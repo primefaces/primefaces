@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.model.terminal.TerminalAutoCompleteModel;
 import org.primefaces.model.terminal.TerminalAutoCompleteMatches;
+import org.primefaces.model.terminal.TerminalAutoCompleteModel;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -33,7 +33,7 @@ public class TerminalRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Terminal terminal = (Terminal) component;
-           
+
         if (terminal.isCommandRequest()) {
             handleCommand(context, terminal);
         }
@@ -54,16 +54,16 @@ public class TerminalRenderer extends CoreRenderer {
         String welcomeMessage = terminal.getWelcomeMessage();
         String prompt = terminal.getPrompt();
         String inputId = clientId + "_input";
-        
+
         ResponseWriter writer = context.getResponseWriter();
-        
+
         writer.startElement("div", terminal);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        
+
         if (welcomeMessage != null) {
             writer.startElement("div", null);
             if (terminal.isEscape()) {
@@ -108,9 +108,9 @@ public class TerminalRenderer extends CoreRenderer {
         wb.init("Terminal", terminal.resolveWidgetVar(), clientId);
         wb.finish();
     }
-    
+
     protected void handleCommand(FacesContext context, Terminal terminal) throws IOException {
-        String tokens[] = getValueTokens(context, terminal);
+        String[] tokens = getValueTokens(context, terminal);
         String command = tokens[0];
         String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
 
@@ -122,7 +122,7 @@ public class TerminalRenderer extends CoreRenderer {
     }
 
     protected void autoCompleteCommand(FacesContext context, Terminal terminal) throws IOException {
-        String tokens[] = getValueTokens(context, terminal);
+        String[] tokens = getValueTokens(context, terminal);
         String command = tokens[0];
         String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
 
@@ -140,7 +140,7 @@ public class TerminalRenderer extends CoreRenderer {
     private String[] getValueTokens(FacesContext context, Terminal terminal) {
         String clientId = terminal.getClientId(context);
         String value = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
-        String tokens[] = value.trim().split(" ");
+        String[] tokens = value.trim().split(" ");
 
         return tokens;
     }

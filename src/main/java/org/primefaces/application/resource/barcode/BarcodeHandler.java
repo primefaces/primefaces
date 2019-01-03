@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.xml.XMLConstants;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -39,7 +40,7 @@ import org.w3c.dom.DocumentFragment;
 
 public class BarcodeHandler extends BaseDynamicContentHandler {
 
-    private final static Logger LOG = Logger.getLogger(BarcodeHandler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BarcodeHandler.class.getName());
 
     private final Map<String, BarcodeGenerator> generators;
 
@@ -62,9 +63,9 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
     public void handle(FacesContext context) throws IOException {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         ExternalContext externalContext = context.getExternalContext();
-        String sessionKey = (String) params.get(Constants.DYNAMIC_CONTENT_PARAM);
+        String sessionKey = params.get(Constants.DYNAMIC_CONTENT_PARAM);
         Map<String, Object> session = externalContext.getSessionMap();
-        Map<String, String> barcodeMapping = (Map) session.get(Constants.BARCODE_MAPPING);
+        Map<String, String> barcodeMapping = (Map<String, String>) session.get(Constants.BARCODE_MAPPING);
         String value = barcodeMapping.get(sessionKey);
 
         if (value != null) {
@@ -73,7 +74,7 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
                 String format = params.get("fmt");
                 String hrp = params.get("hrp");
                 int orientation = Integer.parseInt(params.get("ori"));
-                boolean cache = Boolean.valueOf(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
+                boolean cache = Boolean.parseBoolean(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
 
                 generator.getBarcodeBean().setMsgPosition(HumanReadablePlacement.byName(hrp));
 
@@ -101,6 +102,7 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
                     DocumentFragment frag = svgCanvasProvider.getDOMFragment();
 
                     TransformerFactory factory = TransformerFactory.newInstance();
+                    factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
                     Transformer trans = factory.newTransformer();
                     Source src = new javax.xml.transform.dom.DOMSource(frag);
                     Result res = new javax.xml.transform.stream.StreamResult(out);
@@ -110,7 +112,7 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
                 externalContext.setResponseStatus(200);
             }
             catch (Exception e) {
-                LOG.log(Level.SEVERE, "Error in streaming barcode resource. {0}", new Object[]{e.getMessage()});
+                LOGGER.log(Level.SEVERE, "Error in streaming barcode resource. {0}", new Object[]{e.getMessage()});
             }
             finally {
                 externalContext.responseFlushBuffer();

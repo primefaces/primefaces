@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,8 @@ import java.util.Map;
 
 public class DonutChartModel extends ChartModel {
 
+    private static final long serialVersionUID = 1L;
+
     private List<Map<String, Number>> data;
     private int sliceMargin;
     private boolean fill = true;
@@ -33,7 +35,7 @@ public class DonutChartModel extends ChartModel {
     private String datatipEditor;
 
     public DonutChartModel() {
-        data = new ArrayList<Map<String, Number>>();
+        data = new ArrayList<>();
     }
 
     public DonutChartModel(List<Map<String, Number>> data) {

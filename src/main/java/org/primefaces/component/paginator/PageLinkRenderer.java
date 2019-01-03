@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,12 @@
 package org.primefaces.component.paginator;
 
 import java.io.IOException;
+
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.api.Pageable;
+import org.primefaces.util.HTML;
 
 public class PageLinkRenderer {
 
@@ -32,7 +35,7 @@ public class PageLinkRenderer {
         writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute("aria-label", ariaLabel, null);
+        writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
         writer.writeAttribute("tabindex", tabindex, null);
 
         writer.startElement("span", null);

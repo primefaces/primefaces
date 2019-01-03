@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,12 @@
 package org.primefaces.component.datagrid;
 
 import java.io.IOException;
-import javax.faces.FacesException;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -79,8 +80,8 @@ public class DataGridRenderer extends DataRenderer {
         String style = grid.getStyle();
         String styleClass = grid.getStyleClass() == null ? DataGrid.DATAGRID_CLASS : DataGrid.DATAGRID_CLASS + " " + grid.getStyleClass();
         String contentClass = empty
-                ? DataGrid.EMPTY_CONTENT_CLASS
-                : (layout.equals("tabular") ? DataGrid.TABLE_CONTENT_CLASS : DataGrid.GRID_CONTENT_CLASS);
+                              ? DataGrid.EMPTY_CONTENT_CLASS
+                              : (layout.equals("tabular") ? DataGrid.TABLE_CONTENT_CLASS : DataGrid.GRID_CONTENT_CLASS);
 
         if (hasPaginator) {
             grid.calculateFirst();
@@ -143,7 +144,7 @@ public class DataGridRenderer extends DataRenderer {
 
     protected void encodeGrid(FacesContext context, DataGrid grid) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        
+
         int columns = grid.getColumns();
         int rowIndex = grid.getFirst();
         int rows = grid.getRows();

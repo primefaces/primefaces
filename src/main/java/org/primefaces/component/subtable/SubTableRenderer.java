@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,11 @@
 package org.primefaces.component.subtable;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.datatable.DataTable;
@@ -99,8 +101,12 @@ public class SubTableRenderer extends CoreRenderer {
             String styleClass = column.getStyleClass();
 
             writer.startElement("td", null);
-            if (style != null) writer.writeAttribute("style", style, null);
-            if (styleClass != null) writer.writeAttribute("class", styleClass, null);
+            if (style != null) {
+                writer.writeAttribute("style", style, null);
+            }
+            if (styleClass != null) {
+                writer.writeAttribute("class", styleClass, null);
+            }
 
             column.encodeAll(context);
 
@@ -165,9 +171,15 @@ public class SubTableRenderer extends CoreRenderer {
 
         writer.startElement("td", null);
         writer.writeAttribute("class", columnClass, null);
-        if (column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
-        if (column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
-        if (style != null) writer.writeAttribute("style", style, null);
+        if (column.getRowspan() != 1) {
+            writer.writeAttribute("rowspan", column.getRowspan(), null);
+        }
+        if (column.getColspan() != 1) {
+            writer.writeAttribute("colspan", column.getColspan(), null);
+        }
+        if (style != null) {
+            writer.writeAttribute("style", style, null);
+        }
 
         // Footer content
         UIComponent facet = column.getFacet(facetName);

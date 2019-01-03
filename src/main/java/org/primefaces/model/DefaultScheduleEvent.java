@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,12 @@ package org.primefaces.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private String id;
     private String title;
@@ -30,6 +34,8 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
     private boolean editable = true;
     private String description;
     private String url;
+    private ScheduleRenderingMode renderingMode;
+    private Map<String, Object> dynamicProperties;
 
     public DefaultScheduleEvent() {
     }
@@ -61,14 +67,17 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
         this.data = data;
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
     }
 
+    @Override
     public String getTitle() {
         return title;
     }
@@ -77,6 +86,7 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
         this.title = title;
     }
 
+    @Override
     public Date getStartDate() {
         return startDate;
     }
@@ -85,6 +95,7 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
         this.startDate = startDate;
     }
 
+    @Override
     public Date getEndDate() {
         return endDate;
     }
@@ -93,6 +104,7 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
         this.endDate = endDate;
     }
 
+    @Override
     public boolean isAllDay() {
         return allDay;
     }
@@ -105,10 +117,12 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
         this.styleClass = styleClass;
     }
 
+    @Override
     public String getStyleClass() {
         return styleClass;
     }
 
+    @Override
     public Object getData() {
         return data;
     }
@@ -117,6 +131,7 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
         this.data = data;
     }
 
+    @Override
     public boolean isEditable() {
         return editable;
     }
@@ -125,6 +140,7 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
         this.editable = editable;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
@@ -133,12 +149,34 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
         this.description = description;
     }
 
+    @Override
     public String getUrl() {
         return url;
     }
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Override
+    public ScheduleRenderingMode getRenderingMode() {
+        return renderingMode;
+    }
+
+    public void setRenderingMode(ScheduleRenderingMode renderingMode) {
+        this.renderingMode = renderingMode;
+    }
+
+    @Override
+    public Map<String, Object> getDynamicProperties() {
+        return dynamicProperties;
+    }
+
+    public Object setDynamicProperty(String key, Object value) {
+        if (dynamicProperties == null) {
+            dynamicProperties = new HashMap<>();
+        }
+        return dynamicProperties.put(key, value);
     }
 
     @Override

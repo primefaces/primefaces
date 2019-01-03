@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,7 @@
 package org.primefaces.component.tree;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -28,17 +24,16 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.UITree;
-
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.filter.FilterConstraint;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.RendererUtils;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.SharedStringBuilder;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
+
+import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
 
 public class TreeRenderer extends CoreRenderer {
 
@@ -89,7 +84,7 @@ public class TreeRenderer extends CoreRenderer {
                 tree.setSelection(tree.getRowNode());
             }
             else {
-                List<TreeNode> selectedNodes = new ArrayList<TreeNode>();
+                List<TreeNode> selectedNodes = new ArrayList<>();
 
                 for (int i = 0; i < selectedRowKeys.length; i++) {
                     tree.setRowKey(selectedRowKeys[i]);
@@ -109,7 +104,7 @@ public class TreeRenderer extends CoreRenderer {
             String selectedNodeRowKey = params.get(clientId + "_instantSelection");
             tree.setRowKey(selectedNodeRowKey);
             TreeNode selectedNode = tree.getRowNode();
-            List<String> descendantRowKeys = new ArrayList<String>();
+            List<String> descendantRowKeys = new ArrayList<>();
             tree.populateRowKeys(selectedNode, descendantRowKeys);
             int size = descendantRowKeys.size();
             StringBuilder sb = SharedStringBuilder.get(context, SB_DECODE_SELECTION);
@@ -134,11 +129,11 @@ public class TreeRenderer extends CoreRenderer {
         String dropNodeRowKey = params.get(clientId + "_dropNode");
         String dragSource = params.get(clientId + "_dragSource");
         int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
-        boolean isDroppedNodeCopy = Boolean.valueOf(params.get(clientId + "_isDroppedNodeCopy"));
+        boolean isDroppedNodeCopy = Boolean.parseBoolean(params.get(clientId + "_isDroppedNodeCopy"));
         String[] dragNodeRowKeyArr = dragNodeRowKey.split(",");
-        List<TreeNode> dragNodeList = new ArrayList<TreeNode>();
+        List<TreeNode> dragNodeList = new ArrayList<>();
         TreeNode dropNode;
-        
+
         for (String rowKey : dragNodeRowKeyArr) {
             if (dragSource.equals(clientId)) {
                 tree.setRowKey(rowKey);
@@ -150,7 +145,7 @@ public class TreeRenderer extends CoreRenderer {
                 dragNodeList.add(otherTree.getRowNode());
             }
         }
-        
+
         if (isValueBlank(dropNodeRowKey)) {
             dropNode = tree.getValue();
         }
@@ -158,9 +153,9 @@ public class TreeRenderer extends CoreRenderer {
             tree.setRowKey(dropNodeRowKey);
             dropNode = tree.getRowNode();
         }
-        
+
         tree.setDropNode(dropNode);
-        
+
         TreeNode[] dragNodes = new TreeNode[dragNodeList.size()];
         dragNodes = dragNodeList.toArray(dragNodes);
         if (tree.isMultipleDrag()) {
@@ -169,16 +164,16 @@ public class TreeRenderer extends CoreRenderer {
         else {
             tree.setDragNode(dragNodes[0]);
         }
-        
+
         if (!tree.isTreeNodeDropped()) {
             return;
         }
-        
+
         for (TreeNode dragNode : dragNodes) {
             if (isDroppedNodeCopy) {
                 dragNode = tree.createCopyOfTreeNode(dragNode);
             }
-            
+
             if (dndIndex >= 0 && dndIndex < dropNode.getChildCount()) {
                 dropNode.getChildren().add(dndIndex, dragNode);
             }
@@ -198,7 +193,7 @@ public class TreeRenderer extends CoreRenderer {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String rowKey = params.get(clientId + "_expandNode");
 
-            if (!vertical && rowKey.equals("root")) {
+            if (!vertical && rowKey.equals(ROOT_ROW_KEY)) {
                 encodeHorizontalTreeNodeChildren(context, tree, tree.getValue(), tree.getClientId(context), null, tree.isDynamic(),
                         tree.isCheckboxSelection());
             }
@@ -225,16 +220,16 @@ public class TreeRenderer extends CoreRenderer {
             Locale filterLocale = context.getViewRoot().getLocale();
 
             tree.getFilteredRowKeys().clear();
-            encodeFilteredNodes(context, tree, (TreeNode) tree.getValue(), filteredValue, filterLocale);
-            TreeNode root = (TreeNode) tree.getValue();
+            encodeFilteredNodes(context, tree, tree.getValue(), filteredValue, filterLocale);
+            TreeNode root = tree.getValue();
 
             if (root != null && root.getRowKey() == null) {
-                root.setRowKey("root");
+                root.setRowKey(ROOT_ROW_KEY);
                 tree.buildRowKeys(root);
                 tree.initPreselection();
             }
 
-            if (root != null && (ComponentUtils.isValueBlank(filteredValue) || tree.getFilteredRowKeys().size() > 0)) {
+            if (root != null && (LangUtils.isValueBlank(filteredValue) || tree.getFilteredRowKeys().size() > 0)) {
                 encodeTreeNodeChildren(context, tree, root, clientId, tree.isDynamic(), tree.isCheckboxSelection(), tree.isDroppable());
             }
         }
@@ -247,7 +242,7 @@ public class TreeRenderer extends CoreRenderer {
     protected void encodeFilteredNodes(FacesContext context, Tree tree, TreeNode node, String filteredValue, Locale filterLocale)
             throws IOException {
         int childCount = node.getChildCount();
-        if (childCount > 0) { 
+        if (childCount > 0) {
             String var = tree.getVar();
             Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
             ValueExpression filterByVE = tree.getValueExpression(Tree.PropertyKeys.filterBy.toString());
@@ -300,13 +295,14 @@ public class TreeRenderer extends CoreRenderer {
                     .attr("multipleDrag", tree.isMultipleDrag())
                     .attr("dropCopyNode", tree.isDropCopyNode());
         }
-        
+
         if (tree.getOnDrop() != null) {
             wb.attr("controlled", true);
         }
 
         if (filter) {
-            wb.attr("filter", true);
+            wb.attr("filter", true)
+                    .attr("filterMode", tree.getFilterMode(), "exact");
         }
 
         encodeIconStates(context, tree, wb);
@@ -317,10 +313,10 @@ public class TreeRenderer extends CoreRenderer {
 
     protected void encodeMarkup(FacesContext context, Tree tree) throws IOException {
         boolean vertical = tree.getOrientation().equals("vertical");
-        TreeNode root = (TreeNode) tree.getValue();
+        TreeNode root = tree.getValue();
 
         if (root != null && root.getRowKey() == null) {
-            root.setRowKey("root");
+            root.setRowKey(ROOT_ROW_KEY);
             tree.buildRowKeys(root);
             tree.initPreselection();
         }
@@ -346,7 +342,7 @@ public class TreeRenderer extends CoreRenderer {
         boolean isDisabled = tree.isDisabled();
 
         if (root != null && root.getRowKey() == null) {
-            root.setRowKey("root");
+            root.setRowKey(ROOT_ROW_KEY);
             tree.buildRowKeys(root);
             tree.initPreselection();
         }
@@ -373,8 +369,8 @@ public class TreeRenderer extends CoreRenderer {
         if (!isDisabled) {
             writer.writeAttribute("tabindex", tree.getTabindex(), null);
         }
-        
-        writer.writeAttribute("aria-multiselectable", String.valueOf(multiselectable), null);
+
+        writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, String.valueOf(multiselectable), null);
         if (tree.getStyle() != null) {
             writer.writeAttribute("style", tree.getStyle(), null);
         }
@@ -395,9 +391,9 @@ public class TreeRenderer extends CoreRenderer {
         if (selectable) {
             encodeStateHolder(context, tree, clientId + "_selection", tree.getSelectedRowKeysAsString());
         }
-        
+
         encodeStateHolder(context, tree, clientId + "_scrollState", tree.getScrollState());
-        
+
         writer.endElement("div");
     }
 
@@ -430,8 +426,8 @@ public class TreeRenderer extends CoreRenderer {
         boolean checkbox = (selectionMode != null) && selectionMode.equals("checkbox");
 
         String containerClass = tree.getStyleClass() == null
-                ? Tree.HORIZONTAL_CONTAINER_CLASS
-                : Tree.HORIZONTAL_CONTAINER_CLASS + " " + tree.getStyleClass();
+                                ? Tree.HORIZONTAL_CONTAINER_CLASS
+                                : Tree.HORIZONTAL_CONTAINER_CLASS + " " + tree.getStyleClass();
         containerClass = tree.isDisabled() ? containerClass + " ui-state-disabled" : containerClass;
         if (tree.isShowUnselectableCheckbox()) {
             containerClass = containerClass + " ui-tree-checkbox-all";
@@ -454,8 +450,8 @@ public class TreeRenderer extends CoreRenderer {
     }
 
     protected void encodeHorizontalTreeNode(FacesContext context, Tree tree, TreeNode node, String clientId, String rowKey,
-            NodeOrder nodeOrder, boolean dynamic, boolean checkbox) throws IOException {
-        
+                                            NodeOrder nodeOrder, boolean dynamic, boolean checkbox) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
         UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());
         boolean expanded = node.isExpanded();
@@ -502,12 +498,12 @@ public class TreeRenderer extends CoreRenderer {
         }
         else {
             context.getExternalContext().getRequestMap().put(tree.getVar(), tree.getValue().getData());
-            writer.writeAttribute("data-rowkey", "root", null);
+            writer.writeAttribute("data-rowkey", ROOT_ROW_KEY, null);
         }
 
         nodeClass = uiTreeNode.getStyleClass() == null ? nodeClass : nodeClass + " " + uiTreeNode.getStyleClass();
         writer.writeAttribute("class", nodeClass, null);
-        
+
         String nodeContentClass = (tree.getSelectionMode() != null && node.isSelectable()) ? Tree.SELECTABLE_NODE_CONTENT_CLASS_H : Tree.NODE_CONTENT_CLASS_H;
         if (selected) {
             nodeContentClass += " ui-state-highlight";
@@ -531,7 +527,18 @@ public class TreeRenderer extends CoreRenderer {
         //icon
         encodeIcon(context, uiTreeNode, expanded);
 
+        //label
+        writer.startElement("span", null);
+        writer.writeAttribute("class", Tree.NODE_LABEL_CLASS, null);
+        if (!tree.isDisabled()) {
+            writer.writeAttribute("tabindex", "-1", null);
+        }
+
+        writer.writeAttribute("role", "treeitem", null);
+        writer.writeAttribute("aria-label", uiTreeNode.getAriaLabel(), null);
         uiTreeNode.encodeAll(context);
+        writer.endElement("span");
+
         writer.endElement("div");
         writer.endElement("td");
 
@@ -561,10 +568,10 @@ public class TreeRenderer extends CoreRenderer {
     }
 
     protected void encodeHorizontalTreeNodeChildren(FacesContext context, Tree tree, TreeNode node, String clientId, String rowKey,
-            boolean dynamic, boolean checkbox) throws IOException {
-        
+                                                    boolean dynamic, boolean checkbox) throws IOException {
+
         int childIndex = 0;
-        for (Iterator<TreeNode> iterator = node.getChildren().iterator(); iterator.hasNext();) {
+        for (Iterator<TreeNode> iterator = node.getChildren().iterator(); iterator.hasNext(); ) {
             String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + UITree.SEPARATOR + childIndex;
 
             NodeOrder no = null;
@@ -620,13 +627,14 @@ public class TreeRenderer extends CoreRenderer {
     }
 
     public void encodeTreeNode(FacesContext context, Tree tree, TreeNode node, String clientId, boolean dynamic, boolean checkbox,
-            boolean dragdrop) throws IOException {
-        
+                               boolean dragdrop) throws IOException {
+
         //preselection
         String rowKey = node.getRowKey();
         boolean selected = node.isSelected();
         boolean partialSelected = node.isPartialSelected();
         boolean filter = (tree.getValueExpression("filterBy") != null);
+        boolean isContainsMode = tree.getFilterMode().equals("contains");
 
         UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());
         if (!uiTreeNode.isRendered()) {
@@ -635,11 +643,12 @@ public class TreeRenderer extends CoreRenderer {
 
         List<String> filteredRowKeys = tree.getFilteredRowKeys();
         boolean match = false;
-        if (filter && filteredRowKeys.size() > 0) {
+        if (filter && !filteredRowKeys.isEmpty()) {
             for (String filteredRowKey : filteredRowKeys) {
                 String rowKeyExt = rowKey + "_";
                 String filteredRowKeyExt = filteredRowKey + "_";
-                if (filteredRowKey.startsWith(rowKeyExt) || rowKey.startsWith(filteredRowKeyExt) || filteredRowKey.equals(rowKey)) {
+                if (filteredRowKey.startsWith(rowKeyExt) || (!isContainsMode && rowKey.startsWith(filteredRowKeyExt))
+                        || filteredRowKey.equals(rowKey)) {
                     match = true;
                     if (!node.isLeaf() && !rowKey.startsWith(filteredRowKey)) {
                         node.setExpanded(true);
@@ -659,8 +668,8 @@ public class TreeRenderer extends CoreRenderer {
         boolean expanded = node.isExpanded();
         boolean selectable = tree.getSelectionMode() != null && node.isSelectable();
         String toggleIcon = expanded
-                ? Tree.EXPANDED_ICON_CLASS_V
-                : (tree.isRTLRendering() ? Tree.COLLAPSED_ICON_RTL_CLASS_V : Tree.COLLAPSED_ICON_CLASS_V);
+                            ? Tree.EXPANDED_ICON_CLASS_V
+                            : (tree.isRTLRendering() ? Tree.COLLAPSED_ICON_RTL_CLASS_V : Tree.COLLAPSED_ICON_CLASS_V);
         String stateIcon = isLeaf ? Tree.LEAF_ICON_CLASS : toggleIcon;
         Object datakey = tree.getDatakey();
         String nodeId = clientId + UINamingContainer.getSeparatorChar(context) + rowKey;
@@ -699,10 +708,10 @@ public class TreeRenderer extends CoreRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", contentClass, null);
         writer.writeAttribute("role", "treeitem", null);
-        writer.writeAttribute("aria-expanded", String.valueOf(expanded), null);
-        writer.writeAttribute("aria-selected", String.valueOf(selected), null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(expanded), null);
+        writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(selected), null);
         if (checkbox) {
-            writer.writeAttribute("aria-checked", String.valueOf(selected), null);
+            writer.writeAttribute(HTML.ARIA_CHECKED, String.valueOf(selected), null);
         }
 
         //state icon
@@ -726,15 +735,15 @@ public class TreeRenderer extends CoreRenderer {
         if (!tree.isDisabled()) {
             writer.writeAttribute("tabindex", "-1", null);
         }
-        
+
         writer.writeAttribute("role", "treeitem", null);
-        writer.writeAttribute("aria-label", uiTreeNode.getAriaLabel(), null);
+        writer.writeAttribute(HTML.ARIA_LABEL, uiTreeNode.getAriaLabel(), null);
         uiTreeNode.encodeAll(context);
         writer.endElement("span");
 
         writer.endElement("span");
 
-        //children nodes                
+        //children nodes
         writer.startElement("ul", null);
         writer.writeAttribute("class", Tree.CHILDREN_NODES_CLASS, null);
         writer.writeAttribute("role", "group", null);
@@ -757,8 +766,8 @@ public class TreeRenderer extends CoreRenderer {
     }
 
     public void encodeTreeNodeChildren(FacesContext context, Tree tree, TreeNode node, String clientId, boolean dynamic,
-            boolean checkbox, boolean droppable) throws IOException {
-        
+                                       boolean checkbox, boolean droppable) throws IOException {
+
         int childCount = node.getChildCount();
         if (childCount > 0) {
             for (int i = 0; i < childCount; i++) {
@@ -785,7 +794,7 @@ public class TreeRenderer extends CoreRenderer {
         wb.append(",iconStates:{");
 
         boolean firstWritten = false;
-        for (Iterator<String> it = nodes.keySet().iterator(); it.hasNext();) {
+        for (Iterator<String> it = nodes.keySet().iterator(); it.hasNext(); ) {
             String type = it.next();
             UITreeNode node = nodes.get(type);
             String expandedIcon = node.getExpandedIcon();
@@ -828,25 +837,6 @@ public class TreeRenderer extends CoreRenderer {
         writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("value", value, null);
         writer.endElement("input");
-    }
-
-    protected void encodeCheckbox(FacesContext context, Tree tree, TreeNode node, boolean selected) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String iconClass = selected ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
-
-        writer.startElement("div", null);
-        writer.writeAttribute("class", HTML.CHECKBOX_CLASS, null);
-
-        writer.startElement("div", null);
-        writer.writeAttribute("class", HTML.CHECKBOX_BOX_CLASS, null);
-
-        writer.startElement("span", null);
-        writer.writeAttribute("class", iconClass, null);
-        writer.endElement("span");
-
-        writer.endElement("div");
-
-        writer.endElement("div");
     }
 
     @Override

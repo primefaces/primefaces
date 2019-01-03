@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,10 @@ package org.primefaces.component.chart.renderer;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.BubbleChartModel;
 import org.primefaces.model.chart.BubbleChartSeries;
@@ -33,7 +35,7 @@ public class BubbleRenderer extends CartesianPlotRenderer {
         List<BubbleChartSeries> data = model.getData();
 
         writer.write(",data:[[");
-        for (Iterator<BubbleChartSeries> it = data.iterator(); it.hasNext();) {
+        for (Iterator<BubbleChartSeries> it = data.iterator(); it.hasNext(); ) {
             BubbleChartSeries s = it.next();
             writer.write("[");
             writer.write(escapeChartData(s.getX()));

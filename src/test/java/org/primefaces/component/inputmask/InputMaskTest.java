@@ -20,26 +20,26 @@ import org.junit.Test;
 
 import java.util.regex.Pattern;
 
-import static org.junit.Assert.assertEquals;
+import org.primefaces.mock.FacesContextMock;
 
 public class InputMaskTest {
 
-	@Test
-	public void translatePhoneMaskIntoRegex() {
-		InputMask inputMask = new InputMask();
-		inputMask.setMask("(999) 999-9999? x99999");
-		Pattern pattern = new InputMaskRenderer().translateMaskIntoRegex(inputMask);
-		Assert.assertEquals("\\([0-9][0-9][0-9]\\) [0-9][0-9][0-9]\\-[0-9][0-9][0-9][0-9]( x[0-9][0-9][0-9][0-9][0-9])?", pattern.pattern());
-		Assert.assertTrue(pattern.matcher("(012) 345-6789").matches());
-	}
+    @Test
+    public void translatePhoneMaskIntoRegex() {
+        InputMask inputMask = new InputMask();
+        inputMask.setMask("(999) 999-9999? x99999");
+        Pattern pattern = new InputMaskRenderer().translateMaskIntoRegex(new FacesContextMock(), inputMask);
+        Assert.assertEquals("\\([0-9][0-9][0-9]\\) [0-9][0-9][0-9]\\-[0-9][0-9][0-9][0-9] ?x?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?", pattern.pattern());
+        Assert.assertTrue(pattern.matcher("(012) 345-6789").matches());
+    }
 
-	@Test
-	public void issue3566() {
-		InputMask inputMask = new InputMask();
-		inputMask.setMask("a*9");
-		Pattern pattern = new InputMaskRenderer().translateMaskIntoRegex(inputMask);
-		Assert.assertEquals("[A-Za-z][A-Za-z0-9][0-9]", pattern.pattern());
-		Assert.assertTrue(pattern.matcher("aX3").matches());
-	}
+    @Test
+    public void issue3566() {
+        InputMask inputMask = new InputMask();
+        inputMask.setMask("a*9");
+        Pattern pattern = new InputMaskRenderer().translateMaskIntoRegex(new FacesContextMock(), inputMask);
+        Assert.assertEquals("[A-Za-z][A-Za-z0-9][0-9]", pattern.pattern());
+        Assert.assertTrue(pattern.matcher("aX3").matches());
+    }
 
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,11 @@
 package org.primefaces.component.linkbutton;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
@@ -28,29 +30,29 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         LinkButton linkButton = (LinkButton) component;
-        
+
         encodeMarkup(context, linkButton);
         encodeScript(context, linkButton);
     }
 
-    protected void encodeMarkup(FacesContext context, LinkButton linkButton) throws IOException {        
+    protected void encodeMarkup(FacesContext context, LinkButton linkButton) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        
+
         boolean disabled = linkButton.isDisabled();
-        
+
         String style = linkButton.getStyle();
         String defaultStyleClass = disabled ? LinkButton.DISABLED_STYLE_CLASS : LinkButton.STYLE_CLASS;
-        
+
         String styleClass = linkButton.getStyleClass();
         styleClass = (styleClass == null) ? defaultStyleClass : defaultStyleClass + " " + styleClass;
-        
+
         writer.startElement("span", linkButton);
         writer.writeAttribute("id", linkButton.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        
+
         if (disabled) {
             writer.startElement("span", null);
             writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
@@ -72,10 +74,10 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
             renderContent(context, linkButton);
             writer.endElement("a");
         }
-        
+
         writer.endElement("span");
     }
-    
+
     protected void encodeScript(FacesContext context, LinkButton button) throws IOException {
         String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
@@ -83,7 +85,7 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
 
         wb.finish();
     }
-    
+
     protected void renderContent(FacesContext context, LinkButton linkButton) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Object value = linkButton.getValue();

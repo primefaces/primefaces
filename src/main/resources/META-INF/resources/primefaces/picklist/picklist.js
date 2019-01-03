@@ -54,6 +54,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 cancel: '.ui-state-disabled,.ui-chkbox-box',
                 connectWith: this.jqId + ' .ui-picklist-list',
                 revert: 1,
+                helper: 'clone',
                 update: function(event, ui) {
                     $this.unselectItem(ui.item);
 
@@ -95,6 +96,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             this.bindKeyEvents();
 
             this.updateButtonsState();
+
+            this.updateListRole();
         }
     },
 
@@ -221,9 +224,11 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             }
 
             setTimeout(function() {
-                PrimeFaces.scrollInView(list, $this.focusedItem);
-                $this.focusedItem.addClass('ui-picklist-outline');
-                $this.ariaRegion.text($this.focusedItem.data('item-label'));
+                if ($this.focusedItem) {
+                    PrimeFaces.scrollInView(list, $this.focusedItem);
+                    $this.focusedItem.addClass('ui-picklist-outline');
+                    $this.ariaRegion.text($this.focusedItem.data('item-label'));
+                }
             }, 100);
         })
         .on('blur.pickList', listSelector, null, function() {
@@ -282,7 +287,6 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                 case keyCode.SPACE:
                     if($this.focusedItem && $this.focusedItem.hasClass('ui-state-highlight')) {
                         $this.focusedItem.trigger('dblclick.pickList');
@@ -363,14 +367,17 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     },
 
     generateItems: function(list, input) {
+        var $this = this;
         list.children('.ui-picklist-item').each(function() {
             var item = $(this),
-            itemValue = PrimeFaces.escapeHTML(item.attr('data-item-value')),
-            itemLabel = item.attr('data-item-label'),
-            escapedItemLabel = (itemLabel) ? PrimeFaces.escapeHTML(itemLabel) : '',
+            itemValue = item.attr('data-item-value'),
+            itemLabel = item.attr('data-item-label') ? PrimeFaces.escapeHTML(item.attr('data-item-label')) : '',
             option = $('<option selected="selected"></option>');
 
-            option.prop('value', itemValue).text(escapedItemLabel);
+            if ($this.cfg.escape) {
+               itemValue = PrimeFaces.escapeHTML(itemValue);
+            }
+            option.prop('value', itemValue).text(itemLabel);
             input.append(option);
         });
     },
@@ -403,22 +410,75 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     },
 
     bindFilterEvents: function() {
+        this.cfg.filterEvent = this.cfg.filterEvent||'keyup';
+        this.cfg.filterDelay = this.cfg.filterDelay||300;
         this.setupFilterMatcher();
 
         this.sourceFilter = $(this.jqId + '_source_filter');
         this.targetFilter = $(this.jqId + '_target_filter');
-        var _self = this;
 
         PrimeFaces.skinInput(this.sourceFilter);
+        this.bindTextFilter(this.sourceFilter);
+
         PrimeFaces.skinInput(this.targetFilter);
+        this.bindTextFilter(this.targetFilter);
+    },
 
-        this.sourceFilter.on('keyup', function(e) {
-            _self.filter(this.value, _self.sourceList);
-        })
-        .on('keydown', this.blockEnterKey);
+    bindTextFilter: function(filter) {
+        if(this.cfg.filterEvent === 'enter')
+            this.bindEnterKeyFilter(filter);
+        else
+            this.bindFilterEvent(filter);
+    },
 
-        this.targetFilter.on('keyup', function(e) {
-            _self.filter(this.value, _self.targetList);
+    bindEnterKeyFilter: function(filter) {
+        var $this = this;
+
+        filter.bind('keydown', function(e) {
+            var key = e.which,
+            keyCode = $.ui.keyCode;
+
+            if((key === keyCode.ENTER)) {
+                e.preventDefault();
+            }
+        }).bind('keyup', function(e) {
+            var key = e.which,
+            keyCode = $.ui.keyCode;
+
+            if((key === keyCode.ENTER)) {
+                $this.filter(this.value, $this.getFilteredList($(this)));
+
+                e.preventDefault();
+            }
+        });
+    },
+
+    bindFilterEvent: function(filter) {
+        var $this = this;
+
+        //prevent form submit on enter key
+        filter.on(this.cfg.filterEvent, function(e) {
+            var input = $(this),
+            key = e.which,
+            keyCode = $.ui.keyCode,
+            ignoredKeys = [keyCode.END, keyCode.HOME, keyCode.LEFT, keyCode.RIGHT, keyCode.UP, keyCode.DOWN,
+                keyCode.TAB, 16/*Shift*/, 17/*Ctrl*/, 18/*Alt*/, 91, 92, 93/*left/right Win/Cmd*/,
+                keyCode.ESCAPE, keyCode.PAGE_UP, keyCode.PAGE_DOWN,
+                19/*pause/break*/, 20/*caps lock*/, 44/*print screen*/, 144/*num lock*/, 145/*scroll lock*/];
+
+            if (ignoredKeys.indexOf(key) > -1) {
+                return;
+            }
+
+            if($this.filterTimeout) {
+                clearTimeout($this.filterTimeout);
+            }
+
+            $this.filterTimeout = setTimeout(function() {
+                $this.filter(input.val(), $this.getFilteredList(input));
+                $this.filterTimeout = null;
+            },
+            $this.cfg.filterDelay);
         })
         .on('keydown', this.blockEnterKey);
     },
@@ -427,7 +487,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         var key = e.which,
         keyCode = $.ui.keyCode;
 
-        if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+        if((key === keyCode.ENTER)) {
             e.preventDefault();
         }
     },
@@ -449,29 +509,45 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         items = list.children('li.ui-picklist-item'),
         animated = this.isAnimated();
 
+        list.removeAttr('role');
+        
         if(filterValue === '') {
             items.filter(':hidden').show();
+            list.attr('role', 'menu');
         }
-        else {
+        else {            
             for(var i = 0; i < items.length; i++) {
                 var item = items.eq(i),
                 itemLabel = item.attr('data-item-label'),
                 matches = this.filterMatcher(itemLabel, filterValue);
 
                 if(matches) {
-                    if(animated)
-                        item.fadeIn('fast');
-                    else
+                    var hasRole = list[0].hasAttribute('role');
+                    if(animated) {
+                        item.fadeIn('fast', function() {
+                            if(!hasRole) {
+                                list.attr('role', 'menu');
+                            }
+                        });
+                    }
+                    else {
                         item.show();
+                        if(!hasRole) {
+                            list.attr('role', 'menu');
+                        }
+                    }
                 }
                 else {
-                    if(animated)
+                    if(animated) {
                         item.fadeOut('fast');
-                    else
+                    }
+                    else {
                         item.hide();
+                    }
                 }
             }
         }
+
     },
 
     startsWithFilter: function(value, filter) {
@@ -484,6 +560,10 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
     endsWithFilter: function(value, filter) {
         return value.indexOf(filter, value.length - filter.length) !== -1;
+    },
+
+    getFilteredList: function(filter) {
+        return filter.hasClass('ui-source-filter-input') ? this.sourceList : this.targetList;
     },
 
     add: function() {
@@ -696,6 +776,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                         $this.saveState();
                         $this.fireTransferEvent(items, from, to, type);
                     }
+
+                    $this.updateListRole();
                 });
             });
         }
@@ -712,6 +794,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
             this.saveState();
             this.fireTransferEvent(items, from, to, type);
+            this.updateListRole();
         }
     },
 
@@ -729,24 +812,20 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.onTransfer.call(this, obj);
         }
 
-        if(this.cfg.behaviors) {
-            var transferBehavior = this.cfg.behaviors['transfer'];
+        if(this.hasBehavior('transfer')) {
+            var ext = {
+                params: []
+            },
+            paramName = this.id + '_transferred',
+            isAdd = from.hasClass('ui-picklist-source');
 
-            if(transferBehavior) {
-                var ext = {
-                    params: []
-                },
-                paramName = this.id + '_transferred',
-                isAdd = from.hasClass('ui-picklist-source');
+            items.each(function(index, item) {
+                ext.params.push({name:paramName, value:$(item).attr('data-item-value')});
+            });
 
-                items.each(function(index, item) {
-                    ext.params.push({name:paramName, value:$(item).attr('data-item-value')});
-                });
+            ext.params.push({name:this.id + '_add', value:isAdd});
 
-                ext.params.push({name:this.id + '_add', value:isAdd});
-
-                transferBehavior.call(this, ext);
-            }
+            this.callBehavior('transfer', ext);
         }
         $(this.jqId + ' ul').sortable('enable');
 
@@ -759,8 +838,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
     fireItemSelectEvent: function(item) {
         if(this.hasBehavior('select')) {
-            var itemSelectBehavior = this.cfg.behaviors['select'],
-            listName = this.getListName(item),
+            var listName = this.getListName(item),
             inputContainer = (listName === "source") ? this.sourceInput : this.targetInput,
             ext = {
                 params: [
@@ -774,28 +852,25 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 }
             };
 
-            itemSelectBehavior.call(this, ext);
+            this.callBehavior('select', ext);
         }
     },
 
     fireItemUnselectEvent: function(item) {
         if(this.hasBehavior('unselect')) {
-            var itemUnselectBehavior = this.cfg.behaviors['unselect'],
-            ext = {
+            var ext = {
                 params: [
                     {name: this.id + '_itemIndex', value: item.index()},
                     {name: this.id + '_listName', value: this.getListName(item)}
                 ]
             };
 
-            itemUnselectBehavior.call(this, ext);
+            this.callBehavior('unselect', ext);
         }
     },
 
     fireReorderEvent: function() {
-        if(this.hasBehavior('reorder')) {
-            this.cfg.behaviors['reorder'].call(this);
-        }
+        this.callBehavior('reorder');
     },
 
     isAnimated: function() {
@@ -856,6 +931,11 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
     enableButton: function (button) {
         button.removeAttr('disabled').removeClass('ui-state-disabled');
+    },
+
+    updateListRole: function() {
+        this.sourceList.children('li:visible').length > 0 ? this.sourceList.attr('role', 'menu') : this.sourceList.removeAttr('role');
+        this.targetList.children('li:visible').length > 0 ? this.targetList.attr('role', 'menu') : this.targetList.removeAttr('role');
     }
 
 });

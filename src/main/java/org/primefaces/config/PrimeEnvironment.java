@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,46 +21,65 @@ import java.util.Properties;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.context.FacesContext;
 import javax.validation.Validation;
-import org.primefaces.util.ClassUtils;
+import org.primefaces.util.LangUtils;
 
 public class PrimeEnvironment {
-    
-    private static final Logger LOG = Logger.getLogger(PrimeEnvironment.class.getName());
-    
+
+    private static final Logger LOGGER = Logger.getLogger(PrimeEnvironment.class.getName());
+
+    private boolean portlet;
+
     private boolean beanValidationAvailable = false;
-    
+
     private boolean atLeastEl22 = false;
-    
+
     private boolean atLeastJsf23 = false;
     private boolean atLeastJsf22 = false;
     private boolean atLeastJsf21 = false;
-    
+
+    private boolean mojarra = false;
+
     private boolean atLeastBv11 = false;
 
     private String buildVersion = null;
-    
+
+    private boolean htmlSanitizerAvailable;
+
     public PrimeEnvironment() {
-        atLeastEl22 = ClassUtils.tryToLoadClassForName("javax.el.ValueReference") != null;
+        atLeastEl22 = LangUtils.tryToLoadClassForName("javax.el.ValueReference") != null;
 
-        atLeastJsf23 = ClassUtils.tryToLoadClassForName("javax.faces.component.UIImportConstants") != null;
-        atLeastJsf22 = ClassUtils.tryToLoadClassForName("javax.faces.flow.Flow") != null;
-        atLeastJsf21 = ClassUtils.tryToLoadClassForName("javax.faces.component.TransientStateHolder") != null;
+        atLeastJsf23 = LangUtils.tryToLoadClassForName("javax.faces.component.UIImportConstants") != null;
+        atLeastJsf22 = LangUtils.tryToLoadClassForName("javax.faces.flow.Flow") != null;
+        atLeastJsf21 = LangUtils.tryToLoadClassForName("javax.faces.component.TransientStateHolder") != null;
 
-        atLeastBv11 = ClassUtils.tryToLoadClassForName("javax.validation.executable.ExecutableValidator") != null;
+        atLeastBv11 = LangUtils.tryToLoadClassForName("javax.validation.executable.ExecutableValidator") != null;
 
         beanValidationAvailable = checkIfBeanValidationIsAvailable();
-        
+
         buildVersion = resolveBuildVersion();
         // This should only happen if PF + the webapp is openend and started in the same netbeans instance
         // Fallback to a UID to void a empty version in the resourceUrls
         if (buildVersion == null || buildVersion.trim().isEmpty()) {
             buildVersion = UUID.randomUUID().toString().replace("-", "").substring(0, 10);
         }
+
+        htmlSanitizerAvailable = LangUtils.tryToLoadClassForName("org.owasp.html.PolicyFactory") != null;
     }
-    
+
+    public PrimeEnvironment(FacesContext context) {
+        this();
+        this.mojarra = context.getExternalContext().getApplicationMap().containsKey("com.sun.faces.ApplicationAssociate");
+
+        Class<?> portletContext = LangUtils.tryToLoadClassForName("javax.portlet.PortletContext");
+        if (portletContext != null) {
+            portlet = portletContext.isInstance(context.getExternalContext().getContext());
+        }
+    }
+
     protected boolean checkIfBeanValidationIsAvailable() {
-        boolean available = ClassUtils.tryToLoadClassForName("javax.validation.Validation") != null;
+        boolean available = LangUtils.tryToLoadClassForName("javax.validation.Validation") != null;
 
         if (available) {
             // Trial-error approach to check for Bean Validation impl existence.
@@ -70,14 +89,14 @@ public class PrimeEnvironment {
                 Validation.buildDefaultValidatorFactory().getValidator();
             }
             catch (Throwable t) {
-                LOG.log(Level.FINE, "BV not available - Could not build default ValidatorFactory.");
+                LOGGER.log(Level.FINE, "BV not available - Could not build default ValidatorFactory.");
                 available = false;
             }
         }
 
         return available;
     }
-    
+
     protected String resolveBuildVersion() {
 
         Properties buildProperties = new Properties();
@@ -88,7 +107,7 @@ public class PrimeEnvironment {
             return buildProperties.getProperty("version");
         }
         catch (Exception e) {
-            LOG.log(Level.SEVERE, "PrimeFaces version not resolvable - Could not load pom.properties.");
+            LOGGER.log(Level.SEVERE, "PrimeFaces version not resolvable - Could not load pom.properties.");
         }
 
         if (is != null) {
@@ -98,7 +117,7 @@ public class PrimeEnvironment {
             catch (IOException e) {
             }
         }
-        
+
         return null;
     }
 
@@ -106,40 +125,24 @@ public class PrimeEnvironment {
         return beanValidationAvailable;
     }
 
-    public void setBeanValidationAvailable(boolean beanValidationAvailable) {
-        this.beanValidationAvailable = beanValidationAvailable;
-    }
-
     public boolean isAtLeastEl22() {
         return atLeastEl22;
-    }
-
-    public void setAtLeastEl22(boolean atLeastEl22) {
-        this.atLeastEl22 = atLeastEl22;
     }
 
     public boolean isAtLeastJsf23() {
         return atLeastJsf23;
     }
 
-    public void setAtLeastJsf23(boolean atLeastJsf23) {
-        this.atLeastJsf23 = atLeastJsf23;
-    }
-
     public boolean isAtLeastJsf22() {
         return atLeastJsf22;
-    }
-
-    public void setAtLeastJsf22(boolean atLeastJsf22) {
-        this.atLeastJsf22 = atLeastJsf22;
     }
 
     public boolean isAtLeastJsf21() {
         return atLeastJsf21;
     }
 
-    public void setAtLeastJsf21(boolean atLeastJsf21) {
-        this.atLeastJsf21 = atLeastJsf21;
+    public boolean isMojarra() {
+        return mojarra;
     }
 
     public boolean isAtLeastBv11() {
@@ -154,7 +157,12 @@ public class PrimeEnvironment {
         return buildVersion;
     }
 
-    public void setBuildVersion(String buildVersion) {
-        this.buildVersion = buildVersion;
+    public boolean isHtmlSanitizerAvailable() {
+        return htmlSanitizerAvailable;
     }
+
+    public boolean isPortlet() {
+        return portlet;
+    }
+
 }

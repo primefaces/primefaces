@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,15 +20,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
+
 import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.ArrayUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class ChipsRenderer extends InputRenderer {
@@ -38,7 +40,7 @@ public class ChipsRenderer extends InputRenderer {
         Chips chips = (Chips) component;
         String clientId = chips.getClientId(context);
 
-        if (chips.isDisabled() || chips.isReadonly()) {
+        if (!shouldDecode(chips)) {
             return;
         }
 
@@ -49,7 +51,7 @@ public class ChipsRenderer extends InputRenderer {
         String inputValue = params.get(clientId + "_input");
 
         if (!isValueBlank(inputValue)) {
-            submittedValues = ArrayUtils.concat(submittedValues, new String[]{inputValue});
+            submittedValues = LangUtils.concat(submittedValues, new String[]{inputValue});
         }
 
         if (submittedValues.length > 0) {
@@ -75,7 +77,7 @@ public class ChipsRenderer extends InputRenderer {
         String clientId = chips.getClientId(context);
         String inputId = clientId + "_input";
         List values = (List) chips.getValue();
-        List<String> stringValues = new ArrayList<String>();
+        List<String> stringValues = new ArrayList<>();
         boolean disabled = chips.isDisabled();
         String title = chips.getTitle();
 
@@ -87,7 +89,7 @@ public class ChipsRenderer extends InputRenderer {
         String inputStyleClass = chips.getInputStyleClass();
 
         String listClass = disabled ? Chips.CONTAINER_CLASS + " ui-state-disabled" : Chips.CONTAINER_CLASS;
-        listClass = listClass + " " + inputStyleClass;
+        listClass = (inputStyleClass == null) ? listClass : listClass + " " + inputStyleClass;
         listClass = chips.isValid() ? listClass : listClass + " ui-state-error";
 
         writer.startElement("div", null);
@@ -105,11 +107,12 @@ public class ChipsRenderer extends InputRenderer {
         if (inputStyle != null) {
             writer.writeAttribute("style", inputStyle, null);
         }
+        renderARIARequired(context, chips);
 
         if (values != null && !values.isEmpty()) {
             Converter converter = ComponentUtils.getConverter(context, chips);
 
-            for (Iterator<Object> it = values.iterator(); it.hasNext();) {
+            for (Iterator<Object> it = values.iterator(); it.hasNext(); ) {
                 Object value = it.next();
 
                 String tokenValue = converter != null ? converter.getAsString(context, chips, value) : String.valueOf(value);
@@ -141,9 +144,8 @@ public class ChipsRenderer extends InputRenderer {
         writer.writeAttribute("class", "ui-widget", null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("autocomplete", "off", null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", "disabled");
-        if (chips.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
 
+        renderAccessibilityAttributes(context, chips);
         renderPassThruAttributes(context, chips, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, chips, HTML.INPUT_TEXT_EVENTS);
 

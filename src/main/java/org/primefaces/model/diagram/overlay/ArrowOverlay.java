@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@ package org.primefaces.model.diagram.overlay;
 import java.io.Serializable;
 
 public class ArrowOverlay implements Overlay, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private int width = 20;
 
@@ -90,10 +92,12 @@ public class ArrowOverlay implements Overlay, Serializable {
         this.paintStyle = paintStyle;
     }
 
+    @Override
     public String getType() {
         return "Arrow";
     }
 
+    @Override
     public String toJS(StringBuilder sb) {
         sb.append("['Arrow',{location:").append(location);
 

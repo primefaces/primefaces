@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,10 +17,12 @@ package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
 import java.util.Map;
+
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.datatable.DataTable;
@@ -30,10 +32,12 @@ import org.primefaces.visit.ResetInputVisitCallback;
 
 public class RowEditFeature implements DataTableFeature {
 
+    @Override
     public void decode(FacesContext context, DataTable table) {
         throw new RuntimeException("RowEditFeature should not encode.");
     }
 
+    @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         if (table.isSelectionEnabled()) {
             table.findSelectedRowKeys();
@@ -42,25 +46,28 @@ public class RowEditFeature implements DataTableFeature {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = table.getClientId(context);
         int editedRowId = Integer.parseInt(params.get(clientId + "_rowEditIndex"));
-        String action = params.get(clientId + "_rowEditAction");
         table.setRowIndex(editedRowId);
 
-        if (action.equals("cancel")) {
-            VisitContext visitContext = null;
+        if (table.isRowEditRequest(context)) {
+            String action = params.get(clientId + "_rowEditAction");
 
-            for (UIColumn column : table.getColumns()) {
-                for (UIComponent grandkid : column.getChildren()) {
-                    if (grandkid instanceof CellEditor) {
-                        UIComponent inputFacet = grandkid.getFacet("input");
+            if (action.equals("cancel")) {
+                VisitContext visitContext = null;
 
-                        if (inputFacet instanceof EditableValueHolder) {
-                            ((EditableValueHolder) inputFacet).resetValue();
-                        }
-                        else {
-                            if (visitContext == null) {
-                                visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
+                for (UIColumn column : table.getColumns()) {
+                    for (UIComponent grandkid : column.getChildren()) {
+                        if (grandkid instanceof CellEditor) {
+                            UIComponent inputFacet = grandkid.getFacet("input");
+
+                            if (inputFacet instanceof EditableValueHolder) {
+                                ((EditableValueHolder) inputFacet).resetValue();
                             }
-                            inputFacet.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
+                            else {
+                                if (visitContext == null) {
+                                    visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
+                                }
+                                inputFacet.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
+                            }
                         }
                     }
                 }
@@ -72,11 +79,13 @@ public class RowEditFeature implements DataTableFeature {
         }
     }
 
+    @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
         return false;
     }
 
+    @Override
     public boolean shouldEncode(FacesContext context, DataTable table) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_rowEditAction");
+        return table.isRowEditRequest(context) || table.isRowEditInitRequest(context);
     }
 }

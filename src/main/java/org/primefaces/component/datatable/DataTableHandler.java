@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@ import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
 import javax.faces.view.facelets.MetaRule;
 import javax.faces.view.facelets.MetaRuleset;
-import org.primefaces.component.api.UIData;
 
+import org.primefaces.component.api.UIData;
 import org.primefaces.facelets.MethodRule;
 
 public class DataTableHandler extends ComponentHandler {
@@ -36,6 +36,7 @@ public class DataTableHandler extends ComponentHandler {
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     protected MetaRuleset createMetaRuleset(Class type) {
         MetaRuleset metaRuleset = super.createMetaRuleset(type);
 

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,15 +23,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.FacesWrapper;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
-import javax.faces.application.ResourceHandler;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
@@ -60,8 +57,9 @@ public class ComponentUtils {
 
     // marker for a undefined value when a null check is not reliable enough
     private static final Object UNDEFINED_VALUE = new Object();
-    
-    private static final Pattern PATTERN_NEW_LINE = Pattern.compile("(\r\n|\n\r|\r|\n)");
+
+    private ComponentUtils() {
+    }
 
     public static String getValueToRender(FacesContext context, UIComponent component) {
         return getValueToRender(context, component, UNDEFINED_VALUE);
@@ -192,12 +190,6 @@ public class ComponentUtils {
         return SearchExpressionUtils.resolveWidgetVar(expression, component);
     }
 
-    
-
-    public static boolean isValueBlank(String value) {
-        return value == null || value.trim().isEmpty();
-    }
-
     public static boolean isRTL(FacesContext context, RTLAware component) {
         boolean globalValue = PrimeRequestContext.getCurrentInstance(context).isRTL();
 
@@ -283,97 +275,6 @@ public class ComponentUtils {
         return params;
     }
 
-    public static String getResourceURL(FacesContext context, String value) {
-        if (isValueBlank(value)) {
-            return Constants.EMPTY_STRING;
-        }
-        else if (value.contains(ResourceHandler.RESOURCE_IDENTIFIER)) {
-            return value;
-        }
-        else {
-            String url = context.getApplication().getViewHandler().getResourceURL(context, value);
-
-            return context.getExternalContext().encodeResourceURL(url);
-        }
-    }
-    
-    /**
-     * Generate an <code>href</code> URL considering a base URL and some other parameters.
-     * This method consider existing query string and fragment in the base URL.
-     * @param baseUrl An URL that may have query string and/or fragment.
-     * @param params A map with parameters for adding to <code>baseUrl</code>.
-     * @return An URL resulting in <code>params</code> added to <code>baseUrl</code> for using as <code>href</code> attribute.
-     */
-    public static String getHrefURL(String baseUrl, Map<String, List<String>> params) {
-        if (params == null || params.isEmpty()) {
-            return baseUrl;
-        }
-        //Fragment
-        String fragment = null;
-        int fragmentIndex = baseUrl.indexOf("#");
-        if (fragmentIndex != -1) {
-            fragment = baseUrl.substring(fragmentIndex + 1).trim();
-            baseUrl = baseUrl.substring(0, fragmentIndex);
-        }
-
-        //Query string and path
-        String queryString, path;
-        int queryStringIndex = baseUrl.indexOf("?");
-        if (queryStringIndex != -1) {
-            queryString = baseUrl.substring(queryStringIndex + 1).trim();
-            path = baseUrl.substring(0, queryStringIndex);
-        }
-        else {
-            queryString = null;
-            path = baseUrl;
-        }
-
-        boolean hasParam = false;
-        StringBuilder url = new StringBuilder(baseUrl.length() * 2);
-        url.append(path)
-                .append("?");
-        //If has previous queryString, set that first as is
-        if (!isValueBlank(queryString)) {
-            for (String pair : queryString.split("&")) {
-                String[] nameAndValue = pair.split("=");
-                // ignore malformed pair
-                if (nameAndValue.length != 2
-                        || isValueBlank(nameAndValue[0])) {
-                    continue;
-                }
-                if (hasParam) {
-                    url.append("&");
-                }
-                url.append(nameAndValue[0])
-                        .append("=")
-                        .append(nameAndValue[1]);
-                hasParam = true;
-            }
-        }
-        //Setting params Map passed
-        for (Map.Entry<String, List<String>> entry : params.entrySet()) {
-            for (String value : entry.getValue()) {
-                if (hasParam) {
-                    url.append("&");
-                }
-                try {
-                    url.append(URLEncoder.encode(entry.getKey(), "UTF-8"))
-                            .append("=")
-                            .append(URLEncoder.encode(value, "UTF-8"));
-                }
-                catch (UnsupportedEncodingException e) {
-                    throw new RuntimeException(e);
-                }
-                hasParam = true;
-            }
-        }
-        if (!isValueBlank(fragment)) {
-            url.append("#")
-                    .append(fragment);
-        }
-        return url.toString();
-    }
-
     public static boolean isSkipIteration(VisitContext visitContext, FacesContext context) {
         if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf21()) {
             return visitContext.getHints().contains(VisitHint.SKIP_ITERATION);
@@ -388,7 +289,7 @@ public class ComponentUtils {
         UIComponent component = (UIComponent) widget;
         String userWidgetVar = (String) component.getAttributes().get("widgetVar");
 
-        if (!isValueBlank(userWidgetVar)) {
+        if (!LangUtils.isValueBlank(userWidgetVar)) {
             return userWidgetVar;
         }
         else {
@@ -396,25 +297,12 @@ public class ComponentUtils {
         }
     }
 
-    
-
-    public static String replaceNewLineWithHtml(String text) {
-        if (text == null) {
-            return null;
-        }
-
-        Matcher match = PATTERN_NEW_LINE.matcher(text);
-        if (match.find()) {
-            return match.replaceAll("<br/>");
-        }
-
-        return text;
-    }
-
     /**
      * Duplicate code from json-simple project under apache license
      * http://code.google.com/p/json-simple/source/browse/trunk/src/org/json/simple/JSONValue.java
+     * @deprecated Use {@link EscapeUtils}
      */
+    @Deprecated
     public static String escapeText(String text) {
         if (text == null) {
             return null;
@@ -468,6 +356,10 @@ public class ComponentUtils {
         return sb.toString();
     }
 
+    /**
+     * @deprecated Use {@link EscapeUtils}
+     */
+    @Deprecated
     public static String escapeEcmaScriptText(String text) {
         if (text == null) {
             return null;
@@ -510,7 +402,9 @@ public class ComponentUtils {
      *
      * @param string The string to be escaped.
      * @return The escaped string.
+     * @deprecated Use {@link EscapeUtils}
      */
+    @Deprecated
     public static String escapeXml(String string) {
         StringBuilder sb = SharedStringBuilder.get(SB_ESCAPE, string.length());
         for (int i = 0, length = string.length(); i < length; i++) {
@@ -663,10 +557,10 @@ public class ComponentUtils {
         if (facet.getChildren().isEmpty()) {
             return true;
         }
-        
+
         return shouldRenderChildren(facet);
     }
-    
+
     /**
      * Checks if the component's children are rendered
      * @param component The component to check

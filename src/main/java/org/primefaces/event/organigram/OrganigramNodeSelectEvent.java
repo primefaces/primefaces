@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,8 @@ import org.primefaces.model.OrganigramNode;
  * Event class for the "select" event.
  */
 public class OrganigramNodeSelectEvent extends AbstractOrganigramNodeEvent {
+
+    private static final long serialVersionUID = 1L;
 
     public OrganigramNodeSelectEvent(UIComponent component, Behavior behavior, OrganigramNode organigramNode) {
         super(component, behavior, organigramNode);

@@ -23,9 +23,10 @@ import javax.faces.component.visit.VisitHint;
 import javax.faces.context.FacesContext;
 
 public class TestVisitContextFactory extends VisitContextFactory {
-    
+
+    @Override
     public VisitContext getVisitContext(FacesContext context, Collection<String> ids, Set<VisitHint> hints) {
         return new TestVisitContext(context, hints);
     }
-    
+
 }

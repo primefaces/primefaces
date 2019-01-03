@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 public class BarChartModel extends CartesianChartModel {
+
+    private static final long serialVersionUID = 1L;
 
     private int barPadding = 8;
     private int barMargin = 10;
@@ -73,9 +75,9 @@ public class BarChartModel extends CartesianChartModel {
 
     public List<String> getTicks() {
         List<ChartSeries> series = this.getSeries();
-        List<String> ticks = new ArrayList<String>();
+        List<String> ticks = new ArrayList<>();
 
-        if (series.size() > 0) {
+        if (!series.isEmpty()) {
             Map<Object, Number> firstSeriesData = series.get(0).getData();
             for (Iterator<Object> it = firstSeriesData.keySet().iterator(); it.hasNext();) {
                 Object key = it.next();

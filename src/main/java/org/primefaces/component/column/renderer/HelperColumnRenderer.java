@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,12 @@
 package org.primefaces.component.column.renderer;
 
 import java.io.IOException;
+
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.column.Column;
 
 public interface HelperColumnRenderer {
 
-    public void encode(FacesContext context, Column column) throws IOException;
+    void encode(FacesContext context, Column column) throws IOException;
 }

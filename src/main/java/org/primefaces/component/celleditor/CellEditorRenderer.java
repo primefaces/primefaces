@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,11 @@
 package org.primefaces.component.celleditor;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.renderkit.CoreRenderer;
@@ -30,8 +32,8 @@ public class CellEditorRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         CellEditor editor = (CellEditor) component;
         UIComponent parentTable = editor.getParentTable(context);
-        boolean isLazyCellEdit = false;
-        
+        boolean isLazyEdit = false;
+
         if (editor.isDisabled()) {
             editor.getFacet("output").encodeAll(context);
             return;
@@ -40,19 +42,24 @@ public class CellEditorRenderer extends CoreRenderer {
         if (parentTable != null) {
             String editMode = null;
             String cellEditMode = null;
+            boolean isLazyRowEdit = false;
 
             if (parentTable instanceof DataTable) {
                 DataTable dt = (DataTable) parentTable;
                 editMode = dt.getEditMode();
                 cellEditMode = dt.getCellEditMode();
-            } 
+
+                String rowEditMode = dt.getRowEditMode();
+                isLazyRowEdit = rowEditMode != null && editMode.equals("row") && rowEditMode.equals("lazy")
+                        && !dt.isRowEditInitRequest(context) && !context.isValidationFailed();
+            }
             else if (parentTable instanceof TreeTable) {
                 TreeTable tt = (TreeTable) parentTable;
                 editMode = tt.getEditMode();
                 cellEditMode = tt.getCellEditMode();
             }
 
-            isLazyCellEdit = (editMode != null && cellEditMode != null && editMode.equals("cell") && cellEditMode.equals("lazy"));
+            isLazyEdit = editMode != null && (cellEditMode != null && editMode.equals("cell") && cellEditMode.equals("lazy") || isLazyRowEdit);
         }
 
         writer.startElement("div", null);
@@ -67,7 +74,7 @@ public class CellEditorRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.CELL_EDITOR_INPUT_CLASS, null);
 
-        if (!isLazyCellEdit) {
+        if (!isLazyEdit) {
             editor.getFacet("input").encodeAll(context);
         }
         writer.endElement("div");

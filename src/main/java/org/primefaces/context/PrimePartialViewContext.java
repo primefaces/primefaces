@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,6 @@
  */
 package org.primefaces.context;
 
-import java.util.logging.Logger;
-
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
@@ -28,12 +26,11 @@ import org.primefaces.expression.SearchExpressionConstants;
 
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 import org.primefaces.visit.ResetInputContextCallback;
 import org.primefaces.visit.ResetInputVisitCallback;
 
 public class PrimePartialViewContext extends PartialViewContextWrapper {
-
-    private static final Logger LOG = Logger.getLogger(PrimePartialViewContext.class.getName());
 
     private PartialViewContext wrapped;
     private PartialResponseWriter writer = null;
@@ -86,9 +83,9 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
     }
 
     /**
-     * Visit the current renderIds and, if the component is 
-     * an instance of {@link EditableValueHolder}, 
-     * call its {@link EditableValueHolder#resetValue} method.  
+     * Visit the current renderIds and, if the component is
+     * an instance of {@link EditableValueHolder},
+     * call its {@link EditableValueHolder#resetValue} method.
      * Use {@link #visitTree} to do the visiting.</p>
      *
      * @param context The current {@link FacesContext}.
@@ -102,7 +99,7 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
             ResetInputContextCallback contextCallback = null;
 
             for (String renderId : context.getPartialViewContext().getRenderIds()) {
-                if (ComponentUtils.isValueBlank(renderId) || renderId.trim().equals(SearchExpressionConstants.NONE_KEYWORD)) {
+                if (LangUtils.isValueBlank(renderId) || renderId.trim().equals(SearchExpressionConstants.NONE_KEYWORD)) {
                     continue;
                 }
 

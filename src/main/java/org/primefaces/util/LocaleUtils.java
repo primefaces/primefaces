@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,11 +21,7 @@ import javax.faces.context.FacesContext;
 
 public class LocaleUtils {
 
-    /**
-     * Prevent instantiation.
-     */
     private LocaleUtils() {
-        // prevent instantiation
     }
 
     /**
@@ -81,7 +77,7 @@ public class LocaleUtils {
      */
     public static Locale resolveLocale(Object locale, String clientId) {
         Locale result = null;
-        
+
         if (locale != null) {
             if (locale instanceof String) {
                 result = toLocale((String) locale);

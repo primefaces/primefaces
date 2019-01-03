@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,17 +33,17 @@ import org.primefaces.util.Constants;
 
 public class StreamedContentHandler extends BaseDynamicContentHandler {
 
-    private final static Logger LOG = Logger.getLogger(StreamedContentHandler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(StreamedContentHandler.class.getName());
 
     @Override
     public void handle(FacesContext context) throws IOException {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String library = params.get("ln");
-        String resourceKey = (String) params.get(Constants.DYNAMIC_CONTENT_PARAM);
+        String resourceKey = params.get(Constants.DYNAMIC_CONTENT_PARAM);
 
         if (resourceKey != null && library != null && library.equals(Constants.LIBRARY)) {
             StreamedContent streamedContent = null;
-            boolean cache = Boolean.valueOf(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
+            boolean cache = Boolean.parseBoolean(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
 
             try {
                 ExternalContext externalContext = context.getExternalContext();
@@ -102,7 +102,7 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
 
             }
             catch (Exception e) {
-                LOG.log(Level.SEVERE, "Error in streaming dynamic resource.", e);
+                LOGGER.log(Level.SEVERE, "Error in streaming dynamic resource.", e);
                 throw new IOException(e);
             }
             finally {

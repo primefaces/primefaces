@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package org.primefaces.component.selectcheckboxmenu;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UISelectMany;
@@ -28,6 +29,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
+
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -70,9 +72,14 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleclass, "styleclass");
-        if (style != null) writer.writeAttribute("style", style, "style");
-        if (title != null) writer.writeAttribute("title", title, "title");
+        if (style != null) {
+            writer.writeAttribute("style", style, "style");
+        }
+        if (title != null) {
+            writer.writeAttribute("title", title, "title");
+        }
 
+        renderARIACombobox(context, menu);
         encodeKeyboardTarget(context, menu);
         encodeInputs(context, menu, selectItems);
         if (menu.isMultiple()) {
@@ -117,12 +124,12 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
     }
 
     protected void encodeOption(FacesContext context, SelectCheckboxMenu menu, Object values, Object submittedValues,
-            Converter converter, SelectItem option, int idx) throws IOException {
+                                Converter converter, SelectItem option, int idx) throws IOException {
         encodeOption(context, menu, values, submittedValues, converter, option, idx, null);
     }
 
     protected void encodeOption(FacesContext context, SelectCheckboxMenu menu, Object values, Object submittedValues,
-            Converter converter, SelectItem option, int idx, String selectItemGroupLabel) throws IOException {
+                                Converter converter, SelectItem option, int idx, String selectItemGroupLabel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
         String name = menu.getClientId(context);
@@ -159,10 +166,16 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             writer.writeAttribute("group-label", selectItemGroupLabel, null);
         }
 
-        if (checked) writer.writeAttribute("checked", "checked", null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
-        if (option.getDescription() != null) writer.writeAttribute("title", option.getDescription(), null);
-        if (menu.getOnchange() != null) writer.writeAttribute("onchange", menu.getOnchange(), null);
+        if (checked) {
+            writer.writeAttribute("checked", "checked", null);
+        }
+        if (option.getDescription() != null) {
+            writer.writeAttribute("title", option.getDescription(), null);
+        }
+        if (menu.getOnchange() != null) {
+            writer.writeAttribute("onchange", menu.getOnchange(), null);
+        }
+        renderAccessibilityAttributes(context, menu);
 
         writer.endElement("input");
 
@@ -193,7 +206,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         String label = menu.getLabel();
         String labelClass = !valid ? SelectCheckboxMenu.LABEL_CLASS + " ui-state-error" : SelectCheckboxMenu.LABEL_CLASS;
         if (label == null) {
-            label = "&nbsp;";
+            label = "";
         }
 
         writer.startElement("span", null);
@@ -213,7 +226,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         Object submittedValues = getSubmittedValues(menu);
         Object valuesArray = (submittedValues != null) ? submittedValues : values;
         String listClass = menu.isDisabled() ?
-                SelectCheckboxMenu.MULTIPLE_CONTAINER_CLASS + " ui-state-disabled" : SelectCheckboxMenu.MULTIPLE_CONTAINER_CLASS;
+                           SelectCheckboxMenu.MULTIPLE_CONTAINER_CLASS + " ui-state-disabled" : SelectCheckboxMenu.MULTIPLE_CONTAINER_CLASS;
         listClass = valid ? listClass : listClass + " ui-state-error";
 
         writer.startElement("ul", null);
@@ -232,7 +245,16 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
 
                 SelectItem selectedItem = null;
                 for (SelectItem item : selectItems) {
-                    if (value.equals(item.getValue())) {
+                    if (item instanceof SelectItemGroup) {
+                        SelectItemGroup group = (SelectItemGroup) item;
+                        for (SelectItem groupItem : group.getSelectItems()) {
+                            if (value.equals(groupItem.getValue())) {
+                                selectedItem = groupItem;
+                                break;
+                            }
+                        }
+                    }
+                    else if (value.equals(item.getValue())) {
                         selectedItem = item;
                         break;
                     }
@@ -284,9 +306,12 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         wb.init("SelectCheckboxMenu", menu.resolveWidgetVar(), clientId)
                 .callback("onShow", "function()", menu.getOnShow())
                 .callback("onHide", "function()", menu.getOnHide())
+                .callback("onChange", "function()", menu.getOnchange())
                 .attr("scrollHeight", menu.getScrollHeight(), Integer.MAX_VALUE)
                 .attr("showHeader", menu.isShowHeader(), true)
                 .attr("updateLabel", menu.isUpdateLabel(), false)
+                .attr("labelSeparator", menu.getLabelSeparator(), ",")
+                .attr("emptyLabel", menu.getEmptyLabel())
                 .attr("multiple", menu.isMultiple(), false)
                 .attr("dynamic", menu.isDynamic(), false)
                 .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo()), null);

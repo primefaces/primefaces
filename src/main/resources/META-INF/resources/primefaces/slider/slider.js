@@ -34,17 +34,17 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
     bindEvents: function() {
         var $this = this;
 
-        this.jq.bind('slide', function(event, ui) {
+        this.jq.on('slide', function(event, ui) {
             $this.onSlide(event, ui);
         });
 
         if(this.cfg.onSlideStart) {
-            this.jq.bind('slidestart', function(event, ui) {
+            this.jq.on('slidestart', function(event, ui) {
                 $this.cfg.onSlideStart.call(this, event, ui);
             });
         }
 
-        this.jq.bind('slidestop', function(event, ui) {
+        this.jq.on('slidestop', function(event, ui) {
             $this.onSlideEnd(event, ui);
         });
 
@@ -152,6 +152,11 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
         if (input.parent().hasClass('ui-inputnumber')) {
             input.autoNumeric('set', inputValue);
         }
+        else if (input.hasClass('ui-spinner-input')) {
+            var spinnerId = input.closest('.ui-spinner').attr('id');
+            var spinnerWidget = PrimeFaces.getWidgetById(spinnerId);
+            spinnerWidget.setValue(inputValue);
+        }
         else {
             input.val(inputValue);
         }
@@ -159,6 +164,9 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
 
     triggerOnchange: function(input) {
         if (input.parent().hasClass('ui-inputnumber')) {
+            input.change();
+        }
+        else if (input.hasClass('ui-spinner-input')) {
             input.change();
         }
     },
@@ -176,18 +184,14 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
             this.triggerOnchange(this.input);
         }
 
-        if(this.cfg.behaviors) {
-            var slideEndBehavior = this.cfg.behaviors['slideEnd'];
+        if(this.hasBehavior('slideEnd')) {
+            var ext = {
+                params: [
+                    {name: this.id + '_slideValue', value: ui.value}
+                ]
+            };
 
-            if(slideEndBehavior) {
-                var ext = {
-                    params: [
-                        {name: this.id + '_slideValue', value: ui.value}
-                    ]
-                };
-
-                slideEndBehavior.call(this, ext);
-            }
+            this.callBehavior('slideEnd', ext);
         }
     },
 

@@ -9,21 +9,27 @@ if (!PrimeFaces.utils) {
         },
 
         /**
-         * Removes all the dynamic overlays for the given id.
+         * Cleanup the "detached" overlay.
+         * If you update a component, the overlay is rendered below the component markup but moved to the "appendTo" via our scripts.
+         * After the AJAX update, we have now 2 overlays with the same id:
+         * 1) below the root element
+         * 2) the old, detached overlay, below the "appendTo"
+         *
+         * We now need to remove the detached overlay.
          */
-        removeAllDynamicOverlays: function(overlayId) {
-            $(PrimeFaces.escapeClientId(overlayId)).remove();
+        cleanupDynamicOverlay: function(widget, overlay, overlayId, appendTo) {
+            if (widget.cfg.appendTo) {
+                var overlays = $("[id='" + overlayId + "']");
+                if (overlays.length > 1) {
+                    appendTo.children("[id='" + overlayId + "']").remove();
+                }
+            }
         },
 
         /**
          * Removes the overlay from the appendTo overlay container.
          */
         removeDynamicOverlay: function(widget, overlay, overlayId, appendTo) {
-
-            // if the id contains a ':'
-            appendTo.children(PrimeFaces.escapeClientId(overlayId)).not(overlay).remove();
-
-            // if the id does NOT contain a ':'
             appendTo.children("[id='" + overlayId + "']").not(overlay).remove();
         },
 
@@ -42,8 +48,13 @@ if (!PrimeFaces.utils) {
             }
         },
 
-        addModal: function(id, zIndex, tabbablesCallback) {
+        addModal: function(widget, zIndex, tabbablesCallback) {
+            var id = widget.id;
             PrimeFaces.utils.preventTabbing(id, zIndex, tabbablesCallback);
+
+            if (widget.cfg.blockScroll) {
+                PrimeFaces.utils.preventScrolling();
+            }
 
             var modalId = id + '_modal';
 
@@ -105,7 +116,8 @@ if (!PrimeFaces.utils) {
             });
         },
 
-        removeModal: function(id) {
+        removeModal: function(widget) {
+            var id = widget.id;
             var modalId = id + '_modal';
 
             // if the id contains a ':'
@@ -114,6 +126,9 @@ if (!PrimeFaces.utils) {
             // if the id does NOT contain a ':'
             $(document.body).children("[id='" + modalId + "']").remove();
 
+            if (widget.cfg.blockScroll) {
+                PrimeFaces.utils.enableScrolling();
+            }
             PrimeFaces.utils.enableTabbing(id);
         },
 
@@ -149,8 +164,8 @@ if (!PrimeFaces.utils) {
                 $(document).off(hideNamespace);
             });
 
-            $(document).off(hideNamespace).on(hideNamespace, function (e) {
-                if (overlay.is(":hidden")) {
+            $(document).off(hideNamespace).on(hideNamespace, function(e) {
+                if (overlay.is(':hidden') || overlay.css('visibility') === 'hidden') {
                     return;
                 }
 
@@ -158,7 +173,7 @@ if (!PrimeFaces.utils) {
 
                 // do nothing when the element should be ignored
                 if (resolveIgnoredElementsCallback) {
-                    var elementsToIgnore = resolveIgnoredElementsCallback();
+                    var elementsToIgnore = resolveIgnoredElementsCallback(e);
                     if (elementsToIgnore) {
                         if (elementsToIgnore.is($eventTarget) || elementsToIgnore.has($eventTarget).length > 0) {
                             return;
@@ -166,12 +181,17 @@ if (!PrimeFaces.utils) {
                     }
                 }
 
+
+                // this checks were moved to the used components
+
                 // do nothing when the clicked element is a child of the overlay
+                /*
                 if (overlay.is($eventTarget) || overlay.has($eventTarget).length > 0) {
                     return;
                 }
+                */
 
-                // old check:
+                // OLD WAY: do nothing when the clicked element is a child of the overlay
                 /*
                 var offset = overlay.offset();
                 if (e.pageX < offset.left
@@ -182,7 +202,7 @@ if (!PrimeFaces.utils) {
                 }
                 */
 
-                hideCallback(e);
+                hideCallback(e, $eventTarget);
             });
         },
 
@@ -194,7 +214,7 @@ if (!PrimeFaces.utils) {
             });
 
             $(window).off(resizeNamespace).on(resizeNamespace, function(e) {
-                if (element && element.is(":hidden")) {
+                if (element && (element.is(":hidden") || element.css('visibility') === 'hidden')) {
                     return;
                 }
 
@@ -203,29 +223,80 @@ if (!PrimeFaces.utils) {
         },
 
         registerDynamicOverlay: function(widget, overlay, overlayId) {
-            widget.addDestroyListener(function() {
-                var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
-                PrimeFaces.utils.removeDynamicOverlay(widget, overlay, overlayId, appendTo);
-            });
 
-            var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
-            PrimeFaces.utils.appendDynamicOverlay(widget, overlay, overlayId, appendTo);
+            if (widget.cfg.appendTo) {
+                var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
+                PrimeFaces.utils.appendDynamicOverlay(widget, overlay, overlayId, appendTo);
+
+                widget.addDestroyListener(function() {
+                    var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
+                    // pass null as overlay - as every! overlay with this overlayId can be removed on destroying the whole widget
+                    PrimeFaces.utils.removeDynamicOverlay(widget, null, overlayId, appendTo);
+                });
+
+                widget.addRefreshListener(function() {
+                    var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
+                    PrimeFaces.utils.cleanupDynamicOverlay(widget, overlay, overlayId, appendTo);
+                });
+            }
+
+            return overlay;
         },
 
 
         registerScrollHandler: function(widget, scrollNamespace, scrollCallback) {
 
+            var scrollParent = widget.getJQ().scrollParent();
+            if (scrollParent.is('body')) {
+                scrollParent = $(window);
+            }
+
             widget.addDestroyListener(function() {
-                $(window).off(scrollNamespace);
+                scrollParent.off(scrollNamespace);
             });
 
-            $(window).off(scrollNamespace).on(scrollNamespace, function(e) {
+            scrollParent.off(scrollNamespace).on(scrollNamespace, function(e) {
                 scrollCallback(e);
             });
         },
 
-        unbdingScrollHandler: function(scrollNamespace) {
-            $(window).off(scrollNamespace);
+        unbindScrollHandler: function(widget, scrollNamespace) {
+            var scrollParent = widget.getJQ().scrollParent();
+            if (scrollParent.is('body')) {
+                scrollParent = $(window);
+            }
+
+            scrollParent.off(scrollNamespace);
+        },
+
+        /**
+         * Disables scrolling of the document body.
+         */
+        preventScrolling: function() {
+            $(document.body).addClass('ui-overflow-hidden');
+        },
+
+        /**
+         * Enables scrolling again if previously disabled.
+         */
+        enableScrolling: function() {
+            $(document.body).removeClass('ui-overflow-hidden');
+        },
+        
+        /**
+         * Calculates an element offset relative to where the Window is currently scrolled.
+         */
+        calculateRelativeOffset: function (element) {
+            var result = {
+                left : 0,
+                top : 0
+            };
+            var offset = element.offset();
+            var scrollTop = $(window).scrollTop();
+            var scrollLeft = $(window).scrollLeft();
+            result.top = offset.top - scrollTop;
+            result.left = offset.left - scrollLeft;
+            return result;
         }
     };
 

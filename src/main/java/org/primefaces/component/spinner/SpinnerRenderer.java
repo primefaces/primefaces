@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.PrimeApplicationContext;
+
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -32,7 +32,7 @@ public class SpinnerRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         Spinner spinner = (Spinner) component;
 
-        if (spinner.isDisabled() || spinner.isReadonly()) {
+        if (!shouldDecode(spinner)) {
             return;
         }
 
@@ -75,6 +75,7 @@ public class SpinnerRenderer extends InputRenderer {
                 .attr("max", spinner.getMax(), Double.MAX_VALUE)
                 .attr("prefix", spinner.getPrefix(), null)
                 .attr("suffix", spinner.getSuffix(), null)
+                .attr("required", spinner.isRequired(), false)
                 .attr("decimalPlaces", spinner.getDecimalPlaces(), null);
 
         wb.finish();
@@ -110,7 +111,6 @@ public class SpinnerRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = spinner.getClientId(context) + "_input";
         String inputClass = spinner.isValid() ? Spinner.INPUT_CLASS : Spinner.INPUT_CLASS + " ui-state-error";
-        String labelledBy = spinner.getLabelledBy();
 
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);
@@ -126,17 +126,10 @@ public class SpinnerRenderer extends InputRenderer {
             writer.writeAttribute("value", valueToRender, null);
         }
 
+        renderAccessibilityAttributes(context, spinner);
         renderPassThruAttributes(context, spinner, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, spinner, HTML.INPUT_TEXT_EVENTS);
-
-        if (spinner.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
-        if (spinner.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
-        if (spinner.isRequired()) writer.writeAttribute("aria-required", "true", null);
-        if (labelledBy != null) writer.writeAttribute("aria-labelledby", labelledBy, null);
-
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, spinner);
-        }
+        renderValidationMetadata(context, spinner);
 
         writer.endElement("input");
     }

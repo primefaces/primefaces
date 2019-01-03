@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,12 +24,12 @@ import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.context.FacesContext;
 import org.primefaces.application.resource.barcode.BarcodeHandler;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 public class PrimeResourceHandler extends ResourceHandlerWrapper {
 
-    private static final Logger LOG = Logger.getLogger(PrimeResourceHandler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PrimeResourceHandler.class.getName());
 
     private final Map<String, DynamicContentHandler> handlers;
 
@@ -84,13 +84,13 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String handlerType = params.get(Constants.DYNAMIC_CONTENT_TYPE_PARAM);
 
-        if (ComponentUtils.isValueBlank(handlerType)) {
+        if (LangUtils.isValueBlank(handlerType)) {
             super.handleResourceRequest(context);
         }
         else {
             DynamicContentHandler handler = handlers.get(handlerType);
             if (handler == null) {
-                LOG.warning("No dynamic resource handler registered for: " + handlerType + ". Do you miss a dependency?");
+                LOGGER.warning("No dynamic resource handler registered for: " + handlerType + ". Do you miss a dependency?");
                 super.handleResourceRequest(context);
             }
             else {

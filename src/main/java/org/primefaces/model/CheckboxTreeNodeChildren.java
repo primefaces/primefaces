@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,8 @@ import java.util.Collection;
 import java.util.Iterator;
 
 public class CheckboxTreeNodeChildren extends TreeNodeList {
+
+    private static final long serialVersionUID = 1L;
 
     private TreeNode parent;
 
@@ -147,6 +149,7 @@ public class CheckboxTreeNodeChildren extends TreeNodeList {
      * @param node node to be stored at the specified position
      * @return the node previously at the specified position
      */
+    @Override
     public TreeNode setSibling(int index, TreeNode node) {
         if (node == null) {
             throw new NullPointerException();

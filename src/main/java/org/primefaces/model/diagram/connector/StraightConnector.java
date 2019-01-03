@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 package org.primefaces.model.diagram.connector;
 
 public class StraightConnector extends Connector {
+
+    private static final long serialVersionUID = 1L;
 
     private int stub = 0;
 
@@ -45,10 +47,12 @@ public class StraightConnector extends Connector {
         this.gap = gap;
     }
 
+    @Override
     public String getType() {
         return "Straight";
     }
 
+    @Override
     public String toJS(StringBuilder sb) {
         return sb.append("['Straight',{stub:").append(stub).append(",gap:").append(gap).append("}]").toString();
     }

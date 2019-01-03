@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +15,22 @@
  */
 package org.primefaces.component.autoupdate;
 
-import java.util.ArrayList;
+import java.util.List;
+
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
+
 import org.primefaces.context.PrimeRequestContext;
 
 public class AutoUpdatePhaseListener implements PhaseListener {
-    
+
+    private static final long serialVersionUID = 1L;
+
     @Override
     public void afterPhase(PhaseEvent event) {
-        
+
     }
 
     @Override
@@ -36,7 +40,7 @@ public class AutoUpdatePhaseListener implements PhaseListener {
             return;
         }
 
-        ArrayList<String> clientIds = AutoUpdateListener.getAutoUpdateComponentClientIds(context);
+        List<String> clientIds = AutoUpdateListener.getAutoUpdateComponentClientIds(context);
         if (clientIds != null && !clientIds.isEmpty()) {
             for (int i = 0; i < clientIds.size(); i++) {
                 String clientId = clientIds.get(i);
@@ -51,5 +55,5 @@ public class AutoUpdatePhaseListener implements PhaseListener {
     public PhaseId getPhaseId() {
         return PhaseId.RENDER_RESPONSE;
     }
-    
+
 }

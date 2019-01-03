@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ public class CSVBuilder {
     }
 
     public CSVBuilder process(UIComponent component, String expressions) {
-        if (!ComponentUtils.isValueBlank(expressions)) {
+        if (!LangUtils.isValueBlank(expressions)) {
             String resolvedExpressions = SearchExpressionFacade.resolveClientIds(context, component, expressions);
             buffer.append(",p:'").append(resolvedExpressions).append("'");
         }
@@ -67,7 +67,7 @@ public class CSVBuilder {
     }
 
     public CSVBuilder update(UIComponent component, String expressions) {
-        if (!ComponentUtils.isValueBlank(expressions)) {
+        if (!LangUtils.isValueBlank(expressions)) {
             String resolvedExpressions = SearchExpressionFacade.resolveClientIds(
                     context, component, expressions, SearchExpressionHint.VALIDATE_RENDERER);
             buffer.append(",u:'").append(resolvedExpressions).append("'");

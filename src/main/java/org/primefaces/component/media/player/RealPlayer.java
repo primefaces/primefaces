@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ package org.primefaces.component.media.player;
 
 public class RealPlayer implements MediaPlayer {
 
-    private static final String[] SUPPORTED_TYPES = new String[] { "ra", "ram", "rm", "rpm", "rv", "smi", "smil" };
+    private static final String[] SUPPORTED_TYPES = new String[]{"ra", "ram", "rm", "rpm", "rv", "smi", "smil"};
 
     @Override
     public String getClassId() {
@@ -39,6 +39,7 @@ public class RealPlayer implements MediaPlayer {
         return "audio/x-pn-realaudio-plugin";
     }
 
+    @Override
     public String[] getSupportedTypes() {
         return SUPPORTED_TYPES;
     }

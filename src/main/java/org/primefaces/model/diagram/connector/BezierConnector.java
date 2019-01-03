@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 package org.primefaces.model.diagram.connector;
 
 public class BezierConnector extends Connector {
+
+    private static final long serialVersionUID = 1L;
 
     private int curviness = 150;
 
@@ -45,10 +47,12 @@ public class BezierConnector extends Connector {
         this.stub = stub;
     }
 
+    @Override
     public String getType() {
         return "Bezier";
     }
 
+    @Override
     public String toJS(StringBuilder sb) {
         return sb.append("['Bezier',{curviness:").append(curviness).append(",stub:").append(stub).append("}]").toString();
     }

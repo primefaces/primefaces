@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package org.primefaces.model;
 
 import java.util.Date;
+import java.util.Map;
 
 public interface ScheduleEvent {
 
@@ -40,4 +41,8 @@ public interface ScheduleEvent {
     public String getDescription();
 
     public String getUrl();
+
+    public ScheduleRenderingMode getRenderingMode();
+
+    public Map<String, Object> getDynamicProperties();
 }

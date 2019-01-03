@@ -24,17 +24,17 @@ import javax.faces.context.ResponseWriter;
 public class CollectingResponseWriter extends ResponseWriter {
 
 	private StringBuilder builder = new StringBuilder();
-	
-	private boolean inXmlTag = false; 
-	
+
+	private boolean inXmlTag = false;
+
     public CollectingResponseWriter() {
-        
+
     }
-    
+
     public CollectingResponseWriter(StringBuilder builder) {
         this.builder = builder;
     }
-    
+
 	@Override
 	public ResponseWriter cloneWithWriter(Writer arg0) {
 		return null;
@@ -42,7 +42,7 @@ public class CollectingResponseWriter extends ResponseWriter {
 
 	@Override
 	public void endDocument() throws IOException {
-		
+
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class CollectingResponseWriter extends ResponseWriter {
 
 	@Override
 	public void flush() throws IOException {
-		
+
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class CollectingResponseWriter extends ResponseWriter {
 
 	@Override
 	public void startDocument() throws IOException {
-		
+
 	}
 
 	@Override
@@ -80,12 +80,12 @@ public class CollectingResponseWriter extends ResponseWriter {
 	public void writeAttribute(String arg0, Object arg1, String arg2)
 			throws IOException {
 		builder.append(" " + arg0 + "=\"" + arg1 + "\"");
-		
+
 	}
 
 	@Override
 	public void writeComment(Object arg0) throws IOException {
-		
+
 	}
 
 	@Override
@@ -109,12 +109,12 @@ public class CollectingResponseWriter extends ResponseWriter {
 	@Override
 	public void writeURIAttribute(String arg0, Object arg1, String arg2)
 			throws IOException {
-		
+
 	}
 
 	@Override
 	public void close() throws IOException {
-		
+
 	}
 
 	@Override
@@ -125,7 +125,7 @@ public class CollectingResponseWriter extends ResponseWriter {
 		}
 		builder.append(arg0);
 	}
-	
+
 	@Override
 	public void write(String arg0) throws IOException {
 		if (inXmlTag) {
@@ -135,6 +135,7 @@ public class CollectingResponseWriter extends ResponseWriter {
 		builder.append(arg0);
 	}
 
+        @Override
 	public String toString() {
 		return builder.toString();
 	}

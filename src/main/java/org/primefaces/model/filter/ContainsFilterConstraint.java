@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 package org.primefaces.model.filter;
 
 import java.util.Locale;
-import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 public class ContainsFilterConstraint implements FilterConstraint {
 
@@ -24,7 +24,7 @@ public class ContainsFilterConstraint implements FilterConstraint {
     public boolean applies(Object value, Object filter, Locale locale) {
         String filterText = (filter == null) ? null : filter.toString().trim().toLowerCase(locale);
 
-        if (filterText == null || filterText.equals(Constants.EMPTY_STRING)) {
+        if (LangUtils.isValueEmpty(filterText)) {
             return true;
         }
 

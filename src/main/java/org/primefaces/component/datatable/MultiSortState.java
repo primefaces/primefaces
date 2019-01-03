@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,16 @@
  */
 package org.primefaces.component.datatable;
 
+import java.io.Serializable;
+
 import javax.el.MethodExpression;
+
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 
-public class MultiSortState implements java.io.Serializable {
+public class MultiSortState implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private String sortKey;
 
@@ -33,14 +38,14 @@ public class MultiSortState implements java.io.Serializable {
     }
 
     public MultiSortState(SortMeta sortMeta) {
-        this.sortKey = sortMeta.getColumn().getColumnKey();
-        this.sortField = sortMeta.getSortField();
-        this.sortOrder = sortMeta.getSortOrder();
-        this.sortFunction = sortMeta.getSortFunction();
+        sortKey = sortMeta.getColumn().getColumnKey();
+        sortField = sortMeta.getSortField();
+        sortOrder = sortMeta.getSortOrder();
+        sortFunction = sortMeta.getSortFunction();
     }
 
     public String getSortKey() {
-        return this.sortKey;
+        return sortKey;
     }
 
     public void setSortKey(String sortKey) {

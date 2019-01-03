@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,16 @@
 package org.primefaces.component.paginator;
 
 import java.io.IOException;
+
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIData;
 
 public class PageLinksRenderer implements PaginatorElementRenderer {
 
+    @Override
     public void render(FacesContext context, Pageable pageable) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         int currentPage = pageable.getPage();

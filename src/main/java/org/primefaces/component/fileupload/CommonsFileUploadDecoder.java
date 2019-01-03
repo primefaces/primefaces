@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,16 +15,24 @@
  */
 package org.primefaces.component.fileupload;
 
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletRequestWrapper;
+
 import org.apache.commons.fileupload.FileItem;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultUploadedFile;
 import org.primefaces.model.UploadedFileWrapper;
+import org.primefaces.util.FileUploadUtils;
+import org.primefaces.virusscan.VirusException;
 import org.primefaces.webapp.MultipartRequest;
 
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletRequestWrapper;
+import java.io.IOException;
 
 public class CommonsFileUploadDecoder {
+
+    private CommonsFileUploadDecoder() {
+    }
 
     public static void decode(FacesContext context, FileUpload fileUpload, String inputToDecodeId) {
         MultipartRequest multipartRequest = null;
@@ -41,21 +49,27 @@ public class CommonsFileUploadDecoder {
         }
 
         if (multipartRequest != null) {
-            if (fileUpload.getMode().equals("simple")) {
-                decodeSimple(context, fileUpload, multipartRequest, inputToDecodeId);
+            try {
+                if (fileUpload.getMode().equals("simple")) {
+                    decodeSimple(context, fileUpload, multipartRequest, inputToDecodeId);
+                }
+                else {
+                    decodeAdvanced(context, fileUpload, multipartRequest);
+                }
             }
-            else {
-                decodeAdvanced(context, fileUpload, multipartRequest);
+            catch (IOException ioe) {
+                throw new FacesException(ioe);
             }
         }
     }
 
-    private static void decodeSimple(FacesContext context, FileUpload fileUpload, MultipartRequest request, String inputToDecodeId) {
+    private static void decodeSimple(FacesContext context, FileUpload fileUpload, MultipartRequest request, String inputToDecodeId) throws IOException {
         FileItem file = request.getFileItem(inputToDecodeId);
 
-        if (file != null) {
-            if (!file.getName().isEmpty() && isValidFile(fileUpload, file)) {
-                fileUpload.setSubmittedValue(new UploadedFileWrapper(new DefaultUploadedFile(file, fileUpload)));
+        if (file != null && !file.getName().isEmpty()) {
+            DefaultUploadedFile uploadedFile = new DefaultUploadedFile(file, fileUpload);
+            if (isValidFile(context, fileUpload, uploadedFile)) {
+                fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
             }
             else {
                 fileUpload.setSubmittedValue("");
@@ -63,18 +77,30 @@ public class CommonsFileUploadDecoder {
         }
     }
 
-    private static void decodeAdvanced(FacesContext context, FileUpload fileUpload, MultipartRequest request) {
+    private static void decodeAdvanced(FacesContext context, FileUpload fileUpload, MultipartRequest request) throws IOException {
         String clientId = fileUpload.getClientId(context);
         FileItem file = request.getFileItem(clientId);
 
-        if (file != null && isValidFile(fileUpload, file)) {
-            fileUpload.queueEvent(new FileUploadEvent(fileUpload, new DefaultUploadedFile(file, fileUpload)));
+        if (file != null) {
+            DefaultUploadedFile uploadedFile = new DefaultUploadedFile(file, fileUpload);
+            if (isValidFile(context, fileUpload, uploadedFile)) {
+                fileUpload.queueEvent(new FileUploadEvent(fileUpload, uploadedFile));
+            }
         }
     }
 
-    private static boolean isValidFile(FileUpload fileUpload, FileItem fileItem) {
-        // TODO some more checks could be performed here, e.g. allowed types
-        return fileUpload.getSizeLimit() == null || fileItem.getSize() <= fileUpload.getSizeLimit();
+    private static boolean isValidFile(FacesContext context, FileUpload fileUpload, DefaultUploadedFile uploadedFile) throws IOException {
+        boolean valid = (fileUpload.getSizeLimit() == null || uploadedFile.getSize() <= fileUpload.getSizeLimit()) && FileUploadUtils.isValidType(fileUpload,
+                uploadedFile.getFileName(), uploadedFile.getInputstream());
+        if (valid) {
+            try {
+                FileUploadUtils.performVirusScan(context, fileUpload, uploadedFile.getInputstream());
+            }
+            catch (VirusException ex) {
+                return false;
+            }
+        }
+        return valid;
     }
 
 }

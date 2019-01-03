@@ -190,12 +190,14 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     hideCaption: function() {
-        this.caption.slideUp(this.cfg.effectSpeed);
+        this.caption.stop().slideUp(this.cfg.effectSpeed);
     },
         
     showCaption: function(panel) {
         var image = panel.children('img');
-        this.caption.html('<h4>' + image.attr('title') + '</h4><p>' + image.attr('alt') + '</p>').slideDown(this.cfg.effectSpeed);
+        this.caption.queue(function () {
+            $(this).html('<h4>' + image.attr('title') + '</h4><p>' + image.attr('alt') + '</p>').dequeue();
+        }).slideDown(this.cfg.effectSpeed);
     },
                 
     prev: function() {
@@ -215,7 +217,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     isAnimating: function() {
-        return this.strip.is(':animated');
+        return this.frames.is(':animated');
     }
     
 });

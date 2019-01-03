@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,16 +34,17 @@ import org.apache.commons.fileupload.servlet.FileCleanerCleanup;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileCleaningTracker;
 import org.primefaces.config.PrimeEnvironment;
+import org.primefaces.config.StartupPrimeEnvironment;
 import org.primefaces.util.Constants;
 import org.primefaces.webapp.MultipartRequest;
 
 public class FileUploadFilter implements Filter {
 
-    private final static Logger logger = Logger.getLogger(FileUploadFilter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(FileUploadFilter.class.getName());
 
-    private final static String THRESHOLD_SIZE_PARAM = "thresholdSize";
+    private static final String THRESHOLD_SIZE_PARAM = "thresholdSize";
 
-    private final static String UPLOAD_DIRECTORY_PARAM = "uploadDirectory";
+    private static final String UPLOAD_DIRECTORY_PARAM = "uploadDirectory";
 
     private String thresholdSize;
 
@@ -56,7 +57,7 @@ public class FileUploadFilter implements Filter {
         String uploader = filterConfig.getServletContext().getInitParameter(Constants.ContextParams.UPLOADER);
 
         if (uploader == null || uploader.equals("auto")) {
-            PrimeEnvironment environment = new PrimeEnvironment();
+            PrimeEnvironment environment = new StartupPrimeEnvironment();
             bypass = environment.isAtLeastJsf22();
         }
         else if (uploader.equals("native")) {
@@ -69,8 +70,8 @@ public class FileUploadFilter implements Filter {
         thresholdSize = filterConfig.getInitParameter(THRESHOLD_SIZE_PARAM);
         uploadDir = filterConfig.getInitParameter(UPLOAD_DIRECTORY_PARAM);
 
-        if (logger.isLoggable(Level.FINE)) {
-            logger.fine("FileUploadFilter initiated successfully");
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine("FileUploadFilter initiated successfully");
         }
     }
 
@@ -85,15 +86,15 @@ public class FileUploadFilter implements Filter {
         boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
 
         if (isMultipart) {
-            if (logger.isLoggable(Level.FINE)) {
-                logger.fine("Parsing file upload request");
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Parsing file upload request");
             }
 
             ServletFileUpload servletFileUpload = new ServletFileUpload(createFileItemFactory(httpServletRequest));
             MultipartRequest multipartRequest = new MultipartRequest(httpServletRequest, servletFileUpload);
 
-            if (logger.isLoggable(Level.FINE)) {
-                logger.fine("File upload request parsed succesfully, continuing with filter chain with a wrapped multipart request");
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("File upload request parsed succesfully, continuing with filter chain with a wrapped multipart request");
             }
 
             filterChain.doFilter(multipartRequest, response);
@@ -105,8 +106,8 @@ public class FileUploadFilter implements Filter {
 
     @Override
     public void destroy() {
-        if (logger.isLoggable(Level.FINE)) {
-            logger.fine("Destroying FileUploadFilter");
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine("Destroying FileUploadFilter");
         }
     }
 

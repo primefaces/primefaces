@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,19 +21,16 @@ import java.util.List;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
+
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.context.PrimeRequestContext;
-
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.CSVBuilder;
-import org.primefaces.util.ComponentTraversalUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.HTML;
-import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.util.*;
 
 public class CommandLinkRenderer extends CoreRenderer {
 
@@ -85,14 +82,14 @@ public class CommandLinkRenderer extends CoreRenderer {
             writer.writeAttribute("href", "#", null);
             writer.writeAttribute("class", styleClass, null);
             if (link.getTitle() != null) {
-                writer.writeAttribute("aria-label", link.getTitle(), null);
+                writer.writeAttribute(HTML.ARIA_LABEL, link.getTitle(), null);
             }
 
             if (ajax) {
-                request = buildAjaxRequest(context, link, null);
+                request = buildAjaxRequest(context, link);
             }
             else {
-                UIComponent form = ComponentTraversalUtils.closestForm(context, link);
+                UIForm form = ComponentTraversalUtils.closestForm(context, link);
                 if (form == null) {
                     throw new FacesException("Commandlink \"" + clientId + "\" must be inside a form component");
                 }
@@ -117,7 +114,7 @@ public class CommandLinkRenderer extends CoreRenderer {
                 }
             }
 
-            List<ClientBehaviorContext.Parameter> behaviorParams = new ArrayList<ClientBehaviorContext.Parameter>();
+            List<ClientBehaviorContext.Parameter> behaviorParams = new ArrayList<>();
             behaviorParams.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
             String dialogReturnBehavior = getEventBehaviors(context, link, "dialogReturn", behaviorParams);
             if (dialogReturnBehavior != null) {
@@ -129,9 +126,8 @@ public class CommandLinkRenderer extends CoreRenderer {
             if (label != null) {
                 writer.writeText(label, "value");
             }
-            else {
-                renderChildren(context, link);
-            }
+
+            renderChildren(context, link);
 
             writer.endElement("a");
         }
@@ -150,9 +146,8 @@ public class CommandLinkRenderer extends CoreRenderer {
             if (label != null) {
                 writer.writeText(label, "value");
             }
-            else {
-                renderChildren(context, link);
-            }
+
+            renderChildren(context, link);
 
             writer.endElement("span");
         }

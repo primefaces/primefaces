@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,11 @@ package org.primefaces.component.dataview;
 
 import java.io.IOException;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.HTML;
@@ -37,12 +39,12 @@ public class DataViewRenderer extends DataRenderer {
         DataView dataview = (DataView) component;
         String clientId = dataview.getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        
+
         dataview.findViewItems();
-        
+
         if (dataview.isPaginationRequest(context)) {
             dataview.updatePaginationData(context, dataview);
-            
+
             encodeLayout(context, dataview);
         }
         else if (dataview.isLayoutRequest(context)) {
@@ -50,7 +52,7 @@ public class DataViewRenderer extends DataRenderer {
             dataview.setLayout(layout);
 
             encodeLayout(context, dataview);
-        } 
+        }
         else {
             encodeMarkup(context, dataview);
             encodeScript(context, dataview);
@@ -71,7 +73,7 @@ public class DataViewRenderer extends DataRenderer {
         if (hasPaginator) {
             dataview.calculateFirst();
         }
-        
+
         writer.startElement("div", dataview);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, null);
@@ -80,38 +82,38 @@ public class DataViewRenderer extends DataRenderer {
         }
 
         encodeHeader(context, dataview);
-        
+
         if (hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
             encodePaginatorMarkup(context, dataview, "top");
         }
 
         encodeContent(context, dataview);
-        
+
         if (hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
             encodePaginatorMarkup(context, dataview, "bottom");
         }
-        
+
         encodeFacet(context, dataview, "footer", DataView.FOOTER_CLASS);
 
         writer.endElement("div");
     }
-    
+
     protected void encodeHeader(FacesContext context, DataView dataview) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent fHeader = dataview.getFacet("header");
-        
+
         writer.startElement("div", dataview);
         writer.writeAttribute("class", DataView.HEADER_CLASS, null);
 
         if (fHeader != null && fHeader.isRendered()) {
             fHeader.encodeAll(context);
         }
-        
+
         encodeLayoutOptions(context, dataview);
-        
+
         writer.endElement("div");
     }
-    
+
     protected void encodeContent(FacesContext context, DataView dataview) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = dataview.getClientId(context);
@@ -137,13 +139,13 @@ public class DataViewRenderer extends DataRenderer {
 
         if (hasListItem) {
             String listIcon = dataview.getListIcon() != null ? dataview.getListIcon() : "ui-icon-grip-dotted-horizontal";
-            
+
             encodeButton(context, dataview, "list", listIcon, !isGridLayout);
         }
-        
+
         if (hasGridItem) {
             String gridIcon = dataview.getGridIcon() != null ? dataview.getGridIcon() : "ui-icon-grip-dotted-vertical";
-            
+
             encodeButton(context, dataview, "grid", gridIcon, isGridLayout);
         }
 
@@ -155,7 +157,7 @@ public class DataViewRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = dataview.getClientId(context);
         String buttonClass = isActive ? DataView.BUTTON_CLASS + " ui-state-active" : DataView.BUTTON_CLASS;
-        
+
         //button
         writer.startElement("div", null);
         writer.writeAttribute("class", buttonClass, null);
@@ -169,17 +171,19 @@ public class DataViewRenderer extends DataRenderer {
         writer.writeAttribute("value", layout, null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
         writer.writeAttribute("tabindex", "-1", null);
-        
-        if (isActive) writer.writeAttribute("checked", "checked", null);
-        
+
+        if (isActive) {
+            writer.writeAttribute("checked", "checked", null);
+        }
+
         writer.endElement("input");
 
         //icon
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + icon, null);
-        
+
         writer.endElement("span");
-        
+
         //label
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
@@ -189,13 +193,13 @@ public class DataViewRenderer extends DataRenderer {
 
         writer.endElement("div");
     }
-    
+
     protected void encodeLayout(FacesContext context, DataView dataview) throws IOException {
         String layout = dataview.getLayout();
-        
+
         if (layout.contains("grid")) {
             encodeGridLayout(context, dataview);
-        } 
+        }
         else {
             encodeListLayout(context, dataview);
         }
@@ -289,7 +293,7 @@ public class DataViewRenderer extends DataRenderer {
         if (dataview.isPaginator()) {
             encodePaginatorConfig(context, dataview, wb);
         }
-        
+
         encodeClientBehaviors(context, dataview);
 
         wb.finish();

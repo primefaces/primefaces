@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,37 +20,37 @@ import javax.faces.context.FacesContext;
 
 public interface Pageable {
 
-    public String getClientId(FacesContext context);
+    String getClientId(FacesContext context);
 
-    public String getPaginatorPosition();
+    String getPaginatorPosition();
 
-    public String getCurrentPageReportTemplate();
+    String getCurrentPageReportTemplate();
 
-    public int getRows();
+    int getRows();
 
-    public int getRowCount();
+    int getRowCount();
 
-    public int getPage();
+    int getPage();
 
-    public int getPageLinks();
+    int getPageLinks();
 
-    public boolean isPaginatorAlwaysVisible();
+    boolean isPaginatorAlwaysVisible();
 
-    public Object getFooter();
+    Object getFooter();
 
-    public Object getHeader();
+    Object getHeader();
 
-    public String getPaginatorTemplate();
+    String getPaginatorTemplate();
 
-    public UIComponent getFacet(String element);
+    UIComponent getFacet(String element);
 
-    public int getPageCount();
+    int getPageCount();
 
-    public int getFirst();
+    int getFirst();
 
-    public int getRowsToRender();
+    int getRowsToRender();
 
-    public String getRowsPerPageTemplate();
+    String getRowsPerPageTemplate();
 
-    public String getRowsPerPageLabel();
+    String getRowsPerPageLabel();
 }

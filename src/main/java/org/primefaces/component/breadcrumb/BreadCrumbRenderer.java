@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +15,21 @@
  */
 package org.primefaces.component.breadcrumb;
 
+import java.io.IOException;
+import java.util.List;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.util.List;
-
 public class BreadCrumbRenderer extends BaseMenuRenderer {
 
+    @Override
     protected void encodeMarkup(FacesContext context, AbstractMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         BreadCrumb breadCrumb = (BreadCrumb) menu;
@@ -35,7 +37,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         String styleClass = breadCrumb.getStyleClass();
         styleClass = styleClass == null ? BreadCrumb.CONTAINER_CLASS : BreadCrumb.CONTAINER_CLASS + " " + styleClass;
         int elementCount = menu.getElementsCount();
-        List<MenuElement> menuElements = (List<MenuElement>) menu.getElements();
+        List<MenuElement> menuElements = menu.getElements();
         boolean isIconHome = breadCrumb.getHomeDisplay().equals("icon");
 
         //home icon for first item
@@ -74,7 +76,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
                         encodeDisabledMenuItem(context, item);
                     }
                     else {
-                        encodeMenuItem(context, menu, item);
+                        encodeMenuItem(context, menu, item, menu.getTabindex());
                     }
 
                     writer.endElement("li");
@@ -119,7 +121,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         styleClass = styleClass == null ? BreadCrumb.MENUITEM_LINK_CLASS : BreadCrumb.MENUITEM_LINK_CLASS + " " + styleClass;
         styleClass += " ui-state-disabled";
 
-        writer.startElement("span", null);
+        writer.startElement("span", null); // outer span
         writer.writeAttribute("class", styleClass, null);
         if (style != null) {
             writer.writeAttribute("style", style, null);
@@ -145,8 +147,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
                 writer.write(value.toString());
             }
         }
-
-
-        writer.endElement("span");
+        writer.endElement("span"); // text span
+        writer.endElement("span"); // outer span
     }
 }

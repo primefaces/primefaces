@@ -24,9 +24,9 @@ import javax.faces.event.PhaseId;
 
 public class PartialViewContextMock extends PartialViewContext {
 
-    private Collection<String> executeIds = new ArrayList<String>();
-    private Collection<String> renderIds = new ArrayList<String>();
-    
+    private Collection<String> executeIds = new ArrayList<>();
+    private Collection<String> renderIds = new ArrayList<>();
+
     @Override
     public Collection<String> getExecuteIds() {
         return executeIds;
@@ -74,17 +74,17 @@ public class PartialViewContextMock extends PartialViewContext {
 
     @Override
     public void release() {
-        
+
     }
 
     @Override
     public void processPartial(PhaseId phaseId) {
-        
+
     }
 
     @Override
     public List<String> getEvalScripts() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

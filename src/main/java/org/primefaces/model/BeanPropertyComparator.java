@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ public class BeanPropertyComparator implements Comparator {
 
     public BeanPropertyComparator(ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction,
             boolean caseSensitive, Locale locale, int nullSortOrder) {
-        
+
         this.sortBy = sortBy;
         this.var = var;
         this.asc = sortOrder.equals(SortOrder.ASCENDING);
@@ -52,6 +52,7 @@ public class BeanPropertyComparator implements Comparator {
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public int compare(Object obj1, Object obj2) {
         try {
             FacesContext context = FacesContext.getCurrentInstance();

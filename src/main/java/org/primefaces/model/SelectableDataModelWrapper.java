@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,10 +26,12 @@ public class SelectableDataModelWrapper extends ListDataModel implements Selecta
         setWrappedData(data);
     }
 
+    @Override
     public Object getRowData(String rowKey) {
         return original.getRowData(rowKey);
     }
 
+    @Override
     public Object getRowKey(Object object) {
         return original.getRowKey(object);
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,14 @@ package org.primefaces.component.ribbon;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class RibbonRenderer extends CoreRenderer {
@@ -95,7 +98,7 @@ public class RibbonRenderer extends CoreRenderer {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", headerClass, null);
                     writer.writeAttribute("role", "tab", null);
-                    writer.writeAttribute("aria-expanded", String.valueOf(active), null);
+                    writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(active), null);
 
                     writer.startElement("a", null);
                     writer.writeAttribute("href", tab.getClientId(context), null);

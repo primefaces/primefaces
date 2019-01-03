@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,10 +30,11 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
 import org.primefaces.component.inputtext.InputText;
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class InputNumberRenderer extends InputRenderer {
@@ -44,7 +45,7 @@ public class InputNumberRenderer extends InputRenderer {
 
         String submittedValueString = (String) submittedValue;
 
-        if (ComponentUtils.isValueBlank(submittedValueString)) {
+        if (LangUtils.isValueBlank(submittedValueString)) {
             return null;
         }
 
@@ -60,7 +61,7 @@ public class InputNumberRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         InputNumber inputNumber = (InputNumber) component;
 
-        if (inputNumber.isDisabled() || inputNumber.isReadonly()) {
+        if (!shouldDecode(inputNumber)) {
             return;
         }
 
@@ -69,33 +70,34 @@ public class InputNumberRenderer extends InputRenderer {
         String inputId = inputNumber.getClientId(context) + "_hinput";
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(inputId);
 
+        if (submittedValue == null) {
+            return;
+        }
+
         try {
-            if (ComponentUtils.isValueBlank(submittedValue)) {
+            if (LangUtils.isValueBlank(submittedValue)) {
                 ValueExpression valueExpression = inputNumber.getValueExpression("value");
                 if (valueExpression != null) {
                     Class<?> type = valueExpression.getType(context.getELContext());
-                    if (type != null && type.isPrimitive() && !ComponentUtils.isValueBlank(inputNumber.getMinValue())) {
+                    if (type != null && type.isPrimitive() && !LangUtils.isValueBlank(inputNumber.getMinValue())) {
                         // avoid coercion of null or empty string to 0 which may be out of [minValue, maxValue] range
                         submittedValue = String.valueOf(new BigDecimal(inputNumber.getMinValue()).doubleValue());
                     }
-                    else if (type != null && type.isPrimitive() && !ComponentUtils.isValueBlank(inputNumber.getMaxValue())) {
+                    else if (type != null && type.isPrimitive() && !LangUtils.isValueBlank(inputNumber.getMaxValue())) {
                         // avoid coercion of null or empty string to 0 which may be out of [minValue, maxValue] range
                         submittedValue = String.valueOf(new BigDecimal(inputNumber.getMaxValue()).doubleValue());
-                    }
-                    else {
-                        submittedValue = "";
                     }
                 }
             }
             else {
                 BigDecimal value = new BigDecimal(submittedValue);
-                if (!ComponentUtils.isValueBlank(inputNumber.getMinValue())) {
+                if (!LangUtils.isValueBlank(inputNumber.getMinValue())) {
                     BigDecimal min = new BigDecimal(inputNumber.getMinValue());
                     if (value.compareTo(min) < 0) {
                         submittedValue = String.valueOf(min.doubleValue());
                     }
                 }
-                if (!ComponentUtils.isValueBlank(inputNumber.getMaxValue())) {
+                if (!LangUtils.isValueBlank(inputNumber.getMaxValue())) {
                     BigDecimal max = new BigDecimal(inputNumber.getMaxValue());
                     if (value.compareTo(max) > 0) {
                         submittedValue = String.valueOf(max.doubleValue());
@@ -131,6 +133,7 @@ public class InputNumberRenderer extends InputRenderer {
 
         String styleClass = inputNumber.getStyleClass();
         styleClass = styleClass == null ? InputNumber.STYLE_CLASS : InputNumber.STYLE_CLASS + " " + styleClass;
+        styleClass = inputNumber.isValid() ? styleClass : styleClass + " ui-state-error"; // see #3706
 
         writer.startElement("span", inputNumber);
         writer.writeAttribute("id", clientId, null);
@@ -168,9 +171,7 @@ public class InputNumberRenderer extends InputRenderer {
             writer.writeAttribute("onkeyup", inputNumber.getOnkeyup(), null);
         }
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, inputNumber);
-        }
+        renderValidationMetadata(context, inputNumber);
 
         writer.endElement("input");
 
@@ -200,25 +201,16 @@ public class InputNumberRenderer extends InputRenderer {
         writer.writeAttribute("type", inputNumber.getType(), null);
         writer.writeAttribute("value", valueToRender, null);
 
-        renderPassThruAttributes(context, inputNumber, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
-        renderDomEvents(context, inputNumber, HTML.INPUT_TEXT_EVENTS);
-
-        if (inputNumber.isReadonly()) {
-            writer.writeAttribute("readonly", "readonly", "readonly");
-        }
-        if (inputNumber.isDisabled()) {
-            writer.writeAttribute("disabled", "disabled", "disabled");
-        }
-
         if (!isValueBlank(style)) {
             writer.writeAttribute("style", style, null);
         }
 
         writer.writeAttribute("class", styleClass, null);
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, inputNumber);
-        }
+        renderAccessibilityAttributes(context, inputNumber);
+        renderPassThruAttributes(context, inputNumber, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
+        renderDomEvents(context, inputNumber, HTML.INPUT_TEXT_EVENTS);
+        renderValidationMetadata(context, inputNumber);
 
         writer.endElement("input");
     }
@@ -253,17 +245,17 @@ public class InputNumberRenderer extends InputRenderer {
         boolean padControl = inputNumber.isPadControl();
 
         String options = "";
-        options += isValueBlank(decimalSeparator) ? "" : "aDec:\"" + escapeText(decimalSeparator) + "\",";
+        options += isValueBlank(decimalSeparator) ? "" : "aDec:\"" + EscapeUtils.forJavaScript(decimalSeparator) + "\",";
         //empty thousandSeparator must be explicity defined.
-        options += isValueBlank(thousandSeparator) ? "aSep:''," : "aSep:\"" + escapeText(thousandSeparator) + "\",";
-        options += isValueBlank(symbol) ? "" : "aSign:\"" + escapeText(symbol) + "\",";
-        options += isValueBlank(symbolPosition) ? "" : "pSign:\"" + escapeText(symbolPosition) + "\",";
-        options += isValueBlank(minValue) ? "" : "vMin:\"" + escapeText(minValue) + "\",";
-        options += isValueBlank(maxValue) ? "" : "vMax:\"" + escapeText(maxValue) + "\",";
-        options += isValueBlank(roundMethod) ? "" : "mRound:\"" + escapeText(roundMethod) + "\",";
-        options += isValueBlank(decimalPlaces) ? "" : "mDec:\"" + escapeText(decimalPlaces) + "\",";
-        options += "wEmpty:\"" + escapeText(emptyValue) + "\",";
-        options += "lZero:\"" + escapeText(lZero) + "\",";
+        options += isValueBlank(thousandSeparator) ? "aSep:''," : "aSep:\"" + EscapeUtils.forJavaScript(thousandSeparator) + "\",";
+        options += isValueBlank(symbol) ? "" : "aSign:\"" + EscapeUtils.forJavaScript(symbol) + "\",";
+        options += isValueBlank(symbolPosition) ? "" : "pSign:\"" + EscapeUtils.forJavaScript(symbolPosition) + "\",";
+        options += isValueBlank(minValue) ? "" : "vMin:\"" + EscapeUtils.forJavaScript(minValue) + "\",";
+        options += isValueBlank(maxValue) ? "" : "vMax:\"" + EscapeUtils.forJavaScript(maxValue) + "\",";
+        options += isValueBlank(roundMethod) ? "" : "mRound:\"" + EscapeUtils.forJavaScript(roundMethod) + "\",";
+        options += isValueBlank(decimalPlaces) ? "" : "mDec:\"" + EscapeUtils.forJavaScript(decimalPlaces) + "\",";
+        options += "wEmpty:\"" + EscapeUtils.forJavaScript(emptyValue) + "\",";
+        options += "lZero:\"" + EscapeUtils.forJavaScript(lZero) + "\",";
         options += "aPad:" + padControl + ",";
 
         //if all options are empty return empty

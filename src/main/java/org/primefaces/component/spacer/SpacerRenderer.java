@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,11 @@
 package org.primefaces.component.spacer;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.CoreRenderer;
 
 public class SpacerRenderer extends CoreRenderer {
@@ -35,9 +37,15 @@ public class SpacerRenderer extends CoreRenderer {
         writer.writeAttribute("alt", "", null);
         writer.writeAttribute("src", getResourceRequestPath(context, "spacer/dot_clear.gif"), null);
 
-        if (spacer.getStyle() != null) writer.writeAttribute("style", spacer.getStyle(), "style");
-        if (spacer.getStyleClass() != null) writer.writeAttribute("class", spacer.getStyleClass(), "styleClass");
-        if (spacer.getTitle() != null) writer.writeAttribute("title", spacer.getTitle(), "title");
+        if (spacer.getStyle() != null) {
+            writer.writeAttribute("style", spacer.getStyle(), "style");
+        }
+        if (spacer.getStyleClass() != null) {
+            writer.writeAttribute("class", spacer.getStyleClass(), "styleClass");
+        }
+        if (spacer.getTitle() != null) {
+            writer.writeAttribute("title", spacer.getTitle(), "title");
+        }
 
         writer.endElement("img");
     }

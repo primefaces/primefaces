@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,17 +18,12 @@ package org.primefaces.component.chart;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.component.chart.renderer.BarRenderer;
-import org.primefaces.component.chart.renderer.BasePlotRenderer;
-import org.primefaces.component.chart.renderer.DonutRenderer;
-import org.primefaces.component.chart.renderer.LineRenderer;
-import org.primefaces.component.chart.renderer.OhlcRenderer;
-import org.primefaces.component.chart.renderer.PieRenderer;
-import org.primefaces.component.chart.renderer.BubbleRenderer;
-import org.primefaces.component.chart.renderer.MeterGaugeRenderer;
+
+import org.primefaces.component.chart.renderer.*;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -45,7 +40,7 @@ public class ChartRenderer extends CoreRenderer {
     private static final Map<String, org.primefaces.component.chart.renderer.BasePlotRenderer> CHART_RENDERERS;
 
     static {
-        CHART_RENDERERS = new HashMap<String, org.primefaces.component.chart.renderer.BasePlotRenderer>();
+        CHART_RENDERERS = new HashMap<>();
         CHART_RENDERERS.put(TYPE_PIE, new PieRenderer());
         CHART_RENDERERS.put(TYPE_LINE, new LineRenderer());
         CHART_RENDERERS.put(TYPE_BAR, new BarRenderer());
@@ -75,8 +70,12 @@ public class ChartRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", chart.getClientId(context), null);
-        if (style != null) writer.writeAttribute("style", style, "style");
-        if (styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
+        if (style != null) {
+            writer.writeAttribute("style", style, "style");
+        }
+        if (styleClass != null) {
+            writer.writeAttribute("class", styleClass, "styleClass");
+        }
 
         writer.endElement("div");
     }
@@ -88,13 +87,15 @@ public class ChartRenderer extends CoreRenderer {
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Chart", chart.resolveWidgetVar(), clientId)
-            .attr("type", type);
-        
-        if (chart.isResponsive()) wb.attr("responsive", true);
+                .attr("type", type);
+
+        if (chart.isResponsive()) {
+            wb.attr("responsive", true);
+        }
 
         plotRenderer.render(context, chart);
         encodeClientBehaviors(context, chart);
-        
+
         wb.finish();
     }
 }

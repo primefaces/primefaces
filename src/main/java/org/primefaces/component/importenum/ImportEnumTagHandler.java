@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,9 @@ import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.TagAttribute;
 import javax.faces.view.facelets.TagConfig;
 import javax.faces.view.facelets.TagHandler;
+
 import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.util.LangUtils;
 
 /**
  * {@link TagHandler} for the <code>ImportEnum</code> component.
@@ -73,14 +75,14 @@ public class ImportEnumTagHandler extends TagHandler {
      * Gets the {@link Class} from the {@link TagAttribute}.
      *
      * @param attribute The {@link TagAttribute}.
-     * @param ctx The {@link FaceletContext}.
+     * @param ctx       The {@link FaceletContext}.
      * @return The {@link Class}.
      */
     protected Class<?> getClassFromAttribute(TagAttribute attribute, FaceletContext ctx) {
         String type = attribute.getValue(ctx);
 
         try {
-            return Class.forName(type, true, Thread.currentThread().getContextClassLoader());
+            return Class.forName(type, true, LangUtils.getContextClassLoader());
         }
         catch (ClassNotFoundException e) {
             throw new FacesException("Class " + type + " not found.", e);
@@ -91,8 +93,8 @@ public class ImportEnumTagHandler extends TagHandler {
      * Get all enum values of the given {@link Class}.
      *
      * @param facesContext The {@link FacesContext}.
-     * @param type The enum class.
-     * @param allSuffix The suffix to access a array with all enum values.
+     * @param type         The enum class.
+     * @param allSuffix    The suffix to access a array with all enum values.
      * @return A {@link Map} with the enum values.
      */
     protected Map<String, Object> getEnumValues(FacesContext facesContext, Class<?> type, String allSuffix) {

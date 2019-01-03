@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,14 @@
  */
 package org.primefaces.component.chart.renderer;
 
-import java.io.IOException;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.ChartModel;
 import org.primefaces.model.chart.LegendPlacement;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.EscapeUtils;
+
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import java.io.IOException;
 
 public abstract class BasePlotRenderer {
 
@@ -42,7 +43,7 @@ public abstract class BasePlotRenderer {
         String extender = model.getExtender();
 
         if (title != null) {
-            writer.write(",title:\"" + ComponentUtils.escapeText(title) + "\"");
+            writer.write(",title:\"" + EscapeUtils.forJavaScript(title) + "\"");
         }
 
         if (!model.isShadow()) {
@@ -89,17 +90,17 @@ public abstract class BasePlotRenderer {
         if (!model.isResetAxesOnResize()) {
             writer.write(",resetAxesOnResize:" + false);
         }
-        
+
         writer.write(",dataRenderMode:\"" + model.getDataRenderMode() + "\"");
     }
-    
+
     protected String escapeChartData(Object value) {
         // default to "null" if null
         String result = String.valueOf(value);
 
         // do NOT quote numbers but quote all other objects
-        if (value instanceof Number == false) {
-            result = "\"" + ComponentUtils.escapeText(result) + "\"";
+        if (!(value instanceof Number)) {
+            result = "\"" + EscapeUtils.forJavaScript(result) + "\"";
         }
 
         return result;

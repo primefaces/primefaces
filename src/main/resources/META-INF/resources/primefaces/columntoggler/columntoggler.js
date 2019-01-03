@@ -29,6 +29,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.bindEvents();
     },
 
+    //@override
     refresh: function(cfg) {
         var jqs = $('[id=' + cfg.id.replace(/:/g,"\\:") + ']');
         if(jqs.length > 1) {
@@ -37,7 +38,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
 
         this.widthAligned = false;
 
-        this.init(cfg);
+        this._super(cfg);
     },
 
     render: function() {
@@ -142,11 +143,14 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
 
         this.bindKeyEvents();
 
-        PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id, $this.panel,
-            null,
-            function(e) { $this.hide(); });
+        PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.panel, null,
+            function(e, eventTarget) {
+                if(!($this.panel.is(eventTarget) || $this.panel.has(eventTarget).length > 0)) {
+                    $this.hide();
+                }
+            });
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.panel, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.panel, function() {
             $this.alignPanel();
         });
     },
@@ -167,7 +171,6 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
 
             switch(key) {
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                     if($this.visible)
                         $this.hide();
                     else
@@ -189,10 +192,6 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             var input = $(this),
             box = input.parent().next();
 
-            if(input.prop('checked')) {
-                box.removeClass('ui-state-active');
-            }
-
             box.addClass('ui-state-focus');
 
             //PrimeFaces.scrollInView($this.panel, box);
@@ -200,10 +199,6 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         .on('blur.columnToggler', function(e) {
             var input = $(this),
             box = input.parent().next();
-
-            if(input.prop('checked')) {
-                box.addClass('ui-state-active');
-            }
 
             box.removeClass('ui-state-focus');
         })
@@ -243,7 +238,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             var key = e.which,
             keyCode = $.ui.keyCode;
 
-            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+            if((key === keyCode.ENTER)) {
                 $this.hide();
                 $this.trigger.focus();
                 e.preventDefault();
@@ -382,20 +377,15 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     fireToggleEvent: function(visible, index) {
-        if(this.cfg.behaviors) {
-            var toggleBehavior = this.cfg.behaviors['toggle'];
+        if(this.hasBehavior('toggle')) {
+            var ext = {
+                params: [
+                    {name: this.id + '_visibility', value: visible ? 'VISIBLE' : 'HIDDEN'},
+                    {name: this.id + '_index', value: index}
+                ]
+            };
 
-            if(toggleBehavior) {
-                var visibility = visible ? 'VISIBLE' : 'HIDDEN',
-                ext = {
-                    params: [
-                        {name: this.id + '_visibility', value: visibility},
-                        {name: this.id + '_index', value: index}
-                    ]
-                };
-
-                toggleBehavior.call(this, ext);
-            }
+            this.callBehavior('toggle', ext);
         }
     },
 

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,20 +19,25 @@ import java.io.Serializable;
 
 public class DefaultSeparator implements Separator, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private String id;
     private String title;
     private String style;
     private String styleClass;
     private boolean rendered = true;
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
     }
 
+    @Override
     public String getTitle() {
         return title;
     }
@@ -41,6 +46,7 @@ public class DefaultSeparator implements Separator, Serializable {
         this.title = title;
     }
 
+    @Override
     public String getStyle() {
         return style;
     }
@@ -49,6 +55,7 @@ public class DefaultSeparator implements Separator, Serializable {
         this.style = style;
     }
 
+    @Override
     public String getStyleClass() {
         return styleClass;
     }
@@ -57,6 +64,7 @@ public class DefaultSeparator implements Separator, Serializable {
         this.styleClass = styleClass;
     }
 
+    @Override
     public boolean isRendered() {
         return rendered;
     }

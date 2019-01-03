@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,10 @@ package org.primefaces.component.panelmenu;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
@@ -35,7 +37,8 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         String clientId = menu.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("PanelMenu", menu.resolveWidgetVar(), clientId)
-                .attr("stateful", menu.isStateful());
+                .attr("stateful", menu.isStateful())
+                .attr("multiple", menu.isMultiple());
         wb.finish();
     }
 
@@ -131,7 +134,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
                         if (containerStyle != null) {
                             writer.writeAttribute("style", containerStyle, null);
                         }
-                        encodeMenuItem(context, menu, menuItem);
+                        encodeMenuItem(context, menu, menuItem, "-1");
                         writer.endElement("li");
                     }
                     else if (element instanceof Submenu) {
@@ -202,7 +205,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
                     if (element instanceof MenuItem) {
                         writer.startElement("li", null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
-                        encodeMenuItem(context, menu, (MenuItem) element);
+                        encodeMenuItem(context, menu, (MenuItem) element, "-1");
                         writer.endElement("li");
                     }
                     else if (element instanceof Submenu) {

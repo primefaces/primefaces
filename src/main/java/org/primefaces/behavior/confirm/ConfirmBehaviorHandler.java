@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,12 +46,12 @@ public class ConfirmBehaviorHandler extends AbstractBehaviorHandler<ConfirmBehav
         Application application = ctx.getFacesContext().getApplication();
         ConfirmBehavior behavior = (ConfirmBehavior) application.createBehavior(ConfirmBehavior.BEHAVIOR_ID);
 
-        setBehaviorAttribute(ctx, behavior, this.header, ConfirmBehavior.PropertyKeys.header.expectedType);
-        setBehaviorAttribute(ctx, behavior, this.message, ConfirmBehavior.PropertyKeys.message.expectedType);
-        setBehaviorAttribute(ctx, behavior, this.icon, ConfirmBehavior.PropertyKeys.icon.expectedType);
-        setBehaviorAttribute(ctx, behavior, this.disabled, ConfirmBehavior.PropertyKeys.disabled.expectedType);
-        setBehaviorAttribute(ctx, behavior, this.beforeShow, ConfirmBehavior.PropertyKeys.beforeShow.expectedType);
-        setBehaviorAttribute(ctx, behavior, this.escape, ConfirmBehavior.PropertyKeys.escape.expectedType);
+        setBehaviorAttribute(ctx, behavior, this.header, ConfirmBehavior.PropertyKeys.header.getExpectedType());
+        setBehaviorAttribute(ctx, behavior, this.message, ConfirmBehavior.PropertyKeys.message.getExpectedType());
+        setBehaviorAttribute(ctx, behavior, this.icon, ConfirmBehavior.PropertyKeys.icon.getExpectedType());
+        setBehaviorAttribute(ctx, behavior, this.disabled, ConfirmBehavior.PropertyKeys.disabled.getExpectedType());
+        setBehaviorAttribute(ctx, behavior, this.beforeShow, ConfirmBehavior.PropertyKeys.beforeShow.getExpectedType());
+        setBehaviorAttribute(ctx, behavior, this.escape, ConfirmBehavior.PropertyKeys.escape.getExpectedType());
 
         return behavior;
     }

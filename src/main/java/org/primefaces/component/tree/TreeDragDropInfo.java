@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,21 +16,17 @@
 package org.primefaces.component.tree;
 
 import javax.faces.component.UIComponent;
+
 import org.primefaces.model.TreeNode;
 
 public class TreeDragDropInfo {
 
-    private UIComponent component;
-    
+    private final UIComponent component;
+    private final TreeNode dropNode;
+    private final int dropIndex;
+    private final boolean droppedNodeCopy;
     private TreeNode dragNode;
-
     private TreeNode[] dragNodes;
-
-    private TreeNode dropNode;
-
-    private int dropIndex;
-
-    private boolean droppedNodeCopy;
 
     public TreeDragDropInfo(UIComponent component, TreeNode dragNode, TreeNode dropNode, int dropIndex, boolean droppedNodeCopy) {
         this.component = component;

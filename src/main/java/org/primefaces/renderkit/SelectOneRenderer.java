@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,17 +24,16 @@ public abstract class SelectOneRenderer extends SelectRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
-        if (!shouldDecode(component)) {
+        UISelectOne selectOne = (UISelectOne) component;
+        if (!shouldDecode(selectOne)) {
             return;
         }
-
-        UISelectOne selectOne = (UISelectOne) component;
 
         String clientId = getSubmitParam(context, selectOne);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         String submittedValue = params.containsKey(clientId) ? params.get(clientId) : "";
-        String[] submittedValues = restoreAndCheckDisabledSelectItems(context, selectOne, (Object[]) getValues(selectOne), submittedValue);
+        String[] submittedValues = validateSubmittedValues(context, selectOne, (Object[]) getValues(selectOne), submittedValue);
         submittedValue = submittedValues.length == 0 ? submittedValue : submittedValues[0];
         selectOne.setSubmittedValue(submittedValue);
 

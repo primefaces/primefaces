@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,11 @@ package org.primefaces.component.datalist;
 
 import java.io.IOException;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -47,8 +49,25 @@ public class DataListRenderer extends DataRenderer {
             else {
                 encodeStrictList(context, list);
             }
+
+            if (list.isMultiViewState()) {
+                DataListState ls = list.getDataListState(true);
+                ls.setFirst(list.getFirst());
+                ls.setRows(list.getRows());
+            }
         }
         else {
+            if (list.isMultiViewState() && list.isPaginator()) {
+                int firstOld = list.getFirst();
+                int rowsOld = list.getRows();
+
+                list.restoreDataListState();
+
+                if (list.isLazy() && (firstOld != list.getFirst() || rowsOld != list.getRows())) {
+                    list.loadLazyData();
+                }
+            }
+
             encodeMarkup(context, list);
             encodeScript(context, list);
         }
@@ -90,7 +109,7 @@ public class DataListRenderer extends DataRenderer {
 
         if (empty) {
             writer.startElement("div", list);
-            writer.writeAttribute("class", DataList.DATALIST_EMPTYMESSAGE_CLASS, null);
+            writer.writeAttribute("class", DataList.DATALIST_EMPTY_MESSAGE_CLASS, null);
             writer.writeText(list.getEmptyMessage(), "emptyMessage");
             writer.endElement("div");
         }
@@ -132,7 +151,7 @@ public class DataListRenderer extends DataRenderer {
      * Renders items with no strict markup
      *
      * @param context FacesContext instance
-     * @param list DataList component
+     * @param list    DataList component
      * @throws IOException
      */
     protected void encodeStrictList(FacesContext context, DataList list) throws IOException {
@@ -212,7 +231,7 @@ public class DataListRenderer extends DataRenderer {
      * Renders items with no strict markup
      *
      * @param context FacesContext instance
-     * @param list DataList component
+     * @param list    DataList component
      * @throws IOException
      */
     protected void encodeFreeList(FacesContext context, DataList list) throws IOException {

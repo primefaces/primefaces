@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,22 +17,22 @@ package org.primefaces.component.megamenu;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.separator.UISeparator;
-import org.primefaces.model.menu.MenuColumn;
-import org.primefaces.model.menu.MenuElement;
-import org.primefaces.model.menu.MenuItem;
-import org.primefaces.model.menu.Separator;
-import org.primefaces.model.menu.Submenu;
+import org.primefaces.model.menu.*;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class MegaMenuRenderer extends BaseMenuRenderer {
 
+    @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         MegaMenu menu = (MegaMenu) abstractMenu;
         String clientId = menu.getClientId(context);
@@ -45,6 +45,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         wb.finish();
     }
 
+    @Override
     protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         MegaMenu menu = (MegaMenu) abstractMenu;
@@ -91,7 +92,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
     protected void encodeRootItems(FacesContext context, MegaMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        List<MenuElement> elements = (List<MenuElement>) menu.getElements();
+        List<MenuElement> elements = menu.getElements();
 
         for (MenuElement element : elements) {
             if (element.isRendered()) {
@@ -99,7 +100,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                     writer.writeAttribute("role", "menuitem", null);
-                    encodeMenuItem(context, menu, (MenuItem) element);
+                    encodeMenuItem(context, menu, (MenuItem) element, "-1");
                     writer.endElement("li");
                 }
                 else if (element instanceof Submenu) {
@@ -127,7 +128,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", style, null);
         }
         writer.writeAttribute("role", "menuitem", null);
-        writer.writeAttribute("aria-haspopup", "true", null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
 
         //title
         writer.startElement("a", null);
@@ -158,7 +159,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
         //submenus
         if (submenu.getElementsCount() > 0) {
-            List<MenuElement> submenuElements = (List<MenuElement>) submenu.getElements();
+            List<MenuElement> submenuElements = submenu.getElements();
             writer.startElement("ul", null);
             writer.writeAttribute("class", Menu.TIERED_CHILD_SUBMENU_CLASS, null);
             writer.writeAttribute("role", "menu", null);
@@ -189,8 +190,12 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("td", null);
-        if (column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
-        if (column.getStyleClass() != null) writer.writeAttribute("class", column.getStyleClass(), null);
+        if (column.getStyle() != null) {
+            writer.writeAttribute("style", column.getStyle(), null);
+        }
+        if (column.getStyleClass() != null) {
+            writer.writeAttribute("class", column.getStyleClass(), null);
+        }
 
         if (column.getElementsCount() > 0) {
             List columnElements = column.getElements();
@@ -243,14 +248,14 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
         //menuitems
         if (submenu.getElementsCount() > 0) {
-            List<MenuElement> submenuElements = (List<MenuElement>) submenu.getElements();
+            List<MenuElement> submenuElements = submenu.getElements();
             for (MenuElement submenuElement : submenuElements) {
                 if (submenuElement.isRendered()) {
                     if (submenuElement instanceof MenuItem) {
                         writer.startElement("li", null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                         writer.writeAttribute("role", "menuitem", null);
-                        encodeMenuItem(context, menu, (MenuItem) submenuElement);
+                        encodeMenuItem(context, menu, (MenuItem) submenuElement, "-1");
                         writer.endElement("li");
                     }
                     else if (submenuElement instanceof Separator) {

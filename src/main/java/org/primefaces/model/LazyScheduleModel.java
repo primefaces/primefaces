@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@ package org.primefaces.model;
 import java.util.Date;
 
 public class LazyScheduleModel extends DefaultScheduleModel {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Method to be used when implementing lazy loading, implementers should override to fetch events that belong to a particular period

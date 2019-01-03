@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,6 +53,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
         this.monitorKey = monitorKey;
     }
 
+    @Override
     public void processAction(ActionEvent actionEvent) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
         ELContext elContext = context.getELContext();
@@ -91,7 +92,9 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
                 outputStream.write(buffer, 0, length);
             }
 
-            externalContext.setResponseStatus(200);
+            if (!externalContext.isResponseCommitted()) {
+                externalContext.setResponseStatus(200);
+            }
             externalContext.responseFlushBuffer();
             context.responseComplete();
         }
@@ -110,29 +113,33 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
         }
     }
 
+    @Override
     public boolean isTransient() {
         return false;
     }
 
+    @Override
+    public void setTransient(boolean value) {
+
+    }
+
+    @Override
     public void restoreState(FacesContext facesContext, Object state) {
-        Object values[] = (Object[]) state;
+        Object[] values = (Object[]) state;
 
         value = (ValueExpression) values[0];
         contentDisposition = (ValueExpression) values[1];
         monitorKey = (ValueExpression) values[2];
     }
 
+    @Override
     public Object saveState(FacesContext facesContext) {
-        Object values[] = new Object[3];
+        Object[] values = new Object[3];
 
         values[0] = value;
         values[1] = contentDisposition;
         values[2] = monitorKey;
 
-        return ((Object[]) values);
-    }
-
-    public void setTransient(boolean value) {
-
+        return (values);
     }
 }

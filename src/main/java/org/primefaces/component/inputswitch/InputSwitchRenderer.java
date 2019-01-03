@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,11 @@
 package org.primefaces.component.inputswitch;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.PrimeApplicationContext;
+
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -31,14 +32,14 @@ public class InputSwitchRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         InputSwitch inputSwitch = (InputSwitch) component;
 
-        if (inputSwitch.isDisabled()) {
+        if (!shouldDecode(inputSwitch)) {
             return;
         }
 
         decodeBehaviors(context, inputSwitch);
 
         String clientId = inputSwitch.getClientId(context);
-        String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
         if (submittedValue != null && isChecked(submittedValue)) {
             inputSwitch.setSubmittedValue(true);
@@ -58,8 +59,7 @@ public class InputSwitchRenderer extends InputRenderer {
 
     protected void encodeMarkup(FacesContext context, InputSwitch inputSwitch) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean checked = Boolean.valueOf(ComponentUtils.getValueToRender(context, inputSwitch));
-        boolean disabled = inputSwitch.isDisabled();
+        boolean checked = Boolean.parseBoolean(ComponentUtils.getValueToRender(context, inputSwitch));
         boolean showLabels = inputSwitch.isShowLabels();
         String clientId = inputSwitch.getClientId(context);
         String style = inputSwitch.getStyle();
@@ -80,7 +80,7 @@ public class InputSwitchRenderer extends InputRenderer {
         encodeOption(context, inputSwitch.getOffLabel(), InputSwitch.OFF_LABEL_CLASS, showLabels);
         encodeOption(context, inputSwitch.getOnLabel(), InputSwitch.ON_LABEL_CLASS, showLabels);
         encodeHandle(context);
-        encodeInput(context, inputSwitch, clientId, checked, disabled);
+        encodeInput(context, inputSwitch, clientId, checked);
 
         writer.endElement("div");
     }
@@ -111,7 +111,7 @@ public class InputSwitchRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeInput(FacesContext context, InputSwitch inputSwitch, String clientId, boolean checked, boolean disabled) throws IOException {
+    protected void encodeInput(FacesContext context, InputSwitch inputSwitch, String clientId, boolean checked) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_input";
 
@@ -123,14 +123,13 @@ public class InputSwitchRenderer extends InputRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "checkbox", null);
 
-        if (checked) writer.writeAttribute("checked", "checked", null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
-        if (inputSwitch.getTabindex() != null) writer.writeAttribute("tabindex", inputSwitch.getTabindex(), null);
-
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, inputSwitch);
+        if (checked) {
+            writer.writeAttribute("checked", "checked", null);
         }
 
+        renderValidationMetadata(context, inputSwitch);
+        renderAccessibilityAttributes(context, inputSwitch);
+        renderPassThruAttributes(context, inputSwitch, HTML.TAB_INDEX);
         renderOnchange(context, inputSwitch);
         renderDomEvents(context, inputSwitch, HTML.BLUR_FOCUS_EVENTS);
 

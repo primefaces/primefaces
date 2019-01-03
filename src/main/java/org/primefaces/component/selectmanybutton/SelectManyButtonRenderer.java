@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.primefaces.component.selectmanybutton;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UINamingContainer;
@@ -27,6 +28,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
+
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -87,8 +89,8 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
     }
 
     protected void encodeOption(FacesContext context, UIInput component, Object values, Object submittedValues, Converter converter,
-            SelectItem option, int idx, int size) throws IOException {
-        
+                                SelectItem option, int idx, int size) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
         SelectManyButton button = (SelectManyButton) component;
         String itemValueAsString = getOptionAsString(context, component, converter, option.getValue());
@@ -130,7 +132,9 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         //button
         writer.startElement("div", null);
         writer.writeAttribute("class", buttonStyle, null);
-        if (option.getDescription() != null) writer.writeAttribute("title", option.getDescription(), null);
+        if (option.getDescription() != null) {
+            writer.writeAttribute("title", option.getDescription(), null);
+        }
 
         //input
         writer.startElement("input", null);
@@ -142,23 +146,27 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
 
         renderOnchange(context, button);
 
-        if (selected) writer.writeAttribute("checked", "checked", null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
-        if (tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
+        if (selected) {
+            writer.writeAttribute("checked", "checked", null);
+        }
+        if (tabindex != null) {
+            writer.writeAttribute("tabindex", tabindex, null);
+        }
 
+        renderAccessibilityAttributes(context, button);
         writer.endElement("input");
 
         //item label
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        
+
         if (option.isEscape()) {
             writer.writeText(option.getLabel(), "itemLabel");
         }
         else {
             writer.write(option.getLabel());
         }
-        
+
         writer.endElement("span");
 
         writer.endElement("div");

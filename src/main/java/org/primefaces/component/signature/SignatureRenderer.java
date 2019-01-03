@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,17 +17,22 @@ package org.primefaces.component.signature;
 
 import java.io.IOException;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.renderkit.CoreRenderer;
+
+import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.WidgetBuilder;
 
-public class SignatureRenderer extends CoreRenderer {
+public class SignatureRenderer extends InputRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Signature signature = (Signature) component;
+        if (!shouldDecode(signature)) {
+            return;
+        }
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String value = params.get(signature.getClientId(context) + "_value");
         String base64Value = params.get(signature.getClientId(context) + "_base64");
@@ -56,8 +61,12 @@ public class SignatureRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
-        if (style != null) writer.writeAttribute("style", style, null);
-        if (styleClass != null) writer.writeAttribute("class", styleClass, null);
+        if (style != null) {
+            writer.writeAttribute("style", style, null);
+        }
+        if (styleClass != null) {
+            writer.writeAttribute("class", styleClass, null);
+        }
 
         encodeInputField(context, signature, clientId + "_value", signature.getValue());
 
@@ -100,6 +109,7 @@ public class SignatureRenderer extends CoreRenderer {
         if (value != null) {
             writer.writeAttribute("value", value, null);
         }
+        renderAccessibilityAttributes(context, signature);
         writer.endElement("input");
     }
 }

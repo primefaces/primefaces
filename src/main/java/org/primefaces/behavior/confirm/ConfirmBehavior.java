@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import org.primefaces.json.JSONObject;
 
 public class ConfirmBehavior extends AbstractBehavior {
 
-    public final static String BEHAVIOR_ID = "org.primefaces.behavior.ConfirmBehavior";
+    public static final String BEHAVIOR_ID = "org.primefaces.behavior.ConfirmBehavior";
 
     public enum PropertyKeys {
         header(String.class),
@@ -35,26 +35,41 @@ public class ConfirmBehavior extends AbstractBehavior {
         beforeShow(String.class),
         escape(Boolean.class);
 
-        public final Class<?> expectedType;
+        private final Class<?> expectedType;
 
         PropertyKeys(Class<?> expectedType) {
             this.expectedType = expectedType;
+        }
+
+        /**
+         * Holds the type which ought to be passed to
+         * {@link javax.faces.view.facelets.TagAttribute#getObject(javax.faces.view.facelets.FaceletContext, java.lang.Class) }
+         * when creating the behavior.
+         * @return the expectedType the expected object type
+         */
+        public Class<?> getExpectedType() {
+            return expectedType;
         }
     }
 
     @Override
     public String getScript(ClientBehaviorContext behaviorContext) {
+        FacesContext context = behaviorContext.getFacesContext();
+        UIComponent component = behaviorContext.getComponent();
+
         if (isDisabled()) {
+            if (component instanceof Confirmable) {
+                ((Confirmable) component).setConfirmationScript(null);
+            }
+
             return null;
         }
 
-        FacesContext context = behaviorContext.getFacesContext();
-        UIComponent component = behaviorContext.getComponent();
         String source = component.getClientId(context);
         String headerText = JSONObject.quote(this.getHeader());
         String messageText = JSONObject.quote(this.getMessage());
         String beforeShow = JSONObject.quote(this.getBeforeShow());
-        
+
         if (component instanceof Confirmable) {
             String sourceProperty = (source == null) ? "source:this" : "source:\"" + source + "\"";
             String script = "PrimeFaces.confirm({" + sourceProperty
@@ -84,7 +99,7 @@ public class ConfirmBehavior extends AbstractBehavior {
     }
 
     public void setHeader(String header) {
-        setLiteral(PropertyKeys.header, header);
+        put(PropertyKeys.header, header);
     }
 
     public String getMessage() {
@@ -92,7 +107,7 @@ public class ConfirmBehavior extends AbstractBehavior {
     }
 
     public void setMessage(String message) {
-        setLiteral(PropertyKeys.message, message);
+        put(PropertyKeys.message, message);
     }
 
     public String getIcon() {
@@ -100,7 +115,7 @@ public class ConfirmBehavior extends AbstractBehavior {
     }
 
     public void setIcon(String icon) {
-        setLiteral(PropertyKeys.icon, icon);
+        put(PropertyKeys.icon, icon);
     }
 
     public boolean isDisabled() {
@@ -108,15 +123,15 @@ public class ConfirmBehavior extends AbstractBehavior {
     }
 
     public void setDisabled(boolean disabled) {
-        setLiteral(PropertyKeys.disabled, disabled);
+        put(PropertyKeys.disabled, disabled);
     }
-    
+
     public String getBeforeShow() {
         return eval(PropertyKeys.beforeShow, null);
     }
 
     public void setBeforeShow(String beforeShow) {
-        setLiteral(PropertyKeys.beforeShow, beforeShow);
+        put(PropertyKeys.beforeShow, beforeShow);
     }
 
     public boolean isEscape() {
@@ -124,6 +139,6 @@ public class ConfirmBehavior extends AbstractBehavior {
     }
 
     public void setEscape(boolean escape) {
-        setLiteral(PropertyKeys.escape, escape);
+        put(PropertyKeys.escape, escape);
     }
 }

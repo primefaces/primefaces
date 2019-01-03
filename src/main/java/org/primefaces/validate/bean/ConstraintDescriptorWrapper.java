@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -75,11 +75,13 @@ public class ConstraintDescriptorWrapper<T extends Annotation> implements Constr
     }
 
     //@Override - BV 1.1
+    @Override
     public String getMessageTemplate() {
         return wrapped.getMessageTemplate();
     }
 
     //@Override - BV 1.1
+    @Override
     public ConstraintTarget getValidationAppliesTo() {
         return wrapped.getValidationAppliesTo();
     }

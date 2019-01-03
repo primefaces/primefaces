@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,8 @@ public class DraggableRenderer extends CoreRenderer {
         Draggable draggable = (Draggable) component;
         String clientId = draggable.getClientId(context);
 
+        renderDummyMarkup(context, component, clientId);
+
         UIComponent target = SearchExpressionFacade.resolveComponent(
                 context, draggable, draggable.getFor(), SearchExpressionHint.PARENT_FALLBACK);
 
@@ -51,9 +53,9 @@ public class DraggableRenderer extends CoreRenderer {
                 .attr("stack", draggable.getStack(), null)
                 .attr("scope", draggable.getScope(), null)
                 .attr("cancel", draggable.getCancel(), null);
-        
+
         wb.callback("onStart", "function(event,ui)", draggable.getOnStart())
-            .callback("onStop", "function(event,ui)", draggable.getOnStop());
+                .callback("onStop", "function(event,ui)", draggable.getOnStop());
 
         if (draggable.isRevert()) {
             wb.attr("revert", "invalid");

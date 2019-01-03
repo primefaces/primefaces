@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,21 +15,19 @@
  */
 package org.primefaces.component.remotecommand;
 
-import java.io.IOException;
-import javax.faces.FacesException;
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseId;
+
+import java.io.IOException;
+
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.context.PrimeRequestContext;
-
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AjaxRequestBuilder;
-import org.primefaces.util.ComponentTraversalUtils;
 
 public class RemoteCommandRenderer extends CoreRenderer {
 
@@ -54,19 +52,15 @@ public class RemoteCommandRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         RemoteCommand command = (RemoteCommand) component;
-        AjaxSource source = (AjaxSource) command;
+        AjaxSource source = command;
         String clientId = command.getClientId(context);
         String name = resolveName(command, context);
-        UIComponent form = (UIComponent) ComponentTraversalUtils.closestForm(context, command);
-        if (form == null) {
-            throw new FacesException("RemoteCommand '" + name + "'must be inside a form.");
-        }
 
         AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
 
         String request = builder.init()
                 .source(clientId)
-                .form(form.getClientId(context))
+                .form(source, command)
                 .process(component, source.getProcess())
                 .update(component, source.getUpdate())
                 .async(source.isAsync())

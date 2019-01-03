@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,22 +24,28 @@ import java.util.List;
  */
 public class BaseMenuModel implements MenuModel, Serializable {
 
-    public final static String ID_SEPARATOR = "_";
+    public static final String ID_SEPARATOR = "_";
+
+    private static final long serialVersionUID = 1L;
+
 
     private List<MenuElement> elements;
 
     public BaseMenuModel() {
-        elements = new ArrayList<MenuElement>();
+        elements = new ArrayList<>();
     }
 
+    @Override
     public void addElement(MenuElement element) {
         elements.add(element);
     }
 
+    @Override
     public List<MenuElement> getElements() {
         return elements;
     }
 
+    @Override
     public void generateUniqueIds() {
         this.generateUniqueIds(getElements(), null);
     }

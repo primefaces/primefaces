@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,7 @@ package org.primefaces.component.timeline;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,8 +26,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
-import org.primefaces.PrimeFaces;
 
+import org.primefaces.PrimeFaces;
 import org.primefaces.model.timeline.TimelineEvent;
 import org.primefaces.model.timeline.TimelineGroup;
 import org.primefaces.util.ComponentUtils;
@@ -43,10 +39,19 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
 
     private static final String PREVENT_RENDER = Boolean.TRUE.toString();
 
-    private static final Logger LOG = Logger.getLogger(DefaultTimelineUpdater.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(DefaultTimelineUpdater.class.getName());
 
     private String widgetVar;
     private List<CrudOperationData> crudOperationDatas;
+
+    enum CrudOperation {
+
+        ADD,
+        UPDATE,
+        DELETE,
+        SELECT,
+        CLEAR
+    }
 
     @Override
     public void add(TimelineEvent event) {
@@ -86,10 +91,12 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
         crudOperationDatas.add(new CrudOperationData(CrudOperation.CLEAR));
     }
 
+    @Override
     public PhaseId getPhaseId() {
         return PhaseId.RENDER_RESPONSE;
     }
 
+    @Override
     public void beforePhase(PhaseEvent event) {
         if (crudOperationDatas == null) {
             return;
@@ -97,8 +104,6 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
 
         FacesContext fc = event.getFacesContext();
         StringBuilder sb = new StringBuilder();
-        FastStringWriter fsw = new FastStringWriter();
-        FastStringWriter fswHtml = new FastStringWriter();
 
         Timeline timeline = (Timeline) fc.getViewRoot().findComponent(id);
         TimelineRenderer timelineRenderer = ComponentUtils.getUnwrappedRenderer(
@@ -112,13 +117,15 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
         UIComponent groupFacet = timeline.getFacet("group");
         if (groups != null && groupFacet != null) {
             // buffer for groups' content
-            groupsContent = new HashMap<String, String>();
+            groupsContent = new HashMap<>();
         }
 
         TimeZone targetTZ = ComponentUtils.resolveTimeZone(timeline.getTimeZone());
         TimeZone browserTZ = ComponentUtils.resolveTimeZone(timeline.getBrowserTimeZone());
 
-        try {
+        try (FastStringWriter fsw = new FastStringWriter();
+             FastStringWriter fswHtml = new FastStringWriter()) {
+
             boolean renderComponent = false;
             for (CrudOperationData crudOperationData : crudOperationDatas) {
                 switch (crudOperationData.getCrudOperation()) {
@@ -184,25 +191,26 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
             PrimeFaces.current().executeScript(sb.toString());
         }
         catch (IOException e) {
-            LOG.log(Level.WARNING, "Timeline with id " + id + " could not be updated, at least one CRUD operation failed", e);
+            LOGGER.log(Level.WARNING, "Timeline with id " + id + " could not be updated, at least one CRUD operation failed", e);
         }
     }
 
+    @Override
     public void afterPhase(PhaseEvent event) {
         // NOOP.
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        this.widgetVar = widgetVar;
     }
 
     public String getWidgetVar() {
         return widgetVar;
     }
 
+    public void setWidgetVar(String widgetVar) {
+        this.widgetVar = widgetVar;
+    }
+
     private void checkCrudOperationDataList() {
         if (crudOperationDatas == null) {
-            crudOperationDatas = new ArrayList<CrudOperationData>();
+            crudOperationDatas = new ArrayList<>();
         }
     }
 
@@ -232,7 +240,9 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
 
     class CrudOperationData implements Serializable {
 
-        private CrudOperation crudOperation;
+        private static final long serialVersionUID = 1L;
+
+        private final CrudOperation crudOperation;
         private TimelineEvent event;
         private int index;
 
@@ -267,14 +277,5 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
         public int getIndex() {
             return index;
         }
-    }
-
-    enum CrudOperation {
-
-        ADD,
-        UPDATE,
-        DELETE,
-        SELECT,
-        CLEAR
     }
 }

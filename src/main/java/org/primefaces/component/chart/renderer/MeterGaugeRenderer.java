@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,15 @@
  */
 package org.primefaces.component.chart.renderer;
 
+import org.primefaces.component.chart.Chart;
+import org.primefaces.model.chart.MeterGaugeChartModel;
+import org.primefaces.util.EscapeUtils;
+
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import org.primefaces.component.chart.Chart;
-import org.primefaces.model.chart.MeterGaugeChartModel;
-import org.primefaces.util.ComponentUtils;
 
 public class MeterGaugeRenderer extends BasePlotRenderer {
 
@@ -50,18 +51,26 @@ public class MeterGaugeRenderer extends BasePlotRenderer {
         encodeNumberList(context, "ticks", model.getTicks());
 
         if (gaugeLabel != null) {
-            writer.write(",gaugeLabel:\"" + ComponentUtils.escapeText(gaugeLabel) + "\"");
+            writer.write(",gaugeLabel:\"" + EscapeUtils.forJavaScript(gaugeLabel) + "\"");
             writer.write(",gaugeLabelPosition:\"" + model.getGaugeLabelPosition() + "\"");
         }
 
         writer.write(",showTickLabels:" + model.isShowTickLabels());
         writer.write(",labelHeightAdjust:" + model.getLabelHeightAdjust());
 
-        if (intervalInnerRadius != null) writer.write(",intervalInnerRadius:" + intervalInnerRadius);
-        if (intervalOuterRadius != null) writer.write(",intervalOuterRadius:" + intervalOuterRadius);
+        if (intervalInnerRadius != null) {
+            writer.write(",intervalInnerRadius:" + intervalInnerRadius);
+        }
+        if (intervalOuterRadius != null) {
+            writer.write(",intervalOuterRadius:" + intervalOuterRadius);
+        }
 
-        if (min != Double.MIN_VALUE) writer.write(",min:" + min);
-        if (max != Double.MAX_VALUE) writer.write(",max:" + max);
+        if (min != Double.MIN_VALUE) {
+            writer.write(",min:" + min);
+        }
+        if (max != Double.MAX_VALUE) {
+            writer.write(",max:" + max);
+        }
     }
 
     private void encodeNumberList(FacesContext context, String name, List<Number> values) throws IOException {
@@ -69,7 +78,7 @@ public class MeterGaugeRenderer extends BasePlotRenderer {
             ResponseWriter writer = context.getResponseWriter();
 
             writer.write("," + name + ":[");
-            for (Iterator<Number> it = values.iterator(); it.hasNext();) {
+            for (Iterator<Number> it = values.iterator(); it.hasNext(); ) {
                 Number number = it.next();
                 writer.write(number.toString());
 

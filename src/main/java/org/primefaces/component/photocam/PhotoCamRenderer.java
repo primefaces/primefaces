@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,13 @@ package org.primefaces.component.photocam;
 
 import java.io.IOException;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
 import javax.xml.bind.DatatypeConverter;
+
 import org.primefaces.event.CaptureEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
@@ -62,8 +64,12 @@ public class PhotoCamRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
-        if (style != null) writer.writeAttribute("style", style, null);
-        if (styleClass != null) writer.writeAttribute("class", styleClass, null);
+        if (style != null) {
+            writer.writeAttribute("style", style, null);
+        }
+        if (styleClass != null) {
+            writer.writeAttribute("class", styleClass, null);
+        }
 
         writer.endElement("div");
     }
@@ -84,8 +90,12 @@ public class PhotoCamRenderer extends CoreRenderer {
                 .attr("forceFlash", cam.isForceFlash(), false)
                 .attr("autoStart", cam.isAutoStart(), true);
 
-        if (cam.getUpdate() != null) wb.attr("update", SearchExpressionFacade.resolveClientIds(context, cam, cam.getUpdate()));
-        if (cam.getProcess() != null) wb.attr("process", SearchExpressionFacade.resolveClientIds(context, cam, cam.getProcess()));
+        if (cam.getUpdate() != null) {
+            wb.attr("update", SearchExpressionFacade.resolveClientIds(context, cam, cam.getUpdate()));
+        }
+        if (cam.getProcess() != null) {
+            wb.attr("process", SearchExpressionFacade.resolveClientIds(context, cam, cam.getProcess()));
+        }
 
         wb.finish();
     }

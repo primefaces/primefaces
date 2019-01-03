@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.primefaces.component.multiselectlistbox;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectOne;
 import javax.faces.context.FacesContext;
@@ -26,6 +27,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
+
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -96,6 +98,7 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
 
         writer.startElement("ul", listbox);
         writer.writeAttribute("class", listStyleClass, null);
+        renderARIARequired(context, listbox);
 
         if (items != null) {
             encodeListItems(context, listbox, items);
@@ -152,8 +155,9 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
 
         wb.init("MultiSelectListbox", listbox.resolveWidgetVar(), clientId)
                 .attr("effect", listbox.getEffect(), null)
-                .attr("showHeaders", listbox.isShowHeaders(), false)
-                .finish();
+                .attr("showHeaders", listbox.isShowHeaders(), false);
+        encodeClientBehaviors(context, listbox);
+        wb.finish();
     }
 
     protected void encodeInput(FacesContext context, MultiSelectListbox listbox) throws IOException {
@@ -169,6 +173,7 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
         if (valueToRender != null) {
             writer.writeAttribute("value", valueToRender, null);
         }
+        renderAccessibilityAttributes(context, listbox);
         writer.endElement("input");
     }
 

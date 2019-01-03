@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,21 +15,18 @@
  */
 package org.primefaces.util;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class GridLayoutUtils {
 
-    private static final Map<Integer, String> COLUMN_MAP = new HashMap<Integer, String>();
-
-    static {
-        COLUMN_MAP.put(1, "ui-g-12 ui-md-12");
-        COLUMN_MAP.put(2, "ui-g-12 ui-md-6");
-        COLUMN_MAP.put(3, "ui-g-12 ui-md-4");
-        COLUMN_MAP.put(4, "ui-g-12 ui-md-3");
-        COLUMN_MAP.put(6, "ui-g-12 ui-md-2");
-        COLUMN_MAP.put(12, "ui-g-12 ui-md-1");
-    }
+    private static final Map<Integer, String> COLUMN_MAP = MapBuilder.<Integer, String>builder()
+            .put(1, "ui-g-12 ui-md-12")
+            .put(2, "ui-g-12 ui-md-6")
+            .put(3, "ui-g-12 ui-md-4")
+            .put(4, "ui-g-12 ui-md-3")
+            .put(6, "ui-g-12 ui-md-2")
+            .put(12, "ui-g-12 ui-md-1")
+            .build();
 
     private GridLayoutUtils() {
     }

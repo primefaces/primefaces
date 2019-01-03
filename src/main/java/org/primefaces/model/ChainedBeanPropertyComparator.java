@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ public class ChainedBeanPropertyComparator implements Comparator {
         this.comparators.add(comparator);
     }
 
+    @Override
     public int compare(Object obj1, Object obj2) {
         for (BeanPropertyComparator comparator : comparators) {
             int result = comparator.compare(obj1, obj2);

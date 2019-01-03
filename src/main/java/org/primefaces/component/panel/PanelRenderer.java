@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,13 +39,13 @@ public class PanelRenderer extends CoreRenderer {
         //Restore toggle state
         String collapsedParam = params.get(clientId + "_collapsed");
         if (collapsedParam != null) {
-            panel.setCollapsed(Boolean.valueOf(collapsedParam));
+            panel.setCollapsed(Boolean.parseBoolean(collapsedParam));
         }
 
         //Restore visibility state
         String visibleParam = params.get(clientId + "_visible");
         if (visibleParam != null) {
-            panel.setVisible(Boolean.valueOf(visibleParam));
+            panel.setVisible(Boolean.parseBoolean(visibleParam));
         }
 
         decodeBehaviors(context, component);

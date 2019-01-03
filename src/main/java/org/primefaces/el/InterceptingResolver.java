@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,6 +76,7 @@ public class InterceptingResolver extends ELResolver {
 
     // @Override
     // < EL 2.2 compatibility
+    @Override
     public Object invoke(ELContext context,
             Object base,
             Object method,

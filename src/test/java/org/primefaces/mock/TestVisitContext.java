@@ -30,7 +30,7 @@ public class TestVisitContext extends VisitContext {
 
     private FacesContext facesContext;
     private Set<VisitHint> hints;
-    
+
     public TestVisitContext(FacesContext facesContext) {
         this(facesContext, null);
     }

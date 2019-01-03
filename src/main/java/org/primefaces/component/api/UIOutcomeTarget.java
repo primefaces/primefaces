@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,21 +17,22 @@ package org.primefaces.component.api;
 
 import java.util.List;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 
 public interface UIOutcomeTarget {
 
-    public String getOutcome();
+    String getOutcome();
 
-    public boolean isIncludeViewParams();
+    boolean isIncludeViewParams();
 
-    public String getFragment();
+    String getFragment();
 
-    public List<UIComponent> getChildren();
+    List<UIComponent> getChildren();
 
-    public Map<String, List<String>> getParams();
+    Map<String, List<String>> getParams();
 
-    public String getHref();
+    String getHref();
 
-    public boolean isDisableClientWindow();
+    boolean isDisableClientWindow();
 }

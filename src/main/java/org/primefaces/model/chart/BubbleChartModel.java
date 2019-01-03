@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,15 @@ import java.util.List;
 
 public class BubbleChartModel extends CartesianChartModel {
 
+    private static final long serialVersionUID = 1L;
+
     private List<BubbleChartSeries> data;
     private boolean bubbleGradients = false;
     private double bubbleAlpha = 1.0;
     private boolean showLabels = true;
 
     public BubbleChartModel() {
-        data = new ArrayList<BubbleChartSeries>();
+        data = new ArrayList<>();
     }
 
     public BubbleChartModel(List<BubbleChartSeries> data) {
@@ -50,6 +52,7 @@ public class BubbleChartModel extends CartesianChartModel {
         this.data.add(bubble);
     }
 
+    @Override
     public void clear() {
         this.data.clear();
     }

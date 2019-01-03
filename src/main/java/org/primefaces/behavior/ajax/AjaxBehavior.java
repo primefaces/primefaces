@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ import org.primefaces.component.api.AjaxSource;
     })
 public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
 
-    public final static String BEHAVIOR_ID = "org.primefaces.component.AjaxBehavior";
+    public static final String BEHAVIOR_ID = "org.primefaces.component.AjaxBehavior";
 
     private static final Set<ClientBehaviorHint> HINTS = Collections.unmodifiableSet(EnumSet.of(ClientBehaviorHint.SUBMITTING));
 
@@ -60,10 +60,20 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
         form(String.class),
         skipChildren(Boolean.class);
 
-        public final Class<?> expectedType;
+        private final Class<?> expectedType;
 
         PropertyKeys(Class<?> expectedType) {
             this.expectedType = expectedType;
+        }
+
+        /**
+         * Holds the type which ought to be passed to
+         * {@link javax.faces.view.facelets.TagAttribute#getObject(javax.faces.view.facelets.FaceletContext, java.lang.Class) }
+         * when creating the behavior.
+         * @return the expectedType the expected object type
+         */
+        public Class<?> getExpectedType() {
+            return expectedType;
         }
     }
 
@@ -86,7 +96,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     }
 
     public void setDisabled(boolean disabled) {
-        setLiteral(PropertyKeys.disabled, disabled);
+        put(PropertyKeys.disabled, disabled);
     }
 
     @Override
@@ -95,7 +105,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     }
 
     public void setAsync(boolean async) {
-        setLiteral(PropertyKeys.async, async);
+        put(PropertyKeys.async, async);
     }
 
     @Override
@@ -104,7 +114,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     }
 
     public void setGlobal(boolean global) {
-        setLiteral(PropertyKeys.global, global);
+        put(PropertyKeys.global, global);
     }
 
     @Override
@@ -113,7 +123,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     }
 
     public void setOncomplete(String oncomplete) {
-        setLiteral(PropertyKeys.oncomplete, oncomplete);
+        put(PropertyKeys.oncomplete, oncomplete);
     }
 
     @Override
@@ -122,7 +132,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     }
 
     public void setOnstart(String onstart) {
-        setLiteral(PropertyKeys.onstart, onstart);
+        put(PropertyKeys.onstart, onstart);
     }
 
     @Override
@@ -131,7 +141,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     }
 
     public void setOnsuccess(String onsuccess) {
-        setLiteral(PropertyKeys.onsuccess, onsuccess);
+        put(PropertyKeys.onsuccess, onsuccess);
     }
 
     @Override
@@ -140,7 +150,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     }
 
     public void setOnerror(String onerror) {
-        setLiteral(PropertyKeys.onerror, onerror);
+        put(PropertyKeys.onerror, onerror);
     }
 
     @Override
@@ -149,7 +159,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     }
 
     public void setProcess(String process) {
-        setLiteral(PropertyKeys.process, process);
+        put(PropertyKeys.process, process);
     }
 
     @Override
@@ -158,7 +168,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     }
 
     public void setUpdate(String update) {
-        setLiteral(PropertyKeys.update, update);
+        put(PropertyKeys.update, update);
     }
 
     @Override
@@ -167,7 +177,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     }
 
     public void setDelay(String delay) {
-        setLiteral(PropertyKeys.delay, delay);
+        put(PropertyKeys.delay, delay);
     }
 
     public boolean isImmediate() {
@@ -175,7 +185,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     }
 
     public void setImmediate(Boolean immediate) {
-        setLiteral(PropertyKeys.immediate, immediate);
+        put(PropertyKeys.immediate, immediate);
     }
 
     @Override
@@ -184,7 +194,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     }
 
     public void setIgnoreAutoUpdate(boolean ignoreAutoUpdate) {
-        setLiteral(PropertyKeys.ignoreAutoUpdate, ignoreAutoUpdate);
+        put(PropertyKeys.ignoreAutoUpdate, ignoreAutoUpdate);
     }
 
     @Override
@@ -193,7 +203,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     }
 
     public void setPartialSubmit(boolean partialSubmit) {
-        setLiteral(PropertyKeys.partialSubmit, partialSubmit);
+        put(PropertyKeys.partialSubmit, partialSubmit);
     }
 
     @Override
@@ -202,7 +212,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     }
 
     public void setResetValues(boolean resetValues) {
-        setLiteral(PropertyKeys.resetValues, resetValues);
+        put(PropertyKeys.resetValues, resetValues);
     }
 
     public MethodExpression getListener() {
@@ -210,7 +220,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     }
 
     public void setListener(MethodExpression listener) {
-        setLiteral(PropertyKeys.listener, listener);
+        put(PropertyKeys.listener, listener);
     }
 
     @Override
@@ -219,7 +229,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     }
 
     public void setTimeout(int timeout) {
-        setLiteral(PropertyKeys.timeout, timeout);
+        put(PropertyKeys.timeout, timeout);
     }
 
     @Override
@@ -228,7 +238,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     }
 
     public void setPartialSubmitFilter(String partialSubmitFilter) {
-        setLiteral(PropertyKeys.partialSubmitFilter, partialSubmitFilter);
+        put(PropertyKeys.partialSubmitFilter, partialSubmitFilter);
     }
 
     @Override
@@ -237,7 +247,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     }
 
     public void setForm(String form) {
-        setLiteral(PropertyKeys.form, form);
+        put(PropertyKeys.form, form);
     }
 
     public boolean isSkipChildren() {
@@ -245,7 +255,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     }
 
     public void setSkipChildren(Boolean skipChildren) {
-        setLiteral(PropertyKeys.skipChildren, skipChildren);
+        put(PropertyKeys.skipChildren, skipChildren);
     }
 
     public boolean isImmediateSet() {
@@ -267,13 +277,13 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
         return true;
     }
 
-    
+
     @Override
     protected Enum<?>[] getAllProperties() {
         return PropertyKeys.values();
     }
 
-    
+
     public void addAjaxBehaviorListener(AjaxBehaviorListener listener) {
         addBehaviorListener(listener);
     }

@@ -2,7 +2,7 @@
  * PrimeFaces SimpleDateFormat widget, code ported from Tim Down's http://www.timdown.co.uk/code/simpledateformat.php
  */
 PrimeFaces.widget.SimpleDateFormat = Class.extend({
-    
+
     init: function(cfg) {
         this.cfg = cfg;
         this.cfg.regex = /('[^']*')|(G+|y+|M+|w+|W+|D+|d+|F+|E+|a+|H+|k+|K+|h+|m+|s+|S+|Z+)|([a-zA-Z]+)|([^a-zA-Z']+)/
@@ -32,31 +32,31 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
             S : this.cfg.NUMBER,
             Z : this.cfg.TIMEZONE
         };
-        
+
         this.cfg.ONE_DAY = 24 * 60 * 60 * 1000;
         this.cfg.ONE_WEEK = 7 * this.cfg.ONE_DAY;
         this.cfg.DEFAULT_MINIMAL_DAYS_IN_FIRST_WEEK = 1;
-        
+
         if(this.cfg.locale && PrimeFaces.locales[this.cfg.locale]) {
             this.cfg.monthNames = PrimeFaces.locales[this.cfg.locale].monthNames;
             this.cfg.dayNames = PrimeFaces.locales[this.cfg.locale].dayNames;
-        } 
+        }
         else {
             this.cfg.monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             this.cfg.dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
         }
     },
-    
+
     newDateAtMidnight: function(year, month, day) {
         var d = new Date(year, month, day, 0, 0, 0);
         d.setMilliseconds(0);
         return d;
     },
-    
+
     getDifference : function(date1, date2) {
         return date1.getTime() - date2.getTime();
     },
-    
+
     isBefore : function(date1, date2) {
         return date1.getTime() < date2.getTime();
     },
@@ -65,9 +65,9 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
         if(date != undefined){
             return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
         }
-        
+
     },
-    
+
     getTimeSince: function(date1, date2) {
         return this.getUTCTime(date1) - this.getUTCTime(date2);
     },
@@ -76,11 +76,11 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
         // Using midday avoids any possibility of DST messing things up
         var midday = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 12, 0, 0);
         var previousSunday = new Date(midday.getTime() - date.getDay() * this.cfg.ONE_DAY);
-        
+
         return this.newDateAtMidnight(previousSunday.getFullYear(), previousSunday.getMonth(), previousSunday.getDate());
     },
 
-    getWeekInYear : function(date, minimalDaysInFirstWeek) {        
+    getWeekInYear : function(date, minimalDaysInFirstWeek) {
         var previousSunday = this.getPreviousSunday(date);
         var startOfYear = this.newDateAtMidnight(date.getFullYear(), 0, 1);
         var numberOfSundays = this.isBefore(previousSunday, startOfYear) ? 0 : 1 + Math.floor(this.getTimeSince(previousSunday,startOfYear) / this.cfg.ONE_WEEK);
@@ -89,11 +89,11 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
         if (numberOfDaysInFirstWeek < minimalDaysInFirstWeek) {
             weekInYear--;
         }
-        
+
         return weekInYear;
     },
 
-   getWeekInMonth: function(date, minimalDaysInFirstWeek) {        
+   getWeekInMonth: function(date, minimalDaysInFirstWeek) {
         var previousSunday = this.getPreviousSunday(date);
         var startOfMonth = this.newDateAtMidnight(date.getFullYear(), date.getMonth(), 1);
         var numberOfSundays = this.isBefore(previousSunday,startOfMonth) ? 0 : 1 + Math.floor((this.getTimeSince(previousSunday, startOfMonth)) / this.cfg.ONE_WEEK);
@@ -102,16 +102,16 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
         if (numberOfDaysInFirstWeek >= minimalDaysInFirstWeek) {
             weekInMonth++;
         }
-        
+
         return weekInMonth;
     },
 
     getDayInYear: function(date) {
         var startOfYear = this.newDateAtMidnight(date.getFullYear(), 0, 1);
-        
+
         return 1 + Math.floor(this.getTimeSince(date, startOfYear) / this.cfg.ONE_DAY);
     },
-    
+
     getMinimalDaysInFirstWeek: function(days) {
         return this.cfg.minimalDaysInFirstWeek	? this.cfg.DEFAULT_MINIMAL_DAYS_IN_FIRST_WEEK : this.cfg.minimalDaysInFirstWeek;
     },
@@ -264,7 +264,7 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
                         break;
                 }
             }
-            
+
             searchString = searchString.substr(result.index + result[0].length);
         }
         return formattedString;
@@ -272,14 +272,14 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
 });
 
 /**
- *  PrimeFaces Clock Widget 
+ *  PrimeFaces Clock Widget
  */
 
 PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
-    
+
     init: function(cfg) {
         this._super(cfg);
-        
+
         this.cfg.pattern = this.cfg.pattern||"MM/dd/yyyy HH:mm:ss";
         this.cfg.dateFormat = new PrimeFaces.widget.SimpleDateFormat({
             pattern: this.cfg.pattern,
@@ -292,50 +292,52 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
             this.interval = setInterval(function() {
                 $this.update();
             }, 1000);
-            
+
             this.draw();
         }
         else {
             this.start();
         }
-        
+
         if(!this.isClient() && this.cfg.autoSync) {
             setInterval(function() {
                 $this.sync();
             }, this.cfg.syncInterval);
         }
     },
-        
+
+    //@override
     refresh: function(cfg) {
         clearInterval(this.interval);
-        this.init(cfg);
+        
+        this._super(cfg);
     },
-    
+
     isClient: function() {
         return this.cfg.mode === 'client';
     },
-    
+
     start: function() {
         var $this = this;
         this.interval = setInterval(function(){
             $this.updateOutput();
         }, 1000);
     },
-    
+
     stop: function() {
         clearInterval(this.interval);
     },
-     
+
     updateOutput: function() {
         this.current.setSeconds(this.current.getSeconds() + 1);
-        this.jq.text(this.cfg.dateFormat.format(this.current));   
+        this.jq.text(this.cfg.dateFormat.format(this.current));
     },
-    
+
     sync: function() {
         if(!this.isAnalogClock()) {
             this.stop();
         }
-        
+
         var $this = this,
         options = {
             source: this.id,
@@ -357,10 +359,10 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
         };
-        
-        PrimeFaces.ajax.AjaxRequest(options);
+
+        PrimeFaces.ajax.Request.handle(options);
     },
-    
+
     draw: function() {
 
         this.dimensions = this.getDimensions(this.jq.width());
@@ -368,13 +370,13 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
         this.canvas = new Raphael(this.id, this.dimensions.size,this.dimensions.size);
 
         this.clock = this.canvas.circle(this.dimensions.half,this.dimensions.half, this.dimensions.clock_width);
-        
+
         this.draw_hour_signs();
 
         this.draw_hands();
 
         this.pin = this.canvas.circle(this.dimensions.half,this.dimensions.half, this.dimensions.pin_width);
-        
+
         this.clock.attr({
             "fill": "#ffffff",
             "stroke": "#4A4A4A",
@@ -389,27 +391,27 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.hour_hand.attr({
-            "stroke": "#4A4A4A", 
+            "stroke": "#4A4A4A",
             "stroke-width": this.dimensions.hour_hand_stroke_width
         });
 
         this.minute_hand.attr({
-            "stroke": '#4A4A4A', 
+            "stroke": '#4A4A4A',
             "stroke-width": this.dimensions.minute_hand_stroke_width
         });
 
         this.second_hand.attr({
-            "stroke": "#4A4A4A", 
+            "stroke": "#4A4A4A",
             "stroke-width": this.dimensions.second_hand_stroke_width
         });
 
         this.pin.attr({
             "fill": "#F58503"
         });
-        
+
         this.update();
     },
-    
+
     draw_hour_signs: function() {
         this.hour_sign = [];
 
@@ -438,7 +440,7 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
 
         this.current.setSeconds(this.current.getSeconds() + 1);
     },
-    
+
     getDimensions: function(size) {
         return {
             'size': size,
@@ -456,7 +458,7 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
             'pin_width': Math.floor(size * 2.5 / 100)
         };
     },
-    
+
     isAnalogClock: function() {
         return this.cfg.displayMode === "analog";
     }

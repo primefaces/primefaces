@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,13 @@
 package org.primefaces.component.column;
 
 import java.util.Locale;
+
 import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
 import javax.faces.view.facelets.MetaRule;
 import javax.faces.view.facelets.MetaRuleset;
-import org.primefaces.component.api.UIColumn;
 
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.facelets.MethodRule;
 
 public class ColumnHandler extends ComponentHandler {

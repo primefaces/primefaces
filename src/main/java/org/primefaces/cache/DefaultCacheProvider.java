@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,13 +25,13 @@ import java.util.logging.Logger;
  */
 public class DefaultCacheProvider implements CacheProvider {
 
-    private final static Logger LOG = Logger.getLogger(DefaultCacheProvider.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(DefaultCacheProvider.class.getName());
 
     private ConcurrentMap<String, ConcurrentMap<String, Object>> cache;
 
     public DefaultCacheProvider() {
         cache = new ConcurrentHashMap<>();
-        LOG.warning("DefaultCacheProvider is for development purposes only, prefer another provider such as EhCache and HazelCast in production.");
+        LOGGER.warning("DefaultCacheProvider is for development purposes only, prefer another provider such as EhCache and HazelCast in production.");
     }
 
     @Override

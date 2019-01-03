@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,17 @@
  */
 package org.primefaces.model.chart;
 
+import org.primefaces.util.EscapeUtils;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import org.primefaces.util.ComponentUtils;
 
 public class ChartSeries implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private String label;
 
@@ -86,7 +89,7 @@ public class ChartSeries implements Serializable {
     public void encode(Writer writer) throws IOException {
         String renderer = this.getRenderer();
         writer.write("{");
-        writer.write("label:\"" + ComponentUtils.escapeText(label) + "\"");
+        writer.write("label:\"" + EscapeUtils.forJavaScript(label) + "\"");
 
         if (renderer != null) writer.write(",renderer: $.jqplot." + renderer);
         if (xaxis != null) writer.write(",xaxis:\"" + xaxis + "\"");

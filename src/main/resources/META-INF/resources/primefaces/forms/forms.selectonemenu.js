@@ -20,6 +20,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.effectSpeed = this.cfg.effectSpeed||'normal';
         this.cfg.autoWidth = this.cfg.autoWidth === false ? false : true;
         this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
+        this.cfg.appendTo = this.getAppendTo();
         this.isDynamicLoaded = false;
 
         if(this.cfg.dynamic) {
@@ -121,8 +122,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     refresh: function(cfg) {
         this.panelWidthAdjusted = false;
 
-        PrimeFaces.utils.removeAllDynamicOverlays(this.id + '_panel');
-
         this._super(cfg);
     },
 
@@ -185,6 +184,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         .on('blur.ui-selectonemenu', function(){
             $this.jq.removeClass('ui-state-focus');
             $this.menuIcon.removeClass('ui-state-focus');
+
+            $this.callBehavior('blur');
         });
 
         //onchange handler for editable input
@@ -232,17 +233,19 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     bindConstantEvents: function() {
         var $this = this;
 
-        PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id, $this.panel,
+        PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.panel,
             function() { return  $this.label.add($this.menuIcon); },
-            function(e) {
-                $this.hide();
-                setTimeout(function() {
-                    $this.revert();
-                    $this.changeAriaValue($this.getActiveItem());
-                }, 2);
+            function(e, eventTarget) {
+                if(!($this.panel.is(eventTarget) || $this.panel.has(eventTarget).length > 0)) {
+                    $this.hide();
+                    setTimeout(function() {
+                        $this.revert();
+                        $this.changeAriaValue($this.getActiveItem());
+                    }, 2);
+                }
             });
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.panel, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.panel, function() {
             $this.alignPanel();
         });
     },
@@ -285,15 +288,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
-    triggerItemSelect: function() {
-        if(this.cfg.behaviors) {
-            var itemSelectBehavior = this.cfg.behaviors['itemSelect'];
-            if(itemSelectBehavior) {
-                itemSelectBehavior.call(this);
-            }
-        }
-    },
-
     /**
      * Handler to process item selection with mouse
      */
@@ -327,7 +321,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         if(!silent) {
             this.focusInput.focus();
-            this.triggerItemSelect();
+            this.callBehavior('itemSelect');
         }
 
         if(this.panel.is(':visible')) {
@@ -369,7 +363,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 break;
 
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                     $this.handleEnterKey(e);
                 break;
 
@@ -396,7 +389,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 case keyCode.DOWN:
                 case keyCode.RIGHT:
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                 case keyCode.TAB:
                 case keyCode.ESCAPE:
                 case keyCode.SPACE:
@@ -493,7 +485,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 case keyCode.DOWN:
                 case keyCode.RIGHT:
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                 case keyCode.TAB:
                 case keyCode.ESCAPE:
                 case keyCode.SPACE:
@@ -538,7 +529,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 break;
 
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                     $this.handleEnterKey(e);
                     e.stopPropagation();
                 break;
@@ -664,9 +654,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
     _show: function() {
         var $this = this;
+
+        this.panel.css({'display':'block', 'opacity':0});
+
         this.alignPanel();
 
-        this.panel.css('z-index', ++PrimeFaces.zindex);
+        this.panel.css({'display':'none', 'opacity':'', 'z-index': ++PrimeFaces.zindex});
 
         if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
             this.panel.parent().css('z-index', PrimeFaces.zindex - 1);
@@ -722,6 +715,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
     blur: function() {
         this.focusInput.blur();
+
+        this.callBehavior('blur');
     },
 
     disable: function() {
@@ -760,7 +755,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             });
         }
         else {
-            this.panel.css({left:'', top:''}).position({
+            this.panel.css({left:0, top:0}).position({
                 my: 'left top'
                 ,at: 'left bottom'
                 ,of: this.jq
@@ -785,6 +780,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             if (value === '&nbsp;') {
+                this.label.addClass('ui-selectonemenu-label-placeholder');
                 if (labelText != '&nbsp;') {
                    this.label.text(labelText);
                 } else {
@@ -792,10 +788,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
             else {
+                this.label.removeClass('ui-selectonemenu-label-placeholder');
                 this.label.removeClass('ui-state-disabled');
-                
+
                 var option = null;
-                if(this.items) { 
+                if(this.items) {
                     var selectedItem = this.items.filter('[data-label="' + $.escapeSelector(value) + '"]');
                     option = this.options.eq(this.resolveItemIndex(selectedItem));
                 }
@@ -918,7 +915,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.labelTemplate && value !== '&nbsp;') {
             return this.cfg.labelTemplate.replace('{0}', value);
         }
-        return value;
+        return String(value);
     },
 
     changeAriaValue: function (item) {
@@ -982,6 +979,22 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         else {
             handleMethod.call(this, event);
         }
+    },
+
+    getAppendTo: function() {
+        var dialog = this.jq.closest('.ui-dialog');
+
+        if(dialog.length == 1) {
+            //set position as fixed to scroll with dialog
+            this.panel.css('position', 'fixed');
+
+            //append to body if not already appended by user choice
+            if(!this.panel.parent().is(document.body)) {
+                return "@(body)";
+            }
+        }
+
+        return this.cfg.appendTo;
     }
 
 });

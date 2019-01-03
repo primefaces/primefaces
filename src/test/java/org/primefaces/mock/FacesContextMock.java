@@ -179,7 +179,7 @@ public class FacesContextMock extends FacesContext {
     public boolean isReleased() {
         return false;
     }
-    
+
     @Override
     public boolean isPostback() {
         return false;

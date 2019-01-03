@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,38 +21,44 @@ import java.util.List;
 
 public class DefaultSubMenu implements Submenu, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private String id;
     private String style;
     private String styleClass;
     private String icon;
     private String label;
+    private boolean disabled;
     private List<MenuElement> elements;
     private boolean rendered = true;
     private boolean expanded = false;
 
     public DefaultSubMenu() {
-        elements = new ArrayList<MenuElement>();
+        elements = new ArrayList<>();
     }
 
     public DefaultSubMenu(String label) {
         this.label = label;
-        elements = new ArrayList<MenuElement>();
+        elements = new ArrayList<>();
     }
 
     public DefaultSubMenu(String label, String icon) {
         this.label = label;
         this.icon = icon;
-        elements = new ArrayList<MenuElement>();
+        elements = new ArrayList<>();
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
     }
 
+    @Override
     public String getStyle() {
         return style;
     }
@@ -61,6 +67,7 @@ public class DefaultSubMenu implements Submenu, Serializable {
         this.style = style;
     }
 
+    @Override
     public String getStyleClass() {
         return styleClass;
     }
@@ -69,6 +76,7 @@ public class DefaultSubMenu implements Submenu, Serializable {
         this.styleClass = styleClass;
     }
 
+    @Override
     public String getIcon() {
         return icon;
     }
@@ -77,6 +85,7 @@ public class DefaultSubMenu implements Submenu, Serializable {
         this.icon = icon;
     }
 
+    @Override
     public String getLabel() {
         return label;
     }
@@ -85,6 +94,16 @@ public class DefaultSubMenu implements Submenu, Serializable {
         this.label = label;
     }
 
+    @Override
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    @Override
     public List<MenuElement> getElements() {
         return elements;
     }
@@ -93,10 +112,12 @@ public class DefaultSubMenu implements Submenu, Serializable {
         this.elements = elements;
     }
 
+    @Override
     public int getElementsCount() {
         return (elements == null) ? 0 : elements.size();
     }
 
+    @Override
     public boolean isRendered() {
         return rendered;
     }
@@ -105,6 +126,7 @@ public class DefaultSubMenu implements Submenu, Serializable {
         this.rendered = rendered;
     }
 
+    @Override
     public boolean isExpanded() {
         return expanded;
     }
@@ -113,6 +135,7 @@ public class DefaultSubMenu implements Submenu, Serializable {
         this.expanded = expanded;
     }
 
+    @Override
     public Object getParent() {
         return null;
     }
@@ -121,6 +144,7 @@ public class DefaultSubMenu implements Submenu, Serializable {
         elements.add(element);
     }
 
+    @Override
     public String getClientId() {
         return this.id;
     }

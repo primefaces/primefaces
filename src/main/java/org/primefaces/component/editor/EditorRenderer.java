@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,26 +18,33 @@ package org.primefaces.component.editor;
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
-import javax.faces.application.Resource;
 
+import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
-import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.AgentUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
-public class EditorRenderer extends CoreRenderer {
+public class EditorRenderer extends InputRenderer {
 
-    private final static Logger logger = Logger.getLogger(EditorRenderer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(EditorRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Editor editor = (Editor) component;
+
+        if (!shouldDecode(editor)) {
+            return;
+        }
+
+        decodeBehaviors(context, editor);
+
         String inputParam = editor.getClientId(context) + "_input";
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String value = params.get(inputParam);
@@ -104,7 +111,7 @@ public class EditorRenderer extends CoreRenderer {
         }
 
         if (editor.getMaxlength() != Integer.MAX_VALUE) {
-            logger.info("Maxlength option is deprecated and will be removed in a future version.");
+            LOGGER.info("Maxlength option is deprecated and will be removed in a future version.");
         }
 
         wb.finish();

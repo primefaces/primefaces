@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,20 +23,20 @@ public interface InputHolder {
     /**
      * @return Client id of the input element
      */
-    public String getInputClientId();
+    String getInputClientId();
 
     /**
      * @return Client id of the validatable input element
      */
-    public String getValidatableInputClientId();
+    String getValidatableInputClientId();
 
     /**
      * @return Client id of the label for aria
      */
-    public String getLabelledBy();
+    String getLabelledBy();
 
     /**
      * @return Sets the id of the label for aria
      */
-    public void setLabelledBy(String id);
+    void setLabelledBy(String id);
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ public class NumberConverter extends javax.faces.convert.NumberConverter impleme
 
     private Map<String, Object> metadata;
 
+    @Override
     public Map<String, Object> getMetadata() {
         if (metadata == null) {
             String type = this.getType();
@@ -30,7 +31,7 @@ public class NumberConverter extends javax.faces.convert.NumberConverter impleme
             int minFractionDigits = this.getMinFractionDigits();
             boolean integerOnly = this.isIntegerOnly();
 
-            metadata = new HashMap<String, Object>();
+            metadata = new HashMap<>();
 
             metadata.put(HTML.VALIDATION_METADATA.NUMBER_TYPE, type);
 
@@ -50,6 +51,7 @@ public class NumberConverter extends javax.faces.convert.NumberConverter impleme
         return metadata;
     }
 
+    @Override
     public String getConverterId() {
         return NumberConverter.CONVERTER_ID;
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,9 @@ import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
-
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.WidgetBuilder;

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,13 +29,15 @@ import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.TagAttribute;
 import javax.faces.view.facelets.TagConfig;
 import javax.faces.view.facelets.TagHandler;
+
 import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.util.LangUtils;
 
 /**
  * {@link TagHandler} for the <code>ImportConstants</code> component.
  */
 public class ImportConstantsTagHandler extends TagHandler {
-    
+
     private final TagAttribute typeTagAttribute;
     private final TagAttribute varTagAttribute;
 
@@ -70,14 +72,14 @@ public class ImportConstantsTagHandler extends TagHandler {
      * Gets the {@link Class} from the {@link TagAttribute}.
      *
      * @param attribute The {@link TagAttribute}.
-     * @param ctx The {@link FaceletContext}.
+     * @param ctx       The {@link FaceletContext}.
      * @return The {@link Class}.
      */
     protected Class<?> getClassFromAttribute(TagAttribute attribute, FaceletContext ctx) {
         String type = attribute.getValue(ctx);
 
         try {
-            return Class.forName(type, true, Thread.currentThread().getContextClassLoader());
+            return Class.forName(type, true, LangUtils.getContextClassLoader());
         }
         catch (ClassNotFoundException e) {
             throw new FacesException("Class " + type + " not found.", e);
@@ -88,7 +90,7 @@ public class ImportConstantsTagHandler extends TagHandler {
      * Get all constants of the given {@link Class}.
      *
      * @param facesContext The {@link FacesContext}.
-     * @param type The class which includes the constants.
+     * @param type         The class which includes the constants.
      * @return A {@link Map} with the constants.
      */
     protected Map<String, Object> getConstants(FacesContext facesContext, Class<?> type) {

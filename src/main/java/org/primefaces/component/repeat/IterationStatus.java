@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,15 +39,16 @@ public class IterationStatus implements Serializable {
     private final int iterationCount;
 
     // ------------------------------------------------------------ Constructors
+
     /**
      * Constructor used for ui:repeat.
      */
     public IterationStatus(boolean first,
-            boolean last,
-            int index,
-            Integer begin,
-            Integer end,
-            Integer step) {
+                           boolean last,
+                           int index,
+                           Integer begin,
+                           Integer end,
+                           Integer step) {
         this(first, last, index, begin, end, step, null, 0);
     }
 
@@ -55,13 +56,13 @@ public class IterationStatus implements Serializable {
      * Constructor used for c:forEach varStatus
      */
     public IterationStatus(boolean first,
-            boolean last,
-            int index,
-            Integer begin,
-            Integer end,
-            Integer step,
-            Object current,
-            int iterationCount) {
+                           boolean last,
+                           int index,
+                           Integer begin,
+                           Integer end,
+                           Integer step,
+                           Object current,
+                           int iterationCount) {
         this.index = index;
         this.begin = begin;
         this.end = end;
@@ -71,17 +72,17 @@ public class IterationStatus implements Serializable {
         this.current = current;
         int iBegin = ((begin != null) ? begin : 0);
         int iStep = ((step != null) ? step : 1);
-        this.even = ((index - iBegin) / iStep) % 2 == 0;
+        even = ((index - iBegin) / iStep) % 2 == 0;
         this.iterationCount = iterationCount;
     }
 
     // ---------------------------------------------- Methods from LoopTagStatus
     public boolean isFirst() {
-        return this.first;
+        return first;
     }
 
     public boolean isLast() {
-        return this.last;
+        return last;
     }
 
     public Integer getBegin() {

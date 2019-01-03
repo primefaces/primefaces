@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,12 +28,13 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.TableState;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
 
 public class SelectionFeature implements DataTableFeature {
 
-    private final static String ALL_SELECTOR = "@all";
+    private static final String ALL_SELECTOR = "@all";
 
+    @Override
     public void decode(FacesContext context, DataTable table) {
         String clientId = table.getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -65,7 +66,7 @@ public class SelectionFeature implements DataTableFeature {
     }
 
     void decodeSingleSelection(DataTable table, String selection) {
-        if (ComponentUtils.isValueBlank(selection)) {
+        if (LangUtils.isValueBlank(selection)) {
             table.setSelection(null);
         }
         else {
@@ -82,12 +83,12 @@ public class SelectionFeature implements DataTableFeature {
             throw new FacesException("Multiple selection reference must be an Array or a List for datatable " + table.getClientId());
         }
 
-        if (ComponentUtils.isValueBlank(selection)) {
+        if (LangUtils.isValueBlank(selection)) {
             if (isArray) {
                 table.setSelection(Array.newInstance(clazz.getComponentType(), 0));
             }
             else {
-                table.setSelection(new ArrayList<Object>());
+                table.setSelection(new ArrayList<>());
             }
         }
         else {
@@ -120,14 +121,17 @@ public class SelectionFeature implements DataTableFeature {
         }
     }
 
+    @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         throw new RuntimeException("SelectFeature should not encode.");
     }
 
+    @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
         return table.isSelectionEnabled();
     }
 
+    @Override
     public boolean shouldEncode(FacesContext context, DataTable table) {
         return false;
     }

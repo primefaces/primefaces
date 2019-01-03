@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,8 @@ import org.primefaces.component.tabview.Tab;
 
 public class TabChangeEvent extends AbstractAjaxBehaviorEvent implements TabEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private Tab tab;
     private Object data;
 
@@ -29,6 +31,7 @@ public class TabChangeEvent extends AbstractAjaxBehaviorEvent implements TabEven
         this.tab = tab;
     }
 
+    @Override
     public Tab getTab() {
         return tab;
     }
@@ -37,6 +40,7 @@ public class TabChangeEvent extends AbstractAjaxBehaviorEvent implements TabEven
         this.tab = tab;
     }
 
+    @Override
     public Object getData() {
         return data;
     }

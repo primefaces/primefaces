@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,10 +17,11 @@ package org.primefaces.component.tieredmenu;
 
 import java.io.IOException;
 import java.util.List;
-import javax.faces.component.UIComponent;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
@@ -28,10 +29,12 @@ import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.Separator;
 import org.primefaces.model.menu.Submenu;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class TieredMenuRenderer extends BaseMenuRenderer {
 
+    @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         TieredMenu menu = (TieredMenu) abstractMenu;
         String clientId = menu.getClientId(context);
@@ -48,6 +51,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         wb.finish();
     }
 
+    @Override
     protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         TieredMenu menu = (TieredMenu) abstractMenu;
         String style = menu.getStyle();
@@ -109,7 +113,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
                     if (containerStyle != null) {
                         writer.writeAttribute("style", containerStyle, null);
                     }
-                    encodeMenuItem(context, menu, menuItem);
+                    encodeMenuItem(context, menu, menuItem, "-1");
                     writer.endElement("li");
                 }
                 else if (element instanceof Submenu) {
@@ -127,7 +131,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
                         writer.writeAttribute("style", style, null);
                     }
                     writer.writeAttribute("role", "menuitem", null);
-                    writer.writeAttribute("aria-haspopup", "true", null);
+                    writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
                     encodeSubmenu(context, menu, submenu);
                     writer.endElement("li");
                 }
@@ -142,12 +146,22 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String icon = submenu.getIcon();
         String label = submenu.getLabel();
+        boolean disabled = submenu.isDisabled();
 
         //title
         writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
-        writer.writeAttribute("class", Menu.SUBMENU_LINK_CLASS, null);
         writer.writeAttribute("tabindex", "-1", null);
+
+        String styleClass = Menu.SUBMENU_LINK_CLASS;
+        if (disabled) {
+            styleClass = styleClass + " ui-state-disabled";
+        }
+        writer.writeAttribute("class", styleClass, null);
+
+        if (disabled) {
+            writer.writeAttribute("onclick", "return false;", null);
+        }
 
         if (icon != null) {
             writer.startElement("span", null);
@@ -166,13 +180,15 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
 
         writer.endElement("a");
 
-        //submenus and menuitems
-        if (submenu.getElementsCount() > 0) {
-            writer.startElement("ul", null);
-            writer.writeAttribute("class", Menu.TIERED_CHILD_SUBMENU_CLASS, null);
-            writer.writeAttribute("role", "menu", null);
-            encodeElements(context, menu, submenu.getElements());
-            writer.endElement("ul");
+        if (!disabled) {
+            //submenus and menuitems
+            if (submenu.getElementsCount() > 0) {
+                writer.startElement("ul", null);
+                writer.writeAttribute("class", Menu.TIERED_CHILD_SUBMENU_CLASS, null);
+                writer.writeAttribute("role", "menu", null);
+                encodeElements(context, menu, submenu.getElements());
+                writer.endElement("ul");
+            }
         }
     }
 

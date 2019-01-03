@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,27 +15,30 @@
  */
 package org.primefaces.util;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import org.primefaces.component.api.ClientBehaviorRenderingMode;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionHint;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.view.facelets.FaceletException;
-
-import org.primefaces.component.api.ClientBehaviorRenderingMode;
-
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.expression.SearchExpressionHint;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.faces.component.UIForm;
+import org.primefaces.component.api.AjaxSource;
 
 /**
  * Helper to generate javascript code of an ajax call
  */
 public class AjaxRequestBuilder {
+
+    private static final Logger LOG = Logger.getLogger(AjaxRequestBuilder.class.getName());
 
     protected StringBuilder buffer;
     protected FacesContext context;
@@ -63,6 +66,43 @@ public class AjaxRequestBuilder {
         return this;
     }
 
+    public AjaxRequestBuilder form(AjaxSource source, UIComponent component, UIForm formComponent) {
+        String result = null;
+
+        String form = source.getForm();
+        if (LangUtils.isValueBlank(form)) {
+            if (formComponent == null) {
+                formComponent = ComponentTraversalUtils.closestForm(context, component);
+            }
+
+            if (formComponent == null) {
+                if (context.isProjectStage(ProjectStage.Development)) {
+                    String message = "Component '" + component.getClientId(context)
+                            + "' should be inside a form or should reference a form via its form attribute. "
+                            + " We will try to find a fallback form on the client side.";
+                    LOG.info(message);
+                }
+            }
+            else {
+                result = formComponent.getClientId(context);
+            }
+        }
+        else {
+            result = SearchExpressionFacade.resolveClientId(context, component, source.getForm());
+        }
+
+        if (result != null) {
+            buffer.append(",f:\"").append(result).append("\"");
+        }
+
+        return this;
+    }
+
+    public AjaxRequestBuilder form(AjaxSource source, UIComponent component) {
+        return form(source, component, null);
+    }
+
+    @Deprecated
     public AjaxRequestBuilder form(String form) {
         if (form != null) {
             buffer.append(",f:\"").append(form).append("\"");
@@ -84,7 +124,7 @@ public class AjaxRequestBuilder {
     }
 
     private AjaxRequestBuilder addExpressions(UIComponent component, String expressions, String key, int options) {
-        if (!ComponentUtils.isValueBlank(expressions)) {
+        if (!LangUtils.isValueBlank(expressions)) {
             String resolvedExpressions = SearchExpressionFacade.resolveClientIds(context, component, expressions, options);
             buffer.append(",").append(key).append(":\"").append(resolvedExpressions).append("\"");
         }
@@ -123,7 +163,7 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder delay(String delay) {
-        if (!ComponentUtils.isValueBlank(delay) && !delay.equals("none")) {
+        if (!LangUtils.isValueBlank(delay) && !delay.equals("none")) {
             buffer.append(",d:").append(delay);
 
             if (context.isProjectStage(ProjectStage.Development)) {
@@ -238,8 +278,8 @@ public class AjaxRequestBuilder {
                     buffer.append(",");
                 }
 
-                buffer.append("{name:").append("\"").append(ComponentUtils.escapeText(parameter.getName())).append("\",value:\"")
-                    .append(ComponentUtils.escapeText(paramValue.toString())).append("\"}");
+                buffer.append("{name:").append("\"").append(EscapeUtils.forJavaScript(parameter.getName())).append("\",value:\"")
+                    .append(EscapeUtils.forJavaScript(paramValue.toString())).append("\"}");
             }
         }
 
@@ -263,8 +303,8 @@ public class AjaxRequestBuilder {
                     if (paramValue == null) {
                         paramValue = "";
                     }
-                    buffer.append("{name:").append("\"").append(ComponentUtils.escapeText(name)).append("\",value:\"")
-                        .append(ComponentUtils.escapeText(paramValue)).append("\"}");
+                    buffer.append("{name:").append("\"").append(EscapeUtils.forJavaScript(name)).append("\",value:\"")
+                        .append(EscapeUtils.forJavaScript(paramValue)).append("\"}");
 
                     if (i < (size - 1)) {
                         buffer.append(",");

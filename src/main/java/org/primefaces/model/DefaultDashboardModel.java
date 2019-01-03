@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,28 +21,35 @@ import java.util.List;
 
 public class DefaultDashboardModel implements DashboardModel, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private List<DashboardColumn> columns;
 
     public DefaultDashboardModel() {
-        columns = new ArrayList<DashboardColumn>();
+        columns = new ArrayList<>();
     }
 
+    @Override
     public List<DashboardColumn> getColumns() {
         return columns;
     }
 
+    @Override
     public void addColumn(DashboardColumn column) {
         columns.add(column);
     }
 
+    @Override
     public int getColumnCount() {
         return columns.size();
     }
 
+    @Override
     public DashboardColumn getColumn(int index) {
         return columns.get(index);
     }
 
+    @Override
     public void transferWidget(DashboardColumn fromColumn, DashboardColumn toColumn, String widgetId, int index) {
         fromColumn.removeWidget(widgetId);
         toColumn.addWidget(index, widgetId);

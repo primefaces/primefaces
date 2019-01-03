@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,36 @@
 package org.primefaces.behavior.validate;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.ClientBehaviorBase;
 import javax.faces.component.behavior.ClientBehaviorContext;
+import org.primefaces.behavior.base.AbstractBehavior;
 import org.primefaces.component.api.InputHolder;
 
-public class ClientValidator extends ClientBehaviorBase {
+public class ClientValidator extends AbstractBehavior {
 
-    private String event;
-    private boolean disabled;
+    public enum PropertyKeys {
+        event(String.class),
+        disabled(Boolean.class);
+
+        private final Class<?> expectedType;
+
+        PropertyKeys(Class<?> expectedType) {
+            this.expectedType = expectedType;
+        }
+
+        /**
+         * Holds the type which ought to be passed to
+         * {@link javax.faces.view.facelets.TagAttribute#getObject(javax.faces.view.facelets.FaceletContext, java.lang.Class) }
+         * when creating the behavior.
+         * @return the expectedType the expected object type
+         */
+        public Class<?> getExpectedType() {
+            return expectedType;
+        }
+    }
 
     @Override
     public String getScript(ClientBehaviorContext behaviorContext) {
-        if (disabled) {
+        if (isDisabled()) {
             return null;
         }
 
@@ -37,19 +55,24 @@ public class ClientValidator extends ClientBehaviorBase {
         return "return PrimeFaces.vi(" + target + ")";
     }
 
+    @Override
+    protected Enum<?>[] getAllProperties() {
+        return PropertyKeys.values();
+    }
+
     public String getEvent() {
-        return event;
+        return eval(PropertyKeys.event, null);
     }
 
     public void setEvent(String event) {
-        this.event = event;
+        put(PropertyKeys.event, event);
     }
 
     public boolean isDisabled() {
-        return disabled;
+        return eval(PropertyKeys.disabled, false);
     }
 
     public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
+        put(PropertyKeys.disabled, disabled);
     }
 }

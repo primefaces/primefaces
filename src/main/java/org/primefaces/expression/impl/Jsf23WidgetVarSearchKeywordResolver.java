@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,12 +28,12 @@ import org.primefaces.expression.SearchExpressionUtils;
 public class Jsf23WidgetVarSearchKeywordResolver extends SearchKeywordResolver {
 
     private static final Pattern PATTERN = Pattern.compile("widgetVar\\((\\w+)\\)");
-    
+
     @Override
     public boolean isResolverForKeyword(SearchExpressionContext searchExpressionContext, String keyword) {
         return keyword != null && keyword.startsWith("widgetVar(");
     }
- 
+
     @Override
     public void resolve(SearchKeywordContext context, UIComponent current, String keyword) {
         try {

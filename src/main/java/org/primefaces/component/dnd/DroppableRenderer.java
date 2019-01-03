@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,11 +35,13 @@ public class DroppableRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Droppable droppable = (Droppable) component;
+        String clientId = droppable.getClientId(context);
+
+        renderDummyMarkup(context, component, clientId);
 
         UIComponent target = SearchExpressionFacade.resolveComponent(
                 context, droppable, droppable.getFor(), SearchExpressionHint.PARENT_FALLBACK);
 
-        String clientId = droppable.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Droppable", droppable.resolveWidgetVar(), clientId)
                 .attr("target", target.getClientId(context))

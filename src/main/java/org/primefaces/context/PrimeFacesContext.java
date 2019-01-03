@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ public class PrimeFacesContext extends FacesContextWrapper {
 
         PrimeRequestContext requestContext = new PrimeRequestContext(wrapped);
         PrimeRequestContext.setCurrentInstance(requestContext, wrapped);
-        
+
         moveScriptsToBottom = requestContext.getApplicationContext().getConfig().isMoveScriptsToBottom();
         if (moveScriptsToBottom) {
             moveScriptsToBottomState = new MoveScriptsToBottomState();
@@ -63,7 +63,7 @@ public class PrimeFacesContext extends FacesContextWrapper {
             getWrapped().setResponseWriter(writer);
         }
     }
-    
+
     @Override
     public FacesContext getWrapped() {
         return wrapped;

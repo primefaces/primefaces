@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,11 @@ package org.primefaces.component.fieldset;
 
 import java.io.IOException;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
@@ -34,7 +36,7 @@ public class FieldsetRenderer extends CoreRenderer {
         String toggleStateParam = clientId + "_collapsed";
 
         if (params.containsKey(toggleStateParam)) {
-            fieldset.setCollapsed(Boolean.valueOf(params.get(toggleStateParam)));
+            fieldset.setCollapsed(Boolean.parseBoolean(params.get(toggleStateParam)));
         }
 
         decodeBehaviors(context, component);
@@ -76,7 +78,7 @@ public class FieldsetRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
 
         renderDynamicPassThruAttributes(context, fieldset);
-        
+
         encodeLegend(context, fieldset);
 
         encodeContent(context, fieldset);

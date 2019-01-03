@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -39,7 +39,10 @@ import org.xml.sax.InputSource;
 
 public class WebXmlParser {
 
-    private static final Logger LOG = Logger.getLogger(WebXmlParser.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(WebXmlParser.class.getName());
+
+    private WebXmlParser() {
+    }
 
     public static Map<String, String> getErrorPages(FacesContext context) {
 
@@ -68,7 +71,7 @@ public class WebXmlParser {
             }
         }
         catch (Throwable e) {
-            LOG.log(Level.SEVERE, "Could not load or parse web.xml", e);
+            LOGGER.log(Level.SEVERE, "Could not load or parse web.xml", e);
         }
 
         return null;
@@ -78,7 +81,7 @@ public class WebXmlParser {
         Map<String, String> webFragmentXmlsErrorPages = null;
 
         try {
-            Enumeration<URL> webFragments = Thread.currentThread().getContextClassLoader().getResources("META-INF/web-fragment.xml");
+            Enumeration<URL> webFragments = LangUtils.getContextClassLoader().getResources("META-INF/web-fragment.xml");
 
             while (webFragments.hasMoreElements()) {
                 try {
@@ -99,12 +102,12 @@ public class WebXmlParser {
                     }
                 }
                 catch (Throwable e) {
-                    LOG.log(Level.SEVERE, "Could not load or parse web-fragment.xml", e);
+                    LOGGER.log(Level.SEVERE, "Could not load or parse web-fragment.xml", e);
                 }
             }
         }
         catch (IOException e) {
-            LOG.log(Level.SEVERE, "Could not get web-fragment.xml's from ClassLoader", e);
+            LOGGER.log(Level.SEVERE, "Could not get web-fragment.xml's from ClassLoader", e);
         }
 
         return webFragmentXmlsErrorPages;
@@ -138,7 +141,7 @@ public class WebXmlParser {
                 factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
             }
             catch (Throwable e) {
-                LOG.warning("DocumentBuilderFactory#setFeature not implemented. Skipping...");
+                LOGGER.warning("DocumentBuilderFactory#setFeature not implemented. Skipping...");
             }
 
             boolean absolute = false;
@@ -199,11 +202,11 @@ public class WebXmlParser {
         if (!errorPages.containsKey(null)) {
             String defaultLocation = xpath.compile("error-page[error-code=500]/location").evaluate(webXml).trim();
 
-            if (ComponentUtils.isValueBlank(defaultLocation)) {
+            if (LangUtils.isValueBlank(defaultLocation)) {
                 defaultLocation = xpath.compile("error-page[not(error-code) and not(exception-type)]/location").evaluate(webXml).trim();
             }
 
-            if (!ComponentUtils.isValueBlank(defaultLocation)) {
+            if (!LangUtils.isValueBlank(defaultLocation)) {
                 errorPages.put(null, defaultLocation);
             }
         }

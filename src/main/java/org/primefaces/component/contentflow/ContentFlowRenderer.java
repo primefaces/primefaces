@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,11 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -88,7 +90,7 @@ public class ContentFlowRenderer extends CoreRenderer {
             Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
             Collection<?> value = (Collection<?>) cf.getValue();
             if (value != null) {
-                for (Iterator<?> it = value.iterator(); it.hasNext();) {
+                for (Iterator<?> it = value.iterator(); it.hasNext(); ) {
                     requestMap.put(var, it.next());
 
                     writer.startElement("div", null);

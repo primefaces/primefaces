@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,10 @@ package org.primefaces.component.feedreader;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.renderkit.CoreRenderer;
 
 public class FeedReaderRenderer extends CoreRenderer {

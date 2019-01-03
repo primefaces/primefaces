@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.logging.Logger;
@@ -28,6 +27,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import org.primefaces.json.JSONArray;
+import org.primefaces.json.JSONObject;
 import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
@@ -36,7 +37,7 @@ import org.primefaces.util.WidgetBuilder;
 
 public class ScheduleRenderer extends CoreRenderer {
 
-    private final static Logger LOG = Logger.getLogger(ScheduleRenderer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ScheduleRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -67,15 +68,19 @@ public class ScheduleRenderer extends CoreRenderer {
 
     protected void encodeEvents(FacesContext context, Schedule schedule) throws IOException {
         String clientId = schedule.getClientId(context);
-        ScheduleModel model = (ScheduleModel) schedule.getValue();
+        ScheduleModel model = schedule.getValue();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         if (model instanceof LazyScheduleModel) {
             String startDateParam = params.get(clientId + "_start");
             String endDateParam = params.get(clientId + "_end");
 
-            Date startDate = new Date(Long.valueOf(startDateParam));
-            Date endDate = new Date(Long.valueOf(endDateParam));
+            Long startMillis = Long.valueOf(startDateParam);
+            Long endMillis = Long.valueOf(endDateParam);
+
+            TimeZone tz = schedule.calculateTimeZone();
+            Date startDate = new Date(startMillis - tz.getOffset(startMillis));
+            Date endDate = new Date(endMillis - tz.getOffset(endMillis));
 
             LazyScheduleModel lazyModel = ((LazyScheduleModel) model);
             lazyModel.clear(); //Clear old events
@@ -86,47 +91,48 @@ public class ScheduleRenderer extends CoreRenderer {
     }
 
     protected void encodeEventsAsJSON(FacesContext context, Schedule schedule, ScheduleModel model) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         TimeZone timeZone = schedule.calculateTimeZone();
 
         SimpleDateFormat iso = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
         iso.setTimeZone(timeZone);
-        writer.write("{");
-        writer.write("\"events\" : [");
+
+        JSONArray jsonEvents = new JSONArray();
 
         if (model != null) {
-            for (Iterator<ScheduleEvent> iterator = model.getEvents().iterator(); iterator.hasNext();) {
-                ScheduleEvent event = iterator.next();
-                String className = event.getStyleClass();
-                String description = event.getDescription();
-                String url = event.getUrl();
+            for (ScheduleEvent event : model.getEvents()) {
+                JSONObject jsonObject = new JSONObject();
 
-                writer.write("{");
-                writer.write("\"id\": \"" + event.getId() + "\"");
-                writer.write(",\"title\": \"" + escapeText(event.getTitle()) + "\"");
-                writer.write(",\"start\": \"" + iso.format(event.getStartDate()) + "\"");
-                writer.write(",\"end\": \"" + iso.format(event.getEndDate()) + "\"");
-                writer.write(",\"allDay\":" + event.isAllDay());
-                writer.write(",\"editable\":" + event.isEditable());
-                if (className != null) {
-                    writer.write(",\"className\":\"" + className + "\"");
-                }
-                if (description != null) {
-                    writer.write(",\"description\":\"" + escapeText(description) + "\"");
-                }
-                if (url != null) {
-                    writer.write(",\"url\":\"" + escapeText(url) + "\"");
+                jsonObject.put("id", event.getId());
+                jsonObject.put("title", event.getTitle());
+                jsonObject.put("start", iso.format(event.getStartDate()));
+                jsonObject.put("end", iso.format(event.getEndDate()));
+                jsonObject.put("allDay", event.isAllDay());
+                jsonObject.put("editable", event.isEditable());
+                jsonObject.put("className", event.getStyleClass());
+                jsonObject.put("description", event.getDescription());
+                jsonObject.put("url", event.getUrl());
+                jsonObject.put("rendering", event.getRenderingMode());
+
+                if (event.getDynamicProperties() != null) {
+                    for (Map.Entry<String, Object> dynaProperty : event.getDynamicProperties().entrySet()) {
+                        String key = dynaProperty.getKey();
+                        Object value = dynaProperty.getValue();
+                        if (value instanceof Date) {
+                            value = iso.format((Date) value);
+                        }
+                        jsonObject.put(key, value);
+                    }
                 }
 
-                writer.write("}");
-
-                if (iterator.hasNext()) {
-                    writer.write(",");
-                }
+                jsonEvents.put(jsonObject);
             }
         }
 
-        writer.write("]}");
+        JSONObject jsonResponse = new JSONObject();
+        jsonResponse.put("events", jsonEvents);
+
+        ResponseWriter writer = context.getResponseWriter();
+        writer.write(jsonResponse.toString());
     }
 
     protected void encodeScript(FacesContext context, Schedule schedule) throws IOException {
@@ -136,7 +142,7 @@ public class ScheduleRenderer extends CoreRenderer {
                 .attr("defaultView", schedule.getView())
                 .attr("locale", schedule.calculateLocale(context).toString())
                 .attr("tooltip", schedule.isTooltip(), false)
-                .attr("eventLimit", ((ScheduleModel) schedule.getValue()).isEventLimit(), false)
+                .attr("eventLimit", schedule.getValue().isEventLimit(), false)
                 .attr("lazyFetching", false);
 
         Object initialDate = schedule.getInitialDate();
@@ -161,22 +167,29 @@ public class ScheduleRenderer extends CoreRenderer {
         String slotDuration = schedule.getSlotDuration();
         int slotMinutes = schedule.getSlotMinutes();
         if (slotMinutes != 30) {
-            LOG.warning("slotMinutes is deprecated, use slotDuration instead.");
+            LOGGER.warning("slotMinutes is deprecated, use slotDuration instead.");
             slotDuration = "00:" + slotMinutes + ":00";
         }
 
         String scrollTime = schedule.getScrollTime();
         int firstHour = schedule.getFirstHour();
         if (firstHour != 6) {
-            LOG.warning("firstHour is deprecated, use scrollTime instead.");
+            LOGGER.warning("firstHour is deprecated, use scrollTime instead.");
             scrollTime = firstHour + ":00:00";
         }
 
         String clientTimezone = schedule.getClientTimeZone();
         boolean ignoreTimezone = schedule.isIgnoreTimezone();
         if (!ignoreTimezone) {
-            LOG.warning("ignoreTimezone is deprecated, use clientTimezone instead with 'local' setting.");
+            LOGGER.warning("ignoreTimezone is deprecated, use clientTimezone instead with 'local' setting.");
             clientTimezone = "local";
+        }
+
+        String slotLabelFormat = schedule.getSlotLabelFormat();
+        String axisFormat = schedule.getAxisFormat();
+        if (axisFormat != null) {
+            LOGGER.warning("axisFormat is deprecated, use slotLabelFormat instead.");
+            slotLabelFormat = axisFormat;
         }
 
         boolean isShowWeekNumbers = schedule.isShowWeekNumbers();
@@ -191,12 +204,13 @@ public class ScheduleRenderer extends CoreRenderer {
                 .attr("weekends", schedule.isShowWeekends(), true)
                 .attr("eventStartEditable", schedule.isDraggable(), true)
                 .attr("eventDurationEditable", schedule.isResizable(), true)
-                .attr("axisFormat", schedule.getAxisFormat(), null)
+                .attr("slotLabelFormat", slotLabelFormat, null)
                 .attr("timeFormat", schedule.getTimeFormat(), null)
                 .attr("weekNumbers", isShowWeekNumbers, false)
                 .attr("nextDayThreshold", schedule.getNextDayThreshold(), "09:00:00")
                 .attr("slotEventOverlap", schedule.isSlotEventOverlap(), true)
-                .attr("urlTarget", schedule.getUrlTarget(), "_blank");
+                .attr("urlTarget", schedule.getUrlTarget(), "_blank")
+                .attr("noOpener", schedule.isNoOpener(), true);
 
         String columnFormat = schedule.getColumnFormat();
         if (columnFormat != null) {
@@ -245,8 +259,12 @@ public class ScheduleRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
-        if (schedule.getStyle() != null) writer.writeAttribute("style", schedule.getStyle(), "style");
-        if (schedule.getStyleClass() != null) writer.writeAttribute("class", schedule.getStyleClass(), "style");
+        if (schedule.getStyle() != null) {
+            writer.writeAttribute("style", schedule.getStyle(), "style");
+        }
+        if (schedule.getStyleClass() != null) {
+            writer.writeAttribute("class", schedule.getStyleClass(), "style");
+        }
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId + "_container", null);

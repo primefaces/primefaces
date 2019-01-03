@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,11 @@
 package org.primefaces.component.checkbox;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.radiobutton.RadioButtonRenderer;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
 import org.primefaces.expression.SearchExpressionFacade;
@@ -42,7 +44,6 @@ public class CheckboxRenderer extends InputRenderer {
     protected void encodeMarkup(FacesContext context, Checkbox checkbox, SelectManyCheckbox selectManyCheckbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String masterClientId = selectManyCheckbox.getClientId(context);
-        String inputId = selectManyCheckbox.getCheckboxId(context);
         String clientId = checkbox.getClientId(context);
         boolean disabled = checkbox.isDisabled() || selectManyCheckbox.isDisabled();
 
@@ -51,21 +52,20 @@ public class CheckboxRenderer extends InputRenderer {
         styleClass = styleClass == null ? HTML.CHECKBOX_CLASS : HTML.CHECKBOX_CLASS + " " + styleClass;
 
         writer.startElement("div", null);
-        writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
 
-        encodeOptionInput(context, selectManyCheckbox, checkbox, inputId, masterClientId, disabled);
+        encodeOptionInput(context, selectManyCheckbox, checkbox, clientId, masterClientId, disabled);
         encodeOptionOutput(context, disabled, selectManyCheckbox);
 
         writer.endElement("div");
     }
 
     protected void encodeOptionInput(FacesContext context, SelectManyCheckbox selectManyCheckbox, Checkbox checkbox, String id, String name,
-            boolean disabled) throws IOException {
-        
+                                     boolean disabled) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
         String tabindex = checkbox.getTabindex();
         if (tabindex == null) {
@@ -76,14 +76,15 @@ public class CheckboxRenderer extends InputRenderer {
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
 
         writer.startElement("input", null);
-        writer.writeAttribute("id", id + "_clone", null);
+        writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("class", "ui-chkbox-clone", null);
         writer.writeAttribute("data-itemindex", checkbox.getItemIndex(), null);
 
-        if (tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
+        if (tabindex != null) {
+            writer.writeAttribute("tabindex", tabindex, null);
+        }
 
         String onchange = buildEvent(context, selectManyCheckbox, checkbox, "onchange", "change", "valueChange");
         if (!isValueBlank(onchange)) {
@@ -94,12 +95,15 @@ public class CheckboxRenderer extends InputRenderer {
             writer.writeAttribute("onclick", onclick, null);
         }
 
+        renderAccessibilityAttributes(context, selectManyCheckbox, disabled, selectManyCheckbox.isReadonly());
+        renderValidationMetadata(context, selectManyCheckbox);
+
         writer.endElement("input");
         writer.endElement("div");
     }
 
     protected String buildEvent(FacesContext context, SelectManyCheckbox selectManyCheckbox, Checkbox checkbox, String domEvent,
-            String behaviorEvent, String behaviorEventAlias) {
+                                String behaviorEvent, String behaviorEventAlias) {
 
         String manyCheckboxEvent = buildDomEvent(context, selectManyCheckbox, domEvent, behaviorEvent, behaviorEventAlias, null);
         String checkboxEvent = buildDomEvent(context, checkbox, domEvent, behaviorEvent, behaviorEventAlias, null);
@@ -129,5 +133,15 @@ public class CheckboxRenderer extends InputRenderer {
         writer.endElement("span");
 
         writer.endElement("div");
+    }
+
+    @Override
+    public String getHighlighter() {
+        return "manychkbox";
+    }
+
+    @Override
+    protected boolean isGrouped() {
+        return true;
     }
 }

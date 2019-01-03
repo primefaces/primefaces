@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,9 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
 
 public class BeanValidationMetadataExtractor {
+
+    private BeanValidationMetadataExtractor() {
+    }
 
     public static Set<ConstraintDescriptor<?>> extractAllConstraintDescriptors(FacesContext context, PrimeApplicationContext applicationContext,
             ValueExpression ve) {

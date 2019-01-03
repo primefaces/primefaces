@@ -129,13 +129,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
-    /**
-     * @Override
-     */
+    //@override
     refresh: function(cfg) {
         this.columnWidthsFixed = false;
 
-        this.init(cfg);
+        this._super(cfg);
     },
 
     /**
@@ -255,7 +253,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var key = e.which,
             keyCode = $.ui.keyCode;
 
-            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER) && $(e.target).is(':not(:input)')) {
+            if((key === keyCode.ENTER) && $(e.target).is(':not(:input)')) {
                 $(this).trigger('click.dataTable', (e.metaKey||e.ctrlKey));
                 e.preventDefault();
             }
@@ -380,18 +378,18 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindEnterKeyFilter: function(filter) {
         var $this = this;
 
-        filter.bind('keydown', function(e) {
+        filter.on('keydown', function(e) {
             var key = e.which,
             keyCode = $.ui.keyCode;
 
-            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+            if((key === keyCode.ENTER)) {
                 e.preventDefault();
             }
-        }).bind('keyup', function(e) {
+        }).on('keyup', function(e) {
             var key = e.which,
             keyCode = $.ui.keyCode;
 
-            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+            if((key === keyCode.ENTER)) {
                 $this.filter();
 
                 e.preventDefault();
@@ -407,14 +405,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var key = e.which,
             keyCode = $.ui.keyCode;
 
-            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+            if((key === keyCode.ENTER)) {
                 e.preventDefault();
-            }
-        })
-        .on("input", function() {
-            // #89 IE clear "x" button
-            if (this.value == ""){
-                $this.filter();
             }
         })
         .on(this.cfg.filterEvent + '.dataTable', function(e) {
@@ -439,6 +431,25 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             },
             $this.cfg.filterDelay);
         });
+
+        // #89 IE clear "x" button
+        if (PrimeFaces.env.isIE()) {
+            filter.on('mouseup.dataTable', function(e) {
+                var input = $(this),
+                oldValue = input.val();
+
+                if(oldValue == "") {
+                    return;
+                }
+
+                setTimeout(function() {
+                    var newValue = input.val();
+                    if(newValue == "") {
+                        $this.filter();
+                    }
+                }, 1);
+            });
+        }
     },
 
     setupRowHover: function() {
@@ -571,10 +582,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     break;
 
                     case keyCode.ENTER:
-                    case keyCode.NUMPAD_ENTER:
                     case keyCode.SPACE:
-                        e.target = $this.focusedRow.children().eq(0).get(0);
-                        $this.onRowClick(e,$this.focusedRow.get(0));
+                        if($this.focusedRowWithCheckbox) {
+                            $this.focusedRow.find('> td.ui-selection-column .ui-chkbox .ui-chkbox-box').trigger('click.dataTable');
+                        }
+                        else {
+                            e.target = $this.focusedRow.children().eq(0).get(0);
+                            $this.onRowClick(e,$this.focusedRow.get(0));
+                        }
+
+                        $this.focusedRowWithCheckbox = false;
                         e.preventDefault();
                     break;
 
@@ -757,6 +774,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         }
 
                         box.addClass('ui-state-focus');
+
+                        $this.focusedRow = input.closest('.ui-datatable-selectable');
+                        $this.focusedRowWithCheckbox = true;
                     })
                     .on('blur.dataTable', checkboxInputSelector, null, function() {
                         var input = $(this),
@@ -767,6 +787,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         }
 
                         box.removeClass('ui-state-focus');
+
+                        $this.focusedRow = null;
+                        $this.focusedRowWithCheckbox = false;
                     })
                     .on('change.dataTable', checkboxInputSelector, null, function(e) {
                         var input = $(this),
@@ -844,7 +867,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 var key = e.which,
                 keyCode = $.ui.keyCode;
 
-                if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+                if((key === keyCode.ENTER)) {
                     $this.toggleExpansion($(this));
                     e.preventDefault();
                 }
@@ -977,6 +1000,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 this.rowHeight = row.outerHeight();
                 this.scrollBody.children('div').css('height', parseFloat((scrollLimit * this.rowHeight + 1) + 'px'));
+                
+                if(hasEmptyMessage && this.cfg.scrollHeight && this.percentageScrollHeight) {
+                    setTimeout(function() {
+                        $this.adjustScrollHeight();
+                    }, 10);
+                }
             }
         }
 
@@ -985,6 +1014,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             $this.scrollHeaderBox.css('margin-left', -scrollLeft);
             $this.scrollFooterBox.css('margin-left', -scrollLeft);
 
+            if($this.isEmpty()) {
+                return;
+            }
+            
             if($this.cfg.virtualScroll) {
                 var virtualScrollBody = this;
 
@@ -998,8 +1031,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                     if(virtualScrollBody.scrollTop + viewportHeight > parseFloat($this.bodyTable.css('top')) + tableHeight || virtualScrollBody.scrollTop < parseFloat($this.bodyTable.css('top'))) {
                         var page = Math.floor((virtualScrollBody.scrollTop * pageCount) / (virtualScrollBody.scrollHeight)) + 1;
-                        $this.loadRowsWithVirtualScroll(page);
-                        $this.bodyTable.css('top',((page - 1) * pageHeight) + 'px');
+                        $this.loadRowsWithVirtualScroll(page, function () {
+                            $this.bodyTable.css('top', ((page - 1) * pageHeight) + 'px');
+                        });
                     }
                 }, 200);
             }
@@ -1024,7 +1058,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             $this.scrollFooter.scrollLeft(0);
         });
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.jq, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.jq, function() {
             if ($this.percentageScrollHeight) {
                 $this.adjustScrollHeight();
             }
@@ -1073,7 +1107,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 var key = e.which,
                 keyCode = $.ui.keyCode;
 
-                if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER) && $(e.target).is(':not(:input)')) {
+                if((key === keyCode.ENTER) && $(e.target).is(':not(:input)')) {
                     $(PrimeFaces.escapeClientId($(this).data('original'))).trigger('click.dataTable', (e.metaKey||e.ctrlKey));
                     e.preventDefault();
                 }
@@ -1083,8 +1117,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
     adjustScrollHeight: function() {
         var relativeHeight = this.jq.parent().innerHeight() * (parseInt(this.cfg.scrollHeight) / 100),
-        tableHeaderHeight = this.jq.children('.ui-datatable-header').outerHeight(true),
-        tableFooterHeight = this.jq.children('.ui-datatable-footer').outerHeight(true),
+        headerChilden = this.jq.children('.ui-datatable-header'),
+        footerChilden = this.jq.children('.ui-datatable-footer'),
+        tableHeaderHeight = (headerChilden.length > 0) ? headerChilden.outerHeight(true) : 0,
+        tableFooterHeight = (footerChilden.length > 0) ? footerChilden.outerHeight(true) : 0,
         scrollersHeight = (this.scrollHeader.outerHeight(true) + this.scrollFooter.outerHeight(true)),
         paginatorsHeight = this.paginator ? this.paginator.getContainerHeight(true) : 0,
         height = (relativeHeight - (scrollersHeight + paginatorsHeight + tableHeaderHeight + tableFooterHeight));
@@ -1261,7 +1297,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         PrimeFaces.ajax.Request.handle(options);
     },
 
-    loadRowsWithVirtualScroll: function(page) {
+    loadRowsWithVirtualScroll: function(page, callback) {
         if(this.virtualScrollActive) {
             return;
         }
@@ -1285,7 +1321,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     handle: function(content) {
                         //insert new rows
                         this.updateData(content);
-
+                        callback();
                         this.virtualScrollActive = false;
                     }
                 });
@@ -1298,8 +1334,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
         };
-
-        PrimeFaces.ajax.Request.handle(options);
+        if (this.hasBehavior('virtualScroll')) {
+            this.callBehavior('virtualScroll', options);
+        } else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
     },
 
     /**
@@ -1351,9 +1390,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('page')) {
-            var pageBehavior = this.cfg.behaviors['page'];
-
-            pageBehavior.call(this, options);
+            this.callBehavior('page', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -1440,6 +1477,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         widget: $this,
                         handle: function(content) {
                             this.updateData(content);
+
+                            if(this.checkAllToggler) {
+                              this.updateHeaderCheckbox();
+                            }
                         }
                     });
 
@@ -1530,9 +1571,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if(this.hasBehavior('sort')) {
-            var sortBehavior = this.cfg.behaviors['sort'];
-
-            sortBehavior.call(this, options);
+            this.callBehavior('sort', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -1613,6 +1652,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                         $this.rowHeight = row.outerHeight();
                         $this.scrollBody.children('div').css({'height': parseFloat((scrollLimit * $this.rowHeight + 1) + 'px')});
+                    
+                        if(hasEmptyMessage && $this.cfg.scrollHeight && $this.percentageScrollHeight) {
+                            setTimeout(function() {
+                                $this.adjustScrollHeight();
+                            }, 10);
+                        }
                     }
                 }
                 else if($this.cfg.liveScroll) {
@@ -1628,12 +1673,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('filter')) {
-            var filterBehavior = this.cfg.behaviors['filter'];
-
-            filterBehavior.call(this, options);
+            this.callBehavior('filter', options);
         }
         else {
-            PrimeFaces.ajax.AjaxRequest(options);
+            PrimeFaces.ajax.Request.handle(options);
         }
     },
 
@@ -1752,8 +1795,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     selectRow: function(r, silent) {
-        var row = this.findRow(r),
-        rowMeta = this.getRowMeta(row);
+        var row = this.findRow(r);
+        if(!row.hasClass('ui-datatable-selectable')) {
+            return;
+        }
+
+        var rowMeta = this.getRowMeta(row);
 
         this.highlightRow(row);
 
@@ -1776,8 +1823,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     unselectRow: function(r, silent) {
-        var row = this.findRow(r),
-        rowMeta = this.getRowMeta(row);
+        var row = this.findRow(r);
+        if(!row.hasClass('ui-datatable-selectable')) {
+            return;
+        }
+
+        var rowMeta = this.getRowMeta(row);
 
         this.unhighlightRow(row);
 
@@ -1817,17 +1868,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Sends a rowSelectEvent on server side to invoke a rowSelectListener if defined
      */
     fireRowSelectEvent: function(rowKey, behaviorEvent) {
-        if(this.cfg.behaviors) {
-            var selectBehavior = this.cfg.behaviors[behaviorEvent];
+        if(this.hasBehavior(behaviorEvent)) {
+            var ext = {
+                    params: [{name: this.id + '_instantSelectedRowKey', value: rowKey}
+                ]
+            };
 
-            if(selectBehavior) {
-                var ext = {
-                        params: [{name: this.id + '_instantSelectedRowKey', value: rowKey}
-                    ]
-                };
-
-                selectBehavior.call(this, ext);
-            }
+            this.callBehavior(behaviorEvent, ext);
         }
     },
 
@@ -1835,21 +1882,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Sends a rowUnselectEvent on server side to invoke a rowUnselectListener if defined
      */
     fireRowUnselectEvent: function(rowKey, behaviorEvent) {
-        if(this.cfg.behaviors) {
-            var unselectBehavior = this.cfg.behaviors[behaviorEvent];
+        if(this.hasBehavior(behaviorEvent)) {
+            var ext = {
+                params: [
+                {
+                    name: this.id + '_instantUnselectedRowKey',
+                    value: rowKey
+                }
+                ]
+            };
 
-            if(unselectBehavior) {
-                var ext = {
-                    params: [
-                    {
-                        name: this.id + '_instantUnselectedRowKey',
-                        value: rowKey
-                    }
-                    ]
-                };
-
-                unselectBehavior.call(this, ext);
-            }
+            this.callBehavior(behaviorEvent, ext);
         }
     },
 
@@ -1878,8 +1921,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Selects the corresponding row of a checkbox based column selection
      */
     selectRowWithCheckbox: function(checkbox, silent) {
-        var row = checkbox.closest('tr'),
-        rowMeta = this.getRowMeta(row);
+        var row = checkbox.closest('tr');
+        if(!row.hasClass('ui-datatable-selectable')) {
+            return;
+        }
+
+        var rowMeta = this.getRowMeta(row);
 
         this.highlightRow(row);
 
@@ -1901,8 +1948,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Unselects the corresponding row of a checkbox based column selection
      */
     unselectRowWithCheckbox: function(checkbox, silent) {
-        var row = checkbox.closest('tr'),
-        rowMeta = this.getRowMeta(row);
+        var row = checkbox.closest('tr');
+        if(!row.hasClass('ui-datatable-selectable')) {
+            return;
+        }
+
+        var rowMeta = this.getRowMeta(row);
 
         this.unhighlightRow(row);
 
@@ -1928,6 +1979,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         for(var i = 0; i < selectedRows.length; i++) {
             var row = selectedRows.eq(i);
+            if(!row.hasClass('ui-datatable-selectable')) {
+                continue;
+            }
 
             this.unhighlightRow(row);
 
@@ -2024,17 +2078,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.writeSelections();
 
         //fire toggleSelect event
-        if(this.cfg.behaviors) {
-            var toggleSelectBehavior = this.cfg.behaviors['toggleSelect'];
+        if(this.hasBehavior('toggleSelect')) {
+            var ext = {
+                params: [{name: this.id + '_checked', value: !checked}]
+            };
 
-            if(toggleSelectBehavior) {
-                var ext = {
-                        params: [{name: this.id + '_checked', value: !checked}
-                    ]
-                };
-
-                toggleSelectBehavior.call(this, ext);
-            }
+            this.callBehavior('toggleSelect', ext);
         }
     },
 
@@ -2153,12 +2202,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('rowToggle')) {
-            var rowToggleBehavior = this.cfg.behaviors['rowToggle'];
-
-            rowToggleBehavior.call(this, options);
+            this.callBehavior('rowToggle', options);
         }
         else {
-            PrimeFaces.ajax.AjaxRequest(options);
+            PrimeFaces.ajax.Request.handle(options);
         }
     },
 
@@ -2179,9 +2226,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            var rowToggleBehavior = this.cfg.behaviors['rowToggle'];
-
-            rowToggleBehavior.call(this, ext);
+            this.callBehavior('rowToggle', ext);
         }
     },
 
@@ -2296,17 +2341,21 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     switchToRowEdit: function(row) {
-        this.showRowEditors(row);
+        if(this.cfg.rowEditMode === "lazy") {
+            this.lazyRowEditInit(row);
+        }
+        else {
+            this.showRowEditors(row);
 
-        if(this.hasBehavior('rowEditInit')) {
-            var rowEditInitBehavior = this.cfg.behaviors['rowEditInit'],
-            rowIndex = this.getRowMeta(row).index;
+            if(this.hasBehavior('rowEditInit')) {
+                var rowIndex = this.getRowMeta(row).index;
 
-            var ext = {
-                params: [{name: this.id + '_rowEditIndex', value: rowIndex}]
-            };
+                var ext = {
+                    params: [{name: this.id + '_rowEditIndex', value: rowIndex}]
+                };
 
-            rowEditInitBehavior.call(this, ext);
+                this.callBehavior('rowEditInit', ext);
+            }
         }
     },
 
@@ -2359,7 +2408,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('cellEditInit')) {
-            this.cfg.behaviors['cellEditInit'].call(this, options);
+            this.callBehavior('cellEditInit', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -2403,81 +2452,86 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 this.doCellEditCancelRequest(this.currentCell);
         }
 
-        this.currentCell = cell;
+        if(cell && cell.length) {
+            this.currentCell = cell;
 
-        var cellEditor = cell.children('div.ui-cell-editor'),
-        displayContainer = cellEditor.children('div.ui-cell-editor-output'),
-        inputContainer = cellEditor.children('div.ui-cell-editor-input'),
-        inputs = inputContainer.find(':input:enabled'),
-        multi = inputs.length > 1;
+            var cellEditor = cell.children('div.ui-cell-editor'),
+            displayContainer = cellEditor.children('div.ui-cell-editor-output'),
+            inputContainer = cellEditor.children('div.ui-cell-editor-input'),
+            inputs = inputContainer.find(':input:enabled'),
+            multi = inputs.length > 1;
 
-        cell.addClass('ui-state-highlight ui-cell-editing');
-        displayContainer.hide();
-        inputContainer.show();
-        inputs.eq(0).focus().select();
+            cell.addClass('ui-state-highlight ui-cell-editing');
+            displayContainer.hide();
+            inputContainer.show();
+            inputs.eq(0).focus().select();
 
-        //metadata
-        if(multi) {
-            var oldValues = [];
-            for(var i = 0; i < inputs.length; i++) {
-                var input = inputs.eq(i);
+            //metadata
+            if(multi) {
+                var oldValues = [];
+                for(var i = 0; i < inputs.length; i++) {
+                    var input = inputs.eq(i);
 
-                if(input.is(':checkbox')) {
-                    oldValues.push(input.val() + "_" + input.is(':checked'));
+                    if(input.is(':checkbox')) {
+                        oldValues.push(input.val() + "_" + input.is(':checked'));
+                    }
+                    else {
+                        oldValues.push(input.val());
+                    }
                 }
-                else {
-                    oldValues.push(input.val());
-                }
+
+                cell.data('multi-edit', true);
+                cell.data('old-value', oldValues);
+            }
+            else {
+                cell.data('multi-edit', false);
+                cell.data('old-value', inputs.eq(0).val());
             }
 
-            cell.data('multi-edit', true);
-            cell.data('old-value', oldValues);
+            //bind events on demand
+            if(!cell.data('edit-events-bound')) {
+                cell.data('edit-events-bound', true);
+
+                inputs.on('keydown.datatable-cell', function(e) {
+                        var keyCode = $.ui.keyCode,
+                        shiftKey = e.shiftKey,
+                        key = e.which,
+                        input = $(this);
+
+                        if(key === keyCode.ENTER) {
+                            $this.saveCell(cell);
+                            $this.currentCell = null;
+
+                            e.preventDefault();
+                        }
+                        else if(key === keyCode.TAB) {
+                            if(multi) {
+                                var focusIndex = shiftKey ? input.index() - 1 : input.index() + 1;
+
+                                if(focusIndex < 0 || (focusIndex === inputs.length) || input.parent().hasClass('ui-inputnumber') || input.parent().hasClass('ui-helper-hidden-accessible')) {
+                                    $this.tabCell(cell, !shiftKey);
+                                } else {
+                                    inputs.eq(focusIndex).focus();
+                                }
+                            }
+                            else {
+                                $this.tabCell(cell, !shiftKey);
+                            }
+
+                            e.preventDefault();
+                        }
+                        else if(key === keyCode.ESCAPE) {
+                            $this.doCellEditCancelRequest(cell);
+                            e.preventDefault();
+                        }
+                    })
+                    .on('focus.datatable-cell click.datatable-cell', function(e) {
+                        $this.currentCell = cell;
+                    });
+            }
         }
         else {
-            cell.data('multi-edit', false);
-            cell.data('old-value', inputs.eq(0).val());
-        }
-
-        //bind events on demand
-        if(!cell.data('edit-events-bound')) {
-            cell.data('edit-events-bound', true);
-
-            inputs.on('keydown.datatable-cell', function(e) {
-                    var keyCode = $.ui.keyCode,
-                    shiftKey = e.shiftKey,
-                    key = e.which,
-                    input = $(this);
-
-                    if(key === keyCode.ENTER || key == keyCode.NUMPAD_ENTER) {
-                        $this.saveCell(cell);
-                        $this.currentCell = null;
-
-                        e.preventDefault();
-                    }
-                    else if(key === keyCode.TAB) {
-                        if(multi) {
-                            var focusIndex = shiftKey ? input.index() - 1 : input.index() + 1;
-
-                            if(focusIndex < 0 || (focusIndex === inputs.length) || input.parent().hasClass('ui-inputnumber') || input.parent().hasClass('ui-helper-hidden-accessible')) {
-                                $this.tabCell(cell, !shiftKey);
-                            } else {
-                                inputs.eq(focusIndex).focus();
-                            }
-                        }
-                        else {
-                            $this.tabCell(cell, !shiftKey);
-                        }
-
-                        e.preventDefault();
-                    }
-                    else if(key === keyCode.ESCAPE) {
-                        $this.doCellEditCancelRequest(cell);
-                        e.preventDefault();
-                    }
-                })
-                .on('focus.datatable-cell click.datatable-cell', function(e) {
-                    $this.currentCell = cell;
-                });
+            this.currentCell = null;
         }
     },
 
@@ -2608,7 +2662,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('cellEdit')) {
-            this.cfg.behaviors['cellEdit'].call(this, options);
+            this.callBehavior('cellEdit', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -2660,7 +2714,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('cellEditCancel')) {
-            this.cfg.behaviors['cellEditCancel'].call(this, options);
+            this.callBehavior('cellEditCancel', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -2715,6 +2769,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 if(args && args.validationFailed) {
                     $this.invalidateRow(rowIndex);
                 }
+                else {
+                    if($this.cfg.rowEditMode === "lazy") {
+                        var index = ($this.paginator) ? (rowIndex % $this.paginator.getRows()) : rowIndex,
+                        newRow = $this.tbody.children('tr').eq(index);
+                        $this.getRowEditors(newRow).children('.ui-cell-editor-input').children().remove();
+                    }
+                }
 
                 if($this.cfg.clientCache) {
                     $this.clearCacheMap();
@@ -2729,10 +2790,47 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if(action === 'save' && this.hasBehavior('rowEdit')) {
-            this.cfg.behaviors['rowEdit'].call(this, options);
+            this.callBehavior('rowEdit', options);
         }
         else if(action === 'cancel' && this.hasBehavior('rowEditCancel')) {
-            this.cfg.behaviors['rowEditCancel'].call(this, options);
+            this.callBehavior('rowEditCancel', options);
+        }
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
+    },
+
+    lazyRowEditInit: function(row) {
+        var rowIndex = this.getRowMeta(row).index,
+        $this = this;
+
+        var options = {
+            source: this.id,
+            process: this.id,
+            update: this.id,
+            global: false,
+            params: [{name: this.id + '_encodeFeature', value: true},
+                    {name: this.id + '_rowEditInit', value: true},
+                    {name: this.id + '_rowEditIndex', value: rowIndex}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            $this.updateRow(row, content);
+                        }
+                    });
+
+                return true;
+            },
+            oncomplete: function(xhr, status, args) {
+                var index = ($this.paginator) ? (rowIndex % $this.paginator.getRows()) : rowIndex,
+                newRow = $this.tbody.children('tr').eq(index);
+                $this.showRowEditors(newRow);
+            }
+        };
+
+        if(this.hasBehavior('rowEditInit')) {
+            this.cfg.behaviors['rowEditInit'].call(this, options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -2751,7 +2849,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     invalidateRow: function(index) {
         var i = (this.paginator) ? (index % this.paginator.getRows()) : index;
-        this.tbody.children('tr').eq(i).addClass('ui-widget-content ui-row-editing ui-state-error');
+        this.tbody.children('tr[data-ri]').eq(i).addClass('ui-widget-content ui-row-editing ui-state-error');
     },
 
     /**
@@ -2922,7 +3020,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            this.cfg.behaviors['colResize'].call(this, options);
+            this.callBehavior('colResize', options);
         }
     },
 
@@ -3274,20 +3372,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 $this.saveColumnOrder();
 
                 //fire colReorder event
-                if($this.cfg.behaviors) {
-                    var columnReorderBehavior = $this.cfg.behaviors['colReorder'];
+                if($this.hasBehavior('colReorder')) {
+                    var ext = null;
 
-                    if(columnReorderBehavior) {
-                        var ext = null;
-
-                        if($this.cfg.multiViewState) {
-                            ext = {
-                                params: [{name: this.id + '_encodeFeature', value: true}]
-                            };
-                        }
-
-                        columnReorderBehavior.call($this, ext);
+                    if($this.cfg.multiViewState) {
+                        ext = {
+                            params: [{name: this.id + '_encodeFeature', value: true}]
+                        };
                     }
+
+                    $this.callBehavior('colReorder', ext);
                 }
             }
         });
@@ -3348,7 +3442,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 if($this.hasBehavior('rowReorder')) {
-                    $this.cfg.behaviors['rowReorder'].call($this, options);
+                    $this.callBehavior('rowReorder', options);
                 }
                 else {
                     PrimeFaces.ajax.Request.handle(options);
@@ -3458,68 +3552,95 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     setupStickyHeader: function() {
-        var table = this.thead.parent(),
-        offset = table.offset(),
-        win = $(window),
-        $this = this;
+        var $this = this,
+            table = this.thead.parent();
 
-        this.stickyContainer = $('<div class="ui-datatable ui-datatable-sticky ui-widget"><table></table></div>');
         this.clone = this.thead.clone(false);
-        this.stickyContainer.children('table').append(this.thead);
         table.prepend(this.clone);
 
+        this.stickyContainer = $('<div class="ui-datatable ui-datatable-sticky ui-widget"><table></table></div>');
+        this.stickyContainer.children('table').append(this.thead);
         this.stickyContainer.css({
             position: 'absolute',
-            width: table.outerWidth(),
-            top: offset.top,
-            left: offset.left,
+            width: 0,
+            top: 0,
+            left: 0,
+            display: 'none',
             'z-index': ++PrimeFaces.zindex
         });
-
         this.jq.prepend(this.stickyContainer);
+
+        this.stickyContainerHeight = this.stickyContainer.height();
+
+        this.stickyScrollParent = this.jq.scrollParent();
+        if (this.stickyScrollParent.is('body') || this.stickyScrollParent.is(document)) {
+            this.stickyScrollParent = $(window);
+        }
 
         if(this.cfg.resizableColumns) {
             this.relativeHeight = 0;
         }
 
-        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id, function() {
-            var scrollTop = win.scrollTop(),
-            tableOffset = table.offset();
+        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', function() {
+            var tableOffset = table.offset(),
+                scrollTop = $this.stickyScrollParent.scrollTop();
 
-            if(scrollTop > tableOffset.top) {
-                $this.stickyContainer.css({
-                                        'position': 'fixed',
-                                        'top': '0px'
-                                    })
-                                    .addClass('ui-shadow ui-sticky');
-
-                if($this.cfg.resizableColumns) {
-                    $this.relativeHeight = scrollTop - tableOffset.top;
+            // check top and bottom bounds - the calculation is different if the scrollParent is the window or just a container
+            var showStickyHeader = true;
+            if ($.isWindow($this.stickyScrollParent[0])) {
+                var tableTop = tableOffset.top,
+                    tableBottom = tableTop + $this.tbody.height();
+                if (scrollTop <= tableTop || scrollTop >= tableBottom - $this.stickyContainer.height()) {
+                    showStickyHeader = false;
                 }
-
-                if(scrollTop >= (tableOffset.top + $this.tbody.height()))
-                    $this.stickyContainer.hide();
-                else
-                    $this.stickyContainer.show();
             }
             else {
-                $this.stickyContainer.css({
-                                        'position': 'absolute',
-                                        'top': tableOffset.top
-                                    })
-                                    .removeClass('ui-shadow ui-sticky');
+                var scrollParentOffset = $this.stickyScrollParent.offset(),
+                    tableTop = tableOffset.top - scrollParentOffset.top,
+                    tableBottom = tableTop + $this.tbody.height();
+                if (tableTop >= 0 || tableBottom <= $this.stickyContainer.height()) {
+                    showStickyHeader = false;
+                }
+            }
 
-                if($this.stickyContainer.is(':hidden')) {
-                    $this.stickyContainer.show();
+            if (showStickyHeader) {
+                // refresh top
+                $this.stickyContainer.css({ top: scrollTop - 1 });
+
+                if ($this.cfg.resizableColumns) {
+                    $this.relativeHeight = scrollTop - tableOffset.top; // TODO: this needs to be checked for the container case
                 }
 
-                if($this.cfg.resizableColumns) {
+                // show if not already visible
+                if (!$this.stickyContainer.is(':visible')) {
+                    $this.stickyContainer.show();
+                    $this.stickyContainer.addClass('ui-shadow ui-sticky');
+
+                    // recalculate width + left after swichting from not-visible to visisble state
+                    $this.stickyContainer.css({ width: table.outerWidth() });
+                    if ($.isWindow($this.stickyScrollParent[0])) {
+                        $this.stickyContainer.css({ left: tableOffset.left });
+                    }
+                    else {
+                        var scrollParentOffset = $this.stickyScrollParent.offset();
+                        $this.stickyContainer.css({ left: tableOffset.left - scrollParentOffset.left });
+                    }
+                }
+            }
+            else {
+                // hide if not already hidden
+                if ($this.stickyContainer.is(':visible')) {
+                    $this.stickyContainer.hide();
+                    $this.stickyContainer.removeClass('ui-shadow ui-sticky');
+                }
+
+                if ($this.cfg.resizableColumns) {
                     $this.relativeHeight = 0;
                 }
             }
         });
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.sticky-' + this.id, null, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.sticky-' + this.id + '_align', null, function() {
             $this.stickyContainer.width(table.outerWidth());
         });
 
@@ -3862,9 +3983,10 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
 
                     if(virtualScrollBody.scrollTop + viewportHeight > parseFloat($this.scrollBodyTable.css('top')) + tableHeight || virtualScrollBody.scrollTop < parseFloat($this.scrollBodyTable.css('top'))) {
                         var page = Math.floor((virtualScrollBody.scrollTop * pageCount) / (virtualScrollBody.scrollHeight)) + 1;
-                        $this.loadRowsWithVirtualScroll(page);
-                        $this.scrollBodyTable.css('top',((page - 1) * pageHeight) + 'px');
-                        $this.frozenBodyTable.css('top',((page - 1) * pageHeight) + 'px');
+                        $this.loadRowsWithVirtualScroll(page, function () {
+                            $this.scrollBodyTable.css('top', ((page - 1) * pageHeight) + 'px');
+                            $this.frozenBodyTable.css('top', ((page - 1) * pageHeight) + 'px');
+                        });
                     }
                 }, 200);
             }
@@ -3881,7 +4003,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             $this.saveScrollState();
         });
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.jq, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.jq, function() {
             if ($this.percentageScrollHeight) {
                 $this.adjustScrollHeight();
             }
@@ -3915,8 +4037,10 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
 
     adjustScrollHeight: function() {
         var relativeHeight = this.jq.parent().innerHeight() * (parseInt(this.cfg.scrollHeight) / 100),
-        tableHeaderHeight = this.jq.children('.ui-datatable-header').outerHeight(true),
-        tableFooterHeight = this.jq.children('.ui-datatable-footer').outerHeight(true),
+        headerChilden = this.jq.children('.ui-datatable-header'),
+        footerChilden = this.jq.children('.ui-datatable-footer'),
+        tableHeaderHeight = (headerChilden.length > 0) ? headerChilden.outerHeight(true) : 0,
+        tableFooterHeight = (footerChilden.length > 0) ? footerChilden.outerHeight(true) : 0,
         scrollersHeight = (this.scrollHeader.innerHeight() + this.scrollFooter.innerHeight()),
         paginatorsHeight = this.paginator ? this.paginator.getContainerHeight(true) : 0,
         height = (relativeHeight - (scrollersHeight + paginatorsHeight + tableHeaderHeight + tableFooterHeight));
@@ -3940,15 +4064,16 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
     },
 
     setScrollWidth: function(width) {
+        this.scrollHeader.width(width);
+        this.scrollBody.css('margin-right', 0).width(width);
+        this.scrollFooter.width(width);
+        
         var $this = this,
         headerWidth = width + this.frozenLayout.width();
 
         this.jq.children('.ui-widget-header').each(function() {
             $this.setOuterWidth($(this), headerWidth);
         });
-        this.scrollHeader.width(width);
-        this.scrollBody.css('margin-right', 0).width(width);
-        this.scrollFooter.width(width);
     },
 
     fixColumnWidths: function() {

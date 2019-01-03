@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,26 +16,52 @@
 package org.primefaces.component.texteditor;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
+import org.primefaces.context.PrimeApplicationContext;
 
-import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.HtmlSanitizer;
 import org.primefaces.util.WidgetBuilder;
 
-public class TextEditorRenderer extends CoreRenderer {
+public class TextEditorRenderer extends InputRenderer {
+
+    private static final Logger LOGGER = Logger.getLogger(TextEditorRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
         TextEditor editor = (TextEditor) component;
+
+        if (!shouldDecode(editor)) {
+            return;
+        }
+
+        decodeBehaviors(context, editor);
+
         String inputParam = editor.getClientId(context) + "_input";
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String value = params.get(inputParam);
+
+        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isHtmlSanitizerAvailable()) {
+            value = HtmlSanitizer.sanitizeHtml(value,
+                    editor.isAllowBlocks(), editor.isAllowFormatting(),
+                    editor.isAllowLinks(), editor.isAllowStyles(), editor.isAllowImages());
+        }
+        else {
+            if (!editor.isAllowBlocks() || !editor.isAllowFormatting()
+                    || !editor.isAllowLinks() || !editor.isAllowStyles() || !editor.isAllowImages()) {
+                LOGGER.warning("HTML sanitizer not available - skip sanitizing....");
+            }
+        }
 
         if (value != null && value.equals("<br/>")) {
             value = "";
@@ -65,9 +91,11 @@ public class TextEditorRenderer extends CoreRenderer {
         styleClass = (styleClass != null) ? TextEditor.EDITOR_CLASS + " " + styleClass : TextEditor.EDITOR_CLASS;
 
         writer.startElement("div", editor);
-        writer.writeAttribute("id", clientId , null);
+        writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
-        if (style != null) writer.writeAttribute("style", style, null);
+        if (style != null) {
+            writer.writeAttribute("style", style, null);
+        }
 
         if (toolbar != null && editor.isToolbarVisible()) {
             writer.startElement("div", editor);
@@ -104,6 +132,20 @@ public class TextEditorRenderer extends CoreRenderer {
                 .attr("readOnly", editor.isReadonly(), false)
                 .attr("placeholder", editor.getPlaceholder(), null)
                 .attr("height", editor.getHeight(), Integer.MIN_VALUE);
+
+        List formats = editor.getFormats();
+        if (formats != null) {
+            wb.append(",formats:[");
+            for (int i = 0; i < formats.size(); i++) {
+                if (i != 0) {
+                    wb.append(",");
+                }
+
+                wb.append("\"" + EscapeUtils.forJavaScript((String) formats.get(i)) + "\"");
+            }
+            wb.append("]");
+        }
+
         encodeClientBehaviors(context, editor);
         wb.finish();
     }

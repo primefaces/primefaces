@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,10 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
@@ -47,7 +48,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         writer.startElement("span", button);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "class");
-        
+
         if (button.getStyle() != null) {
             writer.writeAttribute("style", button.getStyle(), "style");
         }
@@ -77,7 +78,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         writer.writeAttribute("name", buttonId, null);
         writer.writeAttribute("type", "button", null);
         writer.writeAttribute("class", buttonClass, null);
-        writer.writeAttribute("aria-label", button.getAriaLabel(), "ariaLabel");
+        writer.writeAttribute(HTML.ARIA_LABEL, button.getAriaLabel(), "ariaLabel");
         if (button.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
         }
@@ -123,7 +124,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         writer.writeAttribute("class", MenuButton.LIST_CLASS, "styleClass");
 
         if (button.getElementsCount() > 0) {
-            List<MenuElement> elements = (List<MenuElement>) button.getElements();
+            List<MenuElement> elements = button.getElements();
 
             for (MenuElement element : elements) {
                 if (element.isRendered()) {
@@ -131,7 +132,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
                         writer.startElement("li", null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                         writer.writeAttribute("role", "menuitem", null);
-                        encodeMenuItem(context, button, (MenuItem) element);
+                        encodeMenuItem(context, button, (MenuItem) element, "-1");
                         writer.endElement("li");
                     }
                     else if (element instanceof Separator) {
@@ -151,7 +152,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         MenuButton button = (MenuButton) abstractMenu;
         String clientId = button.getClientId(context);
 
-        UIComponent form = ComponentTraversalUtils.closestForm(context, button);
+        UIForm form = ComponentTraversalUtils.closestForm(context, button);
         if (form == null) {
             throw new FacesException("MenuButton : \"" + clientId + "\" must be inside a form element");
         }

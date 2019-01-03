@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,10 +17,13 @@ package org.primefaces.model;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 public interface UploadedFile {
 
     public String getFileName();
+
+    public List<String> getFileNames();
 
     public InputStream getInputstream() throws IOException;
 

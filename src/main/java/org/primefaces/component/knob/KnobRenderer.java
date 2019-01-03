@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,32 +15,65 @@
  */
 package org.primefaces.component.knob;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
+
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class KnobRenderer extends CoreRenderer {
 
     public static final String RENDERER_TYPE = "org.primefaces.component.KnobRenderer";
 
+    public static final String colorToHex(Color color) {
+
+        String red = Integer.toHexString(color.getRed());
+        if (red.length() < 2) {
+            red = "0" + red;
+        }
+
+        String blue = Integer.toHexString(color.getBlue());
+        if (blue.length() < 2) {
+            blue = "0" + blue;
+        }
+
+        String green = Integer.toHexString(color.getGreen());
+        if (green.length() < 2) {
+            green = "0" + green;
+        }
+
+        return "#" + red + green + blue;
+    }
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
 
         decodeBehaviors(context, component);
 
-        String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(component.getClientId(context) + "_hidden");
-        ((Knob) component).setSubmittedValue(submittedValue);
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(component.getClientId(context) + "_hidden");
+
+        Knob knob = (Knob) component;
+
+        if (!LangUtils.isValueEmpty(submittedValue)) {
+            int submittedInt = Integer.parseInt(submittedValue);
+            if (submittedInt < knob.getMin() || submittedInt > knob.getMax()) {
+                return;
+            }
+        }
+
+        knob.setSubmittedValue(submittedValue);
     }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        this.encodeMarkup(context, (Knob) component);
-        this.encodeScript(context, (Knob) component);
+        encodeMarkup(context, (Knob) component);
+        encodeScript(context, (Knob) component);
     }
 
     private void encodeMarkup(FacesContext context, Knob knob) throws IOException {
@@ -89,12 +122,14 @@ public class KnobRenderer extends CoreRenderer {
     private void encodeScript(FacesContext context, Knob knob) throws IOException {
         String clientId = knob.getClientId();
         String widgetVar = knob.resolveWidgetVar();
+        String styleClass = knob.getStyleClass() != null ? "ui-knob " + knob.getStyleClass() : "ui-knob";
 
         WidgetBuilder wb = getWidgetBuilder(context);
 
         wb.init("Knob", widgetVar, clientId);
         wb.attr("labelTemplate", knob.getLabelTemplate())
                 .attr("colorTheme", knob.getColorTheme())
+                .attr("styleClass", styleClass)
                 .callback("onchange", "function(value)", knob.getOnchange());
 
         if (knob.getForegroundColor() != null) {
@@ -134,26 +169,6 @@ public class KnobRenderer extends CoreRenderer {
         catch (NumberFormatException e) {
             throw new ConverterException(e);
         }
-    }
-
-    public static String colorToHex(Color color) {
-
-        String red = Integer.toHexString(color.getRed());
-        if (red.length() < 2) {
-            red = "0" + red;
-        }
-
-        String blue = Integer.toHexString(color.getBlue());
-        if (blue.length() < 2) {
-            blue = "0" + blue;
-        }
-
-        String green = Integer.toHexString(color.getGreen());
-        if (green.length() < 2) {
-            green = "0" + green;
-        }
-
-        return "#" + red + green + blue;
     }
 
 }

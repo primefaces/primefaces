@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,13 @@
 package org.primefaces.component.resetinput;
 
 import java.io.IOException;
+
 import javax.el.ELException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.ActionSource;
 import javax.faces.component.UIComponent;
-import javax.faces.view.facelets.ComponentHandler;
-import javax.faces.view.facelets.FaceletContext;
-import javax.faces.view.facelets.FaceletException;
-import javax.faces.view.facelets.TagAttribute;
-import javax.faces.view.facelets.TagConfig;
-import javax.faces.view.facelets.TagException;
-import javax.faces.view.facelets.TagHandler;
+import javax.faces.view.facelets.*;
 
 public class ResetInputTagHandler extends TagHandler {
 
@@ -36,8 +31,8 @@ public class ResetInputTagHandler extends TagHandler {
 
     public ResetInputTagHandler(TagConfig tagConfig) {
         super(tagConfig);
-        this.target = getRequiredAttribute("target");
-        this.clearModel = getAttribute("clearModel");
+        target = getRequiredAttribute("target");
+        clearModel = getAttribute("clearModel");
     }
 
     @Override
@@ -54,7 +49,7 @@ public class ResetInputTagHandler extends TagHandler {
             actionSource.addActionListener(new ResetInputActionListener(targetVE, clearModelVE));
         }
         else {
-            throw new TagException(this.tag, "ResetInput can only be attached to ActionSource components.");
+            throw new TagException(tag, "ResetInput can only be attached to ActionSource components.");
         }
     }
 

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
@@ -109,8 +109,8 @@ public class ButtonRenderer extends OutcomeTargetRenderer {
         }
 
         if (targetURL != null) {
-            onclick.append("window.open('").append(ComponentUtils.escapeText(targetURL)).append("','");
-            onclick.append(ComponentUtils.escapeText(button.getTarget())).append("')");
+            onclick.append("window.open('").append(EscapeUtils.forJavaScript(targetURL)).append("','");
+            onclick.append(EscapeUtils.forJavaScript(button.getTarget())).append("')");
         }
 
         return onclick.toString();

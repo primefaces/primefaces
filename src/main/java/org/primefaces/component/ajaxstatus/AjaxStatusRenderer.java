@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,8 +54,12 @@ public class AjaxStatusRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
 
-        if (status.getStyle() != null) writer.writeAttribute("style", status.getStyle(), "style");
-        if (status.getStyleClass() != null) writer.writeAttribute("class", status.getStyleClass(), "styleClass");
+        if (status.getStyle() != null) {
+            writer.writeAttribute("style", status.getStyle(), "style");
+        }
+        if (status.getStyleClass() != null) {
+            writer.writeAttribute("class", status.getStyleClass(), "styleClass");
+        }
 
         for (String event : AjaxStatus.EVENTS) {
             UIComponent facet = status.getFacet(event);

@@ -1,20 +1,3 @@
-/**
- * Copyright 2009-2018 PrimeTek.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-package org.primefaces.json;
-
 /*
  Copyright (c) 2002 JSON.org
 
@@ -38,6 +21,7 @@ package org.primefaces.json;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+package org.primefaces.json;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -45,7 +29,8 @@ import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.math.*;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -109,6 +94,7 @@ import java.util.Set;
  * @author JSON.org
  * @version 2015-12-09
  */
+//CHECKSTYLE:OFF
 public class JSONObject {
     /**
      * JSONObject.NULL is equivalent to the value that JavaScript calls null,
@@ -146,6 +132,7 @@ public class JSONObject {
          *
          * @return The string "null".
          */
+        @Override
         public String toString() {
             return "null";
         }
@@ -256,7 +243,7 @@ public class JSONObject {
     public JSONObject(Map<?, ?> map) {
         this.map = new HashMap<String, Object>();
         if (map != null) {
-        	for (final Entry<?, ?> e : map.entrySet()) {
+            for (final Entry<?, ?> e : map.entrySet()) {
                 final Object value = e.getValue();
                 if (value != null) {
                     this.map.put(String.valueOf(e.getKey()), wrap(value));
@@ -489,7 +476,7 @@ public class JSONObject {
 
     /**
     * Get the enum value associated with a key.
-    * 
+    *
     * @param clazz
     *           The type of enum to retrieve.
     * @param key
@@ -544,7 +531,7 @@ public class JSONObject {
      *            A key string.
      * @return The numeric value.
      * @throws JSONException
-     *             if the key is not found or if the value cannot 
+     *             if the key is not found or if the value cannot
      *             be converted to BigInteger.
      */
     public BigInteger getBigInteger(String key) throws JSONException {
@@ -879,7 +866,7 @@ public class JSONObject {
 
     /**
      * Get the enum value associated with a key.
-     * 
+     *
      * @param clazz
      *            The type of enum to retrieve.
      * @param key
@@ -892,7 +879,7 @@ public class JSONObject {
 
     /**
      * Get the enum value associated with a key.
-     * 
+     *
      * @param clazz
      *            The type of enum to retrieve.
      * @param key
@@ -1596,6 +1583,7 @@ public class JSONObject {
      *         brace)</small> and ending with <code>}</code>&nbsp;<small>(right
      *         brace)</small>.
      */
+    @Override
     public String toString() {
         try {
             return this.toString(0);
@@ -1848,3 +1836,4 @@ public class JSONObject {
         }
     }
 }
+//CHECKSTYLE:ON

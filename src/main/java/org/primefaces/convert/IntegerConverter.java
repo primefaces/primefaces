@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,10 +19,12 @@ import java.util.Map;
 
 public class IntegerConverter extends javax.faces.convert.IntegerConverter implements ClientConverter {
 
+    @Override
     public Map<String, Object> getMetadata() {
         return null;
     }
 
+    @Override
     public String getConverterId() {
         return IntegerConverter.CONVERTER_ID;
     }

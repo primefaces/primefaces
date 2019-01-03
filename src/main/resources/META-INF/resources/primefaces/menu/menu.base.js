@@ -22,28 +22,16 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         //mark trigger and descandants of trigger as a trigger for a primefaces overlay
         this.trigger.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
 
-        // we might have two menus with same ids if an ancestor of a menu is updated, if so remove the previous one and refresh jq
-        // the first check is required if the id contains a ':' - See #2485
-        if(this.jq.length > 1){
-            $(document.body).children(this.jqId).remove();
-            this.jq = $(this.jqId);
-            this.jq.appendTo(document.body);
-        }
-        else {
-            // this is required if the id does NOT contain a ':' - See #2485
-            $(document.body).children("[id='" + this.id + "']").not(this.jq).remove();
-            if(this.jq.parent().is(':not(body)')) {
-                this.jq.appendTo(document.body);
-            }
-        }
+        this.cfg.appendTo = '@(body)';
+        PrimeFaces.utils.registerDynamicOverlay(this, this.jq, this.id);
 
         this.cfg.pos = {
             my: this.cfg.my
             ,at: this.cfg.at
             ,of: this.trigger
-        }
+        };
 
-        this.trigger.bind(this.cfg.triggerEvent + '.ui-menu', function(e) {
+        this.trigger.off(this.cfg.triggerEvent + '.ui-menu').on(this.cfg.triggerEvent + '.ui-menu', function(e) {
             var trigger = $(this);
 
             if($this.jq.is(':visible')) {
@@ -63,14 +51,15 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         //hide overlay on document click
         this.itemMouseDown = false;
 
-        PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id, $this.jq,
+        PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.jq,
             function() { return $this.trigger; },
-            function(e) {
-                var $eventTarget = $(e.target);
-                if ($eventTarget.is('.ui-menuitem-link') || $eventTarget.closest('.ui-menuitem-link').length) {
+            function(e, eventTarget) {
+                var menuItemLink = '.ui-menuitem-link:not(.ui-submenu-link, .ui-state-disabled)';
+
+                if (eventTarget.is(menuItemLink) || eventTarget.closest(menuItemLink).length) {
                     $this.itemMouseDown = true;
                 }
-                else {
+                else if(!($this.jq.is(eventTarget) || $this.jq.has(eventTarget).length > 0)) {
                     $this.hide(e);
                 }
             });
@@ -84,7 +73,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //Hide overlay on resize
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.jq, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.jq, function() {
             $this.align();
         });
 

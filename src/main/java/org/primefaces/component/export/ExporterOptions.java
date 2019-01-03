@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,18 +17,18 @@ package org.primefaces.component.export;
 
 public interface ExporterOptions {
 
-    public String getFacetFontStyle();
+    String getFacetFontStyle();
 
-    public String getFacetFontColor();
+    String getFacetFontColor();
 
-    public String getFacetBgColor();
+    String getFacetBgColor();
 
-    public String getFacetFontSize();
+    String getFacetFontSize();
 
-    public String getCellFontStyle();
+    String getCellFontStyle();
 
-    public String getCellFontColor();
+    String getCellFontColor();
 
-    public String getCellFontSize();
+    String getCellFontSize();
 
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ public class TimelineListener implements SystemEventListener {
         Map<String, TimelineUpdater> map
                 = (Map<String, TimelineUpdater>) context.getAttributes().get(TimelineUpdater.class.getName());
         if (map == null) {
-            map = new HashMap<String, TimelineUpdater>();
+            map = new HashMap<>();
             context.getAttributes().put(TimelineUpdater.class.getName(), map);
         }
 

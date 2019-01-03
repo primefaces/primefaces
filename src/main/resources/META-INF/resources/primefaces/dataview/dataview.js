@@ -5,20 +5,20 @@ PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
 
     init: function(cfg) {
         this._super(cfg);
-        
+
         this.header = this.jq.children('.ui-dataview-header');
         this.content = this.jq.children('.ui-dataview-content');
         this.layoutOptions = this.header.children('.ui-dataview-layout-options');
         this.buttons = this.layoutOptions.children('div');
         this.cfg.formId = $(this.jqId).closest('form').attr('id');
-        
+
         if(this.cfg.paginator) {
             this.setupPaginator();
         }
-        
+
         this.bindEvents();
     },
-    
+
     setupPaginator: function() {
         var $this = this;
         this.cfg.paginator.paginate = function(newState) {
@@ -27,10 +27,10 @@ PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
 
         this.paginator = new PrimeFaces.widget.Paginator(this.cfg.paginator);
     },
-    
+
     bindEvents: function () {
         var $this = this;
-        
+
         this.buttons.on('mouseover', function() {
             var button = $(this);
             button.addClass('ui-state-hover');
@@ -60,7 +60,7 @@ PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
             var keyCode = $.ui.keyCode,
             key = e.which;
 
-            if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
+            if(key === keyCode.SPACE || key === keyCode.ENTER) {
                 var button = $(this),
                 radio = button.children(':radio');
 
@@ -71,7 +71,7 @@ PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
             }
         });
     },
-    
+
     select: function(button) {
         this.buttons.filter('.ui-state-active').removeClass('ui-state-active ui-state-hover').children(':radio').prop('checked', false);
 
@@ -79,7 +79,7 @@ PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
 
         this.loadLayoutContent(button.children(':radio').val());
     },
-    
+
     loadLayoutContent: function(layout) {
         var $this = this,
         options = {
@@ -106,7 +106,7 @@ PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.ajax.Request.handle(options);
     },
-            
+
     handlePagination: function(newState) {
         var $this = this,
         options = {
@@ -136,14 +136,13 @@ PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
         };
 
         if(this.hasBehavior('page')) {
-            var pageBehavior = this.cfg.behaviors['page'];
-            pageBehavior.call(this, options);
+            this.callBehavior('page', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
         }
     },
-    
+
     getPaginator: function() {
         return this.paginator;
     }

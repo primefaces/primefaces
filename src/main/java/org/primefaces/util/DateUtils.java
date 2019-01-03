@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,9 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class DateUtils {
+
+    private DateUtils() {
+    }
 
     // convert from local date to UTC
     public static Date toUtcDate(TimeZone browserTZ, TimeZone targetTZ, String localDate) {

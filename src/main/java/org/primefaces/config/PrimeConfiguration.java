@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ package org.primefaces.config;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
@@ -29,8 +28,6 @@ import org.primefaces.util.Constants;
  * Container for all config parameters.
  */
 public class PrimeConfiguration {
-
-    private static final Logger LOG = Logger.getLogger(PrimeConfiguration.class.getName());
 
     // context params
     private boolean validateEmptyFields = false;
@@ -49,7 +46,7 @@ public class PrimeConfiguration {
 
     // internal config
     private boolean stringConverterAvailable = false;
-        
+
     private boolean beanValidationEnabled = false;
 
     // web.xml
@@ -65,7 +62,7 @@ public class PrimeConfiguration {
         initConfigFromWebXml(context);
         initValidateEmptyFields(context, environment);
     }
-    
+
     protected void initInternalConfig(FacesContext context) {
         stringConverterAvailable = null != context.getApplication().createConverter(String.class);
     }
@@ -111,7 +108,7 @@ public class PrimeConfiguration {
 
         value = externalContext.getInitParameter(Constants.ContextParams.EARLY_POST_PARAM_EVALUATION);
         earlyPostParamEvaluation = (value == null) ? false : Boolean.valueOf(value);
-        
+
         value = externalContext.getInitParameter(Constants.ContextParams.MOVE_SCRIPTS_TO_BOTTOM);
         moveScriptsToBottom = (value == null) ? false : Boolean.valueOf(value);
     }
@@ -148,7 +145,7 @@ public class PrimeConfiguration {
     protected void initConfigFromWebXml(FacesContext context) {
         errorPages = WebXmlParser.getErrorPages(context);
         if (errorPages == null) {
-            errorPages = new HashMap<String, String>();
+            errorPages = new HashMap<>();
         }
     }
 

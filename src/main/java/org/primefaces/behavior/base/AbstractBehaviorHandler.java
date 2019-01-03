@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,19 +35,21 @@ import javax.faces.view.AttachedObjectHandler;
 import javax.faces.view.AttachedObjectTarget;
 import javax.faces.view.BehaviorHolderAttachedObjectHandler;
 import javax.faces.view.BehaviorHolderAttachedObjectTarget;
-import javax.faces.view.facelets.ComponentHandler;
-import javax.faces.view.facelets.FaceletContext;
-import javax.faces.view.facelets.TagAttribute;
-import javax.faces.view.facelets.TagConfig;
-import javax.faces.view.facelets.TagException;
-import javax.faces.view.facelets.TagHandler;
+import javax.faces.view.facelets.*;
 
 import org.primefaces.behavior.ajax.AjaxBehaviorHandler;
+import org.primefaces.config.PrimeEnvironment;
 import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.util.LangUtils;
 
 public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         extends TagHandler implements BehaviorHolderAttachedObjectHandler {
+
+    protected static final String MOJARRA_ATTACHED_OBJECT_HANDLERS_KEY = "javax.faces.RetargetableHandlers";
+    protected static final String MOJARRA_22_ATTACHED_OBJECT_HANDLERS_KEY = "javax.faces.view.AttachedObjectHandlers";
+
+    protected static Method myfacesGetCompositionContextInstance;
+    protected static Method myfacesAddAttachedObjectHandler;
 
     private final TagAttribute event;
 
@@ -105,13 +107,14 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
             if (supportedEvent) {
                 // Workaround to implementation specific composite component handlers
                 FacesContext context = FacesContext.getCurrentInstance();
-                if (context.getExternalContext().getApplicationMap().containsKey("com.sun.faces.ApplicationAssociate")) {
-                    addAttachedObjectHandlerToMojarra(parent);
+                PrimeEnvironment environment = PrimeApplicationContext.getCurrentInstance(context).getEnvironment();
+                if (environment.isMojarra()) {
+                    addAttachedObjectHandlerToMojarra(environment, parent);
                 }
                 else {
                     addAttachedObjectHandlerToMyFaces(parent, faceletContext);
                 }
-            } 
+            }
             else {
                 if (!tagApplied) {
                     throw new TagException(tag, "Composite component does not support event " + eventName);
@@ -120,7 +123,7 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         }
         else if (parent instanceof ClientBehaviorHolder) {
             applyAttachedObject(faceletContext, parent);
-        } 
+        }
         else {
             throw new TagException(this.tag, "Unable to attach behavior to non-ClientBehaviorHolder parent");
         }
@@ -198,16 +201,10 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         return null;
     }
 
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Mojarra ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    protected static final String MOJARRA_ATTACHED_OBJECT_HANDLERS_KEY = "javax.faces.RetargetableHandlers";
-    protected static final String MOJARRA_22_ATTACHED_OBJECT_HANDLERS_KEY = "javax.faces.view.AttachedObjectHandlers";
-
-    protected void addAttachedObjectHandlerToMojarra(UIComponent component) {
+    protected void addAttachedObjectHandlerToMojarra(PrimeEnvironment environment, UIComponent component) {
 
         String key = MOJARRA_ATTACHED_OBJECT_HANDLERS_KEY;
-        if (PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnvironment().isAtLeastJsf22()) {
+        if (environment.isAtLeastJsf22()) {
             key = MOJARRA_22_ATTACHED_OBJECT_HANDLERS_KEY;
         }
 
@@ -215,22 +212,16 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         List<AttachedObjectHandler> result = (List<AttachedObjectHandler>) attrs.get(key);
 
         if (result == null) {
-            result = new ArrayList<AttachedObjectHandler>();
+            result = new ArrayList<>();
             attrs.put(key, result);
         }
 
         result.add(this);
     }
 
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MyFaces ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    protected static Method MYFACES_GET_COMPOSITION_CONTEXT_INSTANCE;
-    protected static Method MYFACES_ADD_ATTACHED_OBJECT_HANDLER;
-
     protected void addAttachedObjectHandlerToMyFaces(UIComponent component, FaceletContext ctx) {
         try {
-            if (MYFACES_GET_COMPOSITION_CONTEXT_INSTANCE == null || MYFACES_ADD_ATTACHED_OBJECT_HANDLER == null) {
+            if (myfacesGetCompositionContextInstance == null || myfacesAddAttachedObjectHandler == null) {
 
                 Class<?> clazz = null;
                 try {
@@ -239,15 +230,15 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
                 catch (ClassNotFoundException cnfe) {
                     clazz = Class.forName("org.apache.myfaces.view.facelets.FaceletCompositionContext",
                             true,
-                            Thread.currentThread().getContextClassLoader());
+                            LangUtils.getContextClassLoader());
                 }
 
-                MYFACES_GET_COMPOSITION_CONTEXT_INSTANCE = clazz.getDeclaredMethod("getCurrentInstance", FaceletContext.class);
-                MYFACES_ADD_ATTACHED_OBJECT_HANDLER = clazz.getDeclaredMethod("addAttachedObjectHandler", UIComponent.class, AttachedObjectHandler.class);
+                myfacesGetCompositionContextInstance = clazz.getDeclaredMethod("getCurrentInstance", FaceletContext.class);
+                myfacesAddAttachedObjectHandler = clazz.getDeclaredMethod("addAttachedObjectHandler", UIComponent.class, AttachedObjectHandler.class);
             }
 
-            Object faceletCompositionContextInstance = MYFACES_GET_COMPOSITION_CONTEXT_INSTANCE.invoke(null, ctx);
-            MYFACES_ADD_ATTACHED_OBJECT_HANDLER.invoke(faceletCompositionContextInstance, component, this);
+            Object faceletCompositionContextInstance = myfacesGetCompositionContextInstance.invoke(null, ctx);
+            myfacesAddAttachedObjectHandler.invoke(faceletCompositionContextInstance, component, this);
         }
         catch (Exception ex) {
             Logger.getLogger(AjaxBehaviorHandler.class.getName()).log(Level.SEVERE, "Could not add AttachedObjectHandler to MyFaces!", ex);

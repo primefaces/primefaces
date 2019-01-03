@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,16 @@ import java.beans.BeanInfo;
 import java.util.List;
 import javax.faces.FacesException;
 import javax.faces.component.ContextCallback;
+import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.view.AttachedObjectTarget;
 import javax.faces.view.EditableValueHolderAttachedObjectTarget;
 
 public class CompositeUtils {
+
+    private CompositeUtils() {
+    }
 
     public static boolean isComposite(UIComponent component) {
         return UIComponent.isCompositeComponent(component);
@@ -39,6 +43,12 @@ public class CompositeUtils {
      */
     public static void invokeOnDeepestEditableValueHolder(FacesContext context, UIComponent composite,
             final ContextCallback callback) {
+
+        if (composite instanceof EditableValueHolder) {
+            callback.invokeContextCallback(context, composite);
+            return;
+        }
+
         BeanInfo info = (BeanInfo) composite.getAttributes().get(UIComponent.BEANINFO_KEY);
         List<AttachedObjectTarget> targets = (List<AttachedObjectTarget>) info.getBeanDescriptor()
                 .getValue(AttachedObjectTarget.ATTACHED_OBJECT_TARGETS_KEY);
@@ -64,7 +74,7 @@ public class CompositeUtils {
                     final UIComponent child = childs.get(0);
 
                     composite.invokeOnComponent(context, composite.getClientId(context), new ContextCallback() {
-                        
+
                         @Override
                         public void invokeContextCallback(FacesContext context, UIComponent target) {
                             if (isComposite(child)) {

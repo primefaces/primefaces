@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,15 @@
 package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.model.ListDataModel;
-import org.primefaces.PrimeFaces;
 
+import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
@@ -37,11 +33,7 @@ import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.MultiSortState;
 import org.primefaces.component.datatable.TableState;
 import org.primefaces.event.data.PostSortEvent;
-import org.primefaces.model.BeanPropertyComparator;
-import org.primefaces.model.ChainedBeanPropertyComparator;
-import org.primefaces.model.DynamicChainedPropertyComparator;
-import org.primefaces.model.SortMeta;
-import org.primefaces.model.SortOrder;
+import org.primefaces.model.*;
 
 public class SortFeature implements DataTableFeature {
 
@@ -58,7 +50,7 @@ public class SortFeature implements DataTableFeature {
         String sortDir = params.get(clientId + "_sortDir");
 
         if (table.isMultiSort()) {
-            List<SortMeta> multiSortMeta = new ArrayList<SortMeta>();
+            List<SortMeta> multiSortMeta = new ArrayList<>();
             String[] sortKeys = sortKey.split(",");
             String[] sortOrders = sortDir.split(",");
 
@@ -94,7 +86,7 @@ public class SortFeature implements DataTableFeature {
         if (table.isLazy()) {
             if (table.isLiveScroll()) {
                 table.loadLazyScrollData(0, table.getScrollRows());
-            } 
+            }
             else if (table.isVirtualScroll()) {
                 int rows = table.getRows();
                 int scrollRows = table.getScrollRows();
@@ -102,7 +94,7 @@ public class SortFeature implements DataTableFeature {
                 scrollRows = (rows == 0) ? virtualScrollRows : ((virtualScrollRows > rows) ? rows : virtualScrollRows);
 
                 table.loadLazyScrollData(0, scrollRows);
-            } 
+            }
             else {
                 table.loadLazyData();
             }
@@ -156,23 +148,13 @@ public class SortFeature implements DataTableFeature {
         ValueExpression sortVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
         SortOrder sortOrder = SortOrder.valueOf(table.getSortOrder().toUpperCase(Locale.ENGLISH));
         MethodExpression sortFunction = table.getSortFunction();
-        List list = null;
 
         UIColumn sortColumn = table.getSortColumn();
         if (sortColumn != null && sortColumn.isDynamic()) {
             ((DynamicColumn) sortColumn).applyStatelessModel();
         }
 
-        if (value instanceof List) {
-            list = (List) value;
-        }
-        else if (value instanceof ListDataModel) {
-            list = (List) ((ListDataModel) value).getWrappedData();
-        }
-        else {
-            throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
-        }
-
+        List list = resolveList(value);
         Collections.sort(list, new BeanPropertyComparator(
                 sortVE, table.getVar(), sortOrder, sortFunction, table.isCaseSensitiveSort(), table.resolveDataLocale(), table.getNullSortOrder()));
 
@@ -181,25 +163,15 @@ public class SortFeature implements DataTableFeature {
 
     public void multiSort(FacesContext context, DataTable table) {
         Object value = table.getValue();
-        List<SortMeta> sortMeta = table.getMultiSortMeta();
-        List list = null;
-        boolean caseSensitiveSort = table.isCaseSensitiveSort();
-        Locale locale = table.resolveDataLocale();
-        int nullSortOrder = table.getNullSortOrder();
-
         if (value == null) {
             return;
         }
 
-        if (value instanceof List) {
-            list = (List) value;
-        }
-        else if (value instanceof ListDataModel) {
-            list = (List) ((ListDataModel) value).getWrappedData();
-        }
-        else {
-            throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
-        }
+        List<SortMeta> sortMeta = table.getMultiSortMeta();
+        List list = resolveList(value);
+        boolean caseSensitiveSort = table.isCaseSensitiveSort();
+        Locale locale = table.resolveDataLocale();
+        int nullSortOrder = table.getNullSortOrder();
 
         ChainedBeanPropertyComparator chainedComparator = new ChainedBeanPropertyComparator();
         for (SortMeta meta : sortMeta) {
@@ -255,5 +227,17 @@ public class SortFeature implements DataTableFeature {
         }
 
         return sortOrder;
+    }
+
+    protected List resolveList(Object value) {
+        if (value instanceof List) {
+            return (List) value;
+        }
+        else if (value instanceof ListDataModel) {
+            return (List) ((ListDataModel) value).getWrappedData();
+        }
+        else {
+            throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
+        }
     }
 }

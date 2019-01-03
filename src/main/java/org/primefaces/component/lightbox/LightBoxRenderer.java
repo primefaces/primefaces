@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,8 +42,12 @@ public class LightBoxRenderer extends CoreRenderer {
 
         writer.startElement("div", lb);
         writer.writeAttribute("id", clientId, "id");
-        if (lb.getStyle() != null) writer.writeAttribute("style", lb.getStyle(), null);
-        if (lb.getStyleClass() != null) writer.writeAttribute("class", lb.getStyleClass(), null);
+        if (lb.getStyle() != null) {
+            writer.writeAttribute("style", lb.getStyle(), null);
+        }
+        if (lb.getStyleClass() != null) {
+            writer.writeAttribute("class", lb.getStyleClass(), null);
+        }
 
         renderChildren(context, lb);
 
@@ -74,6 +78,7 @@ public class LightBoxRenderer extends CoreRenderer {
                 .attr("width", lb.getWidth(), null)
                 .attr("height", lb.getHeight(), null)
                 .attr("visible", lb.isVisible(), false)
+                .attr("blockScroll", lb.isBlockScroll(), false)
                 .attr("iframeTitle", lb.getIframeTitle(), null)
                 .callback("onShow", "function()", lb.getOnShow())
                 .callback("onHide", "function()", lb.getOnHide());

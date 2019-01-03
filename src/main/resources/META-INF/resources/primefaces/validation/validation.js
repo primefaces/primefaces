@@ -612,7 +612,7 @@ if (window.PrimeFaces) {
             else {
                 vc.renderMessages(form);
             }
-            
+
             //focus first element
             for(var key in vc.messages) {
                 if(vc.messages.hasOwnProperty(key)) {
@@ -649,7 +649,7 @@ if (window.PrimeFaces) {
                 return;
             }
         }
-        
+
         var submittedValue = vc.getSubmittedValue(element),
         valid = true,
         converterId = element.data('p-con');
@@ -674,7 +674,12 @@ if (window.PrimeFaces) {
             newValue = submittedValue;
         }
 
-        if(valid && element.data('p-required') && (newValue === null || newValue === '')) {
+        var required = element.data('p-required');
+        if (required) {
+           element.attr('aria-required', true);
+        }
+
+        if(valid && required && (newValue === null || newValue === '')) {
             var requiredMessageStr = element.data('p-rmsg'),
             requiredMsg = (requiredMessageStr) ? {summary:requiredMessageStr,detail:requiredMessageStr} : vc.getMessage('javax.faces.component.UIInput.REQUIRED', vc.getLabel(element));
             vc.addMessage(element, requiredMsg);
@@ -709,10 +714,14 @@ if (window.PrimeFaces) {
         var highlighterType = element.data('p-hl')||'default',
         highlighter = PrimeFaces.validator.Highlighter.types[highlighterType];
 
-        if(valid)
+        if(valid) {
             highlighter.unhighlight(element);
-        else
+            element.attr('aria-invalid', false);
+        }
+        else {
             highlighter.highlight(element);
+            element.attr('aria-invalid', true);
+        }
     };
 
     PrimeFaces.validateInstant = function(el) {
@@ -1045,8 +1054,17 @@ if (window.PrimeFaces) {
             'manychkbox': {
 
                 highlight: function(element) {
-                    var container = element.closest('.ui-selectmanycheckbox'),
-                    chkboxes = container.find('div.ui-chkbox-box');
+                    var custom = element.hasClass('ui-chkbox-clone'),
+                    chkboxes;
+                    
+                    if(custom) {
+                        var groupedInputs = $('input[name="' + element.attr('name') + '"].ui-chkbox-clone');
+                        chkboxes = groupedInputs.parent().next();
+                    }
+                    else {
+                        var container = element.closest('.ui-selectmanycheckbox');
+                        chkboxes = container.find('div.ui-chkbox-box');
+                    }
 
                     for(var i = 0; i < chkboxes.length; i++) {
                         chkboxes.eq(i).addClass('ui-state-error');
@@ -1054,8 +1072,17 @@ if (window.PrimeFaces) {
                 },
 
                 unhighlight: function(element) {
-                    var container = element.closest('.ui-selectmanycheckbox'),
-                    chkboxes = container.find('div.ui-chkbox-box');
+                    var custom = element.hasClass('ui-chkbox-clone'),
+                    chkboxes;
+                    
+                    if(custom) {
+                        var groupedInputs = $('input[name="' + element.attr('name') + '"].ui-chkbox-clone');
+                        chkboxes = groupedInputs.parent().next();
+                    }
+                    else {
+                        var container = element.closest('.ui-selectmanycheckbox');
+                        chkboxes = container.find('div.ui-chkbox-box');
+                    }
 
                     for(var i = 0; i < chkboxes.length; i++) {
                         chkboxes.eq(i).removeClass('ui-state-error');
@@ -1132,7 +1159,7 @@ if (window.PrimeFaces) {
                 }
 
             },
-            
+
             'booleanbutton': {
 
                 highlight: function(element) {
@@ -1144,19 +1171,25 @@ if (window.PrimeFaces) {
                 }
 
             },
-            
+
             'inputnumber': {
 
                 highlight: function(element) {
                     var orginalInput = element.prev('input');
                     orginalInput.addClass('ui-state-error');
                     PrimeFaces.validator.Highlighter.highlightLabel(orginalInput);
+
+                    // see #3706
+                    orginalInput.parent().addClass('ui-state-error');
                 },
 
                 unhighlight: function(element) {
                     var orginalInput = element.prev('input');
                     orginalInput.removeClass('ui-state-error');
                     PrimeFaces.validator.Highlighter.unhighlightLabel(orginalInput);
+
+                    // see #3706
+                    orginalInput.parent().removeClass('ui-state-error');
                 }
 
             }

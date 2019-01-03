@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,11 +22,14 @@ import org.primefaces.model.OrganigramNode;
  */
 public final class OrganigramHelper {
 
+    private OrganigramHelper() {
+    }
+
     /**
      * Finds a {@link OrganigramNode} for the given rowKey.
      *
      * @param searchRoot The {@link OrganigramNode} to start the search.
-     * @param rowKey The rowKey.
+     * @param rowKey     The rowKey.
      * @return The {@link OrganigramNode} for the rowKey or <code>null</code>.
      */
     public static OrganigramNode findTreeNode(OrganigramNode searchRoot, String rowKey) {
@@ -55,7 +58,7 @@ public final class OrganigramHelper {
      * Finds a {@link OrganigramNode} for the given selection.
      *
      * @param searchRoot The {@link OrganigramNode} to start the search.
-     * @param selection The selection.
+     * @param selection  The selection.
      * @return The {@link OrganigramNode} for the selection or <code>null</code>.
      */
     public static OrganigramNode findTreeNode(OrganigramNode searchRoot, OrganigramNode selection) {

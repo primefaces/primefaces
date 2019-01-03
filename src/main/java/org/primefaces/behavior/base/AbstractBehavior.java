@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,8 +33,8 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
         super();
 
         int propertiesCount = getAllProperties().length;
-        literals = new HashMap<String, Object>(propertiesCount);
-        bindings = new HashMap<String, ValueExpression>(propertiesCount);
+        literals = new HashMap<>(propertiesCount);
+        bindings = new HashMap<>(propertiesCount);
     }
 
     public void setLiteral(String attr, Object val) {
@@ -89,6 +89,14 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
         return eval(property.name(), unspecifiedValue);
     }
 
+    public void put(String name, Object value) {
+        setLiteral(name, value);
+    }
+
+    public void put(Enum<?> property, Object value) {
+        setLiteral(property.name(), value);
+    }
+
     protected boolean isAttributeSet(String attr) {
         return literals.containsKey(attr) || bindings.containsKey(attr);
     }
@@ -113,7 +121,7 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
                 values = null;
             }
             else {
-                values = new Object[] { superState };
+                values = new Object[]{superState};
             }
         }
         else {
@@ -177,7 +185,7 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
 
         Enum<?>[] allProperties = getAllProperties();
 
-        Map<String, Object> map = new HashMap<String, Object>(allProperties.length);
+        Map<String, Object> map = new HashMap<>(allProperties.length);
         for (int i = 0; i < allProperties.length; i++) {
             Object val = values[i];
 

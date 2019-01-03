@@ -4,8 +4,7 @@
 PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
 
     init: function(cfg) {
-        this.cfg = cfg;
-        this.id = this.cfg.id;
+        this._super(cfg);
         this.target = $(PrimeFaces.escapeClientId(this.cfg.target));
         this.cfg.margin = this.cfg.margin||0;
 
@@ -30,14 +29,14 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
         var $this = this,
         win = $(window);
 
-        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id, function() {
+        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', function() {
             if(win.scrollTop() > $this.initialState.top - $this.cfg.margin)
                 $this.fix();
             else
                 $this.restore();
         });
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, null, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', null, function() {
             if ($this.fixed) {
                 $this.target.width($this.ghost.outerWidth() - ($this.target.outerWidth() - $this.target.width()));
             }

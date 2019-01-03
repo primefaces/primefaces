@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package org.primefaces.util;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,19 +22,17 @@ import java.util.List;
  */
 public class BeanUtils {
 
-    private static List<Class<?>> primitiveTypes;
+    private static final List<Class<?>> PRIMITIVES = LangUtils.<Class<?>>unmodifiableList(Boolean.class,
+            Byte.class,
+            Character.class,
+            Double.class,
+            Float.class,
+            Integer.class,
+            Long.class,
+            Short.class,
+            String.class);
 
-    static {
-        primitiveTypes = new ArrayList<Class<?>>();
-        primitiveTypes.add(Boolean.class);
-        primitiveTypes.add(Byte.class);
-        primitiveTypes.add(Character.class);
-        primitiveTypes.add(Double.class);
-        primitiveTypes.add(Float.class);
-        primitiveTypes.add(Integer.class);
-        primitiveTypes.add(Long.class);
-        primitiveTypes.add(Short.class);
-        primitiveTypes.add(String.class);
+    private BeanUtils() {
     }
 
     public static boolean isBean(Class<?> valueClass) {
@@ -46,10 +43,10 @@ public class BeanUtils {
             return false;
         }
         else {
-            return !primitiveTypes.contains(valueClass);
+            return !PRIMITIVES.contains(valueClass);
         }
     }
-    
+
     public static boolean isBean(Object value) {
         if (value instanceof Boolean || value instanceof String || value instanceof Number) {
             return false;

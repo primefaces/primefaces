@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,9 @@ import org.primefaces.util.ComponentUtils;
 
 public class SearchExpressionUtils {
 
+    private SearchExpressionUtils() {
+    }
+
     public static VisitContext createVisitContext(FacesContext context, int hints) {
         if (isHintSet(hints, SearchExpressionHint.SKIP_UNRENDERED)) {
             return VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
@@ -35,7 +38,7 @@ public class SearchExpressionUtils {
     public static boolean isHintSet(int hints, int hint) {
         return (hints & hint) != 0;
     }
-    
+
      // used by p:resolveClientId
     public static String resolveClientId(String expression, UIComponent source) {
         return SearchExpressionFacade.resolveClientId(
@@ -43,7 +46,7 @@ public class SearchExpressionUtils {
                 source,
                 expression);
     }
-    
+
     // used by p:resolveClientIds
     public static String resolveClientIds(String expressions, UIComponent source) {
         return SearchExpressionFacade.resolveClientIds(
@@ -51,7 +54,7 @@ public class SearchExpressionUtils {
                 source,
                 expressions);
     }
-    
+
     // used by p:resolveWidgetVar
     public static String resolveWidgetVar(String expression, UIComponent component) {
         UIComponent resolvedComponent = SearchExpressionFacade.resolveComponent(

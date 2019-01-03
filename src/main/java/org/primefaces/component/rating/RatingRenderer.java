@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,10 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class RatingRenderer extends InputRenderer {
@@ -29,12 +31,19 @@ public class RatingRenderer extends InputRenderer {
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Rating rating = (Rating) component;
-        if (rating.isDisabled() || rating.isReadonly()) {
+        if (!shouldDecode(rating)) {
             return;
         }
 
         String clientId = rating.getClientId(context);
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
+
+        if (!LangUtils.isValueEmpty(submittedValue)) {
+            int submittedStars = Integer.parseInt(submittedValue);
+            if (submittedStars < 1 || submittedStars > rating.getStars()) {
+                return;
+            }
+        }
 
         rating.setSubmittedValue(submittedValue);
 
@@ -94,7 +103,7 @@ public class RatingRenderer extends InputRenderer {
             encodeIcon(context, starClass);
         }
 
-        encodeInput(context, clientId + "_input", valueToRender);
+        encodeInput(context, rating, clientId + "_input", valueToRender);
 
         writer.endElement("div");
     }
@@ -111,7 +120,7 @@ public class RatingRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeInput(FacesContext context, String id, String value) throws IOException {
+    protected void encodeInput(FacesContext context, Rating rating, String id, String value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("input", null);
@@ -122,6 +131,7 @@ public class RatingRenderer extends InputRenderer {
         if (value != null) {
             writer.writeAttribute("value", value, null);
         }
+        renderAccessibilityAttributes(context, rating);
         writer.endElement("input");
     }
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,4 +36,7 @@ public class SearchExpressionConstants {
     public static final String ROOT_KEYWORD =               KEYWORD_PREFIX + "root";
 
     public static final String PFS_PREFIX =                 KEYWORD_PREFIX + "(";
+
+    private SearchExpressionConstants() {
+    }
 }

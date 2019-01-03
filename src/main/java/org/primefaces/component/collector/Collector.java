@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,12 +51,12 @@ public class Collector implements ActionListener, StateHolder {
 
         ELContext elContext = FacesContext.getCurrentInstance().getELContext();
 
-        Object val = (Object) value.getValue(elContext);
+        Object val = value.getValue(elContext);
 
         if (addTo != null) {
             Collection collection = (Collection) addTo.getValue(elContext);
             Object uniqueValue = (unique != null) ? unique.getValue(elContext) : null;
-            boolean checkUniqueness = (uniqueValue == null) ? true : (Boolean.valueOf(uniqueValue.toString())).booleanValue();
+            boolean checkUniqueness = (uniqueValue == null) ? true : Boolean.parseBoolean(uniqueValue.toString());
 
             if (checkUniqueness) {
                 if (!collection.contains(val)) {

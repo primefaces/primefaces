@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ import org.primefaces.expression.impl.WidgetVarExpressionResolver;
  */
 public class SearchExpressionResolverFactory {
 
-    private static final HashMap<String, SearchExpressionResolver> RESOLVER_MAPPING = new HashMap<String, SearchExpressionResolver>();
+    private static final HashMap<String, SearchExpressionResolver> RESOLVER_MAPPING = new HashMap<>();
 
     private static final FindComponentExpressionResolver FIND_COMPONENT_EXPRESSION_RESOLVER = new FindComponentExpressionResolver();
 
@@ -69,7 +69,7 @@ public class SearchExpressionResolverFactory {
     private SearchExpressionResolverFactory() {
 
     }
-    
+
     /**
      * Finds a {@link SearchExpressionResolver} for the given expression.
      *

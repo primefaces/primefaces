@@ -255,7 +255,7 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
             this.plot.destroy();
         }
 
-        this.init(cfg);
+        this._super(cfg);
     },
 
     //@Override
@@ -287,7 +287,7 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
 
         this.cfg.resetAxesOnResize = (this.cfg.resetAxesOnResize === false) ? false : true;
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.jq, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.jq, function() {
             var replotOptions = {
                 resetAxes: $this.cfg.resetAxesOnResize
             };
@@ -319,7 +319,7 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         //legend config
         if(this.cfg.legendPosition) {
             this.cfg.legend = {
-                renderer: $.jqplot.EnhancedLegendRenderer,
+                renderer: this.cfg.type === 'pie' ? $.jqplot.EnhancedPieLegendRenderer : $.jqplot.EnhancedLegendRenderer,
                 show: true,
                 escapeHtml: this.cfg.escapeHtml,
                 location: this.cfg.legendPosition,
@@ -370,18 +370,15 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         $(this.jqId).bind("jqplotClick", function(ev, gridpos, datapos, neighbor) {
-            if(neighbor && $this.cfg.behaviors) {
-                var itemSelectCallback = $this.cfg.behaviors['itemSelect'];
-                if(itemSelectCallback) {
-                    var ext = {
-                        params: [
-                            {name: 'itemIndex', value: neighbor.pointIndex}
-                            ,{name: 'seriesIndex', value: neighbor.seriesIndex}
-                        ]
-                    };
+            if(neighbor && $this.hasBehavior('itemSelect')) {
+                var ext = {
+                    params: [
+                        {name: 'itemIndex', value: neighbor.pointIndex}
+                        ,{name: 'seriesIndex', value: neighbor.seriesIndex}
+                    ]
+                };
 
-                    itemSelectCallback.call($this, ext);
-                }
+                $this.callBehavior('itemSelect', ext);
             }
         });
     },

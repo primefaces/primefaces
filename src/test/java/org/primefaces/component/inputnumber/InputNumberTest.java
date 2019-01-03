@@ -70,6 +70,10 @@ public class InputNumberTest {
         Map<String, String> requestParams = new HashMap<>();
         requestParams.put("_hinput", submittedValue);
         when(externalContext.getRequestParameterMap()).thenReturn(requestParams);
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("readonly", disabled);
+        attributes.put("disabled", disabled);
+        when(inputNumber.getAttributes()).thenReturn(attributes);
         when(inputNumber.isDisabled()).thenReturn(disabled);
         when(inputNumber.isReadonly()).thenReturn(disabled);
         when(inputNumber.getMinValue()).thenReturn(minValue);
@@ -152,7 +156,7 @@ public class InputNumberTest {
         setupValues("", false, null, "10.0", true);
         renderer.decode(context, inputNumber);
         double submittedValue = Double.parseDouble(inputNumber.getSubmittedValue().toString());
-        Assert.assertEquals("10.0", inputNumber.getSubmittedValue());
+        Assert.assertEquals("10.0", String.valueOf(submittedValue));
     }
 
     @Test

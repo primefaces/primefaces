@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,11 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.PrimeApplicationContext;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class PasswordRenderer extends InputRenderer {
@@ -33,7 +33,7 @@ public class PasswordRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         Password password = (Password) component;
 
-        if (password.isDisabled() || password.isReadonly()) {
+        if (!shouldDecode(password)) {
             return;
         }
 
@@ -63,10 +63,10 @@ public class PasswordRenderer extends InputRenderer {
         if (feedback) {
             wb.attr("feedback", true)
                     .attr("inline", password.isInline())
-                    .attr("promptLabel", escapeText(password.getPromptLabel()))
-                    .attr("weakLabel", escapeText(password.getWeakLabel()))
-                    .attr("goodLabel", escapeText(password.getGoodLabel()))
-                    .attr("strongLabel", escapeText(password.getStrongLabel()));
+                    .attr("promptLabel", password.getPromptLabel())
+                    .attr("weakLabel", password.getWeakLabel())
+                    .attr("goodLabel", password.getGoodLabel())
+                    .attr("strongLabel", password.getStrongLabel());
         }
 
         wb.finish();
@@ -92,20 +92,14 @@ public class PasswordRenderer extends InputRenderer {
         }
 
         String valueToRender = ComponentUtils.getValueToRender(context, password);
-        if (!ComponentUtils.isValueBlank(valueToRender) && password.isRedisplay()) {
+        if (!LangUtils.isValueBlank(valueToRender) && password.isRedisplay()) {
             writer.writeAttribute("value", valueToRender, null);
         }
 
+        renderAccessibilityAttributes(context, password);
         renderPassThruAttributes(context, password, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, password, HTML.INPUT_TEXT_EVENTS);
-
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
-        if (password.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
-        if (password.isRequired()) writer.writeAttribute("aria-required", "true", null);
-
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, password);
-        }
+        renderValidationMetadata(context, password);
 
         writer.endElement("input");
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ import org.primefaces.metadata.transformer.AbstractInputMetadataTransformer;
 
 public class BeanValidationInputMetadataTransformer extends AbstractInputMetadataTransformer {
 
-    private static final Logger LOG = Logger.getLogger(BeanValidationInputMetadataTransformer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BeanValidationInputMetadataTransformer.class.getName());
 
     @Override
     public void transformInput(FacesContext context, PrimeApplicationContext applicationContext, UIInput input) throws IOException {
@@ -63,7 +63,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
             String message = "Skip transform metadata for component \"" + input.getClientId(context) + "\" because"
                     + " the ValueExpression of the \"value\" attribute"
                     + " isn't resolvable completely (e.g. a sub-expression returns null)";
-            LOG.log(Level.FINE, message);
+            LOGGER.log(Level.FINE, message);
         }
     }
 

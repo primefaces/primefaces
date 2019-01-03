@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,12 @@
 package org.primefaces.component.selectbooleancheckbox;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
-import org.primefaces.context.PrimeApplicationContext;
+
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -32,14 +33,14 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         SelectBooleanCheckbox checkbox = (SelectBooleanCheckbox) component;
 
-        if (checkbox.isDisabled()) {
+        if (!shouldDecode(checkbox)) {
             return;
         }
 
         decodeBehaviors(context, checkbox);
 
         String clientId = checkbox.getClientId(context);
-        String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
         if (submittedValue != null && isChecked(submittedValue)) {
             checkbox.setSubmittedValue(true);
@@ -64,7 +65,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
     protected void encodeMarkup(FacesContext context, SelectBooleanCheckbox checkbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = checkbox.getClientId(context);
-        boolean checked = Boolean.valueOf(ComponentUtils.getValueToRender(context, checkbox));
+        boolean checked = Boolean.parseBoolean(ComponentUtils.getValueToRender(context, checkbox));
         boolean disabled = checkbox.isDisabled();
         String title = checkbox.getTitle();
 
@@ -83,17 +84,16 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
             writer.writeAttribute("title", title, "title");
         }
 
-        encodeInput(context, checkbox, clientId, checked, disabled);
+        encodeInput(context, checkbox, clientId, checked);
         encodeOutput(context, checkbox, checked, disabled);
         encodeItemLabel(context, checkbox, clientId);
 
         writer.endElement("div");
     }
 
-    protected void encodeInput(FacesContext context, SelectBooleanCheckbox checkbox, String clientId, boolean checked, boolean disabled) throws IOException {
+    protected void encodeInput(FacesContext context, SelectBooleanCheckbox checkbox, String clientId, boolean checked) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_input";
-        String labelledBy = checkbox.getLabelledBy();
 
         writer.startElement("div", checkbox);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
@@ -103,27 +103,19 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute("aria-hidden", "true", null);
-
-        if (labelledBy != null) {
-            writer.writeAttribute("aria-labelledby", labelledBy, null);
-        }
+        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
 
         if (checked) {
             writer.writeAttribute("checked", "checked", null);
-            writer.writeAttribute("aria-checked", "true", null);
+            writer.writeAttribute(HTML.ARIA_CHECKED, "true", null);
         }
         else {
-            writer.writeAttribute("aria-checked", "false", null);
+            writer.writeAttribute(HTML.ARIA_CHECKED, "false", null);
         }
 
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
-        if (checkbox.getTabindex() != null) writer.writeAttribute("tabindex", checkbox.getTabindex(), null);
-
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, checkbox);
-        }
-
+        renderValidationMetadata(context, checkbox);
+        renderAccessibilityAttributes(context, checkbox);
+        renderPassThruAttributes(context, checkbox, HTML.TAB_INDEX);
         renderOnchange(context, checkbox);
         renderDomEvents(context, checkbox, HTML.BLUR_FOCUS_EVENTS);
 
@@ -159,7 +151,14 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
 
             writer.startElement("span", null);
             writer.writeAttribute("class", HTML.CHECKBOX_LABEL_CLASS, null);
-            writer.writeText(label, "itemLabel");
+
+            if (checkbox.isEscape()) {
+                writer.writeText(label, "itemLabel");
+            }
+            else {
+                writer.write(label);
+            }
+
             writer.endElement("span");
         }
     }

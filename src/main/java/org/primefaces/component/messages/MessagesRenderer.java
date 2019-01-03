@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,91 +16,53 @@
 package org.primefaces.component.messages;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
+import java.util.*;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.renderkit.UINotificationRenderer;
+import org.primefaces.util.HTML;
 
 public class MessagesRenderer extends UINotificationRenderer {
-    
-    private final static Logger logger = Logger.getLogger(MessagesRenderer.class.getName());
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Messages uiMessages = (Messages) component;
         ResponseWriter writer = context.getResponseWriter();
         String clientId = uiMessages.getClientId(context);
-        Map<String, List<FacesMessage>> messagesMap = new HashMap<String, List<FacesMessage>>();
         boolean globalOnly = uiMessages.isGlobalOnly();
         String containerClass = uiMessages.isShowIcon() ? Messages.CONTAINER_CLASS : Messages.ICONLESS_CONTAINER_CLASS;
         String style = uiMessages.getStyle();
         String styleClass = uiMessages.getStyleClass();
         styleClass = (styleClass == null) ? containerClass : containerClass + " " + styleClass;
 
-        String _for = uiMessages.getFor();
-        List<FacesMessage> messages = new ArrayList<FacesMessage>();
-        if (!isValueBlank(_for)) {
-            String forType = uiMessages.getForType();
-            Iterator<FacesMessage> messagesIterator = context.getMessages(_for);
-            
-            // key case
-            if (forType == null || forType.equals("key")) { 
-                while (messagesIterator.hasNext()) {
-                    messages.add(messagesIterator.next());
+        Map<String, List<FacesMessage>> messagesBySeverity = null;
+        List<FacesMessage> messages = collectFacesMessages(uiMessages, context);
+        if (messages != null && !messages.isEmpty()) {
+            messagesBySeverity = new HashMap<>(4);
+
+            for (int i = 0; i < messages.size(); i++) {
+                FacesMessage message = messages.get(i);
+                FacesMessage.Severity severity = message.getSeverity();
+
+                if (severity.equals(FacesMessage.SEVERITY_INFO)) {
+                    addMessage(uiMessages, message, messagesBySeverity, "info");
                 }
-            }
-
-            // clientId / SearchExpression case
-            if (forType == null || forType.equals("expression")) {
-                UIComponent forComponent = SearchExpressionFacade.resolveComponent(
-                        context, uiMessages, _for, SearchExpressionHint.IGNORE_NO_RESULT);
-                if (forComponent != null) {
-                    String forComponentClientId = forComponent.getClientId(context);
-                    if (!_for.equals(forComponentClientId)) {
-                        messagesIterator = context.getMessages(forComponentClientId);
-                        while (messagesIterator.hasNext()) {
-                            FacesMessage next = messagesIterator.next();
-                            if (!messages.contains(next)) {
-                                messages.add(next);
-                            }
-                        }
-                    }
+                else if (severity.equals(FacesMessage.SEVERITY_WARN)) {
+                    addMessage(uiMessages, message, messagesBySeverity, "warn");
                 }
-            }
-        }
-        else {
-            Iterator<FacesMessage> messagesIterator = uiMessages.isGlobalOnly() ? context.getMessages(null) : context.getMessages();
-            while (messagesIterator.hasNext()) {
-                messages.add(messagesIterator.next());
-            }
-        }
-
-        for (int i = 0; i < messages.size(); i++) {
-            FacesMessage message = messages.get(i);
-            FacesMessage.Severity severity = message.getSeverity();
-
-            if (severity.equals(FacesMessage.SEVERITY_INFO)) {
-                addMessage(uiMessages, message, messagesMap, "info");
-            }
-            else if (severity.equals(FacesMessage.SEVERITY_WARN)) {
-                addMessage(uiMessages, message, messagesMap, "warn");
-            }
-            else if (severity.equals(FacesMessage.SEVERITY_ERROR)) {
-                addMessage(uiMessages, message, messagesMap, "error");
-            }
-            else if (severity.equals(FacesMessage.SEVERITY_FATAL)) {
-                addMessage(uiMessages, message, messagesMap, "fatal");
+                else if (severity.equals(FacesMessage.SEVERITY_ERROR)) {
+                    addMessage(uiMessages, message, messagesBySeverity, "error");
+                }
+                else if (severity.equals(FacesMessage.SEVERITY_FATAL)) {
+                    addMessage(uiMessages, message, messagesBySeverity, "fatal");
+                }
             }
         }
 
@@ -112,7 +74,7 @@ public class MessagesRenderer extends UINotificationRenderer {
             writer.writeAttribute("style", style, null);
         }
 
-        writer.writeAttribute("aria-live", "polite", null);
+        writer.writeAttribute(HTML.ARIA_LIVE, "polite", null);
 
         if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             writer.writeAttribute("data-global", String.valueOf(globalOnly), null);
@@ -122,31 +84,29 @@ public class MessagesRenderer extends UINotificationRenderer {
             writer.writeAttribute("data-redisplay", String.valueOf(uiMessages.isRedisplay()), null);
         }
 
-        for (String severity : messagesMap.keySet()) {
-            List<FacesMessage> severityMessages = messagesMap.get(severity);
-
-            if (severityMessages.size() > 0) {
-                encodeSeverityMessages(context, uiMessages, severity, severityMessages);
+        if (messagesBySeverity != null) {
+            for (Map.Entry<String, List<FacesMessage>> entry : messagesBySeverity.entrySet()) {
+                encodeMessages(context, uiMessages, entry.getKey(), entry.getValue());
             }
         }
 
         writer.endElement("div");
     }
 
-    protected void addMessage(Messages uiMessages, FacesMessage message, Map<String, List<FacesMessage>> messagesMap, String severity) {
+    protected void addMessage(Messages uiMessages, FacesMessage message, Map<String, List<FacesMessage>> messagesBySeverity, String severity) {
         if (shouldRender(uiMessages, message, severity)) {
-            List<FacesMessage> severityMessages = messagesMap.get(severity);
+            List<FacesMessage> severityMessages = messagesBySeverity.get(severity);
 
             if (severityMessages == null) {
-                severityMessages = new ArrayList<FacesMessage>();
-                messagesMap.put(severity, severityMessages);
+                severityMessages = new ArrayList<>();
+                messagesBySeverity.put(severity, severityMessages);
             }
 
             severityMessages.add(message);
         }
     }
 
-    protected void encodeSeverityMessages(FacesContext context, Messages uiMessages, String severity, List<FacesMessage> messages) throws IOException {
+    protected void encodeMessages(FacesContext context, Messages uiMessages, String severity, List<FacesMessage> messages) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClassPrefix = Messages.SEVERITY_PREFIX_CLASS + severity;
         boolean escape = uiMessages.isEscape();
@@ -168,50 +128,55 @@ public class MessagesRenderer extends UINotificationRenderer {
 
         for (int i = 0; i < messages.size(); i++) {
             FacesMessage message = messages.get(i);
-            writer.startElement("li", null);
-
-            writer.writeAttribute("role", "alert", null);
-            writer.writeAttribute("aria-atomic", "true", null);
-
-            String summary = message.getSummary() != null ? message.getSummary() : "";
-            String detail = message.getDetail() != null ? message.getDetail() : summary;
-
-            if (uiMessages.isShowSummary()) {
-                writer.startElement("span", null);
-                writer.writeAttribute("class", styleClassPrefix + "-summary", null);
-
-                if (escape) {
-                    writer.writeText(summary, null);
-                }
-                else {
-                    writer.write(summary);
-                }
-
-                writer.endElement("span");
-            }
-
-            if (uiMessages.isShowDetail()) {
-                writer.startElement("span", null);
-                writer.writeAttribute("class", styleClassPrefix + "-detail", null);
-
-                if (escape) {
-                    writer.writeText(detail, null);
-                }
-                else {
-                    writer.write(detail);
-                }
-
-                writer.endElement("span");
-            }
-
-            writer.endElement("li");
-
+            encodeMessage(writer, uiMessages, message, styleClassPrefix, escape);
             message.rendered();
         }
 
         writer.endElement("ul");
 
         writer.endElement("div");
+    }
+
+    protected void encodeMessage(ResponseWriter writer, Messages uiMessages, FacesMessage message, String styleClassPrefix, boolean escape)
+            throws IOException {
+
+        writer.startElement("li", null);
+
+        writer.writeAttribute("role", "alert", null);
+        writer.writeAttribute(HTML.ARIA_ATOMIC, "true", null);
+
+        String summary = message.getSummary() != null ? message.getSummary() : "";
+        String detail = message.getDetail() != null ? message.getDetail() : summary;
+
+        if (uiMessages.isShowSummary()) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", styleClassPrefix + "-summary", null);
+
+            if (escape) {
+                writer.writeText(summary, null);
+            }
+            else {
+                writer.write(summary);
+            }
+
+            writer.endElement("span");
+        }
+
+        if (uiMessages.isShowDetail()) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", styleClassPrefix + "-detail", null);
+
+            if (escape) {
+                writer.writeText(detail, null);
+            }
+            else {
+                writer.write(detail);
+            }
+
+            writer.endElement("span");
+        }
+
+        writer.endElement("li");
     }
 
     protected void encodeCloseIcon(FacesContext context, Messages uiMessages) throws IOException {
@@ -227,5 +192,58 @@ public class MessagesRenderer extends UINotificationRenderer {
         writer.endElement("span");
 
         writer.endElement("a");
+    }
+
+    protected List<FacesMessage> collectFacesMessages(Messages uiMessages, FacesContext context) {
+        List<FacesMessage> messages = null;
+
+        String _for = uiMessages.getFor();
+        if (!isValueBlank(_for)) {
+            String forType = uiMessages.getForType();
+
+            // key case
+            if (forType == null || forType.equals("key")) {
+                Iterator<FacesMessage> messagesIterator = context.getMessages(_for);
+                while (messagesIterator.hasNext()) {
+                    if (messages == null) {
+                        messages = new ArrayList<>();
+                    }
+                    messages.add(messagesIterator.next());
+                }
+            }
+
+            // clientId / SearchExpression case
+            if (forType == null || forType.equals("expression")) {
+                UIComponent forComponent = SearchExpressionFacade.resolveComponent(context, uiMessages, _for, SearchExpressionHint.IGNORE_NO_RESULT);
+                if (forComponent != null) {
+
+                    String forComponentClientId = forComponent.getClientId(context);
+                    if (!_for.equals(forComponentClientId)) {
+
+                        Iterator<FacesMessage> messagesIterator = context.getMessages(forComponentClientId);
+                        while (messagesIterator.hasNext()) {
+                            FacesMessage next = messagesIterator.next();
+                            if (messages == null) {
+                                messages = new ArrayList<>();
+                            }
+                            if (!messages.contains(next)) {
+                                messages.add(next);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            Iterator<FacesMessage> messagesIterator = uiMessages.isGlobalOnly() ? context.getMessages(null) : context.getMessages();
+            while (messagesIterator.hasNext()) {
+                if (messages == null) {
+                    messages = new ArrayList<>();
+                }
+                messages.add(messagesIterator.next());
+            }
+        }
+
+        return messages;
     }
 }

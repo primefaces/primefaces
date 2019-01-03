@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package org.primefaces.expression.impl;
 import javax.faces.component.NamingContainer;
 
 import org.primefaces.expression.SearchExpressionResolver;
-import org.primefaces.expression.impl.base.AbstractClosestExpressionResolver;
 
 /**
  * {@link SearchExpressionResolver} for the "@namingcontainer" keyword.

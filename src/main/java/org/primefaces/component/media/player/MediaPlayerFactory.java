@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,27 +15,27 @@
  */
 package org.primefaces.component.media.player;
 
-import java.util.HashMap;
 import java.util.Map;
+import org.primefaces.util.MapBuilder;
 
 public class MediaPlayerFactory {
 
-    private static Map<String, MediaPlayer> players;
+    private static final Map<String, MediaPlayer> PLAYERS = MapBuilder.<String, MediaPlayer>builder()
+            .put(MediaPlayer.QUICKTIME, new QuickTimePlayer())
+            .put(MediaPlayer.FLASH, new FlashPlayer())
+            .put(MediaPlayer.WINDOWS, new WindowsPlayer())
+            .put(MediaPlayer.REAL, new RealPlayer())
+            .put(MediaPlayer.PDF, new PDFPlayer())
+            .build();
+
+    private MediaPlayerFactory() {
+    }
 
     /**
      * @return Provides all players configured by this factory
      */
     public static Map<String, MediaPlayer> getPlayers() {
-        if (players == null) {
-            players = new HashMap<String, MediaPlayer>();
-            players.put(MediaPlayer.QUICKTIME, new QuickTimePlayer());
-            players.put(MediaPlayer.FLASH, new FlashPlayer());
-            players.put(MediaPlayer.WINDOWS, new WindowsPlayer());
-            players.put(MediaPlayer.REAL, new RealPlayer());
-            players.put(MediaPlayer.PDF, new PDFPlayer());
-        }
-
-        return players;
+        return PLAYERS;
     }
 
     /**
@@ -46,7 +46,7 @@ public class MediaPlayerFactory {
             throw new IllegalArgumentException("A media player type must be provided");
         }
 
-        MediaPlayer player = getPlayers().get(type);
+        MediaPlayer player = PLAYERS.get(type);
 
         if (player != null) {
             return player;

@@ -237,23 +237,22 @@
 
 .ui-treetable .ui-row-editor span {
     cursor: pointer;
-    float: left;
 }
 
-.ui-treetable .ui-row-editor .ui-icon-pencil {
+.ui-treetable .ui-row-editor .ui-row-editor-pencil {
     display: inline-block;
 }
-.ui-treetable .ui-row-editing .ui-row-editor .ui-icon-pencil {
+.ui-treetable .ui-row-editing .ui-row-editor .ui-row-editor-pencil {
     display: none;
 }
 
-.ui-treetable .ui-row-editor .ui-icon-check,
-.ui-treetable .ui-row-editor .ui-icon-close {
+.ui-treetable .ui-row-editor .ui-row-editor-check,
+.ui-treetable .ui-row-editor .ui-row-editor-close {
     display: none;
 }
 
-.ui-treetable .ui-row-editing .ui-row-editor .ui-icon-check,
-.ui-treetable .ui-row-editing .ui-row-editor .ui-icon-close {
+.ui-treetable .ui-row-editing .ui-row-editor .ui-row-editor-check,
+.ui-treetable .ui-row-editing .ui-row-editor .ui-row-editor-close {
     display: inline-block;
 }
 

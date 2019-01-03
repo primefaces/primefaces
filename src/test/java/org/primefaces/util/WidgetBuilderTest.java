@@ -31,7 +31,7 @@ public class WidgetBuilderTest {
         FacesContext context = new FacesContextMock(writer);
         return new WidgetBuilder(context, new PrimeConfigurationMock(context));
     }
-    
+
     @Test
     public void init() throws IOException {
         CollectingResponseWriter writer = new CollectingResponseWriter();
@@ -53,7 +53,7 @@ public class WidgetBuilderTest {
         PrimeConfigurationMock config = new PrimeConfigurationMock(context);
         config.setMoveScriptsToBottom(true);
         WidgetBuilder builder = new WidgetBuilder(context, config);
-        
+
         builder.init("AccordionPanel", "acco", "accoId");
         builder.finish();
 
@@ -61,7 +61,7 @@ public class WidgetBuilderTest {
                 "<script id=\"accoId_s\" type=\"text/javascript\">PrimeFaces.cw(\"AccordionPanel\",\"acco\",{id:\"accoId\"});</script>",
                 writer.toString());
     }
-    
+
     @Test
     public void initWithWindowLoad() throws IOException {
         CollectingResponseWriter writer = new CollectingResponseWriter();

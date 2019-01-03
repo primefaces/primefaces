@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,9 +31,9 @@ import org.primefaces.context.PrimeApplicationContext;
 
 public class MetadataTransformerExecutor implements SystemEventListener {
 
-    private final static List<MetadataTransformer> METADATA_TRANSFORMERS = new ArrayList<MetadataTransformer>();
+    private static final List<MetadataTransformer> METADATA_TRANSFORMERS = new ArrayList<>();
 
-    private final static MetadataTransformer BV_INPUT_METADATA_TRANSFORMER = new BeanValidationInputMetadataTransformer();
+    private static final MetadataTransformer BV_INPUT_METADATA_TRANSFORMER = new BeanValidationInputMetadataTransformer();
 
     @Override
     public void processEvent(SystemEvent event) throws AbortProcessingException {
@@ -64,7 +64,7 @@ public class MetadataTransformerExecutor implements SystemEventListener {
                 BV_INPUT_METADATA_TRANSFORMER.transform(context, applicationContext, component);
             }
 
-            if (METADATA_TRANSFORMERS.size() > 0) {
+            if (!METADATA_TRANSFORMERS.isEmpty()) {
                 for (int i = 0; i < METADATA_TRANSFORMERS.size(); i++) {
                     METADATA_TRANSFORMERS.get(i).transform(context, applicationContext, component);
                 }

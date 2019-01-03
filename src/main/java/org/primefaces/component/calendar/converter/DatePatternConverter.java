@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ public class DatePatternConverter implements PatternConverter {
         }
 
         //month
-        if (pattern.contains("MMMM")) { // name 
+        if (pattern.contains("MMMM")) { // name
             pattern = pattern.replaceAll("MMMM*", "MM");
         }
         else if (pattern.contains("MMM")) {

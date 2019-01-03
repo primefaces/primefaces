@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 package org.primefaces.application.resource;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
@@ -26,6 +26,7 @@ import org.primefaces.util.ResourceUtils;
 
 public class DynamicResourcesPhaseListener implements PhaseListener {
 
+    private static final long serialVersionUID = 1L;
     private static final String INITIAL_RESOURCES = DynamicResourcesPhaseListener.class.getName() + ".INITIAL_RESOURCES";
 
     @Override
@@ -48,7 +49,7 @@ public class DynamicResourcesPhaseListener implements PhaseListener {
             return;
         }
 
-        // skip update=@all as the head will all resources will already be rendered
+        // skip update=@all as the head, with all resources, will already be rendered
         if (context.getPartialViewContext().isRenderAll()) {
             return;
         }
@@ -59,7 +60,7 @@ public class DynamicResourcesPhaseListener implements PhaseListener {
         }
 
         // collect all current resources before new components can be added to the view in later phases
-        ArrayList<ResourceUtils.ResourceInfo> initialResources = ResourceUtils.getComponentResources(context);
+        List<ResourceUtils.ResourceInfo> initialResources = ResourceUtils.getComponentResources(context);
 
         putInitialResources(context, initialResources);
     }
@@ -69,12 +70,12 @@ public class DynamicResourcesPhaseListener implements PhaseListener {
         return PhaseId.RESTORE_VIEW;
     }
 
-    public static void putInitialResources(FacesContext context, ArrayList<ResourceUtils.ResourceInfo> resources) {
+    public static void putInitialResources(FacesContext context, List<ResourceUtils.ResourceInfo> resources) {
         context.getAttributes().put(INITIAL_RESOURCES, resources);
     }
 
-    public static ArrayList<ResourceUtils.ResourceInfo> getInitialResources(FacesContext context) {
-        return (ArrayList<ResourceUtils.ResourceInfo>) context.getAttributes().get(INITIAL_RESOURCES);
+    public static List<ResourceUtils.ResourceInfo> getInitialResources(FacesContext context) {
+        return (List<ResourceUtils.ResourceInfo>) context.getAttributes().get(INITIAL_RESOURCES);
     }
 
 }

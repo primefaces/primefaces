@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,11 @@ package org.primefaces.component.mindmap;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.model.mindmap.MindmapNode;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
@@ -126,8 +128,14 @@ public class MindmapRenderer extends CoreRenderer {
 
         writer.write("\"label\":\"" + node.getLabel() + "\"");
 
-        if (nodeKey != null) writer.write(",\"key\":\"" + nodeKey + "\"");
-        if (node.getFill() != null) writer.write(",\"fill\":\"" + node.getFill() + "\"");
-        if (node.isSelectable()) writer.write(",\"selectable\":true");
+        if (nodeKey != null) {
+            writer.write(",\"key\":\"" + nodeKey + "\"");
+        }
+        if (node.getFill() != null) {
+            writer.write(",\"fill\":\"" + node.getFill() + "\"");
+        }
+        if (node.isSelectable()) {
+            writer.write(",\"selectable\":true");
+        }
     }
 }

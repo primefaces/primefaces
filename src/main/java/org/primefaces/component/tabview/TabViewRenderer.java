@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class TabViewRenderer extends CoreRenderer {
@@ -35,7 +36,7 @@ public class TabViewRenderer extends CoreRenderer {
         TabView tabView = (TabView) component;
         String activeIndexValue = params.get(tabView.getClientId(context) + "_activeIndex");
 
-        if (!ComponentUtils.isValueBlank(activeIndexValue)) {
+        if (!LangUtils.isValueBlank(activeIndexValue)) {
             tabView.setActiveIndex(Integer.parseInt(activeIndexValue));
         }
 
@@ -227,9 +228,9 @@ public class TabViewRenderer extends CoreRenderer {
         writer.startElement("li", tab);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "tab", null);
-        writer.writeAttribute("aria-expanded", String.valueOf(active), null);
-        writer.writeAttribute("aria-selected", String.valueOf(active), null);
-        writer.writeAttribute("aria-label", tab.getAriaLabel(), null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(active), null);
+        writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(active), null);
+        writer.writeAttribute(HTML.ARIA_LABEL, tab.getAriaLabel(), null);
         writer.writeAttribute("data-index", index, null);
         if (tab.getTitleStyle() != null) {
             writer.writeAttribute("style", tab.getTitleStyle(), null);
@@ -264,10 +265,10 @@ public class TabViewRenderer extends CoreRenderer {
         }
 
         UIComponent actions = tab.getFacet("actions");
-        if (actions != null && actions.isRendered())  {
+        if (actions != null && actions.isRendered()) {
             writer.startElement("li", null);
             writer.writeAttribute("class", "ui-tabs-actions", null);
-            writer.writeAttribute("aria-hidden", String.valueOf(!active), null);
+            writer.writeAttribute(HTML.ARIA_HIDDEN, String.valueOf(!active), null);
             actions.encodeAll(context);
             writer.endElement("li");
         }
@@ -323,7 +324,7 @@ public class TabViewRenderer extends CoreRenderer {
         writer.writeAttribute("id", tab.getClientId(context), null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "tabpanel", null);
-        writer.writeAttribute("aria-hidden", String.valueOf(!active), null);
+        writer.writeAttribute(HTML.ARIA_HIDDEN, String.valueOf(!active), null);
         writer.writeAttribute("data-index", index, null);
 
         if (dynamic) {

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,14 @@ package org.primefaces.component.ajaxexceptionhandler;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
+
 import org.primefaces.component.api.UIData;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
 
 /**
  * {@link VisitCallback} which collects all {@link AjaxExceptionHandler}s.
@@ -31,12 +33,12 @@ public class AjaxExceptionHandlerVisitCallback implements VisitCallback {
 
     private final Throwable throwable;
 
-    private Map<String, AjaxExceptionHandler> handlers;
+    private final Map<String, AjaxExceptionHandler> handlers;
 
     public AjaxExceptionHandlerVisitCallback(Throwable throwable) {
         this.throwable = throwable;
 
-        this.handlers = new HashMap<String, AjaxExceptionHandler>();
+        handlers = new HashMap<>();
     }
 
     @Override
@@ -45,7 +47,7 @@ public class AjaxExceptionHandlerVisitCallback implements VisitCallback {
         if (target instanceof AjaxExceptionHandler) {
             AjaxExceptionHandler currentHandler = (AjaxExceptionHandler) target;
 
-            if (ComponentUtils.isValueBlank(currentHandler.getType())) {
+            if (LangUtils.isValueBlank(currentHandler.getType())) {
                 handlers.put(null, currentHandler);
             }
             else {

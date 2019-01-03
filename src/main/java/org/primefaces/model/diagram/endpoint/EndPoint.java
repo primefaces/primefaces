@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,8 @@ import org.primefaces.model.diagram.overlay.Overlay;
 
 public abstract class EndPoint implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private String id;
     private EndPointAnchor anchor;
     private int maxConnections = 1;
@@ -35,7 +37,7 @@ public abstract class EndPoint implements Serializable {
     private String scope;
 
     public EndPoint() {
-        overlays = new ArrayList<Overlay>();
+        overlays = new ArrayList<>();
     }
 
     public EndPoint(EndPointAnchor anchor) {
@@ -46,7 +48,7 @@ public abstract class EndPoint implements Serializable {
     public abstract String getType();
 
     public abstract String toJS(StringBuilder sb);
-    
+
     public String getId() {
         return id;
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,9 @@
 package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
+
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.TableState;
@@ -24,10 +26,12 @@ import org.primefaces.event.data.PostPageEvent;
 
 public class PageFeature implements DataTableFeature {
 
+    @Override
     public void decode(FacesContext context, DataTable table) {
         throw new RuntimeException("PageFeature should not encode.");
     }
 
+    @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         table.updatePaginationData(context, table);
 
@@ -51,10 +55,12 @@ public class PageFeature implements DataTableFeature {
         }
     }
 
+    @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
         return false;
     }
 
+    @Override
     public boolean shouldEncode(FacesContext context, DataTable table) {
         return table.isPaginationRequest(context);
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,45 +16,26 @@
 package org.primefaces.component.api;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
-import javax.faces.component.ContextCallback;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.NamingContainer;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.UIPanel;
+import javax.faces.component.*;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.FacesListener;
-import javax.faces.event.PhaseId;
-import javax.faces.event.PostValidateEvent;
-import javax.faces.event.PreValidateEvent;
-import javax.faces.model.ArrayDataModel;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
-import javax.faces.model.ResultSetDataModel;
-import javax.faces.model.ScalarDataModel;
+import javax.faces.event.*;
+import javax.faces.model.*;
 import javax.faces.render.Renderer;
+
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.SharedStringBuilder;
 
 /**
@@ -63,13 +44,32 @@ import org.primefaces.util.SharedStringBuilder;
  */
 public class UITabPanel extends UIPanel implements NamingContainer {
 
-    private final static DataModel<?> EMPTY_MODEL = new ListDataModel<Object>(Collections.emptyList());
+    private static final DataModel<?> EMPTY_MODEL = new ListDataModel<>(Collections.emptyList());
 
     private static final Class<Object[]> OBJECT_ARRAY_CLASS = Object[].class;
 
     private static final Object[] LEAF_NO_STATE = new Object[]{null, null};
-    
+
     private static final String SB_ID = UITabPanel.class.getName() + "#id";
+    // Holds for each row the states of the child components of this UIData.
+    // Note that only "partial" component state is saved: the component fields
+    // that are expected to vary between rows.
+    private final Map<String, Collection<Object[]>> _rowStates = new HashMap<>();
+    /**
+     * Handle case where this table is nested inside another table. See method getDataModel for more details.
+     * <p>
+     * Key: parentClientId (aka rowId when nested within a parent table) Value: DataModel
+     */
+    private final Map<String, DataModel> _dataModelMap = new HashMap<>();
+    private Object _initialDescendantComponentState = null;
+    // will be set to false if the data should not be refreshed at the beginning of the encode phase
+    private boolean _isValidChilds = true;
+    private int _end = -1;
+    private int _count;
+    private int _index = -1;
+    private transient Object _origValue;
+    private transient Object _origVarStatus;
+    private transient FacesContext _facesContext;
 
     public enum PropertyKeys {
         value,
@@ -81,34 +81,6 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         dynamic,
         prependId
     }
-
-    private Object _initialDescendantComponentState = null;
-
-    // Holds for each row the states of the child components of this UIData.
-    // Note that only "partial" component state is saved: the component fields
-    // that are expected to vary between rows.
-    private Map<String, Collection<Object[]>> _rowStates = new HashMap<String, Collection<Object[]>>();
-
-    /**
-     * Handle case where this table is nested inside another table. See method getDataModel for more details.
-     * <p>
-     * Key: parentClientId (aka rowId when nested within a parent table) Value: DataModel
-     */
-    private Map<String, DataModel> _dataModelMap = new HashMap<String, DataModel>();
-
-    // will be set to false if the data should not be refreshed at the beginning of the encode phase
-    private boolean _isValidChilds = true;
-
-    private int _end = -1;
-
-    private int _count;
-
-    private int _index = -1;
-
-    private transient Object _origValue;
-    private transient Object _origVarStatus;
-
-    private transient FacesContext _facesContext;
 
     public int getOffset() {
         return (Integer) getStateHelper().eval(PropertyKeys.offset, 0);
@@ -187,15 +159,20 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
         if (value == null) {
             return EMPTY_MODEL;
-        } else if (value instanceof DataModel) {
+        }
+        else if (value instanceof DataModel) {
             return (DataModel) value;
-        } else if (value instanceof List) {
+        }
+        else if (value instanceof List) {
             return new ListDataModel((List<?>) value);
-        } else if (OBJECT_ARRAY_CLASS.isAssignableFrom(value.getClass())) {
+        }
+        else if (OBJECT_ARRAY_CLASS.isAssignableFrom(value.getClass())) {
             return new ArrayDataModel((Object[]) value);
-        } else if (value instanceof ResultSet) {
+        }
+        else if (value instanceof ResultSet) {
             return new ResultSetDataModel((ResultSet) value);
-        } else {
+        }
+        else {
             return new ScalarDataModel(value);
         }
     }
@@ -204,9 +181,11 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     public void setValueExpression(String name, ValueExpression binding) {
         if (name == null) {
             throw new NullPointerException("name");
-        } else if (name.equals("value")) {
+        }
+        else if (name.equals("value")) {
             _dataModelMap.clear();
-        } else if (name.equals("rowIndex")) {
+        }
+        else if (name.equals("rowIndex")) {
             throw new IllegalArgumentException("name " + name);
         }
         super.setValueExpression(name, binding);
@@ -225,7 +204,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
     @Override
     public String getContainerClientId(FacesContext context) {
-        if (this.isPrependId() || this.isRepeating()) {
+        if (isPrependId() || isRepeating()) {
             String clientId = super.getContainerClientId(context);
 
             int index = getIndex();
@@ -235,8 +214,9 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
             StringBuilder sb = SharedStringBuilder.get(getFacesContext(), SB_ID, clientId.length() + 4);
             return sb.append(clientId).append(UINamingContainer.getSeparatorChar(context)).append(index).toString();
-        } else {
-            UIComponent parent = this.getParent();
+        }
+        else {
+            UIComponent parent = getParent();
             while (parent != null) {
                 if (parent instanceof NamingContainer) {
                     return parent.getContainerClientId(context);
@@ -248,12 +228,12 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         }
     }
 
-    private RepeatStatus _getRepeatStatus() {
+    private RepeatStatus getRepeatStatus() {
         return new RepeatStatus(_count == 0, _index + getStep() >= getDataModel().getRowCount(),
                 _count, _index, getOffset(), _end, getStep());
     }
 
-    private void _captureScopeValues() {
+    private void captureScopeValues() {
         String var = getVar();
         if (var != null) {
             _origValue = getFacesContext().getExternalContext().getRequestMap().get(var);
@@ -264,18 +244,19 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         }
     }
 
-    private boolean _isIndexAvailable() {
+    private boolean isIndexAvailable() {
         return getDataModel().isRowAvailable();
     }
 
-    private void _restoreScopeValues() {
+    private void restoreScopeValues() {
         String var = getVar();
         if (var != null) {
             Map<String, Object> attrs = getFacesContext().getExternalContext().getRequestMap();
             if (_origValue != null) {
                 attrs.put(var, _origValue);
                 _origValue = null;
-            } else {
+            }
+            else {
                 attrs.remove(var);
             }
         }
@@ -285,7 +266,8 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             if (_origVarStatus != null) {
                 attrs.put(varStatus, _origVarStatus);
                 _origVarStatus = null;
-            } else {
+            }
+            else {
                 attrs.remove(varStatus);
             }
         }
@@ -296,9 +278,8 @@ public class UITabPanel extends UIPanel implements NamingContainer {
      * <p>
      * The saved state info only covers those fields that are expected to vary between rows of a table. Other fields are not modified.
      */
-    @SuppressWarnings("unchecked")
     private void restoreDescendantComponentStates(UIComponent parent, boolean iterateFacets, Object state,
-            boolean restoreChildFacets) {
+                                                  boolean restoreChildFacets) {
         int descendantStateIndex = -1;
         List<? extends Object[]> stateCollection = null;
 
@@ -325,10 +306,12 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                         // it is safe to skip iteration.
                         if (object[1] != null) {
                             restoreDescendantComponentStates(component, restoreChildFacets, object[1], true);
-                        } else {
+                        }
+                        else {
                             restoreDescendantComponentWithoutRestoreState(component, restoreChildFacets, true);
                         }
-                    } else {
+                    }
+                    else {
                         restoreDescendantComponentWithoutRestoreState(component, restoreChildFacets, true);
                     }
                     descendantStateIndex++;
@@ -357,10 +340,12 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                         // it is safe to skip iteration.
                         if (object[1] != null) {
                             restoreDescendantComponentStates(component, restoreChildFacets, object[1], true);
-                        } else {
+                        }
+                        else {
                             restoreDescendantComponentWithoutRestoreState(component, restoreChildFacets, true);
                         }
-                    } else {
+                    }
+                    else {
                         restoreDescendantComponentWithoutRestoreState(component, restoreChildFacets, true);
                     }
                     descendantStateIndex++;
@@ -378,7 +363,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
      * @param restoreChildFacets
      */
     private void restoreDescendantComponentWithoutRestoreState(UIComponent parent, boolean iterateFacets,
-            boolean restoreChildFacets) {
+                                                               boolean restoreChildFacets) {
         if (iterateFacets && parent.getFacetCount() > 0) {
             Iterator<UIComponent> childIterator = parent.getFacets().values().iterator();
 
@@ -419,7 +404,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
      * state of that child's child components.
      */
     private Collection<Object[]> saveDescendantComponentStates(UIComponent parent, boolean iterateFacets,
-            boolean saveChildFacets) {
+                                                               boolean saveChildFacets) {
         Collection<Object[]> childStates = null;
         // Index to indicate how many components has been passed without state to save.
         int childEmptyIndex = 0;
@@ -438,47 +423,51 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
                     if (child instanceof EditableValueHolder) {
                         if (childStates == null) {
-                            childStates = new ArrayList<Object[]>(
+                            childStates = new ArrayList<>(
                                     parent.getFacetCount()
-                                    + parent.getChildCount()
-                                    - totalChildCount
-                                    + childEmptyIndex);
+                                            + parent.getChildCount()
+                                            - totalChildCount
+                                            + childEmptyIndex);
                             for (int ci = 0; ci < childEmptyIndex; ci++) {
                                 childStates.add(LEAF_NO_STATE);
                             }
                         }
 
                         childStates.add(child.getChildCount() > 0
-                                ? new Object[]{new SavedState((EditableValueHolder) child),
-                                    saveDescendantComponentStates(child, saveChildFacets, true)}
-                                : new Object[]{new SavedState((EditableValueHolder) child),
-                                    null});
-                    } else if (child.getChildCount() > 0 || (saveChildFacets && child.getFacetCount() > 0)) {
+                                        ? new Object[]{new SavedState((EditableValueHolder) child),
+                                saveDescendantComponentStates(child, saveChildFacets, true)}
+                                        : new Object[]{new SavedState((EditableValueHolder) child), null});
+                    }
+                    else if (child.getChildCount() > 0 || (saveChildFacets && child.getFacetCount() > 0)) {
                         Object descendantSavedState = saveDescendantComponentStates(child, saveChildFacets, true);
 
                         if (descendantSavedState == null) {
                             if (childStates == null) {
                                 childEmptyIndex++;
-                            } else {
+                            }
+                            else {
                                 childStates.add(LEAF_NO_STATE);
                             }
-                        } else {
+                        }
+                        else {
                             if (childStates == null) {
-                                childStates = new ArrayList<Object[]>(
+                                childStates = new ArrayList<>(
                                         parent.getFacetCount()
-                                        + parent.getChildCount()
-                                        - totalChildCount
-                                        + childEmptyIndex);
+                                                + parent.getChildCount()
+                                                - totalChildCount
+                                                + childEmptyIndex);
                                 for (int ci = 0; ci < childEmptyIndex; ci++) {
                                     childStates.add(LEAF_NO_STATE);
                                 }
                             }
                             childStates.add(new Object[]{null, descendantSavedState});
                         }
-                    } else {
+                    }
+                    else {
                         if (childStates == null) {
                             childEmptyIndex++;
-                        } else {
+                        }
+                        else {
                             childStates.add(LEAF_NO_STATE);
                         }
                     }
@@ -498,47 +487,51 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
                     if (child instanceof EditableValueHolder) {
                         if (childStates == null) {
-                            childStates = new ArrayList<Object[]>(
+                            childStates = new ArrayList<>(
                                     parent.getFacetCount()
-                                    + parent.getChildCount()
-                                    - totalChildCount
-                                    + childEmptyIndex);
+                                            + parent.getChildCount()
+                                            - totalChildCount
+                                            + childEmptyIndex);
                             for (int ci = 0; ci < childEmptyIndex; ci++) {
                                 childStates.add(LEAF_NO_STATE);
                             }
                         }
 
                         childStates.add(child.getChildCount() > 0
-                                ? new Object[]{new SavedState((EditableValueHolder) child),
-                                    saveDescendantComponentStates(child, saveChildFacets, true)}
-                                : new Object[]{new SavedState((EditableValueHolder) child),
-                                    null});
-                    } else if (child.getChildCount() > 0 || (saveChildFacets && child.getFacetCount() > 0)) {
+                                        ? new Object[]{new SavedState((EditableValueHolder) child),
+                                saveDescendantComponentStates(child, saveChildFacets, true)}
+                                        : new Object[]{new SavedState((EditableValueHolder) child), null});
+                    }
+                    else if (child.getChildCount() > 0 || (saveChildFacets && child.getFacetCount() > 0)) {
                         Object descendantSavedState = saveDescendantComponentStates(child, saveChildFacets, true);
 
                         if (descendantSavedState == null) {
                             if (childStates == null) {
                                 childEmptyIndex++;
-                            } else {
+                            }
+                            else {
                                 childStates.add(LEAF_NO_STATE);
                             }
-                        } else {
+                        }
+                        else {
                             if (childStates == null) {
-                                childStates = new ArrayList<Object[]>(
+                                childStates = new ArrayList<>(
                                         parent.getFacetCount()
-                                        + parent.getChildCount()
-                                        - totalChildCount
-                                        + childEmptyIndex);
+                                                + parent.getChildCount()
+                                                - totalChildCount
+                                                + childEmptyIndex);
                                 for (int ci = 0; ci < childEmptyIndex; ci++) {
                                     childStates.add(LEAF_NO_STATE);
                                 }
                             }
                             childStates.add(new Object[]{null, descendantSavedState});
                         }
-                    } else {
+                    }
+                    else {
                         if (childStates == null) {
                             childEmptyIndex++;
-                        } else {
+                        }
+                        else {
                             childStates.add(LEAF_NO_STATE);
                         }
                     }
@@ -600,7 +593,8 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                 // components to set them up to represent a clean row.
                 _initialDescendantComponentState = saveDescendantComponentStates(this, true, true);
             }
-        } else {
+        }
+        else {
             // If no initial component state, there are no EditableValueHolder instances,
             // and that means there is no state to be saved for the current row, so we can
             // skip row state saving code safely.
@@ -630,7 +624,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             String varStatus = getVarStatus();
             if (varStatus != null) {
                 getFacesContext().getExternalContext().getRequestMap()
-                        .put(varStatus, _getRepeatStatus());
+                        .put(varStatus, getRepeatStatus());
             }
         }
 
@@ -641,10 +635,12 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             // If no initial state, skip row restore state code
             if (_initialDescendantComponentState != null) {
                 restoreDescendantComponentStates(this, true, _initialDescendantComponentState, true);
-            } else {
+            }
+            else {
                 restoreDescendantComponentWithoutRestoreState(this, true, true);
             }
-        } else {
+        }
+        else {
             Object rowState = _rowStates.get(getContainerClientId(facesContext));
             if (rowState == null) {
                 // We haven't been positioned on this row before, so just
@@ -653,10 +649,12 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                 // If no initial state, skip row restore state code
                 if (_initialDescendantComponentState != null) {
                     restoreDescendantComponentStates(this, true, _initialDescendantComponentState, true);
-                } else {
+                }
+                else {
                     restoreDescendantComponentWithoutRestoreState(this, true, true);
                 }
-            } else {
+            }
+            else {
                 // We have been positioned on this row before, so configure
                 // the child components of this component with the (partial)
                 // state that was previously saved. Fields not in the
@@ -672,11 +670,11 @@ public class UITabPanel extends UIPanel implements NamingContainer {
      * @param index
      * @return
      */
-    private int _calculateCountForIndex(int index) {
+    private int calculateCountForIndex(int index) {
         return (index - getOffset()) / getStep();
     }
 
-    private void _validateAttributes() throws FacesException {
+    private void validateAttributes() throws FacesException {
         int begin = getOffset();
         int end = getDataModel().getRowCount();
         int size = getSize();
@@ -692,7 +690,8 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             if (size < 0) {
                 throw new FacesException("iteration size cannot be less "
                         + "than zero");
-            } else if (!sizeIsEnd && (begin + size) > end) {
+            }
+            else if (!sizeIsEnd && (begin + size) > end) {
                 throw new FacesException("iteration size cannot be greater "
                         + "than collection size");
             }
@@ -710,7 +709,8 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         if (step < 0) {
             throw new FacesException("iteration step size cannot be less "
                     + "than zero");
-        } else if (step == 0) {
+        }
+        else if (step == 0) {
             throw new FacesException("iteration step size cannot be equal "
                     + "to zero");
         }
@@ -726,10 +726,10 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         }
 
         // validate attributes
-        _validateAttributes();
+        validateAttributes();
 
         // reset index
-        _captureScopeValues();
+        captureScopeValues();
         setIndex(-1);
 
         try {
@@ -750,20 +750,24 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                 _count = 0;
 
                 setIndex(i);
-                while (i <= end && _isIndexAvailable()) {
+                while (i <= end && isIndexAvailable()) {
 
                     if (PhaseId.RENDER_RESPONSE.equals(phase) && renderer != null) {
                         renderer.encodeChildren(faces, this);
-                    } else {
+                    }
+                    else {
                         for (int j = 0, childCount = getChildCount(); j < childCount; j++) {
                             UIComponent child = getChildren().get(j);
                             if (PhaseId.APPLY_REQUEST_VALUES.equals(phase)) {
                                 child.processDecodes(faces);
-                            } else if (PhaseId.PROCESS_VALIDATIONS.equals(phase)) {
+                            }
+                            else if (PhaseId.PROCESS_VALIDATIONS.equals(phase)) {
                                 child.processValidators(faces);
-                            } else if (PhaseId.UPDATE_MODEL_VALUES.equals(phase)) {
+                            }
+                            else if (PhaseId.UPDATE_MODEL_VALUES.equals(phase)) {
                                 child.processUpdates(faces);
-                            } else if (PhaseId.RENDER_RESPONSE.equals(phase)) {
+                            }
+                            else if (PhaseId.RENDER_RESPONSE.equals(phase)) {
                                 child.encodeAll(faces);
                             }
                         }
@@ -776,17 +780,19 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                     setIndex(i);
                 }
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new FacesException(e);
-        } finally {
+        }
+        finally {
             setIndex(-1);
-            _restoreScopeValues();
+            restoreScopeValues();
         }
     }
 
     @Override
     public boolean invokeOnComponent(FacesContext context, String clientId, ContextCallback callback) throws FacesException {
-        if (!this.isRepeating()) {
+        if (!isRepeating()) {
             return super.invokeOnComponent(context, clientId, callback);
         }
         else {
@@ -810,14 +816,15 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                     try {
                         callback.invokeContextCallback(context, this);
                         return true;
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e) {
                         throw new FacesException(e);
                     }
                 }
 
                 // Now Look throught facets on this UIComponent
-                if (this.getFacetCount() > 0) {
-                    for (Iterator<UIComponent> it = this.getFacets().values().iterator(); !returnValue && it.hasNext();) {
+                if (getFacetCount() > 0) {
+                    for (Iterator<UIComponent> it = getFacets().values().iterator(); !returnValue && it.hasNext(); ) {
                         returnValue = it.next().invokeOnComponent(context, clientId, callback);
                     }
                 }
@@ -845,39 +852,42 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                         try {
                             int invokeIndex = Integer.parseInt(clientRow);
                             // save the current scope values and set the right index
-                            _captureScopeValues();
+                            captureScopeValues();
                             if (invokeIndex != -1) {
                                 // calculate count for RepeatStatus
-                                _count = _calculateCountForIndex(invokeIndex);
+                                _count = calculateCountForIndex(invokeIndex);
                             }
                             setIndex(invokeIndex);
 
-                            if (!_isIndexAvailable()) {
+                            if (!isIndexAvailable()) {
                                 return false;
                             }
 
                             for (Iterator<UIComponent> it1 = getChildren().iterator();
-                                    !returnValue && it1.hasNext();) {
+                                 !returnValue && it1.hasNext(); ) {
                                 //recursive call to find the component
                                 returnValue = it1.next().invokeOnComponent(context, clientId, callback);
                             }
-                        } finally {
+                        }
+                        finally {
                             // restore the previous count, index and scope values
                             _count = prevCount;
                             setIndex(prevIndex);
-                            _restoreScopeValues();
+                            restoreScopeValues();
                         }
-                    } else {
+                    }
+                    else {
                         // Searching for this component's children
-                        if (this.getChildCount() > 0) {
+                        if (getChildCount() > 0) {
                             // Searching for this component's children/facets
-                            for (Iterator<UIComponent> it = this.getChildren().iterator(); !returnValue && it.hasNext();) {
+                            for (Iterator<UIComponent> it = getChildren().iterator(); !returnValue && it.hasNext(); ) {
                                 returnValue = it.next().invokeOnComponent(context, clientId, callback);
                             }
                         }
                     }
                 }
-            } finally {
+            }
+            finally {
                 //all components must call popComponentFromEl after visiting is finished
                 popComponentFromEL(context);
                 if (!isCachedFacesContext) {
@@ -893,7 +903,8 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     protected FacesContext getFacesContext() {
         if (_facesContext == null) {
             return super.getFacesContext();
-        } else {
+        }
+        else {
             return _facesContext;
         }
     }
@@ -908,7 +919,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
     @Override
     public boolean visitTree(VisitContext context, VisitCallback callback) {
-        if (!this.isRepeating()) {
+        if (!isRepeating()) {
             return super.visitTree(context, callback);
         }
         else {
@@ -928,10 +939,10 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             final int prevCount = _count;
 
             // validate attributes
-            _validateAttributes();
+            validateAttributes();
 
             // reset index and save scope values
-            _captureScopeValues();
+            captureScopeValues();
             setIndex(-1);
 
             // push the Component to EL
@@ -973,7 +984,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                                 _count = 0;
 
                                 setIndex(i);
-                                while (i <= end && _isIndexAvailable()) {
+                                while (i <= end && isIndexAvailable()) {
                                     for (int j = 0, childCount = getChildCount(); j < childCount; j++) {
                                         UIComponent child = getChildren().get(j);
                                         if (child.visitTree(context, callback)) {
@@ -990,14 +1001,15 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                         }
                         return false;
                 }
-            } finally {
+            }
+            finally {
                 // pop the component from EL
                 popComponentFromEL(context.getFacesContext());
 
                 // restore the previous count, index and scope values
                 _count = prevCount;
                 setIndex(prevIndex);
-                _restoreScopeValues();
+                restoreScopeValues();
             }
         }
     }
@@ -1011,11 +1023,11 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         pushComponentToEL(context, null);
 
         if (!shouldSkipChildren(context)) {
-            if (this.isRepeating()) {
+            if (isRepeating()) {
                 process(context, PhaseId.APPLY_REQUEST_VALUES);
             }
             else {
-                if (this.isDynamic()) {
+                if (isDynamic()) {
                     for (int i = 0; i < getChildCount(); i++) {
                         UIComponent child = getChildren().get(i);
                         if (child instanceof Tab) {
@@ -1034,10 +1046,12 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
         try {
             decode(context);
-        } catch (RuntimeException e) {
+        }
+        catch (RuntimeException e) {
             context.renderResponse();
             throw e;
-        } finally {
+        }
+        finally {
             popComponentFromEL(context);
         }
     }
@@ -1057,11 +1071,11 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         Application app = context.getApplication();
         app.publishEvent(context, PreValidateEvent.class, this);
 
-        if (this.isRepeating()) {
+        if (isRepeating()) {
             process(context, PhaseId.PROCESS_VALIDATIONS);
         }
         else {
-            if (this.isDynamic()) {
+            if (isDynamic()) {
                 for (int i = 0; i < getChildCount(); i++) {
                     UIComponent child = getChildren().get(i);
                     if (child instanceof Tab) {
@@ -1098,11 +1112,11 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
         pushComponentToEL(context, null);
 
-        if (this.isRepeating()) {
+        if (isRepeating()) {
             process(context, PhaseId.UPDATE_MODEL_VALUES);
         }
         else {
-            if (this.isDynamic()) {
+            if (isDynamic()) {
                 for (int i = 0; i < getChildCount(); i++) {
                     UIComponent child = getChildren().get(i);
                     if (child instanceof Tab) {
@@ -1125,146 +1139,9 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         popComponentFromEL(context);
     }
 
-    // from RI
-    private final static class SavedState implements Serializable {
-
-        private boolean _localValueSet;
-        private Object _submittedValue;
-        private boolean _valid = true;
-        private Object _value;
-
-        private static final long serialVersionUID = 2920252657338389849L;
-
-        public SavedState(EditableValueHolder evh) {
-            _value = evh.getLocalValue();
-            _localValueSet = evh.isLocalValueSet();
-            _valid = evh.isValid();
-            _submittedValue = evh.getSubmittedValue();
-        }
-
-        Object getSubmittedValue() {
-            return (_submittedValue);
-        }
-
-        void setSubmittedValue(Object submittedValue) {
-            _submittedValue = submittedValue;
-        }
-
-        boolean isValid() {
-            return (_valid);
-        }
-
-        void setValid(boolean valid) {
-            _valid = valid;
-        }
-
-        Object getValue() {
-            return _value;
-        }
-
-        public void setValue(Object value) {
-            _value = value;
-        }
-
-        boolean isLocalValueSet() {
-            return _localValueSet;
-        }
-
-        public void setLocalValueSet(boolean localValueSet) {
-            _localValueSet = localValueSet;
-        }
-
-        @Override
-        public String toString() {
-            return ("submittedValue: " + _submittedValue + " value: " + _value + " localValueSet: " + _localValueSet);
-        }
-
-        public void restoreState(EditableValueHolder evh) {
-            evh.setValue(_value);
-            evh.setValid(_valid);
-            evh.setSubmittedValue(_submittedValue);
-            evh.setLocalValueSet(_localValueSet);
-        }
-
-        public void populate(EditableValueHolder evh) {
-            _value = evh.getLocalValue();
-            _valid = evh.isValid();
-            _submittedValue = evh.getSubmittedValue();
-            _localValueSet = evh.isLocalValueSet();
-        }
-
-        public void apply(EditableValueHolder evh) {
-            evh.setValue(_value);
-            evh.setValid(_valid);
-            evh.setSubmittedValue(_submittedValue);
-            evh.setLocalValueSet(_localValueSet);
-        }
-    }
-
-    private final class IndexedEvent extends FacesEvent {
-
-        private final FacesEvent _target;
-
-        private final int _index;
-
-        public IndexedEvent(UITabPanel owner, FacesEvent target, int index) {
-            super(owner);
-            _target = target;
-            _index = index;
-        }
-
-        @Override
-        public PhaseId getPhaseId() {
-            return _target.getPhaseId();
-        }
-
-        @Override
-        public void setPhaseId(PhaseId phaseId) {
-            _target.setPhaseId(phaseId);
-        }
-
-        public boolean isAppropriateListener(FacesListener listener) {
-            return _target.isAppropriateListener(listener);
-        }
-
-        public void processListener(FacesListener listener) {
-            UITabPanel owner = (UITabPanel) getComponent();
-
-            // safe the current index, count aside
-            final int prevIndex = owner._index;
-            final int prevCount = owner._count;
-
-            try {
-                owner._captureScopeValues();
-                if (this._index != -1) {
-                    // calculate count for RepeatStatus
-                    _count = _calculateCountForIndex(this._index);
-                }
-                owner.setIndex(this._index);
-                if (owner._isIndexAvailable()) {
-                    _target.processListener(listener);
-                }
-            } finally {
-                // restore the previous count, index and scope values
-                owner._count = prevCount;
-                owner.setIndex(prevIndex);
-                owner._restoreScopeValues();
-            }
-        }
-
-        public int getIndex() {
-            return _index;
-        }
-
-        public FacesEvent getTarget() {
-            return _target;
-        }
-
-    }
-
     @Override
     public void broadcast(FacesEvent event) throws AbortProcessingException {
-        if (!this.isRepeating()) {
+        if (!isRepeating()) {
             super.broadcast(event);
         }
         else {
@@ -1276,13 +1153,13 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                 final int prevCount = _count;
 
                 try {
-                    _captureScopeValues();
+                    captureScopeValues();
                     if (idxEvent.getIndex() != -1) {
                         // calculate count for RepeatStatus
-                        _count = _calculateCountForIndex(idxEvent.getIndex());
+                        _count = calculateCountForIndex(idxEvent.getIndex());
                     }
                     setIndex(idxEvent.getIndex());
-                    if (_isIndexAvailable()) {
+                    if (isIndexAvailable()) {
                         // get the target FacesEvent
                         FacesEvent target = idxEvent.getTarget();
                         FacesContext facesContext = getFacesContext();
@@ -1302,7 +1179,8 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                         try {
                             // actual event broadcasting
                             targetComponent.broadcast(target);
-                        } finally {
+                        }
+                        finally {
                             // remove the components from the stack again
                             popComponentFromEL(facesContext);
                             if (compositeParent != null) {
@@ -1310,13 +1188,15 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                             }
                         }
                     }
-                } finally {
+                }
+                finally {
                     // restore the previous count, index and scope values
                     _count = prevCount;
                     setIndex(prevIndex);
-                    _restoreScopeValues();
+                    restoreScopeValues();
                 }
-            } else {
+            }
+            else {
                 super.broadcast(event);
             }
         }
@@ -1324,7 +1204,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
     @Override
     public void queueEvent(FacesEvent event) {
-        if (!this.isRepeating()) {
+        if (!isRepeating()) {
             super.queueEvent(event);
         }
         else {
@@ -1401,7 +1281,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     }
 
     private boolean hasErrorMessages(FacesContext context) {
-        for (Iterator<FacesMessage> iter = context.getMessages(); iter.hasNext();) {
+        for (Iterator<FacesMessage> iter = context.getMessages(); iter.hasNext(); ) {
             FacesMessage message = iter.next();
             if (FacesMessage.SEVERITY_ERROR.compareTo(message.getSeverity()) <= 0) {
                 return true;
@@ -1432,11 +1312,11 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     }
 
     public boolean isRepeating() {
-        return (this.getVar() != null);
+        return (getVar() != null);
     }
 
     public void resetLoadedTabsState() {
-        if (!this.isRepeating() && this.isDynamic()) {
+        if (!isRepeating() && isDynamic()) {
             for (int i = 0; i < getChildCount(); i++) {
                 UIComponent child = getChildren().get(i);
                 if (child instanceof Tab) {
@@ -1451,14 +1331,78 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         if (!ComponentUtils.isRequestSource(this, context)) {
             return false;
         }
-        
+
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String paramValue = params.get(Constants.RequestParams.SKIP_CHILDREN_PARAM);
 
-        if (ComponentUtils.isValueBlank(paramValue)) {
+        if (LangUtils.isValueBlank(paramValue)) {
             return true;
         }
 
-        return Boolean.valueOf(paramValue);
+        return Boolean.parseBoolean(paramValue);
+    }
+
+    private final class IndexedEvent extends FacesEvent {
+
+        private static final long serialVersionUID = 1L;
+        private final FacesEvent _target;
+        private final int _index;
+
+        public IndexedEvent(UITabPanel owner, FacesEvent target, int index) {
+            super(owner);
+            _target = target;
+            _index = index;
+        }
+
+        @Override
+        public PhaseId getPhaseId() {
+            return _target.getPhaseId();
+        }
+
+        @Override
+        public void setPhaseId(PhaseId phaseId) {
+            _target.setPhaseId(phaseId);
+        }
+
+        @Override
+        public boolean isAppropriateListener(FacesListener listener) {
+            return _target.isAppropriateListener(listener);
+        }
+
+        @Override
+        public void processListener(FacesListener listener) {
+            UITabPanel owner = (UITabPanel) getComponent();
+
+            // safe the current index, count aside
+            final int prevIndex = owner._index;
+            final int prevCount = owner._count;
+
+            try {
+                owner.captureScopeValues();
+                if (_index != -1) {
+                    // calculate count for RepeatStatus
+                    _count = calculateCountForIndex(_index);
+                }
+                owner.setIndex(_index);
+                if (owner.isIndexAvailable()) {
+                    _target.processListener(listener);
+                }
+            }
+            finally {
+                // restore the previous count, index and scope values
+                owner._count = prevCount;
+                owner.setIndex(prevIndex);
+                owner.restoreScopeValues();
+            }
+        }
+
+        public int getIndex() {
+            return _index;
+        }
+
+        public FacesEvent getTarget() {
+            return _target;
+        }
+
     }
 }

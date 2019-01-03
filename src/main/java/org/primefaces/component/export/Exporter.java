@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,19 +24,13 @@ import java.util.Map;
 
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIColumn;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
-import javax.faces.component.UIPanel;
-import javax.faces.component.UISelectMany;
-import javax.faces.component.ValueHolder;
+import javax.faces.component.*;
 import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.component.html.HtmlGraphicImage;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import org.primefaces.component.celleditor.CellEditor;
 
+import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.util.ComponentUtils;
@@ -61,25 +55,25 @@ public abstract class Exporter {
         public String toString() {
             return facet;
         }
-    };
+    }
 
     public abstract void export(FacesContext facesContext, DataTable table,
-            String outputFileName, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor,
-            MethodExpression postProcessor, ExporterOptions options, MethodExpression onTableRender) throws IOException;
+                                String outputFileName, boolean pageOnly, boolean selectionOnly,
+                                String encodingType, MethodExpression preProcessor,
+                                MethodExpression postProcessor, ExporterOptions options, MethodExpression onTableRender) throws IOException;
 
     public abstract void export(FacesContext facesContext, List<String> clientIds,
-            String outputFileName, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor,
-            MethodExpression postProcessor, ExporterOptions options, MethodExpression onTableRender) throws IOException;
+                                String outputFileName, boolean pageOnly, boolean selectionOnly,
+                                String encodingType, MethodExpression preProcessor,
+                                MethodExpression postProcessor, ExporterOptions options, MethodExpression onTableRender) throws IOException;
 
     public abstract void export(FacesContext facesContext,
-            String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor,
-            MethodExpression postProcessor, ExporterOptions options, MethodExpression onTableRender) throws IOException;
+                                String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
+                                String encodingType, MethodExpression preProcessor,
+                                MethodExpression postProcessor, ExporterOptions options, MethodExpression onTableRender) throws IOException;
 
     protected List<UIColumn> getColumnsToExport(UIData table) {
-        List<UIColumn> columns = new ArrayList<UIColumn>();
+        List<UIColumn> columns = new ArrayList<>();
 
         for (UIComponent child : table.getChildren()) {
             if (child instanceof UIColumn) {

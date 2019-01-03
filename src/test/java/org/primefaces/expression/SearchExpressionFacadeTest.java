@@ -21,8 +21,8 @@ import javax.faces.component.UIOutput;
 import javax.faces.component.UIPanel;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
-import junit.framework.Assert;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.primefaces.component.inputtext.InputText;
@@ -56,12 +56,6 @@ public class SearchExpressionFacadeTest {
         FacesContext context = FacesContext.getCurrentInstance();
 
         return SearchExpressionFacade.resolveClientId(context, source, expression);
-    }
-
-    private String resolveClientId(UIComponent source, String expression, int options) {
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        return SearchExpressionFacade.resolveClientId(context, source, expression, options);
     }
 
     private List<UIComponent> resolveComponents(UIComponent source, String expression) {
@@ -1712,7 +1706,7 @@ public class SearchExpressionFacadeTest {
         innerContainer.setId("innerContainer");
         outerContainer.getChildren().add(innerContainer);
 
-        ArrayList<UIComponent> components = new ArrayList<UIComponent>();
+        ArrayList<UIComponent> components = new ArrayList<>();
         components.add(outerContainer);
         components.add(innerContainer);
 
@@ -1744,7 +1738,7 @@ public class SearchExpressionFacadeTest {
         innerContainer.setId("innerContainer");
         outerContainer.getChildren().add(innerContainer);
 
-        ArrayList<UIComponent> components = new ArrayList<UIComponent>();
+        ArrayList<UIComponent> components = new ArrayList<>();
         components.add(outerContainer);
         components.add(innerContainer);
 
@@ -1776,7 +1770,7 @@ public class SearchExpressionFacadeTest {
         innerContainer.setId("innerContainer");
         outerContainer.getChildren().add(innerContainer);
 
-        ArrayList<UIComponent> components = new ArrayList<UIComponent>();
+        ArrayList<UIComponent> components = new ArrayList<>();
         components.add(outerContainer);
         components.add(innerContainer);
 
@@ -1800,7 +1794,7 @@ public class SearchExpressionFacadeTest {
         form.setPrependId(false);
         root.getChildren().add(form);
 
-        ArrayList<UIComponent> components = new ArrayList<UIComponent>();
+        ArrayList<UIComponent> components = new ArrayList<>();
         components.add(form);
         components.add(root);
 
@@ -1823,7 +1817,7 @@ public class SearchExpressionFacadeTest {
         form.setPrependId(false);
         root.getChildren().add(form);
 
-        ArrayList<UIComponent> components = new ArrayList<UIComponent>();
+        ArrayList<UIComponent> components = new ArrayList<>();
         components.add(form);
         components.add(root);
 

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class TabMenuRenderer extends BaseMenuRenderer {
@@ -94,14 +95,14 @@ public class TabMenuRenderer extends BaseMenuRenderer {
         writer.startElement("li", null);
         writer.writeAttribute("class", containerClass, null);
         writer.writeAttribute("role", "tab", null);
-        writer.writeAttribute("aria-expanded", String.valueOf(active), null);
-        writer.writeAttribute("aria-selected", String.valueOf(active), null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(active), null);
+        writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(active), null);
 
         if (containerStyle != null) {
             writer.writeAttribute("style", containerStyle, null);
         }
 
-        encodeMenuItem(context, menu, item);
+        encodeMenuItem(context, menu, item, "-1");
 
         writer.endElement("li");
     }

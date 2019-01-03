@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,9 @@ import javax.faces.context.ResponseWriter;
 
 // helper to avoid java.lang.NoClassDefFoundError's in older environments
 public class Jsf22Helper {
+
+    private Jsf22Helper() {
+    }
 
     public static void renderPassThroughAttributes(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();

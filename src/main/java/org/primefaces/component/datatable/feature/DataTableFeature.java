@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,19 @@
 package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
+
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 
 public interface DataTableFeature {
 
-    public boolean shouldDecode(FacesContext context, DataTable table);
+    boolean shouldDecode(FacesContext context, DataTable table);
 
-    public boolean shouldEncode(FacesContext context, DataTable table);
+    boolean shouldEncode(FacesContext context, DataTable table);
 
-    public void decode(FacesContext context, DataTable table);
+    void decode(FacesContext context, DataTable table);
 
-    public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException;
+    void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException;
 }

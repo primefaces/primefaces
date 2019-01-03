@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,10 @@ package org.primefaces.component.column;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.column.renderer.ColumnGroupHelperRenderer;
 import org.primefaces.component.column.renderer.HelperColumnRenderer;
 import org.primefaces.component.column.renderer.PanelGridBodyColumnRenderer;
@@ -32,7 +34,7 @@ public class ColumnRenderer extends CoreRenderer {
     static final Map<String, HelperColumnRenderer> RENDERERS;
 
     static {
-        RENDERERS = new HashMap<String, HelperColumnRenderer>();
+        RENDERERS = new HashMap<>();
         RENDERERS.put("columnGroup", new ColumnGroupHelperRenderer());
         RENDERERS.put("panelGridBody", new PanelGridBodyColumnRenderer());
         RENDERERS.put("panelGridFacet", new PanelGridFacetColumnRenderer());

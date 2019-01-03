@@ -22,15 +22,15 @@ import org.primefaces.context.PrimeRequestContext;
 public class PrimeRequestContextMock extends PrimeRequestContext {
 
     private final PrimeApplicationContext applicationContext;
-    
+
     public PrimeRequestContextMock(FacesContext context, PrimeApplicationContext applicationContext) {
         super(context);
-        
+
         this.applicationContext = applicationContext;
     }
 
-	@Override
-	public PrimeApplicationContext getApplicationContext() {
+    @Override
+    public PrimeApplicationContext getApplicationContext() {
         return applicationContext;
     }
 }

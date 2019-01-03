@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,8 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.treetable.TreeTable;
 
 public class CellEditEvent extends AbstractAjaxBehaviorEvent {
+
+    private static final long serialVersionUID = 1L;
 
     private Object oldValue;
 
@@ -100,7 +102,7 @@ public class CellEditEvent extends AbstractAjaxBehaviorEvent {
 
                 //multiple
                 if (inputFacet instanceof UIPanel) {
-                    List<Object> values = new ArrayList<Object>();
+                    List<Object> values = new ArrayList<>();
                     for (UIComponent kid : inputFacet.getChildren()) {
                         if (kid instanceof ValueHolder) {
                             values.add(((ValueHolder) kid).getValue());

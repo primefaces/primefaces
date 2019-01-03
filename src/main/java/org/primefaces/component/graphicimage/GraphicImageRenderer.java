@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,10 @@ import java.io.IOException;
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
-
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.application.resource.DynamicContentType;
 
+import org.primefaces.application.resource.DynamicContentType;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.DynamicContentSrcBuilder;
 import org.primefaces.util.HTML;
@@ -48,8 +47,12 @@ public class GraphicImageRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("src", imageSrc, null);
 
-        if (image.getAlt() == null) writer.writeAttribute("alt", "", null);
-        if (image.getStyleClass() != null) writer.writeAttribute("class", image.getStyleClass(), "styleClass");
+        if (image.getAlt() == null) {
+            writer.writeAttribute("alt", "", null);
+        }
+        if (image.getStyleClass() != null) {
+            writer.writeAttribute("class", image.getStyleClass(), "styleClass");
+        }
 
         renderPassThruAttributes(context, image, HTML.IMG_ATTRS);
 

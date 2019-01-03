@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,12 +22,7 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.ActionSource;
 import javax.faces.component.UIComponent;
-import javax.faces.view.facelets.ComponentHandler;
-import javax.faces.view.facelets.FaceletContext;
-import javax.faces.view.facelets.FaceletException;
-import javax.faces.view.facelets.TagAttribute;
-import javax.faces.view.facelets.TagConfig;
-import javax.faces.view.facelets.TagHandler;
+import javax.faces.view.facelets.*;
 
 public class FileDownloadTagHandler extends TagHandler {
 
@@ -37,11 +32,12 @@ public class FileDownloadTagHandler extends TagHandler {
 
     public FileDownloadTagHandler(TagConfig tagConfig) {
         super(tagConfig);
-        this.value = getRequiredAttribute("value");
-        this.contentDisposition = getAttribute("contentDisposition");
-        this.monitorKey = getAttribute("monitorKey");
+        value = getRequiredAttribute("value");
+        contentDisposition = getAttribute("contentDisposition");
+        monitorKey = getAttribute("monitorKey");
     }
 
+    @Override
     public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException, FacesException, FaceletException, ELException {
         if (ComponentHandler.isNew(parent)) {
             ValueExpression valueVE = value.getValueExpression(faceletContext, Object.class);

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,26 +21,28 @@ import java.util.List;
 
 public class TerminalAutoCompleteModel implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private List<TerminalCommand> commands;
-    
+
     public TerminalAutoCompleteModel() {
-        this.commands = new ArrayList<TerminalCommand>();
+        this.commands = new ArrayList<>();
     }
 
     public List<TerminalCommand> getCommands() {
         return commands;
     }
-    
+
     public void setCommands(List<TerminalCommand> commands) {
         this.commands = commands;
     }
-    
+
     public TerminalCommand addCommand(String commandText) {
         TerminalCommand command = new TerminalCommand(commandText);
-        
+
         this.commands.add(command);
-        
+
         return command;
     }
-    
+
 }

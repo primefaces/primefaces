@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,16 +20,17 @@ import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
+
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.primefaces.component.datatable.DataTable;
 
 public class ExcelExportVisitCallback implements VisitCallback {
 
-    private ExcelExporter exporter;
-    private boolean pageOnly;
-    private boolean selectionOnly;
-    private Workbook workbook;
+    private final ExcelExporter exporter;
+    private final boolean pageOnly;
+    private final boolean selectionOnly;
+    private final Workbook workbook;
 
     public ExcelExportVisitCallback(ExcelExporter exporter, Workbook workbook, boolean pageOnly, boolean selectionOnly) {
         this.exporter = exporter;
@@ -38,6 +39,7 @@ public class ExcelExportVisitCallback implements VisitCallback {
         this.workbook = workbook;
     }
 
+    @Override
     public VisitResult visit(VisitContext context, UIComponent target) {
         DataTable dt = (DataTable) target;
         FacesContext facesContext = context.getFacesContext();

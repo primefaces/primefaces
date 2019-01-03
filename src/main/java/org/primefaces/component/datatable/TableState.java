@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,10 +17,13 @@ package org.primefaces.component.datatable;
 
 import java.io.Serializable;
 import java.util.List;
+
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 
 public class TableState implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private int first;
 
@@ -47,11 +50,11 @@ public class TableState implements Serializable {
     private List<FilterState> filters;
 
     private String globalFilterValue;
-    
+
     private String orderedColumnsAsString;
-    
+
     private String togglableColumnsAsString;
-    
+
     private String resizableColumnsAsString;
 
     public int getFirst() {
@@ -157,7 +160,7 @@ public class TableState implements Serializable {
     public void setGlobalFilterValue(String globalFilterValue) {
         this.globalFilterValue = globalFilterValue;
     }
-    
+
     public String getOrderedColumnsAsString() {
         return orderedColumnsAsString;
     }
@@ -165,7 +168,7 @@ public class TableState implements Serializable {
     public void setOrderedColumnsAsString(String orderedColumnsAsString) {
         this.orderedColumnsAsString = orderedColumnsAsString;
     }
-    
+
     public String getTogglableColumnsAsString() {
         return togglableColumnsAsString;
     }
@@ -173,7 +176,7 @@ public class TableState implements Serializable {
     public void setTogglableColumnsAsString(String togglableColumnsAsString) {
         this.togglableColumnsAsString = togglableColumnsAsString;
     }
-    
+
     public String getResizableColumnsAsString() {
         return resizableColumnsAsString;
     }

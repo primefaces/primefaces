@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import org.primefaces.util.WidgetBuilder;
 
 public class MenuRenderer extends BaseMenuRenderer {
 
+    @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         Menu menu = (Menu) abstractMenu;
         String clientId = menu.getClientId(context);
@@ -44,6 +45,7 @@ public class MenuRenderer extends BaseMenuRenderer {
         wb.finish();
     }
 
+    @Override
     protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Menu menu = (Menu) abstractMenu;
@@ -98,7 +100,7 @@ public class MenuRenderer extends BaseMenuRenderer {
                     if (containerStyle != null) {
                         writer.writeAttribute("style", containerStyle, null);
                     }
-                    encodeMenuItem(context, menu, menuItem);
+                    encodeMenuItem(context, menu, menuItem, "-1");
                     writer.endElement("li");
                 }
                 else if (element instanceof Submenu) {
