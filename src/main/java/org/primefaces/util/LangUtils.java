@@ -108,11 +108,15 @@ public class LangUtils {
 
     public static Class tryToLoadClassForName(String name) {
         try {
-            return Class.forName(name, false, getCurrentClassLoader(LangUtils.class));
+            return Class.forName(name, false, LangUtils.class.getClassLoader());
         }
-        catch (ClassNotFoundException e) {
-            //do nothing - it's just a try
-            return null;
+        catch (ClassNotFoundException e1) {
+            try {
+                return Class.forName(name, false, getContextClassLoader());
+            }
+            catch (ClassNotFoundException e2) {
+                return null;
+            }
         }
     }
 

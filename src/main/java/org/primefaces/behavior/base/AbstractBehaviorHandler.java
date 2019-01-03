@@ -222,17 +222,7 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
     protected void addAttachedObjectHandlerToMyFaces(UIComponent component, FaceletContext ctx) {
         try {
             if (myfacesGetCompositionContextInstance == null || myfacesAddAttachedObjectHandler == null) {
-
-                Class<?> clazz = null;
-                try {
-                    clazz = Class.forName("org.apache.myfaces.view.facelets.FaceletCompositionContext");
-                }
-                catch (ClassNotFoundException cnfe) {
-                    clazz = Class.forName("org.apache.myfaces.view.facelets.FaceletCompositionContext",
-                            true,
-                            LangUtils.getContextClassLoader());
-                }
-
+                Class<?> clazz = LangUtils.tryToLoadClassForName("org.apache.myfaces.view.facelets.FaceletCompositionContext");
                 myfacesGetCompositionContextInstance = clazz.getDeclaredMethod("getCurrentInstance", FaceletContext.class);
                 myfacesAddAttachedObjectHandler = clazz.getDeclaredMethod("addAttachedObjectHandler", UIComponent.class, AttachedObjectHandler.class);
             }
