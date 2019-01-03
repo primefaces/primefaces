@@ -178,19 +178,15 @@ public class FileUploadUtils {
             //Short circuit
             return true;
         }
-        String tempFilePrefix = UUID.randomUUID().toString();
-        boolean tika = false;
-        try {
-            Class.forName("org.apache.tika.filetypedetector.TikaFileTypeDetector");
-            tika = true;
+
+        boolean tika = LangUtils.tryToLoadClassForName("org.apache.tika.filetypedetector.TikaFileTypeDetector") != null;
+        if (!tika && LOGGER.isLoggable(Level.WARNING)) {
+            LOGGER.warning("Could not find Apache Tika in classpath which is recommended for reliable content type checking");
         }
-        catch (Exception ex) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning("Could not find Apache Tika in classpath which is recommended for reliable content type checking");
-            }
-        }
+
         //If Tika is in place, we drop the original file extension to avoid short circuit detection by just looking at the file extension
         String tempFileSuffix = tika ? null : "." + FilenameUtils.getExtension(fileName);
+        String tempFilePrefix = UUID.randomUUID().toString();
         Path tempFile = Files.createTempFile(tempFilePrefix, tempFileSuffix);
         try {
             InputStream in = new PushbackInputStream(new BufferedInputStream(inputStream));

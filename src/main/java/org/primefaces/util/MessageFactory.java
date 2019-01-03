@@ -50,7 +50,7 @@ public class MessageFactory {
         Application application = facesContext.getApplication();
         String userBundleName = application.getMessageBundle();
         ResourceBundle bundle = null;
-        ClassLoader currentClassLoader = LangUtils.getCurrentClassLoader(application);
+        ClassLoader currentClassLoader = LangUtils.getCurrentClassLoader(application.getClass());
 
         //try user defined bundle first
         if (userBundleName != null) {

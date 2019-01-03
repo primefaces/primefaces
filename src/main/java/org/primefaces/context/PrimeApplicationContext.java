@@ -135,7 +135,7 @@ public class PrimeApplicationContext {
             }
             else {
                 try {
-                    cacheProvider = (CacheProvider) Class.forName(cacheProviderConfigValue).newInstance();
+                    cacheProvider = (CacheProvider) LangUtils.loadClassForName(cacheProviderConfigValue).newInstance();
                 }
                 catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
                     throw new FacesException(ex);

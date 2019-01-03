@@ -79,7 +79,7 @@ public class ImportConstantsTagHandler extends TagHandler {
         String type = attribute.getValue(ctx);
 
         try {
-            return Class.forName(type, true, LangUtils.getContextClassLoader());
+            return LangUtils.loadClassForName(type);
         }
         catch (ClassNotFoundException e) {
             throw new FacesException("Class " + type + " not found.", e);
