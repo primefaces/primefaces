@@ -378,7 +378,9 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             childrenContainer.empty();
         }
 
-        this.fireCollapseEvent(node);
+        if(!this.cfg.cache) {
+            this.fireCollapseEvent(node);
+        }
     },
 
     //@Override
