@@ -100,7 +100,9 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
             childrenContainer.children('.ui-treenode-children').empty();
         }
 
-        this.fireCollapseEvent(node);
+        if(!this.cfg.cache) {
+            this.fireCollapseEvent(node);
+        }
 
         if($.browser.msie) {
             this.drawConnectors();
