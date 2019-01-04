@@ -29,6 +29,7 @@ import javax.faces.event.FacesEvent;
 
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.MoveEvent;
+import org.primefaces.event.ResizeEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
@@ -69,6 +70,8 @@ public class Dialog extends DialogBase {
             .put("restoreMaximize", null)
             .put("open", null)
             .put("loadContent", null)
+            .put("resizeStart", ResizeEvent.class)
+            .put("resizeStop", ResizeEvent.class)
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
@@ -109,6 +112,13 @@ public class Dialog extends DialogBase {
                 MoveEvent moveEvent = new MoveEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), top, left);
                 moveEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(moveEvent);
+            }
+            else if (eventName.equals("resizeStart") || eventName.equals("resizeStop")) {
+                int width = Double.valueOf(params.get(clientId + "_width")).intValue();
+                int height = Double.valueOf(params.get(clientId + "_height")).intValue();
+                ResizeEvent resizeEvent = new ResizeEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), width, height);
+                resizeEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
+                super.queueEvent(resizeEvent);
             }
             else {
                 //minimize and maximize
