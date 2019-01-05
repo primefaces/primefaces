@@ -33,6 +33,7 @@ import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.DualListModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.MapBuilder;
 import org.primefaces.util.MessageFactory;
 
@@ -260,7 +261,7 @@ public class PickList extends PickListBase {
 
         if (values != null) {
             for (String item : values) {
-                if (item == null || item.trim().equals("")) {
+                if (LangUtils.isValueBlank(item)) {
                     continue;
                 }
 

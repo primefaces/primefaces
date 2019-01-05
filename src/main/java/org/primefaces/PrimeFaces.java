@@ -118,7 +118,7 @@ public class PrimeFaces {
      * @param base the base component from which we will start to resolve the search expression.
      */
     public void focus(String expression, UIComponent base) {
-        if (expression == null || expression.trim().isEmpty()) {
+        if (LangUtils.isValueBlank(expression)) {
             return;
         }
 
