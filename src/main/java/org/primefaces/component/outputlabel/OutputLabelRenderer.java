@@ -134,6 +134,7 @@ public class OutputLabelRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass.toString(), "id");
         renderPassThruAttributes(context, label, HTML.LABEL_ATTRS);
+        renderDomEvents(context, label, HTML.LABEL_EVENTS);
 
         if (!isValueBlank(_for)) {
             writer.writeAttribute("for", state.getClientId(), "for");
