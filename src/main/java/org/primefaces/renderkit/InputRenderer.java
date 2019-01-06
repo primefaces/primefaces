@@ -68,8 +68,8 @@ public abstract class InputRenderer extends CoreRenderer {
      * @throws IOException if any error occurs writing the response
      */
     protected void renderARIARequired(FacesContext context, UIInput component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         if (component.isRequired()) {
+            ResponseWriter writer = context.getResponseWriter();
             writer.writeAttribute(HTML.ARIA_REQUIRED, "true", null);
         }
     }
@@ -82,8 +82,8 @@ public abstract class InputRenderer extends CoreRenderer {
      * @throws IOException if any error occurs writing the response
      */
     protected void renderARIAInvalid(FacesContext context, UIInput component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         if (!component.isValid()) {
+            ResponseWriter writer = context.getResponseWriter();
             writer.writeAttribute(HTML.ARIA_INVALID, "true", null);
         }
     }

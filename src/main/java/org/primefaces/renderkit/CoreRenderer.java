@@ -88,13 +88,12 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected void renderPassThruAttributes(FacesContext context, UIComponent component, String[] attrs) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
         //pre-defined attributes
         if (attrs != null && attrs.length > 0) {
+            ResponseWriter writer = context.getResponseWriter();
+
             for (String attribute : attrs) {
                 Object value = component.getAttributes().get(attribute);
-
                 if (shouldRenderAttribute(value)) {
                     writer.writeAttribute(attribute, value.toString(), attribute);
                 }

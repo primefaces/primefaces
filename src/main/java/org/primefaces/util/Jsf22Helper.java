@@ -29,12 +29,12 @@ public class Jsf22Helper {
     }
 
     public static void renderPassThroughAttributes(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         Map<String, Object> passthroughAttributes = component.getPassThroughAttributes(false);
 
         if (passthroughAttributes != null && !passthroughAttributes.isEmpty()) {
-            for (Map.Entry<String, Object> attribute : passthroughAttributes.entrySet()) {
+            ResponseWriter writer = context.getResponseWriter();
 
+            for (Map.Entry<String, Object> attribute : passthroughAttributes.entrySet()) {
                 Object attributeValue = attribute.getValue();
                 if (attributeValue != null) {
                     String value = null;
