@@ -1,0 +1,56 @@
+A cache store is required to use the cache component, two different providers are supported as cache
+implementation; EHCache and Hazelcast. Provider is configured via a context-param.
+
+[source, xml]
+----
+<context-param>
+    <param-name>primefaces.CACHE_PROVIDER</param-name>
+    <param-value>org.primefaces.cache.EHCacheProvider</param-value>
+</context-param>
+----
+
+Here is a sample ehcache.xml to configure cache regions, there are two regions in this
+configuration.
+
+[source, xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="ehcache.xsd"
+         updateCheck="true"
+         monitoring="autodetect"
+         dynamicConfig="true">
+   <diskStore path="java.io.tmpdir" />
+
+   <defaultCache maxEntriesLocalHeap="10000" eternal="false" timeToIdleSeconds="120"
+                 timeToLiveSeconds="120" diskSpoolBufferSizeMB="30" maxEntriesLocalDisk="10000000"
+                 diskExpiryThreadIntervalSeconds="120" memoryStoreEvictionPolicy="LRU">
+      <persistence strategy="localTempSwap" />
+   </defaultCache>
+
+   <cache name="testcache" maxEntriesLocalHeap="10000" eternal="false"
+          timeToIdleSeconds="120" timeToLiveSeconds="120" diskSpoolBufferSizeMB="30"
+          maxEntriesLocalDisk="10000000" diskExpiryThreadIntervalSeconds="120" memoryStoreEvictionPolicy="LRU">
+      <persistence strategy="localTempSwap" />
+   </cache>
+</ehcache>
+----
+
+After the configuration, at UI side, the cached part needs to be wrapped inside the `<p:cache />` component.
+
+[source, xml]
+----
+<p:cache>
+    //content to cache
+</p:cache>
+----
+
+Once the page is loaded initially, content inside p:cache component is cached inside the cache
+region of the cache provider. Postbacks on the same page or reopening the page retrieve the output
+from cache instead of rendering the content regularly.
+
+==== Cache Provider API
+CacheProvider can be accessed via: `RequestContext.getCurrentInstance().getApplicationContext().getCacheProvider()`
+
+For example using this API, all cache regions can be cleaned using _clear()_ method. Refer to javadoc
+of CacheProvider for the full list of available methods.

@@ -1,0 +1,61 @@
+Barcode type should be provided along with the value to display. Supported formats are;
+
+- int2of5
+- codabar
+- code39
+- code128
+- ean8
+- ean13
+- upca
+- postnet
+
+
+- pdf417
+- datamatrix
+- qr
+
+Value can also be retrieved from a backend value:
+
+[source, xml]
+----
+<p:barcode value="#{bean.barcodeValue}" type="int2of5" />
+----
+
+==== Format
+Default display format is _svg_ and other possible option is _png_. In case the client browser does not
+support svg e.g. IE8, barcode automatically chooses png format.
+
+[source, xml]
+----
+<p:barcode value="#{bean.barcodeValue}" type="int2of5" format="png" />
+----
+
+==== Orientation
+In order to change the orientation, choose the angle from the 4 pre-defined values.
+
+[source, xml]
+----
+<p:barcode value="#{bean.barcodeValue}" type="int2of5" orientation="90"/>
+----
+
+==== Dependencies
+Barcode component uses *barcode4j* library underneath except QR code support, which is handled
+by *qrgen* library. Following versions are supported officially.
+
+[source, xml]
+----
+<dependency>
+    <groupId>net.glxn</groupId>
+    <artifactId>qrgen</artifactId>
+    <version>1.4</version>
+</dependency>
+
+<dependency>
+    <groupId>net.sf.barcode4j</groupId>
+    <artifactId>barcode4j-light</artifactId>
+    <version>2.1</version>
+</dependency>
+----
+
+*barcode4j 2.1 does not exist in maven central repository so manual installation is necessary for
+maven users.
