@@ -101,7 +101,10 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     *  Activates a tab with given index
+     * @public
+     *
+     * Activates a tab with given index
+     * @param {number} index - Index of tab
      */
     select: function(index) {
         var panel = this.panels.eq(index);
@@ -142,7 +145,10 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     *  Deactivates a tab with given index
+     * @public
+     *
+     * Deactivates a tab with given index
+     * @param {number} index - Index of tab
      */
     unselect: function(index) {
         if(this.cfg.controlled) {

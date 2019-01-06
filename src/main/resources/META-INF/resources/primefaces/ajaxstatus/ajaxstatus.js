@@ -29,6 +29,12 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
         this.bindToStandard();
     },
 
+    /**
+     * @public
+     *
+     * Triggers given event.
+     * @param {string} event - Name of event
+     */
     trigger: function(event, args) {
         var callback = this.cfg[event];
         if(callback) {

@@ -63,3 +63,22 @@ image::${tag.tagName}.jpg[]
 ==== Getting started with ${tag.tagName?cap_first}
 
 ${content}
+
+<#if clientApi?? && clientApi.functions?? && clientApi.widget??>
+==== Client API
+===== ${clientApi.widget}
+|===
+| Function | Params | Return Type | Description
+
+<#list clientApi.functions as func>
+    | ${func.signature}
+    |
+    <#list func.params as param>
+        ${param.name} - ${param.description}
+        <#sep>\n
+    </#list>
+    | ${func.returns.type}
+    | ${func.description}
+</#list>
+|===
+</#if>

@@ -791,6 +791,7 @@
                                 <faces-config>${basedir}/src/main/resources/META-INF/faces-config.xml</faces-config>
                                 <taglib>${basedir}/src/main/resources/META-INF/primefaces-p.taglib.xml</taglib>
                                 <ftl>${basedir}/src/main/asciidoc/ftl</ftl>
+                                <js>${basedir}/src/main/resources/META-INF/resources/primefaces</js>
                             </attributes>
 
                             <extensions>
