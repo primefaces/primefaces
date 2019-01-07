@@ -17,8 +17,8 @@ package org.primefaces.component.diagram;
 
 import java.util.Collection;
 import java.util.Map;
-import javax.faces.FacesException;
 
+import javax.faces.FacesException;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
@@ -122,7 +122,7 @@ public class Diagram extends DiagramBase {
                     EndPoint originalSourceEndPoint = model.findEndPoint(originalSourceElement, params.get(clientId + "_originalSourceEndPointId"));
                     EndPoint newSourceEndPoint = model.findEndPoint(newSourceElement, params.get(clientId + "_newSourceEndPointId"));
                     EndPoint originalTargetEndPoint = model.findEndPoint(originalTargetElement, params.get(clientId + "_originalTargetEndPointId"));
-                    EndPoint newTargetEndPoint = model.findEndPoint(newTargetElement, params.get(clientId + "_targetEndPointId"));
+                    EndPoint newTargetEndPoint = model.findEndPoint(newTargetElement, params.get(clientId + "_newTargetEndPointId"));
 
                     ConnectionChangeEvent connectionChangeEvent = new ConnectionChangeEvent(this, behaviorEvent.getBehavior(),
                             originalSourceElement, newSourceElement, originalTargetElement, newTargetElement,
