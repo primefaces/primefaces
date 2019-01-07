@@ -64,9 +64,9 @@ image::${tag.tagName}.jpg[]
 
 ${content}
 
-<#if clientApi?? && clientApi.functions?? && clientApi.widget??>
+<#if clientApi?? && clientApi.functions?has_content && clientApi.widget??>
 ==== Client API
-===== ${clientApi.widget}
+===== Widget: ${clientApi.widget}
 |===
 | Function | Params | Return Type | Description
 
@@ -75,7 +75,9 @@ ${content}
     |
     <#list func.params as param>
         ${param.name} - ${param.description}
-        <#sep>\n
+        <#sep>+
+    <#else>
+        -
     </#list>
     | ${func.returns.type}
     | ${func.description}

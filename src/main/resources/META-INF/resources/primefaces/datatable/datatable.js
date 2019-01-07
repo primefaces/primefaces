@@ -1593,7 +1593,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Ajax filter
+     * @public
+     *
+     * Filters the data
      */
     filter: function() {
         var $this = this,
@@ -1794,6 +1796,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.fireRowSelectEvent(rowMeta.key, 'rowSelect');
     },
 
+    /**
+     * @public
+     *
+     * Selects the given row.
+     *
+     * @param {number} r - number of tr element as jQuery object
+     * @param {boolean} silent - flag to fire row select ajax behavior.
+     */
     selectRow: function(r, silent) {
         var row = this.findRow(r);
         if(!row.hasClass('ui-datatable-selectable')) {
@@ -1822,6 +1832,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * @public
+     *
+     * Unselects the given row.
+     *
+     * @param {number} r - number of tr element as jQuery object
+     * @param {boolean} silent - flag to fire row select ajax behavior.
+     */
     unselectRow: function(r, silent) {
         var row = this.findRow(r);
         if(!row.hasClass('ui-datatable-selectable')) {
@@ -1972,6 +1990,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * @public
+     *
+     * Unselects all rows.
+     */
     unselectAllRows: function() {
         var selectedRows = this.tbody.children('tr.ui-state-highlight'),
         checkboxSelectionEnabled = this.isCheckboxSelectionEnabled(),
@@ -2007,6 +2030,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.writeSelections();
     },
 
+    /**
+     * @public
+     *
+     * Select all rows on current page
+     */
     selectAllRowsOnPage: function() {
         var rows = this.tbody.children('tr');
         for(var i = 0; i < rows.length; i++) {
@@ -2015,6 +2043,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * @public
+     *
+     * Unselect all rows on current page
+     */
     unselectAllRowsOnPage: function() {
         var rows = this.tbody.children('tr');
         for(var i = 0; i < rows.length; i++) {
@@ -2023,6 +2056,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * @public
+     *
+     * Select all rows.
+     */
     selectAllRows: function() {
         this.selectAllRowsOnPage();
         this.selection = new Array('@all');
@@ -2030,6 +2068,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
+     * @public
+     *
      * Toggles all rows with checkbox
      */
     toggleCheckAll: function() {
@@ -2860,7 +2900,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
+     * @public
+     *
      * Returns the paginator instance if any defined
+     * @return {Paginator} the paginator instance if any defined
      */
     getPaginator: function() {
         return this.paginator;
@@ -2912,6 +2955,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
+     * @public
+     *
      * Clears table filters
      */
     clearFilters: function() {
@@ -3480,6 +3525,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         return this.tbody.children('tr.ui-datatable-empty-message').length === 1;
     },
 
+    /**
+     * @public
+     *
+     * @return {number} Returns number of selected rows
+     */
     getSelectedRowsCount: function() {
         return this.isSelectionEnabled() ? this.selection.length : 0;
     },
@@ -3658,6 +3708,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.jq.find('.ui-datatable-tablewrapper > table').prepend(this.clone);
     },
 
+    /**
+     * @public
+     *
+     * Fetches the last row from the backend and inserts a row instead of updating the table itself.
+     */
     addRow: function() {
         var $this = this,
         options = {

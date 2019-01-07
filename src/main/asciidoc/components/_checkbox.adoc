@@ -1,0 +1,2 @@
+See custom layout part in SelectManyCheckbox section for more information.
+

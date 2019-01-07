@@ -1,0 +1,41 @@
+Value of the component should be a List where type of the elements it contains can be a string or a
+custom one if a converter is defined.
+
+[source, java]
+----
+public class ChipsView {
+    private List<String> cities;
+
+    public List<String> getCities() {
+        return this.cities;
+    }
+
+    public void setCities(List<String> cities) {
+        this.cities = cities;
+    }
+}
+----
+[source, xml]
+----
+<p:chips value="#{chipsView.cities}" />
+----
+
+==== Ajax Behavior Events
+|===
+|Event | Listener | Parameter Fired
+
+|itemSelect | org.primefaces.event.SelectEvent | When an item is added
+|itemUnselect | org.primefaces.event.UnselectEvent | When an item is removed.
+|===
+
+==== Skinning
+Following is the list of structural style classes;
+
+```
+Style Class Applies
+.ui-chips Container element.
+.ui-chips-container List element.
+.ui-chips-token A list item.
+.ui-chips-input-token List item containing the input.
+.ui-chips-token-icon Close icon of a token.
+```

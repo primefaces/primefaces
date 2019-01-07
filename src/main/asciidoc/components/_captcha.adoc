@@ -1,0 +1,53 @@
+Catpcha is implemented as an input component with a built-in validator that is integrated with
+reCaptcha. First thing to do is to sign up to reCaptcha to get public&private keys. Once you have
+the keys for your domain, add them to web.xml as follows;
+
+[source, xml]
+----
+<context-param>
+    <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
+    <param-value>YOUR_PRIVATE_KEY</param-value>
+</context-param>
+<context-param>
+    <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
+    <param-value>YOUR_PUBLIC_KEY</param-value>
+</context-param>
+----
+
+That is it, now you can use captcha as follows:
+
+[source, xml]
+----
+<p:captcha />
+----
+
+==== Themes
+Captcha features light and dark modes for theme, light is the default one.
+
+[source, xml]
+----
+<p:captcha theme="dark"/>
+----
+
+==== Languages
+Text instructions displayed on captcha is customized with the _language_ attribute. Below is a captcha
+with Turkish text.
+
+[source, xml]
+----
+<p:captcha language="tr"/>
+----
+
+==== Overriding Validation Messages
+By default captcha displays it’s own validation messages, this can be easily overridden by the JSF
+message bundle mechanism. Corresponding keys are:
+
+- Summary: primefaces.captcha.INVALID
+- Detail: primefaces.captcha.INVALID_detail
+
+==== Tips
+
+- Use label option to provide readable error messages in case validation fails.
+- Enable _secure_ option to support https otherwise browsers will give warnings.
+- See [http://www.google.com/recaptcha/learnmore](http://www.google.com/recaptcha/learnmore) to learn more about how reCaptcha works.
+

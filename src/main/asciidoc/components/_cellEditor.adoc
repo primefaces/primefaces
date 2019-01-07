@@ -1,0 +1,2 @@
+See inline editing section in datatable documentation for more information about usage.
+
