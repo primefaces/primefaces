@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultUploadedFile;
 import org.primefaces.model.UploadedFileWrapper;
 import org.primefaces.util.FileUploadUtils;
+import org.primefaces.virusscan.VirusException;
 import org.primefaces.webapp.MultipartRequest;
 
 import java.io.IOException;
@@ -67,7 +68,7 @@ public class CommonsFileUploadDecoder {
 
         if (file != null && !file.getName().isEmpty()) {
             DefaultUploadedFile uploadedFile = new DefaultUploadedFile(file, fileUpload);
-            if (isValidFile(fileUpload, uploadedFile)) {
+            if (isValidFile(context, fileUpload, uploadedFile)) {
                 fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
             }
             else {
@@ -82,15 +83,24 @@ public class CommonsFileUploadDecoder {
 
         if (file != null) {
             DefaultUploadedFile uploadedFile = new DefaultUploadedFile(file, fileUpload);
-            if (isValidFile(fileUpload, uploadedFile)) {
+            if (isValidFile(context, fileUpload, uploadedFile)) {
                 fileUpload.queueEvent(new FileUploadEvent(fileUpload, uploadedFile));
             }
         }
     }
 
-    private static boolean isValidFile(FileUpload fileUpload, DefaultUploadedFile uploadedFile) throws IOException {
-        return (fileUpload.getSizeLimit() == null || uploadedFile.getSize() <= fileUpload.getSizeLimit()) && FileUploadUtils.isValidType(fileUpload,
+    private static boolean isValidFile(FacesContext context, FileUpload fileUpload, DefaultUploadedFile uploadedFile) throws IOException {
+        boolean valid = (fileUpload.getSizeLimit() == null || uploadedFile.getSize() <= fileUpload.getSizeLimit()) && FileUploadUtils.isValidType(fileUpload,
                 uploadedFile.getFileName(), uploadedFile.getInputstream());
+        if (valid) {
+            try {
+                FileUploadUtils.performVirusScan(context, fileUpload, uploadedFile.getInputstream());
+            }
+            catch (VirusException ex) {
+                return false;
+            }
+        }
+        return valid;
     }
 
 }

@@ -6286,6 +6286,12 @@
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
+            <description><![CDATA[Whether to block scrolling of the document when dialog is modal.]]></description>
+            <name>blockScroll</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
             <description><![CDATA[Sets dialogs visibility. Default is false.]]></description>
             <name>visible</name>
             <required>false</required>
@@ -7392,6 +7398,12 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description><![CDATA[Whether virus scan should be performed. Default is false.]]></description>
+            <name>performVirusScan</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>        
     </tag>
     <tag>
         <tag-name>focus</tag-name>
@@ -10924,6 +10936,12 @@
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
+            <description><![CDATA[Whether to block scrolling of the document when lightbox is active.]]></description>
+            <name>blockScroll</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
             <description><![CDATA[Client side callback to execute when lightbox is displayed.]]></description>
             <name>onShow</name>
             <required>false</required>
@@ -13135,6 +13153,12 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
+            <description><![CDATA[Whether to block scrolling of the document when panel is modal.]]></description>
+            <name>blockScroll</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
             <description><![CDATA[Event to show the overlay panel, default is "click".]]></description>
             <name>showEvent</name>
             <required>false</required>
@@ -14443,8 +14467,14 @@
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
-            <description><![CDATA[Interval in seconds to do periodic requests in ajax mode. Default is 300.]]></description>
+            <description><![CDATA[Interval in milliseconds to do periodic requests in ajax mode. Default is 3000.]]></description>
             <name>interval</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[Animation duration in milliseconds determining how long the animation will run. Default is 500.]]></description>
+            <name>animationDuration</name>
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
@@ -18652,6 +18682,12 @@
         <attribute>
             <description><![CDATA[When true, spotlight is activated initially.]]></description>
             <name>active</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[Whether to block scrolling of the document when spotlight is active.]]></description>
+            <name>blockScroll</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>

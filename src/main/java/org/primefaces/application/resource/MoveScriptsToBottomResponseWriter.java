@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Map;
+import org.primefaces.util.LangUtils;
 
 public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
@@ -126,13 +127,13 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
         if (inScript) {
             if ("src".equalsIgnoreCase(name)) {
                 String strValue = (String) value;
-                if (strValue != null && !strValue.trim().isEmpty()) {
+                if (!LangUtils.isValueBlank(strValue)) {
                     include.append(strValue);
                 }
             }
             else if ("type".equalsIgnoreCase(name)) {
                 String strValue = (String) value;
-                if (strValue != null && !strValue.trim().isEmpty()) {
+                if (!LangUtils.isValueBlank(strValue)) {
                     scriptType = strValue;
                 }
             }
@@ -147,13 +148,13 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
         if (inScript) {
             if ("src".equalsIgnoreCase(name)) {
                 String strValue = (String) value;
-                if (strValue != null && !strValue.trim().isEmpty()) {
+                if (!LangUtils.isValueBlank(strValue)) {
                     include.append(strValue);
                 }
             }
             else if ("type".equalsIgnoreCase(name)) {
                 String strValue = (String) value;
-                if (strValue != null && !strValue.trim().isEmpty()) {
+                if (!LangUtils.isValueBlank(strValue)) {
                     scriptType = strValue;
                 }
             }
@@ -208,7 +209,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
                 ArrayList<String> inlines = entry.getValue();
                 String merged = mergeAndMinimizeInlineScripts(type, inlines);
 
-                if (merged != null && !merged.trim().isEmpty()) {
+                if (!LangUtils.isValueBlank(merged)) {
                     getWrapped().startElement("script", null);
                     getWrapped().writeAttribute("type", type, null);
                     getWrapped().write(merged);

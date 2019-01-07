@@ -84,6 +84,14 @@
             <version>3.0</version>
             <scope>provided</scope>
         </dependency>
+        <!--
+        <dependency>
+            <groupId>javax.portlet</groupId>
+            <artifactId>portlet-api</artifactId>
+            <version>3.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+        -->
 
         <dependency>
             <groupId>javax.validation</groupId>
@@ -561,7 +569,9 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tabview/tabview.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tagcloud/tagcloud.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tooltip/tooltip.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/tree/tree.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/tree/tree.base.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/tree/tree.vertical.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/tree/tree.horizontal.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/treetable/treetable.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/wizard/wizard.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tristatecheckbox/tristatecheckbox.js</include>

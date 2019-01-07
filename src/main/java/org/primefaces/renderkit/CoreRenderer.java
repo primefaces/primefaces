@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -88,13 +88,12 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected void renderPassThruAttributes(FacesContext context, UIComponent component, String[] attrs) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
         //pre-defined attributes
         if (attrs != null && attrs.length > 0) {
+            ResponseWriter writer = context.getResponseWriter();
+
             for (String attribute : attrs) {
                 Object value = component.getAttributes().get(attribute);
-
                 if (shouldRenderAttribute(value)) {
                     writer.writeAttribute(attribute, value.toString(), attribute);
                 }

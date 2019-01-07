@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,11 +41,11 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
         handlers = new HashMap<>();
         handlers.put(DynamicContentType.STREAMED_CONTENT.toString(), new StreamedContentHandler());
 
-        if (isBarcodeHandlerAvailable()) {
+        if (LangUtils.tryToLoadClassForName("org.krysalis.barcode4j.output.AbstractCanvasProvider") != null) {
             handlers.put(DynamicContentType.BARCODE.toString(), new BarcodeHandler());
         }
 
-        if (isQRCodeHandlerAvailable()) {
+        if (LangUtils.tryToLoadClassForName("net.glxn.qrgen.QRCode") != null) {
             handlers.put(DynamicContentType.QR_CODE.toString(), new QRCodeHandler());
         }
     }
@@ -99,23 +99,4 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
         }
     }
 
-    private boolean isBarcodeHandlerAvailable() {
-        try {
-            Class.forName("org.krysalis.barcode4j.output.AbstractCanvasProvider");
-            return true;
-        }
-        catch (ClassNotFoundException ex) {
-            return false;
-        }
-    }
-
-    private boolean isQRCodeHandlerAvailable() {
-        try {
-            Class.forName("net.glxn.qrgen.QRCode");
-            return true;
-        }
-        catch (ClassNotFoundException ex) {
-            return false;
-        }
-    }
 }

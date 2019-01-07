@@ -29,8 +29,8 @@ public class PrimeRequestContextMock extends PrimeRequestContext {
         this.applicationContext = applicationContext;
     }
 
-	@Override
-	public PrimeApplicationContext getApplicationContext() {
+    @Override
+    public PrimeApplicationContext getApplicationContext() {
         return applicationContext;
     }
 }

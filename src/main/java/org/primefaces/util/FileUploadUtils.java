@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -38,6 +39,8 @@ import org.apache.commons.io.IOUtils;
 import org.owasp.esapi.SafeFile;
 import org.owasp.esapi.errors.ValidationException;
 import org.primefaces.component.fileupload.FileUpload;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.virusscan.VirusException;
 
 /**
  * Utilities for FileUpload components.
@@ -175,19 +178,15 @@ public class FileUploadUtils {
             //Short circuit
             return true;
         }
-        String tempFilePrefix = UUID.randomUUID().toString();
-        boolean tika = false;
-        try {
-            Class.forName("org.apache.tika.filetypedetector.TikaFileTypeDetector");
-            tika = true;
+
+        boolean tika = LangUtils.tryToLoadClassForName("org.apache.tika.filetypedetector.TikaFileTypeDetector") != null;
+        if (!tika && LOGGER.isLoggable(Level.WARNING)) {
+            LOGGER.warning("Could not find Apache Tika in classpath which is recommended for reliable content type checking");
         }
-        catch (Exception ex) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning("Could not find Apache Tika in classpath which is recommended for reliable content type checking");
-            }
-        }
+
         //If Tika is in place, we drop the original file extension to avoid short circuit detection by just looking at the file extension
         String tempFileSuffix = tika ? null : "." + FilenameUtils.getExtension(fileName);
+        String tempFilePrefix = UUID.randomUUID().toString();
         Path tempFile = Files.createTempFile(tempFilePrefix, tempFileSuffix);
         try {
             InputStream in = new PushbackInputStream(new BufferedInputStream(inputStream));
@@ -252,6 +251,12 @@ public class FileUploadUtils {
             }
         }
         return true;
+    }
+
+    public static void performVirusScan(FacesContext facesContext, FileUpload fileUpload, InputStream inputStream) throws VirusException {
+        if (fileUpload.isPerformVirusScan()) {
+            PrimeApplicationContext.getCurrentInstance(facesContext).getVirusScannerService().performVirusScan(inputStream);
+        }
     }
 
 }

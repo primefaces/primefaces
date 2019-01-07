@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -102,6 +102,7 @@ public class ProgressBarRenderer extends CoreRenderer {
                 .attr("initialValue", progressBar.getValue())
                 .attr("ajax", isAjax)
                 .attr("labelTemplate", progressBar.getLabelTemplate(), null)
+                .attr("animationDuration", progressBar.getAnimationDuration())
                 .attr("global", progressBar.isGlobal(), true);
 
         if (isAjax) {

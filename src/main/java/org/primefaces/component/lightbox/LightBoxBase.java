@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,7 @@ abstract class LightBoxBase extends UIComponentBase implements Widget {
         iframe,
         iframeTitle,
         visible,
+        blockScroll,
         onShow,
         onHide
     }
@@ -112,6 +113,14 @@ abstract class LightBoxBase extends UIComponentBase implements Widget {
 
     public void setVisible(boolean visible) {
         getStateHelper().put(PropertyKeys.visible, visible);
+    }
+
+    public boolean isBlockScroll() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.blockScroll, false);
+    }
+
+    public void setBlockScroll(boolean blockScroll) {
+        getStateHelper().put(PropertyKeys.blockScroll, blockScroll);
     }
 
     public String getOnShow() {

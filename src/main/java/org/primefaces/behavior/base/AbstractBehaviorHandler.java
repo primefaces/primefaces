@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,6 +40,7 @@ import javax.faces.view.facelets.*;
 import org.primefaces.behavior.ajax.AjaxBehaviorHandler;
 import org.primefaces.config.PrimeEnvironment;
 import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.util.LangUtils;
 
 public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         extends TagHandler implements BehaviorHolderAttachedObjectHandler {
@@ -221,17 +222,7 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
     protected void addAttachedObjectHandlerToMyFaces(UIComponent component, FaceletContext ctx) {
         try {
             if (myfacesGetCompositionContextInstance == null || myfacesAddAttachedObjectHandler == null) {
-
-                Class<?> clazz = null;
-                try {
-                    clazz = Class.forName("org.apache.myfaces.view.facelets.FaceletCompositionContext");
-                }
-                catch (ClassNotFoundException cnfe) {
-                    clazz = Class.forName("org.apache.myfaces.view.facelets.FaceletCompositionContext",
-                            true,
-                            Thread.currentThread().getContextClassLoader());
-                }
-
+                Class<?> clazz = LangUtils.tryToLoadClassForName("org.apache.myfaces.view.facelets.FaceletCompositionContext");
                 myfacesGetCompositionContextInstance = clazz.getDeclaredMethod("getCurrentInstance", FaceletContext.class);
                 myfacesAddAttachedObjectHandler = clazz.getDeclaredMethod("addAttachedObjectHandler", UIComponent.class, AttachedObjectHandler.class);
             }

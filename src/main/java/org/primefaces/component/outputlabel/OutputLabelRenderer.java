@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -134,6 +134,7 @@ public class OutputLabelRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass.toString(), "id");
         renderPassThruAttributes(context, label, HTML.LABEL_ATTRS);
+        renderDomEvents(context, label, HTML.LABEL_EVENTS);
 
         if (!isValueBlank(_for)) {
             writer.writeAttribute("for", state.getClientId(), "for");
