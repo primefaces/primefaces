@@ -1,0 +1,48 @@
+AjaxBehavior is attached to the component to ajaxify.
+
+[source, xml]
+----
+<h:inputText value="#{bean.text}">
+    <p:ajax update="out" />
+</h:inputText>
+<h:outputText id="out" value="#{bean.text}" />
+----
+
+In the example above, each time the input changes, an ajax request is sent to the server. When the
+response is received output text with id "out" is updated with value of the input.
+
+==== Listener
+In case you need to execute a method on a backing bean, define a listener;
+
+[source, xml]
+----
+<h:inputText id="counter">
+    <p:ajax update="out" listener="#{counterBean.increment}"/>
+</h:inputText>
+<h:outputText id="out" value="#{counterBean.count}" />
+----
+
+[source, java]
+----
+public class CounterBean {
+    private int count;
+    //getter setter
+    public void increment() {
+        count++;
+    }
+}
+----
+
+==== Events
+Default client side events are defined by components that support client behaviors, for input
+components it is `onchange` and for command components it is `onclick`. In order to override the dom
+event to trigger the ajax request use `event` option. In following example, ajax request is triggered
+when key is up on input field.
+
+[source, xml]
+----
+<h:inputText id="firstname" value="#{bean.text}">
+    <p:ajax update="out" event="keyup"/>
+</h:inputText>
+<h:outputText id="out" value="#{bean.text}" />
+----

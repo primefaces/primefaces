@@ -1,0 +1,145 @@
+Accordion panel consists of one or more tabs and each tab can group any content. Titles can also be
+defined with “title” facet.
+
+[source, xml]
+----
+<p:accordionPanel>
+    <p:tab title="First Tab Title">
+        <h:outputText value= "Lorem"/>
+        // More content for first tab
+    </p:tab>
+
+    <p:tab title="Second Tab Title">
+        <h:outputText value="Ipsum" />
+    </p:tab>
+
+    // More tabs
+
+</p:accordionPanel>
+----
+
+==== Dynamic Content Loading
+AccordionPanel supports lazy loading of tab content, when dynamic option is set true, only active
+tab contents will be rendered to the client side and clicking an inactive tab header will do an ajax
+request to load the tab contents.
+
+This feature is useful to reduce bandwidth and speed up page loading time. By default activating a
+previously loaded dynamic tab does not initiate a request to load the contents again as tab is cached.
+To control this behavior use `cache` option.
+
+[source, xml]
+----
+<p:accordionPanel dynamic="true">
+    // Tabs
+</p:accordionPanel>
+----
+
+==== Client Side Callbacks
+`onTabChange` is called before a tab is shown and `onTabShow` is called after. Both receive container
+element of the tab to show as the parameter.
+
+[source, xml]
+----
+<p:accordionPanel onTabChange="handleChange(panel)">
+    // Tabs
+</p:accordionPanel>
+
+<script type="text/javascript">
+    function handleChange(panel) {
+        //panel: new tab content container
+    }
+</script>
+----
+
+==== Ajax Behavior Events
+`tabChange` and _tabClose are_ the ajax behavior events of accordion panel. An example with
+tabChange would be;
+
+[source, xml]
+----
+<p:accordionPanel>
+    <p:ajax event=”tabChange” listener=”#{bean.onChange}” />
+</p:accordionPanel>
+----
+
+[source, java]
+----
+public void onChange(TabChangeEvent event) {
+    Tab activeTab = event.getTab();
+    // Do something
+}
+----
+
+Your listener(if defined) will be invoked with an _org.primefaces.event.TabChangeEvent_ instance
+that contains a reference to the new active tab and the accordion panel itself. Similarly
+_org.primefaces.event.TabCloseEvent_ is passed to the listener of tabClose event when an active tab is
+closed.
+
+==== Dynamic Number of Tabs
+When the tabs to display are not static, use the built-in iteration feature similar to ui:repeat.
+
+[source, xml]
+----
+<p:accordionPanel value=”#{bean.list}” var=”listItem”>
+    <p:tab title="#{listItem.propertyA}">
+        <h:outputText value= "#{listItem.propertyB}"/>
+        // More content
+    </p:tab>
+</p:accordionPanel>
+----
+
+==== Disabled Tabs
+A tab can be disabled by setting disabled attribute to true.
+
+[source, xml]
+----
+<p:accordionPanel>
+    <p:tab title="First Tab Title" disabled=”true”>
+        <h:outputText value= "Lorem"/>
+        // More content for first tab
+    </p:tab>
+
+    <p:tab title="Second Tab Title">
+        <h:outputText value="Ipsum" />
+    </p:tab>
+
+    // More tabs
+</p:accordionPanel>
+----
+
+==== Multiple Selection
+By default, only one tab at a time can be active, enable `multiple` mode to activate multiple tabs.
+
+[source, xml]
+----
+<p:accordionPanel multiple=”true”>
+    // Tabs
+</p:accordionPanel>
+----
+
+==== TabController
+TabController is a server side listener that can be utilized to decide if a client side tab change or tab
+close action is allowed. When one of these two events occur, an ajax call is made to invoke the tab
+controller, then the boolean return value of this controller is sent back to click to decide if the event
+should be performed. An example use case is disallowing tab change if current tab has invalid
+inputs.
+
+==== Skinning
+AccordionPanel resides in a main container element which `style` and `styleClass` options apply. As
+skinning style classes are global, see the main theming section for more information. Following is
+the list of structural style classes;
+
+==== Class Applies
+
+|===
+|Class | Applies
+
+|.ui-accordion
+|Main container element
+
+|.ui-accordion-header
+|Tab header
+
+|.ui-accordion-content
+|Tab content
+|===

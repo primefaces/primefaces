@@ -1,0 +1,8 @@
+AutoUpdate is used by nesting inside a parent component.
+
+[source, xml]
+----
+<p:panel>
+    <p:autoUpdate />
+</p:panel>
+----
