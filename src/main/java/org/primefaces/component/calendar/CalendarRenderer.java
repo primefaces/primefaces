@@ -15,56 +15,22 @@
  */
 package org.primefaces.component.calendar;
 
+import org.primefaces.util.CalendarUtils;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import javax.el.ValueExpression;
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
+import org.primefaces.component.api.UICalendar;
 
-import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.HTML;
-import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
-public class CalendarRenderer extends InputRenderer {
+public class CalendarRenderer extends BaseCalendarRenderer {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        Calendar calendar = (Calendar) component;
-
-        if (!shouldDecode(calendar)) {
-            return;
-        }
-
-        String param = calendar.getClientId(context) + "_input";
-        String submittedValue = context.getExternalContext().getRequestParameterMap().get(param);
-
-        if (submittedValue != null) {
-            calendar.setSubmittedValue(submittedValue);
-        }
-
-        decodeBehaviors(context, calendar);
-    }
-
-    @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Calendar calendar = (Calendar) component;
-        String markupValue = CalendarUtils.getValueAsString(context, calendar);
-        String widgetValue = calendar.isTimeOnly() ? CalendarUtils.getTimeOnlyValueAsString(context, calendar) : markupValue;
-
-        encodeMarkup(context, calendar, markupValue);
-        encodeScript(context, calendar, widgetValue);
-    }
-
-    protected void encodeMarkup(FacesContext context, Calendar calendar, String value) throws IOException {
+    protected void encodeMarkup(FacesContext context, UICalendar uicalendar, String value) throws IOException {
+        Calendar calendar = (Calendar) uicalendar;
         ResponseWriter writer = context.getResponseWriter();
         String clientId = calendar.getClientId(context);
         String styleClass = calendar.getStyleClass();
@@ -94,54 +60,9 @@ public class CalendarRenderer extends InputRenderer {
 
     }
 
-    protected void encodeInput(FacesContext context, Calendar calendar, String id, String value, boolean popup) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String type = popup ? calendar.getType() : "hidden";
-        String inputStyle = calendar.getInputStyle();
-        String inputStyleClass = calendar.getInputStyleClass();
-
-        writer.startElement("input", null);
-        writer.writeAttribute("id", id, null);
-        writer.writeAttribute("name", id, null);
-        writer.writeAttribute("type", type, null);
-
-        if (!isValueBlank(value)) {
-            writer.writeAttribute("value", value, null);
-        }
-
-        boolean readonly = false;
-        boolean disabled = false;
-
-        if (popup) {
-            inputStyleClass = (inputStyleClass == null) ? Calendar.INPUT_STYLE_CLASS
-                                                        : Calendar.INPUT_STYLE_CLASS + " " + inputStyleClass;
-            readonly = calendar.isReadonly() || calendar.isReadonlyInput();
-
-            if (calendar.isDisabled()) {
-                inputStyleClass = inputStyleClass + " ui-state-disabled";
-                disabled = true;
-            }
-            if (!calendar.isValid()) {
-                inputStyleClass = inputStyleClass + " ui-state-error";
-            }
-
-            writer.writeAttribute("class", inputStyleClass, null);
-
-            if (inputStyle != null) {
-                writer.writeAttribute("style", inputStyle, null);
-            }
-
-            renderPassThruAttributes(context, calendar, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
-            renderDomEvents(context, calendar, HTML.INPUT_TEXT_EVENTS);
-        }
-
-        renderAccessibilityAttributes(context, calendar, disabled, readonly);
-        renderValidationMetadata(context, calendar);
-
-        writer.endElement("input");
-    }
-
-    protected void encodeScript(FacesContext context, Calendar calendar, String value) throws IOException {
+    @Override
+    protected void encodeScript(FacesContext context, UICalendar uicalendar, String value) throws IOException {
+        Calendar calendar = (Calendar) uicalendar;
         String clientId = calendar.getClientId(context);
         Locale locale = calendar.calculateLocale(context);
         String pattern = calendar.isTimeOnly() ? calendar.calculateTimeOnlyPattern() : calendar.calculatePattern();
@@ -239,102 +160,12 @@ public class CalendarRenderer extends InputRenderer {
 
         if (mask != null && !mask.equals("false")) {
             String patternTemplate = calendar.getPattern() == null ? pattern : calendar.getPattern();
-            String maskTemplate = (mask.equals("true")) ? convertPattern(patternTemplate) : mask;
+            String maskTemplate = (mask.equals("true")) ? calendar.convertPattern(patternTemplate) : mask;
             wb.attr("mask", maskTemplate).attr("maskSlotChar", calendar.getMaskSlotChar(), null).attr("maskAutoClear", calendar.isMaskAutoClear(), true);
         }
 
         encodeClientBehaviors(context, calendar);
 
         wb.finish();
-    }
-
-    public String convertPattern(String patternTemplate) {
-        String pattern = patternTemplate.replaceAll("MMM", "###");
-        int patternLen = pattern.length();
-        int countM = patternLen - pattern.replaceAll("M", "").length();
-        int countD = patternLen - pattern.replaceAll("d", "").length();
-        if (countM == 1) {
-            pattern = pattern.replaceAll("M", "mm");
-        }
-
-        if (countD == 1) {
-            pattern = pattern.replaceAll("d", "dd");
-        }
-
-        pattern = pattern.replaceAll("[a-zA-Z]", "9");
-        pattern = pattern.replaceAll("###", "aaa");
-        return pattern;
-    }
-
-    @Override
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object value) throws ConverterException {
-        Calendar calendar = (Calendar) component;
-        String submittedValue = (String) value;
-        SimpleDateFormat format = null;
-
-        if (isValueBlank(submittedValue)) {
-            return null;
-        }
-
-        //Delegate to user supplied converter if defined
-        try {
-            Converter converter = calendar.getConverter();
-            if (converter != null) {
-                return converter.getAsObject(context, calendar, submittedValue);
-            }
-        }
-        catch (ConverterException e) {
-            calendar.setConversionFailed(true);
-
-            throw e;
-        }
-
-        //Delegate to global defined converter (e.g. joda or java8)
-        try {
-            ValueExpression ve = calendar.getValueExpression("value");
-            if (ve != null) {
-                Class type = ve.getType(context.getELContext());
-                if (type != null && type != Object.class && type != Date.class) {
-                    Converter converter = context.getApplication().createConverter(type);
-                    if (converter != null) {
-                        return converter.getAsObject(context, calendar, submittedValue);
-                    }
-                }
-            }
-        }
-        catch (ConverterException e) {
-            calendar.setConversionFailed(true);
-
-            throw e;
-        }
-
-        //Use built-in converter
-        format = new SimpleDateFormat(calendar.calculatePattern(), calendar.calculateLocale(context));
-        format.setLenient(false);
-        format.setTimeZone(calendar.calculateTimeZone());
-        try {
-            return format.parse(submittedValue);
-        }
-        catch (ParseException e) {
-            calendar.setConversionFailed(true);
-
-            FacesMessage message = null;
-            Object[] params = new Object[3];
-            params[0] = submittedValue;
-            params[1] = format.format(new Date());
-            params[2] = MessageFactory.getLabel(context, calendar);
-
-            if (calendar.isTimeOnly()) {
-                message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.TIME", FacesMessage.SEVERITY_ERROR, params);
-            }
-            else if (calendar.hasTime()) {
-                message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.DATETIME", FacesMessage.SEVERITY_ERROR, params);
-            }
-            else {
-                message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.DATE", FacesMessage.SEVERITY_ERROR, params);
-            }
-
-            throw new ConverterException(message);
-        }
     }
 }

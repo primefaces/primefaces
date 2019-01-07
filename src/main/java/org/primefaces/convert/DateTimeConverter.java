@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import javax.faces.convert.ConverterException;
-import org.primefaces.component.calendar.CalendarUtils;
+import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.HTML;
 
 public class DateTimeConverter extends javax.faces.convert.DateTimeConverter implements ClientConverter {

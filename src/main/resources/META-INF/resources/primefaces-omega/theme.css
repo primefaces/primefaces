@@ -517,6 +517,34 @@ td.ui-datepicker-unselectable {
 	box-shadow: 0px 2px 5px rgba(0,0,0,0.8);
 }
 
+/* datePicker component */
+.p-datepicker-panel .ui-timepicker .ui-icon {
+    left: auto;
+    top: auto;
+    display: inline-block;
+    text-align: center;
+}
+
+.p-datepicker-panel .ui-timepicker .ui-picker-up .ui-icon {
+    left: 1px;
+}
+
+.p-datepicker-panel .ui-timepicker.ui-widget-header {
+    border: 0 none;
+}
+
+.p-datepicker-panel.ui-datepicker-multiple-month,
+.p-datepicker .ui-datepicker-touch-ui,
+.ui-datepicker-touch-ui {
+    width: auto;
+}
+
+.p-datepicker-panel .ui-datepicker-calendar td a.ui-state-active {
+    background: #186ba0;
+    filter: none;
+    color: #FFFFFF;
+}
+
 .ui-progressbar .ui-progressbar-value {
 	 border: 1px solid #156090; 
      background: #186ba0;

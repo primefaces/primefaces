@@ -467,6 +467,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/chips/chips.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/sidebar/sidebar.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/dataview/dataview.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/datepicker/datepicker.css</include>
                             </includes>
                         </aggregation>
                         <aggregation>
@@ -695,6 +696,15 @@
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/0-fullcalendar.min.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/1-schedule.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/datepicker/datepicker.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/datepicker/0-datepicker.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/datepicker/1-datepicker.js</include>
                             </includes>
                         </aggregation>
                     </aggregations>

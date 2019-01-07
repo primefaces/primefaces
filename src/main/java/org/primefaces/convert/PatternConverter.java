@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.component.calendar.converter;
+package org.primefaces.convert;
 
 public interface PatternConverter {
 

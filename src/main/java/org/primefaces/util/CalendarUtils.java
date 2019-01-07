@@ -13,22 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.component.calendar;
+package org.primefaces.util;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
+import org.primefaces.component.api.UICalendar;
 
-import org.primefaces.component.calendar.converter.DatePatternConverter;
-import org.primefaces.component.calendar.converter.PatternConverter;
-import org.primefaces.component.calendar.converter.TimePatternConverter;
+import org.primefaces.convert.DatePatternConverter;
+import org.primefaces.convert.PatternConverter;
+import org.primefaces.convert.TimePatternConverter;
 
 /**
  * Utility class for calendar component
@@ -41,7 +45,7 @@ public class CalendarUtils {
     private CalendarUtils() {
     }
 
-    public static final String getValueAsString(FacesContext context, Calendar calendar) {
+    public static final String getValueAsString(FacesContext context, UICalendar calendar) {
         Object submittedValue = calendar.getSubmittedValue();
         if (submittedValue != null) {
             return submittedValue.toString();
@@ -50,7 +54,7 @@ public class CalendarUtils {
         return getValueAsString(context, calendar, calendar.getValue());
     }
 
-    public static Date getObjectAsDate(FacesContext context, Calendar calendar, Object value) {
+    public static Date getObjectAsDate(FacesContext context, UICalendar calendar, Object value) {
         if (value == null) {
             return null;
         }
@@ -96,7 +100,7 @@ public class CalendarUtils {
         throw new FacesException("Value could be either String or java.util.Date");
     }
 
-    public static final String getValueAsString(FacesContext context, Calendar calendar, Object value) {
+    public static final String getValueAsString(FacesContext context, UICalendar calendar, Object value) {
         if (value == null) {
             return null;
         }
@@ -132,7 +136,7 @@ public class CalendarUtils {
         }
     }
 
-    public static final String getTimeOnlyValueAsString(FacesContext context, Calendar calendar) {
+    public static final String getTimeOnlyValueAsString(FacesContext context, UICalendar calendar) {
         Object value = calendar.getValue();
         if (value == null) {
             return null;
@@ -187,6 +191,38 @@ public class CalendarUtils {
 
             return convertedPattern;
         }
+    }
+
+    /**
+     * Write the value of Calendar options
+     *
+     * @param context
+     * @param uicalendar component
+     * @param optionName the name of an option
+     * @param values the List values of an option
+     * @throws java.io.IOException if writer is null
+     */
+    public static void encodeListValue(FacesContext context, UICalendar uicalendar, String optionName, List<Object> values) throws IOException {
+        if (values == null) {
+            return;
+        }
+
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.write("," + optionName + ":[");
+        for (int i = 0; i < values.size(); i++) {
+            Object item = values.get(i);
+            Object preText = (i == 0) ? "" : ",";
+
+            if (item instanceof Date) {
+                writer.write(preText + "\"" + EscapeUtils.forJavaScript(getValueAsString(context, uicalendar, item)) + "\"");
+            }
+            else {
+                writer.write(preText + "" + item);
+            }
+        }
+
+        writer.write("]");
     }
 
 }

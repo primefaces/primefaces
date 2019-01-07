@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.component.calendar;
+package org.primefaces.component.datepicker;
 
 import org.primefaces.util.CalendarUtils;
 import java.util.*;
@@ -35,21 +35,19 @@ import org.primefaces.util.*;
         @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
         @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
         @ResourceDependency(library = "primefaces", name = "core.js"),
-        @ResourceDependency(library = "primefaces", name = "components.js")
+        @ResourceDependency(library = "primefaces", name = "components.js"),
+        @ResourceDependency(library = "primefaces", name = "datepicker/datepicker.js")
 })
-public class Calendar extends CalendarBase {
+public class DatePicker extends DatePickerBase {
 
-    public static final String COMPONENT_TYPE = "org.primefaces.component.Calendar";
+    public static final String COMPONENT_TYPE = "org.primefaces.component.DatePicker";
+    public static final String CONTAINER_EXTENSION_CLASS = "p-datepicker";
 
     private static final Collection<String> EVENT_NAMES = LangUtils.unmodifiableList("blur", "change", "valueChange", "click", "dblclick",
             "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "dateSelect", "viewChange",
             "close");
     private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("dateSelect", "viewChange", "close");
     private final Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>();
-
-    public boolean isPopup() {
-        return getMode().equalsIgnoreCase("popup");
-    }
 
     @Override
     public Collection<String> getEventNames() {
