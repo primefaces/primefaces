@@ -32,8 +32,8 @@ As skinning style classes are global, see the main theming section for more info
 ==== Tips
 
 - If there is a dynamic flow, use model option instead of creating declarative p:menuitem
-    components and bind your MenuModel representing the state of the flow.
+components and bind your MenuModel representing the state of the flow.
 - Breadcrumb can do ajax/non-ajax action requests as well since p:menuitem has this option. In this
-    case, breadcrumb must be nested in a form.
+case, breadcrumb must be nested in a form.
 - url option is the key for a menuitem, if it is defined, it will work as a simple link. If you’d like to
-    use menuitem to execute command with or without ajax, do not define the url option.
+use menuitem to execute command with or without ajax, do not define the url option.

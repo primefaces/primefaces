@@ -1,5 +1,5 @@
 Accordion panel consists of one or more tabs and each tab can group any content. Titles can also be
-defined with “title” facet.
+defined with `title` facet.
 
 [source, xml]
 ----
@@ -52,8 +52,7 @@ element of the tab to show as the parameter.
 ----
 
 ==== Ajax Behavior Events
-`tabChange` and _tabClose are_ the ajax behavior events of accordion panel. An example with
-tabChange would be;
+`tabChange` and `tabClose` are the ajax behavior events of accordion panel. An example with `tabChange` would be;
 
 [source, xml]
 ----
@@ -70,9 +69,9 @@ public void onChange(TabChangeEvent event) {
 }
 ----
 
-Your listener(if defined) will be invoked with an _org.primefaces.event.TabChangeEvent_ instance
+Your listener(if defined) will be invoked with an `org.primefaces.event.TabChangeEvent` instance
 that contains a reference to the new active tab and the accordion panel itself. Similarly
-_org.primefaces.event.TabCloseEvent_ is passed to the listener of tabClose event when an active tab is
+`org.primefaces.event.TabCloseEvent` is passed to the listener of tabClose event when an active tab is
 closed.
 
 ==== Dynamic Number of Tabs

@@ -35,7 +35,7 @@ from PrimeFaces themes such `ui-icon-check`.
 ----
 
 ==== Skinning
-Button renders a _button_ tag which _style_ and _styleClass_ applies. As skinning style classes are global,
+Button renders a `button` tag which `style` and `styleClass` applies. As skinning style classes are global,
 see the main theming section for more information. Following is the list of structural style classes;
 
 ```
