@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,6 @@ import javax.faces.render.ClientBehaviorRenderer;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 
 import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.AjaxRequestBuilder;
 
 public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
@@ -94,7 +93,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         String request = builder.init()
                 .source(source)
                 .event(behaviorContext.getEventName())
-                .form(SearchExpressionFacade.resolveClientId(behaviorContext.getFacesContext(), component, ajaxBehavior.getForm()))
+                .form(ajaxBehavior, component)
                 .process(component, process)
                 .update(component, ajaxBehavior.getUpdate())
                 .async(ajaxBehavior.isAsync())

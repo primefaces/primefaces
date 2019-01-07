@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("PanelMenu", menu.resolveWidgetVar(), clientId)
                 .attr("stateful", menu.isStateful())
-                .attr("multiple", menu.isMultiple(), true);
+                .attr("multiple", menu.isMultiple());
         wb.finish();
     }
 

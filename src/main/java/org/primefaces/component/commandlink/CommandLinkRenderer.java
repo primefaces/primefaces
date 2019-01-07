@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -85,10 +86,10 @@ public class CommandLinkRenderer extends CoreRenderer {
             }
 
             if (ajax) {
-                request = buildAjaxRequest(context, link, null);
+                request = buildAjaxRequest(context, link);
             }
             else {
-                UIComponent form = ComponentTraversalUtils.closestForm(context, link);
+                UIForm form = ComponentTraversalUtils.closestForm(context, link);
                 if (form == null) {
                     throw new FacesException("Commandlink \"" + clientId + "\" must be inside a form component");
                 }

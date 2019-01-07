@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import java.util.Map;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
 import javax.faces.component.UIParameter;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorContext;
@@ -41,7 +42,6 @@ import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menubutton.MenuButton;
-import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.event.MenuActionEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.menu.MenuItem;
@@ -226,10 +226,10 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         }
 
         if (button.isAjax()) {
-            onclick.append(buildAjaxRequest(context, button, null));
+            onclick.append(buildAjaxRequest(context, button));
         }
         else {
-            UIComponent form = ComponentTraversalUtils.closestForm(context, button);
+            UIForm form = ComponentTraversalUtils.closestForm(context, button);
             if (form == null) {
                 throw new FacesException("SplitButton : \"" + button.getClientId(context) + "\" must be inside a form element");
             }
@@ -355,7 +355,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
                 else {
                     writer.writeAttribute("href", "#", null);
 
-                    UIComponent form = ComponentTraversalUtils.closestForm(context, button);
+                    UIForm form = ComponentTraversalUtils.closestForm(context, button);
                     if (form == null) {
                         throw new FacesException("MenuItem must be inside a form element");
                     }
@@ -516,39 +516,6 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
                 }
             }
         }
-    }
-
-    protected String buildAjaxRequest(FacesContext context, SplitButton button, AjaxSource source, UIComponent form,
-            Map<String, List<String>> params) {
-
-        String clientId = button.getClientId(context);
-
-        AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
-
-        builder.init()
-                .source(clientId)
-                .process(button, source.getProcess())
-                .update(button, source.getUpdate())
-                .async(source.isAsync())
-                .global(source.isGlobal())
-                .delay(source.getDelay())
-                .timeout(source.getTimeout())
-                .partialSubmit(source.isPartialSubmit(), source.isPartialSubmitSet(), source.getPartialSubmitFilter())
-                .resetValues(source.isResetValues(), source.isResetValuesSet())
-                .ignoreAutoUpdate(source.isIgnoreAutoUpdate())
-                .onstart(source.getOnstart())
-                .onerror(source.getOnerror())
-                .onsuccess(source.getOnsuccess())
-                .oncomplete(source.getOncomplete())
-                .params(params);
-
-        if (form != null) {
-            builder.form(form.getClientId(context));
-        }
-
-        builder.preventDefault();
-
-        return builder.build();
     }
 
     protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam,

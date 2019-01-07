@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -133,11 +133,11 @@ public class ComponentTraversalUtils {
      *
      * @param id The id.
      * @param base The base component to start the traversal.
-     * @param separatorString The seperatorString (e.g. :).
+     * @param separatorChar The separatorChar (e.g. :).
      * @param context The FacesContext.
      * @param callback the callback for the found component
      */
-    public static void firstById(String id, UIComponent base, String separatorString, FacesContext context, ContextCallback callback) {
+    public static void firstById(String id, UIComponent base, char separatorChar, FacesContext context, ContextCallback callback) {
 
         // try #findComponent first
         UIComponent component = base.findComponent(id);
@@ -147,7 +147,7 @@ public class ComponentTraversalUtils {
         if (component == null) {
             // #invokeOnComponent doesn't support the leading seperator char
             String tempExpression = id;
-            if (tempExpression.startsWith(separatorString)) {
+            if (tempExpression.charAt(0) == separatorChar) {
                 tempExpression = tempExpression.substring(1);
             }
 

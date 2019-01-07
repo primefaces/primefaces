@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -568,7 +568,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("class", DataTable.SCROLLABLE_BODY_CLASS, null);
         writer.writeAttribute("tabindex", "-1", null);
         if (scrollHeight != null && scrollHeight.indexOf('%') == -1) {
-            writer.writeAttribute("style", "height:" + scrollHeight + "px", null);
+            writer.writeAttribute("style", "max-height:" + scrollHeight + "px", null);
         }
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);

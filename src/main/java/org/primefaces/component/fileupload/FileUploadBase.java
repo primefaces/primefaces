@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,7 +62,8 @@ abstract class FileUploadBase extends UIInput implements Widget {
         uploadIcon,
         cancelIcon,
         onAdd,
-        validateContentType
+        validateContentType,
+        performVirusScan
     }
 
     public FileUploadBase() {
@@ -344,6 +345,14 @@ abstract class FileUploadBase extends UIInput implements Widget {
 
     public void setValidateContentType(boolean validateContentType) {
         getStateHelper().put(PropertyKeys.validateContentType, validateContentType);
+    }
+
+    public boolean isPerformVirusScan() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.performVirusScan, false);
+    }
+
+    public void setPerformVirusScan(boolean performVirusScan) {
+        getStateHelper().put(PropertyKeys.performVirusScan, performVirusScan);
     }
 
     @Override

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -84,6 +84,7 @@ public class OverlayPanelRenderer extends CoreRenderer {
                 .attr("dismissable", panel.isDismissable(), true)
                 .attr("showCloseIcon", panel.isShowCloseIcon(), false)
                 .attr("modal", panel.isModal(), false)
+                .attr("blockScroll", panel.isBlockScroll(), false)
                 .attr("showDelay", panel.getShowDelay(), 0);
 
         wb.finish();

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import javax.validation.metadata.ConstraintDescriptor;
-import org.primefaces.component.calendar.Calendar;
+import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.spinner.Spinner;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
@@ -93,14 +93,14 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
             }
         }
 
-        if (input instanceof Calendar) {
-            Calendar calendar = (Calendar) input;
+        if (input instanceof UICalendar) {
+            UICalendar uicalendar = (UICalendar) input;
 
-            if (constraint.annotationType().equals(Past.class) && calendar.getMaxdate() == null) {
-                calendar.setMaxdate(new Date());
+            if (constraint.annotationType().equals(Past.class) && uicalendar.getMaxdate() == null) {
+                uicalendar.setMaxdate(new Date());
             }
-            if (constraint.annotationType().equals(Future.class) && calendar.getMindate() == null) {
-                calendar.setMindate(new Date());
+            if (constraint.annotationType().equals(Future.class) && uicalendar.getMindate() == null) {
+                uicalendar.setMindate(new Date());
             }
         }
     }

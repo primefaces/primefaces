@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -301,7 +301,8 @@ public class TreeRenderer extends CoreRenderer {
         }
 
         if (filter) {
-            wb.attr("filter", true);
+            wb.attr("filter", true)
+                    .attr("filterMode", tree.getFilterMode(), "exact");
         }
 
         encodeIconStates(context, tree, wb);
@@ -633,6 +634,7 @@ public class TreeRenderer extends CoreRenderer {
         boolean selected = node.isSelected();
         boolean partialSelected = node.isPartialSelected();
         boolean filter = (tree.getValueExpression("filterBy") != null);
+        boolean isContainsMode = tree.getFilterMode().equals("contains");
 
         UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());
         if (!uiTreeNode.isRendered()) {
@@ -645,7 +647,8 @@ public class TreeRenderer extends CoreRenderer {
             for (String filteredRowKey : filteredRowKeys) {
                 String rowKeyExt = rowKey + "_";
                 String filteredRowKeyExt = filteredRowKey + "_";
-                if (filteredRowKey.startsWith(rowKeyExt) || rowKey.startsWith(filteredRowKeyExt) || filteredRowKey.equals(rowKey)) {
+                if (filteredRowKey.startsWith(rowKeyExt) || (!isContainsMode && rowKey.startsWith(filteredRowKeyExt))
+                        || filteredRowKey.equals(rowKey)) {
                     match = true;
                     if (!node.isLeaf() && !rowKey.startsWith(filteredRowKey)) {
                         node.setExpanded(true);
@@ -834,25 +837,6 @@ public class TreeRenderer extends CoreRenderer {
         writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("value", value, null);
         writer.endElement("input");
-    }
-
-    protected void encodeCheckbox(FacesContext context, Tree tree, TreeNode node, boolean selected) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String iconClass = selected ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
-
-        writer.startElement("div", null);
-        writer.writeAttribute("class", HTML.CHECKBOX_CLASS, null);
-
-        writer.startElement("div", null);
-        writer.writeAttribute("class", HTML.CHECKBOX_BOX_CLASS, null);
-
-        writer.startElement("span", null);
-        writer.writeAttribute("class", iconClass, null);
-        writer.endElement("span");
-
-        writer.endElement("div");
-
-        writer.endElement("div");
     }
 
     @Override

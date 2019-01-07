@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,8 @@ import org.primefaces.util.LangUtils;
 public class PrimeEnvironment {
 
     private static final Logger LOGGER = Logger.getLogger(PrimeEnvironment.class.getName());
+
+    private boolean portlet;
 
     private boolean beanValidationAvailable = false;
 
@@ -69,6 +71,11 @@ public class PrimeEnvironment {
     public PrimeEnvironment(FacesContext context) {
         this();
         this.mojarra = context.getExternalContext().getApplicationMap().containsKey("com.sun.faces.ApplicationAssociate");
+
+        Class<?> portletContext = LangUtils.tryToLoadClassForName("javax.portlet.PortletContext");
+        if (portletContext != null) {
+            portlet = portletContext.isInstance(context.getExternalContext().getContext());
+        }
     }
 
     protected boolean checkIfBeanValidationIsAvailable() {
@@ -152,6 +159,10 @@ public class PrimeEnvironment {
 
     public boolean isHtmlSanitizerAvailable() {
         return htmlSanitizerAvailable;
+    }
+
+    public boolean isPortlet() {
+        return portlet;
     }
 
 }

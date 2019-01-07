@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,25 +23,11 @@ import org.primefaces.util.HTML;
 public class RendererUtils {
 
     private RendererUtils() {
+        // Hide constructor
     }
 
     public static void encodeCheckbox(FacesContext context, boolean checked) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String icon = checked ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
-
-        writer.startElement("div", null);
-        writer.writeAttribute("class", HTML.CHECKBOX_CLASS, null);
-
-        writer.startElement("div", null);
-        writer.writeAttribute("class", HTML.CHECKBOX_BOX_CLASS, null);
-
-        writer.startElement("span", null);
-        writer.writeAttribute("class", icon, null);
-        writer.endElement("span");
-
-        writer.endElement("div");
-
-        writer.endElement("div");
+        encodeCheckbox(context, checked, false, false, null);
     }
 
     public static void encodeCheckbox(FacesContext context, boolean checked, boolean partialSelected, boolean disabled, String styleClass) throws IOException {

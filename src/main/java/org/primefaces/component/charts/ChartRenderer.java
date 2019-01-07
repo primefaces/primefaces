@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -257,7 +257,7 @@ public class ChartRenderer extends CoreRenderer {
                 writer.write(",");
             }
 
-            writer.write("\"tooltip\":{");
+            writer.write("\"tooltips\":{");
             writer.write(tooltip.encode());
             writer.write("}");
         }

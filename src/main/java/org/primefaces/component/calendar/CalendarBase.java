@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,14 @@
  */
 package org.primefaces.component.calendar;
 
-import javax.faces.component.html.HtmlInputText;
-
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
+import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder, MixedClientBehaviorHolder {
+abstract class CalendarBase extends UICalendar implements Widget, InputHolder, MixedClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -33,15 +32,9 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
 
         placeholder,
         widgetVar,
-        mindate,
-        maxdate,
         pages,
         mode,
-        pattern,
-        locale,
         navigator,
-        timeZone,
-        readonlyInput,
         showButtonPanel,
         effect,
         effectDuration,
@@ -51,7 +44,6 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
         showOtherMonths,
         selectOtherMonths,
         yearRange,
-        timeOnly,
         stepHour,
         stepMinute,
         stepSecond,
@@ -76,9 +68,6 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
         showMillisec,
         showTodayButton,
         buttonTabindex,
-        inputStyle,
-        inputStyleClass,
-        type,
         focusOnSelect,
         oneLine,
         defaultHour,
@@ -112,22 +101,6 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public Object getMindate() {
-        return getStateHelper().eval(PropertyKeys.mindate, null);
-    }
-
-    public void setMindate(Object mindate) {
-        getStateHelper().put(PropertyKeys.mindate, mindate);
-    }
-
-    public Object getMaxdate() {
-        return getStateHelper().eval(PropertyKeys.maxdate, null);
-    }
-
-    public void setMaxdate(Object maxdate) {
-        getStateHelper().put(PropertyKeys.maxdate, maxdate);
-    }
-
     public int getPages() {
         return (Integer) getStateHelper().eval(PropertyKeys.pages, 1);
     }
@@ -144,44 +117,12 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
         getStateHelper().put(PropertyKeys.mode, mode);
     }
 
-    public String getPattern() {
-        return (String) getStateHelper().eval(PropertyKeys.pattern, null);
-    }
-
-    public void setPattern(String pattern) {
-        getStateHelper().put(PropertyKeys.pattern, pattern);
-    }
-
-    public Object getLocale() {
-        return getStateHelper().eval(PropertyKeys.locale, null);
-    }
-
-    public void setLocale(Object locale) {
-        getStateHelper().put(PropertyKeys.locale, locale);
-    }
-
     public boolean isNavigator() {
         return (Boolean) getStateHelper().eval(PropertyKeys.navigator, false);
     }
 
     public void setNavigator(boolean navigator) {
         getStateHelper().put(PropertyKeys.navigator, navigator);
-    }
-
-    public Object getTimeZone() {
-        return getStateHelper().eval(PropertyKeys.timeZone, null);
-    }
-
-    public void setTimeZone(Object timeZone) {
-        getStateHelper().put(PropertyKeys.timeZone, timeZone);
-    }
-
-    public boolean isReadonlyInput() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.readonlyInput, false);
-    }
-
-    public void setReadonlyInput(boolean readonlyInput) {
-        getStateHelper().put(PropertyKeys.readonlyInput, readonlyInput);
     }
 
     public boolean isShowButtonPanel() {
@@ -254,14 +195,6 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
 
     public void setYearRange(String yearRange) {
         getStateHelper().put(PropertyKeys.yearRange, yearRange);
-    }
-
-    public boolean isTimeOnly() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.timeOnly, false);
-    }
-
-    public void setTimeOnly(boolean timeOnly) {
-        getStateHelper().put(PropertyKeys.timeOnly, timeOnly);
     }
 
     public int getStepHour() {
@@ -454,30 +387,6 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
 
     public void setButtonTabindex(String buttonTabindex) {
         getStateHelper().put(PropertyKeys.buttonTabindex, buttonTabindex);
-    }
-
-    public String getInputStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.inputStyle, null);
-    }
-
-    public void setInputStyle(String inputStyle) {
-        getStateHelper().put(PropertyKeys.inputStyle, inputStyle);
-    }
-
-    public String getInputStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.inputStyleClass, null);
-    }
-
-    public void setInputStyleClass(String inputStyleClass) {
-        getStateHelper().put(PropertyKeys.inputStyleClass, inputStyleClass);
-    }
-
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, "text");
-    }
-
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
     }
 
     public boolean isFocusOnSelect() {

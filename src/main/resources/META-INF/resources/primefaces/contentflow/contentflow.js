@@ -2023,7 +2023,7 @@ ContentFlow.prototype = {
         var itemN = currentItem.next;
 
         this._positionItem(currentItem, 0);
-        for (var i=1; i <= this.conf.visibleItems && 2*i < this.items.length ; i++) {
+        for (var i=1; i <= this.conf.visibleItems; i++) {
             if (itemP) {
                 this._positionItem(itemP, -i);
                 this._lastStart = itemP;

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,8 +68,8 @@ public abstract class InputRenderer extends CoreRenderer {
      * @throws IOException if any error occurs writing the response
      */
     protected void renderARIARequired(FacesContext context, UIInput component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         if (component.isRequired()) {
+            ResponseWriter writer = context.getResponseWriter();
             writer.writeAttribute(HTML.ARIA_REQUIRED, "true", null);
         }
     }
@@ -82,8 +82,8 @@ public abstract class InputRenderer extends CoreRenderer {
      * @throws IOException if any error occurs writing the response
      */
     protected void renderARIAInvalid(FacesContext context, UIInput component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         if (!component.isValid()) {
+            ResponseWriter writer = context.getResponseWriter();
             writer.writeAttribute(HTML.ARIA_INVALID, "true", null);
         }
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package org.primefaces.component.hotkey;
 import java.io.IOException;
 import java.util.Map;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -27,7 +26,6 @@ import javax.faces.event.ActionEvent;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AjaxRequestBuilder;
-import org.primefaces.util.ComponentTraversalUtils;
 
 public class HotkeyRenderer extends CoreRenderer {
 
@@ -56,17 +54,11 @@ public class HotkeyRenderer extends CoreRenderer {
         writer.write("$(document).off('" + event + "').on('" + event + "',null,'" + hotkey.getBind() + "',function(){");
 
         if (hotkey.isAjaxified()) {
-            UIComponent form = ComponentTraversalUtils.closestForm(context, hotkey);
-
-            if (form == null) {
-                throw new FacesException("Hotkey '" + clientId + "' needs to be enclosed in a form when ajax mode is enabled");
-            }
-
             AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
 
             String request = builder.init()
                     .source(clientId)
-                    .form(form.getClientId(context))
+                    .form(hotkey, hotkey)
                     .process(component, hotkey.getProcess())
                     .update(component, hotkey.getUpdate())
                     .async(hotkey.isAsync())

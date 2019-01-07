@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,22 +52,10 @@ abstract class SelectBooleanCheckboxBase extends HtmlSelectBooleanCheckbox imple
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    /**
-     * Use HtmlSelectBooleanCheckbox#getLabel() instead
-     * @return
-     * @deprecated Use HtmlSelectBooleanCheckbox#getLabel() instead
-     */
-    @Deprecated
     public String getItemLabel() {
         return (String) getStateHelper().eval(PropertyKeys.itemLabel, null);
     }
 
-    /**
-     * Use HtmlSelectBooleanCheckbox#setLabel() instead
-     * @param itemLabel
-     * @deprecated Use HtmlSelectBooleanCheckbox#setLabel() instead
-     */
-    @Deprecated
     public void setItemLabel(String itemLabel) {
         getStateHelper().put(PropertyKeys.itemLabel, itemLabel);
     }

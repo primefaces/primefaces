@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -180,6 +180,8 @@ public class PrimeRequestContext {
      * @return if secure or not.
      */
     public boolean isSecure() {
+        // currently called once per request - later we might cache the result per request
+        // and even the method lookup
         Object request = context.getExternalContext().getRequest();
 
         if (request instanceof HttpServletRequest) {

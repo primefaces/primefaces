@@ -15,6 +15,7 @@
  */
 package org.primefaces.component.calendar;
 
+import org.primefaces.util.CalendarUtils;
 import static org.junit.Assert.*;
 
 import org.junit.After;

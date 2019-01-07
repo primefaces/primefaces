@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import javax.faces.view.facelets.TagConfig;
 import javax.faces.view.facelets.TagHandler;
 
 import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.util.LangUtils;
 
 /**
  * {@link TagHandler} for the <code>ImportEnum</code> component.
@@ -81,7 +82,7 @@ public class ImportEnumTagHandler extends TagHandler {
         String type = attribute.getValue(ctx);
 
         try {
-            return Class.forName(type, true, Thread.currentThread().getContextClassLoader());
+            return LangUtils.loadClassForName(type);
         }
         catch (ClassNotFoundException e) {
             throw new FacesException("Class " + type + " not found.", e);

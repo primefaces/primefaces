@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,8 @@ abstract class SpotlightBase extends UIComponentBase implements Widget {
 
         widgetVar,
         target,
-        active
+        active,
+        blockScroll
     }
 
     public SpotlightBase() {
@@ -65,6 +66,14 @@ abstract class SpotlightBase extends UIComponentBase implements Widget {
 
     public void setActive(boolean active) {
         getStateHelper().put(PropertyKeys.active, active);
+    }
+
+    public boolean isBlockScroll() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.blockScroll, false);
+    }
+
+    public void setBlockScroll(boolean blockScroll) {
+        getStateHelper().put(PropertyKeys.blockScroll, blockScroll);
     }
 
     @Override

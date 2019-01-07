@@ -296,12 +296,32 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 if($this.cfg.hasIframe) {
                     $this.iframeFix = $('<div style="position:absolute;background-color:transparent;width:100%;height:100%;top:0;left:0;"></div>').appendTo($this.content);
                 }
+
+                if ($this.hasBehavior('resizeStart')) {
+                    var ext = {
+                        params: [
+                            {name: $this.id + '_width', value: ui.size.width},
+                            {name: $this.id + '_height', value: ui.size.height}
+                        ]
+                    };
+                    $this.callBehavior('resizeStart', ext);
+                }
             },
             stop: function(event, ui) {
                 $this.jq.css('position', 'fixed');
 
                 if($this.cfg.hasIframe) {
                     $this.iframeFix.remove();
+                }
+
+                if ($this.hasBehavior('resizeStop')) {
+                    var ext = {
+                        params: [
+                            {name: $this.id + '_width', value: ui.size.width},
+                            {name: $this.id + '_height', value: ui.size.height}
+                        ]
+                    };
+                    $this.callBehavior('resizeStop', ext);
                 }
             }
         });

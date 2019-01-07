@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +46,7 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
         dismissable,
         showCloseIcon,
         modal,
+        blockScroll,
         showDelay;
 
         private String toString;
@@ -137,7 +138,7 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
     }
 
     public String getAppendTo() {
-        return (String) getStateHelper().eval(PropertyKeys.appendTo, "@(body)");
+        return (String) getStateHelper().eval(PropertyKeys.appendTo, null);
     }
 
     public void setAppendTo(String appendTo) {
@@ -206,6 +207,14 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
 
     public void setModal(boolean modal) {
         getStateHelper().put(PropertyKeys.modal, modal);
+    }
+
+    public boolean isBlockScroll() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.blockScroll, false);
+    }
+
+    public void setBlockScroll(boolean blockScroll) {
+        getStateHelper().put(PropertyKeys.blockScroll, blockScroll);
     }
 
     public int getShowDelay() {

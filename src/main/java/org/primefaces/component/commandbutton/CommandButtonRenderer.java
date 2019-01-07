@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import java.io.IOException;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
@@ -133,10 +134,10 @@ public class CommandButtonRenderer extends CoreRenderer {
         boolean ajax = button.isAjax();
 
         if (ajax) {
-            request = buildAjaxRequest(context, button, null);
+            request = buildAjaxRequest(context, button);
         }
         else {
-            UIComponent form = ComponentTraversalUtils.closestForm(context, button);
+            UIForm form = ComponentTraversalUtils.closestForm(context, button);
             if (form == null) {
                 throw new FacesException("CommandButton : \"" + clientId + "\" must be inside a form element");
             }

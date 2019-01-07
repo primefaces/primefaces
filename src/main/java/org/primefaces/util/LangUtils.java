@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,8 +28,22 @@ public class LangUtils {
         return value == null || value.isEmpty();
     }
 
-    public static boolean isValueBlank(String value) {
-        return value == null || value.trim().isEmpty();
+    public static boolean isValueBlank(String str) {
+        if (str == null) {
+            return true;
+        }
+
+        int strLen = str.length();
+        if (strLen == 0) {
+            return true;
+        }
+
+        for (int i = 0; i < strLen; i++) {
+            if (!Character.isWhitespace(str.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static boolean contains(Object[] array, Object object) {
@@ -94,11 +108,39 @@ public class LangUtils {
 
     public static Class tryToLoadClassForName(String name) {
         try {
-            return Class.forName(name);
+            return loadClassForName(name);
         }
         catch (ClassNotFoundException e) {
-            //do nothing - it's just a try
             return null;
         }
+    }
+
+    public static Class loadClassForName(String name) throws ClassNotFoundException {
+        try {
+            return Class.forName(name, false, LangUtils.class.getClassLoader());
+        }
+        catch (ClassNotFoundException e) {
+            try {
+                return Class.forName(name, false, getContextClassLoader());
+            }
+            catch (ClassNotFoundException e2) {
+                throw e2;
+            }
+        }
+    }
+
+    public static ClassLoader getContextClassLoader() {
+        // TODO we probably need to check the SecurityManager and do this via AccessController
+        return Thread.currentThread().getContextClassLoader();
+    }
+
+    public static ClassLoader getCurrentClassLoader(Class clazz) {
+        ClassLoader cl = getContextClassLoader();
+
+        if (cl == null && clazz != null) {
+            cl = clazz.getClassLoader();
+        }
+
+        return cl;
     }
 }

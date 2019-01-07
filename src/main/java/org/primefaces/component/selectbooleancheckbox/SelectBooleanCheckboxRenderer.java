@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,22 +15,19 @@
  */
 package org.primefaces.component.selectbooleancheckbox;
 
-import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
+import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
-import java.io.IOException;
-import java.util.logging.Logger;
+
+import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class SelectBooleanCheckboxRenderer extends InputRenderer {
-
-    private static final Logger LOGGER = Logger.getLogger(SelectBooleanCheckboxRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -147,31 +144,19 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
     }
 
     protected void encodeItemLabel(FacesContext context, SelectBooleanCheckbox checkbox, String clientId) throws IOException {
-        // See #4231 (Remove itemLabel in 7.0)
-        String itemLabel = checkbox.getItemLabel();
-        String label = checkbox.getLabel();
+        String label = checkbox.getItemLabel();
 
-        boolean hasItemLabel = !LangUtils.isValueBlank(itemLabel);
-        boolean hasLabel = !LangUtils.isValueBlank(label);
-
-        if (hasItemLabel || hasLabel) {
+        if (label != null) {
             ResponseWriter writer = context.getResponseWriter();
 
             writer.startElement("span", null);
             writer.writeAttribute("class", HTML.CHECKBOX_LABEL_CLASS, null);
 
-            if (hasItemLabel) {
-                LOGGER.warning("itemLabel property is deprecated. Use label instead");
-            }
-
-            boolean escaped = checkbox.isEscape();
-            String text = hasItemLabel ? itemLabel : label;
-            if (escaped) {
-                String property = hasItemLabel ? "itemLabel" : "label";
-                writer.writeText(text, property);
+            if (checkbox.isEscape()) {
+                writer.writeText(label, "itemLabel");
             }
             else {
-                writer.write(text);
+                writer.write(label);
             }
 
             writer.endElement("span");

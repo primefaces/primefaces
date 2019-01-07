@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ public class MessageFactory {
         Application application = facesContext.getApplication();
         String userBundleName = application.getMessageBundle();
         ResourceBundle bundle = null;
-        ClassLoader currentClassLoader = getCurrentClassLoader(application);
+        ClassLoader currentClassLoader = LangUtils.getCurrentClassLoader(application.getClass());
 
         //try user defined bundle first
         if (userBundleName != null) {
@@ -134,15 +134,6 @@ public class MessageFactory {
         }
 
         return label;
-    }
-
-    protected static ClassLoader getCurrentClassLoader(Object clazz) {
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
-
-        if (loader == null) {
-            loader = clazz.getClass().getClassLoader();
-        }
-        return loader;
     }
 
     protected static Locale getLocale() {

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,6 +57,7 @@ public class DialogRenderer extends CoreRenderer {
                 .attr("draggable", dialog.isDraggable(), true)
                 .attr("resizable", dialog.isResizable(), true)
                 .attr("modal", dialog.isModal(), false)
+                .attr("blockScroll", dialog.isBlockScroll(), false)
                 .attr("width", dialog.getWidth(), null)
                 .attr("height", dialog.getHeight(), null)
                 .attr("minWidth", dialog.getMinWidth(), Integer.MIN_VALUE)

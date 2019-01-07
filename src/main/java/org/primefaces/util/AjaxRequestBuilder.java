@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,11 +29,16 @@ import javax.faces.view.facelets.FaceletException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
+import javax.faces.component.UIForm;
+import org.primefaces.component.api.AjaxSource;
 
 /**
  * Helper to generate javascript code of an ajax call
  */
 public class AjaxRequestBuilder {
+
+    private static final Logger LOG = Logger.getLogger(AjaxRequestBuilder.class.getName());
 
     protected StringBuilder buffer;
     protected FacesContext context;
@@ -61,6 +66,43 @@ public class AjaxRequestBuilder {
         return this;
     }
 
+    public AjaxRequestBuilder form(AjaxSource source, UIComponent component, UIForm formComponent) {
+        String result = null;
+
+        String form = source.getForm();
+        if (LangUtils.isValueBlank(form)) {
+            if (formComponent == null) {
+                formComponent = ComponentTraversalUtils.closestForm(context, component);
+            }
+
+            if (formComponent == null) {
+                if (context.isProjectStage(ProjectStage.Development)) {
+                    String message = "Component '" + component.getClientId(context)
+                            + "' should be inside a form or should reference a form via its form attribute. "
+                            + " We will try to find a fallback form on the client side.";
+                    LOG.info(message);
+                }
+            }
+            else {
+                result = formComponent.getClientId(context);
+            }
+        }
+        else {
+            result = SearchExpressionFacade.resolveClientId(context, component, source.getForm());
+        }
+
+        if (result != null) {
+            buffer.append(",f:\"").append(result).append("\"");
+        }
+
+        return this;
+    }
+
+    public AjaxRequestBuilder form(AjaxSource source, UIComponent component) {
+        return form(source, component, null);
+    }
+
+    @Deprecated
     public AjaxRequestBuilder form(String form) {
         if (form != null) {
             buffer.append(",f:\"").append(form).append("\"");

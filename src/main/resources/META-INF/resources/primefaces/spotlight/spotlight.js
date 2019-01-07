@@ -33,7 +33,7 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
     calculatePositions: function() {
         var doc = $(document),
         documentBody = $(document.body),
-        offset = this.target.offset();
+        offset = PrimeFaces.utils.calculateRelativeOffset(this.target);
 
         documentBody.children('div.ui-spotlight-top').css({
             'left': 0,
@@ -71,6 +71,9 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
 
         this.target.data('zindex',this.target.zIndex()).css('z-index', ++PrimeFaces.zindex);
 
+        if (this.cfg.blockScroll) {
+            PrimeFaces.utils.preventScrolling();
+        }
         PrimeFaces.utils.preventTabbing(this.id, $this.target.zIndex(), function() {
             return $this.target.find(':tabbable');
         });
@@ -82,6 +85,9 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
 
     unbindEvents: function() {
         PrimeFaces.utils.enableTabbing(this.id);
+        if (this.cfg.blockScroll) {
+            PrimeFaces.utils.enableScrolling();
+        }
         $(window).off('resize.spotlight');
     },
 

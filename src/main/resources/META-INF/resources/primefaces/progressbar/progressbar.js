@@ -28,7 +28,7 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
             else {
                 this.jqValue.show().animate({
                     'width': value + '%'
-                }, 500, 'easeInOutCirc');
+                }, this.cfg.animationDuration, 'easeInOutCirc');
 
                 if(this.cfg.labelTemplate) {
                     var formattedLabel = this.cfg.labelTemplate.replace(/{value}/gi, value);

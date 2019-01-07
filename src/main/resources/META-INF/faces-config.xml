@@ -1014,7 +1014,12 @@
         <component-type>org.primefaces.component.RadarChart</component-type>
         <component-class>org.primefaces.component.radarchart.RadarChart</component-class>
     </component>
-
+    
+    <component>
+        <component-type>org.primefaces.component.DatePicker</component-type>
+        <component-class>org.primefaces.component.datepicker.DatePicker</component-class>
+    </component>
+    
     <render-kit>
         <renderer>
             <component-family>org.primefaces.component</component-family>
@@ -1775,6 +1780,11 @@
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.RadarChartRenderer</renderer-type>
             <renderer-class>org.primefaces.component.radarchart.RadarChartRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.DatePickerRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.datepicker.DatePickerRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>javax.faces.Output</component-family>

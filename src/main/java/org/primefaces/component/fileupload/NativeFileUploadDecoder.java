@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.NativeUploadedFile;
 import org.primefaces.model.UploadedFileWrapper;
 import org.primefaces.util.FileUploadUtils;
+import org.primefaces.virusscan.VirusException;
 
 public class NativeFileUploadDecoder {
 
@@ -71,7 +72,7 @@ public class NativeFileUploadDecoder {
                 }
             }
 
-            if (!uploadedInputParts.isEmpty() && isValidFile(fileUpload, uploadedInputParts)) {
+            if (!uploadedInputParts.isEmpty() && isValidFile(context, fileUpload, uploadedInputParts)) {
                 fileUpload.setSubmittedValue(new UploadedFileWrapper(new NativeUploadedFile(uploadedInputParts, fileUpload)));
             }
             else {
@@ -83,7 +84,7 @@ public class NativeFileUploadDecoder {
 
             if (part != null) {
                 NativeUploadedFile uploadedFile = new NativeUploadedFile(part, fileUpload);
-                if (isValidFile(fileUpload, uploadedFile)) {
+                if (isValidFile(context, fileUpload, uploadedFile)) {
                     fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
                 }
             }
@@ -99,24 +100,39 @@ public class NativeFileUploadDecoder {
 
         if (part != null) {
             NativeUploadedFile uploadedFile = new NativeUploadedFile(part, fileUpload);
-            if (isValidFile(fileUpload, uploadedFile)) {
+            if (isValidFile(context, fileUpload, uploadedFile)) {
                 fileUpload.queueEvent(new FileUploadEvent(fileUpload, uploadedFile));
             }
         }
     }
 
-    private static boolean isValidFile(FileUpload fileUpload, NativeUploadedFile uploadedFile) throws IOException {
-        return (fileUpload.getSizeLimit() == null || uploadedFile.getSize() <= fileUpload.getSizeLimit()) && FileUploadUtils.isValidType(fileUpload,
+    private static boolean isValidFile(FacesContext context, FileUpload fileUpload, NativeUploadedFile uploadedFile) throws IOException {
+        boolean valid = (fileUpload.getSizeLimit() == null || uploadedFile.getSize() <= fileUpload.getSizeLimit()) && FileUploadUtils.isValidType(fileUpload,
                 uploadedFile.getFileName(), uploadedFile.getInputstream());
+        if (valid) {
+            try {
+                FileUploadUtils.performVirusScan(context, fileUpload, uploadedFile.getInputstream());
+            }
+            catch (VirusException ex) {
+                return false;
+            }
+        }
+        return valid;
     }
 
-    private static boolean isValidFile(FileUpload fileUpload, List<Part> parts) throws IOException {
+    private static boolean isValidFile(FacesContext context, FileUpload fileUpload, List<Part> parts) throws IOException {
         long totalPartSize = 0;
         for (int i = 0; i < parts.size(); i++) {
             Part p = parts.get(i);
             totalPartSize += p.getSize();
             NativeUploadedFile uploadedFile = new NativeUploadedFile(p, fileUpload);
             if (!FileUploadUtils.isValidType(fileUpload, uploadedFile.getFileName(), uploadedFile.getInputstream())) {
+                return false;
+            }
+            try {
+                FileUploadUtils.performVirusScan(context, fileUpload, uploadedFile.getInputstream());
+            }
+            catch (VirusException ex) {
                 return false;
             }
         }

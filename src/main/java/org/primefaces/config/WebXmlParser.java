@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -81,7 +81,7 @@ public class WebXmlParser {
         Map<String, String> webFragmentXmlsErrorPages = null;
 
         try {
-            Enumeration<URL> webFragments = Thread.currentThread().getContextClassLoader().getResources("META-INF/web-fragment.xml");
+            Enumeration<URL> webFragments = LangUtils.getContextClassLoader().getResources("META-INF/web-fragment.xml");
 
             while (webFragments.hasMoreElements()) {
                 try {

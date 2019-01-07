@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,9 +47,11 @@ public class InputMaskRenderer extends InputRenderer {
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId);
 
         if (submittedValue != null) {
-            Pattern pattern = translateMaskIntoRegex(context, inputMask);
-            if (!pattern.matcher(submittedValue).matches()) {
-                submittedValue = null;
+            if (!submittedValue.isEmpty()) {
+                Pattern pattern = translateMaskIntoRegex(context, inputMask);
+                if (!pattern.matcher(submittedValue).matches()) {
+                    submittedValue = "";
+                }
             }
 
             inputMask.setSubmittedValue(submittedValue);

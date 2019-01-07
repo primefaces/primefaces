@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,8 @@ abstract class ProgressBarBase extends UIComponentBase implements Widget, Client
         labelTemplate,
         displayOnly,
         global,
-        mode
+        mode,
+        animationDuration
     }
 
     public ProgressBarBase() {
@@ -139,6 +140,14 @@ abstract class ProgressBarBase extends UIComponentBase implements Widget, Client
 
     public void setMode(String mode) {
         getStateHelper().put(PropertyKeys.mode, mode);
+    }
+
+    public int getAnimationDuration() {
+        return (Integer) getStateHelper().eval(PropertyKeys.animationDuration, 500);
+    }
+
+    public void setAnimationDuration(int animationDuration) {
+        getStateHelper().put(PropertyKeys.animationDuration, animationDuration);
     }
 
     @Override

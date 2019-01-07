@@ -48,8 +48,13 @@ if (!PrimeFaces.utils) {
             }
         },
 
-        addModal: function(id, zIndex, tabbablesCallback) {
+        addModal: function(widget, zIndex, tabbablesCallback) {
+            var id = widget.id;
             PrimeFaces.utils.preventTabbing(id, zIndex, tabbablesCallback);
+
+            if (widget.cfg.blockScroll) {
+                PrimeFaces.utils.preventScrolling();
+            }
 
             var modalId = id + '_modal';
 
@@ -111,7 +116,8 @@ if (!PrimeFaces.utils) {
             });
         },
 
-        removeModal: function(id) {
+        removeModal: function(widget) {
+            var id = widget.id;
             var modalId = id + '_modal';
 
             // if the id contains a ':'
@@ -120,6 +126,9 @@ if (!PrimeFaces.utils) {
             // if the id does NOT contain a ':'
             $(document.body).children("[id='" + modalId + "']").remove();
 
+            if (widget.cfg.blockScroll) {
+                PrimeFaces.utils.enableScrolling();
+            }
             PrimeFaces.utils.enableTabbing(id);
         },
 
@@ -205,7 +214,7 @@ if (!PrimeFaces.utils) {
             });
 
             $(window).off(resizeNamespace).on(resizeNamespace, function(e) {
-                if (element && element.is(":hidden")) {
+                if (element && (element.is(":hidden") || element.css('visibility') === 'hidden')) {
                     return;
                 }
 
@@ -258,6 +267,36 @@ if (!PrimeFaces.utils) {
             }
 
             scrollParent.off(scrollNamespace);
+        },
+
+        /**
+         * Disables scrolling of the document body.
+         */
+        preventScrolling: function() {
+            $(document.body).addClass('ui-overflow-hidden');
+        },
+
+        /**
+         * Enables scrolling again if previously disabled.
+         */
+        enableScrolling: function() {
+            $(document.body).removeClass('ui-overflow-hidden');
+        },
+        
+        /**
+         * Calculates an element offset relative to where the Window is currently scrolled.
+         */
+        calculateRelativeOffset: function (element) {
+            var result = {
+                left : 0,
+                top : 0
+            };
+            var offset = element.offset();
+            var scrollTop = $(window).scrollTop();
+            var scrollLeft = $(window).scrollLeft();
+            result.top = offset.top - scrollTop;
+            result.left = offset.left - scrollLeft;
+            return result;
         }
     };
 

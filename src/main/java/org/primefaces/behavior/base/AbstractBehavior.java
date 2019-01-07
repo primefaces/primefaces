@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -87,6 +87,14 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
 
     protected <T> T eval(Enum<?> property, T unspecifiedValue) {
         return eval(property.name(), unspecifiedValue);
+    }
+
+    public void put(String name, Object value) {
+        setLiteral(name, value);
+    }
+
+    public void put(Enum<?> property, Object value) {
+        setLiteral(property.name(), value);
     }
 
     protected boolean isAttributeSet(String attr) {

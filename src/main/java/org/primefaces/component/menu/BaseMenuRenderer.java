@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * Copyright 2009-2019 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import java.util.*;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
 import javax.faces.component.UIParameter;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorContext;
@@ -31,12 +32,10 @@ import javax.faces.event.PhaseId;
 import org.primefaces.behavior.confirm.ConfirmBehavior;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
-import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.event.MenuActionEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.menu.*;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
-import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.SharedStringBuilder;
@@ -121,6 +120,10 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         return (styleClass == null) ? AbstractMenu.MENUITEM_LINK_CLASS : AbstractMenu.MENUITEM_LINK_CLASS + " " + styleClass;
     }
 
+    protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
+        encodeMenuItem(context, menu, menuitem, "-1");
+    }
+
     protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem, String tabindex) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String title = menuitem.getTitle();
@@ -173,7 +176,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
             else {
                 writer.writeAttribute("href", "#", null);
 
-                UIComponent form = ComponentTraversalUtils.closestForm(context, menu);
+                UIForm form = ComponentTraversalUtils.closestForm(context, menu);
                 if (form == null) {
                     throw new FacesException("MenuItem must be inside a form element");
                 }
@@ -311,39 +314,6 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
-    }
-
-    protected String buildAjaxRequest(FacesContext context, AbstractMenu menu, AjaxSource source, UIComponent form,
-                                      Map<String, List<String>> params) {
-
-        String clientId = menu.getClientId(context);
-
-        AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
-
-        builder.init()
-                .source(clientId)
-                .process(menu, source.getProcess())
-                .update(menu, source.getUpdate())
-                .async(source.isAsync())
-                .global(source.isGlobal())
-                .delay(source.getDelay())
-                .timeout(source.getTimeout())
-                .partialSubmit(source.isPartialSubmit(), source.isPartialSubmitSet(), source.getPartialSubmitFilter())
-                .resetValues(source.isResetValues(), source.isResetValuesSet())
-                .ignoreAutoUpdate(source.isIgnoreAutoUpdate())
-                .onstart(source.getOnstart())
-                .onerror(source.getOnerror())
-                .onsuccess(source.getOnsuccess())
-                .oncomplete(source.getOncomplete())
-                .params(params);
-
-        if (form != null) {
-            builder.form(form.getClientId(context));
-        }
-
-        builder.preventDefault();
-
-        return builder.build();
     }
 
     protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam,

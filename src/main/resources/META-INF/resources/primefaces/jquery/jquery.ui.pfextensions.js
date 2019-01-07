@@ -60,6 +60,7 @@
                 var checkedOffset = $.datepicker._checkOffset(inst, offset, isFixed);
                 inst.dpDiv.css({top: checkedOffset.top + "px"});
             };
+            this.updateDatePickerPosition(inst);
         });
     };
 
@@ -306,6 +307,16 @@ $.widget( "ui.sortable", $.ui.sortable, {
                 if (originalValue != formattedDateTime) {
                     this.$input.trigger("change"); // PrimeFaces https://github.com/primefaces/primefaces/issues/2811
                 }
+            },
+            
+            // PrimeFaces https://github.com/primefaces/primefaces/issues/3765
+            _addTimePicker: function (dp_inst) {
+                var currDT = $.trim((this.$altInput && this._defaults.altFieldTimeOnly) ? this.$input.val() + ' ' + this.$altInput.val() : this.$input.next().val());
+
+                this.timeDefined = this._parseTime(currDT);
+                this._limitMinMaxDateTime(dp_inst, false);
+                this._injectTimePicker();
+                this._afterInject();
             },
 
             _controls: {
