@@ -38,7 +38,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         UICalendar uicalendar = (UICalendar) component;
 
-        if (uicalendar.isDisabled() || uicalendar.isReadonly()) {
+        if (!shouldDecode(uicalendar)) {
             return;
         }
 
