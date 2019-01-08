@@ -120,6 +120,7 @@ public class DatePicker extends DatePickerBase {
 
         if (isValid() && !isEmpty(value) && value instanceof Date) {
             Date date = (Date) value;
+            boolean isDisabledDate = false;
 
             Date minDate = CalendarUtils.getObjectAsDate(context, this, getMindate());
             if (minDate != null && date.before(minDate)) {
@@ -133,11 +134,52 @@ public class DatePicker extends DatePickerBase {
                 }
             }
 
+            if (isValid()) {
+                List<Object> disabledDates = getDisabledDates();
+                if (disabledDates != null) {
+                    Calendar c = Calendar.getInstance();
+                    c.setTime(date);
+                    int sYear = c.get(Calendar.YEAR);
+                    int sMonth = c.get(Calendar.MONTH);
+                    int sDay = c.get(Calendar.DAY_OF_MONTH);
+
+                    for (Object disabledDate : disabledDates) {
+                        if (disabledDate instanceof Date) {
+                            c.clear();
+                            c.setTime((Date) disabledDate);
+
+                            if (sYear == c.get(Calendar.YEAR) && sMonth == c.get(Calendar.MONTH) && sDay == c.get(Calendar.DAY_OF_MONTH)) {
+                                setValid(false);
+                                isDisabledDate = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (isValid()) {
+                List<Object> disabledDays = getDisabledDays();
+                if (disabledDays != null) {
+                    Calendar c = Calendar.getInstance();
+                    c.setTime(date);
+                    int dayOfWeek = c.get(Calendar.DAY_OF_WEEK) - 1;
+
+                    if (disabledDays.contains(dayOfWeek)) {
+                        setValid(false);
+                        isDisabledDate = true;
+                    }
+                }
+            }
+
             if (!isValid()) {
                 FacesMessage msg = null;
                 String validatorMessage = getValidatorMessage();
                 if (validatorMessage != null) {
                     msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessage, validatorMessage);
+                }
+                else if (isDisabledDate) {
+                    msg = MessageFactory.getMessage(DATE_INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, null);
                 }
                 else {
                     msg = MessageFactory.getMessage(DATE_OUT_OF_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, null);
