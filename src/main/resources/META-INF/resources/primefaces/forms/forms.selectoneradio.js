@@ -31,6 +31,8 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
                             .addClass('ui-icon-bullet').removeClass('ui-icon-blank');
                 }
             }
+            
+            this.originalInputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
         }
         //regular layout
         else {
@@ -57,18 +59,18 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         .on('mouseout.selectOneRadio', function() {
             $(this).removeClass('ui-state-hover');
         })
-        .on('click.selectOneRadio', function() {
+        .on('click.selectOneRadio', function(e) {
             var radio = $(this),
             input = radio.prev().children(':radio');
 
             if(!radio.hasClass('ui-state-active')) {
                 $this.unselect($this.checkedRadio);
                 $this.select(radio);
-                input.trigger('click');
+                $this.fireClickEvent(input, e);
                 input.trigger('change');
             }
             else {
-                input.trigger('click');
+                $this.fireClickEvent(input, e);
             }
         });
 
@@ -145,14 +147,26 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
     },
 
     unselect: function(radio) {
-        radio.prev().children(':radio').prop('checked', false);
+        var radioInput = radio.prev().children(':radio');
+        radioInput.prop('checked', false);
         radio.removeClass('ui-state-active').children('.ui-radiobutton-icon').removeClass('ui-icon-bullet').addClass('ui-icon-blank');
+        
+        if (this.cfg.custom) {
+            var itemindex = radioInput.data('itemindex');
+            this.originalInputs.eq(itemindex).prop('checked', false);
+        }
     },
 
     select: function(radio) {
+        var radioInput = radio.prev().children(':radio');
         this.checkedRadio = radio;
         radio.addClass('ui-state-active').children('.ui-radiobutton-icon').addClass('ui-icon-bullet').removeClass('ui-icon-blank');
-        radio.prev().children(':radio').prop('checked', true);
+        radioInput.prop('checked', true);
+        
+        if (this.cfg.custom) {
+            var itemindex = radioInput.data('itemindex');
+            this.originalInputs.eq(itemindex).prop('checked', true);
+        }
     },
 
     unbindEvents: function(input) {
@@ -198,6 +212,13 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             label.removeClass('ui-state-disabled');
         }
         this.bindEvents();
+    },
+    
+    fireClickEvent: function(input, event) {
+        var userOnClick = input.prop('onclick');
+        if (userOnClick) {
+            userOnClick.call(this, event);
+        }
     }
 
 });
