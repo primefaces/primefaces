@@ -23,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.convert.DateTimeConverter;
+import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.LocaleUtils;
 
 public abstract class UICalendar extends HtmlInputText {
@@ -32,8 +33,6 @@ public abstract class UICalendar extends HtmlInputText {
     public static final String DATE_OUT_OF_RANGE_MESSAGE_ID = "primefaces.calendar.OUT_OF_RANGE";
 
     private java.util.Locale calculatedLocale;
-
-    private java.util.TimeZone appropriateTimeZone;
 
     private String timeOnlyPattern = null;
 
@@ -154,28 +153,6 @@ public abstract class UICalendar extends HtmlInputText {
         return calculatedLocale;
     }
 
-    public java.util.TimeZone calculateTimeZone() {
-        if (appropriateTimeZone == null) {
-            Object usertimeZone = getTimeZone();
-            if (usertimeZone != null) {
-                if (usertimeZone instanceof String) {
-                    appropriateTimeZone = java.util.TimeZone.getTimeZone((String) usertimeZone);
-                }
-                else if (usertimeZone instanceof java.util.TimeZone) {
-                    appropriateTimeZone = (java.util.TimeZone) usertimeZone;
-                }
-                else {
-                    throw new IllegalArgumentException("TimeZone could be either String or java.util.TimeZone");
-                }
-            }
-            else {
-                appropriateTimeZone = java.util.TimeZone.getDefault();
-            }
-        }
-
-        return appropriateTimeZone;
-    }
-
     public boolean hasTime() {
         String pattern = getPattern();
 
@@ -249,7 +226,7 @@ public abstract class UICalendar extends HtmlInputText {
         if (converter == null && PrimeApplicationContext.getCurrentInstance(getFacesContext()).getConfig().isClientSideValidationEnabled()) {
             DateTimeConverter con = new DateTimeConverter();
             con.setPattern(calculatePattern());
-            con.setTimeZone(calculateTimeZone());
+            con.setTimeZone(CalendarUtils.calculateTimeZone(this.getTimeZone()));
             con.setLocale(calculateLocale(getFacesContext()));
 
             return con;

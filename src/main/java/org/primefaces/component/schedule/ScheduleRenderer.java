@@ -33,6 +33,7 @@ import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class ScheduleRenderer extends CoreRenderer {
@@ -78,7 +79,7 @@ public class ScheduleRenderer extends CoreRenderer {
             Long startMillis = Long.valueOf(startDateParam);
             Long endMillis = Long.valueOf(endDateParam);
 
-            TimeZone tz = schedule.calculateTimeZone();
+            TimeZone tz = CalendarUtils.calculateTimeZone(schedule.getTimeZone(), TimeZone.getTimeZone("UTC"));
             Date startDate = new Date(startMillis - tz.getOffset(startMillis));
             Date endDate = new Date(endMillis - tz.getOffset(endMillis));
 
@@ -91,7 +92,7 @@ public class ScheduleRenderer extends CoreRenderer {
     }
 
     protected void encodeEventsAsJSON(FacesContext context, Schedule schedule, ScheduleModel model) throws IOException {
-        TimeZone timeZone = schedule.calculateTimeZone();
+        TimeZone timeZone = CalendarUtils.calculateTimeZone(schedule.getTimeZone(), TimeZone.getTimeZone("UTC"));
 
         SimpleDateFormat iso = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
         iso.setTimeZone(timeZone);
