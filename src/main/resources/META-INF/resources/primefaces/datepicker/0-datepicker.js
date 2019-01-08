@@ -688,7 +688,7 @@
                         throw "Unknown name at position " + iValue;
                     }
                 },
-                checkLiteral = () => {
+                checkLiteral = function() {
                     if (value.charAt(iValue) !== format.charAt(iFormat)) {
                         throw "Unexpected literal at position " + iValue;
                     }
