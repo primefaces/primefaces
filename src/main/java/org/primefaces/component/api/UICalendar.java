@@ -50,21 +50,7 @@ public abstract class UICalendar extends HtmlInputText {
         readonlyInput,
         inputStyle,
         inputStyleClass,
-        type;
-
-        String toString;
-
-        PropertyKeys(String toString) {
-            this.toString = toString;
-        }
-
-        PropertyKeys() {
-        }
-
-        @Override
-        public String toString() {
-            return ((this.toString != null) ? this.toString : super.toString());
-        }
+        type
     }
 
     public Object getLocale() {
