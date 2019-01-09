@@ -27,6 +27,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class ClockRenderer extends CoreRenderer {
@@ -95,7 +96,7 @@ public class ClockRenderer extends CoreRenderer {
 
         if (locale != null) {
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", locale);
-            dateFormat.setTimeZone(clock.calculateTimeZone());
+            dateFormat.setTimeZone(CalendarUtils.calculateTimeZone(clock.getTimeZone()));
 
             value = dateFormat.format(new Date());
         }

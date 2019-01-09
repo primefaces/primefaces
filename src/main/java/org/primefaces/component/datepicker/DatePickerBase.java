@@ -358,6 +358,11 @@ abstract class DatePickerBase extends UICalendar implements Widget, InputHolder,
     }
 
     @Override
+    public boolean hasTime() {
+        return this.isShowTime() || this.isTimeOnly() || super.hasTime();
+    }
+
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

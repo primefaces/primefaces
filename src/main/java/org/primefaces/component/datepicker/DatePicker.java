@@ -118,18 +118,27 @@ public class DatePicker extends DatePickerBase {
     protected void validateValue(FacesContext context, Object value) {
         super.validateValue(context, value);
 
-        if (isValid() && !isEmpty(value) && value instanceof Date) {
-            Date date = (Date) value;
+        if (isValid() && !isEmpty(value)) {
+            boolean isDisabledDate = false;
+            boolean isRangeDatesSequential = true;
 
-            Date minDate = CalendarUtils.getObjectAsDate(context, this, getMindate());
-            if (minDate != null && date.before(minDate)) {
-                setValid(false);
+            if (value instanceof Date) {
+                isDisabledDate = validateDateValue(context, (Date) value);
             }
+            else if (value instanceof List && getSelectionMode().equals("range")) {
+                List rangeValues = (List) value;
 
-            if (isValid()) {
-                Date maxDate = CalendarUtils.getObjectAsDate(context, this, getMaxdate());
-                if (maxDate != null && date.after(maxDate)) {
-                    setValid(false);
+                Date startDate = (Date) rangeValues.get(0);
+                isDisabledDate = validateDateValue(context, startDate);
+
+                if (!isDisabledDate) {
+                    Date endDate = (Date) rangeValues.get(1);
+                    isDisabledDate = validateDateValue(context, endDate);
+
+                    if (isValid() && startDate.after(endDate)) {
+                        setValid(false);
+                        isRangeDatesSequential = false;
+                    }
                 }
             }
 
@@ -139,11 +148,73 @@ public class DatePicker extends DatePickerBase {
                 if (validatorMessage != null) {
                     msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessage, validatorMessage);
                 }
+                else if (isDisabledDate) {
+                    msg = MessageFactory.getMessage(DATE_INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, null);
+                }
+                else if (!isRangeDatesSequential) {
+                    msg = MessageFactory.getMessage(DATE_INVALID_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, null);
+                }
                 else {
                     msg = MessageFactory.getMessage(DATE_OUT_OF_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, null);
                 }
                 context.addMessage(getClientId(context), msg);
             }
         }
+    }
+
+    protected boolean validateDateValue(FacesContext context, Date date) {
+        boolean isDisabledDate = false;
+
+        Date minDate = CalendarUtils.getObjectAsDate(context, this, getMindate());
+        if (minDate != null && date.before(minDate)) {
+            setValid(false);
+        }
+
+        if (isValid()) {
+            Date maxDate = CalendarUtils.getObjectAsDate(context, this, getMaxdate());
+            if (maxDate != null && date.after(maxDate)) {
+                setValid(false);
+            }
+        }
+
+        if (isValid()) {
+            List<Object> disabledDates = getDisabledDates();
+            if (disabledDates != null) {
+                Calendar c = Calendar.getInstance(CalendarUtils.calculateTimeZone(getTimeZone()), calculateLocale(context));
+                c.setTime(date);
+                int sYear = c.get(Calendar.YEAR);
+                int sMonth = c.get(Calendar.MONTH);
+                int sDay = c.get(Calendar.DAY_OF_MONTH);
+
+                for (Object disabledDate : disabledDates) {
+                    if (disabledDate instanceof Date) {
+                        c.clear();
+                        c.setTime((Date) disabledDate);
+
+                        if (sYear == c.get(Calendar.YEAR) && sMonth == c.get(Calendar.MONTH) && sDay == c.get(Calendar.DAY_OF_MONTH)) {
+                            setValid(false);
+                            isDisabledDate = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (isValid()) {
+            List<Object> disabledDays = getDisabledDays();
+            if (disabledDays != null) {
+                Calendar c = Calendar.getInstance(CalendarUtils.calculateTimeZone(getTimeZone()), calculateLocale(context));
+                c.setTime(date);
+                int dayOfWeek = c.get(Calendar.DAY_OF_WEEK) - 1;
+
+                if (disabledDays.contains(dayOfWeek)) {
+                    setValid(false);
+                    isDisabledDate = true;
+                }
+            }
+        }
+
+        return isDisabledDate;
     }
 }

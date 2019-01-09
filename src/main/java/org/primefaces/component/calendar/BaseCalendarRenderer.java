@@ -38,7 +38,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         UICalendar uicalendar = (UICalendar) component;
 
-        if (uicalendar.isDisabled() || uicalendar.isReadonly()) {
+        if (!shouldDecode(uicalendar)) {
             return;
         }
 
@@ -158,7 +158,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         //Use built-in converter
         format = new SimpleDateFormat(uicalendar.calculatePattern(), uicalendar.calculateLocale(context));
         format.setLenient(false);
-        format.setTimeZone(uicalendar.calculateTimeZone());
+        format.setTimeZone(CalendarUtils.calculateTimeZone(uicalendar.getTimeZone()));
         try {
             return format.parse(submittedValue);
         }

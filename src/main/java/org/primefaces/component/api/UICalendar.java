@@ -23,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.convert.DateTimeConverter;
+import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.LocaleUtils;
 
 public abstract class UICalendar extends HtmlInputText {
@@ -30,10 +31,10 @@ public abstract class UICalendar extends HtmlInputText {
     public static final String CONTAINER_CLASS = "ui-calendar";
     public static final String INPUT_STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
     public static final String DATE_OUT_OF_RANGE_MESSAGE_ID = "primefaces.calendar.OUT_OF_RANGE";
+    public static final String DATE_INVALID_MESSAGE_ID = "primefaces.calendar.INVALID";
+    public static final String DATE_INVALID_RANGE_MESSAGE_ID = "primefaces.calendar.DATE_INVALID_RANGE_MESSAGE_ID";
 
     private java.util.Locale calculatedLocale;
-
-    private java.util.TimeZone appropriateTimeZone;
 
     private String timeOnlyPattern = null;
 
@@ -49,21 +50,7 @@ public abstract class UICalendar extends HtmlInputText {
         readonlyInput,
         inputStyle,
         inputStyleClass,
-        type;
-
-        String toString;
-
-        PropertyKeys(String toString) {
-            this.toString = toString;
-        }
-
-        PropertyKeys() {
-        }
-
-        @Override
-        public String toString() {
-            return ((this.toString != null) ? this.toString : super.toString());
-        }
+        type
     }
 
     public Object getLocale() {
@@ -154,28 +141,6 @@ public abstract class UICalendar extends HtmlInputText {
         return calculatedLocale;
     }
 
-    public java.util.TimeZone calculateTimeZone() {
-        if (appropriateTimeZone == null) {
-            Object usertimeZone = getTimeZone();
-            if (usertimeZone != null) {
-                if (usertimeZone instanceof String) {
-                    appropriateTimeZone = java.util.TimeZone.getTimeZone((String) usertimeZone);
-                }
-                else if (usertimeZone instanceof java.util.TimeZone) {
-                    appropriateTimeZone = (java.util.TimeZone) usertimeZone;
-                }
-                else {
-                    throw new IllegalArgumentException("TimeZone could be either String or java.util.TimeZone");
-                }
-            }
-            else {
-                appropriateTimeZone = java.util.TimeZone.getDefault();
-            }
-        }
-
-        return appropriateTimeZone;
-    }
-
     public boolean hasTime() {
         String pattern = getPattern();
 
@@ -249,7 +214,7 @@ public abstract class UICalendar extends HtmlInputText {
         if (converter == null && PrimeApplicationContext.getCurrentInstance(getFacesContext()).getConfig().isClientSideValidationEnabled()) {
             DateTimeConverter con = new DateTimeConverter();
             con.setPattern(calculatePattern());
-            con.setTimeZone(calculateTimeZone());
+            con.setTimeZone(CalendarUtils.calculateTimeZone(this.getTimeZone()));
             con.setLocale(calculateLocale(getFacesContext()));
 
             return con;

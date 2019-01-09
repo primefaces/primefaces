@@ -30,6 +30,7 @@ import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.ScheduleEvent;
+import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.MapBuilder;
@@ -48,7 +49,6 @@ public class Schedule extends ScheduleBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Schedule";
 
-    private static final TimeZone DEFAULT_TIME_ZONE = TimeZone.getTimeZone("UTC");
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("dateSelect", SelectEvent.class)
             .put("eventSelect", SelectEvent.class)
@@ -58,7 +58,6 @@ public class Schedule extends ScheduleBase {
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
     private java.util.Locale appropriateLocale;
-    private TimeZone appropriateTimeZone;
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
@@ -78,35 +77,13 @@ public class Schedule extends ScheduleBase {
         return appropriateLocale;
     }
 
-    protected TimeZone calculateTimeZone() {
-        if (appropriateTimeZone == null) {
-            Object usertimeZone = getTimeZone();
-            if (usertimeZone != null) {
-                if (usertimeZone instanceof String) {
-                    appropriateTimeZone = TimeZone.getTimeZone((String) usertimeZone);
-                }
-                else if (usertimeZone instanceof java.util.TimeZone) {
-                    appropriateTimeZone = (TimeZone) usertimeZone;
-                }
-                else {
-                    throw new IllegalArgumentException("TimeZone could be either String or java.util.TimeZone");
-                }
-            }
-            else {
-                appropriateTimeZone = DEFAULT_TIME_ZONE;
-            }
-        }
-
-        return appropriateTimeZone;
-    }
-
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
         String clientId = getClientId(context);
-        TimeZone tz = calculateTimeZone();
+        TimeZone tz = CalendarUtils.calculateTimeZone(this.getTimeZone(), TimeZone.getTimeZone("UTC"));
 
         if (isSelfRequest(context)) {
 

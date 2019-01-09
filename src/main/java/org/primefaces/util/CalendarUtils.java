@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -115,7 +116,7 @@ public class CalendarUtils {
         //Use built-in converter
         else if (value instanceof Date) {
             SimpleDateFormat dateFormat = new SimpleDateFormat(calendar.calculatePattern(), calendar.calculateLocale(context));
-            dateFormat.setTimeZone(calendar.calculateTimeZone());
+            dateFormat.setTimeZone(calculateTimeZone(calendar.getTimeZone()));
 
             return dateFormat.format((Date) value);
         }
@@ -152,7 +153,7 @@ public class CalendarUtils {
         //Use built-in converter
         else if (value instanceof Date) {
             SimpleDateFormat format = new SimpleDateFormat(calendar.calculateTimeOnlyPattern(), calendar.calculateLocale(context));
-            format.setTimeZone(calendar.calculateTimeZone());
+            format.setTimeZone(calculateTimeZone(calendar.getTimeZone()));
 
             return format.format(calendar.getValue());
         }
@@ -225,4 +226,24 @@ public class CalendarUtils {
         writer.write("]");
     }
 
+    public static TimeZone calculateTimeZone(Object usertimeZone) {
+        return calculateTimeZone(usertimeZone, TimeZone.getDefault());
+    }
+
+    public static TimeZone calculateTimeZone(Object usertimeZone, TimeZone defaultTimeZone) {
+        if (usertimeZone != null) {
+            if (usertimeZone instanceof String) {
+                return TimeZone.getTimeZone((String) usertimeZone);
+            }
+            else if (usertimeZone instanceof TimeZone) {
+                return (TimeZone) usertimeZone;
+            }
+            else {
+                throw new IllegalArgumentException("TimeZone could be either String or java.util.TimeZone");
+            }
+        }
+        else {
+            return defaultTimeZone;
+        }
+    }
 }
