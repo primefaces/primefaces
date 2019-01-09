@@ -180,7 +180,7 @@ public class DatePicker extends DatePickerBase {
         if (isValid()) {
             List<Object> disabledDates = getDisabledDates();
             if (disabledDates != null) {
-                Calendar c = Calendar.getInstance();
+                Calendar c = Calendar.getInstance(CalendarUtils.calculateTimeZone(getTimeZone()), calculateLocale(context));
                 c.setTime(date);
                 int sYear = c.get(Calendar.YEAR);
                 int sMonth = c.get(Calendar.MONTH);
@@ -204,7 +204,7 @@ public class DatePicker extends DatePickerBase {
         if (isValid()) {
             List<Object> disabledDays = getDisabledDays();
             if (disabledDays != null) {
-                Calendar c = Calendar.getInstance();
+                Calendar c = Calendar.getInstance(CalendarUtils.calculateTimeZone(getTimeZone()), calculateLocale(context));
                 c.setTime(date);
                 int dayOfWeek = c.get(Calendar.DAY_OF_WEEK) - 1;
 
