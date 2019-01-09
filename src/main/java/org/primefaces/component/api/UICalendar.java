@@ -32,6 +32,7 @@ public abstract class UICalendar extends HtmlInputText {
     public static final String INPUT_STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
     public static final String DATE_OUT_OF_RANGE_MESSAGE_ID = "primefaces.calendar.OUT_OF_RANGE";
     public static final String DATE_INVALID_MESSAGE_ID = "primefaces.calendar.INVALID";
+    public static final String DATE_INVALID_RANGE_MESSAGE_ID = "primefaces.calendar.DATE_INVALID_RANGE_MESSAGE_ID";
 
     private java.util.Locale calculatedLocale;
 
