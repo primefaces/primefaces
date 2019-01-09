@@ -97,7 +97,7 @@
                 this.value = this.parseOptionValue(value);
                 
                 /* set changes */
-                this.panel.empty().append(this.renderPanelElements());
+                this.panel.get(0).innerHTML = this.renderPanelElements();
                 this.inputfield.val(this.value);
             }
             else if (key === 'getDate') {
@@ -942,7 +942,7 @@
             this.panel = $('<div class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all ' + _classes + '"></div>');
 
             //render inner elements
-            this.panel.append(this.renderPanelElements());
+            this.panel.get(0).innerHTML = this.renderPanelElements();
         },
 
         renderPanelElements: function () {
@@ -1032,7 +1032,7 @@
         renderMonthViewMonth: function (index) {
             var monthName = this.options.locale.monthNamesShort[index];
 
-            return '<a tabindex="0" class="ui-monthpicker-month' + this.getClassesToAdd({ 'ui-state-active': this.isMonthSelected(index) }) + '">' + monthName + '</a>';
+            return '<a tabindex="0" class="ui-monthpicker-month' + this.getClassesToAdd({ 'ui-state-active': this.isMonthSelected(index) }) + '">' + this.escapeHTML(monthName) + '</a>';
         },
 
         renderMonthViewMonths: function () {
@@ -1088,7 +1088,7 @@
                 return '<select class="ui-datepicker-month">' + this.renderTitleOptions('month', this.options.locale.monthNames) + '</select>';
             }
             else {
-                return '<span class="ui-datepicker-month">' + this.options.locale.monthNames[month] + '</span>' + '&#xa0;';
+                return '<span class="ui-datepicker-month">' + this.escapeHTML(this.options.locale.monthNames[month]) + '</span>' + '&#xa0;';
             }
         },
 
@@ -1113,9 +1113,9 @@
         renderTitleOptions: function (name, options) {
             var _options = '';
             for (var i = 0; i < options.length; i++) {
-                var option = options[i];
+                var option = (name === 'month') ? this.escapeHTML(options[i]) : options[i];
 
-                _options += '<option value="' + (name == 'month' ? i : option) + '">' + option + '</option>';
+                _options += '<option value="' + (name === 'month' ? i : option) + '">' + option + '</option>';
             }
 
             return _options;
@@ -1137,7 +1137,7 @@
             var dayNamesHtml = '';
             for (var i = 0; i < weekDays.length; i++) {
                 dayNamesHtml += '<th scope="col">' +
-                    '<span title="' + this.options.locale.dayNames[i] + '">' +
+                    '<span title="' + this.escapeHTML(this.options.locale.dayNames[i]) + '">' +
                     weekDays[i] +
                     '</span>' +
                     '</th>';
@@ -1966,6 +1966,10 @@
                 this.options.onClearButtonClick.call(this, event);
             }
         },
+        
+        escapeHTML: function(value) {
+            return value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        },
 
         updateViewDate: function (event, value) {
             if (this.options.onViewDateChange) {
@@ -1974,7 +1978,7 @@
             
             this.viewDate = value;
 
-            this.panel.empty().append(this.renderPanelElements());
+            this.panel.get(0).innerHTML = this.renderPanelElements();
 
             this._setInitOptionValues();
         },
@@ -1983,7 +1987,7 @@
             this.value = value;
             this.inputfield.val(this.getValueToRender());
 
-            this.panel.empty().append(this.renderPanelElements());
+            this.panel.get(0).innerHTML = this.renderPanelElements();
 
             this._setInitOptionValues();
         }
