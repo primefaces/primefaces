@@ -1968,7 +1968,20 @@
         },
         
         escapeHTML: function(value) {
-            return value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            var entityMap = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;',
+                '/': '&#x2F;',
+                '`': '&#x60;',
+                '=': '&#x3D;'
+            };
+            
+            return String(value).replace(/[&<>"'`=\/]/g, function (s) {
+                return entityMap[s];
+            });
         },
 
         updateViewDate: function (event, value) {
