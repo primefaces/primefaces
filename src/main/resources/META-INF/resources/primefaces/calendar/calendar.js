@@ -259,14 +259,20 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.timeFormat.indexOf('TT') != -1) {
             this.cfg.ampm = true;
         }
+        
+        // GitHub #4366 pass date and time settings for min/max date
+        var timeSettings = {
+                settings : this.cfg
+        };
+        var parseSettings = $.datepicker._getFormatConfig(timeSettings);
 
-        //restrains
+        //restraints
         if(this.cfg.minDate) {
-            this.cfg.minDate = $.datepicker.parseDateTime(this.cfg.dateFormat, this.cfg.timeFormat, this.cfg.minDate, {}, {});
+            this.cfg.minDate = $.datepicker.parseDateTime(this.cfg.dateFormat, this.cfg.timeFormat, this.cfg.minDate, parseSettings, this.cfg);
         }
 
         if(this.cfg.maxDate) {
-            this.cfg.maxDate = $.datepicker.parseDateTime(this.cfg.dateFormat, this.cfg.timeFormat, this.cfg.maxDate, {}, {});
+            this.cfg.maxDate = $.datepicker.parseDateTime(this.cfg.dateFormat, this.cfg.timeFormat, this.cfg.maxDate, parseSettings, this.cfg);
         }
 
         if(!this.cfg.showButtonPanel) {
