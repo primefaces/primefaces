@@ -31,7 +31,6 @@ import javax.faces.event.ActionListener;
 
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.util.LangUtils;
 
 public class DataExporter implements ActionListener, StateHolder {
 
@@ -117,7 +116,7 @@ public class DataExporter implements ActionListener, StateHolder {
             exporterOptions = (ExporterOptions) options.getValue(elContext);
         }
 
-        String customExporterClass = null;
+        Object customExporterClass = null;
         if (customExporter != null) {
             customExporterClass = (String) customExporter.getValue(elContext);
         }
@@ -157,19 +156,20 @@ public class DataExporter implements ActionListener, StateHolder {
         }
     }
 
-    protected Exporter getExporter(String exportAs, ExporterOptions exporterOptions, String customExporterClass) {
-        Exporter exporter = null;
-        if (LangUtils.isValueBlank(customExporterClass)) {
-            exporter = ExporterFactory.getExporterForType(exportAs, exporterOptions);
-        }
-        else {
-            Object customExporter = LangUtils.tryNewInstanceOfClass(customExporterClass);
-            if (customExporter != null) {
-                exporter = (Exporter) customExporter;
-            }
+    protected Exporter getExporter(String exportAs, ExporterOptions exporterOptions, Object customExporterClass) {
+
+        if (customExporterClass == null ) {
+            return ExporterFactory.getExporterForType(exportAs, exporterOptions);
         }
 
-        return exporter;
+        if (customExporterClass instanceof Exporter ) {
+            return (Exporter) customExporterClass;
+        }
+        else {
+            throw new FacesException("Component " + this.getClass().getName() + " customExporter="
+                   + customExporterClass.getClass().getName() + " does not extend Exporter!");
+        }
+
     }
 
     @Override

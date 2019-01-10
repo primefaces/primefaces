@@ -165,7 +165,7 @@
             <description>Custom Exporter to be used in place of DataExporter. Provide fully qualified name of the class.</description>
             <name>customExporter</name>
             <required>false</required>
-            <type>java.lang.String</type>
+            <type>java.lang.Object</type>
         </attribute>        
     </tag>
 
