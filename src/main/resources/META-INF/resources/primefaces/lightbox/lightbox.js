@@ -142,7 +142,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
 
                 var title = link.attr('title');
                 if(title) {
-                    _self.captionText.html(title);
+                    _self.captionText.html(PrimeFaces.escapeHTML(title));
                 }
             }, 1000);
 
@@ -184,7 +184,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
 
             var title = $(this).attr('title');
             if(title) {
-                _self.captionText.html(title);
+                _self.captionText.html(PrimeFaces.escapeHTML(title));
                 _self.caption.slideDown();
             }
 
