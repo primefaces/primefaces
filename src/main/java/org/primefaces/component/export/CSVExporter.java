@@ -116,27 +116,27 @@ public class CSVExporter extends Exporter {
                 }
 
                 UIComponent facet = col.getFacet(columnType.facet());
-                if (facet != null) {
-                    addColumnValue(builder, facet);
+                String textValue;
+                switch (columnType) {
+                    case HEADER:
+                        textValue = col.getExportHeaderValue() != null ? col.getExportHeaderValue() : col.getHeaderText();
+                        break;
+                    case FOOTER:
+                        textValue = col.getExportFooterValue() != null ? col.getExportFooterValue() : col.getFooterText();
+                        break;
+                    default:
+                        textValue = null;
+                        break;
+                }
+
+                if (textValue != null) {
+                    this.addColumnValue(builder, textValue);
+                }
+                else if (facet != null) {
+                    this.addColumnValue(builder, facet);
                 }
                 else {
-                    String textValue;
-                    switch (columnType) {
-                        case HEADER:
-                            textValue = col.getHeaderText();
-                            break;
-
-                        case FOOTER:
-                            textValue = col.getFooterText();
-                            break;
-
-                        default:
-                            textValue = "";
-                            break;
-                    }
-
-                    addColumnValue(builder, textValue);
-
+                    this.addColumnValue(builder, Constants.EMPTY_STRING);
                 }
 
                 firstCellWritten = true;
