@@ -118,7 +118,7 @@ public class DataExporter implements ActionListener, StateHolder {
 
         Object customExporterClass = null;
         if (customExporter != null) {
-            customExporterClass = (String) customExporter.getValue(elContext);
+            customExporterClass = (Object) customExporter.getValue(elContext);
         }
 
         try {
