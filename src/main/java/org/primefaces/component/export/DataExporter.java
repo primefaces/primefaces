@@ -31,6 +31,7 @@ import javax.faces.event.ActionListener;
 
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.util.LangUtils;
 
 public class DataExporter implements ActionListener, StateHolder {
 
@@ -55,6 +56,8 @@ public class DataExporter implements ActionListener, StateHolder {
     private ValueExpression options;
 
     private MethodExpression onTableRender;
+
+    private ValueExpression customExporter;
 
     public DataExporter() {
     }
@@ -114,8 +117,13 @@ public class DataExporter implements ActionListener, StateHolder {
             exporterOptions = (ExporterOptions) options.getValue(elContext);
         }
 
+        String customExporterClass = null;
+        if (customExporter != null) {
+            customExporterClass = (String) customExporter.getValue(elContext);
+        }
+
         try {
-            Exporter exporter = ExporterFactory.getExporterForType(exportAs, exporterOptions);
+            Exporter exporter = getExporter(exportAs, exporterOptions , customExporterClass);
 
             if (!repeating) {
                 List components = SearchExpressionFacade.resolveComponents(context, event.getComponent(), tables);
@@ -149,6 +157,21 @@ public class DataExporter implements ActionListener, StateHolder {
         }
     }
 
+    protected Exporter getExporter(String exportAs, ExporterOptions exporterOptions, String customExporterClass) {
+        Exporter exporter = null;
+        if (LangUtils.isValueBlank(customExporterClass)) {
+            exporter = ExporterFactory.getExporterForType(exportAs, exporterOptions);
+        }
+        else {
+            Object customExporter = LangUtils.tryNewInstanceOfClass(customExporterClass);
+            if (customExporter != null) {
+                exporter = (Exporter) customExporter;
+            }
+        }
+
+        return exporter;
+    }
+
     @Override
     public boolean isTransient() {
         return false;
@@ -161,6 +184,14 @@ public class DataExporter implements ActionListener, StateHolder {
 
     public void setRepeat(ValueExpression ve) {
         repeat = ve;
+    }
+
+    public ValueExpression getCustomExporter() {
+        return customExporter;
+    }
+
+    public void setCustomExporter(ValueExpression customExporter) {
+        this.customExporter = customExporter;
     }
 
     @Override
