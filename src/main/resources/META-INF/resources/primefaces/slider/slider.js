@@ -136,14 +136,16 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
             this.setInputValue(this.input.eq(1), ui.values[1]);
 
             if(this.output) {
-                this.output.html(this.cfg.displayTemplate.replace('{min}', ui.values[0]).replace('{max}', ui.values[1]));
+                var displayTemplate = PrimeFaces.escapeHTML(this.cfg.displayTemplate);
+                this.output.html(displayTemplate.replace('{min}', ui.values[0]).replace('{max}', ui.values[1]));
             }
         }
         else {
             this.setInputValue(this.input, ui.value);
 
             if(this.output) {
-                this.output.html(this.cfg.displayTemplate.replace('{value}', ui.value));
+                var displayTemplate = PrimeFaces.escapeHTML(this.cfg.displayTemplate);
+                this.output.html(displayTemplate.replace('{value}', ui.value));
             }
         }
     },
