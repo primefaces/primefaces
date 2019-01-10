@@ -5127,7 +5127,10 @@ body .ui-dialog {
     color: #333333;
     border: 1px solid #c8c8c8;
     padding: 0.571em 1em;
-    line-height: 1.5; }
+    line-height: 1.5;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box; }
   body .ui-dialog .ui-dialog-footer {
     border: 1px solid #c8c8c8;
     border-top: 0 none;
@@ -5150,8 +5153,8 @@ body .ui-dialog {
       body .ui-dialog.ui-confirm-dialog .ui-dialog-content > span.ui-icon {
         margin-right: 0.2145em;
         font-size: 2em; }
-  body .ui-dialog .ui-resizable-handle {
-    display: none !important; }
+  body .ui-dialog .ui-resizable-handle.ui-icon {
+    position: absolute; }
 body .ui-tooltip .ui-tooltip-text {
   background-color: #333333;
   color: #ffffff;

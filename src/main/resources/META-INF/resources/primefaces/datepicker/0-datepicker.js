@@ -1174,7 +1174,7 @@
             return weekHtml;
         },
 
-        renderDateCellContent(date, dateClass) {
+        renderDateCellContent: function (date, dateClass) {
             var content = this.options.dateTemplate ? this.options.dateTemplate.call(this, date) : date.day;
             if (date.selectable) {
                 return '<a tabindex="0" class="' + dateClass + '">' + content + '</a>';
@@ -1968,7 +1968,20 @@
         },
         
         escapeHTML: function(value) {
-            return value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            var entityMap = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;',
+                '/': '&#x2F;',
+                '`': '&#x60;',
+                '=': '&#x3D;'
+            };
+            
+            return String(value).replace(/[&<>"'`=\/]/g, function (s) {
+                return entityMap[s];
+            });
         },
 
         updateViewDate: function (event, value) {
