@@ -26,7 +26,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
             this.counter = this.cfg.counter ? $(PrimeFaces.escapeClientId(this.cfg.counter)) : null;
             this.cfg.counterTemplate = this.cfg.counterTemplate||'{0}';
             this.updateCounter();
-            
+
             if(this.counter) {
                 var $this = this;
                 this.jq.on('keyup.inputtextarea-counter', function(e) {
@@ -85,8 +85,8 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
 
             var counterText = this.cfg.counterTemplate.replace('{0}', remaining);
             counterText = counterText.replace('{1}', length);
-            
-            this.counter.html(counterText);
+
+            this.counter.text(counterText);
         }
     },
 
