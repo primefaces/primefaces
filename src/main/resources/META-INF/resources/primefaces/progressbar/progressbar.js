@@ -32,8 +32,7 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
 
                 if(this.cfg.labelTemplate) {
                     var formattedLabel = this.cfg.labelTemplate.replace(/{value}/gi, value);
-
-                    this.jqLabel.html(formattedLabel).show();
+                    this.jqLabel.text(formattedLabel).show();
                 }
             }
 
