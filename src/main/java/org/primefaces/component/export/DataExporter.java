@@ -214,7 +214,7 @@ public class DataExporter implements ActionListener, StateHolder {
 
     @Override
     public Object saveState(FacesContext context) {
-        Object[] values = new Object[11];
+        Object[] values = new Object[12];
 
         values[0] = target;
         values[1] = type;
