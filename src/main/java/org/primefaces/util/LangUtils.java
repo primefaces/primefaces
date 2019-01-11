@@ -144,13 +144,4 @@ public class LangUtils {
         return cl;
     }
 
-    public static Object tryNewInstanceOfClass(String name) {
-        try {
-            return loadClassForName(name).newInstance();
-        }
-        catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            return null;
-        }
-    }
-
 }
