@@ -196,7 +196,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
     showCaption: function(panel) {
         var image = panel.children('img');
         this.caption.queue(function () {
-            $(this).html('<h4>' + image.attr('title') + '</h4><p>' + image.attr('alt') + '</p>').dequeue();
+            $(this).html('<h4>' + PrimeFaces.escapeHTML(image.attr('title')) + '</h4><p>' + PrimeFaces.escapeHTML(image.attr('alt')) + '</p>').dequeue();
         }).slideDown(this.cfg.effectSpeed);
     },
                 
