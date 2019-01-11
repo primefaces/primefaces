@@ -47,7 +47,7 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
-public class ExcelExporter extends Exporter {
+public class ExcelExporter extends DataTableExporter {
 
     private CellStyle cellStyle;
     private CellStyle facetStyle;
@@ -166,8 +166,8 @@ public class ExcelExporter extends Exporter {
         }
     }
 
-    protected void addColumnFacets(DataTable table, Sheet sheet, Exporter.ColumnType columnType) {
-        int sheetRowIndex = columnType.equals(Exporter.ColumnType.HEADER) ? 0 : (sheet.getLastRowNum() + 1);
+    protected void addColumnFacets(DataTable table, Sheet sheet, DataTableExporter.ColumnType columnType) {
+        int sheetRowIndex = columnType.equals(DataTableExporter.ColumnType.HEADER) ? 0 : (sheet.getLastRowNum() + 1);
         Row rowHeader = sheet.createRow(sheetRowIndex);
 
         for (UIColumn col : table.getColumns()) {
@@ -282,7 +282,7 @@ public class ExcelExporter extends Exporter {
     }
 
     public void exportTable(FacesContext context, DataTable table, Sheet sheet, boolean pageOnly, boolean selectionOnly) {
-        addColumnFacets(table, sheet, Exporter.ColumnType.HEADER);
+        addColumnFacets(table, sheet, DataTableExporter.ColumnType.HEADER);
 
         if (pageOnly) {
             exportPageOnly(context, table, sheet);
@@ -295,7 +295,7 @@ public class ExcelExporter extends Exporter {
         }
 
         if (table.hasFooterColumn()) {
-            addColumnFacets(table, sheet, Exporter.ColumnType.FOOTER);
+            addColumnFacets(table, sheet, DataTableExporter.ColumnType.FOOTER);
         }
 
         table.setRowIndex(-1);

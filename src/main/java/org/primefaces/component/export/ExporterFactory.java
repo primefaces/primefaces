@@ -31,7 +31,7 @@ public class ExporterFactory {
     }
 
     public static Exporter getExporterForType(String type, ExporterOptions options) {
-        Exporter exporter = null;
+        DataTableExporter exporter = null;
 
         try {
             ExporterType exporterType = ExporterType.valueOf(type.toUpperCase());
