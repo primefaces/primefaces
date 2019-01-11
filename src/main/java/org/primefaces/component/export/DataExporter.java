@@ -116,13 +116,13 @@ public class DataExporter implements ActionListener, StateHolder {
             exporterOptions = (ExporterOptions) options.getValue(elContext);
         }
 
-        Object customExporter = null;
-        if (this.customExporter != null) {
-            customExporter = (Object) this.customExporter.getValue(elContext);
+        Object customExporterInstance = null;
+        if (customExporter != null) {
+            customExporterInstance = (Object) customExporter.getValue(elContext);
         }
 
         try {
-            Exporter exporter = getExporter(exportAs, exporterOptions , customExporter);
+            Exporter exporter = getExporter(exportAs, exporterOptions , customExporterInstance);
 
             if (!repeating) {
                 List components = SearchExpressionFacade.resolveComponents(context, event.getComponent(), tables);
@@ -156,18 +156,18 @@ public class DataExporter implements ActionListener, StateHolder {
         }
     }
 
-    protected Exporter getExporter(String exportAs, ExporterOptions exporterOptions, Object customExporter) {
+    protected Exporter getExporter(String exportAs, ExporterOptions exporterOptions, Object customExporterInstance) {
 
-        if (customExporter == null ) {
+        if (customExporterInstance == null) {
             return ExporterFactory.getExporterForType(exportAs, exporterOptions);
         }
 
-        if (customExporter instanceof Exporter ) {
-            return (Exporter) customExporter;
+        if (customExporterInstance instanceof Exporter) {
+            return (Exporter) customExporterInstance;
         }
         else {
-            throw new FacesException("Component " + this.getClass().getName() + " customExporter="
-                   + customExporter.getClass().getName() + " does not extend Exporter!");
+            throw new FacesException("Component " + this.getClass().getName() + " customExporterInstance="
+                   + customExporterInstance.getClass().getName() + " does not extend Exporter!");
         }
 
     }
