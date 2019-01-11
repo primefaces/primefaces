@@ -163,7 +163,7 @@
         </attribute>
         <attribute>
             <description>Custom Exporter to be used in place of Default DataExporter.</description>
-            <name>customExporterClass</name>
+            <name>customExporter</name>
             <required>false</required>
             <type>java.lang.Object</type>
         </attribute>        

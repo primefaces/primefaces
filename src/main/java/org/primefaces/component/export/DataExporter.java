@@ -56,7 +56,7 @@ public class DataExporter implements ActionListener, StateHolder {
 
     private MethodExpression onTableRender;
 
-    private ValueExpression customExporterClass;
+    private ValueExpression customExporter;
 
     public DataExporter() {
     }
@@ -116,13 +116,13 @@ public class DataExporter implements ActionListener, StateHolder {
             exporterOptions = (ExporterOptions) options.getValue(elContext);
         }
 
-        Object customExporterObj = null;
-        if (customExporterClass != null) {
-            customExporterObj = (Object) customExporterClass.getValue(elContext);
+        Object customExporter = null;
+        if (this.customExporter != null) {
+            customExporter = (Object) this.customExporter.getValue(elContext);
         }
 
         try {
-            Exporter exporter = getExporter(exportAs, exporterOptions , customExporterObj);
+            Exporter exporter = getExporter(exportAs, exporterOptions , customExporter);
 
             if (!repeating) {
                 List components = SearchExpressionFacade.resolveComponents(context, event.getComponent(), tables);
@@ -156,18 +156,18 @@ public class DataExporter implements ActionListener, StateHolder {
         }
     }
 
-    protected Exporter getExporter(String exportAs, ExporterOptions exporterOptions, Object customExporterClass) {
+    protected Exporter getExporter(String exportAs, ExporterOptions exporterOptions, Object customExporter) {
 
-        if (customExporterClass == null ) {
+        if (customExporter == null ) {
             return ExporterFactory.getExporterForType(exportAs, exporterOptions);
         }
 
-        if (customExporterClass instanceof Exporter ) {
-            return (Exporter) customExporterClass;
+        if (customExporter instanceof Exporter ) {
+            return (Exporter) customExporter;
         }
         else {
             throw new FacesException("Component " + this.getClass().getName() + " customExporter="
-                   + customExporterClass.getClass().getName() + " does not extend Exporter!");
+                   + customExporter.getClass().getName() + " does not extend Exporter!");
         }
 
     }
@@ -186,12 +186,12 @@ public class DataExporter implements ActionListener, StateHolder {
         repeat = ve;
     }
 
-    public ValueExpression getCustomExporterClass() {
-        return customExporterClass;
+    public ValueExpression getCustomExporter() {
+        return customExporter;
     }
 
-    public void setCustomExporterClass(ValueExpression customExporterClass) {
-        this.customExporterClass = customExporterClass;
+    public void setCustomExporter(ValueExpression customExporter) {
+        this.customExporter = customExporter;
     }
 
     @Override
@@ -209,12 +209,12 @@ public class DataExporter implements ActionListener, StateHolder {
         repeat = (ValueExpression) values[8];
         options = (ValueExpression) values[9];
         onTableRender = (MethodExpression) values[10];
-        customExporterClass = (ValueExpression) values[11];
+        customExporter = (ValueExpression) values[11];
     }
 
     @Override
     public Object saveState(FacesContext context) {
-        Object[] values = new Object[12];
+        Object[] values = new Object[11];
 
         values[0] = target;
         values[1] = type;
@@ -227,7 +227,7 @@ public class DataExporter implements ActionListener, StateHolder {
         values[8] = repeat;
         values[9] = options;
         values[10] = onTableRender;
-        values[11] = customExporterClass;
+        values[11] = customExporter;
 
         return (values);
     }
