@@ -38,6 +38,7 @@ public class DataExporterTagHandler extends TagHandler {
     private final TagAttribute repeat;
     private final TagAttribute options;
     private final TagAttribute onTableRender;
+    private final TagAttribute customExporter;
 
     public DataExporterTagHandler(TagConfig tagConfig) {
         super(tagConfig);
@@ -52,6 +53,7 @@ public class DataExporterTagHandler extends TagHandler {
         repeat = getAttribute("repeat");
         options = getAttribute("options");
         onTableRender = getAttribute("onTableRender");
+        customExporter = getAttribute("customExporter");
     }
 
     @Override
@@ -68,6 +70,7 @@ public class DataExporterTagHandler extends TagHandler {
             ValueExpression repeatVE = null;
             ValueExpression optionsVE = null;
             MethodExpression onTableRenderME = null;
+            ValueExpression customExporterVE = null;
 
             if (encoding != null) {
                 encodingVE = encoding.getValueExpression(faceletContext, Object.class);
@@ -93,11 +96,14 @@ public class DataExporterTagHandler extends TagHandler {
             if (onTableRender != null) {
                 onTableRenderME = onTableRender.getMethodExpression(faceletContext, null, new Class[]{Object.class, Object.class});
             }
-
+            if (customExporter != null) {
+                customExporterVE = customExporter.getValueExpression(faceletContext, Object.class);
+            }
             ActionSource actionSource = (ActionSource) parent;
             DataExporter dataExporter = new DataExporter(targetVE, typeVE, fileNameVE, pageOnlyVE, selectionOnlyVE,
                     encodingVE, preProcessorME, postProcessorME, optionsVE, onTableRenderME);
             dataExporter.setRepeat(repeatVE);
+            dataExporter.setCustomExporter(customExporterVE);
             actionSource.addActionListener(dataExporter);
         }
     }
