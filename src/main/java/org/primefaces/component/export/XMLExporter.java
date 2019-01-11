@@ -34,7 +34,7 @@ import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.List;
 
-public class XMLExporter extends Exporter {
+public class XMLExporter extends DataTableExporter {
 
     @Override
     public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly,

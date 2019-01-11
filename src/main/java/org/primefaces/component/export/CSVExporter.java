@@ -33,7 +33,7 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
-public class CSVExporter extends Exporter {
+public class CSVExporter extends DataTableExporter {
 
     private CSVOptions csvOptions;
 
