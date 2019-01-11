@@ -141,7 +141,7 @@
             day.setMonth(month);
             day.setFullYear(year);
 
-            let dayIndex = day.getDay() + this.getSundayIndex();
+            var dayIndex = day.getDay() + this.getSundayIndex();
             return dayIndex >= 7 ? dayIndex - 7 : dayIndex;
         },
 
@@ -806,7 +806,7 @@
             else if (this.isRangeSelection()) {
                 var tokens = text.split(' - ');
                 value = [];
-                for (let i = 0; i < tokens.length; i++) {
+                for (var i = 0; i < tokens.length; i++) {
                     value[i] = this.parseDateTime(tokens[i].trim());
                 }
             }
