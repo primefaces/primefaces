@@ -31,10 +31,8 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
                 }, this.cfg.animationDuration, 'easeInOutCirc');
 
                 if(this.cfg.labelTemplate) {
-                    var labelTemplate = PrimeFaces.escapeHTML(this.cfg.labelTemplate);
-                    var formattedLabel = labelTemplate.replace(/{value}/gi, value);
-
-                    this.jqLabel.html(formattedLabel).show();
+                    var formattedLabel = this.cfg.labelTemplate.replace(/{value}/gi, value);
+                    this.jqLabel.text(formattedLabel).show();
                 }
             }
 
