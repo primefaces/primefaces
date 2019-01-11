@@ -649,6 +649,10 @@ if (window.PrimeFaces) {
                 return;
             }
         }
+        
+        if (element.parent().hasClass('ui-inputnumber')) {
+            element = element.parent().children('input:hidden');
+        }
 
         var submittedValue = vc.getSubmittedValue(element),
         valid = true,
