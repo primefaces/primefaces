@@ -56,7 +56,7 @@ public class DataExporter implements ActionListener, StateHolder {
 
     private MethodExpression onTableRender;
 
-    private ValueExpression customExporter;
+    private ValueExpression customExporterClass;
 
     public DataExporter() {
     }
@@ -116,13 +116,13 @@ public class DataExporter implements ActionListener, StateHolder {
             exporterOptions = (ExporterOptions) options.getValue(elContext);
         }
 
-        Object customExporterClass = null;
-        if (customExporter != null) {
-            customExporterClass = (Object) customExporter.getValue(elContext);
+        Object customExporterObj = null;
+        if (customExporterClass != null) {
+            customExporterObj = (Object) customExporterClass.getValue(elContext);
         }
 
         try {
-            Exporter exporter = getExporter(exportAs, exporterOptions , customExporterClass);
+            Exporter exporter = getExporter(exportAs, exporterOptions , customExporterObj);
 
             if (!repeating) {
                 List components = SearchExpressionFacade.resolveComponents(context, event.getComponent(), tables);
@@ -186,12 +186,12 @@ public class DataExporter implements ActionListener, StateHolder {
         repeat = ve;
     }
 
-    public ValueExpression getCustomExporter() {
-        return customExporter;
+    public ValueExpression getCustomExporterClass() {
+        return customExporterClass;
     }
 
-    public void setCustomExporter(ValueExpression customExporter) {
-        this.customExporter = customExporter;
+    public void setCustomExporterClass(ValueExpression customExporterClass) {
+        this.customExporterClass = customExporterClass;
     }
 
     @Override
@@ -209,11 +209,12 @@ public class DataExporter implements ActionListener, StateHolder {
         repeat = (ValueExpression) values[8];
         options = (ValueExpression) values[9];
         onTableRender = (MethodExpression) values[10];
+        customExporterClass = (ValueExpression) values[11];
     }
 
     @Override
     public Object saveState(FacesContext context) {
-        Object[] values = new Object[11];
+        Object[] values = new Object[12];
 
         values[0] = target;
         values[1] = type;
@@ -226,6 +227,7 @@ public class DataExporter implements ActionListener, StateHolder {
         values[8] = repeat;
         values[9] = options;
         values[10] = onTableRender;
+        values[11] = customExporterClass;
 
         return (values);
     }
