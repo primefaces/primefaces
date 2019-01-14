@@ -302,7 +302,7 @@ public class TreeRenderer extends CoreRenderer {
 
         if (filter) {
             wb.attr("filter", true)
-                    .attr("filterMode", tree.getFilterMode(), "exact");
+                    .attr("filterMode", tree.getFilterMode(), "lenient");
         }
 
         encodeIconStates(context, tree, wb);
@@ -634,7 +634,7 @@ public class TreeRenderer extends CoreRenderer {
         boolean selected = node.isSelected();
         boolean partialSelected = node.isPartialSelected();
         boolean filter = (tree.getValueExpression("filterBy") != null);
-        boolean isContainsMode = tree.getFilterMode().equals("contains");
+        boolean isStrictMode = tree.getFilterMode().equals("strict");
 
         UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());
         if (!uiTreeNode.isRendered()) {
@@ -647,7 +647,7 @@ public class TreeRenderer extends CoreRenderer {
             for (String filteredRowKey : filteredRowKeys) {
                 String rowKeyExt = rowKey + "_";
                 String filteredRowKeyExt = filteredRowKey + "_";
-                if (filteredRowKey.startsWith(rowKeyExt) || (!isContainsMode && rowKey.startsWith(filteredRowKeyExt))
+                if (filteredRowKey.startsWith(rowKeyExt) || (!isStrictMode && rowKey.startsWith(filteredRowKeyExt))
                         || filteredRowKey.equals(rowKey)) {
                     match = true;
                     if (!node.isLeaf() && !rowKey.startsWith(filteredRowKey)) {
