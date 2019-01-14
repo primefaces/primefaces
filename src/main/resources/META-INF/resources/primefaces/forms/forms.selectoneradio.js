@@ -32,6 +32,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
             
+            //pfs metadata
             this.originalInputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
         }
         //regular layout
@@ -39,15 +40,15 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             this.outputs = this.jq.find('.ui-radiobutton-box');
             this.inputs = this.jq.find(':radio');
             this.labels = this.jq.find('label');
+            
+            //pfs metadata
+            this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
         }
 
         this.enabledInputs = this.inputs.filter(':not(:disabled)');
         this.checkedRadio = this.outputs.filter('.ui-state-active');
 
         this.bindEvents();
-
-        //pfs metadata
-        this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
 
     bindEvents: function() {
