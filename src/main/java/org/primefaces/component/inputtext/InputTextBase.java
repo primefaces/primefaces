@@ -32,7 +32,9 @@ abstract class InputTextBase extends HtmlInputText implements Widget, RTLAware {
 
         placeholder,
         widgetVar,
-        type
+        type,
+        counter,
+        counterTemplate
     }
 
     public InputTextBase() {
@@ -66,6 +68,22 @@ abstract class InputTextBase extends HtmlInputText implements Widget, RTLAware {
 
     public void setType(String type) {
         getStateHelper().put(PropertyKeys.type, type);
+    }
+
+    public String getCounter() {
+        return (String) getStateHelper().eval(PropertyKeys.counter, null);
+    }
+
+    public void setCounter(String counter) {
+        getStateHelper().put(PropertyKeys.counter, counter);
+    }
+
+    public String getCounterTemplate() {
+        return (String) getStateHelper().eval(PropertyKeys.counterTemplate, null);
+    }
+
+    public void setCounterTemplate(String counterTemplate) {
+        getStateHelper().put(PropertyKeys.counterTemplate, counterTemplate);
     }
 
     @Override

@@ -9707,6 +9707,18 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description><![CDATA[Id of the label component to display remaining and entered characters.]]></description>
+            <name>counter</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[Template text to display in counter, default value is "{0}".]]></description>
+            <name>counterTemplate</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <tag-name>inputTextarea</tag-name>
