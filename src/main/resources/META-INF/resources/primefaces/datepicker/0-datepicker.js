@@ -1374,6 +1374,10 @@
             if (this.documentClickListener) {
                 this.datepickerClick = true;
             }
+            
+            if (this.options.showOnFocus && !this.panel.is(':visible')) {
+                this.showOverlay();
+            }
         },
 
         onInputFocus: function (event) {
