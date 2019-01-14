@@ -359,7 +359,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 case keyCode.ENTER:
                 case keyCode.NUMPAD_ENTER:
                 case keyCode.SPACE:
-                    if($this.panel.is(":hidden"))
+                    if ($this.panel.is(":hidden"))
                         $this.show();
                     else
                         $this.hide(true);
@@ -369,7 +369,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 
                 case keyCode.DOWN:
                     if (e.altKey) {
-                        if($this.panel.is(":hidden"))
+                        if ($this.panel.is(":hidden"))
                             $this.show();
                         else
                             $this.hide(true);
