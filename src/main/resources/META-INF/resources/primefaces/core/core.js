@@ -35,7 +35,7 @@
             var form = $(this.escapeClientId(parent));
 
             for(var key in params) {
-                form.append("<input type=\"hidden\" name=\"" + key + "\" value=\"" + params[key] + "\" class=\"ui-submit-param\"/>");
+                form.append("<input type=\"hidden\" name=\"" + PrimeFaces.escapeHTML(key) + "\" value=\"" + PrimeFaces.escapeHTML(params[key]) + "\" class=\"ui-submit-param\"/>");
             }
 
             return this;
