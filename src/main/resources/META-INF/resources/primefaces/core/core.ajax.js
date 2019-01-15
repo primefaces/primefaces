@@ -458,6 +458,8 @@ if (!PrimeFaces.ajax) {
                             else {
                                 componentPostParams = jqProcess.find(partialSubmitFilter).serializeArray();
                             }
+                            
+                            postParams = PrimeFaces.ajax.Request.arrayCompare(componentPostParams, postParams);
 
                             if (cfg.ext && cfg.ext.partialSubmitParameterFilter) {
                                 var filteredParams = cfg.ext.partialSubmitParameterFilter.call(this, componentPostParams);
@@ -484,16 +486,7 @@ if (!PrimeFaces.ajax) {
 
                 // remove postParam if already available in earlyPostParams
                 if (PrimeFaces.settings.earlyPostParamEvaluation && cfg.earlyPostParams) {
-                    // loop early post params
-                    $.each(cfg.earlyPostParams, function(earlyPostParamIndex, earlyPostParam) {
-                        // loop post params and remove it, if it's the same param as the early post param
-                        postParams = $.grep(postParams, function(postParam, postParamIndex) {
-                            if (postParam.name === earlyPostParam.name) {
-                                return false;
-                            }
-                            return true;
-                        });
-                    });
+                    postParams = PrimeFaces.ajax.Request.arrayCompare(cfg.earlyPostParams, postParams);
 
                     $.merge(postParams, cfg.earlyPostParams);
                 }
@@ -670,6 +663,21 @@ if (!PrimeFaces.ajax) {
                 }
 
                 return null;
+            },
+            
+            arrayCompare: function(arr1, arr2) {
+                // loop arr1 params
+                $.each(arr1, function(index1, param1) {
+                    // loop arr2 params and remove it, if it's the same param as the arr1 param
+                    arr2 = $.grep(arr2, function(param2, index2) {
+                        if (param2.name === param1.name) {
+                            return false;
+                        }
+                        return true;
+                    });
+                });
+                
+                return arr2;
             }
         },
 
