@@ -95,7 +95,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("SelectOneRadio", radio.resolveWidgetVar(), clientId)
-                .attr("custom", custom, false).finish();
+                .attr("custom", custom, false)
+                .attr("unselectable", radio.isUnselectable()).finish();
     }
 
     protected void encodeResponsiveLayout(FacesContext context, SelectOneRadio radio) throws IOException {

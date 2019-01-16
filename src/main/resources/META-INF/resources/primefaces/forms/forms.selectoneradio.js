@@ -71,6 +71,9 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
                 input.trigger('change');
             }
             else {
+                if ($this.cfg.unselectable) {
+                    $this.unselect($this.checkedRadio);
+                }
                 $this.fireClickEvent(input, e);
             }
         });
