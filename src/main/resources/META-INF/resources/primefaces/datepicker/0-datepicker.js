@@ -1370,7 +1370,7 @@
             this.panel.off('click.datePicker-date', dateSelector).on('click.datePicker-date', dateSelector, null, function (event) {
                 if ($this.monthsMetaData) {
                     var dayEl = $(this),
-                        calendarIndex = dayEl.closest('table').index(),
+                        calendarIndex = dayEl.closest('.ui-datepicker-group').index(),
                         weekIndex = dayEl.closest('tr').index(),
                         dayIndex = dayEl.closest('td').index();
                     $this.onDateSelect(event, $this.monthsMetaData[calendarIndex].dates[weekIndex][dayIndex]);
