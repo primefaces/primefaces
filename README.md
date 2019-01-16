@@ -47,7 +47,7 @@ For a full list of the available downloads, please visit the [download page](htt
 	</dependency>
 	```
 
-- Snapshot release
+- Snapshot (should NOT be used in production environments!)
 
 	```xml
 	<dependency>
