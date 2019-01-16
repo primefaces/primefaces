@@ -1715,16 +1715,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
 
-            if(this.cfg.disabledTextSelection) {
-                PrimeFaces.clearSelection();
-            }
+            this.clearTextSelection();
         }
     },
 
     onRowDblclick: function(event, row) {
-        if(this.cfg.disabledTextSelection) {
-            PrimeFaces.clearSelection();
-        }
+        this.clearTextSelection();
 
         //Check if rowclick triggered this event not a clickable element in row content
         if($(event.target).is('td,span:not(.ui-c)')) {
@@ -1740,7 +1736,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         selected = row.hasClass('ui-state-highlight');
 
         this.assignFocusedRow(row);
+        
+        // GitHub #4422
+        if (cmSelMode === 'checkbox') {
+            this.clearTextSelection();
+            return;
+        }
 
+        
         if(cmSelMode === 'single' || !selected) {
             this.unselectAllRows();
         }
@@ -1749,6 +1752,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         this.fireRowSelectEvent(rowMeta.key, 'contextMenu');
 
+        this.clearTextSelection();
+    },
+    
+    clearTextSelection: function() {
         if(this.cfg.disabledTextSelection) {
             PrimeFaces.clearSelection();
         }
