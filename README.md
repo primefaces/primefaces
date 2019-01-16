@@ -36,13 +36,32 @@ For a full list of the available downloads, please visit the [download page](htt
 
 ##### Maven
 
-```xml
-<dependency>
-    <groupId>org.primefaces</groupId>
-    <artifactId>primefaces</artifactId>
-    <version>6.2</version>
-</dependency>
-```
+- Official release
+
+	```xml
+	<dependency>
+	    <groupId>org.primefaces</groupId>
+	    <artifactId>primefaces</artifactId>
+	    <version>6.2</version>
+	</dependency>
+	```
+
+- Snapshot release
+
+	```xml
+	<dependency>
+	    <groupId>com.github.primefaces</groupId>
+	    <artifactId>primefaces</artifactId>
+	    <version>master-SNAPSHOT</version>
+	</dependency>
+
+	<repositories>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+	```
 
 ### Usage
 ***
