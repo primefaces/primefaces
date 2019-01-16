@@ -94,7 +94,7 @@
 
         _setOption: function (key, value) {
             if (key === 'setDate') {
-                this.value = this.parseOptionValue(value);
+                this.value = this.parseValue(value);
                 
                 /* set changes */
                 this.panel.get(0).innerHTML = this.renderPanelElements();
@@ -114,8 +114,8 @@
         },
         
         _setInitValues: function () {
-            this.value = this.parseOptionValue(this.options.defaultDate);
-            this.viewDate = this.parseOptionValue(this.options.viewDate || this.options.defaultDate || new Date());
+            this.value = this.parseValue(this.options.defaultDate);
+            this.viewDate = this.parseValue(this.options.viewDate || this.options.defaultDate || new Date());
             this.options.minDate = this.parseOptionValue(this.options.minDate);
             this.options.maxDate = this.parseOptionValue(this.options.maxDate);
             this.ticksTo1970 = (((1970 - 1) * 365 + Math.floor(1970 / 4) - Math.floor(1970 / 100) + Math.floor(1970 / 400)) * 24 * 60 * 60 * 10000000);
@@ -128,6 +128,14 @@
         },
         
         parseOptionValue: function(option) {
+            if (option && typeof option === 'string') {
+                return this.parseDate(option, this.options.dateFormat);
+            }
+            
+            return option;
+        },
+        
+        parseValue: function(option) {
             if (option && typeof option === 'string') {
                 return this.parseValueFromString(option);
             }
