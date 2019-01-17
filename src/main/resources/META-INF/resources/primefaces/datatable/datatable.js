@@ -1738,20 +1738,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.assignFocusedRow(row);
         
         // GitHub #4422
-        if (cmSelMode === 'checkbox') {
-            this.clearTextSelection();
-            return;
-        }
+        if (cmSelMode !== 'checkbox') {
+            if(cmSelMode === 'single' || !selected) {
+                this.unselectAllRows();
+            }
 
+            this.selectRow(row, true);
+        }
         
-        if(cmSelMode === 'single' || !selected) {
-            this.unselectAllRows();
-        }
-
-        this.selectRow(row, true);
-
         this.fireRowSelectEvent(rowMeta.key, 'contextMenu');
-
         this.clearTextSelection();
     },
     
