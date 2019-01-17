@@ -17418,6 +17418,12 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description><![CDATA[Unselectable mode when true clicking a radio again will clear the selection. Default false.]]></description>
+            <name>unselectable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <tag-name>separator</tag-name>
