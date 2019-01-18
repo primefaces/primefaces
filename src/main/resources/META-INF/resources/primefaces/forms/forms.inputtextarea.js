@@ -29,7 +29,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
 
             if(this.counter) {
                 var $this = this;
-                this.jq.on('keyup.inputtextarea-counter', function(e) {
+                this.jq.on('input.inputtextarea-counter', function(e) {
                     $this.updateCounter();
                 });
             }

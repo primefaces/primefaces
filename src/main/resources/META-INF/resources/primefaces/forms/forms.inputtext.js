@@ -16,7 +16,7 @@ PrimeFaces.widget.InputText = PrimeFaces.widget.BaseWidget.extend({
 
             if(this.counter) {
                 var $this = this;
-                this.jq.on('keyup.inputtext-counter', function(e) {
+                this.jq.on('input.inputtext-counter', function(e) {
                     $this.updateCounter();
                 });
             }
