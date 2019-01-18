@@ -33,6 +33,8 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                 }
                 
                 this.panel.css('z-index', ++PrimeFaces.zindex);
+                
+                var inst = this; // the instance of prime.datePicker API
 
                 // touch support - prevents keyboard popup
                 if(PrimeFaces.env.touch && !inst.inputfield.attr("readonly") && _self.cfg.showIcon) {
