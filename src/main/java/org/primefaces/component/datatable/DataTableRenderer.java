@@ -1710,7 +1710,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         Object nextGroupByData = groupByVE.getValue(eLContext);
-        if (nextGroupByData != null && nextGroupByData.equals(currentGroupByData)) {
+        if (nextGroupByData == null || nextGroupByData.equals(currentGroupByData)) {
             return true;
         }
 
