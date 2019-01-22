@@ -46,7 +46,8 @@ abstract class CommandLinkBase extends HtmlCommandLink implements AjaxSource, Co
         ignoreAutoUpdate,
         validateClient,
         partialSubmitFilter,
-        form
+        form,
+        ariaLabel
     }
 
     public CommandLinkBase() {
@@ -207,6 +208,14 @@ abstract class CommandLinkBase extends HtmlCommandLink implements AjaxSource, Co
 
     public void setForm(String form) {
         getStateHelper().put(PropertyKeys.form, form);
+    }
+
+    public String getAriaLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
+    }
+
+    public void setAriaLabel(String ariaLabel) {
+        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
     }
 
 }

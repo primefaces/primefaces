@@ -4288,7 +4288,7 @@
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
-            <description><![CDATA[]]></description>
+            <description><![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]></description>
             <name>ariaLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -4613,6 +4613,12 @@
         <attribute>
             <description><![CDATA[Form to serialize for an ajax request. Default is the enclosing form.]]></description>
             <name>form</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]></description>
+            <name>ariaLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -11881,7 +11887,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[]]></description>
+            <description><![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]></description>
             <name>ariaLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -19152,7 +19158,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[]]></description>
+            <description><![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]></description>
             <name>ariaLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -20897,7 +20903,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[]]></description>
+            <description><![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]></description>
             <name>ariaLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
