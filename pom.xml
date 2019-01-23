@@ -638,6 +638,15 @@
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/chartjs/chartjs</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/chartjs/0-chartjs.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/chartjs/1-widgets.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/timeline.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/0-timeline.js</include>
