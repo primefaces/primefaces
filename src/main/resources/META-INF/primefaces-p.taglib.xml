@@ -2203,7 +2203,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[Locale to be used for labels and conversion.]]></description>
+            <description><![CDATA[User locale for i18n localization messages. The attribute can be either a String or java.util.Locale object.]]></description>
             <name>locale</name>
             <required>false</required>
             <type>java.lang.Object</type>
@@ -15438,7 +15438,7 @@
             <type>org.primefaces.model.ScheduleModel</type>
         </attribute>
         <attribute>
-            <description><![CDATA[Locale for localization, can be String or a java.util.Locale instance.]]></description>
+            <description><![CDATA[User locale for i18n localization messages. The attribute can be either a String or java.util.Locale object.]]></description>
             <name>locale</name>
             <required>false</required>
             <type>java.lang.Object</type>
@@ -19951,7 +19951,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[User locale for i18n messages. The attribute can be either a String or Locale object.]]></description>
+            <description><![CDATA[User locale for i18n localization messages. The attribute can be either a String or java.util.Locale object.]]></description>
             <name>locale</name>
             <required>false</required>
             <type>java.lang.Object</type>
@@ -22010,6 +22010,12 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
+            <description><![CDATA[User locale for i18n localization messages. The attribute can be either a String or java.util.Locale object.]]></description>
+            <name>locale</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
             <description><![CDATA[Maximum number of characters that may be entered in this field.]]></description>
             <name>maxlength</name>
             <required>false</required>
@@ -22149,13 +22155,13 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[<![CDATA[Shows only time picker without date. Default is false.]]></description>
+            <description><![CDATA[Shows only time picker without date. Default is false.]]></description>
             <name>timeOnly</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
-            <description><![CDATA[<![CDATA[When enabled, displays the datepicker as inline. Default is false for popup mode.]]></description>
+            <description><![CDATA[When enabled, displays the datepicker as inline. Default is false for popup mode.]]></description>
             <name>inline</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
@@ -22191,7 +22197,7 @@
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
-            <description><![CDATA[Locale to be used for labels and conversion.]]></description>
+            <description><![CDATA[User locale for i18n localization messages. The attribute can be either a String or java.util.Locale object.]]></description>
             <name>locale</name>
             <required>false</required>
             <type>java.lang.Object</type>
