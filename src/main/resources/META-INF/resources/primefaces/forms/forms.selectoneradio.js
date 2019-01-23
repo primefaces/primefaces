@@ -76,6 +76,9 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
                 }
                 $this.fireClickEvent(input, e);
             }
+            
+            // Github issue #4467
+            e.stopPropagation();
         });
 
         this.labels.filter(':not(.ui-state-disabled)').on('click.selectOneRadio', function(e) {
