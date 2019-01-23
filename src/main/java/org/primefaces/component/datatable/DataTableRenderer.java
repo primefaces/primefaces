@@ -1710,11 +1710,8 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         Object nextGroupByData = groupByVE.getValue(eLContext);
-        if (nextGroupByData == null || nextGroupByData.equals(currentGroupByData)) {
-            return true;
-        }
 
-        return false;
+        return Objects.equals(nextGroupByData, currentGroupByData);
     }
 
     protected void encodeSortableHeaderOnReflow(FacesContext context, DataTable table) throws IOException {
