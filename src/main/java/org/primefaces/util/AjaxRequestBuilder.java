@@ -78,7 +78,7 @@ public class AjaxRequestBuilder {
             if (formComponent == null) {
                 if (context.isProjectStage(ProjectStage.Development)) {
                     String message = "Component '" + component.getClientId(context)
-                            + "' should be inside a form or should reference a form via its form attribute. "
+                            + "' should be inside a form or should reference a form via its form attribute."
                             + " We will try to find a fallback form on the client side.";
                     LOG.info(message);
                 }
