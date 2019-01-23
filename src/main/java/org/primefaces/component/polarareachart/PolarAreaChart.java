@@ -31,6 +31,7 @@ import org.primefaces.util.MapBuilder;
         @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js"),
+        @ResourceDependency(library = "primefaces", name = "moment/moment.js"),
         @ResourceDependency(library = "primefaces", name = "chartjs/chartjs.js"),
         @ResourceDependency(library = "primefaces", name = "chartjs/chartjs-widgets.js")
 })
