@@ -166,7 +166,7 @@
             <name>customExporter</name>
             <required>false</required>
             <type>java.lang.Object</type>
-        </attribute>        
+        </attribute>
     </tag>
 
     <tag>
@@ -1613,7 +1613,6 @@
             <name>tabindex</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <defaultValue>0</defaultValue>
             <description>Position of the items in the tabbing order. Default is 0.</description>
         </attribute>
     </tag>
@@ -7415,7 +7414,7 @@
             <name>performVirusScan</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-        </attribute>        
+        </attribute>
     </tag>
     <tag>
         <tag-name>focus</tag-name>
@@ -18650,8 +18649,7 @@
             <name>filter</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <description>Displays an input filter for the list.</description>
+            <description>Displays an input filter for the list. Default is false.</description>
         </attribute>
         <attribute>
             <name>filterMatchMode</name>
@@ -20841,11 +20839,10 @@
             <type>javax.el.MethodExpression</type>
         </attribute>
         <attribute>
-            <description><![CDATA[Mode for filtering valid values are exact (default) and contains.]]></description>
+            <description><![CDATA[Mode for filtering valid values are exact (default) and contains. Default is exact.]]></description>
             <name>filterMode</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <defaultValue>exact</defaultValue>
         </attribute>
     </tag>
     <tag>
@@ -22152,18 +22149,16 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[<![CDATA[Shows only time picker without date.]]></description>
+            <description><![CDATA[<![CDATA[Shows only time picker without date. Default is false.]]></description>
             <name>timeOnly</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
         </attribute>
         <attribute>
             <description><![CDATA[<![CDATA[When enabled, displays the datepicker as inline. Default is false for popup mode.]]></description>
             <name>inline</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
         </attribute>
         <attribute>
             <description><![CDATA[DateFormat pattern for localization.]]></description>
@@ -22176,7 +22171,6 @@
             <name>type</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <defaultValue>text</defaultValue>
         </attribute>
         <attribute>
             <description><![CDATA[Inline style of the input element. Used when inline is false.]]></description>
@@ -22195,7 +22189,6 @@
             <name>readonlyInput</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
         </attribute>
         <attribute>
             <description><![CDATA[Locale to be used for labels and conversion.]]></description>
@@ -22210,11 +22203,10 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[When enabled, displays a button with icon next to input.]]></description>
+            <description><![CDATA[When enabled, displays a button with icon next to input. Default is false.]]></description>
             <name>showIcon</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
         </attribute>
         <attribute>
             <description><![CDATA[Callback to execute before displaying calendar.]]></description>
@@ -22227,7 +22219,6 @@
             <name>focusOnSelect</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
         </attribute>
         <attribute>
             <description><![CDATA[The range of years displayed in the year drop-down in (nnnn:nnnn) format such as (2000:2020).]]></description>
@@ -22252,30 +22243,26 @@
             <name>selectionMode</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <defaultValue>single</defaultValue>
         </attribute>
         <attribute>
-            <description><![CDATA[Whether to display dates in other months (non-selectable) at the start or end of the current month. 
+            <description><![CDATA[Whether to display dates in other months (non-selectable) at the start or end of the current month.
                 To make these days selectable use the selectOtherMonths option. Default is false.]]></description>
             <name>showOtherMonths</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
         </attribute>
         <attribute>
-            <description><![CDATA[Whether days in other months shown before or after the current month are selectable. 
+            <description><![CDATA[Whether days in other months shown before or after the current month are selectable.
                 This only applies if the showOtherMonths option is set to true. Default is false.]]></description>
             <name>selectOtherMonths</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
         </attribute>
         <attribute>
-            <description><![CDATA[When disabled, datepicker will not be visible with input focus.]]></description>
+            <description><![CDATA[When disabled, datepicker will not be visible with input focus. Default is true.]]></description>
             <name>showOnFocus</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-            <defaultValue>true</defaultValue>
         </attribute>
         <attribute>
             <description><![CDATA[The cutoff year for determining the century for a date. Default is "+10".]]></description>
@@ -22284,25 +22271,22 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[Whether the year should be rendered as a dropdown instead of text.]]></description>
+            <description><![CDATA[Whether the year should be rendered as a dropdown instead of text. Default is false.]]></description>
             <name>monthNavigator</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
         </attribute>
         <attribute>
-            <description><![CDATA[Whether the year should be rendered as a dropdown instead of text.]]></description>
+            <description><![CDATA[Whether the year should be rendered as a dropdown instead of text. Default is false.]]></description>
             <name>yearNavigator</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
         </attribute>
         <attribute>
-            <description><![CDATA[Whether to display timepicker.]]></description>
+            <description><![CDATA[Whether to display timepicker. Default is false.]]></description>
             <name>showTime</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
         </attribute>
         <attribute>
             <description><![CDATA[Specifies 12 or 24 hour format.]]></description>
@@ -22311,46 +22295,40 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[Whether to display timepicker only.]]></description>
+            <description><![CDATA[Whether to display timepicker only. Default is false.]]></description>
             <name>timeOnly</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
         </attribute>
         <attribute>
-            <description><![CDATA[Whether to show the seconds in time picker.]]></description>
+            <description><![CDATA[Whether to show the seconds in time picker. Default is false.]]></description>
             <name>showSeconds</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
         </attribute>
         <attribute>
-            <description><![CDATA[Hours to change per step.]]></description>
+            <description><![CDATA[Hours to change per step. Default is 1.]]></description>
             <name>stepHour</name>
             <required>false</required>
             <type>java.lang.Integer</type>
-            <defaultValue>1</defaultValue>
         </attribute>
         <attribute>
-            <description><![CDATA[Minutes to change per step.]]></description>
+            <description><![CDATA[Minutes to change per step. Default is 1.]]></description>
             <name>stepMinute</name>
             <required>false</required>
             <type>java.lang.Integer</type>
-            <defaultValue>1</defaultValue>
         </attribute>
         <attribute>
-            <description><![CDATA[Seconds to change per step.]]></description>
+            <description><![CDATA[Seconds to change per step. Default is 1.]]></description>
             <name>stepSecond</name>
             <required>false</required>
             <type>java.lang.Integer</type>
-            <defaultValue>1</defaultValue>
         </attribute>
         <attribute>
-            <description><![CDATA[Whether to display today and clear buttons at the footer.]]></description>
+            <description><![CDATA[Whether to display today and clear buttons at the footer. Default is false.]]></description>
             <name>showButtonBar</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
         </attribute>
         <attribute>
             <description><![CDATA[Style class of the datetimepicker container element.]]></description>
@@ -22365,32 +22343,28 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[Keep invalid value when input blur.]]></description>
+            <description><![CDATA[Keep invalid value when input blur. Default is false.]]></description>
             <name>keepInvalid</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
         </attribute>
         <attribute>
-            <description><![CDATA[Whether to hide the overlay on date selection when showTime is enabled.]]></description>
+            <description><![CDATA[Whether to hide the overlay on date selection when showTime is enabled. Default is false.]]></description>
             <name>hideOnDateTimeSelect</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
         </attribute>
         <attribute>
-            <description><![CDATA[Maximum number of selectable dates in multiple mode.]]></description>
+            <description><![CDATA[Maximum number of selectable dates in multiple mode. Default is java.lang.Integer.MAX_VALUE.]]></description>
             <name>maxDateCount</name>
             <required>false</required>
             <type>java.lang.Integer</type>
-            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
         </attribute>
         <attribute>
-            <description><![CDATA[Number of months to display.]]></description>
+            <description><![CDATA[Number of months to display. Default is 1.]]></description>
             <name>numberOfMonths</name>
             <required>false</required>
             <type>java.lang.Integer</type>
-            <defaultValue>1</defaultValue>
         </attribute>
         <attribute>
             <description><![CDATA[Type of view to display, valid values are "date" for datepicker and "month" for month picker.]]></description>
@@ -22399,11 +22373,10 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[When enabled, calendar overlay is displayed as optimized for touch devices.]]></description>
+            <description><![CDATA[When enabled, calendar overlay is displayed as optimized for touch devices. Default is false.]]></description>
             <name>touchUI</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
         </attribute>
         <attribute>
             <description><![CDATA[Function that gets a date information and returns the cell content in datepicker.]]></description>
