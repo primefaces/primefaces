@@ -20839,7 +20839,7 @@
             <type>javax.el.MethodExpression</type>
         </attribute>
         <attribute>
-            <description><![CDATA[Mode for filtering valid values are exact (default) and contains. Default is exact.]]></description>
+            <description><![CDATA[Mode for filtering valid values are lenient and strict. Default is lenient.]]></description>
             <name>filterMode</name>
             <required>false</required>
             <type>java.lang.String</type>
