@@ -94,7 +94,7 @@ public class WidgetBuilder {
     public WidgetBuilder initWithComponentLoad(String widgetClass, String widgetVar, String id, String targetId) throws IOException {
 
         this.renderScriptBlock(id);
-        context.getResponseWriter().write("$(PrimeFaces.escapeClientId(\"" + targetId + "\")).on(\"load\",function(){");
+        context.getResponseWriter().write("PrimeFaces.onElementLoad($(PrimeFaces.escapeClientId(\"" + targetId + "\")),function(){");
         this.init(widgetClass, widgetVar, id, true);
 
         return this;
