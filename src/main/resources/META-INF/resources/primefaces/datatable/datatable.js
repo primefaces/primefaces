@@ -3000,7 +3000,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 if($this.cfg.stickyHeader) {
-                    $this.reclone();
+                    $this.refreshStickyHeader();
                 }
             },
             containment: this.cfg.resizeMode === "expand" ? "document" : this.jq
@@ -3646,10 +3646,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
     },
 
-    reclone: function() {
+    refreshStickyHeader: function() {
         this.clone.remove();
         this.clone = this.thead.clone(false);
-        this.jq.find('.ui-datatable-tablewrapper > table').prepend(this.clone);
+        this.clone.find('.ui-column-filter').prop('disabled', true); //disable filters in sticky header
+        this.stickyContainer.children('table').append(this.clone);
     },
 
     getFocusableTbody: function() {
