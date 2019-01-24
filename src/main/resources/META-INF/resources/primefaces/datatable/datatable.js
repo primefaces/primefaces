@@ -1000,7 +1000,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 this.rowHeight = row.outerHeight();
                 this.scrollBody.children('div').css('height', parseFloat((scrollLimit * this.rowHeight + 1) + 'px'));
-                
+
                 if(hasEmptyMessage && this.cfg.scrollHeight && this.percentageScrollHeight) {
                     setTimeout(function() {
                         $this.adjustScrollHeight();
@@ -1017,7 +1017,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             if($this.isEmpty()) {
                 return;
             }
-            
+
             if($this.cfg.virtualScroll) {
                 var virtualScrollBody = this;
 
@@ -1652,7 +1652,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                         $this.rowHeight = row.outerHeight();
                         $this.scrollBody.children('div').css({'height': parseFloat((scrollLimit * $this.rowHeight + 1) + 'px')});
-                    
+
                         if(hasEmptyMessage && $this.cfg.scrollHeight && $this.percentageScrollHeight) {
                             setTimeout(function() {
                                 $this.adjustScrollHeight();
@@ -3556,10 +3556,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             table = this.thead.parent();
 
         this.clone = this.thead.clone(false);
-        table.prepend(this.clone);
+        this.clone.find('.ui-column-filter').prop('disabled', true); //disable filters in sticky header
 
         this.stickyContainer = $('<div class="ui-datatable ui-datatable-sticky ui-widget"><table></table></div>');
-        this.stickyContainer.children('table').append(this.thead);
+        this.stickyContainer.children('table').append(this.clone);
         this.stickyContainer.css({
             position: 'absolute',
             width: 0,
@@ -3644,18 +3644,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             $this.stickyContainer.width(table.outerWidth());
         });
 
-        //filter support
-        this.clone.find('.ui-column-filter').prop('disabled', true);
-    },
-
-    getFocusableTbody: function() {
-        return this.tbody;
     },
 
     reclone: function() {
         this.clone.remove();
         this.clone = this.thead.clone(false);
         this.jq.find('.ui-datatable-tablewrapper > table').prepend(this.clone);
+    },
+
+    getFocusableTbody: function() {
+        return this.tbody;
     },
 
     addRow: function() {
@@ -4067,7 +4065,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         this.scrollHeader.width(width);
         this.scrollBody.css('margin-right', 0).width(width);
         this.scrollFooter.width(width);
-        
+
         var $this = this,
         headerWidth = width + this.frozenLayout.width();
 
