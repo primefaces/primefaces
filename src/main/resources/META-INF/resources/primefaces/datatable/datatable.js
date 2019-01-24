@@ -3000,7 +3000,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 if($this.cfg.stickyHeader) {
-                    $this.refreshStickyHeader();
+                    $this.reclone();
                 }
             },
             containment: this.cfg.resizeMode === "expand" ? "document" : this.jq
@@ -3552,109 +3552,83 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     setupStickyHeader: function() {
-        var $this = this,
-            table = this.thead.parent();
-
-        this.clone = this.thead.clone(false);
-        this.clone.find('.ui-column-filter').prop('disabled', true); //disable filters in sticky header
+        var table = this.thead.parent(),
+        offset = table.offset(),
+        win = $(window),
+        $this = this;
 
         this.stickyContainer = $('<div class="ui-datatable ui-datatable-sticky ui-widget"><table></table></div>');
-        this.stickyContainer.children('table').append(this.clone);
+        this.clone = this.thead.clone(false);
+        this.stickyContainer.children('table').append(this.thead);
+        table.prepend(this.clone);
+
         this.stickyContainer.css({
             position: 'absolute',
-            width: 0,
-            top: 0,
-            left: 0,
-            display: 'none',
+            width: table.outerWidth(),
+            top: offset.top,
+            left: offset.left,
             'z-index': ++PrimeFaces.zindex
         });
+
         this.jq.prepend(this.stickyContainer);
-
-        this.stickyContainerHeight = this.stickyContainer.height();
-
-        this.stickyScrollParent = this.jq.scrollParent();
-        if (this.stickyScrollParent.is('body') || this.stickyScrollParent.is(document)) {
-            this.stickyScrollParent = $(window);
-        }
 
         if(this.cfg.resizableColumns) {
             this.relativeHeight = 0;
         }
 
-        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', function() {
-            var tableOffset = table.offset(),
-                scrollTop = $this.stickyScrollParent.scrollTop();
+        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id, function() {
+            var scrollTop = win.scrollTop(),
+            tableOffset = table.offset();
 
-            // check top and bottom bounds - the calculation is different if the scrollParent is the window or just a container
-            var showStickyHeader = true;
-            if ($.isWindow($this.stickyScrollParent[0])) {
-                var tableTop = tableOffset.top,
-                    tableBottom = tableTop + $this.tbody.height();
-                if (scrollTop <= tableTop || scrollTop >= tableBottom - $this.stickyContainer.height()) {
-                    showStickyHeader = false;
-                }
-            }
-            else {
-                var scrollParentOffset = $this.stickyScrollParent.offset(),
-                    tableTop = tableOffset.top - scrollParentOffset.top,
-                    tableBottom = tableTop + $this.tbody.height();
-                if (tableTop >= 0 || tableBottom <= $this.stickyContainer.height()) {
-                    showStickyHeader = false;
-                }
-            }
+            if(scrollTop > tableOffset.top) {
+                $this.stickyContainer.css({
+                                        'position': 'fixed',
+                                        'top': '0px'
+                                    })
+                                    .addClass('ui-shadow ui-sticky');
 
-            if (showStickyHeader) {
-                // refresh top
-                $this.stickyContainer.css({ top: scrollTop - 1 });
-
-                if ($this.cfg.resizableColumns) {
-                    $this.relativeHeight = scrollTop - tableOffset.top; // TODO: this needs to be checked for the container case
+                if($this.cfg.resizableColumns) {
+                    $this.relativeHeight = scrollTop - tableOffset.top;
                 }
 
-                // show if not already visible
-                if (!$this.stickyContainer.is(':visible')) {
-                    $this.stickyContainer.show();
-                    $this.stickyContainer.addClass('ui-shadow ui-sticky');
-
-                    // recalculate width + left after swichting from not-visible to visisble state
-                    $this.stickyContainer.css({ width: table.outerWidth() });
-                    if ($.isWindow($this.stickyScrollParent[0])) {
-                        $this.stickyContainer.css({ left: tableOffset.left });
-                    }
-                    else {
-                        var scrollParentOffset = $this.stickyScrollParent.offset();
-                        $this.stickyContainer.css({ left: tableOffset.left - scrollParentOffset.left });
-                    }
-                }
-            }
-            else {
-                // hide if not already hidden
-                if ($this.stickyContainer.is(':visible')) {
+                if(scrollTop >= (tableOffset.top + $this.tbody.height()))
                     $this.stickyContainer.hide();
-                    $this.stickyContainer.removeClass('ui-shadow ui-sticky');
+                else
+                    $this.stickyContainer.show();
+            }
+            else {
+                $this.stickyContainer.css({
+                                        'position': 'absolute',
+                                        'top': tableOffset.top
+                                    })
+                                    .removeClass('ui-shadow ui-sticky');
+
+                if($this.stickyContainer.is(':hidden')) {
+                    $this.stickyContainer.show();
                 }
 
-                if ($this.cfg.resizableColumns) {
+                if($this.cfg.resizableColumns) {
                     $this.relativeHeight = 0;
                 }
             }
         });
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.sticky-' + this.id + '_align', null, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.sticky-' + this.id, null, function() {
             $this.stickyContainer.width(table.outerWidth());
         });
 
-    },
-
-    refreshStickyHeader: function() {
-        this.clone.remove();
-        this.clone = this.thead.clone(false);
-        this.clone.find('.ui-column-filter').prop('disabled', true); //disable filters in sticky header
-        this.stickyContainer.children('table').append(this.clone);
+        //filter support
+        this.clone.find('.ui-column-filter').prop('disabled', true);
     },
 
     getFocusableTbody: function() {
         return this.tbody;
+    },
+
+    reclone: function() {
+        this.clone.remove();
+        this.clone = this.thead.clone(false);
+        this.jq.find('.ui-datatable-tablewrapper > table').prepend(this.clone);
     },
 
     addRow: function() {
