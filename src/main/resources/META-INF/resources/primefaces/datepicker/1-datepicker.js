@@ -105,6 +105,8 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         var _self = this;
 
         this.cfg.onSelect = function(event, date) {
+            _self.viewDateOption = this.viewDate;
+            
             _self.fireDateSelectEvent();
             
             if(!_self.cfg.inline && _self.cfg.focusOnSelect) {
@@ -136,12 +138,14 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
     },
 
     bindViewChangeListener: function() {
-        if(this.hasBehavior('viewChange')) {
-            var $this = this;
-            this.cfg.onViewDateChange = function(event, date) {
-                $this.fireViewChangeEvent(date.getFullYear(), date.getMonth());
-            };
-        }
+        var _self = this;
+        this.cfg.onViewDateChange = function(event, date) {
+            _self.viewDateOption = date;
+            
+            if(_self.hasBehavior('viewChange')) {
+                _self.fireViewChangeEvent(date.getFullYear(), date.getMonth());
+            }
+        }; 
     },
 
     fireViewChangeEvent: function(year, month) {
