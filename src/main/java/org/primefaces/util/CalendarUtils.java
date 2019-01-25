@@ -121,7 +121,7 @@ public class CalendarUtils {
     public static final String getValueAsString(FacesContext context, UICalendar calendar, Object value, String pattern) {
         if (value instanceof List) {
             String valuesAsString = "";
-            String separator = calendar.getSelectionMode().equals("multiple") ? "," : "-";
+            String separator = "multiple".equals(calendar.getSelectionMode()) ? "," : "-";
             List values = ((List) value);
 
             for (int i = 0; i < values.size(); i++) {
