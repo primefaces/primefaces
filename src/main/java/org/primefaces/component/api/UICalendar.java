@@ -133,6 +133,10 @@ public abstract class UICalendar extends HtmlInputText {
         getStateHelper().put(PropertyKeys.type, type);
     }
 
+    public String getSelectionMode() {
+        return null;
+    }
+
     public java.util.Locale calculateLocale(FacesContext facesContext) {
         if (calculatedLocale == null) {
             calculatedLocale = LocaleUtils.resolveLocale(getLocale(), getClientId(facesContext));

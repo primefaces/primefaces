@@ -106,35 +106,7 @@ public class CalendarUtils {
             return null;
         }
 
-        //first ask the converter
-        if (calendar.getConverter() != null) {
-            return calendar.getConverter().getAsString(context, calendar, value);
-        }
-        else if (value instanceof String) {
-            return (String) value;
-        }
-        //Use built-in converter
-        else if (value instanceof Date) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat(calendar.calculatePattern(), calendar.calculateLocale(context));
-            dateFormat.setTimeZone(calculateTimeZone(calendar.getTimeZone()));
-
-            return dateFormat.format((Date) value);
-        }
-        else {
-            //Delegate to global defined converter (e.g. joda or java8)
-            ValueExpression ve = calendar.getValueExpression("value");
-            if (ve != null) {
-                Class type = ve.getType(context.getELContext());
-                if (type != null && type != Object.class && type != Date.class) {
-                    Converter converter = context.getApplication().createConverter(type);
-                    if (converter != null) {
-                        return converter.getAsString(context, calendar, value);
-                    }
-                }
-            }
-
-            throw new FacesException("Value could be either String or java.util.Date");
-        }
+        return getValueAsString(context, calendar, value, calendar.calculatePattern());
     }
 
     public static final String getTimeOnlyValueAsString(FacesContext context, UICalendar calendar) {
@@ -143,6 +115,31 @@ public class CalendarUtils {
             return null;
         }
 
+        return getValueAsString(context, calendar, value, calendar.calculateTimeOnlyPattern());
+    }
+
+    public static final String getValueAsString(FacesContext context, UICalendar calendar, Object value, String pattern) {
+        if (value instanceof List) {
+            String valuesAsString = "";
+            String separator = calendar.getSelectionMode().equals("multiple") ? "," : "-";
+            List values = ((List) value);
+
+            for (int i = 0; i < values.size(); i++) {
+                if (i != 0) {
+                    valuesAsString += separator;
+                }
+
+                valuesAsString += getValue(context, calendar, values.get(i), pattern);
+            }
+
+            return valuesAsString;
+        }
+        else {
+            return getValue(context, calendar, value, pattern);
+        }
+    }
+
+    public static final String getValue(FacesContext context, UICalendar calendar, Object value, String pattern) {
         //first ask the converter
         if (calendar.getConverter() != null) {
             return calendar.getConverter().getAsString(context, calendar, value);
@@ -152,10 +149,10 @@ public class CalendarUtils {
         }
         //Use built-in converter
         else if (value instanceof Date) {
-            SimpleDateFormat format = new SimpleDateFormat(calendar.calculateTimeOnlyPattern(), calendar.calculateLocale(context));
+            SimpleDateFormat format = new SimpleDateFormat(pattern, calendar.calculateLocale(context));
             format.setTimeZone(calculateTimeZone(calendar.getTimeZone()));
 
-            return format.format(calendar.getValue());
+            return format.format((Date) value);
         }
         else {
             //Delegate to global defined converter (e.g. joda or java8)
