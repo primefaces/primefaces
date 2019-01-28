@@ -91,8 +91,13 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
     
     configureLocale: function() {
         var localeSettings = PrimeFaces.locales[this.cfg.locale];
+        
+        if (!localeSettings) {
+            console.log('DatePicker locale '+this.cfg.locale+' not detected. Default to en_US.');
+            localeSettings = PrimeFaces.locales['en_US'];
+        }
 
-        if(localeSettings) {
+        if (localeSettings) {
             var locale = {};
             for(var setting in localeSettings) {
                 locale[setting] = localeSettings[setting];
