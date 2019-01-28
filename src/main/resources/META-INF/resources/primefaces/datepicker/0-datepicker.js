@@ -154,7 +154,8 @@
         },
 
         getSundayIndex: function () {
-            return this.options.locale.firstDayOfWeek > 0 ? 7 - this.options.locale.firstDayOfWeek : 0;
+            var firstDayOfWeek = this.options.locale.firstDayOfWeek || this.options.locale.firstDay;
+            return firstDayOfWeek > 0 ? 7 - firstDayOfWeek : 0;
         },
 
         getDaysCountInMonth: function (month, year) {
@@ -208,7 +209,7 @@
 
         createWeekDays: function () {
             var weekDays = [],
-                dayIndex = this.options.locale.firstDayOfWeek;
+                dayIndex = this.options.locale.firstDayOfWeek || this.options.locale.firstDay;
             for (var i = 0; i < 7; i++) {
                 weekDays.push(this.options.locale.dayNamesMin[dayIndex]);
                 dayIndex = (dayIndex === 6) ? 0 : ++dayIndex;
