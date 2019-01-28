@@ -87,7 +87,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
 
         wb.attr("defaultDate", defaultDate, null)
             .attr("inline", datepicker.isInline())
-            .attr("locale", locale.toString())
+            .attr("userLocale", locale.toString())
             .attr("dateFormat", CalendarUtils.convertPattern(pattern))
             .attr("showIcon", datepicker.isShowIcon(), false)
             .attr("buttonTabindex", datepicker.getButtonTabindex())

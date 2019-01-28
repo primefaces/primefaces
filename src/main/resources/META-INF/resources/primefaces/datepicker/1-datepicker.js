@@ -90,7 +90,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
     },
     
     configureLocale: function() {
-        var localeSettings = PrimeFaces.locales[this.cfg.locale];
+        var localeSettings = PrimeFaces.locales[this.cfg.userLocale];
 
         if(localeSettings) {
             var locale = {};
@@ -98,7 +98,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                 locale[setting] = localeSettings[setting];
             }
             
-            this.cfg.locale = locale;
+            this.cfg.userLocale = locale;
         }
     },
     

@@ -52,6 +52,7 @@
             stepSecond: 1,
             shortYearCutoff: '+10',
             hideOnDateTimeSelect: false,
+            userLocale: null,
             locale: {
                 firstDayOfWeek: 0,
                 dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
@@ -120,6 +121,10 @@
             this.options.maxDate = this.parseOptionValue(this.options.maxDate);
             this.ticksTo1970 = (((1970 - 1) * 365 + Math.floor(1970 / 4) - Math.floor(1970 / 100) + Math.floor(1970 / 400)) * 24 * 60 * 60 * 10000000);
             
+            if (this.options.userLocale && typeof this.options.userLocale === 'object') {
+                $.extend(this.options.locale, this.options.userLocale);
+            }
+            
             if (this.options.disabledDates) {
                 for (var i = 0; i < this.options.disabledDates.length; i++) {
                     this.options.disabledDates[i] = this.parseOptionValue(this.options.disabledDates[i]);
@@ -154,7 +159,7 @@
         },
 
         getSundayIndex: function () {
-            var firstDayOfWeek = this.options.locale.firstDayOfWeek || this.options.locale.firstDay;
+            var firstDayOfWeek = this.options.locale.firstDay !== undefined ? this.options.locale.firstDay : this.options.locale.firstDayOfWeek;
             return firstDayOfWeek > 0 ? 7 - firstDayOfWeek : 0;
         },
 
@@ -209,7 +214,7 @@
 
         createWeekDays: function () {
             var weekDays = [],
-                dayIndex = this.options.locale.firstDayOfWeek || this.options.locale.firstDay;
+                dayIndex = this.options.locale.firstDay !== undefined ? this.options.locale.firstDay : this.options.locale.firstDayOfWeek;
             for (var i = 0; i < 7; i++) {
                 weekDays.push(this.options.locale.dayNamesMin[dayIndex]);
                 dayIndex = (dayIndex === 6) ? 0 : ++dayIndex;
