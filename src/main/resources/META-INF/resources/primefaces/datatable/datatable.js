@@ -1386,6 +1386,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 else {
                     $this.paginator.updateUI();
                 }
+                $this.updateColumnsView();
             }
         };
 
