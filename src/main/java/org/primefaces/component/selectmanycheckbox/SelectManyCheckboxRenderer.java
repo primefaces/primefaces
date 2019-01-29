@@ -386,31 +386,38 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         Object submittedValues = getSubmittedValues(checkbox);
         int columns = checkbox.getColumns();
 
-        if (columns != 0) {
-            int idx = 0;
-            int colMod;
-            for (int i = 0; i < selectItems.size(); i++) {
-                SelectItem selectItem = selectItems.get(i);
-                colMod = idx % columns;
-                if (colMod == 0) {
-                    writer.startElement("tr", null);
-                }
-
-                writer.startElement("td", null);
-                encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
-                writer.endElement("td");
-
-                idx++;
-                colMod = idx % columns;
-
-                if (colMod == 0) {
-                    writer.endElement("tr");
-                }
-            }
-        }
-        else {
+        if (columns <= 0) {
             throw new FacesException("The value of columns attribute must be greater than zero.");
         }
+
+        writer.startElement("tbody", null);
+
+        int idx = 0;
+        int colMod = 0;
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
+            colMod = idx % columns;
+            if (colMod == 0) {
+                writer.startElement("tr", null);
+            }
+
+            writer.startElement("td", null);
+            encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
+            writer.endElement("td");
+
+            idx++;
+            colMod = idx % columns;
+
+            if (colMod == 0) {
+                writer.endElement("tr");
+            }
+        }
+
+        // close final <tr> if not closed
+        if (colMod != 0) {
+            writer.endElement("tr");
+        }
+        writer.endElement("tbody");
     }
 
     protected void encodeCustomLayout(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
