@@ -169,16 +169,24 @@ public class TreeRenderer extends CoreRenderer {
             return;
         }
 
+        List<TreeNode> dropNodeChildren = dropNode.getChildren();
+
+        if (tree.isMultipleDrag()) {
+            for (TreeNode dragNode : dragNodes) {
+                dropNodeChildren.remove(dragNode);
+            }
+        }
+
         for (TreeNode dragNode : dragNodes) {
             if (isDroppedNodeCopy) {
                 dragNode = tree.createCopyOfTreeNode(dragNode);
             }
 
             if (dndIndex >= 0 && dndIndex < dropNode.getChildCount()) {
-                dropNode.getChildren().add(dndIndex, dragNode);
+                dropNodeChildren.add(dndIndex, dragNode);
             }
             else {
-                dropNode.getChildren().add(dragNode);
+                dropNodeChildren.add(dragNode);
             }
         }
     }
