@@ -395,7 +395,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             String var = ac.getVar();
             boolean pojo = var != null;
 
-            Collection<Object> items = ac.isUnique() ? new HashSet<Object>(values) : values;
+            Collection<Object> items = ac.isUnique() ? new HashSet<>(values) : values;
             for (Object value : items) {
                 Object itemValue = null;
                 String itemLabel = null;
@@ -667,7 +667,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                 .attr("active", ac.isActive(), true)
                 .attr("unique", ac.isUnique(), false)
                 .attr("dynamic", ac.isDynamic(), false)
-                .attr("autoSelection", ac.isAutoSelection(), true);
+                .attr("autoSelection", ac.isAutoSelection(), true)
+                .attr("escapeResults", ac.isEscapeResults(), true);
 
         if (ac.isCache()) {
             wb.attr("cache", true).attr("cacheTimeout", ac.getCacheTimeout());
