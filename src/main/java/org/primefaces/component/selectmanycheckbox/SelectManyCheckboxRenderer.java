@@ -390,8 +390,6 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             throw new FacesException("The value of columns attribute must be greater than zero.");
         }
 
-        writer.startElement("tbody", null);
-
         int idx = 0;
         int colMod = 0;
         for (int i = 0; i < selectItems.size(); i++) {
@@ -417,7 +415,6 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         if (colMod != 0) {
             writer.endElement("tr");
         }
-        writer.endElement("tbody");
     }
 
     protected void encodeCustomLayout(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
