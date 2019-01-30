@@ -386,30 +386,34 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         Object submittedValues = getSubmittedValues(checkbox);
         int columns = checkbox.getColumns();
 
-        if (columns != 0) {
-            int idx = 0;
-            int colMod;
-            for (int i = 0; i < selectItems.size(); i++) {
-                SelectItem selectItem = selectItems.get(i);
-                colMod = idx % columns;
-                if (colMod == 0) {
-                    writer.startElement("tr", null);
-                }
+        if (columns <= 0) {
+            throw new FacesException("The value of columns attribute must be greater than zero.");
+        }
 
-                writer.startElement("td", null);
-                encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
-                writer.endElement("td");
+        int idx = 0;
+        int colMod = 0;
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
+            colMod = idx % columns;
+            if (colMod == 0) {
+                writer.startElement("tr", null);
+            }
 
-                idx++;
-                colMod = idx % columns;
+            writer.startElement("td", null);
+            encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
+            writer.endElement("td");
 
-                if (colMod == 0) {
-                    writer.endElement("tr");
-                }
+            idx++;
+            colMod = idx % columns;
+
+            if (colMod == 0) {
+                writer.endElement("tr");
             }
         }
-        else {
-            throw new FacesException("The value of columns attribute must be greater than zero.");
+
+        // close final <tr> if not closed
+        if (colMod != 0) {
+            writer.endElement("tr");
         }
     }
 
