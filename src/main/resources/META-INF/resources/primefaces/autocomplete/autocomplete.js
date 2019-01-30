@@ -570,12 +570,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             if(this.panel.children().is('ul') && query.length > 0) {
                 this.items.filter(':not(.ui-autocomplete-moretext)').each(function() {
                     var item = $(this);
-                    
-                    var text = item.html();
-                    if (!$this.cfg.escapeResults) {
-                        text = item.text();
-                    }
-                    
+                    var text = $this.cfg.escapeResults ? item.html() : item.text();
                     var re = new RegExp(PrimeFaces.escapeRegExp(query), 'gi'),
                     highlighedText = text.replace(re, '<span class="ui-autocomplete-query">$&</span>');
 
