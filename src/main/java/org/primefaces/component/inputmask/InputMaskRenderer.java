@@ -18,15 +18,13 @@ package org.primefaces.component.inputmask;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.SharedStringBuilder;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public class InputMaskRenderer extends InputRenderer {
 
@@ -73,6 +71,9 @@ public class InputMaskRenderer extends InputRenderer {
      */
     protected Pattern translateMaskIntoRegex(FacesContext context, InputMask inputMask) {
         String mask = inputMask.getMask();
+        if (LangUtils.isValueBlank(mask)) {
+            throw new FacesException("InputMask requires a value for the 'mask' attribute.");
+        }
         StringBuilder regex = SharedStringBuilder.get(context, SB_PATTERN);
         boolean optionalFound = false;
 
