@@ -72,7 +72,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
         unique,
         dynamic,
         autoSelection,
-        escapeResults
+        escape
     }
 
     public AutoCompleteBase() {
@@ -412,12 +412,12 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
         getStateHelper().put(PropertyKeys.autoSelection, autoSelection);
     }
 
-    public boolean isEscapeResults() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.escapeResults, true);
+    public boolean isEscape() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
     }
 
-    public void setEscapeResults(boolean escapeResults) {
-        getStateHelper().put(PropertyKeys.escapeResults, escapeResults);
+    public void setEscape(boolean escape) {
+        getStateHelper().put(PropertyKeys.escape, escape);
     }
 
     @Override
