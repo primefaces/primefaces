@@ -52,10 +52,7 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
         renderPassThruAttributes(context, linkButton, HTML.OUTPUT_EVENTS);
 
         if (disabled) {
-            writer.startElement("span", null);
-
             renderContent(context, linkButton);
-            writer.endElement("span");
         }
         else {
             String targetURL = getTargetURL(context, linkButton);
