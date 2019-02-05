@@ -71,12 +71,10 @@ public class PrimeApplicationContext {
 
         enumCacheMap = new ConcurrentHashMap<>();
         constantsCacheMap = new ConcurrentHashMap<>();
+
         Object context = facesContext.getExternalContext().getContext();
-
         if (context != null) {
-
             try {
-
                 // Reflectively call getClassLoader() on the context in order to be compatible with both the Portlet 3.0
                 // API and the Servlet API without depending on the Portlet API directly.
                 Method getClassLoaderMethod = context.getClass().getMethod("getClassLoader");
