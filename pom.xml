@@ -84,15 +84,6 @@
             <version>3.0</version>
             <scope>provided</scope>
         </dependency>
-        <!--
-        <dependency>
-            <groupId>javax.portlet</groupId>
-            <artifactId>portlet-api</artifactId>
-            <version>3.0.1</version>
-            <scope>provided</scope>
-        </dependency>
-        -->
-
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
@@ -804,6 +795,7 @@
             <id>release</id>
             <build>
                 <plugins>
+
                     <plugin>
                         <groupId>org.apache.felix</groupId>
                         <artifactId>maven-bundle-plugin</artifactId>
@@ -825,17 +817,29 @@
                                     javax.inject.*;resolution:=optional,
                                     javax.enterprise;resolution:=optional,
                                     javax.enterprise.*;resolution:=optional,
+                                    javax.validation.*;resolution:=optional,
                                     javax.validation.executable;resolution:=optional,
                                     javax.servlet;version="[3,5)",
                                     javax.servlet.annotation;version="[3,5)",
                                     javax.servlet.descriptor;version="[3,5)",
                                     javax.servlet.http;version="[3,5)",
                                     javax.*,
+                                    com.sun.faces;resolution:=optional,
                                     net.glxn.qrgen;resolution:=optional,
                                     org.krysalis.barcode4j.output;resolution:=optional,
+                                    org.owasp.html;resolution:=optional,
                                     org.apache.myfaces.view.facelets;resolution:=optional,
+                                    org.apache.tika.filetypedetector;resolution:=optional,
                                     *;resolution:=optional
                                 </Import-Package>
+                                <Require-Capability>
+                                    osgi.serviceloader;filter:="(osgi.serviceloader=org.primefaces.virusscan.VirusScanner)";cardinality:=multiple,
+                                    osgi.extender;filter:="(osgi.extender=osgi.serviceloader.processor)",
+                                    osgi.extender;filter:="(osgi.extender=osgi.serviceloader.registrar)"
+                                </Require-Capability>
+                                <Provide-Capability>
+                                    osgi.serviceloader;osgi.serviceloader=org.primefaces.virusscan.VirusScanner;uses:="org.primefaces.virusscan.impl"
+                                </Provide-Capability>
                             </instructions>
                         </configuration>
                         <executions>
