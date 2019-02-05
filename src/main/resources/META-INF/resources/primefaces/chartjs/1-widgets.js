@@ -38,6 +38,15 @@ PrimeFaces.widget.BaseChart = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
         });
+    },
+    
+    /**
+     * Return this chart as an <img src="data:url" />
+     */
+    exportAsImage: function() {
+        var img = new Image();
+        img.src = this.chart.toBase64Image();
+        return img;
     }
 });
 
