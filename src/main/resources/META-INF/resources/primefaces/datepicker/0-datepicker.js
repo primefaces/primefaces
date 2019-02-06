@@ -818,7 +818,7 @@
                 }
             }
             else if (this.isRangeSelection()) {
-                var tokens = text.split(' - ');
+                var tokens = text.split(/-| - /);
                 value = [];
                 for (var i = 0; i < tokens.length; i++) {
                     value[i] = this.parseDateTime(tokens[i].trim());
