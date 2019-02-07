@@ -115,8 +115,13 @@
         },
         
         _setInitValues: function () {
-            this.value = this.parseValue(this.options.defaultDate);
-            this.viewDate = this.parseValue(this.options.viewDate || this.options.defaultDate || new Date());
+            var parsedDefaultDate = this.parseValue(this.options.defaultDate);
+
+            this.value = parsedDefaultDate;
+            this.viewDate = this.options.viewDate ? 
+                this.parseValue(this.options.viewDate) 
+                :
+                (((this.isRangeSelection() && parsedDefaultDate instanceof Array) ? parsedDefaultDate[0] : parsedDefaultDate) || this.parseValue(new Date()));
             this.options.minDate = this.parseOptionValue(this.options.minDate);
             this.options.maxDate = this.parseOptionValue(this.options.maxDate);
             this.ticksTo1970 = (((1970 - 1) * 365 + Math.floor(1970 / 4) - Math.floor(1970 / 100) + Math.floor(1970 / 400)) * 24 * 60 * 60 * 10000000);
