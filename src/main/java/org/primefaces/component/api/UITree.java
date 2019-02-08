@@ -200,7 +200,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
 
     public boolean isPropagateSelectionDown() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.propagateSelectionDown, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.propagateSelectionDown, true);
     }
 
     public void setPropagateSelectionDown(boolean _propagateSelectionDown) {
@@ -208,7 +208,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
 
     public boolean isPropagateSelectionUp() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.propagateSelectionUp, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.propagateSelectionUp, true);
     }
 
     public void setPropagateSelectionUp(boolean _propagateSelectionUp) {
