@@ -28,7 +28,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
             this.cursorNode = this.jq.find('.ui-treenode[data-rowkey="' + this.cursorNode.data('rowkey') + '"]');
         }
 
-        if(this.isCheckboxSelection()) {
+        if(this.isCheckboxSelection() && this.cfg.propagateUp) {
             this.preselectCheckbox();
         }
     },
