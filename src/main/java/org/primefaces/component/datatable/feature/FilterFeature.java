@@ -18,7 +18,6 @@ package org.primefaces.component.datatable.feature;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.*;
-
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -27,7 +26,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
@@ -180,10 +178,18 @@ public class FilterFeature implements DataTableFeature {
         Locale filterLocale = table.resolveDataLocale();
         boolean hasGlobalFilter = !LangUtils.isValueBlank(globalFilterValue);
         GlobalFilterConstraint globalFilterConstraint = (GlobalFilterConstraint) FILTER_CONSTRAINTS.get(GLOBAL_MODE);
+        MethodExpression globalFilterFunction = table.getGlobalFilterFunction();
         ELContext elContext = context.getELContext();
 
         for (int i = 0; i < table.getRowCount(); i++) {
             table.setRowIndex(i);
+
+            if (globalFilterFunction != null
+                    && (Boolean) globalFilterFunction.invoke(elContext, new Object[]{table.getRowData(), globalFilterValue, filterLocale})) {
+                filteredData.add(table.getRowData());
+                continue;
+            }
+
             boolean localMatch = true;
             boolean globalMatch = false;
 

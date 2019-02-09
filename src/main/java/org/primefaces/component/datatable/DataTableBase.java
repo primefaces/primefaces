@@ -16,7 +16,6 @@
 package org.primefaces.component.datatable;
 
 import javax.faces.component.behavior.ClientBehaviorHolder;
-
 import org.primefaces.component.api.*;
 import org.primefaces.util.ComponentUtils;
 
@@ -98,7 +97,8 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
         rowSelector,
         disableContextMenuIfEmpty,
         escapeText,
-        rowEditMode
+        rowEditMode,
+        globalFilterFunction
     }
 
     public DataTableBase() {
@@ -668,6 +668,14 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
 
     public void setRowEditMode(String rowEditMode) {
         getStateHelper().put(PropertyKeys.rowEditMode, rowEditMode);
+    }
+
+    public javax.el.MethodExpression getGlobalFilterFunction() {
+        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.globalFilterFunction, null);
+    }
+
+    public void setGlobalFilterFunction(javax.el.MethodExpression globalFilterFunction) {
+        getStateHelper().put(PropertyKeys.globalFilterFunction, globalFilterFunction);
     }
 
     @Override
