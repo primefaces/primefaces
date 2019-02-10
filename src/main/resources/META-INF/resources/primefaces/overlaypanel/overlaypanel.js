@@ -177,7 +177,6 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         //replace visibility hidden with display none for effect support, toggle marker class
         this.jq.removeClass('ui-overlay-hidden').addClass('ui-overlay-visible').css({
             'display':'none'
-            ,'visibility':'visible'
         });
 
         if(this.cfg.showEffect) {
@@ -245,7 +244,6 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         //replace display block with visibility hidden for hidden container support, toggle marker class
         this.jq.removeClass('ui-overlay-visible').addClass('ui-overlay-hidden').css({
             'display':'block'
-            ,'visibility':'hidden'
         });
 
         if(this.cfg.onHide) {
