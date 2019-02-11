@@ -3556,7 +3556,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var table = this.thead.parent(),
         offset = table.offset(),
         win = $(window),
-        $this = this;
+        $this = this,
+        orginTableContent = this.jq.find('> .ui-datatable-tablewrapper > table'),
+        fixedElementsOnTop = this.cfg.stickyTopAt ? $(this.cfg.stickyTopAt) : null,
+        fixedElementsHeight = 0;
+
+        if (fixedElementsOnTop && fixedElementsOnTop.length) {
+            for (var i = 0; i < fixedElementsOnTop.length; i++) {
+                fixedElementsHeight += fixedElementsOnTop.eq(i).outerHeight();
+            }
+        }
 
         this.stickyContainer = $('<div class="ui-datatable ui-datatable-sticky ui-widget"><table></table></div>');
         this.clone = this.thead.clone(false);
@@ -3581,18 +3590,18 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var scrollTop = win.scrollTop(),
             tableOffset = table.offset();
 
-            if(scrollTop > tableOffset.top) {
+            if(scrollTop + fixedElementsHeight > tableOffset.top) {
                 $this.stickyContainer.css({
                                         'position': 'fixed',
-                                        'top': '0px'
+                                        'top': fixedElementsHeight
                                     })
                                     .addClass('ui-shadow ui-sticky');
 
                 if($this.cfg.resizableColumns) {
-                    $this.relativeHeight = scrollTop - tableOffset.top;
+                    $this.relativeHeight = (scrollTop + fixedElementsHeight) - tableOffset.top;
                 }
 
-                if(scrollTop >= (tableOffset.top + $this.tbody.height()))
+                if(scrollTop + fixedElementsHeight >= (tableOffset.top + $this.tbody.height()))
                     $this.stickyContainer.hide();
                 else
                     $this.stickyContainer.show();
@@ -3614,9 +3623,25 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
         });
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.sticky-' + this.id, null, function() {
-            $this.stickyContainer.width(table.outerWidth());
-        });
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.sticky-' + this.id, null, function(e) {
+            var _delay = e.data.delay;
+    
+            if (_delay !== null && typeof _delay === 'number' && _delay > -1) {
+                if ($this.resizeTimeout) {
+                    clearTimeout($this.resizeTimeout);
+                }
+                
+                $this.stickyContainer.hide();
+                $this.resizeTimeout = setTimeout(function() {
+                    $this.stickyContainer.css('left', orginTableContent.offset().left);
+                    $this.stickyContainer.width(table.outerWidth());
+                    $this.stickyContainer.show(); 
+                }, _delay);
+            }
+            else {
+                $this.stickyContainer.width(table.outerWidth());
+            }
+        }, { delay: null });
 
         //filter support
         this.clone.find('.ui-column-filter').prop('disabled', true);

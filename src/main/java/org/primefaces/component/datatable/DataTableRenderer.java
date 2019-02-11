@@ -284,7 +284,8 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if (table.isStickyHeader()) {
-            wb.attr("stickyHeader", true);
+            wb.attr("stickyHeader", true)
+                    .attr("stickyTopAt", table.getStickyTopAt(), null);
         }
 
         wb.attr("tabindex", table.getTabindex(), "0")
