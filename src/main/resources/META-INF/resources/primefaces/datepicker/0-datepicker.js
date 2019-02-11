@@ -92,19 +92,6 @@
             onBeforeShow: null,
             onBeforeHide: null
         },
-
-        _setOption: function (key, value) {
-            if (key === 'setDate') {
-                this.value = this.parseValue(value);
-                
-                /* set changes */
-                this.panel.get(0).innerHTML = this.renderPanelElements();
-                this.inputfield.val(this.value);
-            }
-            else if (key === 'getDate') {
-                return this.value;
-            }
-        },
         
         _create: function () {
             this.container = this.element;
@@ -151,6 +138,18 @@
             }
             
             return option;
+        },
+        
+        setDate: function(date) {
+            this.value = this.parseValue(date);
+                
+            /* set changes */
+            this.panel.get(0).innerHTML = this.renderPanelElements();
+            this.inputfield.val(this.value);
+        },
+        
+        getDate: function() {
+            return this.value;
         },
 
         getFirstDayOfMonthIndex: function (month, year) {
