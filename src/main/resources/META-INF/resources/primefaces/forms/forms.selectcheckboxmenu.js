@@ -893,6 +893,30 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         if(items.length) {
             items.filter('[data-item-value="' + item.data('item-value') + '"]').remove();
         }
+    },
+
+    selectValue: function(value) {                                                                     // Patch
+        var idx = -1;
+        // find input-index
+        for(var i = 0; i < this.inputs.length; i++) {
+            if (this.inputs.eq(i).val() === value) {
+                idx = i;
+                break;
+            }
+        }
+        if (idx === -1) {
+            return;
+        }
+        var input = this.inputs.eq(idx);   // the hidden input
+        var item  = this.items.eq(idx);    // the Overlay-Panel-Item (li)
+
+        // check (see this.checkAll())
+        input.prop('checked', true).attr('aria-checked', true);
+        this.check(item.children('.ui-chkbox').children('.ui-chkbox-box'));
+
+        if(this.cfg.multiple) {
+            this.createMultipleItem(item);
+        }
     }
 
 });
