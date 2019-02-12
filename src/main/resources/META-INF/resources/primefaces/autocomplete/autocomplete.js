@@ -36,6 +36,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
         this.hinput.data(PrimeFaces.CLIENT_ID_DATA, this.id);
+        
+        this.placeholder = this.input.attr('placeholder');
 
         if(this.cfg.multiple) {
             this.setupMultipleMode();
@@ -400,6 +402,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         $this.inputContainer.before(itemDisplayMarkup);
                         $this.multiItemContainer.children('.ui-helper-hidden').fadeIn();
                         $this.input.val('');
+                        $this.input.removeAttr('placeholder');
 
                         $this.hinput.append('<option value="' + PrimeFaces.escapeHTML(itemValue) + '" selected="selected"></option>');
                         if($this.multiItemContainer.children('li.ui-autocomplete-token').length >= $this.cfg.selectLimit) {
@@ -755,6 +758,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
             $this.invokeItemUnselectBehavior(event, itemValue);
         });
+        
+        // if empty return placeholder
+        if (this.hinput.children('option').length === 0) {
+            this.input.attr('placeholder', this.placeholder);
+        }
     },
 
     setupForceSelection: function() {
