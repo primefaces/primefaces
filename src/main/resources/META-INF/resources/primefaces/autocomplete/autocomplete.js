@@ -760,7 +760,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         });
         
         // if empty return placeholder
-        if (this.hinput.children('option').length === 0) {
+        if (this.placeholder && this.hinput.children('option').length === 0) {
             this.input.attr('placeholder', this.placeholder);
         }
     },
