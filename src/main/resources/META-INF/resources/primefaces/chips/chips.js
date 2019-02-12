@@ -14,6 +14,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
         this.hinput.data(PrimeFaces.CLIENT_ID_DATA, this.id);
+        this.placeholder = this.input.attr('placeholder');
 
         this.bindEvents();
     },
@@ -79,6 +80,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
 
         this.inputContainer.before(itemDisplayMarkup);
         this.input.val('').focus();
+        this.input.removeAttr('placeholder');
 
         this.hinput.append('<option value="' + escapedValue + '" selected="selected"></option>');
         this.invokeItemSelectBehavior(escapedValue);
@@ -99,6 +101,11 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
 
             $this.invokeItemUnselectBehavior(itemValue);
         });
+        
+        // if empty return placeholder
+        if ($this.hinput.children('option').length === 0) {
+            this.input.attr('placeholder', this.placeholder);
+        }
     },
 
     invokeItemSelectBehavior: function(itemValue) {
