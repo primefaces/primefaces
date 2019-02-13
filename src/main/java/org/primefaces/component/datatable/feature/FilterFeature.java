@@ -183,15 +183,12 @@ public class FilterFeature implements DataTableFeature {
 
         for (int i = 0; i < table.getRowCount(); i++) {
             table.setRowIndex(i);
-
-            if (globalFilterFunction != null
-                    && (Boolean) globalFilterFunction.invoke(elContext, new Object[]{table.getRowData(), globalFilterValue, filterLocale})) {
-                filteredData.add(table.getRowData());
-                continue;
-            }
-
             boolean localMatch = true;
             boolean globalMatch = false;
+
+            if (hasGlobalFilter && globalFilterFunction != null) {
+                globalMatch = (Boolean) globalFilterFunction.invoke(elContext, new Object[]{table.getRowData(), globalFilterValue, filterLocale});
+            }
 
             for (FilterMeta filterMeta : filterMetadata) {
                 Object filterValue = filterMeta.getFilterValue();
@@ -206,7 +203,7 @@ public class FilterFeature implements DataTableFeature {
                 Object columnValue = filterByVE.getValue(elContext);
                 FilterConstraint filterConstraint = getFilterConstraint(column);
 
-                if (hasGlobalFilter && !globalMatch) {
+                if (hasGlobalFilter && !globalMatch && globalFilterFunction == null) {
                     globalMatch = globalFilterConstraint.applies(columnValue, globalFilterValue, filterLocale);
                 }
 
