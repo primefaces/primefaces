@@ -19,7 +19,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.showHeader = (this.cfg.showHeader === undefined) ? true : this.cfg.showHeader;
         this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
         this.isDynamicLoaded = false;
-        this.cfg.labelSeparator = (this.cfg.labelSeparator === undefined) ? ',' : this.cfg.labelSeparator;
+        this.cfg.labelSeparator = (this.cfg.labelSeparator === undefined) ? ', ' : this.cfg.labelSeparator;
 
         if(!this.disabled) {
             if(this.cfg.multiple) {

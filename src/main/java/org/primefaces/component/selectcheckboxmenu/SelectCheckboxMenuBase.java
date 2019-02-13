@@ -201,7 +201,7 @@ abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements 
     }
 
     public String getLabelSeparator() {
-        return (String) getStateHelper().eval(PropertyKeys.labelSeparator, ",");
+        return (String) getStateHelper().eval(PropertyKeys.labelSeparator, ", ");
     }
 
     public void setLabelSeparator(String labelSeparator) {
