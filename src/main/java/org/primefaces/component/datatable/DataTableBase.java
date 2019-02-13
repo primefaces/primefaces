@@ -99,6 +99,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
         disableContextMenuIfEmpty,
         escapeText,
         rowEditMode,
+        stickyTopAt,
         globalFilterFunction
     }
 
@@ -669,6 +670,14 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
 
     public void setRowEditMode(String rowEditMode) {
         getStateHelper().put(PropertyKeys.rowEditMode, rowEditMode);
+    }
+
+    public String getStickyTopAt() {
+        return (String) getStateHelper().eval(PropertyKeys.stickyTopAt, null);
+    }
+
+    public void setStickyTopAt(String stickyTopAt) {
+        getStateHelper().put(PropertyKeys.stickyTopAt, stickyTopAt);
     }
 
     public MethodExpression getGlobalFilterFunction() {
