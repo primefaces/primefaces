@@ -15,7 +15,7 @@ if (!PrimeFaces.dialog) {
             var dialogWidgetVar = cfg.sourceComponentId.replace(/:/g, '_') + '_dlgwidget',
             styleClass = cfg.options.styleClass||'',
             dialogDOM = $('<div id="' + dialogId + '" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container ui-overlay-hidden ' + styleClass + '"' +
-                    ' data-pfdlgcid="' + cfg.pfdlgcid + '" data-widget="' + dialogWidgetVar + '"></div>')
+                    ' data-pfdlgcid="' + PrimeFaces.escapeHTML(cfg.pfdlgcid) + '" data-widget="' + dialogWidgetVar + '"></div>')
                     .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"><span id="' + dialogId + '_title" class="ui-dialog-title"></span></div>');
 
             var titlebar = dialogDOM.children('.ui-dialog-titlebar');

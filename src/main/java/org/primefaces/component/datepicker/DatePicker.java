@@ -166,13 +166,13 @@ public class DatePicker extends DatePickerBase {
         boolean isDisabledDate = false;
 
         Date minDate = CalendarUtils.getObjectAsDate(context, this, getMindate());
-        if (minDate != null && date.before(minDate)) {
+        if (minDate != null && !date.equals(minDate) && date.before(minDate)) {
             setValid(false);
         }
 
         if (isValid()) {
             Date maxDate = CalendarUtils.getObjectAsDate(context, this, getMaxdate());
-            if (maxDate != null && date.after(maxDate)) {
+            if (maxDate != null && !date.equals(maxDate) && date.after(maxDate)) {
                 setValid(false);
             }
         }

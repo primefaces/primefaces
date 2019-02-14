@@ -20,10 +20,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
+
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.calendar.BaseCalendarRenderer;
 import org.primefaces.expression.SearchExpressionFacade;
@@ -85,7 +87,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
 
         wb.attr("defaultDate", defaultDate, null)
             .attr("inline", datepicker.isInline())
-            .attr("locale", locale.toString())
+            .attr("userLocale", locale.toString())
             .attr("dateFormat", CalendarUtils.convertPattern(pattern))
             .attr("showIcon", datepicker.isShowIcon(), false)
             .attr("buttonTabindex", datepicker.getButtonTabindex())
@@ -161,8 +163,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
 
         String selectionMode = datepicker.getSelectionMode();
         switch (selectionMode) {
-            case "multiple":
-            {
+            case "multiple": {
                 String[] parts = submittedValue.split(",");
                 List<Object> multi = new ArrayList<>();
                 for (String part : parts) {
@@ -171,8 +172,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
 
                 return multi;
             }
-            case "range":
-            {
+            case "range": {
                 String[] parts = submittedValue.split("-");
                 List<Object> range = new ArrayList<>();
                 if (parts.length == 2) {

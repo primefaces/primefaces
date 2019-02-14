@@ -252,14 +252,14 @@ public class PrimeFaces {
         public void closeDynamic(Object data) {
             FacesContext facesContext = getFacesContext();
             Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
-            String pfdlgcid = EscapeUtils.forJavaScript(params.get(Constants.DIALOG_FRAMEWORK.CONVERSATION_PARAM));
+            String pfdlgcid = params.get(Constants.DIALOG_FRAMEWORK.CONVERSATION_PARAM);
 
             if (data != null) {
                 Map<String, Object> session = facesContext.getExternalContext().getSessionMap();
                 session.put(pfdlgcid, data);
             }
 
-            executeScript("PrimeFaces.closeDialog({pfdlgcid:'" + pfdlgcid + "'});");
+            executeScript("PrimeFaces.closeDialog({pfdlgcid:'" + EscapeUtils.forJavaScript(pfdlgcid) + "'});");
         }
 
         /**

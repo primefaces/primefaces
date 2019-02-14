@@ -285,6 +285,7 @@ public class BarChartDataSet extends ChartDataSet {
             ChartUtils.writeDataValue(fsw, "type", this.getType(), false);
             ChartUtils.writeDataValue(fsw, "data", this.data, true);
             ChartUtils.writeDataValue(fsw, "label", this.label, true);
+            ChartUtils.writeDataValue(fsw, "hidden", this.isHidden(), true);
             ChartUtils.writeDataValue(fsw, "xAxisID", this.xaxisID, true);
             ChartUtils.writeDataValue(fsw, "yAxisID", this.yaxisID, true);
             ChartUtils.writeDataValue(fsw, "stack", this.stack, true);

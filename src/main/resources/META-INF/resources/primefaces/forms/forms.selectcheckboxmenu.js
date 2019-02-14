@@ -168,9 +168,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             escaped = input.data('escaped');
 
             if(grouped.length && currentGroupName !== input.attr('group-label')) {
-            	currentGroupName = input.attr('group-label');
+                currentGroupName = input.attr('group-label');
             	var itemGroup = $('<li class="ui-selectcheckboxmenu-item-group ui-selectcheckboxmenu-group-list-item ui-corner-all"></li>');
-            	itemGroup.html(currentGroupName);
+            	itemGroup.text(currentGroupName);
             	$this.itemContainer.append(itemGroup);
             }
 
@@ -357,10 +357,23 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
             switch(key) {
                 case keyCode.ENTER:
-                    if($this.panel.is(":hidden"))
+                case keyCode.NUMPAD_ENTER:
+                case keyCode.SPACE:
+                    if ($this.panel.is(":hidden"))
                         $this.show();
                     else
                         $this.hide(true);
+
+                    e.preventDefault();
+                break;
+                
+                case keyCode.DOWN:
+                    if (e.altKey) {
+                        if ($this.panel.is(":hidden"))
+                            $this.show();
+                        else
+                            $this.hide(true);
+                    }
 
                     e.preventDefault();
                 break;
@@ -879,6 +892,30 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         var items = this.multiItemContainer.children();
         if(items.length) {
             items.filter('[data-item-value="' + item.data('item-value') + '"]').remove();
+        }
+    },
+
+    selectValue: function(value) {                                                                     // Patch
+        var idx = -1;
+        // find input-index
+        for(var i = 0; i < this.inputs.length; i++) {
+            if (this.inputs.eq(i).val() === value) {
+                idx = i;
+                break;
+            }
+        }
+        if (idx === -1) {
+            return;
+        }
+        var input = this.inputs.eq(idx);   // the hidden input
+        var item  = this.items.eq(idx);    // the Overlay-Panel-Item (li)
+
+        // check (see this.checkAll())
+        input.prop('checked', true).attr('aria-checked', true);
+        this.check(item.children('.ui-chkbox').children('.ui-chkbox-box'));
+
+        if(this.cfg.multiple) {
+            this.createMultipleItem(item);
         }
     }
 

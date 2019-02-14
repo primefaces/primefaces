@@ -18,11 +18,35 @@ package org.primefaces.model.charts;
 import java.io.IOException;
 import java.io.Serializable;
 
+/**
+ * Abstract base class for all ChartJS datasets.
+ *
+ */
 public abstract class ChartDataSet implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private boolean hidden = false;
+
     public String encode() throws IOException {
         return null;
+    }
+
+    /**
+     * Marks this dataset as hidden. Default is false.
+     *
+     * @return true if this dataset is hidden
+     */
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    /**
+     * Marks this dataset as hidden. Default is false.
+     *
+     * @param hidden true to hide the dataset
+     */
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
     }
 }

@@ -33,6 +33,8 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                 }
                 
                 this.panel.css('z-index', ++PrimeFaces.zindex);
+                
+                var inst = this; // the instance of prime.datePicker API
 
                 // touch support - prevents keyboard popup
                 if(PrimeFaces.env.touch && !inst.inputfield.attr("readonly") && _self.cfg.showIcon) {
@@ -56,6 +58,8 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
         //Initialize datepicker
         this.cfg.panelStyleClass = (this.cfg.panelStyleClass || '') + ' p-datepicker-panel';
+        this.cfg.viewDate = this.viewDateOption;
+        this.cfg.appendTo = this.cfg.appendTo ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo) : null;
         
         this.jq.datePicker(this.cfg);
 
@@ -87,7 +91,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
     },
     
     configureLocale: function() {
-        var localeSettings = PrimeFaces.locales[this.cfg.locale];
+        var localeSettings = PrimeFaces.locales[this.cfg.userLocale];
 
         if(localeSettings) {
             var locale = {};
@@ -95,7 +99,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                 locale[setting] = localeSettings[setting];
             }
             
-            this.cfg.locale = locale;
+            this.cfg.userLocale = locale;
         }
     },
     
@@ -103,6 +107,8 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         var _self = this;
 
         this.cfg.onSelect = function(event, date) {
+            _self.viewDateOption = this.viewDate;
+            
             _self.fireDateSelectEvent();
             
             if(!_self.cfg.inline && _self.cfg.focusOnSelect) {
@@ -134,12 +140,14 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
     },
 
     bindViewChangeListener: function() {
-        if(this.hasBehavior('viewChange')) {
-            var $this = this;
-            this.cfg.onViewDateChange = function(event, date) {
-                $this.fireViewChangeEvent(date.getFullYear(), date.getMonth());
-            };
-        }
+        var _self = this;
+        this.cfg.onViewDateChange = function(event, date) {
+            _self.viewDateOption = date;
+            
+            if(_self.hasBehavior('viewChange')) {
+                _self.fireViewChangeEvent(date.getFullYear(), date.getMonth());
+            }
+        }; 
     },
 
     fireViewChangeEvent: function(year, month) {

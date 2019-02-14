@@ -31,7 +31,8 @@ abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements Widget {
 
         widgetVar,
         columns,
-        plain
+        plain,
+        unselectable
     }
 
     public SelectOneRadioBase() {
@@ -65,6 +66,14 @@ abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements Widget {
 
     public void setPlain(boolean plain) {
         getStateHelper().put(PropertyKeys.plain, plain);
+    }
+
+    public boolean isUnselectable() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.unselectable, false);
+    }
+
+    public void setUnselectable(boolean unselectable) {
+        getStateHelper().put(PropertyKeys.unselectable, unselectable);
     }
 
     @Override

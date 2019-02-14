@@ -41,10 +41,7 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
         boolean disabled = linkButton.isDisabled();
 
         String style = linkButton.getStyle();
-        String defaultStyleClass = disabled ? LinkButton.DISABLED_STYLE_CLASS : LinkButton.STYLE_CLASS;
-
-        String styleClass = linkButton.getStyleClass();
-        styleClass = (styleClass == null) ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+        String styleClass = linkButton.resolveStyleClass();
 
         writer.startElement("span", linkButton);
         writer.writeAttribute("id", linkButton.getClientId(context), "id");
@@ -52,13 +49,10 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
+        renderPassThruAttributes(context, linkButton, HTML.OUTPUT_EVENTS);
 
         if (disabled) {
-            writer.startElement("span", null);
-            writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-
             renderContent(context, linkButton);
-            writer.endElement("span");
         }
         else {
             String targetURL = getTargetURL(context, linkButton);
@@ -67,9 +61,7 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
             }
 
             writer.startElement("a", null);
-            writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
             writer.writeAttribute("href", targetURL, null);
-            renderPassThruAttributes(context, linkButton, HTML.LINK_ATTRS_WITHOUT_EVENTS);
             renderDomEvents(context, linkButton, HTML.OUTPUT_EVENTS);
             renderContent(context, linkButton);
             writer.endElement("a");
@@ -88,19 +80,34 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
 
     protected void renderContent(FacesContext context, LinkButton linkButton) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Object value = linkButton.getValue();
 
-        if (value != null) {
+        String icon = linkButton.getIcon();
+        if (!isValueBlank(icon)) {
+            String defaultIconClass = linkButton.getIconPos().equals("left") ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS;
+            String iconClass = defaultIconClass + " " + icon;
+
+            writer.startElement("span", null);
+            writer.writeAttribute("class", iconClass, null);
+            writer.endElement("span");
+        }
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
+
+        String value = (String) linkButton.getValue();
+        if (value == null) {
+            writer.write("ui-button");
+        }
+        else {
             if (linkButton.isEscape()) {
                 writer.writeText(value, "value");
             }
             else {
-                writer.write(value.toString());
+                writer.write(value);
             }
         }
-        else {
-            renderChildren(context, linkButton);
-        }
+
+        writer.endElement("span");
     }
 
     @Override

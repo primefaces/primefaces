@@ -54,6 +54,10 @@ public class ChipsRenderer extends InputRenderer {
             submittedValues = LangUtils.concat(submittedValues, new String[]{inputValue});
         }
 
+        if (submittedValues.length > chips.getMax()) {
+            return;
+        }
+
         if (submittedValues.length > 0) {
             chips.setSubmittedValue(submittedValues);
         }

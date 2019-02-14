@@ -268,7 +268,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public String getAppendTo() {
-        return (String) getStateHelper().eval(PropertyKeys.appendTo, null);
+        return (String) getStateHelper().eval(PropertyKeys.appendTo, "@(body)");
     }
 
     public void setAppendTo(String appendTo) {

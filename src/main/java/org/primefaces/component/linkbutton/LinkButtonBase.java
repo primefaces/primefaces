@@ -21,7 +21,6 @@ import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
-
 abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UIOutcomeTarget, Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
@@ -34,7 +33,9 @@ abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UIOutcome
         fragment,
         disableClientWindow,
         href,
-        escape
+        escape,
+        icon,
+        iconPos
     }
 
     public LinkButtonBase() {
@@ -88,6 +89,22 @@ abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UIOutcome
 
     public void setEscape(boolean escape) {
         getStateHelper().put(PropertyKeys.escape, escape);
+    }
+
+    public String getIcon() {
+        return (String) getStateHelper().eval(PropertyKeys.icon, null);
+    }
+
+    public void setIcon(String icon) {
+        getStateHelper().put(PropertyKeys.icon, icon);
+    }
+
+    public String getIconPos() {
+        return (String) getStateHelper().eval(PropertyKeys.iconPos, "left");
+    }
+
+    public void setIconPos(String iconPos) {
+        getStateHelper().put(PropertyKeys.iconPos, iconPos);
     }
 
     @Override

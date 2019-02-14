@@ -31,6 +31,7 @@ import org.primefaces.event.SlideEndEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.MapBuilder;
 import org.primefaces.util.MessageFactory;
 
@@ -129,9 +130,13 @@ public class Slider extends SliderBase {
                 return;
             }
 
-            String valueStr = submittedValue.toString();
-            double value = Double.valueOf(valueStr);
-            if (value < getMinValue() || value > getMaxValue()) {
+            String submittedValueString = submittedValue.toString();
+            if (LangUtils.isValueBlank(submittedValueString)) {
+                return;
+            }
+
+            double submittedValueDouble = Double.valueOf(submittedValueString);
+            if (submittedValueDouble < getMinValue() || submittedValueDouble > getMaxValue()) {
                 setValid(false);
                 input.setValid(false);
             }

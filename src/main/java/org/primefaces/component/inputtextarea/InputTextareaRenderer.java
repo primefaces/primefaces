@@ -48,6 +48,10 @@ public class InputTextareaRenderer extends InputRenderer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String submittedValue = params.get(clientId);
 
+        if (submittedValue != null && submittedValue.length() > inputTextarea.getMaxlength()) {
+            return;
+        }
+
         inputTextarea.setSubmittedValue(submittedValue);
 
         //AutoComplete event

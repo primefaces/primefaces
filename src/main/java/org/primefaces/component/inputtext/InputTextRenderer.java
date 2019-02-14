@@ -20,6 +20,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.expression.SearchExpressionFacade;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -56,8 +57,19 @@ public class InputTextRenderer extends InputRenderer {
 
     protected void encodeScript(FacesContext context, InputText inputText) throws IOException {
         String clientId = inputText.getClientId(context);
+        String counter = inputText.getCounter();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("InputText", inputText.resolveWidgetVar(), clientId).finish();
+        wb.init("InputText", inputText.resolveWidgetVar(), clientId)
+                .attr("maxlength", inputText.getMaxlength(), Integer.MAX_VALUE);
+
+        if (counter != null) {
+            UIComponent counterComponent = SearchExpressionFacade.resolveComponent(context, inputText, counter);
+
+            wb.attr("counter", counterComponent.getClientId(context))
+                    .attr("counterTemplate", inputText.getCounterTemplate(), null);
+        }
+
+        wb.finish();
     }
 
     protected void encodeMarkup(FacesContext context, InputText inputText) throws IOException {

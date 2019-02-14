@@ -52,6 +52,7 @@
             stepSecond: 1,
             shortYearCutoff: '+10',
             hideOnDateTimeSelect: false,
+            userLocale: null,
             locale: {
                 firstDayOfWeek: 0,
                 dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
@@ -91,19 +92,6 @@
             onBeforeShow: null,
             onBeforeHide: null
         },
-
-        _setOption: function (key, value) {
-            if (key === 'setDate') {
-                this.value = this.parseOptionValue(value);
-                
-                /* set changes */
-                this.panel.get(0).innerHTML = this.renderPanelElements();
-                this.inputfield.val(this.value);
-            }
-            else if (key === 'getDate') {
-                return this.value;
-            }
-        },
         
         _create: function () {
             this.container = this.element;
@@ -114,11 +102,20 @@
         },
         
         _setInitValues: function () {
-            this.value = this.parseOptionValue(this.options.defaultDate);
-            this.viewDate = this.parseOptionValue(this.options.viewDate || this.options.defaultDate || new Date());
+            var parsedDefaultDate = this.parseValue(this.options.defaultDate);
+
+            this.value = parsedDefaultDate;
+            this.viewDate = this.options.viewDate ? 
+                this.parseValue(this.options.viewDate) 
+                :
+                (((this.isRangeSelection() && parsedDefaultDate instanceof Array) ? parsedDefaultDate[0] : parsedDefaultDate) || this.parseValue(new Date()));
             this.options.minDate = this.parseOptionValue(this.options.minDate);
             this.options.maxDate = this.parseOptionValue(this.options.maxDate);
             this.ticksTo1970 = (((1970 - 1) * 365 + Math.floor(1970 / 4) - Math.floor(1970 / 100) + Math.floor(1970 / 400)) * 24 * 60 * 60 * 10000000);
+            
+            if (this.options.userLocale && typeof this.options.userLocale === 'object') {
+                $.extend(this.options.locale, this.options.userLocale);
+            }
             
             if (this.options.disabledDates) {
                 for (var i = 0; i < this.options.disabledDates.length; i++) {
@@ -129,10 +126,30 @@
         
         parseOptionValue: function(option) {
             if (option && typeof option === 'string') {
+                return this.parseDate(option, this.options.dateFormat);
+            }
+            
+            return option;
+        },
+        
+        parseValue: function(option) {
+            if (option && typeof option === 'string') {
                 return this.parseValueFromString(option);
             }
             
             return option;
+        },
+        
+        setDate: function(date) {
+            this.value = this.parseValue(date);
+                
+            /* set changes */
+            this.panel.get(0).innerHTML = this.renderPanelElements();
+            this.inputfield.val(this.value);
+        },
+        
+        getDate: function() {
+            return this.value;
         },
 
         getFirstDayOfMonthIndex: function (month, year) {
@@ -141,12 +158,13 @@
             day.setMonth(month);
             day.setFullYear(year);
 
-            let dayIndex = day.getDay() + this.getSundayIndex();
+            var dayIndex = day.getDay() + this.getSundayIndex();
             return dayIndex >= 7 ? dayIndex - 7 : dayIndex;
         },
 
         getSundayIndex: function () {
-            return this.options.locale.firstDayOfWeek > 0 ? 7 - this.options.locale.firstDayOfWeek : 0;
+            var firstDayOfWeek = this.options.locale.firstDay !== undefined ? this.options.locale.firstDay : this.options.locale.firstDayOfWeek;
+            return firstDayOfWeek > 0 ? 7 - firstDayOfWeek : 0;
         },
 
         getDaysCountInMonth: function (month, year) {
@@ -200,7 +218,7 @@
 
         createWeekDays: function () {
             var weekDays = [],
-                dayIndex = this.options.locale.firstDayOfWeek;
+                dayIndex = this.options.locale.firstDay !== undefined ? this.options.locale.firstDay : this.options.locale.firstDayOfWeek;
             for (var i = 0; i < 7; i++) {
                 weekDays.push(this.options.locale.dayNamesMin[dayIndex]);
                 dayIndex = (dayIndex === 6) ? 0 : ++dayIndex;
@@ -804,9 +822,9 @@
                 }
             }
             else if (this.isRangeSelection()) {
-                var tokens = text.split(' - ');
+                var tokens = text.split(/-| - /);
                 value = [];
-                for (let i = 0; i < tokens.length; i++) {
+                for (var i = 0; i < tokens.length; i++) {
                     value[i] = this.parseDateTime(tokens[i].trim());
                 }
             }
@@ -1362,7 +1380,7 @@
             this.panel.off('click.datePicker-date', dateSelector).on('click.datePicker-date', dateSelector, null, function (event) {
                 if ($this.monthsMetaData) {
                     var dayEl = $(this),
-                        calendarIndex = dayEl.closest('table').index(),
+                        calendarIndex = dayEl.closest('.ui-datepicker-group').index(),
                         weekIndex = dayEl.closest('tr').index(),
                         dayIndex = dayEl.closest('td').index();
                     $this.onDateSelect(event, $this.monthsMetaData[calendarIndex].dates[weekIndex][dayIndex]);
@@ -1373,6 +1391,10 @@
         onInputClick: function (event) {
             if (this.documentClickListener) {
                 this.datepickerClick = true;
+            }
+            
+            if (this.options.showOnFocus && !this.panel.is(':visible')) {
+                this.showOverlay();
             }
         },
 

@@ -23,6 +23,7 @@ import javax.faces.application.ResourceDependency;
 
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -34,11 +35,35 @@ public class LinkButton extends LinkButtonBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.LinkButton";
 
-    public static final String STYLE_CLASS = "ui-linkbutton " + HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS;
-    public static final String DISABLED_STYLE_CLASS = STYLE_CLASS + " ui-state-disabled";
-
     @Override
     public Map<String, List<String>> getParams() {
         return ComponentUtils.getUIParams(this);
+    }
+
+    public String resolveStyleClass() {
+        String icon = getIcon();
+        Object value = getValue();
+        String styleClass = "";
+
+        if (value != null && LangUtils.isValueBlank(icon)) {
+            styleClass = HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS;
+        }
+        else if (value != null && !LangUtils.isValueBlank(icon)) {
+            styleClass = getIconPos().equals("left") ? HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS : HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
+        }
+        else if (value == null && !LangUtils.isValueBlank(icon)) {
+            styleClass = HTML.BUTTON_ICON_ONLY_BUTTON_CLASS;
+        }
+
+        if (isDisabled()) {
+            styleClass = styleClass + " ui-state-disabled";
+        }
+
+        String userStyleClass = getStyleClass();
+        if (userStyleClass != null) {
+            styleClass = styleClass + " " + userStyleClass;
+        }
+
+        return "ui-linkbutton " + styleClass;
     }
 }

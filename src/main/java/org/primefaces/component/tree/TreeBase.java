@@ -270,7 +270,7 @@ abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehavi
     }
 
     public String getFilterMode() {
-        return (String) getStateHelper().eval(PropertyKeys.filterMode, "exact");
+        return (String) getStateHelper().eval(PropertyKeys.filterMode, "lenient");
     }
     public void setFilterMode(String filterMode) {
         getStateHelper().put(PropertyKeys.filterMode, filterMode);

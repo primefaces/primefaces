@@ -284,7 +284,8 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if (table.isStickyHeader()) {
-            wb.attr("stickyHeader", true);
+            wb.attr("stickyHeader", true)
+                    .attr("stickyTopAt", table.getStickyTopAt(), null);
         }
 
         wb.attr("tabindex", table.getTabindex(), "0")
@@ -1710,11 +1711,8 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         Object nextGroupByData = groupByVE.getValue(eLContext);
-        if (nextGroupByData != null && nextGroupByData.equals(currentGroupByData)) {
-            return true;
-        }
 
-        return false;
+        return Objects.equals(nextGroupByData, currentGroupByData);
     }
 
     protected void encodeSortableHeaderOnReflow(FacesContext context, DataTable table) throws IOException {

@@ -142,7 +142,11 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.jq.appendTo(document.body);
 
         if($.trim(this.jq.children('.ui-tooltip-text').html()) === '') {
-            this.jq.children('.ui-tooltip-text').html(this.target.attr('title'));
+            var text = this.target.attr('title');
+            if(this.cfg.escape)
+                this.jq.children('.ui-tooltip-text').text(text);
+            else
+                this.jq.children('.ui-tooltip-text').html(text);
         }
 
         this.target.removeAttr('title');

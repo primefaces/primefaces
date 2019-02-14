@@ -15,7 +15,6 @@
  */
 package org.primefaces.util;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,6 +46,6 @@ public final class MapBuilder<K, V> {
     }
 
     public Map<K, V> build() {
-        return Collections.unmodifiableMap(map);
+        return map;
     }
 }

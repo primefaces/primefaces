@@ -12,10 +12,10 @@
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
     <packaging>jar</packaging>
-    <version>6.3-SNAPSHOT</version>
+    <version>7.0-SNAPSHOT</version>
 
-    <name>primefaces</name>
-    <url>http://www.primefaces.org</url>
+    <name>PrimeFaces</name>
+    <url>https://www.primefaces.org</url>
 
     <description>
         <![CDATA[PrimeFaces is one of the most popular UI libraries in Java EE Ecosystem and widely used by software companies, world renowned brands, banks, financial institutions, insurance companies, universities and more.]]>
@@ -24,7 +24,7 @@
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
             <distribution>repo</distribution>
             <comments>A business-friendly OSS license</comments>
         </license>
@@ -84,15 +84,6 @@
             <version>3.0</version>
             <scope>provided</scope>
         </dependency>
-        <!--
-        <dependency>
-            <groupId>javax.portlet</groupId>
-            <artifactId>portlet-api</artifactId>
-            <version>3.0.1</version>
-            <scope>provided</scope>
-        </dependency>
-        -->
-
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
@@ -272,6 +263,63 @@
 
         <plugins>
             <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>3.5.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <supportedProjectTypes>
+                        <supportedProjectType>jar</supportedProjectType>
+                    </supportedProjectTypes>
+                    <instructions>
+                        <Export-Package>org.primefaces.*;version="${project.version}</Export-Package>
+                        <Import-Package>
+                            javax.faces.component.search;resolution:=optional,
+                            javax.faces.component.search.*;resolution:=optional,
+                            javax.faces.flow;resolution:=optional,
+                            javax.faces;version="[2.0.0,3.0.0)",
+                            javax.faces.*;version="[2.0.0,3.0.0)",
+                            javax.inject;resolution:=optional,
+                            javax.inject.*;resolution:=optional,
+                            javax.enterprise;resolution:=optional,
+                            javax.enterprise.*;resolution:=optional,
+                            javax.validation;resolution:=optional,
+                            javax.validation.executable;resolution:=optional,
+                            javax.servlet;version="[3,5)",
+                            javax.servlet.annotation;version="[3,5)",
+                            javax.servlet.descriptor;version="[3,5)",
+                            javax.servlet.http;version="[3,5)",
+                            javax.*,
+                            com.sun.faces;resolution:=optional,
+                            net.glxn.qrgen;resolution:=optional,
+                            org.krysalis.barcode4j.output;resolution:=optional,
+                            org.owasp.html;resolution:=optional,
+                            org.apache.myfaces.view.facelets;resolution:=optional,
+                            org.apache.tika.filetypedetector;resolution:=optional,
+                            *;resolution:=optional
+                        </Import-Package>
+                        <Require-Capability>
+                            osgi.serviceloader;filter:="(osgi.serviceloader=org.primefaces.virusscan.VirusScanner)";cardinality:=multiple,
+                            osgi.extender;filter:="(osgi.extender=osgi.serviceloader.processor)";resolution:=optional,
+                            osgi.extender;filter:="(osgi.extender=osgi.serviceloader.registrar)"
+                        </Require-Capability>
+                        <Provide-Capability>
+                            osgi.serviceloader;osgi.serviceloader=org.primefaces.virusscan.VirusScanner;uses:="org.primefaces.virusscan.impl"
+                        </Provide-Capability>
+                    </instructions>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>bundle-manifest</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>manifest</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.7.0</version>
@@ -325,6 +373,22 @@
                     </dependency>
                 </dependencies>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <archive>
+                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
@@ -638,6 +702,15 @@
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/chartjs/chartjs.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/chartjs/0-chartjs.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/chartjs/1-widgets.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/timeline.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/0-timeline.js</include>
@@ -796,66 +869,6 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.apache.felix</groupId>
-                        <artifactId>maven-bundle-plugin</artifactId>
-                        <version>3.5.0</version>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <supportedProjectTypes>
-                                <supportedProjectType>jar</supportedProjectType>
-                            </supportedProjectTypes>
-                            <instructions>
-                                <Export-Package>org.primefaces.*;version="${project.version}</Export-Package>
-                                <Import-Package>
-                                    javax.faces.component.search;resolution:=optional,
-                                    javax.faces.component.search.*;resolution:=optional,
-                                    javax.faces.flow;resolution:=optional,
-                                    javax.faces;version="[2.0.0,3.0.0)",
-                                    javax.faces.*;version="[2.0.0,3.0.0)",
-                                    javax.inject;resolution:=optional,
-                                    javax.inject.*;resolution:=optional,
-                                    javax.enterprise;resolution:=optional,
-                                    javax.enterprise.*;resolution:=optional,
-                                    javax.validation.executable;resolution:=optional,
-                                    javax.servlet;version="[3,5)",
-                                    javax.servlet.annotation;version="[3,5)",
-                                    javax.servlet.descriptor;version="[3,5)",
-                                    javax.servlet.http;version="[3,5)",
-                                    javax.*,
-                                    net.glxn.qrgen;resolution:=optional,
-                                    org.krysalis.barcode4j.output;resolution:=optional,
-                                    org.apache.myfaces.view.facelets;resolution:=optional,
-                                    *;resolution:=optional
-                                </Import-Package>
-                            </instructions>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>bundle-manifest</id>
-                                <phase>process-classes</phase>
-                                <goals>
-                                    <goal>manifest</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-jar-plugin</artifactId>
-                        <version>3.0.2</version>
-                        <configuration>
-                            <archive>
-                                <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-                                <manifest>
-                                    <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                                    <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                                </manifest>
-                            </archive>
-                        </configuration>
-                    </plugin>
-
-                    <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
                         <version>2.1</version>
@@ -921,7 +934,7 @@
                                 <exclude>**/texteditor.js</exclude>
                                 <exclude>**/jquery.js</exclude>
                                 <exclude>**/0-fullcalendar.min.js</exclude>
-                                <exclude>**/chartjs.js</exclude>
+                                <exclude>**/0-chartjs.js</exclude>
                                 <exclude>**/raphael.js</exclude>
                             </excludes>
                             <includes>
