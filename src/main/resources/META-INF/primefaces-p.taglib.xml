@@ -1950,6 +1950,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean flag indicating whether the last item should be disabled. Default is false.]]>
+            </description>
+            <name>lastItemDisabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
