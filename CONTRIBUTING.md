@@ -58,7 +58,7 @@ About the code you contribute
 
 ### Detailed Java code quality standards:
   
-  - All your code should compile and run in **Java 6.0**.
+  - All your code should compile and run in **Java 7.0**.
   - All comments, names of classes and variables, log messages, etc. must be **in English**.
   - All `.java` files must include the standard PrimeFaces copyright header.
   - All your code should follow the Java Code Conventions regarding variable/method/class naming.
@@ -105,7 +105,7 @@ Note the following only applies to documentation/articles meant to be published 
 Pay special attention to this
 -----------------------------
 
-All PrimeFaces software is distributed under the **Apache License 2.0** open source license, and your contributions
+All PrimeFaces software is distributed under the **MIT** open source license, and your contributions
 will be licensed in the same way.
 
 If you work for a company which, by the way or place in which your code was written, by your contract terms 
@@ -174,7 +174,7 @@ compliance with Section 2.3.
 #### 2.3 Outbound License
 
 As a condition on the grant of rights in Sections 2.1 and 2.2, PrimeFaces agrees to license the Contribution only
-under the terms of the Apache License 2.0 (including any right to adopt any future version of this license if 
+under the terms of the MIT License (including any right to adopt any future version of this license if 
 permitted).
 
 
