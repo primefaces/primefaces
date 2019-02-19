@@ -1588,5 +1588,25 @@ public class DataTable extends DataTableBase {
         return null;
     }
 
+    public String getSortMetaOrder(FacesContext context) {
+        List<SortMeta> multiSortMeta = getMultiSortMeta();
+        int size = multiSortMeta.size();
+        if (size > 0) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("['");
+            for (int i = 0; i < size; i++) {
+                SortMeta sortMeta = multiSortMeta.get(i);
+                if (i > 0) {
+                    sb.append("','");
+                }
+                sb.append(sortMeta.getColumn().getClientId(context));
+            }
+            sb.append("']");
+
+            return sb.toString();
+        }
+        return null;
+    }
+
 
 }
