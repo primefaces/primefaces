@@ -198,7 +198,9 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         var fixedPosition = this.jq.css('position') == 'fixed',
         win = $(window),
         positionOffset = fixedPosition ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null,
-        targetId = target||this.cfg.target;
+        targetId = target||this.cfg.target,
+        allowedNegativeValuesByParentOffset = this.jq.offsetParent().offset(),
+        _self = this;
 
         this.jq.css({'left':'', 'top':'', 'z-index': ++PrimeFaces.zindex})
                 .position({
@@ -206,6 +208,17 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
                     ,at: this.cfg.at
                     ,of: document.getElementById(targetId)
                     ,offset: positionOffset
+                    ,using: function(pos, info) {
+                        if(pos.top < -allowedNegativeValuesByParentOffset.top) {
+                            pos.top = -allowedNegativeValuesByParentOffset.top;
+                        }
+                        
+                        if(pos.left < -allowedNegativeValuesByParentOffset.left) {
+                            pos.left = -allowedNegativeValuesByParentOffset.left;
+                        }
+                        
+                        _self.jq.css(pos);
+                    }
                 });
 
         var widthOffset = this.jq.width() - this.content.width();
