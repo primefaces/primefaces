@@ -1,4 +1,4 @@
-/* 
+/**
  * The MIT License
  *
  * Copyright (c) 2009-2019 PrimeTek
@@ -41,8 +41,6 @@ public abstract class UICalendar extends HtmlInputText {
     public static final String DATE_OUT_OF_RANGE_MESSAGE_ID = "primefaces.calendar.OUT_OF_RANGE";
     public static final String DATE_INVALID_MESSAGE_ID = "primefaces.calendar.INVALID";
     public static final String DATE_INVALID_RANGE_MESSAGE_ID = "primefaces.calendar.DATE_INVALID_RANGE_MESSAGE_ID";
-
-    private java.util.Locale calculatedLocale;
 
     private String timeOnlyPattern = null;
 
@@ -146,11 +144,7 @@ public abstract class UICalendar extends HtmlInputText {
     }
 
     public java.util.Locale calculateLocale(FacesContext facesContext) {
-        if (calculatedLocale == null) {
-            calculatedLocale = LocaleUtils.resolveLocale(getLocale(), getClientId(facesContext));
-        }
-
-        return calculatedLocale;
+        return LocaleUtils.resolveLocale(getLocale(), getClientId(facesContext));
     }
 
     public boolean hasTime() {
