@@ -55,33 +55,28 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             return;
         }
 
-        if (!menu.isEditable()) {
-            super.decode(context, component);
-            return;
-        }
+        if (menu.isEditable()) {
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        decodeBehaviors(context, menu);
+            // default to user entered input
+            String editorInput = params.get(menu.getClientId(context) + "_editableInput");
+            menu.setSubmittedValue(editorInput);
 
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-
-        // default to user entered input
-        String editableInputId = menu.getClientId(context) + "_editableInput";
-        if (!params.containsKey(editableInputId)) {
-            return;
-        }
-
-        String submittedValue = params.get(editableInputId);
-
-        // #2862 check if it matches a label and if so use the value
-        SelectItem match = null;
-        for (SelectItem item : getSelectItems(context, menu)) {
-            if (item.getLabel().equalsIgnoreCase(submittedValue)) {
-                match = item;
-                break;
+            // #2862 check if it matches a label and if so use the value
+            List<SelectItem> selectItems = getSelectItems(context, menu);
+            for (int i = 0; i < selectItems.size(); i++) {
+                SelectItem item = selectItems.get(i);
+                if (item.getLabel().equalsIgnoreCase(editorInput)) {
+                    menu.setSubmittedValue(getOptionAsString(context, menu, menu.getConverter(), item.getValue()));
+                    break;
+                }
             }
-        }
 
-        menu.setSubmittedValue(match != null ? getOptionAsString(context, menu, menu.getConverter(), match.getValue()) : submittedValue);
+            decodeBehaviors(context, menu);
+        }
+        else {
+            super.decode(context, component);
+        }
     }
 
     @Override
