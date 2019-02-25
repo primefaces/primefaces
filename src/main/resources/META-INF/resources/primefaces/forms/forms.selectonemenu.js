@@ -767,28 +767,31 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     setLabel: function(value) {
         var displayedLabel = this.getLabelToDisplay(value);
 
-        if(this.cfg.editable) {
-            if(value === '&nbsp;')
+        if (this.cfg.editable) {
+            if (value === '&nbsp;')
                 this.label.val('');
             else
                 this.label.val(displayedLabel);
+            
+            var hasPlaceholder = this.label[0].hasAttribute('placeholder');
+            this.updatePlaceholderClass((hasPlaceholder && value === '&nbsp;'));
         }
         else {
             var labelText = this.label.data('placeholder');
             if (labelText == null || labelText == "") {
                 labelText = '&nbsp;';
             }
+            
+            this.updatePlaceholderClass((value === '&nbsp;' && labelText !== '&nbsp;'));
 
             if (value === '&nbsp;') {
-                this.label.addClass('ui-selectonemenu-label-placeholder');
                 if (labelText != '&nbsp;') {
                    this.label.text(labelText);
                 } else {
                     this.label.html(labelText);
                 }
             }
-            else {
-                this.label.removeClass('ui-selectonemenu-label-placeholder');
+            else {               
                 this.label.removeClass('ui-state-disabled');
 
                 var option = null;
@@ -995,6 +998,15 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         return this.cfg.appendTo;
+    },
+    
+    updatePlaceholderClass: function(add) {
+        if (add) {
+            this.label.addClass('ui-selectonemenu-label-placeholder');
+        }
+        else {
+            this.label.removeClass('ui-selectonemenu-label-placeholder');
+        }
     }
 
 });

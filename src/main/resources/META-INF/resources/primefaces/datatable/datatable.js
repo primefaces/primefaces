@@ -470,7 +470,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.selection = (preselection === "") ? [] : preselection.split(',');
 
         //shift key based range selection
-        this.originRowIndex = 0;
+        this.originRowIndex = null;
         this.cursorIndex = null;
 
         this.bindSelectionEvents();
@@ -1287,6 +1287,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 $this.loadingLiveScroll = false;
                 $this.allLoadedLiveScroll = ($this.scrollOffset + $this.cfg.scrollStep) >= $this.cfg.scrollLimit;
+                
+                // reset index of shift selection on multiple mode
+                $this.originRowIndex = null;
             }
         };
 
@@ -1328,6 +1331,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 if(typeof args.totalRecords !== 'undefined') {
                     $this.cfg.scrollLimit = args.totalRecords;
                 }
+                
+                // reset index of shift selection on multiple mode
+                $this.originRowIndex = null;
             }
         };
         if (this.hasBehavior('virtualScroll')) {
@@ -1383,6 +1389,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     $this.paginator.updateUI();
                 }
                 $this.updateColumnsView();
+                // reset index of shift selection on multiple mode
+                $this.originRowIndex = null;
             }
         };
 
@@ -1554,6 +1562,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 $this.updateColumnsView();
+                
+                // reset index of shift selection on multiple mode
+                $this.originRowIndex = null;
             }
         };
 
@@ -1666,6 +1677,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 $this.updateColumnsView();
+                
+                // reset index of shift selection on multiple mode
+                $this.originRowIndex = null;
             }
         };
 
@@ -1698,7 +1712,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 //range selection with shift key
-                if(this.isMultipleSelection() && event && event.shiftKey) {
+                if(this.isMultipleSelection() && event && event.shiftKey && this.originRowIndex !== null) {
                     this.selectRowsInRange(row);
                 }
                 else if(this.cfg.rowSelectMode === 'add' && selected) {

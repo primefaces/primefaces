@@ -219,8 +219,9 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             SelectItem selectItem = selectItems.get(i);
             String id = name + UINamingContainer.getSeparatorChar(context) + i;
             boolean selected = isSelected(context, radio, selectItem, currentValue);
+            boolean disabled = selectItem.isDisabled() || radio.isDisabled();
             String itemValueAsString = getOptionAsString(context, radio, converter, selectItem.getValue());
-            encodeOptionInput(context, radio, id, name, selected, false, itemValueAsString);
+            encodeOptionInput(context, radio, id, name, selected, disabled, itemValueAsString);
         }
     }
 
