@@ -29325,5 +29325,21 @@
             <required>false</required>
             <type>java.util.List</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Callback to invoke when a month is changed using the navigators.]]>
+            </description>
+            <name>onMonthChange</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Callback to invoke when a year is changed using the navigators.]]>
+            </description>
+            <name>onYearChange</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
 </facelet-taglib>

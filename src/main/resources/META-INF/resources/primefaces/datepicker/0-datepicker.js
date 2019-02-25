@@ -90,7 +90,9 @@
             onTodayButtonClick: null,
             onClearButtonClick: null,
             onBeforeShow: null,
-            onBeforeHide: null
+            onBeforeHide: null,
+            onMonthChange: null,
+            onYearChange: null
         },
         
         _create: function () {
@@ -1475,7 +1477,10 @@
         onMonthDropdownChange: function (event) {
             var newViewDate = new Date(this.viewDate.getTime());
             newViewDate.setMonth(parseInt(event.target.value, 10));
-
+            
+            if (this.options.onMonthChange) {
+                this.options.onMonthChange.call(this, newViewDate.getMonth() + 1, newViewDate.getFullYear());
+            }
             this.updateViewDate(event, newViewDate);
         },
 
@@ -1483,6 +1488,9 @@
             var newViewDate = new Date(this.viewDate.getTime());
             newViewDate.setFullYear(parseInt(event.target.value, 10));
 
+            if (this.options.onYearChange) {
+                this.options.onYearChange.call(this, newViewDate.getMonth(), newViewDate.getFullYear());
+            }
             this.updateViewDate(event, newViewDate);
         },
 
@@ -1507,6 +1515,10 @@
                 else {
                     newViewDate.setMonth(newViewDate.getMonth() - 1);
                 }
+                
+                if (this.options.onMonthChange) {
+                    this.options.onMonthChange.call(this, newViewDate.getMonth() + 1, newViewDate.getFullYear());
+                }
             }
             else if (this.options.view === 'month') {
                 var currentYear = newViewDate.getFullYear(),
@@ -1521,6 +1533,10 @@
                 }
 
                 newViewDate.setFullYear(newYear);
+                
+                if (this.options.onYearChange) {
+                    this.options.onYearChange.call(this, newViewDate.getMonth(), newViewDate.getFullYear());
+                }
             }
 
             this.updateViewDate(event, newViewDate);
@@ -1544,6 +1560,10 @@
                 else {
                     newViewDate.setMonth(newViewDate.getMonth() + 1);
                 }
+                
+                if (this.options.onMonthChange) {
+                    this.options.onMonthChange.call(this, newViewDate.getMonth() + 1, newViewDate.getFullYear());
+                }
             }
             else if (this.options.view === 'month') {
                 var currentYear = newViewDate.getFullYear(),
@@ -1558,6 +1578,10 @@
                 }
 
                 newViewDate.setFullYear(newYear);
+                
+                if (this.options.onYearChange) {
+                    this.options.onYearChange.call(this, newViewDate.getMonth(), newViewDate.getFullYear());
+                }
             }
 
             this.updateViewDate(event, newViewDate);
