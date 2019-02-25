@@ -58,7 +58,11 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
     refresh: function(cfg) {
         if(this.cfg.custom) {
             for(var i = 0; i < this.inputs.length; i++) {
+                var input = this.inputs.eq(i);
+                
                 this.enable(i);
+                input.prop('checked', false).parent().next().removeClass('ui-state-active').children('.ui-radiobutton-icon')
+                            .removeClass('ui-icon-bullet').addClass('ui-icon-blank');
             }
         }
         
