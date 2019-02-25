@@ -191,7 +191,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             sortIcon = columnHeader.children('span.ui-sortable-column-icon'),
             sortOrder = null,
             columnId = null,
-            resolvedSortMetaIndex = null.
+            resolvedSortMetaIndex = null,
             ariaLabel = columnHeader.attr('aria-label');
 
             if(columnHeader.hasClass('ui-state-active')) {
