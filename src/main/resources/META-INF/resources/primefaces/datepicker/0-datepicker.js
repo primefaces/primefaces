@@ -621,7 +621,7 @@
             var tokens = value.split(':'),
                 validTokenLength = this.options.showSeconds ? 3 : 2;
 
-            if (tokens.length !== validTokenLength || tokens[0].length !== 2 || tokens[1].length !== 2 || tokens[2].length !== 2) {
+            if (tokens.length !== validTokenLength) {
                 throw "Invalid time";
             }
 
