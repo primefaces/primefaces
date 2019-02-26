@@ -37,10 +37,10 @@ public class VirusScannerService {
 
     private static final Logger LOGGER = Logger.getLogger(VirusScannerService.class.getName());
 
-    private ServiceLoader<VirusScanner> loader;
+    private final ClassLoader applicationClassLoader;
 
-    public VirusScannerService(ClassLoader classLoader) {
-        loader = ServiceLoader.load(VirusScanner.class, classLoader);
+    public VirusScannerService(ClassLoader applicationClassLoader) {
+        this.applicationClassLoader = applicationClassLoader;
     }
 
     /**
@@ -52,7 +52,10 @@ public class VirusScannerService {
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("Performing virus scan...");
         }
-        Iterator<VirusScanner> scanners = loader.iterator();
+
+        // ServiceLoader is not thread-safe so it cannot be cached:
+        // https://docs.oracle.com/javase/7/docs/api/java/util/ServiceLoader.html
+        Iterator<VirusScanner> scanners = ServiceLoader.load(VirusScanner.class, applicationClassLoader).iterator();
         while (scanners.hasNext()) {
             try {
                 VirusScanner scanner = scanners.next();
