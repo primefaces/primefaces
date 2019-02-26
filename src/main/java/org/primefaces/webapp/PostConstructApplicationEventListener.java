@@ -23,16 +23,16 @@
  */
 package org.primefaces.webapp;
 
-import org.primefaces.util.Jsf23Helper;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 
-import org.primefaces.config.PrimeEnvironment;
-import org.primefaces.config.StartupPrimeEnvironment;
+import org.primefaces.util.StartupUtils;
+import org.primefaces.util.Jsf23Helper;
 
 public class PostConstructApplicationEventListener implements SystemEventListener {
 
@@ -45,14 +45,13 @@ public class PostConstructApplicationEventListener implements SystemEventListene
 
     @Override
     public void processEvent(SystemEvent event) throws AbortProcessingException {
-        // temp manually instantiate as the ApplicationContext is not available yet
-        PrimeEnvironment environment = new StartupPrimeEnvironment();
+        // ApplicationContext is not available yet
 
-        LOGGER.log(Level.INFO,
-                "Running on PrimeFaces {0}",
-                environment.getBuildVersion());
+        LOGGER.log(Level.INFO, "Running on PrimeFaces {0}", StartupUtils.getBuildVersion());
 
-        if (environment.isAtLeastJsf23()) {
+        ClassLoader applicationClassLoader = StartupUtils.getApplicationClassLoader(FacesContext.getCurrentInstance());
+
+        if (StartupUtils.isAtLeastJsf23(applicationClassLoader)) {
             Jsf23Helper.addSearchKeywordResolvers();
         }
     }

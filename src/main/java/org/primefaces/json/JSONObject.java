@@ -40,6 +40,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Set;
+import org.primefaces.util.LangUtils;
 
 /**
  * A JSONObject is an unordered collection of name/value pairs. Its external
@@ -332,8 +333,7 @@ public class JSONObject {
      */
     public JSONObject(String baseName, Locale locale) throws JSONException {
         this();
-        ResourceBundle bundle = ResourceBundle.getBundle(baseName, locale,
-                Thread.currentThread().getContextClassLoader());
+        ResourceBundle bundle = ResourceBundle.getBundle(baseName, locale, LangUtils.getCurrentClassLoader(getClass()));
 
 // Iterate through the keys in the bundle.
 

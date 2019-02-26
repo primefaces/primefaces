@@ -115,8 +115,12 @@ public class LangUtils {
     }
 
     public static Class tryToLoadClassForName(String name) {
+        return tryToLoadClassForName(name, LangUtils.getContextClassLoader());
+    }
+
+    public static Class tryToLoadClassForName(String name, ClassLoader classLoader) {
         try {
-            return loadClassForName(name);
+            return loadClassForName(name, classLoader);
         }
         catch (ClassNotFoundException e) {
             return null;
@@ -124,16 +128,32 @@ public class LangUtils {
     }
 
     public static Class loadClassForName(String name) throws ClassNotFoundException {
+        return loadClassForName(name, LangUtils.getContextClassLoader());
+    }
+
+    public static Class loadClassForName(String name, ClassLoader classLoader) throws ClassNotFoundException {
+
+        ClassNotFoundException classNotFoundException = null;
+
+        if (classLoader != null) {
+            try {
+                return Class.forName(name, false, classLoader);
+            }
+            catch (ClassNotFoundException e) {
+                classNotFoundException = e;
+            }
+        }
+
         try {
             return Class.forName(name, false, LangUtils.class.getClassLoader());
         }
         catch (ClassNotFoundException e) {
-            try {
-                return Class.forName(name, false, getContextClassLoader());
+
+            if (classNotFoundException == null) {
+                classNotFoundException = e;
             }
-            catch (ClassNotFoundException e2) {
-                throw e2;
-            }
+
+            throw classNotFoundException;
         }
     }
 

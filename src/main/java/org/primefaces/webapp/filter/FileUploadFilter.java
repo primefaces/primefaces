@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -41,8 +42,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.FileCleanerCleanup;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileCleaningTracker;
-import org.primefaces.config.PrimeEnvironment;
-import org.primefaces.config.StartupPrimeEnvironment;
+import org.primefaces.util.StartupUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.webapp.MultipartRequest;
 
@@ -62,11 +62,12 @@ public class FileUploadFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        String uploader = filterConfig.getServletContext().getInitParameter(Constants.ContextParams.UPLOADER);
+
+        ServletContext servletContext = filterConfig.getServletContext();
+        String uploader = servletContext.getInitParameter(Constants.ContextParams.UPLOADER);
 
         if (uploader == null || uploader.equals("auto")) {
-            PrimeEnvironment environment = new StartupPrimeEnvironment();
-            bypass = environment.isAtLeastJsf22();
+            bypass = StartupUtils.isAtLeastJsf22(servletContext.getClassLoader());
         }
         else if (uploader.equals("native")) {
             bypass = true;

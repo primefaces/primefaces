@@ -38,6 +38,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
+import org.primefaces.util.StartupUtils;
 import org.primefaces.util.LangUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -55,7 +56,8 @@ public class WebXmlParser {
     public static Map<String, String> getErrorPages(FacesContext context) {
 
         Map<String, String> webXmlErrorPages = getWebXmlErrorPages(context);
-        Map<String, String> webFragmentXmlsErrorPages = getWebFragmentXmlsErrorPages(context);
+        ClassLoader applicationClassLoader = StartupUtils.getApplicationClassLoader(context);
+        Map<String, String> webFragmentXmlsErrorPages = getWebFragmentXmlsErrorPages(applicationClassLoader);
 
         Map<String, String> errorPages = webXmlErrorPages;
         if (errorPages == null) {
@@ -85,11 +87,11 @@ public class WebXmlParser {
         return null;
     }
 
-    private static Map<String, String> getWebFragmentXmlsErrorPages(FacesContext context) {
+    private static Map<String, String> getWebFragmentXmlsErrorPages(ClassLoader applicationClassLoader) {
         Map<String, String> webFragmentXmlsErrorPages = null;
 
         try {
-            Enumeration<URL> webFragments = LangUtils.getContextClassLoader().getResources("META-INF/web-fragment.xml");
+            Enumeration<URL> webFragments = applicationClassLoader.getResources("META-INF/web-fragment.xml");
 
             while (webFragments.hasMoreElements()) {
                 try {

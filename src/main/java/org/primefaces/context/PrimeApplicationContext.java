@@ -23,11 +23,9 @@
  */
 package org.primefaces.context;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import org.primefaces.util.StartupUtils;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -79,35 +77,6 @@ public class PrimeApplicationContext {
 
         enumCacheMap = new ConcurrentHashMap<>();
         constantsCacheMap = new ConcurrentHashMap<>();
-
-        Object context = facesContext.getExternalContext().getContext();
-        if (context != null) {
-            try {
-                // Reflectively call getClassLoader() on the context in order to be compatible with both the Portlet 3.0
-                // API and the Servlet API without depending on the Portlet API directly.
-                Method getClassLoaderMethod = context.getClass().getMethod("getClassLoader");
-
-                if (getClassLoaderMethod != null) {
-                    applicationClassLoader = (ClassLoader) getClassLoaderMethod.invoke(context);
-                }
-            }
-            catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | AbstractMethodError |
-                NoSuchMethodError | UnsupportedOperationException e) {
-                // Do nothing.
-            }
-            catch (Throwable t) {
-                LOGGER.log(Level.WARNING, "An unexpected Exception or Error was thrown when calling " +
-                    "facesContext.getExternalContext().getContext().getClassLoader(). Falling back to " +
-                    "Thread.currentThread().getContextClassLoader() instead.", t);
-            }
-        }
-
-        // If the context is unavailable or this is a Portlet 2.0 environment, the ClassLoader cannot be obtained from
-        // the context, so use Thread.currentThread().getContextClassLoader() to obtain the application ClassLoader
-        // instead.
-        if (applicationClassLoader == null) {
-            applicationClassLoader = LangUtils.getContextClassLoader();
-        }
     }
 
     public static PrimeApplicationContext getCurrentInstance(FacesContext facesContext) {
@@ -136,6 +105,19 @@ public class PrimeApplicationContext {
         if (facesContext.getExternalContext().getContext() instanceof ServletContext) {
             ((ServletContext) facesContext.getExternalContext().getContext()).setAttribute(INSTANCE_KEY, context);
         }
+    }
+
+    private ClassLoader getApplicationClassLoader() {
+
+        if (applicationClassLoader == null) {
+            initApplicationClassLoader();
+        }
+
+        return applicationClassLoader;
+    }
+
+    protected synchronized void initApplicationClassLoader() {
+        applicationClassLoader = StartupUtils.getApplicationClassLoader(FacesContext.getCurrentInstance());
     }
 
     public PrimeEnvironment getEnvironment() {
@@ -169,7 +151,8 @@ public class PrimeApplicationContext {
             }
             else {
                 try {
-                    cacheProvider = (CacheProvider) LangUtils.loadClassForName(cacheProviderConfigValue).newInstance();
+                    cacheProvider = (CacheProvider) LangUtils
+                        .loadClassForName(cacheProviderConfigValue, getApplicationClassLoader()).newInstance();
                 }
                 catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
                     throw new FacesException(ex);
@@ -200,7 +183,7 @@ public class PrimeApplicationContext {
 
     protected synchronized void initVirusScannerService() {
         if (virusScannerService == null) {
-            virusScannerService = new VirusScannerService(applicationClassLoader);
+            virusScannerService = new VirusScannerService(getApplicationClassLoader());
         }
     }
 

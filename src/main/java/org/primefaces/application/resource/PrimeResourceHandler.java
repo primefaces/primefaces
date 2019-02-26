@@ -32,6 +32,7 @@ import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.context.FacesContext;
 import org.primefaces.application.resource.barcode.BarcodeHandler;
+import org.primefaces.util.StartupUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
@@ -48,12 +49,14 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
         this.wrapped = wrapped;
         handlers = new HashMap<>();
         handlers.put(DynamicContentType.STREAMED_CONTENT.toString(), new StreamedContentHandler());
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ClassLoader applicationClassLoader = StartupUtils.getApplicationClassLoader(facesContext);
 
-        if (LangUtils.tryToLoadClassForName("org.krysalis.barcode4j.output.AbstractCanvasProvider") != null) {
+        if (LangUtils.tryToLoadClassForName("org.krysalis.barcode4j.output.AbstractCanvasProvider", applicationClassLoader) != null) {
             handlers.put(DynamicContentType.BARCODE.toString(), new BarcodeHandler());
         }
 
-        if (LangUtils.tryToLoadClassForName("net.glxn.qrgen.QRCode") != null) {
+        if (LangUtils.tryToLoadClassForName("net.glxn.qrgen.QRCode", applicationClassLoader) != null) {
             handlers.put(DynamicContentType.QR_CODE.toString(), new QRCodeHandler());
         }
     }

@@ -201,7 +201,8 @@ public class FileUploadUtils {
             return true;
         }
 
-        boolean tika = LangUtils.tryToLoadClassForName("org.apache.tika.filetypedetector.TikaFileTypeDetector") != null;
+        boolean tika = LangUtils.tryToLoadClassForName("org.apache.tika.filetypedetector.TikaFileTypeDetector",
+            LangUtils.getCurrentClassLoader(FileUploadUtils.class)) != null;
         if (!tika && LOGGER.isLoggable(Level.WARNING)) {
             LOGGER.warning("Could not find Apache Tika in classpath which is recommended for reliable content type checking");
         }

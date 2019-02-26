@@ -23,14 +23,11 @@
  */
 package org.primefaces.config;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
 import javax.validation.Validation;
+import org.primefaces.util.StartupUtils;
 import org.primefaces.util.LangUtils;
 
 public class PrimeEnvironment {
@@ -53,34 +50,27 @@ public class PrimeEnvironment {
 
     private boolean htmlSanitizerAvailable;
 
-    public PrimeEnvironment() {
-        atLeastEl22 = LangUtils.tryToLoadClassForName("javax.el.ValueReference") != null;
-
-        atLeastJsf23 = LangUtils.tryToLoadClassForName("javax.faces.component.UIImportConstants") != null;
-        atLeastJsf22 = LangUtils.tryToLoadClassForName("javax.faces.flow.Flow") != null;
-        atLeastJsf21 = LangUtils.tryToLoadClassForName("javax.faces.component.TransientStateHolder") != null;
-
-        atLeastBv11 = LangUtils.tryToLoadClassForName("javax.validation.executable.ExecutableValidator") != null;
-
-        beanValidationAvailable = checkIfBeanValidationIsAvailable();
-
-        buildVersion = resolveBuildVersion();
-        // This should only happen if PF + the webapp is openend and started in the same netbeans instance
-        // Fallback to a UID to void a empty version in the resourceUrls
-        if (buildVersion == null || buildVersion.trim().isEmpty()) {
-            buildVersion = UUID.randomUUID().toString().replace("-", "").substring(0, 10);
-        }
-
-        htmlSanitizerAvailable = LangUtils.tryToLoadClassForName("org.owasp.html.PolicyFactory") != null;
-    }
-
     public PrimeEnvironment(FacesContext context) {
-        this();
+
+        ClassLoader applicationClassLoader = StartupUtils.getApplicationClassLoader(context);
+        atLeastEl22 = LangUtils.tryToLoadClassForName("javax.el.ValueReference", applicationClassLoader) != null;
+
+        atLeastJsf23 = StartupUtils.isAtLeastJsf23(applicationClassLoader);
+        atLeastJsf22 = StartupUtils.isAtLeastJsf22(applicationClassLoader);
+        atLeastJsf21 = LangUtils.tryToLoadClassForName("javax.faces.component.TransientStateHolder", applicationClassLoader) != null;
+
+        atLeastBv11 = LangUtils.tryToLoadClassForName("javax.validation.executable.ExecutableValidator", applicationClassLoader) != null;
+
+        beanValidationAvailable = checkIfBeanValidationIsAvailable(applicationClassLoader);
+
+        buildVersion = StartupUtils.getBuildVersion();
+
+        htmlSanitizerAvailable = LangUtils.tryToLoadClassForName("org.owasp.html.PolicyFactory", applicationClassLoader) != null;
         this.mojarra = context.getExternalContext().getApplicationMap().containsKey("com.sun.faces.ApplicationAssociate");
     }
 
-    protected boolean checkIfBeanValidationIsAvailable() {
-        boolean available = LangUtils.tryToLoadClassForName("javax.validation.Validation") != null;
+    protected boolean checkIfBeanValidationIsAvailable(ClassLoader applicationClassLoader) {
+        boolean available = LangUtils.tryToLoadClassForName("javax.validation.Validation", applicationClassLoader) != null;
 
         if (available) {
             // Trial-error approach to check for Bean Validation impl existence.
@@ -96,30 +86,6 @@ public class PrimeEnvironment {
         }
 
         return available;
-    }
-
-    protected String resolveBuildVersion() {
-
-        Properties buildProperties = new Properties();
-        InputStream is = null;
-        try {
-            is = getClass().getResourceAsStream("/META-INF/maven/org.primefaces/primefaces/pom.properties");
-            buildProperties.load(is);
-            return buildProperties.getProperty("version");
-        }
-        catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "PrimeFaces version not resolvable - Could not load pom.properties.");
-        }
-
-        if (is != null) {
-            try {
-                is.close();
-            }
-            catch (IOException e) {
-            }
-        }
-
-        return null;
     }
 
     public boolean isBeanValidationAvailable() {
