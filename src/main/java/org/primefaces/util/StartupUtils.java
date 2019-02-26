@@ -23,16 +23,11 @@
  */
 package org.primefaces.util;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Properties;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
-import org.primefaces.config.PrimeEnvironment;
 
 /**
  * @author Kyle Stiemann
@@ -43,42 +38,6 @@ public final class StartupUtils {
 
     private StartupUtils() {
         // prevent instantiation
-    }
-
-    public static String getBuildVersion() {
-
-        String buildVersion = null;
-
-        Properties buildProperties = new Properties();
-        InputStream is = null;
-        try {
-            is = PrimeEnvironment.class.getResourceAsStream("/META-INF/maven/org.primefaces/primefaces/pom.properties");
-            buildProperties.load(is);
-            buildVersion = buildProperties.getProperty("version");
-        }
-        catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "PrimeFaces version not resolvable - Could not load pom.properties.");
-        }
-
-        if (is != null) {
-            try {
-                is.close();
-            }
-            catch (IOException e) {
-            }
-        }
-
-        // This should only happen if PF + the webapp is openend and started in the same netbeans instance
-        // Fallback to a UID to void a empty version in the resourceUrls
-        if (buildVersion == null || buildVersion.trim().isEmpty()) {
-            buildVersion = UUID.randomUUID().toString().replace("-", "").substring(0, 10);
-        }
-
-        return buildVersion;
-    }
-
-    public static boolean isAtLeastJsf23(ClassLoader applicationClassLoader) {
-        return LangUtils.tryToLoadClassForName("javax.faces.component.UIImportConstants", applicationClassLoader) != null;
     }
 
     public static boolean isAtLeastJsf22(ClassLoader applicationClassLoader) {

@@ -23,10 +23,8 @@
  */
 package org.primefaces.context;
 
-import org.primefaces.util.StartupUtils;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
@@ -49,32 +47,30 @@ import org.primefaces.virusscan.VirusScannerService;
  * <blockquote>
  * PrimeApplicationContext.getCurrentInstance(context)
  * </blockquote>
+ * This class should not be used during application startup.
  */
 public class PrimeApplicationContext {
 
     public static final String INSTANCE_KEY = PrimeApplicationContext.class.getName();
 
-    private static final Logger LOGGER = Logger.getLogger(PrimeApplicationContext.class.getName());
+    private final PrimeEnvironment environment;
+    private final PrimeConfiguration config;
+    private final ValidatorFactoryAccessor validatorFactoryAccessor;
+    private final ValidatorAccessor validatorAccessor;
+    private final CacheProviderAccessor cacheProviderAccessor;
+    private final Map<Class<?>, Map<String, Object>> enumCacheMap;
+    private final Map<Class<?>, Map<String, Object>> constantsCacheMap;
+    private final VirusScannerServiceAccessor virusScannerServiceAccessor;
 
-    private ClassLoader applicationClassLoader;
-    private PrimeEnvironment environment;
-    private PrimeConfiguration config;
-    private ValidatorFactory validatorFactory;
-    private Validator validator;
-    private CacheProvider cacheProvider;
-    private Map<Class<?>, Map<String, Object>> enumCacheMap;
-    private Map<Class<?>, Map<String, Object>> constantsCacheMap;
-    private VirusScannerService virusScannerService;
+    public PrimeApplicationContext(ClassLoader applicationClassLoader, PrimeEnvironment environment,
+        PrimeConfiguration config) {
 
-    public PrimeApplicationContext(FacesContext facesContext) {
-        this.environment = new PrimeEnvironment(facesContext);
-        this.config = new PrimeConfiguration(facesContext, environment);
-
-        if (this.config.isBeanValidationEnabled()) {
-            this.validatorFactory = Validation.buildDefaultValidatorFactory();
-            this.validator = validatorFactory.getValidator();
-        }
-
+        this.environment = environment;
+        this.config = config;
+        validatorFactoryAccessor = new ValidatorFactoryAccessor(config);
+        validatorAccessor = new ValidatorAccessor(validatorFactoryAccessor);
+        cacheProviderAccessor = new CacheProviderAccessor(applicationClassLoader);
+        virusScannerServiceAccessor = new VirusScannerServiceAccessor(applicationClassLoader);
         enumCacheMap = new ConcurrentHashMap<>();
         constantsCacheMap = new ConcurrentHashMap<>();
     }
@@ -84,15 +80,7 @@ public class PrimeApplicationContext {
             return null;
         }
 
-        PrimeApplicationContext applicationContext =
-                (PrimeApplicationContext) facesContext.getExternalContext().getApplicationMap().get(INSTANCE_KEY);
-
-        if (applicationContext == null) {
-            applicationContext = new PrimeApplicationContext(facesContext);
-            setCurrentInstance(applicationContext, facesContext);
-        }
-
-        return applicationContext;
+        return (PrimeApplicationContext) facesContext.getExternalContext().getApplicationMap().get(INSTANCE_KEY);
     }
 
     public static PrimeApplicationContext getCurrentInstance(ServletContext context) {
@@ -107,19 +95,6 @@ public class PrimeApplicationContext {
         }
     }
 
-    private ClassLoader getApplicationClassLoader() {
-
-        if (applicationClassLoader == null) {
-            initApplicationClassLoader();
-        }
-
-        return applicationClassLoader;
-    }
-
-    protected synchronized void initApplicationClassLoader() {
-        applicationClassLoader = StartupUtils.getApplicationClassLoader(FacesContext.getCurrentInstance());
-    }
-
     public PrimeEnvironment getEnvironment() {
         return environment;
     }
@@ -129,22 +104,45 @@ public class PrimeApplicationContext {
     }
 
     public ValidatorFactory getValidatorFactory() {
-        return validatorFactory;
+        return validatorFactoryAccessor.get();
+    }
+
+    private static final class ValidatorFactoryAccessor extends ThreadSafeLazyAccessor<ValidatorFactory> {
+
+        private final PrimeConfiguration config;
+
+        public ValidatorFactoryAccessor(PrimeConfiguration config) {
+            this.config = config;
+        }
+
+        @Override
+        protected ValidatorFactory computeValue() {
+
+            if (config.isBeanValidationEnabled()) {
+                return Validation.buildDefaultValidatorFactory();
+            }
+            else {
+                return null;
+            }
+        }
     }
 
     public CacheProvider getCacheProvider() {
-        if (cacheProvider == null) {
-            initCacheProvider();
-        }
-
-        return cacheProvider;
+        return cacheProviderAccessor.get();
     }
 
-    /**
-     * Lazy init cacheProvider. Not required if no cache component is used in the application.
-     */
-    protected synchronized void initCacheProvider() {
-        if (cacheProvider == null) {
+    private static final class CacheProviderAccessor extends ThreadSafeLazyAccessor<CacheProvider> {
+
+        private final ClassLoader applicationClassLoader;
+
+        public CacheProviderAccessor(ClassLoader applicationClassLoader) {
+            this.applicationClassLoader = applicationClassLoader;
+        }
+
+        @Override
+        protected CacheProvider computeValue() {
+
+            CacheProvider cacheProvider = null;
             String cacheProviderConfigValue = FacesContext.getCurrentInstance().getExternalContext().getInitParameter(Constants.ContextParams.CACHE_PROVIDER);
             if (cacheProviderConfigValue == null) {
                 cacheProvider = new DefaultCacheProvider();
@@ -152,12 +150,14 @@ public class PrimeApplicationContext {
             else {
                 try {
                     cacheProvider = (CacheProvider) LangUtils
-                        .loadClassForName(cacheProviderConfigValue, getApplicationClassLoader()).newInstance();
+                        .loadClassForName(cacheProviderConfigValue, applicationClassLoader).newInstance();
                 }
                 catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
                     throw new FacesException(ex);
                 }
             }
+
+            return cacheProvider;
         }
     }
 
@@ -170,25 +170,54 @@ public class PrimeApplicationContext {
     }
 
     public Validator getValidator() {
-        return validator;
+        return validatorAccessor.get();
+    }
+
+    private static final class ValidatorAccessor extends ThreadSafeLazyAccessor<Validator> {
+
+        private final ValidatorFactoryAccessor validatorFactoryAccessor;
+
+        public ValidatorAccessor(ValidatorFactoryAccessor validatorFactoryAccessor) {
+            this.validatorFactoryAccessor = validatorFactoryAccessor;
+        }
+
+        @Override
+        protected Validator computeValue() {
+
+            ValidatorFactory validatorFactory = validatorFactoryAccessor.get();
+
+            if (validatorFactory != null) {
+                return validatorFactory.getValidator();
+            }
+            else {
+                return null;
+            }
+        }
     }
 
     public VirusScannerService getVirusScannerService() {
-        if (virusScannerService == null) {
-            initVirusScannerService();
-        }
-
-        return virusScannerService;
+        return virusScannerServiceAccessor.get();
     }
 
-    protected synchronized void initVirusScannerService() {
-        if (virusScannerService == null) {
-            virusScannerService = new VirusScannerService(getApplicationClassLoader());
+    private static final class VirusScannerServiceAccessor extends ThreadSafeLazyAccessor<VirusScannerService> {
+
+        private final ClassLoader applicationClassLoader;
+
+        public VirusScannerServiceAccessor(ClassLoader applicationClassLoader) {
+            this.applicationClassLoader = applicationClassLoader;
+        }
+
+        @Override
+        protected VirusScannerService computeValue() {
+            return new VirusScannerService(applicationClassLoader);
         }
     }
 
     public void release() {
-        if (validatorFactory != null && environment != null && environment.isAtLeastBv11()) {
+
+        ValidatorFactory validatorFactory = getValidatorFactory();
+
+        if (validatorFactory != null && getEnvironment().isAtLeastBv11()) {
             validatorFactory.close();
         }
     }

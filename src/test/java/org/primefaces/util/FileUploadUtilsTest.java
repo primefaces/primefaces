@@ -36,6 +36,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.primefaces.component.fileupload.FileUpload;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.mock.FacesContextMock;
+import org.primefaces.mock.pf.PrimeApplicationContextMock;
 
 public class FileUploadUtilsTest {
 
@@ -79,6 +82,9 @@ public class FileUploadUtilsTest {
         when(fileUpload.isValidateContentType()).thenReturn(false);
 
         when(fileUpload.getAccept()).thenReturn("image/png");
+        FacesContextMock facesContext = new FacesContextMock();
+        PrimeApplicationContext.setCurrentInstance(new PrimeApplicationContextMock(facesContext, getClass().getClassLoader()),
+            facesContext);
         Assert.assertTrue(FileUploadUtils.isValidType(fileUpload, "test.TIF", tif));
         Assert.assertTrue(FileUploadUtils.isValidType(fileUpload, "test.mp4", mp4));
         

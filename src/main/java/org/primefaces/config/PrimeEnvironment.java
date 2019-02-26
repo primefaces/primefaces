@@ -23,6 +23,10 @@
  */
 package org.primefaces.config;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
@@ -34,28 +38,26 @@ public class PrimeEnvironment {
 
     private static final Logger LOGGER = Logger.getLogger(PrimeEnvironment.class.getName());
 
-    private boolean beanValidationAvailable = false;
+    private final boolean beanValidationAvailable;
 
-    private boolean atLeastEl22 = false;
+    private final boolean atLeastEl22;
 
-    private boolean atLeastJsf23 = false;
-    private boolean atLeastJsf22 = false;
-    private boolean atLeastJsf21 = false;
+    private final boolean atLeastJsf23;
+    private final boolean atLeastJsf22;
+    private final boolean atLeastJsf21;
 
-    private boolean mojarra = false;
+    private final boolean mojarra;
 
-    private boolean atLeastBv11 = false;
+    private final boolean atLeastBv11;
 
-    private String buildVersion = null;
+    private final String buildVersion;
 
-    private boolean htmlSanitizerAvailable;
+    private final boolean htmlSanitizerAvailable;
 
-    public PrimeEnvironment(FacesContext context) {
-
-        ClassLoader applicationClassLoader = StartupUtils.getApplicationClassLoader(context);
+    public PrimeEnvironment(FacesContext context, ClassLoader applicationClassLoader) {
         atLeastEl22 = LangUtils.tryToLoadClassForName("javax.el.ValueReference", applicationClassLoader) != null;
 
-        atLeastJsf23 = StartupUtils.isAtLeastJsf23(applicationClassLoader);
+        atLeastJsf23 = LangUtils.tryToLoadClassForName("javax.faces.component.UIImportConstants", applicationClassLoader) != null;
         atLeastJsf22 = StartupUtils.isAtLeastJsf22(applicationClassLoader);
         atLeastJsf21 = LangUtils.tryToLoadClassForName("javax.faces.component.TransientStateHolder", applicationClassLoader) != null;
 
@@ -63,7 +65,7 @@ public class PrimeEnvironment {
 
         beanValidationAvailable = checkIfBeanValidationIsAvailable(applicationClassLoader);
 
-        buildVersion = StartupUtils.getBuildVersion();
+        buildVersion = resolveBuildVersion();
 
         htmlSanitizerAvailable = LangUtils.tryToLoadClassForName("org.owasp.html.PolicyFactory", applicationClassLoader) != null;
         this.mojarra = context.getExternalContext().getApplicationMap().containsKey("com.sun.faces.ApplicationAssociate");
@@ -86,6 +88,38 @@ public class PrimeEnvironment {
         }
 
         return available;
+    }
+
+    protected String resolveBuildVersion() {
+
+        String buildVersion = null;
+
+        Properties buildProperties = new Properties();
+        InputStream is = null;
+        try {
+            is = PrimeEnvironment.class.getResourceAsStream("/META-INF/maven/org.primefaces/primefaces/pom.properties");
+            buildProperties.load(is);
+            buildVersion = buildProperties.getProperty("version");
+        }
+        catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "PrimeFaces version not resolvable - Could not load pom.properties.");
+        }
+
+        if (is != null) {
+            try {
+                is.close();
+            }
+            catch (IOException e) {
+            }
+        }
+
+        // This should only happen if PF + the webapp is openend and started in the same netbeans instance
+        // Fallback to a UID to void a empty version in the resourceUrls
+        if (buildVersion == null || buildVersion.trim().isEmpty()) {
+            buildVersion = UUID.randomUUID().toString().replace("-", "").substring(0, 10);
+        }
+
+        return buildVersion;
     }
 
     public boolean isBeanValidationAvailable() {
@@ -114,10 +148,6 @@ public class PrimeEnvironment {
 
     public boolean isAtLeastBv11() {
         return atLeastBv11;
-    }
-
-    public void setAtLeastBv11(boolean atLeastBv11) {
-        this.atLeastBv11 = atLeastBv11;
     }
 
     public String getBuildVersion() {

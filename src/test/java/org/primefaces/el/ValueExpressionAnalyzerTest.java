@@ -44,7 +44,8 @@ public class ValueExpressionAnalyzerTest
     public void init() {
         FacesContext facesContext = new FacesContextMock();
 
-        PrimeApplicationContextMock applicationContext = new PrimeApplicationContextMock(facesContext);
+        PrimeApplicationContextMock applicationContext = new PrimeApplicationContextMock(facesContext,
+            getClass().getClassLoader());
         PrimeApplicationContext.setCurrentInstance(applicationContext, facesContext);
 
         PrimeRequestContext requestContext = new PrimeRequestContextMock(facesContext, applicationContext);

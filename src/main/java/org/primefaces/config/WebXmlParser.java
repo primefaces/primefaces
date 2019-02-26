@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +39,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
-import org.primefaces.util.StartupUtils;
 import org.primefaces.util.LangUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -53,10 +53,9 @@ public class WebXmlParser {
     private WebXmlParser() {
     }
 
-    public static Map<String, String> getErrorPages(FacesContext context) {
+    public static Map<String, String> getErrorPages(FacesContext context, ClassLoader applicationClassLoader) {
 
         Map<String, String> webXmlErrorPages = getWebXmlErrorPages(context);
-        ClassLoader applicationClassLoader = StartupUtils.getApplicationClassLoader(context);
         Map<String, String> webFragmentXmlsErrorPages = getWebFragmentXmlsErrorPages(applicationClassLoader);
 
         Map<String, String> errorPages = webXmlErrorPages;
@@ -70,6 +69,14 @@ public class WebXmlParser {
                 }
             }
         }
+
+        if (errorPages == null) {
+            errorPages = Collections.emptyMap();
+        }
+        else {
+            errorPages = Collections.unmodifiableMap(errorPages);
+        }
+
         return errorPages;
     }
 

@@ -37,7 +37,7 @@ public class WidgetBuilderTest {
 
     protected WidgetBuilder getWidgetBuilder(CollectingResponseWriter writer) {
         FacesContext context = new FacesContextMock(writer);
-        return new WidgetBuilder(context, new PrimeConfigurationMock(context));
+        return new WidgetBuilder(context, new PrimeConfigurationMock(context, getClass().getClassLoader()));
     }
 
     @Test
@@ -58,7 +58,7 @@ public class WidgetBuilderTest {
         CollectingResponseWriter writer = new CollectingResponseWriter();
 
         FacesContext context = new FacesContextMock(writer);
-        PrimeConfigurationMock config = new PrimeConfigurationMock(context);
+        PrimeConfigurationMock config = new PrimeConfigurationMock(context, getClass().getClassLoader());
         config.setMoveScriptsToBottom(true);
         WidgetBuilder builder = new WidgetBuilder(context, config);
 

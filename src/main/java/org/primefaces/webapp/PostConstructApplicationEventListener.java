@@ -30,9 +30,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.config.PrimeEnvironment;
+import org.primefaces.context.PrimeApplicationContext;
 
-import org.primefaces.util.StartupUtils;
 import org.primefaces.util.Jsf23Helper;
+import org.primefaces.util.StartupUtils;
 
 public class PostConstructApplicationEventListener implements SystemEventListener {
 
@@ -45,15 +48,21 @@ public class PostConstructApplicationEventListener implements SystemEventListene
 
     @Override
     public void processEvent(SystemEvent event) throws AbortProcessingException {
-        // ApplicationContext is not available yet
 
-        LOGGER.log(Level.INFO, "Running on PrimeFaces {0}", StartupUtils.getBuildVersion());
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ClassLoader applicationClassLoader = StartupUtils.getApplicationClassLoader(facesContext);
+        PrimeEnvironment environment = new PrimeEnvironment(facesContext, applicationClassLoader);
+        PrimeConfiguration config = new PrimeConfiguration(facesContext, environment.isBeanValidationAvailable(),
+            applicationClassLoader);
+        PrimeApplicationContext primeApplicationContext = new PrimeApplicationContext(applicationClassLoader, environment, config);
 
-        ClassLoader applicationClassLoader = StartupUtils.getApplicationClassLoader(FacesContext.getCurrentInstance());
+        LOGGER.log(Level.INFO, "Running on PrimeFaces {0}", environment.getBuildVersion());
 
-        if (StartupUtils.isAtLeastJsf23(applicationClassLoader)) {
+        if (environment.isAtLeastJsf23()) {
             Jsf23Helper.addSearchKeywordResolvers();
         }
+
+        PrimeApplicationContext.setCurrentInstance(primeApplicationContext, facesContext);
     }
 
 }
