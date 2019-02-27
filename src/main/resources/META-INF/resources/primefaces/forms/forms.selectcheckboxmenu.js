@@ -136,6 +136,10 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             this.filterInput = $('<input type="text" aria-multiline="false" aria-readonly="false" aria-disabled="false" aria-label="Filter Input" role="textbox" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all">')
                                 .appendTo(this.filterInputWrapper);
 
+            if(this.cfg.filterPlaceholder) {
+                this.filterInput.attr('placeholder', this.cfg.filterPlaceholder);
+            }
+
             this.filterInputWrapper.append("<span class='ui-icon ui-icon-search'></span>");
         }
 

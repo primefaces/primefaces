@@ -21244,6 +21244,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Placeholder text to show when filter input is empty.]]>
+            </description>
+            <name>filterPlaceholder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
