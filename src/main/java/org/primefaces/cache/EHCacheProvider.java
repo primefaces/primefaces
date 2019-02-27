@@ -29,7 +29,7 @@ import net.sf.ehcache.Element;
 
 public class EHCacheProvider implements CacheProvider {
 
-    private CacheManager cacheManager;
+    private final CacheManager cacheManager;
 
     public EHCacheProvider() {
         cacheManager = CacheManager.create();
@@ -85,9 +85,5 @@ public class EHCacheProvider implements CacheProvider {
 
     public CacheManager getCacheManager() {
         return cacheManager;
-    }
-
-    public void setCacheManager(CacheManager cacheManager) {
-        this.cacheManager = cacheManager;
     }
 }
