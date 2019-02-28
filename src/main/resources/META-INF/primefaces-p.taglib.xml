@@ -26464,7 +26464,7 @@
         </description>
         <tag-name>toggleSwitch</tag-name>
         <component>
-            <component-type>org.primefaces.ToggleSwitch</component-type>
+            <component-type>org.primefaces.component.ToggleSwitch</component-type>
             <renderer-type>org.primefaces.component.ToggleSwitchRenderer</renderer-type>
         </component>
         <attribute>
