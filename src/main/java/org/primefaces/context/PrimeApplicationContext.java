@@ -210,9 +210,10 @@ public class PrimeApplicationContext {
     }
 
     public void release() {
-        if ((environment != null && environment.isAtLeastBv11())
-                && (validatorFactory != null && validatorFactory.isInitialized())) {
-            validatorFactory.get().close();
+        if (environment != null && environment.isAtLeastBv11()) {
+            if (validatorFactory != null && validatorFactory.isInitialized() && validatorFactory.get() != null) {
+                validatorFactory.get().close();
+            }
         }
     }
 }
