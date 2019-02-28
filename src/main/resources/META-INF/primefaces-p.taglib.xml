@@ -26460,7 +26460,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[ToggleSwitch is used to select a boolean value.]]>
         </description>
         <tag-name>toggleSwitch</tag-name>
         <component>
