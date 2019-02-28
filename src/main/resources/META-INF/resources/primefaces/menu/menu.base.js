@@ -84,14 +84,19 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
     setupDialogSupport: function() {
         var dialog = this.trigger.parents('.ui-dialog:first');
 
-        if(dialog.length == 1) {
+        if(dialog.length == 1 && dialog.css('position') === 'fixed') {
             this.jq.css('position', 'fixed');
         }
     },
 
     show: function() {
+        this.jq.css({
+            'z-index': ++PrimeFaces.zindex,
+            'visibility': 'hidden'
+        }).show();
+
         this.align();
-        this.jq.css('z-index', ++PrimeFaces.zindex).show();
+        this.jq.css('visibility', '');
     },
 
     hide: function() {
@@ -103,12 +108,6 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
     },
 
     align: function() {
-        var fixedPosition = this.jq.css('position') == 'fixed',
-        win = $(window),
-        positionOffset = fixedPosition ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null;
-
-        this.cfg.pos.offset = positionOffset;
-
         this.jq.css({left:'', top:''}).position(this.cfg.pos);
     }
 });
