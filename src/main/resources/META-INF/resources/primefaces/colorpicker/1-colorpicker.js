@@ -104,7 +104,7 @@
     },
     
     setupDialogSupport: function() {
-        var dialog = this.jq.closest('.ui-dialog');
+        var dialog = this.jqEl.closest('.ui-dialog');
         
         if(dialog.length == 1 && dialog.css('position') === 'fixed') {
             this.overlay.css('position', 'fixed');
