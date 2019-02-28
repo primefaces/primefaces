@@ -52,5 +52,9 @@ public abstract class Lazy<T> {
         return result;
     }
 
+    public boolean isInitialized() {
+        return object != NO_INIT;
+    }
+
     protected abstract T initialize();
 }

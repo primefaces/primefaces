@@ -59,24 +59,20 @@ public class PrimeApplicationContext {
 
     private static final Logger LOGGER = Logger.getLogger(PrimeApplicationContext.class.getName());
 
-    private ClassLoader applicationClassLoader;
     private PrimeEnvironment environment;
     private PrimeConfiguration config;
-    private ValidatorFactory validatorFactory;
-    private Validator validator;
-    private Lazy<CacheProvider> cacheProvider;
+    private ClassLoader applicationClassLoader;
     private Map<Class<?>, Map<String, Object>> enumCacheMap;
     private Map<Class<?>, Map<String, Object>> constantsCacheMap;
+
+    private Lazy<ValidatorFactory> validatorFactory;
+    private Lazy<Validator> validator;
+    private Lazy<CacheProvider> cacheProvider;
     private Lazy<VirusScannerService> virusScannerService;
 
     public PrimeApplicationContext(FacesContext facesContext) {
-        this.environment = new PrimeEnvironment(facesContext);
-        this.config = new PrimeConfiguration(facesContext, environment);
-
-        if (this.config.isBeanValidationEnabled()) {
-            this.validatorFactory = Validation.buildDefaultValidatorFactory();
-            this.validator = validatorFactory.getValidator();
-        }
+        environment = new PrimeEnvironment(facesContext);
+        config = new PrimeConfiguration(facesContext, environment);
 
         enumCacheMap = new ConcurrentHashMap<>();
         constantsCacheMap = new ConcurrentHashMap<>();
@@ -108,6 +104,22 @@ public class PrimeApplicationContext {
         // instead.
         if (applicationClassLoader == null) {
             applicationClassLoader = LangUtils.getContextClassLoader();
+        }
+
+
+        if (config.isBeanValidationEnabled()) {
+            validatorFactory = new Lazy<ValidatorFactory>() {
+                @Override
+                protected ValidatorFactory initialize() {
+                    return Validation.buildDefaultValidatorFactory();
+                }
+            };
+            validator = new Lazy<Validator>() {
+                @Override
+                protected Validator initialize() {
+                    return validatorFactory.get().getValidator();
+                }
+            };
         }
 
         virusScannerService = new Lazy<VirusScannerService>() {
@@ -174,7 +186,7 @@ public class PrimeApplicationContext {
     }
 
     public ValidatorFactory getValidatorFactory() {
-        return validatorFactory;
+        return validatorFactory.get();
     }
 
     public CacheProvider getCacheProvider() {
@@ -190,7 +202,7 @@ public class PrimeApplicationContext {
     }
 
     public Validator getValidator() {
-        return validator;
+        return validator.get();
     }
 
     public VirusScannerService getVirusScannerService() {
@@ -198,8 +210,9 @@ public class PrimeApplicationContext {
     }
 
     public void release() {
-        if (validatorFactory != null && environment != null && environment.isAtLeastBv11()) {
-            validatorFactory.close();
+        if ((environment != null && environment.isAtLeastBv11())
+                && (validatorFactory != null && validatorFactory.isInitialized())) {
+            validatorFactory.get().close();
         }
     }
 }
