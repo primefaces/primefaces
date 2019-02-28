@@ -42,6 +42,7 @@ import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.config.PrimeEnvironment;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
+import org.primefaces.util.Lazy;
 import org.primefaces.virusscan.VirusScannerService;
 
 /**
@@ -63,10 +64,10 @@ public class PrimeApplicationContext {
     private PrimeConfiguration config;
     private ValidatorFactory validatorFactory;
     private Validator validator;
-    private CacheProvider cacheProvider;
+    private Lazy<CacheProvider> cacheProvider;
     private Map<Class<?>, Map<String, Object>> enumCacheMap;
     private Map<Class<?>, Map<String, Object>> constantsCacheMap;
-    private VirusScannerService virusScannerService;
+    private Lazy<VirusScannerService> virusScannerService;
 
     public PrimeApplicationContext(FacesContext facesContext) {
         this.environment = new PrimeEnvironment(facesContext);
@@ -108,6 +109,32 @@ public class PrimeApplicationContext {
         if (applicationClassLoader == null) {
             applicationClassLoader = LangUtils.getContextClassLoader();
         }
+
+        virusScannerService = new Lazy<VirusScannerService>() {
+            @Override
+            protected VirusScannerService initialize() {
+                return new VirusScannerService(applicationClassLoader);
+            }
+        };
+
+        cacheProvider = new Lazy<CacheProvider>() {
+            @Override
+            protected CacheProvider initialize() {
+                String cacheProviderConfigValue = FacesContext.getCurrentInstance().getExternalContext()
+                        .getInitParameter(Constants.ContextParams.CACHE_PROVIDER);
+                if (cacheProviderConfigValue == null) {
+                    return new DefaultCacheProvider();
+                }
+                else {
+                    try {
+                        return (CacheProvider) LangUtils.loadClassForName(cacheProviderConfigValue).newInstance();
+                    }
+                    catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+                        throw new FacesException(ex);
+                    }
+                }
+            }
+        };
     }
 
     public static PrimeApplicationContext getCurrentInstance(FacesContext facesContext) {
@@ -151,31 +178,7 @@ public class PrimeApplicationContext {
     }
 
     public CacheProvider getCacheProvider() {
-        if (cacheProvider == null) {
-            initCacheProvider();
-        }
-
-        return cacheProvider;
-    }
-
-    /**
-     * Lazy init cacheProvider. Not required if no cache component is used in the application.
-     */
-    protected synchronized void initCacheProvider() {
-        if (cacheProvider == null) {
-            String cacheProviderConfigValue = FacesContext.getCurrentInstance().getExternalContext().getInitParameter(Constants.ContextParams.CACHE_PROVIDER);
-            if (cacheProviderConfigValue == null) {
-                cacheProvider = new DefaultCacheProvider();
-            }
-            else {
-                try {
-                    cacheProvider = (CacheProvider) LangUtils.loadClassForName(cacheProviderConfigValue).newInstance();
-                }
-                catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-                    throw new FacesException(ex);
-                }
-            }
-        }
+        return cacheProvider.get();
     }
 
     public Map<Class<?>, Map<String, Object>> getEnumCacheMap() {
@@ -191,17 +194,7 @@ public class PrimeApplicationContext {
     }
 
     public VirusScannerService getVirusScannerService() {
-        if (virusScannerService == null) {
-            initVirusScannerService();
-        }
-
-        return virusScannerService;
-    }
-
-    protected synchronized void initVirusScannerService() {
-        if (virusScannerService == null) {
-            virusScannerService = new VirusScannerService(applicationClassLoader);
-        }
+        return virusScannerService.get();
     }
 
     public void release() {
