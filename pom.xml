@@ -275,6 +275,7 @@
                             javax.enterprise;resolution:=optional,
                             javax.enterprise.*;resolution:=optional,
                             javax.validation;resolution:=optional,
+                            javax.validation.*;resolution:=optional,
                             javax.validation.executable;resolution:=optional,
                             javax.servlet;version="[3,5)",
                             javax.servlet.annotation;version="[3,5)",
