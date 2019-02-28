@@ -655,11 +655,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     _show: function() {
         var $this = this;
 
-        this.panel.css({'display':'block', 'opacity':0});
-
+        this.panel.css({'display':'block', 'opacity':0, 'pointer-events': 'none'});
+        
         this.alignPanel();
-
-        this.panel.css({'display':'none', 'opacity':'', 'z-index': ++PrimeFaces.zindex});
+        
+        this.panel.css({'display':'none', 'opacity':'', 'pointer-events': '', 'z-index': ++PrimeFaces.zindex});
 
         if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
             this.panel.parent().css('z-index', PrimeFaces.zindex - 1);
@@ -987,7 +987,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     getAppendTo: function() {
         var dialog = this.jq.closest('.ui-dialog');
 
-        if(dialog.length == 1) {
+        if(dialog.length == 1 && dialog.css('position') === 'fixed') {
             //set position as fixed to scroll with dialog
             this.panel.css('position', 'fixed');
 
