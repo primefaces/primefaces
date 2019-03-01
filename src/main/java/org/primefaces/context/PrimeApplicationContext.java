@@ -59,16 +59,16 @@ public class PrimeApplicationContext {
 
     private static final Logger LOGGER = Logger.getLogger(PrimeApplicationContext.class.getName());
 
-    private PrimeEnvironment environment;
-    private PrimeConfiguration config;
-    private ClassLoader applicationClassLoader;
-    private Map<Class<?>, Map<String, Object>> enumCacheMap;
-    private Map<Class<?>, Map<String, Object>> constantsCacheMap;
+    private final PrimeEnvironment environment;
+    private final PrimeConfiguration config;
+    private final ClassLoader applicationClassLoader;
+    private final Map<Class<?>, Map<String, Object>> enumCacheMap;
+    private final Map<Class<?>, Map<String, Object>> constantsCacheMap;
 
-    private Lazy<ValidatorFactory> validatorFactory;
-    private Lazy<Validator> validator;
-    private Lazy<CacheProvider> cacheProvider;
-    private Lazy<VirusScannerService> virusScannerService;
+    private final Lazy<ValidatorFactory> validatorFactory;
+    private final Lazy<Validator> validator;
+    private final Lazy<CacheProvider> cacheProvider;
+    private final Lazy<VirusScannerService> virusScannerService;
 
     public PrimeApplicationContext(FacesContext facesContext) {
         environment = new PrimeEnvironment(facesContext);
@@ -77,6 +77,7 @@ public class PrimeApplicationContext {
         enumCacheMap = new ConcurrentHashMap<>();
         constantsCacheMap = new ConcurrentHashMap<>();
 
+        ClassLoader classLoader = null;
         Object context = facesContext.getExternalContext().getContext();
         if (context != null) {
             try {
@@ -85,7 +86,7 @@ public class PrimeApplicationContext {
                 Method getClassLoaderMethod = context.getClass().getMethod("getClassLoader");
 
                 if (getClassLoaderMethod != null) {
-                    applicationClassLoader = (ClassLoader) getClassLoaderMethod.invoke(context);
+                    classLoader = (ClassLoader) getClassLoaderMethod.invoke(context);
                 }
             }
             catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | AbstractMethodError |
@@ -102,10 +103,11 @@ public class PrimeApplicationContext {
         // If the context is unavailable or this is a Portlet 2.0 environment, the ClassLoader cannot be obtained from
         // the context, so use Thread.currentThread().getContextClassLoader() to obtain the application ClassLoader
         // instead.
-        if (applicationClassLoader == null) {
-            applicationClassLoader = LangUtils.getContextClassLoader();
+        if (classLoader == null) {
+            classLoader = LangUtils.getContextClassLoader();
         }
 
+        applicationClassLoader = classLoader;
 
         if (config.isBeanValidationEnabled()) {
             validatorFactory = new Lazy<ValidatorFactory>() {
@@ -120,6 +122,10 @@ public class PrimeApplicationContext {
                     return validatorFactory.get().getValidator();
                 }
             };
+        }
+        else {
+            validatorFactory = null;
+            validator = null;
         }
 
         virusScannerService = new Lazy<VirusScannerService>() {
