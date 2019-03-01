@@ -26,6 +26,7 @@ package org.primefaces.mock.pf;
 import java.util.Map;
 import javax.faces.context.FacesContext;
 import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.config.PrimeEnvironment;
 
 public class PrimeConfigurationMock extends PrimeConfiguration {
 
@@ -50,8 +51,8 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
     // web.xml
     private Map<String, String> errorPages = null;
 
-    public PrimeConfigurationMock(FacesContext context) {
-
+    public PrimeConfigurationMock(FacesContext context, PrimeEnvironment environment) {
+        super(context, environment);
     }
 
     @Override
@@ -59,7 +60,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return validateEmptyFields;
     }
 
-    @Override
     public void setValidateEmptyFields(boolean validateEmptyFields) {
         this.validateEmptyFields = validateEmptyFields;
     }
@@ -69,7 +69,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return partialSubmitEnabled;
     }
 
-    @Override
     public void setPartialSubmitEnabled(boolean partialSubmitEnabled) {
         this.partialSubmitEnabled = partialSubmitEnabled;
     }
@@ -79,7 +78,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return resetValuesEnabled;
     }
 
-    @Override
     public void setResetValuesEnabled(boolean resetValuesEnabled) {
         this.resetValuesEnabled = resetValuesEnabled;
     }
@@ -89,7 +87,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return interpretEmptyStringAsNull;
     }
 
-    @Override
     public void setInterpretEmptyStringAsNull(boolean interpretEmptyStringAsNull) {
         this.interpretEmptyStringAsNull = interpretEmptyStringAsNull;
     }
@@ -99,7 +96,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return theme;
     }
 
-    @Override
     public void setTheme(String theme) {
         this.theme = theme;
     }
@@ -109,7 +105,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return fontAwesomeEnabled;
     }
 
-    @Override
     public void setFontAwesomeEnabled(boolean fontAwesomeEnabled) {
         this.fontAwesomeEnabled = fontAwesomeEnabled;
     }
@@ -119,7 +114,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return clientSideValidationEnabled;
     }
 
-    @Override
     public void setClientSideValidationEnabled(boolean clientSideValidationEnabled) {
         this.clientSideValidationEnabled = clientSideValidationEnabled;
     }
@@ -129,7 +123,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return uploader;
     }
 
-    @Override
     public void setUploader(String uploader) {
         this.uploader = uploader;
     }
@@ -139,7 +132,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return transformMetadataEnabled;
     }
 
-    @Override
     public void setTransformMetadataEnabled(boolean transformMetadataEnabled) {
         this.transformMetadataEnabled = transformMetadataEnabled;
     }
@@ -149,7 +141,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return legacyWidgetNamespace;
     }
 
-    @Override
     public void setLegacyWidgetNamespace(boolean legacyWidgetNamespace) {
         this.legacyWidgetNamespace = legacyWidgetNamespace;
     }
@@ -167,7 +158,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return interpolateClientSideValidationMessages;
     }
 
-    @Override
     public void setInterpolateClientSideValidationMessages(boolean interpolateClientSideValidationMessages) {
         this.interpolateClientSideValidationMessages = interpolateClientSideValidationMessages;
     }
@@ -177,7 +167,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return earlyPostParamEvaluation;
     }
 
-    @Override
     public void setEarlyPostParamEvaluation(boolean earlyPostParamEvaluation) {
         this.earlyPostParamEvaluation = earlyPostParamEvaluation;
     }
@@ -187,7 +176,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return stringConverterAvailable;
     }
 
-    @Override
     public void setStringConverterAvailable(boolean stringConverterAvailable) {
         this.stringConverterAvailable = stringConverterAvailable;
     }
@@ -197,7 +185,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return errorPages;
     }
 
-    @Override
     public void setErrorPages(Map<String, String> errorPages) {
         this.errorPages = errorPages;
     }
@@ -207,7 +194,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return moveScriptsToBottom;
     }
 
-    @Override
     public void setMoveScriptsToBottom(boolean moveScriptsToBottom) {
         this.moveScriptsToBottom = moveScriptsToBottom;
     }
