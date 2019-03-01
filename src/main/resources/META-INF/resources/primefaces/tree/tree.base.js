@@ -268,7 +268,10 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
             selectable = nodeContent.hasClass('ui-tree-selectable');
 
             if(this.cfg.onNodeClick) {
-                this.cfg.onNodeClick.call(this, node, event);
+                var retVal = this.cfg.onNodeClick.call(this, node, event);
+                if (retVal === false) {
+                    return;
+                }
             }
 
             if(selectable && this.cfg.selectionMode) {
