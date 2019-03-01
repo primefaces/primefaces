@@ -30,12 +30,13 @@ import org.ehcache.xml.XmlConfiguration;
 
 public class EHCache3Provider implements CacheProvider {
 
-    private CacheManager cacheManager;
+    private final CacheManager cacheManager;
 
     public EHCache3Provider() {
         XmlConfiguration xmlConfig = new XmlConfiguration(this.getClass().getResource("/ehcache.xml"));
-        cacheManager = CacheManagerBuilder.newCacheManager(xmlConfig);
+        CacheManager cacheManager = CacheManagerBuilder.newCacheManager(xmlConfig);
         cacheManager.init();
+        this.cacheManager = cacheManager;
     }
 
     @Override
@@ -73,9 +74,5 @@ public class EHCache3Provider implements CacheProvider {
 
     public CacheManager getCacheManager() {
         return cacheManager;
-    }
-
-    public void setCacheManager(CacheManager cacheManager) {
-        this.cacheManager = cacheManager;
     }
 }
