@@ -192,7 +192,7 @@ public class PrimeApplicationContext {
     }
 
     public ValidatorFactory getValidatorFactory() {
-        return validatorFactory.get();
+        return validatorFactory == null ? null : validatorFactory.get();
     }
 
     public CacheProvider getCacheProvider() {
@@ -208,7 +208,7 @@ public class PrimeApplicationContext {
     }
 
     public Validator getValidator() {
-        return validator.get();
+        return validator == null ? null : validator.get();
     }
 
     public VirusScannerService getVirusScannerService() {
