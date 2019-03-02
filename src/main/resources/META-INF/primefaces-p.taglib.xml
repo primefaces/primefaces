@@ -21244,6 +21244,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Placeholder text to show when filter input is empty.]]>
+            </description>
+            <name>filterPlaceholder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -26452,11 +26460,11 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[ToggleSwitch is used to select a boolean value.]]>
         </description>
         <tag-name>toggleSwitch</tag-name>
         <component>
-            <component-type>org.primefaces.ToggleSwitch</component-type>
+            <component-type>org.primefaces.component.ToggleSwitch</component-type>
             <renderer-type>org.primefaces.component.ToggleSwitchRenderer</renderer-type>
         </component>
         <attribute>
@@ -29324,6 +29332,22 @@
             <name>disabledDays</name>
             <required>false</required>
             <type>java.util.List</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Callback to invoke when a month is changed using the navigators.]]>
+            </description>
+            <name>onMonthChange</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Callback to invoke when a year is changed using the navigators.]]>
+            </description>
+            <name>onYearChange</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
 </facelet-taglib>

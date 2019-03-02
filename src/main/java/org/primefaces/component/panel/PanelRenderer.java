@@ -34,6 +34,7 @@ import org.primefaces.component.menu.Menu;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class PanelRenderer extends CoreRenderer {
@@ -181,16 +182,16 @@ public class PanelRenderer extends CoreRenderer {
 
         //Options
         if (panel.isClosable()) {
-            encodeIcon(context, panel, "ui-icon-closethick", clientId + "_closer", panel.getCloseTitle());
+            encodeIcon(context, panel, "ui-icon-closethick", clientId + "_closer", panel.getCloseTitle(), MessageFactory.getMessage(Panel.ARIA_CLOSE, null));
         }
 
         if (panel.isToggleable()) {
             String icon = panel.isCollapsed() ? "ui-icon-plusthick" : "ui-icon-minusthick";
-            encodeIcon(context, panel, icon, clientId + "_toggler", panel.getToggleTitle());
+            encodeIcon(context, panel, icon, clientId + "_toggler", panel.getToggleTitle(), MessageFactory.getMessage(Panel.ARIA_TOGGLE, null));
         }
 
         if (panel.getOptionsMenu() != null) {
-            encodeIcon(context, panel, "ui-icon-gear", clientId + "_menu", panel.getMenuTitle());
+            encodeIcon(context, panel, "ui-icon-gear", clientId + "_menu", panel.getMenuTitle(), MessageFactory.getMessage(Panel.ARIA_OPTIONS_MENU, null));
         }
 
         //Actions
@@ -241,7 +242,7 @@ public class PanelRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeIcon(FacesContext context, Panel panel, String iconClass, String id, String title) throws IOException {
+    protected void encodeIcon(FacesContext context, Panel panel, String iconClass, String id, String title, String ariaLabel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("a", null);
@@ -252,6 +253,10 @@ public class PanelRenderer extends CoreRenderer {
         writer.writeAttribute("class", Panel.PANEL_TITLE_ICON_CLASS, null);
         if (title != null) {
             writer.writeAttribute("title", title, null);
+        }
+
+        if (ariaLabel != null) {
+            writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
         }
 
         writer.startElement("span", null);

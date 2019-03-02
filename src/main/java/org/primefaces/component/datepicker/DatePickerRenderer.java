@@ -140,6 +140,16 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             wb.nativeAttr("preShow", beforeShow);
         }
 
+        String onMonthChange = datepicker.getOnMonthChange();
+        if (onMonthChange != null) {
+            wb.nativeAttr("onMonthChange", onMonthChange);
+        }
+
+        String onYearChange = datepicker.getOnYearChange();
+        if (onYearChange != null) {
+            wb.nativeAttr("onYearChange", onYearChange);
+        }
+
         if (datepicker.isShowOtherMonths()) {
             wb.attr("showOtherMonths", true).attr("selectOtherMonths", datepicker.isSelectOtherMonths());
         }

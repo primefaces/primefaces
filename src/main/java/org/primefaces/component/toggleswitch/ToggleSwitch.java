@@ -42,7 +42,7 @@ import org.primefaces.util.MapBuilder;
 })
 public class ToggleSwitch extends ToggleSwitchBase {
 
-    public static final String COMPONENT_TYPE = "org.primefaces.ToggleSwitch";
+    public static final String COMPONENT_TYPE = "org.primefaces.component.ToggleSwitch";
 
     public static final String CONTAINER_CLASS = "ui-toggleswitch ui-widget";
     public static final String SLIDER_CLASS = "ui-toggleswitch-slider";

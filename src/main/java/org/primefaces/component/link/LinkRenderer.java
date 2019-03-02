@@ -60,7 +60,7 @@ public class LinkRenderer extends OutcomeTargetRenderer {
         }
         else {
             String targetURL = getTargetURL(context, link);
-            if (targetURL == null) {
+            if (targetURL == null || targetURL.trim().length() == 0) {
                 targetURL = "#";
             }
 

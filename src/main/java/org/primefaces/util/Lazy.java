@@ -21,16 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.config;
+package org.primefaces.util;
 
-public class StartupPrimeEnvironment extends PrimeEnvironment {
+/**
+ * Inspired by commons-lang LazyInitializer.
+ * Can be reworked with a Supplier in Java8.
+ *
+ * @param <T> The type to be lazy initialized.
+ */
+public abstract class Lazy<T> {
 
-    public StartupPrimeEnvironment() {
-        super(null);
+    private static final Object NO_INIT = new Object();
+
+    @SuppressWarnings("unchecked")
+    private volatile T object = (T) NO_INIT;
+
+    public T get() {
+        T result = object;
+
+        if (result == NO_INIT) {
+            synchronized (this) {
+                result = object;
+                if (result == NO_INIT) {
+                    object = initialize();
+                    result = object;
+                }
+            }
+        }
+
+        return result;
     }
 
-    @Override
-    protected boolean resolveBeanValidationAvailable() {
-        return false;
+    public boolean isInitialized() {
+        return object != NO_INIT;
     }
+
+    protected abstract T initialize();
 }
