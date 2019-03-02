@@ -30,10 +30,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
+
+import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.RTLAware;
 
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 
 public abstract class InputRenderer extends CoreRenderer {
 
@@ -120,9 +123,12 @@ public abstract class InputRenderer extends CoreRenderer {
         renderARIARequired(context, component);
         renderARIAInvalid(context, component);
 
-        String labelledBy = (String) component.getAttributes().get("labelledby");
-        if (labelledBy != null) {
-            writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelledBy, null);
+        if (component instanceof InputHolder) {
+            InputHolder inputHolder = ((InputHolder) component);
+            String labelledBy = inputHolder.getLabelledBy();
+            if (!LangUtils.isValueBlank(labelledBy)) {
+                writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelledBy, null);
+            }
         }
 
         if (disabled) {
