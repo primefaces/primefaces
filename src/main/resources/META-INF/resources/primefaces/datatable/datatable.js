@@ -343,7 +343,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     setupFiltering: function() {
         var $this = this,
         filterColumns = this.thead.find('> tr > th.ui-filter-column');
-        this.cfg.filterEvent = this.cfg.filterEvent||'keyup';
+        this.cfg.filterEvent = this.cfg.filterEvent||'input propertychange';
         this.cfg.filterDelay = this.cfg.filterDelay||300;
 
         filterColumns.children('.ui-column-filter').each(function() {
