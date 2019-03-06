@@ -1,0 +1,1 @@
+[filename](components/accordionpanel.md ':include'))
