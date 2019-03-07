@@ -7708,6 +7708,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines if lazy loading is enabled for the data component.]]>
+            </description>
+            <name>lazy</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Enables pagination.]]>
             </description>
             <name>paginator</name>
