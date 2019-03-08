@@ -18,7 +18,7 @@ AccordionPanel is a container component that displays content in stacked format.
 | Name | Default | Type | Description |
 | --- | --- | --- | --- |
 | id | null | String | Unique identifier of the component |
-| rendered | true | boolean | Boolean value to specify the rendering of the component. |
+| rendered | true | Boolean | Boolean value to specify the rendering of the component. |
 | binding | null | Object | An EL expression that maps to a server side UIComponent instance in a backing bean. |
 | activeIndex | false | String | Index of the active tab or a comma separated string of indexes when multiple mode is on. |
 | style | null | String | Inline style of the container element. |
