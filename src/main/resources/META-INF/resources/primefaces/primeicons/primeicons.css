@@ -2,6 +2,7 @@
 
 @font-face {
   font-family: 'primeicons';
+  font-display: auto;
   src: url("#{resource['primefaces:primeicons/primeicons.eot']}");
   src: url("#{resource['primefaces:primeicons/primeicons.eot']}#iefix") format("embedded-opentype"), url("#{resource['primefaces:primeicons/primeicons.ttf']}") format("truetype"), url("#{resource['primefaces:primeicons/primeicons.woff']}") format("woff"), url("#{resource['primefaces:primeicons/primeicons.svg']}?#primeicons") format("svg");
   font-weight: normal;
