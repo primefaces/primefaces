@@ -1,4 +1,4 @@
-# 3.139 Spacer..............................................................................................................................
+# Spacer
 
 Spacer is used to put spaces between elements.
 
@@ -25,11 +25,11 @@ style | null | String | Inline style of the spacer.
 styleClass | null | String | Style class of the spacer.
 width | null | String | Width of the space.
 height | null | String | Height of the space.
-```
+
 ## Getting started with Spacer
 Spacer is used by either specifying width or height of the space.
 
-```
+```xhtml
 Spacer in this example separates this text <p:spacer width="100" height="10"> and
 <p:spacer width="100" height="10"> this text.
 ```

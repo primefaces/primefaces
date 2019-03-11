@@ -1,4 +1,4 @@
-# Sticky...............................................................................................................................
+# Sticky
 
 Sticky component positions other components as fixed so that these components stay in window
 viewport during scrolling.
@@ -20,25 +20,23 @@ viewport during scrolling.
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component.
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent
-instance in a backing bean.
+binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
 target | null | String | Component to make sticky.
-margin 0 | Integer | Margin to the top of the page during fixed scrolling.
-```
+margin | 0 | Integer | Margin to the top of the page during fixed scrolling.
 
 ## Getting started with Sticky
 Sticky requires a target to keep in viewport on scroll. Here is a sticky toolbar;
 
-```
+```xhtml
 <p:toolbar id="tb">
-<p:toolbarGroup align="left">
-<p:commandButton type="button" value="New" icon="ui-icon-document" />
-<p:commandButton type="button" value="Open" icon="ui-icon-folder-open"/>
-<p:separator />
-<p:commandButton type="button" title="Save" icon="ui-icon-disk"/>
-<p:commandButton type="button" title="Delete" icon="ui-icon-trash"/>
-<p:commandButton type="button" title="Print" icon="ui-icon-print"/>
-</p:toolbarGroup>
+    <p:toolbarGroup align="left">
+        <p:commandButton type="button" value="New" icon="ui-icon-document" />
+        <p:commandButton type="button" value="Open" icon="ui-icon-folder-open"/>
+        <p:separator />
+        <p:commandButton type="button" title="Save" icon="ui-icon-disk"/>
+        <p:commandButton type="button" title="Delete" icon="ui-icon-trash"/>
+        <p:commandButton type="button" title="Print" icon="ui-icon-print"/>
+    </p:toolbarGroup>
 </p:toolbar>
 <p:sticky target="tb" />
 ```

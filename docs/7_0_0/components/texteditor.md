@@ -1,4 +1,4 @@
-# TextEditor........................................................................................................................
+# TextEditor
 
 Editor is an input component with rich text editing capabilities based on Quill.
 
@@ -18,41 +18,15 @@ Editor is an input component with rich text editing capabilities based on Quill.
 | Name | Default | Type | Description | 
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component.
-rendered | true | Boolean | Boolean value to specify the rendering of the
-component.
+rendered | true | Boolean | Boolean value to specify the rendering of the component.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
-value | null | Object | Value of the component than can be either an EL
-expression of a literal text.
-converter | null | Converter/
-String
-```
-```
-An el expression or a literal text that defines a
-converter for the component. When it’s an EL
-expression, it’s resolved to a converter instance. In
-case it’s a static text, it must refer to a converter id.
-immediate | false | Boolean | When set true, process validations logic is executed at
-apply request values phase for this component.
+value | null | Object | Value of the component than can be either an EL expression of a literal text.
+converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id.
+immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
 required | false | Boolean | Marks component as required.
-```
-
-```
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-validator | null | Method
-Expr
-```
-```
-A method expression that refers to a method
-validationg the input.
-valueChangeListener | null | Method
-Expr
-```
-```
-A method expression that refers to a method for
-handling a valuchangeevent.
-requiredMessage | null | String | Message to be displayed when required field
-validation fails.
+validator | null | MethodExpr | A method expression that refers to a method validationg the input.
+valueChangeListener | null | MethodExpr | A method expression that refers to a method for handling a valuchangeevent.
+requiredMessage | null | String | Message to be displayed when required field validation fails.
 converterMessage | null | String | Message to be displayed when conversion fails.
 validatorMessage | null | String | Message to be displayed when validation fails.
 widgetVar | null | String | Name of the client side widget.
@@ -62,37 +36,37 @@ style | null | String | Inline style of the editor container.
 styleClass | null | String | Style class of the editor container.
 placeholder | null | String | Placeholder text to show when editor is empty
 toolbarVisible | true | Boolean | Whether the toolbar of the editor is visible.
-```
+
 ## Getting started with the Editor
 Rich Text entered using the Editor is passed to the server using _value_ expression.
 
-```
+```java
 public class Bean {
-private | String | text;
-//getter and setter
+    private String text;
+    //getter and setter
 }
 ```
-```
+```xhtml
 <p:textEditor value="#{bean.text}" />
 ```
 ## Custom Toolbar
 Toolbar of editor is easy to customize using _toolbar facet_ ;
 
 
-```
+```xhtml
 <p:textEditor widgetVar="editor2" value="#{editorView.text2}" height="300">
-<f:facet name="toolbar">
-<span class="ql-formats">
-<button class="ql-bold"></button>
-<button class="ql-italic"></button>
-<button class="ql-underline"></button>
-<button class="ql-strike"></button>
-</span>
-<span class="ql-formats">
-<select class="ql-font"></select>
-<select class="ql-size"></select>
-</span>
-</f:facet>
+    <f:facet name="toolbar">
+        <span class="ql-formats">
+            <button class="ql-bold"></button>
+            <button class="ql-italic"></button>
+            <button class="ql-underline"></button>
+            <button class="ql-strike"></button>
+        </span>
+        <span class="ql-formats">
+            <select class="ql-font"></select>
+            <select class="ql-size"></select>
+        </span>
+    </f:facet>
 </p:textEditor>
 ```
 Refer to QuillJS documentation for avialable list of formats.
@@ -100,13 +74,11 @@ Refer to QuillJS documentation for avialable list of formats.
 ## Client Side API
 Widget: _PrimeFaces.widget.Editor_
 
-```
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 
-getEditorValue() | - | void | Initializes a lazy editor, subsequent calls do not
-reinit the editor.
+getEditorValue() | - | void | Initializes a lazy editor, subsequent calls do not reinit the editor.
 clear() | - | void | Clears the text in editor.
-```
+
 ## Skinning
 Refer to QuillJS documentation for styling;
 

@@ -1,4 +1,4 @@
-# 3.132 Separator..........................................................................................................................
+# Separator
 
 Separator displays a horizontal line to separate content.
 
@@ -23,11 +23,11 @@ binding | null | Object | An el expression that maps to a server side UIComponen
 title | null | String | Advisory tooltip informaton.
 style | null | String | Inline style of the separator.
 styleClass | null | String | Style class of the separator.
-```
+
 ## Getting started with Separator
 In its simplest form, separator is used as;
 
-```
+```xhtml
 //content
 <p:separator />
 //content
@@ -36,27 +36,26 @@ In its simplest form, separator is used as;
 Separator renders a _<hr />_ tag which style and styleClass options apply.
 
 
-```
+```xhtml
 <p:separator style="width:500px;height:20px" />
 ```
 ## Special Separators
 Separator can be used inside other components such as menu when supported.
 
-```
+```xhtml
 <p:menu>
-//submenu or menuitem
-<p:separator />
-//submenu or menuitem
+    //submenu or menuitem
+    <p:separator />
+    //submenu or menuitem
 </p:menu>
 ```
 ## Skinning
 As mentioned in dimensions section, style and styleClass options can be used to style the separator.
 Following is the list of structural style classes;
 
-```
 | Class | Applies | 
 | --- | --- | 
-.ui-separator Separator element
-```
+.ui-separator | Separator element
+
 As skinning style classes are global, see the main theming section for more information.
 

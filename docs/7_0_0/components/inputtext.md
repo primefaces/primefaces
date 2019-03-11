@@ -1,4 +1,4 @@
-# 3.70 InputText............................................................................................................................
+# InputText
 
 InputText is an extension to standard inputText with skinning capabilities.
 

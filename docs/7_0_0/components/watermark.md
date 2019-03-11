@@ -1,4 +1,4 @@
-# Watermark.......................................................................................................................
+# Watermark
 
 Watermark displays a hint on an input field.
 
@@ -22,12 +22,12 @@ rendered | true | Boolean | Boolean value to specify the rendering of the compon
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 value | null | Object | Text of watermark.
 for | null | String | Component to attach the watermark
-```
+
 ## Getting started with Watermark
 Watermark requires a target of the input component. In case you don't need to support legacy
 browsers, prefer placeholder attribute of input components over watermark.
 
-```
+```xhtml
 <h:inputText id="txt" value="#{bean.searchKeyword}" />
 <p:watermark for="txt" value="Search with a keyword" />
 ```
@@ -41,11 +41,10 @@ submissions, watermarks are cleared. However ajax submissions requires a little 
 Please note that this only applies to legacy browsers, as watermark uses HTML5 placeholder option
 when available.
 
-```
+```xhtml
 <h:inputText id="txt" value="#{bean.searchKeyword}" />
 <p:watermark for="txt" value="Search with a keyword" />
-<p:commandButton value="Submit" onclick="PrimeFaces.cleanWatermarks()"
-oncomplete="PrimeFaces.showWatermarks()" />
+<p:commandButton value="Submit" onclick="PrimeFaces.cleanWatermarks()" oncomplete="PrimeFaces.showWatermarks()" />
 ```
 ## Skinning
 For browsers that do not support placeholder, there’s only one css style class applying watermark

@@ -1,4 +1,4 @@
-# Tooltip..............................................................................................................................
+# Tooltip
 
 Tooltip goes beyond the legacy html title attribute by providing custom effects, events, html content
 and advance theme support.
@@ -19,55 +19,37 @@ and advance theme support.
 | Name | Default | Type | Description | 
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the
-component, when set to false component will not be
-rendered.
+rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-value | null | Object | Value of the component than can be either an EL
-expression of a literal text
-converter | null | Converter/
-String
-```
-```
-An el expression or a literal text that defines a
-converter for the component. When it’s an EL
-expression, it’s resolved to a converter instance. In
-case it’s a static text, it must refer to a converter id
+value | null | Object | Value of the component than can be either an EL expression of a literal text
+converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
 widgetVar | null | String | Name of the client side widget.
-showEvent mouseover | String | Event displaying the tooltip.
-showEffect fade | String | Effect to be used for displaying.
-hideEvent mouseout | String | Event hiding the tooltip.
-hideEffect fade | String | Effect to be used for hiding.
-showDelay 150 | Integer | Delay time to show tooltip in milliseconds.
-```
-
-```
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-hideDelay 0 | Integer | Delay time to hide tooltip in milliseconds.
+showEvent | mouseover | String | Event displaying the tooltip.
+showEffect | fade | String | Effect to be used for displaying.
+hideEvent | mouseout | String | Event hiding the tooltip.
+hideEffect | fade | String | Effect to be used for hiding.
+showDelay | 150 | Integer | Delay time to show tooltip in milliseconds.
+hideDelay | 0 | Integer | Delay time to hide tooltip in milliseconds.
 for | null | String | Component to attach the tooltip.
 style | null | String | Inline style of the tooltip.
 styleClass | null | String | Style class of the tooltip.
-globalSelector | null | String | jquery selector for global tooltip, defaults to
-"a,:input,:button".
+globalSelector | null | String | jquery selector for global tooltip, defaults to "a,:input,:button".
 escape | true | Boolean | Defines whether html would be escaped or not.
 trackMouse | false | Boolean | Tooltip position follows pointer on mousemove.
-beforeShow | null | String | Client side callback to execute before tooltip is shown.
-Returning false will prevent display.
+beforeShow | null | String | Client side callback to execute before tooltip is shown. Returning false will prevent display.
 onHide | null | String | Client side callback to execute after tooltip is shown.
 onShow | null | String | Client side callback to execute after tooltip is shown.
-position right | String | Position of the tooltip, valid values are right, left, top
-and bottom.
-```
+position | right | String | Position of the tooltip, valid values are right, left, top and bottom.
+
 ## Getting started with the Tooltip
 Tooltip can be used by attaching it to a target component. Tooltip value can also be retrieved from
 target’s title, so following are same;
 
-```
+```xhtml
 <h:inputSecret id="pwd" value="#{myBean.password}" />
 <p:tooltip for="pwd" value="Only numbers"/>
 ```
-```
+```xhtml
 <h:inputSecret id="pwd" value="#{myBean.password}" title="Only numbers"/>
 <p:tooltip for="pwd"/>
 ```
@@ -77,11 +59,11 @@ target component is updated with ajax, tooltip can still bind. As global tooltip
 since only one instance of tooltip is used across all tooltip targets, it is suggested to be used instead
 of explicit tooltips unless you have a custom case e.g. different options, custom content.
 
-```
+```xhtml
 <p:tooltip />
 <p:inputText id="focus" title="Tooltip for an input"/>
 <h:outputLink id="fade" value="#" title="Tooltip for a link">
-<h:outputText value="Fade Effect" />
+    <h:outputText value="Fade Effect" />
 </h:outputLink>
 <p:commandButton value="Up" title="Up" />
 ```
@@ -91,16 +73,16 @@ Due to a bug, IE10 always displays the title text in a native popup when the ele
 via tabbing and two tooltips might be displayed at once. Solution is to use passthrough data-tooltip
 attribute instead of title.
 
-```
+```xhtml
 <html xmlns="http://www.w3.org/1999/xhtml"
-xmlns:h="http://xmlns.jcp.org/jsf/html"
-xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-xmlns:p="http://primefaces.org/ui">
-<h:head></h:head>
-<h:body>
-<p:inputText pt:data-tooltip="Title here"/>
-<p:inputText title="Works fine except tabbed on IE10"/>
-</h:body>
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:p="http://primefaces.org/ui">
+    <h:head></h:head>
+    <h:body>
+        <p:inputText pt:data-tooltip="Title here"/>
+        <p:inputText title="Works fine except tabbed on IE10"/>
+    </h:body>
 </html>
 ```
 ## Position
@@ -111,10 +93,9 @@ A tooltip is shown on mouseover event and hidden when mouse is out by default. I
 change this behavior use the showEvent and hideEvent feature. Tooltip below is displayed when the
 input gets the focus and hidden with onblur.
 
-```
+```xhtml
 <h:inputSecret id="pwd" value="#{myBean.password}" />
-<p:tooltip for="pwd" value="Password must contain only numbers"
-showEvent="focus" hideEvent="blur" showEffect="blind" hideEffect="explode" />
+<p:tooltip for="pwd" value="Password must contain only numbers" showEvent="focus" hideEvent="blur" showEffect="blind" hideEffect="explode" />
 ```
 Available options for effects are; _blind, bounce, clip, drop, explode, fold, highlight, puff, pulsate,
 scale, shake, size_ and _slide_.
@@ -122,13 +103,13 @@ scale, shake, size_ and _slide_.
 ## Html Content
 Another powerful feature of tooltip is the ability to display custom content as a tooltip.
 
-```
+```xhtml
 <h:outputLink id="lnk" value="#">
-<h:outputText value="PrimeFaces Home" />
+    <h:outputText value="PrimeFaces Home" />
 </h:outputLink>
 <p:tooltip for="lnk">
-<p:graphicImage value="/images/prime_logo.png" />
-<h:outputText value="Visit PrimeFaces Home" />
+    <p:graphicImage value="/images/prime_logo.png" />
+    <h:outputText value="Visit PrimeFaces Home" />
 </p:tooltip>
 ```
 ## Skinning

@@ -1,4 +1,4 @@
-# 3.117 RowEditor........................................................................................................................
+# RowEditor
 
 RowEditor is a helper component for datatable.
 
@@ -25,7 +25,7 @@ styleClass | null | String | Style class of the component.
 editTitle | null | String | Title attribute for edit icon.
 cancelTitle | null | String | Title attribute for cancel icon.
 saveTitle | null | String | Title attribute for save icon.
-```
+
 ## Getting Started with RowEditor
 See inline editing section in datatable documentation for more information about usage.
 

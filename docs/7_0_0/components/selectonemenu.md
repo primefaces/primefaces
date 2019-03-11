@@ -1,4 +1,4 @@
-# 3.130 SelectOneMenu...............................................................................................................
+# SelectOneMenu
 
 SelectOneMenu is an extended version of the standard SelectOneMenu.
 
@@ -18,38 +18,20 @@ SelectOneMenu is an extended version of the standard SelectOneMenu.
 | Name | Default | Type | Description | 
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the
-component, when set to false component will not be
-rendered.
+rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 value | null | Object | Value of the component.
-converter | null | Converter/
-String
-```
-```
-An el expression or a literal text that defines a converter
-for the component. When it’s an EL expression, it’s
-resolved to a converter instance. In case it’s a static text,
-it must refer to a converter id
-immediate 0 Boolean When set true, process validations logic is executed at
-apply request values phase for this component.
-required 0 Boolean Marks component as required
-validator | null | MethodExpr A method expression that refers to a method validationg
-the input
-```
-
-## | Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-valueChangeListener | null | MethodExpr A method expression that refers to a method for
-handling a valuechangeevent
-requiredMessage | null | String | Message to be displayed when required field validation
-fails.
+converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
+immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
+required | false | Boolean | Marks component as required
+validator | null | MethodExpr | A method expression that refers to a method validationg the input
+valueChangeListener | null | MethodExpr | A method expression that refers to a method for handling a valuechangeevent
+requiredMessage | null | String | Message to be displayed when required field validation fails.
 converterMessage | null | String | Message to be displayed when conversion fails.
 validatorMessage | null | String | Message to be displayed when validation fields.
 widgetVar | null | String | Name of the client side widget.
-effect blind | String | Name of the toggle animation.
-effectSpeed normal | String | Duration of toggle animation, valid values are "slow",
-"normal" and "fast".
+effect | blind | String | Name of the toggle animation.
+effectSpeed | normal | String | Duration of toggle animation, valid values are "slow", "normal" and "fast".
 disabled | false | Boolean | Disables the component.
 label | null | String | User presentable name.
 onchange | null | String | Client side callback to execute on value change.
@@ -58,42 +40,23 @@ onkeydown | null | String | Client side callback to execute on keydown.
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the container.
 var | null | String | Name of the item iterator.
-height auto | Integer | Height of the overlay.
+height | auto | Integer | Height of the overlay.
 tabindex | null | String | Tabindex of the input.
 editable | false | Boolean | When true, input becomes editable.
 filter | false | Boolean | Renders an input field as a filter.
-filterMatchMode starts
-With
-
-String Match mode for filtering, valid values are startsWith,
-contains, endsWith and custom.
+filterMatchMode | startsWith | String | Match mode for filtering, valid values are startsWith, contains, endsWith and custom.
 filterFunction | null | String | Client side function to use in custom filtering.
 caseSensitive | false | Boolean | Defines if filtering would be case sensitive.
-maxlength | null | Integer | Number of maximum characters allowed in editable
-selectOneMenu.
-appendTo | null | String | Appends the overlay to the element defined by search
-expression. Defaults to document body.
+maxlength | null | Integer | Number of maximum characters allowed in editable selectOneMenu.
+appendTo | null | String | Appends the overlay to the element defined by search expression. Defaults to document body.
 title | null | String | Advisory tooltip information.
+syncTooltip | false | Boolean | Updates the title of the component with the description of the selected item.
+labelTemplate | null | String | Displays label of the element in a custom template. Valid placeholder is {0}.
+onfocus | null | String | Client side callback to execute when element receives focus.
+onblur | null | String | Client side callback to execute when element loses focus.
+autoWidth | true | Boolean | Calculates a fixed width based on the width of the maximum option label. Set to false for custom width.
+dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the overlay is not rendered on page load to improve performance.
 
-syncTooltip | false | Boolean | Updates the title of the component with the description
-of the selected item.
-
-
-```
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-labelTemplate | null | String | Displays label of the element in a custom template.
-Valid placeholder is {0}.
-onfocus | null | String | Client side callback to execute when element receives
-focus.
-onblur | null | String | Client side callback to execute when element loses
-focus.
-autoWidth | true | Boolean | Calculates a fixed width based on the width of the
-maximum option label. Set to false for custom width.
-dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's
-panel. If the value is "true", the overlay is not rendered
-on page load to improve performance.
-```
 ## Getting started with SelectOneMenu
 Basic SelectOneMenu usage is same as the standard one.
 
@@ -101,29 +64,29 @@ Basic SelectOneMenu usage is same as the standard one.
 SelectOneMenu can display custom content in overlay panel by using column component and the
 var option to refer to each item.
 
-```
+```java
 public class MenuBean {
-private List<Player> players;
-private Player selectedPlayer;
-public OrderListBean() {
-players = new ArrayList<Player>();
-players.add(new Player("Messi", 10, "messi.jpg"));
-//more players
-}
-//getters and setters
+    private List<Player> players;
+    private Player selectedPlayer;
+
+    public OrderListBean() {
+        players = new ArrayList<Player>();
+        players.add(new Player("Messi", 10, "messi.jpg"));
+        //more players
+    }
+    //getters and setters
 }
 ```
-```
+```xhtml
 <p:selectOneMenu value="#{menuBean.selectedPlayer}" converter="player" var="p">
-<f:selectItem itemLabel="Select One" itemValue="" />
-<f:selectItems value="#{menuBean.players}" var="player"
-itemLabel="#{player.name}" itemValue="#{player}"/>
-<p:column>
-<p:graphicImage value="/images/barca/#{p.photo}" width="40" height="50"/>
-</p:column>
-<p:column>
-#{p.name} - #{p.number}
-</p:column>
+    <f:selectItem itemLabel="Select One" itemValue="" />
+    <f:selectItems value="#{menuBean.players}" var="player" itemLabel="#{player.name}" itemValue="#{player}"/>
+    <p:column>
+        <p:graphicImage value="/images/barca/#{p.photo}" width="40" height="50"/>
+    </p:column>
+    <p:column>
+        #{p.name} - #{p.number}
+    </p:column>
 </p:selectOneMenu>
 ```
 
@@ -142,15 +105,14 @@ keyup event filtering is executed on client side using _filterMatchMode_. Defaul
 filterMatchMode are startsWith, contains, endsWith and custom. Custom mode requires a javascript
 function to do the filtering.
 
-```
-<p:selectOneMenu value="#{bean.selectedOptions}"
-filterMatchMode="custom" filterFunction="customFilter">
-<f:selectItems value="#{bean.options}" />
+```xhtml
+<p:selectOneMenu value="#{bean.selectedOptions}" filterMatchMode="custom" filterFunction="customFilter">
+    <f:selectItems value="#{bean.options}" />
 </p:selectOneMenu>
 ```
-```
+```js
 function customFilter(itemLabel, filterValue) {
-//return true to accept and false to reject
+    //return true to accept and false to reject
 }
 ```
 
@@ -161,7 +123,6 @@ invoke when an item is selected from dropdown.
 ## Client Side API
 Widget: _PrimeFaces.widget.SelectOneMenu_
 
-```
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 
 show() | - | void | Shows overlay menu.
@@ -170,25 +131,21 @@ blur() | - | void | Invokes blur event.
 focus() | - | void | Invokes focus event.
 enable() | - | void | Enables component.
 disable() | - | void | Disabled component.
-selectValue() value: itemValue void Selects given value.
-getSelectedValue() - Object Returns value of selected item.
-getSelectedLabel() | String | Returns label of selected item.
-```
+selectValue(value) | value: itemValue | void | Selects given value.
+getSelectedValue() | - | Object | Returns value of selected item.
+getSelectedLabel() | - | String | Returns label of selected item.
+
 ## Skinning
 SelectOneMenu resides in a container element that _style_ and _styleClass_ attributes apply. As skinning
 style classes are global, see the main theming section for more information. Following is the list of
 structural style classes;
 
-```
+
 | Class | Applies | 
 | --- | --- | 
-.ui-selectonemenu Main container.
-.ui-selectonemenu-label Label of the component.
-.ui-selectonemenu-trigger Container of dropdown icon.
-```
-
-## | Class | Applies | 
-| --- | --- | 
-.ui-selectonemenu-items Items list.
-.ui-selectonemenu-items Each item in the list.
+.ui-selectonemenu | Main container.
+.ui-selectonemenu-label | Label of the component.
+.ui-selectonemenu-trigger | Container of dropdown icon.
+.ui-selectonemenu-items | Items list.
+.ui-selectonemenu-items | Each item in the list.
 

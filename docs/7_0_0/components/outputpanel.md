@@ -1,4 +1,4 @@
-# 3.96 OutputPanel.......................................................................................................................
+# OutputPanel
 
 OutputPanel is a panel component with the ability to deferred loading.
 
@@ -19,19 +19,14 @@ OutputPanel is a panel component with the ability to deferred loading.
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent
-instance in a backing bean
+binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 style | null | String | Style of the html container element
 styleClass | null | String | StyleClass of the html container element
-layout block | String | Shortcut for the css display property, valid values are block
-(default) and inline.
+layout | block | String | Shortcut for the css display property, valid values are block(default) and inline.
 autoUpdate | false | Boolean | Enables auto update mode if set true.
-deferred | false | Boolean | Deferred mode loads the contents after page load to speed
-up page load.
-deferredMode load | String | Defines deferred loading mode, valid values are "load"
-(after page load) and "visible" (once the panel is visible on
-scroll).
-```
+deferred | false | Boolean | Deferred mode loads the contents after page load to speed up page load.
+deferredMode | load | String | Defines deferred loading mode, valid values are "load" (after page load) and "visible" (once the panel is visible on scroll).
+
 OutputPanel has various uses cases such as placeholder, deferred loading and auto update.
 
 ## PlaceHolder
@@ -45,23 +40,23 @@ bean sets the condition to be true meaning datatable will be rendered after a pa
 problem is although partial output is generated, the markup on page cannot be updated since it
 doesn’t exist.
 
-```
+```xhtml
 <p:dataTable id="tbl" rendered="#{bean.condition}" ...>
-//columns
+    //columns
 </p:dataTable>
 <p:commandButton update="tbl" actionListener="#{bean.search}" />
 ```
 Solution is to use the outputPanel as a placeHolder.
 
-```
+```xhtml
 <p:outputPanel id="out">
-<p:dataTable id="tbl" rendered="#{bean.condition}" ...>
-//columns
-</p:dataTable>
+    <p:dataTable id="tbl" rendered="#{bean.condition}" ...>
+        //columns
+    </p:dataTable>
 </p:outputPanel>
 <p:commandButton update="out" actionListener="#{bean.list}" />
 ```
-Note that you won’t need an outputPanel if commandButton has no update attribute specified, in
+**Note** that you won’t need an outputPanel if commandButton has no update attribute specified, in
 this case parent form will be updated partially implicitly making an outputPanel use obselete.
 
 ## Deferred Loading

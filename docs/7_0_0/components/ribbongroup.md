@@ -1,4 +1,4 @@
-# 3.114 RibbonGroup...................................................................................................................
+# RibbonGroup
 
 RibbonGroup is a helper component for Ribbon to define groups in a tab.
 
@@ -23,7 +23,7 @@ binding | null | Object | An el expression that maps to a server side UIComponen
 style | null | String | Inline style of the container element.
 styleClass | null | String | Style class of the container element.
 label | null | String | Label of the group.
-```
+
 ## Getting started with RibbonGroup
 Refer to Ribbon component documentation for more information.
 

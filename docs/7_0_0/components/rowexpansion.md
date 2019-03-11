@@ -1,4 +1,4 @@
-# 3.118 RowExpansion.................................................................................................................
+# RowExpansion
 
 RowExpansion is a helper component of datatable used to implement expandable rows.
 
@@ -19,7 +19,7 @@ id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 styleClass | null | String | Style class of the component.
-```
+
 ## Getting Started with RowExpansion
 See datatable expandable rows section for more information about how rowExpansion is used.
 

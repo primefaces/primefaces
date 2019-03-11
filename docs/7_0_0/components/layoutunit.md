@@ -1,4 +1,4 @@
-# 3.76 LayoutUnit.........................................................................................................................
+# LayoutUnit
 
 LayoutUnit represents a region in the border layout model of the Layout component.
 
@@ -24,25 +24,20 @@ position | null | String | Position of the unit.
 size | null | String | Size of the unit.
 resizable | false | Boolean | Makes the unit resizable.
 closable | false | Boolean | Makes the unit closable.
-collapsible fale Boolean Makes the unit collapsible.
+collapsible | false | Boolean | Makes the unit collapsible.
 header | null | String | Text of header.
 footer | null | String | Text of footer.
 minSize | null | Integer | Minimum dimension for resize.
 maxSize | null | Integer | Maximum dimension for resize.
-gutter 4px | String | Gutter size of layout unit.
+gutter | 4px | String | Gutter size of layout unit.
 visible | true | Boolean | Specifies default visibility
 collapsed | false | Boolean | Specifies toggle status of unit
 collapseSize | null | Integer | Size of the unit when collapsed
-```
-
-```
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the component.
 effect | null | String | Effect name of the layout transition.
 effectSpeed | null | String | Effect speed of the layout transition.
-```
+
 ## Getting started with LayoutUnit
 See layout component documentation for more information regarding the usage of layoutUnits.
 
