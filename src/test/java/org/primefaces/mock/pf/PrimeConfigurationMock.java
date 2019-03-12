@@ -1,23 +1,32 @@
-/*
- * Copyright 2009-2016 PrimeTek.
+/* 
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.mock.pf;
 
 import java.util.Map;
 import javax.faces.context.FacesContext;
 import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.config.PrimeEnvironment;
 
 public class PrimeConfigurationMock extends PrimeConfiguration {
 
@@ -42,8 +51,8 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
     // web.xml
     private Map<String, String> errorPages = null;
 
-    public PrimeConfigurationMock(FacesContext context) {
-
+    public PrimeConfigurationMock(FacesContext context, PrimeEnvironment environment) {
+        super(context, environment);
     }
 
     @Override
@@ -51,7 +60,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return validateEmptyFields;
     }
 
-    @Override
     public void setValidateEmptyFields(boolean validateEmptyFields) {
         this.validateEmptyFields = validateEmptyFields;
     }
@@ -61,7 +69,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return partialSubmitEnabled;
     }
 
-    @Override
     public void setPartialSubmitEnabled(boolean partialSubmitEnabled) {
         this.partialSubmitEnabled = partialSubmitEnabled;
     }
@@ -71,7 +78,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return resetValuesEnabled;
     }
 
-    @Override
     public void setResetValuesEnabled(boolean resetValuesEnabled) {
         this.resetValuesEnabled = resetValuesEnabled;
     }
@@ -81,7 +87,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return interpretEmptyStringAsNull;
     }
 
-    @Override
     public void setInterpretEmptyStringAsNull(boolean interpretEmptyStringAsNull) {
         this.interpretEmptyStringAsNull = interpretEmptyStringAsNull;
     }
@@ -91,7 +96,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return theme;
     }
 
-    @Override
     public void setTheme(String theme) {
         this.theme = theme;
     }
@@ -101,7 +105,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return fontAwesomeEnabled;
     }
 
-    @Override
     public void setFontAwesomeEnabled(boolean fontAwesomeEnabled) {
         this.fontAwesomeEnabled = fontAwesomeEnabled;
     }
@@ -111,7 +114,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return clientSideValidationEnabled;
     }
 
-    @Override
     public void setClientSideValidationEnabled(boolean clientSideValidationEnabled) {
         this.clientSideValidationEnabled = clientSideValidationEnabled;
     }
@@ -121,7 +123,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return uploader;
     }
 
-    @Override
     public void setUploader(String uploader) {
         this.uploader = uploader;
     }
@@ -131,7 +132,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return transformMetadataEnabled;
     }
 
-    @Override
     public void setTransformMetadataEnabled(boolean transformMetadataEnabled) {
         this.transformMetadataEnabled = transformMetadataEnabled;
     }
@@ -141,7 +141,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return legacyWidgetNamespace;
     }
 
-    @Override
     public void setLegacyWidgetNamespace(boolean legacyWidgetNamespace) {
         this.legacyWidgetNamespace = legacyWidgetNamespace;
     }
@@ -159,7 +158,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return interpolateClientSideValidationMessages;
     }
 
-    @Override
     public void setInterpolateClientSideValidationMessages(boolean interpolateClientSideValidationMessages) {
         this.interpolateClientSideValidationMessages = interpolateClientSideValidationMessages;
     }
@@ -169,7 +167,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return earlyPostParamEvaluation;
     }
 
-    @Override
     public void setEarlyPostParamEvaluation(boolean earlyPostParamEvaluation) {
         this.earlyPostParamEvaluation = earlyPostParamEvaluation;
     }
@@ -179,7 +176,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return stringConverterAvailable;
     }
 
-    @Override
     public void setStringConverterAvailable(boolean stringConverterAvailable) {
         this.stringConverterAvailable = stringConverterAvailable;
     }
@@ -189,7 +185,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return errorPages;
     }
 
-    @Override
     public void setErrorPages(Map<String, String> errorPages) {
         this.errorPages = errorPages;
     }
@@ -199,7 +194,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return moveScriptsToBottom;
     }
 
-    @Override
     public void setMoveScriptsToBottom(boolean moveScriptsToBottom) {
         this.moveScriptsToBottom = moveScriptsToBottom;
     }

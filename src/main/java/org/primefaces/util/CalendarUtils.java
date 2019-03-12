@@ -1,17 +1,25 @@
 /**
- * Copyright 2009-2019 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.util;
 
@@ -106,35 +114,7 @@ public class CalendarUtils {
             return null;
         }
 
-        //first ask the converter
-        if (calendar.getConverter() != null) {
-            return calendar.getConverter().getAsString(context, calendar, value);
-        }
-        else if (value instanceof String) {
-            return (String) value;
-        }
-        //Use built-in converter
-        else if (value instanceof Date) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat(calendar.calculatePattern(), calendar.calculateLocale(context));
-            dateFormat.setTimeZone(calculateTimeZone(calendar.getTimeZone()));
-
-            return dateFormat.format((Date) value);
-        }
-        else {
-            //Delegate to global defined converter (e.g. joda or java8)
-            ValueExpression ve = calendar.getValueExpression("value");
-            if (ve != null) {
-                Class type = ve.getType(context.getELContext());
-                if (type != null && type != Object.class && type != Date.class) {
-                    Converter converter = context.getApplication().createConverter(type);
-                    if (converter != null) {
-                        return converter.getAsString(context, calendar, value);
-                    }
-                }
-            }
-
-            throw new FacesException("Value could be either String or java.util.Date");
-        }
+        return getValueAsString(context, calendar, value, calendar.calculatePattern());
     }
 
     public static final String getTimeOnlyValueAsString(FacesContext context, UICalendar calendar) {
@@ -143,6 +123,31 @@ public class CalendarUtils {
             return null;
         }
 
+        return getValueAsString(context, calendar, value, calendar.calculateTimeOnlyPattern());
+    }
+
+    public static final String getValueAsString(FacesContext context, UICalendar calendar, Object value, String pattern) {
+        if (value instanceof List) {
+            String valuesAsString = "";
+            String separator = "multiple".equals(calendar.getSelectionMode()) ? "," : " - ";
+            List values = ((List) value);
+
+            for (int i = 0; i < values.size(); i++) {
+                if (i != 0) {
+                    valuesAsString += separator;
+                }
+
+                valuesAsString += getValue(context, calendar, values.get(i), pattern);
+            }
+
+            return valuesAsString;
+        }
+        else {
+            return getValue(context, calendar, value, pattern);
+        }
+    }
+
+    public static final String getValue(FacesContext context, UICalendar calendar, Object value, String pattern) {
         //first ask the converter
         if (calendar.getConverter() != null) {
             return calendar.getConverter().getAsString(context, calendar, value);
@@ -152,10 +157,10 @@ public class CalendarUtils {
         }
         //Use built-in converter
         else if (value instanceof Date) {
-            SimpleDateFormat format = new SimpleDateFormat(calendar.calculateTimeOnlyPattern(), calendar.calculateLocale(context));
+            SimpleDateFormat format = new SimpleDateFormat(pattern, calendar.calculateLocale(context));
             format.setTimeZone(calculateTimeZone(calendar.getTimeZone()));
 
-            return format.format(calendar.getValue());
+            return format.format((Date) value);
         }
         else {
             //Delegate to global defined converter (e.g. joda or java8)

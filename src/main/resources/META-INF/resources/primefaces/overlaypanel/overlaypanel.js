@@ -177,7 +177,6 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         //replace visibility hidden with display none for effect support, toggle marker class
         this.jq.removeClass('ui-overlay-hidden').addClass('ui-overlay-visible').css({
             'display':'none'
-            ,'visibility':'visible'
         });
 
         if(this.cfg.showEffect) {
@@ -196,9 +195,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
     },
 
     align: function(target) {
-        var fixedPosition = this.jq.css('position') == 'fixed',
-        win = $(window),
-        positionOffset = fixedPosition ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null,
+        var win = $(window),
         targetId = target||this.cfg.target;
 
         this.jq.css({'left':'', 'top':'', 'z-index': ++PrimeFaces.zindex})
@@ -206,7 +203,6 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
                     my: this.cfg.my
                     ,at: this.cfg.at
                     ,of: document.getElementById(targetId)
-                    ,offset: positionOffset
                 });
 
         var widthOffset = this.jq.width() - this.content.width();
@@ -245,7 +241,6 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         //replace display block with visibility hidden for hidden container support, toggle marker class
         this.jq.removeClass('ui-overlay-visible').addClass('ui-overlay-hidden').css({
             'display':'block'
-            ,'visibility':'hidden'
         });
 
         if(this.cfg.onHide) {
@@ -258,7 +253,9 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         if(dialog.length == 1) {
             //set position as fixed to scroll with dialog
-            this.jq.css('position', 'fixed');
+            if(dialog.css('position') === 'fixed') {
+                this.jq.css('position', 'fixed');
+            }
 
             //append to body if not already appended by user choice
             if(!this.cfg.appendTo) {

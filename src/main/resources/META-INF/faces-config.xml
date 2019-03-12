@@ -931,7 +931,7 @@
     </component>
 
     <component>
-        <component-type>org.primefaces.ToggleSwitch</component-type>
+        <component-type>org.primefaces.component.ToggleSwitch</component-type>
         <component-class>org.primefaces.component.toggleswitch.ToggleSwitch</component-class>
     </component>
 

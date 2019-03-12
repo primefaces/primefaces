@@ -11,6 +11,15 @@
             return "#" + id.replace(/:/g,"\\:");
         },
 
+        onElementLoad: function(element, listener) {
+            if (element.prop('complete')) {
+                listener();
+            }
+            else {
+                element.on('load', listener);
+            }
+        },
+
         cleanWatermarks : function(){
             $.watermark.hideAll();
         },

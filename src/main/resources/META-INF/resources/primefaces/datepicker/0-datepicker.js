@@ -52,6 +52,7 @@
             stepSecond: 1,
             shortYearCutoff: '+10',
             hideOnDateTimeSelect: false,
+            userLocale: null,
             locale: {
                 firstDayOfWeek: 0,
                 dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
@@ -89,20 +90,9 @@
             onTodayButtonClick: null,
             onClearButtonClick: null,
             onBeforeShow: null,
-            onBeforeHide: null
-        },
-
-        _setOption: function (key, value) {
-            if (key === 'setDate') {
-                this.value = this.parseValue(value);
-                
-                /* set changes */
-                this.panel.get(0).innerHTML = this.renderPanelElements();
-                this.inputfield.val(this.value);
-            }
-            else if (key === 'getDate') {
-                return this.value;
-            }
+            onBeforeHide: null,
+            onMonthChange: null,
+            onYearChange: null
         },
         
         _create: function () {
@@ -114,11 +104,20 @@
         },
         
         _setInitValues: function () {
-            this.value = this.parseValue(this.options.defaultDate);
-            this.viewDate = this.parseValue(this.options.viewDate || this.options.defaultDate || new Date());
+            var parsedDefaultDate = this.parseValue(this.options.defaultDate);
+
+            this.value = parsedDefaultDate;
+            this.viewDate = this.options.viewDate ? 
+                this.parseValue(this.options.viewDate) 
+                :
+                ((((this.isMultipleSelection() || this.isRangeSelection()) && parsedDefaultDate instanceof Array) ? parsedDefaultDate[0] : parsedDefaultDate) || this.parseValue(new Date()));
             this.options.minDate = this.parseOptionValue(this.options.minDate);
             this.options.maxDate = this.parseOptionValue(this.options.maxDate);
             this.ticksTo1970 = (((1970 - 1) * 365 + Math.floor(1970 / 4) - Math.floor(1970 / 100) + Math.floor(1970 / 400)) * 24 * 60 * 60 * 10000000);
+            
+            if (this.options.userLocale && typeof this.options.userLocale === 'object') {
+                $.extend(this.options.locale, this.options.userLocale);
+            }
             
             if (this.options.disabledDates) {
                 for (var i = 0; i < this.options.disabledDates.length; i++) {
@@ -142,6 +141,18 @@
             
             return option;
         },
+        
+        setDate: function(date) {
+            this.value = this.parseValue(date);
+                
+            /* set changes */
+            this.panel.get(0).innerHTML = this.renderPanelElements();
+            this.inputfield.val(this.value);
+        },
+        
+        getDate: function() {
+            return this.value;
+        },
 
         getFirstDayOfMonthIndex: function (month, year) {
             var day = new Date();
@@ -154,7 +165,8 @@
         },
 
         getSundayIndex: function () {
-            return this.options.locale.firstDayOfWeek > 0 ? 7 - this.options.locale.firstDayOfWeek : 0;
+            var firstDayOfWeek = this.options.locale.firstDay !== undefined ? this.options.locale.firstDay : this.options.locale.firstDayOfWeek;
+            return firstDayOfWeek > 0 ? 7 - firstDayOfWeek : 0;
         },
 
         getDaysCountInMonth: function (month, year) {
@@ -208,7 +220,7 @@
 
         createWeekDays: function () {
             var weekDays = [],
-                dayIndex = this.options.locale.firstDayOfWeek;
+                dayIndex = this.options.locale.firstDay !== undefined ? this.options.locale.firstDay : this.options.locale.firstDayOfWeek;
             for (var i = 0; i < 7; i++) {
                 weekDays.push(this.options.locale.dayNamesMin[dayIndex]);
                 dayIndex = (dayIndex === 6) ? 0 : ++dayIndex;
@@ -609,7 +621,7 @@
             var tokens = value.split(':'),
                 validTokenLength = this.options.showSeconds ? 3 : 2;
 
-            if (tokens.length !== validTokenLength || tokens[0].length !== 2 || tokens[1].length !== 2 || tokens[2].length !== 2) {
+            if (tokens.length !== validTokenLength) {
                 throw "Invalid time";
             }
 
@@ -812,7 +824,7 @@
                 }
             }
             else if (this.isRangeSelection()) {
-                var tokens = text.split(' - ');
+                var tokens = text.split(/-| - /);
                 value = [];
                 for (var i = 0; i < tokens.length; i++) {
                     value[i] = this.parseDateTime(tokens[i].trim());
@@ -1465,7 +1477,10 @@
         onMonthDropdownChange: function (event) {
             var newViewDate = new Date(this.viewDate.getTime());
             newViewDate.setMonth(parseInt(event.target.value, 10));
-
+            
+            if (this.options.onMonthChange) {
+                this.options.onMonthChange.call(this, newViewDate.getMonth() + 1, newViewDate.getFullYear());
+            }
             this.updateViewDate(event, newViewDate);
         },
 
@@ -1473,6 +1488,9 @@
             var newViewDate = new Date(this.viewDate.getTime());
             newViewDate.setFullYear(parseInt(event.target.value, 10));
 
+            if (this.options.onYearChange) {
+                this.options.onYearChange.call(this, newViewDate.getMonth(), newViewDate.getFullYear());
+            }
             this.updateViewDate(event, newViewDate);
         },
 
@@ -1497,6 +1515,10 @@
                 else {
                     newViewDate.setMonth(newViewDate.getMonth() - 1);
                 }
+                
+                if (this.options.onMonthChange) {
+                    this.options.onMonthChange.call(this, newViewDate.getMonth() + 1, newViewDate.getFullYear());
+                }
             }
             else if (this.options.view === 'month') {
                 var currentYear = newViewDate.getFullYear(),
@@ -1511,6 +1533,10 @@
                 }
 
                 newViewDate.setFullYear(newYear);
+                
+                if (this.options.onYearChange) {
+                    this.options.onYearChange.call(this, newViewDate.getMonth(), newViewDate.getFullYear());
+                }
             }
 
             this.updateViewDate(event, newViewDate);
@@ -1534,6 +1560,10 @@
                 else {
                     newViewDate.setMonth(newViewDate.getMonth() + 1);
                 }
+                
+                if (this.options.onMonthChange) {
+                    this.options.onMonthChange.call(this, newViewDate.getMonth() + 1, newViewDate.getFullYear());
+                }
             }
             else if (this.options.view === 'month') {
                 var currentYear = newViewDate.getFullYear(),
@@ -1548,6 +1578,10 @@
                 }
 
                 newViewDate.setFullYear(newYear);
+                
+                if (this.options.onYearChange) {
+                    this.options.onYearChange.call(this, newViewDate.getMonth(), newViewDate.getFullYear());
+                }
             }
 
             this.updateViewDate(event, newViewDate);

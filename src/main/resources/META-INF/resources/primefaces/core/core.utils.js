@@ -207,13 +207,13 @@ if (!PrimeFaces.utils) {
         },
 
 
-        registerResizeHandler: function(widget, resizeNamespace, element, resizeCallback) {
+        registerResizeHandler: function(widget, resizeNamespace, element, resizeCallback, params) {
 
             widget.addDestroyListener(function() {
                 $(window).off(resizeNamespace);
             });
 
-            $(window).off(resizeNamespace).on(resizeNamespace, function(e) {
+            $(window).off(resizeNamespace).on(resizeNamespace, params||null, function(e) {
                 if (element && (element.is(":hidden") || element.css('visibility') === 'hidden')) {
                     return;
                 }

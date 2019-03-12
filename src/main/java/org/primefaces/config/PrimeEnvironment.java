@@ -1,17 +1,25 @@
 /**
- * Copyright 2009-2019 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.config;
 
@@ -29,25 +37,23 @@ public class PrimeEnvironment {
 
     private static final Logger LOGGER = Logger.getLogger(PrimeEnvironment.class.getName());
 
-    private boolean portlet;
+    private final boolean beanValidationAvailable;
 
-    private boolean beanValidationAvailable = false;
+    private final boolean atLeastEl22;
 
-    private boolean atLeastEl22 = false;
+    private final boolean atLeastJsf23;
+    private final boolean atLeastJsf22;
+    private final boolean atLeastJsf21;
 
-    private boolean atLeastJsf23 = false;
-    private boolean atLeastJsf22 = false;
-    private boolean atLeastJsf21 = false;
+    private final boolean mojarra;
 
-    private boolean mojarra = false;
+    private final boolean atLeastBv11;
 
-    private boolean atLeastBv11 = false;
+    private final String buildVersion;
 
-    private String buildVersion = null;
+    private final boolean htmlSanitizerAvailable;
 
-    private boolean htmlSanitizerAvailable;
-
-    public PrimeEnvironment() {
+    public PrimeEnvironment(FacesContext context) {
         atLeastEl22 = LangUtils.tryToLoadClassForName("javax.el.ValueReference") != null;
 
         atLeastJsf23 = LangUtils.tryToLoadClassForName("javax.faces.component.UIImportConstants") != null;
@@ -56,32 +62,24 @@ public class PrimeEnvironment {
 
         atLeastBv11 = LangUtils.tryToLoadClassForName("javax.validation.executable.ExecutableValidator") != null;
 
-        beanValidationAvailable = checkIfBeanValidationIsAvailable();
+        beanValidationAvailable = resolveBeanValidationAvailable();
 
         buildVersion = resolveBuildVersion();
-        // This should only happen if PF + the webapp is openend and started in the same netbeans instance
-        // Fallback to a UID to void a empty version in the resourceUrls
-        if (buildVersion == null || buildVersion.trim().isEmpty()) {
-            buildVersion = UUID.randomUUID().toString().replace("-", "").substring(0, 10);
-        }
 
         htmlSanitizerAvailable = LangUtils.tryToLoadClassForName("org.owasp.html.PolicyFactory") != null;
-    }
 
-    public PrimeEnvironment(FacesContext context) {
-        this();
-        this.mojarra = context.getExternalContext().getApplicationMap().containsKey("com.sun.faces.ApplicationAssociate");
-
-        Class<?> portletContext = LangUtils.tryToLoadClassForName("javax.portlet.PortletContext");
-        if (portletContext != null) {
-            portlet = portletContext.isInstance(context.getExternalContext().getContext());
+        if (context == null) {
+            this.mojarra = false;
+        }
+        else {
+            this.mojarra = context.getExternalContext().getApplicationMap().containsKey("com.sun.faces.ApplicationAssociate");
         }
     }
 
-    protected boolean checkIfBeanValidationIsAvailable() {
-        boolean available = LangUtils.tryToLoadClassForName("javax.validation.Validation") != null;
+    protected boolean resolveBeanValidationAvailable() {
+        boolean beanValidationAvailable = LangUtils.tryToLoadClassForName("javax.validation.Validation") != null;
 
-        if (available) {
+        if (beanValidationAvailable) {
             // Trial-error approach to check for Bean Validation impl existence.
             // If any Exception occurs here, we assume that Bean Validation is not available.
             // The cause may be anything, i.e. NoClassDef, config error...
@@ -90,35 +88,44 @@ public class PrimeEnvironment {
             }
             catch (Throwable t) {
                 LOGGER.log(Level.FINE, "BV not available - Could not build default ValidatorFactory.");
-                available = false;
+                beanValidationAvailable = false;
             }
         }
 
-        return available;
+        return beanValidationAvailable;
     }
 
     protected String resolveBuildVersion() {
+        String buildVersion = null;
 
-        Properties buildProperties = new Properties();
         InputStream is = null;
         try {
             is = getClass().getResourceAsStream("/META-INF/maven/org.primefaces/primefaces/pom.properties");
+
+            Properties buildProperties = new Properties();
             buildProperties.load(is);
-            return buildProperties.getProperty("version");
+            buildVersion = buildProperties.getProperty("version");
         }
         catch (Exception e) {
             LOGGER.log(Level.SEVERE, "PrimeFaces version not resolvable - Could not load pom.properties.");
         }
-
-        if (is != null) {
-            try {
-                is.close();
-            }
-            catch (IOException e) {
+        finally {
+            if (is != null) {
+                try {
+                    is.close();
+                }
+                catch (IOException e) {
+                }
             }
         }
 
-        return null;
+        // This should only happen if PF + the webapp is openend and started in the same netbeans instance
+        // Fallback to a UID to void a empty version in the resourceUrls
+        if (LangUtils.isValueBlank(buildVersion)) {
+            buildVersion = UUID.randomUUID().toString().replace("-", "").substring(0, 10);
+        }
+
+        return buildVersion;
     }
 
     public boolean isBeanValidationAvailable() {
@@ -149,10 +156,6 @@ public class PrimeEnvironment {
         return atLeastBv11;
     }
 
-    public void setAtLeastBv11(boolean atLeastBv11) {
-        this.atLeastBv11 = atLeastBv11;
-    }
-
     public String getBuildVersion() {
         return buildVersion;
     }
@@ -160,9 +163,4 @@ public class PrimeEnvironment {
     public boolean isHtmlSanitizerAvailable() {
         return htmlSanitizerAvailable;
     }
-
-    public boolean isPortlet() {
-        return portlet;
-    }
-
 }
