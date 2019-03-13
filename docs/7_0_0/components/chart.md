@@ -23,7 +23,7 @@ charting API.
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 | type | null | String | Type of the chart.
-| model | null | ChartModel Model object of data and settings.
+| model | null | ChartModel | Model object of data and settings.
 | style | null | String | Inline style of the component.
 | styleClass | null | String | Style class of the component.
 | widgetVar | null | String | Name of the client side widget.
@@ -910,7 +910,7 @@ _org.primefaces.model.chart.BubbleChartModel_ extends _org.primefaces.model.char
 
 | Property | Default | Type | Description |
 | --- | --- | --- | --- |
-| data | null | List<BubbleChartSeries> Data as a list of BubbleChartSeries.
+| data | null | List<BubbleChartSeries> | Data as a list of BubbleChartSeries.
 | bubbleGradients | false | Boolean | Displays bubbles with gradients.
 | bubbleAlpha | 1.0 | Double | Opacity of bubbles.
 | showLabels | true | Boolean | Displays label of a series inside a bubble.
@@ -988,7 +988,7 @@ _org.primefaces.model.chart.DonutChartModel_ extends _org.primefaces.model.chart
 | fill | true | Boolean | True or False to fill the slices.
 | showDataLabels | false | Boolean | True to False show data labels on slices.
 | dataFormat | percent | String | Either ‘label’, ‘value’, ‘percent’ or an array of labels to place on the pie slices.
-| dataLabelFormat String | null | String | Format string for data labels. If none, ‘%s’ is used for “label” and for arrays, ‘%d’ for value and ‘%d%%’ for percentage.
+| dataLabelFormat | null | String | Format string for data labels. If none, ‘%s’ is used for “label” and for arrays, ‘%d’ for value and ‘%d%%’ for percentage.
 | dataLabelThreshold | 3 | Integer | Threshhold in percentage (0-100) of pie area, below which no label will be displayed. This applies to all label types, not just to percentage labels.
 | showDatatip | true | Boolean | Displays tooltip when enabled.
 | datatipFormat | %s-%d | String | Format string for datatip.
