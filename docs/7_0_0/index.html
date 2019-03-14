@@ -7,21 +7,25 @@
   <meta name="description" content="Description">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="//unpkg.com/docsify/themes/vue.css">
+  <link rel="stylesheet" href="/resources/css/coverpage.css">
 </head>
 <body>
   <div id="app"></div>
   <script>
     window.$docsify = {
       name: 'primefaces',
-      repo: 'https://github.com/primefaces/primefaces',
+      repo: '',
       homepage: 'home.md',
       loadSidebar: 'menu.md',
       subMaxLevel: 1,
       themeColor: '#235ba5',
-      logo:'primefaces.png',
+      logo:'/resources/images/menu-logo.png',
       search: 'auto',
       alias: {
         '/.*/menu.md': '/menu.md'
+      },
+      coverpage: {
+        '/': 'cover.md'
       }
     }
   </script>
