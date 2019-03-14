@@ -271,17 +271,28 @@ public class PrimeFaces {
         }
 
         /**
-         * Displays a message in a dynamic dialog.
+         * Displays a message in a dynamic dialog with any HTML escaped.
          *
          * @param message the {@link FacesMessage} to be displayed.
          */
         public void showMessageDynamic(FacesMessage message) {
+            showMessageDynamic(message, true);
+        }
+
+        /**
+         * Displays a message in a dynamic dialog with escape control.
+         *
+         * @param message the {@link FacesMessage} to be displayed.
+         * @param escape true to escape HTML content, false to display HTML content
+         */
+        public void showMessageDynamic(FacesMessage message, boolean escape) {
             String summary = EscapeUtils.forJavaScript(message.getSummary());
             String detail = EscapeUtils.forJavaScript(message.getDetail());
 
             executeScript("PrimeFaces.showMessageInDialog({severity:\"" + message.getSeverity()
                     + "\",summary:\"" + summary
-                    + "\",detail:\"" + detail + "\"});");
+                    + "\",detail:\"" + detail
+                    + "\",escape:" + escape + "});");
         }
     }
 
