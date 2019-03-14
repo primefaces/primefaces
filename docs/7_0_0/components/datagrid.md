@@ -2,6 +2,8 @@
 
 DataGrid displays a collection of data in a grid layout.
 
+> DataGrid is deprecated, use  [DataView](/components/dataview.md) instead.
+
 ## Info
 
 | Name | Value |

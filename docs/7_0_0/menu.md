@@ -47,6 +47,7 @@
   - [DataList](/components/datalist.md)
   - [DataScroller](/components/datascroller.md)
   - [DataTable](/components/datatable.md)
+  - [DataView](/components/dataview.md)
   - [DefaultCommand](/components/defaultcommand.md)
   - [Diagram](/components/diagram.md)
   - [Dialog](/components/dialog.md)

@@ -2,6 +2,8 @@
 
 DataList presents a collection of data in list layout with several display types.
 
+> DataGrid is deprecated, use  [DataView](/components/dataview.md) instead.
+
 ## Info
 
 | Name | Value |
