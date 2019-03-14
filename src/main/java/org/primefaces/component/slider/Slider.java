@@ -157,7 +157,8 @@ public class Slider extends SliderBase {
                 msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessage, validatorMessage);
             }
             else {
-                msg = MessageFactory.getMessage(VALUE_OUT_OF_RANGE, FacesMessage.SEVERITY_ERROR, null);
+                Object[] params = new Object[] {MessageFactory.getLabel(context, this)};
+                msg = MessageFactory.getMessage(VALUE_OUT_OF_RANGE, FacesMessage.SEVERITY_ERROR, params);
             }
             context.addMessage(getClientId(context), msg);
         }

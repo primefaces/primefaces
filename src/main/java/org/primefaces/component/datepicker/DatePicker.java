@@ -153,17 +153,18 @@ public class DatePicker extends DatePickerBase {
             if (!isValid()) {
                 FacesMessage msg = null;
                 String validatorMessage = getValidatorMessage();
+                Object[] params = new Object[] {MessageFactory.getLabel(context, this)};
                 if (validatorMessage != null) {
                     msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessage, validatorMessage);
                 }
                 else if (isDisabledDate) {
-                    msg = MessageFactory.getMessage(DATE_INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, null);
+                    msg = MessageFactory.getMessage(DATE_INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
                 }
                 else if (!isRangeDatesSequential) {
-                    msg = MessageFactory.getMessage(DATE_INVALID_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, null);
+                    msg = MessageFactory.getMessage(DATE_INVALID_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
                 }
                 else {
-                    msg = MessageFactory.getMessage(DATE_OUT_OF_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, null);
+                    msg = MessageFactory.getMessage(DATE_OUT_OF_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
                 }
                 context.addMessage(getClientId(context), msg);
             }
