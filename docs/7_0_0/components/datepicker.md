@@ -3,7 +3,7 @@
 DatePicker is an input component used to select a date featuring display modes, paging, localization,
 ajax selection and more.
 
-> DatePicker is designed to replace the old p:datePicker component.
+> DatePicker is designed to replace the old p:calendar component.
 
 ## Info
 
