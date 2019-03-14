@@ -25,6 +25,7 @@
   - [Carousel](/components/carousel.md)
   - [CellEditor](/components/celleditor.md)
   - [Chart](/components/chart.md)
+  - [Chart.js](/components/charts.md)
   - [Checkbox](/components/checkbox.md)
   - [Chips](/components/chips.md)
   - [Clock](/components/clock.md)
