@@ -50,6 +50,11 @@ tabindex | 0 | Integer | Position of the element in the tabbing order.
 nodeVar | null | String | Name of the request-scoped variable that'll be used to refer current treenode using EL.
 filterBy | null | Object | Value expression to be used in filtering.
 filterMatchMode | startsWith | String | Match mode for filtering.
+disabled | false | Boolean | Disables tree.
+multipleDrag | false | Boolean | When enabled, the selected multiple nodes can be dragged from a tree to another tree.
+dropCopyNode | false | Boolean | When enabled, the copy of the selected nodes can be dropped from a tree to another tree using Shift key.
+onDrop | null | MethodExpression | Method providing suggestions.
+filterMode | lenient | String | Mode for filtering valid values are lenient and strict. Default is lenient.
 
 ## Getting started with the Tree
 Tree is populated with a _org.primefaces.model.TreeNode_ instance which corresponds to the root.

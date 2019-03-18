@@ -60,6 +60,8 @@ styleClass | null | String | Style class of the input element.
 tabindex | null | Integer | Position of the input element in the tabbing order.
 title | null | String | Advisory tooltip informaton.
 type | text | String | Input field type.
+counter | null | String | Id of the label component to display remaining and entered characters.
+counterTemplate | {0} | String | Template text to display in counter, default value is "{0}".
 
 ## Getting Started with InputText
 InputText usage is same as standard inputText;

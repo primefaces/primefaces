@@ -23,14 +23,14 @@ rendered | true | Boolean | Boolean value to specify the rendering of the compon
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 for | null | String | Id of the input text that the slider will be used for
 display | null | String | Id of the component to display the slider value.
-minValue | 0 | Integer | Minimum value of the slider
-maxValue | 100 | Integer | Maximum value of the slider
+minValue | 0 | Double | Minimum value of the slider
+maxValue | 100 | Double | Maximum value of the slider
 style | null | String | Inline style of the container element
 styleClass | null | String | Style class of the container element
 animate | true | Boolean | Boolean value to enable/disable the animated move when background of slider is clicked
 type | horizontal | String | Sets the type of the slider, "horizontal" or "vertical".
-step | 1 | Integer | Fixed pixel increments that the slider move in
-disabled | 0 | Boolean | Disables or enables the slider.
+step | 1 | Double | Fixed pixel increments that the slider move in
+disabled | false | Boolean | Disables or enables the slider.
 onSlideStart | null | String | Client side callback to execute when slide begins.
 onSlide | null | String | Client side callback to execute during sliding.
 onSlideEnd | null | String | Client side callback to execute when slide ends.

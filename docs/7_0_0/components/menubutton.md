@@ -31,6 +31,7 @@ iconPos | left | String | Position of the icon, valid values are left and right.
 title | null | String | Advisory tooltip information.
 appendTo | null | String | Appends the overlay to the element defined by search expression. Defaults to document body.
 menuStyleClass | null | String | Style class of the overlay menu element.
+ariaLabel | null | String | The aria-label attribute is used to define a string that labels the current element for accessibility.
 
 ## Getting started with the MenuButton
 MenuButton consists of one ore more menuitems. Following menubutton example has three

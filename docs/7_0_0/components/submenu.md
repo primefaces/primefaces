@@ -23,6 +23,7 @@ icon | null | String | Icon of a submenu, see menuitem to see how it is used
 style | null | String | Inline style of the submenu.
 styleClass | null | String | Style class of the submenu.
 expanded | false | Boolean | Defines the state of submenu.
+disabled | false | Boolean | [Disables or enables the submenu.
 
 ## Getting started with Submenu
 Please see Menu or Menubar section to find out how submenu is used with the menus.

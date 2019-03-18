@@ -31,6 +31,8 @@ styleClass | null | String | Style class of the main container element.
 labelTemplate | {value} | String | Template of the progress label.
 displayOnly | false | Boolean | Enables static display mode.
 global | true | Boolean | Global ajax requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus.
+mode | determinate | String | Defines the mode of the progress, valid values are "determinate" and "indeterminate".
+animationDuration | 500 | Integer | Animation duration in milliseconds determining how long the animation will run. Default is 500.
 
 ## Getting started with the ProgressBar
 ProgressBar has two modes, "client"(default) or "ajax". Following is a pure client side progressBar.

@@ -47,6 +47,11 @@ Columns is used by datatable to create columns dynamically.
 | filterable | true | Boolean | Boolean value to mark column as filterable.
 | visible | true | Boolean | Controls the visibilty of the column.
 | selectRow | true | Boolean | Whether clicking the column selects the row when parent component has row selection enabled, default is true.
+| ariaHeaderText | null | String | Label to read by screen readers, when not specified headerText is used.
+| exportFunction | null | MethodExpression | Custom pluggable exportFunction.
+| groupRow | false | Boolean | Speficies whether to group rows based on the column data.
+| exportHeaderValue | null | String | Defines if the header value of column to be exported.
+| exportFooterValue | null | String | Defines if the footer value of column to be exported.
 
 ## Getting Started with Columns
 See dynamic columns section in datatable documentation for detailed information.

@@ -72,6 +72,11 @@ widgetVar | null | String | Name of the client side widget.
 appendTo | null | String | Appends the overlay to the element defined by search expression. Defaults to document body.
 form | null | String | Form to serialize for an ajax request. Default is the enclosing form.
 menuStyleClass | null | String | Style class of the overlay menu element.
+model | null | MenuModel | A menu model instance to create the items of splitButton programmatically.
+filter | false | Boolean | Displays an input filter for the list. Default is false.
+filterMatchMode | null | String | Match mode for filtering, valid values are startsWith (default), contains, endsWith and custom.
+filterFunction | null | String | Client side function to use in custom filterMatchMode.
+filterPlaceholder | null | String | Watermark displayed in the filter input field before the user enters a value in an HTML5 browser.
 
 ## Getting started with SplitButton
 SplitButton usage is similar to a regular commandButton. Additional commands are placed inside

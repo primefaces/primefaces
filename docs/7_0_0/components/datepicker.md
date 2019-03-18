@@ -51,7 +51,7 @@ widgetVar | null | String | Name of the client side widget.
 | yearNavigator | false | Boolean | Whether to show the year navigator
 | showTime | false | Boolean | Specifies if the timepicker should be displayed
 | hourFormat | '24' | String | Defines the hour format, valid values are '12' and '24'
-| showSeconds,
+| showSeconds | false | Boolean | Whether to show the seconds in time picker. Default is false.
 | stepHour | 1 | Integer | Hour steps.
 | stepMinute | 1 | Integer | Minute steps.
 | stepSecond | 1 | Integer | Second steps.

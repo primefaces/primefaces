@@ -917,7 +917,7 @@ _org.primefaces.model.chart.BubbleChartModel_ extends _org.primefaces.model.char
 
 
 ### BubbleChartSeries
-_org.primefaces.model.chart.BarChartSeries_ extends _org.primefaces.model.chart.ChartSeries_
+_org.primefaces.model.chart.BubbleChartSeries_ extends _org.primefaces.model.chart.CartesianChartModel_
 
 | Property | Default | Type | Description |
 | --- | --- | --- | --- |

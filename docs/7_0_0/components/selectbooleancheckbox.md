@@ -40,6 +40,7 @@ tabindex | null | String | Specifies tab order for tab key navigation.
 onfocus | null | String | Client side callback to execute when checkbox receives focus.
 onblur | null | String | Client side callback to execute when checkbox loses focus.
 title | null | String | Advisory tooltip information.
+escape | false | Boolean | Defines if label of the component is escaped or not.
 
 ## Getting started with SelectBooleanCheckbox
 SelectBooleanCheckbox usage is same as the standard one.

@@ -2,6 +2,9 @@
 
 LayoutUnit represents a region in the border layout model of the Layout component.
 
+> Layout and LayoutUnit are deprecated, use  [FlexGrid](https://www.primefaces.org/showcase/ui/panel/flexGrid.xhtml) or [GridCSS](/components/gridcss.md) instead.
+
+
 ## Info
 
 | Name | Value |

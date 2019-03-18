@@ -62,7 +62,7 @@ listener. Parameter of the reset method can be a single clientId or a collection
 ```
 ```java
 public void listener() {
-    PrimeFaces.currrent().resetInputs("form:panel")
+    PrimeFaces.current().resetInputs("form:panel")
 }
 ```
 **Tip**

@@ -58,6 +58,12 @@ powered rich solution with graceful degradation for legacy browsers.
 | skinSimple | false | Boolean | Applies theming to simple uploader.
 | accept | null | String | Filters files in native file browser dialog.
 | sequential | false | Boolean | Uploads are concurrent by default, set this option to true for sequential uploads.
+| chooseIcon | ui-icon-plusthick | String | The icon of choose button
+| uploadIcon | ui-icon-arrowreturnthick-1-n | String | The icon of upload button
+| cancelIcon | ui-icon-cancel | String | The icon of cancel button
+| onAdd | null | String | Callback to execute before adding a file.
+| validateContentType | false | Boolean | Whether content type validation should be performed, based on the types defined in the accept attribute. Default is false.
+| performVirusScan | false | Boolean | Whether virus scan should be performed. Default is false.
 
 ## Getting started with FileUpload
 FileUpload engine on the server side can either be servlet 3.0 or commons fileupload. PrimeFaces

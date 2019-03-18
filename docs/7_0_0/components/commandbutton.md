@@ -27,8 +27,8 @@ CommandButton is an extended version of standard commandButton with ajax and the
 | type | submit | String | Sets the behavior of the button.
 | ajax | true | Boolean | Specifies the submit mode, when set to true(default), submit would be made with Ajax.
 | async | false | Boolean | When set to true, ajax requests are not queued.
-| process | null | String | Component(s) to process partially instead of whole view.
-| update | null | String | Component(s) to be updated with ajax.
+| process | @all | String | Component(s) to process partially instead of whole view.
+| update | @none | String | Component(s) to be updated with ajax.
 | onstart | null | String | Client side callback to execute before ajax request is begins.
 | oncomplete | null | String | Client side callback to execute when ajax request is completed.
 | onsuccess | null | String | Client side callback to execute when ajax request succeeds.

@@ -44,6 +44,8 @@ showLabel | true | Boolean | Set false to hide the label.
 cursor | false | Boolean | Set true to show only a cursor instead of the full bar.
 labelTemplate | {value} | String | Template of the progress value e.g. "{value}%"
 onchange | null | String | Client side callback to invoke when value changes.
+lineCap | butt | String | Gauge stroke endings. Valid values are "butt" (default) and "round".
+styleClass | null | String | Style class of the component.
 
 ## Getting Started with Knob
 Knob is used as an input component with a value.

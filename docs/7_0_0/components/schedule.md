@@ -55,6 +55,7 @@ weekNumberCalculator | null | String | Client side function to use in custom wee
 nextDayThreshold | 09: 00: 00 | String | When an event's end time spans into another day, the minimum time it must be in order for it to render as if it were on that day. Default is 09: 00: 00.
 slotEventOverlap | true | Boolean | If true contemporary events will be rendered one overlapping the other, else they will be rendered side by side.
 urlTarget | _blank | String | Target for events with urls. Clicking on such events in the schedule will not trigger the selectEvent but open the url using this target instead. Default is "_blank".
+noOpener | true | Boolean | Whether for URL events access to the opener window from the target site should be prevented (phishing protection), default value is true.
 
 ## Getting started with Schedule
 Schedule needs to be backed by an _org.primefaces.model.ScheduleModel_ instance, a schedule

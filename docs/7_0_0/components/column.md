@@ -49,6 +49,9 @@ treetable and more.
 | selectRow | true | Boolean | Whether clicking the column selects the row when parent component has row selection enabled, default is true.
 | ariaHeaderText | null | String | Label to read by screen readers, when not specified headerText is used.
 | exportFunction | null | MethodExpr | Custom pluggable exportFunction for data exporter.
+| groupRow | false | Boolean | Speficies whether to group rows based on the column data.
+| exportHeaderValue | null | String | Defines if the header value of column to be exported.
+| exportFooterValue | null | String | Defines if the footer value of column to be exported.
 
 ## Getting Started with Column
 As column is a reused component, see documentation of components that use a column.

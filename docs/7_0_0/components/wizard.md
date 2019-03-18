@@ -32,6 +32,7 @@ onnext | null | String | Javascript event handler to be invoked when flow goes f
 nextLabel | null | String | Label of next navigation button.
 backLabel | null | String | Label of back navigation button.
 widgetVar | null | String | Name of the client side widget
+updateModelOnPrev | false | Boolean | If yes, the model will be updated when the "Back" button is clicked. Default is false.
 
 ## Getting Started with Wizard
 Each step in the flow is represented with a tab. As an example following wizard is used to create a

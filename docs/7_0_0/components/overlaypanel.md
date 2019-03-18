@@ -28,7 +28,6 @@ showEvent | click | String | Event on target to show the panel.
 hideEvent | click | String | Event on target to hide the panel.
 showEffect | null | String | Animation to display when showing the panel.
 hideEffect | null | String | Animation to display when hiding the panel.
-appendToBody | 0 | Boolean | When true, panel is appended to document body.
 onShow | null | String | Client side callback to execute when panel is shown.
 onHide | null | String | Client side callback to execute when panel is hidden.
 my | left top | String | Position of the panel relative to the target.
@@ -37,6 +36,7 @@ dynamic | false | Boolean | Defines content loading mode.
 dismissable | true | Boolean | When set true, clicking outside of the panel hides the overlay.
 showCloseIcon | false | Boolean | Displays a close icon to hide the overlay, default is false.
 modal | false | Boolean | Boolean value that specifies whether the document should be shielded with a partially transparent mask to require the user to close the Panel before being able to activate any elements in the document.
+appendTo | null | String | Alternative to appendToBody. Appends the overlayPanel to the given search expression.
 
 ## Getting started with OverlayPanel
 OverlayPanel needs a component as a target in addition to the content to display. Example below

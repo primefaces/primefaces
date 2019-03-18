@@ -98,6 +98,15 @@ DataTable displays data in tabular format.
 | cellEditMode | eager | String | Defines the cell edit behavior, valid values are "eager" (default) and "lazy".
 | expandableRowGroups | false | Boolean | Makes row groups toggleable, default is false.
 | virtualScroll | false | Boolean | Loads data on demand as the scrollbar gets close to the bottom. Default is false.
+| rowDragSelector | td,span:not(.ui-c) | String | Defines the element used to reorder rows using dragdrop. Default selector is "td,span:not(.ui-c)"
+| draggableRowsFunction | null | MethodExpression | Method expression to execute after dragging row.
+| onRowClick | null | String | Client side callback to execute after clicking row.
+| editInitEvent | null | String | Defines a client side event to open cell on editable table.
+| rowSelector | null | String | Client side check if rowclick triggered row click event not a clickable element in row content.
+| disableContextMenuIfEmpty | false | Boolean | Decides whether to disable context menu or not if a table has no records.
+| escapeText | true | Boolean | Defines if headerText and footerText values on columns are escaped or not. Default is true.
+| rowEditMode | eager | String | Defines the row edit behavior, valid values are "eager" (default) and "lazy".
+| stickyTopAt | null | String | Selector to position on the page according to other fixing elements on the top of the table. Default is null.
 
 ## Getting started with the DataTable
 We will be using the same Car and CarBean classes described in DataGrid section.

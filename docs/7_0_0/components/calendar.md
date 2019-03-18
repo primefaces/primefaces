@@ -105,6 +105,13 @@ ajax selection and more.
 | buttonTabindex | null | String | Position of the button in the tabbing order.
 | inputStyle | null | String | Inline style of the input element. Used when mode is popup.
 | inputStyleClass | null | String | Style class of the input element. Used when mode is popup.
+| type | text | String | Input field type. Default is text.
+| focusOnSelect | false | Boolean | If enabled, the input is focused again after selecting a date. Default is false.
+| oneLine | false | Boolean | Try to show the time dropdowns all on one line. This should be used with controlType 'select'.
+| defaultHour | 0 | Integer | Default for hour selection, if no date is given. Default is 0.
+| defaultMinute | 0 | Integer | Default for minute selection, if no date is given. Default is 0.
+| defaultSecond | 0 | Integer | Default for second selection, if no date is given. Default is 0.
+| defaultMillisec | 0 | Integer | Default for millisecond selection, if no date is given. Default is 0.
 
 ## Getting Started with Calendar
 Value of the calendar should be a java.util.Date.

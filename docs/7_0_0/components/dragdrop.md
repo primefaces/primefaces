@@ -165,6 +165,7 @@ it’s parent.
 | scope | null | String | Scope key to match draggables and droppables.
 | tolerance | null | String | Specifies the intersection mode to accept a draggable.
 | datasource | null | String | Id of a UIData component to connect with.
+| greedy | false | Boolean | Avoids parent droppable elements receiving the drop event. Default value is false.
 
 ### Getting Started with Droppable
 Usage of droppable is very similar to draggable, droppable behavior can be added to any component

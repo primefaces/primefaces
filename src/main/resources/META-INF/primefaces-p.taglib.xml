@@ -167,6 +167,12 @@
             <required>false</required>
             <type>java.lang.Object</type>
         </attribute>
+        <attribute>
+            <description>OnTableRender to be used to set the options of exported table.</description>
+            <name>onTableRender</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+        </attribute>
     </tag>
 
     <tag>
@@ -1945,7 +1951,9 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>Position of the items in the tabbing order. Default is 0.</description>
+            <description>
+                <![CDATA[Position of the items in the tabbing order. Default is 0.]]>
+            </description>
             <name>tabindex</name>
             <required>false</required>
             <type>java.lang.String</type>

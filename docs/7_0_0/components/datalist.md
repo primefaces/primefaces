@@ -43,6 +43,7 @@ DataList presents a collection of data in list layout with several display types
 | lazy | false | Boolean | Defines if lazy loading is enabled for the data component.
 | emptyMessage | No records found. | String | Text to display when there is no data to display.
 | itemStyleClass | null | String | Style class of an item in list.
+| multiViewState | false | Boolean | Whether to keep list state across views, defaults to false.
 
 ## Getting started with the DataList
 Since DataList is a data iteration component, it renders it’s children for each data represented with
