@@ -87,7 +87,7 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
             for (String option : options) {
                 int rows;
                 String optionText;
-                if (option.trim().startsWith("{ShowAll|")) {
+                if (option.trim().startsWith(UIData.ROWS_PER_PAGE_TEMPLATE_SHOWALL_FEATURE)) {
                     optionText = option.substring(option.indexOf("'") + 1, option.lastIndexOf("'"));
                     rows = pageable.getRowCount();
                 }

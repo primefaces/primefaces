@@ -85,6 +85,7 @@ public class UIData extends javax.faces.component.UIData {
     public static final String ARIA_NEXT_PAGE_LABEL = "primefaces.paginator.aria.NEXT_PAGE";
     public static final String ARIA_LAST_PAGE_LABEL = "primefaces.paginator.aria.LAST_PAGE";
     public static final String ROWS_PER_PAGE_LABEL = "primefaces.paginator.aria.ROWS_PER_PAGE";
+    public static final String ROWS_PER_PAGE_TEMPLATE_SHOWALL_FEATURE = "{ShowAll|";
 
     private static final String SB_ID = UIData.class.getName() + "#id";
     private final Map<String, Object> _rowTransientStates = new HashMap<>();
@@ -258,6 +259,11 @@ public class UIData extends javax.faces.component.UIData {
         String rowsPerPageTemplate = data.getRowsPerPageTemplate();
 
         if (rowsPerPageTemplate != null) {
+            boolean showAll = rowsPerPageTemplate.contains(ROWS_PER_PAGE_TEMPLATE_SHOWALL_FEATURE);
+            if (showAll && Integer.toString(data.getRowCount()).equals(rowsParam)) {
+                return true;
+            }
+
             return Arrays.asList(rowsPerPageTemplate.split("[,\\s]+")).contains(rowsParam);
         }
 
