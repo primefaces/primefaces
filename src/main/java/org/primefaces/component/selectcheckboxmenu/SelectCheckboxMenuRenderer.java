@@ -50,8 +50,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
                 "javax.faces.SelectMany",
-                "javax.faces.Checkbox",
-                Renderer.class);
+                "javax.faces.Checkbox");
         return renderer.getConvertedValue(context, component, submittedValue);
     }
 
