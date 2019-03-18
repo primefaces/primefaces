@@ -144,7 +144,7 @@ public class MessageFactory {
         return label;
     }
 
-    protected static Locale getLocale() {
+    public static Locale getLocale() {
         Locale locale = null;
         FacesContext facesContext = FacesContext.getCurrentInstance();
 
