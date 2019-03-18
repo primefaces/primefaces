@@ -1167,7 +1167,7 @@ public class TreeTableRenderer extends DataRenderer {
     }
 
     public void filter(FacesContext context, TreeTable tt, List<FilterMeta> filterMetadata, String globalFilterValue) throws IOException {
-        Locale filterLocale = context.getViewRoot().getLocale();
+        Locale filterLocale = LocaleUtils.getCurrentLocale(context);
         TreeNode root = tt.getValue();
         TreeNode filteredNode = null;
 

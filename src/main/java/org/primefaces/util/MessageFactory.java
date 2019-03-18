@@ -45,7 +45,7 @@ public class MessageFactory {
     }
 
     public static FacesMessage getMessage(String messageId, FacesMessage.Severity severity, Object[] params) {
-        FacesMessage facesMessage = getMessage(getLocale(), messageId, params);
+        FacesMessage facesMessage = getMessage(LocaleUtils.getCurrentLocale(), messageId, params);
         facesMessage.setSeverity(severity);
 
         return facesMessage;
@@ -112,7 +112,7 @@ public class MessageFactory {
     }
 
     public static String getMessage(String messageId, Object[] params) {
-        FacesMessage message = getMessage(getLocale(), messageId, params);
+        FacesMessage message = getMessage(LocaleUtils.getCurrentLocale(), messageId, params);
 
         return message.getSummary();
     }
@@ -142,24 +142,6 @@ public class MessageFactory {
         }
 
         return label;
-    }
-
-    protected static Locale getLocale() {
-        Locale locale = null;
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-
-        if (facesContext != null && facesContext.getViewRoot() != null) {
-            locale = facesContext.getViewRoot().getLocale();
-
-            if (locale == null) {
-                locale = Locale.getDefault();
-            }
-        }
-        else {
-            locale = Locale.getDefault();
-        }
-
-        return locale;
     }
 
     private static ResourceBundle getBundle(String baseName, Locale locale, ClassLoader classLoader,
