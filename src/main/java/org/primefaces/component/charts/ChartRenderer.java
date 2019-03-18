@@ -175,6 +175,8 @@ public class ChartRenderer extends CoreRenderer {
                     }
                     encodeAxes(context, chartName, "yAxes", yAxes);
                 }
+                
+                writer.write("}");
             }
             else if (scales instanceof RadialScales) {
                 writer.write("\"scale\":{");
@@ -201,9 +203,9 @@ public class ChartRenderer extends CoreRenderer {
                     preString = hasComma ? "," : "";
                     writer.write(preString + "\"ticks\":" + rScales.getTicks().encode());
                 }
+                
+                writer.write("}");
             }
-
-            writer.write("}");
         }
     }
 
