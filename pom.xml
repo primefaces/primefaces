@@ -12,7 +12,7 @@
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
     <packaging>jar</packaging>
-    <version>7.0</version>
+    <version>7.1-SNAPSHOT</version>
 
     <name>PrimeFaces</name>
     <url>https://www.primefaces.org</url>
@@ -906,6 +906,9 @@
                                 <goals>
                                     <goal>sign</goal>
                                 </goals>
+                                <configuration>
+                                    <executable>gpg2</executable>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
