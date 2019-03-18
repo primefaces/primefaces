@@ -571,6 +571,7 @@ public class LineChartDataSet extends ChartDataSet {
             ChartUtils.writeDataValue(fsw, "type", "line", false);
             ChartUtils.writeDataValue(fsw, "data", this.data, true);
             ChartUtils.writeDataValue(fsw, "label", this.label, true);
+            ChartUtils.writeDataValue(fsw, "hidden", this.isHidden(), true);
             ChartUtils.writeDataValue(fsw, "xAxisID", this.xaxisID, true);
             ChartUtils.writeDataValue(fsw, "yAxisID", this.yaxisID, true);
             ChartUtils.writeDataValue(fsw, "backgroundColor", this.backgroundColor, true);
