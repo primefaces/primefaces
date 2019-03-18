@@ -19,7 +19,6 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 | SUBMIT | full | Defines ajax submit mode, full or partial. |
 | DIR | ltr | Defines orientation, ltr or rtl. |
 | RESET_VALUES | false | When enabled, ajax updated inputs are reset. |
-| SECRET | primefaces | Secret key to encrypt-decrypt value expressions exposed in rendering StreamedContents. |
 | CLIENT_SIDE_VALIDATION | false | Controls client side validatation. |
 | UPLOADER | auto | Defines uploader mode; auto , native or commons. |
 | TRANSFORM_METADATA | false | Transforms bean validation metadata to html attributes. |
