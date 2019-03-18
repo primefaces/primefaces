@@ -25,7 +25,7 @@ This is an overview page, please visit [PrimeFaces.org](https://www.primefaces.o
 
 Version | Binary | Source | JSF version | Java version
 ------------ | -------------  | ------------- | ------------- | -------------
-7.1|  |  | 2.0 - 2.3 | 1.8 - ?
+7.1-SNAPSHOT|  |  | 2.0 - 2.3 | 1.8 - ?
 7.0| [primefaces-7.0.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/7.0/primefaces-7.0.jar)  | [primefaces-7.0-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/7.0/primefaces-7.0-sources.jar) | 2.0 - 2.3 | 1.7 - ?
 6.2| [primefaces-6.2.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.2/primefaces-6.2.jar)  | [primefaces-6.2-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.2/primefaces-6.2-sources.jar) | 2.0 - 2.3 | 1.6 - ?
 6.1| [primefaces-6.1.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.1/primefaces-6.1.jar)  | [primefaces-6.1-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.1/primefaces-6.1-sources.jar) | 2.0 - 2.3 | 1.5 - ?
