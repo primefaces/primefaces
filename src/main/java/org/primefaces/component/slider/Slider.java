@@ -109,8 +109,8 @@ public class Slider extends SliderBase {
 
         String[] inputIds = getFor().split(",");
         if (isRange()) {
-            UIInput inputFrom = (UIInput) SearchExpressionFacade.resolveComponent(context, this, inputIds[0].trim());
-            UIInput inputTo = (UIInput) SearchExpressionFacade.resolveComponent(context, this, inputIds[1].trim());
+            UIInput inputFrom = (UIInput) SearchExpressionFacade.resolveComponent(context, this, inputIds[0]);
+            UIInput inputTo = (UIInput) SearchExpressionFacade.resolveComponent(context, this, inputIds[1]);
             String valueFromStr = getSubmittedValue(inputFrom).toString();
             String valueToStr = getSubmittedValue(inputTo).toString();
             double valueFrom = Double.valueOf(valueFromStr);
@@ -132,7 +132,7 @@ public class Slider extends SliderBase {
             }
         }
         else {
-            UIInput input = (UIInput) SearchExpressionFacade.resolveComponent(context, this, inputIds[0].trim());
+            UIInput input = (UIInput) SearchExpressionFacade.resolveComponent(context, this, inputIds[0]);
             Object submittedValue = getSubmittedValue(input);
             if (submittedValue == null) {
                 return;

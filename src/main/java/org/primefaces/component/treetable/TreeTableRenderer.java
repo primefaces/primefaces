@@ -1196,7 +1196,7 @@ public class TreeTableRenderer extends DataRenderer {
     protected void findFilteredRowKeys(FacesContext context, TreeTable tt, TreeNode node, List<FilterMeta> filterMetadata, Locale filterLocale,
                                        String globalFilterValue) throws IOException {
         int childCount = node.getChildCount();
-        boolean hasGlobalFilter = globalFilterValue != null && globalFilterValue.trim().length() > 0;
+        boolean hasGlobalFilter = !LangUtils.isValueBlank(globalFilterValue);
         GlobalFilterConstraint globalFilterConstraint = (GlobalFilterConstraint) FILTER_CONSTRAINTS.get(GLOBAL_MODE);
         ELContext elContext = context.getELContext();
 
