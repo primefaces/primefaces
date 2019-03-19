@@ -122,6 +122,13 @@ rowEditCancel | org.primefaces.event.RowEditEvent | When row edit is cancelled.
 cellEdit | org.primefaces.event.CellEditEvent | On cell edit.
 page | org.primefaces.event.data.PageEvent | On pagination.
 
+## Client Side API
+Widget: _PrimeFaces.widget.TreeTable_
+
+| Method | Params | Return Type | Description | 
+| --- | --- | --- | --- | 
+| clearFilters() | - | void | Clears all column filters
+
 ## ContextMenu
 TreeTable has special integration with context menu, you can even match different context menus
 with different tree nodes using _nodeType_ option of context menu that matches the tree node type.
