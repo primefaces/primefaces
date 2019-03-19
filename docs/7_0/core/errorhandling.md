@@ -85,6 +85,6 @@ included in every page. Refer to component documentation of p:ajaxExceptionHandl
 available attributes.
 
 ## Render Response Exceptions
-To support exception handling in the _RENDER\_RESPONSE_ phase, it's required to set the
-_javax.faces.FACELETS\_BUFFER\_SIZE_ parameter. Otherwise you will probably see a
+To support exception handling in the _RENDER_RESPONSE_ phase, it's required to set the
+_javax.faces.FACELETS_BUFFER_SIZE_ parameter. Otherwise you will probably see a
 ServletException with "Response already committed" message.
