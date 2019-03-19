@@ -6,7 +6,7 @@ PrimeFaces.current() is a simple utility that provides useful goodies such as ad
 ajax callback functions. PrimeFaces.current() is available in both ajax and non-ajax requests. Scope
 of the instance is thread local.
 
-Instance can be obtained similarly to the FacesContext.
+Instance can be obtained similarly to the FacesContext or CDI.
 
 ```java
 PrimeFaces instance = PrimeFaces.current();
@@ -15,11 +15,18 @@ PrimeFaces instance = PrimeFaces.current();
 
 | Method | Description |
 | --- | --- |
+executeScript(String script) | Executes script after ajax request completes or on page load.
 isAjaxRequest() | Returns a boolean value if current request is a PrimeFaces ajax request.
-addCallBackParam(String name, Object value) | Adds parameters to ajax callbacks like oncomplete.
-update(String clientId); | Specifies component(s) to update at runtime.
-execute(String script) | Executes script after ajax request completes or on page load.
 scrollTo(String clientId) | Scrolls to the component with given clientId after ajax request completes.
+focus(String expression) | Focus the input(s) targeted by the given search expression.
+resetInputs(Collection<String>|String... expressions) | Resets all UIInput targeted by the search expression(s).
+clearTableStates() | Removes the multiViewState for all DataTables within the current session.
+clearTableState(String key) | Removes the multiViewState for DataTable with the defined key.
+clearDataListStates() | Removes the multiViewState for all DataList within the current session.
+clearDataListState(String key) | Removes the multiViewState for DataList with the defined key.
+ajax().addCallBackParam(String name, Object value) | Adds parameters to ajax callbacks like oncomplete.
+ajax().update(Collection<String>|String... expressions); | Specifies component(s) to update at runtime.
+
 
 **Callback Parameters**
 
@@ -32,8 +39,7 @@ parameters are serialized to JSON and provided as an argument in ajax callbacks 
 ```java
 public void validate() {
     //isValid = calculate isValid
-    PrimeFaces instance = PrimeFaces.current();
-    instance.addCallbackParam("isValid", true or false);
+    PrimeFaces.current().ajax().addCallbackParam("isValid", true or false);
 }
 ```
 _isValid_ parameter will be available in handleComplete callback as;
@@ -54,9 +60,8 @@ lastname to the client in addition to _isValid_ boolean value.
 ```java
 public void validate() {
     //isValid = calculate isValid
-    PrimeFaces instance = PrimeFaces.current();
-    instance.addCallbackParam("isValid", true or false);
-    instance.addCallbackParam("user", user);
+    PrimeFaces.current().ajax().addCallbackParam("isValid", true or false);
+    PrimeFaces.current().ajax().addCallbackParam("user", user);
 }
 ```
 ```js
@@ -86,11 +91,10 @@ update on-the-fly.
 ```java
 public void save() {
     //boolean outcome = ...
-    PrimeFaces instance = PrimeFaces.current();
     if(outcome)
-        instance.update("panel");
+        PrimeFaces.current().ajax().update("panel");
     else
-        instance.update("table");
+        PrimeFaces.current().ajax().update("table");
 }
 ```
 When the save button is clicked, depending on the outcome, you can either configure the datatable

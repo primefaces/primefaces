@@ -26,7 +26,9 @@ Cache component is used to reduce page load time by caching the content after in
 
 ## Getting Started with Cache
 A cache store is required to use the cache component, two different providers are supported as cache
-implementation; EHCache and Hazelcast. Provider is configured via a context-param.
+implementation; Default (org.primefaces.cache.DefaultCacheProvider based on ConcurrentHashMap), EHCache 2 (org.primefaces.cache.EHCacheProvider), EHCache 3 (org.primefaces.cache.EHCache3Provider) and Hazelcast (org.primefaces.cache.HazelcastCacheProvider).
+
+Provider is configured via a context-param.
 
 ```xml
 <context-param>
