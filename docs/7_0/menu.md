@@ -12,10 +12,8 @@
   - [Search Expression](/core/searchexpression.md)
   - [Client Side Validation](/core/clientsidevalidation.md)  
   - [Dialog Framework](/core/dialogframework.md)
-  - [Error handling](/core/errorhandling.md.md)
-  - [JavaScript API](/core/javascriptApi.md)
+  - [Error Handling](/core/errorhandling.md)
   - [BeanValidation Transformation](/core/beanvalidationtransformation.md)
-  - [Portlets](/core/portlets.md)
   - [Misc](/core/misc.md)
 
 - AJAX

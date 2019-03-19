@@ -1,5 +1,42 @@
 # Misc
 
+## Javascript API
+
+PrimeFaces renders unobstrusive javascript which cleanly separates behavior from the html. Client side engine is powered by jQuery.
+
+### PrimeFaces Namespace
+
+_PrimeFaces_ is the main javascript object providing utilities and namespace.
+
+| Method | Description |
+| --- | --- |
+escapeClientId(id) | Escaped JSF ids with semi colon to work with jQuery.
+addSubmitParam(el, name, param) | Adds request parameters dynamically to the element.
+getCookie(name) | Returns cookie with given name.
+setCookie(name, value, cfg) | Sets a cookie with given name, value and options. e.g. PrimeFaces.setCookie('name', 'test'); PrimeFaces.setCookie('name','test',{expires:7, path:'/'}) Second example creates cookie for entire site that expires in 7 days.
+deleteCookie(name, cfg) | Deletes a cookie with given and and options.
+skinInput(input) | Progressively enhances an input element with theming.
+info(msg), debug(msg), warn(msg), error(msg) | Client side log API.
+changeTheme(theme) | Changes theme on the fly with no page refresh.
+cleanWatermarks() | Watermark component extension, cleans all watermarks on page before submitting the form.
+showWatermarks() | Shows watermarks on form.
+getWidgetById(clientid) | Returns the widget instance from the client id
+
+To be compatible with other javascript entities on a page, PrimeFaces defines two javascript
+namespaces;
+
+**PrimeFaces.widget.**
+
+Contains custom PrimeFaces widgets like;
+
+- PrimeFaces.widget.DataTable
+- PrimeFaces.widget.Tree
+- PrimeFaces.widget.Poll
+- and more...
+
+Most of the components have a corresponding client side widget with same name.
+
+
 ## PrimeFaces.current()
 
 PrimeFaces.current() is a simple utility that provides useful goodies such as adding parameters to
@@ -349,3 +386,30 @@ bundle to provide your own values.
 - primefaces.datatable.SORT_LABEL = Sort
 - primefaces.datatable.SORT_ASC = Ascending
 - primefaces.datatable.SORT_DESC = Descending
+
+## Portlets
+
+PrimeFaces supports portlet environments based on JSF 2 and Portlet 2 APIs. A portlet bridge is
+necessary to run a JSF application as a portlet and we suggest LiferayFaces bridge as the
+implementation. Both teams work together time to time to make sure PrimeFaces runs well on
+liferay. A kickstart example with necessary configuration is available at LiferayFaces Demos;
+
+http://www.liferay.com/community/liferay-projects/liferay-faces/demos
+
+Demo contains a single "Job Application" portlet within the WAR that demonstrates several of the
+key features of JSF 2 and PrimeFaces;
+
+- Uses the PrimeFaces <p:calendar/> tag for a popup date selector
+- Uses the JSF 2 <f:ajax /> tag on the postal (zip) code field in order to provide the ability to auto-
+fill fields via Ajax
+- Uses the JSF 2 <f:ajax /> tag on the show/hide comments links in order to show/hide the
+comments field via Ajax
+- Model managed-bean is marked with the JSF 2 @ViewScoped annotation in order to support a
+rich UI with the <f:ajax /> tag
+- Uses the JSF 2 <f:ajax /> tag to show navigation-rules executing without full page refreshes
+- File upload capabilities via <h:form enctype="multipart/form-data">
+- Managed-beans defined by marking POJOs with the JSF 2 @ManagedBean annotation
+- Dependency injection of managed-beans done via the JSF 2 @ManagedProperty annotation
+- Uses the PrimeFaces p:fileUpload tag for multi-file Ajax-based file upload
+- Uses the PrimeFaces p:dataTable tag to list the uploaded files
+- Uses the PrimeFaces p:confirmDialog tag to popup a yes/no dialog to verify file deletion
