@@ -36,7 +36,7 @@ dynamic | false | Boolean | Defines content loading mode.
 dismissable | true | Boolean | When set true, clicking outside of the panel hides the overlay.
 showCloseIcon | false | Boolean | Displays a close icon to hide the overlay, default is false.
 modal | false | Boolean | Boolean value that specifies whether the document should be shielded with a partially transparent mask to require the user to close the Panel before being able to activate any elements in the document.
-appendTo | null | String | Alternative to appendToBody. Appends the overlayPanel to the given search expression.
+appendTo | null | String | Appends the overlayPanel to the given search expression.
 
 ## Getting started with OverlayPanel
 OverlayPanel needs a component as a target in addition to the content to display. Example below
@@ -94,7 +94,7 @@ As skinning style classes are global, see the main theming section for more info
 
 **Tips**
 
-- Enable appendToBody when overlayPanel is in other panel components like layout, dialog ...
+- Use appendTo with a value like "@(body) when overlayPanel is in other panel components like layout, dialog ...
 - If there is a component with a popup like calendar, autocomplete placed inside the overlay panel,
     popup part might exceed the boundaries of panel and clicking the outside hides the panel. This is
     undesirable so in cases like this use overlayPanel with _dismissable_ false and optional

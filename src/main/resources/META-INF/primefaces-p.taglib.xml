@@ -6023,7 +6023,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Alternative to appendToBody. Appends the dialog to the given search expression.]]>
+                <![CDATA[Appends the dialog to the given search expression.]]>
             </description>
             <name>appendTo</name>
             <required>false</required>
@@ -8245,7 +8245,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Alternative to appendToBody. Appends the dialog to the given search expression.]]>
+                <![CDATA[Appends the dialog to the given search expression.]]>
             </description>
             <name>appendTo</name>
             <required>false</required>
@@ -17246,7 +17246,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Alternative to appendToBody. Appends the overlayPanel to the given search expression.]]>
+                <![CDATA[Appends the overlayPanel to the given search expression.]]>
             </description>
             <name>appendTo</name>
             <required>false</required>
