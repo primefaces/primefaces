@@ -26,7 +26,6 @@ showSummary | true | Boolean | Specifies if the summary of message should be dis
 showDetail | false | Boolean | Specifies if the detail of message should be displayed.
 globalOnly | false | Boolean | When true, only facesmessages without clientids are displayed.
 life | 6000 | Integer | Duration in milliseconds to display non-sticky messages.
-autoUpdate | false | Boolean | Specifies auto update mode.
 redisplay | true | Boolean | Defines if already rendered messaged should be displayed.
 for | null | String | Name of associated key, takes precedence when used with globalOnly.
 escape | true | Boolean | Defines whether html would be escaped or not.
@@ -53,15 +52,6 @@ messages. Following growl will display the messages for 5 seconds and then fade-
 ```xhtml
 <p:growl life="5000" />
 ```
-## Growl with Ajax Updates (Deprecated)
-If you need to display messages with growl after an ajax request you just need to update it. Note
-that if you enable autoUpdate, growl will be updated automatically with each ajax request anyway.
-
-```xhtml
-<p:growl id="messages" autoUpdate="true"/>
-<p:commandButton value="Submit" update="messages" />
-```
-Use p:autoUpdate instead of the autoUpdate property.
 
 ## Positioning
 Growl is positioned at top right corner by default, position can be controlled with a CSS selector

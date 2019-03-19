@@ -24,7 +24,6 @@ showSummary | true | Boolean | Specifies if the summary of the FacesMessages sho
 showDetail | false | Boolean | Specifies if the detail of the FacesMessages should be displayed.
 globalOnly | false | String | When true, only facesmessages with no clientIds are displayed.
 redisplay | true | Boolean | Defines if already rendered messages should be displayed
-autoUpdate | false | Boolean | Enables auto update mode if set true.
 for | null | String | Name of associated key, takes precedence when used with globalOnly.
 escape | true | Boolean | Defines whether html would be escaped or not.
 severity | null | String | Comma separated list of severities to display only.
@@ -39,10 +38,6 @@ Message usage is exactly same as standard messages.
 ```xhtml
 <p:messages />
 ```
-## AutoUpdate (Deprecated)
-When auto update is enabled, messages component is updated with each ajax request automatically.
-
-Use p:autoUpdate instead of the autoUpdate property.
 
 ## Targetable Messages
 There may be times where you need to target one or more messages to a specific message

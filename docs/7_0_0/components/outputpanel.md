@@ -23,7 +23,6 @@ binding | null | Object | An el expression that maps to a server side UIComponen
 style | null | String | Style of the html container element
 styleClass | null | String | StyleClass of the html container element
 layout | block | String | Shortcut for the css display property, valid values are block(default) and inline.
-autoUpdate | false | Boolean | Enables auto update mode if set true.
 deferred | false | Boolean | Deferred mode loads the contents after page load to speed up page load.
 deferredMode | load | String | Defines deferred loading mode, valid values are "load" (after page load) and "visible" (once the panel is visible on scroll).
 
