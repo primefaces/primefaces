@@ -147,7 +147,7 @@ Widget: _PrimeFaces.widget.Dialog_
 | show() | - | void | Displays dialog.
 | hide() | - | void | Closes dialog.
 | isVisible() | - | void | Returns visibility as a boolean.
-| resetPosition | - | void | Client side API convenience call to reset the dialog position based on the "position" requested.
+| resetPosition | - | void | Reset the dialog position based on the configured "position".
 
 ## Skinning
 Dialog resides in a main container element which _styleClass_ option apply. Following is the list of

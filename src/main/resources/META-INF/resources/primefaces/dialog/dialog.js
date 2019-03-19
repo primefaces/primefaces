@@ -330,8 +330,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
     },
     
     /**
-     * Client side API convenience call to reset the dialog position based on
-     * the "position" requested.
+     * Reset the dialog position based on the configured "position".
      */
     resetPosition: function() {
        this.initPosition();
