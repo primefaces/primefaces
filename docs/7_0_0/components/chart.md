@@ -906,7 +906,7 @@ _org.primefaces.model.chart.BarChartSeries_ extends _org.primefaces.model.chart.
 | disableStack | false | Boolean | When true, series data is not included in a stacked chart.
 
 ### BubbleChartModel
-_org.primefaces.model.chart.BubbleChartModel_ extends _org.primefaces.model.chart.ChartModel_
+_org.primefaces.model.chart.BubbleChartModel_ extends _org.primefaces.model.chart.CartesianChartModel_
 
 | Property | Default | Type | Description |
 | --- | --- | --- | --- |
@@ -917,7 +917,7 @@ _org.primefaces.model.chart.BubbleChartModel_ extends _org.primefaces.model.char
 
 
 ### BubbleChartSeries
-_org.primefaces.model.chart.BubbleChartSeries_ extends _org.primefaces.model.chart.CartesianChartModel_
+_org.primefaces.model.chart.BubbleChartSeries_
 
 | Property | Default | Type | Description |
 | --- | --- | --- | --- |
