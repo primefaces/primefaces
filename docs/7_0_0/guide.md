@@ -15556,7 +15556,7 @@ listener. Parameter of the reset method can be a single clientId or a collection
 ```
 ```
 public void listener() {
-PrimeFaces.currrent().resetInputs("form:panel")
+PrimeFaces.current().resetInputs("form:panel")
 }
 ```
 **Tip**
@@ -23864,7 +23864,7 @@ PrimeFaces.current() is a simple utility that provides useful goodies such as ad
 ajax callback functions. PrimeFaces.current() is available in both ajax and non-ajax requests. Scope
 of the instance is thread local.
 
-Instance can be obtained similarly to the FacesContext.
+Instance can be obtained similarly to the FacesContext or CDI.
 
 ```
 PrimeFaces instance = PrimeFaces.current();
@@ -23891,8 +23891,7 @@ oncomplete="handleComplete(xhr, status, args)" />
 ```
 public void validate() {
 //isValid = calculate isValid
-PrimeFaces instance = PrimeFaces.current();
-instance.addCallbackParam("isValid", true or false);
+PrimeFaces.current().ajax().addCallbackParam("isValid", true or false);
 }
 ```
 _isValid_ parameter will be available in handleComplete callback as;
@@ -23913,9 +23912,8 @@ lastname to the client in addition to _isValid_ boolean value.
 ```
 ￼public void validate() {
 //isValid = calculate isValid
-PrimeFaces instance = PrimeFaces.current();
-instance.addCallbackParam("isValid", true or false);
-instance.addCallbackParam("user", user);
+PrimeFaces.current().ajax().addCallbackParam("isValid", true or false);
+PrimeFaces.current().ajax().addCallbackParam("user", user);
 }
 ```
 ```
@@ -23945,9 +23943,9 @@ update on-the-fly.
 public void save() {
 //boolean outcome = ...
 if(outcome)
-PrimeFaces.current().update("panel");
+PrimeFaces.current().ajax().update("panel");
 else
-PrimeFaces.current().update("table");
+PrimeFaces.current().ajax().update("table");
 }
 ```
 When the save button is clicked, depending on the outcome, you can either configure the datatable
