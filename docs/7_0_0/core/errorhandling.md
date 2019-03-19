@@ -1,3 +1,5 @@
+# Error handling
+
 ## Exception Handler
 
 PrimeFaces provides a built-in exception handler to take care of exceptions in ajax and non-ajax
