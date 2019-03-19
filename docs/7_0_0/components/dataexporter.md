@@ -21,7 +21,7 @@ fileName | null | String | Filename of the generated export file, defaults to da
 pageOnly | false | Boolean | Exports only current page instead of whole dataset
 preProcessor | null | MethodExpr | PreProcessor for the exported document.
 postProcessor | null | MethodExpr | PostProcessor for the exported document.
-encoding | UTF-8 | Boolean | Character encoding to use
+encoding | UTF-8 | String | Character encoding to use
 selectionOnly | false | Boolean | When enabled, only selection would be exported.
 repeat | false | Boolean | Set to true if target is a datatable that is rendered multiple times in a repeating component.
 options | null | ExporterOptions | Options object to customize document.
