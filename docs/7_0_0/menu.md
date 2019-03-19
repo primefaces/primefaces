@@ -155,6 +155,7 @@
   - [SplitButton](/components/splitbutton.md)
   - [Submenu](/components/submenu.md)
   - [Stack](/components/stack.md)
+  - [StaticMessage](/components/staticmessage.md)
   - [Steps](/components/steps.md)
   - [Sticky](/components/sticky.md)
   - [SubTable](/components/subtable.md)
