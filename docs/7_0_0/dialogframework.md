@@ -110,6 +110,17 @@ headerElement | null | String | Client id of the element to display inside heade
 minimizable | false | Boolean | Makes dialog minimizable.
 maximizable | false | Boolean | Makes dialog maximizable.
 closeOnEscape | false | Boolean | Whether the dialog can be closed with escape key.
+minWidth | 150 | Integer | Minimum width of a resizable dialog.
+minHeight | 0 | Integer | Minimum height of a resizable dialog.
+appendTo | null | String | Appends the dialog to the element defined by the given search expression.
+dynamic | false | Boolean | Enables lazy loading of the content with ajax.
+showEffect | null | String | Effect to use when showing the dialog
+hideEffect | null | String | Effect to use when hiding the dialog
+position | null | String | Defines where the dialog should be displayed
+fitViewport | false | Boolean | Dialog size might exceeed viewport if content is bigger than viewport in terms of height. fitViewport option automatically adjusts height to fit dialog within the viewport.
+responsive | false | Boolean | In responsive mode, dialog adjusts itself based on screen width.
+onShow | null | String | Client side callback to execute when dialog is displayed.
+onHide | null | String | Client side callback to execute when dialog is hidden.
 
 **Data Communication**
 Page displayed in the dialog can pass data back to the parent page. The trigger component needs to
