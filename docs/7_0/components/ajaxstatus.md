@@ -30,7 +30,7 @@ AjaxStatus is a global notifier for ajax requests.
 
 ## Getting Started with AjaxStatus
 AjaxStatus uses facets to represent the request status. Most common used facets are _start_ and
-_complete_ The _start_ facet will be visible once ajax request begins and stay visible until it’s completed.
+_complete_. The _start_ facet will be visible once ajax request begins and stay visible until it’s completed.
 Once the ajax response is received and page is updated, _start_ facet gets hidden and _complete_ facet
 shows up. **NOTE:** If a _complete_ facet is defined, the user will never see the _error_ or _success_ facets.
 
