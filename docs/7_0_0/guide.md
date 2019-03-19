@@ -17923,7 +17923,7 @@ guidelineOffset 25 String Offset of guideline from bottom
 guidelineIndent 10 Boolean Guide line indent from the edges
 onchange null String Client side callback to execute when signature
 changes.
-base65Value null String Write-only value used to pass the value in base64
+base64Value null String Write-only value used to pass the value in base64
 to backing bean
 ```
 **Getting started with Signature**

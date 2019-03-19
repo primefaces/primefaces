@@ -43,7 +43,7 @@ guidelineColor | #a0a0a0 | String | Color of the guideline
 guidelineOffset | 25 | String | Offset of guideline from bottom
 guidelineIndent | 10 | Integer | Guide line indent from the edges
 onchange | null | String | Client side callback to execute when signature changes.
-base65Value | null | String | Write-only value used to pass the value in base64 to backing bean
+base64Value | null | String | Write-only value used to pass the value in base64 to backing bean
 
 ## Getting started with Signature
 Value is interpreted as JSON so at backing bean should be a string value.
