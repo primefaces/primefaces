@@ -453,29 +453,51 @@ public class TreeTableRenderer extends DataRenderer {
         writer.writeAttribute("id", clientId + "_head", null);
 
         if (group != null && group.isRendered()) {
+            context.getAttributes().put(Constants.HELPER_RENDERER, "columnGroupForTreeTable");
+
             for (UIComponent child : group.getChildren()) {
-                if (child.isRendered() && child instanceof Row) {
-                    Row headerRow = (Row) child;
-                    String rowClass = headerRow.getStyleClass();
-                    String rowStyle = headerRow.getStyle();
+                if (child.isRendered()) {
+                    if (child instanceof Row) {
+                        Row headerRow = (Row) child;
+                        String rowClass = headerRow.getStyleClass();
+                        String rowStyle = headerRow.getStyle();
 
-                    writer.startElement("tr", null);
-                    if (rowClass != null) {
-                        writer.writeAttribute("class", rowClass, null);
-                    }
-                    if (rowStyle != null) {
-                        writer.writeAttribute("style", rowStyle, null);
-                    }
-
-                    for (UIComponent headerRowChild : headerRow.getChildren()) {
-                        if (headerRowChild.isRendered() && headerRowChild instanceof Column) {
-                            encodeColumnHeader(context, tt, (Column) headerRowChild);
+                        writer.startElement("tr", null);
+                        writer.writeAttribute("role", "row", null);
+                        if (rowClass != null) {
+                            writer.writeAttribute("class", rowClass, null);
                         }
-                    }
+                        if (rowStyle != null) {
+                            writer.writeAttribute("style", rowStyle, null);
+                        }
 
-                    writer.endElement("tr");
+                        for (UIComponent headerRowChild : headerRow.getChildren()) {
+                            if (headerRowChild.isRendered()) {
+                                if (headerRowChild instanceof Column) {
+                                    encodeColumnHeader(context, tt, (Column) headerRowChild);
+                                }
+                                else if (headerRowChild instanceof Columns) {
+                                    List<DynamicColumn> dynamicColumns = ((Columns) headerRowChild).getDynamicColumns();
+                                    for (DynamicColumn dynaColumn : dynamicColumns) {
+                                        dynaColumn.applyModel();
+                                        encodeColumnHeader(context, tt, dynaColumn);
+                                    }
+                                }
+                                else {
+                                    headerRowChild.encodeAll(context);
+                                }
+                            }
+                        }
+
+                        writer.endElement("tr");
+                    }
+                    else {
+                        child.encodeAll(context);
+                    }
                 }
             }
+
+            context.getAttributes().remove(Constants.HELPER_RENDERER);
         }
         else {
             writer.startElement("tr", null);
@@ -678,7 +700,7 @@ public class TreeTableRenderer extends DataRenderer {
         }
     }
 
-    protected void encodeColumnHeader(FacesContext context, TreeTable tt, UIColumn column) throws IOException {
+    public void encodeColumnHeader(FacesContext context, TreeTable tt, UIColumn column) throws IOException {
         if (!column.isRendered()) {
             return;
         }
@@ -868,35 +890,62 @@ public class TreeTableRenderer extends DataRenderer {
     protected void encodeTfoot(FacesContext context, TreeTable tt) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         ColumnGroup group = tt.getColumnGroup("footer");
+        boolean hasFooterColumn = tt.hasFooterColumn();
+        boolean shouldRenderFooter = (hasFooterColumn || group != null);
+
+        if (!shouldRenderFooter) {
+            return;
+        }
 
         writer.startElement("tfoot", null);
 
         if (group != null && group.isRendered()) {
+            context.getAttributes().put(Constants.HELPER_RENDERER, "columnGroupForTreeTable");
+
             for (UIComponent child : group.getChildren()) {
-                if (child.isRendered() && child instanceof Row) {
-                    Row footerRow = (Row) child;
-                    String rowClass = footerRow.getStyleClass();
-                    String rowStyle = footerRow.getStyle();
+                if (child.isRendered()) {
+                    if (child instanceof Row) {
+                        Row footerRow = (Row) child;
+                        String rowClass = footerRow.getStyleClass();
+                        String rowStyle = footerRow.getStyle();
 
-                    writer.startElement("tr", null);
-                    if (rowClass != null) {
-                        writer.writeAttribute("class", rowClass, null);
-                    }
-                    if (rowStyle != null) {
-                        writer.writeAttribute("style", rowStyle, null);
-                    }
-
-                    for (UIComponent footerRowChild : footerRow.getChildren()) {
-                        if (footerRowChild.isRendered() && footerRowChild instanceof Column) {
-                            encodeColumnFooter(context, tt, (Column) footerRowChild);
+                        writer.startElement("tr", null);
+                        if (rowClass != null) {
+                            writer.writeAttribute("class", rowClass, null);
                         }
-                    }
+                        if (rowStyle != null) {
+                            writer.writeAttribute("style", rowStyle, null);
+                        }
 
-                    writer.endElement("tr");
+                        for (UIComponent footerRowChild : footerRow.getChildren()) {
+                            if (footerRowChild.isRendered()) {
+                                if (footerRowChild instanceof Column) {
+                                    encodeColumnFooter(context, tt, (Column) footerRowChild);
+                                }
+                                else if (footerRowChild instanceof Columns) {
+                                    List<DynamicColumn> dynamicColumns = ((Columns) footerRowChild).getDynamicColumns();
+                                    for (DynamicColumn dynaColumn : dynamicColumns) {
+                                        dynaColumn.applyModel();
+                                        encodeColumnFooter(context, tt, dynaColumn);
+                                    }
+                                }
+                                else {
+                                    footerRowChild.encodeAll(context);
+                                }
+                            }
+                        }
+
+                        writer.endElement("tr");
+                    }
+                    else {
+                        child.encodeAll(context);
+                    }
                 }
             }
+
+            context.getAttributes().remove(Constants.HELPER_RENDERER);
         }
-        else if (tt.hasFooterColumn()) {
+        else if (hasFooterColumn) {
             writer.startElement("tr", null);
 
             List<UIColumn> columns = tt.getColumns();
@@ -920,7 +969,7 @@ public class TreeTableRenderer extends DataRenderer {
         writer.endElement("tfoot");
     }
 
-    protected void encodeColumnFooter(FacesContext context, TreeTable table, UIColumn column) throws IOException {
+    public void encodeColumnFooter(FacesContext context, TreeTable table, UIColumn column) throws IOException {
         if (!column.isRendered()) {
             return;
         }
