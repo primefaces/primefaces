@@ -7,6 +7,18 @@
   - [Configuration](/gettingstarted/configuration.md)
   - [Hello World](/gettingstarted/helloworld.md)
 
+- Core
+
+    - [JavaScript API](/javascriptApi.md)
+    - [Dialog Framework](/dialogframework.md)
+    - [Client Side Validation](/clientsidevalidation.md)
+    - [Misc](/misc.md)
+    - [Partial Rendering](/partial/rendering.md)
+    - [Partial Processing](/partial/processing.md)
+    - [Partial Submit](/partial/partialsubmit.md)
+    - [Search Expression](/partial/searchexpression.md)
+    - [Portlets](/portlets.md)
+
 - Components
 
   - [AccordionPanel](/components/accordionpanel.md)
@@ -179,20 +191,3 @@
   - [TriStateCheckbox](/components/tristatecheckbox.md)
   - [Watermark](/components/watermark.md)
   - [Wizard](/components/wizard.md)
-
-- Partial Rendering and Processing
-  
-  - [Partial Rendering](/partial/rendering.md)
-  - [Partial Processing](/partial/processing.md)
-  - [Partial Submit](/partial/partialsubmit.md)
-  - [Search Expression](/partial/searchexpression.md)
-
-- [JavaScript API](/javascriptApi.md)
-
-- [Dialog Framework](/dialogframework.md)
-
-- [Client Side Validation](/clientsidevalidation.md)
-
-- [Misc](/misc.md)
-
-- [Portlets](/portlets.md)
