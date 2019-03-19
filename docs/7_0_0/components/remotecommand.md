@@ -25,8 +25,8 @@ actionListener | null | MethodExpr | An actionlistener that’d be processed in 
 immediate | false | Boolean | Boolean value that determines the phaseId, when true actions are processed at apply_request_values, when false at invoke_application phase.
 name | null | String | Name of the command
 async | false | Boolean | When set to true, ajax requests are not queued.
-process | null | String | Component(s) to process partially instead of whole view.
-update | null | String | Component(s) to update with ajax.
+process | @all | String | Component(s) to process partially instead of whole view.
+update | @none | String | Component(s) to update with ajax.
 onstart | null | String | Javascript handler to execute before ajax request is begins.
 oncomplete | null | String | Javascript handler to execute when ajax request is completed.
 onsuccess | null | String | Javascript handler to execute when ajax request succeeds.

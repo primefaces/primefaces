@@ -22,11 +22,11 @@ rendered | true | Boolean | Boolean value to specify the rendering of the compon
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
 widgetVar | null | String | Name of the client side widget.
 interval | 2 | Integer | Interval in seconds to do periodic ajax requests.
-update | null | String | Component(s) to be updated with ajax.
+process | @all | String | Component id(s) to process partially instead of whole view.
+update | @none | String | Component(s) to be updated with ajax.
 listener | null | MethodExpr | A method expression to invoke by polling.
 immediate | false | Boolean | Boolean value that determines the phaseId, when true actions are processed at apply_request_values, when false at invoke_application phase.
 async | false | Boolean | When set to true, ajax requests are not queued.
-process | null | String | Component id(s) to process partially instead of whole view.
 onstart | null | String | Javascript handler to execute before ajax request is begins.
 oncomplete | null | String | Javascript handler to execute when ajax request is completed.
 onsuccess | null | String | Javascript handler to execute when ajax request succeeds.

@@ -31,8 +31,8 @@ powered rich solution with graceful degradation for legacy browsers.
 | converterMessage | null | String | Message to be displayed when conversion fails.
 | validatorMessage | null | String | Message to be displayed when validation fails.
 | widgetVar | null | String | Name of the client side widget.
-| update | null | String | Component(s) to update after fileupload completes.
-| process | null | String | Component(s) to process in fileupload request.
+| update | @none | String | Component(s) to update after fileupload completes.
+| process | @all | String | Component(s) to process in fileupload request.
 | fileUploadListener | null | MethodExpr | Method to invoke when a file is uploaded.
 | multiple | false | Boolean | Allows choosing of multi file uploads from native file browse dialog
 | auto | false | Boolean | When set to true, selecting a file starts the upload process implicitly.

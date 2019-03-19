@@ -29,8 +29,8 @@ style | null | String | Style of the menuitem label
 styleClass | null | String | StyleClass of the menuitem label
 onclick | null | String | Javascript event handler for click event
 async | false | Boolean | When set to true, ajax requests are not queued.
-process | null | String | Components to process partially instead of whole view.
-update | null | String | Components to update after ajax request.
+process | @all | String | Components to process partially instead of whole view.
+update | @none | String | Components to update after ajax request.
 disabled | false | Boolean | Disables the menuitem.
 onstart | null | String | Javascript handler to execute before ajax request is begins.
 oncomplete | null | String | Javascript handler to execute when ajax request is completed.
