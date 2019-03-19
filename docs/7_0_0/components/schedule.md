@@ -22,7 +22,7 @@ rendered | true | Boolean | Boolean value to specify the rendering of the compon
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 widgetVar | null | String | Name of the client side widget.
 value | null | Object | An org.primefaces.model.ScheduleModel instance representing the backed model
-locale | null | Object | Locale for localization, can be \| String \| or a java.util.Locale instance
+locale | null | Object | Locale for localization, can be String or a java.util.Locale instance
 aspectRatio | null | Float | Ratio of calendar width to height, higher the value shorter the height is
 view | month | String | The view type to use, possible values are 'month', 'agendaDay', 'agendaWeek', 'basicWeek', 'basicDay'
 initialDate | null | Object | The initial date that is used when schedule loads. If ommitted, the schedule starts on the current date
