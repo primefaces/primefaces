@@ -114,6 +114,7 @@ with commandButton would be;
 Conditional UI update is quite common where different parts of the page need to be updated based
 on a dynamic condition. In this case, it is not efficient to use declarative update and defined all
 update areas since this will cause unnecessary updates.
+
 There may be cases where you need to define which component(s) to update at runtime rather than specifying it declaratively
  _update_ method is added to handle this case. In example below, button actionListener decides which part of the page to update on-the-fly.
 
