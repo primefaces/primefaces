@@ -1,4 +1,4 @@
-# Link
+# LinkButton
 
 LinkButton a simple link, which is styled as a button and integrated with JSF navigation model.
 
