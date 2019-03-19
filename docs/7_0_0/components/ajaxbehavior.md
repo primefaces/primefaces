@@ -19,10 +19,10 @@ AjaxBehavior is an extension to standard f:ajax.
 | async | false | Boolean | When set to true, ajax requests are not queued. |
 | process | null | String | Component(s) to process in partial request. |
 | update | null | String | Component(s) to update with ajax. |
-| onstart | null | String | Callback to execute before ajax request is begins. |
-| oncomplete | null | String | Callback to execute when ajax request is completed. |
-| onsuccess | null | String | Callback to execute when ajax request succeeds. |
-| onerror | null | String | Callback to execute when ajax request fails. |
+| onstart | null | String | Client-side javascript callback to execute before ajax request is begins. |
+| oncomplete | null | String | Client-side javascript callback to execute when ajax request is completed. |
+| onsuccess | null | String | Client-side javascript callback to execute when ajax request succeeds. |
+| onerror | null | String | Client-side javascript callback to execute when ajax request fails. |
 | global | true | Boolean | Global ajax requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus. |
 | delay | null | String | If less than delay milliseconds elapses between calls to request() only the most recent one is sent and all other requests are discarded. If this option is not specified, or if the value of delay is the literal string 'none' without the quotes, no delay is used. |
 | partialSubmit | false | Boolean | Enables serialization of values belonging to the partially processed components only. |
