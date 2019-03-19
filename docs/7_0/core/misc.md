@@ -3,7 +3,7 @@
 ## PrimeFaces.current()
 
 PrimeFaces.current() is a simple utility that provides useful goodies such as adding parameters to
-ajax callback functions. PrimeFaces.current() is available in both ajax and non-ajax requests. Scope
+ajax callback functions. It's available in both ajax and non-ajax requests. Scope
 of the instance is thread local.
 
 Instance can be obtained similarly to the FacesContext or CDI.
@@ -19,13 +19,13 @@ executeScript(String script) | Executes script after ajax request completes or o
 isAjaxRequest() | Returns a boolean value if current request is a PrimeFaces ajax request.
 scrollTo(String clientId) | Scrolls to the component with given clientId after ajax request completes.
 focus(String expression) | Focus the input(s) targeted by the given search expression.
-resetInputs(Collection<String>|String... expressions) | Resets all UIInput targeted by the search expression(s).
+resetInputs(Collection<String>/String... expressions) | Resets all UIInput targeted by the search expression(s).
 clearTableStates() | Removes the multiViewState for all DataTables within the current session.
 clearTableState(String key) | Removes the multiViewState for DataTable with the defined key.
 clearDataListStates() | Removes the multiViewState for all DataList within the current session.
 clearDataListState(String key) | Removes the multiViewState for DataList with the defined key.
 ajax().addCallBackParam(String name, Object value) | Adds parameters to ajax callbacks like oncomplete.
-ajax().update(Collection<String>|String... expressions); | Specifies component(s) to update at runtime.
+ajax().update(Collection<String>/String... expressions); | Specifies component(s) to update at runtime.
 
 
 **Callback Parameters**
