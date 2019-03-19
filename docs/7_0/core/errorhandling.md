@@ -66,7 +66,7 @@ In error page, exception metadata is accessed using EL;
 <h:outputText value="#{pfExceptionHandler.formattedStackTrace}" escape="false" />
 ```
 
-## Ajax Exception Handler Component
+## AjaxExceptionHandler Component
 
 A specialized exception handler component provides a way to execute callbacks on client side,
 update other components on the same page. This is quite useful in case you don't want to create a
@@ -85,6 +85,6 @@ included in every page. Refer to component documentation of p:ajaxExceptionHandl
 available attributes.
 
 ## Render Response Exceptions
-To support exception handling in the _RENDER_RESPONSE_ phase, it's required to set the
-_javax.faces.FACELETS_BUFFER_SIZE_ parameter. Otherwise you will probably see a
+To support exception handling in the _RENDER\_RESPONSE_ phase, it's required to set the
+_javax.faces.FACELETS\_BUFFER\_SIZE_ parameter. Otherwise you will probably see a
 ServletException with "Response already committed" message.
