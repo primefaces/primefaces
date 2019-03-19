@@ -30,9 +30,9 @@ AjaxStatus is a global notifier for ajax requests.
 
 ## Getting Started with AjaxStatus
 AjaxStatus uses facets to represent the request status. Most common used facets are _start_ and
-_complete._ Start facet will be visible once ajax request begins and stay visible until it’s completed.
-Once the ajax response is received and page is updated, start facet gets hidden and complete facet
-shows up.
+_complete_ The _start_ facet will be visible once ajax request begins and stay visible until it’s completed.
+Once the ajax response is received and page is updated, _start_ facet gets hidden and _complete_ facet
+shows up. **NOTE:** If a _complete_ facet is defined, the user will never see the _error_ or _success_ facets.
 
 ```xhtml
 <p:ajaxStatus>
@@ -47,11 +47,11 @@ shows up.
 ## Events
 Here is the full list of available event names;
 
-**default** : Initially visible when page is loaded.
-**start** : Before ajax request begins.
-**success** : When ajax response is received without error.
-**error** : When ajax response is received with an http error.
-**complete** : When everything finishes.
+- **default** : Initially visible when page is loaded.
+- **start** : Before ajax request begins.
+- **success** : When ajax response is received without error.
+- **error** : When ajax response is received with an http error.
+- **complete** : When everything finishes.
 
 ```xhtml
 <p:ajaxStatus>
@@ -108,3 +108,4 @@ which contains the facets.
 - Provide a fixed width/height to an inline ajaxStatus to prevent page layout from changing.
 - Components like commandButton has an attribute ( _global)_ to control triggering of AjaxStatus.
 - AjaxStatus also supports core JSF ajax requests of f:ajax as well.
+- If a _complete_ facet is defined, the user will never see the _error_ or _success_ facets.
