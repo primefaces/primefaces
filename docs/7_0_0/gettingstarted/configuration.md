@@ -14,8 +14,6 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 | Name | Default | Description |
 | --- | --- | --- |
 | THEME | omega | Theme of the application. |
-| mobile.THEME | null | Theme of the mobile application. |
-| PUSH_SERVER_URL | null | Custom server url for PrimeFaces Push. |
 | SUBMIT | full | Defines ajax submit mode, full or partial. |
 | DIR | ltr | Defines orientation, ltr or rtl. |
 | RESET_VALUES | false | When enabled, ajax updated inputs are reset. |
@@ -24,5 +22,5 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 | TRANSFORM_METADATA | false | Transforms bean validation metadata to html attributes. |
 | LEGACY_WIDGET_NAMESPACE | false | Enables window scope so that widgets can be accessed using widgetVar.method() in addition to default PF namespace approach like PF('widgetVar').method(). |
 | FONT_AWESOME | false | Enabled font-awesome icons. |
-| INTERPOLATE_CLIENT_SIDE_ VALIDATION_MESSAGES | false | Whether to load the CSV messages from server. |
-|  MOVE_SCRIPTS_TO_BOTTOM | false | Moves all inline scripts to end of body tag for better performance and smaller html output. |
+| INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES | false | Whether to load the CSV messages from server. |
+| MOVE_SCRIPTS_TO_BOTTOM | false | Moves all inline scripts to end of body tag for better performance and smaller html output. |
