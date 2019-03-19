@@ -1,11 +1,9 @@
 # Error handling
 
-## Exception Handler
-
 PrimeFaces provides a built-in exception handler to take care of exceptions in ajax and non-ajax
 requests easily.
 
-**Configuration**
+## Configuration
 
 ExceptionHandler and an ElResolver configured is required in faces configuration file.
 
@@ -21,7 +19,8 @@ ExceptionHandler and an ElResolver configured is required in faces configuration
     </exception-handler-factory>
 </factory>
 ```
-**Error Pages**
+
+## Error Pages
 
 ExceptionHandler is integrated with error-page mechanism of Servlet API. At application startup,
 PrimeFaces parses the error pages and uses this information to find the appropriate page to redirect
@@ -47,7 +46,7 @@ exceptions and a special page for ViewExpiredException type.
 </web-app>
 ```
 
-**Exception Information**
+## Exception Information
 
 In the error page, information about the exception is provided via the pfExceptionHandler EL
 keyword. Here is the list of exposed properties.
@@ -66,7 +65,8 @@ In error page, exception metadata is accessed using EL;
 <h:outputText value="Message:#{pfExceptionHandler.message}" />
 <h:outputText value="#{pfExceptionHandler.formattedStackTrace}" escape="false" />
 ```
-**Ajax Exception Handler Component**
+
+## Ajax Exception Handler Component
 
 A specialized exception handler component provides a way to execute callbacks on client side,
 update other components on the same page. This is quite useful in case you don't want to create a
@@ -84,7 +84,7 @@ Ideal location for p:ajaxExceptionHandler component is the facelets template so 
 included in every page. Refer to component documentation of p:ajaxExceptionHandler for the
 available attributes.
 
-**Render Response Exceptions**
+## Render Response Exceptions
 To support exception handling in the _RENDER_RESPONSE_ phase, it's required to set the
 _javax.faces.FACELETS_BUFFER_SIZE_ parameter. Otherwise you will probably see a
 ServletException with "Response already committed" message.
