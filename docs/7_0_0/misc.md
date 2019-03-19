@@ -52,7 +52,7 @@ primitive values. Following example sends a pojo called _User_ that has properti
 lastname to the client in addition to _isValid_ boolean value.
 
 ```java
-￼public void validate() {
+public void validate() {
     //isValid = calculate isValid
     PrimeFaces instance = PrimeFaces.current();
     instance.addCallbackParam("isValid", true or false);
@@ -301,7 +301,7 @@ support another locale, settings should be extended with the new information.
 A wiki page is available for user contributed settings, the list is community driven and a good
 starting point although it might be incomplete.
 
-https://code.google.com/p/primefaces/wiki/PrimeFacesLocales
+https://github.com/primefaces/primefaces/wiki/Locales
 
 **Default Locale**
 Here is the list of all key-value pairs for en_US locale that is provided by PrimeFaces. DateTime
