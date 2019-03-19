@@ -74,31 +74,7 @@ public void validate() {
 ```
 By default _validationFailed_ callback parameter is added implicitly if validation fails.
 
-**Runtime Updates**
 
-Conditional UI update is quite common where different parts of the page need to be updated based
-on a dynamic condition. In this case, it is not efficient to use declarative update and defined all
-update areas since this will cause unnecessary updates.There may be cases where you need to define
-which component(s) to update at runtime rather than specifying it declaratively. _update_ method is
-added to handle this case. In example below, button actionListener decides which part of the page to
-update on-the-fly.
-
-```xhtml
-<p:commandButton value="Save" actionListener="#{bean.save}" />
-<p:panel id="panel"> ... </p:panel>
-<p:dataTable id="table"> ... </p:panel>
-```
-```java
-public void save() {
-    //boolean outcome = ...
-    if(outcome)
-        PrimeFaces.current().ajax().update("panel");
-    else
-        PrimeFaces.current().ajax().update("table");
-}
-```
-When the save button is clicked, depending on the outcome, you can either configure the datatable
-or the panel to be updated with ajax response.
 
 **Execute Javascript**
 
@@ -158,49 +134,6 @@ userPrincipal() | Returns the principal instance of the logged in user.
 <p:commandButton rendered="#{p:ifGranted('ROLE_ADMIN')}" />
 <h:inputText disabled="#{p:ifGranted('ROLE_GUEST')}" />
 <p:inputMask rendered="#{p:ifAllGranted('ROLE_EDITOR, ROLE_READER')}" />
-```
-
-## BeanValidation Transformation
-
-Since JavaEE 6, validation metadata is already available for many components via the value
-reference and BeanValidation (e.g. @NotNull, @Size). The JSF Implementations use this
-information for server side validation and PrimeFaces enhances this feature with client side
-validation framework.
-
-PrimeFaces makes use of these metadata by transforming them to component and html attributes.
-For example sometimes it’s required to manually maintain the required or maxlength attribute for
-input components. The required attribute also controls the behavior of p:outputLabel to show or
-hide the required indicator (*) whereas the _maxlength_ attribute is used to limit the characters on
-input fields. BeanValidation transformation features enables avoiding manually maintaining these
-attributes anymore by implicility handling them behind the scenes.
-
-**Configuration**
-To start with, transformation should be enabled.
-
-```xml
-<context-param>;
-    <param-name>primefaces.TRANSFORM_METADATA</param-name>
-    <param-value>true</param-value>
-</context-param>
-```
-**Usage**
-Define constraints at bean level.
-
-```java
-@NotNull
-@Max(30)
-private String firstname;
-```
-Component at view does not have any constraints;
-
-```xhtml
-<p:inputText value="#{bean.firstname}" />
-```
-Final output has html maxlength attribute generated from the @Max annotation, also the component
-instance has required enabled.
-
-```xhtml
-<input type="text" maxlength="30" ... />
 ```
 
 ## PrimeFaces Locales

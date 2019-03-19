@@ -108,9 +108,28 @@ with commandButton would be;
 <p:commandButton value="Silent" global="false" />
 <p:commandButton value="Notify" global="true" />
 ```
-## Bits&Pieces
 
-**PrimeFaces Ajax Javascript API**
+## Dynamic/Runtime Updates
 
-See the javascript section to learn more about the PrimeFaces Javascript Ajax API.
+Conditional UI update is quite common where different parts of the page need to be updated based
+on a dynamic condition. In this case, it is not efficient to use declarative update and defined all
+update areas since this will cause unnecessary updates.
+There may be cases where you need to define which component(s) to update at runtime rather than specifying it declaratively
+ _update_ method is added to handle this case. In example below, button actionListener decides which part of the page to update on-the-fly.
 
+```xhtml
+<p:commandButton value="Save" actionListener="#{bean.save}" />
+<p:panel id="panel"> ... </p:panel>
+<p:dataTable id="table"> ... </p:panel>
+```
+```java
+public void save() {
+    //boolean outcome = ...
+    if(outcome)
+        PrimeFaces.current().ajax().update("panel");
+    else
+        PrimeFaces.current().ajax().update("table");
+}
+```
+When the save button is clicked, depending on the outcome, you can either configure the datatable
+or the panel to be updated with AJAX response.

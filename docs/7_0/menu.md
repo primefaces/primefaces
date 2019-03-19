@@ -14,13 +14,14 @@
   - [Dialog Framework](/core/dialogframework.md)
   - [Error handling](/core/errorhandling.md.md)
   - [JavaScript API](/core/javascriptApi.md)
+  - [BeanValidation Transformation](/core/beanvalidationtransformation.md)
   - [Portlets](/core/portlets.md)
   - [Misc](/core/misc.md)
 
 - AJAX
 
-  - [Partial Rendering](/ajax/rendering.md)
-  - [Partial Processing](/ajax/processing.md)
+  - [Partial Render / Update](/ajax/rendering.md)
+  - [Partial Execute / Process](/ajax/processing.md)
   - [Partial Submit](/ajax/partialsubmit.md)
   - [JavaScript API](/ajax/javascriptApi.md)
 
