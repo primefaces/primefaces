@@ -290,7 +290,8 @@ To display a link when there are too many events on a slot, use _setEventLimit(t
 
 ## Extender Method
 If the schedule component lacking functions/options that are provided by the full calendar, 
-they can be used by the extender function.
+they can be used by the extender function. For more details about the configuration of full calender
+look at their documentation.
 ```xhtml
 <h:form>
     <p:schedule value="#{scheduleBean.model}" extender="initSchedule"/>
@@ -320,6 +321,16 @@ they can be used by the extender function.
                     LLLL: "dddd, D. MMMM YYYY HH:mm"
                 }
             });
+            // Callback :: eventRender
+            this.cfg.eventRender = function (event, element, view) {
+                // show title of background events 
+                if (event.rendering === 'background' && event.title !== 'null') {
+                    element.append(event.title);
+                }
+                if (event.rendering !== 'background') {
+                    element.attr('title', event.title);
+                }
+            };
     </h:outputScript>
 </h:form>
 ``` 
