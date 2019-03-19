@@ -258,7 +258,17 @@ public class UIData extends javax.faces.component.UIData {
         String rowsPerPageTemplate = data.getRowsPerPageTemplate();
 
         if (rowsPerPageTemplate != null) {
-            return Arrays.asList(rowsPerPageTemplate.split("[,\\s]+")).contains(rowsParam);
+            String[] options = rowsPerPageTemplate.split("[,]+");
+
+            for (String option : options) {
+                String opt = option.trim();
+
+                if (opt.equals(rowsParam) || (opt.startsWith("{ShowAll|") && Integer.toString(getRowCount()).equals(rowsParam))) {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         int rows = data.getRows();

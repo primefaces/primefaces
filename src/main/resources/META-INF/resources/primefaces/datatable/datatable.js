@@ -1074,6 +1074,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var header = $(this);
             header.attr('id', header.attr('id') + '_clone');
             $(this).children().not('.ui-column-title').remove();
+            $(this).children('.ui-column-title').children().remove();
         });
         this.theadClone.removeAttr('id').addClass('ui-datatable-scrollable-theadclone').height(0).prependTo(this.bodyTable);
 
@@ -1545,9 +1546,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 if($this.cfg.virtualScroll) {
-                    $this.bodyTable.css('top', '0px');
-                    $this.scrollBody.scrollTop(0);
-                    $this.clearScrollState();
+                    $this.resetVirtualScrollBody();
                 }
                 else if($this.cfg.liveScroll) {
                     $this.scrollOffset = 0;
@@ -1654,9 +1653,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             scrollLimit = 1;
                         }
 
-                        $this.bodyTable.css('top', '0px');
-                        $this.scrollBody.scrollTop(0);
-                        $this.clearScrollState();
+                        $this.resetVirtualScrollBody();
 
                         $this.rowHeight = row.outerHeight();
                         $this.scrollBody.children('div').css({'height': parseFloat((scrollLimit * $this.rowHeight + 1) + 'px')});
@@ -3878,6 +3875,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 col.removeClass('ui-helper-hidden');
             }
         }
+    },
+    
+    resetVirtualScrollBody: function() {
+        this.bodyTable.css('top', '0px');
+        this.scrollBody.scrollTop(0);
+        this.clearScrollState();
     }
 
 });
@@ -4028,6 +4031,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             var header = $(this);
             header.attr('id', header.attr('id') + '_clone');
             $(this).children().not('.ui-column-title').remove();
+            $(this).children('.ui-column-title').children().remove();
         });
         this.frozenTheadClone.removeAttr('id').addClass('ui-datatable-scrollable-theadclone').height(0).prependTo(this.frozenBodyTable);
 
@@ -4036,6 +4040,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             var header = $(this);
             header.attr('id', header.attr('id') + '_clone');
             $(this).children().not('.ui-column-title').remove();
+            $(this).children('.ui-column-title').children().remove();
         });
         this.scrollTheadClone.removeAttr('id').addClass('ui-datatable-scrollable-theadclone').height(0).prependTo(this.scrollBodyTable);
     },
@@ -4490,6 +4495,15 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         });
 
         this.orderStateHolder.val(columnIds.join(','));
+    },
+    
+    //Override
+    resetVirtualScrollBody: function() {
+        this.scrollBodyTable.css('top', '0px');
+        this.frozenBodyTable.css('top', '0px');
+        this.scrollBody.scrollTop(0);
+        this.frozenBody.scrollTop(0);
+        this.clearScrollState();
     }
 
 });

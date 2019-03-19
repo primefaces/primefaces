@@ -31,13 +31,14 @@ import org.junit.Test;
 import org.primefaces.mock.FacesContextMock;
 
 import static org.junit.Assert.*;
+import org.primefaces.config.PrimeEnvironment;
 import org.primefaces.mock.pf.PrimeConfigurationMock;
 
 public class WidgetBuilderTest {
 
     protected WidgetBuilder getWidgetBuilder(CollectingResponseWriter writer) {
         FacesContext context = new FacesContextMock(writer);
-        return new WidgetBuilder(context, new PrimeConfigurationMock(context));
+        return new WidgetBuilder(context, new PrimeConfigurationMock(context, new PrimeEnvironment(context)));
     }
 
     @Test
@@ -58,7 +59,7 @@ public class WidgetBuilderTest {
         CollectingResponseWriter writer = new CollectingResponseWriter();
 
         FacesContext context = new FacesContextMock(writer);
-        PrimeConfigurationMock config = new PrimeConfigurationMock(context);
+        PrimeConfigurationMock config = new PrimeConfigurationMock(context, new PrimeEnvironment(context));
         config.setMoveScriptsToBottom(true);
         WidgetBuilder builder = new WidgetBuilder(context, config);
 

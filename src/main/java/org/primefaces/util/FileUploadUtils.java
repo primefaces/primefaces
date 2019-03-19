@@ -95,7 +95,7 @@ public class FileUploadUtils {
     }
 
     public static String getValidFilePath(String filePath) throws ValidationException {
-        if (filePath == null || filePath.trim().equals("")) {
+        if (LangUtils.isValueBlank(filePath)) {
             throw new FacesException("Path can not be the empty string or null");
         }
 
@@ -164,6 +164,20 @@ public class FileUploadUtils {
             //We use rhino or nashorn javascript engine bundled with java to re-evaluate javascript regex that cannot be easily translated to java regex
             //TODO If at some day nashorn will not be bundled with java (http://openjdk.java.net/jeps/335), we have to put some notes in the user guide
             ScriptEngine engine = new ScriptEngineManager().getEngineByName("javascript");
+
+            if (engine == null) {
+
+                // Attempt to use the default extension loader to obtain the engine for environments where the
+                // JavaScript ScriptEngine isn't available via the Thread.currentThread().getContextClassLoader()
+                // (such as Liferay).
+                engine = new ScriptEngineManager(null).getEngineByName("javascript");
+            }
+
+            if (engine == null) {
+                throw new ScriptException(new NullPointerException(
+                    "JavaScript ScriptEngine not available via the context ClassLoader or the extension ClassLoader."));
+            }
+
             String evalJs = String.format("%s.test(\"%s\")", fileNameRegex, EscapeUtils.forJavaScriptAttribute(fileName));
             if (!Boolean.TRUE.equals(engine.eval(evalJs))) {
                 if (LOGGER.isLoggable(Level.FINE)) {

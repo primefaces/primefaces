@@ -259,13 +259,12 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
     updatePageLinks: function() {
         var start, end, delta,
         focusedElement = $(document.activeElement),
-        focusContainer, tabindex;
+        focusContainer;
 
         if(focusedElement.hasClass('ui-paginator-page')) {
             var pagesContainerIndex = this.pagesContainer.index(focusedElement.parent());
             if(pagesContainerIndex >= 0) {
                 focusContainer = this.pagesContainer.eq(pagesContainerIndex);
-                tabindex = focusedElement.index();
             }
         }
 
@@ -295,7 +294,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         }
 
         if(focusContainer) {
-            focusContainer.children().eq(tabindex).trigger('focus');
+            focusContainer.children().filter('.ui-state-active').trigger('focus');
         }
 
         this.bindPageLinkEvents();

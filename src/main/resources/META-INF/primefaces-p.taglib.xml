@@ -167,6 +167,12 @@
             <required>false</required>
             <type>java.lang.Object</type>
         </attribute>
+        <attribute>
+            <description>OnTableRender to be used to set the options of exported table.</description>
+            <name>onTableRender</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+        </attribute>
     </tag>
 
     <tag>
@@ -1945,7 +1951,9 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>Position of the items in the tabbing order. Default is 0.</description>
+            <description>
+                <![CDATA[Position of the items in the tabbing order. Default is 0.]]>
+            </description>
             <name>tabindex</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -21244,6 +21252,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Placeholder text to show when filter input is empty.]]>
+            </description>
+            <name>filterPlaceholder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -26452,11 +26468,11 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[ToggleSwitch is used to select a boolean value.]]>
         </description>
         <tag-name>toggleSwitch</tag-name>
         <component>
-            <component-type>org.primefaces.ToggleSwitch</component-type>
+            <component-type>org.primefaces.component.ToggleSwitch</component-type>
             <renderer-type>org.primefaces.component.ToggleSwitchRenderer</renderer-type>
         </component>
         <attribute>
@@ -29324,6 +29340,22 @@
             <name>disabledDays</name>
             <required>false</required>
             <type>java.util.List</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Callback to invoke when a month is changed using the navigators.]]>
+            </description>
+            <name>onMonthChange</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Callback to invoke when a year is changed using the navigators.]]>
+            </description>
+            <name>onYearChange</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
 </facelet-taglib>

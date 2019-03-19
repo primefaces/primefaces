@@ -28,7 +28,7 @@ import java.util.Locale;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
+import org.primefaces.util.LocaleUtils;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -83,7 +83,7 @@ public class InputNumber extends InputNumberBase {
     private String getCalculatedDecimalSepartor() {
         String decimalSeparator = (String) getStateHelper().eval("decimalSeparator", null);
         if (decimalSeparator == null) {
-            Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+            Locale locale = LocaleUtils.getCurrentLocale(getFacesContext());
             DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(locale);
             decimalSeparator = Character.toString(decimalFormatSymbols.getDecimalSeparator());
         }
@@ -93,7 +93,7 @@ public class InputNumber extends InputNumberBase {
     private String getCalculatedThousandSeparator() {
         String thousandSeparator = (String) getStateHelper().eval("thousandSeparator", null);
         if (thousandSeparator == null) {
-            Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+            Locale locale = LocaleUtils.getCurrentLocale(getFacesContext());
             DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(locale);
             thousandSeparator = Character.toString(decimalFormatSymbols.getGroupingSeparator());
         }

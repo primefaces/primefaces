@@ -105,4 +105,24 @@ public class LocaleUtils {
         return result;
     }
 
+    public static Locale getCurrentLocale(FacesContext context) {
+        Locale locale = null;
+
+        if (context != null && context.getViewRoot() != null) {
+            locale = context.getViewRoot().getLocale();
+
+            if (locale == null) {
+                locale = Locale.getDefault();
+            }
+        }
+        else {
+            locale = Locale.getDefault();
+        }
+
+        return locale;
+    }
+
+    public static Locale getCurrentLocale() {
+        return getCurrentLocale(FacesContext.getCurrentInstance());
+    }
 }

@@ -159,9 +159,8 @@ public class ChartRenderer extends CoreRenderer {
             }
             hasComma = false;
 
-            writer.write("\"scales\":{");
-
             if (scales instanceof CartesianScales) {
+                writer.write("\"scales\":{");
                 CartesianScales cScales = (CartesianScales) scales;
                 List<CartesianAxes> xAxes = cScales.getXAxes();
                 if (xAxes != null && !xAxes.isEmpty()) {
@@ -176,8 +175,11 @@ public class ChartRenderer extends CoreRenderer {
                     }
                     encodeAxes(context, chartName, "yAxes", yAxes);
                 }
+
+                writer.write("}");
             }
             else if (scales instanceof RadialScales) {
+                writer.write("\"scale\":{");
                 RadialScales rScales = (RadialScales) scales;
                 String preString;
                 if (rScales.getAngelLines() != null) {
@@ -201,9 +203,9 @@ public class ChartRenderer extends CoreRenderer {
                     preString = hasComma ? "," : "";
                     writer.write(preString + "\"ticks\":" + rScales.getTicks().encode());
                 }
-            }
 
-            writer.write("}");
+                writer.write("}");
+            }
         }
     }
 
