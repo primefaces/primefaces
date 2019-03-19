@@ -9,15 +9,20 @@
 
 - Core
 
-    - [JavaScript API](/core/javascriptApi.md)
-    - [Dialog Framework](/core/dialogframework.md)
-    - [Client Side Validation](/core/clientsidevalidation.md)
-    - [Misc](/core/misc.md)
-    - [Partial Rendering](/core/rendering.md)
-    - [Partial Processing](/core/processing.md)
-    - [Partial Submit](/core/partialsubmit.md)
-    - [Search Expression](/core/searchexpression.md)
-    - [Portlets](/core/portlets.md)
+  - [Search Expression](/core/searchexpression.md)
+  - [Client Side Validation](/core/clientsidevalidation.md)  
+  - [Dialog Framework](/core/dialogframework.md)
+  - [Error handling](/core/errorhandling.md.md)
+  - [JavaScript API](/core/javascriptApi.md)
+  - [Portlets](/core/portlets.md)
+  - [Misc](/core/misc.md)
+
+- AJAX
+
+  - [Partial Rendering](/ajax/rendering.md)
+  - [Partial Processing](/ajax/processing.md)
+  - [Partial Submit](/ajax/partialsubmit.md)
+  - [JavaScript API](/ajax/javascriptApi.md)
 
 - Components
 
