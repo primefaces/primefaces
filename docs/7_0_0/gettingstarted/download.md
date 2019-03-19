@@ -16,6 +16,6 @@ Group id is _org.primefaces_ and artifact id is _primefaces._
 <dependency>
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
-    <version>6.2</version>
+    <version>7.0</version>
 </dependency>
 ```
