@@ -1,16 +1,9 @@
-# Javascript API
+# AJAX Javascript API
 
-**_PrimeFaces.ajax.*_**
+PrimeFaces AJAX Javascript API is powered by jQuery and optimized for JSF.
+The whole API consists of three properly namespaced simple javascript functions.
 
-PrimeFaces.ajax namespace contains the ajax API which is described in next section.
-
-
-## Ajax API
-
-PrimeFaces Ajax Javascript API is powered by jQuery and optimized for JSF. Whole API consists
-of three properly namespaced simple javascript functions.
-
-**PrimeFaces.ajax.Request**
+## PrimeFaces.ajax.Request
 Sends ajax requests that execute JSF lifecycle and retrieve partial output. Function signature is as
 follows;
 
@@ -35,7 +28,7 @@ onerror(xhr, status, error) | Javascript callback to process when ajax request f
 oncomplete(xhr, status, args) | Javascript callback to process when ajax request completes. Takes three arguments, xmlhttprequest, status string and optional arguments provided by PrimeFaces.current() API.
 
 
-**Examples**
+### Examples
 Suppose you have a JSF page called _createUser_ with a simple form and some input components.
 
 ```xhtml
@@ -68,14 +61,15 @@ PrimeFaces.ajax.Request.handle({
     oncomplete:function(xhr, status) {alert('Done');}
 });
 ```
-We highly recommend using p:remoteComponent instead of low level javascript api as it generates
+
+We highly recommend using p:remoteComponent instead of low level javascript API as it generates
 the same with much less effort and less possibility to do an error.
 
-**PrimeFaces.ajax.Response**
+## PrimeFaces.ajax.Response
 PrimeFaces.ajax.Response.handle() updates the specified components if any and synchronizes the
 client side JSF state. DOM updates are implemented using jQuery which uses a very fast algorithm.
 
-**Abort**
+## Abort
 Use the abort API in case you'd like to cancel all the ongoing requests;
 
 ```js

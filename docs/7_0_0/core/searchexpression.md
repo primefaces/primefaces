@@ -5,6 +5,8 @@ support. PrimeFaces Search Expression Framework (SEF) provides both server side 
 extensions to make it easier to reference components. SEF is utilized in partial update, process and
 whenever a component references another component.
 
+Search Expressions are part of the JSF specs since 2.3.
+
 ## Keywords
 
 Keywords are the easier way to reference components, they resolve to ids so that if an id changes,
@@ -65,6 +67,7 @@ referencing another.
     </p:menu>
 </h:form>
 ```
+
 ## PrimeFaces Selectors (PFS)
 
 PFS integrates jQuery Selector API with JSF component referencing model so that referencing can
