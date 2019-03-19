@@ -84,7 +84,7 @@ public class PieChartRenderer extends ChartRenderer {
         }
 
         if (pieOptions.getCircumference() != null) {
-            writer.write(",\"cutoutPercentage\":" + pieOptions.getCircumference());
+            writer.write(",\"circumference\":" + pieOptions.getCircumference());
         }
 
         encodeElements(context, pieOptions.getElements(), true);
