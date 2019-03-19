@@ -73,7 +73,7 @@ from cache instead of rendering the content regularly.
 ## Cache Provider API
 CacheProvider can be accessed via;
 
-_RequestContext.getCurrentInstance().getApplicationContext().getCacheProvider()_
+_PrimeRequestContext.getCurrentInstance().getApplicationContext().getCacheProvider()_
 
 For example using this API, all cache regions can be cleaned using _clear()_ method. Refer to javadoc
 of CacheProvider for the full list of available methods.

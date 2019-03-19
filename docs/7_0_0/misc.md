@@ -98,14 +98,13 @@ or the panel to be updated with ajax response.
 
 **Execute Javascript**
 
-RequestContext provides a way to execute javascript when the ajax request completes, this
+PrimeFaces provides a way to execute javascript when the ajax request completes, this
 approach is easier compared to passing callback params and execute conditional javascript.
 Example below hides the dialog when ajax request completes;
 
 ```java
 public void save() {
-    PrimeFaces instance = PrimeFaces.current();
-    instance.execute(“dialog.hide()”);
+    PrimeFaces.current().executeScript(“dialog.hide()”);
 }
 ```
 

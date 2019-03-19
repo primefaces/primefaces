@@ -176,7 +176,7 @@ public String handleFlow(FlowEvent event) {
 ```
 Steps here are simply the ids of tab, by using a flowListener you can decide which step to display
 next so wizard does not need to be linear always. If you need to update other component(s) on page
-within a flow, use PrimeFaces.current() _.update(String clientId)_ api.
+within a flow, use _PrimeFaces.current().ajax().update(String clientId)_ API.
 
 ## Client Side Callbacks
 Wizard is equipped with onback and onnext attributes, in case you need to execute custom

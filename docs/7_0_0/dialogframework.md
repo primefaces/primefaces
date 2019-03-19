@@ -4,7 +4,7 @@ Dialog Framework (DF) is used to open an external xhtml page in a dialog that is
 dynamically on runtime. This is quite different to regular usage of dialogs with declarative p:dialog
 components as DF is based on a programmatic API where dialogs are created and destroyed at
 runtime. Note that DF and the declarative approach are two different ways and both can even be
-used together. Usage is quite simple, PrimeFaces.current().dialog() has _openDialog_ and _closeDialog_
+used together. Usage is quite simple, PrimeFaces.current().dialog() has _openDynamic_ and _closeDynamic_
 methods;
 
 ```java
@@ -61,14 +61,14 @@ xmlns:p="http://primefaces.org/ui">
     </h:body>
 </html>
 ```
-On the host page, call PrimeFaces.current().dialog().openDialog("viewname");
+On the host page, call PrimeFaces.current().dialog().openDynamic("viewname");
 
 ```xhtml
 <p:commandButton value="View Cars" actionListener="#{hostBean.view}" />
 ```
 ```java
 public void view() {
-    PrimeFaces.current().dialog().openDialog("viewCars");
+    PrimeFaces.current().dialog().openDynamic("viewCars");
 }
 ```
 Once the response is received from the request caused by command button a dialog would be
@@ -89,7 +89,7 @@ public void view() {
     options.put("draggable", false);
     options.put("resizable", false);
     options.put("contentHeight", 320);
-    RequestContext.getCurrentInstance().openDialog("viewCars", options, null);
+    PrimeFaces.current().dialog().openDynamic("viewCars", options, null);
 }
 ```
 
@@ -135,7 +135,7 @@ have _dialogReturn_ ajax behavior event to hook-in when data is returned from di
 
 ```java
 public void selectCarFromDialog(Car car) {
-    PrimeFaces.current().dialog().closeDialog(car);
+    PrimeFaces.current().dialog().closeDynamic(car);
 }
 ```
 At host page, the button that triggered the dialog should have _dialogReturn_ event.
@@ -147,7 +147,7 @@ At host page, the button that triggered the dialog should have _dialogReturn_ ev
 ```
 ```java
 public void view() {
-    PrimeFaces.current().dialog().openDialog("viewCars");
+    PrimeFaces.current().dialog().openDynamic("viewCars");
 }
 public void handleReturn(SelectEvent event) {
     Car car = (Car) event.getObject();

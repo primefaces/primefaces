@@ -1833,7 +1833,7 @@ from cache instead of rendering the content regularly.
 **Cache Provider API**
 CacheProvider can be accessed via;
 
-_RequestContext.getCurrentInstance().getApplicationContext().getCacheProvider()_
+_PrimeRequestContext.getCurrentInstance().getApplicationContext().getCacheProvider()_
 
 For example using this API, all cache regions can be cleaned using _clear()_ method. Refer to javadoc
 of CacheProvider for the full list of available methods.
@@ -22080,7 +22080,7 @@ options.put("modal", true);
 options.put("draggable", false);
 options.put("resizable", false);
 options.put("contentHeight", 320);
-RequestContext.getCurrentInstance().openDialog("viewCars", options, null);
+PrimeFaces.current().dialog().openDynamic("viewCars", options, null);
 }
 ```
 
@@ -23944,25 +23944,23 @@ update on-the-fly.
 ```
 public void save() {
 //boolean outcome = ...
-PrimeFaces instance = PrimeFaces.current();
 if(outcome)
-instance.update("panel");
+PrimeFaces.current().update("panel");
 else
-instance.update("table");
+PrimeFaces.current().update("table");
 }
 ```
 When the save button is clicked, depending on the outcome, you can either configure the datatable
 or the panel to be updated with ajax response.
 
 **Execute Javascript**
-RequestContext provides a way to execute javascript when the ajax request completes, this
+PrimeFaces provides a way to execute javascript when the ajax request completes, this
 approach is easier compared to passing callback params and execute conditional javascript.
 Example below hides the dialog when ajax request completes;
 
 
 public void save() {
-PrimeFaces instance = PrimeFaces.current();
-instance.execute(“dialog.hide()”);
+PrimeFaces.current().executeScript(“dialog.hide()”);
 }
 
 
