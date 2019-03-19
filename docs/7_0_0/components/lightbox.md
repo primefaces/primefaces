@@ -31,6 +31,7 @@ iframeTitle | null | String | Title of the iframe element.
 visible | false | Boolean | Displays lightbox without requiring any user interaction by default.
 onHide | null | String | Client side callback to execute when lightbox is displayed.
 onShow | null | String | Client side callback to execute when lightbox is hidden.
+blockScroll | false | Boolean | Whether to block scrolling of the document when sidebar is active.
 
 ## Images
 The images displayed in the lightBox need to be nested as child outputLink components. Following

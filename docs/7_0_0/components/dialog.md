@@ -50,6 +50,7 @@ Dialog is a panel component that can overlay other elements on page.
 | fitViewport | false | Boolean | Dialog size might exceeed viewport if content is bigger than viewport in terms of height. fitViewport option automatically adjusts height to fit dialog within the viewport.
 | positionType | fixed | String | Defines whether dialog will be kept in viewport on scroll (fixed) or keep its position (absolute).
 | responsive | false | Boolean | In responsive mode, dialog adjusts itself based on screen width.
+| blockScroll | false | Boolean | Whether to block scrolling of the document when sidebar is active.
 
 ## Getting started with the Dialog
 Dialog is a panel component containing other components, note that by default dialog is not visible.

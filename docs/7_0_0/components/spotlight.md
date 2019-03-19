@@ -23,6 +23,7 @@ binding | null | Object | An el expression that maps to a server side UIComponen
 widgetVar | null | String | Name of the client side widget.
 target | null | String | Component to highlight.
 active | false | Boolean | When true, spotlight is activated initially.
+blockScroll | false | Boolean | Whether to block scrolling of the document when sidebar is active.
 
 ## Getting started with Spotlight
 Spotlight is accessed using client side api. Clicking the button highlights the panel below;
