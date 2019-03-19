@@ -163,6 +163,54 @@ pagination section in dataGrid documentation for more information about customiz
 Optionally enabling clientCache property loads the next page asynchronously so that when user
 clicks the second page, data is displayed instantly from client side.
 
+## Paginator Template
+Paginator is customized using paginatorTemplateOption that accepts various keys of UI controls.
+
+- FirstPageLink
+- LastPageLink
+- PreviousPageLink
+- NextPageLink
+- PageLinks
+- CurrentPageReport
+- RowsPerPageDropdown
+- JumpToPageDropdown
+- JumpToPageInput
+
+**Note** that _{RowsPerPageDropdown}_ has it’s own template, options to display is provided via
+rowsPerPageTemplate attribute (e.g. rowsPerPageTemplate="9,12,15").
+
+Also _{CurrentPageReport}_ has it’s own template defined with currentPageReportTemplate option.
+You can use _{currentPage},{totalPages},{totalRecords},{startRecord},{endRecord}_ keyword
+within currentPageReportTemplate. Default is "_{currentPage}_ of _{totalPages}_". Default UI is;
+
+which corresponds to the following template.
+
+- _{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}_
+
+Here are more examples based on different templates;
+
+- _{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}_
+
+- _{PreviousPageLink} {CurrentPageReport} {NextPageLink}_
+
+## Paginator Position
+Paginator can be positoned using _paginatorPosition_ attribute in three different locations, "top",
+"bottom" or "both" (default).
+
+## Custom Content in Paginator
+Custom content can be placed inside a paginator using a facet name matching a token in the
+template.
+
+```xhtml
+<p:dataTable paginatorTemplate="{CurrentPageReport} {MyContent} ...">
+    <f:facet name="{MyContent}">
+        //Any content here
+    </f:facet>
+    //...
+</p:dataTable>
+```
+
+
 ## Sorting
 Defining _sortBy_ attribute enables ajax based sorting on that particular column.
 

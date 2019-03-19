@@ -108,6 +108,7 @@ Paginator is customized using paginatorTemplateOption that accepts various keys 
 - CurrentPageReport
 - RowsPerPageDropdown
 - JumpToPageDropdown
+- JumpToPageInput
 
 **Note** that _{RowsPerPageDropdown}_ has it’s own template, options to display is provided via
 rowsPerPageTemplate attribute (e.g. rowsPerPageTemplate="9,12,15").
