@@ -94,7 +94,7 @@ public class BasicTimelineView implements Serializable {
 }
 ```
 ## Examples
-For examples on editing, grouping, styling, ranges, linked timelines and lazy loading please visit;
+For examples on editing, grouping, styling, ranges, linked timelines and lazy loading please visit:
 
 https://www.primefaces.org/showcase/ui/data/timeline/basic.xhtml
 
