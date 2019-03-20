@@ -7,6 +7,22 @@
   - [Configuration](/gettingstarted/configuration.md)
   - [Hello World](/gettingstarted/helloworld.md)
 
+- Core
+
+  - [Search Expression](/core/searchexpression.md)
+  - [Client Side Validation](/core/clientsidevalidation.md)  
+  - [Dialog Framework](/core/dialogframework.md)
+  - [Error Handling](/core/errorhandling.md)
+  - [BeanValidation Transformation](/core/beanvalidationtransformation.md)
+  - [Misc](/core/misc.md)
+
+- AJAX
+
+  - [Partial Render / Update](/ajax/rendering.md)
+  - [Partial Execute / Process](/ajax/processing.md)
+  - [Partial Submit](/ajax/partialsubmit.md)
+  - [JavaScript API](/ajax/javascriptApi.md)
+
 - Components
 
   - [AccordionPanel](/components/accordionpanel.md)
@@ -179,20 +195,3 @@
   - [TriStateCheckbox](/components/tristatecheckbox.md)
   - [Watermark](/components/watermark.md)
   - [Wizard](/components/wizard.md)
-
-- Partial Rendering and Processing
-  
-  - [Partial Rendering](/partial/rendering.md)
-  - [Partial Processing](/partial/processing.md)
-  - [Partial Submit](/partial/partialsubmit.md)
-  - [Search Expression](/partial/searchexpression.md)
-
-- [JavaScript API](/javascriptApi.md)
-
-- [Dialog Framework](/dialogframework.md)
-
-- [Client Side Validation](/clientsidevalidation.md)
-
-- [Misc](/misc.md)
-
-- [Portlets](/portlets.md)

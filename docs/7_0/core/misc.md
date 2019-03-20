@@ -1,9 +1,46 @@
 # Misc
 
+## Javascript API
+
+PrimeFaces renders unobstrusive javascript which cleanly separates behavior from the html. Client side engine is powered by jQuery.
+
+### PrimeFaces Namespace
+
+_PrimeFaces_ is the main javascript object providing utilities and namespace.
+
+| Method | Description |
+| --- | --- |
+escapeClientId(id) | Escaped JSF ids with semi colon to work with jQuery.
+addSubmitParam(el, name, param) | Adds request parameters dynamically to the element.
+getCookie(name) | Returns cookie with given name.
+setCookie(name, value, cfg) | Sets a cookie with given name, value and options. e.g. PrimeFaces.setCookie('name', 'test'); PrimeFaces.setCookie('name','test',{expires:7, path:'/'}) Second example creates cookie for entire site that expires in 7 days.
+deleteCookie(name, cfg) | Deletes a cookie with given and and options.
+skinInput(input) | Progressively enhances an input element with theming.
+info(msg), debug(msg), warn(msg), error(msg) | Client side log API.
+changeTheme(theme) | Changes theme on the fly with no page refresh.
+cleanWatermarks() | Watermark component extension, cleans all watermarks on page before submitting the form.
+showWatermarks() | Shows watermarks on form.
+getWidgetById(clientid) | Returns the widget instance from the client id
+
+To be compatible with other javascript entities on a page, PrimeFaces defines two javascript
+namespaces;
+
+**PrimeFaces.widget.**
+
+Contains custom PrimeFaces widgets like;
+
+- PrimeFaces.widget.DataTable
+- PrimeFaces.widget.Tree
+- PrimeFaces.widget.Poll
+- and more...
+
+Most of the components have a corresponding client side widget with same name.
+
+
 ## PrimeFaces.current()
 
 PrimeFaces.current() is a simple utility that provides useful goodies such as adding parameters to
-ajax callback functions. PrimeFaces.current() is available in both ajax and non-ajax requests. Scope
+ajax callback functions. It's available in both ajax and non-ajax requests. Scope
 of the instance is thread local.
 
 Instance can be obtained similarly to the FacesContext or CDI.
@@ -19,13 +56,13 @@ executeScript(String script) | Executes script after ajax request completes or o
 isAjaxRequest() | Returns a boolean value if current request is a PrimeFaces ajax request.
 scrollTo(String clientId) | Scrolls to the component with given clientId after ajax request completes.
 focus(String expression) | Focus the input(s) targeted by the given search expression.
-resetInputs(Collection<String>|String... expressions) | Resets all UIInput targeted by the search expression(s).
+resetInputs(Collection<String>/String... expressions) | Resets all UIInput targeted by the search expression(s).
 clearTableStates() | Removes the multiViewState for all DataTables within the current session.
 clearTableState(String key) | Removes the multiViewState for DataTable with the defined key.
 clearDataListStates() | Removes the multiViewState for all DataList within the current session.
 clearDataListState(String key) | Removes the multiViewState for DataList with the defined key.
 ajax().addCallBackParam(String name, Object value) | Adds parameters to ajax callbacks like oncomplete.
-ajax().update(Collection<String>|String... expressions); | Specifies component(s) to update at runtime.
+ajax().update(Collection<String>/String... expressions); | Specifies component(s) to update at runtime.
 
 
 **Callback Parameters**
@@ -74,31 +111,7 @@ public void validate() {
 ```
 By default _validationFailed_ callback parameter is added implicitly if validation fails.
 
-**Runtime Updates**
 
-Conditional UI update is quite common where different parts of the page need to be updated based
-on a dynamic condition. In this case, it is not efficient to use declarative update and defined all
-update areas since this will cause unnecessary updates.There may be cases where you need to define
-which component(s) to update at runtime rather than specifying it declaratively. _update_ method is
-added to handle this case. In example below, button actionListener decides which part of the page to
-update on-the-fly.
-
-```xhtml
-<p:commandButton value="Save" actionListener="#{bean.save}" />
-<p:panel id="panel"> ... </p:panel>
-<p:dataTable id="table"> ... </p:panel>
-```
-```java
-public void save() {
-    //boolean outcome = ...
-    if(outcome)
-        PrimeFaces.current().ajax().update("panel");
-    else
-        PrimeFaces.current().ajax().update("table");
-}
-```
-When the save button is clicked, depending on the outcome, you can either configure the datatable
-or the panel to be updated with ajax response.
 
 **Execute Javascript**
 
@@ -158,140 +171,6 @@ userPrincipal() | Returns the principal instance of the logged in user.
 <p:commandButton rendered="#{p:ifGranted('ROLE_ADMIN')}" />
 <h:inputText disabled="#{p:ifGranted('ROLE_GUEST')}" />
 <p:inputMask rendered="#{p:ifAllGranted('ROLE_EDITOR, ROLE_READER')}" />
-```
-
-
-## Exception Handler
-
-PrimeFaces provides a built-in exception handler to take care of exceptions in ajax and non-ajax
-requests easily.
-
-**Configuration**
-
-ExceptionHandler and an ElResolver configured is required in faces configuration file.
-
-```xml
-<application>
-    <el-resolver>
-        org.primefaces.application.exceptionhandler.PrimeExceptionHandlerELResolver
-    </el-resolver>
-</application>
-<factory>
-    <exception-handler-factory>
-    org.primefaces.application.exceptionhandler.PrimeExceptionHandlerFactory
-    </exception-handler-factory>
-</factory>
-```
-**Error Pages**
-
-ExceptionHandler is integrated with error-page mechanism of Servlet API. At application startup,
-PrimeFaces parses the error pages and uses this information to find the appropriate page to redirect
-to based on the exception type. Here is an example web.xml configuration with a generic page for
-exceptions and a special page for ViewExpiredException type.
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<web-app version="2.5"
-    xmlns="http://java.sun.com/xml/ns/javaee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-    http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" >
-    <!-- Other application configuration -->
-    <error-page>
-        <exception-type>java.lang.Throwable</exception-type>
-        <location>/ui/error/error.jsf</location>
-    </error-page>
-    <error-page>
-        <exception-type>javax.faces.application.ViewExpiredException</exception-type>
-        <location>/ui/error/viewExpired.jsf</location>
-    </error-page>
-</web-app>
-```
-
-**Exception Information**
-
-In the error page, information about the exception is provided via the pfExceptionHandler EL
-keyword. Here is the list of exposed properties.
-
-- **exception**: Throwable instance.
-- **type**: Type of the exception.
-- **message**: Exception message:
-- **stackTrace**: An array of java.lang.StackTraceElement instances.
-- **formattedStackTrace**: Stack trace as presentable string.
-- **timestamp**: Timestamp as date.
-- **formattedTimestamp**: Timestamp as presentable string.
-
-In error page, exception metadata is accessed using EL;
-
-```xhtml
-<h:outputText value="Message:#{pfExceptionHandler.message}" />
-<h:outputText value="#{pfExceptionHandler.formattedStackTrace}" escape="false" />
-```
-**Ajax Exception Handler Component**
-
-A specialized exception handler component provides a way to execute callbacks on client side,
-update other components on the same page. This is quite useful in case you don't want to create a
-separate error page. Following example shows the exception in a dialog on the same page.
-
-```xhtml
-<p:ajaxExceptionHandler type="javax.faces.application.ViewExpiredException" update="exceptionDialog" onexception="PF('exceptionDialog').show();" />
-<p:dialog id="exceptionDialog" header="Exception: #{pfExceptionHandler.type} occured!" widgetVar="exceptionDialog" height="500px">
-    Message: #{pfExceptionHandler.message} <br/>
-    StackTrace: <h:outputText value="#{pfExceptionHandler.formattedStackTrace}" escape="false" />
-    <p:button onclick="document.location.href = document.location.href;" value="Reload!"/>
-</p:dialog>
-```
-Ideal location for p:ajaxExceptionHandler component is the facelets template so that it gets
-included in every page. Refer to component documentation of p:ajaxExceptionHandler for the
-available attributes.
-
-**Render Response Exceptions**
-To support exception handling in the _RENDER_RESPONSE_ phase, it's required to set the
-_javax.faces.FACELETS_BUFFER_SIZE_ parameter. Otherwise you will probably see a
-ServletException with "Response already committed" message.
-
-
-## BeanValidation Transformation
-
-Since JavaEE 6, validation metadata is already available for many components via the value
-reference and BeanValidation (e.g. @NotNull, @Size). The JSF Implementations use this
-information for server side validation and PrimeFaces enhances this feature with client side
-validation framework.
-
-PrimeFaces makes use of these metadata by transforming them to component and html attributes.
-For example sometimes it’s required to manually maintain the required or maxlength attribute for
-input components. The required attribute also controls the behavior of p:outputLabel to show or
-hide the required indicator (*) whereas the _maxlength_ attribute is used to limit the characters on
-input fields. BeanValidation transformation features enables avoiding manually maintaining these
-attributes anymore by implicility handling them behind the scenes.
-
-**Configuration**
-To start with, transformation should be enabled.
-
-```xml
-<context-param>;
-    <param-name>primefaces.TRANSFORM_METADATA</param-name>
-    <param-value>true</param-value>
-</context-param>
-```
-**Usage**
-Define constraints at bean level.
-
-```java
-@NotNull
-@Max(30)
-private String firstname;
-```
-Component at view does not have any constraints;
-
-```xhtml
-<p:inputText value="#{bean.firstname}" />
-```
-Final output has html maxlength attribute generated from the @Max annotation, also the component
-instance has required enabled.
-
-```xhtml
-<input type="text" maxlength="30" ... />
 ```
 
 ## PrimeFaces Locales
@@ -507,3 +386,30 @@ bundle to provide your own values.
 - primefaces.datatable.SORT_LABEL = Sort
 - primefaces.datatable.SORT_ASC = Ascending
 - primefaces.datatable.SORT_DESC = Descending
+
+## Portlets
+
+PrimeFaces supports portlet environments based on JSF 2 and Portlet 2 APIs. A portlet bridge is
+necessary to run a JSF application as a portlet and we suggest LiferayFaces bridge as the
+implementation. Both teams work together time to time to make sure PrimeFaces runs well on
+liferay. A kickstart example with necessary configuration is available at LiferayFaces Demos;
+
+http://www.liferay.com/community/liferay-projects/liferay-faces/demos
+
+Demo contains a single "Job Application" portlet within the WAR that demonstrates several of the
+key features of JSF 2 and PrimeFaces;
+
+- Uses the PrimeFaces <p:calendar/> tag for a popup date selector
+- Uses the JSF 2 <f:ajax /> tag on the postal (zip) code field in order to provide the ability to auto-
+fill fields via Ajax
+- Uses the JSF 2 <f:ajax /> tag on the show/hide comments links in order to show/hide the
+comments field via Ajax
+- Model managed-bean is marked with the JSF 2 @ViewScoped annotation in order to support a
+rich UI with the <f:ajax /> tag
+- Uses the JSF 2 <f:ajax /> tag to show navigation-rules executing without full page refreshes
+- File upload capabilities via <h:form enctype="multipart/form-data">
+- Managed-beans defined by marking POJOs with the JSF 2 @ManagedBean annotation
+- Dependency injection of managed-beans done via the JSF 2 @ManagedProperty annotation
+- Uses the PrimeFaces p:fileUpload tag for multi-file Ajax-based file upload
+- Uses the PrimeFaces p:dataTable tag to list the uploaded files
+- Uses the PrimeFaces p:confirmDialog tag to popup a yes/no dialog to verify file deletion

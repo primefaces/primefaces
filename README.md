@@ -103,7 +103,7 @@ Please refer to the [showcase](https://www.primefaces.org/showcase) in order to 
 
 ### Documentation
 ***
-User Guide is available at [documentation](http://www.primefaces.org/documentation) page along with other additional resoures.
+User Guide is available here: [click](https://primefaces.github.io/primefaces/).
 
 ### Contribution
 ***

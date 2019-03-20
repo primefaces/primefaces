@@ -3,7 +3,9 @@
 Dialog Framework (DF) is used to open an external xhtml page in a dialog that is generated
 dynamically on runtime. This is quite different to regular usage of dialogs with declarative p:dialog
 components as DF is based on a programmatic API where dialogs are created and destroyed at
-runtime. Note that DF and the declarative approach are two different ways and both can even be
+runtime.
+
+Note that DF and the declarative approach are two different ways and both can even be
 used together. Usage is quite simple, PrimeFaces.current().dialog() has _openDynamic_ and _closeDynamic_
 methods;
 
@@ -12,19 +14,19 @@ methods;
 * Open a view in dialog.
 * @param outcome The logical outcome used to resolve a navigation case.
 */
-public abstract void openDialog(String outcome);
+public abstract void openDynamic(String outcome);
 /**
 * Open a view in dialog.
 * @param outcome The logical outcome used to resolve a navigation case.
 * @param options Configuration options for the dialog.
 * @param params Parameters to send to the view displayed in a dialog.
 */
-public abstract void openDialog(String outcome, Map<String,Object> options, Map<String,List<String>> params);
+public abstract void openDynamic(String outcome, Map<String,Object> options, Map<String,List<String>> params);
 /**
 * Close a dialog.
 * @param data Optional data to pass back to a dialogReturn event.
 */
-public abstract void closeDialog(Object data);
+public abstract void closeDynamic(Object data);
 ```
 
 **Configuration**
