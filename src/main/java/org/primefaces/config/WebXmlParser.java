@@ -68,6 +68,11 @@ public class WebXmlParser {
                 }
             }
         }
+
+        if (errorPages == null) {
+            errorPages = new HashMap<>();
+        }
+
         return errorPages;
     }
 

@@ -63,6 +63,13 @@ public class CalendarUtils {
         return getValueAsString(context, calendar, calendar.getValue());
     }
 
+    /**
+     * Try to convert the given value to {@link Date} or return <code>null</code> if there is no appropriate converter for doing so.
+     * @param context the faces context
+     * @param calendar the calendar component
+     * @param value the value to convert
+     * @return the {@link Date} object or <code>null</code>
+     */
     public static Date getObjectAsDate(FacesContext context, UICalendar calendar, Object value) {
         if (value == null) {
             return null;
@@ -106,7 +113,10 @@ public class CalendarUtils {
             }
         }
 
-        throw new FacesException("Value could be either String or java.util.Date");
+        // TODO Currently we do not support conversion of jquery datepicker's special dates like 'today' or '+1m +7d'
+        // See http://api.jqueryui.com/datepicker/#option-maxDate, https://github.com/primefaces/primefaces/issues/4621
+
+        return null;
     }
 
     public static final String getValueAsString(FacesContext context, UICalendar calendar, Object value) {

@@ -470,7 +470,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.selection = (preselection === "") ? [] : preselection.split(',');
 
         //shift key based range selection
-        this.originRowIndex = 0;
+        this.originRowIndex = null;
         this.cursorIndex = null;
 
         this.bindSelectionEvents();
@@ -1074,6 +1074,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var header = $(this);
             header.attr('id', header.attr('id') + '_clone');
             $(this).children().not('.ui-column-title').remove();
+            $(this).children('.ui-column-title').children().remove();
         });
         this.theadClone.removeAttr('id').addClass('ui-datatable-scrollable-theadclone').height(0).prependTo(this.bodyTable);
 
@@ -1287,6 +1288,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 $this.loadingLiveScroll = false;
                 $this.allLoadedLiveScroll = ($this.scrollOffset + $this.cfg.scrollStep) >= $this.cfg.scrollLimit;
+                
+                // reset index of shift selection on multiple mode
+                $this.originRowIndex = null;
             }
         };
 
@@ -1328,6 +1332,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 if(typeof args.totalRecords !== 'undefined') {
                     $this.cfg.scrollLimit = args.totalRecords;
                 }
+                
+                // reset index of shift selection on multiple mode
+                $this.originRowIndex = null;
             }
         };
         if (this.hasBehavior('virtualScroll')) {
@@ -1383,6 +1390,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     $this.paginator.updateUI();
                 }
                 $this.updateColumnsView();
+                // reset index of shift selection on multiple mode
+                $this.originRowIndex = null;
             }
         };
 
@@ -1537,9 +1546,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 if($this.cfg.virtualScroll) {
-                    $this.bodyTable.css('top', '0px');
-                    $this.scrollBody.scrollTop(0);
-                    $this.clearScrollState();
+                    $this.resetVirtualScrollBody();
                 }
                 else if($this.cfg.liveScroll) {
                     $this.scrollOffset = 0;
@@ -1554,6 +1561,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 $this.updateColumnsView();
+                
+                // reset index of shift selection on multiple mode
+                $this.originRowIndex = null;
             }
         };
 
@@ -1643,9 +1653,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             scrollLimit = 1;
                         }
 
-                        $this.bodyTable.css('top', '0px');
-                        $this.scrollBody.scrollTop(0);
-                        $this.clearScrollState();
+                        $this.resetVirtualScrollBody();
 
                         $this.rowHeight = row.outerHeight();
                         $this.scrollBody.children('div').css({'height': parseFloat((scrollLimit * $this.rowHeight + 1) + 'px')});
@@ -1666,6 +1674,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 $this.updateColumnsView();
+                
+                // reset index of shift selection on multiple mode
+                $this.originRowIndex = null;
             }
         };
 
@@ -1698,7 +1709,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 //range selection with shift key
-                if(this.isMultipleSelection() && event && event.shiftKey) {
+                if(this.isMultipleSelection() && event && event.shiftKey && this.originRowIndex !== null) {
                     this.selectRowsInRange(row);
                 }
                 else if(this.cfg.rowSelectMode === 'add' && selected) {
@@ -3864,6 +3875,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 col.removeClass('ui-helper-hidden');
             }
         }
+    },
+    
+    resetVirtualScrollBody: function() {
+        this.bodyTable.css('top', '0px');
+        this.scrollBody.scrollTop(0);
+        this.clearScrollState();
     }
 
 });
@@ -4014,6 +4031,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             var header = $(this);
             header.attr('id', header.attr('id') + '_clone');
             $(this).children().not('.ui-column-title').remove();
+            $(this).children('.ui-column-title').children().remove();
         });
         this.frozenTheadClone.removeAttr('id').addClass('ui-datatable-scrollable-theadclone').height(0).prependTo(this.frozenBodyTable);
 
@@ -4022,6 +4040,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             var header = $(this);
             header.attr('id', header.attr('id') + '_clone');
             $(this).children().not('.ui-column-title').remove();
+            $(this).children('.ui-column-title').children().remove();
         });
         this.scrollTheadClone.removeAttr('id').addClass('ui-datatable-scrollable-theadclone').height(0).prependTo(this.scrollBodyTable);
     },
@@ -4476,6 +4495,15 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         });
 
         this.orderStateHolder.val(columnIds.join(','));
+    },
+    
+    //Override
+    resetVirtualScrollBody: function() {
+        this.scrollBodyTable.css('top', '0px');
+        this.frozenBodyTable.css('top', '0px');
+        this.scrollBody.scrollTop(0);
+        this.frozenBody.scrollTop(0);
+        this.clearScrollState();
     }
 
 });

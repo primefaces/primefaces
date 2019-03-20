@@ -36,6 +36,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.PrimeFaces;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class ClockRenderer extends CoreRenderer {
@@ -85,7 +86,7 @@ public class ClockRenderer extends CoreRenderer {
         wb.attr("mode", mode)
                 .attr("pattern", clock.getPattern(), null)
                 .attr("displayMode", clock.getDisplayMode())
-                .attr("locale", context.getViewRoot().getLocale().toString());
+                .attr("locale", LocaleUtils.getCurrentLocale(context).toString());
 
         if (mode.equals("server")) {
             wb.attr("value", getValueWithTimeZone(context, clock));
@@ -99,7 +100,7 @@ public class ClockRenderer extends CoreRenderer {
     }
 
     protected String getValueWithTimeZone(FacesContext context, Clock clock) {
-        Locale locale = context.getViewRoot().getLocale();
+        Locale locale = LocaleUtils.getCurrentLocale(context);
         String value = "";
 
         if (locale != null) {

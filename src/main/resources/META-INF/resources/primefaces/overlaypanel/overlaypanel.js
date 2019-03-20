@@ -266,7 +266,9 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         if(dialog.length == 1) {
             //set position as fixed to scroll with dialog
-            this.jq.css('position', 'fixed');
+            if(dialog.css('position') === 'fixed') {
+                this.jq.css('position', 'fixed');
+            }
 
             //append to body if not already appended by user choice
             if(!this.cfg.appendTo) {

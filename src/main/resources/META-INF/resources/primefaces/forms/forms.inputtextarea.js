@@ -353,20 +353,26 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
 
     alignPanel: function() {
         var pos = this.jq.getCaretPosition(),
-        offset = this.jq.offset();
+        posLeft = (pos.left > 0 ? '+' : '-') + pos.left,
+        posTop = (pos.top > 0 ? '+' : '-') + pos.top;
 
-        this.panel.css({
-                        'left': offset.left + pos.left,
-                        'top': offset.top + pos.top,
-                        'width': this.jq.innerWidth(),
-                        'z-index': ++PrimeFaces.zindex
-                });
+        this.panel.css({left:'', top:''}).position({
+            my: 'left top'
+            ,at: 'left' + posLeft +  ' top' + posTop
+            ,of: this.jq
+        });
     },
 
     show: function() {
+        this.panel.css({
+            'z-index': ++PrimeFaces.zindex,
+            'width': this.jq.innerWidth(),
+            'visibility': 'hidden'
+        }).show();
+        
         this.alignPanel();
-
-        this.panel.show();
+        
+        this.panel.css('visibility', '');
     },
 
     hide: function() {
@@ -376,7 +382,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
     setupDialogSupport: function() {
         var dialog = this.jq.parents('.ui-dialog:first');
 
-        if(dialog.length == 1) {
+        if(dialog.length == 1 && dialog.css('position') === 'fixed') {
             this.panel.css('position', 'fixed');
         }
     }

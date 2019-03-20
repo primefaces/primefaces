@@ -31,6 +31,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 
 public class LinkRenderer extends OutcomeTargetRenderer {
 
@@ -60,7 +61,7 @@ public class LinkRenderer extends OutcomeTargetRenderer {
         }
         else {
             String targetURL = getTargetURL(context, link);
-            if (targetURL == null) {
+            if (LangUtils.isValueBlank(targetURL)) {
                 targetURL = "#";
             }
 

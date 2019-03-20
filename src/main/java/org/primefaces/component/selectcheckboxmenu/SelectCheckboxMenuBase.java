@@ -45,6 +45,7 @@ abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements 
         filter,
         filterMatchMode,
         filterFunction,
+        filterPlaceholder,
         caseSensitive,
         panelStyle,
         panelStyleClass,
@@ -122,6 +123,14 @@ abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements 
 
     public void setFilterFunction(String filterFunction) {
         getStateHelper().put(PropertyKeys.filterFunction, filterFunction);
+    }
+
+    public java.lang.String getFilterPlaceholder() {
+        return (String) getStateHelper().eval(PropertyKeys.filterPlaceholder, null);
+    }
+
+    public void setFilterPlaceholder(String filterPlaceholder) {
+        getStateHelper().put(PropertyKeys.filterPlaceholder, filterPlaceholder);
     }
 
     public boolean isCaseSensitive() {
@@ -209,7 +218,7 @@ abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements 
     }
 
     public String getLabelSeparator() {
-        return (String) getStateHelper().eval(PropertyKeys.labelSeparator, ",");
+        return (String) getStateHelper().eval(PropertyKeys.labelSeparator, ", ");
     }
 
     public void setLabelSeparator(String labelSeparator) {
