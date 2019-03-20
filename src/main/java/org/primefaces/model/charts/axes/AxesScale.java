@@ -21,61 +21,54 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model.charts.axes.cartesian;
+package org.primefaces.model.charts.axes;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.primefaces.model.charts.axes.AxesScale;
+import java.io.Serializable;
 
 /**
- * Used to provide scales option has cartesian type
+ * Base Scale configuration for common scale options.
  */
-public class CartesianScales extends AxesScale {
+public abstract class AxesScale implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private List<CartesianAxes> xAxes;
-    private List<CartesianAxes> yAxes;
+    private boolean display = true;
+    private Number weight;
 
-    public CartesianScales() {
-        xAxes = new ArrayList<>();
-        yAxes = new ArrayList<>();
+    /**
+     * Controls the axis global visibility (visible when true, hidden when false).
+     *
+     * @return display flag
+     */
+    public boolean isDisplay() {
+        return display;
     }
 
     /**
-     * Gets xAxes
+     * Controls the axis global visibility (visible when true, hidden when false).
      *
-     * @return xAxes List&#60;{@link CartesianAxes}&#62; list of x axes
+     * @param display true to display false to hide.
      */
-    public List<CartesianAxes> getXAxes() {
-        return xAxes;
+    public void setDisplay(boolean display) {
+        this.display = display;
     }
 
     /**
-     * Gets yAxes
+     * The weight used to sort the axis. Higher weights are further away from the chart area.
      *
-     * @return yAxes List&#60;{@link CartesianAxes}&#62; list of y axes
+     * @return the weight
      */
-    public List<CartesianAxes> getYAxes() {
-        return yAxes;
+    public Number getWeight() {
+        return weight;
     }
 
     /**
-     * Adds a new xAxes as {@link CartesianAxes} data to scales
+     * The weight used to sort the axis. Higher weights are further away from the chart area.
      *
-     * @param newXAxesData
+     * @param weight number to set to the weight to
      */
-    public void addXAxesData(CartesianAxes newXAxesData) {
-        xAxes.add(newXAxesData);
+    public void setWeight(Number weight) {
+        this.weight = weight;
     }
 
-    /**
-     * Adds a new yAxes as {@link CartesianAxes} data to scales
-     *
-     * @param newYAxesData
-     */
-    public void addYAxesData(CartesianAxes newYAxesData) {
-        yAxes.add(newYAxesData);
-    }
 }
