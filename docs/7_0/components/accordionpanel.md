@@ -17,12 +17,14 @@ AccordionPanel is a container component that displays content in stacked format.
 
 | Name          | Default | Type       | Description     |                                                                                 
 | ------------- | ------- | ---------- | ----------------- |
-| activeIndex   | false   | String     | Index of the active tab or a comma separated string of indexes when multiple mode is on.          
-| binding       | null    | Object     | An EL expression that maps to a server side UIComponent instance in a backing bean.  
+| id            | null    | String     | Unique identifier of the component  
+| binding       | null    | Object     | An EL expression that maps to a server side UIComponent instance in a backing bean. 
+| value         | null    | List       | List to iterate to display dynamic number of tabs.                                   
+| var           | null    | String     | Name of iterator to use in a dynamic number of tabs.   
+| activeIndex   | false   | String     | Index of the active tab or a comma separated string of indexes when multiple mode is on.  
 | cache         | true    | Boolean    | Defines if activating a dynamic tab should load the contents from server again.      
 | dir           | ltr     | String     | Defines text direction, valid values are ltr and rtl.
-| dynamic       | false   | Boolean    | Defines the toggle mode.                                                             
-| id            | null    | String     | Unique identifier of the component                                                   
+| dynamic       | false   | Boolean    | Defines the toggle mode.                                     
 | multiple      | false   | Boolean    | Controls multiple selection.                                                         
 | onTabChange   | null    | String     | Client side callback to invoke when an inactive tab is clicked.
 | onTabClose    | null    | String     | Client side callback to invoke when a tab is closed.                                 
@@ -32,9 +34,7 @@ AccordionPanel is a container component that displays content in stacked format.
 | style         | null    | String     | Inline style of the container element.                                               
 | styleClass    | null    | String     | Style class of the container element.                                                
 | tabController | null    | MethodExpr | Server side listener to decide whether a tab change or tab close should be allowed.  
-| tabindex      | 0       | String     | Position of the headers in the tabbing order.                                        
-| value         | null    | List       | List to iterate to display dynamic number of tabs.                                   
-| var           | null    | String     | Name of iterator to use in a dynamic number of tabs.                                 
+| tabindex      | 0       | String     | Position of the headers in the tabbing order.                             
 | widgetVar     | null    | String     | Name of the client side widget.
 
 ## Getting Started with Accordion Panel
