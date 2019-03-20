@@ -31,6 +31,7 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
@@ -107,8 +108,8 @@ public class Slider extends SliderBase {
             return;
         }
 
-        String[] inputIds = getFor().split(",");
         if (isRange()) {
+            String[] inputIds = getFor().split(",");
             UIInput inputFrom = (UIInput) SearchExpressionFacade.resolveComponent(context, this, inputIds[0]);
             UIInput inputTo = (UIInput) SearchExpressionFacade.resolveComponent(context, this, inputIds[1]);
             String valueFromStr = getSubmittedValue(inputFrom).toString();
@@ -132,13 +133,20 @@ public class Slider extends SliderBase {
             }
         }
         else {
-            UIInput input = (UIInput) SearchExpressionFacade.resolveComponent(context, this, inputIds[0]);
+            UIInput input = (UIInput) SearchExpressionFacade.resolveComponent(context, this, getFor());
             Object submittedValue = getSubmittedValue(input);
             if (submittedValue == null) {
                 return;
             }
 
-            String submittedValueString = submittedValue.toString();
+            String submittedValueString;
+            Converter converter = input.getConverter();
+            if (converter != null) {
+                submittedValueString = converter.getAsString(context, this, submittedValue);
+            }
+            else {
+                submittedValueString = submittedValue.toString();
+            }
             if (LangUtils.isValueBlank(submittedValueString)) {
                 return;
             }
