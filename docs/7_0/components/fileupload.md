@@ -252,3 +252,46 @@ folder.
 ```
 **Note** that uploadDirectory is used internally, you always need to implement the logic to save the file
 contents yourself in your backing bean.
+
+## More secure file upload
+
+### Introduction 
+
+File uploads per se introduce some security risks, for best practices you should consult OWASP's recommendations: https://www.owasp.org/index.php/Unrestricted_File_Upload
+
+### Measures
+
+Here are some measures that can be taken into account when using PrimeFaces's `fileUpload` component:
+1. Consider **limiting the size** of uploaded files. As of PrimeFaces 6.2 this will be double-checked at server side as well: `p:fileUpload sizeLimit="1024"`. See https://github.com/primefaces/primefaces/issues/3290.
+2. Consider **restricting file names** of uploaded files. As of PrimeFaces 7.0 this will be double-checked at server side as well: `p:fileUpload allowTypes="/(\.|\/)(gif|jpe?g|png)$/"`. See https://github.com/primefaces/primefaces/issues/2791.
+3. Consider **enabling content type validation**. This feature has been introduced with PrimeFaces 7.0 and can be used by combining the `accept` and `validateContentType` attributes: `p:fileUpload accept="image/*" validateContentType="true"`. For reliable content type validation we recommend to use Apache Tika, which will be picked up automatically if available in classpath. See https://github.com/primefaces/primefaces/issues/4244.
+4. Consider **enabling virus scanning**. This feature has been introduced with PrimeFaces 7.0 and can be enabled with `p:fileUpload performVirusScan="true"`. See https://github.com/primefaces/primefaces/issues/4256.
+   * **Built-in implementation**: You may either make use of PrimeFaces' basic built-in implementation, that just searches for the file's hash at VirusTotal. Therefore you have to configure accordingly the context param `primefaces.virusscan.VIRUSTOTAL_KEY` in `web.xml`; a key can be obtained for free at [VirusTotal](https://www.virustotal.com/#/join-us). 
+   * **Custom implementation**: Or if more sophisticated virus scanning is required, you can just drop in your custom service provider implementation that will be picked up automatically once available in classpath. In your custom implementation you may leverage your system's virus scanner by using its appropriate API for example.
+
+      * _Implementation skeleton_
+
+        ```
+        public class CustomVirusScanner implements org.primefaces.virusscan.VirusScanner {
+            @Override
+            public boolean isEnabled() {
+                // maybe read some config here
+                return true;
+            }
+
+            @Override
+            public void performVirusScan(InputStream inputStream) throws VirusException {
+                // call the virus scanner's API here
+                if (virusDetected) {
+                    throw new VirusException();
+                }
+            }
+        }
+
+      * _Service provider registration_: To register the service provider just place a file named `org.primefaces.virusscan.VirusScanner` in the `META-INF/services` directory within your JAR file:
+
+        ```
+        com.example.CustomVirusScanner 
+        ```
+
+   * **Multiple implementations**: If more than one service provider is available in classpath, all of them will be consulted and must give the green light.
