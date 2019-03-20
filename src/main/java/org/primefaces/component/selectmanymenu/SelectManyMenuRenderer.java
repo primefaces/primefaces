@@ -1,22 +1,31 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.selectmanymenu;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectMany;
 import javax.faces.context.FacesContext;
@@ -25,11 +34,12 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
+
 import org.primefaces.component.column.Column;
-import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectManyMenuRenderer extends SelectManyRenderer {
@@ -39,8 +49,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
                 "javax.faces.SelectMany",
-                "javax.faces.Menu",
-                Renderer.class);
+                "javax.faces.Menu");
         return renderer.getConvertedValue(context, component, submittedValue);
     }
 
@@ -99,10 +108,9 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
 
     protected void encodeInput(FacesContext context, SelectManyMenu menu, String clientId, List<SelectItem> selectItems)
             throws IOException {
-        
+
         ResponseWriter writer = context.getResponseWriter();
         String inputid = clientId + "_input";
-        String labelledBy = menu.getLabelledBy();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
@@ -113,19 +121,10 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("multiple", "multiple", null);
         writer.writeAttribute("size", "2", null);   //prevent browser to send value when no item is selected
 
+        renderAccessibilityAttributes(context, menu);
+        renderPassThruAttributes(context, menu, HTML.TAB_INDEX);
         renderDomEvents(context, menu, SelectManyMenu.DOM_EVENTS);
-
-        if (labelledBy != null) {
-            writer.writeAttribute("aria-labelledby", labelledBy, null);
-        }
-
-        if (menu.getTabindex() != null) {
-            writer.writeAttribute("tabindex", menu.getTabindex(), null);
-        }
-
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, menu);
-        }
+        renderValidationMetadata(context, menu);
 
         encodeSelectItems(context, menu, selectItems);
 
@@ -171,7 +170,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
     }
 
     protected void encodeItem(FacesContext context, SelectManyMenu menu, SelectItem option, Object values, Object submittedValues,
-            Converter converter, boolean customContent, boolean showCheckbox) throws IOException {
+                              Converter converter, boolean customContent, boolean showCheckbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
         boolean disabled = option.isDisabled() || menu.isDisabled();
@@ -219,8 +218,12 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
                     String styleClass = ((Column) child).getStyleClass();
 
                     writer.startElement("td", null);
-                    if (styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
-                    if (style != null) writer.writeAttribute("style", style, "style");
+                    if (styleClass != null) {
+                        writer.writeAttribute("class", styleClass, "styleClass");
+                    }
+                    if (style != null) {
+                        writer.writeAttribute("style", style, "style");
+                    }
 
                     renderChildren(context, child);
                     writer.endElement("td");
@@ -254,14 +257,15 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         Object values = getValues(menu);
         Object submittedValues = getSubmittedValues(menu);
 
-        for (SelectItem selectItem : selectItems) {
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
             encodeOption(context, menu, selectItem, values, submittedValues, converter);
         }
     }
 
     protected void encodeOption(FacesContext context, SelectManyMenu menu, SelectItem option, Object values, Object submittedValues,
-            Converter converter) throws IOException {
-        
+                                Converter converter) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
         boolean disabled = option.isDisabled() || menu.isDisabled();
@@ -284,8 +288,12 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
 
         writer.startElement("option", null);
         writer.writeAttribute("value", itemValueAsString, null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
-        if (selected) writer.writeAttribute("selected", "selected", null);
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+        if (selected) {
+            writer.writeAttribute("selected", "selected", null);
+        }
 
         if (option.isEscape()) {
             writer.writeText(option.getLabel(), null);
@@ -316,7 +324,9 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
 
         writer.endElement("input");
 
@@ -328,14 +338,14 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
 
         if (height != Integer.MAX_VALUE) {
             return height + "px";
-        } 
+        }
         else if (itemSize > 10) {
             return 200 + "px";
         }
 
         return "auto";
     }
-    
+
     @Override
     protected String getSubmitParam(FacesContext context, UISelectMany selectMany) {
         return selectMany.getClientId(context) + "_input";

@@ -1,34 +1,44 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.*;
+
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
-import org.primefaces.component.api.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
@@ -40,7 +50,7 @@ import org.primefaces.component.row.Row;
 import org.primefaces.event.data.PostFilterEvent;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.filter.*;
-import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 public class FilterFeature implements DataTableFeature {
 
@@ -59,7 +69,7 @@ public class FilterFeature implements DataTableFeature {
     private static final Map<String, FilterConstraint> FILTER_CONSTRAINTS;
 
     static {
-        FILTER_CONSTRAINTS = new HashMap<String, FilterConstraint>();
+        FILTER_CONSTRAINTS = new HashMap<>();
         FILTER_CONSTRAINTS.put(STARTS_WITH_MATCH_MODE, new StartsWithFilterConstraint());
         FILTER_CONSTRAINTS.put(ENDS_WITH_MATCH_MODE, new EndsWithFilterConstraint());
         FILTER_CONSTRAINTS.put(CONTAINS_MATCH_MODE, new ContainsFilterConstraint());
@@ -90,8 +100,8 @@ public class FilterFeature implements DataTableFeature {
     @Override
     public void decode(FacesContext context, DataTable table) {
         String globalFilterParam = table.getClientId(context) + UINamingContainer.getSeparatorChar(context) + "globalFilter";
-        List<FilterMeta> filterMetadata = this.populateFilterMetaData(context, table);
-        Map<String, Object> filterParameterMap = this.populateFilterParameterMap(context, table, filterMetadata, globalFilterParam);
+        List<FilterMeta> filterMetadata = populateFilterMetaData(context, table);
+        Map<String, Object> filterParameterMap = populateFilterParameterMap(context, table, filterMetadata, globalFilterParam);
         table.setFilters(filterParameterMap);
         table.setFilterMetadata(filterMetadata);
     }
@@ -117,6 +127,14 @@ public class FilterFeature implements DataTableFeature {
         if (table.isLazy()) {
             if (table.isLiveScroll()) {
                 table.loadLazyScrollData(0, table.getScrollRows());
+            }
+            else if (table.isVirtualScroll()) {
+                int rows = table.getRows();
+                int scrollRows = table.getScrollRows();
+                int virtualScrollRows = (scrollRows * 2);
+                scrollRows = (rows == 0) ? virtualScrollRows : ((virtualScrollRows > rows) ? rows : virtualScrollRows);
+
+                table.loadLazyScrollData(0, scrollRows);
             }
             else {
                 table.loadLazyData();
@@ -148,7 +166,7 @@ public class FilterFeature implements DataTableFeature {
 
         if (table.isMultiViewState()) {
             List<FilterMeta> filterMetadata = table.getFilterMetadata();
-            List<FilterState> filters = new ArrayList<FilterState>();
+            List<FilterState> filters = new ArrayList<>();
 
             for (FilterMeta filterMeta : filterMetadata) {
                 filters.add(new FilterState(filterMeta.getColumn().getColumnKey(), filterMeta.getFilterValue()));
@@ -168,7 +186,7 @@ public class FilterFeature implements DataTableFeature {
     public void filter(FacesContext context, DataTable table, List<FilterMeta> filterMetadata, String globalFilterValue) {
         List filteredData = new ArrayList();
         Locale filterLocale = table.resolveDataLocale();
-        boolean hasGlobalFilter = globalFilterValue != null && globalFilterValue.trim().length() > 0;
+        boolean hasGlobalFilter = !LangUtils.isValueBlank(globalFilterValue);
         GlobalFilterConstraint globalFilterConstraint = (GlobalFilterConstraint) FILTER_CONSTRAINTS.get(GLOBAL_MODE);
         ELContext elContext = context.getELContext();
 
@@ -188,7 +206,7 @@ public class FilterFeature implements DataTableFeature {
                 }
 
                 Object columnValue = filterByVE.getValue(elContext);
-                FilterConstraint filterConstraint = this.getFilterConstraint(column);
+                FilterConstraint filterConstraint = getFilterConstraint(column);
 
                 if (hasGlobalFilter && !globalMatch) {
                     globalMatch = globalFilterConstraint.applies(columnValue, globalFilterValue, filterLocale);
@@ -231,10 +249,10 @@ public class FilterFeature implements DataTableFeature {
     }
 
     public Map<String, Object> populateFilterParameterMap(FacesContext context, DataTable table, List<FilterMeta> filterMetadata,
-            String globalFilterParam) {
-        
+                                                          String globalFilterParam) {
+
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        Map<String, Object> filterParameterMap = new HashMap<String, Object>();
+        Map<String, Object> filterParameterMap = new HashMap<>();
 
         for (FilterMeta filterMeta : filterMetadata) {
             Object filterValue = filterMeta.getFilterValue();
@@ -247,7 +265,7 @@ public class FilterFeature implements DataTableFeature {
                 continue;
             }
 
-            if (filterValue.toString().trim().equals(Constants.EMPTY_STRING)) {
+            if (LangUtils.isValueBlank(filterValue.toString())) {
                 continue;
             }
 
@@ -287,7 +305,7 @@ public class FilterFeature implements DataTableFeature {
     }
 
     public List<FilterMeta> populateFilterMetaData(FacesContext context, DataTable table) {
-        List<FilterMeta> filterMetadata = new ArrayList<FilterMeta>();
+        List<FilterMeta> filterMetadata = new ArrayList<>();
         String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         boolean hasFrozenColumns = table.getFrozenColumns() > 0;
@@ -319,8 +337,8 @@ public class FilterFeature implements DataTableFeature {
     }
 
     private void populateFilterMetaDataInColumnGroup(FacesContext context, List<FilterMeta> filterMetadata, ColumnGroup group,
-            Map<String, String> params, String separator) {
-        
+                                                     Map<String, String> params, String separator) {
+
         if (group == null) {
             return;
         }
@@ -337,8 +355,8 @@ public class FilterFeature implements DataTableFeature {
                             if (filterVE != null) {
                                 UIComponent filterFacet = column.getFacet("filter");
                                 Object filterValue = (filterFacet == null)
-                                        ? params.get(column.getClientId(context) + separator + "filter")
-                                        : ((ValueHolder) filterFacet).getLocalValue();
+                                                     ? params.get(column.getClientId(context) + separator + "filter")
+                                                     : ((ValueHolder) filterFacet).getLocalValue();
 
                                 filterMetadata.add(new FilterMeta(column, filterVE, filterValue));
                             }
@@ -368,8 +386,8 @@ public class FilterFeature implements DataTableFeature {
     }
 
     private void populateFilterMetaDataWithoutColumnGroups(FacesContext context, DataTable table, List<FilterMeta> filterMetadata,
-            Map<String, String> params, String separator) {
-        
+                                                           Map<String, String> params, String separator) {
+
         for (UIColumn column : table.getColumns()) {
             ValueExpression filterVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
             if (filterVE != null) {

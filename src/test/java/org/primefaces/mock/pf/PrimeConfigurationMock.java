@@ -1,35 +1,41 @@
-/*
- * Copyright 2009-2016 PrimeTek.
+/* 
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.mock.pf;
 
 import java.util.Map;
 import javax.faces.context.FacesContext;
 import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.config.PrimeEnvironment;
 
 public class PrimeConfigurationMock extends PrimeConfiguration {
-    
+
     // context params
     private boolean validateEmptyFields = false;
     private boolean partialSubmitEnabled = false;
     private boolean resetValuesEnabled = false;
     private boolean interpretEmptyStringAsNull = false;
-    private String  secretKey = null;
-    private String  pushServerURL = null;
     private String  theme = null;
-    private String  mobileTheme = null;
     private boolean fontAwesomeEnabled = false;
     private boolean clientSideValidationEnabled = false;
     private String  uploader = null;
@@ -38,23 +44,15 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
     private boolean beanValidationDisabled = false;
     private boolean interpolateClientSideValidationMessages = false;
     private boolean earlyPostParamEvaluation = false;
+    private boolean moveScriptsToBottom = false;
 
-    // internal config
-    private boolean beanValidationAvailable = false;
     private boolean stringConverterAvailable = false;
-    private boolean el22Available = false;
-    private boolean jsf22 = false;
-    private boolean jsf21 = false;
-    private boolean bv11 = false;
-
-    // build properties
-    private String buildVersion = null;
 
     // web.xml
     private Map<String, String> errorPages = null;
-    
-    public PrimeConfigurationMock(FacesContext context) {
-        
+
+    public PrimeConfigurationMock(FacesContext context, PrimeEnvironment environment) {
+        super(context, environment);
     }
 
     @Override
@@ -94,39 +92,12 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
     }
 
     @Override
-    public String getSecretKey() {
-        return secretKey;
-    }
-
-    public void setSecretKey(String secretKey) {
-        this.secretKey = secretKey;
-    }
-
-    @Override
-    public String getPushServerURL() {
-        return pushServerURL;
-    }
-
-    public void setPushServerURL(String pushServerURL) {
-        this.pushServerURL = pushServerURL;
-    }
-
-    @Override
     public String getTheme() {
         return theme;
     }
 
     public void setTheme(String theme) {
         this.theme = theme;
-    }
-
-    @Override
-    public String getMobileTheme() {
-        return mobileTheme;
-    }
-
-    public void setMobileTheme(String mobileTheme) {
-        this.mobileTheme = mobileTheme;
     }
 
     @Override
@@ -201,62 +172,12 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
     }
 
     @Override
-    public boolean isBeanValidationAvailable() {
-        return beanValidationAvailable;
-    }
-
-    public void setBeanValidationAvailable(boolean beanValidationAvailable) {
-        this.beanValidationAvailable = beanValidationAvailable;
-    }
-
-    @Override
     public boolean isStringConverterAvailable() {
         return stringConverterAvailable;
     }
 
     public void setStringConverterAvailable(boolean stringConverterAvailable) {
         this.stringConverterAvailable = stringConverterAvailable;
-    }
-
-    public boolean isEl22Available() {
-        return el22Available;
-    }
-
-    public void setEl22Available(boolean el22Available) {
-        this.el22Available = el22Available;
-    }
-
-    public boolean isJsf22() {
-        return jsf22;
-    }
-
-    public void setJsf22(boolean jsf22) {
-        this.jsf22 = jsf22;
-    }
-
-    public boolean isJsf21() {
-        return jsf21;
-    }
-
-    public void setJsf21(boolean jsf21) {
-        this.jsf21 = jsf21;
-    }
-
-    public boolean isBv11() {
-        return bv11;
-    }
-
-    public void setBv11(boolean bv11) {
-        this.bv11 = bv11;
-    }
-
-    @Override
-    public String getBuildVersion() {
-        return buildVersion;
-    }
-
-    public void setBuildVersion(String buildVersion) {
-        this.buildVersion = buildVersion;
     }
 
     @Override
@@ -269,7 +190,12 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
     }
 
     @Override
-    public boolean isAtLeastEL22() {
-        return el22Available;
+    public boolean isMoveScriptsToBottom() {
+        return moveScriptsToBottom;
     }
+
+    public void setMoveScriptsToBottom(boolean moveScriptsToBottom) {
+        this.moveScriptsToBottom = moveScriptsToBottom;
+    }
+
 }

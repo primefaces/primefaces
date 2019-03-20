@@ -1,17 +1,25 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.tabview;
 
@@ -25,6 +33,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class TabViewRenderer extends CoreRenderer {
@@ -35,7 +44,7 @@ public class TabViewRenderer extends CoreRenderer {
         TabView tabView = (TabView) component;
         String activeIndexValue = params.get(tabView.getClientId(context) + "_activeIndex");
 
-        if (!ComponentUtils.isValueBlank(activeIndexValue)) {
+        if (!LangUtils.isValueBlank(activeIndexValue)) {
             tabView.setActiveIndex(Integer.parseInt(activeIndexValue));
         }
 
@@ -177,11 +186,12 @@ public class TabViewRenderer extends CoreRenderer {
         writer.writeAttribute("role", "tablist", null);
 
         if (var == null) {
-            int i = 0;
-            for (UIComponent kid : tabView.getChildren()) {
-                if (kid.isRendered() && kid instanceof Tab) {
-                    encodeTabHeader(context, tabView, (Tab) kid, (i == activeIndex));
-                    i++;
+            int j = 0;
+            for (int i = 0; i < tabView.getChildCount(); i++) {
+                UIComponent child = tabView.getChildren().get(i);
+                if (child.isRendered() && child instanceof Tab) {
+                    encodeTabHeader(context, tabView, (Tab) child, j, (j == activeIndex));
+                    j++;
                 }
             }
         }
@@ -196,7 +206,7 @@ public class TabViewRenderer extends CoreRenderer {
             for (int i = 0; i < dataCount; i++) {
                 tabView.setIndex(i);
 
-                encodeTabHeader(context, tabView, tab, (i == activeIndex));
+                encodeTabHeader(context, tabView, tab, i, (i == activeIndex));
             }
 
             tabView.setIndex(-1);
@@ -209,7 +219,8 @@ public class TabViewRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeTabHeader(FacesContext context, TabView tabView, Tab tab, boolean active) throws IOException {
+    protected void encodeTabHeader(FacesContext context, TabView tabView, Tab tab, int index, boolean active)
+            throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String defaultStyleClass = active ? TabView.ACTIVE_TAB_HEADER_CLASS : TabView.INACTIVE_TAB_HEADER_CLASS;
         defaultStyleClass = defaultStyleClass + " ui-corner-" + tabView.getOrientation();   //cornering
@@ -222,12 +233,13 @@ public class TabViewRenderer extends CoreRenderer {
         String tabindex = tab.isDisabled() ? "-1" : tabView.getTabindex();
 
         //header container
-        writer.startElement("li", null);
+        writer.startElement("li", tab);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "tab", null);
-        writer.writeAttribute("aria-expanded", String.valueOf(active), null);
-        writer.writeAttribute("aria-selected", String.valueOf(active), null);
-        writer.writeAttribute("aria-label", tab.getAriaLabel(), null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(active), null);
+        writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(active), null);
+        writer.writeAttribute(HTML.ARIA_LABEL, tab.getAriaLabel(), null);
+        writer.writeAttribute("data-index", index, null);
         if (tab.getTitleStyle() != null) {
             writer.writeAttribute("style", tab.getTitleStyle(), null);
         }
@@ -245,7 +257,7 @@ public class TabViewRenderer extends CoreRenderer {
         if (titleFacet == null) {
             String tabTitle = tab.getTitle();
             if (tabTitle != null) {
-                writer.write(tabTitle);
+                writer.writeText(tabTitle, null);
             }
         }
         else {
@@ -261,10 +273,10 @@ public class TabViewRenderer extends CoreRenderer {
         }
 
         UIComponent actions = tab.getFacet("actions");
-        if (actions != null && actions.isRendered())  {
+        if (actions != null && actions.isRendered()) {
             writer.startElement("li", null);
             writer.writeAttribute("class", "ui-tabs-actions", null);
-            writer.writeAttribute("aria-hidden", String.valueOf(!active), null);
+            writer.writeAttribute(HTML.ARIA_HIDDEN, String.valueOf(!active), null);
             actions.encodeAll(context);
             writer.endElement("li");
         }
@@ -282,11 +294,12 @@ public class TabViewRenderer extends CoreRenderer {
         writer.writeAttribute("class", TabView.PANELS_CLASS, null);
 
         if (var == null) {
-            int i = 0;
-            for (UIComponent kid : tabView.getChildren()) {
-                if (kid.isRendered() && kid instanceof Tab) {
-                    encodeTabContent(context, (Tab) kid, (i == activeIndex), dynamic);
-                    i++;
+            int j = 0;
+            for (int i = 0; i < tabView.getChildCount(); i++) {
+                UIComponent child = tabView.getChildren().get(i);
+                if (child.isRendered() && child instanceof Tab) {
+                    encodeTabContent(context, (Tab) child, j, (j == activeIndex), dynamic);
+                    j++;
                 }
             }
         }
@@ -301,7 +314,7 @@ public class TabViewRenderer extends CoreRenderer {
             for (int i = 0; i < dataCount; i++) {
                 tabView.setIndex(i);
 
-                encodeTabContent(context, tab, (i == activeIndex), dynamic);
+                encodeTabContent(context, tab, i, (i == activeIndex), dynamic);
             }
 
             tabView.setIndex(-1);
@@ -310,7 +323,8 @@ public class TabViewRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeTabContent(FacesContext context, Tab tab, boolean active, boolean dynamic) throws IOException {
+    protected void encodeTabContent(FacesContext context, Tab tab, int index, boolean active, boolean dynamic)
+            throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = active ? TabView.ACTIVE_TAB_CONTENT_CLASS : TabView.INACTIVE_TAB_CONTENT_CLASS;
 
@@ -318,7 +332,8 @@ public class TabViewRenderer extends CoreRenderer {
         writer.writeAttribute("id", tab.getClientId(context), null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "tabpanel", null);
-        writer.writeAttribute("aria-hidden", String.valueOf(!active), null);
+        writer.writeAttribute(HTML.ARIA_HIDDEN, String.valueOf(!active), null);
+        writer.writeAttribute("data-index", index, null);
 
         if (dynamic) {
             if (active) {

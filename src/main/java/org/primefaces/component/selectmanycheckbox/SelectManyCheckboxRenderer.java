@@ -1,22 +1,31 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.selectmanycheckbox;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -29,7 +38,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
-import org.primefaces.context.RequestContext;
+
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.GridLayoutUtils;
@@ -43,8 +52,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
                 "javax.faces.SelectMany",
-                "javax.faces.Checkbox",
-                Renderer.class);
+                "javax.faces.Checkbox");
         return renderer.getConvertedValue(context, component, submittedValue);
     }
 
@@ -68,6 +76,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             writer.startElement("span", checkbox);
             writer.writeAttribute("id", checkbox.getClientId(context), "id");
             writer.writeAttribute("class", "ui-helper-hidden", null);
+            renderARIARequired(context, checkbox);
             encodeCustomLayout(context, checkbox);
             writer.endElement("span");
         }
@@ -85,7 +94,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         String layout = checkbox.getLayout();
         boolean custom = (layout != null && layout.equals("custom"));
 
-        wb.initWithDomReady("SelectManyCheckbox", checkbox.resolveWidgetVar(), clientId)
+        wb.init("SelectManyCheckbox", checkbox.resolveWidgetVar(), clientId)
                 .attr("custom", custom, false).finish();
     }
 
@@ -108,12 +117,17 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
+        renderARIARequired(context, checkbox);
 
         List<SelectItem> selectItems = getSelectItems(context, checkbox);
         Converter converter = checkbox.getConverter();
         Object values = getValues(checkbox);
         Object submittedValues = getSubmittedValues(checkbox);
-        int idx = 0, groupIdx = 0, colMod;
+
+        int idx = 0;
+        int groupIdx = 0;
+        int colMod = 0;
+
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
             if (selectItem instanceof SelectItemGroup) {
@@ -193,14 +207,15 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
+        renderARIARequired(context, checkbox);
         encodeSelectItems(context, checkbox, layout);
 
         writer.endElement("table");
     }
 
     protected void encodeOptionInput(FacesContext context, SelectManyCheckbox checkbox, String id, String name, boolean checked,
-            boolean disabled, String value) throws IOException {
-        
+                                     boolean disabled, String value) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
         String tabindex = checkbox.getTabindex();
 
@@ -218,12 +233,14 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
 
         renderOnchange(context, checkbox);
 
-        if (checked) writer.writeAttribute("checked", "checked", null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
-
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, checkbox);
+        if (checked) {
+            writer.writeAttribute("checked", "checked", null);
         }
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+
+        renderValidationMetadata(context, checkbox);
 
         writer.endElement("input");
 
@@ -231,8 +248,8 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
     }
 
     protected void encodeOptionLabel(FacesContext context, SelectManyCheckbox checkbox, String containerClientId, SelectItem option,
-            boolean disabled) throws IOException {
-        
+                                     boolean disabled) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("label", null);
@@ -241,7 +258,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         }
 
         writer.writeAttribute("for", containerClientId, null);
-        
+
         if (option.getDescription() != null) {
             writer.writeAttribute("title", option.getDescription(), null);
         }
@@ -376,28 +393,34 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         Object submittedValues = getSubmittedValues(checkbox);
         int columns = checkbox.getColumns();
 
-        if (columns != 0) {
-            int idx = 0, colMod;
-            for (SelectItem selectItem : selectItems) {
-                colMod = idx % columns;
-                if (colMod == 0) {
-                    writer.startElement("tr", null);
-                }
+        if (columns <= 0) {
+            throw new FacesException("The value of columns attribute must be greater than zero.");
+        }
 
-                writer.startElement("td", null);
-                encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
-                writer.endElement("td");
+        int idx = 0;
+        int colMod = 0;
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
+            colMod = idx % columns;
+            if (colMod == 0) {
+                writer.startElement("tr", null);
+            }
 
-                idx++;
-                colMod = idx % columns;
+            writer.startElement("td", null);
+            encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
+            writer.endElement("td");
 
-                if (colMod == 0) {
-                    writer.endElement("tr");
-                }
+            idx++;
+            colMod = idx % columns;
+
+            if (colMod == 0) {
+                writer.endElement("tr");
             }
         }
-        else {
-            throw new FacesException("The value of columns attribute must be greater than zero.");
+
+        // close final <tr> if not closed
+        if (colMod != 0) {
+            writer.endElement("tr");
         }
     }
 
@@ -408,7 +431,8 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         Object submittedValues = getSubmittedValues(checkbox);
 
         int idx = 0;
-        for (SelectItem selectItem : selectItems) {
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
             String itemValueAsString = getOptionAsString(context, checkbox, converter, selectItem.getValue());
             String name = checkbox.getClientId(context);
             String id = name + UINamingContainer.getSeparatorChar(context) + idx;
@@ -435,8 +459,8 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
     }
 
     protected void encodeOption(FacesContext context, UIInput component, Object values, Object submittedValues, Converter converter,
-            SelectItem option, int idx) throws IOException {
-        
+                                SelectItem option, int idx) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
         SelectManyCheckbox checkbox = (SelectManyCheckbox) component;
         String itemValueAsString = getOptionAsString(context, component, converter, option.getValue());

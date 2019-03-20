@@ -1,28 +1,36 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.util;
 
-import java.io.IOException;
+import org.primefaces.config.PrimeConfiguration;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.config.PrimeConfiguration;
+import java.io.IOException;
 
 /**
- * Helper to generate javascript code of an ajax call
+ * Helper to generate scripts for widgets.
  */
 public class WidgetBuilder {
 
@@ -61,20 +69,12 @@ public class WidgetBuilder {
 
     public WidgetBuilder init(String widgetClass, String widgetVar, String id) throws IOException {
         this.renderScriptBlock(id);
-        this.init(widgetClass, widgetVar, id, false);
 
-        return this;
-    }
-
-    public WidgetBuilder initWithDomReady(String widgetClass, String widgetVar, String id) throws IOException {
-
-        this.renderScriptBlock(id);
-        
-        // since jQuery 3 document ready ($(function() {})) are executed async
-        // this would mean that our oncomplete handlers are probably called before the scripts in the update nodes
+        // AJAX case: since jQuery 3 document ready ($(function() {})) are executed async
+        //            this would mean that our oncomplete handlers are probably called before the scripts in the update nodes
         // or
         // we can also skip it when MOVE_SCRIPTS_TO_BOTTOM is enabled as the scripts are already executed when everything is ready
-        if (context.isPostback() || configuration.isMoveScriptsToBottom()) {
+        if ((context.isPostback() && context.getPartialViewContext().isAjaxRequest()) || configuration.isMoveScriptsToBottom()) {
             this.init(widgetClass, widgetVar, id, false);
         }
         else {
@@ -83,6 +83,11 @@ public class WidgetBuilder {
         }
 
         return this;
+    }
+
+    @Deprecated
+    public WidgetBuilder initWithDomReady(String widgetClass, String widgetVar, String id) throws IOException {
+        return init(widgetClass, widgetVar, id);
     }
 
     public WidgetBuilder initWithWindowLoad(String widgetClass, String widgetVar, String id) throws IOException {
@@ -97,13 +102,13 @@ public class WidgetBuilder {
     public WidgetBuilder initWithComponentLoad(String widgetClass, String widgetVar, String id, String targetId) throws IOException {
 
         this.renderScriptBlock(id);
-        context.getResponseWriter().write("$(PrimeFaces.escapeClientId(\"" + targetId + "\")).on(\"load\",function(){");
+        context.getResponseWriter().write("PrimeFaces.onElementLoad($(PrimeFaces.escapeClientId(\"" + targetId + "\")),function(){");
         this.init(widgetClass, widgetVar, id, true);
 
         return this;
     }
 
-    private void renderScriptBlock(String id) throws IOException {
+    protected void renderScriptBlock(String id) throws IOException {
         ResponseWriter rw = context.getResponseWriter();
         rw.startElement("script", null);
         rw.writeAttribute("id", id + "_s", null);
@@ -114,11 +119,11 @@ public class WidgetBuilder {
      * This should only be used internally if the selector is directly used by jQuery on the client.
      * If PFS is used and specified by the user, {@link #attr(java.lang.String, java.lang.String)} should be used
      * as the users have to escape colons like @(myForm\:myId).
-     * 
+     *
      * @param name
      * @param value
      * @return
-     * @throws IOException 
+     * @throws IOException
      */
     public WidgetBuilder selectorAttr(String name, String value) throws IOException {
         if (value != null) {
@@ -132,14 +137,14 @@ public class WidgetBuilder {
 
         return this;
     }
-    
+
     public WidgetBuilder attr(String name, String value) throws IOException {
         if (value != null) {
             ResponseWriter rw = context.getResponseWriter();
             rw.write(",");
             rw.write(name);
             rw.write(":\"");
-            rw.write(ComponentUtils.escapeEcmaScriptText(value));
+            rw.write(EscapeUtils.forJavaScript(value));
             rw.write("\"");
         }
 
@@ -200,7 +205,7 @@ public class WidgetBuilder {
             rw.write(",");
             rw.write(name);
             rw.write(":\"");
-            rw.write(ComponentUtils.escapeEcmaScriptText(value));
+            rw.write(EscapeUtils.forJavaScript(value));
             rw.write("\"");
         }
 

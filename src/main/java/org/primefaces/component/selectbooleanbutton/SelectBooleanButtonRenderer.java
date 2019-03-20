@@ -1,17 +1,25 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.selectbooleanbutton;
 
@@ -22,7 +30,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 
-import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -34,14 +41,14 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         SelectBooleanButton button = (SelectBooleanButton) component;
 
-        if (button.isDisabled()) {
+        if (!shouldDecode(button)) {
             return;
         }
 
         decodeBehaviors(context, button);
 
         String clientId = button.getClientId(context);
-        String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
         if (submittedValue != null && submittedValue.equalsIgnoreCase("on")) {
             button.setSubmittedValue(true);
@@ -62,7 +69,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
     protected void encodeMarkup(FacesContext context, SelectBooleanButton button) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = button.getClientId(context);
-        boolean checked = Boolean.valueOf(ComponentUtils.getValueToRender(context, button));
+        boolean checked = Boolean.parseBoolean(ComponentUtils.getValueToRender(context, button));
         boolean disabled = button.isDisabled();
         String inputId = clientId + "_input";
         String label = checked ? button.getOnLabel() : button.getOffLabel();
@@ -74,11 +81,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         //button
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("type", "button", null);
-        writer.writeAttribute("class",styleClass, null);
-        if (disabled) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
+        writer.writeAttribute("class", styleClass, null);
         if (title != null) {
             writer.writeAttribute("title", title, null);
         }
@@ -98,21 +101,12 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         if (checked) {
             writer.writeAttribute("checked", "checked", null);
         }
-        if (disabled) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, button);
-        }
-
+        renderValidationMetadata(context, button);
+        renderAccessibilityAttributes(context, button);
+        renderPassThruAttributes(context, button, HTML.TAB_INDEX);
         renderOnchange(context, button);
         renderDomEvents(context, button, HTML.BLUR_FOCUS_EVENTS);
-
-        // tabindex
-        if (button.getTabindex() != null) {
-            writer.writeAttribute("tabindex", button.getTabindex(), null);
-        }
 
         writer.endElement("input");
 
@@ -142,15 +136,15 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
     }
 
     protected void encodeScript(FacesContext context, SelectBooleanButton button) throws IOException {
-        
+
         String onLabel = button.getOnLabel();
         String offLabel = button.getOffLabel();
-        
+
         String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("SelectBooleanButton", button.resolveWidgetVar(), clientId)
-                .attr("onLabel", isValueBlank(onLabel) ? "ui-button" : escapeText(onLabel))
-                .attr("offLabel", isValueBlank(offLabel) ? "ui-button" : escapeText(offLabel))
+                .attr("onLabel", isValueBlank(onLabel) ? "ui-button" : onLabel)
+                .attr("offLabel", isValueBlank(offLabel) ? "ui-button" : offLabel)
                 .attr("onIcon", button.getOnIcon(), null)
                 .attr("offIcon", button.getOffIcon(), null);
 

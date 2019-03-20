@@ -1,30 +1,34 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.menu;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
 import javax.faces.component.UIParameter;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorContext;
@@ -32,27 +36,23 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
+
 import org.primefaces.behavior.confirm.ConfirmBehavior;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.MenuActionEvent;
 import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.model.menu.MenuElement;
-import org.primefaces.model.menu.MenuGroup;
-import org.primefaces.model.menu.MenuItem;
-import org.primefaces.model.menu.MenuModel;
-import org.primefaces.model.menu.Separator;
+import org.primefaces.model.menu.*;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
-import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
 
 public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 
     public static final String SEPARATOR = "_";
-    
+
     private static final String SB_BUILD_NON_AJAX_REQUEST = BaseMenuRenderer.class.getName() + "#buildNonAjaxRequest";
 
     @Override
@@ -129,6 +129,10 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
     }
 
     protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
+        encodeMenuItem(context, menu, menuitem, "-1");
+    }
+
+    protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem, String tabindex) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String title = menuitem.getTitle();
         String style = menuitem.getStyle();
@@ -136,7 +140,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         String rel = menuitem.getRel();
 
         writer.startElement("a", null);
-        writer.writeAttribute("tabindex", "-1", null);
+        writer.writeAttribute("tabindex", tabindex, null);
         if (shouldRenderId(menuitem)) {
             writer.writeAttribute("id", menuitem.getClientId(), null);
         }
@@ -144,7 +148,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
             writer.writeAttribute("title", title, null);
         }
 
-        String styleClass = this.getLinkStyleClass(menuitem);
+        String styleClass = getLinkStyleClass(menuitem);
         if (disabled) {
             styleClass = styleClass + " ui-state-disabled";
         }
@@ -180,7 +184,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
             else {
                 writer.writeAttribute("href", "#", null);
 
-                UIComponent form = ComponentTraversalUtils.closestForm(context, menu);
+                UIForm form = ComponentTraversalUtils.closestForm(context, menu);
                 if (form == null) {
                     throw new FacesException("MenuItem must be inside a form element");
                 }
@@ -190,20 +194,20 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
                     String menuClientId = menu.getClientId(context);
                     Map<String, List<String>> params = menuitem.getParams();
                     if (params == null) {
-                        params = new LinkedHashMap<String, List<String>>();
+                        params = new LinkedHashMap<>();
                     }
-                    List<String> idParams = new ArrayList<String>();
+                    List<String> idParams = new ArrayList<>();
                     idParams.add(menuitem.getId());
                     params.put(menuClientId + "_menuid", idParams);
 
                     command = menuitem.isAjax()
-                            ? buildAjaxRequest(context, menu, (AjaxSource) menuitem, form, params)
-                            : buildNonAjaxRequest(context, menu, form, menuClientId, params, true);
+                              ? buildAjaxRequest(context, menu, (AjaxSource) menuitem, form, params)
+                              : buildNonAjaxRequest(context, menu, form, menuClientId, params, true);
                 }
                 else {
                     command = menuitem.isAjax()
-                            ? buildAjaxRequest(context, (AjaxSource) menuitem, form)
-                            : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
+                              ? buildAjaxRequest(context, (AjaxSource) menuitem, form)
+                              : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
                 }
 
                 onclick = (onclick == null) ? command : onclick + ";" + command;
@@ -320,45 +324,12 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         return true;
     }
 
-    protected String buildAjaxRequest(FacesContext context, AbstractMenu menu, AjaxSource source, UIComponent form,
-            Map<String, List<String>> params) {
-        
-        String clientId = menu.getClientId(context);
-
-        AjaxRequestBuilder builder = RequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
-
-        builder.init()
-                .source(clientId)
-                .process(menu, source.getProcess())
-                .update(menu, source.getUpdate())
-                .async(source.isAsync())
-                .global(source.isGlobal())
-                .delay(source.getDelay())
-                .timeout(source.getTimeout())
-                .partialSubmit(source.isPartialSubmit(), source.isPartialSubmitSet(), source.getPartialSubmitFilter())
-                .resetValues(source.isResetValues(), source.isResetValuesSet())
-                .ignoreAutoUpdate(source.isIgnoreAutoUpdate())
-                .onstart(source.getOnstart())
-                .onerror(source.getOnerror())
-                .onsuccess(source.getOnsuccess())
-                .oncomplete(source.getOncomplete())
-                .params(params);
-
-        if (form != null) {
-            builder.form(form.getClientId(context));
-        }
-
-        builder.preventDefault();
-
-        return builder.build();
-    }
-
     protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam,
-            Map<String, List<String>> parameters, boolean submit) {
-        
+                                         Map<String, List<String>> parameters, boolean submit) {
+
         StringBuilder request = SharedStringBuilder.get(context, SB_BUILD_NON_AJAX_REQUEST);
         String formId = form.getClientId(context);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
 
         if (decodeParam != null) {
             params.put(decodeParam, decodeParam);
@@ -372,7 +343,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         }
 
         if (parameters != null && !parameters.isEmpty()) {
-            for (Iterator<String> it = parameters.keySet().iterator(); it.hasNext();) {
+            for (Iterator<String> it = parameters.keySet().iterator(); it.hasNext(); ) {
                 String paramName = it.next();
                 params.put(paramName, parameters.get(paramName).get(0));
             }
@@ -380,13 +351,14 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 
         //append params
         if (!params.isEmpty()) {
-            request.append("PrimeFaces.addSubmitParam('").append(formId).append("',{");
+            request.append("PrimeFaces.addSubmitParam(\"").append(formId).append("\",{");
 
-            for (Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
+            for (Iterator<String> it = params.keySet().iterator(); it.hasNext(); ) {
                 String key = it.next();
                 Object value = params.get(key);
+                String valueStr = value == null ? null : EscapeUtils.forJavaScript(value.toString());
 
-                request.append("'").append(key).append("':'").append(value).append("'");
+                request.append("\"").append(EscapeUtils.forJavaScript(key)).append("\":\"").append(valueStr).append("\"");
 
                 if (it.hasNext()) {
                     request.append(",");
@@ -397,7 +369,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         }
 
         if (submit) {
-            request.append(".submit('").append(formId).append("');return false;");
+            request.append(".submit(\"").append(formId).append("\");return false;");
         }
 
         return request.toString();

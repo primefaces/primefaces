@@ -11,8 +11,13 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
 
         if(!this.cfg.disabled) {
             this.bindEvents();
-            this.appendPanel();
+            PrimeFaces.utils.registerDynamicOverlay(this, this.menu, this.id + '_menu');
         }
+    },
+
+    //@override
+    refresh: function(cfg) {
+        this._super(cfg);
     },
 
     bindEvents: function() {
@@ -95,7 +100,6 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                 case keyCode.SPACE:
                     if($this.menu.is(':visible'))
                         $this.menuitems.filter('.ui-state-hover').children('a').trigger('click');
@@ -113,53 +117,23 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
-        /**
-        * handler for document mousedown to hide the overlay
-        **/
-        var hideNS = 'mousedown.' + this.id;
-        $(document.body).off(hideNS).on(hideNS, function (e) {
-            //do nothing if hidden already
-            if($this.menu.is(":hidden") || $this.cfg.disabled) {
-                return;
-            }
+        if (!$this.cfg.disabled) {
+            PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.menu,
+                function() { return $this.button; },
+                function(e, eventTarget) {
+                    if(!($this.menu.is(eventTarget) || $this.menu.has(eventTarget).length > 0)) {
+                        $this.button.removeClass('ui-state-focus ui-state-hover');
+                        $this.hide();
+                    }
+                });
+        }
 
-            //do nothing if mouse is on button
-            var target = $(e.target);
-            if(target.is($this.button)||$this.button.has(target).length > 0) {
-                return;
-            }
-
-            //hide overlay if mouse is outside of overlay except button
-            var offset = $this.menu.offset();
-            if(e.pageX < offset.left ||
-                e.pageX > offset.left + $this.menu.width() ||
-                e.pageY < offset.top ||
-                e.pageY > offset.top + $this.menu.height()) {
-
-                $this.button.removeClass('ui-state-focus ui-state-hover');
-                $this.hide();
-            }
-        });
-
-        //Realign overlay on window resize
-        var resizeNS = 'resize.' + this.id;
-        $(window).unbind(resizeNS).bind(resizeNS, function() {
-            if($this.menu.is(':visible')) {
-                $this.alignPanel();
-            }
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.menu, function() {
+            $this.alignPanel();
         });
 
         //aria
         this.button.attr('role', 'button').attr('aria-disabled', this.button.is(':disabled'));
-    },
-
-    appendPanel: function() {
-        var container = this.cfg.appendTo ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo): $(document.body);
-
-        if(!container.is(this.jq)) {
-            container.children(this.menuId).remove();
-            this.menu.appendTo(container);
-        }
     },
 
     show: function() {

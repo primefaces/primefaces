@@ -13,23 +13,39 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
 
         // container support - e.g. splitButton
         if (this.jqTarget.is(':not(:button):not(:input):not(a)')) {
-        	this.jqTarget = this.jqTarget.find('button,a').filter(':visible').first();
+            this.jqTarget = this.jqTarget.find('button,a').filter(':visible').first();
         }
 
         //attach keypress listener to parent form
-        this.jqTarget.closest('form').off('keydown.' + this.id).on('keydown.' + this.id, function(e) {
-           var keyCode = $.ui.keyCode;
-           if(e.which == keyCode.ENTER || e.which == keyCode.NUMPAD_ENTER) {
-                //do not proceed if event target is not in this scope or target is a textarea,button or link
-                if (($this.scope && $this.scope[0] != e.target && $this.scope.find(e.target).length == 0)
-                   || $(e.target).is('textarea,button,input[type="submit"],a')) {
+        var closestForm = this.jqTarget.closest('form');
+        closestForm.off('keydown.' + this.id).on('keydown.' + this.id, {scopeEnter: false}, function (e, data) {
+            var keyCode = $.ui.keyCode;
+
+            data = data || e.data;
+            if (($this.scope && data.scopeEnter) || (!$this.scope && (e.which == keyCode.ENTER || e.which == keyCode.NUMPAD_ENTER))) {
+                //do not proceed if target is a textarea,button or link
+                if ($(e.target).is('textarea,button,input[type="submit"],a')) {
                     return true;
                 }
 
-               $this.jqTarget.click();
-               e.preventDefault();
-           }
+                if (!$this.jqTarget.is(':disabled, .ui-state-disabled')) {
+                    $this.jqTarget.click();
+                }
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            }
         });
+
+        if (this.scope) {
+            this.scope.off('keydown.' + this.id).on('keydown.' + this.id, function (e) {
+                var keyCode = $.ui.keyCode;
+                if (e.which == keyCode.ENTER || e.which == keyCode.NUMPAD_ENTER) {
+                    closestForm.trigger('keydown.' + $this.id, {scopeEnter: true});
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            });
+        }
 
         this.removeScriptElement(this.id);
     }

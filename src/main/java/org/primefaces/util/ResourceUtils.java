@@ -1,25 +1,31 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.util;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.Resource;
@@ -32,9 +38,29 @@ public class ResourceUtils {
 
     public static final String RENDERER_SCRIPT = "javax.faces.resource.Script";
     public static final String RENDERER_STYLESHEET = "javax.faces.resource.Stylesheet";
-    
-    private static final Logger LOG = Logger.getLogger(ResourceUtils.class.getName());
-    
+
+    private ResourceUtils() {
+    }
+
+    public static String getResourceURL(FacesContext context, String value) {
+        if (LangUtils.isValueBlank(value)) {
+            return Constants.EMPTY_STRING;
+        }
+        else if (value.contains(ResourceHandler.RESOURCE_IDENTIFIER)) {
+            return value;
+        }
+        else {
+            String url = context.getApplication().getViewHandler().getResourceURL(context, value);
+
+            return context.getExternalContext().encodeResourceURL(url);
+        }
+    }
+
+    public static String getResourceRequestPath(FacesContext context, String resourceName) {
+        Resource resource = context.getApplication().getResourceHandler().createResource(resourceName, "primefaces");
+        return resource.getRequestPath();
+    }
+
     public static void addComponentResource(FacesContext context, String name, String library, String target) {
 
         Application application = context.getApplication();
@@ -51,11 +77,11 @@ public class ResourceUtils {
     public static void addComponentResource(FacesContext context, String name, String library) {
         addComponentResource(context, name, library, "head");
     }
-   
+
     public static void addComponentResource(FacesContext context, String name) {
         addComponentResource(context, name, Constants.LIBRARY, "head");
     }
-   
+
     public static boolean isScript(UIComponent component) {
         return RENDERER_SCRIPT.equals(component.getRendererType());
     }
@@ -63,112 +89,57 @@ public class ResourceUtils {
     public static boolean isStylesheet(UIComponent component) {
         return RENDERER_STYLESHEET.equals(component.getRendererType());
     }
-   
-    public static ArrayList<ResourceInfo> getComponentResources(FacesContext context) {
-        ArrayList<ResourceInfo> resourceInfos = new ArrayList<ResourceInfo>();
-        
+
+    public static List<ResourceInfo> getComponentResources(FacesContext context) {
+        List<ResourceInfo> resourceInfos = new ArrayList<>();
+
         List<UIComponent> resources = context.getViewRoot().getComponentResources(context, "head");
         if (resources != null) {
-            for (UIComponent resource : resources) {
+            for (int i = 0; i < resources.size(); i++) {
+                UIComponent resource = resources.get(i);
                 ResourceUtils.ResourceInfo resourceInfo = newResourceInfo(resource);
                 if (resourceInfo != null && !resourceInfos.contains(resourceInfo)) {
                     resourceInfos.add(resourceInfo);
                 }
             }
         }
-        
+
         return resourceInfos;
     }
-    
-    public static ArrayList<String> filterStylesheets(FacesContext context, ArrayList<ResourceInfo> resourceInfos) {
-        if (resourceInfos == null || resourceInfos.isEmpty()) {
-            return null;
-        }
-        
-        ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
-        
-        ArrayList<String> stylesheets = new ArrayList<String>();
-        for (ResourceInfo resourceInfo : resourceInfos) {
-            if (isStylesheet(resourceInfo.getResource()) && !isInline(resourceInfo)) {
-                Resource resource;
-                if (ComponentUtils.isValueBlank(resourceInfo.getLibrary())) {
-                    resource = resourceHandler.createResource(resourceInfo.getName());
-                }
-                else {
-                    resource = resourceHandler.createResource(resourceInfo.getName(), resourceInfo.getLibrary());
-                }
 
-                if (resource == null) {
-                    LOG.log(Level.WARNING, "Resource not found, ignore it. Name: " + resourceInfo.getName() + ", Library: " + resourceInfo.getLibrary());
-                }
-                else {
-                    stylesheets.add(resource.getRequestPath());
-                }
-            }
-        }
-        return stylesheets;
-    }
-    
-    public static ArrayList<String> filterScripts(FacesContext context, ArrayList<ResourceInfo> resourceInfos) {
-        if (resourceInfos == null || resourceInfos.isEmpty()) {
-            return null;
-        }
-        
-        ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
-        
-        ArrayList<String> scripts = new ArrayList<String>();
-        for (ResourceInfo resourceInfo : resourceInfos) {
-            if (isScript(resourceInfo.getResource()) && !isInline(resourceInfo)) {
-                Resource resource;
-                if (ComponentUtils.isValueBlank(resourceInfo.getLibrary())) {
-                    resource = resourceHandler.createResource(resourceInfo.getName());
-                }
-                else {
-                    resource = resourceHandler.createResource(resourceInfo.getName(), resourceInfo.getLibrary());
-                }
-                
-                if (resource == null) {
-                    LOG.log(Level.WARNING, "Resource not found, ignore it. Name: " + resourceInfo.getName() + ", Library: " + resourceInfo.getLibrary());
-                }
-                else {
-                    scripts.add(resource.getRequestPath());
-                }
-            }
-        }
-        return scripts;
-    }
-    
     public static boolean isInline(ResourceInfo resourceInfo) {
         if (resourceInfo != null) {
-            return ComponentUtils.isValueBlank(resourceInfo.getLibrary()) && ComponentUtils.isValueBlank(resourceInfo.getName());
+            return LangUtils.isValueBlank(resourceInfo.getLibrary()) && LangUtils.isValueBlank(resourceInfo.getName());
         }
 
         return false;
     }
-    
+
     public static ResourceInfo newResourceInfo(UIComponent component) {
-       
+
         if (!(component instanceof UIOutput)) {
             return null;
         }
-       
+
         String library = (String) component.getAttributes().get("library");
         String name = (String) component.getAttributes().get("name");
-       
+
         return new ResourceInfo(library, name, component);
     }
-   
+
     public static Resource newResource(ResourceInfo resourceInfo, FacesContext context) {
         Resource resource = context.getApplication().getResourceHandler().createResource(resourceInfo.getName(), resourceInfo.getLibrary());
-       
+
         if (resource == null) {
             throw new FacesException("Resource '" + resourceInfo.getName() + "' in library '" + resourceInfo.getLibrary() + "' not found!");
         }
-       
+
         return resource;
     }
 
     public static class ResourceInfo implements Serializable {
+
+        private static final long serialVersionUID = 1L;
 
         private String library;
         private String name;

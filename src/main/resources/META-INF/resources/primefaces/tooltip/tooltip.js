@@ -23,10 +23,11 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.removeScriptElement(this.id);
     },
 
+    //@override
     refresh: function(cfg) {
         if(cfg.target) {
             var targetTooltip = $(document.body).children(PrimeFaces.escapeClientId(cfg.id));
-            if(targetTooltip.length) 
+            if(targetTooltip.length)
                 targetTooltip.remove();
         }
         else {
@@ -62,7 +63,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                         }
 
                         var arrow = $this.jq.children('.ui-tooltip-arrow');
-                        
+
                         if(element.hasClass('ui-state-error')) {
                             $this.jq.children('.ui-tooltip-text').addClass('ui-state-error');
                             arrow.addClass('ui-state-error');
@@ -88,16 +89,14 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                             $this.hide();
                             $this.globalTitle = null;
                             $this.target = null;
-                            $this.jq.removeClass('ui-state-error');
+                            $this.jq.children('.ui-tooltip-text').removeClass('ui-state-error');
                         }
                     });
 
-        var resizeNS = 'resize.tooltip';
-        $(window).unbind(resizeNS).bind(resizeNS, function() {
-            if($this.jq.is(':visible')) {
-                $this.align();
-            }
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.tooltip' + '_align', $this.jq, function() {
+            $this.align();
         });
+
     },
 
     bindTarget: function() {
@@ -109,13 +108,13 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
         if(this.cfg.delegate) {
             var targetSelector = "*[id='" + this.target.attr('id') + "']";
-            
+
             $(document).off(this.cfg.showEvent + ' ' + this.cfg.hideEvent, targetSelector)
                         .on(this.cfg.showEvent, targetSelector, function(e) {
                             if($this.cfg.trackMouse) {
                                 $this.mouseEvent = e;
                             }
-                            
+
                             if($.trim($this.jq.children('.ui-tooltip-text').html()) !== '') {
                                 $this.show();
                             }
@@ -143,16 +142,18 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.jq.appendTo(document.body);
 
         if($.trim(this.jq.children('.ui-tooltip-text').html()) === '') {
-            this.jq.children('.ui-tooltip-text').html(this.target.attr('title'));
+            var text = this.target.attr('title');
+            if(this.cfg.escape)
+                this.jq.children('.ui-tooltip-text').text(text);
+            else
+                this.jq.children('.ui-tooltip-text').html(text);
         }
 
         this.target.removeAttr('title');
 
-        var resizeNS = 'resize.' + this.id;
-        $(window).unbind(resizeNS).bind(resizeNS, function() {
-            if($this.jq.is(':visible')) {
-                $this.align();
-            }
+
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.jq, function() {
+            $this.align();
         });
     },
 
@@ -319,18 +320,18 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
     unfollowMouse: function() {
         var target = this.getTarget();
         if(target) {
-            target.off('mousemove.tooltip-track'); 
+            target.off('mousemove.tooltip-track');
         }
     },
 
     isVisible: function() {
         return this.jq.is(':visible');
     },
-    
+
     getTarget: function() {
         if(this.cfg.delegate)
             return PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.target);
-        else 
+        else
             return this.target;
     }
 

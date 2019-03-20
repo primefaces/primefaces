@@ -1,17 +1,25 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.validate.bean;
 
@@ -44,34 +52,35 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.validation.metadata.ConstraintDescriptor;
-
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
+import org.primefaces.util.MapBuilder;
 
 public class BeanValidationMetadataMapper {
 
-    private static final Logger LOG = Logger.getLogger(BeanValidationMetadataMapper.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BeanValidationMetadataMapper.class.getName());
 
     private static final Map<Class<? extends Annotation>, ClientValidationConstraint> CONSTRAINT_MAPPING
-            = new HashMap<Class<? extends Annotation>, ClientValidationConstraint>();
+            = MapBuilder.<Class<? extends Annotation>, ClientValidationConstraint>builder()
+                    .put(NotNull.class, new NotNullClientValidationConstraint())
+                    .put(Null.class, new NullClientValidationConstraint())
+                    .put(Size.class, new SizeClientValidationConstraint())
+                    .put(Min.class, new MinClientValidationConstraint())
+                    .put(Max.class, new MaxClientValidationConstraint())
+                    .put(DecimalMin.class, new DecimalMinClientValidationConstraint())
+                    .put(DecimalMax.class, new DecimalMaxClientValidationConstraint())
+                    .put(AssertTrue.class, new AssertTrueClientValidationConstraint())
+                    .put(AssertFalse.class, new AssertFalseClientValidationConstraint())
+                    .put(Digits.class, new DigitsClientValidationConstraint())
+                    .put(Past.class, new PastClientValidationConstraint())
+                    .put(Future.class, new FutureClientValidationConstraint())
+                    .put(Pattern.class, new PatternClientValidationConstraint())
+                    .build();
 
-    static {
-        CONSTRAINT_MAPPING.put(NotNull.class, new NotNullClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(Null.class, new NullClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(Size.class, new SizeClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(Min.class, new MinClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(Max.class, new MaxClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(DecimalMin.class, new DecimalMinClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(DecimalMax.class, new DecimalMaxClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(AssertTrue.class, new AssertTrueClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(AssertFalse.class, new AssertFalseClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(Digits.class, new DigitsClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(Past.class, new PastClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(Future.class, new FutureClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(Pattern.class, new PatternClientValidationConstraint());
+    private BeanValidationMetadataMapper() {
     }
 
-    public static BeanValidationMetadata resolveValidationMetadata(FacesContext context, UIComponent component, RequestContext requestContext)
+    public static BeanValidationMetadata resolveValidationMetadata(FacesContext context, UIComponent component, PrimeApplicationContext applicationContext)
             throws IOException {
 
         Map<String, Object> metadata = null;
@@ -80,16 +89,16 @@ public class BeanValidationMetadataMapper {
         try {
             // get BV ConstraintDescriptors
             Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractAllConstraintDescriptors(
-                    context, requestContext, component.getValueExpression("value"));
+                    context, applicationContext, component.getValueExpression("value"));
 
             if (constraints != null && !constraints.isEmpty()) {
 
                 boolean interpolateClientSideValidationMessages =
-                        requestContext.getApplicationContext().getConfig().isInterpolateClientSideValidationMessages();
+                        applicationContext.getConfig().isInterpolateClientSideValidationMessages();
 
                 MessageInterpolator messageInterpolator = null;
                 if (interpolateClientSideValidationMessages) {
-                    messageInterpolator = requestContext.getApplicationContext().getValidatorFactory().getMessageInterpolator();
+                    messageInterpolator = applicationContext.getValidatorFactory().getMessageInterpolator();
                 }
 
                 // loop BV ConstraintDescriptors
@@ -137,14 +146,14 @@ public class BeanValidationMetadataMapper {
 
                         if (constraintMetadata != null) {
                             if (metadata == null) {
-                                metadata = new HashMap<String, Object>();
+                                metadata = new HashMap<>();
                             }
                             metadata.putAll(constraintMetadata);
                         }
 
                         if (validatorId != null) {
                             if (validatorIds == null) {
-                                validatorIds = new ArrayList<String>();
+                                validatorIds = new ArrayList<>();
                             }
                             validatorIds.add(validatorId);
                         }
@@ -156,7 +165,7 @@ public class BeanValidationMetadataMapper {
             String message = "Skip resolving of CSV BV metadata for component \"" + component.getClientId(context) + "\" because"
                     + " the ValueExpression of the \"value\" attribute"
                     + " isn't resolvable completely (e.g. a sub-expression returns null)";
-            LOG.log(Level.FINE, message);
+            LOGGER.log(Level.FINE, message);
         }
 
         if (metadata == null && validatorIds == null) {

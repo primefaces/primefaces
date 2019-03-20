@@ -8,7 +8,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
 
         this.input = $(this.jqId + '_input');
         this.jqEl = this.cfg.popup ? this.input : $(this.jqId + '_inline');
-        var _self = this;
+        var $this = this;
 
         //i18n and l7n
         this.configureLocale();
@@ -20,10 +20,10 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
 
         //disabled dates
         this.cfg.beforeShowDay = function(date) {
-            if(_self.cfg.preShowDay) {
-                return _self.cfg.preShowDay(date);
+            if($this.cfg.preShowDay) {
+                return $this.cfg.preShowDay(date);
             }
-            else if(_self.cfg.disabledWeekends) {
+            else if($this.cfg.disabledWeekends) {
                 return $.datepicker.noWeekends(date);
             }
             else {
@@ -46,31 +46,37 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
             }
 
             this.cfg.beforeShow = function(input, inst) {
-                if(_self.refocusInput) {
-                    _self.refocusInput = false;
+                if($this.refocusInput) {
+                    $this.refocusInput = false;
                     return false;
                 }
-                
+
                 //display on top
                 setTimeout(function() {
-                    $('#ui-datepicker-div').css('z-index', ++PrimeFaces.zindex);
+                    $('#ui-datepicker-div').addClass('ui-input-overlay').css('z-index', ++PrimeFaces.zindex);
 
-                    if (_self.cfg.showTodayButton === false) {
+                    if ($this.cfg.showTodayButton === false) {
                         $(input).datepicker("widget").find(".ui-datepicker-current").hide();
                     }
+                    
+                    $this.alignPanel();
                 }, 1);
 
                 // touch support - prevents keyboard popup
-                if(PrimeFaces.env.touch && !_self.input.attr("readonly") && _self.cfg.showOn && _self.cfg.showOn === 'button') {
+                if(PrimeFaces.env.touch && !$this.input.attr("readonly") && $this.cfg.showOn && $this.cfg.showOn === 'button') {
                     $(this).prop("readonly", true);
                 }
 
                 //user callback
-                var preShow = _self.cfg.preShow;
+                var preShow = $this.cfg.preShow;
                 if(preShow) {
-                    return _self.cfg.preShow.call(_self, input, inst);
+                    return $this.cfg.preShow.call($this, input, inst);
                 }
             };
+            
+            PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $('#ui-datepicker-div'), function() {
+                $this.alignPanel();
+            });
         }
 
         // touch support - prevents keyboard popup
@@ -101,11 +107,11 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
             if(title) {
                 triggerButton.attr('title', title);
             }
-            
+
             if(this.cfg.disabled) {
                 triggerButton.addClass('ui-state-disabled');
             }
-            
+
             var buttonIndex = this.cfg.buttonTabindex||this.jqEl.attr('tabindex');
             if(buttonIndex) {
                 triggerButton.attr('tabindex', buttonIndex);
@@ -137,12 +143,23 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    alignPanel: function () {
+        if($.datepicker._lastInput && (this.id + '_input') === $.datepicker._lastInput.id) {
+            $('#ui-datepicker-div').css({left: '', top: ''}).position({
+                my: 'left top'
+                , at: 'left bottom'
+                , of: this.input
+                , collision: 'flipfit'
+            });
+        }
+    },
+    
     refresh: function(cfg) {
         if(cfg.popup && $.datepicker._lastInput && (cfg.id + '_input') === $.datepicker._lastInput.id) {
             $.datepicker._hideDatepicker();
         }
 
-        this.init(cfg);
+        this._super(cfg);
     },
 
     configureLocale: function() {
@@ -156,46 +173,44 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
     },
 
     bindDateSelectListener: function() {
-        var _self = this;
+        var $this = this;
 
         this.cfg.onSelect = function() {
-            if(_self.cfg.popup) {
-                _self.fireDateSelectEvent();
-                
-                if(_self.cfg.focusOnSelect) {
-                    _self.refocusInput = true;
-                    _self.jqEl.focus();
-                    if(!(_self.cfg.showOn && _self.cfg.showOn === 'button')) {
-                        _self.jqEl.off('click.calendar').on('click.calendar', function() {
+            if($this.cfg.popup) {
+                $this.fireDateSelectEvent();
+
+                if($this.cfg.focusOnSelect) {
+                    $this.refocusInput = true;
+                    $this.jqEl.focus();
+                    if(!($this.cfg.showOn && $this.cfg.showOn === 'button')) {
+                        $this.jqEl.off('click.calendar').on('click.calendar', function() {
                             $(this).datepicker("show");
                         });
                     }
-                    
+
                     setTimeout(function() {
-                        _self.refocusInput = false;
+                        $this.refocusInput = false;
                     }, 10);
                 }
             }
             else {
-                var newDate = _self.cfg.timeOnly ? '' : $.datepicker.formatDate(_self.cfg.dateFormat, _self.getDate());
-                if(_self.cfg.timeFormat) {
-                   newDate += ' ' + _self.jqEl.find('.ui_tpicker_time_input')[0].value;
+                // GitHub #3760 Pass the config settings to TimePicker
+                var settingsObj = {
+                       settings : $this.cfg
+                };
+                var newDate = $this.cfg.timeOnly ? '' : $.datepicker.formatDate($this.cfg.dateFormat, $this.getDate(), $.datepicker._getFormatConfig(settingsObj));
+                if($this.cfg.timeFormat) {
+                   newDate += ' ' + $this.jqEl.find('.ui_tpicker_time_input')[0].value;
                 }
 
-                _self.input.val(newDate);
-                _self.fireDateSelectEvent();
+                $this.input.val(newDate);
+                $this.fireDateSelectEvent();
             }
         };
     },
 
     fireDateSelectEvent: function() {
-        if(this.cfg.behaviors) {
-            var dateSelectBehavior = this.cfg.behaviors['dateSelect'];
-
-            if(dateSelectBehavior) {
-                dateSelectBehavior.call(this);
-            }
-        }
+        this.callBehavior('dateSelect');
     },
 
     bindViewChangeListener: function() {
@@ -208,19 +223,15 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
     },
 
     fireViewChangeEvent: function(year, month) {
-        if(this.cfg.behaviors) {
-            var viewChangeBehavior = this.cfg.behaviors['viewChange'];
+        if(this.hasBehavior('viewChange')) {
+            var ext = {
+                    params: [
+                        {name: this.id + '_month', value: month},
+                        {name: this.id + '_year', value: year}
+                    ]
+            };
 
-            if(viewChangeBehavior) {
-                var ext = {
-                        params: [
-                            {name: this.id + '_month', value: month},
-                            {name: this.id + '_year', value: year}
-                        ]
-                };
-
-                viewChangeBehavior.call(this, ext);
-            }
+            this.callBehavior('viewChange', ext);
         }
     },
 
@@ -234,12 +245,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
     },
 
     fireCloseEvent: function() {
-        if(this.cfg.behaviors) {
-            var closeBehavior = this.cfg.behaviors['close'];
-            if(closeBehavior) {
-                closeBehavior.call(this);
-            }
-        }
+        this.callBehavior('close');
     },
 
     configureTimePicker: function() {
@@ -253,14 +259,20 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.timeFormat.indexOf('TT') != -1) {
             this.cfg.ampm = true;
         }
+        
+        // GitHub #4366 pass date and time settings for min/max date
+        var timeSettings = {
+                settings : this.cfg
+        };
+        var parseSettings = $.datepicker._getFormatConfig(timeSettings);
 
-        //restrains
+        //restraints
         if(this.cfg.minDate) {
-            this.cfg.minDate = $.datepicker.parseDateTime(this.cfg.dateFormat, this.cfg.timeFormat, this.cfg.minDate, {}, {});
+            this.cfg.minDate = $.datepicker.parseDateTime(this.cfg.dateFormat, this.cfg.timeFormat, this.cfg.minDate, parseSettings, this.cfg);
         }
 
         if(this.cfg.maxDate) {
-            this.cfg.maxDate = $.datepicker.parseDateTime(this.cfg.dateFormat, this.cfg.timeFormat, this.cfg.maxDate, {}, {});
+            this.cfg.maxDate = $.datepicker.parseDateTime(this.cfg.dateFormat, this.cfg.timeFormat, this.cfg.maxDate, parseSettings, this.cfg);
         }
 
         if(!this.cfg.showButtonPanel) {

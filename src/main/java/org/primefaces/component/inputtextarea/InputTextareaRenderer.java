@@ -1,29 +1,38 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.inputtextarea;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
+
 import org.primefaces.component.autocomplete.AutoComplete;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
@@ -37,7 +46,7 @@ public class InputTextareaRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         InputTextarea inputTextarea = (InputTextarea) component;
 
-        if (inputTextarea.isDisabled() || inputTextarea.isReadonly()) {
+        if (!shouldDecode(inputTextarea)) {
             return;
         }
 
@@ -46,6 +55,10 @@ public class InputTextareaRenderer extends InputRenderer {
         String clientId = inputTextarea.getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String submittedValue = params.get(clientId);
+
+        if (submittedValue != null && submittedValue.length() > inputTextarea.getMaxlength()) {
+            return;
+        }
 
         inputTextarea.setSubmittedValue(submittedValue);
 
@@ -84,7 +97,7 @@ public class InputTextareaRenderer extends InputRenderer {
         for (Object item : items) {
             writer.startElement("li", null);
             writer.writeAttribute("class", AutoComplete.ITEM_CLASS, null);
-            writer.writeAttribute("data-item-value", item, null);
+            writer.writeAttribute("data-item-value", item.toString(), null);
             writer.writeText(item, null);
 
             writer.endElement("li");
@@ -99,7 +112,7 @@ public class InputTextareaRenderer extends InputRenderer {
         String counter = inputTextarea.getCounter();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("InputTextarea", inputTextarea.resolveWidgetVar(), clientId)
+        wb.init("InputTextarea", inputTextarea.resolveWidgetVar(), clientId)
                 .attr("autoResize", autoResize)
                 .attr("maxlength", inputTextarea.getMaxlength(), Integer.MAX_VALUE);
 
@@ -128,19 +141,16 @@ public class InputTextareaRenderer extends InputRenderer {
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("name", clientId, null);
 
-        renderPassThruAttributes(context, inputTextarea, HTML.TEXTAREA_ATTRS_WITHOUT_EVENTS);
-        renderDomEvents(context, inputTextarea, HTML.INPUT_TEXT_EVENTS);
-
-        if (inputTextarea.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
-        if (inputTextarea.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
-        if (inputTextarea.getStyle() != null) writer.writeAttribute("style", inputTextarea.getStyle(), null);
-        if (inputTextarea.isRequired()) writer.writeAttribute("aria-required", "true", null);
+        if (inputTextarea.getStyle() != null) {
+            writer.writeAttribute("style", inputTextarea.getStyle(), null);
+        }
 
         writer.writeAttribute("class", createStyleClass(inputTextarea), "styleClass");
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, inputTextarea);
-        }
+        renderAccessibilityAttributes(context, inputTextarea);
+        renderPassThruAttributes(context, inputTextarea, HTML.TEXTAREA_ATTRS_WITHOUT_EVENTS);
+        renderDomEvents(context, inputTextarea, HTML.INPUT_TEXT_EVENTS);
+        renderValidationMetadata(context, inputTextarea);
 
         String valueToRender = ComponentUtils.getValueToRender(context, inputTextarea);
         if (valueToRender != null) {

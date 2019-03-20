@@ -12,13 +12,19 @@ PrimeFaces.widget.Poll = PrimeFaces.widget.BaseWidget.extend({
             this.start();
         }
     },
-    
+
+    //@Override
     refresh: function(cfg) {
-        if(this.isActive()) {
-            this.stop();
-        }
-        
-        this.init(cfg);
+        this.stop();
+
+        this._super(cfg);
+    },
+
+    //@Override
+    destroy: function() {
+        this._super();
+
+        this.stop();
     },
 
     start: function() {

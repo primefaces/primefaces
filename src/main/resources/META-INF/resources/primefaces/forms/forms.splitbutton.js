@@ -9,12 +9,14 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         this.menuButton = $(this.jqId + '_menuButton');
         this.menuId = this.jqId + "_menu";
         this.menu = $(this.menuId);
-        this.menuitems = this.menu.find('.ui-menuitem:not(.ui-state-disabled)');
+        this.menuitemContainer = this.menu.find('.ui-menu-list');
+        this.menuitems = this.menuitemContainer.children('.ui-menuitem:not(.ui-state-disabled)');
         this.cfg.disabled = this.button.is(':disabled');
 
         if(!this.cfg.disabled) {
             this.bindEvents();
-            this.appendPanel();
+
+            PrimeFaces.utils.registerDynamicOverlay(this, this.menu, this.id + '_menu');
         }
 
         //pfs metadata
@@ -22,16 +24,9 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         this.menuButton.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
 
+    //@override
     refresh: function(cfg) {
-        this.menu.remove();
-
-        this.init(cfg);
-    },
-
-    destroy: function() {
-        this._super();
-
-        this.menu.remove();
+        this._super(cfg);
     },
 
     bindEvents: function() {
@@ -70,96 +65,272 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
 
             switch(e.which) {
                 case keyCode.UP:
-                    var highlightedItem = $this.menuitems.filter('.ui-state-hover'),
-                    prevItems = highlightedItem.length ? highlightedItem.prevAll(':not(.ui-separator)') : null;
-
-                    if(prevItems && prevItems.length) {
-                        highlightedItem.removeClass('ui-state-hover');
-                        prevItems.eq(0).addClass('ui-state-hover');
-                    }
-
-                    e.preventDefault();
+                    $this.highlightPrev(e);
                 break;
 
                 case keyCode.DOWN:
-                    var highlightedItem = $this.menuitems.filter('.ui-state-hover'),
-                    nextItems = highlightedItem.length ? highlightedItem.nextAll(':not(.ui-separator)') : $this.menuitems.eq(0);
-
-                    if(nextItems.length) {
-                        highlightedItem.removeClass('ui-state-hover');
-                        nextItems.eq(0).addClass('ui-state-hover');
-                    }
-
-                    e.preventDefault();
+                    $this.highlightNext(e);
                 break;
 
                 case keyCode.ENTER:
                 case keyCode.NUMPAD_ENTER:
                 case keyCode.SPACE:
-                    if($this.menu.is(':visible'))
-                        $this.menuitems.filter('.ui-state-hover').children('a').trigger('click');
-                    else
-                        $this.show();
-
-                    e.preventDefault();
+                    $this.handleEnterKey(e);
                 break;
 
 
                 case keyCode.ESCAPE:
                 case keyCode.TAB:
-                    $this.hide();
+                    $this.handleEscapeKey();
                 break;
             }
         });
 
-        var hideNS = 'mousedown.' + this.id;
-        $(document.body).off(hideNS).on(hideNS, function (e) {
-            //do nothing if hidden already
-            if($this.menu.is(":hidden")) {
-                return;
-            }
+        PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.menu, null,
+            function(e, eventTarget) {
+                if(!($this.menu.is(eventTarget) || $this.menu.has(eventTarget).length > 0)) {
+                    $this.button.removeClass('ui-state-focus ui-state-hover');
+                    $this.hide();
+                }
+            });
 
-            //do nothing if mouse is on button
-            var target = $(e.target);
-            if(target.is($this.button)||$this.button.has(target).length > 0) {
-                return;
-            }
-
-            //hide overlay if mouse is outside of overlay except button
-            var offset = $this.menu.offset();
-            if(e.pageX < offset.left ||
-                e.pageX > offset.left + $this.menu.width() ||
-                e.pageY < offset.top ||
-                e.pageY > offset.top + $this.menu.height()) {
-
-                $this.button.removeClass('ui-state-focus ui-state-hover');
-                $this.hide();
-            }
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.menu, function() {
+            $this.alignPanel();
         });
+        
+        if(this.cfg.filter) {
+            this.setupFilterMatcher();
+            this.filterInput = this.menu.find('> div.ui-splitbuttonmenu-filter-container > input.ui-splitbuttonmenu-filter');
+            PrimeFaces.skinInput(this.filterInput);
 
-        var resizeNS = 'resize.' + this.id;
-        $(window).off(resizeNS).on(resizeNS, function() {
-            if($this.menu.is(':visible')) {
-                $this.alignPanel();
+            this.bindFilterEvents();
+        }
+    },
+    
+    bindFilterEvents: function() {
+        var $this = this;
+
+        this.filterInput.on('keyup.ui-splitbutton', function(e) {
+            var keyCode = $.ui.keyCode,
+            key = e.which;
+
+            switch(key) {
+                case keyCode.UP:
+                case keyCode.LEFT:
+                case keyCode.DOWN:
+                case keyCode.RIGHT:
+                case keyCode.ENTER:
+                case keyCode.NUMPAD_ENTER:
+                case keyCode.TAB:
+                case keyCode.ESCAPE:
+                case keyCode.SPACE:
+                case keyCode.HOME:
+                case keyCode.PAGE_DOWN:
+                case keyCode.PAGE_UP:
+                case keyCode.END:
+                case 16: //shift
+                case 17: //keyCode.CONTROL:
+                case 18: //keyCode.ALT:
+                case 91: //left window or cmd:
+                case 92: //right window:
+                case 93: //right cmd:
+                case 20: //capslock:
+                break;
+
+                default:
+                    //function keys (F1,F2 etc.)
+                    if(key >= 112 && key <= 123) {
+                        break;
+                    }
+
+                    var metaKey = e.metaKey||e.ctrlKey;
+
+                    if(!metaKey) {
+                        $this.filter($(this).val());
+                    }
+                break;
             }
-        });
+        })
+        .on('keydown.ui-splitbutton',function(e) {
+            var keyCode = $.ui.keyCode,
+            key = e.which;
+
+            switch(key) {
+                case keyCode.UP:
+                    $this.highlightPrev(e);
+                break;
+
+                case keyCode.DOWN:
+                    $this.highlightNext(e);
+                break;
+                
+                case keyCode.ENTER:
+                case keyCode.NUMPAD_ENTER:
+                    $this.handleEnterKey(e);
+                break;
+                
+                case keyCode.SPACE:
+                    var target = $(e.target);
+
+                    if(target.is('input') && target.hasClass('ui-splitbuttonmenu-filter')) {
+                        return;
+                    }
+                    
+                    $this.handleEnterKey(e);
+                break;
+                
+                case keyCode.ESCAPE:
+                case keyCode.TAB:
+                    $this.handleEscapeKey();
+                break;
+
+                default:
+                break;
+            }
+        }).on('paste.ui-splitbutton', function() {
+            setTimeout(function(){
+                $this.filter($this.filterInput.val());
+            },2);
+	});
+    },
+    
+    highlightNext: function(event) {
+        var highlightedItem = this.menuitems.filter('.ui-state-hover'),
+        nextItems = highlightedItem.length ? highlightedItem.nextAll(':not(.ui-separator, .ui-widget-header):visible') : this.menuitems.filter(':visible').eq(0);
+        
+        if(nextItems.length) {
+            highlightedItem.removeClass('ui-state-hover');
+            nextItems.eq(0).addClass('ui-state-hover');
+        }
+
+        event.preventDefault();
+    },
+    
+    highlightPrev: function(event) {
+        var highlightedItem = this.menuitems.filter('.ui-state-hover'),
+        prevItems = highlightedItem.length ? highlightedItem.prevAll(':not(.ui-separator, .ui-widget-header):visible') : null;
+
+        if(prevItems && prevItems.length) {
+            highlightedItem.removeClass('ui-state-hover');
+            prevItems.eq(0).addClass('ui-state-hover');
+        }
+
+        event.preventDefault();
+    },
+    
+    handleEnterKey: function(event) {
+        if(this.menu.is(':visible')) {
+            var link = this.menuitems.filter('.ui-state-hover').children('a');
+            link.trigger('click');
+            
+            var href = link.attr('href');
+            if(href && href !== '#') {
+                window.location.href = href;
+            } 
+        }
+        else {
+            this.show();
+        }
+
+        event.preventDefault();
+    },
+    
+    handleEscapeKey: function() {
+        this.hide();
+    },
+    
+    setupFilterMatcher: function() {
+        this.cfg.filterMatchMode = this.cfg.filterMatchMode||'startsWith';
+        this.filterMatchers = {
+            'startsWith': this.startsWithFilter
+            ,'contains': this.containsFilter
+            ,'endsWith': this.endsWithFilter
+            ,'custom': this.cfg.filterFunction
+        };
+
+        this.filterMatcher = this.filterMatchers[this.cfg.filterMatchMode];
     },
 
-    appendPanel: function() {
-        var container = this.cfg.appendTo ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo): $(document.body);
+    startsWithFilter: function(value, filter) {
+        return value.indexOf(filter) === 0;
+    },
 
-        if(!container.is(this.jq)) {
-            container.children(this.menuId).remove();
-            this.menu.appendTo(container);
+    containsFilter: function(value, filter) {
+        return value.indexOf(filter) !== -1;
+    },
+
+    endsWithFilter: function(value, filter) {
+        return value.indexOf(filter, value.length - filter.length) !== -1;
+    },
+
+    filter: function(value) {
+        var filterValue = $.trim(value).toLowerCase();
+
+        if(filterValue === '') {
+            this.menuitems.filter(':hidden').show();
+            this.menuitemContainer.children('.ui-widget-header').show();
+            this.menuitemContainer.children('.ui-separator').show();
         }
+        else {
+            for(var i = 0; i < this.menuitems.length; i++) {
+                var menuitem = this.menuitems.eq(i),
+                itemLabel = menuitem.find('.ui-menuitem-text').text().toLowerCase();
+
+                /* for keyboard support */
+                menuitem.removeClass('ui-state-hover');
+                
+                if(this.filterMatcher(itemLabel, filterValue))
+                    menuitem.show();
+                else
+                    menuitem.hide();
+
+            }
+
+            //groups
+            var groupHeaders = this.menuitemContainer.children('.ui-widget-header');
+            for(var g = 0; g < groupHeaders.length; g++) {
+                var group = groupHeaders.eq(g);
+
+                if(g === (groupHeaders.length - 1)) {
+                    if(group.nextAll('.ui-submenu-child').filter(':visible').length === 0)
+                        group.hide();
+                    else
+                        group.show();
+                }
+                else {
+                    if(group.nextUntil('.ui-widget-header').filter(':visible').length === 0)
+                        group.hide();
+                    else
+                        group.show();
+                }
+            }
+            
+            var separators = this.menuitemContainer.children('.ui-separator');
+            for(var s = 0; s < separators.length; s++) {
+                var separator = separators.eq(s);
+                if(separator.nextAll().filter(':visible').length === 0 || separator.prevAll().filter(':visible').length === 0) {
+                    separator.hide();
+                }
+                else {
+                    separator.show();
+                }
+            }
+        }
+        
+        this.alignPanel();
     },
 
     show: function() {
         this.alignPanel();
 
-        this.menuButton.focus();
-
         this.menu.show();
+        
+        if(this.cfg.filter) {
+            this.filterInput.focus();
+        }
+        else {
+            this.menuButton.focus();
+        }
     },
 
     hide: function() {

@@ -1,17 +1,25 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.accordionpanel;
 
@@ -158,19 +166,20 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
         String activeIndex = acco.getActiveIndex();
         List<String> activeIndexes = activeIndex == null
-                ? Collections.EMPTY_LIST
-                : Arrays.asList(activeIndex.split(","));        
+                                     ? Collections.<String>emptyList()
+                                     : Arrays.asList(activeIndex.split(","));
 
         if (var == null) {
-            int i = 0;
+            int j = 0;
 
-            for (UIComponent child : acco.getChildren()) {
+            for (int i = 0; i < acco.getChildCount(); i++) {
+                UIComponent child = acco.getChildren().get(i);
                 if (child.isRendered() && child instanceof Tab) {
-                    boolean active = activeIndexes.indexOf(Integer.toString(i)) != -1;
+                    boolean active = activeIndexes.indexOf(Integer.toString(j)) != -1;
 
                     encodeTab(context, acco, (Tab) child, active, dynamic, rtl);
 
-                    i++;
+                    j++;
                 }
             }
         }
@@ -190,19 +199,19 @@ public class AccordionPanelRenderer extends CoreRenderer {
     }
 
     protected void encodeTab(FacesContext context, AccordionPanel accordionPanel, Tab tab, boolean active, boolean dynamic,
-            boolean rtl) throws IOException {
-        
+                             boolean rtl) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
 
         String headerClass = active ? AccordionPanel.ACTIVE_TAB_HEADER_CLASS : AccordionPanel.TAB_HEADER_CLASS;
         headerClass = tab.isDisabled() ? headerClass + " ui-state-disabled" : headerClass;
         headerClass = tab.getTitleStyleClass() == null ? headerClass : headerClass + " " + tab.getTitleStyleClass();
         String iconClass = active
-                ? AccordionPanel.ACTIVE_TAB_HEADER_ICON_CLASS
-                : (rtl ? AccordionPanel.TAB_HEADER_ICON_RTL_CLASS : AccordionPanel.TAB_HEADER_ICON_CLASS);
+                           ? AccordionPanel.ACTIVE_TAB_HEADER_ICON_CLASS
+                           : (rtl ? AccordionPanel.TAB_HEADER_ICON_RTL_CLASS : AccordionPanel.TAB_HEADER_ICON_CLASS);
         String contentClass = active
-                ? AccordionPanel.ACTIVE_TAB_CONTENT_CLASS
-                : AccordionPanel.INACTIVE_TAB_CONTENT_CLASS;
+                              ? AccordionPanel.ACTIVE_TAB_CONTENT_CLASS
+                              : AccordionPanel.INACTIVE_TAB_CONTENT_CLASS;
         UIComponent titleFacet = tab.getFacet("title");
         String title = tab.getTitle();
         String tabindex = tab.isDisabled() ? "-1" : accordionPanel.getTabindex();
@@ -211,12 +220,16 @@ public class AccordionPanelRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", headerClass, null);
         writer.writeAttribute("role", "tab", null);
-        writer.writeAttribute("aria-expanded", String.valueOf(active), null);
-        writer.writeAttribute("aria-selected", String.valueOf(active), null);
-        writer.writeAttribute("aria-label", tab.getAriaLabel(), null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(active), null);
+        writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(active), null);
+        writer.writeAttribute(HTML.ARIA_LABEL, tab.getAriaLabel(), null);
         writer.writeAttribute("tabindex", tabindex, null);
-        if (tab.getTitleStyle() != null) writer.writeAttribute("style", tab.getTitleStyle(), null);
-        if (tab.getTitletip() != null) writer.writeAttribute("title", tab.getTitletip(), null);
+        if (tab.getTitleStyle() != null) {
+            writer.writeAttribute("style", tab.getTitleStyle(), null);
+        }
+        if (tab.getTitletip() != null) {
+            writer.writeAttribute("title", tab.getTitletip(), null);
+        }
 
         //icon
         writer.startElement("span", null);
@@ -240,7 +253,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
         writer.writeAttribute("id", tab.getClientId(context), null);
         writer.writeAttribute("class", contentClass, null);
         writer.writeAttribute("role", "tabpanel", null);
-        writer.writeAttribute("aria-hidden", String.valueOf(!active), null);
+        writer.writeAttribute(HTML.ARIA_HIDDEN, String.valueOf(!active), null);
 
         if (dynamic) {
             if (active) {

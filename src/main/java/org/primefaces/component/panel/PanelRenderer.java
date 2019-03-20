@@ -1,17 +1,25 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.panel;
 
@@ -26,6 +34,7 @@ import org.primefaces.component.menu.Menu;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class PanelRenderer extends CoreRenderer {
@@ -39,13 +48,13 @@ public class PanelRenderer extends CoreRenderer {
         //Restore toggle state
         String collapsedParam = params.get(clientId + "_collapsed");
         if (collapsedParam != null) {
-            panel.setCollapsed(Boolean.valueOf(collapsedParam));
+            panel.setCollapsed(Boolean.parseBoolean(collapsedParam));
         }
 
         //Restore visibility state
         String visibleParam = params.get(clientId + "_visible");
         if (visibleParam != null) {
-            panel.setVisible(Boolean.valueOf(visibleParam));
+            panel.setVisible(Boolean.parseBoolean(visibleParam));
         }
 
         decodeBehaviors(context, component);
@@ -69,7 +78,7 @@ public class PanelRenderer extends CoreRenderer {
                     .attr("toggleSpeed", panel.getToggleSpeed())
                     .attr("collapsed", panel.isCollapsed())
                     .attr("toggleOrientation", panel.getToggleOrientation())
-                    .attr("toggleOnHeaderClick", panel.isToggleOnHeaderClick());
+                    .attr("toggleableHeader", panel.isToggleableHeader());
         }
 
         if (panel.isClosable()) {
@@ -173,16 +182,16 @@ public class PanelRenderer extends CoreRenderer {
 
         //Options
         if (panel.isClosable()) {
-            encodeIcon(context, panel, "ui-icon-closethick", clientId + "_closer", panel.getCloseTitle());
+            encodeIcon(context, panel, "ui-icon-closethick", clientId + "_closer", panel.getCloseTitle(), MessageFactory.getMessage(Panel.ARIA_CLOSE, null));
         }
 
         if (panel.isToggleable()) {
             String icon = panel.isCollapsed() ? "ui-icon-plusthick" : "ui-icon-minusthick";
-            encodeIcon(context, panel, icon, clientId + "_toggler", panel.getToggleTitle());
+            encodeIcon(context, panel, icon, clientId + "_toggler", panel.getToggleTitle(), MessageFactory.getMessage(Panel.ARIA_TOGGLE, null));
         }
 
         if (panel.getOptionsMenu() != null) {
-            encodeIcon(context, panel, "ui-icon-gear", clientId + "_menu", panel.getMenuTitle());
+            encodeIcon(context, panel, "ui-icon-gear", clientId + "_menu", panel.getMenuTitle(), MessageFactory.getMessage(Panel.ARIA_OPTIONS_MENU, null));
         }
 
         //Actions
@@ -217,7 +226,7 @@ public class PanelRenderer extends CoreRenderer {
         UIComponent footer = panel.getFacet("footer");
         String footerText = panel.getFooter();
 
-        if (footer != null || footerText != null) {
+        if (footerText != null || ComponentUtils.shouldRenderFacet(footer)) {
             writer.startElement("div", null);
             writer.writeAttribute("id", panel.getClientId(context) + "_footer", null);
             writer.writeAttribute("class", Panel.PANEL_FOOTER_CLASS, null);
@@ -233,7 +242,7 @@ public class PanelRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeIcon(FacesContext context, Panel panel, String iconClass, String id, String title) throws IOException {
+    protected void encodeIcon(FacesContext context, Panel panel, String iconClass, String id, String title, String ariaLabel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("a", null);
@@ -244,6 +253,10 @@ public class PanelRenderer extends CoreRenderer {
         writer.writeAttribute("class", Panel.PANEL_TITLE_ICON_CLASS, null);
         if (title != null) {
             writer.writeAttribute("title", title, null);
+        }
+
+        if (ariaLabel != null) {
+            writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
         }
 
         writer.startElement("span", null);

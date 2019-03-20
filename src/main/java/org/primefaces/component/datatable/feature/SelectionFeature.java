@@ -1,17 +1,25 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.datatable.feature;
 
@@ -28,12 +36,13 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.TableState;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
 
 public class SelectionFeature implements DataTableFeature {
 
-    private final static String ALL_SELECTOR = "@all";
+    private static final String ALL_SELECTOR = "@all";
 
+    @Override
     public void decode(FacesContext context, DataTable table) {
         String clientId = table.getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -65,7 +74,7 @@ public class SelectionFeature implements DataTableFeature {
     }
 
     void decodeSingleSelection(DataTable table, String selection) {
-        if (ComponentUtils.isValueBlank(selection)) {
+        if (LangUtils.isValueBlank(selection)) {
             table.setSelection(null);
         }
         else {
@@ -82,12 +91,12 @@ public class SelectionFeature implements DataTableFeature {
             throw new FacesException("Multiple selection reference must be an Array or a List for datatable " + table.getClientId());
         }
 
-        if (ComponentUtils.isValueBlank(selection)) {
+        if (LangUtils.isValueBlank(selection)) {
             if (isArray) {
                 table.setSelection(Array.newInstance(clazz.getComponentType(), 0));
             }
             else {
-                table.setSelection(new ArrayList<Object>());
+                table.setSelection(new ArrayList<>());
             }
         }
         else {
@@ -120,14 +129,17 @@ public class SelectionFeature implements DataTableFeature {
         }
     }
 
+    @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         throw new RuntimeException("SelectFeature should not encode.");
     }
 
+    @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
         return table.isSelectionEnabled();
     }
 
+    @Override
     public boolean shouldEncode(FacesContext context, DataTable table) {
         return false;
     }

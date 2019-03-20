@@ -1,17 +1,25 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.message;
 
@@ -23,11 +31,12 @@ import javax.faces.application.FacesMessage.Severity;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.component.api.InputHolder;
-import org.primefaces.context.RequestContext;
 
+import org.primefaces.component.api.InputHolder;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.UINotificationRenderer;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class MessageRenderer extends UINotificationRenderer {
@@ -47,7 +56,6 @@ public class MessageRenderer extends UINotificationRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String display = uiMessage.getDisplay();
         boolean iconOnly = display.equals("icon");
-        boolean escape = uiMessage.isEscape();
         String style = uiMessage.getStyle();
         String containerClass = display.equals("tooltip") ? "ui-message ui-helper-hidden" : "ui-message";
         String styleClass = uiMessage.getStyleClass();
@@ -57,13 +65,13 @@ public class MessageRenderer extends UINotificationRenderer {
 
         writer.startElement("div", uiMessage);
         writer.writeAttribute("id", uiMessage.getClientId(context), null);
-        writer.writeAttribute("aria-live", "polite", null);
+        writer.writeAttribute(HTML.ARIA_LIVE, "polite", null);
 
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             writer.writeAttribute("data-display", display, null);
             writer.writeAttribute("data-target", targetClientId, null);
             writer.writeAttribute("data-redisplay", String.valueOf(uiMessage.isRedisplay()), null);
@@ -104,7 +112,7 @@ public class MessageRenderer extends UINotificationRenderer {
 
                 writer.writeAttribute("class", styleClass, null);
                 writer.writeAttribute("role", "alert", null);
-                writer.writeAttribute("aria-atomic", "true", null);
+                writer.writeAttribute(HTML.ARIA_ATOMIC, "true", null);
 
                 if (!display.equals("text")) {
                     encodeIcon(writer, severityKey, msg.getDetail(), iconOnly);
@@ -112,10 +120,10 @@ public class MessageRenderer extends UINotificationRenderer {
 
                 if (!iconOnly) {
                     if (uiMessage.isShowSummary()) {
-                        encodeText(writer, msg.getSummary(), severityKey + "-summary", escape);
+                        encodeText(context, uiMessage, msg.getSummary(), severityKey + "-summary");
                     }
                     if (uiMessage.isShowDetail()) {
-                        encodeText(writer, msg.getDetail(), severityKey + "-detail", escape);
+                        encodeText(context, uiMessage, msg.getDetail(), severityKey + "-detail");
                     }
                 }
 
@@ -129,11 +137,13 @@ public class MessageRenderer extends UINotificationRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeText(ResponseWriter writer, String text, String severity, boolean escape) throws IOException {
+    protected void encodeText(FacesContext context, Message uiMessage, String text, String severity) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-message-" + severity, null);
+        writer.writeAttribute("id", uiMessage.getClientId(context) + '_' + severity, null);
 
-        if (escape) {
+        if (uiMessage.isEscape()) {
             writer.writeText(text, null);
         }
         else {
@@ -153,13 +163,15 @@ public class MessageRenderer extends UINotificationRenderer {
     }
 
     protected void encodeScript(FacesContext context, Message uiMessage, UIComponent target) throws IOException {
-        if (uiMessage.getDisplay().equals("tooltip")) {
+        boolean tooltip = "tooltip".equals(uiMessage.getDisplay());
+        if (tooltip || uiMessage.isShowDetail()) {
             String clientId = uiMessage.getClientId(context);
             String targetClientId = (target instanceof InputHolder) ? ((InputHolder) target).getInputClientId() : target.getClientId(context);
             WidgetBuilder wb = getWidgetBuilder(context);
 
-            wb.initWithDomReady("Message", uiMessage.resolveWidgetVar(), clientId)
+            wb.init("Message", uiMessage.resolveWidgetVar(), clientId)
                     .attr("target", targetClientId)
+                    .attr("tooltip", tooltip, false)
                     .finish();
         }
     }

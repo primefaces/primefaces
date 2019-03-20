@@ -101,8 +101,15 @@
                         setTimeout(function() { proxy(); tryFireCompleted(); }, 0);
                     }
                 }
-                function blurEvent() {
-                    checkVal(), input.val() != focusText && input.change();
+                function blurEvent(e) {
+                    checkVal(), input.val() != focusText && changeEvent(e);
+                }
+                function changeEvent(e) { /* PrimeFaces Github Issue #3175 */
+                    input.change();
+                    
+                    if(settings.onChange) {
+                        settings.onChange.call(input, e);
+                    }
                 }
                 function keydownEvent(e) {
                     if (!input.prop("readonly")) {

@@ -1,33 +1,59 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.behavior.validate;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.ClientBehaviorBase;
 import javax.faces.component.behavior.ClientBehaviorContext;
+import org.primefaces.behavior.base.AbstractBehavior;
 import org.primefaces.component.api.InputHolder;
 
-public class ClientValidator extends ClientBehaviorBase {
+public class ClientValidator extends AbstractBehavior {
 
-    private String event;
-    private boolean disabled;
+    public enum PropertyKeys {
+        event(String.class),
+        disabled(Boolean.class);
+
+        private final Class<?> expectedType;
+
+        PropertyKeys(Class<?> expectedType) {
+            this.expectedType = expectedType;
+        }
+
+        /**
+         * Holds the type which ought to be passed to
+         * {@link javax.faces.view.facelets.TagAttribute#getObject(javax.faces.view.facelets.FaceletContext, java.lang.Class) }
+         * when creating the behavior.
+         * @return the expectedType the expected object type
+         */
+        public Class<?> getExpectedType() {
+            return expectedType;
+        }
+    }
 
     @Override
     public String getScript(ClientBehaviorContext behaviorContext) {
-        if (disabled) {
+        if (isDisabled()) {
             return null;
         }
 
@@ -37,19 +63,24 @@ public class ClientValidator extends ClientBehaviorBase {
         return "return PrimeFaces.vi(" + target + ")";
     }
 
+    @Override
+    protected Enum<?>[] getAllProperties() {
+        return PropertyKeys.values();
+    }
+
     public String getEvent() {
-        return event;
+        return eval(PropertyKeys.event, null);
     }
 
     public void setEvent(String event) {
-        this.event = event;
+        put(PropertyKeys.event, event);
     }
 
     public boolean isDisabled() {
-        return disabled;
+        return eval(PropertyKeys.disabled, false);
     }
 
     public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
+        put(PropertyKeys.disabled, disabled);
     }
 }

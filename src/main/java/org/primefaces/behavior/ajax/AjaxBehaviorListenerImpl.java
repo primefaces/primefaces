@@ -1,17 +1,25 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.behavior.ajax;
 
@@ -29,7 +37,8 @@ import javax.faces.event.AjaxBehaviorListener;
 
 public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializable {
 
-    private static final Logger LOG = Logger.getLogger(AjaxBehaviorListenerImpl.class.getName());
+    private static final long serialVersionUID = 1L;
+    private static final Logger LOGGER = Logger.getLogger(AjaxBehaviorListenerImpl.class.getName());
 
     private MethodExpression listener;
     private MethodExpression listenerWithArg;
@@ -49,40 +58,32 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
         this.listenerWithCustomArg = listenerWithCustomArg;
     }
 
+    @Override
     public void processAjaxBehavior(AjaxBehaviorEvent event) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
         final ELContext elContext = context.getELContext();
 
-        if (LOG.isLoggable(Level.FINE)) {
-            LOG.fine("Try to invoke listener: " + listener.getExpressionString());
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine("Try to invoke listener: " + listener.getExpressionString());
         }
 
         try {
             listener.invoke(elContext, new Object[]{});
         }
-        catch (MethodNotFoundException mnfe) {
-            processArgListener(context, elContext, event);
-        }
-        catch (IllegalArgumentException iae) {
-            processArgListener(context, elContext, event);
-        }
-        catch (ArrayIndexOutOfBoundsException ex) {
+        catch (MethodNotFoundException | IllegalArgumentException | ArrayIndexOutOfBoundsException mnfe) {
             processArgListener(context, elContext, event);
         }
     }
 
     private void processArgListener(FacesContext context, ELContext elContext, AjaxBehaviorEvent event) throws AbortProcessingException {
-        if (LOG.isLoggable(Level.FINE)) {
-            LOG.fine("Try to invoke listenerWithArg: " + listenerWithArg.getExpressionString());
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine("Try to invoke listenerWithArg: " + listenerWithArg.getExpressionString());
         }
 
         try {
             listenerWithArg.invoke(elContext, new Object[]{event});
         }
-        catch (MethodNotFoundException mnfe) {
-            processCustomArgListener(context, elContext, event);
-        }
-        catch (IllegalArgumentException e) {
+        catch (MethodNotFoundException | IllegalArgumentException mnfe) {
             processCustomArgListener(context, elContext, event);
         }
     }
@@ -94,15 +95,15 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
             MethodExpression argListener = context.getApplication().getExpressionFactory().
                     createMethodExpression(elContext, listener.getExpressionString(), Void.class, new Class[]{event.getClass()});
 
-            if (LOG.isLoggable(Level.FINE)) {
-                LOG.fine("Try to invoke customListener: " + argListener.getExpressionString());
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Try to invoke customListener: " + argListener.getExpressionString());
             }
 
             argListener.invoke(elContext, new Object[]{event});
         }
         else {
-            if (LOG.isLoggable(Level.FINE)) {
-                LOG.fine("Try to invoke customListener: " + listenerWithCustomArg.getExpressionString());
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Try to invoke customListener: " + listenerWithCustomArg.getExpressionString());
             }
 
             listenerWithCustomArg.invoke(elContext, new Object[]{event});

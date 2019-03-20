@@ -1,22 +1,31 @@
 /**
- * Copyright 2009-2018 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.selectoneradio;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -29,8 +38,8 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
+
 import org.primefaces.component.radiobutton.RadioButton;
-import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.GridLayoutUtils;
@@ -44,8 +53,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
                 "javax.faces.SelectOne",
-                "javax.faces.Radio",
-                Renderer.class);
+                "javax.faces.Radio");
         return renderer.getConvertedValue(context, component, submittedValue);
     }
 
@@ -93,8 +101,9 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         boolean custom = layout != null && layout.equals("custom");
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("SelectOneRadio", radio.resolveWidgetVar(), clientId)
-                .attr("custom", custom, false).finish();
+        wb.init("SelectOneRadio", radio.resolveWidgetVar(), clientId)
+                .attr("custom", custom, false)
+                .attr("unselectable", radio.isUnselectable()).finish();
     }
 
     protected void encodeResponsiveLayout(FacesContext context, SelectOneRadio radio) throws IOException {
@@ -113,6 +122,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
+        renderARIARequired(context, radio);
 
         Converter converter = radio.getConverter();
         String name = radio.getClientId(context);
@@ -120,7 +130,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         String currentValue = ComponentUtils.getValueToRender(context, radio);
 
         if (columns > 0) {
-            int idx = 0, colMod;
+            int idx = 0;
+            int colMod;
 
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);
@@ -174,6 +185,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
+        renderARIARequired(context, radio);
         encodeSelectItems(context, radio, selectItems, layout);
 
         writer.endElement("table");
@@ -181,7 +193,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
     protected void encodeSelectItems(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems, String layout)
             throws IOException {
-        
+
         if (layout.equals("lineDirection")) {
             encodeLineLayout(context, radio, selectItems);
         }
@@ -206,8 +218,9 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             SelectItem selectItem = selectItems.get(i);
             String id = name + UINamingContainer.getSeparatorChar(context) + i;
             boolean selected = isSelected(context, radio, selectItem, currentValue);
+            boolean disabled = selectItem.isDisabled() || radio.isDisabled();
             String itemValueAsString = getOptionAsString(context, radio, converter, selectItem.getValue());
-            encodeOptionInput(context, radio, id, name, selected, true, itemValueAsString);
+            encodeOptionInput(context, radio, id, name, selected, disabled, itemValueAsString);
         }
     }
 
@@ -259,7 +272,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         String currentValue = ComponentUtils.getValueToRender(context, radio);
 
         if (columns > 0) {
-            int idx = 0, colMod;
+            int idx = 0;
+            int colMod;
 
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);
@@ -293,8 +307,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     }
 
     protected void encodeOption(FacesContext context, SelectOneRadio radio, SelectItem option, String id, String name,
-            Converter converter, boolean selected, boolean disabled) throws IOException {
-        
+                                Converter converter, boolean selected, boolean disabled) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, radio, converter, option.getValue());
         String styleClass = radio.isPlain() ? HTML.RADIOBUTTON_NATIVE_CLASS : HTML.RADIOBUTTON_CLASS;
@@ -311,8 +325,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     }
 
     protected void encodeOptionInput(FacesContext context, SelectOneRadio radio, String id, String name, boolean checked,
-            boolean disabled, String value) throws IOException {
-        
+                                     boolean disabled, String value) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
@@ -336,9 +350,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             writer.writeAttribute("disabled", "disabled", null);
         }
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, radio);
-        }
+        renderValidationMetadata(context, radio);
 
         writer.endElement("input");
 
@@ -346,8 +358,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     }
 
     protected void encodeOptionLabel(FacesContext context, SelectOneRadio radio, String containerClientId, SelectItem option,
-            boolean disabled) throws IOException {
-        
+                                     boolean disabled) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
         String label = option.getLabel();
 
@@ -394,8 +406,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     protected boolean isSelected(FacesContext context, SelectOneRadio radio, SelectItem selectItem, String currentValue) {
         String itemStrValue = getOptionAsString(context, radio, radio.getConverter(), selectItem.getValue());
         return (itemStrValue == null || "".equals(itemStrValue))
-                ? currentValue == null || "".equals(currentValue)
-                : itemStrValue.equals(currentValue);
+               ? currentValue == null || "".equals(currentValue)
+               : itemStrValue.equals(currentValue);
     }
 
     protected void encodeRadioButton(FacesContext context, SelectOneRadio radio, RadioButton button) throws IOException {
