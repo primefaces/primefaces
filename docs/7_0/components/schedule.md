@@ -5,13 +5,13 @@ Schedule provides an Outlook Calendar, iCal like JSF component to manage events.
 ## Info
 
 | Name | Value |
-| - | - |
-| Tag | schedule
-| Component Class | org.primefaces.component.schedule.Schedule
-| Component Type | org.primefaces.component.Schedule
-| Component Family | org.primefaces.component |
-| Renderer Type | org.primefaces.component.ScheduleRenderer
-| Renderer Class | org.primefaces.component.schedule.ScheduleRenderer
+| --- | --- |
+Tag | schedule
+Component Class | org.primefaces.component.schedule.Schedule
+Component Type | org.primefaces.component.Schedule
+Component Family | org.primefaces.component
+Renderer Type | org.primefaces.component.ScheduleRenderer
+Renderer Class | org.primefaces.component.schedule.ScheduleRenderer
 
 ## Attributes
 
@@ -22,7 +22,7 @@ rendered | true | Boolean | Boolean value to specify the rendering of the compon
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 widgetVar | null | String | Name of the client side widget.
 value | null | Object | An org.primefaces.model.ScheduleModel instance representing the backed model
-locale | null | Object | Locale for localization, can be | String | or a java.util.Locale instance
+locale | null | Object | Locale for localization, can be String or a java.util.Locale instance
 aspectRatio | null | Float | Ratio of calendar width to height, higher the value shorter the height is
 view | month | String | The view type to use, possible values are 'month', 'agendaDay', 'agendaWeek', 'basicWeek', 'basicDay'
 initialDate | null | Object | The initial date that is used when schedule loads. If ommitted, the schedule starts on the current date
@@ -36,15 +36,17 @@ leftHeaderTemplate | prev, next, today | String | Content of left side of header
 centerHeaderTemplate | title | String | Content of center of header.
 rightHeaderTemplate | month, agendaWeek, agendaDay | String | Content of right side of header.
 allDaySlot | true | Boolean | Determines if all-day slot will be displayed in agendaWeek or agendaDay views
-slotMinutes | 30 | Integer | Interval in minutes in an hour to create a slot.
-firstHour | 6 | Integer | First hour to display in day view.
+slotMinutes | 30 | Integer | Interval in minutes in an hour to create a slot. (deprecated: use slotDuration)
+slotDuration | 00:30:00 | String | The frequency for displaying time slots.
+firstHour | 6 | Integer | First hour to display in day view. (deprecated: use scrollTime)
+scrollTime | 06:00:00 | String | Determines how far down the scroll pane is initially scrolled down.
 minTime | null | String | Minimum time to display in a day view.
 maxTime | null | String | Maximum time to display in a day view.
-axisFormat | null | String | Determines the time-text that will be displayed on the vertical axis of the agenda views.
+axisFormat | null | String | Determines the time-text that will be displayed on the vertical axis of the agenda views. (deprecated: use slotLabelFormat)
 timeFormat | null | String | Determines the time-text that will be displayed on each event.
 columnFormat | null | String | Format for column headers.
 timeZone | null | Object | String or a java.util.TimeZone instance to specify the timezone used for date conversion.
-ignoreTimezone | true | Boolean | When parsing dates, whether UTC offsets should be ignored while processing event data.
+ignoreTimezone | true | Boolean | When parsing dates, whether UTC offsets should be ignored while processing event data. (deprecated: use clientTimezone)
 tooltip | false | Boolean | Displays description of events on a tooltip.
 clientTimeZone | null | String | Timezone to define how to interpret the dates at browser. Valid values are "false", "local", "UTC" and ids like "America/Chicago".
 showWeekNumbers | false | Boolean | Display week numbers in schedule.
@@ -52,7 +54,7 @@ extender | null | String | Name of javascript function to extend the options of 
 displayEventEnd | null | String | Whether or not to display an event's end time text when it is rendered on the calendar. Value can be a boolean to globally configure for all views or a comma separated list such as "month:false,basicWeek:true" to configure per view.
 weekNumberCalculation | local | String | The method for calculating week numbers that are displayed. Valid values are "local"(default), "ISO" and "custom".
 weekNumberCalculator | null | String | Client side function to use in custom weekNumberCalculation.
-nextDayThreshold | 09: 00: 00 | String | When an event's end time spans into another day, the minimum time it must be in order for it to render as if it were on that day. Default is 09: 00: 00.
+nextDayThreshold | 09:00:00 | String | When an event's end time spans into another day, the minimum time it must be in order for it to render as if it were on that day. Default is 09:00:00.
 slotEventOverlap | true | Boolean | If true contemporary events will be rendered one overlapping the other, else they will be rendered side by side.
 urlTarget | _blank | String | Target for events with urls. Clicking on such events in the schedule will not trigger the selectEvent but open the url using this target instead. Default is "_blank".
 noOpener | true | Boolean | Whether for URL events access to the opener window from the target site should be prevented (phishing protection), default value is true.
@@ -94,6 +96,9 @@ styleClass | Visual style class to enable multi resource display.
 data | Optional data you can set to be represented by Event.
 editable | Whether the event is editable or not.
 description | Tooltip text to display on mouseover of an event.
+url | Events with url set, do not trigger the selectEvent but open the url instead.
+renderingMode | Which event rendering mode of the full calendar should be used? 
+dynamicProperties | Add additional properties to the event json. Can be used with the javascript extender method.
 
 ## Ajax Behavior Events
 Schedule provides various ajax behavior events to respond user actions.
@@ -131,7 +136,7 @@ Let’s put it altogether to come up a fully editable and complex schedule.
 <h:form>
     <p:schedule value="#{bean.eventModel}" editable="true" widgetVar="myschedule">
         <p:ajax event="dateSelect" listener="#{bean.onDateSelect}" update="eventDetails" oncomplete="eventDialog.show()" />
-        <p:ajax event="eventSelect" listener="#{bean.onEventSelect}"
+        <p:ajax event="eventSelect" listener="#{bean.onEventSelect}" />
     </p:schedule>
     <p:dialog widgetVar="eventDialog" header="Event Details">
         <h:panelGrid id="eventDetails" columns="2">
@@ -282,6 +287,53 @@ in your application. Following is a Turkish calendar.
 ```
 ## Event Limit
 To display a link when there are too many events on a slot, use _setEventLimit(true)_ on model.
+
+## Extender Method
+If the schedule component lacking functions/options that are provided by the full calendar, 
+they can be used by the extender function. For more details about the configuration of full calender
+look at their documentation.
+```xhtml
+<h:form>
+    <p:schedule value="#{scheduleBean.model}" extender="initSchedule"/>
+    <h:outputScript>
+        function initSchedule() {
+            // Configure fullCalendar
+            this.cfg.eventOrder = "doNotSort"; // dummy 
+            this.cfg.views = {
+                week: {
+                    titleFormat: "D. MMMM YYYY",
+                    columnFormat: "ddd D.M.",
+                    displayEventTime: false
+                },
+                day: {
+                    displayEventTime: false
+                }
+            };
+            ...
+            // Configure moment.js 
+            window.moment.locale("de", {
+                longDateFormat: {
+                    LT: "HH:mm",
+                    LTS: "HH:mm:ss",
+                    L: "DD.MM.YYYY",
+                    LL: "D. MMMM YYYY",
+                    LLL: "D. MMMM YYYY HH:mm",
+                    LLLL: "dddd, D. MMMM YYYY HH:mm"
+                }
+            });
+            // Callback :: eventRender
+            this.cfg.eventRender = function (event, element, view) {
+                // show title of background events 
+                if (event.rendering === 'background' && event.title !== 'null') {
+                    element.append(event.title);
+                }
+                if (event.rendering !== 'background') {
+                    element.attr('title', event.title);
+                }
+            };
+    </h:outputScript>
+</h:form>
+``` 
 
 ## Skinning
 Schedule resides in a main container which _style_ and _styleClass_ attributes apply. As skinning style
