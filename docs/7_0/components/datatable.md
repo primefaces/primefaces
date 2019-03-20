@@ -15,98 +15,98 @@ DataTable displays data in tabular format.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| value | null | Object | Data to display.
-| var | null | String | Name of the request-scoped variable used to refer each data.
-| rows | null | Integer | Number of rows to display per page.
-| first | 0 | Integer | Index of the first row to be displayed
-| widgetVar | null | String | Name of the client side widget.
-| paginator | false | Boolean | Enables pagination.
-| paginatorTemplate | null | String | Template of the paginator.
-| rowsPerPageTemplate | null | String | Template of the rowsPerPage dropdown.
-| rowsPerPageLabel | null | String | Label for the rowsPerPage dropdown.
-| currentPageReportTemplate | null | String | Template of the currentPageReport UI.
-| pageLinks | 10 | Integer | Maximum number of page links to display.
-| paginatorPosition | both | String | Position of the paginator.
-| paginatorAlwaysVisible | true | Boolean | Defines if paginator should be hidden if total data count is less than number of rows per page.
-| scrollable | false | Boolean | Makes data scrollable with fixed header.
-| scrollHeight | null | Integer | Scroll viewport height.
-| scrollWidth | null | Integer | Scroll viewport width.
-| selectionMode | null | String | Enables row selection, valid values are “single” and “multiple”.
-| selection | null | Object | Reference to the selection data.
-| rowIndexVar | null | String | Name of iterator to refer each row index.
-| emptyMessage | No records found. | String | Text to display when there is no data to display. Alternative is emptyMessage facet.
-| style | null | String | Inline style of the component.
-| styleClass | null | String | Style class of the component.
-| dblClickSelect | false | Boolean | Enables row selection on double click.
-| liveScroll | false | Boolean | Enables live scrolling.
-| rowStyleClass | null | String | Style class for each row.
-| onExpandStart | null | String | Client side callback to execute before expansion.
-| resizableColumns | false | Boolean | Enables column resizing.
-| sortBy | null | Object | Property to be used for default sorting.
-| sortOrder | ascending | String | “ascending” or “descending”.
-| scrollRows | 0 | Integer | Number of rows to load on live scroll.
-| rowKey | null | String | Unique identifier of a row.
-| tableStyle | null | String | Inline style of the table element.
-| tableStyleClass | null | String | Style class of the table element.
-| filterEvent | keyup | String | Event to invoke filtering for input filters.
-| filterDelay | 300 | Integer | Delay in milliseconds before sending an ajax filter query.
-| draggableColumns | false | Boolean | Columns can be reordered with dragdrop when enabled.
-| editable | false | Boolean | Controls incell editing.
-| lazy | false | Boolean | Controls lazy loading.
-| filteredValue | null | List | List to keep filtered data.
-| sortMode | single | String | Defines sorting mode, valid values are _single_ and _multiple_.
-| editMode | row | String | Defines edit mode, valid values are _row_ and _cell_.
-| editingRow | false | Boolean | Defines if cell editors of row should be displayed as editable or not.
-| cellSeparator | null | String | Separator text to use in output mode of editable cells with multiple components.
-| summary | null | String | Summary attribute for WCAG.
-| frozenRows | null | Object | Collection to display as fixed in scrollable mode.
-| dir | ltr | String | Defines text direction, valid values are _ltr_ and _rtl_.
-| liveResize | false | Boolean | Columns are resized live in this mode without using a resize helper.
-| stickyHeader | false | Boolean | Sticky header stays in window viewport during scrolling.
-| expandedRow | false | Boolean | Defines if row should be rendered as expanded by default.
-| disabledSelection | false | Boolean | Disables row selection when true. Overrides p:column's disabledSelection attr. Example: var="xxx" disabledSelection="#{xxx.year > 1960}"
-| rowSelectMode | new | String | Defines row selection mode for multiple selection. Valid values are "new", "add" and "checkbox".
-| rowExpandMode | new | String | Defines row expand mode, valid values are "single" and "multiple" (default).
-| dataLocale | null | Object | Locale to be used in features such as filtering and sorting, defaults to view locale.
-| nativeElements | false | Boolean | Uses native radio-checkbox elements for row selection.
-| frozenColumns | 0 | Integer | Number of columns to freeze from start index 0.
-| draggableRows | false | Boolean | When enabled, rows can be reordered using dragdrop.
-| caseSensitiveSort | false | Boolean | Case sensitivity for sorting, insensitive by default.
-| skipChildren | false | Boolean | Ignores processing of children during lifecycle, improves performance if table only has output components.
-| disabledTextSelection | true | Boolean | Disables text selection on row click.
-| sortField | null | String | Name of the field to pass lazy load method for sorting. If not specified, sortBy expression is used to extract the name.
-| initMode | load | String | Defines when the datatable is initiated at client side, valid values are "load" (default) and "immediate".
-| nullSortOrder | 1 | Integer | Defines where the null values are placed in ascending sort order. Default value is "1"
-| meaning | null | String | Values are placed at the end in ascending mode and at beginning in descending mode. Set to "-1" for the opposite behavior.
-| tabindex | null | String | Position of the element in the tabbing order.
-| reflow | false | Boolean | Reflow mode is a responsive mode to display columns as stacked depending on screen size.
-| liveScrollBuffer | 0 | Integer | Percentage height of the buffer between the bottom of the page and the scroll position to initiate the load for the new chunk. Value is defined in integer and default is 0.
-| rowHover | false | Boolean | Adds hover effect to rows, default is false. Hover is always on when selection is enabled.
-| rowStatePreserved | false | Boolean | Keeps state of its children on a per-row basis. Default is false.
-| resizeMode | fit | String | Defines the resize behavior, valid values are "fit" (default) and expand.
-| ariaRowLabel | null | String | Label to read by screen readers on checkbox selection.
-| saveOnCellBlur | true | Boolean | Saves the changes in cell editing on blur, when set to false changes are discarded..
-| clientCache | false | Boolean | Caches the next page asynchronously, default is false.
-| multiViewState | false | Boolean | Whether to keep table state across views, defaults to false.
-| filterBy | null | List | List of FilterState objects to filter table by default.
-| globalFilter | null | String | Value of the global filter to use when filtering by default.
-| cellEditMode | eager | String | Defines the cell edit behavior, valid values are "eager" (default) and "lazy".
-| expandableRowGroups | false | Boolean | Makes row groups toggleable, default is false.
-| virtualScroll | false | Boolean | Loads data on demand as the scrollbar gets close to the bottom. Default is false.
-| rowDragSelector | td,span:not(.ui-c) | String | Defines the element used to reorder rows using dragdrop. Default selector is "td,span:not(.ui-c)"
-| draggableRowsFunction | null | MethodExpression | Method expression to execute after dragging row.
-| onRowClick | null | String | Client side callback to execute after clicking row.
-| editInitEvent | null | String | Defines a client side event to open cell on editable table.
-| rowSelector | null | String | Client side check if rowclick triggered row click event not a clickable element in row content.
-| disableContextMenuIfEmpty | false | Boolean | Decides whether to disable context menu or not if a table has no records.
-| escapeText | true | Boolean | Defines if headerText and footerText values on columns are escaped or not. Default is true.
-| rowEditMode | eager | String | Defines the row edit behavior, valid values are "eager" (default) and "lazy".
-| stickyTopAt | null | String | Selector to position on the page according to other fixing elements on the top of the table. Default is null.
+| Name                      | Default            | Type             | Description                                                                                       
+| ------------------------- | ------------------ | ---------------- | ------------------ |
+| ariaRowLabel              | null               | String           | Label to read by screen readers on checkbox selection.
+| binding                   | null               | Object           | An el expression that maps to a server side UIComponent instance in a backing bean                
+| caseSensitiveSort         | false              | Boolean          | Case sensitivity for sorting, insensitive by default.                                             
+| cellEditMode              | eager              | String           | Defines the cell edit behavior, valid values are "eager" (default) and "lazy".                    
+| cellSeparator             | null               | String           | Separator text to use in output mode of editable cells with multiple components.                  
+| clientCache               | false              | Boolean          | Caches the next page asynchronously, default is false.                                            
+| currentPageReportTemplate | null               | String           | Template of the currentPageReport UI.                                                             
+| dataLocale                | null               | Object           | Locale to be used in features such as filtering and sorting, defaults to view locale.             
+| dblClickSelect            | false              | Boolean          | Enables row selection on double click.                                                            
+| dir                       | ltr                | String           | Defines text direction, valid values are _ltr_ and _rtl_.                                         
+| disableContextMenuIfEmpty | false              | Boolean          | Decides whether to disable context menu or not if a table has no records.                         
+| disabledSelection         | false              | Boolean          | Disables row selection when true. Overrides p:column's disabledSelection attr. Example: var="xxx" disabledSelection="#{xxx.year > 1960}"
+| disabledTextSelection     | true               | Boolean          | Disables text selection on row click.                                                             
+| draggableColumns          | false              | Boolean          | Columns can be reordered with dragdrop when enabled.                                              
+| draggableRows             | false              | Boolean          | When enabled, rows can be reordered using dragdrop.                                               
+| draggableRowsFunction     | null               | MethodExpression | Method expression to execute after dragging row.                                                  
+| editInitEvent             | null               | String           | Defines a client side event to open cell on editable table.                                       
+| editMode                  | row                | String           | Defines edit mode, valid values are _row_ and _cell_.                                             
+| editable                  | false              | Boolean          | Controls incell editing.                                                                          
+| editingRow                | false              | Boolean          | Defines if cell editors of row should be displayed as editable or not.                            
+| emptyMessage              | No records found.  | String           | Text to display when there is no data to display. Alternative is emptyMessage facet.              
+| escapeText                | true               | Boolean          | Defines if headerText and footerText values on columns are escaped or not. Default is true.       
+| expandableRowGroups       | false              | Boolean          | Makes row groups toggleable, default is false.                                                    
+| expandedRow               | false              | Boolean          | Defines if row should be rendered as expanded by default.                                         
+| filterBy                  | null               | List             | List of FilterState objects to filter table by default.                                           
+| filterDelay               | 300                | Integer          | Delay in milliseconds before sending an ajax filter query.                                        
+| filterEvent               | keyup              | String           | Event to invoke filtering for input filters.                                                      
+| filteredValue             | null               | List             | List to keep filtered data.                                                                       
+| first                     | 0                  | Integer          | Index of the first row to be displayed                                                            
+| frozenColumns             | 0                  | Integer          | Number of columns to freeze from start index 0.                                                   
+| frozenRows                | null               | Object           | Collection to display as fixed in scrollable mode.                                                
+| globalFilter              | null               | String           | Value of the global filter to use when filtering by default.                                      
+| id                        | null               | String           | Unique identifier of the component                                                                
+| initMode                  | load               | String           | Defines when the datatable is initiated at client side, valid values are "load" (default) and "immediate".
+| lazy                      | false              | Boolean          | Controls lazy loading.                                                                            
+| liveResize                | false              | Boolean          | Columns are resized live in this mode without using a resize helper.                              
+| liveScroll                | false              | Boolean          | Enables live scrolling.                                                                           
+| liveScrollBuffer          | 0                  | Integer          | Percentage height of the buffer between the bottom of the page and the scroll position to initiate the load for the new chunk. Value is defined in integer and default is 0.
+| meaning                   | null               | String           | Values are placed at the end in ascending mode and at beginning in descending mode. Set to "-1" for the opposite behavior.
+| multiViewState            | false              | Boolean          | Whether to keep table state across views, defaults to false.                                      
+| nativeElements            | false              | Boolean          | Uses native radio-checkbox elements for row selection.                                            
+| nullSortOrder             | 1                  | Integer          | Defines where the null values are placed in ascending sort order. Default value is "1"            
+| onExpandStart             | null               | String           | Client side callback to execute before expansion.                                                 
+| onRowClick                | null               | String           | Client side callback to execute after clicking row.                                               
+| pageLinks                 | 10                 | Integer          | Maximum number of page links to display.                                                          
+| paginator                 | false              | Boolean          | Enables pagination.                                                                               
+| paginatorAlwaysVisible    | true               | Boolean          | Defines if paginator should be hidden if total data count is less than number of rows per page.   
+| paginatorPosition         | both               | String           | Position of the paginator.                                                                        
+| paginatorTemplate         | null               | String           | Template of the paginator.                                                                        
+| reflow                    | false              | Boolean          | Reflow mode is a responsive mode to display columns as stacked depending on screen size.          
+| rendered                  | true               | Boolean          | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
+| resizableColumns          | false              | Boolean          | Enables column resizing.                                                                          
+| resizeMode                | fit                | String           | Defines the resize behavior, valid values are "fit" (default) and expand.                         
+| rowDragSelector           | td,span:not(.ui-c) | String           | Defines the element used to reorder rows using dragdrop. Default selector is "td,span:not(.ui-c)" 
+| rowEditMode               | eager              | String           | Defines the row edit behavior, valid values are "eager" (default) and "lazy".                     
+| rowExpandMode             | new                | String           | Defines row expand mode, valid values are "single" and "multiple" (default).                      
+| rowHover                  | false              | Boolean          | Adds hover effect to rows, default is false. Hover is always on when selection is enabled.        
+| rowIndexVar               | null               | String           | Name of iterator to refer each row index.                                                         
+| rowKey                    | null               | String           | Unique identifier of a row.                                                                       
+| rowSelectMode             | new                | String           | Defines row selection mode for multiple selection. Valid values are "new", "add" and "checkbox".  
+| rowSelector               | null               | String           | Client side check if rowclick triggered row click event not a clickable element in row content.   
+| rowStatePreserved         | false              | Boolean          | Keeps state of its children on a per-row basis. Default is false.                                 
+| rowStyleClass             | null               | String           | Style class for each row.                                                                         
+| rows                      | null               | Integer          | Number of rows to display per page.                                                               
+| rowsPerPageLabel          | null               | String           | Label for the rowsPerPage dropdown.                                                               
+| rowsPerPageTemplate       | null               | String           | Template of the rowsPerPage dropdown.                                                             
+| saveOnCellBlur            | true               | Boolean          | Saves the changes in cell editing on blur, when set to false changes are discarded..              
+| scrollHeight              | null               | Integer          | Scroll viewport height.                                                                           
+| scrollRows                | 0                  | Integer          | Number of rows to load on live scroll.                                                            
+| scrollWidth               | null               | Integer          | Scroll viewport width.                                                                            
+| scrollable                | false              | Boolean          | Makes data scrollable with fixed header.                                                          
+| selection                 | null               | Object           | Reference to the selection data.                                                                  
+| selectionMode             | null               | String           | Enables row selection, valid values are “single” and “multiple”.                                  
+| skipChildren              | false              | Boolean          | Ignores processing of children during lifecycle, improves performance if table only has output components.
+| sortBy                    | null               | Object           | Property to be used for default sorting.                                                          
+| sortField                 | null               | String           | Name of the field to pass lazy load method for sorting. If not specified, sortBy expression is used to extract the name.
+| sortMode                  | single             | String           | Defines sorting mode, valid values are _single_ and _multiple_.                                   
+| sortOrder                 | ascending          | String           | “ascending” or “descending”.                                                                      
+| stickyHeader              | false              | Boolean          | Sticky header stays in window viewport during scrolling.                                          
+| stickyTopAt               | null               | String           | Selector to position on the page according to other fixing elements on the top of the table. Default is null.
+| style                     | null               | String           | Inline style of the component.                                                                    
+| styleClass                | null               | String           | Style class of the component.                                                                     
+| summary                   | null               | String           | Summary attribute for WCAG.                                                                       
+| tabindex                  | null               | String           | Position of the element in the tabbing order.                                                     
+| tableStyle                | null               | String           | Inline style of the table element.                                                                
+| tableStyleClass           | null               | String           | Style class of the table element.                                                                 
+| value                     | null               | Object           | Data to display.                                                                                  
+| var                       | null               | String           | Name of the request-scoped variable used to refer each data.                                      
+| virtualScroll             | false              | Boolean          | Loads data on demand as the scrollbar gets close to the bottom. Default is false.                 
+| widgetVar                 | null               | String           | Name of the client side widget.                                                                   
 
 ## Getting started with the DataTable
 We will be using the same Car and CarBean classes described in DataGrid section.
