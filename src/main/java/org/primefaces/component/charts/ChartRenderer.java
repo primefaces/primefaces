@@ -33,6 +33,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.model.charts.ChartData;
 import org.primefaces.model.charts.ChartDataSet;
 import org.primefaces.model.charts.ChartModel;
+import org.primefaces.model.charts.axes.AxesScale;
 import org.primefaces.model.charts.axes.cartesian.CartesianAxes;
 import org.primefaces.model.charts.axes.cartesian.CartesianScales;
 import org.primefaces.model.charts.axes.radial.RadialScales;
@@ -41,6 +42,7 @@ import org.primefaces.model.charts.optionconfig.legend.Legend;
 import org.primefaces.model.charts.optionconfig.title.Title;
 import org.primefaces.model.charts.optionconfig.tooltip.Tooltip;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ChartUtils;
 import org.primefaces.util.EscapeUtils;
 
 public class ChartRenderer extends CoreRenderer {
@@ -162,17 +164,16 @@ public class ChartRenderer extends CoreRenderer {
             if (scales instanceof CartesianScales) {
                 writer.write("\"scales\":{");
                 CartesianScales cScales = (CartesianScales) scales;
+                encodeScaleCommon(writer, cScales);
                 List<CartesianAxes> xAxes = cScales.getXAxes();
                 if (xAxes != null && !xAxes.isEmpty()) {
+                    writer.write(",");
                     encodeAxes(context, chartName, "xAxes", xAxes);
-                    hasComma = true;
                 }
 
                 List<CartesianAxes> yAxes = cScales.getYAxes();
                 if (yAxes != null && !yAxes.isEmpty()) {
-                    if (hasComma) {
-                        writer.write(",");
-                    }
+                    writer.write(",");
                     encodeAxes(context, chartName, "yAxes", yAxes);
                 }
 
@@ -181,32 +182,31 @@ public class ChartRenderer extends CoreRenderer {
             else if (scales instanceof RadialScales) {
                 writer.write("\"scale\":{");
                 RadialScales rScales = (RadialScales) scales;
-                String preString;
+                encodeScaleCommon(writer, rScales);
                 if (rScales.getAngelLines() != null) {
-                    writer.write("\"angleLines\":" + rScales.getAngelLines().encode());
-                    hasComma = true;
+                    writer.write(",\"angleLines\":" + rScales.getAngelLines().encode());
                 }
 
                 if (rScales.getGridLines() != null) {
-                    preString = hasComma ? "," : "";
-                    writer.write(preString + "\"gridLines\":" + rScales.getGridLines().encode());
-                    hasComma = true;
+                    writer.write(",\"gridLines\":" + rScales.getGridLines().encode());
                 }
 
                 if (rScales.getPointLabels() != null) {
-                    preString = hasComma ? "," : "";
-                    writer.write(preString + "\"pointLabels\":" + rScales.getPointLabels().encode());
-                    hasComma = true;
+                    writer.write(",\"pointLabels\":" + rScales.getPointLabels().encode());
                 }
 
                 if (rScales.getTicks() != null) {
-                    preString = hasComma ? "," : "";
-                    writer.write(preString + "\"ticks\":" + rScales.getTicks().encode());
+                    writer.write(",\"ticks\":" + rScales.getTicks().encode());
                 }
 
                 writer.write("}");
             }
         }
+    }
+
+    protected void encodeScaleCommon(ResponseWriter writer, AxesScale scale) throws IOException {
+        ChartUtils.writeDataValue(writer, "display", scale.isDisplay(), false);
+        ChartUtils.writeDataValue(writer, "weight", scale.getWeight(), true);
     }
 
     protected void encodeAxes(FacesContext context, String chartName, String name, List<CartesianAxes> axes) throws IOException {
