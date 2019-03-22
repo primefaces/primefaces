@@ -6,7 +6,7 @@ ajax selection and more.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | calendar
 | Component Class | org.primefaces.component.calendar.Calendar
 | Component Type | org.primefaces.component.Calendar

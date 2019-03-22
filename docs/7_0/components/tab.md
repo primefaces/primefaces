@@ -6,7 +6,7 @@ accordionPanel.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | tab
 | Component Class | org.primefaces.component.TabView.Tab
 | Component Type | org.primefaces.component.Tab

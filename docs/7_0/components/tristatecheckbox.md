@@ -5,7 +5,7 @@ TriStateCheckbox adds a new state to a checkbox value.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | triStateCheckbox
 | Component Class | org.primefaces.component.triStateCheckbox.TriStateCheckbox
 | Component Type | org.primefaces.component.TriStateCheckbox

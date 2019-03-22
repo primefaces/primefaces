@@ -8,7 +8,7 @@ ajax selection and more.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | datePicker
 | Component Class | org.primefaces.component.datepicker.DatePicker
 | Component Type | org.primefaces.component.DatePicker

@@ -5,7 +5,7 @@ PanelMenu is a hybrid component of accordionPanel and tree components.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | panelMenu
 | Component Class | org.primefaces.component.panelmenu.PanelMenu
 | Component Type | org.primefaces.component.PanelMenu

@@ -5,7 +5,7 @@ AjaxExceptionHandler is a utility component for the built-in ExceptionHandler.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | ajaxExceptionHandler |
 | Component Class | org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandler |
 | Component Type | org.primefaces.component.AjaxExceptionHandler |

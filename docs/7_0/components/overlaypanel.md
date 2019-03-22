@@ -5,7 +5,7 @@ OverlayPanel is a generic panel component that can be displayed on top of other 
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | overlayPanel
 | Component Class | org.primefaces.component.overlaypanel.OverlayPanelRenderer
 | Component Type | org.primefaces.component.OverlayPanel

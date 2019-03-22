@@ -5,7 +5,7 @@ AutoUpdate is a tag handler to mark a component to be updated at every ajax requ
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | autoUpdate
 | Handler Class | org.primefaces.component.autoupdate.AutoUpdateTagHandler
 

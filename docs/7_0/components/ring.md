@@ -5,7 +5,7 @@ Ring is a data display component with a circular animation.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | ring
 | Component Class | org.primefaces.component.ring.Ring
 | Component Type | org.primefaces.component.Ring

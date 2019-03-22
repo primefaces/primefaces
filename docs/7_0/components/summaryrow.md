@@ -5,7 +5,7 @@ SummaryRow is a helper component of datatable used for dynamic grouping.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | summaryRow
 | Component Class | org.primefaces.component.summaryrow.SummaryRow
 | Component Type | org.primefaces.component.SummaryRow

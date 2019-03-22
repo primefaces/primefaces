@@ -6,7 +6,7 @@ relationship.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | multiSelectListbox
 | Component Class | org.primefaces.component.multiselectlistbox.MultiSelectListbox
 | Component Type | org.primefaces.component.MultiSelectListbox

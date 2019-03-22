@@ -5,7 +5,7 @@ SelectOneMenu is an extended version of the standard SelectOneMenu.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | selectOneMenu
 | Component Class | org.primefaces.component.selectonemenu.SelectOneMenu
 | Component Type | org.primefaces.component.SelectOneMenu

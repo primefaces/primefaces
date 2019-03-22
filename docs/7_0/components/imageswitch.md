@@ -5,7 +5,7 @@ ImageSwitch component is a simple image gallery component.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | imageSwitch
 | Component Class | org.primefaces.component.imageswitch.ImageSwitch
 | Component Type | org.primefaces.component.ImageSwitch

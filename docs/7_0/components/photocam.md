@@ -5,7 +5,7 @@ PhotoCam is used to take photos with webcam and send them to the JSF backend mod
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | photoCam
 | Component Class | org.primefaces.component.photocam.PhotoCam
 | Component Type | org.primefaces.component.PhotoCam

@@ -5,7 +5,7 @@ Toolbar is a horizontal grouping component for commands and other content.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | toolbar
 | Component Class | org.primefaces.component.toolbar.Toolbar
 | Component Type | org.primefaces.component.Toolbar

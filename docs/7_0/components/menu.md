@@ -5,7 +5,7 @@ Menu is a navigation component with submenus and menuitems.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | menu
 | Component Class | org.primefaces.component.menu.Menu
 | Component Type | org.primefaces.component.Menu

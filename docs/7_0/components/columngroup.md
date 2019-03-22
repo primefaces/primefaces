@@ -5,7 +5,7 @@ ColumnGroup is used by datatable for column grouping.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | columnGroup
 | Component Class | org.primefaces.component.columngroup.ColumnGroup
 | Component Type | org.primefaces.component. ColumnGroup

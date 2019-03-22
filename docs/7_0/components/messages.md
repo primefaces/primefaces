@@ -5,7 +5,7 @@ Messages is a pre-skinned extended version of the standard JSF messages componen
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | messages
 | Component Class | org.primefaces.component.messages.Messages
 | Component Type | org.primefaces.component.Messages

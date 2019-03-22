@@ -6,7 +6,7 @@ optimized for responsive design.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | steps
 | Component Class | org.primefaces.component.steps.Steps
 | Component Type | org.primefaces.component.Steps

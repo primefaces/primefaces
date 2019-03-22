@@ -6,7 +6,7 @@ synchronizes automatically after each AJAX request.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | lifecycle
 | Component Class | org.primefaces.component.lifecycle.Lifecycle
 | Component Type | org.primefaces.component.Lifecycle

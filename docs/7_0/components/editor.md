@@ -5,7 +5,7 @@ Editor is an input component with rich text editing capabilities. (Deprecated: U
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | editor
 | Component Class | org.primefaces.component.editor.Editor
 | Component Type | org.primefaces.component.Editor

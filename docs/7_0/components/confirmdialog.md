@@ -6,7 +6,7 @@ and avoiding popup blockers are notable advantages over classic javascript confi
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | confirmDialog
 | Component Class | org.primefaces.component.confirmdialog.ConfirmDialog
 | Component Type | org.primefaces.component.ConfirmDialog

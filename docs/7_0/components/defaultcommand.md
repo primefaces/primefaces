@@ -10,7 +10,7 @@ enter key press.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | defaultCommand
 | Component Class | org.primefaces.component.defaultcommand.DefaultCommand
 | Component Type | org.primefaces.component.DefaultCommand

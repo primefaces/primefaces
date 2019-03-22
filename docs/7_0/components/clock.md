@@ -5,7 +5,7 @@ Clock displays server or client datetime live.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | clock
 | Component Class | org.primefaces.component.clock.Clock
 | Component Type | org.primefaces.component.Clock

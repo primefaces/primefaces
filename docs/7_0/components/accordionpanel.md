@@ -5,7 +5,7 @@ AccordionPanel is a container component that displays content in stacked format.
 ## Info
 
 | Name | Value |
-|-|-|
+| --- | --- |
 | Tag | accordionPanel |
 | Component Class | org.primefaces.component.accordionpanel.Accordionpanel |
 | Component Type | org.primefaces.component.AccordionPanel |

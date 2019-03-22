@@ -6,7 +6,7 @@ overlay.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | growl
 | Component Class | org.primefaces.component.growl.Growl
 | Component Type | org.primefaces.component.Growl

@@ -5,7 +5,7 @@ OutputPanel is a panel component with the ability to deferred loading.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | outputPanel
 | Component Class | org.primefaces.component.outputpanel.OutputPanel
 | Component Type | org.primefaces.component.OutputPanel

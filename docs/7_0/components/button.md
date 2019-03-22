@@ -5,7 +5,7 @@ Button is an extension to the standard h:button component with skinning capabili
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | button
 | Component Class | org.primefaces.component.button.Button
 | Component Type | org.primefaces.component.Button

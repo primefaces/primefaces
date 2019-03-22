@@ -5,7 +5,7 @@ TagCloud displays a collection of tag with different strengths.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | tagCloud
 | Component Class | org.primefaces.component.tagcloud.TagCloud
 | Component Type | org.primefaces.component.TagCloud

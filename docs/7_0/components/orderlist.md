@@ -6,7 +6,7 @@ pojo support.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | orderList
 | Component Class | org.primefaces.component.orderlist.OrderList
 | Component Type | org.primefaces.component.OrderList

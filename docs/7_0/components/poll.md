@@ -5,7 +5,7 @@ Poll is an ajax component that has the ability to send periodical ajax requests.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | poll
 | Component Class | org.primefaces.component.poll.Poll
 | Component Type | org.primefaces.component.Poll

@@ -5,7 +5,7 @@ ContextMenu provides an overlay menu displayed on mouse right-click event.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | contextMenu
 | Component Class | org.primefaces.component.contextmenu.ContextMenu
 | Component Type | org.primefaces.component.ContextMenu

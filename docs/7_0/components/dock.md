@@ -5,7 +5,7 @@ Dock component mimics the well known dock interface of Mac OS X.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | dock
 | Component Class | org.primefaces.component.dock.Dock
 | Component Type | org.primefaces.component.Dock
@@ -16,7 +16,7 @@ Dock component mimics the well known dock interface of Mac OS X.
 ## Attributes
 
 | Name | Default | Type | Description | 
-| --- | --- | --- | --- |
+| --- |---| --- | --- |
 | id | null | String | Unique identifier of the component
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean

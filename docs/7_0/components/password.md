@@ -6,7 +6,7 @@ integration and strength indicator.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | password
 | Component Class | org.primefaces.component.password.Password
 | Component Type | org.primefaces.component.Password

@@ -7,7 +7,7 @@ instead.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | resetInput
 | ActionListener Class | org.primefaces.component.resetinput.ResetInputActionListener
 

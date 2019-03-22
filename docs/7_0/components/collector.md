@@ -5,7 +5,7 @@ Collector is a simple utility to manage collections declaratively.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | collector
 | ActionListener Class | org.primefaces.component.collector.Collector
 

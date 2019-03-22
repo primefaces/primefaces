@@ -12,7 +12,7 @@ or a custom prefix via the "allSuffix" attribute.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | importEnums
 | Handler | org.primefaces.component.importenum.ImportEnumTagHandler
 

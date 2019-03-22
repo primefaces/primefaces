@@ -5,7 +5,7 @@ MegaMenu is a horizontal navigation component that displays submenus together.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | megaMenu
 | Component Class | org.primefaces.component.megamenu.MegaMenu
 | Component Type | org.primefaces.component.MegaMenu

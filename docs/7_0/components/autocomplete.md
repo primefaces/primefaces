@@ -5,7 +5,7 @@ AutoComplete provides live suggestions while an input is being typed.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | autoComplete
 | Component Class | org.primefaces.component.autocomplete.AutoComplete
 | Component Type | org.primefaces.component.AutoComplete

@@ -5,7 +5,7 @@ Represents a node in an Organigram model.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | organigramNode
 | Component Class | org.primefaces.component.organigramnode.OrganigramNode
 | Component Type | org.primefaces.component.OrganigramNode

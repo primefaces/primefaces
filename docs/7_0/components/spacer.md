@@ -5,7 +5,7 @@ Spacer is used to put spaces between elements.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | spacer
 | Component Class | org.primefaces.component.spacer.Spacer
 | Component Type | org.primefaces.component.Spacer

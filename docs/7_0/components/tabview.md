@@ -5,7 +5,7 @@ TabView is a container component to group content in tabs.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | tabView
 | Component Class | org.primefaces.component. tabview.TabView
 | Component Type | org.primefaces.component.TabView

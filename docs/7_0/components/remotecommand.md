@@ -5,7 +5,7 @@ RemoteCommand provides a way to execute backing bean methods directly from javas
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | remoteCommand
 | Component Class | org.primefaces.component.remotecommand.RemoteCommand
 | Component Type | org.primefaces.component.RemoteCommand

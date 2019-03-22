@@ -5,7 +5,7 @@ Confirm is a behavior element used to integrate with global confirm dialog.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | confirm
 | Behavior Id | org.primefaces.behavior.ConfirmBehavior
 

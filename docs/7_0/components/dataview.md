@@ -5,7 +5,7 @@ DataView displays data in grid or list layout.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | dataView
 | Component Class | org.primefaces.component.dataview.DataView
 | Component Type | org.primefaces.component.DataView

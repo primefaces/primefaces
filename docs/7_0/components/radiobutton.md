@@ -5,7 +5,7 @@ RadioButton is a helper component of SelectOneRadio to implement custom layouts.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | radioButton
 | Component Class | org.primefaces.component.radiobutton.RadioButton
 | Component Type | org.primefaces.component.RadioButton

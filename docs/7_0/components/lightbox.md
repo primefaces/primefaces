@@ -6,7 +6,7 @@ external urls.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | lightBox
 | Component Class | org.primefaces.component lightbox.LightBox
 | Component Type | org.primefaces.component.LightBox

@@ -6,7 +6,7 @@ is applied to inner components for a unified look.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | ribbon
 | Component Class | org.primefaces.component.ribbon.Ribbon
 | Component Type | org.primefaces.component.Ribbon

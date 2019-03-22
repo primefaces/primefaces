@@ -6,7 +6,7 @@ such as excel, pdf, csv and xml.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | dataExporter
 | Tag Class | org.primefaces.component.export.DataExporterTag
 | ActionListener Class | org.primefaces.component.export.DataExporter

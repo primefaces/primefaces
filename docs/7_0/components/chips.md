@@ -5,7 +5,7 @@ Chips is used to enter multiple values on an inputfield.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | chips
 | Component Class | org.primefaces.component.chips.Chips
 | Component Type | org.primefaces.component.Chips

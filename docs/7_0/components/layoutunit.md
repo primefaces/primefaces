@@ -8,7 +8,7 @@ LayoutUnit represents a region in the border layout model of the Layout componen
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | layoutUnit
 | Component Class | org.primefaces.component.layout.LayoutUnit
 | Component Type | org.primefaces.component.LayoutUnit

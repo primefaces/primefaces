@@ -5,7 +5,7 @@ SelectBooleanButton is used to select a binary decision with a toggle button.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | selectBooleanButton
 | Component Class | org.primefaces.component.selectbooleanbutton.SelectBooleanButton
 | Component Type | org.primefaces.component.SelectBooleanButton

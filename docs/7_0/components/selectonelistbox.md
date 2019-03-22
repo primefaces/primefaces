@@ -5,7 +5,7 @@ SelectOneListbox is an extended version of the standard selectOneListbox compone
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | selectOneListbox
 | Component Class | org.primefaces.component.selectonelistbox.SelectOneListbox
 | Component Type | org.primefaces.component.SelectOneListbox

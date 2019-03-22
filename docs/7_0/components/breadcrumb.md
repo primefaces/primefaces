@@ -6,7 +6,7 @@ in the workflow.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | breadCrumb
 | Component Class | org.primefaces.component.breadcrumb.BreadCrumb
 | Component Type | org.primefaces.component.BreadCrumb

@@ -5,7 +5,7 @@ InputSwitch is used to select a boolean value.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | inputSwitch
 | Component Class | org.primefaces.component.inputswitch.InputSwitch
 | Component Type | org.primefaces.component.InputSwitch

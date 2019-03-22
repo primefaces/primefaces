@@ -5,7 +5,7 @@ Submenu is nested in menu components and represents a sub menu items.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | submenu
 | Component Class | org.primefaces.component.submenu.Submenu
 | Component Type | org.primefaces.component.Submenu

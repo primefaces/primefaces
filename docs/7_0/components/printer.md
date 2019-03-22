@@ -5,7 +5,7 @@ Printer allows sending a specific JSF component to the printer, not the whole pa
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | printer
 | Behavior Class | org.primefaces.component.behavior.Printer
 

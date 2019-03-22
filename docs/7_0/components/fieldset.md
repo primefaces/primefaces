@@ -5,7 +5,7 @@ Fieldset is a grouping component as an extension to html fieldset.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | fieldset
 | Component Class | org.primefaces.component.fieldset.Fieldset
 | Component Type | org.primefaces.component.Fieldset

@@ -5,7 +5,7 @@ RowExpansion is a helper component of datatable used to implement expandable row
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | rowExpansion
 | Component Class | org.primefaces.component.rowexpansion.RowExpansion
 | Component Type | org.primefaces.component.RowExpansion

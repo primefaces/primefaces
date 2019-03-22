@@ -5,7 +5,7 @@ Terminal is an ajax powered web based terminal that brings desktop terminals to 
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | terminal
 | Component Class | org.primefaces.component.terminal.Terminal
 | Component Type | org.primefaces.component.Terminal

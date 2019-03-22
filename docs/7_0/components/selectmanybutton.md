@@ -5,7 +5,7 @@ SelectManyButton is a multi select component using button UI.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | selectManyButton
 | Component Class | org.primefaces.component.selectmanybutton.SelectManyButton
 | Component Type | org.primefaces.component.SelectManyButton

@@ -5,7 +5,7 @@ HeaderRow is a helper component of datatable used for dynamic grouping.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | headerRow
 | Component Class | org.primefaces.component.headerrow.HeaderRow
 | Component Type | org.primefaces.component.HeaderRow

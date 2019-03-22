@@ -5,7 +5,7 @@ Resizable component is used to make another JSF component resizable.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | resizable
 | Component Class | org.primefaces.component.resizable.Resizable
 | Component Type | org.primefaces.component.Resizable

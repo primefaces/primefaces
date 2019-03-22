@@ -5,7 +5,7 @@ SplitButton displays a command by default and additional ones in an overlay.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | splitButton
 | Component Class | org.primefaces.component.splitbutton.SplitButton
 | Component Type | org.primefaces.component.SplitButton

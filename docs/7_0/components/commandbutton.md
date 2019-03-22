@@ -5,7 +5,7 @@ CommandButton is an extended version of standard commandButton with ajax and the
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | commandButton
 | Component Class | org.primefaces.component.commandbutton.CommandButton
 | Component Type | org.primefaces.component.CommandButton

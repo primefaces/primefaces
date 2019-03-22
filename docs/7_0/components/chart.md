@@ -7,7 +7,7 @@ charting API.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | chart
 | Component Class | org.primefaces.component.chart.Chart
 | Component Type | org.primefaces.component.Chart

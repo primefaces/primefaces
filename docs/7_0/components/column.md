@@ -6,7 +6,7 @@ treetable and more.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | column
 | Component Class | org.primefaces.component.column.Column
 | Component Type | org.primefaces.component.Column

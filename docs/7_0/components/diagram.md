@@ -7,7 +7,7 @@ api, events and theming.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | diagram
 | Component Class | org.primefaces.component.diagram.Diagram
 | Component Type | org.primefaces.component.Diagram

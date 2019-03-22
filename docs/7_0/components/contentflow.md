@@ -5,7 +5,7 @@ ContentFlow is a horizontal content gallery component with a slide animation.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | contentFlow
 | Component Class | org.primefaces.component.contentflow.ContentFlow
 | Component Type | org.primefaces.component.ContentFlow

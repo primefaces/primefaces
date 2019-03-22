@@ -5,7 +5,7 @@ TreeNode is used with Tree component to represent a node in tree.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | treeNode
 | Component Class | org.primefaces.component.tree.UITreeNode
 | Component Type | org.primefaces.component.UITreeNode

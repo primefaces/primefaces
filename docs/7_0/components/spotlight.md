@@ -5,7 +5,7 @@ Spotlight highlights a certain component on page.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | spotlight
 | Component Class | org.primefaces.component.spotlight.Spotlight
 | Component Type | org.primefaces.component.Spotlight

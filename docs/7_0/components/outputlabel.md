@@ -5,7 +5,7 @@ OutputLabel is a an extension to the standard outputLabel component.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | outputLabel
 | Component Class | org.primefaces.component.outputlabel.OutputLabel
 | Component Type | org.primefaces.component.OutputLabel

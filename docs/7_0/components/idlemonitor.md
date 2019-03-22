@@ -5,7 +5,7 @@ IdleMonitor watches user actions on a page and notify callbacks in case they go 
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | idleMonitor
 | Component Class | org.primefaces.component.idlemonitor.IdleMonitor
 | Component Type | org.primefaces.component.IdleMonitor

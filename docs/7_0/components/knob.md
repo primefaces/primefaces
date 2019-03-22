@@ -5,7 +5,7 @@ Knob is an input component to insert numeric values in a range.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | knob
 | Component Class | org.primefaces.component.knob.Knob
 | Component Type | org.primefaces.component.Knob

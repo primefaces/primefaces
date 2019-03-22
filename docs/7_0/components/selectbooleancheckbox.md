@@ -5,7 +5,7 @@ SelectBooleanCheckbox is an extended version of the standard checkbox with theme
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | selectBooleanCheckbox
 | Component Class | org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckbox
 | Component Type | org.primefaces.component.SelectBooleanCheckbox

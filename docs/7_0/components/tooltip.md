@@ -6,7 +6,7 @@ and advance theme support.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | tooltip
 | Component Class | org.primefaces.component.tooltip.Tooltip
 | Component Type | org.primefaces.component.Tooltip

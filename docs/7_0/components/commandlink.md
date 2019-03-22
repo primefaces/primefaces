@@ -5,7 +5,7 @@ CommandLink extends standard JSF commandLink with Ajax capabilities.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | commandLink
 | Component Class | org.primefaces.component.commandlink.CommandLink
 | Component Type | org.primefaces.component.CommandLink

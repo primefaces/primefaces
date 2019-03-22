@@ -9,7 +9,7 @@ A bar chart provides a way of showing data values represented as vertical bars. 
 ### Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | barChart
 | Component Class | org.primefaces.component.barchart.BarChart
 | Component Type | org.primefaces.component.BarChart
@@ -421,7 +421,7 @@ A bubble chart is used to display three dimensions of data at the same time. The
 ### Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | bubbleChart
 | Component Class | org.primefaces.component.bubblechart.BubbleChart
 | Component Type | org.primefaces.component.BubbleChart
@@ -481,7 +481,7 @@ A Donut Chart is a variation of a Pie Chart but with a space in the center.
 ### Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | donutChart
 | Component Class | org.primefaces.component.donutchart.DonutChart
 | Component Type | org.primefaces.component.DonutChart
@@ -553,7 +553,7 @@ A line chart is a way of plotting data points on a line. Often, it is used to sh
 ### Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | lineChart
 | Component Class | org.primefaces.component.linechart.LineChart
 | Component Type | org.primefaces.component.LineChart
@@ -639,7 +639,7 @@ Pie chart is divided into segments, the arc of each segment shows the proportion
 ### Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | pieChart
 | Component Class | org.primefaces.component.piechart.PieChart
 | Component Type | org.primefaces.component.PieChart
@@ -711,7 +711,7 @@ Polar area charts are similar to pie charts, but each segment has the same angle
 ### Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | polarAreaChart
 | Component Class | org.primefaces.component.polarareachart.PolarAreaChart
 | Component Type | org.primefaces.component.PolarAreaChart
@@ -789,7 +789,7 @@ A radar chart is a way of showing multiple data points and the variation between
 ### Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | radarChart
 | Component Class | org.primefaces.component.radarchart.RadarChart
 | Component Type | org.primefaces.component.RadarChart
