@@ -8213,7 +8213,15 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines where the dialog should be displayed.]]>
+                <![CDATA[Position of the dialog relative to the target. Default is "center".]]>
+            </description>
+            <name>my</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines where the dialog should be displayed. Default is "center".]]>
             </description>
             <name>position</name>
             <required>false</required>
