@@ -144,28 +144,28 @@ By default, only one tab at a time can be active, enable _multiple_ mode to acti
 </p:accordionPanel>
 ```
 
-## TabController
+## TabController
 TabController is a server side listener that can be utilized to decide if a client side tab change or tab
 close action is allowed. When one of these two events occur, an ajax call is made to invoke the tab
 controller, then the boolean return value of this controller is sent back to click to decide if the event
 should be performed. An example use case is disallowing tab change if current tab has invalid
 inputs.
 
-## Client Side API
+## Client Side API
 Widget: _PrimeFaces.widget.AccordionPanel_
 
 | Method | Params | Return Type | Description |
-| --- | --- | --- | --- |
+| --- | --- | --- | --- |
 | select(index) | index: Index of tab | void | Activates tab with given index.|
 | unselect(index) | index: Index of tab | void | Deactivates tab with given index.|
 
-## Skinning
+## Skinning
 AccordionPanel resides in a main container element which _style_ and _styleClass_ options apply. As
 skinning style classes are global, see the main theming section for more information. Following is
 the list of structural style classes;
 
 | Class | Element |
-| --- | --- |
+| --- | --- |
 | .ui-accordion | Main container |
 | .ui-accordion-header | Tab header |
 | .ui-accordion-content | Tab content |
