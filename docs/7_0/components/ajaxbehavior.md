@@ -13,7 +13,7 @@ AjaxBehavior is an extension to standard f:ajax.
 ## Attributes
 
 | Name | Default | Type | Description | 
-| --- | --- | --- | --- |
+| --- | --- | --- | --- |
 | listener | null | Method Expr | Method to process in partial request. |
 | immediate | false | Boolean | Boolean value that determines the phaseId, when true actions are processed at apply_request_values, when false at invoke_application phase. |
 | async | false | Boolean | When set to true, ajax requests are not queued. |
