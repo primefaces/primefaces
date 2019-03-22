@@ -23,28 +23,43 @@
  */
 package org.primefaces.util;
 
+import java.util.function.Supplier;
+
 /**
  * Inspired by commons-lang LazyInitializer.
- * Can be reworked with a Supplier in Java8.
  *
  * @param <T> The type to be lazy initialized.
  */
-public abstract class Lazy<T> {
+public class Lazy<T> {
 
-    private static final Object NO_INIT = new Object();
+    private static final Object NOT_INITIALIZED = new Object();
 
     @SuppressWarnings("unchecked")
-    private volatile T object = (T) NO_INIT;
+    private volatile T value = (T) NOT_INITIALIZED;
+    private volatile Supplier<T> init;
+
+    public Lazy(Supplier<T> init) {
+        this.init = init;
+    }
+
+    public synchronized void reset(Supplier<T> init) {
+        this.init = init;
+        this.value = (T) NOT_INITIALIZED;
+    }
+
+    public synchronized void reset(T value) {
+        this.value = value;
+    }
 
     public T get() {
-        T result = object;
+        T result = value;
 
-        if (result == NO_INIT) {
+        if (result == NOT_INITIALIZED) {
             synchronized (this) {
-                result = object;
-                if (result == NO_INIT) {
-                    object = initialize();
-                    result = object;
+                result = value;
+                if (result == NOT_INITIALIZED) {
+                    value = init.get();
+                    result = value;
                 }
             }
         }
@@ -53,8 +68,6 @@ public abstract class Lazy<T> {
     }
 
     public boolean isInitialized() {
-        return object != NO_INIT;
+        return value != NOT_INITIALIZED;
     }
-
-    protected abstract T initialize();
 }

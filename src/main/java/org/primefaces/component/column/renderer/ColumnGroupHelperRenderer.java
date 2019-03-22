@@ -44,8 +44,7 @@ public class ColumnGroupHelperRenderer implements HelperColumnRenderer {
         DataTableRenderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
                 DataTable.COMPONENT_FAMILY,
-                DataTable.DEFAULT_RENDERER,
-                DataTableRenderer.class);
+                DataTable.DEFAULT_RENDERER);
 
         if (type.equals("header") || type.equals("frozenHeader") || type.equals("scrollableHeader")) {
             renderer.encodeColumnHeader(context, table, column);

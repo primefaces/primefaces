@@ -50,8 +50,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
                 "javax.faces.SelectMany",
-                "javax.faces.Checkbox",
-                Renderer.class);
+                "javax.faces.Checkbox");
         return renderer.getConvertedValue(context, component, submittedValue);
     }
 
@@ -318,7 +317,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 .attr("scrollHeight", menu.getScrollHeight(), Integer.MAX_VALUE)
                 .attr("showHeader", menu.isShowHeader(), true)
                 .attr("updateLabel", menu.isUpdateLabel(), false)
-                .attr("labelSeparator", menu.getLabelSeparator(), ",")
+                .attr("labelSeparator", menu.getLabelSeparator(), ", ")
                 .attr("emptyLabel", menu.getEmptyLabel())
                 .attr("multiple", menu.isMultiple(), false)
                 .attr("dynamic", menu.isDynamic(), false)

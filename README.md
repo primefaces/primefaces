@@ -25,7 +25,8 @@ This is an overview page, please visit [PrimeFaces.org](https://www.primefaces.o
 
 Version | Binary | Source | JSF version | Java version
 ------------ | -------------  | ------------- | ------------- | -------------
-7.0.RC3| [primefaces-7.0.RC3.jar](https://jitpack.io/com/github/primefaces/primefaces/7.0.RC3/primefaces-7.0.RC3.jar)  | [primefaces-7.0.RC3.zip](https://github.com/primefaces/primefaces/archive/7.0.RC3.zip) | 2.0 - 2.3 | 1.7 - ?
+7.1-SNAPSHOT|  |  | 2.0 - 2.3 | 1.8 - ?
+7.0| [primefaces-7.0.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/7.0/primefaces-7.0.jar)  | [primefaces-7.0-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/7.0/primefaces-7.0-sources.jar) | 2.0 - 2.3 | 1.7 - ?
 6.2| [primefaces-6.2.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.2/primefaces-6.2.jar)  | [primefaces-6.2-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.2/primefaces-6.2-sources.jar) | 2.0 - 2.3 | 1.6 - ?
 6.1| [primefaces-6.1.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.1/primefaces-6.1.jar)  | [primefaces-6.1-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.1/primefaces-6.1-sources.jar) | 2.0 - 2.3 | 1.5 - ?
 6.0| [primefaces-6.0.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.0/primefaces-6.0.jar)  | [primefaces-6.0-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.0/primefaces-6.0-sources.jar) | 2.0 - 2.2 | 1.5 - ?
@@ -43,7 +44,7 @@ For a full list of the available downloads, please visit the [download page](htt
 	<dependency>
 	    <groupId>org.primefaces</groupId>
 	    <artifactId>primefaces</artifactId>
-	    <version>6.2</version>
+	    <version>7.0</version>
 	</dependency>
 	```
 
@@ -102,7 +103,7 @@ Please refer to the [showcase](https://www.primefaces.org/showcase) in order to 
 
 ### Documentation
 ***
-User Guide is available at [documentation](http://www.primefaces.org/documentation) page along with other additional resoures.
+User Guide is available here: [click](https://primefaces.github.io/primefaces/).
 
 ### Contribution
 ***

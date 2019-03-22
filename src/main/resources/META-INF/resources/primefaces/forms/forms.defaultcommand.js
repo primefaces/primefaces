@@ -28,7 +28,9 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
                     return true;
                 }
 
-                $this.jqTarget.click();
+                if (!$this.jqTarget.is(':disabled, .ui-state-disabled')) {
+                    $this.jqTarget.click();
+                }
                 e.preventDefault();
                 e.stopImmediatePropagation();
             }

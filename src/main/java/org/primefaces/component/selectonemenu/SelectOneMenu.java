@@ -114,8 +114,7 @@ public class SelectOneMenu extends SelectOneMenuBase {
                 Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                         context,
                         "javax.faces.SelectOne",
-                        "javax.faces.Menu",
-                        Renderer.class);
+                        "javax.faces.Menu");
 
                 Object item = renderer.getConvertedValue(context, this, getSubmittedValue());
                 SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), item);

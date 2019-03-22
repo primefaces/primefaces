@@ -117,8 +117,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
         TimelineRenderer timelineRenderer = ComponentUtils.getUnwrappedRenderer(
                 fc,
                 Timeline.COMPONENT_FAMILY,
-                Timeline.DEFAULT_RENDERER,
-                TimelineRenderer.class);
+                Timeline.DEFAULT_RENDERER);
 
         Map<String, String> groupsContent = null;
         List<TimelineGroup> groups = timeline.getValue().getGroups();
