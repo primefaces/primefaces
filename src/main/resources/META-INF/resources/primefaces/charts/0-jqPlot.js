@@ -9315,7 +9315,11 @@
 
             else if (tagname == 'canvas') {
                 if(!$(el).hasClass('jqplot-series-hidden')) { // PrimeFaces Github Issue; #1505
-                    newContext.drawImage(el, left, top);
+                    
+                    // PrimeFaces Github Issue; #4655
+                    var hh = $(el).innerHeight() - 2 * parseInt($(el).css('padding-top'), 10);
+                    var ww = $(el).innerWidth() - 2 * parseInt($(el).css('padding-left'), 10);
+                    newContext.drawImage(el, left, top, ww, hh);
                 }
             }
         }

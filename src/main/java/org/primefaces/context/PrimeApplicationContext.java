@@ -110,49 +110,31 @@ public class PrimeApplicationContext {
         applicationClassLoader = classLoader;
 
         if (config.isBeanValidationEnabled()) {
-            validatorFactory = new Lazy<ValidatorFactory>() {
-                @Override
-                protected ValidatorFactory initialize() {
-                    return Validation.buildDefaultValidatorFactory();
-                }
-            };
-            validator = new Lazy<Validator>() {
-                @Override
-                protected Validator initialize() {
-                    return validatorFactory.get().getValidator();
-                }
-            };
+            validatorFactory = new Lazy<>(() -> Validation.buildDefaultValidatorFactory());
+            validator = new Lazy<>(() -> validatorFactory.get().getValidator());
         }
         else {
             validatorFactory = null;
             validator = null;
         }
 
-        virusScannerService = new Lazy<VirusScannerService>() {
-            @Override
-            protected VirusScannerService initialize() {
-                return new VirusScannerService(applicationClassLoader);
-            }
-        };
+        virusScannerService = new Lazy<>(() -> new VirusScannerService(applicationClassLoader));
 
-        cacheProvider = new Lazy<CacheProvider>() {
-            @Override
-            protected CacheProvider initialize() {
-                String cacheProviderConfigValue = FacesContext.getCurrentInstance().getExternalContext()
-                        .getInitParameter(Constants.ContextParams.CACHE_PROVIDER);
-                if (cacheProviderConfigValue == null) {
-                    return new DefaultCacheProvider();
+        cacheProvider = new Lazy<CacheProvider>(() -> {
+            String cacheProviderConfigValue = FacesContext.getCurrentInstance().getExternalContext()
+                    .getInitParameter(Constants.ContextParams.CACHE_PROVIDER);
+            if (cacheProviderConfigValue == null) {
+                return new DefaultCacheProvider();
+            }
+            else {
+                try {
+                    return (CacheProvider) LangUtils.loadClassForName(cacheProviderConfigValue).newInstance();
                 }
-                else {
-                    try {
-                        return (CacheProvider) LangUtils.loadClassForName(cacheProviderConfigValue).newInstance();
-                    }
-                    catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-                        throw new FacesException(ex);
-                    }
+                catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+                    throw new FacesException(ex);
                 }
             }
-        };
+        });
     }
 
     public static PrimeApplicationContext getCurrentInstance(FacesContext facesContext) {

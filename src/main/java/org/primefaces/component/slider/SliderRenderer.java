@@ -76,8 +76,8 @@ public class SliderRenderer extends CoreRenderer {
 
         if (range) {
             String[] inputIds = slider.getFor().split(",");
-            UIComponent inputMin = getTarget(context, slider, inputIds[0].trim());
-            UIComponent inputMax = getTarget(context, slider, inputIds[1].trim());
+            UIComponent inputMin = getTarget(context, slider, inputIds[0]);
+            UIComponent inputMax = getTarget(context, slider, inputIds[1]);
             String inputMinValue = ComponentUtils.getValueToRender(context, inputMin);
             String inputMaxValue = ComponentUtils.getValueToRender(context, inputMax);
 

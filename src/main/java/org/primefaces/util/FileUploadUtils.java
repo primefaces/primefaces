@@ -95,7 +95,7 @@ public class FileUploadUtils {
     }
 
     public static String getValidFilePath(String filePath) throws ValidationException {
-        if (filePath == null || filePath.trim().equals("")) {
+        if (LangUtils.isValueBlank(filePath)) {
             throw new FacesException("Path can not be the empty string or null");
         }
 

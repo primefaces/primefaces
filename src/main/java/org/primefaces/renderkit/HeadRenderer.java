@@ -38,6 +38,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.util.LocaleUtils;
 
 /**
  * Renders head content based on the following order
@@ -114,7 +115,7 @@ public class HeadRenderer extends Renderer {
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("if(window.PrimeFaces){");
 
-        writer.write("PrimeFaces.settings.locale='" + context.getViewRoot().getLocale() + "';");
+        writer.write("PrimeFaces.settings.locale='" + LocaleUtils.getCurrentLocale(context) + "';");
 
         if (csvEnabled) {
             writer.write("PrimeFaces.settings.validateEmptyFields=" + applicationContext.getConfig().isValidateEmptyFields() + ";");

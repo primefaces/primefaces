@@ -39,11 +39,7 @@ import javax.faces.convert.ConverterException;
 
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public class InputNumberRenderer extends InputRenderer {
 
@@ -152,12 +148,12 @@ public class InputNumberRenderer extends InputRenderer {
         }
 
         encodeInput(context, inputNumber, clientId, valueToRender);
-        encodeHiddenInput(context, inputNumber, clientId);
+        encodeHiddenInput(context, inputNumber, clientId, valueToRender);
 
         writer.endElement("span");
     }
 
-    protected void encodeHiddenInput(FacesContext context, InputNumber inputNumber, String clientId) throws IOException {
+    protected void encodeHiddenInput(FacesContext context, InputNumber inputNumber, String clientId, String valueToRender) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_hinput";
 
@@ -166,6 +162,7 @@ public class InputNumberRenderer extends InputRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "hidden", null);
         writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute("value", valueToRender, null);
 
         if (inputNumber.getOnchange() != null) {
             writer.writeAttribute("onchange", inputNumber.getOnchange(), null);

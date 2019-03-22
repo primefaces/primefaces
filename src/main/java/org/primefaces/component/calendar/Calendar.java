@@ -150,7 +150,8 @@ public class Calendar extends CalendarBase {
                     msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessage, validatorMessage);
                 }
                 else {
-                    msg = MessageFactory.getMessage(DATE_OUT_OF_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, null);
+                    Object[] params = new Object[] {MessageFactory.getLabel(context, this)};
+                    msg = MessageFactory.getMessage(DATE_OUT_OF_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
                 }
                 context.addMessage(getClientId(context), msg);
             }
