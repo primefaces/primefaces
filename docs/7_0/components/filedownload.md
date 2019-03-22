@@ -6,7 +6,7 @@ stream the binary data. FileDownload presents an easier way to do the same.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | fileDownload
 | ActionListener Class | org.primefaces.component.filedownload.FileDownloadActionListener
 

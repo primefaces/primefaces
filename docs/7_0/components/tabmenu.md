@@ -5,7 +5,7 @@ TabMenu is a navigation component that displays menuitems as tabs.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | tabMenu
 | Component Class | org.primefaces.component.tabmenu.TabMenu
 | Component Type | org.primefaces.component.TabMenu

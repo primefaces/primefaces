@@ -7,7 +7,7 @@ DataList presents a collection of data in list layout with several display types
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | dataList
 | Component Class | org.primefaces.component.datalist.DataList
 | Component Type | org.primefaces.component.DataList

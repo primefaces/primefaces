@@ -6,7 +6,7 @@ consists of several child tab components where each tab represents a step in the
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | wizard
 | Component Class | org.primefaces.component.wizard.Wizard
 | Component Type | org.primefaces.component.Wizard

@@ -5,7 +5,7 @@ ImageCompare provides a user interface to compare two images.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | imageCompare
 | Component Class | org.primefaces.component.imagecompare.ImageCompare
 | Component Type | org.primefaces.component.ImageCompare

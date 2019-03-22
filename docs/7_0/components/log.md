@@ -5,7 +5,7 @@ Log component is a visual console to display logs on JSF pages.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | log
 | Component Class | org.primefaces.component.log.Log
 | Component Type | org.primefaces.component.Log

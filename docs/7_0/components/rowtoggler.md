@@ -5,7 +5,7 @@ RowToggler is a helper component for datatable.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | rowToggler
 | Component Class | org.primefaces.component.rowtoggler.RowToggler
 | Component Type | org.primefaces.component.RowToggler

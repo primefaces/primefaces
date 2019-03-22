@@ -5,7 +5,7 @@ Timeline is an interactive graph to visualize events in time.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | timeLine
 | Component Class | org.primefaces.component.timeline.TimeLine
 | Component Type | org.primefaces.component.TimeLine

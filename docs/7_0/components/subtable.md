@@ -5,7 +5,7 @@ SubTable is a helper component of datatable used for grouping.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | subTable
 | Component Class | org.primefaces.component.subtable.SubTable
 | Component Type | org.primefaces.component.SubTable

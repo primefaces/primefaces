@@ -9,7 +9,7 @@ attribute).
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | importConstants
 | Handler | org.primefaces.component.importconstants.ImportConstantsTagHandler
 

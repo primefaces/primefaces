@@ -6,7 +6,7 @@ animations and more.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | mindmap
 | Component Class | org.primefaces.component.mindmap.Mindmap
 | Component Type | org.primefaces.component.Mindmap

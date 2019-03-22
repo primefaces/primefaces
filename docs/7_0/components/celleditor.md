@@ -5,7 +5,7 @@ CellEditor is a helper component of datatable used for incell editing.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | cellEditor
 | Component Class | org.primefaces.component.celleditor.CellEditor
 | Component Type | org.primefaces.component.CellEditor

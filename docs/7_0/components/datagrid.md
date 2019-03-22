@@ -7,7 +7,7 @@ DataGrid displays a collection of data in a grid layout.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | dataGrid
 | Component Class | org.primefaces.component.datagrid.DataGrid
 | Component Type | org.primefaces.component.DataGrid

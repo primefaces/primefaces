@@ -5,7 +5,7 @@ Organigram is a data component to display an organizational hierarchy.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | organigram
 | Component Class | org.primefaces.component.organigram.Organigram
 | Component Type | org.primefaces.component.Organigram

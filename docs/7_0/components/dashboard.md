@@ -5,7 +5,7 @@ Dashboard provides a portal like layout with drag&drop based reorder capabilitie
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | dashboard
 | Component Class | org.primefaces.component.dashboard.Dashboard
 | Component Type | org.primefaces.component.Dashboard

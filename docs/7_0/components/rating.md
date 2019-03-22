@@ -5,7 +5,7 @@ Rating component features a star based rating system.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | rating
 | Component Class | org.primefaces.component.rating.Rating
 | Component Type | org.primefaces.component.Rating

@@ -6,7 +6,7 @@ browser scrollbars.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | scrollPanel
 | Component Class | org.primefaces.component.scrollpanel.ScrollPanel
 | Component Type | org.primefaces.component.ScrollPanel

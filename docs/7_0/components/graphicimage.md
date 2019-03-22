@@ -8,7 +8,7 @@ the streaming, GraphicImage does all the hard work without the need of a Servlet
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | graphicImage
 | Component Class | org.primefaces.component.graphicimage.GraphicImage
 | Component Type | org.primefaces.component.GraphicImage

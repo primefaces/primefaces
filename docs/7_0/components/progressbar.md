@@ -6,7 +6,7 @@ server side using ajax.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | propressBar
 | Component Class | org.primefaces.component.progressbar.ProgressBar
 | Component Type | org.primefaces.component.Progressbar

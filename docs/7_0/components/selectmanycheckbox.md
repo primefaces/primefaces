@@ -5,7 +5,7 @@ SelectManyCheckbox is an extended version of the standard SelectManyCheckbox.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | selectManyCheckbox
 | Component Class | org.primefaces.component.selectmanycheckbox.SelectManyCheckbox
 | Component Type | org.primefaces.component.SelectManyCheckbox

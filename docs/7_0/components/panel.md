@@ -5,7 +5,7 @@ Panel is a grouping component with content toggle, close and menu integration.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | panel
 | Component Class | org.primefaces.component.panel.Panel
 | Component Type | org.primefaces.component.Panel

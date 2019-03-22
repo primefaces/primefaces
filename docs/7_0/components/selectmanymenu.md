@@ -5,7 +5,7 @@ SelectManyMenu is an extended version of the standard SelectManyMenu.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | selectManyMenu
 | Component Class | org.primefaces.component.selectmanymenu.SelectManyMenu
 | Component Type | org.primefaces.component.SelectManyMenu

@@ -5,7 +5,7 @@ KeyFilter is used to filter keyboard input on specified input components.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | keyFilter
 | Component Class | org.primefaces.component.keyfilter.KeyFilter
 | Component Type | org.primefaces.component.KeyFilter

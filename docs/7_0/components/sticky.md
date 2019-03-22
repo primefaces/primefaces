@@ -6,7 +6,7 @@ viewport during scrolling.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | sticky
 | Component Class | org.primefaces.component.sticky.Sticky
 | Component Type | org.primefaces.component.Sticky

@@ -5,7 +5,7 @@ Watermark displays a hint on an input field.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | watermark
 | Component Class | org.primefaces.component.watermark.Watermark
 | Component Type | org.primefaces.component.Watermark

@@ -6,7 +6,7 @@ characters counter and theming features.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | inputTextarea
 | Component Class | org.primefaces.component.inputtextarea.InputTextarea
 | Component Type | org.primefaces.component.InputTextarea

@@ -5,7 +5,7 @@ Row is a helper component for datatable.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | row
 | Component Class | org.primefaces.component.row.Row
 | Component Type | org.primefaces.component.Row

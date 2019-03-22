@@ -5,7 +5,7 @@ Spinner is an input component to provide a numerical input via increment and dec
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | spinner
 | Component Class | org.primefaces.component.spinner.Spinner
 | Component Type | org.primefaces.component.Spinner

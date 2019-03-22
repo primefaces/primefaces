@@ -7,7 +7,7 @@ displayed when display element is toggled.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | inplace
 | Component Class | org.primefaces.component.inplace.Inplace
 | Component Type | org.primefaces.component.Inplace

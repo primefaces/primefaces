@@ -5,7 +5,7 @@ DataTable displays data in tabular format.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | dataTable
 | Component Class | org.primefaces.component.datatable.DataTable
 | Component Type | org.primefaces.component.DataTable

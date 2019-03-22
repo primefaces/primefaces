@@ -5,7 +5,7 @@ ToolbarGroup is a helper component for Toolbar component to define placeholders.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | toolbarGroup
 | Component Class | org.primefaces.component.toolbar.ToolbarGroup
 | Component Type | org.primefaces.component.ToolbarGroup

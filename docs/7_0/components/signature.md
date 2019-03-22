@@ -7,7 +7,7 @@ devices and legacy browsers without canvas support.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | signature
 | Component Class | org.primefaces.component.signature.Signature
 | Component Type | org.primefaces.component.Signature

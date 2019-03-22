@@ -6,7 +6,7 @@ and skinning.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | slider
 | Component Class | org.primefaces.component.slider.Slider
 | Component Type | org.primefaces.component.Slider

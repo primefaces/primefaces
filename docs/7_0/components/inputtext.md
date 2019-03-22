@@ -5,7 +5,7 @@ InputText is an extension to standard inputText with skinning capabilities.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | inputText
 | Component Class | org.primefaces.component.inputtext.InputText
 | Component Type | org.primefaces.component.InputText

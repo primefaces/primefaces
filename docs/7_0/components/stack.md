@@ -5,7 +5,7 @@ Stack is a navigation component that mimics the stacks feature in Mac OS X.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | stack
 | Component Class | org.primefaces.component.stack.Stack
 | Component Type | org.primefaces.component.Stack

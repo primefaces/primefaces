@@ -5,7 +5,7 @@ Treetable is is used for displaying hierarchical data in tabular format.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | treeTable
 | Component Class | org.primefaces.component.treetable.TreeTable
 | Component Type | org.primefaces.component.TreeTable

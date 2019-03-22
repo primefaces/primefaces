@@ -7,7 +7,7 @@ ToggleSwitch is used to select a boolean value.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | toggleSwitch
 | Component Class | org.primefaces.component.toggleswitch.ToggleSwitch
 | Component Type | org.primefaces.component.ToggleSwitch

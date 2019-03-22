@@ -5,7 +5,7 @@ Focus is a utility component that makes it easy to manage the element focus on a
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | focus
 | Component Class | org.primefaces.component.focus.Focus
 | Component Type | org.primefaces.component.Focus.FocusTag

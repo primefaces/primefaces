@@ -5,7 +5,7 @@ AjaxBehavior is an extension to standard f:ajax.
 ## Info
 
 | Name | Value |
-|-|-|
+| --- | --- |
 | Tag | ajax |
 | Behavior Id | org.primefaces.component.AjaxBehavior |
 | Behavior Class | org.primefaces.component.behavior.ajax.AjaxBehavior |

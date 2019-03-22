@@ -6,7 +6,7 @@ are the customizable layouts and skinning capabilities.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | keyboard
 | Component Class | org.primefaces.component.keyboard.Keyboard
 | Component Type | org.primefaces.component.Keyboard

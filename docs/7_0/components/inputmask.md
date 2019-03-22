@@ -5,7 +5,7 @@ InputMask forces an input to fit in a defined mask template.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | inputMask
 | Component Class | org.primefaces.component.inputmask.InputMask
 | Component Type | org.primefaces.component.InputMask

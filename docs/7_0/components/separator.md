@@ -5,7 +5,7 @@ Separator displays a horizontal line to separate content.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | separator
 | Component Class | org.primefaces.component.separator.Separator
 | Component Type | org.primefaces.component.Separator

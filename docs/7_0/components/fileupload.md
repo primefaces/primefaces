@@ -6,7 +6,7 @@ powered rich solution with graceful degradation for legacy browsers.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | fileUpload
 | Component Class | org.primefaces.component.fileupload.FileUpload
 | Component Type | org.primefaces.component.FileUpload

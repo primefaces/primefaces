@@ -5,7 +5,7 @@ AjaxStatus is a global notifier for ajax requests.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | ajaxStatus |
 | Component Class | org.primefaces.component.ajaxstatus.AjaxStatus |
 | Component Type | org.primefaces.component.AjaxStatus |

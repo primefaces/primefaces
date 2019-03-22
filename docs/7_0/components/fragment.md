@@ -6,7 +6,7 @@ ajax request is triggered by a descendant component.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | fragment
 | Component Class | org.primefaces.component.fragment.Fragment
 | Component Type | org.primefaces.component.Fragment

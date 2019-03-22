@@ -5,7 +5,7 @@ ThemeSwitcher enables switching PrimeFaces themes on the fly with no page refres
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | themeSwitcher
 | Component Class | org.primefaces.component.themeswitcher.ThemeSwitcher
 | Component Type | org.primefaces.component.ThemeSwitcher

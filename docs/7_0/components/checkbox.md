@@ -5,7 +5,7 @@ Checkbox is a helper component of SelectManyCheckbox to implement custom layouts
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | checkbox
 | Component Class | org.primefaces.component.checkbox.Checkbox
 | Component Type | org.primefaces.component.Checkbox

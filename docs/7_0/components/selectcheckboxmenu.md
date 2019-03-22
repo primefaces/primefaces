@@ -5,7 +5,7 @@ SelectCheckboxMenu is a multi select component that displays options in an overl
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | selectCheckboxMenu
 | Component Class | org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenu
 | Component Type | org.primefaces.component.SelectCheckboxMenu

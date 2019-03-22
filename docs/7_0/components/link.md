@@ -5,7 +5,7 @@ Link is an extension to standard h:link component.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | link
 | Component Class | org.primefaces.component.link.Link
 | Component Type | org.primefaces.component.Link

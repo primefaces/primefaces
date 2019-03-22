@@ -6,7 +6,7 @@ theming and colspan-rowspan.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | panelGrid
 | Component Class | org.primefaces.component.panelgrid.PanelGridRenderer
 | Component Type | org.primefaces.component.PanelGrid

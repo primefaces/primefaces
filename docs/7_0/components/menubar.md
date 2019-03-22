@@ -5,7 +5,7 @@ Menubar is a horizontal navigation component.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | menubar
 | Component Class | org.primefaces.component.menubar.Menubar
 | Component Type | org.primefaces.component.Menubar

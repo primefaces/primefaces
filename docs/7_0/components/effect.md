@@ -5,7 +5,7 @@ Effect component is based on the jQuery UI effects library.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | effect
 | Tag | Class org.primefaces.component.effect.EffectTag
 | Component Class | org.primefaces.component.effect.Effect

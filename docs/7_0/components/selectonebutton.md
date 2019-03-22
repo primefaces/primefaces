@@ -5,7 +5,7 @@ SelectOneButton is an input component to do a single select.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | selectOneButton
 | Component Class | org.primefaces.component.selectonebutton.SelectOneButton
 | Component Type | org.primefaces.component.SelectOneButton

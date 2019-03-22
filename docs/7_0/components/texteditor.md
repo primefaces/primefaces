@@ -5,7 +5,7 @@ Editor is an input component with rich text editing capabilities based on Quill.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | textEditor
 | Component Class | org.primefaces.component.texteditor.TextEditor
 | Component Type | org.primefaces.component.TextEditor

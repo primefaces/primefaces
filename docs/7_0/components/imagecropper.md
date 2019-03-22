@@ -6,7 +6,7 @@ cropped area and assigned to a CroppedImage instanced on the server side.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | imageCropper
 | Component Class | org.primefaces.component. imagecropper.ImageCropper
 | Component Type | org.primefaces.component.ImageCropper

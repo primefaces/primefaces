@@ -5,7 +5,7 @@ RibbonGroup is a helper component for Ribbon to define groups in a tab.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | ribbonGroup
 | Component Class | org.primefaces.component.ribbon.RibbonGroup
 | Component Type | org.primefaces.component.RibbonGroup

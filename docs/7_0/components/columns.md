@@ -5,7 +5,7 @@ Columns is used by datatable to create columns dynamically.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | columns
 | Component Class | org.primefaces.component.column.Columns
 | Component Type | org.primefaces.component.Columns

@@ -5,7 +5,7 @@ NotificationBar displays a multipurpose fixed positioned panel for notification.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | notificationBar
 | Component Class | org.primefaces.component.notificationbar.NotificationBar
 | Component Type | org.primefaces.component.NotificatonBar

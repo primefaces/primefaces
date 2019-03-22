@@ -5,7 +5,7 @@ Barcode component is used to display various barcode formats.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | barcode
 | Component Class | org.primefaces.component.barcode.Barcode
 | Component Type | org.primefaces.component.Barcode

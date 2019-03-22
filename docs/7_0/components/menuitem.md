@@ -5,7 +5,7 @@ MenuItem is used by various menu components.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | menuItem
 | Tag | Class org.primefaces.component.menuitem.MenuItemTag
 | Component Class | org.primefaces.component.menuitem.MenuItem

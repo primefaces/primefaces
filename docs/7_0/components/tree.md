@@ -5,7 +5,7 @@ Tree is used for displaying hierarchical data and creating site navigations.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | tree
 | Component Class | org.primefaces.component.tree.Tree
 | Component Type | org.primefaces.component.Tree

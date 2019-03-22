@@ -5,7 +5,7 @@ Galleria is used to display a set of images.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | galleria
 | Component Class | org.primefaces.component.galleria.Galleria
 | Component Type | org.primefaces.component.Galleria

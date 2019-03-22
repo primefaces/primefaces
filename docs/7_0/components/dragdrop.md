@@ -7,7 +7,7 @@ Drag&Drop utilities of PrimeFaces consists of two components; Draggable and Drop
 ### Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | draggable
 | Component Class | org.primefaces.component.dnd.Draggable
 | Component Type | org.primefaces.component.Draggable
@@ -140,7 +140,7 @@ it’s parent.
 ### Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | droppable
 | Component Class | org.primefaces.component.dnd.Droppable
 | Component Type | org.primefaces.component.Droppable

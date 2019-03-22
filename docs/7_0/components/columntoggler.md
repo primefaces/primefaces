@@ -5,7 +5,7 @@ ColumnToggler is a helper component for datatable to toggle visibility of column
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | columnToggler
 | Component Class | org.primefaces.component.columngroup.ColumnGroup
 | Component Type | org.primefaces.component. ColumnGroup

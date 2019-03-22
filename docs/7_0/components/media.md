@@ -5,7 +5,7 @@ Media component is used for embedding multimedia content.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | media
 | Component Class | org.primefaces.component.media.Media
 | Component Type | org.primefaces.component.Media

@@ -6,7 +6,7 @@ and maximum value, negative numbers, and a lot of round methods.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | inputNumber
 | Component Class | org.primefaces.component.inputnumber.InputNumber
 | Component Type | org.primefaces.component.InputNumber

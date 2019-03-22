@@ -5,7 +5,7 @@ SelectOneRadio is an extended version of the standard SelectOneRadio with theme 
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | selectOneRadio
 | Component Class | org.primefaces.component.selectoneradio.SelectOneRadio
 | Component Type | org.primefaces.component.SelectOneRadio

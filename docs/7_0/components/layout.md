@@ -8,7 +8,7 @@ create complex layouts even if you’re not familiar with web design.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | layout
 | Component Class | org.primefaces.component.layout.Layout
 | Component Type | org.primefaces.component.Layout

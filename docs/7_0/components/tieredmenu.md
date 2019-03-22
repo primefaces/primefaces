@@ -5,7 +5,7 @@ TieredMenu is used to display nested submenus with overlays.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | tieredMenu
 | Component Class | org.primefaces.component.tieredmenu.TieredMenu
 | Component Type | org.primefaces.component.TieredMenu

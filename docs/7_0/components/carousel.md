@@ -5,7 +5,7 @@ Carousel is a multi purpose component to display a set of data or general conten
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | carousel
 | Component Class | org.primefaces.component.carousel.Carousel
 | Component Type | org.primefaces.component.Carousel

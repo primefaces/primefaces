@@ -5,7 +5,7 @@ Captcha is a form validation component based on Recaptcha API V2.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | captcha
 | Component Class | org.primefaces.component.captcha.Captcha
 | Component Type | org.primefaces.component.Captcha

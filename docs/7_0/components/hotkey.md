@@ -6,7 +6,7 @@ handlers or ajax calls.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | hotkey
 | Component Class | org.primefaces.component.hotkey.HotKey
 | Component Type | org.primefaces.component.HotKey

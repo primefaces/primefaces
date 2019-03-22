@@ -5,7 +5,7 @@ MenuButton displays different commands in a popup menu.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | menuButton
 | Component Class | org.primefaces.component.menubutton.MenuButton
 | Component Type | org.primefaces.component.MenuButton

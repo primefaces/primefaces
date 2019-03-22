@@ -5,7 +5,7 @@ DataScroller displays a collection of data with on demand loading using scrollin
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | dataScroller
 | Component Class | org.primefaces.component.datascroller.DataScroller
 | Component Type | org.primefaces.component.DataScroller

@@ -5,7 +5,7 @@ SlideMenu is used to display nested submenus with sliding animation.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | slideMenu
 | Component Class | org.primefaces.component.slidemenu.SlideMenu
 | Component Type | org.primefaces.component.SlideMenu

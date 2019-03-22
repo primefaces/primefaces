@@ -5,7 +5,7 @@ GMap is a map component integrated with Google Maps API V3.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | gmap
 | Component Class | org.primefaces.component.gmap.GMap
 | Component Type | org.primefaces.component.Gmap

@@ -5,7 +5,7 @@ Sidebar is a panel component displayed as an overlay at the edges of the screen.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | sidebar
 | Component Class | org.primefaces.component.sidebar.Sidebar
 | Component Type | org.primefaces.component.Sidebar

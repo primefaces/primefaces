@@ -5,7 +5,7 @@ LinkButton a simple link, which is styled as a button and integrated with JSF na
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | linkButton
 | Component Class | org.primefaces.component.linkbutton.LinkButton
 | Component Type | org.primefaces.component.Link

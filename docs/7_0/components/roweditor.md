@@ -5,7 +5,7 @@ RowEditor is a helper component for datatable.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | rowEditor
 | Component Class | org.primefaces.component.roweditor.RowEditor
 | Component Type | org.primefaces.component.RowEditor

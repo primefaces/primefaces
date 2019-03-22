@@ -5,7 +5,7 @@ BlockUI is used to block interactivity of JSF components with optional ajax inte
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | blockUI
 | Component Class | org.primefaces.component.blockui.BlockUI
 | Component Type | org.primefaces.component.BlockUI

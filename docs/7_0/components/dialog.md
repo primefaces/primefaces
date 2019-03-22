@@ -5,7 +5,7 @@ Dialog is a panel component that can overlay other elements on page.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | dialog
 | Component Class | org.primefaces.component.dialog.Dialog
 | Component Type | org.primefaces.component.Dialog

@@ -5,7 +5,7 @@ FeedReader is used to display content from a feed.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | feedReader
 | Component Class | org.primefaces.component.feedreader.FeedReader
 | Component Type | org.primefaces.component.FeedReader

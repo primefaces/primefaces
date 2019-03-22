@@ -5,7 +5,7 @@ ColorPicker is an input component with a color palette.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | colorPicker
 | Component Class | org.primefaces.component.colorpicker.ColorPicker
 | Component Type | org.primefaces.component.ColorPicker

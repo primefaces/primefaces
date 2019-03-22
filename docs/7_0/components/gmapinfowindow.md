@@ -6,7 +6,7 @@ selected.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | gmapInfoWindow
 | Tag Class | org.primefaces.component.gmap.GMapInfoWindowTag
 | Component Class | org.primefaces.component.gmap.GMapInfoWindow

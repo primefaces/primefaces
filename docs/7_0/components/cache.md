@@ -4,7 +4,7 @@ Cache component is used to reduce page load time by caching the content after in
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | cache
 | Component Class | org.primefaces.component.cache.UICache
 | Component Type | org.primefaces.component.Cache
