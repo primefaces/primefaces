@@ -222,6 +222,8 @@ expand | org.primefaces.event.NodeExpandEvent | When a node is expanded.
 collapse | org.primefaces.event.NodeCollapseEvent | When a node is collapsed.
 select | org.primefaces.event.NodeSelectEvent | When a node is selected.
 unselect | org.primefaces.event.NodeUnselectEvent | When a node is unselected.
+dragdrop | javax.faces.event.TreeDragDropEvent | When a node is dropped.
+contextMenu | org.primefaces.event.NodeSelectEvent | When a context menu is shown.
 filter | javax.faces.event.AjaxBehaviorEvent | When the tree gets filtered.
 
 Following tree has three listeners;
