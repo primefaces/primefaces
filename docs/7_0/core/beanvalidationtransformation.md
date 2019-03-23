@@ -16,7 +16,7 @@ attributes anymore by implicility handling them behind the scenes.
 To start with, transformation should be enabled.
 
 ```xml
-<context-param>;
+<context-param>
     <param-name>primefaces.TRANSFORM_METADATA</param-name>
     <param-value>true</param-value>
 </context-param>
