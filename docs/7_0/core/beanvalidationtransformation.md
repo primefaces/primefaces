@@ -22,6 +22,15 @@ To start with, transformation should be enabled.
 </context-param>
 ```
 
+To enable full support for `@NotNull`, `InterpretEmptyStringAsNull` has to be set to `true`. Otherwise no required indicator will be shown for that constraint.
+
+```xml
+<context-param>
+    <param-name>javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</param-name>
+    <param-value>true</param-value>
+</context-param>
+```
+
 ## Usage
 Define constraints at bean level.
 
