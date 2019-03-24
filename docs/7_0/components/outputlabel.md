@@ -40,7 +40,7 @@ onmousedown | null | String | Client side callback to execute when a pointer is 
 onmouseout | null | String | Client side callback to execute when a pointer is moved away from component.
 onmouseover | null | String | Client side callback to execute when a pointer is moved onto component.
 onmouseup | null | String | Client side callback to execute when a pointer is released over component.
-indicateRequired | true | Boolean | Displays * symbol if the input is required.
+indicateRequired | auto | String | auto, true or false. Displays * symbol if the input is required.
 
 ## Getting Started with OutputLabel
 Usage is same as standard outputLabel, an input component is associated with for attribute.
@@ -64,6 +64,7 @@ can be rewritten as;
 <p:outputLabel for="input" value="Field" />
 <p:inputText id="input" value="#{bean.text}" />
 ```
+
 ## Support for Advanced Components
 Some PrimeFaces input components like spinner, autocomplete does not render just basic inputs so
 standard outputLabel component cannot apply focus to these, however PrimeFaces outputLabel can.
@@ -73,8 +74,9 @@ standard outputLabel component cannot apply focus to these, however PrimeFaces o
 <p:outputLabel for="input" value="Can apply focus" />
 <p:spinner id="input" value="#{bean.text}" />
 ```
+
 ## Validations
-When the target input is required, outputLabel displays * symbol next to the value. In case any
+When _indicateRequired_ is `auto` (requires BeanValidation Transformation) and the target input is required or _indicateRequired_ is `true`, outputLabel displays * symbol next to the value. In case any
 validation fails on target input, label will also be displayed with theme aware error styles.
 
 ## Skinning

@@ -16,8 +16,17 @@ attributes anymore by implicility handling them behind the scenes.
 To start with, transformation should be enabled.
 
 ```xml
-<context-param>;
+<context-param>
     <param-name>primefaces.TRANSFORM_METADATA</param-name>
+    <param-value>true</param-value>
+</context-param>
+```
+
+To enable full support for `@NotNull`, `InterpretEmptyStringAsNull` has to be set to `true`. Otherwise no required indicator will be shown for that constraint.
+
+```xml
+<context-param>
+    <param-name>javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</param-name>
     <param-value>true</param-value>
 </context-param>
 ```
