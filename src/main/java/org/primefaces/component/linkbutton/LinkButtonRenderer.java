@@ -50,12 +50,16 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
 
         String style = linkButton.getStyle();
         String styleClass = linkButton.resolveStyleClass();
+        String title = linkButton.getTitle();
 
         writer.startElement("span", linkButton);
         writer.writeAttribute("id", linkButton.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
+        }
+        if (title != null) {
+            writer.writeAttribute("title", title, "title");
         }
         renderPassThruAttributes(context, linkButton, HTML.OUTPUT_EVENTS);
 
@@ -70,6 +74,7 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
 
             writer.startElement("a", null);
             writer.writeAttribute("href", targetURL, null);
+            renderPassThruAttributes(context, linkButton, HTML.LINK_ATTRS_WITHOUT_EVENTS, HTML.TITLE);
             renderDomEvents(context, linkButton, HTML.OUTPUT_EVENTS);
             renderContent(context, linkButton);
             writer.endElement("a");
