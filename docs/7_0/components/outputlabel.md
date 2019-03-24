@@ -76,7 +76,7 @@ standard outputLabel component cannot apply focus to these, however PrimeFaces o
 ```
 
 ## Validations
-When _indicateRequired_ is `auto` (requires BeanValidation Transformation) and the target input is required or _indicateRequired_ is `true`, outputLabel displays * symbol next to the value. In case any
+When _indicateRequired_ is `auto` and the target input is required, or _indicateRequired_ is `true`, outputLabel displays * symbol next to the value. In case any
 validation fails on target input, label will also be displayed with theme aware error styles.
 
 ## Skinning
