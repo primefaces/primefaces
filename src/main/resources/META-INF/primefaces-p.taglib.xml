@@ -2066,14 +2066,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Style class for button icon.]]>
-            </description>
-            <name>image</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Code describing the language used in the generated markup.]]>
             </description>
             <name>lang</name>
@@ -5237,14 +5229,6 @@
             <name>disabled</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style class representing the button icon.]]>
-            </description>
-            <name>image</name>
-            <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -24133,14 +24117,6 @@
             <name>disabled</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style class representing the button icon.]]>
-            </description>
-            <name>image</name>
-            <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
