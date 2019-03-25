@@ -44,7 +44,6 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.expression.SearchExpressionUtils;
 
 public class ComponentUtils {
 
