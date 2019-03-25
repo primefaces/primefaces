@@ -11557,10 +11557,10 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Mask template. Required.]]>
+                <![CDATA[Mask template.]]>
             </description>
             <name>mask</name>
-            <required>true</required>
+            <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
