@@ -59,7 +59,7 @@ showCheckbox | false | Boolean | When true, a checkbox is displayed next to each
 labelDisplay | tooltip | String | Defines how the button labels displayed, valid values are "tooltip" (default) and "inline".
 orientation | horizontal | String | Defines layout orientation, valid values are "vertical" and "horizontal".
 responsive | false | Boolean | In responsive mode, picklist adjusts itself based on screen width.
-escape | false | Boolean | Defines if labels of the component is escaped or not.
+escape | true | Boolean | Defines if labels of the component is escaped or not.
 tabindex | null | String | Position of the element in the tabbing order.
 filterEvent | keyup | String | Client side event to invoke picklist filtering for input fields. Default is keyup.
 filterDelay | 300 | Integer  | Delay to wait in milliseconds before sending each filter query. Default is 300.
