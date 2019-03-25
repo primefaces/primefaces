@@ -35,8 +35,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.json.JSONArray;
-import org.primefaces.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
