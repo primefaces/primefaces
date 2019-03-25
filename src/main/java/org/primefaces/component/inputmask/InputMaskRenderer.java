@@ -54,7 +54,7 @@ public class InputMaskRenderer extends InputRenderer {
         if (submittedValue != null) {
             String mask = inputMask.getMask();
 
-            if (!submittedValue.isEmpty() && !mask.isEmpty()) {
+            if (!submittedValue.isEmpty() && !LangUtils.isValueBlank(mask)) {
                 Pattern pattern = translateMaskIntoRegex(context, mask);
                 if (!pattern.matcher(submittedValue).matches()) {
                     submittedValue = "";
