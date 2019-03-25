@@ -166,27 +166,8 @@ public class ComponentUtils {
         return context.getApplication().createConverter(converterType);
     }
 
-    // used by p:component - don't remove!
-    @Deprecated
-    public static String findComponentClientId(String id) {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        UIComponent component = ComponentTraversalUtils.firstWithId(id, facesContext.getViewRoot());
-
-        return component.getClientId(facesContext);
-    }
-
     public static String escapeSelector(String selector) {
         return selector.replaceAll(":", "\\\\\\\\:");
-    }
-
-    @Deprecated
-    public static String resolveWidgetVar(String expression) {
-        return resolveWidgetVar(expression, FacesContext.getCurrentInstance().getViewRoot());
-    }
-
-    @Deprecated
-    public static String resolveWidgetVar(String expression, UIComponent component) {
-        return SearchExpressionUtils.resolveWidgetVar(expression, component);
     }
 
     public static boolean isRTL(FacesContext context, RTLAware component) {
