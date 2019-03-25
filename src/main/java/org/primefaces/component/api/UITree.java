@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.*;
 
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.*;
@@ -744,6 +745,18 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
                 restoreDescendantState(facet, context);
             }
         }
+    }
+
+    @Override
+    public boolean invokeOnComponent(FacesContext context, String clientId, ContextCallback callback)
+            throws FacesException {
+
+        // skip if the component is not a children of the UITree
+        if (!clientId.startsWith(getClientId(context))) {
+            return false;
+        }
+
+        return super.invokeOnComponent(context, clientId, callback);
     }
 
     @Override
