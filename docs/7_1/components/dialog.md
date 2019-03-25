@@ -51,6 +51,7 @@ Dialog is a panel component that can overlay other elements on page.
 | positionType | fixed | String | Defines whether dialog will be kept in viewport on scroll (fixed) or keep its position (absolute).
 | responsive | false | Boolean | In responsive mode, dialog adjusts itself based on screen width.
 | blockScroll | false | Boolean | Whether to block scrolling of the document when sidebar is active.
+| my | center | String | Position of the dialog relative to the target.
 
 ## Getting started with the Dialog
 Dialog is a panel component containing other components, note that by default dialog is not visible.
