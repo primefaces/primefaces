@@ -29,7 +29,6 @@ Button is an extension to the standard h:button component with skinning capabili
 | accesskey | null | String | Access key that when pressed transfers focus to button.
 | alt | null | String | Alternate textual description.
 | dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
-| image | null | String | Style class for the button icon. (deprecated: use icon)
 | lang | null | String | Code describing the language used in the generated markup for this component.
 | onblur | null | String | Client side callback to execute when button loses focus.
 | onchange | null | String | Client side callback to execute when button loses focus and its value has been modified since gaining focus.

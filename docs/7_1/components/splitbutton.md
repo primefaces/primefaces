@@ -60,7 +60,6 @@ accesskey | null | String | Access key that when pressed transfers focus to the 
 alt | null | String | Alternate textual description of the button.
 dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
 disabled | false | Boolean | Disables the button.
-image | null | String | Style class for the button icon. (deprecated: use icon)
 label | null | String | A localized user presentable name.
 lang | null | String | Code describing the language used in the generated markup for this component.
 tabindex | null | Integer | Position of the button element in the tabbing order.
