@@ -20263,27 +20263,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Deprecated, use slotDuration instead. Interval in minutes in an hour to create a slot. Default is 30.]]>
-            </description>
-            <name>slotMinutes</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Determines how far down the scroll pane is initially scrolled down. Default is 06:00:00.]]>
             </description>
             <name>scrollTime</name>
             <required>false</required>
             <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Deprecated, use scrollTime instead. First hour to display in day view. Default is 6.]]>
-            </description>
-            <name>firstHour</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
         </attribute>
         <attribute>
             <description>
@@ -20306,14 +20290,6 @@
                 <![CDATA[Determines the time-text that will be displayed within a time slot.]]>
             </description>
             <name>slotLabelFormat</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Deprecated, use slotLabelFormat instead. Determines the time-text that will be displayed on the vertical axis of the agenda views.]]>
-            </description>
-            <name>axisFormat</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -20348,14 +20324,6 @@
             <name>clientTimeZone</name>
             <required>false</required>
             <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Deprecated, use clientTimezone instead with 'local' setting. When parsing dates, whether UTC offsets should be ignored while processing event data. Default is true]]>
-            </description>
-            <name>ignoreTimezone</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>

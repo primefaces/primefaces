@@ -36,17 +36,13 @@ leftHeaderTemplate | prev, next, today | String | Content of left side of header
 centerHeaderTemplate | title | String | Content of center of header.
 rightHeaderTemplate | month, agendaWeek, agendaDay | String | Content of right side of header.
 allDaySlot | true | Boolean | Determines if all-day slot will be displayed in agendaWeek or agendaDay views
-slotMinutes | 30 | Integer | Interval in minutes in an hour to create a slot. (deprecated: use slotDuration)
 slotDuration | 00:30:00 | String | The frequency for displaying time slots.
-firstHour | 6 | Integer | First hour to display in day view. (deprecated: use scrollTime)
 scrollTime | 06:00:00 | String | Determines how far down the scroll pane is initially scrolled down.
 minTime | null | String | Minimum time to display in a day view.
 maxTime | null | String | Maximum time to display in a day view.
-axisFormat | null | String | Determines the time-text that will be displayed on the vertical axis of the agenda views. (deprecated: use slotLabelFormat)
 timeFormat | null | String | Determines the time-text that will be displayed on each event.
 columnFormat | null | String | Format for column headers.
 timeZone | null | Object | String or a java.util.TimeZone instance to specify the timezone used for date conversion.
-ignoreTimezone | true | Boolean | When parsing dates, whether UTC offsets should be ignored while processing event data. (deprecated: use clientTimezone)
 tooltip | false | Boolean | Displays description of events on a tooltip.
 clientTimeZone | null | String | Timezone to define how to interpret the dates at browser. Valid values are "false", "local", "UTC" and ids like "America/Chicago".
 showWeekNumbers | false | Boolean | Display week numbers in schedule.
