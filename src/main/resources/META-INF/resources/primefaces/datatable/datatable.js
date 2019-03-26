@@ -1067,16 +1067,23 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     shouldLoadLiveScroll: function() {
         return (!this.loadingLiveScroll && !this.allLoadedLiveScroll);
     },
-
-    cloneHead: function() {
-        this.theadClone = this.thead.clone();
-        this.theadClone.find('th').each(function() {
+    
+    /**
+     * Clones a table header and removes duplicate ids.
+     */
+    cloneTableHeader: function(thead, table) {
+        var clone = thead.clone();
+        clone.find('th').each(function() {
             var header = $(this);
             header.attr('id', header.attr('id') + '_clone');
             $(this).children().not('.ui-column-title').remove();
             $(this).children('.ui-column-title').children().remove();
         });
-        this.theadClone.removeAttr('id').addClass('ui-datatable-scrollable-theadclone').height(0).prependTo(this.bodyTable);
+        clone.removeAttr('id').addClass('ui-datatable-scrollable-theadclone').height(0).prependTo(table);
+    },
+
+    cloneHead: function() {
+        this.theadClone = this.cloneTableHeader(this.thead, this.bodyTable);
 
         //reflect events from clone to original
         if(this.sortableColumns.length) {
@@ -4026,23 +4033,8 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
     },
 
     cloneHead: function() {
-        this.frozenTheadClone = this.frozenThead.clone();
-        this.frozenTheadClone.find('th').each(function() {
-            var header = $(this);
-            header.attr('id', header.attr('id') + '_clone');
-            $(this).children().not('.ui-column-title').remove();
-            $(this).children('.ui-column-title').children().remove();
-        });
-        this.frozenTheadClone.removeAttr('id').addClass('ui-datatable-scrollable-theadclone').height(0).prependTo(this.frozenBodyTable);
-
-        this.scrollTheadClone = this.scrollThead.clone();
-        this.scrollTheadClone.find('th').each(function() {
-            var header = $(this);
-            header.attr('id', header.attr('id') + '_clone');
-            $(this).children().not('.ui-column-title').remove();
-            $(this).children('.ui-column-title').children().remove();
-        });
-        this.scrollTheadClone.removeAttr('id').addClass('ui-datatable-scrollable-theadclone').height(0).prependTo(this.scrollBodyTable);
+        this.frozenTheadClone = this.cloneTableHeader(this.frozenThead, this.frozenBodyTable);
+        this.scrollTheadClone = this.cloneTableHeader(this.scrollThead, this.scrollBodyTable);
     },
 
     hasVerticalOverflow: function() {
@@ -4167,7 +4159,8 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
     },
 
     copyRow: function(original) {
-        return $('<tr></tr>').data('ri', original.data('ri')).attr('data-rk', original.data('rk')).addClass(original.attr('class')).attr('role', 'row');
+        return $('<tr></tr>').data('ri', original.data('ri')).attr('data-rk', original.data('rk')).addClass(original.attr('class')).
+                attr('role', 'row').attr('aria-selected', original.attr('aria-selected'));
     },
 
     getThead: function() {

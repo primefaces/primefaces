@@ -193,7 +193,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             item.append('<div class="ui-chkbox ui-widget"><div class="ui-helper-hidden-accessible"><input type="checkbox" role="checkbox" readonly="readonly"></input></div>' +
                     '<div class="' + boxClass + '"><span class="' + iconClass + '"></span></div></div>');
 
-            var itemLabel = $('<label></label>'),
+            var uuid = PrimeFaces.uuid();
+            var itemLabel = $('<label for='+uuid+'></label>'),
             labelHtml = label.html().trim(),
             labelLength = labelHtml.length;
             if (labelLength > 0 && labelHtml !== '&nbsp;')
@@ -214,7 +215,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 item.attr('data-item-value', input.val());
             }
 
-            item.find('> .ui-chkbox > .ui-helper-hidden-accessible > input').prop('checked', checked).attr('aria-checked', checked);
+            item.find('> .ui-chkbox > .ui-helper-hidden-accessible > input').prop('checked', checked).attr('aria-checked', checked).attr('id', uuid);
             $this.itemContainer.attr('role', 'group');
 
             $this.itemContainer.append(item);

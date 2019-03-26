@@ -27,8 +27,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.ArrayList;
 
-import org.primefaces.json.JSONArray;
-import org.primefaces.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class TerminalAutoCompleteMatches extends JSONObject {
 

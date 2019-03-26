@@ -843,10 +843,9 @@ public class UIData extends javax.faces.component.UIData {
     @Override
     public boolean invokeOnComponent(FacesContext context, String clientId, ContextCallback callback)
             throws FacesException {
-        String baseClientId = getClientId(context);
 
         // skip if the component is not a children of the UIData
-        if (!clientId.startsWith(baseClientId)) {
+        if (!clientId.startsWith(getClientId(context))) {
             return false;
         }
 
