@@ -373,7 +373,8 @@
 
 .ui-button-icon-only .ui-button-text {
     padding: .3em;
-    text-indent: -9999999px;
+    letter-spacing: -8px;
+    color: transparent;
 }
 
 .ui-button-text-icon-left .ui-button-text {
