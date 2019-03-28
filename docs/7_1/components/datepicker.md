@@ -41,7 +41,7 @@ widgetVar | null | String | Name of the client side widget.
 | showIcon | false | String | Whether to show an icon to display the picker in an overlay
 | beforeShow | null | String | Callback to execute before displaying DatePicker, element and DatePicker instance are passed as parameters
 | focusOnSelect | false | Boolean | When enabled, input receives focus after a value is picked.
-| yearRange | null | String | Year range for the navigator, default "c-10:c+10"
+| yearRange | null | String | The range of years displayed in the year drop-down in (nnnn:nnnn) format such as (2000:2020). Default value is "displayed_date - 10 : displayed_date + 10".
 | selectionMode | single | String | Defines the selection mode, valid values are "single", "multiple" and "range"  
 | showOtherMonths | false | Boolean | Displays days belonging to other months.
 | selectOtherMonths | false | Boolean | Enables selection of days belonging to other months.
