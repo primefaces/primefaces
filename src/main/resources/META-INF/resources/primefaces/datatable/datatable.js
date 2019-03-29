@@ -4164,7 +4164,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
     },
 
     copyRow: function(original) {
-        return $('<tr></tr>').data('ri', original.data('ri')).attr('data-rk', original.data('rk')).addClass(original.attr('class')).
+        return $('<tr></tr>').attr('data-ri', original.data('ri')).attr('data-rk', original.data('rk')).addClass(original.attr('class')).
                 attr('role', 'row').attr('aria-selected', original.attr('aria-selected'));
     },
 
