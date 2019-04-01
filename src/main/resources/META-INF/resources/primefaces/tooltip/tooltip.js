@@ -42,6 +42,8 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             .appendTo('body');
         this.jq.append('<div class="ui-tooltip-arrow"></div><div class="ui-tooltip-text ui-shadow ui-corner-all"></div>');
 
+        this.jq.addClass(this.cfg.styleClass);
+        
         this.cfg.globalSelector = this.cfg.globalSelector||'a,:input,:button';
         this.cfg.escape = (this.cfg.escape === undefined) ? true : this.cfg.escape;
         var $this = this;
