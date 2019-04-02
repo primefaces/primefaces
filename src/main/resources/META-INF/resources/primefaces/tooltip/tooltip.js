@@ -258,7 +258,12 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             }
         }
 
+        this.jq.css({'display':'block', 'opacity':0, 'pointer-events': 'none'});
+    
         this.align();
+
+        this.jq.css({'display':'none', 'opacity':'', 'pointer-events': ''});
+        
         if(this.cfg.trackMouse) {
             this.followMouse();
         }
