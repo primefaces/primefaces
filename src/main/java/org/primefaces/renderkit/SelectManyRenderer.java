@@ -82,7 +82,7 @@ public abstract class SelectManyRenderer extends SelectRenderer {
     @Override
     protected boolean isSelected(FacesContext context, UIComponent component, Object itemValue, Object valueArray, Converter converter) {
         // GitHub #4712
-        if (itemValue == null && valueArray == null) {
+        if (valueArray == null) {
             return false;
         }
         return super.isSelected(context, component, itemValue, valueArray, converter);
