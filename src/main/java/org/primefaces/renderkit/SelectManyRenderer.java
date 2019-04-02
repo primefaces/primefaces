@@ -30,6 +30,7 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectMany;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
 
 public abstract class SelectManyRenderer extends SelectRenderer {
 
@@ -78,5 +79,16 @@ public abstract class SelectManyRenderer extends SelectRenderer {
         return (Object[]) select.getSubmittedValue();
     }
 
+    @Override
+    protected boolean isSelected(FacesContext context, UIComponent component, Object itemValue, Object valueArray, Converter converter) {
+        // GitHub #4712
+        if (itemValue == null && valueArray == null) {
+            return false;
+        }
+        return super.isSelected(context, component, itemValue, valueArray, converter);
+    }
+
     protected abstract String getSubmitParam(FacesContext context, UISelectMany selectMany);
+
+
 }
