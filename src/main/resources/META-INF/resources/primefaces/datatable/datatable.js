@@ -3985,6 +3985,10 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
                 this.scrollBody.children('div').css('height', parseFloat((this.cfg.scrollLimit * this.rowHeight) + 'px'));
                 this.frozenBody.children('div').css('height', parseFloat((this.cfg.scrollLimit * this.rowHeight) + 'px'));
             }
+            
+            if(!this.cfg.scrollHeight) {
+                this.frozenBody.css('height', this.scrollBody.height());
+            }
         }
 
         this.scrollBody.scroll(function() {
