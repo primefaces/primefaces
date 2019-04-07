@@ -64,6 +64,7 @@ public class Layout extends LayoutBase {
     public static final String UNIT_HEADER_ICON_CLASS = "ui-layout-unit-header-icon ui-state-default ui-corner-all";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("toggle", ToggleEvent.class)
             .put("close", CloseEvent.class)
             .put("resize", ResizeEvent.class)
             .build();

@@ -7,12 +7,6 @@
     <namespace>http://primefaces.org/ui</namespace>
 
     <function>
-        <function-name>component</function-name>
-        <function-class>org.primefaces.util.ComponentUtils</function-class>
-        <function-signature>java.lang.String findComponentClientId(java.lang.String)</function-signature>
-    </function>
-
-    <function>
         <function-name>resolveClientId</function-name>
         <function-class>org.primefaces.expression.SearchExpressionUtils</function-class>
         <function-signature>java.lang.String resolveClientId(java.lang.String, javax.faces.component.UIComponent)</function-signature>
@@ -27,18 +21,6 @@
     <function>
         <function-name>resolveWidgetVar</function-name>
         <function-class>org.primefaces.expression.SearchExpressionUtils</function-class>
-        <function-signature>java.lang.String resolveWidgetVar(java.lang.String, javax.faces.component.UIComponent)</function-signature>
-    </function>
-
-    <function>
-        <function-name>widgetVar</function-name>
-        <function-class>org.primefaces.util.ComponentUtils</function-class>
-        <function-signature>java.lang.String resolveWidgetVar(java.lang.String)</function-signature>
-    </function>
-
-    <function>
-        <function-name>widgetVarFromContext</function-name>
-        <function-class>org.primefaces.util.ComponentUtils</function-class>
         <function-signature>java.lang.String resolveWidgetVar(java.lang.String, javax.faces.component.UIComponent)</function-signature>
     </function>
 
@@ -2061,14 +2043,6 @@
                 <![CDATA[Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.]]>
             </description>
             <name>dir</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style class for button icon.]]>
-            </description>
-            <name>image</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -5240,14 +5214,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Style class representing the button icon.]]>
-            </description>
-            <name>image</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[A localized user presentable name.]]>
             </description>
             <name>label</name>
@@ -7639,6 +7605,14 @@
             <name>stickyTopAt</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Custom implementation to globally filter a value against a constraint.]]>
+            </description>
+            <name>globalFilterFunction</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
         </attribute>
     </tag>
     <tag>
@@ -11591,10 +11565,10 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Mask template. Required.]]>
+                <![CDATA[Mask template.]]>
             </description>
             <name>mask</name>
-            <required>true</required>
+            <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
@@ -20297,27 +20271,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Deprecated, use slotDuration instead. Interval in minutes in an hour to create a slot. Default is 30.]]>
-            </description>
-            <name>slotMinutes</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Determines how far down the scroll pane is initially scrolled down. Default is 06:00:00.]]>
             </description>
             <name>scrollTime</name>
             <required>false</required>
             <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Deprecated, use scrollTime instead. First hour to display in day view. Default is 6.]]>
-            </description>
-            <name>firstHour</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
         </attribute>
         <attribute>
             <description>
@@ -20340,14 +20298,6 @@
                 <![CDATA[Determines the time-text that will be displayed within a time slot.]]>
             </description>
             <name>slotLabelFormat</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Deprecated, use slotLabelFormat instead. Determines the time-text that will be displayed on the vertical axis of the agenda views.]]>
-            </description>
-            <name>axisFormat</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -20382,14 +20332,6 @@
             <name>clientTimeZone</name>
             <required>false</required>
             <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Deprecated, use clientTimezone instead with 'local' setting. When parsing dates, whether UTC offsets should be ignored while processing event data. Default is true]]>
-            </description>
-            <name>ignoreTimezone</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -24133,14 +24075,6 @@
             <name>disabled</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style class representing the button icon.]]>
-            </description>
-            <name>image</name>
-            <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>

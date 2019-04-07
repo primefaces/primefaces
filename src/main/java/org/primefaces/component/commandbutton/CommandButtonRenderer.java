@@ -70,7 +70,7 @@ public class CommandButtonRenderer extends CoreRenderer {
         String type = button.getType();
         boolean pushButton = (type.equals("reset") || type.equals("button"));
         Object value = button.getValue();
-        String icon = button.resolveIcon();
+        String icon = button.getIcon();
         String title = button.getTitle();
         String onclick = null;
 

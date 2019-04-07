@@ -46,22 +46,8 @@ public class Button extends ButtonBase {
 
     private static final Logger LOGGER = Logger.getLogger(Button.class.getName());
 
-    public String resolveIcon() {
-        String icon = getIcon();
-
-        if (icon == null) {
-            icon = getImage();
-
-            if (icon != null) {
-                LOGGER.info("image attribute is deprecated to define an icon, use icon attribute instead.");
-            }
-        }
-
-        return icon;
-    }
-
     public String resolveStyleClass() {
-        String icon = resolveIcon();
+        String icon = getIcon();
         Object value = getValue();
         String styleClass = "";
 

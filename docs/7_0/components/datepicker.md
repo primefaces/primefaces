@@ -41,14 +41,14 @@ widgetVar | null | String | Name of the client side widget.
 | showIcon | false | String | Whether to show an icon to display the picker in an overlay
 | beforeShow | null | String | Callback to execute before displaying DatePicker, element and DatePicker instance are passed as parameters
 | focusOnSelect | false | Boolean | When enabled, input receives focus after a value is picked.
-| yearRange | null | String | Year range for the navigator, default "c-10:c+10"
+| yearRange | null | String | The range of years displayed in the year drop-down in (nnnn:nnnn) format such as (2000:2020).
 | selectionMode | single | String | Defines the selection mode, valid values are "single", "multiple" and "range"  
 | showOtherMonths | false | Boolean | Displays days belonging to other months.
 | selectOtherMonths | false | Boolean | Enables selection of days belonging to other months.
 | showOnFocus | true | Boolean | Whether to show the popup when input receives focus.
 | shortYearCutoff | +10 | String | The cutoff year for determining the century for a date. Any dates entered with a year value less than or equal to the cutoff year are considered to be in the current century, while those greater than it are deemed to be in the previous century.
 | monthNavigator | false | Boolean | Whether to show the month navigator
-| yearNavigator | false | Boolean | Whether to show the year navigator
+| yearNavigator | false | Boolean | Whether to show the year navigator. The yearRange attribute is required to use this feature.
 | showTime | false | Boolean | Specifies if the timepicker should be displayed
 | hourFormat | '24' | String | Defines the hour format, valid values are '12' and '24'
 | showSeconds | false | Boolean | Whether to show the seconds in time picker. Default is false.
@@ -238,7 +238,7 @@ public void init() {
 Navigator is an easy way to jump between months/years quickly.
 
 ```xhtml
-<p:datePicker value="#{dateBean.date}" monthNavigator="true" yearNavigator="true" />
+<p:datePicker value="#{dateBean.date}" monthNavigator="true" yearNavigator="true" yearRange="2000:2050"/>
 ```
 
 ## TimePicker

@@ -51,11 +51,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.initReflow();
         }
 
-        if(this.cfg.groupColumnIndexes) {
-            this.groupRows();
-            this.bindToggleRowGroupEvents();
-        }
-
         if(this.cfg.multiViewState && this.cfg.resizableColumns) {
             this.resizableStateHolder = $(this.jqId + '_resizableColumnState');
             this.resizableState = [];
@@ -72,6 +67,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     _render: function() {
         if(this.cfg.scrollable) {
             this.setupScrolling();
+        }
+        
+        if(this.cfg.groupColumnIndexes) {
+            this.groupRows();
+            this.bindToggleRowGroupEvents();
         }
 
         if(this.cfg.resizableColumns) {
@@ -1067,16 +1067,23 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     shouldLoadLiveScroll: function() {
         return (!this.loadingLiveScroll && !this.allLoadedLiveScroll);
     },
-
-    cloneHead: function() {
-        this.theadClone = this.thead.clone();
-        this.theadClone.find('th').each(function() {
+    
+    /**
+     * Clones a table header and removes duplicate ids.
+     */
+    cloneTableHeader: function(thead, table) {
+        var clone = thead.clone();
+        clone.find('th').each(function() {
             var header = $(this);
             header.attr('id', header.attr('id') + '_clone');
             $(this).children().not('.ui-column-title').remove();
             $(this).children('.ui-column-title').children().remove();
         });
-        this.theadClone.removeAttr('id').addClass('ui-datatable-scrollable-theadclone').height(0).prependTo(this.bodyTable);
+        clone.removeAttr('id').addClass('ui-datatable-scrollable-theadclone').height(0).prependTo(table);
+    },
+
+    cloneHead: function() {
+        this.theadClone = this.cloneTableHeader(this.thead, this.bodyTable);
 
         //reflect events from clone to original
         if(this.sortableColumns.length) {
@@ -2923,13 +2930,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Clears table filters
      */
     clearFilters: function() {
-        var columnFilters = this.thead.find('> tr > th.ui-filter-column > .ui-column-filter');
-
-        if (columnFilters.length == 0) {
-            return;
-        }
-
-        columnFilters.val('');
+        this.thead.find('> tr > th.ui-filter-column > .ui-column-filter').val('');
         $(this.jqId + '\\:globalFilter').val('');
 
         this.filter();
@@ -3734,25 +3735,30 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     groupRows: function() {
-        this.rows = this.tbody.children('tr');
+        var rows = this.tbody.children('tr');
         for(var i = 0; i < this.cfg.groupColumnIndexes.length; i++) {
-            this.groupRow(this.cfg.groupColumnIndexes[i]);
+            this.groupRow(this.cfg.groupColumnIndexes[i], rows);
         }
 
-        this.rows.children('td.ui-duplicated-column').remove();
+        rows.children('td.ui-duplicated-column').remove();
     },
 
-    groupRow: function(colIndex) {
+    groupRow: function(colIndex, rows) {
         var groupStartIndex = null, rowGroupCellData = null, rowGroupCount = null;
 
-        for(var i = 0; i < this.rows.length; i++) {
-            var row = this.rows.eq(i);
+        for(var i = 0; i < rows.length; i++) {
+            var row = rows.eq(i);
             var column = row.children('td').eq(colIndex);
             var columnData = column.text();
             if(rowGroupCellData != columnData) {
                 groupStartIndex = i;
                 rowGroupCellData = columnData;
                 rowGroupCount = 1;
+                
+                if (this.cfg.liveScroll && column[0].hasAttribute('rowspan')) {
+                    rowGroupCount = parseInt(column.attr('rowspan'));
+                    i += rowGroupCount - 1;
+                }
             }
             else {
                 column.addClass('ui-duplicated-column');
@@ -3760,7 +3766,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             if(groupStartIndex != null && rowGroupCount > 1) {
-                this.rows.eq(groupStartIndex).children('td').eq(colIndex).attr('rowspan', rowGroupCount);
+                rows.eq(groupStartIndex).children('td').eq(colIndex).attr('rowspan', rowGroupCount);
             }
         }
     },
@@ -3973,6 +3979,10 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
                 this.scrollBody.children('div').css('height', parseFloat((this.cfg.scrollLimit * this.rowHeight) + 'px'));
                 this.frozenBody.children('div').css('height', parseFloat((this.cfg.scrollLimit * this.rowHeight) + 'px'));
             }
+            
+            if(!this.cfg.scrollHeight) {
+                this.frozenBody.css('height', this.scrollBody.height());
+            }
         }
 
         this.scrollBody.scroll(function() {
@@ -4026,23 +4036,8 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
     },
 
     cloneHead: function() {
-        this.frozenTheadClone = this.frozenThead.clone();
-        this.frozenTheadClone.find('th').each(function() {
-            var header = $(this);
-            header.attr('id', header.attr('id') + '_clone');
-            $(this).children().not('.ui-column-title').remove();
-            $(this).children('.ui-column-title').children().remove();
-        });
-        this.frozenTheadClone.removeAttr('id').addClass('ui-datatable-scrollable-theadclone').height(0).prependTo(this.frozenBodyTable);
-
-        this.scrollTheadClone = this.scrollThead.clone();
-        this.scrollTheadClone.find('th').each(function() {
-            var header = $(this);
-            header.attr('id', header.attr('id') + '_clone');
-            $(this).children().not('.ui-column-title').remove();
-            $(this).children('.ui-column-title').children().remove();
-        });
-        this.scrollTheadClone.removeAttr('id').addClass('ui-datatable-scrollable-theadclone').height(0).prependTo(this.scrollBodyTable);
+        this.frozenTheadClone = this.cloneTableHeader(this.frozenThead, this.frozenBodyTable);
+        this.scrollTheadClone = this.cloneTableHeader(this.scrollThead, this.scrollBodyTable);
     },
 
     hasVerticalOverflow: function() {
@@ -4167,7 +4162,8 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
     },
 
     copyRow: function(original) {
-        return $('<tr></tr>').data('ri', original.data('ri')).attr('data-rk', original.data('rk')).addClass(original.attr('class')).attr('role', 'row');
+        return $('<tr></tr>').attr('data-ri', original.data('ri')).attr('data-rk', original.data('rk')).addClass(original.attr('class')).
+                attr('role', 'row').attr('aria-selected', original.attr('aria-selected'));
     },
 
     getThead: function() {
@@ -4504,6 +4500,25 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         this.scrollBody.scrollTop(0);
         this.frozenBody.scrollTop(0);
         this.clearScrollState();
-    }
+    },
+    
+    //Override
+    groupRows: function() {
+        var scrollRows = this.scrollTbody.children('tr'),
+        frozenRows = this.frozenTbody.children('tr');
 
+        for (var i = 0; i < this.cfg.groupColumnIndexes.length; i++) {
+            var groupColumnIndex = this.cfg.groupColumnIndexes[i];
+            
+            if (groupColumnIndex >= this.cfg.frozenColumns) {
+                this.groupRow(groupColumnIndex - this.cfg.frozenColumns, scrollRows);
+            } 
+            else {
+                this.groupRow(groupColumnIndex, frozenRows);
+            }
+        }
+
+        scrollRows.children('td.ui-duplicated-column').remove();
+        frozenRows.children('td.ui-duplicated-column').remove();
+    }
 });

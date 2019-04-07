@@ -105,7 +105,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("minDate", CalendarUtils.getValueAsString(context, datepicker, datepicker.getMindate()), null)
             .attr("maxDate", CalendarUtils.getValueAsString(context, datepicker, datepicker.getMaxdate()), null)
             .attr("selectionMode", datepicker.getSelectionMode(), null)
-            .attr("showOnFocus", datepicker.isShowOnFocus(), false)
+            .attr("showOnFocus", datepicker.isShowOnFocus())
             .attr("shortYearCutoff", datepicker.getShortYearCutoff(), null)
             .attr("monthNavigator", datepicker.isMonthNavigator(), false)
             .attr("yearNavigator", datepicker.isYearNavigator(), false)

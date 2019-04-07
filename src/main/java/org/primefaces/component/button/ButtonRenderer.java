@@ -49,7 +49,7 @@ public class ButtonRenderer extends OutcomeTargetRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = button.getClientId(context);
         String value = (String) button.getValue();
-        String icon = button.resolveIcon();
+        String icon = button.getIcon();
 
         writer.startElement("button", button);
         writer.writeAttribute("id", clientId, "id");

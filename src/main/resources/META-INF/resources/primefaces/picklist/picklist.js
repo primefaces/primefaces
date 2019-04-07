@@ -300,7 +300,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                     list.children('.ui-picklist-item').each(function() {
                         var item = $(this),
                             itemLabel = item.attr('data-item-label');
-                        if (itemLabel.toLowerCase().startsWith(keyChar)) {
+                        if (itemLabel.toLowerCase().indexOf(keyChar) === 0) {
                             $this.removeOutline();
                             $this.unselectAll();
                             $this.selectItem(item);

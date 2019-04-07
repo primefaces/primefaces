@@ -27,9 +27,9 @@ import org.primefaces.mock.CollectingPartialResponseWriter;
 import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
-import org.primefaces.json.JSONArray;
-import org.primefaces.json.JSONException;
-import org.primefaces.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 @SuppressWarnings("resource")
 public class PrimePartialResponseWriterTest {
