@@ -36,7 +36,7 @@ public class InputMaskTest {
     public void translatePhoneMaskIntoRegex() {
         InputMask inputMask = new InputMask();
         inputMask.setMask("(999) 999-9999? x99999");
-        Pattern pattern = new InputMaskRenderer().translateMaskIntoRegex(new FacesContextMock(), inputMask);
+        Pattern pattern = new InputMaskRenderer().translateMaskIntoRegex(new FacesContextMock(), inputMask.getMask());
         Assert.assertEquals("\\([0-9][0-9][0-9]\\) [0-9][0-9][0-9]\\-[0-9][0-9][0-9][0-9] ?x?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?", pattern.pattern());
         Assert.assertTrue(pattern.matcher("(012) 345-6789").matches());
     }
@@ -45,7 +45,7 @@ public class InputMaskTest {
     public void issue3566() {
         InputMask inputMask = new InputMask();
         inputMask.setMask("a*9");
-        Pattern pattern = new InputMaskRenderer().translateMaskIntoRegex(new FacesContextMock(), inputMask);
+        Pattern pattern = new InputMaskRenderer().translateMaskIntoRegex(new FacesContextMock(), inputMask.getMask());
         Assert.assertEquals("[A-Za-z][A-Za-z0-9][0-9]", pattern.pattern());
         Assert.assertTrue(pattern.matcher("aX3").matches());
     }

@@ -269,7 +269,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                         var selectable = $this.focusedNode.children('.ui-treenode-content').hasClass('ui-tree-selectable');
 
                         if($this.cfg.onNodeClick) {
-                            $this.cfg.onNodeClick.call($this, $this.focusedNode, e);
+                            var retVal = $this.cfg.onNodeClick.call($this, $this.focusedNode, e);
+                            if (retVal === false) {
+                                return;
+                            }
                         }
 
                         if(selectable) {

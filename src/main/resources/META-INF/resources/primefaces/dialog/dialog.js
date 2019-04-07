@@ -25,6 +25,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.cfg.resizable = this.cfg.resizable === false ? false : true;
         this.cfg.minWidth = this.cfg.minWidth||150;
         this.cfg.minHeight = this.cfg.minHeight||this.titlebar.outerHeight();
+        this.cfg.my = this.cfg.my||'center';
         this.cfg.position = this.cfg.position||'center';
         this.parent = this.jq.parent();
 
@@ -330,8 +331,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
     },
     
     /**
-     * Client side API convenience call to reset the dialog position based on
-     * the "position" requested.
+     * Reset the dialog position based on the configured "position".
      */
     resetPosition: function() {
        this.initPosition();
@@ -347,7 +347,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             this.cfg.position = this.cfg.position.replace(',', ' ');
 
             this.jq.position({
-                        my: 'center'
+                        my: this.cfg.my
                         ,at: this.cfg.position
                         ,collision: 'fit'
                         ,of: window

@@ -359,6 +359,7 @@
 
 .ui-button-icon-only {
     width: 2.4em;
+    overflow: hidden;
 }
 
 /*button text element */
@@ -373,7 +374,8 @@
 
 .ui-button-icon-only .ui-button-text {
     padding: .3em;
-    text-indent: -9999999px;
+    white-space: nowrap;
+    visibility: hidden;
 }
 
 .ui-button-text-icon-left .ui-button-text {

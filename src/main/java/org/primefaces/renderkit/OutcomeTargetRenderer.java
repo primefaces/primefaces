@@ -154,54 +154,52 @@ public class OutcomeTargetRenderer extends CoreRenderer {
     protected String getTargetURL(FacesContext context, UIOutcomeTarget outcomeTarget) {
         String url;
 
-        String href = outcomeTarget.getHref();
-        if (href != null) {
-            url = "#".equals(href) ? "#" : context.getExternalContext().encodeRedirectURL(href, outcomeTarget.getParams());
-        }
-        else {
-            NavigationCase navCase = findNavigationCase(context, outcomeTarget);
-
-            if (navCase == null) {
-                throw new FacesException("Could not resolve NavigationCase for outcome: " + outcomeTarget.getOutcome());
-            }
-
-            String toViewId = navCase.getToViewId(context);
-            boolean isIncludeViewParams = isIncludeViewParams(outcomeTarget, navCase);
-            Map<String, List<String>> params = getParams(context, navCase, outcomeTarget);
-
-            if (params == null) {
-                params = Collections.emptyMap();
-            }
-
-            boolean clientWindowRenderingModeEnabled = false;
-            Object clientWindow = null;
-
-            try {
-                if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()
+        boolean clientWindowRenderingModeEnabled = false;
+        Object clientWindow = null;
+        try {
+            if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()
                         && outcomeTarget.isDisableClientWindow()) {
 
-                    clientWindow = context.getExternalContext().getClientWindow();
+                clientWindow = context.getExternalContext().getClientWindow();
 
-                    if (clientWindow != null) {
-                        clientWindowRenderingModeEnabled = ((ClientWindow) clientWindow).isClientWindowRenderModeEnabled(context);
+                if (clientWindow != null) {
+                    clientWindowRenderingModeEnabled = ((ClientWindow) clientWindow).isClientWindowRenderModeEnabled(context);
 
-                        if (clientWindowRenderingModeEnabled) {
-                            ((ClientWindow) clientWindow).disableClientWindowRenderMode(context);
-                        }
+                    if (clientWindowRenderingModeEnabled) {
+                        ((ClientWindow) clientWindow).disableClientWindowRenderMode(context);
                     }
+                }
+            }
+
+            String href = outcomeTarget.getHref();
+            if (href != null) {
+                url = "#".equals(href) ? "#" : context.getExternalContext().encodeRedirectURL(href, outcomeTarget.getParams());
+            }
+            else {
+                NavigationCase navCase = findNavigationCase(context, outcomeTarget);
+
+                if (navCase == null) {
+                    throw new FacesException("Could not resolve NavigationCase for outcome: " + outcomeTarget.getOutcome());
+                }
+
+                String toViewId = navCase.getToViewId(context);
+                boolean isIncludeViewParams = isIncludeViewParams(outcomeTarget, navCase);
+                Map<String, List<String>> params = getParams(context, navCase, outcomeTarget);
+
+                if (params == null) {
+                    params = Collections.emptyMap();
                 }
 
                 url = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, params, isIncludeViewParams);
 
-            }
-            finally {
-                if (clientWindowRenderingModeEnabled && clientWindow != null) {
-                    ((ClientWindow) clientWindow).enableClientWindowRenderMode(context);
+                if (outcomeTarget.getFragment() != null) {
+                    url += "#" + outcomeTarget.getFragment();
                 }
             }
-
-            if (outcomeTarget.getFragment() != null) {
-                url += "#" + outcomeTarget.getFragment();
+        }
+        finally {
+            if (clientWindowRenderingModeEnabled && clientWindow != null) {
+                ((ClientWindow) clientWindow).enableClientWindowRenderMode(context);
             }
         }
 

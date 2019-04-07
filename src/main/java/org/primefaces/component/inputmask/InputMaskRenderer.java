@@ -26,7 +26,6 @@ package org.primefaces.component.inputmask;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -53,8 +52,10 @@ public class InputMaskRenderer extends InputRenderer {
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId);
 
         if (submittedValue != null) {
-            if (!submittedValue.isEmpty()) {
-                Pattern pattern = translateMaskIntoRegex(context, inputMask);
+            String mask = inputMask.getMask();
+
+            if (!submittedValue.isEmpty() && !LangUtils.isValueBlank(mask)) {
+                Pattern pattern = translateMaskIntoRegex(context, mask);
                 if (!pattern.matcher(submittedValue).matches()) {
                     submittedValue = "";
                 }
@@ -74,14 +75,10 @@ public class InputMaskRenderer extends InputRenderer {
      * ? - Makes the following input optional
      *
      * @param context   The {@link FacesContext}
-     * @param inputMask The component
+     * @param mask The mask value of component
      * @return The generated {@link Pattern}
      */
-    protected Pattern translateMaskIntoRegex(FacesContext context, InputMask inputMask) {
-        String mask = inputMask.getMask();
-        if (LangUtils.isValueBlank(mask)) {
-            throw new FacesException("InputMask requires a value for the 'mask' attribute.");
-        }
+    protected Pattern translateMaskIntoRegex(FacesContext context, String mask) {
         StringBuilder regex = SharedStringBuilder.get(context, SB_PATTERN);
         boolean optionalFound = false;
 

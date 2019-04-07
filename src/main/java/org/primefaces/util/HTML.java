@@ -29,6 +29,8 @@ public class HTML {
 
     public static final String[] TAB_INDEX = {"tabindex"};
 
+    public static final String[] TITLE = {"title"};
+
     public static final String[] BLUR_FOCUS_EVENTS = {
         "onblur",
         "onfocus"

@@ -187,8 +187,8 @@ public class OutputLabelRenderer extends CoreRenderer {
             for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
                 Class<? extends Annotation> annotationType = constraintDescriptor.getAnnotation().annotationType();
                 // GitHub #14 skip @NotNull check
-                if (annotationType.equals(NotNull.class)) {
-                    return applicationContext.getConfig().isInterpretEmptyStringAsNull();
+                if (annotationType.equals(NotNull.class) && applicationContext.getConfig().isInterpretEmptyStringAsNull()) {
+                    return true;
                 }
 
                 // GitHub #3052 @NotBlank,@NotEmpty Hibernate and BeanValidator 2.0

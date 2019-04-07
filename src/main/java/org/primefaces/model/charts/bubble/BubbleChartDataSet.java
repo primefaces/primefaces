@@ -282,6 +282,7 @@ public class BubbleChartDataSet extends ChartDataSet {
             ChartUtils.writeDataValue(fsw, "type", "bubble", false);
             ChartUtils.writeDataValue(fsw, "data", this.data, true);
             ChartUtils.writeDataValue(fsw, "label", this.label, true);
+            ChartUtils.writeDataValue(fsw, "hidden", this.isHidden(), true);
             ChartUtils.writeDataValue(fsw, "backgroundColor", this.backgroundColor, true);
             ChartUtils.writeDataValue(fsw, "borderColor", this.borderColor, true);
             ChartUtils.writeDataValue(fsw, "borderWidth", this.borderWidth, true);

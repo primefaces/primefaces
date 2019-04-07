@@ -47,8 +47,7 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
                 "javax.faces.SelectOne",
-                "javax.faces.Listbox",
-                Renderer.class);
+                "javax.faces.Listbox");
         return renderer.getConvertedValue(context, component, submittedValue);
     }
 

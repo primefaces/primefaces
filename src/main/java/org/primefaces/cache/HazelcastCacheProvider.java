@@ -30,7 +30,7 @@ import com.hazelcast.core.IMap;
 
 public class HazelcastCacheProvider implements CacheProvider {
 
-    private HazelcastInstance hazelcastInstance;
+    private final HazelcastInstance hazelcastInstance;
 
     public HazelcastCacheProvider() {
         Config config = new Config();
@@ -71,9 +71,5 @@ public class HazelcastCacheProvider implements CacheProvider {
 
     public HazelcastInstance getHazelcastInstance() {
         return hazelcastInstance;
-    }
-
-    public void setHazelcastInstance(HazelcastInstance hazelcastInstance) {
-        this.hazelcastInstance = hazelcastInstance;
     }
 }

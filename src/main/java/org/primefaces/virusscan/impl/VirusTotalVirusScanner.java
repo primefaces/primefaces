@@ -24,7 +24,7 @@
 package org.primefaces.virusscan.impl;
 
 import org.apache.commons.io.IOUtils;
-import org.primefaces.json.JSONObject;
+import org.json.JSONObject;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.virusscan.VirusException;
 import org.primefaces.virusscan.VirusScanner;

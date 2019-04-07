@@ -23,6 +23,9 @@
  */
 package org.primefaces.cache;
 
+/**
+ * Implementations of this interface must be thread-safe.
+ */
 public interface CacheProvider {
 
     public Object get(String region, String key);

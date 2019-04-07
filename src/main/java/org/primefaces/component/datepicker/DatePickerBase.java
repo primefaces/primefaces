@@ -73,7 +73,9 @@ abstract class DatePickerBase extends UICalendar implements Widget, InputHolder,
         appendTo,
         triggerButtonIcon,
         disabledDates,
-        disabledDays
+        disabledDays,
+        onMonthChange,
+        onYearChange
     }
 
     public DatePickerBase() {
@@ -363,6 +365,22 @@ abstract class DatePickerBase extends UICalendar implements Widget, InputHolder,
 
     public void setDisabledDays(List disabledDays) {
         getStateHelper().put(PropertyKeys.disabledDays, disabledDays);
+    }
+
+    public String getOnMonthChange() {
+        return (String) getStateHelper().eval(PropertyKeys.onMonthChange, null);
+    }
+
+    public void setOnMonthChange(String onMonthChange) {
+        getStateHelper().put(PropertyKeys.onMonthChange, onMonthChange);
+    }
+
+    public String getOnYearChange() {
+        return (String) getStateHelper().eval(PropertyKeys.onYearChange, null);
+    }
+
+    public void setOnYearChange(String onYearChange) {
+        getStateHelper().put(PropertyKeys.onYearChange, onYearChange);
     }
 
     @Override

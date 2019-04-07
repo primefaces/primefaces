@@ -90,7 +90,9 @@
             onTodayButtonClick: null,
             onClearButtonClick: null,
             onBeforeShow: null,
-            onBeforeHide: null
+            onBeforeHide: null,
+            onMonthChange: null,
+            onYearChange: null
         },
         
         _create: function () {
@@ -108,10 +110,15 @@
             this.viewDate = this.options.viewDate ? 
                 this.parseValue(this.options.viewDate) 
                 :
-                (((this.isRangeSelection() && parsedDefaultDate instanceof Array) ? parsedDefaultDate[0] : parsedDefaultDate) || this.parseValue(new Date()));
+                ((((this.isMultipleSelection() || this.isRangeSelection()) && parsedDefaultDate instanceof Array) ? parsedDefaultDate[0] : parsedDefaultDate) || this.parseValue(new Date()));
             this.options.minDate = this.parseOptionValue(this.options.minDate);
             this.options.maxDate = this.parseOptionValue(this.options.maxDate);
             this.ticksTo1970 = (((1970 - 1) * 365 + Math.floor(1970 / 4) - Math.floor(1970 / 100) + Math.floor(1970 / 400)) * 24 * 60 * 60 * 10000000);
+            
+            if (this.options.yearRange === null && this.options.yearNavigator) {
+                var viewYear = this.viewDate.getFullYear();
+                this.options.yearRange = (viewYear - 10) + ':' + (viewYear + 10);
+            }
             
             if (this.options.userLocale && typeof this.options.userLocale === 'object') {
                 $.extend(this.options.locale, this.options.userLocale);
@@ -619,7 +626,7 @@
             var tokens = value.split(':'),
                 validTokenLength = this.options.showSeconds ? 3 : 2;
 
-            if (tokens.length !== validTokenLength || tokens[0].length !== 2 || tokens[1].length !== 2 || tokens[2].length !== 2) {
+            if (tokens.length !== validTokenLength) {
                 throw "Invalid time";
             }
 
@@ -1475,7 +1482,10 @@
         onMonthDropdownChange: function (event) {
             var newViewDate = new Date(this.viewDate.getTime());
             newViewDate.setMonth(parseInt(event.target.value, 10));
-
+            
+            if (this.options.onMonthChange) {
+                this.options.onMonthChange.call(this, newViewDate.getMonth() + 1, newViewDate.getFullYear());
+            }
             this.updateViewDate(event, newViewDate);
         },
 
@@ -1483,6 +1493,9 @@
             var newViewDate = new Date(this.viewDate.getTime());
             newViewDate.setFullYear(parseInt(event.target.value, 10));
 
+            if (this.options.onYearChange) {
+                this.options.onYearChange.call(this, newViewDate.getMonth(), newViewDate.getFullYear());
+            }
             this.updateViewDate(event, newViewDate);
         },
 
@@ -1507,6 +1520,10 @@
                 else {
                     newViewDate.setMonth(newViewDate.getMonth() - 1);
                 }
+                
+                if (this.options.onMonthChange) {
+                    this.options.onMonthChange.call(this, newViewDate.getMonth() + 1, newViewDate.getFullYear());
+                }
             }
             else if (this.options.view === 'month') {
                 var currentYear = newViewDate.getFullYear(),
@@ -1521,6 +1538,10 @@
                 }
 
                 newViewDate.setFullYear(newYear);
+                
+                if (this.options.onYearChange) {
+                    this.options.onYearChange.call(this, newViewDate.getMonth(), newViewDate.getFullYear());
+                }
             }
 
             this.updateViewDate(event, newViewDate);
@@ -1544,6 +1565,10 @@
                 else {
                     newViewDate.setMonth(newViewDate.getMonth() + 1);
                 }
+                
+                if (this.options.onMonthChange) {
+                    this.options.onMonthChange.call(this, newViewDate.getMonth() + 1, newViewDate.getFullYear());
+                }
             }
             else if (this.options.view === 'month') {
                 var currentYear = newViewDate.getFullYear(),
@@ -1558,6 +1583,10 @@
                 }
 
                 newViewDate.setFullYear(newYear);
+                
+                if (this.options.onYearChange) {
+                    this.options.onYearChange.call(this, newViewDate.getMonth(), newViewDate.getFullYear());
+                }
             }
 
             this.updateViewDate(event, newViewDate);

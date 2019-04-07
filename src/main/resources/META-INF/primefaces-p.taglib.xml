@@ -7,12 +7,6 @@
     <namespace>http://primefaces.org/ui</namespace>
 
     <function>
-        <function-name>component</function-name>
-        <function-class>org.primefaces.util.ComponentUtils</function-class>
-        <function-signature>java.lang.String findComponentClientId(java.lang.String)</function-signature>
-    </function>
-
-    <function>
         <function-name>resolveClientId</function-name>
         <function-class>org.primefaces.expression.SearchExpressionUtils</function-class>
         <function-signature>java.lang.String resolveClientId(java.lang.String, javax.faces.component.UIComponent)</function-signature>
@@ -27,18 +21,6 @@
     <function>
         <function-name>resolveWidgetVar</function-name>
         <function-class>org.primefaces.expression.SearchExpressionUtils</function-class>
-        <function-signature>java.lang.String resolveWidgetVar(java.lang.String, javax.faces.component.UIComponent)</function-signature>
-    </function>
-
-    <function>
-        <function-name>widgetVar</function-name>
-        <function-class>org.primefaces.util.ComponentUtils</function-class>
-        <function-signature>java.lang.String resolveWidgetVar(java.lang.String)</function-signature>
-    </function>
-
-    <function>
-        <function-name>widgetVarFromContext</function-name>
-        <function-class>org.primefaces.util.ComponentUtils</function-class>
         <function-signature>java.lang.String resolveWidgetVar(java.lang.String, javax.faces.component.UIComponent)</function-signature>
     </function>
 
@@ -166,6 +148,12 @@
             <name>customExporter</name>
             <required>false</required>
             <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <description>OnTableRender to be used to set the options of exported table.</description>
+            <name>onTableRender</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
         </attribute>
     </tag>
 
@@ -1945,7 +1933,9 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>Position of the items in the tabbing order. Default is 0.</description>
+            <description>
+                <![CDATA[Position of the items in the tabbing order. Default is 0.]]>
+            </description>
             <name>tabindex</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -2061,14 +2051,6 @@
                 <![CDATA[Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.]]>
             </description>
             <name>dir</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style class for button icon.]]>
-            </description>
-            <name>image</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -5240,14 +5222,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Style class representing the button icon.]]>
-            </description>
-            <name>image</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[A localized user presentable name.]]>
             </description>
             <name>label</name>
@@ -6023,7 +5997,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Alternative to appendToBody. Appends the dialog to the given search expression.]]>
+                <![CDATA[Appends the dialog to the given search expression.]]>
             </description>
             <name>appendTo</name>
             <required>false</required>
@@ -7640,6 +7614,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Custom implementation to globally filter a value against a constraint.]]>
+            </description>
+            <name>globalFilterFunction</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -8213,7 +8195,15 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines where the dialog should be displayed.]]>
+                <![CDATA[Position of the dialog relative to the target. Default is "center".]]>
+            </description>
+            <name>my</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines where the dialog should be displayed. Default is "center".]]>
             </description>
             <name>position</name>
             <required>false</required>
@@ -8245,7 +8235,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Alternative to appendToBody. Appends the dialog to the given search expression.]]>
+                <![CDATA[Appends the dialog to the given search expression.]]>
             </description>
             <name>appendTo</name>
             <required>false</required>
@@ -11583,10 +11573,10 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Mask template. Required.]]>
+                <![CDATA[Mask template.]]>
             </description>
             <name>mask</name>
-            <required>true</required>
+            <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
@@ -17246,7 +17236,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Alternative to appendToBody. Appends the overlayPanel to the given search expression.]]>
+                <![CDATA[Appends the overlayPanel to the given search expression.]]>
             </description>
             <name>appendTo</name>
             <required>false</required>
@@ -20289,27 +20279,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Deprecated, use slotDuration instead. Interval in minutes in an hour to create a slot. Default is 30.]]>
-            </description>
-            <name>slotMinutes</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Determines how far down the scroll pane is initially scrolled down. Default is 06:00:00.]]>
             </description>
             <name>scrollTime</name>
             <required>false</required>
             <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Deprecated, use scrollTime instead. First hour to display in day view. Default is 6.]]>
-            </description>
-            <name>firstHour</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
         </attribute>
         <attribute>
             <description>
@@ -20332,14 +20306,6 @@
                 <![CDATA[Determines the time-text that will be displayed within a time slot.]]>
             </description>
             <name>slotLabelFormat</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Deprecated, use slotLabelFormat instead. Determines the time-text that will be displayed on the vertical axis of the agenda views.]]>
-            </description>
-            <name>axisFormat</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -20374,14 +20340,6 @@
             <name>clientTimeZone</name>
             <required>false</required>
             <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Deprecated, use clientTimezone instead with 'local' setting. When parsing dates, whether UTC offsets should be ignored while processing event data. Default is true]]>
-            </description>
-            <name>ignoreTimezone</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -21249,6 +21207,14 @@
                 <![CDATA[Label to be shown in updateLabel mode when no item is selected. If not set the label is shown.]]>
             </description>
             <name>emptyLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Placeholder text to show when filter input is empty.]]>
+            </description>
+            <name>filterPlaceholder</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -24120,14 +24086,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Style class representing the button icon.]]>
-            </description>
-            <name>image</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[A localized user presentable name.]]>
             </description>
             <name>label</name>
@@ -26460,11 +26418,11 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[ToggleSwitch is used to select a boolean value.]]>
         </description>
         <tag-name>toggleSwitch</tag-name>
         <component>
-            <component-type>org.primefaces.ToggleSwitch</component-type>
+            <component-type>org.primefaces.component.ToggleSwitch</component-type>
             <renderer-type>org.primefaces.component.ToggleSwitchRenderer</renderer-type>
         </component>
         <attribute>
@@ -29332,6 +29290,22 @@
             <name>disabledDays</name>
             <required>false</required>
             <type>java.util.List</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Callback to invoke when a month is changed using the navigators.]]>
+            </description>
+            <name>onMonthChange</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Callback to invoke when a year is changed using the navigators.]]>
+            </description>
+            <name>onYearChange</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
 </facelet-taglib>

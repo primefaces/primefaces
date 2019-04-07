@@ -37,23 +37,23 @@ public class PrimeEnvironment {
 
     private static final Logger LOGGER = Logger.getLogger(PrimeEnvironment.class.getName());
 
-    private boolean beanValidationAvailable = false;
+    private final boolean beanValidationAvailable;
 
-    private boolean atLeastEl22 = false;
+    private final boolean atLeastEl22;
 
-    private boolean atLeastJsf23 = false;
-    private boolean atLeastJsf22 = false;
-    private boolean atLeastJsf21 = false;
+    private final boolean atLeastJsf23;
+    private final boolean atLeastJsf22;
+    private final boolean atLeastJsf21;
 
-    private boolean mojarra = false;
+    private final boolean mojarra;
 
-    private boolean atLeastBv11 = false;
+    private final boolean atLeastBv11;
 
-    private String buildVersion = null;
+    private final String buildVersion;
 
-    private boolean htmlSanitizerAvailable;
+    private final boolean htmlSanitizerAvailable;
 
-    public PrimeEnvironment() {
+    public PrimeEnvironment(FacesContext context) {
         atLeastEl22 = LangUtils.tryToLoadClassForName("javax.el.ValueReference") != null;
 
         atLeastJsf23 = LangUtils.tryToLoadClassForName("javax.faces.component.UIImportConstants") != null;
@@ -62,27 +62,24 @@ public class PrimeEnvironment {
 
         atLeastBv11 = LangUtils.tryToLoadClassForName("javax.validation.executable.ExecutableValidator") != null;
 
-        beanValidationAvailable = checkIfBeanValidationIsAvailable();
+        beanValidationAvailable = resolveBeanValidationAvailable();
 
         buildVersion = resolveBuildVersion();
-        // This should only happen if PF + the webapp is openend and started in the same netbeans instance
-        // Fallback to a UID to void a empty version in the resourceUrls
-        if (buildVersion == null || buildVersion.trim().isEmpty()) {
-            buildVersion = UUID.randomUUID().toString().replace("-", "").substring(0, 10);
-        }
 
         htmlSanitizerAvailable = LangUtils.tryToLoadClassForName("org.owasp.html.PolicyFactory") != null;
+
+        if (context == null) {
+            this.mojarra = false;
+        }
+        else {
+            this.mojarra = context.getExternalContext().getApplicationMap().containsKey("com.sun.faces.ApplicationAssociate");
+        }
     }
 
-    public PrimeEnvironment(FacesContext context) {
-        this();
-        this.mojarra = context.getExternalContext().getApplicationMap().containsKey("com.sun.faces.ApplicationAssociate");
-    }
+    protected boolean resolveBeanValidationAvailable() {
+        boolean beanValidationAvailable = LangUtils.tryToLoadClassForName("javax.validation.Validation") != null;
 
-    protected boolean checkIfBeanValidationIsAvailable() {
-        boolean available = LangUtils.tryToLoadClassForName("javax.validation.Validation") != null;
-
-        if (available) {
+        if (beanValidationAvailable) {
             // Trial-error approach to check for Bean Validation impl existence.
             // If any Exception occurs here, we assume that Bean Validation is not available.
             // The cause may be anything, i.e. NoClassDef, config error...
@@ -91,35 +88,44 @@ public class PrimeEnvironment {
             }
             catch (Throwable t) {
                 LOGGER.log(Level.FINE, "BV not available - Could not build default ValidatorFactory.");
-                available = false;
+                beanValidationAvailable = false;
             }
         }
 
-        return available;
+        return beanValidationAvailable;
     }
 
     protected String resolveBuildVersion() {
+        String buildVersion = null;
 
-        Properties buildProperties = new Properties();
         InputStream is = null;
         try {
             is = getClass().getResourceAsStream("/META-INF/maven/org.primefaces/primefaces/pom.properties");
+
+            Properties buildProperties = new Properties();
             buildProperties.load(is);
-            return buildProperties.getProperty("version");
+            buildVersion = buildProperties.getProperty("version");
         }
         catch (Exception e) {
             LOGGER.log(Level.SEVERE, "PrimeFaces version not resolvable - Could not load pom.properties.");
         }
-
-        if (is != null) {
-            try {
-                is.close();
-            }
-            catch (IOException e) {
+        finally {
+            if (is != null) {
+                try {
+                    is.close();
+                }
+                catch (IOException e) {
+                }
             }
         }
 
-        return null;
+        // This should only happen if PF + the webapp is openend and started in the same netbeans instance
+        // Fallback to a UID to void a empty version in the resourceUrls
+        if (LangUtils.isValueBlank(buildVersion)) {
+            buildVersion = UUID.randomUUID().toString().replace("-", "").substring(0, 10);
+        }
+
+        return buildVersion;
     }
 
     public boolean isBeanValidationAvailable() {
@@ -150,10 +156,6 @@ public class PrimeEnvironment {
         return atLeastBv11;
     }
 
-    public void setAtLeastBv11(boolean atLeastBv11) {
-        this.atLeastBv11 = atLeastBv11;
-    }
-
     public String getBuildVersion() {
         return buildVersion;
     }
@@ -161,5 +163,4 @@ public class PrimeEnvironment {
     public boolean isHtmlSanitizerAvailable() {
         return htmlSanitizerAvailable;
     }
-
 }
