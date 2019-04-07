@@ -78,8 +78,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
                     writer.startElement("li", null);
                     writer.writeAttribute("role", "menuitem", null);
 
-                    if ((breadCrumb.isLastItemDisabled() && i + 1 == elementCount)
-                            || item.isDisabled()) {
+                    if (item.isDisabled() || (breadCrumb.isLastItemDisabled() && i + 1 == elementCount)) {
                         encodeDisabledMenuItem(context, item);
                     }
                     else {
