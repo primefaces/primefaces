@@ -16,17 +16,18 @@ in the workflow.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component.
-| rendered | true | Boolean | Boolean value to specify the rendering of the component.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| widgetVar | null | String | Name of the client side widget.
+| homeDisplay | icon | String | Defines display mode of root link, valid values are "icon" default and "text".
+| id | null | String | Unique identifier of the component.
+| lastItemDisabled | false | Boolean | Boolean flag indicating whether the last item should be disabled.
 | model | null | MenuModel | MenuModel instance to create menus programmatically
+| rendered | true | Boolean | Boolean value to specify the rendering of the component.
 | style | null | String | Style of main container element.
 | styleClass | null | String | Style class of main container
-| homeDisplay | icon | String | Defines display mode of root link, valid values are "icon" default and "text".
 | tabindex | 0 | String | Position of the items in the tabbing order. Default is 0.
+| widgetVar | null | String | Name of the client side widget.
 
 ## Getting Started with BreadCrumb
 Steps are defined as child menuitem components in breadcrumb.
@@ -51,8 +52,8 @@ Breadcrumb resides in a container element that _style_ and _styleClass_ options 
 list of structural style classes;
 
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 | .ui-breadcrumb | Main breadcrumb container element.
 | .ui-breadcrumb .ui-menu-item-link | Each menuitem.
 | .ui-breadcrumb .ui-menu-item-text | Each menuitem label.
