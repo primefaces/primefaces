@@ -106,6 +106,7 @@ public class TooltipRenderer extends CoreRenderer {
                 .attr("trackMouse", tooltip.isTrackMouse(), false)
                 .attr("position", tooltip.getPosition(), "right")
                 .attr("delegate", tooltip.isDelegate(), false)
+                .attr("styleClass", tooltip.getStyleClass(), null)
                 .returnCallback("beforeShow", "function()", tooltip.getBeforeShow())
                 .callback("onShow", "function()", tooltip.getOnShow())
                 .callback("onHide", "function()", tooltip.getOnHide());

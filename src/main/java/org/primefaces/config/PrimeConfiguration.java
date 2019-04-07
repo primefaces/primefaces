@@ -23,7 +23,6 @@
  */
 package org.primefaces.config;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.faces.component.UIInput;
@@ -38,49 +37,40 @@ import org.primefaces.util.Constants;
 public class PrimeConfiguration {
 
     // context params
-    private boolean validateEmptyFields = false;
-    private boolean partialSubmitEnabled = false;
-    private boolean resetValuesEnabled = false;
-    private boolean interpretEmptyStringAsNull = false;
-    private String theme = null;
-    private boolean fontAwesomeEnabled = false;
-    private boolean clientSideValidationEnabled = false;
-    private String uploader = null;
-    private boolean transformMetadataEnabled = false;
-    private boolean legacyWidgetNamespace = false;
-    private boolean interpolateClientSideValidationMessages = false;
-    private boolean earlyPostParamEvaluation = false;
-    private boolean moveScriptsToBottom = false;
+    private final boolean validateEmptyFields;
+    private final boolean partialSubmitEnabled;
+    private final boolean resetValuesEnabled;
+    private final boolean interpretEmptyStringAsNull;
+    private final String theme;
+    private final boolean fontAwesomeEnabled;
+    private final boolean clientSideValidationEnabled;
+    private final String uploader;
+    private final boolean transformMetadataEnabled;
+    private final boolean legacyWidgetNamespace;
+    private final boolean interpolateClientSideValidationMessages;
+    private final boolean earlyPostParamEvaluation;
+    private final boolean moveScriptsToBottom;
 
     // internal config
-    private boolean stringConverterAvailable = false;
+    private final boolean stringConverterAvailable;
 
-    private boolean beanValidationEnabled = false;
+    private final boolean beanValidationEnabled;
 
     // web.xml
-    private Map<String, String> errorPages = null;
-
-    protected PrimeConfiguration() {
-
-    }
+    private final Map<String, String> errorPages;
 
     public PrimeConfiguration(FacesContext context, PrimeEnvironment environment) {
-        initConfigFromContextParams(context, environment);
-        initInternalConfig(context);
-        initConfigFromWebXml(context);
-        initValidateEmptyFields(context, environment);
-    }
-
-    protected void initInternalConfig(FacesContext context) {
-        stringConverterAvailable = null != context.getApplication().createConverter(String.class);
-    }
-
-    protected void initConfigFromContextParams(FacesContext context, PrimeEnvironment environment) {
         ExternalContext externalContext = context.getExternalContext();
 
-        String value = null;
+        stringConverterAvailable = null != context.getApplication().createConverter(String.class);
 
-        value = externalContext.getInitParameter(Constants.ContextParams.INTERPRET_EMPTY_STRING_AS_NULL);
+        errorPages = WebXmlParser.getErrorPages(context);
+
+        validateEmptyFields = resolveValidateEmptyFields(context, environment);
+
+
+        // parse context params
+        String value = externalContext.getInitParameter(Constants.ContextParams.INTERPRET_EMPTY_STRING_AS_NULL);
         interpretEmptyStringAsNull = (value == null) ? false : Boolean.valueOf(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.SUBMIT);
@@ -110,6 +100,9 @@ public class PrimeConfiguration {
             value = externalContext.getInitParameter(Constants.ContextParams.BEAN_VALIDATION_DISABLED);
             beanValidationEnabled = (value == null) ? true : !Boolean.valueOf(value);
         }
+        else {
+            beanValidationEnabled = false;
+        }
 
         value = externalContext.getInitParameter(Constants.ContextParams.INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES);
         interpolateClientSideValidationMessages = (value == null) ? false : Boolean.valueOf(value);
@@ -121,7 +114,7 @@ public class PrimeConfiguration {
         moveScriptsToBottom = (value == null) ? false : Boolean.valueOf(value);
     }
 
-    protected void initValidateEmptyFields(FacesContext context, PrimeEnvironment environment) {
+    protected boolean resolveValidateEmptyFields(FacesContext context, PrimeEnvironment environment) {
         ExternalContext externalContext = context.getExternalContext();
 
         String param = externalContext.getInitParameter(UIInput.VALIDATE_EMPTY_FIELDS_PARAM_NAME);
@@ -132,9 +125,7 @@ public class PrimeConfiguration {
                 param = (String) applicationMapValue;
             }
             else if (applicationMapValue instanceof Boolean) {
-                validateEmptyFields = (Boolean) applicationMapValue;
-                // already initialized - skip further processing
-                return;
+                return (Boolean) applicationMapValue;
             }
         }
 
@@ -147,141 +138,70 @@ public class PrimeConfiguration {
             param = param.toLowerCase();
         }
 
-        validateEmptyFields = (param.equals("auto") && environment.isBeanValidationAvailable()) || param.equals("true");
-    }
-
-    protected void initConfigFromWebXml(FacesContext context) {
-        errorPages = WebXmlParser.getErrorPages(context);
-        if (errorPages == null) {
-            errorPages = new HashMap<>();
-        }
+        return (param.equals("auto") && environment.isBeanValidationAvailable()) || param.equals("true");
     }
 
     public boolean isValidateEmptyFields() {
         return validateEmptyFields;
     }
 
-    public void setValidateEmptyFields(boolean validateEmptyFields) {
-        this.validateEmptyFields = validateEmptyFields;
-    }
-
     public boolean isPartialSubmitEnabled() {
         return partialSubmitEnabled;
-    }
-
-    public void setPartialSubmitEnabled(boolean partialSubmitEnabled) {
-        this.partialSubmitEnabled = partialSubmitEnabled;
     }
 
     public boolean isResetValuesEnabled() {
         return resetValuesEnabled;
     }
 
-    public void setResetValuesEnabled(boolean resetValuesEnabled) {
-        this.resetValuesEnabled = resetValuesEnabled;
-    }
-
     public boolean isInterpretEmptyStringAsNull() {
         return interpretEmptyStringAsNull;
-    }
-
-    public void setInterpretEmptyStringAsNull(boolean interpretEmptyStringAsNull) {
-        this.interpretEmptyStringAsNull = interpretEmptyStringAsNull;
     }
 
     public String getTheme() {
         return theme;
     }
 
-    public void setTheme(String theme) {
-        this.theme = theme;
-    }
-
     public boolean isFontAwesomeEnabled() {
         return fontAwesomeEnabled;
-    }
-
-    public void setFontAwesomeEnabled(boolean fontAwesomeEnabled) {
-        this.fontAwesomeEnabled = fontAwesomeEnabled;
     }
 
     public boolean isClientSideValidationEnabled() {
         return clientSideValidationEnabled;
     }
 
-    public void setClientSideValidationEnabled(boolean clientSideValidationEnabled) {
-        this.clientSideValidationEnabled = clientSideValidationEnabled;
-    }
-
     public String getUploader() {
         return uploader;
-    }
-
-    public void setUploader(String uploader) {
-        this.uploader = uploader;
     }
 
     public boolean isTransformMetadataEnabled() {
         return transformMetadataEnabled;
     }
 
-    public void setTransformMetadataEnabled(boolean transformMetadataEnabled) {
-        this.transformMetadataEnabled = transformMetadataEnabled;
-    }
-
     public boolean isLegacyWidgetNamespace() {
         return legacyWidgetNamespace;
-    }
-
-    public void setLegacyWidgetNamespace(boolean legacyWidgetNamespace) {
-        this.legacyWidgetNamespace = legacyWidgetNamespace;
     }
 
     public boolean isInterpolateClientSideValidationMessages() {
         return interpolateClientSideValidationMessages;
     }
 
-    public void setInterpolateClientSideValidationMessages(boolean interpolateClientSideValidationMessages) {
-        this.interpolateClientSideValidationMessages = interpolateClientSideValidationMessages;
-    }
-
     public boolean isEarlyPostParamEvaluation() {
         return earlyPostParamEvaluation;
-    }
-
-    public void setEarlyPostParamEvaluation(boolean earlyPostParamEvaluation) {
-        this.earlyPostParamEvaluation = earlyPostParamEvaluation;
     }
 
     public boolean isMoveScriptsToBottom() {
         return moveScriptsToBottom;
     }
 
-    public void setMoveScriptsToBottom(boolean moveScriptsToBottom) {
-        this.moveScriptsToBottom = moveScriptsToBottom;
-    }
-
     public boolean isStringConverterAvailable() {
         return stringConverterAvailable;
-    }
-
-    public void setStringConverterAvailable(boolean stringConverterAvailable) {
-        this.stringConverterAvailable = stringConverterAvailable;
     }
 
     public boolean isBeanValidationEnabled() {
         return beanValidationEnabled;
     }
 
-    public void setBeanValidationEnabled(boolean beanValidationEnabled) {
-        this.beanValidationEnabled = beanValidationEnabled;
-    }
-
     public Map<String, String> getErrorPages() {
         return errorPages;
-    }
-
-    public void setErrorPages(Map<String, String> errorPages) {
-        this.errorPages = errorPages;
     }
 }

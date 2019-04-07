@@ -35,7 +35,7 @@ public class DefaultCacheProvider implements CacheProvider {
 
     private static final Logger LOGGER = Logger.getLogger(DefaultCacheProvider.class.getName());
 
-    private ConcurrentMap<String, ConcurrentMap<String, Object>> cache;
+    private final ConcurrentMap<String, ConcurrentMap<String, Object>> cache;
 
     public DefaultCacheProvider() {
         cache = new ConcurrentHashMap<>();

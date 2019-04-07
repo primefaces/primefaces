@@ -30,6 +30,10 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
                     input.prop('checked', true).parent().next().addClass('ui-state-active').children('.ui-radiobutton-icon')
                             .addClass('ui-icon-bullet').removeClass('ui-icon-blank');
                 }
+                
+                if(original.is(':disabled')) {
+                    this.disable(i);
+                }
             }
             
             //pfs metadata
@@ -49,6 +53,20 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         this.checkedRadio = this.outputs.filter('.ui-state-active');
 
         this.bindEvents();
+    },
+    
+    refresh: function(cfg) {
+        if(this.cfg.custom) {
+            for(var i = 0; i < this.inputs.length; i++) {
+                var input = this.inputs.eq(i);
+                
+                this.enable(i);
+                input.prop('checked', false).parent().next().removeClass('ui-state-active').children('.ui-radiobutton-icon')
+                            .removeClass('ui-icon-bullet').addClass('ui-icon-blank');
+            }
+        }
+        
+        this.init(cfg);
     },
 
     bindEvents: function() {

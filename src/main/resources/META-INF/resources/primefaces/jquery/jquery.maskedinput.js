@@ -108,7 +108,7 @@
                     input.change();
                     
                     if(settings.onChange) {
-                        settings.onChange.call(this, e);
+                        settings.onChange.call(input, e);
                     }
                 }
                 function keydownEvent(e) {

@@ -25,23 +25,14 @@ package org.primefaces.util;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.FacesWrapper;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.UIParameter;
-import javax.faces.component.ValueHolder;
+import javax.faces.component.*;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.context.FacesContext;
@@ -53,7 +44,6 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.expression.SearchExpressionUtils;
 
 public class ComponentUtils {
 
@@ -175,27 +165,8 @@ public class ComponentUtils {
         return context.getApplication().createConverter(converterType);
     }
 
-    // used by p:component - don't remove!
-    @Deprecated
-    public static String findComponentClientId(String id) {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        UIComponent component = ComponentTraversalUtils.firstWithId(id, facesContext.getViewRoot());
-
-        return component.getClientId(facesContext);
-    }
-
     public static String escapeSelector(String selector) {
         return selector.replaceAll(":", "\\\\\\\\:");
-    }
-
-    @Deprecated
-    public static String resolveWidgetVar(String expression) {
-        return resolveWidgetVar(expression, FacesContext.getCurrentInstance().getViewRoot());
-    }
-
-    @Deprecated
-    public static String resolveWidgetVar(String expression, UIComponent component) {
-        return SearchExpressionUtils.resolveWidgetVar(expression, component);
     }
 
     public static boolean isRTL(FacesContext context, RTLAware component) {
@@ -468,7 +439,7 @@ public class ComponentUtils {
         }
     }
 
-    public static <T extends Renderer> T getUnwrappedRenderer(FacesContext context, String family, String rendererType, Class<T> rendererClass) {
+    public static <T extends Renderer> T getUnwrappedRenderer(FacesContext context, String family, String rendererType) {
         Renderer renderer = context.getRenderKit().getRenderer(family, rendererType);
 
         while (renderer instanceof FacesWrapper) {

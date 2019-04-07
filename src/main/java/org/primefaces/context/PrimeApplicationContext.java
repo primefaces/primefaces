@@ -42,6 +42,7 @@ import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.config.PrimeEnvironment;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
+import org.primefaces.util.Lazy;
 import org.primefaces.virusscan.VirusScannerService;
 
 /**
@@ -58,28 +59,25 @@ public class PrimeApplicationContext {
 
     private static final Logger LOGGER = Logger.getLogger(PrimeApplicationContext.class.getName());
 
-    private ClassLoader applicationClassLoader;
-    private PrimeEnvironment environment;
-    private PrimeConfiguration config;
-    private ValidatorFactory validatorFactory;
-    private Validator validator;
-    private CacheProvider cacheProvider;
-    private Map<Class<?>, Map<String, Object>> enumCacheMap;
-    private Map<Class<?>, Map<String, Object>> constantsCacheMap;
-    private VirusScannerService virusScannerService;
+    private final PrimeEnvironment environment;
+    private final PrimeConfiguration config;
+    private final ClassLoader applicationClassLoader;
+    private final Map<Class<?>, Map<String, Object>> enumCacheMap;
+    private final Map<Class<?>, Map<String, Object>> constantsCacheMap;
+
+    private final Lazy<ValidatorFactory> validatorFactory;
+    private final Lazy<Validator> validator;
+    private final Lazy<CacheProvider> cacheProvider;
+    private final Lazy<VirusScannerService> virusScannerService;
 
     public PrimeApplicationContext(FacesContext facesContext) {
-        this.environment = new PrimeEnvironment(facesContext);
-        this.config = new PrimeConfiguration(facesContext, environment);
-
-        if (this.config.isBeanValidationEnabled()) {
-            this.validatorFactory = Validation.buildDefaultValidatorFactory();
-            this.validator = validatorFactory.getValidator();
-        }
+        environment = new PrimeEnvironment(facesContext);
+        config = new PrimeConfiguration(facesContext, environment);
 
         enumCacheMap = new ConcurrentHashMap<>();
         constantsCacheMap = new ConcurrentHashMap<>();
 
+        ClassLoader classLoader = null;
         Object context = facesContext.getExternalContext().getContext();
         if (context != null) {
             try {
@@ -88,7 +86,7 @@ public class PrimeApplicationContext {
                 Method getClassLoaderMethod = context.getClass().getMethod("getClassLoader");
 
                 if (getClassLoaderMethod != null) {
-                    applicationClassLoader = (ClassLoader) getClassLoaderMethod.invoke(context);
+                    classLoader = (ClassLoader) getClassLoaderMethod.invoke(context);
                 }
             }
             catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | AbstractMethodError |
@@ -105,9 +103,38 @@ public class PrimeApplicationContext {
         // If the context is unavailable or this is a Portlet 2.0 environment, the ClassLoader cannot be obtained from
         // the context, so use Thread.currentThread().getContextClassLoader() to obtain the application ClassLoader
         // instead.
-        if (applicationClassLoader == null) {
-            applicationClassLoader = LangUtils.getContextClassLoader();
+        if (classLoader == null) {
+            classLoader = LangUtils.getContextClassLoader();
         }
+
+        applicationClassLoader = classLoader;
+
+        if (config.isBeanValidationEnabled()) {
+            validatorFactory = new Lazy<>(() -> Validation.buildDefaultValidatorFactory());
+            validator = new Lazy<>(() -> validatorFactory.get().getValidator());
+        }
+        else {
+            validatorFactory = null;
+            validator = null;
+        }
+
+        virusScannerService = new Lazy<>(() -> new VirusScannerService(applicationClassLoader));
+
+        cacheProvider = new Lazy<CacheProvider>(() -> {
+            String cacheProviderConfigValue = FacesContext.getCurrentInstance().getExternalContext()
+                    .getInitParameter(Constants.ContextParams.CACHE_PROVIDER);
+            if (cacheProviderConfigValue == null) {
+                return new DefaultCacheProvider();
+            }
+            else {
+                try {
+                    return (CacheProvider) LangUtils.loadClassForName(cacheProviderConfigValue).newInstance();
+                }
+                catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+                    throw new FacesException(ex);
+                }
+            }
+        });
     }
 
     public static PrimeApplicationContext getCurrentInstance(FacesContext facesContext) {
@@ -147,35 +174,11 @@ public class PrimeApplicationContext {
     }
 
     public ValidatorFactory getValidatorFactory() {
-        return validatorFactory;
+        return validatorFactory == null ? null : validatorFactory.get();
     }
 
     public CacheProvider getCacheProvider() {
-        if (cacheProvider == null) {
-            initCacheProvider();
-        }
-
-        return cacheProvider;
-    }
-
-    /**
-     * Lazy init cacheProvider. Not required if no cache component is used in the application.
-     */
-    protected synchronized void initCacheProvider() {
-        if (cacheProvider == null) {
-            String cacheProviderConfigValue = FacesContext.getCurrentInstance().getExternalContext().getInitParameter(Constants.ContextParams.CACHE_PROVIDER);
-            if (cacheProviderConfigValue == null) {
-                cacheProvider = new DefaultCacheProvider();
-            }
-            else {
-                try {
-                    cacheProvider = (CacheProvider) LangUtils.loadClassForName(cacheProviderConfigValue).newInstance();
-                }
-                catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-                    throw new FacesException(ex);
-                }
-            }
-        }
+        return cacheProvider.get();
     }
 
     public Map<Class<?>, Map<String, Object>> getEnumCacheMap() {
@@ -187,26 +190,18 @@ public class PrimeApplicationContext {
     }
 
     public Validator getValidator() {
-        return validator;
+        return validator == null ? null : validator.get();
     }
 
     public VirusScannerService getVirusScannerService() {
-        if (virusScannerService == null) {
-            initVirusScannerService();
-        }
-
-        return virusScannerService;
-    }
-
-    protected synchronized void initVirusScannerService() {
-        if (virusScannerService == null) {
-            virusScannerService = new VirusScannerService(applicationClassLoader);
-        }
+        return virusScannerService.get();
     }
 
     public void release() {
-        if (validatorFactory != null && environment != null && environment.isAtLeastBv11()) {
-            validatorFactory.close();
+        if (environment != null && environment.isAtLeastBv11()) {
+            if (validatorFactory != null && validatorFactory.isInitialized() && validatorFactory.get() != null) {
+                validatorFactory.get().close();
+            }
         }
     }
 }

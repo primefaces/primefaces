@@ -23,14 +23,15 @@
  */
 package org.primefaces.model.charts.axes.cartesian;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.primefaces.model.charts.axes.AxesScale;
 
 /**
  * Used to provide scales option has cartesian type
  */
-public class CartesianScales implements Serializable {
+public class CartesianScales extends AxesScale {
 
     private static final long serialVersionUID = 1L;
 

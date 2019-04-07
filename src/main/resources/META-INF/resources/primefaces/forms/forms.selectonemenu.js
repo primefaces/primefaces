@@ -417,50 +417,62 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                         break;
                     }
 
-                    var text = String.fromCharCode(key).toLowerCase();
-                    matchedOptions = null,
+                   
+                    var matchedOptions = null,
                     metaKey = e.metaKey||e.ctrlKey||e.shiftKey;
 
                     if(!metaKey) {
                         clearTimeout($this.searchTimer);
-
-                        // find all options with the same first letter
-                        matchedOptions = $this.options.filter(function() {
-                            var option = $(this);
-                            return (option.is(':not(:disabled)') && (option.text().toLowerCase().indexOf(text) === 0));
-                        });
-
+                        
+                        // #4682: check for word match
+                        var text = $(this).val(); 
+                        matchedOptions = $this.matchOptions(text);
                         if(matchedOptions.length) {
-                            var selectedIndex = -1;
+                            var highlightItem = $this.items.eq(matchedOptions.index());
+                            if($this.panel.is(':hidden')) {
+                                $this.selectItem(highlightItem);
+                            }
+                            else {
+                                $this.highlightItem(highlightItem);
+                                PrimeFaces.scrollInView($this.itemsWrapper, highlightItem);
+                            }
+                        } else {
+                            // #4682: check for first letter match
+                            text = String.fromCharCode(key).toLowerCase();
+                            // find all options with the same first letter
+                            matchedOptions = $this.matchOptions(text);
+                            if(matchedOptions.length) {
+                                var selectedIndex = -1;
+                                
+                                // is current selection one of our matches?
+                                matchedOptions.each(function() {
+                                   var option = $(this);
+                                   var currentIndex = option.index();
+                                   var currentItem = $this.items.eq(currentIndex);
+                                   if (currentItem.hasClass('ui-state-highlight')) {
+                                       selectedIndex = currentIndex;
+                                       return false;
+                                   }
+                                });
 
-                            // is current selection one of our matches?
-                            matchedOptions.each(function() {
-                                var option = $(this);
-                                var currentIndex = option.index();
-                                var currentItem = $this.items.eq(currentIndex);
-                                if (currentItem.hasClass('ui-state-highlight')) {
-                                    selectedIndex = currentIndex;
-                                    return false;
-                                }
-                            });
+                                matchedOptions.each(function() {
+                                    var option = $(this);
+                                    var currentIndex = option.index();
+                                    var currentItem = $this.items.eq(currentIndex);
 
-                            matchedOptions.each(function() {
-                                var option = $(this);
-                                var currentIndex = option.index();
-                                var currentItem = $this.items.eq(currentIndex);
-
-                                // select next item after the current selection
-                                if (currentIndex > selectedIndex) {
-                                    if($this.panel.is(':hidden')) {
-                                        $this.selectItem(currentItem);
-                                    }
-                                    else {
-                                        $this.highlightItem(currentItem);
-                                        PrimeFaces.scrollInView($this.itemsWrapper, currentItem);
-                                    }
-                                    return false;
-                                }
-                            });
+                                    // select next item after the current selection
+                                    if (currentIndex > selectedIndex) {
+                                         if($this.panel.is(':hidden')) {
+                                             $this.selectItem(currentItem);
+                                         }
+                                         else {
+                                             $this.highlightItem(currentItem);
+                                             PrimeFaces.scrollInView($this.itemsWrapper, currentItem);
+                                         }
+                                         return false;
+                                     }
+                                });
+                            }
                         }
 
                         $this.searchTimer = setTimeout(function(){
@@ -469,6 +481,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                     }
                 break;
             }
+        });
+    },
+  
+    matchOptions: function(text) {
+        return this.options.filter(function() {
+            var option = $(this);
+            return (option.is(':not(:disabled)') && (option.text().toLowerCase().indexOf(text) === 0));
         });
     },
 
@@ -655,11 +674,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     _show: function() {
         var $this = this;
 
-        this.panel.css({'display':'block', 'opacity':0});
-
+        this.panel.css({'display':'block', 'opacity':0, 'pointer-events': 'none'});
+        
         this.alignPanel();
-
-        this.panel.css({'display':'none', 'opacity':'', 'z-index': ++PrimeFaces.zindex});
+        
+        this.panel.css({'display':'none', 'opacity':'', 'pointer-events': '', 'z-index': ++PrimeFaces.zindex});
 
         if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
             this.panel.parent().css('z-index', PrimeFaces.zindex - 1);
@@ -767,28 +786,31 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     setLabel: function(value) {
         var displayedLabel = this.getLabelToDisplay(value);
 
-        if(this.cfg.editable) {
-            if(value === '&nbsp;')
+        if (this.cfg.editable) {
+            if (value === '&nbsp;')
                 this.label.val('');
             else
                 this.label.val(displayedLabel);
+            
+            var hasPlaceholder = this.label[0].hasAttribute('placeholder');
+            this.updatePlaceholderClass((hasPlaceholder && value === '&nbsp;'));
         }
         else {
             var labelText = this.label.data('placeholder');
             if (labelText == null || labelText == "") {
                 labelText = '&nbsp;';
             }
+            
+            this.updatePlaceholderClass((value === '&nbsp;' && labelText !== '&nbsp;'));
 
             if (value === '&nbsp;') {
-                this.label.addClass('ui-selectonemenu-label-placeholder');
                 if (labelText != '&nbsp;') {
                    this.label.text(labelText);
                 } else {
                     this.label.html(labelText);
                 }
             }
-            else {
-                this.label.removeClass('ui-selectonemenu-label-placeholder');
+            else {               
                 this.label.removeClass('ui-state-disabled');
 
                 var option = null;
@@ -986,7 +1008,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         if(dialog.length == 1) {
             //set position as fixed to scroll with dialog
-            this.panel.css('position', 'fixed');
+            if(dialog.css('position') === 'fixed') {
+                this.panel.css('position', 'fixed');
+            }
 
             //append to body if not already appended by user choice
             if(!this.panel.parent().is(document.body)) {
@@ -995,6 +1019,15 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         return this.cfg.appendTo;
+    },
+    
+    updatePlaceholderClass: function(add) {
+        if (add) {
+            this.label.addClass('ui-selectonemenu-label-placeholder');
+        }
+        else {
+            this.label.removeClass('ui-selectonemenu-label-placeholder');
+        }
     }
 
 });

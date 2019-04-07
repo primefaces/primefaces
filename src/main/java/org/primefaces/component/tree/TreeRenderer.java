@@ -233,7 +233,7 @@ public class TreeRenderer extends CoreRenderer {
             String clientId = tree.getClientId();
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String filteredValue = params.get(clientId + "_filter");
-            Locale filterLocale = context.getViewRoot().getLocale();
+            Locale filterLocale = LocaleUtils.getCurrentLocale(context);
 
             tree.getFilteredRowKeys().clear();
             encodeFilteredNodes(context, tree, tree.getValue(), filteredValue, filterLocale);

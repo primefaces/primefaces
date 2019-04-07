@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.*;
 
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.*;
@@ -40,6 +41,7 @@ import javax.faces.event.*;
 
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.tree.UITreeNode;
+import org.primefaces.model.CheckboxTreeNode;
 import org.primefaces.model.TreeNode;
 import org.primefaces.util.MessageFactory;
 import org.primefaces.util.SharedStringBuilder;
@@ -72,7 +74,9 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         requiredMessage,
         skipChildren,
         showUnselectableCheckbox,
-        nodeVar;
+        nodeVar,
+        propagateSelectionDown,
+        propagateSelectionUp;
     }
 
     public String getRowKey() {
@@ -202,6 +206,22 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
     public Object getLocalSelectedNodes() {
         return getStateHelper().get(PropertyKeys.selection);
+    }
+
+    public boolean isPropagateSelectionDown() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.propagateSelectionDown, true);
+    }
+
+    public void setPropagateSelectionDown(boolean _propagateSelectionDown) {
+        getStateHelper().put(PropertyKeys.propagateSelectionDown, _propagateSelectionDown);
+    }
+
+    public boolean isPropagateSelectionUp() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.propagateSelectionUp, true);
+    }
+
+    public void setPropagateSelectionUp(boolean _propagateSelectionUp) {
+        getStateHelper().put(PropertyKeys.propagateSelectionUp, _propagateSelectionUp);
     }
 
     protected TreeNode findTreeNode(TreeNode searchRoot, String rowKey) {
@@ -504,6 +524,9 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
     public void updateSelection(FacesContext context) {
         String selectionMode = getSelectionMode();
+        boolean propagateSelectionDown = isPropagateSelectionDown();
+        boolean propagateSelectionUp = isPropagateSelectionUp();
+
         ValueExpression selectionVE = getValueExpression(UITree.PropertyKeys.selection.toString());
 
         if (selectionMode != null && selectionVE != null) {
@@ -524,13 +547,23 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
                 if (previousSelections != null) {
                     for (TreeNode node : previousSelections) {
-                        node.setSelected(false);
+                        if (node instanceof CheckboxTreeNode) {
+                            ((CheckboxTreeNode) node).setSelected(false, propagateSelectionDown, propagateSelectionUp);
+                        }
+                        else {
+                            node.setSelected(false);
+                        }
                     }
                 }
 
                 if (selections != null) {
                     for (TreeNode node : selections) {
-                        node.setSelected(true);
+                        if (node instanceof CheckboxTreeNode) {
+                            ((CheckboxTreeNode) node).setSelected(true, propagateSelectionDown, propagateSelectionUp);
+                        }
+                        else {
+                            node.setSelected(true);
+                        }
                     }
                 }
             }
@@ -744,6 +777,18 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
                 restoreDescendantState(facet, context);
             }
         }
+    }
+
+    @Override
+    public boolean invokeOnComponent(FacesContext context, String clientId, ContextCallback callback)
+            throws FacesException {
+
+        // skip if the component is not a children of the UITree
+        if (!clientId.startsWith(getClientId(context))) {
+            return false;
+        }
+
+        return super.invokeOnComponent(context, clientId, callback);
     }
 
     @Override

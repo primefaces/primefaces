@@ -26,11 +26,11 @@ package org.primefaces.config;
 public class StartupPrimeEnvironment extends PrimeEnvironment {
 
     public StartupPrimeEnvironment() {
-        super();
+        super(null);
     }
 
     @Override
-    protected boolean checkIfBeanValidationIsAvailable() {
+    protected boolean resolveBeanValidationAvailable() {
         return false;
     }
 }

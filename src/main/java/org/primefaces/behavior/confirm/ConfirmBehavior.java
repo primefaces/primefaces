@@ -29,7 +29,7 @@ import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
 import org.primefaces.behavior.base.AbstractBehavior;
 import org.primefaces.component.api.Confirmable;
-import org.primefaces.json.JSONObject;
+import org.json.JSONObject;
 
 public class ConfirmBehavior extends AbstractBehavior {
 

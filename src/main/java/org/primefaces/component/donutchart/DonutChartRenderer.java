@@ -84,7 +84,7 @@ public class DonutChartRenderer extends ChartRenderer {
         }
 
         if (donutOptions.getCircumference() != null) {
-            writer.write(",cutoutPercentage:" + donutOptions.getCircumference());
+            writer.write(",circumference:" + donutOptions.getCircumference());
         }
 
         encodeElements(context, donutOptions.getElements(), true);

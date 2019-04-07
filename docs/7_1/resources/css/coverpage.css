@@ -1,0 +1,43 @@
+body section.cover.show {
+    background: radial-gradient(circle at 50% 0, #2371d7, #08264e) !important;
+    color: #ffffff;
+}
+
+body section.cover.show .cover-main > h1 .anchor span {
+    color: #ffffff;
+}
+
+body section.cover.show .cover-main ul {
+    font-size: 17px;
+    max-width: 800px;
+}
+
+body section.cover.show .cover-main > p:last-child {
+    margin-top: 2.5rem;
+}
+
+body section.cover.show .cover-main > p:last-child a {
+    opacity: 0.8;
+    border-radius: 3px;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: normal;
+    padding: 0.5em 2rem;
+}
+
+body section.cover.show .cover-main > p:last-child a:first-child {
+    background-color: #ffffff;
+    color: #174f98;
+}
+
+body section.cover.show .cover-main > p:last-child a:first-child:hover {
+    background-color: #c0cad8;
+}
+
+body section.cover.show .cover-main > p:last-child a:last-child {
+    border: solid 1px #ffffff;
+}
+
+body section.cover.show .cover-main > p:last-child a:last-child:hover {
+    background-color: rgba(255,255,255,0.16);
+}

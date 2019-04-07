@@ -767,6 +767,10 @@ public class DataTable extends DataTableBase {
         clearMultiSortMeta();
     }
 
+    public void resetRows() {
+        getStateHelper().remove("rows");
+    }
+
     public boolean isFilteringEnabled() {
         Object value = getStateHelper().get("filtering");
 

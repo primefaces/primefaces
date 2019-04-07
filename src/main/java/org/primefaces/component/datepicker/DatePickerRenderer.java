@@ -105,7 +105,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("minDate", CalendarUtils.getValueAsString(context, datepicker, datepicker.getMindate()), null)
             .attr("maxDate", CalendarUtils.getValueAsString(context, datepicker, datepicker.getMaxdate()), null)
             .attr("selectionMode", datepicker.getSelectionMode(), null)
-            .attr("showOnFocus", datepicker.isShowOnFocus(), false)
+            .attr("showOnFocus", datepicker.isShowOnFocus())
             .attr("shortYearCutoff", datepicker.getShortYearCutoff(), null)
             .attr("monthNavigator", datepicker.isMonthNavigator(), false)
             .attr("yearNavigator", datepicker.isYearNavigator(), false)
@@ -138,6 +138,16 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         String beforeShow = datepicker.getBeforeShow();
         if (beforeShow != null) {
             wb.nativeAttr("preShow", beforeShow);
+        }
+
+        String onMonthChange = datepicker.getOnMonthChange();
+        if (onMonthChange != null) {
+            wb.nativeAttr("onMonthChange", onMonthChange);
+        }
+
+        String onYearChange = datepicker.getOnYearChange();
+        if (onYearChange != null) {
+            wb.nativeAttr("onYearChange", onYearChange);
         }
 
         if (datepicker.isShowOtherMonths()) {

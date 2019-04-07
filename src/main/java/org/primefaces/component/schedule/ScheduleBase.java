@@ -56,18 +56,14 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
         rightHeaderTemplate,
         allDaySlot,
         slotDuration,
-        slotMinutes,
         scrollTime,
-        firstHour,
         minTime,
         maxTime,
         slotLabelFormat,
-        axisFormat,
         timeFormat,
         columnFormat,
         timeZone,
         clientTimeZone,
-        ignoreTimezone,
         tooltip,
         showWeekNumbers,
         extender,
@@ -225,28 +221,12 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
         getStateHelper().put(PropertyKeys.slotDuration, slotDuration);
     }
 
-    public int getSlotMinutes() {
-        return (Integer) getStateHelper().eval(PropertyKeys.slotMinutes, 30);
-    }
-
-    public void setSlotMinutes(int slotMinutes) {
-        getStateHelper().put(PropertyKeys.slotMinutes, slotMinutes);
-    }
-
     public String getScrollTime() {
         return (String) getStateHelper().eval(PropertyKeys.scrollTime, "06:00:00");
     }
 
     public void setScrollTime(String scrollTime) {
         getStateHelper().put(PropertyKeys.scrollTime, scrollTime);
-    }
-
-    public int getFirstHour() {
-        return (Integer) getStateHelper().eval(PropertyKeys.firstHour, 6);
-    }
-
-    public void setFirstHour(int firstHour) {
-        getStateHelper().put(PropertyKeys.firstHour, firstHour);
     }
 
     public String getMinTime() {
@@ -271,14 +251,6 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
 
     public void setSlotLabelFormat(String slotLabelFormat) {
         getStateHelper().put(PropertyKeys.slotLabelFormat, slotLabelFormat);
-    }
-
-    public String getAxisFormat() {
-        return (String) getStateHelper().eval(PropertyKeys.axisFormat, null);
-    }
-
-    public void setAxisFormat(String axisFormat) {
-        getStateHelper().put(PropertyKeys.axisFormat, axisFormat);
     }
 
     public String getTimeFormat() {
@@ -311,14 +283,6 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
 
     public void setClientTimeZone(String clientTimeZone) {
         getStateHelper().put(PropertyKeys.clientTimeZone, clientTimeZone);
-    }
-
-    public boolean isIgnoreTimezone() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.ignoreTimezone, true);
-    }
-
-    public void setIgnoreTimezone(boolean ignoreTimezone) {
-        getStateHelper().put(PropertyKeys.ignoreTimezone, ignoreTimezone);
     }
 
     public boolean isTooltip() {
