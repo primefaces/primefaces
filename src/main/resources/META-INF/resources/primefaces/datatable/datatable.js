@@ -2930,13 +2930,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Clears table filters
      */
     clearFilters: function() {
-        var columnFilters = this.thead.find('> tr > th.ui-filter-column > .ui-column-filter');
-
-        if (columnFilters.length == 0) {
-            return;
-        }
-
-        columnFilters.val('');
+        this.thead.find('> tr > th.ui-filter-column > .ui-column-filter').val('');
         $(this.jqId + '\\:globalFilter').val('');
 
         this.filter();
