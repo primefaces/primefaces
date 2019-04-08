@@ -23,7 +23,6 @@
  */
 package org.primefaces.renderkit;
 
-import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Map;
 import javax.faces.FacesException;
@@ -57,15 +56,7 @@ public abstract class SelectManyRenderer extends SelectRenderer {
         if (value == null) {
             return null;
         }
-        else if (value instanceof Collection) {
-            return ((Collection) value).toArray();
-        }
-        else if (value.getClass().isArray()) {
-            if (Array.getLength(value) == 0) {
-                return null;
-            }
-        }
-        else {
+        else if (!(value instanceof Collection) && !value.getClass().isArray()) {
             throw new FacesException("Value of '" + component.getClientId() + "'must be an array or a collection");
         }
 
