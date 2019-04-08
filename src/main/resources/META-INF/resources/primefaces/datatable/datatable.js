@@ -68,7 +68,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.scrollable) {
             this.setupScrolling();
         }
-        
+
         if(this.cfg.groupColumnIndexes) {
             this.groupRows();
             this.bindToggleRowGroupEvents();
@@ -560,14 +560,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                         if(row.length) {
                             $this.unhighlightFocusedRow();
-                            
+
                             if($this.isCheckboxSelectionEnabled()) {
                                 row.find('> td.ui-selection-column .ui-chkbox input').focus();
                             }
                             else {
                                 $this.focusedRow = row;
                             }
-                            
+
                             $this.highlightFocusedRow();
 
                             if($this.cfg.scrollable) {
@@ -1067,7 +1067,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     shouldLoadLiveScroll: function() {
         return (!this.loadingLiveScroll && !this.allLoadedLiveScroll);
     },
-    
+
     /**
      * Clones a table header and removes duplicate ids.
      */
@@ -1173,7 +1173,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     hasVerticalOverflow: function() {
-        return (this.cfg.scrollHeight && this.bodyTable.outerHeight() > this.scrollBody.outerHeight())
+        return (this.cfg.scrollHeight && this.bodyTable.outerHeight() > this.scrollBody.outerHeight());
     },
 
     restoreScrollState: function() {
@@ -1295,7 +1295,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 $this.loadingLiveScroll = false;
                 $this.allLoadedLiveScroll = ($this.scrollOffset + $this.cfg.scrollStep) >= $this.cfg.scrollLimit;
-                
+
                 // reset index of shift selection on multiple mode
                 $this.originRowIndex = null;
             }
@@ -1339,7 +1339,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 if(typeof args.totalRecords !== 'undefined') {
                     $this.cfg.scrollLimit = args.totalRecords;
                 }
-                
+
                 // reset index of shift selection on multiple mode
                 $this.originRowIndex = null;
             }
@@ -1568,7 +1568,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 $this.updateColumnsView();
-                
+
                 // reset index of shift selection on multiple mode
                 $this.originRowIndex = null;
             }
@@ -1681,7 +1681,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 $this.updateColumnsView();
-                
+
                 // reset index of shift selection on multiple mode
                 $this.originRowIndex = null;
             }
@@ -3633,17 +3633,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         PrimeFaces.utils.registerResizeHandler(this, 'resize.sticky-' + this.id, null, function(e) {
             var _delay = e.data.delay;
-    
+
             if (_delay !== null && typeof _delay === 'number' && _delay > -1) {
                 if ($this.resizeTimeout) {
                     clearTimeout($this.resizeTimeout);
                 }
-                
+
                 $this.stickyContainer.hide();
                 $this.resizeTimeout = setTimeout(function() {
                     $this.stickyContainer.css('left', orginTableContent.offset().left);
                     $this.stickyContainer.width(table.outerWidth());
-                    $this.stickyContainer.show(); 
+                    $this.stickyContainer.show();
                 }, _delay);
             }
             else {
@@ -3754,7 +3754,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 groupStartIndex = i;
                 rowGroupCellData = columnData;
                 rowGroupCount = 1;
-                
+
                 if (this.cfg.liveScroll && column[0].hasAttribute('rowspan')) {
                     rowGroupCount = parseInt(column.attr('rowspan'));
                     i += rowGroupCount - 1;
@@ -3882,7 +3882,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
         }
     },
-    
+
     resetVirtualScrollBody: function() {
         this.bodyTable.css('top', '0px');
         this.scrollBody.scrollTop(0);
@@ -3979,7 +3979,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
                 this.scrollBody.children('div').css('height', parseFloat((this.cfg.scrollLimit * this.rowHeight) + 'px'));
                 this.frozenBody.children('div').css('height', parseFloat((this.cfg.scrollLimit * this.rowHeight) + 'px'));
             }
-            
+
             if(!this.cfg.scrollHeight) {
                 this.frozenBody.css('height', this.scrollBody.height());
             }
@@ -4492,7 +4492,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
 
         this.orderStateHolder.val(columnIds.join(','));
     },
-    
+
     //Override
     resetVirtualScrollBody: function() {
         this.scrollBodyTable.css('top', '0px');
@@ -4501,7 +4501,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         this.frozenBody.scrollTop(0);
         this.clearScrollState();
     },
-    
+
     //Override
     groupRows: function() {
         var scrollRows = this.scrollTbody.children('tr'),
@@ -4509,10 +4509,10 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
 
         for (var i = 0; i < this.cfg.groupColumnIndexes.length; i++) {
             var groupColumnIndex = this.cfg.groupColumnIndexes[i];
-            
+
             if (groupColumnIndex >= this.cfg.frozenColumns) {
                 this.groupRow(groupColumnIndex - this.cfg.frozenColumns, scrollRows);
-            } 
+            }
             else {
                 this.groupRow(groupColumnIndex, frozenRows);
             }
