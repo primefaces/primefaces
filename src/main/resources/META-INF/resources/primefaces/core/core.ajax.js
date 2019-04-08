@@ -435,6 +435,16 @@ if (!PrimeFaces.ajax) {
                     PrimeFaces.ajax.Request.addParams(postParams, cfg.ext.params, parameterPrefix);
                 }
 
+
+                // try to get partialSubmit from global config
+                if (cfg.partialSubmit === undefined) {
+                    cfg.partialSubmit = PrimeFaces.settings.partialSubmit;
+                }
+                // check for overwrite
+                if (cfg.ext && cfg.ext.partialSubmit) {
+                    cfg.partialSubmit = cfg.ext.partialSubmit;
+                }
+
                 /**
                  * Only add params of process components and their children
                  * if partial submit is enabled and there are components to process partially
@@ -458,7 +468,7 @@ if (!PrimeFaces.ajax) {
                             else {
                                 componentPostParams = jqProcess.find(partialSubmitFilter).serializeArray();
                             }
-                            
+
                             postParams = PrimeFaces.ajax.Request.arrayCompare(componentPostParams, postParams);
 
                             if (cfg.ext && cfg.ext.partialSubmitParameterFilter) {
@@ -664,7 +674,7 @@ if (!PrimeFaces.ajax) {
 
                 return null;
             },
-            
+
             arrayCompare: function(arr1, arr2) {
                 // loop arr1 params
                 $.each(arr1, function(index1, param1) {
@@ -676,7 +686,7 @@ if (!PrimeFaces.ajax) {
                         return true;
                     });
                 });
-                
+
                 return arr2;
             }
         },
