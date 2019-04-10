@@ -145,12 +145,15 @@
         if (typeof(inst.stay_open) !== 'boolean' || inst.stay_open === false) {
                 var $this = this;
                 setTimeout( function() {
-                    $this._base_updateDatepicker(inst);
-
                     // Reload the time control when changing something in the input text field.
                     var tp_inst = $this._get(inst, 'timepicker');
                     if (tp_inst) {
                             tp_inst._addTimePicker(inst);
+                    }
+                    // #4719 recalc position now that timepicker was added
+                    this._base_updateDatepicker(inst);
+                    if (tp_inst) {
+                        tp_inst._addTimePicker(inst);
                     }
                 }, 0);
         }
