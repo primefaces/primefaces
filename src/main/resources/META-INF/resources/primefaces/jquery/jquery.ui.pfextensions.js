@@ -17,51 +17,54 @@
             var handler = {
                 prev: function () {
                     $.datepicker._adjustDate(id, -stepMonths, "M");
-                    this.updateDatePickerPosition(inst);
+                    $.datepicker._updateDatePickerPosition(inst);
                 },
                 next: function () {
                     $.datepicker._adjustDate(id, +stepMonths, "M");
-                    this.updateDatePickerPosition(inst);
+                    $.datepicker._updateDatePickerPosition(inst);
                 },
                 hide: function () {
                     $.datepicker._hideDatepicker();
                 },
                 today: function () {
                     $.datepicker._gotoToday(id);
+                    $.datepicker._updateDatePickerPosition(inst);
                 },
                 selectDay: function () {
                     $.datepicker._selectDay(id, +this.getAttribute("data-month"), +this.getAttribute("data-year"), this);
+                    $.datepicker._updateDatePickerPosition(inst);
                     return false;
                 },
                 selectMonth: function () {
                     $.datepicker._selectMonthYear(id, this, "M");
+                    $.datepicker._updateDatePickerPosition(inst);
                     return false;
                 },
                 selectYear: function () {
                     $.datepicker._selectMonthYear(id, this, "Y");
+                    $.datepicker._updateDatePickerPosition(inst);
                     return false;
                 }
             };
             $(this).bind(this.getAttribute("data-event"), handler[this.getAttribute("data-handler")]);
-
-            this.updateDatePickerPosition = function (inst) {
-                if (!$.datepicker._pos) { // position below input
-                    $.datepicker._pos = $.datepicker._findPos(inst.input[0]);
-                    $.datepicker._pos[1] += inst.input[0].offsetHeight; // add the height
-                }
-
-                var offset = {left: $.datepicker._pos[0], top: $.datepicker._pos[1]};
-                $.datepicker._pos = null;
-                var isFixed = false;
-                $(inst.input[0]).parents().each(function () {
-                    isFixed |= $(this).css("position") === "fixed";
-                    return !isFixed;
-                });
-                var checkedOffset = $.datepicker._checkOffset(inst, offset, isFixed);
-                inst.dpDiv.css({top: checkedOffset.top + "px"});
-            };
-            this.updateDatePickerPosition(inst);
         });
+    };
+
+    $.datepicker._updateDatePickerPosition = function (inst) {
+        if (!$.datepicker._pos) { // position below input
+            $.datepicker._pos = $.datepicker._findPos(inst.input[0]);
+            $.datepicker._pos[1] += inst.input[0].offsetHeight; // add the height
+        }
+
+        var offset = {left: $.datepicker._pos[0], top: $.datepicker._pos[1]};
+        $.datepicker._pos = null;
+        var isFixed = false;
+        $(inst.input[0]).parents().each(function () {
+            isFixed |= $(this).css("position") === "fixed";
+            return !isFixed;
+        });
+        var checkedOffset = $.datepicker._checkOffset(inst, offset, isFixed);
+        inst.dpDiv.css({top: checkedOffset.top + "px"});
     };
 
     $.datepicker._generateMonthYearHeader = function (inst, drawMonth, drawYear, minDate, maxDate, secondary, monthNames, monthNamesShort) {
@@ -152,6 +155,8 @@
                     if (tp_inst) {
                             tp_inst._addTimePicker(inst);
                     }
+
+                    $this._updateDatePickerPosition(inst);
                 }, 0);
         }
     };
