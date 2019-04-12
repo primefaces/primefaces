@@ -143,7 +143,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     unbindEvents: function() {
         this.sortableColumns.off();
-        this.paginator.unbindEvents();
+        if (this.paginator) {
+            this.paginator.unbindEvents();
+        }
     },
 
     /**
