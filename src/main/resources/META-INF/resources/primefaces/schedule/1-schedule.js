@@ -133,9 +133,9 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                             'left': jsEvent.pageX,
                             'top': jsEvent.pageY + 15,
                             'z-index': ++PrimeFaces.zindex
-                        })
-                            .text(event.description)
-                            .show();
+                        });
+                        $this.tip[0].innerHTML = event.description;
+                        $this.tip.show();
                     }, 150);
                 }
             };
