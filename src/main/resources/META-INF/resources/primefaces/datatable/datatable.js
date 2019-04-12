@@ -142,7 +142,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Unbinds events needed if refreshing to prevent multiple sort and pagination events.
      */
     unbindEvents: function() {
-        this.sortableColumns.off();
+        if (this.sortableColumns) {
+            this.sortableColumns.off();
+        }
         if (this.paginator) {
             this.paginator.unbindEvents();
         }
