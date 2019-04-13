@@ -561,8 +561,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         });
         
         // GitHub #4727
-        var title = '#' + this.id + '_title';
-        if ($(title).length) {
+        var title = this.id + '_title';
+        if ($('#' +title).length) {
             this.jq.attr('aria-labelledby', title);
         }
 
