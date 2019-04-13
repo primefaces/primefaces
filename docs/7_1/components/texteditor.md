@@ -44,6 +44,8 @@ allowImages | true | Boolean | Whether to allow images to be included.
 formats | null | List | Define a list of formats to allow in the editor. By default all formats are allowed.
 
 ## Getting started with the Editor
+!> TextEditor requires the **owasp-java-html-sanitizer** dependency added to your pom.xml to prevent XSS. 
+
 Rich Text entered using the Editor is passed to the server using _value_ expression.
 
 ```java
