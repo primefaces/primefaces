@@ -83,4 +83,4 @@ message bundle mechanism. Corresponding keys are;
 
 - Use label option to provide readable error messages in case validation fails.
 - Enable _secure_ option to support https otherwise browsers will give warnings.
-- See [http://www.google.com/recaptcha/learnmore](http://www.google.com/recaptcha/learnmore) to learn more about how reCaptcha works.
+- See [https://developers.google.com/recaptcha/intro](https://developers.google.com/recaptcha/intro) to learn more about how reCaptcha works.
