@@ -192,6 +192,17 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             }
         });
     },
+    
+    unbindEvents: function() {
+        var buttons = this.jq.children('a.ui-state-default');
+        if (buttons.length > 0) {
+            buttons.off();
+        }
+        var pageLinks = this.pagesContainer.children('.ui-paginator-page');
+        if (pageLinks.length > 0) {
+            pageLinks.off();
+        }
+    },
 
     updateUI: function() {
         //boundaries

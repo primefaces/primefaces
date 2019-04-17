@@ -132,8 +132,22 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     //@override
     refresh: function(cfg) {
         this.columnWidthsFixed = false;
+        
+        this.unbindEvents();
 
         this._super(cfg);
+    },
+    
+    /**
+     * Unbinds events needed if refreshing to prevent multiple sort and pagination events.
+     */
+    unbindEvents: function() {
+        if (this.sortableColumns) {
+            this.sortableColumns.off();
+        }
+        if (this.paginator) {
+            this.paginator.unbindEvents();
+        }
     },
 
     /**
