@@ -42,7 +42,8 @@ abstract class MessagesBase extends UIMessages implements UINotification {
         style,
         styleClass,
         showIcon,
-        forType
+        forType,
+        forIgnores
     }
 
     public MessagesBase() {
@@ -109,6 +110,14 @@ abstract class MessagesBase extends UIMessages implements UINotification {
 
     public void setForType(String forType) {
         getStateHelper().put(PropertyKeys.forType, forType);
+    }
+
+    public String getForIgnores() {
+        return (String) getStateHelper().eval(PropertyKeys.forIgnores, null);
+    }
+
+    public void setForIgnores(String forIgnores) {
+        getStateHelper().put(PropertyKeys.forIgnores, forIgnores);
     }
 
 }
