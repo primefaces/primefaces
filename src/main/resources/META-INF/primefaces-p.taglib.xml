@@ -16088,7 +16088,7 @@
             <description>
                 <![CDATA[Defines a list of keys and clientIds, which should NOT be rendered by this component. Seperated by space or comma.]]>
             </description>
-            <name>forType</name>
+            <name>forIgnores</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
