@@ -1110,7 +1110,7 @@
 
         renderTitleMonthElement: function (month) {
             if (this.options.monthNavigator && this.options.view !== 'month') {
-                return '<select class="ui-datepicker-month">' + this.renderTitleOptions('month', this.options.locale.monthNames) + '</select>';
+                return '<select class="ui-datepicker-month">' + this.renderTitleOptions('month', this.options.locale.monthNamesShort) + '</select>';
             }
             else {
                 return '<span class="ui-datepicker-month">' + this.escapeHTML(this.options.locale.monthNames[month]) + '</span>' + '&#xa0;';
