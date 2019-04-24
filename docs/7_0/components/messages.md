@@ -25,6 +25,7 @@ showDetail | false | Boolean | Specifies if the detail of the FacesMessages shou
 globalOnly | false | String | When true, only facesmessages with no clientIds are displayed.
 redisplay | true | Boolean | Defines if already rendered messages should be displayed
 for | null | String | Name of associated key, takes precedence when used with globalOnly.
+forType | null | String | Type of the "for" attribute. Valid values are "key" and "expression".
 escape | true | Boolean | Defines whether html would be escaped or not.
 severity | null | String | Comma separated list of severities to display only.
 closable | false | Boolean | Adds a close icon to hide the messages.

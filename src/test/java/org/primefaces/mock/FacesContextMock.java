@@ -23,8 +23,10 @@
  */
 package org.primefaces.mock;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.faces.application.Application;
@@ -44,6 +46,7 @@ public class FacesContextMock extends FacesContext {
     private ExternalContext externalContext = new ExternalContextMock();
     private Application application = new ApplicationMock();
     private PartialViewContext partialViewContext = new PartialViewContextMock();
+    private Map<String, List<FacesMessage>> messages = new HashMap<>();
 
     private Map<Object, Object> attributes;
     private ResponseWriter writer;
@@ -84,8 +87,12 @@ public class FacesContextMock extends FacesContext {
     }
 
     @Override
-    public void addMessage(String arg0, FacesMessage arg1) {
-
+    public void addMessage(String clientId, FacesMessage message) {
+        if (!messages.containsKey(clientId)) {
+            messages.put(clientId, new ArrayList<>());
+        }
+        
+        messages.get(clientId).add(message);
     }
 
     @Override
@@ -95,7 +102,7 @@ public class FacesContextMock extends FacesContext {
 
     @Override
     public Iterator<String> getClientIdsWithMessages() {
-        return null;
+        return messages.keySet().iterator();
     }
 
     @Override
@@ -115,12 +122,17 @@ public class FacesContextMock extends FacesContext {
 
     @Override
     public Iterator<FacesMessage> getMessages() {
-        return null;
+        List<FacesMessage> all = new ArrayList<>();
+        for (List msgs : messages.values()) {
+            all.addAll(msgs);
+        }
+        
+        return all.iterator();
     }
 
     @Override
-    public Iterator<FacesMessage> getMessages(String arg0) {
-        return null;
+    public Iterator<FacesMessage> getMessages(String clientId) {
+        return messages.get(clientId).iterator();
     }
 
     @Override

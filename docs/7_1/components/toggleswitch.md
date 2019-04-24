@@ -53,13 +53,7 @@ public class Bean {
     //getter and setter
 }
 ```
-## Labels
-Labels are customized using onLabel and offLabel options. Setting showLabels as false, turns off
-labels altogether.
 
-```xhtml
-<p:toggleSwitch value="#{bean.propertyName}" onLabel="yes" offLabel="no"/>
-```
 ## Client Side API
 Widget: _PrimeFaces.widget.ToggleSwitch_
 

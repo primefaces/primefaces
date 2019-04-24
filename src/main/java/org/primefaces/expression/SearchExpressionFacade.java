@@ -43,13 +43,13 @@ import org.primefaces.util.SharedStringBuilder;
  */
 public class SearchExpressionFacade {
 
+    public static final char[] EXPRESSION_SEPARATORS = new char[]{',', ' '};
+
     private static final Logger LOGGER = Logger.getLogger(SearchExpressionFacade.class.getName());
 
     private static final String SHARED_EXPRESSION_BUFFER_KEY = SearchExpressionFacade.class.getName() + ".SHARED_EXPRESSION_BUFFER";
     private static final String SHARED_SPLIT_BUFFER_KEY = SearchExpressionFacade.class.getName() + ".SHARED_SPLIT_BUFFER_KEY";
     private static final String SHARED_CLIENT_ID_EXPRESSION_BUFFER_KEY = SearchExpressionFacade.class.getName() + ".SHARED_CLIENT_ID_EXPRESSION_BUFFER_KEY";
-
-    private static final char[] EXPRESSION_SEPARATORS = new char[]{',', ' '};
 
     private SearchExpressionFacade() {
     }
@@ -806,7 +806,7 @@ public class SearchExpressionFacade {
      * @param separators The separators.
      * @return The splitted string.
      */
-    protected static String[] split(FacesContext context, String value, char... separators) {
+    public static String[] split(FacesContext context, String value, char... separators) {
 
         if (LangUtils.isValueBlank(value)) {
             return null;
