@@ -16,7 +16,7 @@ consists of several child tab components where each tab represents a step in the
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component.
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -33,6 +33,14 @@ nextLabel | null | String | Label of next navigation button.
 backLabel | null | String | Label of back navigation button.
 widgetVar | null | String | Name of the client side widget
 updateModelOnPrev | false | Boolean | If yes, the model will be updated when the "Back" button is clicked. Default is false.
+
+## Ajax Behavior Events
+Wizard provides custom ajax behavior events to configure the built-in AJAX requests.
+
+| Event | Listener Parameter | Fired |
+| --- | --- | --- |
+next | javax.faces.event.AjaxBehaviorEvent | When "next" is triggered
+back | javax.faces.event.AjaxBehaviorEvent | When "back" is triggered
 
 ## Getting Started with Wizard
 Each step in the flow is represented with a tab. As an example following wizard is used to create a
@@ -192,8 +200,8 @@ as the values of these attributes.
 Widget: _PrimeFaces.widget.Wizard_
 
 
-| Method | Params | Return Type | Description | 
-| --- | --- | --- | --- | 
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
 next() | - | void | Proceeds to next step.
 back() | - | void | Goes back in flow.
 getStepIndex() | - | Number | Returns the index of current step.
@@ -206,8 +214,8 @@ hideBackNav() | - | void | Hides back button.
 Wizard resides in a container element that _style_ and _styleClass_ attributes apply. Following is the list
 of structural css classes.
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 .ui-wizard | Main container element.
 .ui-wizard-content | Container element of content.
 .ui-wizard-step-titles | Container of step titles.
