@@ -26,7 +26,7 @@ package org.primefaces.component.rowtoggler;
 import javax.faces.component.UIComponentBase;
 
 
-abstract class RowTogglerBase extends UIComponentBase {
+public abstract class RowTogglerBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

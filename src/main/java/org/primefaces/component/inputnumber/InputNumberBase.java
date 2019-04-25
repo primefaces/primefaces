@@ -30,7 +30,7 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class InputNumberBase extends HtmlInputText implements Widget, InputHolder {
+public abstract class InputNumberBase extends HtmlInputText implements Widget, InputHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

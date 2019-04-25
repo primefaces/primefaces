@@ -26,7 +26,7 @@ package org.primefaces.component.ribbon;
 import javax.faces.component.UIComponentBase;
 
 
-abstract class RibbonGroupBase extends UIComponentBase {
+public abstract class RibbonGroupBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

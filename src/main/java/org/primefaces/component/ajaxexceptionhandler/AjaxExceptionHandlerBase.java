@@ -26,7 +26,7 @@ package org.primefaces.component.ajaxexceptionhandler;
 import javax.faces.component.UIComponentBase;
 
 
-abstract class AjaxExceptionHandlerBase extends UIComponentBase {
+public abstract class AjaxExceptionHandlerBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

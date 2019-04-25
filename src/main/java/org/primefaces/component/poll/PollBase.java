@@ -30,7 +30,7 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
+public abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

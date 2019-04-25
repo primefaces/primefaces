@@ -31,7 +31,7 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class ChipsBase extends HtmlInputText implements Widget, InputHolder, MixedClientBehaviorHolder {
+public abstract class ChipsBase extends HtmlInputText implements Widget, InputHolder, MixedClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

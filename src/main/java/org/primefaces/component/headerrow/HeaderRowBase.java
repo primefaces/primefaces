@@ -26,7 +26,7 @@ package org.primefaces.component.headerrow;
 import javax.faces.component.UIComponentBase;
 
 
-abstract class HeaderRowBase extends UIComponentBase {
+public abstract class HeaderRowBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

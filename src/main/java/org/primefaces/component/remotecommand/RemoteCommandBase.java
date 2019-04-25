@@ -28,7 +28,7 @@ import javax.faces.component.UICommand;
 import org.primefaces.component.api.AjaxSource;
 
 
-abstract class RemoteCommandBase extends UICommand implements AjaxSource {
+public abstract class RemoteCommandBase extends UICommand implements AjaxSource {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

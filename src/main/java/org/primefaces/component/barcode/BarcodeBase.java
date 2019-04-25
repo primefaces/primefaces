@@ -26,7 +26,7 @@ package org.primefaces.component.barcode;
 import javax.faces.component.html.HtmlGraphicImage;
 
 
-abstract class BarcodeBase extends HtmlGraphicImage {
+public abstract class BarcodeBase extends HtmlGraphicImage {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

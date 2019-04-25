@@ -26,7 +26,7 @@ package org.primefaces.component.organigramnode;
 import javax.faces.component.UIComponentBase;
 
 
-abstract class UIOrganigramNodeBase extends UIComponentBase {
+public abstract class UIOrganigramNodeBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

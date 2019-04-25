@@ -32,7 +32,7 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class DataListBase extends UIData implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable {
+public abstract class DataListBase extends UIData implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

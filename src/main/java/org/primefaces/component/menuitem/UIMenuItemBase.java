@@ -33,7 +33,8 @@ import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.model.menu.MenuItem;
 
 
-abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcomeTarget, MenuItem, Confirmable, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcomeTarget, MenuItem, Confirmable,
+        ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

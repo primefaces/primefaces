@@ -32,7 +32,7 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

@@ -26,7 +26,7 @@ package org.primefaces.component.outputlabel;
 import javax.faces.component.html.HtmlOutputLabel;
 
 
-abstract class OutputLabelBase extends HtmlOutputLabel {
+public abstract class OutputLabelBase extends HtmlOutputLabel {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
