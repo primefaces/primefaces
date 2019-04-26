@@ -137,8 +137,10 @@ public class PickList extends PickListBase {
             setValid(false);
         }
 
-        checkDisabled(facesContext, label, newModel.getSource(), oldModel.getSource());
-        checkDisabled(facesContext, label, newModel.getTarget(), oldModel.getTarget());
+        if (newModel != null && oldModel != null) {
+            checkDisabled(facesContext, label, newModel.getSource(), oldModel.getSource());
+            checkDisabled(facesContext, label, newModel.getTarget(), oldModel.getTarget());
+        }
     }
 
     /**
