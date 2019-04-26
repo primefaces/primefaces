@@ -213,18 +213,6 @@
             <version>1.2.1</version>
             <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>org.owasp.esapi</groupId>
-            <artifactId>esapi</artifactId>
-            <version>2.1.0.1</version>
-            <optional>true</optional>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
 
         <dependency>
             <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
@@ -817,16 +805,6 @@
                             </includes>
                         </relocation>
                         <relocation>
-                            <pattern>org.owasp.esapi</pattern>
-                            <shadedPattern>org.primefaces.shaded.owasp.esapi</shadedPattern>
-                            <includes>
-                                <include>org.owasp.esapi.SafeFile</include>
-                                <include>org.owasp.esapi.Logger</include>
-                                <include>org.owasp.esapi.errors.ValidationException</include>
-                                <include>org.owasp.esapi.errors.EnterpriseSecurityException</include>
-                            </includes>
-                        </relocation>
-                        <relocation>
                             <pattern>org.apache.commons.io</pattern>
                             <shadedPattern>org.primefaces.shaded.commons.io</shadedPattern>
                             <includes>
@@ -837,15 +815,6 @@
                         </relocation>
                     </relocations>
                     <filters>
-                        <filter>
-                            <artifact>org.owasp.esapi:esapi</artifact>
-                            <includes>
-                                <include>org/owasp/esapi/SafeFile.class</include>
-                                <include>org/owasp/esapi/Logger.class</include>
-                                <include>org/owasp/esapi/errors/ValidationException.class</include>
-                                <include>org/owasp/esapi/errors/EnterpriseSecurityException.class</include>
-                            </includes>
-                        </filter>
                         <filter>
                             <artifact>commons-io:commons-io</artifact>
                             <includes>
