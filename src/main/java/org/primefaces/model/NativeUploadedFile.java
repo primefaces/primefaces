@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.faces.FacesException;
 import javax.servlet.http.Part;
+
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.input.BoundedInputStream;
 import org.primefaces.util.FileUploadUtils;
 
@@ -128,16 +130,16 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
 
     @Override
     public void write(String filePath) throws Exception {
-        String validFilePath = FileUploadUtils.getValidFilePath(filePath);
+        String validFileName = FileUploadUtils.getValidFilename(FilenameUtils.getName(filePath));
 
         if (parts != null) {
             for (int i = 0; i < parts.size(); i++) {
                 Part p = parts.get(i);
-                p.write(validFilePath);
+                p.write(validFileName);
             }
         }
         else {
-            part.write(validFilePath);
+            part.write(validFileName);
         }
     }
 
