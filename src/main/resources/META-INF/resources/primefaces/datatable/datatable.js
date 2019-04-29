@@ -201,11 +201,19 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         for(var i = 0; i < this.sortableColumns.length; i++) {
-            var columnHeader = this.sortableColumns.eq(i),
-            sortIcon = columnHeader.children('span.ui-sortable-column-icon'),
+            var columnHeader, columnHeaderId;
+             
+            if (this.cfg.multiSort) {
+                columnHeaderId = this.cfg.sortMetaOrder[i];
+                columnHeader = this.sortableColumns.filter('[id="' + columnHeaderId + '"]');
+            }
+            else {
+                columnHeader = this.sortableColumns.eq(i);
+                columnHeaderId = columnHeader.attr('id');
+            }
+            
+            var sortIcon = columnHeader.children('span.ui-sortable-column-icon'),
             sortOrder = null,
-            columnId = null,
-            resolvedSortMetaIndex = null,
             ariaLabel = columnHeader.attr('aria-label');
 
             if(columnHeader.hasClass('ui-state-active')) {
@@ -227,13 +235,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 if($this.cfg.multiSort) {
-                    columnId = columnHeader.attr('id');
-                    resolvedSortMetaIndex = $.inArray(columnId, this.cfg.sortMetaOrder);
-
-                    this.sortMeta[resolvedSortMetaIndex] = {
-                        col: columnId,
+                    $this.addSortMeta({
+                        col: columnHeaderId,
                         order: sortOrder
-                    };
+                    });
                 }
 
                 $this.updateReflowDD(columnHeader, sortOrder);
