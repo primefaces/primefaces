@@ -182,7 +182,8 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
                         
             //caption
             if(this.cfg.showCaption) {
-                this.showCaption(newPanel);
+                var $this = this;
+                setTimeout(function() {$this.showCaption(newPanel);}, $this.cfg.effectSpeed);
             }
             
             this.cfg.activeIndex = index;
