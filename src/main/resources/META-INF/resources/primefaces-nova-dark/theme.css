@@ -2453,7 +2453,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
   color: #333333;
   padding: 0.571em 1em; }
   body .ui-panelgrid .ui-panelgrid-cell.ui-widget-header {
-    border: 1px solid #333333;
+    border: 1px solid #6a6a6a;
     background-color: #333333;
     color: #ffffff;
     padding: 0.571em 1em 0.571em 1em;
