@@ -204,6 +204,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var columnHeader = this.sortableColumns.eq(i),
             sortIcon = columnHeader.children('span.ui-sortable-column-icon'),
             sortOrder = null,
+            columnId = null,
+            resolvedSortMetaIndex = null,
             ariaLabel = columnHeader.attr('aria-label');
 
             if(columnHeader.hasClass('ui-state-active')) {
@@ -225,10 +227,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 if($this.cfg.multiSort) {
-                    $this.addSortMeta({
-                        col: columnHeader.attr('id'),
+                    columnId = columnHeader.attr('id');
+                    resolvedSortMetaIndex = $.inArray(columnId, this.cfg.sortMetaOrder);
+
+                    this.sortMeta[resolvedSortMetaIndex] = {
+                        col: columnId,
                         order: sortOrder
-                    });
+                    };
                 }
 
                 $this.updateReflowDD(columnHeader, sortOrder);

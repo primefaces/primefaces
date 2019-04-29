@@ -288,7 +288,8 @@ public class DataTableRenderer extends DataRenderer {
 
         //MultiColumn Sorting
         if (table.isMultiSort()) {
-            wb.attr("multiSort", true);
+            wb.attr("multiSort", true)
+                    .nativeAttr("sortMetaOrder", table.getSortMetaOrder(context), null);
         }
 
         if (table.isStickyHeader()) {
