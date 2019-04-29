@@ -536,6 +536,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.env.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.ajax.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.csp.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.expressions.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.utils.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.widget.js</include>

@@ -45,6 +45,7 @@ public class Constants {
         public static final String INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES = "primefaces.INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES";
         public static final String EARLY_POST_PARAM_EVALUATION = "primefaces.EARLY_POST_PARAM_EVALUATION";
         public static final String MOVE_SCRIPTS_TO_BOTTOM = "primefaces.MOVE_SCRIPTS_TO_BOTTOM";
+        public static final String CSP = "primefaces.CSP";
     }
 
     public static class RequestParams {
@@ -60,6 +61,7 @@ public class Constants {
         public static final String RESET_VALUES_PARAM = "primefaces.resetvalues";
         public static final String IGNORE_AUTO_UPDATE_PARAM = "primefaces.ignoreautoupdate";
         public static final String SKIP_CHILDREN_PARAM = "primefaces.skipchildren";
+        public static final String NONCE_PARAM = "primefaces.nonce";
     }
 
     public static final String DOWNLOAD_COOKIE = "primefaces.download";

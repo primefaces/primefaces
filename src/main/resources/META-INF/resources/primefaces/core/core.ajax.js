@@ -435,16 +435,6 @@ if (!PrimeFaces.ajax) {
                     PrimeFaces.ajax.Request.addParams(postParams, cfg.ext.params, parameterPrefix);
                 }
 
-
-                // try to get partialSubmit from global config
-                if (cfg.partialSubmit === undefined) {
-                    cfg.partialSubmit = PrimeFaces.settings.partialSubmit;
-                }
-                // check for overwrite
-                if (cfg.ext && cfg.ext.partialSubmit) {
-                    cfg.partialSubmit = cfg.ext.partialSubmit;
-                }
-
                 /**
                  * Only add params of process components and their children
                  * if partial submit is enabled and there are components to process partially
@@ -468,7 +458,7 @@ if (!PrimeFaces.ajax) {
                             else {
                                 componentPostParams = jqProcess.find(partialSubmitFilter).serializeArray();
                             }
-
+                            
                             postParams = PrimeFaces.ajax.Request.arrayCompare(componentPostParams, postParams);
 
                             if (cfg.ext && cfg.ext.partialSubmitParameterFilter) {
@@ -485,6 +475,7 @@ if (!PrimeFaces.ajax) {
                     if (!formProcessed) {
                         PrimeFaces.ajax.Request.addParamFromInput(postParams, PrimeFaces.VIEW_STATE, form, parameterPrefix);
                         PrimeFaces.ajax.Request.addParamFromInput(postParams, PrimeFaces.CLIENT_WINDOW, form, parameterPrefix);
+                        PrimeFaces.ajax.Request.addParamFromInput(postParams, PrimeFaces.csp.NONCE_INPUT, form, parameterPrefix);
                         PrimeFaces.ajax.Request.addParamFromInput(postParams, 'dsPostWindowId', form, parameterPrefix);
                         PrimeFaces.ajax.Request.addParamFromInput(postParams, 'dspwid', form, parameterPrefix);
                     }
@@ -526,6 +517,11 @@ if (!PrimeFaces.ajax) {
                         }
                     }
                 };
+
+                var nonce = form.children("input[name='" + PrimeFaces.csp.NONCE_INPUT + "']");
+                if (nonce.length > 0) {
+                    xhrOptions.nonce = nonce.val();
+                }
 
                 if (cfg.timeout) {
                     xhrOptions['timeout'] = cfg.timeout;
@@ -674,7 +670,7 @@ if (!PrimeFaces.ajax) {
 
                 return null;
             },
-
+            
             arrayCompare: function(arr1, arr2) {
                 // loop arr1 params
                 $.each(arr1, function(index1, param1) {
@@ -686,7 +682,7 @@ if (!PrimeFaces.ajax) {
                         return true;
                     });
                 });
-
+                
                 return arr2;
             }
         },
@@ -732,7 +728,7 @@ if (!PrimeFaces.ajax) {
                                         PrimeFaces.ajax.ResponseProcessor.doAttributes(currentChangeNode);
                                         break;
                                     case "eval":
-                                        PrimeFaces.ajax.ResponseProcessor.doEval(currentChangeNode);
+                                        PrimeFaces.ajax.ResponseProcessor.doEval(currentChangeNode, xhr);
                                         break;
                                     case "extension":
                                         PrimeFaces.ajax.ResponseProcessor.doExtension(currentChangeNode, xhr);
@@ -834,9 +830,21 @@ if (!PrimeFaces.ajax) {
                 }
             },
 
-            doEval : function(node) {
+            doEval : function(node, xhr) {
                 var textContent = node.textContent || node.innerText || node.text;
-                $.globalEval(textContent);
+
+                if (xhr && xhr.pfSettings && xhr.pfSettings.nonce) {
+                    // $.globalEval doesn't support nonce currently
+                    // and the internal used DOMEval can't be used from outside?
+                    var script = document.createElement('script');
+                    script.nonce = xhr.pfSettings.nonce;
+                    script.setAttribute('nonce', xhr.pfSettings.nonce);
+                    script.innerHTML = textContent;
+                    document.head.appendChild(script);
+                }
+                else {
+                    $.globalEval(textContent);
+                }
             },
 
             doExtension : function(node, xhr) {
