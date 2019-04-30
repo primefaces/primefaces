@@ -31,6 +31,7 @@ import java.io.Writer;
 import java.util.Map;
 import javax.faces.context.FacesContext;
 import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.util.EscapeUtils;
 
 public class CspPartialResponseWriter extends PartialResponseWriter {
 
@@ -189,7 +190,7 @@ public class CspPartialResponseWriter extends PartialResponseWriter {
                 String javascript = events.getValue();
 
                 sb.append("PrimeFaces.csp.register('");
-                sb.append(id);
+                sb.append(EscapeUtils.forJavaScript(id));
                 sb.append("','");
                 sb.append(event);
                 sb.append("',function(event){");

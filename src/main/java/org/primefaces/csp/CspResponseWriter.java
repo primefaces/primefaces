@@ -34,6 +34,7 @@ import java.util.UUID;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseWriterWrapper;
+import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.LangUtils;
 
 public class CspResponseWriter extends ResponseWriterWrapper {
@@ -226,7 +227,7 @@ public class CspResponseWriter extends ResponseWriterWrapper {
                 String javascript = events.getValue();
 
                 javascriptBuilder.append("PrimeFaces.csp.register('");
-                javascriptBuilder.append(id);
+                javascriptBuilder.append(EscapeUtils.forJavaScript(id));
                 javascriptBuilder.append("','");
                 javascriptBuilder.append(event);
                 javascriptBuilder.append("',function(event){");
