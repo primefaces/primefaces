@@ -84,7 +84,8 @@ public class CspResponseWriter extends ResponseWriterWrapper {
             lastId = (String) value;
         }
 
-        if (name.startsWith("on") && DOM_EVENTS.contains(name)) {
+        String lowerCaseName = name.toLowerCase();
+        if (lowerCaseName.startsWith("on") && DOM_EVENTS.contains(lowerCaseName)) {
             if (value != null) {
                 if (lastEvents == null) {
                     lastEvents = new HashMap<>(1);
