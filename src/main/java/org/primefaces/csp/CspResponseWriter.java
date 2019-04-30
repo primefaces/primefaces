@@ -176,7 +176,7 @@ public class CspResponseWriter extends ResponseWriterWrapper {
         }
 
         // no nonce written -> do it
-        if ("script".equals(lastElement) && LangUtils.isValueBlank(lastNonce)) {
+        if ("script".equalsIgnoreCase(lastElement) && LangUtils.isValueBlank(lastNonce)) {
             getWrapped().writeAttribute("nonce", cspState.getNonce(), null);
         }
 
