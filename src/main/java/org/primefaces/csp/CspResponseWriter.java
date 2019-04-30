@@ -34,6 +34,7 @@ import java.util.UUID;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseWriterWrapper;
+import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.LangUtils;
 
 public class CspResponseWriter extends ResponseWriterWrapper {
@@ -84,7 +85,8 @@ public class CspResponseWriter extends ResponseWriterWrapper {
             lastId = (String) value;
         }
 
-        if (name.startsWith("on") && DOM_EVENTS.contains(name)) {
+        String lowerCaseName = name.toLowerCase();
+        if (lowerCaseName.startsWith("on") && DOM_EVENTS.contains(lowerCaseName)) {
             if (value != null) {
                 if (lastEvents == null) {
                     lastEvents = new HashMap<>(1);
@@ -176,7 +178,7 @@ public class CspResponseWriter extends ResponseWriterWrapper {
         }
 
         // no nonce written -> do it
-        if ("script".equals(lastElement) && LangUtils.isValueBlank(lastNonce)) {
+        if ("script".equalsIgnoreCase(lastElement) && LangUtils.isValueBlank(lastNonce)) {
             getWrapped().writeAttribute("nonce", cspState.getNonce(), null);
         }
 
@@ -225,7 +227,7 @@ public class CspResponseWriter extends ResponseWriterWrapper {
                 String javascript = events.getValue();
 
                 javascriptBuilder.append("PrimeFaces.csp.register('");
-                javascriptBuilder.append(id);
+                javascriptBuilder.append(EscapeUtils.forJavaScript(id));
                 javascriptBuilder.append("','");
                 javascriptBuilder.append(event);
                 javascriptBuilder.append("',function(event){");
