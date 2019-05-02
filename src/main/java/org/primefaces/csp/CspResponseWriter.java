@@ -54,6 +54,8 @@ public class CspResponseWriter extends ResponseWriterWrapper {
                     "onselect", "onshow", "onstalled", "onstorage", "onsubmit", "onsuspend", "ontimeupdate", "ontoggle", "ontouchcancel",
                     "ontouchend", "ontouchmove", "ontouchstart", "ontransitionend", "onunload", "onvolumechange", "onwaiting", "onwheel"));
 
+    private ResponseWriter wrapped;
+
     private CspState cspState;
 
     private String lastElement;
@@ -61,8 +63,9 @@ public class CspResponseWriter extends ResponseWriterWrapper {
     private String lastNonce;
     private Map<String, String> lastEvents;
 
+    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public CspResponseWriter(ResponseWriter wrapped, CspState cspState) {
-        super(wrapped);
+        this.wrapped = wrapped;
         this.cspState = cspState;
     }
 
@@ -246,5 +249,10 @@ public class CspResponseWriter extends ResponseWriterWrapper {
     @Override
     public ResponseWriter cloneWithWriter(Writer writer) {
         return getWrapped().cloneWithWriter(writer);
+    }
+
+    @Override
+    public ResponseWriter getWrapped() {
+        return wrapped;
     }
 }
