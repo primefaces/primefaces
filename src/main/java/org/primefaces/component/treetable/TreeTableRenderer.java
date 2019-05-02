@@ -30,6 +30,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.el.ELContext;
+import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.EditableValueHolder;
