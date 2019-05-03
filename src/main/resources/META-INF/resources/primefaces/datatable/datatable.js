@@ -1104,6 +1104,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             $(this).children('.ui-column-title').children().remove();
         });
         clone.removeAttr('id').addClass('ui-datatable-scrollable-theadclone').height(0).prependTo(table);
+        
+        return clone;
     },
 
     cloneHead: function() {
