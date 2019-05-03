@@ -23,11 +23,9 @@
  */
 package org.primefaces.component.inputnumber;
 
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
-
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LocaleUtils;
 
 @ResourceDependencies({
@@ -65,7 +63,8 @@ public class InputNumber extends InputNumberBase {
     }
 
     public String getDecimalSeparator() {
-        return (String) getStateHelper().eval("decimalSeparator", getCalculatedDecimalSepartor());
+        return ComponentUtils.getValue(getStateHelper(), "decimalSeparator",
+            () -> LocaleUtils.getDecimalSeparator(getFacesContext()));
     }
 
     public void setDecimalSeparator(final String decimalSeparator) {
@@ -73,31 +72,12 @@ public class InputNumber extends InputNumberBase {
     }
 
     public String getThousandSeparator() {
-        return (String) getStateHelper().eval("thousandSeparator", getCalculatedThousandSeparator());
+        return ComponentUtils.getValue(getStateHelper(), "thousandSeparator",
+            () -> LocaleUtils.getThousandSeparator(getFacesContext()));
     }
 
     public void setThousandSeparator(final String thousandSeparator) {
         getStateHelper().put("thousandSeparator", thousandSeparator);
-    }
-
-    private String getCalculatedDecimalSepartor() {
-        String decimalSeparator = (String) getStateHelper().eval("decimalSeparator", null);
-        if (decimalSeparator == null) {
-            Locale locale = LocaleUtils.getCurrentLocale(getFacesContext());
-            DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(locale);
-            decimalSeparator = Character.toString(decimalFormatSymbols.getDecimalSeparator());
-        }
-        return decimalSeparator;
-    }
-
-    private String getCalculatedThousandSeparator() {
-        String thousandSeparator = (String) getStateHelper().eval("thousandSeparator", null);
-        if (thousandSeparator == null) {
-            Locale locale = LocaleUtils.getCurrentLocale(getFacesContext());
-            DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(locale);
-            thousandSeparator = Character.toString(decimalFormatSymbols.getGroupingSeparator());
-        }
-        return thousandSeparator;
     }
 
 }
