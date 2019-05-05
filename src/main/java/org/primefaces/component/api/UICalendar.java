@@ -23,16 +23,18 @@
  */
 package org.primefaces.component.api;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-import javax.faces.component.html.HtmlInputText;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.convert.DateTimeConverter;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.LocaleUtils;
+
+import javax.faces.component.html.HtmlInputText;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.FormatStyle;
+import java.util.Locale;
 
 public abstract class UICalendar extends HtmlInputText {
 
@@ -143,7 +145,7 @@ public abstract class UICalendar extends HtmlInputText {
         return null;
     }
 
-    public java.util.Locale calculateLocale(FacesContext facesContext) {
+    public Locale calculateLocale(FacesContext facesContext) {
         return LocaleUtils.resolveLocale(getLocale(), getClientId(facesContext));
     }
 
@@ -153,19 +155,49 @@ public abstract class UICalendar extends HtmlInputText {
         return (pattern != null && (pattern.contains("HH") || pattern.contains("mm") || pattern.contains("ss")));
     }
 
+    /**
+     * date-only pattern
+     * @return
+     */
     public String calculatePattern() {
         String pattern = getPattern();
         Locale locale = calculateLocale(getFacesContext());
 
-        return pattern == null ? ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, locale)).toPattern() : pattern;
+        //return pattern == null ? ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, locale)).toPattern() : pattern;
+        if (pattern == null) {
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT);
+            return DateTimeFormatterBuilder.getLocalizedDateTimePattern(FormatStyle.SHORT, null, dateTimeFormatter.getChronology(), locale);
+        }
+        else return pattern;
+    }
+
+    public String calculateDateTimePattern() {
+        String pattern = getPattern();
+        Locale locale = calculateLocale(getFacesContext());
+
+        //return pattern == null ? ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, locale)).toPattern() : pattern;
+        if (pattern == null) {
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
+            //TODO: timeStyle needs to be changed?
+            return DateTimeFormatterBuilder.getLocalizedDateTimePattern(FormatStyle.SHORT, FormatStyle.SHORT, dateTimeFormatter.getChronology(), locale);
+        }
+        else return pattern;
     }
 
     public String calculateTimeOnlyPattern() {
         if (timeOnlyPattern == null) {
-            String localePattern = ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, calculateLocale(getFacesContext()))).toPattern();
+            /*
+            Locale locale = calculateLocale(getFacesContext());
+            //TODO: SimpleDateFormat --> DateTimeFormatter
+            String localePattern = ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, locale)).toPattern();
             String userTimePattern = getPattern();
 
             timeOnlyPattern = localePattern + " " + userTimePattern;
+             */
+
+            //TODO: Default-Pattern when no Pattern is specified via Pattern-Attribute?
+
+            return getPattern();
         }
 
         return timeOnlyPattern;
@@ -217,6 +249,7 @@ public abstract class UICalendar extends HtmlInputText {
     public Converter getConverter() {
         Converter converter = super.getConverter();
 
+        //TODO: Why does it matter whether Client-Side-Validation is enabled?
         if (converter == null && PrimeApplicationContext.getCurrentInstance(getFacesContext()).getConfig().isClientSideValidationEnabled()) {
             DateTimeConverter con = new DateTimeConverter();
             con.setPattern(calculatePattern());

@@ -23,8 +23,9 @@
  */
 package org.primefaces.component.datepicker;
 
-import org.primefaces.util.CalendarUtils;
-import java.util.*;
+import org.primefaces.event.DateViewChangeEvent;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.util.*;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependencies;
@@ -33,10 +34,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
-
-import org.primefaces.event.DateViewChangeEvent;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.util.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -130,23 +130,49 @@ public class DatePicker extends DatePickerBase {
             boolean isDisabledDate = false;
             boolean isRangeDatesSequential = true;
 
-            if (value instanceof Date) {
-                isDisabledDate = validateDateValue(context, (Date) value);
+            //TODO: do we need to check for LocalTime?
+            if (value instanceof LocalDate) {
+                isDisabledDate = validateDateValue(context, (LocalDate) value);
+            }
+            else if (value instanceof LocalDateTime) {
+                isDisabledDate = validateDateValue(context, ((LocalDateTime) value).toLocalDate());
+            }
+            else if (value instanceof Date) {
+                isDisabledDate = validateDateValue(context, CalendarUtils.convertDate2LocalDate((Date) value));
             }
             else if (value instanceof List && getSelectionMode().equals("range")) {
                 List rangeValues = (List) value;
 
-                Date startDate = (Date) rangeValues.get(0);
-                isDisabledDate = validateDateValue(context, startDate);
+                if (rangeValues.get(0) instanceof LocalDate) {
+                    LocalDate startDate = (LocalDate) rangeValues.get(0);
+                    isDisabledDate = validateDateValue(context, startDate);
 
-                if (!isDisabledDate) {
-                    Date endDate = (Date) rangeValues.get(1);
-                    isDisabledDate = validateDateValue(context, endDate);
+                    if (!isDisabledDate) {
+                        LocalDate endDate = (LocalDate) rangeValues.get(1);
+                        isDisabledDate = validateDateValue(context, endDate);
 
-                    if (isValid() && startDate.after(endDate)) {
-                        setValid(false);
-                        isRangeDatesSequential = false;
+                        if (isValid() && startDate.isAfter(endDate)) {
+                            setValid(false);
+                            isRangeDatesSequential = false;
+                        }
                     }
+                }
+                else if (rangeValues.get(0) instanceof Date) {
+                    Date startDate = (Date) rangeValues.get(0);
+                    isDisabledDate = validateDateValue(context, CalendarUtils.convertDate2LocalDate(startDate));
+
+                    if (!isDisabledDate) {
+                        Date endDate = (Date) rangeValues.get(1);
+                        isDisabledDate = validateDateValue(context, CalendarUtils.convertDate2LocalDate(endDate));
+
+                        if (isValid() && startDate.after(endDate)) {
+                            setValid(false);
+                            isRangeDatesSequential = false;
+                        }
+                    }
+                }
+                else {
+                    //TODO: write error, throw exception, ...
                 }
             }
 
@@ -171,17 +197,17 @@ public class DatePicker extends DatePickerBase {
         }
     }
 
-    protected boolean validateDateValue(FacesContext context, Date date) {
+    protected boolean validateDateValue(FacesContext context, LocalDate date) {
         boolean isDisabledDate = false;
 
-        Date minDate = CalendarUtils.getObjectAsDate(context, this, getMindate());
-        if (minDate != null && !date.equals(minDate) && date.before(minDate)) {
+        LocalDate minDate = CalendarUtils.getObjectAsLocalDate(context, this, getMindate());
+        if (minDate != null && !date.equals(minDate) && date.isBefore(minDate)) {
             setValid(false);
         }
 
         if (isValid()) {
-            Date maxDate = CalendarUtils.getObjectAsDate(context, this, getMaxdate());
-            if (maxDate != null && !date.equals(maxDate) && date.after(maxDate)) {
+            LocalDate maxDate = CalendarUtils.getObjectAsLocalDate(context, this, getMaxdate());
+            if (maxDate != null && !date.equals(maxDate) && date.isAfter(maxDate)) {
                 setValid(false);
             }
         }
@@ -189,18 +215,22 @@ public class DatePicker extends DatePickerBase {
         if (isValid()) {
             List<Object> disabledDates = getDisabledDates();
             if (disabledDates != null) {
-                Calendar c = Calendar.getInstance(CalendarUtils.calculateTimeZone(getTimeZone()), calculateLocale(context));
-                c.setTime(date);
-                int sYear = c.get(Calendar.YEAR);
-                int sMonth = c.get(Calendar.MONTH);
-                int sDay = c.get(Calendar.DAY_OF_MONTH);
 
                 for (Object disabledDate : disabledDates) {
-                    if (disabledDate instanceof Date) {
-                        c.clear();
+                    if (disabledDate instanceof LocalDate) {
+                        if (((LocalDate) disabledDate).isEqual(date)) {
+                            setValid(false);
+                            isDisabledDate = true;
+                            break;
+                        }
+                    }
+                    else if (disabledDate instanceof Date) {
+                        Calendar c = Calendar.getInstance(CalendarUtils.calculateTimeZone(getTimeZone()), calculateLocale(context));
                         c.setTime((Date) disabledDate);
 
-                        if (sYear == c.get(Calendar.YEAR) && sMonth == c.get(Calendar.MONTH) && sDay == c.get(Calendar.DAY_OF_MONTH)) {
+                        if (date.getYear() == c.get(Calendar.YEAR) &&
+                                date.getMonthValue() == c.get(Calendar.MONTH) &&
+                                date.getDayOfMonth() == c.get(Calendar.DAY_OF_MONTH)) {
                             setValid(false);
                             isDisabledDate = true;
                             break;
@@ -213,11 +243,7 @@ public class DatePicker extends DatePickerBase {
         if (isValid()) {
             List<Object> disabledDays = getDisabledDays();
             if (disabledDays != null) {
-                Calendar c = Calendar.getInstance(CalendarUtils.calculateTimeZone(getTimeZone()), calculateLocale(context));
-                c.setTime(date);
-                int dayOfWeek = c.get(Calendar.DAY_OF_WEEK) - 1;
-
-                if (disabledDays.contains(dayOfWeek)) {
+                if (disabledDays.contains(date.getDayOfWeek())) {
                     setValid(false);
                     isDisabledDate = true;
                 }

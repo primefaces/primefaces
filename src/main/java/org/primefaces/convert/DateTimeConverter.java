@@ -23,13 +23,21 @@
  */
 package org.primefaces.convert;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.Map;
-import javax.faces.convert.ConverterException;
+import org.primefaces.component.api.UICalendar;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.HTML;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.ConverterException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DateTimeConverter extends javax.faces.convert.DateTimeConverter implements ClientConverter {
 
@@ -98,5 +106,61 @@ public class DateTimeConverter extends javax.faces.convert.DateTimeConverter imp
         else {
             throw new ConverterException("Invalid style '" + style + '\'');
         }
+    }
+
+    @Override
+    public Object getAsObject(FacesContext context, UIComponent component, String value) {
+        Object object = super.getAsObject(context, component, value);
+
+        /*
+        PF Client-Side-Validation triggers this converter. (If no converter is set explicit.)
+        So this converter needs to convert java.util.Date <--> LocalDate/LocalDateTime/LocalTime.
+        */
+
+        if (object != null) {
+            if (component instanceof UICalendar) {
+                UICalendar uiCalendar = (UICalendar) component;
+
+                if (object instanceof Date) {
+                    Date date = (Date) object;
+
+                    if (uiCalendar.isTimeOnly()) {
+                        object = CalendarUtils.convertDate2LocalTime(date);
+                    }
+                    else if (uiCalendar.hasTime()) {
+                        object = CalendarUtils.convertDate2LocalDateTime(date);
+                    }
+                    else {
+                        object = CalendarUtils.convertDate2LocalDate(date);
+                    }
+                }
+            }
+        }
+
+        return object;
+    }
+
+    @Override
+    public String getAsString(FacesContext context, UIComponent component, Object value) {
+        /*
+        PF Client-Side-Validation triggers this converter. (If no converter is set explicit.)
+        So this converter needs to convert java.util.Date <--> LocalDate/LocalDateTime/LocalTime.
+        */
+
+        if (value != null) {
+            if (component instanceof UICalendar) {
+                if (value instanceof LocalDate) {
+                    value = CalendarUtils.convertLocalDate2Date((LocalDate) value);
+                }
+                else if (value instanceof LocalDateTime) {
+                    value = CalendarUtils.convertLocalDateTime2Date((LocalDateTime) value);
+                }
+                else if (value instanceof LocalTime) {
+                    value = CalendarUtils.convertLocalTime2Date((LocalTime) value);
+                }
+            }
+        }
+
+        return super.getAsString(context, component, value);
     }
 }

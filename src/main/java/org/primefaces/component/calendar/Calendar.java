@@ -23,8 +23,9 @@
  */
 package org.primefaces.component.calendar;
 
-import org.primefaces.util.CalendarUtils;
-import java.util.*;
+import org.primefaces.event.DateViewChangeEvent;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.util.*;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependencies;
@@ -33,10 +34,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
-
-import org.primefaces.event.DateViewChangeEvent;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.util.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -128,17 +128,28 @@ public class Calendar extends CalendarBase {
     protected void validateValue(FacesContext context, Object value) {
         super.validateValue(context, value);
 
-        if (isValid() && !isEmpty(value) && value instanceof Date) {
-            Date date = (Date) value;
+        if (isValid() && !isEmpty(value) && (value instanceof LocalDate || value instanceof LocalDateTime || value instanceof Date)) {
+            LocalDate date = null;
 
-            Date minDate = CalendarUtils.getObjectAsDate(context, this, getMindate());
-            if (minDate != null && date.before(minDate)) {
+            //TODO: do we need to check for LocalTime?
+            if (value instanceof LocalDate) {
+                date = (LocalDate) value;
+            }
+            else if (value instanceof LocalDateTime) {
+                date = ((LocalDateTime) value).toLocalDate();
+            }
+            else if (value instanceof Date) {
+                date = CalendarUtils.convertDate2LocalDate((Date) value);
+            }
+
+            LocalDate minDate = CalendarUtils.getObjectAsLocalDate(context, this, getMindate());
+            if (minDate != null && date.isBefore(minDate)) {
                 setValid(false);
             }
 
             if (isValid()) {
-                Date maxDate = CalendarUtils.getObjectAsDate(context, this, getMaxdate());
-                if (maxDate != null && date.after(maxDate)) {
+                LocalDate maxDate = CalendarUtils.getObjectAsLocalDate(context, this, getMaxdate());
+                if (maxDate != null && date.isAfter(maxDate)) {
                     setValid(false);
                 }
             }

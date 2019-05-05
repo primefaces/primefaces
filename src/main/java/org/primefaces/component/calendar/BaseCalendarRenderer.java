@@ -23,10 +23,13 @@
  */
 package org.primefaces.component.calendar;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import org.primefaces.component.api.UICalendar;
+import org.primefaces.component.datepicker.DatePickerRenderer;
+import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.MessageFactory;
+
 import javax.el.ValueExpression;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -34,11 +37,14 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import org.primefaces.component.api.UICalendar;
-import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.CalendarUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.MessageFactory;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoField;
 
 public abstract class BaseCalendarRenderer extends InputRenderer {
 
@@ -124,11 +130,14 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object value) throws ConverterException {
         UICalendar uicalendar = (UICalendar) component;
-        String submittedValue = (String) value;
-        SimpleDateFormat format = null;
+        String submittedValue = ((String) value);
+        DateTimeFormatter formatter = null;
 
         if (isValueBlank(submittedValue)) {
             return null;
+        }
+        else {
+            submittedValue = submittedValue.trim();
         }
 
         //Delegate to user supplied converter if defined
@@ -144,12 +153,14 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             throw e;
         }
 
-        //Delegate to global defined converter (e.g. joda or java8)
+        //Delegate to global defined converter (e.g. joda or java.util.Date)
         try {
             ValueExpression ve = uicalendar.getValueExpression("value");
             if (ve != null) {
                 Class type = ve.getType(context.getELContext());
-                if (type != null && type != Object.class && type != Date.class) {
+                //if (type != null && type != Object.class && type != Date.class) {
+                if (type != null && type != Object.class && type != LocalDate.class && type != LocalDateTime.class && type != LocalTime.class) {
+                    //TODO: right decision to check Java8-Types instead of java.util.Date?
                     Converter converter = context.getApplication().createConverter(type);
                     if (converter != null) {
                         return converter.getAsObject(context, uicalendar, submittedValue);
@@ -163,20 +174,49 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             throw e;
         }
 
-        //Use built-in converter
-        format = new SimpleDateFormat(uicalendar.calculatePattern(), uicalendar.calculateLocale(context));
-        format.setLenient(false);
-        format.setTimeZone(CalendarUtils.calculateTimeZone(uicalendar.getTimeZone()));
         try {
-            return format.parse(submittedValue);
+            //TODO: is there some way to dynamically determine the type?
+
+            //inverted code from org.primefaces.convert::DateBackwardCompatiblityConverter - keep synchronized!
+
+            if (uicalendar.isTimeOnly()) {
+                formatter =  DateTimeFormatter.ofPattern(uicalendar.calculateTimeOnlyPattern(), uicalendar.calculateLocale(context));
+                return LocalTime.parse(submittedValue, formatter);
+            }
+            else if (uicalendar.hasTime()) {
+                //known issue: https://github.com/primefaces/primefaces/issues/4625
+                //known issue: https://github.com/primefaces/primefaces/issues/4626
+
+                //TODO: remove temporary (ugly) work-around for adding fixed time-pattern
+                String pattern = uicalendar.calculatePattern();
+                if (this instanceof DatePickerRenderer) {
+                    pattern += " HH:mm";
+                }
+
+                formatter = new DateTimeFormatterBuilder()
+                        .parseCaseInsensitive()
+                        .appendPattern(pattern)
+                        .toFormatter();
+                formatter = formatter.withLocale(uicalendar.calculateLocale(context));
+                return LocalDateTime.parse(submittedValue, formatter);
+            }
+            else {
+                formatter = new DateTimeFormatterBuilder()
+                        .parseCaseInsensitive()
+                        .appendPattern(uicalendar.calculatePattern())
+                        .parseDefaulting(ChronoField.DAY_OF_MONTH, 1) //because of Month Picker which does not contain day of month
+                        .toFormatter();
+                formatter = formatter.withLocale(uicalendar.calculateLocale(context));
+                return LocalDate.parse(submittedValue, formatter);
+            }
         }
-        catch (ParseException e) {
+        catch (DateTimeParseException e) {
             uicalendar.setConversionFailed(true);
 
             FacesMessage message = null;
             Object[] params = new Object[3];
             params[0] = submittedValue;
-            params[1] = format.format(new Date());
+            params[1] = formatter.format(LocalDate.now());
             params[2] = MessageFactory.getLabel(context, uicalendar);
 
             if (uicalendar.isTimeOnly()) {
