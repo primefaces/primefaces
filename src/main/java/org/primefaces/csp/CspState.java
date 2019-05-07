@@ -24,6 +24,7 @@
 package org.primefaces.csp;
 
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -67,6 +68,9 @@ public class CspState {
      * @throws FacesException
      */
     private void validate(String nonce) throws FacesException {
+        if (LangUtils.isValueEmpty(nonce)) {
+            throw new FacesException("Missing CSP nonce");
+        }
         try {
             Base64.getDecoder().decode(nonce);
         }
