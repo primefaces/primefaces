@@ -23,20 +23,17 @@
  */
 package org.primefaces.csp;
 
-import javax.faces.FacesException;
+import org.owasp.encoder.Encode;
+import org.primefaces.PrimeFaces;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeFacesContext;
+
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.servlet.http.HttpServletResponse;
-
-import org.owasp.encoder.Encode;
-import org.primefaces.PrimeFaces;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeFacesContext;
-
-import java.util.Base64;
 
 public class CspPhaseListener implements PhaseListener {
 
@@ -64,26 +61,11 @@ public class CspPhaseListener implements PhaseListener {
         // TODO Support portlet environments?
         if (externalContext.getResponse() instanceof HttpServletResponse) {
             CspState state = PrimeFacesContext.getCspState(context);
-            validate(state);
 
             HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
             response.addHeader("Content-Security-Policy", "script-src 'nonce-" + state.getNonce() + "'");
 
             PrimeFaces.current().executeScript("PrimeFaces.csp.init('" + Encode.forJavaScript(state.getNonce()) + "');");
-        }
-    }
-
-    /**
-     * Currently the script nonce is user-supplied input, so we have to validate it to prevent header/XSS injections.
-     * @param state
-     * @throws FacesException
-     */
-    private void validate(CspState state) throws FacesException {
-        try {
-            Base64.getDecoder().decode(state.getNonce());
-        }
-        catch (Exception e) {
-            throw new FacesException("Invalid CSP nonce", e);
         }
     }
 

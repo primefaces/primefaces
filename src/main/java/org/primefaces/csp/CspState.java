@@ -23,15 +23,16 @@
  */
 package org.primefaces.csp;
 
+import org.primefaces.util.Constants;
+
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
-import javax.faces.context.FacesContext;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
 
 public class CspState {
 
@@ -50,9 +51,7 @@ public class CspState {
         if (nonce == null) {
             if (context.isPostback()) {
                 nonce = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.NONCE_PARAM);
-                if (LangUtils.isValueBlank(nonce)) {
-                    LOG.severe("CSP activated but no nonce available in the POST...");
-                }
+                validate(nonce);
             }
             else {
                 nonce = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
@@ -60,6 +59,20 @@ public class CspState {
         }
 
         return nonce;
+    }
+
+    /**
+     * Currently the script nonce is user-supplied input, so we have to validate it to prevent header/XSS injections.
+     * @param nonce
+     * @throws FacesException
+     */
+    private void validate(String nonce) throws FacesException {
+        try {
+            Base64.getDecoder().decode(nonce);
+        }
+        catch (Exception e) {
+            throw new FacesException("Invalid CSP nonce", e);
+        }
     }
 
     public Map<String, Map<String, String>> getEventHandlers() {
