@@ -181,6 +181,9 @@ public class CspPartialResponseWriter extends PartialResponseWriter {
         if (sb == null) {
             sb = new StringBuilder(cspState.getEventHandlers().size() * 25);
         }
+        else {
+            sb.setLength(0);
+        }
 
         for (Map.Entry<String, Map<String, String>> elements : cspState.getEventHandlers().entrySet()) {
             String id = elements.getKey();
