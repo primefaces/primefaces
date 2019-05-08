@@ -1178,8 +1178,8 @@ public class TreeTableRenderer extends DataRenderer {
         filteredNode = createNewNode(root, root.getParent());
 
         List<String> filteredRowKeys = tt.getFilteredRowKeys();
-
-        createFilteredNodeFromRowKeys(tt, root, filteredNode, filteredRowKeys);
+        boolean showAll = isNoFilter(filterMetadata);
+        createFilteredNodeFromRowKeys(tt, root, filteredNode, filteredRowKeys,showAll);
 
         tt.updateFilteredNode(context, filteredNode);
         tt.setValue(filteredNode);
@@ -1193,6 +1193,17 @@ public class TreeTableRenderer extends DataRenderer {
             PrimeFaces.current().ajax().addCallbackParam("selection", tt.getSelectedRowKeysAsString());
         }
     }
+    
+  private boolean isNoFilter(List<FilterMeta> filterMetadata){
+    for (FilterMeta filterMeta : filterMetadata){
+      Object filterValue=filterMeta.getFilterValue();
+        boolean emptyFilter = filterValue==null||filterValue.equals("");
+        if(!emptyFilter){
+          return false;
+        }
+    }
+    return true;
+  }
 
     protected void findFilteredRowKeys(FacesContext context, TreeTable tt, TreeNode node, List<FilterMeta> filterMetadata, Locale filterLocale,
                                        String globalFilterValue) throws IOException {
@@ -1249,21 +1260,24 @@ public class TreeTableRenderer extends DataRenderer {
         }
     }
 
-    private void createFilteredNodeFromRowKeys(TreeTable tt, TreeNode node, TreeNode filteredNode, List<String> filteredRowKeys) {
+    private void createFilteredNodeFromRowKeys(TreeTable tt, TreeNode node, TreeNode filteredNode, List<String> filteredRowKeys,boolean showAll) {
         int childCount = node.getChildCount();
         for (int i = 0; i < childCount; i++) {
             TreeNode childNode = node.getChildren().get(i);
             String rowKeyOfChildNode = childNode.getRowKey();
+            if(showAll){
+                TreeNode newNode = createNewNode(childNode, filteredNode);
+            }else
+                for (String rk : filteredRowKeys) {
+                    if (rk.equals(rowKeyOfChildNode) || rk.startsWith(rowKeyOfChildNode + "_") || rowKeyOfChildNode.startsWith(rk + "_")) {
+                        TreeNode newNode = createNewNode(childNode, filteredNode);
+                        if (rk.startsWith(rowKeyOfChildNode + "_")) {
+                            newNode.setExpanded(true);
+                        }
 
-            for (String rk : filteredRowKeys) {
-                if (rk.equals(rowKeyOfChildNode) || rk.startsWith(rowKeyOfChildNode + "_") || rowKeyOfChildNode.startsWith(rk + "_")) {
-                    TreeNode newNode = createNewNode(childNode, filteredNode);
-                    if (rk.startsWith(rowKeyOfChildNode + "_")) {
-                        newNode.setExpanded(true);
+                        createFilteredNodeFromRowKeys(tt, childNode, newNode, filteredRowKeys,showAll);
+                        break;
                     }
-
-                    createFilteredNodeFromRowKeys(tt, childNode, newNode, filteredRowKeys);
-                    break;
                 }
             }
         }
