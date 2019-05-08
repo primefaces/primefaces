@@ -1198,7 +1198,7 @@ public class TreeTableRenderer extends DataRenderer {
         for (FilterMeta filterMeta : filterMetadata) {
             Object filterValue = filterMeta.getFilterValue();
             boolean emptyFilter = filterValue == null || filterValue.equals("");
-            if(!emptyFilter) {
+            if (!emptyFilter) {
                 return false;
             }
         }
@@ -1265,7 +1265,7 @@ public class TreeTableRenderer extends DataRenderer {
         for (int i = 0; i < childCount; i++) {
             TreeNode childNode = node.getChildren().get(i);
             String rowKeyOfChildNode = childNode.getRowKey();
-            if(showAll) {
+            if (showAll) {
                 TreeNode newNode = createNewNode(childNode, filteredNode);
             }
             else {
