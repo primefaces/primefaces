@@ -54,7 +54,7 @@ public class TreeNodeChildren extends TreeNodeList {
             eraseParent(node);
             boolean result = super.add(node);
             node.setParent(parent);
-            updateRowKeys(parent.getChildCount(), node);
+            updateRowKeys(parent.getChildCount() - 1, node);
             return result;
         }
     }
@@ -78,6 +78,7 @@ public class TreeNodeChildren extends TreeNodeList {
     @Override
     public boolean addAll(Collection<? extends TreeNode> collection) {
         Iterator<TreeNode> elements = (new ArrayList<TreeNode>(collection)).iterator();
+        int index = collection.size();
         boolean changed = false;
         while (elements.hasNext()) {
             TreeNode node = elements.next();
@@ -93,7 +94,7 @@ public class TreeNodeChildren extends TreeNodeList {
         }
 
         if (changed) {
-            updateRowKeys(collection.size(), parent);
+            updateRowKeys(index, parent);
         }
 
         return (changed);
