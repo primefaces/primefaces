@@ -193,7 +193,8 @@ public class TreeNodeChildren extends TreeNodeList {
             node.clearParent();
         }
 
-        if (super.remove(node)) {
+        int index = super.indexOf(node);
+        if (index != -1) {
             updateRowKeys(index, this.parent);
             return true;
         }
