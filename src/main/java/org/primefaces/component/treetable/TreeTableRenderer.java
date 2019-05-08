@@ -1179,7 +1179,7 @@ public class TreeTableRenderer extends DataRenderer {
 
         List<String> filteredRowKeys = tt.getFilteredRowKeys();
         boolean showAll = isNoFilter(filterMetadata);
-        createFilteredNodeFromRowKeys(tt, root, filteredNode, filteredRowKeys,showAll);
+        createFilteredNodeFromRowKeys(tt, root, filteredNode, filteredRowKeys, showAll);
 
         tt.updateFilteredNode(context, filteredNode);
         tt.setValue(filteredNode);
@@ -1193,17 +1193,17 @@ public class TreeTableRenderer extends DataRenderer {
             PrimeFaces.current().ajax().addCallbackParam("selection", tt.getSelectedRowKeysAsString());
         }
     }
-    
-  private boolean isNoFilter(List<FilterMeta> filterMetadata){
-    for (FilterMeta filterMeta : filterMetadata){
-      Object filterValue=filterMeta.getFilterValue();
-        boolean emptyFilter = filterValue==null||filterValue.equals("");
-        if(!emptyFilter){
-          return false;
-        }
+
+    private boolean isNoFilter(List<FilterMeta> filterMetadata) {
+      for (FilterMeta filterMeta : filterMetadata) {
+          Object filterValue=filterMeta.getFilterValue();
+          boolean emptyFilter = filterValue == null || filterValue.equals("");
+          if(!emptyFilter) {
+            return false;
+          }
+      }
+      return true;
     }
-    return true;
-  }
 
     protected void findFilteredRowKeys(FacesContext context, TreeTable tt, TreeNode node, List<FilterMeta> filterMetadata, Locale filterLocale,
                                        String globalFilterValue) throws IOException {
