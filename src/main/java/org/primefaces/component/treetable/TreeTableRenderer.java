@@ -1267,7 +1267,8 @@ public class TreeTableRenderer extends DataRenderer {
             String rowKeyOfChildNode = childNode.getRowKey();
             if(showAll){
                 TreeNode newNode = createNewNode(childNode, filteredNode);
-            }else
+            }
+            else{
                 for (String rk : filteredRowKeys) {
                     if (rk.equals(rowKeyOfChildNode) || rk.startsWith(rowKeyOfChildNode + "_") || rowKeyOfChildNode.startsWith(rk + "_")) {
                         TreeNode newNode = createNewNode(childNode, filteredNode);
