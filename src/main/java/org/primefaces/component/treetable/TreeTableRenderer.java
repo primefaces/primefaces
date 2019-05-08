@@ -1195,14 +1195,14 @@ public class TreeTableRenderer extends DataRenderer {
     }
 
     private boolean isNoFilter(List<FilterMeta> filterMetadata) {
-      for (FilterMeta filterMeta : filterMetadata) {
-          Object filterValue=filterMeta.getFilterValue();
-          boolean emptyFilter = filterValue == null || filterValue.equals("");
-          if(!emptyFilter) {
-            return false;
-          }
-      }
-      return true;
+        for (FilterMeta filterMeta : filterMetadata) {
+            Object filterValue = filterMeta.getFilterValue();
+            boolean emptyFilter = filterValue == null || filterValue.equals("");
+            if(!emptyFilter) {
+                return false;
+            }
+        }
+        return true;
     }
 
     protected void findFilteredRowKeys(FacesContext context, TreeTable tt, TreeNode node, List<FilterMeta> filterMetadata, Locale filterLocale,
@@ -1260,15 +1260,15 @@ public class TreeTableRenderer extends DataRenderer {
         }
     }
 
-    private void createFilteredNodeFromRowKeys(TreeTable tt, TreeNode node, TreeNode filteredNode, List<String> filteredRowKeys,boolean showAll) {
+    private void createFilteredNodeFromRowKeys(TreeTable tt, TreeNode node, TreeNode filteredNode, List<String> filteredRowKeys, boolean showAll) {
         int childCount = node.getChildCount();
         for (int i = 0; i < childCount; i++) {
             TreeNode childNode = node.getChildren().get(i);
             String rowKeyOfChildNode = childNode.getRowKey();
-            if(showAll){
+            if(showAll) {
                 TreeNode newNode = createNewNode(childNode, filteredNode);
             }
-            else{
+            else {
                 for (String rk : filteredRowKeys) {
                     if (rk.equals(rowKeyOfChildNode) || rk.startsWith(rowKeyOfChildNode + "_") || rowKeyOfChildNode.startsWith(rk + "_")) {
                         TreeNode newNode = createNewNode(childNode, filteredNode);
@@ -1276,7 +1276,7 @@ public class TreeTableRenderer extends DataRenderer {
                             newNode.setExpanded(true);
                         }
 
-                        createFilteredNodeFromRowKeys(tt, childNode, newNode, filteredRowKeys,showAll);
+                        createFilteredNodeFromRowKeys(tt, childNode, newNode, filteredRowKeys, showAll);
                         break;
                     }
                 }
