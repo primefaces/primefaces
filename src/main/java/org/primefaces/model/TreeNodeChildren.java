@@ -233,6 +233,7 @@ public class TreeNodeChildren extends TreeNodeList {
         int i = parent.getChildCount();
         String childRowKey = node.getParent() == null ? String.valueOf(i) : node.getRowKey() + "_" + i;
         node.setRowKey(childRowKey);
+        this.updateRowKeys(node);
     }
 
 }
