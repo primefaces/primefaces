@@ -54,7 +54,7 @@ public class TreeNodeChildren extends TreeNodeList {
             eraseParent(node);
             boolean result = super.add(node);
             node.setParent(parent);
-            updateRowKeys(parent.getChildCount() - 1, node);
+            updateRowKeys(parent.getChildCount() - 1, this.parent);
             return result;
         }
     }
@@ -217,7 +217,7 @@ public class TreeNodeChildren extends TreeNodeList {
         }
     }
 
-    public void updateRowKeys(int index, TreeNode node) {
+    private void updateRowKeys(int index, TreeNode node) {
         int childCount = node.getChildCount();
         if (childCount > 0) {
             for (int i = index; i < childCount; ++i) {
@@ -229,7 +229,7 @@ public class TreeNodeChildren extends TreeNodeList {
         }
     }
 
-    public void updateRowKeys(TreeNode parent, TreeNode node) {
+    private void updateRowKeys(TreeNode parent, TreeNode node) {
         int i = parent.getChildCount();
         String childRowKey = node.getParent() == null ? String.valueOf(i) : node.getRowKey() + "_" + i;
         node.setRowKey(childRowKey);
