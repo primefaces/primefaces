@@ -114,18 +114,37 @@
             return (cookieEnabled);
         },
 
+        /**
+         * Updates the Input to add style whether it contains data or not. Used particularly in Floating Labels.
+         * 
+         * @param the text input to modify
+         */
+        updateFilledState: function(input) {
+            if (input.val().length) {
+                input.addClass('ui-state-filled');
+            } else {
+                input.removeClass('ui-state-filled')
+            }
+        },
+
         skinInput : function(input) {
+            PrimeFaces.updateFilledState(input);
+
+            var $this = $(input);
+
             input.hover(
                 function() {
-                    $(this).addClass('ui-state-hover');
+                    $this.addClass('ui-state-hover');
                 },
                 function() {
-                    $(this).removeClass('ui-state-hover');
+                    $this.removeClass('ui-state-hover');
                 }
-            ).focus(function() {
-                $(this).addClass('ui-state-focus');
+            ).change(function() {
+                PrimeFaces.updateFilledState($this);
+            }).focus(function() {
+                $this.addClass('ui-state-focus');
             }).blur(function() {
-                $(this).removeClass('ui-state-focus');
+                $this.removeClass('ui-state-focus');
             });
 
             //aria
