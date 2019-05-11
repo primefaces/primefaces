@@ -225,7 +225,7 @@ public class DatePicker extends DatePickerBase {
                         }
                     }
                     else if (disabledDate instanceof Date) {
-                        Calendar c = Calendar.getInstance(CalendarUtils.calculateTimeZone(getTimeZone()), calculateLocale(context));
+                        Calendar c = Calendar.getInstance(TimeZone.getTimeZone(CalendarUtils.calculateZoneId(getTimeZone())), calculateLocale(context));
                         c.setTime((Date) disabledDate);
 
                         if (date.getYear() == c.get(Calendar.YEAR) &&

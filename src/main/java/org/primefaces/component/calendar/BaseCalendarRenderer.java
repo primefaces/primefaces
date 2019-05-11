@@ -49,6 +49,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoField;
 import java.util.Date;
+import java.util.TimeZone;
 
 public abstract class BaseCalendarRenderer extends InputRenderer {
 
@@ -242,7 +243,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
                 //Code for backward-compatibility with java.util.Date - may be removed at some point in the future
                 format = new SimpleDateFormat(uicalendar.calculatePattern(), uicalendar.calculateLocale(context));
                 format.setLenient(false);
-                format.setTimeZone(CalendarUtils.calculateTimeZone(uicalendar.getTimeZone()));
+                format.setTimeZone(TimeZone.getTimeZone(CalendarUtils.calculateZoneId(uicalendar.getTimeZone())));
 
                 return format.parse(submittedValue);
             }

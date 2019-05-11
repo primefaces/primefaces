@@ -40,6 +40,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Converter which provides Backward-Compatibility with {@link Date}
@@ -60,7 +61,7 @@ public class DateBackwardCompatiblityConverter implements Converter {
             //migrated code from org.primefaces.component.calendar.BaseCalendarRenderer, method getConvertedValue
             SimpleDateFormat format = new SimpleDateFormat(uicalendar.calculatePattern(), uicalendar.calculateLocale(context));
             format.setLenient(false);
-            format.setTimeZone(CalendarUtils.calculateTimeZone(uicalendar.getTimeZone()));
+            format.setTimeZone(TimeZone.getTimeZone(CalendarUtils.calculateZoneId(uicalendar.getTimeZone())));
             try {
                 return format.parse(value);
             }
@@ -124,7 +125,7 @@ public class DateBackwardCompatiblityConverter implements Converter {
             }
             else if (value instanceof Date) {
                 SimpleDateFormat format = new SimpleDateFormat(uicalendar.calculatePattern(), uicalendar.calculateLocale(context));
-                format.setTimeZone(CalendarUtils.calculateTimeZone(uicalendar.getTimeZone()));
+                format.setTimeZone(TimeZone.getTimeZone(CalendarUtils.calculateZoneId(uicalendar.getTimeZone())));
                 return format.format((Date) value);
             }
             else {

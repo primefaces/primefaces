@@ -319,13 +319,44 @@ public class CalendarUtils {
     }
 
     public static ZoneId calculateZoneId(Object usertimeZone) {
-        return calculateTimeZone(usertimeZone).toZoneId();
+        return calculateZoneId(usertimeZone, ZoneId.systemDefault());
     }
 
+    public static ZoneId calculateZoneId(Object usertimeZone, ZoneId defaultZoneId) {
+        if (usertimeZone != null) {
+            if (usertimeZone instanceof String) {
+                return ZoneId.of((String) usertimeZone);
+            }
+            else if (usertimeZone instanceof ZoneId) {
+                return (ZoneId) usertimeZone;
+            }
+            else if (usertimeZone instanceof TimeZone) {
+                return ((TimeZone) usertimeZone).toZoneId();
+            }
+            else {
+                throw new IllegalArgumentException("TimeZone could be either String or java.time.ZoneId or java.util.TimeZone");
+            }
+        }
+        else {
+            return defaultZoneId;
+        }
+    }
+
+    /**
+     * @deprecated  use {@link #calculateZoneId(Object)} instead.
+     * @param usertimeZone
+     * @return
+     */
     public static TimeZone calculateTimeZone(Object usertimeZone) {
         return calculateTimeZone(usertimeZone, TimeZone.getDefault());
     }
 
+    /**
+     * @deprecated  use {@link #calculateZoneId(Object, ZoneId)} instead.
+     * @param usertimeZone
+     * @param defaultTimeZone
+     * @return
+     */
     public static TimeZone calculateTimeZone(Object usertimeZone, TimeZone defaultTimeZone) {
         if (usertimeZone != null) {
             if (usertimeZone instanceof String) {

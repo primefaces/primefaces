@@ -35,6 +35,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public abstract class UICalendar extends HtmlInputText {
 
@@ -240,7 +241,7 @@ public abstract class UICalendar extends HtmlInputText {
         if (converter == null && PrimeApplicationContext.getCurrentInstance(getFacesContext()).getConfig().isClientSideValidationEnabled()) {
             DateTimeConverter con = new DateTimeConverter();
             con.setPattern(calculatePattern());
-            con.setTimeZone(CalendarUtils.calculateTimeZone(this.getTimeZone()));
+            con.setTimeZone(TimeZone.getTimeZone(CalendarUtils.calculateZoneId(this.getTimeZone())));
             con.setLocale(calculateLocale(getFacesContext()));
 
             return con;
