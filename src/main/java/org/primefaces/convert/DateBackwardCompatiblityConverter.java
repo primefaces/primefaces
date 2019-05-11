@@ -108,15 +108,18 @@ public class DateBackwardCompatiblityConverter implements Converter {
 
             if (value instanceof LocalDate) {
                 formatter =  DateTimeFormatter.ofPattern(uicalendar.calculateTimeOnlyPattern(), uicalendar.calculateLocale(context));
+                formatter = formatter.withZone(CalendarUtils.calculateZoneId(uicalendar.getTimeZone()));
                 return ((LocalDate) value).format(formatter);
             }
             else if (value instanceof LocalDateTime) {
                 //TODO: remove temporary (ugly) work-around for adding fixed time-pattern
                 formatter =  DateTimeFormatter.ofPattern(uicalendar.calculatePattern() + " HH:mm", uicalendar.calculateLocale(context));
+                formatter = formatter.withZone(CalendarUtils.calculateZoneId(uicalendar.getTimeZone()));
                 return ((LocalDateTime) value).format(formatter);
             }
             else if (value instanceof LocalTime) {
                 formatter =  DateTimeFormatter.ofPattern(uicalendar.calculateTimeOnlyPattern(), uicalendar.calculateLocale(context));
+                formatter = formatter.withZone(CalendarUtils.calculateZoneId(uicalendar.getTimeZone()));
                 return ((LocalTime) value).format(formatter);
             }
             else if (value instanceof Date) {

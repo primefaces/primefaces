@@ -171,19 +171,6 @@ public abstract class UICalendar extends HtmlInputText {
         else return pattern;
     }
 
-    public String calculateDateTimePattern() {
-        String pattern = getPattern();
-        Locale locale = calculateLocale(getFacesContext());
-
-        //return pattern == null ? ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, locale)).toPattern() : pattern;
-        if (pattern == null) {
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
-            //TODO: timeStyle needs to be changed?
-            return DateTimeFormatterBuilder.getLocalizedDateTimePattern(FormatStyle.SHORT, FormatStyle.SHORT, dateTimeFormatter.getChronology(), locale);
-        }
-        else return pattern;
-    }
-
     public String calculateTimeOnlyPattern() {
         if (timeOnlyPattern == null) {
             /*

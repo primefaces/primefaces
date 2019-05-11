@@ -318,6 +318,10 @@ public class CalendarUtils {
         writer.write("]");
     }
 
+    public static ZoneId calculateZoneId(Object usertimeZone) {
+        return calculateTimeZone(usertimeZone).toZoneId();
+    }
+
     public static TimeZone calculateTimeZone(Object usertimeZone) {
         return calculateTimeZone(usertimeZone, TimeZone.getDefault());
     }

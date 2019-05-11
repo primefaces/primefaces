@@ -212,12 +212,12 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
                         .parseDefaulting(ChronoField.DAY_OF_MONTH, 1) //because of Month Picker which does not contain day of month
                         .toFormatter();
                 formatter = formatter.withLocale(uicalendar.calculateLocale(context));
-                //formatter = formatter.withZone();  //TODO: replacement for format.setTimeZone
+                formatter = formatter.withZone(CalendarUtils.calculateZoneId(uicalendar.getTimeZone()));
                 return LocalDate.parse(submittedValue, formatter);
             }
             else if (type == LocalTime.class) {
                 formatter =  DateTimeFormatter.ofPattern(uicalendar.calculateTimeOnlyPattern(), uicalendar.calculateLocale(context));
-                //formatter = formatter.withZone();  //TODO: replacement for format.setTimeZone
+                formatter = formatter.withZone(CalendarUtils.calculateZoneId(uicalendar.getTimeZone()));
                 return LocalTime.parse(submittedValue, formatter);
             }
             else if (type == LocalDateTime.class) {
@@ -235,7 +235,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
                         .appendPattern(pattern)
                         .toFormatter();
                 formatter = formatter.withLocale(uicalendar.calculateLocale(context));
-                //formatter = formatter.withZone();  //TODO: replacement for format.setTimeZone
+                formatter = formatter.withZone(CalendarUtils.calculateZoneId(uicalendar.getTimeZone()));
                 return LocalDateTime.parse(submittedValue, formatter);
             }
             else if (type == java.util.Date.class) {
