@@ -249,10 +249,12 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             }
             else if (type == ZonedDateTime.class) {
                 //TODO: implement if necessary
-                throw new ConverterException("ZonedDateTime not supported");
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ZonedDateTime not supported", null);
+                throw new ConverterException(message);
             }
             else {
-                throw new ConverterException(type.getName() + " not supported");
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, type.getName() + " not supported", null);
+                throw new ConverterException(message);
             }
         }
         catch (DateTimeParseException | ParseException e) {
