@@ -233,7 +233,7 @@ public class CalendarUtils {
 
             return format.format((Date) value);
         }
-        else if (value instanceof LocalDate || value instanceof LocalDateTime || value instanceof  LocalTime) {
+        else if (value instanceof LocalDate || value instanceof LocalDateTime || value instanceof LocalTime) {
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern, calendar.calculateLocale(context));
             if (value instanceof LocalDate) {
                 return ((LocalDate) value).format(dateTimeFormatter);
@@ -246,11 +246,12 @@ public class CalendarUtils {
             }
         }
         else {
-            //Delegate to global defined converter (e.g. joda or java8)
+            //Delegate to global defined converter (e.g. joda)
             ValueExpression ve = calendar.getValueExpression("value");
             if (ve != null) {
                 Class type = ve.getType(context.getELContext());
-                if (type != null && type != Object.class && type != Date.class) {
+                if (type != null && type != Object.class && type != Date.class &&
+                        type != LocalDate.class && type != LocalDateTime.class && type != LocalTime.class) {
                     Converter converter = context.getApplication().createConverter(type);
                     if (converter != null) {
                         return converter.getAsString(context, calendar, value);

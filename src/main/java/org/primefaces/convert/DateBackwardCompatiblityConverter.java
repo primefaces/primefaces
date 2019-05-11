@@ -43,9 +43,9 @@ import java.util.Date;
 
 /**
  * Converter which provides Backward-Compatibility with {@link Date}
- * for e.g {@link org.primefaces.component.calendar.Calendar} and {@link org.primefaces.component.datepicker.DatePicker}.
+ * Only required for {@link org.primefaces.component.datepicker.DatePicker} with mode selectionMode = multiple and selectionMode = range.
  */
-@FacesConverter("primefaces.DateBackwardCompatiblityConverter")
+@FacesConverter("pf.DateBackwardCompatiblityConverter")
 public class DateBackwardCompatiblityConverter implements Converter {
 
     //TODO: define shortcut for this converter
