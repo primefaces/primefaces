@@ -49,12 +49,8 @@ import java.util.TimeZone;
 @FacesConverter("pf.DateBackwardCompatiblityConverter")
 public class DateBackwardCompatiblityConverter implements Converter {
 
-    //TODO: define shortcut for this converter
-
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        Object object = null;
-
         if (component instanceof UICalendar) {
             UICalendar uicalendar = (UICalendar) component;
 
@@ -88,10 +84,10 @@ public class DateBackwardCompatiblityConverter implements Converter {
             }
         }
         else {
-            //TODO: write error, throw exception, ...
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "pf.DateBackwardCompatiblityConverter only works with Calendar and DatePicker", null);
+            throw new ConverterException(message);
         }
-
-        return object;
     }
 
     @Override
@@ -129,11 +125,14 @@ public class DateBackwardCompatiblityConverter implements Converter {
                 return format.format((Date) value);
             }
             else {
-                //TODO: write error, throw exception, ...
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, value.getClass().getTypeName() + " not supported", null);
+                throw new ConverterException(message);
             }
         }
         else {
-            //TODO: write error, throw exception, ...
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "pf.DateBackwardCompatiblityConverter only works with Calendar and DatePicker", null);
+            throw new ConverterException(message);
         }
 
         return string;
