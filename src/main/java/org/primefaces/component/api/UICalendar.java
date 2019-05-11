@@ -23,19 +23,14 @@
  */
 package org.primefaces.component.api;
 
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.convert.DateTimeConverter;
-import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.LocaleUtils;
 
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.util.Locale;
-import java.util.TimeZone;
 
 public abstract class UICalendar extends HtmlInputText {
 
@@ -233,6 +228,7 @@ public abstract class UICalendar extends HtmlInputText {
         getStateHelper().put("labelledby", labelledBy);
     }
 
+    /*
     @Override
     public Converter getConverter() {
         Converter converter = super.getConverter();
@@ -249,4 +245,5 @@ public abstract class UICalendar extends HtmlInputText {
 
         return converter;
     }
+    */
 }
