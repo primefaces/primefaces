@@ -36,6 +36,7 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 @ResourceDependencies({
@@ -130,15 +131,17 @@ public class DatePicker extends DatePickerBase {
             boolean isDisabledDate = false;
             boolean isRangeDatesSequential = true;
 
-            //TODO: do we need to check for LocalTime?
             if (value instanceof LocalDate) {
                 isDisabledDate = validateDateValue(context, (LocalDate) value);
             }
             else if (value instanceof LocalDateTime) {
                 isDisabledDate = validateDateValue(context, ((LocalDateTime) value).toLocalDate());
             }
+            else if (value instanceof LocalTime) {
+                //no check necessary
+            }
             else if (value instanceof Date) {
-                isDisabledDate = validateDateValue(context, CalendarUtils.convertDate2LocalDate((Date) value));
+                isDisabledDate = validateDateValue(context, CalendarUtils.convertDate2LocalDate((Date) value, CalendarUtils.calculateZoneId(getTimeZone())));
             }
             else if (value instanceof List && getSelectionMode().equals("range")) {
                 List rangeValues = (List) value;
@@ -159,11 +162,11 @@ public class DatePicker extends DatePickerBase {
                 }
                 else if (rangeValues.get(0) instanceof Date) {
                     Date startDate = (Date) rangeValues.get(0);
-                    isDisabledDate = validateDateValue(context, CalendarUtils.convertDate2LocalDate(startDate));
+                    isDisabledDate = validateDateValue(context, CalendarUtils.convertDate2LocalDate(startDate, CalendarUtils.calculateZoneId(getTimeZone())));
 
                     if (!isDisabledDate) {
                         Date endDate = (Date) rangeValues.get(1);
-                        isDisabledDate = validateDateValue(context, CalendarUtils.convertDate2LocalDate(endDate));
+                        isDisabledDate = validateDateValue(context, CalendarUtils.convertDate2LocalDate(endDate, CalendarUtils.calculateZoneId(getTimeZone())));
 
                         if (isValid() && startDate.after(endDate)) {
                             setValid(false);
@@ -172,7 +175,9 @@ public class DatePicker extends DatePickerBase {
                     }
                 }
                 else {
-                    //TODO: write error, throw exception, ...
+                    //no other type possible (as of 05/2019)
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, rangeValues.get(0).getClass().getTypeName() + " not supported", null);
+                    context.addMessage(getClientId(context), message);
                 }
             }
 

@@ -374,35 +374,31 @@ public class CalendarUtils {
         }
     }
 
-    private static ZonedDateTime convertDate2ZonedDateTime(Date date) {
-        //TODO: ZoneId.systemDefault() correct?
-        return date.toInstant().atZone(ZoneId.systemDefault());
+    private static ZonedDateTime convertDate2ZonedDateTime(Date date, ZoneId zoneId) {
+        return date.toInstant().atZone(zoneId);
     }
 
-    public static LocalDate convertDate2LocalDate(Date date) {
-        return convertDate2ZonedDateTime(date).toLocalDate();
+    public static LocalDate convertDate2LocalDate(Date date, ZoneId zoneId) {
+        return convertDate2ZonedDateTime(date, zoneId).toLocalDate();
     }
 
-    public static LocalDateTime convertDate2LocalDateTime(Date date) {
-        return convertDate2ZonedDateTime(date).toLocalDateTime();
+    public static LocalDateTime convertDate2LocalDateTime(Date date, ZoneId zoneId) {
+        return convertDate2ZonedDateTime(date, zoneId).toLocalDateTime();
     }
 
-    public static LocalTime convertDate2LocalTime(Date date) {
-        return convertDate2ZonedDateTime(date).toLocalTime();
+    public static LocalTime convertDate2LocalTime(Date date, ZoneId zoneId) {
+        return convertDate2ZonedDateTime(date, zoneId).toLocalTime();
     }
 
-    public static Date convertLocalDate2Date(LocalDate localDate) {
-        //TODO: ZoneId.systemDefault() correct?
-        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    public static Date convertLocalDate2Date(LocalDate localDate, ZoneId zoneId) {
+        return Date.from(localDate.atStartOfDay(zoneId).toInstant());
     }
 
-    public static Date convertLocalDateTime2Date(LocalDateTime localDateTime) {
-        //TODO: ZoneId.systemDefault() correct?
-        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+    public static Date convertLocalDateTime2Date(LocalDateTime localDateTime, ZoneId zoneId) {
+        return Date.from(localDateTime.atZone(zoneId).toInstant());
     }
 
-    public static Date convertLocalTime2Date(LocalTime localTime) {
-        //TODO: ZoneId.systemDefault() correct?
-        return Date.from(localTime.atDate(LocalDate.now()).atZone(ZoneId.systemDefault()).toInstant());
+    public static Date convertLocalTime2Date(LocalTime localTime, ZoneId zoneId) {
+        return Date.from(localTime.atDate(LocalDate.now()).atZone(zoneId).toInstant());
     }
 }

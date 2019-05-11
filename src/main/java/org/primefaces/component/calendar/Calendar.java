@@ -36,6 +36,7 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 @ResourceDependencies({
@@ -131,26 +132,30 @@ public class Calendar extends CalendarBase {
         if (isValid() && !isEmpty(value) && (value instanceof LocalDate || value instanceof LocalDateTime || value instanceof Date)) {
             LocalDate date = null;
 
-            //TODO: do we need to check for LocalTime?
             if (value instanceof LocalDate) {
                 date = (LocalDate) value;
             }
             else if (value instanceof LocalDateTime) {
                 date = ((LocalDateTime) value).toLocalDate();
             }
+            else if (value instanceof LocalTime) {
+                //no check necessary
+            }
             else if (value instanceof Date) {
-                date = CalendarUtils.convertDate2LocalDate((Date) value);
+                date = CalendarUtils.convertDate2LocalDate((Date) value, CalendarUtils.calculateZoneId(getTimeZone()));
             }
 
-            LocalDate minDate = CalendarUtils.getObjectAsLocalDate(context, this, getMindate());
-            if (minDate != null && date.isBefore(minDate)) {
-                setValid(false);
-            }
-
-            if (isValid()) {
-                LocalDate maxDate = CalendarUtils.getObjectAsLocalDate(context, this, getMaxdate());
-                if (maxDate != null && date.isAfter(maxDate)) {
+            if (date != null) {
+                LocalDate minDate = CalendarUtils.getObjectAsLocalDate(context, this, getMindate());
+                if (minDate != null && date.isBefore(minDate)) {
                     setValid(false);
+                }
+
+                if (isValid()) {
+                    LocalDate maxDate = CalendarUtils.getObjectAsLocalDate(context, this, getMaxdate());
+                    if (maxDate != null && date.isAfter(maxDate)) {
+                        setValid(false);
+                    }
                 }
             }
 

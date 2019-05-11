@@ -159,7 +159,6 @@ public abstract class UICalendar extends HtmlInputText {
         String pattern = getPattern();
         Locale locale = calculateLocale(getFacesContext());
 
-        //return pattern == null ? ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, locale)).toPattern() : pattern;
         if (pattern == null) {
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT);
             return DateTimeFormatterBuilder.getLocalizedDateTimePattern(FormatStyle.SHORT, null, dateTimeFormatter.getChronology(), locale);
@@ -169,17 +168,6 @@ public abstract class UICalendar extends HtmlInputText {
 
     public String calculateTimeOnlyPattern() {
         if (timeOnlyPattern == null) {
-            /*
-            Locale locale = calculateLocale(getFacesContext());
-            //TODO: SimpleDateFormat --> DateTimeFormatter
-            String localePattern = ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, locale)).toPattern();
-            String userTimePattern = getPattern();
-
-            timeOnlyPattern = localePattern + " " + userTimePattern;
-             */
-
-            //TODO: Default-Pattern when no Pattern is specified via Pattern-Attribute?
-
             return getPattern();
         }
 
