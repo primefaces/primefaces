@@ -54,7 +54,7 @@ public class TreeNodeChildren extends TreeNodeList {
             eraseParent(node);
             boolean result = super.add(node);
             node.setParent(parent);
-            updateRowKeys(parent.getChildCount() - 1, this.parent);
+            updateRowKeys(parent.getChildCount() - 1, parent);
             return result;
         }
     }
@@ -71,7 +71,7 @@ public class TreeNodeChildren extends TreeNodeList {
             eraseParent(node);
             super.add(index, node);
             node.setParent(parent);
-            updateRowKeys(index, this.parent);
+            updateRowKeys(index, parent);
         }
     }
 
@@ -141,7 +141,7 @@ public class TreeNodeChildren extends TreeNodeList {
             super.set(index, node);
             previous.setParent(null);
             node.setParent(parent);
-            updateRowKeys(this.parent, node);
+            updateRowKeys(parent, node, index);
             return previous;
         }
     }
@@ -169,7 +169,7 @@ public class TreeNodeChildren extends TreeNodeList {
             TreeNode previous = get(index);
             super.set(index, node);
             node.setParent(parent);
-            updateRowKeys(this.parent, node);
+            updateRowKeys(parent, node, index);
             return previous;
         }
     }
@@ -179,7 +179,7 @@ public class TreeNodeChildren extends TreeNodeList {
         TreeNode node = get(index);
         node.setParent(null);
         super.remove(index);
-        updateRowKeys(index, this.parent);
+        updateRowKeys(index, parent);
         return node;
     }
 
@@ -196,7 +196,7 @@ public class TreeNodeChildren extends TreeNodeList {
 
         int index = super.indexOf(node);
         if (index != -1) {
-            updateRowKeys(index, this.parent);
+            updateRowKeys(index, parent);
             return true;
         }
         else {
@@ -210,9 +210,7 @@ public class TreeNodeChildren extends TreeNodeList {
             for (int i = 0; i < childCount; i++) {
                 TreeNode childNode = node.getChildren().get(i);
 
-                String childRowKey = (node.getParent() == null) ? String.valueOf(i) : node.getRowKey() + "_" + i;
-                childNode.setRowKey(childRowKey);
-                updateRowKeys(childNode);
+                updateRowKeys(node, childNode, i);
             }
         }
     }
@@ -222,18 +220,15 @@ public class TreeNodeChildren extends TreeNodeList {
         if (childCount > 0) {
             for (int i = index; i < childCount; ++i) {
                 TreeNode childNode = (TreeNode) node.getChildren().get(i);
-                String childRowKey = node.getParent() == null ? String.valueOf(i) : node.getRowKey() + "_" + i;
-                childNode.setRowKey(childRowKey);
-                this.updateRowKeys(childNode);
+                updateRowKeys(node, childNode, i);
             }
         }
     }
 
-    private void updateRowKeys(TreeNode parent, TreeNode node) {
-        int i = parent.getChildCount();
+    private void updateRowKeys(TreeNode node, TreeNode childNode, int i) {
         String childRowKey = node.getParent() == null ? String.valueOf(i) : node.getRowKey() + "_" + i;
-        node.setRowKey(childRowKey);
-        this.updateRowKeys(node);
+        childNode.setRowKey(childRowKey);
+        this.updateRowKeys(childNode);
     }
 
 }
