@@ -218,7 +218,7 @@ public class TreeNodeChildren extends TreeNodeList {
     private void updateRowKeys(int index, TreeNode node) {
         int childCount = node.getChildCount();
         if (childCount > 0) {
-            for (int i = index; i < childCount; ++i) {
+            for (int i = index; i < childCount; i++) {
                 TreeNode childNode = (TreeNode) node.getChildren().get(i);
                 updateRowKeys(node, childNode, i);
             }
