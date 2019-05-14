@@ -1109,6 +1109,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     cloneHead: function() {
+        var $this = this;
+        
         this.theadClone = this.cloneTableHeader(this.thead, this.bodyTable);
 
         //reflect events from clone to original
@@ -1124,7 +1126,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     col.data('original', originalId);
                 }
 
-                $(PrimeFaces.escapeClientId(originalId)).width(col[0].style.width);
+                $this.setOuterWidth($(PrimeFaces.escapeClientId(originalId)), col[0].style.width);
             });
 
             clonedSortableColumns.on('blur.dataTable', function() {
@@ -1170,7 +1172,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
     setOuterWidth: function(element, width) {
         var diff = element.outerWidth() - element.width();
-        element.width(width - diff);
+        element.width(parseFloat(width) - diff);
     },
 
     setScrollWidth: function(width) {
@@ -1235,11 +1237,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         width = ($this.findColWidthInResizableState(headerCol.attr('id')) || width);
                     }
 
-                    headerCol.width(width);
-
+                    $this.setOuterWidth(headerCol, width);
+                    
                     if($this.footerCols.length > 0) {
                         var footerCol = $this.footerCols.eq(colIndex);
-                        footerCol.width(width);
+                        $this.setOuterWidth(footerCol, width);
                     }
                 });
             }
@@ -4132,17 +4134,19 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
     },
 
     _fixColumnWidths: function(header, footerCols) {
+        var $this = this;
+        
         header.find('> .ui-datatable-scrollable-header-box > table > thead > tr > th').each(function() {
             var headerCol = $(this),
             colIndex = headerCol.index(),
             headerStyle = headerCol[0].style,
             width = headerStyle.width||headerCol.width();
 
-            headerCol.width(width);
+            $this.setOuterWidth(headerCol, width);
 
             if(footerCols.length > 0) {
                 var footerCol = footerCols.eq(colIndex);
-                footerCol.width(width);
+                $this.setOuterWidth(footerCol, width);
             }
         });
     },
