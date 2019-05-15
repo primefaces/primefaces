@@ -203,7 +203,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         for(var i = 0; i < this.sortableColumns.length; i++) {
             var columnHeader, columnHeaderId;
              
-            if (this.cfg.multiSort) {
+            if (this.cfg.multiSort && this.cfg.sortMetaOrder) {
                 columnHeaderId = this.cfg.sortMetaOrder[i];
                 columnHeader = this.sortableColumns.filter('[id="' + columnHeaderId + '"]');
             }
