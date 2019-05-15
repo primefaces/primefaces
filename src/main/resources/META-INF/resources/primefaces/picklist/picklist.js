@@ -374,7 +374,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             itemLabel = item.attr('data-item-label') ? PrimeFaces.escapeHTML(item.attr('data-item-label')) : '',
             option = $('<option selected="selected"></option>');
 
-            if ($this.cfg.escape) {
+            if ($this.cfg.escapeValue) {
                itemValue = PrimeFaces.escapeHTML(itemValue);
             }
             option.prop('value', itemValue).text(itemLabel);

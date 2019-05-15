@@ -18657,6 +18657,14 @@
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if values of the component is escaped or not.]]>
+            </description>
+            <name>escape</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
