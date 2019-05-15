@@ -63,6 +63,7 @@ escape | true | Boolean | Defines if labels of the component is escaped or not.
 tabindex | null | String | Position of the element in the tabbing order.
 filterEvent | keyup | String | Client side event to invoke picklist filtering for input fields. Default is keyup.
 filterDelay | 300 | Integer  | Delay to wait in milliseconds before sending each filter query. Default is 300.
+escapeValue | true | Boolean | Defines if values of the component is escaped or not.
 
 ## Getting started with PickList
 You need to create custom model called _org.primefaces.model.DualListModel_ to use PickList. As
