@@ -24,8 +24,7 @@ DataTable displays data in tabular format.
 | cellSeparator             | null               | String           | Separator text to use in output mode of editable cells with multiple components.                  
 | clientCache               | false              | Boolean          | Caches the next page asynchronously, default is false.                                            
 | currentPageReportTemplate | null               | String           | Template of the currentPageReport UI.                                                             
-| dataLocale                | null               | Object           | Locale to be used in features such as filtering and sorting, defaults to view locale.             
-| dblClickSelect            | false              | Boolean          | Enables row selection on double click.                                                            
+| dataLocale                | null               | Object           | Locale to be used in features such as filtering and sorting, defaults to view locale.                                                         
 | dir                       | ltr                | String           | Defines text direction, valid values are _ltr_ and _rtl_.                                         
 | disableContextMenuIfEmpty | false              | Boolean          | Decides whether to disable context menu or not if a table has no records.                         
 | disabledSelection         | false              | Boolean          | Disables row selection when true. Overrides p:column's disabledSelection attr. Example: var="xxx" disabledSelection="#{xxx.year > 1960}"
