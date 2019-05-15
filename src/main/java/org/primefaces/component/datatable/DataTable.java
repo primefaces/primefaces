@@ -1243,7 +1243,22 @@ public class DataTable extends DataTableBase {
         int first = getFirst();
         int rows = getRows();
         int rowCount = getRowCount();
-        int last = rows == 0 ? (isLiveScroll() ? (getScrollRows() + getScrollOffset()) : rowCount) : (first + rows);
+        int last = 0;
+
+        if (rows == 0) {
+            if (isLiveScroll()) {
+                last = getScrollRows() + getScrollOffset();
+            }
+            else if (isVirtualScroll()) {
+                last = first + (getScrollRows() * 2);
+            }
+            else {
+                last = rowCount;
+            }
+        }
+        else {
+            last = first + rows;
+        }
 
         for (int rowIndex = first; rowIndex < last; rowIndex++) {
             setRowIndex(rowIndex);
