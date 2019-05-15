@@ -119,11 +119,13 @@ public class DataTableRenderer extends DataRenderer {
         if (filters != null) {
             for (FilterState filterState : filters) {
                 UIColumn column = table.findColumn(filterState.getColumnKey());
-                filterMetadata.add(
+                if (column != null) {
+                    filterMetadata.add(
                         new FilterMeta(
-                                column,
-                                column.getValueExpression(DataTable.PropertyKeys.filterBy.toString()),
-                                filterState.getFilterValue()));
+                            column,
+                            column.getValueExpression(DataTable.PropertyKeys.filterBy.toString()),
+                            filterState.getFilterValue()));
+                }
             }
 
             table.setFilterMetadata(filterMetadata);
