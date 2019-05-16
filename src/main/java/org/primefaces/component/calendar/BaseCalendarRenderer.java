@@ -25,12 +25,14 @@ package org.primefaces.component.calendar;
 
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.datepicker.DatePickerRenderer;
+import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.MessageFactory;
 
 import javax.el.ValueExpression;
+import javax.el.ValueReference;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -38,6 +40,9 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -161,8 +166,8 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         }
 
         //Delegate to global defined converter (e.g. joda)
+        ValueExpression ve = uicalendar.getValueExpression("value");
         try {
-            ValueExpression ve = uicalendar.getValueExpression("value");
             if (ve != null) {
                 type = ve.getType(context.getELContext());
                 if (type != null && type != Object.class && type != Date.class &&
@@ -182,17 +187,28 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
 
         try {
             if (type == java.util.List.class) {
-                /*
-                Datepicker with selectionMode = multiple and selectionMode = range.
-                java.util.List does not help for determining the right date-conversation.
-                So we take LocalDate.
-                TODO: Is there some way to find out whether this is a List<java.util.Date> or a List<java.time.LocalDate>?
-                */
-                type = LocalDate.class;
+                //Datepicker with selectionMode = multiple and selectionMode = range.
+
+                ValueReference valueReference = ValueExpressionAnalyzer.getReference(context.getELContext(), ve);
+                Object base = valueReference.getBase();
+                Object property = valueReference.getProperty();
+
+                try {
+                    Field field = base.getClass().getDeclaredField((String) property);
+                    ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
+                    Type listType = parameterizedType.getActualTypeArguments()[0];
+                    type = Class.forName(listType.getTypeName());
+                }
+                catch (NoSuchFieldException | ClassNotFoundException ex) {
+                    //NOOP
+                }
             }
 
             if (type == null) {
-                //if type could not be determined via value-expression try it this way
+                /*
+                If type could not be determined via value-expression try it this way.
+                (Very unlikely, this happens in real world.)
+                 */
                 if (uicalendar.isTimeOnly()) {
                     type = LocalTime.class;
                 }
@@ -203,8 +219,6 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
                     type = LocalDate.class;
                 }
             }
-
-            //inverted code from org.primefaces.convert::DateBackwardCompatiblityConverter - keep synchronized!
 
             if (type == LocalDate.class) {
                 formatter = new DateTimeFormatterBuilder()
