@@ -200,6 +200,13 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>net.sf.saxon</groupId>
+            <artifactId>Saxon-HE</artifactId>
+            <version>9.9.0-2</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- will be included and relocated by shade plugin -->
         <dependency>
             <groupId>org.owasp.encoder</groupId>
