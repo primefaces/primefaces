@@ -35,6 +35,7 @@ min | null | Double | Minimum boundary value
 max | null | Double | Maximum boundary value
 prefix | null | String | Prefix of the input
 suffix | null | String | Suffix of the input
+decimalPlaces | null | String | Number of decimal places
 accesskey | null | String | Access key that when pressed transfers focus to the input element.
 alt | null | String | Alternate textual description of the input field.
 autocomplete | null | String | Controls browser autocomplete behavior.
