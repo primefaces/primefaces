@@ -5,6 +5,10 @@
     font-weight: normal;
 }
 
+input[type=text]::-ms-clear {
+    display: none;
+}
+
 .ui-widget-header .ui-inputfield,
 .ui-widget-content .ui-inputfield {
     font-weight: normal;
