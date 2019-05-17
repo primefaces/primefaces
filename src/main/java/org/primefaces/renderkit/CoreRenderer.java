@@ -395,14 +395,14 @@ public abstract class CoreRenderer extends Renderer {
         return LangUtils.isValueBlank(value);
     }
 
-    protected String buildAjaxRequest(FacesContext context, AjaxSource source) {
-        return buildAjaxRequest(context, source, null);
+    protected AjaxRequestBuilder preconfiguredAjaxRequestBuilder(FacesContext context,
+            UIComponent component, AjaxSource source) {
+        return preconfiguredAjaxRequestBuilder(context, component, source, null);
     }
 
-    protected String buildAjaxRequest(FacesContext context, AjaxSource source, UIForm form) {
-        UIComponent component = (UIComponent) source;
+    protected AjaxRequestBuilder preconfiguredAjaxRequestBuilder(FacesContext context,
+            UIComponent component, AjaxSource source, UIForm form) {
         String clientId = component.getClientId(context);
-
         AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
 
         builder.init()
@@ -420,40 +420,28 @@ public abstract class CoreRenderer extends Renderer {
                 .onstart(source.getOnstart())
                 .onerror(source.getOnerror())
                 .onsuccess(source.getOnsuccess())
-                .oncomplete(source.getOncomplete())
-                .params(component);
+                .oncomplete(source.getOncomplete());
 
-        builder.preventDefault();
+        return builder;
+    }
+
+    protected String buildAjaxRequest(FacesContext context, UIComponent component, AjaxSource source) {
+        return buildAjaxRequest(context, component, source, null);
+    }
+
+    protected String buildAjaxRequest(FacesContext context, UIComponent component, AjaxSource source, UIForm form) {
+        AjaxRequestBuilder builder = preconfiguredAjaxRequestBuilder(context, component, source, form)
+                .params((UIComponent) source)
+                .preventDefault();
 
         return builder.build();
     }
 
     protected String buildAjaxRequest(FacesContext context, UIComponent component, AjaxSource source, UIForm form,
             Map<String, List<String>> params) {
-
-        String clientId = component.getClientId(context);
-
-        AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
-
-        builder.init()
-                .source(clientId)
-                .form(source, component, form)
-                .process(component, source.getProcess())
-                .update(component, source.getUpdate())
-                .async(source.isAsync())
-                .global(source.isGlobal())
-                .delay(source.getDelay())
-                .timeout(source.getTimeout())
-                .partialSubmit(source.isPartialSubmit(), source.isPartialSubmitSet(), source.getPartialSubmitFilter())
-                .resetValues(source.isResetValues(), source.isResetValuesSet())
-                .ignoreAutoUpdate(source.isIgnoreAutoUpdate())
-                .onstart(source.getOnstart())
-                .onerror(source.getOnerror())
-                .onsuccess(source.getOnsuccess())
-                .oncomplete(source.getOncomplete())
-                .params(params);
-
-        builder.preventDefault();
+        AjaxRequestBuilder builder = preconfiguredAjaxRequestBuilder(context, component, source, form)
+                .params(params)
+                .preventDefault();
 
         return builder.build();
     }
