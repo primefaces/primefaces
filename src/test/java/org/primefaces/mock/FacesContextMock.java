@@ -1,22 +1,32 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/* 
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.mock;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.faces.application.Application;
@@ -36,142 +46,162 @@ public class FacesContextMock extends FacesContext {
     private ExternalContext externalContext = new ExternalContextMock();
     private Application application = new ApplicationMock();
     private PartialViewContext partialViewContext = new PartialViewContextMock();
+    private Map<String, List<FacesMessage>> messages = new HashMap<>();
 
-	private Map<Object, Object> attributes;
-	private ResponseWriter writer;
+    private Map<Object, Object> attributes;
+    private ResponseWriter writer;
     private UIViewRoot viewRoot;
 
+    public FacesContextMock() {
+        this.attributes = new HashMap<Object, Object>();
 
-	public FacesContextMock() {
-            this.attributes = new HashMap<Object, Object>();
-
-            setCurrentInstance(this);
+        setCurrentInstance(this);
     }
 
-	public FacesContextMock(ResponseWriter writer) {
-            this();
-            this.writer = writer;
+    public FacesContextMock(ResponseWriter writer) {
+        this();
+        this.writer = writer;
 
+    }
 
-	}
+    public FacesContextMock(Map<Object, Object> attributes) {
+        this();
+        this.attributes = attributes;
+    }
 
-	public FacesContextMock(Map<Object, Object> attributes) {
-            this();
-            this.attributes = attributes;
-	}
+    public FacesContextMock(ResponseWriter writer, Map<Object, Object> attributes) {
+        this.writer = writer;
+        this.attributes = attributes;
 
-	@Override
+        setCurrentInstance(this);
+    }
+
+    @Override
     public Map<Object, Object> getAttributes() {
-		return attributes;
-	}
+        return attributes;
+    }
 
-	@Override
+    @Override
     public boolean isProjectStage(ProjectStage stage) {
-		return true;
-	}
+        return true;
+    }
 
-	@Override
-	public void addMessage(String arg0, FacesMessage arg1) {
+    @Override
+    public void addMessage(String clientId, FacesMessage message) {
+        if (!messages.containsKey(clientId)) {
+            messages.put(clientId, new ArrayList<>());
+        }
+        
+        messages.get(clientId).add(message);
+    }
 
-	}
+    @Override
+    public Application getApplication() {
+        return application;
+    }
 
-	@Override
-	public Application getApplication() {
-		return application;
-	}
+    @Override
+    public Iterator<String> getClientIdsWithMessages() {
+        return messages.keySet().iterator();
+    }
 
-	@Override
-	public Iterator<String> getClientIdsWithMessages() {
-		return null;
-	}
-
-	@Override
-	public ExternalContext getExternalContext() {
-		return externalContext;
-	}
+    @Override
+    public ExternalContext getExternalContext() {
+        return externalContext;
+    }
 
     @Override
     public PartialViewContext getPartialViewContext() {
         return partialViewContext;
     }
 
-	@Override
-	public Severity getMaximumSeverity() {
-		return null;
-	}
+    @Override
+    public Severity getMaximumSeverity() {
+        return null;
+    }
 
-	@Override
-	public Iterator<FacesMessage> getMessages() {
-		return null;
-	}
+    @Override
+    public Iterator<FacesMessage> getMessages() {
+        List<FacesMessage> all = new ArrayList<>();
+        for (List msgs : messages.values()) {
+            all.addAll(msgs);
+        }
+        
+        return all.iterator();
+    }
 
-	@Override
-	public Iterator<FacesMessage> getMessages(String arg0) {
-		return null;
-	}
+    @Override
+    public Iterator<FacesMessage> getMessages(String clientId) {
+        return messages.get(clientId).iterator();
+    }
 
-	@Override
-	public RenderKit getRenderKit() {
-		return new RenderKitMock();
-	}
+    @Override
+    public RenderKit getRenderKit() {
+        return new RenderKitMock();
+    }
 
-	@Override
-	public boolean getRenderResponse() {
-		return false;
-	}
+    @Override
+    public boolean getRenderResponse() {
+        return false;
+    }
 
-	@Override
-	public boolean getResponseComplete() {
-		return false;
-	}
+    @Override
+    public boolean getResponseComplete() {
+        return false;
+    }
 
-	@Override
-	public ResponseStream getResponseStream() {
-		return null;
-	}
+    @Override
+    public ResponseStream getResponseStream() {
+        return null;
+    }
 
-	@Override
-	public ResponseWriter getResponseWriter() {
-		return writer;
-	}
+    @Override
+    public ResponseWriter getResponseWriter() {
+        return writer;
+    }
 
-	@Override
-	public UIViewRoot getViewRoot() {
-		return viewRoot;
-	}
+    @Override
+    public UIViewRoot getViewRoot() {
+        return viewRoot;
+    }
 
-	@Override
-	public void release() {
+    @Override
+    public void release() {
 
-	}
+    }
 
-	@Override
-	public void renderResponse() {
+    @Override
+    public void renderResponse() {
 
-	}
+    }
 
-	@Override
-	public void responseComplete() {
+    @Override
+    public void responseComplete() {
 
-	}
+    }
 
-	@Override
-	public void setResponseStream(ResponseStream arg0) {
+    @Override
+    public void setResponseStream(ResponseStream arg0) {
 
-	}
+    }
 
-	@Override
-	public void setResponseWriter(ResponseWriter arg0) {
+    @Override
+    public void setResponseWriter(ResponseWriter arg0) {
 
-	}
+    }
 
-	@Override
-	public void setViewRoot(UIViewRoot viewRoot) {
+    @Override
+    public void setViewRoot(UIViewRoot viewRoot) {
         this.viewRoot = viewRoot;
-	}
+    }
 
     @Override
     public boolean isReleased() {
+        return false;
+    }
+
+    @Override
+    public boolean isPostback() {
         return false;
     }
 }

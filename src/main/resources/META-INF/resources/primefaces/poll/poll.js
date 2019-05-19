@@ -12,23 +12,33 @@ PrimeFaces.widget.Poll = PrimeFaces.widget.BaseWidget.extend({
             this.start();
         }
     },
-    
+
+    //@Override
     refresh: function(cfg) {
-        if(this.isActive()) {
-            this.stop();
-        }
-        
-        this.init(cfg);
+        this.stop();
+
+        this._super(cfg);
+    },
+
+    //@Override
+    destroy: function() {
+        this._super();
+
+        this.stop();
     },
 
     start: function() {
-        this.timer = setInterval(this.cfg.fn, (this.cfg.frequency * 1000));
-        this.active = true;
+        if (!this.active) {
+            this.timer = setInterval(this.cfg.fn, (this.cfg.frequency * 1000));
+            this.active = true;
+        }
     },
 
     stop: function() {
-        clearInterval(this.timer);
-        this.active = false;
+        if (this.active) {
+            clearInterval(this.timer);
+            this.active = false;
+        }
     },
 
     isActive: function() {

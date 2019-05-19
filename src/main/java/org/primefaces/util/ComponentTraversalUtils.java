@@ -1,17 +1,25 @@
-/*
- * Copyright 2015 tandraschko.
+/**
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.util;
 
@@ -26,6 +34,9 @@ import javax.faces.component.UniqueIdVendor;
 import javax.faces.context.FacesContext;
 
 public class ComponentTraversalUtils {
+
+    private ComponentTraversalUtils() {
+    }
 
     public static <T> T closest(Class<T> type, UIComponent base) {
         UIComponent parent = base.getParent();
@@ -46,7 +57,7 @@ public class ComponentTraversalUtils {
 
         Iterator<UIComponent> kids = base.getFacetsAndChildren();
         while (kids.hasNext() && (result == null)) {
-            UIComponent kid = (UIComponent) kids.next();
+            UIComponent kid = kids.next();
             if (type.isAssignableFrom(kid.getClass())) {
                 result = (T) kid;
                 break;
@@ -67,7 +78,7 @@ public class ComponentTraversalUtils {
 
         Iterator<UIComponent> kids = base.getFacetsAndChildren();
         while (kids.hasNext()) {
-            UIComponent kid = (UIComponent) kids.next();
+            UIComponent kid = kids.next();
             if (type.isAssignableFrom(kid.getClass())) {
                 result.add((T) kid);
             }
@@ -82,18 +93,18 @@ public class ComponentTraversalUtils {
             components.add(base);
         }
 
-    	if (base.getFacetCount() > 0) {
-    		for (UIComponent facet : base.getFacets().values()) {
-    			withId(id, facet, components);
-    		}
-    	}
+        if (base.getFacetCount() > 0) {
+            for (UIComponent facet : base.getFacets().values()) {
+                withId(id, facet, components);
+            }
+        }
 
-    	if (base.getChildCount() > 0) {
-	    	for (int i = 0, childCount = base.getChildCount(); i < childCount; i++) {
-	    		UIComponent child = base.getChildren().get(i);
-	    		withId(id, child, components);
-	    	}
-    	}
+        if (base.getChildCount() > 0) {
+            for (int i = 0, childCount = base.getChildCount(); i < childCount; i++) {
+                UIComponent child = base.getChildren().get(i);
+                withId(id, child, components);
+            }
+        }
     }
 
     /**
@@ -112,7 +123,7 @@ public class ComponentTraversalUtils {
 
         Iterator<UIComponent> kids = base.getFacetsAndChildren();
         while (kids.hasNext() && (result == null)) {
-            UIComponent kid = (UIComponent) kids.next();
+            UIComponent kid = kids.next();
             if (id.equals(kid.getId())) {
                 result = kid;
                 break;
@@ -130,11 +141,11 @@ public class ComponentTraversalUtils {
      *
      * @param id The id.
      * @param base The base component to start the traversal.
-     * @param separatorString The seperatorString (e.g. :).
+     * @param separatorChar The separatorChar (e.g. :).
      * @param context The FacesContext.
      * @param callback the callback for the found component
      */
-    public static void firstById(String id, UIComponent base, String separatorString, FacesContext context, ContextCallback callback) {
+    public static void firstById(String id, UIComponent base, char separatorChar, FacesContext context, ContextCallback callback) {
 
         // try #findComponent first
         UIComponent component = base.findComponent(id);
@@ -144,26 +155,23 @@ public class ComponentTraversalUtils {
         if (component == null) {
             // #invokeOnComponent doesn't support the leading seperator char
             String tempExpression = id;
-            if (tempExpression.startsWith(separatorString)) {
+            if (tempExpression.charAt(0) == separatorChar) {
                 tempExpression = tempExpression.substring(1);
             }
 
             context.getViewRoot().invokeOnComponent(context, tempExpression, callback);
         }
-        else
-        {
+        else {
             callback.invokeContextCallback(context, component);
         }
     }
-
-
 
     public static UIForm closestForm(FacesContext context, UIComponent component) {
         return closest(UIForm.class, component);
     }
 
     public static UniqueIdVendor closestUniqueIdVendor(UIComponent component) {
-        return (UniqueIdVendor) closest(UniqueIdVendor.class, component);
+        return closest(UniqueIdVendor.class, component);
     }
 
     public static UIComponent closestNamingContainer(UIComponent component) {

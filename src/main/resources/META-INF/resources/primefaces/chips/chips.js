@@ -14,13 +14,14 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
         this.hinput.data(PrimeFaces.CLIENT_ID_DATA, this.id);
-        
+        this.placeholder = this.input.attr('placeholder');
+
         this.bindEvents();
     },
-    
+
     bindEvents: function() {
         var $this = this;
-        
+
         this.itemContainer.hover(function() {
                 $(this).addClass('ui-state-hover');
             },
@@ -30,8 +31,8 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
         ).click(function() {
             $this.input.focus();
         });
-        
-        
+
+
         this.input.on('focus.chips', function() {
             $this.itemContainer.addClass('ui-state-focus');
         }).on('blur.chips', function() {
@@ -45,9 +46,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
                     if(value.length === 0 && $this.hinput.children('option') && $this.hinput.children('option').length > 0) {
                         var lastOption = $this.hinput.children('option:last'),
                         index = lastOption.index();
-                        
-                        $($this.itemContainer.children('li.ui-chips-token').get(index)).remove();
-                        lastOption.remove();
+                        $this.removeItem($($this.itemContainer.children('li.ui-chips-token').get(index)));
                     }
                 break;
 
@@ -55,7 +54,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
                 case 13:
                     if(value && value.trim().length && (!$this.cfg.max||$this.cfg.max > $this.hinput.children('option').length)) {
                         $this.addItem(value);
-                    }     
+                    }
                     e.preventDefault();
                 break;
 
@@ -66,13 +65,13 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
                 break;
             }
         });
-        
+
         var closeSelector = '> li.ui-chips-token > .ui-chips-token-icon';
         this.itemContainer.off('click', closeSelector).on('click', closeSelector, null, function(event) {
             $this.removeItem($(this).parent());
         });
     },
-    
+
     addItem : function(value) {
         var escapedValue = PrimeFaces.escapeHTML(value);
         var itemDisplayMarkup = '<li class="ui-chips-token ui-state-active ui-corner-all">';
@@ -81,14 +80,15 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
 
         this.inputContainer.before(itemDisplayMarkup);
         this.input.val('').focus();
+        this.input.removeAttr('placeholder');
 
         this.hinput.append('<option value="' + escapedValue + '" selected="selected"></option>');
         this.invokeItemSelectBehavior(escapedValue);
     },
-    
+
     removeItem: function(item) {
         var itemIndex = this.itemContainer.children('li.ui-chips-token').index(item);
-        var itemValue = item.find('span.ui-autocomplete-token-label').html()
+        var itemValue = item.find('span.ui-chips-token-label').html()
         $this = this;
 
         //remove from options
@@ -101,37 +101,34 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
 
             $this.invokeItemUnselectBehavior(itemValue);
         });
+        
+        // if empty return placeholder
+        if (this.placeholder && this.hinput.children('option').length === 0) {
+            this.input.attr('placeholder', this.placeholder);
+        }
     },
-    
+
     invokeItemSelectBehavior: function(itemValue) {
-        if(this.cfg.behaviors) {
-            var itemSelectBehavior = this.cfg.behaviors['itemSelect'];
+        if(this.hasBehavior('itemSelect')) {
+            var ext = {
+                params : [
+                    {name: this.id + '_itemSelect', value: itemValue}
+                ]
+            };
 
-            if(itemSelectBehavior) {
-                var ext = {
-                    params : [
-                        {name: this.id + '_itemSelect', value: itemValue}
-                    ]
-                };
-
-                itemSelectBehavior.call(this, ext);
-            }
+            this.callBehavior('itemSelect', ext);
         }
     },
 
     invokeItemUnselectBehavior: function(itemValue) {
-        if(this.cfg.behaviors) {
-            var itemUnselectBehavior = this.cfg.behaviors['itemUnselect'];
+        if(this.hasBehavior('itemUnselect')) {
+            var ext = {
+                params : [
+                    {name: this.id + '_itemUnselect', value: itemValue}
+                ]
+            };
 
-            if(itemUnselectBehavior) {
-                var ext = {
-                    params : [
-                        {name: this.id + '_itemUnselect', value: itemValue}
-                    ]
-                };
-
-                itemUnselectBehavior.call(this, ext);
-            }
+            this.callBehavior('itemUnselect', ext);
         }
     }
 });

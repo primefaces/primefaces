@@ -1,17 +1,25 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.commandlink;
 
@@ -21,146 +29,148 @@ import java.util.List;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
-import org.primefaces.component.api.ClientBehaviorRenderingMode;
-import org.primefaces.context.RequestContext;
 
+import org.primefaces.component.api.ClientBehaviorRenderingMode;
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.CSVBuilder;
-import org.primefaces.util.ComponentTraversalUtils;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.HTML;
-import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.util.*;
 
 public class CommandLinkRenderer extends CoreRenderer {
 
     private static final String SB_BUILD_ONCLICK = CommandLinkRenderer.class.getName() + "#buildOnclick";
-    
+
     @Override
-	public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, UIComponent component) {
         CommandLink link = (CommandLink) component;
-        if(link.isDisabled()) {
+        if (link.isDisabled()) {
             return;
         }
-        
-		String param = component.getClientId(context);
 
-		if(context.getExternalContext().getRequestParameterMap().containsKey(param)) {
-			component.queueEvent(new ActionEvent(component));
-		}
-        
+        String param = component.getClientId(context);
+
+        if (context.getExternalContext().getRequestParameterMap().containsKey(param)) {
+            component.queueEvent(new ActionEvent(component));
+        }
+
         decodeBehaviors(context, component);
-	}
+    }
 
     @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		CommandLink link = (CommandLink) component;
-		String clientId = link.getClientId(context);
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        CommandLink link = (CommandLink) component;
+        String clientId = link.getClientId(context);
         Object label = link.getValue();
 
-		if(!link.isDisabled()) {
+        if (!link.isDisabled()) {
             String request;
             boolean ajax = link.isAjax();
             String styleClass = link.getStyleClass();
             styleClass = styleClass == null ? CommandLink.STYLE_CLASS : CommandLink.STYLE_CLASS + " " + styleClass;
-            RequestContext requestContext = RequestContext.getCurrentInstance();
-            boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled()&&link.isValidateClient();
-        
+            PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
+            boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled() && link.isValidateClient();
+
             StringBuilder onclick = SharedStringBuilder.get(context, SB_BUILD_ONCLICK);
-            if(link.getOnclick() != null) {
+            if (link.getOnclick() != null) {
                 onclick.append(link.getOnclick()).append(";");
             }
-            
-            
+
             String onclickBehaviors = getEventBehaviors(context, link, "click", null);
-            if(onclickBehaviors != null) {
+            if (onclickBehaviors != null) {
                 onclick.append(onclickBehaviors);
             }
-            
-			writer.startElement("a", link);
-			writer.writeAttribute("id", clientId, "id");
-			writer.writeAttribute("href", "#", null);
-			writer.writeAttribute("class", styleClass, null);
-            if(link.getTitle() != null) {
-                writer.writeAttribute("aria-label", link.getTitle(), null);
+
+            writer.startElement("a", link);
+            writer.writeAttribute("id", clientId, "id");
+            writer.writeAttribute("href", "#", null);
+            writer.writeAttribute("class", styleClass, null);
+            if (link.getAriaLabel() != null) {
+                writer.writeAttribute(HTML.ARIA_LABEL, link.getAriaLabel(), null);
             }
-            
-            if(ajax) {
-                request = buildAjaxRequest(context, link, null);
+            else if (link.getTitle() != null) {
+                writer.writeAttribute(HTML.ARIA_LABEL, link.getTitle(), null);
+            }
+
+            if (ajax) {
+                request = buildAjaxRequest(context, link, link);
             }
             else {
-                UIComponent form = ComponentTraversalUtils.closestForm(context, link);
-                if(form == null) {
+                UIForm form = ComponentTraversalUtils.closestForm(context, link);
+                if (form == null) {
                     throw new FacesException("Commandlink \"" + clientId + "\" must be inside a form component");
                 }
-                
+
                 request = buildNonAjaxRequest(context, link, form, clientId, true);
             }
-            
-            if(csvEnabled) {
+
+            if (csvEnabled) {
                 CSVBuilder csvb = requestContext.getCSVBuilder();
                 request = csvb.init().source("this").ajax(ajax).process(link, link.getProcess()).update(link, link.getUpdate()).command(request).build();
             }
-            
+
             onclick.append(request);
 
-            if(onclick.length() > 0) {
-                if(link.requiresConfirmation()) {
+            if (onclick.length() > 0) {
+                if (link.requiresConfirmation()) {
                     writer.writeAttribute("data-pfconfirmcommand", onclick.toString(), null);
                     writer.writeAttribute("onclick", link.getConfirmationScript(), "onclick");
                 }
-                else
+                else {
                     writer.writeAttribute("onclick", onclick.toString(), "onclick");
+                }
             }
-            
-            List<ClientBehaviorContext.Parameter> behaviorParams = new ArrayList<ClientBehaviorContext.Parameter>();
+
+            List<ClientBehaviorContext.Parameter> behaviorParams = new ArrayList<>();
             behaviorParams.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
             String dialogReturnBehavior = getEventBehaviors(context, link, "dialogReturn", behaviorParams);
-            if(dialogReturnBehavior != null) {
+            if (dialogReturnBehavior != null) {
                 writer.writeAttribute("data-dialogreturn", dialogReturnBehavior, null);
             }
-			
-			renderPassThruAttributes(context, link, HTML.LINK_ATTRS, HTML.CLICK_EVENT);
 
-			if(label != null)
-				writer.writeText(label, "value");
-			else
-				renderChildren(context, link);
-			
-			writer.endElement("a");
-		}
+            renderPassThruAttributes(context, link, HTML.LINK_ATTRS, HTML.CLICK_EVENT);
+
+            if (label != null) {
+                writer.writeText(label, "value");
+            }
+
+            renderChildren(context, link);
+
+            writer.endElement("a");
+        }
         else {
             String styleClass = link.getStyleClass();
             styleClass = styleClass == null ? CommandLink.DISABLED_STYLE_CLASS : CommandLink.DISABLED_STYLE_CLASS + " " + styleClass;
 
-			writer.startElement("span", link);
-			writer.writeAttribute("id", clientId, "id");
+            writer.startElement("span", link);
+            writer.writeAttribute("id", clientId, "id");
             writer.writeAttribute("class", styleClass, "styleclass");
 
-            if(link.getStyle() != null)
+            if (link.getStyle() != null) {
                 writer.writeAttribute("style", link.getStyle(), "style");
-			
-			if(label != null)
-				writer.writeText(label, "value");
-			else
-				renderChildren(context, link);
-			
-			writer.endElement("span");
-		}
-	}
+            }
+
+            if (label != null) {
+                writer.writeText(label, "value");
+            }
+
+            renderChildren(context, link);
+
+            writer.endElement("span");
+        }
+    }
 
     @Override
-	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-		//Do Nothing
-	}
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        //Do Nothing
+    }
 
     @Override
-	public boolean getRendersChildren() {
-		return true;
-	}
+    public boolean getRendersChildren() {
+        return true;
+    }
 }

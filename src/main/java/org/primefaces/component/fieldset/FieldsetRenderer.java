@@ -1,25 +1,35 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.fieldset;
 
 import java.io.IOException;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
@@ -29,14 +39,14 @@ public class FieldsetRenderer extends CoreRenderer {
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Fieldset fieldset = (Fieldset) component;
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = fieldset.getClientId(context);
         String toggleStateParam = clientId + "_collapsed";
-        
-        if(params.containsKey(toggleStateParam)) {
-            fieldset.setCollapsed(Boolean.valueOf(params.get(toggleStateParam)));
+
+        if (params.containsKey(toggleStateParam)) {
+            fieldset.setCollapsed(Boolean.parseBoolean(params.get(toggleStateParam)));
         }
-        
+
         decodeBehaviors(context, component);
     }
 
@@ -53,29 +63,35 @@ public class FieldsetRenderer extends CoreRenderer {
         String clientId = fieldset.getClientId(context);
         String widgetVar = fieldset.resolveWidgetVar();
         boolean toggleable = fieldset.isToggleable();
-        
+        String title = fieldset.getTitle();
+
         String styleClass = toggleable ? Fieldset.TOGGLEABLE_FIELDSET_CLASS : Fieldset.FIELDSET_CLASS;
-        if(fieldset.isCollapsed()) {
+        if (fieldset.isCollapsed()) {
             styleClass = styleClass + " ui-hidden-container";
         }
-        if(fieldset.getStyleClass() != null) {
+        if (fieldset.getStyleClass() != null) {
             styleClass = styleClass + " " + fieldset.getStyleClass();
         }
 
         writer.startElement("fieldset", fieldset);
+        if (title != null) {
+            writer.writeAttribute("title", fieldset.getTitle(), null);
+        }
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(fieldset.getStyle() != null) {
+        if (fieldset.getStyle() != null) {
             writer.writeAttribute("style", fieldset.getStyle(), "style");
         }
-        
+
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
+
+        renderDynamicPassThruAttributes(context, fieldset);
 
         encodeLegend(context, fieldset);
 
         encodeContent(context, fieldset);
 
-        if(toggleable) {
+        if (toggleable) {
             encodeStateHolder(context, fieldset);
         }
 
@@ -84,15 +100,15 @@ public class FieldsetRenderer extends CoreRenderer {
 
     protected void encodeContent(FacesContext context, Fieldset fieldset) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("class", Fieldset.CONTENT_CLASS, null);
-        if(fieldset.isCollapsed()) {
+        if (fieldset.isCollapsed()) {
             writer.writeAttribute("style", "display:none", null);
         }
 
         renderChildren(context, fieldset);
-        
+
         writer.endElement("div");
     }
 
@@ -101,15 +117,15 @@ public class FieldsetRenderer extends CoreRenderer {
         boolean toggleable = fieldset.isToggleable();
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Fieldset", fieldset.resolveWidgetVar(), clientId);
-        
-        if(toggleable) {
+
+        if (toggleable) {
             wb.attr("toggleable", true)
-                .attr("collapsed", fieldset.isCollapsed())
-                .attr("toggleSpeed", fieldset.getToggleSpeed());
+                    .attr("collapsed", fieldset.isCollapsed())
+                    .attr("toggleSpeed", fieldset.getToggleSpeed());
         }
-        
+
         encodeClientBehaviors(context, fieldset);
-        
+
         wb.finish();
     }
 
@@ -117,32 +133,34 @@ public class FieldsetRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String legendText = fieldset.getLegend();
         UIComponent legend = fieldset.getFacet("legend");
-        
-        if(legendText != null || legend != null) {
+
+        if (legendText != null || legend != null) {
             writer.startElement("legend", null);
             writer.writeAttribute("class", Fieldset.LEGEND_CLASS, null);
 
-            if(fieldset.isToggleable()) {
+            if (fieldset.isToggleable()) {
                 writer.writeAttribute("role", "button", null);
                 writer.writeAttribute("tabindex", fieldset.getTabindex(), null);
-            
+
                 String togglerClass = fieldset.isCollapsed() ? Fieldset.TOGGLER_PLUS_CLASS : Fieldset.TOGGLER_MINUS_CLASS;
-                               
+
                 writer.startElement("span", null);
                 writer.writeAttribute("class", togglerClass, null);
                 writer.endElement("span");
             }
 
-            if(legend != null) {
+            if (legend != null) {
                 legend.encodeAll(context);
             }
             else {
-                if(fieldset.isEscape())
+                if (fieldset.isEscape()) {
                     writer.writeText(legendText, "value");
-                else
+                }
+                else {
                     writer.write(legendText);
+                }
             }
-            
+
             writer.endElement("legend");
         }
     }

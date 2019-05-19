@@ -32,13 +32,13 @@
             if ($("link[media=print]").length > 0)
             {
                 $("link[media=print]").each( function() {
-                    doc.write("<link type='text/css' rel='stylesheet' href='" + $(this).attr("href") + "' media='print' />");
+                    doc.write("<link type='text/css' rel='stylesheet' href='" + PrimeFaces.escapeHTML($(this).attr("href")) + "' media='print' />");
                 });
             }
             else
             {
                 $("link").each( function() {
-                    doc.write("<link type='text/css' rel='stylesheet' href='" + $(this).attr("href") + "' />");
+                    doc.write("<link type='text/css' rel='stylesheet' href='" + PrimeFaces.escapeHTML($(this).attr("href")) + "' />");
                 });
             }
         }
@@ -49,7 +49,19 @@
         doc.close();
 
         (opt.operaSupport && $.browser.opera ? tab : $iframe[0].contentWindow).focus();
-        setTimeout( function() { (opt.operaSupport && $.browser.opera ? tab : $iframe[0].contentWindow).print(); if (tab) { tab.close(); } }, 1000);
+        setTimeout(function() { 
+            var frameWindow = (opt.operaSupport && $.browser.opera ? tab : $iframe[0].contentWindow);
+            try {
+                // fix for IE; http://stackoverflow.com/a/21336448/937891
+                if(!frameWindow.document.execCommand('print', false, null)) { 
+                    frameWindow.print();
+                }
+            }
+            catch(e) {
+                frameWindow.print();
+            }
+            if (tab) { tab.close(); } 
+        }, 1000);
     }
 
     $.fn.jqprint.defaults = {

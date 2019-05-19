@@ -612,11 +612,15 @@ if (window.PrimeFaces) {
             else {
                 vc.renderMessages(form);
             }
-            
+
             //focus first element
             for(var key in vc.messages) {
                 if(vc.messages.hasOwnProperty(key)) {
-                    $(PrimeFaces.escapeClientId(key)).focus();
+                    var el = $(PrimeFaces.escapeClientId(key));
+                    if(!el.is(':focusable'))
+                        el.find(':focusable:first').focus();
+                    else
+                        el.focus();
                     break;
                 }
             }
@@ -645,6 +649,10 @@ if (window.PrimeFaces) {
                 return;
             }
         }
+        
+        if (element.parent().hasClass('ui-inputnumber')) {
+            element = element.parent().children('input:hidden');
+        }
 
         var submittedValue = vc.getSubmittedValue(element),
         valid = true,
@@ -670,7 +678,12 @@ if (window.PrimeFaces) {
             newValue = submittedValue;
         }
 
-        if(valid && element.data('p-required') && (newValue === null || newValue === '')) {
+        var required = element.data('p-required');
+        if (required) {
+           element.attr('aria-required', true);
+        }
+
+        if(valid && required && (newValue === null || newValue === '')) {
             var requiredMessageStr = element.data('p-rmsg'),
             requiredMsg = (requiredMessageStr) ? {summary:requiredMessageStr,detail:requiredMessageStr} : vc.getMessage('javax.faces.component.UIInput.REQUIRED', vc.getLabel(element));
             vc.addMessage(element, requiredMsg);
@@ -705,10 +718,14 @@ if (window.PrimeFaces) {
         var highlighterType = element.data('p-hl')||'default',
         highlighter = PrimeFaces.validator.Highlighter.types[highlighterType];
 
-        if(valid)
+        if(valid) {
             highlighter.unhighlight(element);
-        else
+            element.attr('aria-invalid', false);
+        }
+        else {
             highlighter.highlight(element);
+            element.attr('aria-invalid', true);
+        }
     };
 
     PrimeFaces.validateInstant = function(el) {
@@ -836,11 +853,11 @@ if (window.PrimeFaces) {
                         var msgItem = $('<li></li>');
 
                         if(showSummary) {
-                            msgItem.append('<span class="ui-messages-error-summary">' + msg.summary + '</span>');
+                            msgItem.append('<span class="ui-messages-error-summary">' + PrimeFaces.escapeHTML(msg.summary) + '</span>');
                         }
 
                         if(showDetail) {
-                            msgItem.append('<span class="ui-messages-error-detail">' + msg.detail + '</span>');
+                            msgItem.append('<span class="ui-messages-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span>');
                         }
 
                         uiMessagesComponent.find('> .ui-messages-error > ul').append(msgItem);
@@ -903,19 +920,19 @@ if (window.PrimeFaces) {
                 uiMessage.addClass('ui-message-error ui-widget ui-corner-all ui-helper-clearfix');
 
                 if(display === 'both') {
-                    uiMessage.append('<div><span class="ui-message-error-icon"></span><span class="ui-message-error-detail">' + msg.detail + '</span></div>');
+                    uiMessage.append('<div><span class="ui-message-error-icon"></span><span class="ui-message-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span></div>');
                 }
                 else if(display === 'text') {
-                    uiMessage.append('<span class="ui-message-error-detail">' + msg.detail + '</span>');
+                    uiMessage.append('<span class="ui-message-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span>');
                 }
                 else if(display === 'icon') {
                     uiMessage.addClass('ui-message-icon-only')
-                            .append('<span class="ui-message-error-icon" title="' + msg.detail + '"></span>');
+                            .append('<span class="ui-message-error-icon" title="' + PrimeFaces.escapeHTML(msg.detail) + '"></span>');
                 }
             }
             else {
                 uiMessage.hide();
-                $(PrimeFaces.escapeClientId(uiMessage.data('target'))).attr('title', msg.detail);
+                $(PrimeFaces.escapeClientId(uiMessage.data('target'))).attr('title', PrimeFaces.escapeHTML(msg.detail));
             }
         },
 
@@ -1041,8 +1058,17 @@ if (window.PrimeFaces) {
             'manychkbox': {
 
                 highlight: function(element) {
-                    var container = element.closest('.ui-selectmanycheckbox'),
-                    chkboxes = container.find('div.ui-chkbox-box');
+                    var custom = element.hasClass('ui-chkbox-clone'),
+                    chkboxes;
+                    
+                    if(custom) {
+                        var groupedInputs = $('input[name="' + element.attr('name') + '"].ui-chkbox-clone');
+                        chkboxes = groupedInputs.parent().next();
+                    }
+                    else {
+                        var container = element.closest('.ui-selectmanycheckbox');
+                        chkboxes = container.find('div.ui-chkbox-box');
+                    }
 
                     for(var i = 0; i < chkboxes.length; i++) {
                         chkboxes.eq(i).addClass('ui-state-error');
@@ -1050,8 +1076,17 @@ if (window.PrimeFaces) {
                 },
 
                 unhighlight: function(element) {
-                    var container = element.closest('.ui-selectmanycheckbox'),
-                    chkboxes = container.find('div.ui-chkbox-box');
+                    var custom = element.hasClass('ui-chkbox-clone'),
+                    chkboxes;
+                    
+                    if(custom) {
+                        var groupedInputs = $('input[name="' + element.attr('name') + '"].ui-chkbox-clone');
+                        chkboxes = groupedInputs.parent().next();
+                    }
+                    else {
+                        var container = element.closest('.ui-selectmanycheckbox');
+                        chkboxes = container.find('div.ui-chkbox-box');
+                    }
 
                     for(var i = 0; i < chkboxes.length; i++) {
                         chkboxes.eq(i).removeClass('ui-state-error');
@@ -1128,7 +1163,7 @@ if (window.PrimeFaces) {
                 }
 
             },
-            
+
             'booleanbutton': {
 
                 highlight: function(element) {
@@ -1140,18 +1175,25 @@ if (window.PrimeFaces) {
                 }
 
             },
-            
+
             'inputnumber': {
 
                 highlight: function(element) {
-                    element.addClass('ui-state-error');
-                    PrimeFaces.validator.Highlighter.highlightLabel(element);
+                    var orginalInput = element.prev('input');
+                    orginalInput.addClass('ui-state-error');
+                    PrimeFaces.validator.Highlighter.highlightLabel(orginalInput);
+
+                    // see #3706
+                    orginalInput.parent().addClass('ui-state-error');
                 },
 
                 unhighlight: function(element) {
-                    element.removeClass('ui-state-error');
-                    PrimeFaces.validator.Highlighter.unhighlightLabel(element);
+                    var orginalInput = element.prev('input');
+                    orginalInput.removeClass('ui-state-error');
+                    PrimeFaces.validator.Highlighter.unhighlightLabel(orginalInput);
 
+                    // see #3706
+                    orginalInput.parent().removeClass('ui-state-error');
                 }
 
             }

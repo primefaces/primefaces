@@ -1,40 +1,50 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.model.diagram.overlay;
 
 import java.io.Serializable;
 
 public class ArrowOverlay implements Overlay, Serializable {
-    
+
+    private static final long serialVersionUID = 1L;
+
     private int width = 20;
-    
+
     private int length = 20;
-    
+
     private double location = 0.5;
-    
+
     private int direction = 1;
-    
+
     private double foldback = 0.623;
-    
+
     private String paintStyle;
 
     public ArrowOverlay() {
-        
+
     }
-    
+
     public ArrowOverlay(int width, int length, double location, int direction) {
         this.width = width;
         this.length = length;
@@ -90,21 +100,23 @@ public class ArrowOverlay implements Overlay, Serializable {
         this.paintStyle = paintStyle;
     }
 
+    @Override
     public String getType() {
         return "Arrow";
     }
 
+    @Override
     public String toJS(StringBuilder sb) {
         sb.append("['Arrow',{location:").append(location);
-        
-        if(width != 20) sb.append(",width:").append(width);
-        if(length != 20) sb.append(",length:").append(length);
-        if(direction != 1) sb.append(",direction:").append(direction);
-        if(foldback != 0.623) sb.append(",foldback:").append(foldback);
-        if(paintStyle != null) sb.append(",paintStyle:{").append(paintStyle).append("}");
-        
+
+        if (width != 20) sb.append(",width:").append(width);
+        if (length != 20) sb.append(",length:").append(length);
+        if (direction != 1) sb.append(",direction:").append(direction);
+        if (foldback != 0.623) sb.append(",foldback:").append(foldback);
+        if (paintStyle != null) sb.append(",paintStyle:{").append(paintStyle).append("}");
+
         sb.append("}]");
-        
+
         return sb.toString();
-    }    
+    }
 }

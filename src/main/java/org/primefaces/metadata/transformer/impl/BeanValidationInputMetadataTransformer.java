@@ -1,17 +1,25 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.metadata.transformer.impl;
 
@@ -28,49 +36,49 @@ import javax.faces.context.FacesContext;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import javax.validation.metadata.ConstraintDescriptor;
-import org.primefaces.component.calendar.Calendar;
+import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.spinner.Spinner;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
 import org.primefaces.metadata.transformer.AbstractInputMetadataTransformer;
 
 public class BeanValidationInputMetadataTransformer extends AbstractInputMetadataTransformer {
 
-    private static final Logger LOG = Logger.getLogger(BeanValidationInputMetadataTransformer.class.getName());
-    
-    public void transformInput(FacesContext context, RequestContext requestContext, UIInput input) throws IOException {
+    private static final Logger LOGGER = Logger.getLogger(BeanValidationInputMetadataTransformer.class.getName());
+
+    @Override
+    public void transformInput(FacesContext context, PrimeApplicationContext applicationContext, UIInput input) throws IOException {
 
         EditableValueHolder editableValueHolder = (EditableValueHolder) input;
-       
+
         if (editableValueHolder.isRequired() && isMaxlenghtSet(input)) {
             return;
         }
-         
+
         try {
             Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(
-                    context, requestContext, input.getValueExpression("value"));
-            if (constraints != null && !constraints.isEmpty()) {    
+                    context, applicationContext, input.getValueExpression("value"));
+            if (constraints != null && !constraints.isEmpty()) {
                 for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
                     applyConstraint(constraintDescriptor, input, editableValueHolder);
                 }
             }
         }
-        catch (PropertyNotFoundException e)  {
+        catch (PropertyNotFoundException e) {
             String message = "Skip transform metadata for component \"" + input.getClientId(context) + "\" because"
                     + " the ValueExpression of the \"value\" attribute"
                     + " isn't resolvable completely (e.g. a sub-expression returns null)";
-            LOG.log(Level.FINE, message);
+            LOGGER.log(Level.FINE, message);
         }
     }
-    
+
     protected void applyConstraint(ConstraintDescriptor constraintDescriptor, UIInput input, EditableValueHolder editableValueHolder) {
-        
+
         Annotation constraint = constraintDescriptor.getAnnotation();
-        
+
         if (!isMaxlenghtSet(input)) {
             if (constraint.annotationType().equals(Size.class)) {
                 Size size = (Size) constraint;
@@ -79,7 +87,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
                 }
             }
         }
-        
+
         if (input instanceof Spinner) {
             Spinner spinner = (Spinner) input;
 
@@ -92,15 +100,15 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
                 spinner.setMin(min.value());
             }
         }
-        
-        if (input instanceof Calendar) {
-            Calendar calendar = (Calendar) input;
 
-            if (constraint.annotationType().equals(Past.class) && calendar.getMaxdate() == null) {
-                calendar.setMaxdate(new Date());
+        if (input instanceof UICalendar) {
+            UICalendar uicalendar = (UICalendar) input;
+
+            if (constraint.annotationType().equals(Past.class) && uicalendar.getMaxdate() == null) {
+                uicalendar.setMaxdate(new Date());
             }
-            if (constraint.annotationType().equals(Future.class) && calendar.getMindate() == null) {
-                calendar.setMindate(new Date());
+            if (constraint.annotationType().equals(Future.class) && uicalendar.getMindate() == null) {
+                uicalendar.setMindate(new Date());
             }
         }
     }

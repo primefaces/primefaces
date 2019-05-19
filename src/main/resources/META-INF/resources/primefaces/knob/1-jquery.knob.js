@@ -2,7 +2,7 @@
 /**
  * Downward compatible, touchable dial
  *
- * Version: 1.2.10
+ * Version: 1.2.13
  * Requires: jQuery v1.7+
  *
  * Copyright (c) 2012 Anthony Terrien
@@ -11,7 +11,10 @@
  * Thanks to vor, eskimoblood, spiffistan, FabrizioC
  */
 (function (factory) {
-    if (typeof define === 'function' && define.amd) {
+    if (typeof exports === 'object') {
+        // CommonJS
+        module.exports = factory(require('jquery'));
+    } else if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
         define(['jquery'], factory);
     } else {
@@ -156,7 +159,7 @@
                         function () {
                             var val = {};
                             val[k] = $this.val();
-                            s.val(val);
+                            s.val(s._validate(val));
                         }
                     );
                 });
@@ -294,7 +297,7 @@
             }
 
             return this;
-        }
+        };
 
         this._draw = function () {
 
@@ -367,7 +370,7 @@
                     // Escape key cancel current change
                     "keyup.k",
                     function (e) {
-                        if (e.which === 27) {
+                        if (e.keyCode === 27) {
                             k.c.d.unbind("mouseup.k mousemove.k keyup.k");
 
                             if (s.eH && s.eH() === false)
@@ -452,7 +455,8 @@
         };
 
         this._validate = function (v) {
-            return (~~ (((v < 0) ? -0.5 : 0.5) + (v/this.o.step))) * this.o.step;
+            var val = (~~ (((v < 0) ? -0.5 : 0.5) + (v/this.o.step))) * this.o.step;
+            return Math.round(val * 100) / 100;
         };
 
         // Abstract methods
@@ -468,7 +472,7 @@
         // Utils
         this.h2rgba = function (h, a) {
             var rgb;
-            h = h.substring(1,7)
+            h = h.substring(1,7);
             rgb = [
                 parseInt(h.substring(0,2), 16),
                 parseInt(h.substring(2,4), 16),
@@ -549,7 +553,7 @@
                 a += this.PI2;
             }
 
-            ret = ~~ (0.5 + (a * (this.o.max - this.o.min) / this.angleArc)) + this.o.min;
+            ret = (a * (this.o.max - this.o.min) / this.angleArc) + this.o.min;
 
             this.o.stopper && (ret = max(min(ret, this.o.max), this.o.min));
 
@@ -562,6 +566,10 @@
             var s = this, mwTimerStop,
                 mwTimerRelease,
                 mw = function (e) {
+                    // PrimeFaces #4098
+                        e.stopImmediatePropagation();
+                        e.stopPropagation();
+                        
                     e.preventDefault();
 
                     var ori = e.originalEvent,
@@ -610,11 +618,11 @@
                 .bind(
                     "keydown",
                     function (e) {
-                        var kc = e.which;
+                        var kc = e.keyCode;
 
                         // numpad support
                         if (kc >= 96 && kc <= 105) {
-                            kc = e.which = kc - 48;
+                            kc = e.keyCode = kc - 48;
                         }
 
                         kval = parseInt(String.fromCharCode(kc));
@@ -635,7 +643,7 @@
                                 var v = s.o.parse(s.$.val()) + kv[kc] * m;
                                 s.o.stopper && (v = max(min(v, s.o.max), s.o.min));
 
-                                s.change(v);
+                                s.change(s._validate(v));
                                 s._draw();
 
                                 // long time keydown speed-up
@@ -665,7 +673,7 @@
                 );
 
             this.$c.bind("mousewheel DOMMouseScroll", mw);
-            this.$.bind("mousewheel DOMMouseScroll", mw)
+            this.$.bind("mousewheel DOMMouseScroll", mw);
         };
 
         this.init = function () {

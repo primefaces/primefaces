@@ -1,25 +1,35 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.datalist;
 
 import java.io.IOException;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -27,36 +37,55 @@ public class DataListRenderer extends DataRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
-        decodeBehaviors(context, component);        
+        decodeBehaviors(context, component);
     }
-    
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         DataList list = (DataList) component;
 
-        if(list.isPaginationRequest(context)) {
+        if (list.isPaginationRequest(context)) {
             list.updatePaginationData(context, list);
-            
-            if(list.isLazy()) {
+
+            if (list.isLazy()) {
                 list.loadLazyData();
             }
-            
-            if(list.getType().equals("none"))
+
+            if (list.getType().equals("none")) {
                 encodeFreeList(context, list);
-            else
-                encodeStrictList(context, list); 
-        } 
+            }
+            else {
+                encodeStrictList(context, list);
+            }
+
+            if (list.isMultiViewState()) {
+                DataListState ls = list.getDataListState(true);
+                ls.setFirst(list.getFirst());
+                ls.setRows(list.getRows());
+            }
+        }
         else {
+            if (list.isMultiViewState() && list.isPaginator()) {
+                int firstOld = list.getFirst();
+                int rowsOld = list.getRows();
+
+                list.restoreDataListState();
+
+                if (list.isLazy() && (firstOld != list.getFirst() || rowsOld != list.getRows())) {
+                    list.loadLazyData();
+                }
+            }
+
             encodeMarkup(context, list);
             encodeScript(context, list);
         }
     }
 
     protected void encodeMarkup(FacesContext context, DataList list) throws IOException {
-        if(list.isLazy()) {
+        if (list.isLazy()) {
             list.loadLazyData();
         }
-        
+
         ResponseWriter writer = context.getResponseWriter();
         String clientId = list.getClientId(context);
         boolean hasPaginator = list.isPaginator();
@@ -64,21 +93,21 @@ public class DataListRenderer extends DataRenderer {
         String paginatorPosition = list.getPaginatorPosition();
         String styleClass = list.getStyleClass() == null ? DataList.DATALIST_CLASS : DataList.DATALIST_CLASS + " " + list.getStyleClass();
         String style = list.getStyle();
-        
-        if(hasPaginator) {
+
+        if (hasPaginator) {
             list.calculateFirst();
         }
-        
+
         writer.startElement("div", list);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        
+
         encodeFacet(context, list, "header", DataList.HEADER_CLASS);
-        
-        if(hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
+
+        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
             encodePaginatorMarkup(context, list, "top");
         }
 
@@ -86,25 +115,27 @@ public class DataListRenderer extends DataRenderer {
         writer.writeAttribute("id", clientId + "_content", "id");
         writer.writeAttribute("class", DataList.CONTENT_CLASS, "styleClass");
 
-        if(empty) {
+        if (empty) {
             writer.startElement("div", list);
-            writer.writeAttribute("class", DataList.DATALIST_EMPTYMESSAGE_CLASS,null);
-            writer.write(list.getEmptyMessage());
+            writer.writeAttribute("class", DataList.DATALIST_EMPTY_MESSAGE_CLASS, null);
+            writer.writeText(list.getEmptyMessage(), "emptyMessage");
             writer.endElement("div");
-        } 
+        }
         else {
-            if(list.getType().equals("none"))
+            if (list.getType().equals("none")) {
                 encodeFreeList(context, list);
-            else
-                encodeStrictList(context, list); 
+            }
+            else {
+                encodeStrictList(context, list);
+            }
         }
 
         writer.endElement("div");
 
-        if(hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
+        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
             encodePaginatorMarkup(context, list, "bottom");
         }
-        
+
         encodeFacet(context, list, "footer", DataList.FOOTER_CLASS);
 
         writer.endElement("div");
@@ -113,12 +144,12 @@ public class DataListRenderer extends DataRenderer {
     protected void encodeScript(FacesContext context, DataList list) throws IOException {
         String clientId = list.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("DataList", list.resolveWidgetVar(), clientId);
-        
-        if(list.isPaginator()) {
+        wb.init("DataList", list.resolveWidgetVar(), clientId);
+
+        if (list.isPaginator()) {
             encodePaginatorConfig(context, list, wb);
         }
-        
+
         encodeClientBehaviors(context, list);
 
         wb.finish();
@@ -126,10 +157,10 @@ public class DataListRenderer extends DataRenderer {
 
     /**
      * Renders items with no strict markup
-     * 
+     *
      * @param context FacesContext instance
-     * @param list DataList component
-     * @throws IOException 
+     * @param list    DataList component
+     * @throws IOException
      */
     protected void encodeStrictList(FacesContext context, DataList list) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -139,10 +170,10 @@ public class DataListRenderer extends DataRenderer {
         boolean renderDefinition = isDefinition && definitionFacet != null;
         String itemType = list.getItemType();
         String listClass = DataList.LIST_CLASS;
-        if(itemType != null && itemType.equals("none")) {
+        if (itemType != null && itemType.equals("none")) {
             listClass = listClass + " " + DataList.NO_BULLETS_CLASS;
         }
-        
+
         String listTag = list.getListTag();
         String listItemTag = isDefinition ? "dt" : "li";
         String varStatus = list.getVarStatus();
@@ -153,36 +184,36 @@ public class DataListRenderer extends DataRenderer {
         int rowCount = list.getRowCount();
 
         String rowIndexVar = list.getRowIndexVar();
-        Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
         writer.startElement(listTag, null);
         writer.writeAttribute("id", clientId + "_list", null);
         writer.writeAttribute("class", listClass, null);
-        if(list.getItemType() != null) {
+        if (list.getItemType() != null) {
             writer.writeAttribute("type", list.getItemType(), null);
         }
 
-        for(int i = first; i < pageSize; i++) {
-            if(varStatus != null) {
+        for (int i = first; i < pageSize; i++) {
+            if (varStatus != null) {
                 requestMap.put(varStatus, new VarStatus(first, (pageSize - 1), (i == 0), (i == (rowCount - 1)), i, (i % 2 == 0), (i % 2 == 1), 1));
             }
-            
+
             list.setRowIndex(i);
 
-            if(rowIndexVar != null) {
+            if (rowIndexVar != null) {
                 requestMap.put(rowIndexVar, i);
             }
 
-            if(list.isRowAvailable()) {
+            if (list.isRowAvailable()) {
                 String itemStyleClass = list.getItemStyleClass();
-                itemStyleClass = (itemStyleClass == null) ? DataList.LIST_ITEM_CLASS: DataList.LIST_ITEM_CLASS + " " + itemStyleClass;
-            
+                itemStyleClass = (itemStyleClass == null) ? DataList.LIST_ITEM_CLASS : DataList.LIST_ITEM_CLASS + " " + itemStyleClass;
+
                 writer.startElement(listItemTag, null);
                 writer.writeAttribute("class", itemStyleClass, null);
                 renderChildren(context, list);
                 writer.endElement(listItemTag);
 
-                if(renderDefinition) {
+                if (renderDefinition) {
                     writer.startElement("dd", null);
                     definitionFacet.encodeAll(context);
                     writer.endElement("dd");
@@ -191,25 +222,25 @@ public class DataListRenderer extends DataRenderer {
         }
 
         //cleanup
-        list.setRowIndex(-1);	
+        list.setRowIndex(-1);
 
-        if(rowIndexVar != null) {
+        if (rowIndexVar != null) {
             requestMap.remove(rowIndexVar);
         }
-        
-        if(varStatus != null) {
+
+        if (varStatus != null) {
             requestMap.remove(varStatus);
         }
 
         writer.endElement(listTag);
     }
-    
+
     /**
      * Renders items with no strict markup
-     * 
+     *
      * @param context FacesContext instance
-     * @param list DataList component
-     * @throws IOException 
+     * @param list    DataList component
+     * @throws IOException
      */
     protected void encodeFreeList(FacesContext context, DataList list) throws IOException {
         int first = list.getFirst();
@@ -219,36 +250,36 @@ public class DataListRenderer extends DataRenderer {
 
         String rowIndexVar = list.getRowIndexVar();
         String varStatus = list.getVarStatus();
-        Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
-        for(int i = first; i < pageSize; i++) {
-            if(varStatus != null) {
+        for (int i = first; i < pageSize; i++) {
+            if (varStatus != null) {
                 requestMap.put(varStatus, new VarStatus(first, (pageSize - 1), (i == 0), (i == (rowCount - 1)), i, (i % 2 == 0), (i % 2 == 1), 1));
             }
-            
+
             list.setRowIndex(i);
 
-            if(rowIndexVar != null) {
+            if (rowIndexVar != null) {
                 requestMap.put(rowIndexVar, i);
             }
 
-            if(list.isRowAvailable()) {
+            if (list.isRowAvailable()) {
                 renderChildren(context, list);
             }
         }
 
         //cleanup
-        list.setRowIndex(-1);               
+        list.setRowIndex(-1);
 
-        if(rowIndexVar != null) {
+        if (rowIndexVar != null) {
             requestMap.remove(rowIndexVar);
         }
-        
-        if(varStatus != null) {
+
+        if (varStatus != null) {
             requestMap.remove(varStatus);
         }
     }
-    
+
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         //Do Nothing
@@ -258,9 +289,9 @@ public class DataListRenderer extends DataRenderer {
     public boolean getRendersChildren() {
         return true;
     }
-    
+
     public static class VarStatus {
-        
+
         private int begin;
         private int end;
         private boolean first;
@@ -269,9 +300,9 @@ public class DataListRenderer extends DataRenderer {
         private boolean even;
         private boolean odd;
         private int step;
-        
+
         public VarStatus() {
-            
+
         }
 
         public VarStatus(int begin, int end, boolean first, boolean last, int index, boolean even, boolean odd, int step) {
@@ -340,7 +371,7 @@ public class DataListRenderer extends DataRenderer {
         public void setOdd(boolean odd) {
             this.odd = odd;
         }
-        
+
         public int getStep() {
             return step;
         }

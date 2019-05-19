@@ -1,17 +1,25 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.resetinput;
 
@@ -33,8 +41,9 @@ import org.primefaces.visit.ResetInputVisitCallback;
 
 public class ResetInputActionListener implements ActionListener, Serializable {
 
-    private ValueExpression target;
+    private static final long serialVersionUID = 1L;
 
+    private ValueExpression target;
     private ValueExpression clearModel;
 
     /**
@@ -45,25 +54,32 @@ public class ResetInputActionListener implements ActionListener, Serializable {
     }
 
     public ResetInputActionListener(ValueExpression target, ValueExpression clearModel) {
-		this.target = target;
+        this.target = target;
         this.clearModel = clearModel;
-	}
+    }
 
+    @Override
     public void processAction(ActionEvent event) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
-		ELContext elContext = context.getELContext();
+        ELContext elContext = context.getELContext();
         VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
 
         String expressions = (String) target.getValue(elContext);
         boolean resetModel = false;
-        if(clearModel != null) {
-            resetModel = clearModel.isLiteralText() ? Boolean.valueOf(clearModel.getValue(context.getELContext()).toString()) : (Boolean) clearModel.getValue(context.getELContext());
+        if (clearModel != null) {
+            resetModel = clearModel.isLiteralText()
+                         ? Boolean.parseBoolean(clearModel.getValue(context.getELContext()).toString())
+                         : (Boolean) clearModel.getValue(context.getELContext());
         }
-        UIComponent source = event.getComponent();
 
-        List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, source, expressions);
-        for (UIComponent component : components) {
-            component.visitTree(visitContext, new ResetInputVisitCallback(resetModel));
+        ResetInputVisitCallback visitCallback = resetModel
+                                                ? ResetInputVisitCallback.INSTANCE_CLEAR_MODEL
+                                                : ResetInputVisitCallback.INSTANCE;
+
+        List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, event.getComponent(), expressions);
+        for (int i = 0; i < components.size(); i++) {
+            UIComponent component = components.get(i);
+            component.visitTree(visitContext, visitCallback);
         }
     }
 }

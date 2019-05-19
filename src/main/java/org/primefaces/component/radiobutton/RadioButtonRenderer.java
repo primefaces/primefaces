@@ -1,24 +1,34 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.radiobutton;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.selectoneradio.SelectOneRadio;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
@@ -33,7 +43,7 @@ public class RadioButtonRenderer extends InputRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         RadioButton radioButton = (RadioButton) component;
         SelectOneRadio selectOneRadio = (SelectOneRadio) SearchExpressionFacade.resolveComponent(
-        		context, radioButton, radioButton.getFor());
+                context, radioButton, radioButton.getFor());
 
         encodeMarkup(context, radioButton, selectOneRadio);
     }
@@ -53,20 +63,22 @@ public class RadioButtonRenderer extends InputRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, null);
         }
 
         encodeOptionInput(context, selectOneRadio, radio, inputId, masterClientId, disabled);
-        encodeOptionOutput(context, disabled);
+        encodeOptionOutput(context, disabled, selectOneRadio);
 
         writer.endElement("div");
     }
 
-    protected void encodeOptionInput(FacesContext context, SelectOneRadio radio, RadioButton button, String id, String name, boolean disabled) throws IOException {
+    protected void encodeOptionInput(FacesContext context, SelectOneRadio radio, RadioButton button, String id, String name,
+                                     boolean disabled) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
         String tabindex = button.getTabindex();
-        if(tabindex == null) {
+        if (tabindex == null) {
             tabindex = radio.getTabindex();
         }
 
@@ -80,8 +92,11 @@ public class RadioButtonRenderer extends InputRenderer {
         writer.writeAttribute("class", "ui-radio-clone", null);
         writer.writeAttribute("data-itemindex", button.getItemIndex(), null);
 
-        if(tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
-        if(disabled) writer.writeAttribute("disabled", "disabled", null);
+        renderAccessibilityAttributes(context, radio, disabled, radio.isReadonly());
+
+        if (tabindex != null) {
+            writer.writeAttribute("tabindex", tabindex, null);
+        }
 
         String onchange = buildEvent(context, radio, button, "onchange", "change", "valueChange");
         if (!isValueBlank(onchange)) {
@@ -97,7 +112,7 @@ public class RadioButtonRenderer extends InputRenderer {
     }
 
     protected String buildEvent(FacesContext context, SelectOneRadio radio, RadioButton button, String domEvent, String behaviorEvent,
-            String behaviorEventAlias) {
+                                String behaviorEventAlias) {
 
         String radioEvent = buildDomEvent(context, radio, domEvent, behaviorEvent, behaviorEventAlias, null);
         String buttonEvent = buildDomEvent(context, button, domEvent, behaviorEvent, behaviorEventAlias, null);
@@ -113,10 +128,11 @@ public class RadioButtonRenderer extends InputRenderer {
         return eventBuilder.toString();
     }
 
-    protected void encodeOptionOutput(FacesContext context, boolean disabled) throws IOException {
+    protected void encodeOptionOutput(FacesContext context, boolean disabled, SelectOneRadio selectOneRadio) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String boxClass = HTML.RADIOBUTTON_BOX_CLASS;
         boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
+        boxClass = !selectOneRadio.isValid() ? boxClass + " ui-state-error" : boxClass;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", boxClass, null);

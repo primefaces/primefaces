@@ -1,17 +1,25 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.expression;
 
@@ -37,12 +45,11 @@ import org.primefaces.expression.impl.ThisExpressionResolver;
 import org.primefaces.expression.impl.WidgetVarExpressionResolver;
 
 /**
- * Factory for providing different {@link SearchExpressionResolver} for
- * expressions.
+ * Factory for providing different {@link SearchExpressionResolver} for expressions.
  */
 public class SearchExpressionResolverFactory {
 
-    private static final HashMap<String, SearchExpressionResolver> RESOLVER_MAPPING = new HashMap<String, SearchExpressionResolver>();
+    private static final HashMap<String, SearchExpressionResolver> RESOLVER_MAPPING = new HashMap<>();
 
     private static final FindComponentExpressionResolver FIND_COMPONENT_EXPRESSION_RESOLVER = new FindComponentExpressionResolver();
 
@@ -64,6 +71,13 @@ public class SearchExpressionResolverFactory {
         RESOLVER_MAPPING.put(SearchExpressionConstants.ROOT_KEYWORD, new RootExpressionResolver());
     }
 
+    /*
+     * Prevent instantiation.
+     */
+    private SearchExpressionResolverFactory() {
+
+    }
+
     /**
      * Finds a {@link SearchExpressionResolver} for the given expression.
      *
@@ -79,10 +93,12 @@ public class SearchExpressionResolverFactory {
             if (parenthesisPosition > 0) {
                 String expressionWithoutParam = expression.substring(0, parenthesisPosition);
                 resolver = RESOLVER_MAPPING.get(expressionWithoutParam);
-            } else {
+            }
+            else {
                 resolver = RESOLVER_MAPPING.get(expression);
             }
-        } else {
+        }
+        else {
             // if it's not a keyword, just delegate it to JSF
             resolver = FIND_COMPONENT_EXPRESSION_RESOLVER;
         }
@@ -100,12 +116,5 @@ public class SearchExpressionResolverFactory {
 
     public static SearchExpressionResolver removeResolver(final String keyword) {
         return RESOLVER_MAPPING.remove(keyword);
-    }
-
-    /**
-     * Prevent instantiation.
-     */
-    private SearchExpressionResolverFactory() {
-
     }
 }

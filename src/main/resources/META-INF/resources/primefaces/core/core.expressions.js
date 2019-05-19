@@ -33,7 +33,7 @@ if (!PrimeFaces.expressions) {
                                 elements = elements.add(
                                         $(document.getElementById(widget.id)));
                             } else {
-                                PrimeFaces.error("Widget for widgetVar \"" + widgetVar + "\" not avaiable");
+                                PrimeFaces.widgetNotAvailable(widgetVar);
                             }
                         }
                         // PFS
@@ -74,7 +74,7 @@ if (!PrimeFaces.expressions) {
                                     ids.push(widget.id);
                                 }
                             } else {
-                                PrimeFaces.error("Widget for widgetVar \"" + widgetVar + "\" not avaiable");
+                                PrimeFaces.widgetNotAvailable(widgetVar);
                             }
                         }
                         // PFS
@@ -86,7 +86,7 @@ if (!PrimeFaces.expressions) {
                                 var element = $(elements[j]),
                                 clientId = element.data(PrimeFaces.CLIENT_ID_DATA) || element.attr('id');
 
-                                if (!PrimeFaces.inArray(ids, clientId)) {
+                                if (clientId && !PrimeFaces.inArray(ids, clientId)) {
                                     ids.push(clientId);
                                 }
                             }
@@ -99,10 +99,6 @@ if (!PrimeFaces.expressions) {
         },
 
         splitExpressions: function(expression) {
-
-            if (PrimeFaces.isIE(7)) {
-                expression = expression.split('');
-            }
 
             var expressions = [];
             var buffer = '';
@@ -134,6 +130,6 @@ if (!PrimeFaces.expressions) {
             expressions.push(buffer);
 
             return expressions;
-        }	
+        }
     };
 }

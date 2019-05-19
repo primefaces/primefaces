@@ -1,17 +1,25 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.model;
 
@@ -21,23 +29,25 @@ import java.util.Iterator;
 
 public class CheckboxTreeNodeChildren extends TreeNodeList {
 
+    private static final long serialVersionUID = 1L;
+
     private TreeNode parent;
-    
+
     public CheckboxTreeNodeChildren(TreeNode parent) {
         this.parent = parent;
     }
-    
+
     private void eraseParent(TreeNode node) {
         TreeNode parentNode = node.getParent();
-        if(parentNode != null) {
+        if (parentNode != null) {
             parentNode.getChildren().remove(node);
             node.setParent(null);
         }
     }
-    
+
     @Override
     public boolean add(TreeNode node) {
-        if(node == null) {
+        if (node == null) {
             throw new NullPointerException();
         }
         else {
@@ -52,12 +62,12 @@ public class CheckboxTreeNodeChildren extends TreeNodeList {
 
     @Override
     public void add(int index, TreeNode node) {
-        if(node == null) {
+        if (node == null) {
             throw new NullPointerException();
         }
-        else if((index < 0) || (index > size())) {
+        else if ((index < 0) || (index > size())) {
             throw new IndexOutOfBoundsException();
-        } 
+        }
         else {
             eraseParent(node);
             super.add(index, node);
@@ -66,16 +76,16 @@ public class CheckboxTreeNodeChildren extends TreeNodeList {
             updateSelectionState(parent);
         }
     }
-    
+
     @Override
     public boolean addAll(Collection<? extends TreeNode> collection) {
         Iterator<TreeNode> elements = (new ArrayList<TreeNode>(collection)).iterator();
         boolean changed = false;
-        while(elements.hasNext()) {
+        while (elements.hasNext()) {
             TreeNode node = elements.next();
-            if(node == null) {
+            if (node == null) {
                 throw new NullPointerException();
-            } 
+            }
             else {
                 eraseParent(node);
                 super.add(node);
@@ -83,24 +93,24 @@ public class CheckboxTreeNodeChildren extends TreeNodeList {
                 changed = true;
             }
         }
-        
-        if(changed) {
+
+        if (changed) {
             updateRowKeys(parent);
             updateSelectionState(parent);
         }
-        
+
         return (changed);
     }
-    
+
     @Override
     public boolean addAll(int index, Collection<? extends TreeNode> collection) {
         Iterator<TreeNode> elements = (new ArrayList<TreeNode>(collection)).iterator();
         boolean changed = false;
-        while(elements.hasNext()) {
+        while (elements.hasNext()) {
             TreeNode node = elements.next();
-            if(node == null) {
+            if (node == null) {
                 throw new NullPointerException();
-            } 
+            }
             else {
                 eraseParent(node);
                 super.add(index++, node);
@@ -108,28 +118,28 @@ public class CheckboxTreeNodeChildren extends TreeNodeList {
                 changed = true;
             }
         }
-        
-        if(changed) {
+
+        if (changed) {
             updateRowKeys(parent);
             updateSelectionState(parent);
         }
-        
+
         return (changed);
     }
-    
+
     @Override
     public TreeNode set(int index, TreeNode node) {
-        if(node == null) {
+        if (node == null) {
             throw new NullPointerException();
         }
         else if ((index < 0) || (index >= size())) {
             throw new IndexOutOfBoundsException();
-        } 
+        }
         else {
-            if(!parent.equals(node.getParent())) {
+            if (!parent.equals(node.getParent())) {
                 eraseParent(node);
             }
-            
+
             TreeNode previous = get(index);
             super.set(index, node);
             previous.setParent(null);
@@ -139,25 +149,27 @@ public class CheckboxTreeNodeChildren extends TreeNodeList {
             return previous;
         }
     }
-    
+
     /**
      * Optimized set implementation to be used in sorting
+     *
      * @param index index of the element to replace
      * @param node node to be stored at the specified position
      * @return the node previously at the specified position
      */
+    @Override
     public TreeNode setSibling(int index, TreeNode node) {
-        if(node == null) {
+        if (node == null) {
             throw new NullPointerException();
         }
         else if ((index < 0) || (index >= size())) {
             throw new IndexOutOfBoundsException();
-        } 
+        }
         else {
-            if(!parent.equals(node.getParent())) {
+            if (!parent.equals(node.getParent())) {
                 eraseParent(node);
             }
-            
+
             TreeNode previous = get(index);
             super.set(index, node);
             node.setParent(parent);
@@ -180,27 +192,28 @@ public class CheckboxTreeNodeChildren extends TreeNodeList {
     @Override
     public boolean remove(Object object) {
         TreeNode node = (TreeNode) object;
-        if(node == null) {
+        if (node == null) {
             throw new NullPointerException();
         }
-        
-        if(super.indexOf(node) != -1) {
+
+        if (super.indexOf(node) != -1) {
             node.clearParent();
         }
-        
-        if(super.remove(node)) {
+
+        if (super.remove(node)) {
             updateRowKeys(parent);
             updateSelectionState(parent);
             return true;
-        } else {
+        }
+        else {
             return false;
         }
     }
-    
+
     private void updateRowKeys(TreeNode node) {
         int childCount = node.getChildCount();
-        if(childCount > 0) {
-            for(int i = 0; i < childCount; i++) {
+        if (childCount > 0) {
+            for (int i = 0; i < childCount; i++) {
                 TreeNode childNode = node.getChildren().get(i);
 
                 String childRowKey = (node.getParent() == null) ? String.valueOf(i) : node.getRowKey() + "_" + i;
@@ -209,30 +222,31 @@ public class CheckboxTreeNodeChildren extends TreeNodeList {
             }
         }
     }
-    
+
     private void updateSelectionState(TreeNode node) {
         boolean allChildrenSelected = true;
         boolean partialSelected = false;
-        
-        for(int i=0; i < node.getChildren().size(); i++) {
+
+        for (int i = 0; i < node.getChildren().size(); i++) {
             TreeNode childNode = node.getChildren().get(i);
-            
+
             boolean childSelected = childNode.isSelected();
             boolean childPartialSelected = childNode.isPartialSelected();
             allChildrenSelected = allChildrenSelected && childSelected;
-            partialSelected = partialSelected||childSelected||childPartialSelected;
+            partialSelected = partialSelected || childSelected || childPartialSelected;
         }
-        
+
         ((CheckboxTreeNode) node).setSelected(allChildrenSelected, false);
-        
-        if(allChildrenSelected) {
+
+        if (allChildrenSelected) {
             node.setPartialSelected(false);
-        } else {
+        }
+        else {
             node.setPartialSelected(partialSelected);
         }
-        
+
         TreeNode parentNode = node.getParent();
-        if(parentNode != null) {
+        if (parentNode != null) {
             updateSelectionState(parentNode);
         }
     }

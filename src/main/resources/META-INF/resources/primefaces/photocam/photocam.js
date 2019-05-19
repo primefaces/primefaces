@@ -1,4 +1,4 @@
-// WebcamJS v1.0.21
+// WebcamJS v1.0.25
 // Webcam library for capturing JPEG/PNG images in JavaScript
 // Attempts getUserMedia, falls back to Flash
 // Author: Joseph Huckaby: http://github.com/jhuckaby
@@ -27,14 +27,14 @@ function WebcamError() {
 	this.message = temp.message;
 }
 
-IntermediateInheritor = function() {};
+var IntermediateInheritor = function() {};
 IntermediateInheritor.prototype = Error.prototype;
 
 FlashError.prototype = new IntermediateInheritor();
 WebcamError.prototype = new IntermediateInheritor();
 
 var Webcam = {
-	version: '1.0.20',
+	version: '1.0.25',
 	
 	// globals
 	protocol: location.protocol.match(/https/i) ? 'https' : 'http',
@@ -91,6 +91,10 @@ var Webcam = {
 		
 		window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
 		this.userMedia = this.userMedia && !!this.mediaDevices && !!window.URL;
+		
+		if (this.iOS) {
+			this.userMedia = null;
+		}
 		
 		// Older versions of firefox (< 21) apparently claim support but user media does not actually work
 		if (navigator.userAgent.match(/Firefox\D+(\d+)/)) {
@@ -296,8 +300,10 @@ var Webcam = {
 			this.mediaDevices.getUserMedia({
 				"audio": false,
 				"video": this.params.constraints || {
-					width: this.params.dest_width,
-					height: this.params.dest_height
+					mandatory: {
+						minWidth: this.params.dest_width,
+						minHeight: this.params.dest_height
+					}
 				}
 			})
 			.then( function(stream) {
@@ -310,7 +316,15 @@ var Webcam = {
 					self.dispatch('live');
 					self.flip();
 				};
-				video.src = window.URL.createObjectURL( stream ) || stream;
+				// as window.URL.createObjectURL() is deprecated, adding a check so that it works in Safari.
+				// older browsers may not have srcObject
+				if ("srcObject" in video) {
+				  	video.srcObject = stream;
+				}
+				else {
+				  	// using URL.createObjectURL() as fallback for old browsers
+				  	video.src = window.URL.createObjectURL(stream);
+				}
 			})
 			.catch( function(err) {
 				// JH 2016-07-31 Instead of dispatching error, now falling back to Flash if userMedia fails (thx @john2014)
@@ -555,6 +569,7 @@ var Webcam = {
 			return true;
 		}
 		else if (name == 'error') {
+			var message;
 			if ((args[0] instanceof FlashError) || (args[0] instanceof WebcamError)) {
 				message = args[0].message;
 			} else {
@@ -1060,6 +1075,13 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    //@Override
+    destroy: function() {
+        this._super();
+
+        this.dettach();
+    },
+
     attach: function() {
         if (!this.attached) {
             Webcam.reset();
@@ -1105,4 +1127,3 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
     }
 
 });
-

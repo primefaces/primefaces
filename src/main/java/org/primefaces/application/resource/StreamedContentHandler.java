@@ -1,17 +1,25 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.application.resource;
 
@@ -33,34 +41,36 @@ import org.primefaces.util.Constants;
 
 public class StreamedContentHandler extends BaseDynamicContentHandler {
 
-    private final static Logger LOG = Logger.getLogger(StreamedContentHandler.class.getName());
-    
+    private static final Logger LOGGER = Logger.getLogger(StreamedContentHandler.class.getName());
+
+    @Override
     public void handle(FacesContext context) throws IOException {
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String library = params.get("ln");
-        String resourceKey = (String) params.get(Constants.DYNAMIC_CONTENT_PARAM);
+        String resourceKey = params.get(Constants.DYNAMIC_CONTENT_PARAM);
 
         if (resourceKey != null && library != null && library.equals(Constants.LIBRARY)) {
             StreamedContent streamedContent = null;
-            boolean cache = Boolean.valueOf(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
+            boolean cache = Boolean.parseBoolean(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
 
             try {
                 ExternalContext externalContext = context.getExternalContext();
-                Map<String,Object> session = externalContext.getSessionMap();
-                Map<String,String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
+                Map<String, Object> session = externalContext.getSessionMap();
+                Map<String, String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
 
                 if (dynamicResourcesMapping != null) {
                     String dynamicContentEL = dynamicResourcesMapping.get(resourceKey);
 
                     if (dynamicContentEL != null) {
                         ELContext eLContext = context.getELContext();
-                        ValueExpression ve = context.getApplication().getExpressionFactory().createValueExpression(context.getELContext(), dynamicContentEL, StreamedContent.class);
+                        ValueExpression ve = context.getApplication().getExpressionFactory().createValueExpression(
+                                context.getELContext(), dynamicContentEL, StreamedContent.class);
                         streamedContent = (StreamedContent) ve.getValue(eLContext);
 
                         if (streamedContent == null || streamedContent.getStream() == null) {
                             if (externalContext.getRequest() instanceof HttpServletRequest) {
                                 externalContext.responseSendError(HttpServletResponse.SC_NOT_FOUND,
-                                    ((HttpServletRequest) externalContext.getRequest()).getRequestURI());
+                                        ((HttpServletRequest) externalContext.getRequest()).getRequestURI());
                             }
                             else {
                                 externalContext.responseSendError(HttpServletResponse.SC_NOT_FOUND, null);
@@ -69,19 +79,19 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
                         }
 
                         externalContext.setResponseStatus(HttpServletResponse.SC_OK);
-                        externalContext.setResponseContentType(streamedContent.getContentType());                    
+                        externalContext.setResponseContentType(streamedContent.getContentType());
 
                         handleCache(externalContext, cache);
 
-                        if(streamedContent.getContentLength() != null){
+                        if (streamedContent.getContentLength() != null) {
                             externalContext.setResponseContentLength(streamedContent.getContentLength());
                         }
 
-                        if(streamedContent.getContentEncoding() != null) {
+                        if (streamedContent.getContentEncoding() != null) {
                             externalContext.setResponseHeader("Content-Encoding", streamedContent.getContentEncoding());
                         }
-                        
-                        if(streamedContent.getName() != null) {
+
+                        if (streamedContent.getName() != null) {
                             externalContext.setResponseHeader("Content-Disposition", "inline;filename=\"" + streamedContent.getName() + "\"");
                         }
 
@@ -98,13 +108,14 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
                 externalContext.responseFlushBuffer();
                 context.responseComplete();
 
-            } catch(Exception e) {
-                LOG.log(Level.SEVERE, "Error in streaming dynamic resource.", e);
+            }
+            catch (Exception e) {
+                LOGGER.log(Level.SEVERE, "Error in streaming dynamic resource.", e);
                 throw new IOException(e);
             }
             finally {
                 //cleanup
-                if(streamedContent != null && streamedContent.getStream() != null) {
+                if (streamedContent != null && streamedContent.getStream() != null) {
                     streamedContent.getStream().close();
                 }
             }

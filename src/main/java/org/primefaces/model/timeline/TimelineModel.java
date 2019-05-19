@@ -1,19 +1,26 @@
-/*
- * Copyright 2009-2016 PrimeTek.
+/**
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
-
 package org.primefaces.model.timeline;
 
 import java.io.Serializable;
@@ -40,11 +47,11 @@ public class TimelineModel implements Serializable {
     private List<TimelineGroup> groups;
 
     public TimelineModel() {
-        events = new ArrayList<TimelineEvent>();
+        events = new ArrayList<>();
     }
 
     public TimelineModel(List<TimelineEvent> events) {
-        this.events = new ArrayList<TimelineEvent>();
+        this.events = new ArrayList<>();
 
         if (events != null && !events.isEmpty()) {
             for (TimelineEvent event : events) {
@@ -74,7 +81,7 @@ public class TimelineModel implements Serializable {
      */
     public void addGroup(TimelineGroup group) {
         if (groups == null) {
-            groups = new ArrayList<TimelineGroup>();
+            groups = new ArrayList<>();
         }
 
         groups.add(group);
@@ -111,7 +118,7 @@ public class TimelineModel implements Serializable {
      */
     public void addAllGroups(Collection<TimelineGroup> groups) {
         if (groups == null) {
-            groups = new ArrayList<TimelineGroup>();
+            groups = new ArrayList<>();
         }
 
         groups.addAll(groups);
@@ -296,7 +303,7 @@ public class TimelineModel implements Serializable {
 
             if (isOverlapping(event, e)) {
                 if (overlappedEvents == null) {
-                    overlappedEvents = new ArrayList<TimelineEvent>();
+                    overlappedEvents = new ArrayList<>();
                 }
 
                 overlappedEvents.add(e);
@@ -308,7 +315,7 @@ public class TimelineModel implements Serializable {
         }
 
         // order overlapped events according to their start / end dates
-        TreeSet<TimelineEvent> orderedOverlappedEvents = new TreeSet<TimelineEvent>(new TimelineEventComparator());
+        TreeSet<TimelineEvent> orderedOverlappedEvents = new TreeSet<>(new TimelineEventComparator());
         orderedOverlappedEvents.addAll(overlappedEvents);
 
         return orderedOverlappedEvents;
@@ -367,13 +374,14 @@ public class TimelineModel implements Serializable {
         for (TimelineEvent e : orderedEvents) {
             if (endDate == null && e.getEndDate() != null) {
                 endDate = e.getEndDate();
-            } else if (endDate != null && e.getEndDate() != null && endDate.before(e.getEndDate())) {
+            }
+            else if (endDate != null && e.getEndDate() != null && endDate.before(e.getEndDate())) {
                 endDate = e.getEndDate();
             }
         }
 
-        TimelineEvent mergedEvent =
-                new TimelineEvent(event.getData(), orderedEvents.first().getStartDate(), endDate, event.isEditable(),
+        TimelineEvent mergedEvent
+                = new TimelineEvent(event.getData(), orderedEvents.first().getStartDate(), endDate, event.isEditable(),
                         event.getGroup(), event.getStyleClass());
 
         // merge...
@@ -468,22 +476,24 @@ public class TimelineModel implements Serializable {
     private boolean isOverlapping(TimelineEvent event1, TimelineEvent event2) {
         if (event1.getEndDate() == null && event2.getEndDate() == null) {
             return event1.getStartDate().equals(event2.getStartDate());
-        } else if (event1.getEndDate() == null && event2.getEndDate() != null) {
+        }
+        else if (event1.getEndDate() == null && event2.getEndDate() != null) {
             return (event1.getStartDate().equals(event2.getStartDate()) || event1.getStartDate().equals(event2.getEndDate())
                     || (event1.getStartDate().after(event2.getStartDate()) && event1.getStartDate().before(event2.getEndDate())));
-        } else if (event1.getEndDate() != null && event2.getEndDate() == null) {
+        }
+        else if (event1.getEndDate() != null && event2.getEndDate() == null) {
             return (event2.getStartDate().equals(event1.getStartDate()) || event2.getStartDate().equals(event1.getEndDate())
                     || (event2.getStartDate().after(event1.getStartDate()) && event2.getStartDate().before(event1.getEndDate())));
-        } else {
+        }
+        else {
             // check with ODER if
             // 1. start date of the event 1 is within the event 2
             // 2. end date of the event 1 is within the event 2
             // 3. event 2 is completely strong within the event 1
             return (event1.getStartDate().equals(event2.getStartDate()) || event1.getStartDate().equals(event2.getEndDate())
                     || (event1.getStartDate().after(event2.getStartDate()) && event1.getStartDate().before(event2.getEndDate())))
-                    ||
-                    (event1.getEndDate().equals(event2.getStartDate()) || event1.getEndDate().equals(event2.getEndDate())
-                            || (event1.getEndDate().after(event2.getStartDate()) && event1.getEndDate().before(event2.getEndDate())))
+                    || (event1.getEndDate().equals(event2.getStartDate()) || event1.getEndDate().equals(event2.getEndDate())
+                    || (event1.getEndDate().after(event2.getStartDate()) && event1.getEndDate().before(event2.getEndDate())))
                     || (event1.getStartDate().before(event2.getStartDate()) && event1.getEndDate().after(event2.getEndDate()));
         }
     }

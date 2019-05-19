@@ -1,17 +1,25 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.slidemenu;
 
@@ -19,77 +27,78 @@ import java.io.IOException;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
 import org.primefaces.util.WidgetBuilder;
 
 public class SlideMenuRenderer extends TieredMenuRenderer {
-    
+
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         SlideMenu menu = (SlideMenu) abstractMenu;
-		String clientId = menu.getClientId(context);
+        String clientId = menu.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("SlideMenu", menu.resolveWidgetVar(), clientId);
-        
-        if(menu.isOverlay()) {
+        wb.init("SlideMenu", menu.resolveWidgetVar(), clientId);
+
+        if (menu.isOverlay()) {
             encodeOverlayConfig(context, menu, wb);
         }
 
         wb.finish();
-	}
+    }
 
     @Override
-	protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
+    protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         SlideMenu menu = (SlideMenu) abstractMenu;
-        
+
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
         String defaultStyleClass = menu.isOverlay() ? SlideMenu.DYNAMIC_CONTAINER_CLASS : SlideMenu.STATIC_CONTAINER_CLASS;
-        styleClass = styleClass == null ?  defaultStyleClass : defaultStyleClass + " " + styleClass;
-        
+        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+
         writer.startElement("div", menu);
-		writer.writeAttribute("id", menu.getClientId(context), "id");
+        writer.writeAttribute("id", menu.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
         writer.writeAttribute("role", "menu", null);
-        
+
         //wrapper
         writer.startElement("div", menu);
         writer.writeAttribute("class", SlideMenu.WRAPPER_CLASS, "styleClass");
-        
+
         //content
         writer.startElement("div", menu);
         writer.writeAttribute("class", SlideMenu.CONTENT_CLASS, "styleClass");
 
         //root menu
-        if(menu.getElementsCount() > 0) {
+        if (menu.getElementsCount() > 0) {
             writer.startElement("ul", null);
             writer.writeAttribute("class", Menu.LIST_CLASS, null);
             encodeElements(context, abstractMenu, menu.getElements());
             writer.endElement("ul");
         }
-        
+
         //content
         writer.endElement("div");
-                
+
         //back navigator
         writer.startElement("div", menu);
         writer.writeAttribute("class", SlideMenu.BACKWARD_CLASS, null);
         writer.startElement("span", menu);
         writer.writeAttribute("class", SlideMenu.BACKWARD_ICON_CLASS, null);
         writer.endElement("span");
-        writer.write(menu.getBackLabel());
+        writer.writeText(menu.getBackLabel(), "backLabel");
         writer.endElement("div");
-        
+
         //wrapper
         writer.endElement("div");
 
         writer.endElement("div");
-	}
+    }
 }

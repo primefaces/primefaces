@@ -1,38 +1,48 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.ring;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
 public class RingRenderer extends CoreRenderer {
 
     @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Ring ring = (Ring) component;
 
         encodeMarkup(context, ring);
         encodeScript(context, ring);
-	}
+    }
 
-	public void encodeMarkup(FacesContext context, Ring ring) throws IOException {
+    public void encodeMarkup(FacesContext context, Ring ring) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String style = ring.getStyle();
         String styleClass = ring.getStyleClass();
@@ -41,17 +51,17 @@ public class RingRenderer extends CoreRenderer {
         writer.startElement("ul", ring);
         writer.writeAttribute("id", ring.getClientId(context), null);
         writer.writeAttribute("class", styleClass, null);
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, null);
         }
 
-        for(int rowIndex = 0; rowIndex < ring.getRowCount(); rowIndex++) {
+        for (int rowIndex = 0; rowIndex < ring.getRowCount(); rowIndex++) {
             ring.setRowIndex(rowIndex);
 
             writer.startElement("li", ring);
             writer.writeAttribute("class", "ui-state-default ui-corner-all", null);
 
-            for(UIComponent child : ring.getChildren()) {
+            for (UIComponent child : ring.getChildren()) {
                 child.encodeAll(context);
             }
 
@@ -61,29 +71,29 @@ public class RingRenderer extends CoreRenderer {
         ring.setRowIndex(-1);
 
         writer.endElement("ul");
-	}
+    }
 
     public void encodeScript(FacesContext context, Ring ring) throws IOException {
         String clientId = ring.getClientId(context);
-        
+
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Ring", ring.resolveWidgetVar(), clientId)
-            .attr("startingChild", ring.getFirst())
-            .attr("easing", ring.getEasing(), null)
-            .attr("autoplay", ring.isAutoplay(), false)
-            .attr("autoplayDuration", ring.getAutoplayDuration(), 1000)
-            .attr("autoplayPauseOnHover", ring.isAutoplayPauseOnHover(), false)
-            .attr("autoplayInitialDelay", ring.getAutoplayInitialDelay(), 0);
+        wb.init("Ring", ring.resolveWidgetVar(), clientId)
+                .attr("startingChild", ring.getFirst())
+                .attr("easing", ring.getEasing(), null)
+                .attr("autoplay", ring.isAutoplay(), false)
+                .attr("autoplayDuration", ring.getAutoplayDuration(), 1000)
+                .attr("autoplayPauseOnHover", ring.isAutoplayPauseOnHover(), false)
+                .attr("autoplayInitialDelay", ring.getAutoplayInitialDelay(), 0);
         wb.finish();
-	}
+    }
 
     @Override
-	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         //Do nothing
-	}
+    }
 
     @Override
-	public boolean getRendersChildren() {
-		return true;
-	}
+    public boolean getRendersChildren() {
+        return true;
+    }
 }

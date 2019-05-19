@@ -1,17 +1,25 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.behavior.ajax;
 
@@ -29,41 +37,51 @@ import org.primefaces.behavior.base.AbstractBehavior;
 import org.primefaces.component.api.AjaxSource;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-    @ResourceDependency(library="primefaces", name="jquery/jquery-plugins.js"),
-	@ResourceDependency(library="primefaces", name="core.js")
-})
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js")
+    })
 public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
 
-    public final static String BEHAVIOR_ID = "org.primefaces.component.AjaxBehavior";
-    
+    public static final String BEHAVIOR_ID = "org.primefaces.component.AjaxBehavior";
+
     private static final Set<ClientBehaviorHint> HINTS = Collections.unmodifiableSet(EnumSet.of(ClientBehaviorHint.SUBMITTING));
-	
+
     public enum PropertyKeys {
-    	update(String.class),
-    	process(String.class),
-    	global(Boolean.class),
-    	async(Boolean.class),
-    	oncomplete(String.class),
-    	onerror(String.class),
-    	onsuccess(String.class),
-    	onstart(String.class),
-    	listener(MethodExpression.class),
-    	immediate(Boolean.class),
-    	disabled(Boolean.class),
-    	partialSubmit(Boolean.class),
-    	resetValues(Boolean.class),
-    	ignoreAutoUpdate(Boolean.class),
-    	delay(String.class),
+        update(String.class),
+        process(String.class),
+        global(Boolean.class),
+        async(Boolean.class),
+        oncomplete(String.class),
+        onerror(String.class),
+        onsuccess(String.class),
+        onstart(String.class),
+        listener(MethodExpression.class),
+        immediate(Boolean.class),
+        disabled(Boolean.class),
+        partialSubmit(Boolean.class),
+        resetValues(Boolean.class),
+        ignoreAutoUpdate(Boolean.class),
+        delay(String.class),
         timeout(Integer.class),
         partialSubmitFilter(String.class),
         form(String.class),
         skipChildren(Boolean.class);
 
-        final Class<?> expectedType;
+        private final Class<?> expectedType;
 
         PropertyKeys(Class<?> expectedType) {
             this.expectedType = expectedType;
+        }
+
+        /**
+         * Holds the type which ought to be passed to
+         * {@link javax.faces.view.facelets.TagAttribute#getObject(javax.faces.view.facelets.FaceletContext, java.lang.Class) }
+         * when creating the behavior.
+         * @return the expectedType the expected object type
+         */
+        public Class<?> getExpectedType() {
+            return expectedType;
         }
     }
 
@@ -75,178 +93,194 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     public String getRendererType() {
         return "org.primefaces.component.AjaxBehaviorRenderer";
     }
-    
+
     @Override
     public Set<ClientBehaviorHint> getHints() {
         return HINTS;
     }
 
-    
     public boolean isDisabled() {
         return eval(PropertyKeys.disabled, Boolean.FALSE);
     }
 
     public void setDisabled(boolean disabled) {
-        setLiteral(PropertyKeys.disabled, disabled);
-    }    
+        put(PropertyKeys.disabled, disabled);
+    }
 
+    @Override
     public boolean isAsync() {
-    	return eval(PropertyKeys.async, Boolean.FALSE);
+        return eval(PropertyKeys.async, Boolean.FALSE);
     }
 
     public void setAsync(boolean async) {
-    	setLiteral(PropertyKeys.async, async);
+        put(PropertyKeys.async, async);
     }
 
+    @Override
     public boolean isGlobal() {
-    	return eval(PropertyKeys.global, Boolean.TRUE);
+        return eval(PropertyKeys.global, Boolean.TRUE);
     }
 
     public void setGlobal(boolean global) {
-    	setLiteral(PropertyKeys.global, global);
+        put(PropertyKeys.global, global);
     }
 
+    @Override
     public String getOncomplete() {
         return eval(PropertyKeys.oncomplete, null);
     }
 
     public void setOncomplete(String oncomplete) {
-    	setLiteral(PropertyKeys.oncomplete, oncomplete);
+        put(PropertyKeys.oncomplete, oncomplete);
     }
 
+    @Override
     public String getOnstart() {
-    	return eval(PropertyKeys.onstart, null);
+        return eval(PropertyKeys.onstart, null);
     }
 
     public void setOnstart(String onstart) {
-    	setLiteral(PropertyKeys.onstart, onstart);
+        put(PropertyKeys.onstart, onstart);
     }
 
+    @Override
     public String getOnsuccess() {
-    	return eval(PropertyKeys.onsuccess, null);
+        return eval(PropertyKeys.onsuccess, null);
     }
 
     public void setOnsuccess(String onsuccess) {
-    	setLiteral(PropertyKeys.onsuccess, onsuccess);
+        put(PropertyKeys.onsuccess, onsuccess);
     }
 
+    @Override
     public String getOnerror() {
-    	return eval(PropertyKeys.onerror, null);
+        return eval(PropertyKeys.onerror, null);
     }
 
     public void setOnerror(String onerror) {
-    	setLiteral(PropertyKeys.onerror, onerror);
+        put(PropertyKeys.onerror, onerror);
     }
 
+    @Override
     public String getProcess() {
-    	return eval(PropertyKeys.process, null);
+        return eval(PropertyKeys.process, null);
     }
 
     public void setProcess(String process) {
-    	setLiteral(PropertyKeys.process, process);
+        put(PropertyKeys.process, process);
     }
 
+    @Override
     public String getUpdate() {
-    	return eval(PropertyKeys.update, null);
+        return eval(PropertyKeys.update, null);
     }
 
     public void setUpdate(String update) {
-    	setLiteral(PropertyKeys.update, update);
+        put(PropertyKeys.update, update);
     }
 
+    @Override
     public String getDelay() {
-    	return eval(PropertyKeys.delay, null);
+        return eval(PropertyKeys.delay, null);
     }
 
     public void setDelay(String delay) {
-    	setLiteral(PropertyKeys.delay, delay);
+        put(PropertyKeys.delay, delay);
     }
 
     public boolean isImmediate() {
-    	return eval(PropertyKeys.immediate, Boolean.FALSE);
+        return eval(PropertyKeys.immediate, Boolean.FALSE);
     }
 
     public void setImmediate(Boolean immediate) {
-    	setLiteral(PropertyKeys.immediate, immediate);
+        put(PropertyKeys.immediate, immediate);
     }
-    
+
+    @Override
     public boolean isIgnoreAutoUpdate() {
-    	return eval(PropertyKeys.ignoreAutoUpdate, Boolean.FALSE);
+        return eval(PropertyKeys.ignoreAutoUpdate, Boolean.FALSE);
     }
- 
+
     public void setIgnoreAutoUpdate(boolean ignoreAutoUpdate) {
-    	setLiteral(PropertyKeys.ignoreAutoUpdate, ignoreAutoUpdate);
+        put(PropertyKeys.ignoreAutoUpdate, ignoreAutoUpdate);
     }
-    
+
+    @Override
     public boolean isPartialSubmit() {
-    	return eval(PropertyKeys.partialSubmit, Boolean.FALSE);
+        return eval(PropertyKeys.partialSubmit, Boolean.FALSE);
     }
 
     public void setPartialSubmit(boolean partialSubmit) {
-    	setLiteral(PropertyKeys.partialSubmit, partialSubmit);
+        put(PropertyKeys.partialSubmit, partialSubmit);
     }
-    
+
+    @Override
     public boolean isResetValues() {
-    	return eval(PropertyKeys.resetValues, Boolean.FALSE);
+        return eval(PropertyKeys.resetValues, Boolean.FALSE);
     }
 
     public void setResetValues(boolean resetValues) {
-    	setLiteral(PropertyKeys.resetValues, resetValues);
+        put(PropertyKeys.resetValues, resetValues);
     }
 
     public MethodExpression getListener() {
-    	return eval(PropertyKeys.listener, null);
+        return eval(PropertyKeys.listener, null);
     }
 
     public void setListener(MethodExpression listener) {
-    	setLiteral(PropertyKeys.listener, listener);
+        put(PropertyKeys.listener, listener);
     }
 
+    @Override
     public int getTimeout() {
         return eval(PropertyKeys.timeout, 0);
     }
 
     public void setTimeout(int timeout) {
-    	setLiteral(PropertyKeys.timeout, timeout);
+        put(PropertyKeys.timeout, timeout);
     }
-    
+
+    @Override
     public String getPartialSubmitFilter() {
         return eval(PropertyKeys.partialSubmitFilter, null);
     }
-    
+
     public void setPartialSubmitFilter(String partialSubmitFilter) {
-        setLiteral(PropertyKeys.partialSubmitFilter, partialSubmitFilter);
+        put(PropertyKeys.partialSubmitFilter, partialSubmitFilter);
     }
-    
+
+    @Override
     public String getForm() {
         return eval(PropertyKeys.form, null);
     }
-    
+
     public void setForm(String form) {
-        setLiteral(PropertyKeys.form, form);
+        put(PropertyKeys.form, form);
     }
-    
+
     public boolean isSkipChildren() {
-    	return eval(PropertyKeys.skipChildren, Boolean.TRUE);
+        return eval(PropertyKeys.skipChildren, Boolean.TRUE);
     }
 
     public void setSkipChildren(Boolean skipChildren) {
-    	setLiteral(PropertyKeys.skipChildren, skipChildren);
+        put(PropertyKeys.skipChildren, skipChildren);
     }
-    
+
     public boolean isImmediateSet() {
         return isAttributeSet(PropertyKeys.immediate);
     }
-    
+
+    @Override
     public boolean isPartialSubmitSet() {
-    	return isAttributeSet(PropertyKeys.partialSubmit);
+        return isAttributeSet(PropertyKeys.partialSubmit);
     }
 
+    @Override
     public boolean isResetValuesSet() {
-    	return isAttributeSet(PropertyKeys.resetValues);
+        return isAttributeSet(PropertyKeys.resetValues);
     }
-    
 
+    @Override
     public boolean isAjaxified() {
         return true;
     }
@@ -254,7 +288,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
 
     @Override
     protected Enum<?>[] getAllProperties() {
-            return PropertyKeys.values();
+        return PropertyKeys.values();
     }
 
 

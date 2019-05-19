@@ -43,7 +43,7 @@
     background: none;
 }
 
-.ui-tabs .ui-tabs-nav li .ui-icon {
+.ui-tabs .ui-tabs-nav li > .ui-icon {
     float: left;
     margin: 0.4em 0.2em 0 0;
     cursor: pointer;
@@ -134,6 +134,12 @@
     border-left:0 none;
 }
 
+.ui-tabs.ui-tabs-left .ui-tabs-actions, .ui-tabs.ui-tabs-right .ui-tabs-actions {
+    position: absolute;
+    bottom: 0;
+    padding: .2em; /** .ui-tabs padding **/
+}
+
 /** RTL **/
 .ui-tabs-rtl {
     direction: rtl;
@@ -146,6 +152,11 @@
 
 .ui-tabs .ui-tabs-navscroller {
     overflow: hidden;
+    padding-left: 18px;
+}
+
+.ui-tabs .ui-tabs-navscroller.ui-tabs-navscroller-btn-hidden {
+    padding-left: 0;
 }
 
 .ui-tabs-scrollable .ui-tabs-nav li {
@@ -157,6 +168,9 @@
     height: 28px;
     z-index: 100;
     cursor: pointer;
+}
+
+.ui-tabs .ui-tabs-navscroller.ui-tabs-navscroller-btn-hidden .ui-tabs-navscroller-btn {
     display: none;
 }
 
@@ -176,4 +190,16 @@
 .ui-tabs-outline {
     outline: dotted thin;
     z-index: 1;
+}
+
+.ui-tabs li.ui-tabs-actions {
+    float: right;
+}
+
+.ui-tabs.ui-tabs-rtl li.ui-tabs-actions {
+    float: left;
+}
+
+.ui-tabs li.ui-tabs-actions[aria-hidden='true'] {
+    display: none;
 }

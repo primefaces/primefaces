@@ -59,7 +59,8 @@
 
 .ui-datatable .ui-column-filter {
     display: block;
-    width:100px;
+    box-sizing: border-box;
+    width: 100%;
     margin:auto;
 }
 
@@ -76,6 +77,10 @@
     margin: 0px auto;
     width: 16px;
     height: 16px;
+}
+
+.ui-datatable-summary {
+    display: none;
 }
 
 /* Scrollable */
@@ -286,6 +291,10 @@
 }
 
 .ui-datatable-frozenlayout-right .ui-datatable-empty-message td {
+    text-indent: -9999px;
+}
+
+.ui-datatable-frozenlayout-right .ui-datatable-empty-message td > * {
     visibility: hidden;
 }
 
@@ -319,7 +328,7 @@
         display: none;
     }
 
-    .ui-datatable-reflow .ui-datatable-data td[role="gridcell"] { 
+    .ui-datatable-reflow .ui-datatable-data td[role="gridcell"]:not(.ui-helper-hidden) { 
         text-align: left;
         display: block;
         border: 0px none;

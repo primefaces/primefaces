@@ -1,28 +1,38 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.ajaxexceptionhandler;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
+
 import org.primefaces.component.api.UIData;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
 
 /**
  * {@link VisitCallback} which collects all {@link AjaxExceptionHandler}s.
@@ -30,26 +40,27 @@ import org.primefaces.util.ComponentUtils;
 public class AjaxExceptionHandlerVisitCallback implements VisitCallback {
 
     private final Throwable throwable;
-    
-    private Map<String, AjaxExceptionHandler> handlers;
+
+    private final Map<String, AjaxExceptionHandler> handlers;
 
     public AjaxExceptionHandlerVisitCallback(Throwable throwable) {
         this.throwable = throwable;
-        
-        this.handlers = new HashMap<String, AjaxExceptionHandler>();
+
+        handlers = new HashMap<>();
     }
-    
-    public VisitResult visit(VisitContext context, UIComponent target) {;
+
+    @Override
+    public VisitResult visit(VisitContext context, UIComponent target) {
 
         if (target instanceof AjaxExceptionHandler) {
             AjaxExceptionHandler currentHandler = (AjaxExceptionHandler) target;
 
-            if (ComponentUtils.isValueBlank(currentHandler.getType())) {
+            if (LangUtils.isValueBlank(currentHandler.getType())) {
                 handlers.put(null, currentHandler);
             }
             else {
                 handlers.put(currentHandler.getType(), currentHandler);
-                
+
                 // exact type matched - we don't need to search more generic handlers
                 if (throwable.getClass().getName().equals(currentHandler.getType())) {
                     return VisitResult.COMPLETE;
@@ -59,10 +70,10 @@ public class AjaxExceptionHandlerVisitCallback implements VisitCallback {
         else if (target instanceof UIData) {
             return VisitResult.REJECT;
         }
-        
+
         return VisitResult.ACCEPT;
     }
-    
+
     public Map<String, AjaxExceptionHandler> getHandlers() {
         return handlers;
     }

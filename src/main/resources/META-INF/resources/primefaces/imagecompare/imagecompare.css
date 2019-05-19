@@ -1,0 +1,344 @@
+div.juxtapose {
+    width: 100%;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+div.jx-slider {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    color: #f3f3f3;
+}
+
+
+div.jx-handle {
+    position: absolute;
+    height: 100%;
+    width: 40px;
+    cursor: col-resize;
+    z-index: 15;
+    margin-left: -20px;
+}
+
+.vertical div.jx-handle {
+    height: 40px;
+    width: 100%;
+    cursor: row-resize;
+    margin-top: -20px;
+    margin-left: 0;
+}
+
+div.jx-control {
+    height: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    width: 3px;
+    background-color: currentColor;
+}
+
+.vertical div.jx-control {
+    height: 3px;
+    width: 100%;
+    background-color: currentColor;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+div.jx-controller {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    height: 60px;
+    width: 9px;
+    margin-left: -3px;
+    background-color: currentColor;
+}
+
+.vertical div.jx-controller {
+    height: 9px;
+    width: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    top: -3px;
+    position: relative;
+}
+
+div.jx-arrow {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    transition: all .2s ease;
+}
+
+.vertical div.jx-arrow {
+    position: absolute;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    transition: all .2s ease;
+}
+
+
+div.jx-arrow.jx-left {
+    left: 2px;
+    border-style: solid;
+    border-width: 8px 8px 8px 0;
+    border-color: transparent currentColor transparent transparent;
+}
+
+div.jx-arrow.jx-right {
+    right: 2px;
+    border-style: solid;
+    border-width: 8px 0 8px 8px;
+    border-color: transparent transparent transparent currentColor;
+}
+
+.vertical div.jx-arrow.jx-left {
+    left: 0px;
+    top: 2px;
+    border-style: solid;
+    border-width: 0px 8px 8px 8px;
+    border-color: transparent transparent currentColor transparent;
+}
+
+.vertical div.jx-arrow.jx-right {
+    right: 0px;
+    top: auto;
+    bottom: 2px;
+    border-style: solid;
+    border-width: 8px 8px 0 8px;
+    border-color: currentColor transparent transparent transparent;
+}
+
+div.jx-handle:hover div.jx-arrow.jx-left,
+div.jx-handle:active div.jx-arrow.jx-left {
+    left: -1px;
+}
+
+div.jx-handle:hover div.jx-arrow.jx-right,
+div.jx-handle:active div.jx-arrow.jx-right {
+    right: -1px;
+}
+
+.vertical div.jx-handle:hover div.jx-arrow.jx-left,
+.vertical div.jx-handle:active div.jx-arrow.jx-left {
+    left: 0px;
+    top: 0px;
+}
+
+.vertical div.jx-handle:hover div.jx-arrow.jx-right,
+.vertical div.jx-handle:active div.jx-arrow.jx-right {
+    right: 0px;
+    bottom: 0px;
+}
+
+
+div.jx-image {
+    position: absolute;
+    height: 100%;
+    display: inline-block;
+    top: 0;
+    overflow: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.vertical div.jx-image {
+    width: 100%;
+    left: 0;
+    top: auto;
+}
+
+div.jx-image img {
+    height: 100%;
+    width: auto;
+    z-index: 5;
+    position: absolute;
+    margin-bottom: 0;
+
+    max-height: none;
+    max-width: none;
+    max-height: initial;
+    max-width: initial;
+}
+
+.vertical div.jx-image img {
+    height: auto;
+    width: 100%;
+}
+
+div.jx-image.jx-left {
+    left: 0;
+    background-position: left;
+}
+
+div.jx-image.jx-left img {
+    left: 0;
+}
+
+div.jx-image.jx-right {
+    right: 0;
+    background-position: right;
+}
+
+div.jx-image.jx-right img {
+    right: 0;
+    bottom: 0;
+}
+
+
+.veritcal div.jx-image.jx-left {
+    top: 0;
+    background-position: top;
+}
+
+.veritcal div.jx-image.jx-left img {
+    top: 0;
+}
+
+.vertical div.jx-image.jx-right {
+    bottom: 0;
+    background-position: bottom;
+}
+
+.veritcal div.jx-image.jx-right img {
+    bottom: 0;
+}
+
+
+div.jx-image div.jx-label {
+    font-size: 1em;
+    padding: .25em .75em;
+    position: relative;
+    display: inline-block;
+    top: 0;
+    background-color: #000; /* IE 8 */
+    background-color: rgba(0,0,0,.7);
+    color: white;
+    z-index: 10;
+    white-space: nowrap;
+    line-height: 18px;
+    vertical-align: middle;
+}
+
+div.jx-image.jx-left div.jx-label {
+    float: left;
+    left: 0;
+}
+
+div.jx-image.jx-right div.jx-label {
+    float: right;
+    right: 0;
+}
+
+.vertical div.jx-image div.jx-label {
+    display: table;
+    position: absolute;
+}
+
+.vertical div.jx-image.jx-right div.jx-label {
+    left: 0;
+    bottom: 0;
+    top: auto;
+}
+
+div.jx-credit {
+    line-height: 1.1;
+    font-size: 0.75em;
+}
+
+div.jx-credit em {
+    font-weight: bold;
+    font-style: normal;
+}
+
+
+/* Animation */
+
+div.jx-image.transition {
+    transition: width .5s ease;
+}
+
+div.jx-handle.transition {
+    transition: left .5s ease;
+}
+
+.vertical div.jx-image.transition {
+    transition: height .5s ease;
+}
+
+.vertical div.jx-handle.transition {
+    transition: top .5s ease;
+}
+
+/* Knight Lab Credit */
+a.jx-knightlab {
+    background-color: #000; /* IE 8 */
+    background-color: rgba(0,0,0,.25);
+    bottom: 0;
+    display: none;
+    height: 14px;
+    line-height: 14px;
+    padding: 1px 4px 1px 5px;
+    position: absolute;
+    right: 0;
+    text-decoration: none;
+    z-index: 10;
+}
+
+a.jx-knightlab div.knightlab-logo {
+    display: inline-block;
+    vertical-align: middle;
+    height: 8px;
+    width: 8px;
+    background-color: #c34528;
+    transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    top: -1.25px;
+    position: relative;
+    cursor: pointer;
+}
+
+a.jx-knightlab:hover {
+    background-color: #000; /* IE 8 */
+    background-color: rgba(0,0,0,.35);
+}
+a.jx-knightlab:hover div.knightlab-logo {
+    background-color: #ce4d28;
+}
+
+a.jx-knightlab span.juxtapose-name {
+    display: table-cell;
+    margin: 0;
+    padding: 0;
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight: 300;
+    color: white;
+    font-size: 10px;
+    padding-left: 0.375em;
+    vertical-align: middle;
+    line-height: normal;
+    text-shadow: none;
+}
+
+/* keyboard accessibility */
+div.jx-controller:focus,
+div.jx-image.jx-left div.jx-label:focus,
+div.jx-image.jx-right div.jx-label:focus,
+a.jx-knightlab:focus {
+    background: #eae34a;
+    color: #000;
+}
+a.jx-knightlab:focus span.juxtapose-name{
+    color: #000;
+    border: none;
+}

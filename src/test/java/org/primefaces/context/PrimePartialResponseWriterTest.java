@@ -1,17 +1,25 @@
-/*
- * Copyright 2009-2015 PrimeTek.
+/* 
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.context;
 
@@ -19,55 +27,56 @@ import org.primefaces.mock.CollectingPartialResponseWriter;
 import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
-import org.primefaces.json.JSONArray;
-import org.primefaces.json.JSONException;
-import org.primefaces.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+@SuppressWarnings("resource")
 public class PrimePartialResponseWriterTest {
     
-    @Test
+	@Test
     public void testEncodeJSONArray() throws IOException, JSONException {
         CollectingPartialResponseWriter partialResponseWriter = new CollectingPartialResponseWriter();
         PrimePartialResponseWriter primePartialResponseWriter = new PrimePartialResponseWriter(partialResponseWriter);
-        
+
         JSONArray jsonArray = new JSONArray();
         jsonArray.put("test");
         jsonArray.put(12);
         jsonArray.put(1);
         jsonArray.put("test123&");
-        
+
         primePartialResponseWriter.encodeJSONArray("myArray", jsonArray);
         
-        Assert.assertEquals("\"myArray\":[\"test\",12,1,\"test123&amp;\"]", partialResponseWriter.toString());
+        Assert.assertEquals("\"myArray\":[&#34;test&#34;,12,1" + ",&#34;test123&amp;&#34;]", partialResponseWriter.toString());
     }
-    
+
     @Test
     public void testEncodeJSONObject() throws IOException, JSONException {
         CollectingPartialResponseWriter partialResponseWriter = new CollectingPartialResponseWriter();
         PrimePartialResponseWriter primePartialResponseWriter = new PrimePartialResponseWriter(partialResponseWriter);
-        
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("myStrVal", "Hello<>World!");
         jsonObject.put("isThatTrue", false);
 
         primePartialResponseWriter.encodeJSONObject("myObj", jsonObject);
         
-        Assert.assertEquals("\"myObj\":{\"myStrVal\":\"Hello&lt;&gt;World!\",\"isThatTrue\":false}", partialResponseWriter.toString());
+        Assert.assertEquals("\"myObj\":{&#34;myStrVal&#34;:&#34;Hello&lt;&gt;World!&#34;,&#34;isThatTrue&#34;:false}", partialResponseWriter.toString());
     }
-    
+
     @Test
     public void testEncodeJSONValue() throws IOException, JSONException {
         CollectingPartialResponseWriter partialResponseWriter = new CollectingPartialResponseWriter();
         PrimePartialResponseWriter primePartialResponseWriter = new PrimePartialResponseWriter(partialResponseWriter);
-        
+
         primePartialResponseWriter.encodeJSONValue("myVal", "test123>");
-        Assert.assertEquals("\"myVal\":\"test123&gt;\"", partialResponseWriter.toString());
+        Assert.assertEquals("&#34;myVal&#34;:&#34;test123&gt;&#34;", partialResponseWriter.toString());
         
         
         partialResponseWriter = new CollectingPartialResponseWriter();
         primePartialResponseWriter = new PrimePartialResponseWriter(partialResponseWriter);
-        
+
         primePartialResponseWriter.encodeJSONValue("myVal2", 123);
-        Assert.assertEquals("\"myVal2\":123", partialResponseWriter.toString());
+        Assert.assertEquals("&#34;myVal2&#34;:123", partialResponseWriter.toString());
     }
 }

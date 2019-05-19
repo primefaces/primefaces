@@ -54,10 +54,11 @@ About the code you contribute
     codebase should not render it unstable in any way.
   - All your code should be easy to read and understand by a human.
   - There should be no compilation warnings at all.
+  - Checkstyle must pass without errors or warnings. Currently this is embedded into the maven build.
 
 ### Detailed Java code quality standards:
   
-  - All your code should compile and run in **Java 5.0**.
+  - All your code should compile and run in **Java 7.0**.
   - All comments, names of classes and variables, log messages, etc. must be **in English**.
   - All `.java` files must include the standard PrimeFaces copyright header.
   - All your code should follow the Java Code Conventions regarding variable/method/class naming.
@@ -71,6 +72,7 @@ About the code you contribute
     of complexity"* usually means you had to take some design decisions in order to write it the way you did. Do 
     not write obvious comments.
   - All public methods and classes directly available to users (i.e. public) should have comprehensive javadoc.
+  - We also have some defined checkstyle rules in checkstyle.xml
   
 ### Detailed HTML/XML code quality standards:
 
@@ -103,7 +105,7 @@ Note the following only applies to documentation/articles meant to be published 
 Pay special attention to this
 -----------------------------
 
-All PrimeFaces software is distributed under the **Apache License 2.0** open source license, and your contributions
+All PrimeFaces software is distributed under the **MIT** open source license, and your contributions
 will be licensed in the same way.
 
 If you work for a company which, by the way or place in which your code was written, by your contract terms 
@@ -123,7 +125,7 @@ This contributor agreement ("Agreement") documents the rights granted by contrib
 This is a legally binding document, so please read it carefully before agreeing to it. The Agreement
 may cover more than one software project managed by PrimeFaces.
 
-###1. Definitions
+### 1. Definitions
 
   * _"PrimeFaces"_ means the "PrimeFaces Project organization and members".
   * _"You"_ means the individual who submits a Contribution to PrimeFaces.
@@ -145,9 +147,9 @@ may cover more than one software project managed by PrimeFaces.
   * _"Effective Date"_ means the date you execute this agreement or the date You first submit a
     Contribution to PrimeFaces, whichever is earlier.
   
-###2. Grant of Rights
+### 2. Grant of Rights
 
-####2.1. Copyright License
+#### 2.1. Copyright License
 
     (a) You retain ownership of the copyright in your Contribution and have the same rights to use or
         license the Contribution which you would have had without entering into the agreement.
@@ -157,7 +159,7 @@ may cover more than one software project managed by PrimeFaces.
         reproduce, modify, display, perform and distribute the Contribution as part of the Material; provided
         that this license is conditioned upon compliance with Section 2.3.
 
-####2.2 Patent License
+#### 2.2 Patent License
 
 For patent claims including, without limitation, method, process, and apparatus claims which you
 own, control or have the right to grant, now or in the future, you grant to PrimeFaces a perpetual, worldwide,
@@ -169,32 +171,32 @@ licensed rights infringes such patent claims; and provided that this license is 
 compliance with Section 2.3.
 
 
-####2.3 Outbound License
+#### 2.3 Outbound License
 
 As a condition on the grant of rights in Sections 2.1 and 2.2, PrimeFaces agrees to license the Contribution only
-under the terms of the Apache License 2.0 (including any right to adopt any future version of this license if 
+under the terms of the MIT License (including any right to adopt any future version of this license if 
 permitted).
 
 
-####2.4 Moral Rights 
+#### 2.4 Moral Rights 
 
 If moral rights apply to the Contribution, to the maximum extent permitted by law, you waive and agree not 
 to assert such moral rights against PrimeFaces or its successors in interest, or any of our licensees, either 
 direct or indirect.
 
 
-####2.5 PrimeFaces Rights 
+#### 2.5 PrimeFaces Rights 
 
 You acknowledge that PrimeFaces is not obligated to use your Contribution as part of the
 Material and may decide to include any Contributions PrimeFaces considers appropriate.
 
-####2.6 Reservation of Rights
+#### 2.6 Reservation of Rights
 
 Any rights not expressly assigned or licensed under this section are expressly reserved by you.
 
 
 
-###3. Agreement
+### 3. Agreement
 
 You confirm that:
 
@@ -208,7 +210,7 @@ You confirm that:
 
 
 
-###4. Disclaimer
+### 4. Disclaimer
 
 EXCEPT FOR THE EXPRESS WARRANTIES IN SECTION 3, THE CONTRIBUTION IS PROVIDED "AS IS". MORE PARTICULARLY, 
 ALL EXPRESS OR IMPLIED WARRANTIES INCLUDING, WITHOUT LIMITATION, ANY IMPLIED WARRANTY OF MERCHANTABILITY,
@@ -218,7 +220,7 @@ DURATION TO THE MINIMUM PERIOD PERMITTED BY LAW.
 
 
 
-###5. Consequential Damage Waiver
+### 5. Consequential Damage Waiver
 
 TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT WILL YOU OR PrimeFaces BE LIABLE FOR ANY LOSS OF 
 PROFITS, LOSS OF ANTICIPATED SAVINGS, LOSS OF DATA, INDIRECT, SPECIAL, INCIDENTAL, CONSEQUENTIAL AND EXEMPLARY
@@ -227,7 +229,7 @@ UPON WHICH THE CLAIM IS BASED.
 
 
 
-###6. Miscellaneous
+### 6. Miscellaneous
 
     6.1 This Agreement will be governed by and construed in accordance with the laws of Spain excluding its
         conflicts of law provisions. Under certain circumstances, the governing law in this section might be

@@ -1,17 +1,25 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.galleria;
 
@@ -19,9 +27,11 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -43,62 +53,62 @@ public class GalleriaRenderer extends CoreRenderer {
         String styleClass = galleria.getStyleClass();
         styleClass = (styleClass == null) ? Galleria.CONTAINER_CLASS : Galleria.CONTAINER_CLASS + " " + styleClass;
         UIComponent content = galleria.getFacet("content");
-        
+
         writer.startElement("div", component);
         writer.writeAttribute("id", galleria.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        
+
         writer.startElement("ul", component);
         writer.writeAttribute("class", Galleria.PANEL_WRAPPER_CLASS, null);
-        
-        if(var == null) {
-            for(UIComponent child : galleria.getChildren()) {
-                if(child.isRendered()) {
+
+        if (var == null) {
+            for (UIComponent child : galleria.getChildren()) {
+                if (child.isRendered()) {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", Galleria.PANEL_CLASS, null);
                     child.encodeAll(context);
-                    
-                    if(content != null) {
+
+                    if (content != null) {
                         writer.startElement("div", null);
                         writer.writeAttribute("class", Galleria.PANEL_CONTENT_CLASS, null);
                         content.encodeAll(context);
                         writer.endElement("div");
                     }
-                    
+
                     writer.endElement("li");
                 }
             }
         }
         else {
-            Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+            Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
             Collection<?> value = (Collection<?>) galleria.getValue();
-            if(value != null) {
-                for(Iterator<?> it = value.iterator(); it.hasNext();) {
+            if (value != null) {
+                for (Iterator<?> it = value.iterator(); it.hasNext(); ) {
                     requestMap.put(var, it.next());
 
                     writer.startElement("li", null);
                     writer.writeAttribute("class", Galleria.PANEL_CLASS, null);
                     renderChildren(context, galleria);
-                    
-                    if(content != null) {
+
+                    if (content != null) {
                         writer.startElement("div", null);
                         writer.writeAttribute("class", Galleria.PANEL_CONTENT_CLASS, null);
                         content.encodeAll(context);
                         writer.endElement("div");
                     }
-                    
+
                     writer.endElement("li");
                 }
             }
 
             requestMap.remove(var);
         }
-        
+
         writer.endElement("ul");
-                
+
         writer.endElement("div");
     }
 
@@ -106,11 +116,12 @@ public class GalleriaRenderer extends CoreRenderer {
         Galleria galleria = (Galleria) component;
         String clientId = galleria.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        
+
         if (context.isPostback()) {
-        	wb.initWithDomReady("Galleria", galleria.resolveWidgetVar(), clientId);
-        } else {
-        	wb.initWithWindowLoad("Galleria", galleria.resolveWidgetVar(), clientId);
+            wb.init("Galleria", galleria.resolveWidgetVar(), clientId);
+        }
+        else {
+            wb.initWithWindowLoad("Galleria", galleria.resolveWidgetVar(), clientId);
         }
 
         wb.attr("showFilmstrip", galleria.isShowFilmstrip(), true)

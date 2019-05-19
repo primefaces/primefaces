@@ -88,8 +88,13 @@
     vertical-align: middle;
 }
 
-.ui-tree.ui-tree-horizontal .ui-tree-toggler {
+.ui-tree.ui-tree-horizontal .ui-tree-toggler,
+.ui-tree.ui-tree-horizontal .ui-treenode-icon {
     vertical-align: bottom;
+}
+
+.ui-tree.ui-tree-horizontal .ui-treenode-label {
+    outline: 0 none;
 }
 
 .ui-tree-horizontal .ui-treenode-content {
@@ -149,6 +154,13 @@
 .ui-tree.ui-tree-horizontal .ui-chkbox {
     vertical-align: bottom;
     margin-right: 3px;
+}
+
+.ui-tree.ui-state-disabled .ui-tree-toggler,
+.ui-tree.ui-state-disabled .ui-tree-selectable .ui-treenode-label,
+.ui-tree.ui-state-disabled .ui-tree-selectable .ui-treenode-icon,
+.ui-tree.ui-state-disabled .ui-chkbox-box {
+    cursor: default;
 }
 
 /** RTL **/

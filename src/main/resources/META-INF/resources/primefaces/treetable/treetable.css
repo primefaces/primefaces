@@ -57,6 +57,10 @@
     border:0 none;
 }
 
+.ui-treetable-scrollable .ui-treetable-scrollable-theadclone tr th > * { 
+    display: none;
+}
+            
 .ui-treetable.ui-treetable-scrollable table {
     table-layout: fixed;
 }
@@ -162,6 +166,14 @@
   height: 0px;
 }
 
+/** Filter **/
+.ui-treetable .ui-column-filter {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    margin:auto;
+}
+
 /** Reflow **/
 .ui-treetable-reflow .ui-treetable-data td .ui-column-title {
     display: none;
@@ -225,23 +237,22 @@
 
 .ui-treetable .ui-row-editor span {
     cursor: pointer;
-    float: left;
 }
 
-.ui-treetable .ui-row-editor .ui-icon-pencil {
+.ui-treetable .ui-row-editor .ui-row-editor-pencil {
     display: inline-block;
 }
-.ui-treetable .ui-row-editing .ui-row-editor .ui-icon-pencil {
+.ui-treetable .ui-row-editing .ui-row-editor .ui-row-editor-pencil {
     display: none;
 }
 
-.ui-treetable .ui-row-editor .ui-icon-check,
-.ui-treetable .ui-row-editor .ui-icon-close {
+.ui-treetable .ui-row-editor .ui-row-editor-check,
+.ui-treetable .ui-row-editor .ui-row-editor-close {
     display: none;
 }
 
-.ui-treetable .ui-row-editing .ui-row-editor .ui-icon-check,
-.ui-treetable .ui-row-editing .ui-row-editor .ui-icon-close {
+.ui-treetable .ui-row-editing .ui-row-editor .ui-row-editor-check,
+.ui-treetable .ui-row-editing .ui-row-editor .ui-row-editor-close {
     display: inline-block;
 }
 
