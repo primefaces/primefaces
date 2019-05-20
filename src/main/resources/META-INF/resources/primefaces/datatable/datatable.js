@@ -201,19 +201,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         for(var i = 0; i < this.sortableColumns.length; i++) {
-            var columnHeader, columnHeaderId;
-             
-            if (this.cfg.multiSort && this.cfg.sortMetaOrder) {
-                columnHeaderId = this.cfg.sortMetaOrder[i];
-                columnHeader = this.sortableColumns.filter('[id="' + columnHeaderId + '"]');
-            }
-            else {
-                columnHeader = this.sortableColumns.eq(i);
-                columnHeaderId = columnHeader.attr('id');
-            }
-            
-            var sortIcon = columnHeader.children('span.ui-sortable-column-icon'),
+            var columnHeader = this.sortableColumns.eq(i),
+            columnHeaderId = columnHeader.attr('id'),
+            sortIcon = columnHeader.children('span.ui-sortable-column-icon'),
             sortOrder = null,
+            resolvedSortMetaIndex = null,
             ariaLabel = columnHeader.attr('aria-label');
 
             if(columnHeader.hasClass('ui-state-active')) {
@@ -234,11 +226,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     }
                 }
 
-                if($this.cfg.multiSort) {
-                    $this.addSortMeta({
+                if (this.cfg.multiSort && this.cfg.sortMetaOrder) {
+                    resolvedSortMetaIndex = $.inArray(columnHeaderId, this.cfg.sortMetaOrder);
+
+                    this.sortMeta[resolvedSortMetaIndex] = {
                         col: columnHeaderId,
                         order: sortOrder
-                    });
+                    };
                 }
 
                 $this.updateReflowDD(columnHeader, sortOrder);
