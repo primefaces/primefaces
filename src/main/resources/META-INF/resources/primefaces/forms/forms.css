@@ -952,6 +952,10 @@ div.ui-button, .ui-splitbutton {
     line-height: 1;
 }
 
+.ui-float-label > textarea ~ label {
+    top: 1.2em;
+}
+
 .ui-float-label > input:focus ~ label,
 .ui-float-label > input.ui-state-filled ~ label,
 .ui-float-label > input:-webkit-autofill ~ label,
