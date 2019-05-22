@@ -943,7 +943,7 @@ div.ui-button, .ui-splitbutton {
     position: absolute;
     pointer-events: none;
     left: .25em;
-    top: 50%;
+    top: 0.9em;
     margin-top: -.5em;
     transition: 0.3s ease all;
     -moz-transition: 0.3s ease all;
