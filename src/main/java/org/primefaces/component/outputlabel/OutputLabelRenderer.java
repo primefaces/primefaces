@@ -1,22 +1,30 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.outputlabel;
 
-import org.primefaces.util.EditableValueHolderState;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,25 +34,24 @@ import javax.el.ValueExpression;
 import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.component.UISelectBoolean;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import javax.validation.metadata.ConstraintDescriptor;
+
 import org.primefaces.component.api.InputHolder;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.CompositeUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.util.*;
 
 public class OutputLabelRenderer extends CoreRenderer {
 
-    private static final Logger LOG = Logger.getLogger(OutputLabelRenderer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(OutputLabelRenderer.class.getName());
 
     private static final String SB_STYLE_CLASS = OutputLabelRenderer.class.getName() + "#styleClass";
 
@@ -106,14 +113,13 @@ public class OutputLabelRenderer extends CoreRenderer {
                             styleClass.append(" ui-state-error");
                         }
 
-                        
                         if ("auto".equals(indicateRequired)) {
                             state.setRequired(input.isRequired());
 
                             // fallback if required=false
                             if (!state.isRequired()) {
-                                PrimeConfiguration config = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
-                                if (config.isBeanValidationAvailable() && isNotNullDefined(input, context)) {
+                                PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
+                                if (applicationContext.getConfig().isBeanValidationEnabled() && isBeanValidationDefined(input, context)) {
                                     state.setRequired(true);
                                 }
                             }
@@ -136,6 +142,7 @@ public class OutputLabelRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass.toString(), "id");
         renderPassThruAttributes(context, label, HTML.LABEL_ATTRS);
+        renderDomEvents(context, label, HTML.LABEL_EVENTS);
 
         if (!isValueBlank(_for)) {
             writer.writeAttribute("for", state.getClientId(), "for");
@@ -166,32 +173,42 @@ public class OutputLabelRenderer extends CoreRenderer {
         writer.endElement("span");
     }
 
-    protected boolean isNotNullDefined(UIInput input, FacesContext context) {
-
-        // skip @NotNull check
-        // see GitHub #14
-        if (!RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isInterpretEmptyStringAsNull()) {
-            return false;
-        }
-
+    protected boolean isBeanValidationDefined(UIInput input, FacesContext context) {
         try {
-            Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(
-                    context,
-                    RequestContext.getCurrentInstance(context),
+            PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
+            Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(context,
+                    applicationContext,
                     ValueExpressionAnalyzer.getExpression(context.getELContext(), input.getValueExpression("value")));
-            if (constraints != null && !constraints.isEmpty()) {
-                for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
-                    if (constraintDescriptor.getAnnotation().annotationType().equals(NotNull.class)) {
-                        return true;
-                    }
+
+            if (constraints == null || constraints.isEmpty()) {
+                return false;
+            }
+
+            for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
+                Class<? extends Annotation> annotationType = constraintDescriptor.getAnnotation().annotationType();
+                // GitHub #14 skip @NotNull check
+                if (annotationType.equals(NotNull.class) && applicationContext.getConfig().isInterpretEmptyStringAsNull()) {
+                    return true;
+                }
+
+                // GitHub #3052 @NotBlank,@NotEmpty Hibernate and BeanValidator 2.0
+                String annotationClassName = annotationType.getSimpleName();
+                if ("NotBlank".equals(annotationClassName) || "NotEmpty".equals(annotationClassName)) {
+                    return true;
+                }
+
+                // GitHub #3986
+                if (input instanceof UISelectBoolean && annotationType.equals(AssertTrue.class)) {
+                    return true;
                 }
             }
         }
         catch (PropertyNotFoundException e) {
-            String message = "Skip evaluating @NotNull for outputLabel and referenced component \"" + input.getClientId(context) + "\" because"
-                    + " the ValueExpression of the \"value\" attribute"
+            String message = "Skip evaluating [@NotNull,@NotBlank,@NotEmpty,@AssertTrue] for outputLabel and referenced component \""
+                    + input.getClientId(context)
+                    + "\" because the ValueExpression of the \"value\" attribute"
                     + " isn't resolvable completely (e.g. a sub-expression returns null)";
-            LOG.log(Level.FINE, message);
+            LOGGER.log(Level.FINE, message);
         }
 
         return false;
@@ -199,7 +216,7 @@ public class OutputLabelRenderer extends CoreRenderer {
 
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //Do nothing
+        // Do nothing
     }
 
     @Override

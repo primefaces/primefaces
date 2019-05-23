@@ -1,17 +1,25 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.export;
 
@@ -27,27 +35,14 @@ import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFPalette;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
+import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.PrintSetup;
-import org.apache.poi.ss.usermodel.RichTextString;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.VerticalAlignment;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.WorkbookUtil;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
-
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -59,8 +54,9 @@ public class ExcelExporter extends Exporter {
 
     @Override
     public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType,
-            MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
-        
+                       MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
+                       MethodExpression onTableRender) throws IOException {
+
         Workbook wb = createWorkBook();
         String sheetName = getSheetName(context, table);
         if (sheetName == null) {
@@ -72,7 +68,7 @@ public class ExcelExporter extends Exporter {
             sheetName = "Sheet";
         }
 
-        Sheet sheet = wb.createSheet(sheetName);
+        Sheet sheet = createSheet(wb, sheetName);
 
         if (preProcessor != null) {
             preProcessor.invoke(context.getELContext(), new Object[]{wb});
@@ -94,8 +90,9 @@ public class ExcelExporter extends Exporter {
 
     @Override
     public void export(FacesContext context, String filename, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
-        
+                       String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
+                       MethodExpression onTableRender) throws IOException {
+
         Workbook wb = createWorkBook();
 
         if (preProcessor != null) {
@@ -114,7 +111,7 @@ public class ExcelExporter extends Exporter {
                 sheetName = "Sheet" + String.valueOf(i + 1);
             }
 
-            Sheet sheet = wb.createSheet(sheetName);
+            Sheet sheet = createSheet(wb, sheetName);
             applyOptions(wb, table, sheet, options);
             exportTable(context, table, sheet, pageOnly, selectionOnly);
 
@@ -132,8 +129,9 @@ public class ExcelExporter extends Exporter {
 
     @Override
     public void export(FacesContext context, List<String> clientIds, String filename, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
-        
+                       String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
+                       MethodExpression onTableRender) throws IOException {
+
         Workbook wb = createWorkBook();
 
         if (preProcessor != null) {
@@ -179,26 +177,29 @@ public class ExcelExporter extends Exporter {
 
             if (col.isRendered() && col.isExportable()) {
                 UIComponent facet = col.getFacet(columnType.facet());
-                if (facet != null) {
+                String textValue;
+                switch (columnType) {
+                    case HEADER:
+                        textValue = (col.getExportHeaderValue() != null) ? col.getExportHeaderValue() : col.getHeaderText();
+                        break;
+
+                    case FOOTER:
+                        textValue = (col.getExportFooterValue() != null) ? col.getExportFooterValue() : col.getFooterText();
+                        break;
+
+                    default:
+                        textValue = null;
+                        break;
+                }
+
+                if (textValue != null) {
+                    addColumnValue(rowHeader, textValue);
+                }
+                else if (facet != null) {
                     addColumnValue(rowHeader, facet);
                 }
                 else {
-                    String textValue;
-                    switch (columnType) {
-                        case HEADER:
-                            textValue = col.getHeaderText();
-                            break;
-
-                        case FOOTER:
-                            textValue = col.getFooterText();
-                            break;
-
-                        default:
-                            textValue = "";
-                            break;
-                    }
-
-                    addColumnValue(rowHeader, textValue);
+                    addColumnValue(rowHeader, "");
                 }
             }
         }
@@ -254,6 +255,10 @@ public class ExcelExporter extends Exporter {
 
     protected Workbook createWorkBook() {
         return new HSSFWorkbook();
+    }
+
+    protected Sheet createSheet(Workbook wb, String sheetName) {
+        return wb.createSheet(sheetName);
     }
 
     protected void writeExcelToResponse(ExternalContext externalContext, Workbook generatedExcel, String filename) throws IOException {

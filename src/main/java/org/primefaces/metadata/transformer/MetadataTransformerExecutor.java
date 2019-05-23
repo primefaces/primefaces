@@ -1,17 +1,25 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.metadata.transformer;
 
@@ -27,14 +35,13 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PreRenderComponentEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 
 public class MetadataTransformerExecutor implements SystemEventListener {
 
-    private final static List<MetadataTransformer> METADATA_TRANSFORMERS = new ArrayList<MetadataTransformer>();
+    private static final List<MetadataTransformer> METADATA_TRANSFORMERS = new ArrayList<>();
 
-    private final static MetadataTransformer BV_INPUT_METADATA_TRANSFORMER = new BeanValidationInputMetadataTransformer();
+    private static final MetadataTransformer BV_INPUT_METADATA_TRANSFORMER = new BeanValidationInputMetadataTransformer();
 
     @Override
     public void processEvent(SystemEvent event) throws AbortProcessingException {
@@ -42,7 +49,8 @@ public class MetadataTransformerExecutor implements SystemEventListener {
             if (event instanceof PreRenderComponentEvent) {
                 PreRenderComponentEvent preRenderComponentEvent = (PreRenderComponentEvent) event;
 
-                execute(RequestContext.getCurrentInstance().getApplicationContext().getConfig(), preRenderComponentEvent.getComponent());
+                execute(PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()),
+                        preRenderComponentEvent.getComponent());
             }
         }
         catch (IOException e) {
@@ -55,19 +63,18 @@ public class MetadataTransformerExecutor implements SystemEventListener {
         return source instanceof UIComponent;
     }
 
-    public static void execute(PrimeConfiguration config, UIComponent component) throws IOException {
-        if (config.isTransformMetadataEnabled()) {
+    public static void execute(PrimeApplicationContext applicationContext, UIComponent component) throws IOException {
+        if (applicationContext.getConfig().isTransformMetadataEnabled()) {
 
             FacesContext context = FacesContext.getCurrentInstance();
-            RequestContext requestContext = RequestContext.getCurrentInstance(context);
 
-            if (config.isBeanValidationAvailable()) {
-                BV_INPUT_METADATA_TRANSFORMER.transform(context, requestContext, component);
+            if (applicationContext.getConfig().isBeanValidationEnabled()) {
+                BV_INPUT_METADATA_TRANSFORMER.transform(context, applicationContext, component);
             }
 
-            if (METADATA_TRANSFORMERS.size() > 0) {
+            if (!METADATA_TRANSFORMERS.isEmpty()) {
                 for (int i = 0; i < METADATA_TRANSFORMERS.size(); i++) {
-                    METADATA_TRANSFORMERS.get(i).transform(context, requestContext, component);
+                    METADATA_TRANSFORMERS.get(i).transform(context, applicationContext, component);
                 }
             }
         }

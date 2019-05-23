@@ -1,113 +1,127 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.api;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.celleditor.CellEditor;
 
 public interface UIColumn {
 
-    public ValueExpression getValueExpression(String property);
+    ValueExpression getValueExpression(String property);
 
-    public String getContainerClientId(FacesContext context);
+    String getContainerClientId(FacesContext context);
 
-    public String getColumnKey();
+    String getColumnKey();
 
-    public String getClientId();
+    String getClientId();
 
-    public String getClientId(FacesContext context);
+    String getClientId(FacesContext context);
 
-    public String getSelectionMode();
+    String getSelectionMode();
 
-    public boolean isResizable();
+    boolean isResizable();
 
-    public String getStyle();
+    String getStyle();
 
-    public String getStyleClass();
+    String getStyleClass();
 
-    public int getRowspan();
+    int getRowspan();
 
-    public int getColspan();
+    int getColspan();
 
-    public String getFilterPosition();
+    String getFilterPosition();
 
-    public UIComponent getFacet(String facet);
+    UIComponent getFacet(String facet);
 
-    public Object getFilterBy();
+    Object getFilterBy();
 
-    public Object getFilterValue();
+    Object getFilterValue();
 
-    public String getHeaderText();
+    String getHeaderText();
 
-    public String getFooterText();
+    String getFooterText();
 
-    public String getFilterStyleClass();
+    String getFilterStyleClass();
 
-    public String getFilterStyle();
+    String getFilterStyle();
 
-    public String getFilterMatchMode();
+    String getFilterMatchMode();
 
-    public int getFilterMaxLength();
+    int getFilterMaxLength();
 
-    public Object getFilterOptions();
+    Object getFilterOptions();
 
-    public CellEditor getCellEditor();
+    CellEditor getCellEditor();
 
-    public boolean isDynamic();
+    boolean isDynamic();
 
-    public MethodExpression getSortFunction();
+    MethodExpression getSortFunction();
 
-    public Object getSortBy();
+    Object getSortBy();
 
-    public List<UIComponent> getChildren();
+    List<UIComponent> getChildren();
 
-    public boolean isExportable();
+    boolean isExportable();
 
-    public boolean isRendered();
+    boolean isRendered();
 
-    public void encodeAll(FacesContext context) throws IOException;
+    void encodeAll(FacesContext context) throws IOException;
 
-    public void renderChildren(FacesContext context) throws IOException;
+    void renderChildren(FacesContext context) throws IOException;
 
-    public String getWidth();
+    String getWidth();
 
-    public boolean isToggleable();
+    boolean isToggleable();
 
-    public MethodExpression getFilterFunction();
+    MethodExpression getFilterFunction();
 
-    public String getField();
+    String getField();
 
-    public int getPriority();
+    int getPriority();
 
-    public boolean isSortable();
+    boolean isSortable();
 
-    public boolean isFilterable();
+    boolean isFilterable();
 
-    public boolean isVisible();
+    boolean isVisible();
 
-    public boolean isSelectRow();
+    boolean isSelectRow();
 
-    public String getAriaHeaderText();
+    String getAriaHeaderText();
 
-    public MethodExpression getExportFunction();
+    MethodExpression getExportFunction();
 
-    public boolean isGroupRow();
+    boolean isGroupRow();
+
+    String getExportHeaderValue();
+
+    String getExportFooterValue();
 }

@@ -1,17 +1,25 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.export;
 
@@ -23,12 +31,7 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.ActionSource;
 import javax.faces.component.UIComponent;
-import javax.faces.view.facelets.ComponentHandler;
-import javax.faces.view.facelets.FaceletContext;
-import javax.faces.view.facelets.FaceletException;
-import javax.faces.view.facelets.TagAttribute;
-import javax.faces.view.facelets.TagConfig;
-import javax.faces.view.facelets.TagHandler;
+import javax.faces.view.facelets.*;
 
 public class DataExporterTagHandler extends TagHandler {
 
@@ -42,21 +45,26 @@ public class DataExporterTagHandler extends TagHandler {
     private final TagAttribute encoding;
     private final TagAttribute repeat;
     private final TagAttribute options;
+    private final TagAttribute onTableRender;
+    private final TagAttribute customExporter;
 
     public DataExporterTagHandler(TagConfig tagConfig) {
         super(tagConfig);
-        this.target = getRequiredAttribute("target");
-        this.type = getRequiredAttribute("type");
-        this.fileName = getRequiredAttribute("fileName");
-        this.pageOnly = getAttribute("pageOnly");
-        this.selectionOnly = getAttribute("selectionOnly");
-        this.encoding = getAttribute("encoding");
-        this.preProcessor = getAttribute("preProcessor");
-        this.postProcessor = getAttribute("postProcessor");
-        this.repeat = getAttribute("repeat");
-        this.options = getAttribute("options");
+        target = getRequiredAttribute("target");
+        type = getRequiredAttribute("type");
+        fileName = getRequiredAttribute("fileName");
+        pageOnly = getAttribute("pageOnly");
+        selectionOnly = getAttribute("selectionOnly");
+        encoding = getAttribute("encoding");
+        preProcessor = getAttribute("preProcessor");
+        postProcessor = getAttribute("postProcessor");
+        repeat = getAttribute("repeat");
+        options = getAttribute("options");
+        onTableRender = getAttribute("onTableRender");
+        customExporter = getAttribute("customExporter");
     }
 
+    @Override
     public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException, FacesException, FaceletException, ELException {
         if (ComponentHandler.isNew(parent)) {
             ValueExpression targetVE = target.getValueExpression(faceletContext, Object.class);
@@ -69,6 +77,8 @@ public class DataExporterTagHandler extends TagHandler {
             MethodExpression postProcessorME = null;
             ValueExpression repeatVE = null;
             ValueExpression optionsVE = null;
+            MethodExpression onTableRenderME = null;
+            ValueExpression customExporterVE = null;
 
             if (encoding != null) {
                 encodingVE = encoding.getValueExpression(faceletContext, Object.class);
@@ -91,11 +101,17 @@ public class DataExporterTagHandler extends TagHandler {
             if (options != null) {
                 optionsVE = options.getValueExpression(faceletContext, Object.class);
             }
-
+            if (onTableRender != null) {
+                onTableRenderME = onTableRender.getMethodExpression(faceletContext, null, new Class[]{Object.class, Object.class});
+            }
+            if (customExporter != null) {
+                customExporterVE = customExporter.getValueExpression(faceletContext, Object.class);
+            }
             ActionSource actionSource = (ActionSource) parent;
             DataExporter dataExporter = new DataExporter(targetVE, typeVE, fileNameVE, pageOnlyVE, selectionOnlyVE,
-                    encodingVE, preProcessorME, postProcessorME, optionsVE);
+                    encodingVE, preProcessorME, postProcessorME, optionsVE, onTableRenderME);
             dataExporter.setRepeat(repeatVE);
+            dataExporter.setCustomExporter(customExporterVE);
             actionSource.addActionListener(dataExporter);
         }
     }

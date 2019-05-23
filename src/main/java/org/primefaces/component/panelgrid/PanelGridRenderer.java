@@ -1,26 +1,36 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.panelgrid;
 
 import java.io.IOException;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.column.Column;
 import org.primefaces.component.row.Row;
 import org.primefaces.renderkit.CoreRenderer;
@@ -113,6 +123,9 @@ public class PanelGridRenderer extends CoreRenderer {
         String columnClassesValue = grid.getColumnClasses();
         String[] columnClasses = columnClassesValue == null ? new String[0] : columnClassesValue.split(",");
 
+        int openendRows = 0;
+        int closedRows = 0;
+
         int i = 0;
         for (UIComponent child : grid.getChildren()) {
             if (!child.isRendered()) {
@@ -121,14 +134,16 @@ public class PanelGridRenderer extends CoreRenderer {
 
             int colMod = i % columns;
             if (colMod == 0) {
+                openendRows++;
+
                 writer.startElement("tr", null);
                 writer.writeAttribute("class", PanelGrid.TABLE_ROW_CLASS, null);
                 writer.writeAttribute("role", "row", null);
             }
 
             String columnClass = (colMod < columnClasses.length)
-                    ? PanelGrid.CELL_CLASS + " " + columnClasses[colMod].trim()
-                    : PanelGrid.CELL_CLASS;
+                                 ? PanelGrid.CELL_CLASS + " " + columnClasses[colMod].trim()
+                                 : PanelGrid.CELL_CLASS;
             writer.startElement("td", null);
             writer.writeAttribute("role", "gridcell", null);
             writer.writeAttribute("class", columnClass, null);
@@ -139,8 +154,15 @@ public class PanelGridRenderer extends CoreRenderer {
             colMod = i % columns;
 
             if (colMod == 0) {
+                closedRows++;
+
                 writer.endElement("tr");
             }
+        }
+
+        // special handling for #4122, when the child count is not a multiple of the columns count
+        if (openendRows > closedRows) {
+            writer.endElement("tr");
         }
     }
 
@@ -152,8 +174,8 @@ public class PanelGridRenderer extends CoreRenderer {
             if (child.isRendered()) {
                 if (child instanceof Row) {
                     String rowStyleClass = i % 2 == 0
-                            ? PanelGrid.TABLE_ROW_CLASS + " " + PanelGrid.EVEN_ROW_CLASS
-                            : PanelGrid.TABLE_ROW_CLASS + " " + PanelGrid.ODD_ROW_CLASS;
+                                           ? PanelGrid.TABLE_ROW_CLASS + " " + PanelGrid.EVEN_ROW_CLASS
+                                           : PanelGrid.TABLE_ROW_CLASS + " " + PanelGrid.ODD_ROW_CLASS;
                     encodeRow(context, (Row) child, "gridcell", rowStyleClass, PanelGrid.CELL_CLASS);
                     i++;
                 }
@@ -177,7 +199,9 @@ public class PanelGridRenderer extends CoreRenderer {
         if (row.getStyleClass() != null) {
             rowClass += " " + row.getStyleClass();
         }
-        if (style != null) writer.writeAttribute("style", style, null);
+        if (style != null) {
+            writer.writeAttribute("style", style, null);
+        }
 
         writer.writeAttribute("class", rowClass, null);
         writer.writeAttribute("role", "row", null);
@@ -195,9 +219,15 @@ public class PanelGridRenderer extends CoreRenderer {
                 writer.writeAttribute("role", columnRole, null);
                 writer.writeAttribute("class", styleClass, null);
 
-                if (column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
-                if (column.getColspan() > 1) writer.writeAttribute("colspan", column.getColspan(), null);
-                if (column.getRowspan() > 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
+                if (column.getStyle() != null) {
+                    writer.writeAttribute("style", column.getStyle(), null);
+                }
+                if (column.getColspan() > 1) {
+                    writer.writeAttribute("colspan", column.getColspan(), null);
+                }
+                if (column.getRowspan() > 1) {
+                    writer.writeAttribute("rowspan", column.getRowspan(), null);
+                }
 
                 renderChildren(context, column);
 
@@ -261,7 +291,7 @@ public class PanelGridRenderer extends CoreRenderer {
 
     public void encodeTableFacet(FacesContext context, PanelGrid grid, int columns, String facet, String tag, String styleClass)
             throws IOException {
-        
+
         UIComponent component = grid.getFacet(facet);
 
         if (component != null && component.isRendered()) {
@@ -278,7 +308,7 @@ public class PanelGridRenderer extends CoreRenderer {
                 writer.writeAttribute("colspan", columns, null);
                 writer.writeAttribute("role", "columnheader", null);
                 writer.writeAttribute("class", PanelGrid.CELL_CLASS + " ui-widget-header", null);
-                
+
                 component.encodeAll(context);
 
                 writer.endElement("td");

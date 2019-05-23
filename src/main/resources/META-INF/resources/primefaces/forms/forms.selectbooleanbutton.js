@@ -63,7 +63,7 @@ PrimeFaces.widget.SelectBooleanButton = PrimeFaces.widget.BaseWidget.extend({
     check: function() {
         if(!this.disabled) {
             this.input.prop('checked', true);
-            this.jq.addClass('ui-state-active').children('.ui-button-text').html(this.cfg.onLabel);
+            this.jq.addClass('ui-state-active').children('.ui-button-text').text(this.cfg.onLabel);
 
             if(this.icon.length > 0) {
                 this.icon.removeClass(this.cfg.offIcon).addClass(this.cfg.onIcon);
@@ -76,7 +76,7 @@ PrimeFaces.widget.SelectBooleanButton = PrimeFaces.widget.BaseWidget.extend({
     uncheck: function() {
         if(!this.disabled) {
             this.input.prop('checked', false);
-            this.jq.removeClass('ui-state-active').children('.ui-button-text').html(this.cfg.offLabel);
+            this.jq.removeClass('ui-state-active').children('.ui-button-text').text(this.cfg.offLabel);
 
             if(this.icon.length > 0) {
                 this.icon.removeClass(this.cfg.onIcon).addClass(this.cfg.offIcon);

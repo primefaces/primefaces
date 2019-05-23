@@ -1,17 +1,25 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.config;
 
@@ -30,7 +38,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -39,7 +47,16 @@ import org.xml.sax.InputSource;
 
 public class WebXmlParser {
 
-    private static final Logger LOG = Logger.getLogger(WebXmlParser.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(WebXmlParser.class.getName());
+
+    private static final String ERROR_PAGE_EXCEPTION_TYPE_EXPRESSION = "*[local-name() = 'error-page']/*[local-name() = 'exception-type']";
+    private static final String LOCATION_EXPRESSION = "*[local-name() = 'location']";
+    private static final String ERROR_CODE_500_LOCATION_EXPRESSION =
+            "*[local-name() = 'error-page'][*[local-name() = 'error-code'] = '500'] / *[local-name() = 'location']";
+    private static final String ERROR_PAGE_NO_CODE_AND_TYPE_EXPRESSION = "*[local-name() = 'error-page'][not(*[local-name() = 'error-code']) and not" +
+            "(*[local-name() = 'exception-type'])]/*[local-name() = 'location']";
+    private WebXmlParser() {
+    }
 
     public static Map<String, String> getErrorPages(FacesContext context) {
 
@@ -57,6 +74,11 @@ public class WebXmlParser {
                 }
             }
         }
+
+        if (errorPages == null) {
+            errorPages = new HashMap<>();
+        }
+
         return errorPages;
     }
 
@@ -68,7 +90,7 @@ public class WebXmlParser {
             }
         }
         catch (Throwable e) {
-            LOG.log(Level.SEVERE, "Could not load or parse web.xml", e);
+            LOGGER.log(Level.SEVERE, "Could not load or parse web.xml", e);
         }
 
         return null;
@@ -78,7 +100,7 @@ public class WebXmlParser {
         Map<String, String> webFragmentXmlsErrorPages = null;
 
         try {
-            Enumeration<URL> webFragments = Thread.currentThread().getContextClassLoader().getResources("META-INF/web-fragment.xml");
+            Enumeration<URL> webFragments = LangUtils.getContextClassLoader().getResources("META-INF/web-fragment.xml");
 
             while (webFragments.hasMoreElements()) {
                 try {
@@ -99,12 +121,12 @@ public class WebXmlParser {
                     }
                 }
                 catch (Throwable e) {
-                    LOG.log(Level.SEVERE, "Could not load or parse web-fragment.xml", e);
+                    LOGGER.log(Level.SEVERE, "Could not load or parse web-fragment.xml", e);
                 }
             }
         }
         catch (IOException e) {
-            LOG.log(Level.SEVERE, "Could not get web-fragment.xml's from ClassLoader", e);
+            LOGGER.log(Level.SEVERE, "Could not get web-fragment.xml's from ClassLoader", e);
         }
 
         return webFragmentXmlsErrorPages;
@@ -138,7 +160,7 @@ public class WebXmlParser {
                 factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
             }
             catch (Throwable e) {
-                LOG.warning("DocumentBuilderFactory#setFeature not implemented. Skipping...");
+                LOGGER.warning("DocumentBuilderFactory#setFeature not implemented. Skipping...");
             }
 
             boolean absolute = false;
@@ -177,11 +199,11 @@ public class WebXmlParser {
 
     private static Map<String, String> parseErrorPages(Element webXml) throws Exception {
 
-        Map<String, String> errorPages = new HashMap<String, String>();
+        Map<String, String> errorPages = new HashMap<>();
 
         XPath xpath = XPathFactory.newInstance().newXPath();
 
-        NodeList exceptionTypes = (NodeList) xpath.compile("error-page/exception-type").evaluate(webXml, XPathConstants.NODESET);
+        NodeList exceptionTypes = (NodeList) xpath.compile(ERROR_PAGE_EXCEPTION_TYPE_EXPRESSION).evaluate(webXml, XPathConstants.NODESET);
 
         for (int i = 0; i < exceptionTypes.getLength(); i++) {
             Node node = exceptionTypes.item(i);
@@ -189,7 +211,7 @@ public class WebXmlParser {
             String exceptionType = node.getTextContent().trim();
             String key = Throwable.class.getName().equals(exceptionType) ? null : exceptionType;
 
-            String location = xpath.compile("location").evaluate(node.getParentNode()).trim();
+            String location = xpath.compile(LOCATION_EXPRESSION).evaluate(node.getParentNode()).trim();
 
             if (!errorPages.containsKey(key)) {
                 errorPages.put(key, location);
@@ -197,13 +219,13 @@ public class WebXmlParser {
         }
 
         if (!errorPages.containsKey(null)) {
-            String defaultLocation = xpath.compile("error-page[error-code=500]/location").evaluate(webXml).trim();
+            String defaultLocation = xpath.compile(ERROR_CODE_500_LOCATION_EXPRESSION).evaluate(webXml).trim();
 
-            if (ComponentUtils.isValueBlank(defaultLocation)) {
-                defaultLocation = xpath.compile("error-page[not(error-code) and not(exception-type)]/location").evaluate(webXml).trim();
+            if (LangUtils.isValueBlank(defaultLocation)) {
+                defaultLocation = xpath.compile(ERROR_PAGE_NO_CODE_AND_TYPE_EXPRESSION).evaluate(webXml).trim();
             }
 
-            if (!ComponentUtils.isValueBlank(defaultLocation)) {
+            if (!LangUtils.isValueBlank(defaultLocation)) {
                 errorPages.put(null, defaultLocation);
             }
         }

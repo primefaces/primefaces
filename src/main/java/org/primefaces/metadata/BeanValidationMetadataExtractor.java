@@ -1,17 +1,25 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.metadata;
 
@@ -25,15 +33,18 @@ import javax.validation.groups.Default;
 import javax.validation.metadata.BeanDescriptor;
 import javax.validation.metadata.ConstraintDescriptor;
 import javax.validation.metadata.PropertyDescriptor;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
 
 public class BeanValidationMetadataExtractor {
 
-    public static Set<ConstraintDescriptor<?>> extractAllConstraintDescriptors(FacesContext context, RequestContext requestContext,
+    private BeanValidationMetadataExtractor() {
+    }
+
+    public static Set<ConstraintDescriptor<?>> extractAllConstraintDescriptors(FacesContext context, PrimeApplicationContext applicationContext,
             ValueExpression ve) {
 
-        PropertyDescriptor propertyDescriptor = extractPropertyDescriptor(context, requestContext, ve);
+        PropertyDescriptor propertyDescriptor = extractPropertyDescriptor(context, applicationContext, ve);
 
         if (propertyDescriptor != null) {
             return propertyDescriptor.getConstraintDescriptors();
@@ -42,16 +53,16 @@ public class BeanValidationMetadataExtractor {
         return null;
     }
 
-    public static Set<ConstraintDescriptor<?>> extractDefaultConstraintDescriptors(FacesContext context, RequestContext requestContext,
+    public static Set<ConstraintDescriptor<?>> extractDefaultConstraintDescriptors(FacesContext context, PrimeApplicationContext applicationContext,
             ValueExpression ve) {
 
-        return extractConstraintDescriptors(context, requestContext, ve, Default.class);
+        return extractConstraintDescriptors(context, applicationContext, ve, Default.class);
     }
 
-    public static Set<ConstraintDescriptor<?>> extractConstraintDescriptors(FacesContext context, RequestContext requestContext,
+    public static Set<ConstraintDescriptor<?>> extractConstraintDescriptors(FacesContext context, PrimeApplicationContext applicationContext,
             ValueExpression ve, Class... groups) {
 
-        PropertyDescriptor propertyDescriptor = extractPropertyDescriptor(context, requestContext, ve);
+        PropertyDescriptor propertyDescriptor = extractPropertyDescriptor(context, applicationContext, ve);
 
         if (propertyDescriptor != null) {
             return propertyDescriptor.findConstraints().unorderedAndMatchingGroups(groups).getConstraintDescriptors();
@@ -60,14 +71,14 @@ public class BeanValidationMetadataExtractor {
         return null;
     }
 
-    public static PropertyDescriptor extractPropertyDescriptor(FacesContext context, RequestContext requestContext, ValueExpression ve) {
+    public static PropertyDescriptor extractPropertyDescriptor(FacesContext context, PrimeApplicationContext applicationContext, ValueExpression ve) {
 
         if (ve != null) {
             ELContext elContext = context.getELContext();
             ValueReference vr = ValueExpressionAnalyzer.getReference(elContext, ve);
 
             if (vr != null) {
-                Validator validator = requestContext.getApplicationContext().getValidator();
+                Validator validator = applicationContext.getValidator();
                 Object base = vr.getBase();
                 Object property = vr.getProperty();
 

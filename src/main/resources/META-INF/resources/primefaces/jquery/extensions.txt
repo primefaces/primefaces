@@ -20,10 +20,14 @@ jquery.autosize.js:
 
 jquery.ui.timepicker.js:
 - Added fix to timepicker from https://github.com/trentrichardson/jQuery-Timepicker-Addon/issues/848
+- Fix timeOnlyTitle XSS (https://github.com/primefaces/primefaces/issues/4385)
 
 jquery.maskedinput.js:
 - line 116: Added arrow keys fix to mask (https://github.com/primefaces/primefaces/issues/1481)
 
 jquery.ui.pfextensions:
 - Added gotoToday selection fix (https://github.com/primefaces/primefaces/issues/1420)
-- Re-Added keyCode.NUMPAD_ENTER (https://github.com/primefaces/primefaces/issues/2448)
+- Sortable performance fix (/https://github.com/primefaces/primefaces/issues/3675)
+- Timepicker Fix (https://github.com/primefaces/primefaces/issues/2811)
+- Timepicker Fix (https://github.com/primefaces/primefaces/issues/3765)
+- Datepicker Position Fix (https://github.com/primefaces/primefaces/issues/4295)

@@ -2,13 +2,13 @@
  * PrimeFaces Google Maps Widget
  */
 PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
-    
+
     init: function(cfg) {
         this._super(cfg);
 
         this.renderDeferred();
     },
-    
+
     _render: function() {
         this.map = new google.maps.Map(document.getElementById(this.id), this.cfg);
         this.cfg.fitBounds = !(this.cfg.fitBounds === false);
@@ -54,19 +54,19 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
             });
         }
     },
-    
+
     getMap: function() {
         return this.map;
     },
-    
+
     getInfoWindow: function() {
         return this.cfg.infoWindow;
     },
-    
+
     loadWindow: function(content){
         this.jq.find(PrimeFaces.escapeClientId(this.getInfoWindow().id + '_content')).html(content||'');
     },
-    
+
     openWindow: function(responseXML) {
         var infoWindow = this.getInfoWindow();
         var $this = this;
@@ -83,7 +83,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
 
         return true;
     },
-    
+
     configureMarkers: function() {
         var _self = this;
 
@@ -106,11 +106,9 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
             });
         }
     },
-    
+
     fireMarkerDragEvent: function(event, marker) {
         if(this.hasBehavior('markerDrag')) {
-            var markerDragBehavior = this.cfg.behaviors['markerDrag'];
-
             var ext = {
                 params: [
                     {name: this.id + '_markerId', value: marker.id},
@@ -119,30 +117,29 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            markerDragBehavior.call(this, ext);
+            this.callBehavior('markerDrag', ext);
         }
     },
-            
+
     geocode: function(address) {
         var $this = this;
-        
+
         if(this.hasBehavior('geocode')) {
-            var geocodeBehavior = this.cfg.behaviors['geocode'],
-                geocoder = new google.maps.Geocoder(),
+            var geocoder = new google.maps.Geocoder(),
                 lats = [],
                 lngs = [],
                 addresses = [];
-            
+
             geocoder.geocode({'address': address}, function(results, status) {
-                
-                if (status == google.maps.GeocoderStatus.OK) { 
+
+                if (status == google.maps.GeocoderStatus.OK) {
                     for(var i = 0; i < results.length; i++) {
                         var location = results[i].geometry.location;
                         lats.push(location.lat());
                         lngs.push(location.lng());
                         addresses.push(results[i].formatted_address);
                     }
-                    
+
                     if(results.length) {
                         var ext = {
                             params: [
@@ -152,36 +149,35 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
                                 {name: $this.id + '_lng', value: lngs.join()}
                             ]
                         };
-                        
-                        geocodeBehavior.call(this, ext);
+
+                        $this.callBehavior('geocode', ext);
                     }
-                } 
+                }
                 else {
                     PrimeFaces.error('Geocode was not found');
                 }
             });
-      
+
         }
     },
-        
+
     reverseGeocode: function(lat, lng) {
         var $this = this;
-        
+
         if(this.hasBehavior('reverseGeocode')) {
-            var reverseGeocoder = this.cfg.behaviors['reverseGeocode'],
-                geocoder = new google.maps.Geocoder(),
+            var geocoder = new google.maps.Geocoder(),
                 latlng = new google.maps.LatLng(lat, lng),
                 addresses = [];
 
             geocoder.geocode({'latLng': latlng}, function(results, status) {
-                
+
                 if (status == google.maps.GeocoderStatus.OK) {
                     for(var i = 0; i < results.length; i++) {
                         if (results[i]) {
                             addresses[i] = results[i].formatted_address;
-                        } 
+                        }
                     }
-                    
+
                     if(0 < addresses.length) {
                         var ext = {
                             params: [
@@ -191,52 +187,50 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
                             ]
                         };
 
-                        reverseGeocoder.call(this, ext);
+                        $this.callBehavior('reverseGeocode', ext);
                     }
                     else {
-                        PrimeFaces.error('No results found');    
+                        PrimeFaces.error('No results found');
                     }
-                } 
+                }
                 else {
                     PrimeFaces.error('Geocoder failed');
                 }
            });
-           
+
         }
-    },         
-    
+    },
+
     configurePolylines: function() {
         this.addOverlays(this.cfg.polylines);
     },
-    
+
     configureCircles: function() {
         this.addOverlays(this.cfg.circles);
     },
-    
+
     configureRectangles: function() {
         this.addOverlays(this.cfg.rectangles);
     },
-    
+
     configurePolygons: function() {
         this.addOverlays(this.cfg.polygons);
     },
-    
+
     fireOverlaySelectEvent: function(event, overlay) {
         this.selectedOverlay = overlay;
 
         if(this.hasBehavior('overlaySelect')) {
-            var overlaySelectBehavior = this.cfg.behaviors['overlaySelect'];
-
             var ext = {
                 params: [
                     {name: this.id + '_overlayId', value: overlay.id}
                 ]
             };
 
-            overlaySelectBehavior.call(this, ext);
+            this.callBehavior('overlaySelect', ext);
         }
     },
-    
+
     configureEventListeners: function() {
         var _self = this;
 
@@ -253,7 +247,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
         this.configureStateChangeListener();
         this.configurePointSelectListener();
     },
-    
+
     configureStateChangeListener: function() {
         var _self = this,
         onStateChange = function(event) {
@@ -263,11 +257,10 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
         google.maps.event.addListener(this.map, 'zoom_changed', onStateChange);
         google.maps.event.addListener(this.map, 'dragend', onStateChange);
     },
-    
+
     fireStateChangeEvent: function(event) {
         if(this.hasBehavior('stateChange')) {
-            var stateChangeBehavior = this.cfg.behaviors['stateChange'],
-            bounds = this.map.getBounds();
+            var bounds = this.map.getBounds();
 
             var ext = {
                 params: [
@@ -278,36 +271,34 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            stateChangeBehavior.call(this, ext);
+            this.callBehavior('stateChange', ext);
         }
     },
-    
-    configurePointSelectListener: function() {	
+
+    configurePointSelectListener: function() {
         var _self = this;
 
         google.maps.event.addListener(this.map, 'click', function(event) {
             _self.firePointSelectEvent(event);
         });
     },
-    
+
     firePointSelectEvent: function(event) {
         if(this.hasBehavior('pointSelect')) {
-            var pointSelectBehavior = this.cfg.behaviors['pointSelect'];
-
             var ext = {
                 params: [
                     {name: this.id + '_pointLatLng', value: event.latLng.lat() + ',' + event.latLng.lng()}
                 ]
             };
 
-            pointSelectBehavior.call(this, ext);
+            this.callBehavior('pointSelect', ext);
         }
     },
-    
+
     addOverlay: function(overlay) {
         overlay.setMap(this.map);
     },
-    
+
     addOverlays: function(overlays) {
         var _self = this;
 
@@ -322,7 +313,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
             });
         })
     },
-    
+
     extendView: function(overlay){
         if( this.cfg.fitBounds && overlay){
             var _self = this;
@@ -339,7 +330,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
                 });
         }
     },
-    
+
     checkResize: function() {
         google.maps.event.trigger(this.map, 'resize');
         this.map.setZoom(this.map.getZoom());

@@ -26,6 +26,13 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
             this.counter = this.cfg.counter ? $(PrimeFaces.escapeClientId(this.cfg.counter)) : null;
             this.cfg.counterTemplate = this.cfg.counterTemplate||'{0}';
             this.updateCounter();
+
+            if(this.counter) {
+                var $this = this;
+                this.jq.on('input.inputtextarea-counter', function(e) {
+                    $this.updateCounter();
+                });
+            }
         }
 
         //maxLength
@@ -39,13 +46,14 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    //@override
     refresh: function(cfg) {
         //remove autocomplete panel
         if(cfg.autoComplete) {
             $(PrimeFaces.escapeClientId(cfg.id + '_panel')).remove();
         }
 
-        this.init(cfg);
+        this._super(cfg);
     },
 
     setupAutoResize: function() {
@@ -63,12 +71,6 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                 _self.jq.val(value.substr(0, _self.cfg.maxlength));
             }
         });
-
-        if(_self.counter) {
-            this.jq.on('keyup.inputtextarea-counter', function(e) {
-                _self.updateCounter();
-            });
-        }
     },
 
     updateCounter: function() {
@@ -81,9 +83,10 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                 remaining = 0;
             }
 
-            var remainingText = this.cfg.counterTemplate.replace('{0}', remaining);
+            var counterText = this.cfg.counterTemplate.replace('{0}', remaining);
+            counterText = counterText.replace('{1}', length);
 
-            this.counter.html(remainingText);
+            this.counter.text(counterText);
         }
     },
 
@@ -107,7 +110,6 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                 case keyCode.DOWN:
                 case keyCode.RIGHT:
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                 case keyCode.TAB:
                 case keyCode.SPACE:
                 case 17: //keyCode.CONTROL:
@@ -184,7 +186,6 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                 break;
 
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                     if(overlayVisible) {
                         _self.items.filter('.ui-state-highlight').trigger('click');
 
@@ -220,7 +221,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         });
 
         //hide panel when outside is clicked
-        $(document.body).bind('mousedown.ui-inputtextarea', function (e) {
+        $(document.body).on('mousedown.ui-inputtextarea', function (e) {
             if(_self.panel.is(":hidden")) {
                 return;
             }
@@ -238,11 +239,8 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         });
 
         //Hide overlay on resize
-        var resizeNS = 'resize.' + this.id;
-        $(window).unbind(resizeNS).bind(resizeNS, function() {
-            if(_self.panel.is(':visible')) {
-                _self.hide();
-            }
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', _self.panel, function() {
+            _self.hide();
         });
 
         //dialog support
@@ -253,7 +251,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         var _self = this;
 
         //visuals and click handler for items
-        this.items.bind('mouseover', function() {
+        this.items.on('mouseover', function() {
             var item = $(this);
 
             if(!item.hasClass('ui-state-highlight')) {
@@ -261,7 +259,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                 item.addClass('ui-state-highlight');
             }
         })
-        .bind('click', function(event) {
+        .on('click', function(event) {
             var item = $(this),
             itemValue = item.attr('data-item-value'),
             insertValue = itemValue.substring(_self.query.length);
@@ -277,18 +275,14 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     invokeItemSelectBehavior: function(event, itemValue) {
-        if(this.cfg.behaviors) {
-            var itemSelectBehavior = this.cfg.behaviors['itemSelect'];
+        if(this.hasBehavior('itemSelect')) {
+            var ext = {
+                params : [
+                    {name: this.id + '_itemSelect', value: itemValue}
+                ]
+            };
 
-            if(itemSelectBehavior) {
-                var ext = {
-                    params : [
-                        {name: this.id + '_itemSelect', value: itemValue}
-                    ]
-                };
-
-                itemSelectBehavior.call(this, ext);
-            }
+            this.callBehavior('itemSelect', ext);
         }
     },
 
@@ -359,20 +353,26 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
 
     alignPanel: function() {
         var pos = this.jq.getCaretPosition(),
-        offset = this.jq.offset();
+        posLeft = (pos.left > 0 ? '+' : '-') + pos.left,
+        posTop = (pos.top > 0 ? '+' : '-') + pos.top;
 
-        this.panel.css({
-                        'left': offset.left + pos.left,
-                        'top': offset.top + pos.top,
-                        'width': this.jq.innerWidth(),
-                        'z-index': ++PrimeFaces.zindex
-                });
+        this.panel.css({left:'', top:''}).position({
+            my: 'left top'
+            ,at: 'left' + posLeft +  ' top' + posTop
+            ,of: this.jq
+        });
     },
 
     show: function() {
+        this.panel.css({
+            'z-index': ++PrimeFaces.zindex,
+            'width': this.jq.innerWidth(),
+            'visibility': 'hidden'
+        }).show();
+        
         this.alignPanel();
-
-        this.panel.show();
+        
+        this.panel.css('visibility', '');
     },
 
     hide: function() {
@@ -382,7 +382,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
     setupDialogSupport: function() {
         var dialog = this.jq.parents('.ui-dialog:first');
 
-        if(dialog.length == 1) {
+        if(dialog.length == 1 && dialog.css('position') === 'fixed') {
             this.panel.css('position', 'fixed');
         }
     }

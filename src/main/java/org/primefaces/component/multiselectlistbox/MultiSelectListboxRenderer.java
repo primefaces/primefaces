@@ -1,22 +1,31 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.multiselectlistbox;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectOne;
 import javax.faces.context.FacesContext;
@@ -26,6 +35,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
+
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -37,8 +47,7 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
                 "javax.faces.SelectOne",
-                "javax.faces.Listbox",
-                Renderer.class);
+                "javax.faces.Listbox");
         return renderer.getConvertedValue(context, component, submittedValue);
     }
 
@@ -96,6 +105,7 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
 
         writer.startElement("ul", listbox);
         writer.writeAttribute("class", listStyleClass, null);
+        renderARIARequired(context, listbox);
 
         if (items != null) {
             encodeListItems(context, listbox, items);
@@ -152,8 +162,9 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
 
         wb.init("MultiSelectListbox", listbox.resolveWidgetVar(), clientId)
                 .attr("effect", listbox.getEffect(), null)
-                .attr("showHeaders", listbox.isShowHeaders(), false)
-                .finish();
+                .attr("showHeaders", listbox.isShowHeaders(), false);
+        encodeClientBehaviors(context, listbox);
+        wb.finish();
     }
 
     protected void encodeInput(FacesContext context, MultiSelectListbox listbox) throws IOException {
@@ -169,6 +180,7 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
         if (valueToRender != null) {
             writer.writeAttribute("value", valueToRender, null);
         }
+        renderAccessibilityAttributes(context, listbox);
         writer.endElement("input");
     }
 

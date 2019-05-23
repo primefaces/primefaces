@@ -517,6 +517,34 @@ td.ui-datepicker-unselectable {
 	box-shadow: 0px 2px 5px rgba(0,0,0,0.8);
 }
 
+/* datePicker component */
+.p-datepicker-panel .ui-timepicker .ui-icon {
+    left: auto;
+    top: auto;
+    display: inline-block;
+    text-align: center;
+}
+
+.p-datepicker-panel .ui-timepicker .ui-picker-up .ui-icon {
+    left: 1px;
+}
+
+.p-datepicker-panel .ui-timepicker.ui-widget-header {
+    border: 0 none;
+}
+
+.p-datepicker-panel.ui-datepicker-multiple-month,
+.p-datepicker .ui-datepicker-touch-ui,
+.ui-datepicker-touch-ui {
+    width: auto;
+}
+
+.p-datepicker-panel .ui-datepicker-calendar td a.ui-state-active {
+    background: #186ba0;
+    filter: none;
+    color: #FFFFFF;
+}
+
 .ui-progressbar .ui-progressbar-value {
 	 border: 1px solid #156090; 
      background: #186ba0;
@@ -536,9 +564,6 @@ td.ui-datepicker-unselectable {
 	border: 1px solid #1f89ce;
 	color: #FFFFFF;
 	background: #2399e5;
-}
-.ui-button, .ui-button span, button.ui-button.ui-state-default span, .ui-button.ui-state-default span {
-	font-weight: bold;
 }
 button.ui-button.ui-state-hover, .ui-button.ui-state-hover,
 button.ui-button.ui-state-focus, .ui-button.ui-state-focus {
@@ -603,6 +628,35 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
 	color: #ffffff !important;
 }
 
+/* ToggleSwitch */
+.ui-toggleswitch-slider {
+    -webkit-transition: background-color .3s, box-shadow .2s;
+    transition: background-color .3s, box-shadow .2s;
+    background: #cccccc; 
+}
+    
+.ui-toggleswitch-slider:before {
+    background-color: #ffffff;
+}
+
+.ui-toggleswitch-focus .ui-toggleswitch-slider {
+    -moz-box-shadow: 0px 0px 5px #c0c0c0;
+    -webkit-box-shadow: 0px 0px 5px #c0c0c0;
+    box-shadow: 0px 0px 5px #c0c0c0; 
+}
+
+.ui-toggleswitch:not(.ui-state-disabled):hover .ui-toggleswitch-slider {
+    background-color: #b7b7b7;
+}
+
+.ui-toggleswitch.ui-toggleswitch-checked .ui-toggleswitch-slider {
+    background-color: #186ba0;
+}
+
+.ui-toggleswitch.ui-toggleswitch-checked:not(.ui-state-disabled):hover .ui-toggleswitch-slider {
+    background-color: #114d74;
+}
+
 .ui-paginator .ui-paginator-page.ui-state-active {
 	background: #186ba0;
 	color: #ffffff;
@@ -625,7 +679,8 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
 .ui-datatable th {
     font-weight: bold;
 }
-.ui-datatable th.ui-state-default{
+.ui-datatable th.ui-state-default, 
+.ui-datatable tfoot td.ui-state-default{
     background: #ebedf0;
     border-color: #d9d9d9;
 }
@@ -660,7 +715,7 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
 .ui-datatable .ui-selection-column .ui-radiobutton-box .ui-icon,
 .ui-datatable .ui-selection-column .ui-chkbox-box .ui-icon{
     background-image: url("#{resource['primefaces-omega:images/ui-icons_454545_256x240.png']}");
-}
+} 
 
 /* Panel */
 .ui-panel.ui-widget {
@@ -766,16 +821,20 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
    border: 1px solid #156090; background: #186ba0; color: #FFFFFF;
 }
 
-.ui-selectbooleanbutton.ui-button.ui-state-default .ui-icon {
+.ui-selectbooleanbutton.ui-button.ui-state-default .ui-icon,
+.ui-dataview .ui-dataview-layout-options .ui-button .ui-icon {
     background-image: url("#{resource['primefaces-omega:images/ui-icons_454545_256x240.png']}");
 }
 
 .ui-selectbooleanbutton.ui-button.ui-state-hover.ui-icon,
-.ui-selectbooleanbutton.ui-button.ui-state-focus .ui-icon {
+.ui-selectbooleanbutton.ui-button.ui-state-focus .ui-icon,
+.ui-dataview .ui-dataview-layout-options .ui-button.ui-state-hover .ui-icon,
+.ui-dataview .ui-dataview-layout-options .ui-button.ui-state-focus .ui-icon {
     background-image: url("#{resource['primefaces-omega:images/ui-icons_454545_256x240.png']}");
 }
 
-.ui-selectbooleanbutton.ui-button.ui-state-active .ui-icon {
+.ui-selectbooleanbutton.ui-button.ui-state-active .ui-icon,
+.ui-dataview .ui-dataview-layout-options .ui-button.ui-state-active .ui-icon {
     background-image: url("#{resource['primefaces-omega:images/ui-icons_ffffff_256x240.png']}");
 }
 
@@ -895,7 +954,19 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
     border-bottom-left-radius: 3px;
 }
         
-.ui-inputgroup .ui-button:last-child {
+.ui-inputgroup .ui-button:last-child,
+.ui-inputgroup .ui-autocomplete:last-child .ui-button.ui-autocomplete-dropdown,
+.ui-inputgroup .ui-spinner:last-child .ui-spinner-button {
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
+} 
+
+/* Tooltip */
+.ui-tooltip .ui-tooltip-text.ui-state-error {
+    border: 0 none;
+    background-color: #ef5350;
+}
+
+.ui-tooltip .ui-tooltip-arrow.ui-state-error {
+    border-right-color: #ef5350;
 }

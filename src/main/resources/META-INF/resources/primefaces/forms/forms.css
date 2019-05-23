@@ -5,6 +5,10 @@
     font-weight: normal;
 }
 
+input[type=text]::-ms-clear {
+    display: none;
+}
+
 .ui-widget-header .ui-inputfield,
 .ui-widget-content .ui-inputfield {
     font-weight: normal;
@@ -94,6 +98,11 @@
     text-align: center;
     padding: 2px 10px;
     border-bottom: 0px none;
+}
+
+.ui-listbox-outline {
+    outline: 1px dotted black;
+    z-index: 1;
 }
 
 /**
@@ -223,7 +232,7 @@
     width: auto;
     zoom: 1;
     cursor: pointer;
-    padding-right: 2em;
+    padding-right: 22px;
     vertical-align: top;
 }
 
@@ -241,7 +250,12 @@
 }
 
 .ui-selectonemenu .ui-selectonemenu-trigger  .ui-icon {
-    margin-top: 3px;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 .ui-selectonemenu .ui-selectonemenu-label  {
@@ -386,7 +400,19 @@
 /* FontAwesome icon */
 .ui-button-icon-only .ui-icon.fa,
 .ui-button-text-icon-left .ui-icon.fa,
-.ui-button-text-icon-right .ui-icon.fa {
+.ui-button-text-icon-right .ui-icon.fa,
+.ui-button-icon-only .ui-icon.fab,
+.ui-button-text-icon-left .ui-icon.fab,
+.ui-button-text-icon-right .ui-icon.fab,
+.ui-button-icon-only .ui-icon.far,
+.ui-button-text-icon-left .ui-icon.far,
+.ui-button-text-icon-right .ui-icon.far,
+.ui-button-icon-only .ui-icon.fas,
+.ui-button-text-icon-left .ui-icon.fas,
+.ui-button-text-icon-right .ui-icon.fas,
+.ui-button-icon-only .ui-icon.fal,
+.ui-button-text-icon-left .ui-icon.fal,
+.ui-button-text-icon-right .ui-icon.fal {
     margin-top: -7px;
 }
 
@@ -404,9 +430,6 @@
 }
 
 /*button sets*/
-.ui-buttonset {
-    margin-right: 7px;
-}
 .ui-buttonset .ui-button {
     margin-left: 0;
     margin-right: 0;
@@ -415,6 +438,14 @@
 /* workarounds */
 button.ui-button::-moz-focus-inner {
     border: 0; padding: 0; /* reset extra padding in Firefox */
+}
+
+.ui-linkbutton.ui-button.ui-state-default > a {
+    color: inherit;
+}
+
+.ui-linkbutton.ui-button.ui-state-hover > a {
+    color: inherit;
 }
 
 /** SelectCheckbox Menu **/
@@ -622,6 +653,39 @@ button.ui-button::-moz-focus-inner {
     top: 0px;
     margin-left: -1px;
     right: 0px;
+}
+
+.ui-splitbuttonmenu .ui-splitbuttonmenu-filter-container {
+    position: relative;
+    margin: 0;
+    padding: 0.4em 0;
+    display: inline-block;
+}
+
+.ui-splitbuttonmenu .ui-splitbuttonmenu-filter {
+    width: 100%;
+    padding-right: 15px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.ui-splitbuttonmenu .ui-splitbuttonmenu-filter-container .ui-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.ui-splitbuttonmenu .ui-splitbuttonmenu-list-wrapper {
+    overflow: auto;
+}
+
+.ui-splitbuttonmenu.ui-menu .ui-menu-list .ui-widget-header,
+.ui-splitbuttonmenu.ui-menu .ui-menuitem-link {
+    width: 100%;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 /** IE Hacks **/
@@ -866,4 +930,40 @@ div.ui-button, .ui-splitbutton {
 .ui-fluid .ui-selectonelistbox,
 .ui-fluid .ui-selectmanymenu {
     width: 100%;
+}
+
+/** Floating Label **/
+.ui-float-label {
+    display: block;
+    position:relative;
+}
+
+.ui-float-label > label {
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    left: .25em;
+    top: 50%;
+    margin-top: -.5em;
+    transition: 0.3s ease all;
+    -moz-transition: 0.3s ease all;
+    -webkit-transition: 0.3s ease all;
+    color: #898989;
+    line-height: 1;
+}
+
+.ui-float-label > textarea ~ label {
+    top: 1.2em;
+}
+
+.ui-float-label > input:focus ~ label,
+.ui-float-label > input.ui-state-filled ~ label,
+.ui-float-label > input:-webkit-autofill ~ label,
+.ui-float-label > textarea:focus ~ label,
+.ui-float-label > textarea.ui-state-filled ~ label,
+.ui-float-label > textarea:-webkit-autofill ~ label,
+.ui-float-label > .ui-inputwrapper-focus ~ label,
+.ui-float-label > .ui-inputwrapper-filled ~ label {
+    top: -.75em;
+    font-size: 12px;
 }

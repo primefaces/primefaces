@@ -1,17 +1,25 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.model.menu;
 
@@ -23,8 +31,11 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
+import org.primefaces.util.SerializableFunction;
 
 public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private String id;
     private String icon;
@@ -43,6 +54,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private String fragment;
     private Map<String, List<String>> params;
     private String command;
+    private SerializableFunction<MenuItem, String> function;
     private boolean rendered = true;
     private String onstart;
     private String onerror;
@@ -69,36 +81,61 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private boolean escape = true;
     private String rel;
 
+    /**
+     * Creates a new menu item without value.
+     */
     public DefaultMenuItem() {
     }
 
+    /**
+     * Creates a new menu item with the specified
+     * @param value the value of the item used as label
+     */
     public DefaultMenuItem(Object value) {
         this.value = value;
     }
 
+    /**
+     * Creates a new menu item with the specified
+     * @param value the value of the item used as label
+     * @param icon the icon to be displayed next to the label
+     */
     public DefaultMenuItem(Object value, String icon) {
         this.value = value;
         this.icon = icon;
     }
 
+    /**
+     * Creates a menu item with the specified
+     * @param value the value of the item used as label
+     * @param icon the icon to be displayed next to the label
+     * @param url a URL to redirect to after the menu item has been clicked
+     * (specifying a {@code url} which is not {@code null} causes
+     * {@code command} to be ignored) (another form of redirection is provided
+     * by the {@code outcome} property)
+     */
     public DefaultMenuItem(Object value, String icon, String url) {
         this.value = value;
         this.icon = icon;
         this.url = url;
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
     }
 
+    @Override
     public String getIcon() {
         return icon;
     }
 
+    @Override
     public String getIconPos() {
         return iconPos;
     }
@@ -111,6 +148,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.icon = icon;
     }
 
+    @Override
     public String getTitle() {
         return title;
     }
@@ -119,6 +157,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.title = title;
     }
 
+    @Override
     public boolean isDisabled() {
         return disabled;
     }
@@ -127,6 +166,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.disabled = disabled;
     }
 
+    @Override
     public String getOnclick() {
         return onclick;
     }
@@ -135,6 +175,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.onclick = onclick;
     }
 
+    @Override
     public String getStyle() {
         return style;
     }
@@ -143,14 +184,17 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.style = style;
     }
 
+    @Override
     public String getStyleClass() {
         return styleClass;
     }
 
+    @Override
     public void setStyleClass(String styleClass) {
         this.styleClass = styleClass;
     }
 
+    @Override
     public String getHref() {
         return url;
     }
@@ -159,6 +203,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.url = href;
     }
 
+    @Override
     public String getUrl() {
         return url;
     }
@@ -167,6 +212,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.url = url;
     }
 
+    @Override
     public String getTarget() {
         return target;
     }
@@ -175,6 +221,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.target = target;
     }
 
+    @Override
     public String getOutcome() {
         return outcome;
     }
@@ -183,6 +230,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.outcome = outcome;
     }
 
+    @Override
     public boolean isAjax() {
         return ajax;
     }
@@ -191,6 +239,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.ajax = ajax;
     }
 
+    @Override
     public Object getValue() {
         return value;
     }
@@ -199,6 +248,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.value = value;
     }
 
+    @Override
     public boolean isIncludeViewParams() {
         return includeViewParams;
     }
@@ -207,6 +257,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.includeViewParams = includeViewParams;
     }
 
+    @Override
     public String getFragment() {
         return fragment;
     }
@@ -215,6 +266,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.fragment = fragment;
     }
 
+    @Override
     public Map<String, List<String>> getParams() {
         return params;
     }
@@ -223,13 +275,14 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.params = params;
     }
 
+    @Override
     public void setParam(String key, Object value) {
         if (value == null) {
             throw new IllegalArgumentException("value cannot be null");
         }
 
         if (params == null) {
-            params = new LinkedHashMap<String, List<String>>();
+            params = new LinkedHashMap<>();
         }
 
         if (!params.containsKey(key)) {
@@ -239,18 +292,22 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         params.get(key).add(value.toString());
     }
 
+    @Override
     public boolean shouldRenderChildren() {
         return false;
     }
 
+    @Override
     public List<UIComponent> getChildren() {
         return null;
     }
 
+    @Override
     public boolean isDynamic() {
         return true;
     }
 
+    @Override
     public String getCommand() {
         return command;
     }
@@ -259,6 +316,16 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.command = command;
     }
 
+    @Override
+    public SerializableFunction<MenuItem, String> getFunction() {
+        return function;
+    }
+
+    public void setFunction(SerializableFunction<MenuItem, String> function) {
+        this.function = function;
+    }
+
+    @Override
     public boolean isRendered() {
         return rendered;
     }
@@ -267,6 +334,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.rendered = rendered;
     }
 
+    @Override
     public String getOnstart() {
         return onstart;
     }
@@ -275,6 +343,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.onstart = onstart;
     }
 
+    @Override
     public String getOnerror() {
         return onerror;
     }
@@ -283,6 +352,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.onerror = onerror;
     }
 
+    @Override
     public String getOnsuccess() {
         return onsuccess;
     }
@@ -291,6 +361,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.onsuccess = onsuccess;
     }
 
+    @Override
     public String getOncomplete() {
         return oncomplete;
     }
@@ -299,6 +370,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.oncomplete = oncomplete;
     }
 
+    @Override
     public String getUpdate() {
         return update;
     }
@@ -307,6 +379,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.update = update;
     }
 
+    @Override
     public String getProcess() {
         return process;
     }
@@ -315,6 +388,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.process = process;
     }
 
+    @Override
     public boolean isPartialSubmit() {
         return partialSubmit;
     }
@@ -324,6 +398,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.partialSubmitSet = true;
     }
 
+    @Override
     public boolean isResetValues() {
         return resetValues;
     }
@@ -333,6 +408,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.resetValuesSet = true;
     }
 
+    @Override
     public boolean isGlobal() {
         return global;
     }
@@ -341,6 +417,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.global = global;
     }
 
+    @Override
     public boolean isAsync() {
         return async;
     }
@@ -349,14 +426,17 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.async = async;
     }
 
+    @Override
     public boolean isPartialSubmitSet() {
         return partialSubmitSet;
     }
 
+    @Override
     public boolean isResetValuesSet() {
         return resetValuesSet;
     }
 
+    @Override
     public boolean isIgnoreAutoUpdate() {
         return ignoreAutoUpdate;
     }
@@ -365,6 +445,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.ignoreAutoUpdate = ignoreAutoUpdate;
     }
 
+    @Override
     public boolean isImmediate() {
         return immediate;
     }
@@ -373,10 +454,12 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.immediate = immediate;
     }
 
+    @Override
     public boolean isAjaxified() {
         return getUrl() == null && isAjax();
     }
 
+    @Override
     public String getDelay() {
         return delay;
     }
@@ -385,6 +468,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.delay = delay;
     }
 
+    @Override
     public boolean isDisableClientWindow() {
         return disableClientWindow;
     }
@@ -393,6 +477,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.disableClientWindow = disableClientWindow;
     }
 
+    @Override
     public String getContainerStyle() {
         return containerStyle;
     }
@@ -401,6 +486,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.containerStyle = containerStyle;
     }
 
+    @Override
     public String getContainerStyleClass() {
         return containerStyleClass;
     }
@@ -409,10 +495,12 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.containerStyleClass = containerStyleClass;
     }
 
+    @Override
     public String getClientId() {
         return this.id;
     }
 
+    @Override
     public int getTimeout() {
         return timeout;
     }
@@ -421,6 +509,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.timeout = timeout;
     }
 
+    @Override
     public String getPartialSubmitFilter() {
         return partialSubmitFilter;
     }
@@ -429,6 +518,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.partialSubmitFilter = partialSubmitFilter;
     }
 
+    @Override
     public String getForm() {
         return form;
     }
@@ -437,18 +527,22 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.form = form;
     }
 
+    @Override
     public String getConfirmationScript() {
         return this.confirmationScript;
     }
 
+    @Override
     public void setConfirmationScript(String confirmationScript) {
         this.confirmationScript = confirmationScript;
     }
 
+    @Override
     public boolean requiresConfirmation() {
         return this.confirmationScript != null;
     }
 
+    @Override
     public boolean isEscape() {
         return escape;
     }
@@ -457,6 +551,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.escape = escape;
     }
 
+    @Override
     public String getRel() {
         return rel;
     }

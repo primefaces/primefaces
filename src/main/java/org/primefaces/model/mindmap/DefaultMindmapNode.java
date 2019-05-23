@@ -1,17 +1,25 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.model.mindmap;
 
@@ -20,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultMindmapNode implements MindmapNode, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private MindmapNode parent;
 
@@ -38,7 +48,7 @@ public class DefaultMindmapNode implements MindmapNode, Serializable {
 
     public DefaultMindmapNode(String label) {
         this.label = label;
-        this.children = new ArrayList<MindmapNode>();
+        this.children = new ArrayList<>();
         this.selectable = true;
     }
 
@@ -57,6 +67,7 @@ public class DefaultMindmapNode implements MindmapNode, Serializable {
         this.selectable = selectable;
     }
 
+    @Override
     public String getLabel() {
         return label;
     }
@@ -65,10 +76,12 @@ public class DefaultMindmapNode implements MindmapNode, Serializable {
         this.label = label;
     }
 
+    @Override
     public MindmapNode getParent() {
         return this.parent;
     }
 
+    @Override
     public Object getData() {
         return this.data;
     }
@@ -77,6 +90,7 @@ public class DefaultMindmapNode implements MindmapNode, Serializable {
         this.data = data;
     }
 
+    @Override
     public void setParent(MindmapNode parent) {
         if (this.parent != null) {
             this.parent.getChildren().remove(this);
@@ -89,6 +103,7 @@ public class DefaultMindmapNode implements MindmapNode, Serializable {
         }
     }
 
+    @Override
     public String getFill() {
         return this.fill;
     }
@@ -97,18 +112,22 @@ public class DefaultMindmapNode implements MindmapNode, Serializable {
         this.fill = fill;
     }
 
+    @Override
     public void addNode(MindmapNode node) {
         node.setParent(this);
     }
 
+    @Override
     public boolean isSelectable() {
         return selectable;
     }
 
+    @Override
     public void setSelectable(boolean selectable) {
         this.selectable = selectable;
     }
 
+    @Override
     public List<MindmapNode> getChildren() {
         return this.children;
     }

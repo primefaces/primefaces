@@ -11,6 +11,15 @@
             return "#" + id.replace(/:/g,"\\:");
         },
 
+        onElementLoad: function(element, listener) {
+            if (element.prop('complete')) {
+                listener();
+            }
+            else {
+                element.on('load', listener);
+            }
+        },
+
         cleanWatermarks : function(){
             $.watermark.hideAll();
         },
@@ -35,7 +44,7 @@
             var form = $(this.escapeClientId(parent));
 
             for(var key in params) {
-                form.append("<input type=\"hidden\" name=\"" + key + "\" value=\"" + params[key] + "\" class=\"ui-submit-param\"/>");
+                form.append("<input type=\"hidden\" name=\"" + PrimeFaces.escapeHTML(key) + "\" value=\"" + PrimeFaces.escapeHTML(params[key]) + "\" class=\"ui-submit-param\"/>");
             }
 
             return this;
@@ -76,7 +85,7 @@
 
         attachBehaviors : function(element, behaviors) {
             $.each(behaviors, function(event, fn) {
-                element.bind(event, function(e) {
+                element.on(event, function(e) {
                     fn.call(element, e);
                 });
             });
@@ -105,7 +114,36 @@
             return (cookieEnabled);
         },
 
+        /**
+         * Updates the Input to add style whether it contains data or not. Used particularly in Floating Labels.
+         * 
+         * @param the text input to modify
+         * @param the parent element of input
+         */
+        updateFilledState: function(input, parent) {
+            if (input.val().length) {
+                input.addClass('ui-state-filled');
+                
+                if(parent.is("span:not('.ui-float-label')")) {
+                    parent.addClass('ui-inputwrapper-filled');
+                }
+            } else {
+                input.removeClass('ui-state-filled');
+                parent.removeClass('ui-inputwrapper-filled');
+            }
+        },
+
         skinInput : function(input) {
+            var parent = input.parent(),
+            updateFilledStateOnBlur = function () {
+                if(parent.hasClass('ui-inputwrapper-focus')) {
+                    parent.removeClass('ui-inputwrapper-focus');
+                }
+                PrimeFaces.updateFilledState(input, parent);
+            };
+
+            PrimeFaces.updateFilledState(input, parent);
+
             input.hover(
                 function() {
                     $(this).addClass('ui-state-hover');
@@ -115,8 +153,21 @@
                 }
             ).focus(function() {
                 $(this).addClass('ui-state-focus');
+                
+                if(parent.is("span:not('.ui-float-label')")) {
+                    parent.addClass('ui-inputwrapper-focus');
+                }
             }).blur(function() {
                 $(this).removeClass('ui-state-focus');
+                
+                if(input.hasClass('hasDatepicker')) {
+                    setTimeout(function() {
+                        updateFilledStateOnBlur();
+                    }, 150);
+                }
+                else {
+                    updateFilledStateOnBlur();
+                }
             });
 
             //aria
@@ -151,7 +202,7 @@
             }).blur(function() {
                 $(this).removeClass('ui-state-focus ui-state-active');
             }).keydown(function(e) {
-                if(e.which === $.ui.keyCode.SPACE || e.which === $.ui.keyCode.ENTER || e.which === $.ui.keyCode.NUMPAD_ENTER) {
+                if(e.which === $.ui.keyCode.SPACE || e.which === $.ui.keyCode.ENTER) {
                     $(this).addClass('ui-state-active');
                 }
             }).keyup(function() {
@@ -220,6 +271,10 @@
             return PrimeFaces.settings.projectStage === 'Development';
         },
 
+        widgetNotAvailable: function(widgetVar) {
+           PrimeFaces.error("Widget for var '" + widgetVar + "' not available!");
+        },
+
         setCaretToEnd: function(element) {
             if(element) {
                 element.focus();
@@ -262,7 +317,9 @@
         },
 
         escapeHTML: function(value) {
-            return value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            return String(value).replace(/[&<>"'`=\/]/g, function (s) {
+                return PrimeFaces.entityMap[s];
+            });
         },
 
         clearSelection: function() {
@@ -303,6 +360,14 @@
             this.createWidget(widgetName, widgetVar, cfg);
         },
 
+
+        /**
+         * @deprecated moved to PrimeFaces.resources.getFacesResource
+         */
+        getFacesResource : function(name, library, version) {
+           return PrimeFaces.resources.getFacesResource(name, library, version);
+        },
+
         createWidget : function(widgetName, widgetVar, cfg) {
             cfg.widgetVar = widgetVar;
 
@@ -324,42 +389,8 @@
             // widget script not loaded
             else {
                 // should be loaded by our dynamic resource handling, log a error
-                PrimeFaces.error("Widget not available: " + widgetName);
+                PrimeFaces.widgetNotAvailable(widgetName);
             }
-        },
-
-        /**
-         * Builds a resource URL for given parameters.
-         *
-         * @param {string} name The name of the resource. For example: primefaces.js
-         * @param {string} library The library of the resource. For example: primefaces
-         * @param {string} version The version of the library. For example: 5.1
-         * @returns {string} The resource URL.
-         */
-        getFacesResource : function(name, library, version) {
-
-            // just get sure - name shoudln't start with a slash
-            if (name.indexOf('/') === 0)
-            {
-                name = name.substring(1, name.length);
-            }
-
-            var scriptURI = $('script[src*="/' + PrimeFaces.RESOURCE_IDENTIFIER + '/core.js"]').attr('src');
-            // portlet
-            if (!scriptURI) {
-                scriptURI = $('script[src*="' + PrimeFaces.RESOURCE_IDENTIFIER + '=core.js"]').attr('src');
-            }
-
-            scriptURI = scriptURI.replace('core.js', name);
-            scriptURI = scriptURI.replace('ln=primefaces', 'ln=' + library);
-
-            if (version) {
-                var extractedVersion = new RegExp('[?&]v=([^&]*)').exec(scriptURI)[1];
-                scriptURI = scriptURI.replace('v=' + extractedVersion, 'v=' + version);
-            }
-
-            var prefix = window.location.protocol + '//' + window.location.host;
-            return scriptURI.indexOf(prefix) >= 0 ? scriptURI : prefix + scriptURI;
         },
 
         inArray: function(arr, item) {
@@ -374,17 +405,6 @@
 
         isNumber: function(value) {
             return typeof value === 'number' && isFinite(value);
-        },
-
-        getScript: function(url, callback) {
-            $.ajax({
-                type: "GET",
-                url: url,
-                success: callback,
-                dataType: "script",
-                cache: true,
-                async: true
-            });
         },
 
         focus: function(id, context) {
@@ -409,16 +429,7 @@
                 else {
                     var elements = $(selector),
                     firstElement = elements.eq(0);
-                    if(firstElement.is(':radio')) {
-                        var checkedRadio = $(':radio[name="' + firstElement.attr('name') + '"]').filter(':checked');
-                        if(checkedRadio.length)
-                            PrimeFaces.focusElement(checkedRadio);
-                        else
-                            PrimeFaces.focusElement(firstElement);
-                    }
-                    else {
-                        firstElement.focus();
-                    }
+                    PrimeFaces.focusElement(firstElement);
                 }
             }, 50);
 
@@ -428,8 +439,18 @@
         },
 
         focusElement: function(el) {
-            if(el.is(':radio') && el.hasClass('ui-helper-hidden-accessible')) {
-                el.parent().focus();
+            if(el.is(':radio')) {
+                // github issue: #2582
+                if(el.hasClass('ui-helper-hidden-accessible')) {
+                    el.parent().focus();
+                }
+                else {
+                    var checkedRadio = $(':radio[name="' + el.attr('name') + '"]').filter(':checked');
+                    if(checkedRadio.length)
+                        checkedRadio.focus();
+                    else
+                        el.focus();
+                }
             }
             else {
                 el.focus();
@@ -477,7 +498,7 @@
          *  Aligns container scrollbar to keep item in container viewport, algorithm copied from jquery-ui menu widget
          */
         scrollInView: function(container, item) {
-            if(item.length === 0) {
+            if(item === null || item.length === 0) {
                 return;
             }
 
@@ -498,22 +519,12 @@
 
         calculateScrollbarWidth: function() {
             if(!this.scrollbarWidth) {
-                if(PrimeFaces.env.browser.msie) {
-                    var $textarea1 = $('<textarea cols="10" rows="2"></textarea>')
-                            .css({ position: 'absolute', top: -1000, left: -1000 }).appendTo('body'),
-                        $textarea2 = $('<textarea cols="10" rows="2" style="overflow: hidden;"></textarea>')
-                            .css({ position: 'absolute', top: -1000, left: -1000 }).appendTo('body');
-                    this.scrollbarWidth = $textarea1.width() - $textarea2.width();
-                    $textarea1.add($textarea2).remove();
-                }
-                else {
-                    var $div = $('<div />')
-                        .css({ width: 100, height: 100, overflow: 'auto', position: 'absolute', top: -1000, left: -1000 })
-                        .prependTo('body').append('<div />').find('div')
-                            .css({ width: '100%', height: 200 });
-                    this.scrollbarWidth = 100 - $div.width();
-                    $div.parent().remove();
-                }
+                var $div = $('<div />')
+                    .css({ width: 100, height: 100, overflow: 'auto', position: 'absolute', top: -1000, left: -1000 })
+                    .prependTo('body').append('<div />').find('div')
+                        .css({ width: '100%', height: 200 });
+                this.scrollbarWidth = 100 - $div.width();
+                $div.parent().remove();
             }
 
             return this.scrollbarWidth;
@@ -620,6 +631,24 @@
             var ariaLocaleSettings = this.getLocaleSettings()['aria'];
             return (ariaLocaleSettings&&ariaLocaleSettings[key]) ? ariaLocaleSettings[key] : PrimeFaces.locales['en_US']['aria'][key];
         },
+        
+        /**
+         * Generate an RFC-4122 compliant UUID to be used to unique identifiers.
+         * 
+         * https://www.ietf.org/rfc/rfc4122.txt
+         */
+        uuid: function() {
+            var lut = []; 
+            for (var i=0; i<256; i++) { lut[i] = (i<16?'0':'')+(i).toString(16); }
+            var d0 = Math.random()*0xffffffff|0;
+            var d1 = Math.random()*0xffffffff|0;
+            var d2 = Math.random()*0xffffffff|0;
+            var d3 = Math.random()*0xffffffff|0;
+            return lut[d0&0xff]+lut[d0>>8&0xff]+lut[d0>>16&0xff]+lut[d0>>24&0xff]+'-'+
+              lut[d1&0xff]+lut[d1>>8&0xff]+'-'+lut[d1>>16&0x0f|0x40]+lut[d1>>24&0xff]+'-'+
+              lut[d2&0x3f|0x80]+lut[d2>>8&0xff]+'-'+lut[d2>>16&0xff]+lut[d2>>24&0xff]+
+              lut[d3&0xff]+lut[d3>>8&0xff]+lut[d3>>16&0xff]+lut[d3>>24&0xff];
+        }, 
 
         zindex : 1000,
 
@@ -680,6 +709,7 @@
             dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
             dayNamesMin: ['S', 'M', 'T', 'W ', 'T', 'F ', 'S'],
             weekHeader: 'Week',
+            weekNumberTitle: 'W',
             firstDay: 0,
             isRTL: false,
             showMonthAfterYear: false,
@@ -708,11 +738,22 @@
 
     PrimeFaces.locales['en'] = PrimeFaces.locales['en_US'];
 
+    PrimeFaces.entityMap = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+        '/': '&#x2F;',
+        '`': '&#x60;',
+        '=': '&#x3D;'
+    };
+
     PF = function(widgetVar) {
     	var widgetInstance = PrimeFaces.widgets[widgetVar];
 
     	if (!widgetInstance) {
-	        PrimeFaces.error("Widget for var '" + widgetVar + "' not available!");
+	        PrimeFaces.widgetNotAvailable(widgetVar);
     	}
 
         return widgetInstance;

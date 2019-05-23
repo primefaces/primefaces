@@ -19,6 +19,7 @@
 .ui-picklist .ui-picklist-list li {
     margin: 1px;
     padding: 2px;
+    overflow-wrap: break-word;
 }
 
 .ui-picklist .ui-button {
@@ -124,6 +125,11 @@
 
 .ui-picklist.ui-picklist-responsive .ui-picklist-list-wrapper {
     width: 35%;
+}
+
+.ui-picklist.ui-picklist-responsive .ui-picklist-list-wrapper:nth-child(1),
+.ui-picklist.ui-picklist-responsive .ui-picklist-list-wrapper:nth-last-child(2) {
+    width: 45%;
 }
 
 .ui-picklist.ui-picklist-responsive .ui-picklist-buttons {

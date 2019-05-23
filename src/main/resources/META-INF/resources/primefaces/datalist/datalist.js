@@ -2,10 +2,10 @@
  * PrimeFaces DataList Widget
  */
 PrimeFaces.widget.DataList = PrimeFaces.widget.BaseWidget.extend({
-    
+
     init: function(cfg) {
         this._super(cfg);
-        
+
         this.cfg.formId = $(this.jqId).parents('form:first').attr('id');
         this.content = $(this.jqId + '_content');
 
@@ -13,7 +13,7 @@ PrimeFaces.widget.DataList = PrimeFaces.widget.BaseWidget.extend({
             this.setupPaginator();
         }
     },
-    
+
     setupPaginator: function() {
         var $this = this;
         this.cfg.paginator.paginate = function(newState) {
@@ -22,7 +22,7 @@ PrimeFaces.widget.DataList = PrimeFaces.widget.BaseWidget.extend({
 
         this.paginator = new PrimeFaces.widget.Paginator(this.cfg.paginator);
     },
-    
+
     handlePagination: function(newState) {
         var $this = this,
         options = {
@@ -52,16 +52,15 @@ PrimeFaces.widget.DataList = PrimeFaces.widget.BaseWidget.extend({
         };
 
         if(this.hasBehavior('page')) {
-            var pageBehavior = this.cfg.behaviors['page'];
-            pageBehavior.call(this, options);
+            this.callBehavior('page', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
         }
     },
-    
+
     getPaginator: function() {
         return this.paginator;
     }
-    
+
 });

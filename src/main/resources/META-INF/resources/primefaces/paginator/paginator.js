@@ -14,6 +14,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         this.pageLinks = this.pagesContainer.children('.ui-paginator-page');
         this.rppSelect = this.jq.children('.ui-paginator-rpp-options');
         this.jtpSelect = this.jq.children('.ui-paginator-jtp-select');
+        this.jtpInput = this.jq.children('.ui-paginator-jtp-input');
         this.firstLink = this.jq.children('.ui-paginator-first');
         this.prevLink  = this.jq.children('.ui-paginator-prev');
         this.nextLink  = this.jq.children('.ui-paginator-next');
@@ -60,7 +61,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             var key = e.which,
             keyCode = $.ui.keyCode;
 
-            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+            if((key === keyCode.ENTER)) {
                 $(this).trigger('click');
                 e.preventDefault();
             }
@@ -77,11 +78,26 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
-        //jump to page
+        //jump to page dropdown
         PrimeFaces.skinSelect(this.jtpSelect);
         this.jtpSelect.change(function(e) {
             if(!$(this).hasClass("ui-state-disabled")){
                 $this.setPage(parseInt($(this).val()));
+            }
+        });
+
+        //jump to page input
+        PrimeFaces.skinInput(this.jtpInput);
+        this.jtpInput.change(function(e) {
+            if(!$(this).hasClass("ui-state-disabled")){
+                var page = parseInt($(this).val());
+                if (isNaN(page) || page > $this.cfg.pageCount || page < 1) {
+                    // restore old value if invalid
+                    $(this).val($this.cfg.page + 1);
+                }
+                else {
+                    $this.setPage(page - 1);
+                }
             }
         });
 
@@ -170,11 +186,22 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             var key = e.which,
             keyCode = $.ui.keyCode;
 
-            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+            if((key === keyCode.ENTER)) {
                 $(this).trigger('click');
                 e.preventDefault();
             }
         });
+    },
+    
+    unbindEvents: function() {
+        var buttons = this.jq.children('a.ui-state-default');
+        if (buttons.length > 0) {
+            buttons.off();
+        }
+        var pageLinks = this.pagesContainer.children('.ui-paginator-page');
+        if (pageLinks.length > 0) {
+            pageLinks.off();
+        }
     },
 
     updateUI: function() {
@@ -220,12 +247,20 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
 
         //jump to page dropdown
         if(this.jtpSelect.length > 0) {
-            this.jtpSelect.children().remove();
+            if(this.jtpSelect[0].options.length != this.cfg.pageCount){
+                var jtpOptions = '';
+                for(var i = 0; i < this.cfg.pageCount; i++) {
+                    jtpOptions += '<option value="' + i + '">' + (i + 1) + '</option>';
+                }
 
-            for(var i=0; i < this.cfg.pageCount; i++) {
-                this.jtpSelect.append("<option value=" + i + ">" + (i + 1) + "</option>");
+                this.jtpSelect.html(jtpOptions);
             }
             this.jtpSelect.children('option[value=' + (this.cfg.page) + ']').prop('selected','selected');
+        }
+
+        //jump to page input
+        if(this.jtpInput.length > 0) {
+            this.jtpInput.val(this.cfg.page + 1);
         }
 
         //page links
@@ -235,13 +270,12 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
     updatePageLinks: function() {
         var start, end, delta,
         focusedElement = $(document.activeElement),
-        focusContainer, tabindex;
+        focusContainer;
 
         if(focusedElement.hasClass('ui-paginator-page')) {
             var pagesContainerIndex = this.pagesContainer.index(focusedElement.parent());
             if(pagesContainerIndex >= 0) {
                 focusContainer = this.pagesContainer.eq(pagesContainerIndex);
-                tabindex = focusedElement.index();
             }
         }
 
@@ -271,7 +305,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         }
 
         if(focusContainer) {
-            focusContainer.children().eq(tabindex).trigger('focus');
+            focusContainer.children().filter('.ui-state-active').trigger('focus');
         }
 
         this.bindPageLinkEvents();

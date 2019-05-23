@@ -1,23 +1,35 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.util;
 
 public class HTML {
 
     public static final String[] CLICK_EVENT = {"onclick"};
+
+    public static final String[] TAB_INDEX = {"tabindex"};
+
+    public static final String[] TITLE = {"title"};
 
     public static final String[] BLUR_FOCUS_EVENTS = {
         "onblur",
@@ -142,7 +154,7 @@ public class HTML {
         "title"
     };
 
-    public static final String[] BODY_ATTRS = ArrayUtils.concat(COMMON_EVENTS_WITHOUT_CLICK, CLICK_EVENT, new String[]{
+    public static final String[] BODY_ATTRS = LangUtils.concat(COMMON_EVENTS_WITHOUT_CLICK, CLICK_EVENT, new String[]{
         "dir",
         "lang",
         "style",
@@ -151,32 +163,49 @@ public class HTML {
         "onunload"
     });
 
-    public static final String[] COMMON_EVENTS = ArrayUtils.concat(COMMON_EVENTS_WITHOUT_CLICK, CLICK_EVENT);
+    public static final String[] COMMON_EVENTS = LangUtils.concat(COMMON_EVENTS_WITHOUT_CLICK, CLICK_EVENT);
 
-    public static final String[] OUTPUT_EVENTS = ArrayUtils.concat(COMMON_EVENTS, BLUR_FOCUS_EVENTS);
+    public static final String[] OUTPUT_EVENTS = LangUtils.concat(COMMON_EVENTS, BLUR_FOCUS_EVENTS);
 
-    public static final String[] OUTPUT_EVENTS_WITHOUT_CLICK = ArrayUtils.concat(COMMON_EVENTS_WITHOUT_CLICK, BLUR_FOCUS_EVENTS);
+    public static final String[] OUTPUT_EVENTS_WITHOUT_CLICK = LangUtils.concat(COMMON_EVENTS_WITHOUT_CLICK, BLUR_FOCUS_EVENTS);
 
-    public static final String[] BUTTON_EVENTS = ArrayUtils.concat(OUTPUT_EVENTS, CHANGE_SELECT_EVENTS);
+    public static final String[] BUTTON_EVENTS = LangUtils.concat(OUTPUT_EVENTS, CHANGE_SELECT_EVENTS);
 
-    public static final String[] BUTTON_EVENTS_WITHOUT_CLICK = ArrayUtils.concat(OUTPUT_EVENTS_WITHOUT_CLICK, CHANGE_SELECT_EVENTS);
+    public static final String[] BUTTON_EVENTS_WITHOUT_CLICK = LangUtils.concat(OUTPUT_EVENTS_WITHOUT_CLICK, CHANGE_SELECT_EVENTS);
 
-    public static final String[] IMG_ATTRS = ArrayUtils.concat(IMG_ATTRS_WITHOUT_EVENTS, COMMON_EVENTS);
+    public static final String[] IMG_ATTRS = LangUtils.concat(IMG_ATTRS_WITHOUT_EVENTS, COMMON_EVENTS);
 
-    public static final String[] LINK_ATTRS = ArrayUtils.concat(LINK_ATTRS_WITHOUT_EVENTS, OUTPUT_EVENTS);
+    public static final String[] LINK_ATTRS = LangUtils.concat(LINK_ATTRS_WITHOUT_EVENTS, OUTPUT_EVENTS);
 
-    public static final String[] LABEL_ATTRS = ArrayUtils.concat(LABEL_ATTRS_WITHOUT_EVENTS, OUTPUT_EVENTS);
+    public static final String[] LABEL_ATTRS = LangUtils.concat(LABEL_ATTRS_WITHOUT_EVENTS, OUTPUT_EVENTS);
+    public static final String[] LABEL_EVENTS = OUTPUT_EVENTS;
 
-    public static final String[] BUTTON_ATTRS = ArrayUtils.concat(BUTTON_ATTRS_WITHOUT_EVENTS, BUTTON_EVENTS);
+    public static final String[] BUTTON_ATTRS = LangUtils.concat(BUTTON_ATTRS_WITHOUT_EVENTS, BUTTON_EVENTS);
 
-    public static final String[] INPUT_TEXT_EVENTS = ArrayUtils.concat(COMMON_EVENTS, CHANGE_SELECT_EVENTS, BLUR_FOCUS_EVENTS);
-    public static final String[] INPUT_TEXT_ATTRS = ArrayUtils.concat(INPUT_TEXT_ATTRS_WITHOUT_EVENTS, INPUT_TEXT_EVENTS);
+    public static final String[] INPUT_TEXT_EVENTS = LangUtils.concat(COMMON_EVENTS, CHANGE_SELECT_EVENTS, BLUR_FOCUS_EVENTS);
+    public static final String[] INPUT_TEXT_ATTRS = LangUtils.concat(INPUT_TEXT_ATTRS_WITHOUT_EVENTS, INPUT_TEXT_EVENTS);
 
-    public static final String[] INPUT_TEXTAREA_ATTRS = ArrayUtils.concat(
+    public static final String[] INPUT_TEXTAREA_ATTRS = LangUtils.concat(
             TEXTAREA_ATTRS_WITHOUT_EVENTS, COMMON_EVENTS, CHANGE_SELECT_EVENTS, BLUR_FOCUS_EVENTS);
 
-    public static final String[] SELECT_ATTRS = ArrayUtils.concat(
+    public static final String[] SELECT_ATTRS = LangUtils.concat(
             SELECT_ATTRS_WITHOUT_EVENTS, COMMON_EVENTS, CHANGE_SELECT_EVENTS, BLUR_FOCUS_EVENTS);
+
+    public static final String ARIA_ATOMIC = "aria-atomic";
+    public static final String ARIA_CHECKED = "aria-checked";
+    public static final String ARIA_DESCRIBEDBY = "aria-describedby";
+    public static final String ARIA_DISABLED = "aria-disabled";
+    public static final String ARIA_EXPANDED = "aria-expanded";
+    public static final String ARIA_HASPOPUP = "aria-haspopup";
+    public static final String ARIA_HIDDEN = "aria-hidden";
+    public static final String ARIA_INVALID = "aria-invalid";
+    public static final String ARIA_LABEL = "aria-label";
+    public static final String ARIA_LABELLEDBY = "aria-labelledby";
+    public static final String ARIA_LIVE = "aria-live";
+    public static final String ARIA_MULITSELECTABLE = "aria-multiselectable";
+    public static final String ARIA_READONLY = "aria-readonly";
+    public static final String ARIA_REQUIRED = "aria-required";
+    public static final String ARIA_SELECTED = "aria-selected";
 
     public static final String BUTTON_TEXT_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only";
     public static final String BUTTON_ICON_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only";
@@ -190,7 +219,7 @@ public class HTML {
     public static final String CHECKBOX_ALL_CLASS = "ui-chkbox ui-chkbox-all ui-widget";
     public static final String CHECKBOX_CLASS = "ui-chkbox ui-widget";
     public static final String CHECKBOX_BOX_CLASS = "ui-chkbox-box ui-widget ui-corner-all ui-state-default";
-    public static final String CHECKBOX_INPUT_WRAPPER_CLASS = "ui-helper-hidden";
+    public static final String CHECKBOX_INPUT_WRAPPER_CLASS = "ui-helper-hidden-accessible";
     public static final String CHECKBOX_UNCHECKED_ICON_CLASS = "ui-chkbox-icon ui-icon ui-icon-blank ui-c";
     public static final String CHECKBOX_CHECKED_ICON_CLASS = "ui-chkbox-icon ui-icon ui-icon-check ui-c";
     public static final String CHECKBOX_PARTIAL_CHECKED_ICON_CLASS = "ui-chkbox-icon ui-icon ui-icon-minus ui-c";
@@ -235,5 +264,8 @@ public class HTML {
         public static final String NUMBER_TYPE = "data-p-notype";
         public static final String HIGHLIGHTER = "data-p-hl";
         public static final String GROUPED = "data-p-grouped";
+    }
+
+    private HTML() {
     }
 }

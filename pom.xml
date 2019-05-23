@@ -8,21 +8,18 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
     <packaging>jar</packaging>
-    <version>6.2-SNAPSHOT</version>
-    <name>primefaces</name>
-    <url>http://www.primefaces.org</url>
+    <version>7.1-SNAPSHOT</version>
 
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-            <comments>A business-friendly OSS license</comments>
-        </license>
-    </licenses>
+    <name>PrimeFaces</name>
+    <url>https://www.primefaces.org</url>
+
+    <description>
+        <![CDATA[PrimeFaces is one of the most popular UI libraries in Java EE Ecosystem and widely used by software companies, world renowned brands, banks, financial institutions, insurance companies, universities and more.]]>
+    </description>
 
     <scm>
         <connection>scm:git:https://github.com/primefaces/primefaces.git</connection>
@@ -55,6 +52,10 @@
             <id>sudheer.jonna</id>
             <name>Sudheer Jonna</name>
         </developer>
+        <developer>
+            <id>Rapster</id>
+            <name>Sébastien Lepage</name>
+        </developer>
     </developers>
 
     <properties>
@@ -74,7 +75,6 @@
             <version>3.0</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
@@ -112,7 +112,7 @@
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
-            <version>1.3</version>
+            <version>1.3.3</version>
             <scope>provided</scope>
         </dependency>
 
@@ -120,7 +120,7 @@
         <dependency>
             <groupId>com.rometools</groupId>
             <artifactId>rome</artifactId>
-            <version>1.7.3</version>
+            <version>1.9.0</version>
             <scope>provided</scope>
         </dependency>
 
@@ -150,13 +150,13 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.8.2</version>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.easymock</groupId>
-            <artifactId>easymock</artifactId>
-            <version>2.4</version>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>2.23.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -165,13 +165,12 @@
             <version>2.2.7</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- Atmosphere -->
+        <!-- Content type validation in FileUploadUtilsTest -->
         <dependency>
-            <groupId>org.atmosphere</groupId>
-            <artifactId>atmosphere-runtime</artifactId>
-            <version>2.4.6</version>
-            <scope>provided</scope>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-java7</artifactId>
+            <version>1.19.1</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -185,7 +184,7 @@
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
-            <version>2.6.5</version>
+            <version>3.9.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -193,6 +192,48 @@
             <artifactId>ehcache</artifactId>
             <version>2.7.4</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>3.0.2</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sf.saxon</groupId>
+            <artifactId>Saxon-HE</artifactId>
+            <version>9.9.0-2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- will be included and relocated by shade plugin -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20180813</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.owasp.encoder</groupId>
+            <artifactId>encoder</artifactId>
+            <version>1.2.1</version>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
+            <artifactId>owasp-java-html-sanitizer</artifactId>
+            <version>20181114.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- will be shaded; use 2.4 as later versions would require multiple files to shade -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
@@ -206,71 +247,97 @@
             </resource>
         </resources>
 
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>
+
         <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>3.5.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <supportedProjectTypes>
+                        <supportedProjectType>jar</supportedProjectType>
+                    </supportedProjectTypes>
+                    <instructions>
+                        <Export-Package>org.primefaces.*;version="${project.version}</Export-Package>
+                        <Import-Package>
+                            javax.faces.component.search;resolution:=optional,
+                            javax.faces.component.search.*;resolution:=optional,
+                            javax.faces.flow;resolution:=optional,
+                            javax.faces;version="[2.0.0,3.0.0)",
+                            javax.faces.*;version="[2.0.0,3.0.0)",
+                            javax.inject;resolution:=optional,
+                            javax.inject.*;resolution:=optional,
+                            javax.enterprise;resolution:=optional,
+                            javax.enterprise.*;resolution:=optional,
+                            javax.validation;resolution:=optional,
+                            javax.validation.*;resolution:=optional,
+                            javax.validation.executable;resolution:=optional,
+                            javax.servlet;version="[3,5)",
+                            javax.servlet.annotation;version="[3,5)",
+                            javax.servlet.descriptor;version="[3,5)",
+                            javax.servlet.http;version="[3,5)",
+                            javax.*,
+                            com.sun.faces;resolution:=optional,
+                            net.glxn.qrgen;resolution:=optional,
+                            org.krysalis.barcode4j.output;resolution:=optional,
+                            org.owasp.html;resolution:=optional,
+                            org.apache.myfaces.view.facelets;resolution:=optional,
+                            org.apache.tika.filetypedetector;resolution:=optional,
+                            *;resolution:=optional
+                        </Import-Package>
+                        <Require-Capability>
+                            osgi.serviceloader;filter:="(osgi.serviceloader=org.primefaces.virusscan.VirusScanner)";cardinality:=multiple,
+                            osgi.extender;filter:="(osgi.extender=osgi.serviceloader.processor)";resolution:=optional,
+                            osgi.extender;filter:="(osgi.extender=osgi.serviceloader.registrar)"
+                        </Require-Capability>
+                        <Provide-Capability>
+                            osgi.serviceloader;osgi.serviceloader=org.primefaces.virusscan.VirusScanner;uses:="org.primefaces.virusscan.impl"
+                        </Provide-Capability>
+                    </instructions>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>bundle-manifest</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>manifest</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.7.0</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>xslt-maven-plugin</artifactId>
-                <version>1.0</version>
                 <executions>
                     <execution>
-                        <id>generate-ui-metadata</id>
-                        <phase>generate-sources</phase>
+                        <id>default-compile</id>
                         <configuration>
-                            <xslFile>src/main/resources-maven-jsf/misc/resolve_entities.xsl</xslFile>
-                            <srcIncludes>**/*.xml</srcIncludes>
-                            <srcDir>src/main/resources-maven-jsf/ui</srcDir>
-                            <destDir>target/resources-maven-jsf/ui</destDir>
+                            <showDeprecation>true</showDeprecation>
+                            <showWarnings>true</showWarnings>
                         </configuration>
-                        <goals>
-                            <goal>transform</goal>
-                        </goals>
                     </execution>
                     <execution>
-                        <id>generate-ui-metadata-mobile</id>
-                        <phase>generate-sources</phase>
+                        <id>default-testCompile</id>
                         <configuration>
-                            <xslFile>src/main/resources-maven-jsf/misc/resolve_entities.xsl</xslFile>
-                            <srcIncludes>**/*.xml</srcIncludes>
-                            <srcDir>src/main/resources-maven-jsf/mobile</srcDir>
-                            <destDir>target/resources-maven-jsf/mobile</destDir>
+
                         </configuration>
-                        <goals>
-                            <goal>transform</goal>
-                        </goals>
                     </execution>
                 </executions>
             </plugin>
 
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.5</version>
-                <executions>
-                    <execution>
-                        <id>add-source</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>add-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>target/generated-sources/maven-jsf-plugin</source>
-                            </sources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
@@ -278,7 +345,6 @@
                 <configuration>
                     <consoleOutput>true</consoleOutput>
                     <configLocation>./checkstyle.xml</configLocation>
-                    <excludes>**/UIData.java,**/Base64.java,**/UITabPanel.java,**/json/**,**/UITree.java,**/UIRepeat.java,**/AbstractBehaviorHandler.java</excludes>
                 </configuration>
                 <executions>
                     <execution>
@@ -292,7 +358,30 @@
                         </configuration>
                     </execution>
                 </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>8.18</version>
+                    </dependency>
+                </dependencies>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <archive>
+                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
@@ -302,6 +391,9 @@
                     <includes>
                         <include>src/main/java/**</include>
                     </includes>
+                    <excludes>
+                        <exclude>**/json/JSON*.java</exclude>
+                    </excludes>
                 </configuration>
                 <executions>
                     <execution>
@@ -311,57 +403,32 @@
                     </execution>
                 </executions>
             </plugin>
+
+
             <plugin>
-                <groupId>org.primefaces</groupId>
-                <artifactId>maven-jsf-plugin</artifactId>
-                <version>1.3.3-SNAPSHOT</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>1.16</version>
                 <executions>
                     <execution>
-                        <id>generate-ui</id>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <uri>http://primefaces.org/ui</uri>
-                            <shortName>p</shortName>
-                            <templatesDir>src/main/java-templates</templatesDir>
-                            <componentConfigsDir>target/resources-maven-jsf/ui</componentConfigsDir>
-                            <standardFacesConfig>src/main/resources-maven-jsf/standard-faces-config.xml</standardFacesConfig>
-                            <standardFaceletsTaglib>src/main/resources-maven-jsf/standard-facelets-taglib.xml</standardFaceletsTaglib>
-                            <standardTLD>src/main/resources-maven-jsf/standard-tld.xml</standardTLD>
-                        </configuration>
+                        <id>aggregate-download-licenses</id>
+                        <phase>prepare-package</phase>
                         <goals>
-                            <goal>generate-components</goal>
-                            <goal>generate-facelets-taglib</goal>
+                            <goal>aggregate-download-licenses</goal>
                         </goals>
                     </execution>
                     <execution>
-                        <id>generate-ui-mobile</id>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <uri>http://primefaces.org/mobile</uri>
-                            <shortName>pm</shortName>
-                            <templatesDir>src/main/java-templates</templatesDir>
-                            <componentConfigsDir>target/resources-maven-jsf/mobile</componentConfigsDir>
-                        </configuration>
+                        <id>add-third-party</id>
                         <goals>
-                            <goal>generate-components</goal>
-                            <goal>generate-facelets-taglib</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>generate-facesconfig</id>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <componentConfigsDir>target/resources-maven-jsf/ui</componentConfigsDir>
-                            <standardFacesConfig>src/main/resources-maven-jsf/standard-faces-config.xml</standardFacesConfig>
-                            <standardRenderersConfig>src/main/resources-maven-jsf/standard-renderers.xml</standardRenderersConfig>
-                            <jsfVersion>2</jsfVersion>
-                        </configuration>
-                        <goals>
-                            <goal>generate-faces-config</goal>
+                            <goal>add-third-party</goal>
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <excludedScopes>test,provided</excludedScopes>
+                </configuration>
             </plugin>
+
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -370,18 +437,36 @@
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <nonFilteredFileExtensions>
-                       <nonFilteredFileExtension>eot</nonFilteredFileExtension>
-                       <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
-                       <nonFilteredFileExtension>woff</nonFilteredFileExtension>
-                       <nonFilteredFileExtension>woff2</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>eot</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>woff</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>woff2</nonFilteredFileExtension>
                     </nonFilteredFileExtensions>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.outputDirectory}/META-INF/resources</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/generated-resources</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>yuicompressor-maven-plugin</artifactId>
-                <version>1.4.0</version>
+                <version>1.5.1</version>
                 <executions>
                     <execution>
                         <goals>
@@ -446,6 +531,8 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/wizard/wizard.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/chips/chips.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/sidebar/sidebar.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/dataview/dataview.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/datepicker/datepicker.css</include>
                             </includes>
                         </aggregation>
                         <aggregation>
@@ -456,8 +543,11 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.env.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.ajax.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.csp.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.expressions.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.utils.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.widget.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.resources.js</include>
 
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/ajaxstatus/ajaxstatus.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/poll/poll.js</include>
@@ -495,6 +585,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectmanymenu.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.commandbutton.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.button.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.linkbutton.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectmanybutton.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectonebutton.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectbooleanbutton.js</include>
@@ -536,34 +627,24 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tabview/tabview.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tagcloud/tagcloud.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tooltip/tooltip.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/tree/tree.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/tree/tree.base.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/tree/tree.vertical.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/tree/tree.horizontal.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/treetable/treetable.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/wizard/wizard.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tristatecheckbox/tristatecheckbox.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/chips/chips.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/sidebar/sidebar.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/dataview/dataview.js</include>
                             </includes>
                         </aggregation>
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>true</removeIncluded>
-                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/components-mobile.js</output>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/imagecropper/imagecropper.js</output>
                             <includes>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.mobile.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/accordion.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/autocomplete.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/calendar.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/datalist.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/datagrid.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/datatable.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/dialog.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/forms.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/growl.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/menu.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/paginator.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/overlaypanel.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/panel.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/tabview.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/imagecropper/0-jcrop.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/imagecropper/1-imagecropper.js</include>
                             </includes>
                         </aggregation>
                         <aggregation>
@@ -574,6 +655,15 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/inputnumber/0-autoNumeric.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/inputnumber/1-jquery.metadata.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/inputnumber/2-inputnumber.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/keyboard/keyboard.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/keyboard/0-jquery.keypad.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/keyboard/1-keyboard.js</include>
                             </includes>
                         </aggregation>
                         <aggregation>
@@ -606,6 +696,15 @@
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/chartjs/chartjs.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/chartjs/0-chartjs.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/chartjs/1-widgets.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/timeline.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/0-timeline.js</include>
@@ -615,19 +714,19 @@
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>true</removeIncluded>
-                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/socket/socket.js</output>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/idlemonitor/idlemonitor.js</output>
                             <includes>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/socket/0-atmosphere.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/socket/1-socket.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/idlemonitor/0-jquery.idletimer.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/idlemonitor/1-idlemonitor.js</include>
                             </includes>
                         </aggregation>
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>true</removeIncluded>
-                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/idlemonitor/idlemonitor.js</output>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/charts/charts.js</output>
                             <includes>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/idlemonitor/0-jquery.idletimer.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/idlemonitor/1-idlemonitor.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/charts/0-jqPlot.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/charts/1-charts.js</include>
                             </includes>
                         </aggregation>
                         <aggregation>
@@ -667,10 +766,82 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/2-fileupload.js</include>
                             </includes>
                         </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/schedule.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/0-fullcalendar.min.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/1-schedule.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/datepicker/datepicker.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/datepicker/0-datepicker.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/datepicker/1-datepicker.js</include>
+                            </includes>
+                        </aggregation>
                     </aggregations>
                 </configuration>
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <shadedArtifactAttached>false</shadedArtifactAttached>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
+                    <minimizeJar>true</minimizeJar>
+                    <relocations>
+                        <relocation>
+                            <pattern>org.json</pattern>
+                            <shadedPattern>org.primefaces.shaded.json</shadedPattern>
+                            <includes>
+                                <include>**</include>
+                            </includes>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.owasp.encoder</pattern>
+                            <shadedPattern>org.primefaces.shaded.owasp.encoder</shadedPattern>
+                            <includes>
+                                <include>**</include>
+                            </includes>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.apache.commons.io</pattern>
+                            <shadedPattern>org.primefaces.shaded.commons.io</shadedPattern>
+                            <includes>
+                                <include>org.apache.commons.io.FilenameUtils</include>
+                                <include>org.apache.commons.io.IOUtils</include>
+                                <include>org.apache.commons.io.input.BoundedInputStream</include>
+                            </includes>
+                        </relocation>
+                    </relocations>
+                    <filters>
+                        <filter>
+                            <artifact>commons-io:commons-io</artifact>
+                            <includes>
+                                <include>org/apache/commons/io/FilenameUtils.class</include>
+                                <include>org/apache/commons/io/IOUtils.class</include>
+                                <include>org/apache/commons/io/input/BoundedInputStream.class</include>
+                            </includes>
+                        </filter>
+                    </filters>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -679,46 +850,6 @@
             <id>release</id>
             <build>
                 <plugins>
-                    <plugin>
-                        <groupId>org.apache.felix</groupId>
-                        <artifactId>maven-bundle-plugin</artifactId>
-                        <version>2.3.5</version>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <supportedProjectTypes>
-                                <supportedProjectType>jar</supportedProjectType>
-                            </supportedProjectTypes>
-                            <instructions>
-                                <Export-Package>org.primefaces.*;version="${project.version}</Export-Package>
-                                <Import-Package>javax.*,*;resolution:=optional</Import-Package>
-                            </instructions>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>bundle-manifest</id>
-                                <phase>process-classes</phase>
-                                <goals>
-                                    <goal>manifest</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-jar-plugin</artifactId>
-                        <version>2.3.1</version>
-                        <configuration>
-                            <archive>
-                                <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-                                <manifest>
-                                    <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                                    <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                                </manifest>
-                            </archive>
-                        </configuration>
-                    </plugin>
-
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
@@ -739,7 +870,7 @@
                         <artifactId>maven-javadoc-plugin</artifactId>
                         <version>2.10.4</version>
                         <configuration>
-                            <sourcepath>${basedir}/src/main/java;${basedir}/target/generated-sources/maven-jsf-plugin</sourcepath>
+                            <sourcepath>${basedir}/src/main/java</sourcepath>
                             <additionalparam>-Xdoclint:none</additionalparam>
                         </configuration>
                         <executions>
@@ -765,6 +896,9 @@
                                 <goals>
                                     <goal>sign</goal>
                                 </goals>
+                                <configuration>
+                                    <executable>gpg2</executable>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
@@ -775,13 +909,18 @@
                     <plugin>
                         <groupId>net.alchim31.maven</groupId>
                         <artifactId>yuicompressor-maven-plugin</artifactId>
+                        <version>1.5.1</version>
                         <configuration>
                             <jswarn>false</jswarn>
+                            <force>true</force>
                             <excludes>
                                 <exclude>**/*.something</exclude>
                                 <exclude>**/photocam.js</exclude>
                                 <exclude>**/texteditor.js</exclude>
                                 <exclude>**/jquery.js</exclude>
+                                <exclude>**/0-fullcalendar.min.js</exclude>
+                                <exclude>**/0-chartjs.js</exclude>
+                                <exclude>**/raphael.js</exclude>
                             </excludes>
                             <includes>
                                 <include>**/*.js</include>

@@ -7,3 +7,5 @@
 *~
 /.classpath
 /.project
+.vscode/
+.checkstyle

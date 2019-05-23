@@ -1,22 +1,31 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.selectmanybutton;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UINamingContainer;
@@ -27,6 +36,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
+
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -39,8 +49,7 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
                 "javax.faces.SelectMany",
-                "javax.faces.Checkbox",
-                Renderer.class);
+                "javax.faces.Checkbox");
         return renderer.getConvertedValue(context, component, submittedValue);
     }
 
@@ -87,8 +96,8 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
     }
 
     protected void encodeOption(FacesContext context, UIInput component, Object values, Object submittedValues, Converter converter,
-            SelectItem option, int idx, int size) throws IOException {
-        
+                                SelectItem option, int idx, int size) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
         SelectManyButton button = (SelectManyButton) component;
         String itemValueAsString = getOptionAsString(context, component, converter, option.getValue());
@@ -130,7 +139,9 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         //button
         writer.startElement("div", null);
         writer.writeAttribute("class", buttonStyle, null);
-        if (option.getDescription() != null) writer.writeAttribute("title", option.getDescription(), null);
+        if (option.getDescription() != null) {
+            writer.writeAttribute("title", option.getDescription(), null);
+        }
 
         //input
         writer.startElement("input", null);
@@ -142,23 +153,27 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
 
         renderOnchange(context, button);
 
-        if (selected) writer.writeAttribute("checked", "checked", null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
-        if (tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
+        if (selected) {
+            writer.writeAttribute("checked", "checked", null);
+        }
+        if (tabindex != null) {
+            writer.writeAttribute("tabindex", tabindex, null);
+        }
 
+        renderAccessibilityAttributes(context, button);
         writer.endElement("input");
 
         //item label
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        
+
         if (option.isEscape()) {
             writer.writeText(option.getLabel(), "itemLabel");
         }
         else {
             writer.write(option.getLabel());
         }
-        
+
         writer.endElement("span");
 
         writer.endElement("div");

@@ -2,7 +2,7 @@
  * PrimeFaces DataScroller Widget
  */
 PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
-    
+
     init: function(cfg) {
         this._super(cfg);
         this.content = this.jq.children('div.ui-datascroller-content');
@@ -14,7 +14,7 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.offset = 0;
         this.cfg.mode = this.cfg.mode||'document';
         this.cfg.buffer = (100 - this.cfg.buffer) / 100;
-                
+
         if(this.cfg.loadEvent === 'scroll') {
             this.bindScrollListener();
         }
@@ -23,18 +23,17 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
             this.bindManualLoader();
         }
     },
-    
+
     bindScrollListener: function() {
         var $this = this;
-        
+
         if(this.cfg.mode === 'document') {
             var win = $(window),
             doc = $(document),
-            $this = this,
-            NS = 'scroll.' + this.id;
+            $this = this;
 
-            win.off(NS).on(NS, function () {
-                if(win.scrollTop() >= ((doc.height() * $this.cfg.buffer) - win.height()) && $this.shouldLoad()) {
+            PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', function() {
+                if (win.scrollTop() >= ((doc.height() * $this.cfg.buffer) - win.height()) && $this.shouldLoad()) {
                     $this.load();
                 }
             });
@@ -51,25 +50,25 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
             });
         }
     },
-    
+
     bindManualLoader: function() {
         var $this = this;
-        
+
         this.loadTrigger.on('click.dataScroller', function(e) {
             $this.load();
             e.preventDefault();
         });
     },
-    
+
     load: function() {
         this.loading = true;
         this.cfg.offset += this.cfg.chunkSize;
-        
+
         this.loadStatus.appendTo(this.loaderContainer);
         if(this.loadTrigger) {
             this.loadTrigger.hide();
         }
-                        
+
         var $this = this,
         options = {
             source: this.id,
@@ -84,26 +83,26 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
                         this.list.append(content);
                     }
                 });
-                
+
                 return true;
             },
             oncomplete: function() {
                 $this.loading = false;
                 $this.allLoaded = ($this.cfg.offset + $this.cfg.chunkSize) >= $this.cfg.totalSize;
-                
+
                 $this.loadStatus.remove();
-                
+
                 if($this.loadTrigger && !$this.allLoaded) {
                     $this.loadTrigger.show();
                 }
             }
         };
-        
-        PrimeFaces.ajax.AjaxRequest(options);
+
+        PrimeFaces.ajax.Request.handle(options);
     },
-    
+
     shouldLoad: function() {
         return (!this.loading && !this.allLoaded);
     }
-    
+
 });

@@ -129,13 +129,18 @@
 
 	$.fn.keyfilter = function(re)
 	{
-		return this.keypress(function(e)
+		return this.on('keypress',function(e)
 		{
 			var keyNo = e.which;
-			if (keyNo == 17 || keyNo == 18) //keyCode.CONTROL and keyCode.ALT
+			if ($.browser.mozilla && (e.ctrlKey || e.altKey)) // PF GitHub #3785
+			{
+				return;
+			} 
+			else if (keyNo == 17 || keyNo == 18) // PF GitHub #1852 keyCode.CONTROL and keyCode.ALT
 			{
 				return;
 			}
+			
 			var k = getKey(e);
 			if($.browser.mozilla && (isNavKeyPress(e) || k == Keys.BACKSPACE || (k == Keys.DELETE && e.charCode == 0)))
 			{
@@ -181,4 +186,3 @@
 	}); */
 
 })(jQuery);
-

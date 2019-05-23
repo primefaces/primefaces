@@ -11,7 +11,6 @@
         this.jqEl = this.cfg.popup ? $(this.jqId + '_button') : $(this.jqId + '_inline');
         this.cfg.flat = !this.cfg.popup;
         this.cfg.livePreview = false;
-        this.cfg.nestedInDialog = this.jqEl.parents('.ui-dialog:first').length == 1;
 
         this.bindCallbacks();
 
@@ -44,25 +43,20 @@
 
             $this.input.change();
 
-            if ($this.hasBehavior('change')) {
-                var changeBehavior = $this.cfg.behaviors['change'];
-                if(changeBehavior) {
-                    changeBehavior.call($this);
-                }
-            }
+            $this.callBehavior('change');
         };
 
         this.cfg.onShow = function() {
             if($this.cfg.popup) {
-                $this.overlay.css('z-index', ++PrimeFaces.zindex);
+                $this.overlay.css({
+                    'z-index': ++PrimeFaces.zindex,
+                    'display':'block', 
+                    'opacity':0, 
+                    'pointer-events': 'none'
+                });
             }
 
-            var win = $(window),
-            positionOffset = $this.cfg.nestedInDialog ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null;
-
-            if($this.cfg.nestedInDialog) {
-                $this.overlay.css('position', 'fixed');
-            }
+            $this.setupDialogSupport();
 
             //position the overlay relative to the button
             $this.overlay.css({
@@ -72,9 +66,16 @@
                 .position({
                     my: 'left top'
                     ,at: 'left bottom'
-                    ,of: $this.jqEl,
-                    offset : positionOffset
+                    ,of: $this.jqEl
                 });
+            
+            if($this.cfg.popup) {
+                $this.overlay.css({
+                    'display':'none', 
+                    'opacity':'', 
+                    'pointer-events': ''
+                });
+            }
         };
 
         this.cfg.onHide = function(cp) {
@@ -100,5 +101,13 @@
                 return false;   //break;
             }
         });
+    },
+    
+    setupDialogSupport: function() {
+        var dialog = this.jqEl.closest('.ui-dialog');
+        
+        if(dialog.length == 1 && dialog.css('position') === 'fixed') {
+            this.overlay.css('position', 'fixed');
+        }
     }
 });

@@ -1,25 +1,34 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.inputswitch;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.RequestContext;
+
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -31,14 +40,14 @@ public class InputSwitchRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         InputSwitch inputSwitch = (InputSwitch) component;
 
-        if (inputSwitch.isDisabled()) {
+        if (!shouldDecode(inputSwitch)) {
             return;
         }
 
         decodeBehaviors(context, inputSwitch);
 
         String clientId = inputSwitch.getClientId(context);
-        String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
         if (submittedValue != null && isChecked(submittedValue)) {
             inputSwitch.setSubmittedValue(true);
@@ -58,13 +67,13 @@ public class InputSwitchRenderer extends InputRenderer {
 
     protected void encodeMarkup(FacesContext context, InputSwitch inputSwitch) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean checked = Boolean.valueOf(ComponentUtils.getValueToRender(context, inputSwitch));
-        boolean disabled = inputSwitch.isDisabled();
+        boolean checked = Boolean.parseBoolean(ComponentUtils.getValueToRender(context, inputSwitch));
         boolean showLabels = inputSwitch.isShowLabels();
         String clientId = inputSwitch.getClientId(context);
         String style = inputSwitch.getStyle();
         String styleClass = inputSwitch.getStyleClass();
         styleClass = (styleClass == null) ? InputSwitch.CONTAINER_CLASS : InputSwitch.CONTAINER_CLASS + " " + styleClass;
+        styleClass = (checked) ? styleClass + " " + InputSwitch.CHECKED_CLASS : styleClass;
         if (inputSwitch.isDisabled()) {
             styleClass = styleClass + " ui-state-disabled";
         }
@@ -79,7 +88,7 @@ public class InputSwitchRenderer extends InputRenderer {
         encodeOption(context, inputSwitch.getOffLabel(), InputSwitch.OFF_LABEL_CLASS, showLabels);
         encodeOption(context, inputSwitch.getOnLabel(), InputSwitch.ON_LABEL_CLASS, showLabels);
         encodeHandle(context);
-        encodeInput(context, inputSwitch, clientId, checked, disabled);
+        encodeInput(context, inputSwitch, clientId, checked);
 
         writer.endElement("div");
     }
@@ -110,7 +119,7 @@ public class InputSwitchRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeInput(FacesContext context, InputSwitch inputSwitch, String clientId, boolean checked, boolean disabled) throws IOException {
+    protected void encodeInput(FacesContext context, InputSwitch inputSwitch, String clientId, boolean checked) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_input";
 
@@ -122,14 +131,13 @@ public class InputSwitchRenderer extends InputRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "checkbox", null);
 
-        if (checked) writer.writeAttribute("checked", "checked", null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
-        if (inputSwitch.getTabindex() != null) writer.writeAttribute("tabindex", inputSwitch.getTabindex(), null);
-
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, inputSwitch);
+        if (checked) {
+            writer.writeAttribute("checked", "checked", null);
         }
 
+        renderValidationMetadata(context, inputSwitch);
+        renderAccessibilityAttributes(context, inputSwitch);
+        renderPassThruAttributes(context, inputSwitch, HTML.TAB_INDEX);
         renderOnchange(context, inputSwitch);
         renderDomEvents(context, inputSwitch, HTML.BLUR_FOCUS_EVENTS);
 

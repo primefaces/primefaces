@@ -1,17 +1,17 @@
 /*
- * jQuery Iframe Transport Plugin 1.8.3
+ * jQuery Iframe Transport Plugin
  * https://github.com/blueimp/jQuery-File-Upload
  *
  * Copyright 2011, Sebastian Tschan
  * https://blueimp.net
  *
  * Licensed under the MIT license:
- * http://www.opensource.org/licenses/MIT
+ * https://opensource.org/licenses/MIT
  */
 
-/* global define, require, window, document */
+/* global define, require, window, document, JSON */
 
-(function (factory) {
+;(function (factory) {
     'use strict';
     if (typeof define === 'function' && define.amd) {
         // Register as an anonymous AMD module:
@@ -27,7 +27,14 @@
     'use strict';
 
     // Helper variable to create unique names for the transport iframes:
-    var counter = 0;
+    var counter = 0,
+        jsonAPI = $,
+        jsonParse = 'parseJSON';
+
+    if ('JSON' in window && 'parse' in JSON) {
+      jsonAPI = JSON;
+      jsonParse = 'parse';
+    }
 
     // The iframe transport accepts four additional options:
     // options.fileInput: a jQuery collection of file input fields
@@ -197,7 +204,7 @@
                 return iframe && $(iframe[0].body).text();
             },
             'iframe json': function (iframe) {
-                return iframe && $.parseJSON($(iframe[0].body).text());
+                return iframe && jsonAPI[jsonParse]($(iframe[0].body).text());
             },
             'iframe html': function (iframe) {
                 return iframe && $(iframe[0].body).html();

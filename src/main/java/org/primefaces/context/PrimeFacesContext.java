@@ -1,17 +1,25 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.context;
 
@@ -19,29 +27,43 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextWrapper;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.application.resource.CollectScriptsResponseWriter;
-import org.primefaces.application.resource.CollectScriptsState;
+import javax.faces.context.ResponseWriterWrapper;
+import org.primefaces.application.resource.MoveScriptsToBottomResponseWriter;
+import org.primefaces.application.resource.MoveScriptsToBottomState;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.csp.CspResponseWriter;
+import org.primefaces.csp.CspState;
 
 /**
- * Custom {@link FacesContextWrapper} to init and release our {@link RequestContext}.
+ * Custom {@link FacesContextWrapper} to init and release our {@link PrimeRequestContext}.
  */
 public class PrimeFacesContext extends FacesContextWrapper {
 
     private final FacesContext wrapped;
-    private final boolean collectScripts;
+    private final boolean moveScriptsToBottom;
+    private final boolean csp;
 
-    private CollectScriptsState collectScriptsState;
+    private MoveScriptsToBottomState moveScriptsToBottomState;
+    private CspState cspState;
     private PrimeExternalContext externalContext;
 
+    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeFacesContext(FacesContext wrapped) {
         this.wrapped = wrapped;
 
-        RequestContext requestContext = new DefaultRequestContext(wrapped);
-        RequestContext.setCurrentInstance(requestContext, wrapped);
-        
-        collectScripts = requestContext.getApplicationContext().getConfig().isCollectScripts();
-        if (collectScripts) {
-            collectScriptsState = new CollectScriptsState();
+        PrimeRequestContext requestContext = new PrimeRequestContext(wrapped);
+        PrimeRequestContext.setCurrentInstance(requestContext, wrapped);
+
+        PrimeConfiguration config = requestContext.getApplicationContext().getConfig();
+
+        moveScriptsToBottom = config.isMoveScriptsToBottom();
+        if (moveScriptsToBottom) {
+            moveScriptsToBottomState = new MoveScriptsToBottomState();
+        }
+
+        csp = config.isCsp();
+        if (csp) {
+            cspState = getCspState(this);
         }
     }
 
@@ -55,14 +77,37 @@ public class PrimeFacesContext extends FacesContextWrapper {
 
     @Override
     public void setResponseWriter(ResponseWriter writer) {
-        if (!getPartialViewContext().isAjaxRequest() && collectScripts && !(writer instanceof CollectScriptsResponseWriter)) {
-            getWrapped().setResponseWriter(new CollectScriptsResponseWriter(writer, collectScriptsState));
+
+        boolean alreadyWrapped = false;
+
+        ResponseWriter wrappedWriter = writer;
+        while (wrappedWriter != null) {
+            if (wrappedWriter instanceof ResponseWriterWrapper) {
+                if (wrappedWriter instanceof MoveScriptsToBottomResponseWriter
+                        || wrappedWriter instanceof CspResponseWriter) {
+                    alreadyWrapped = true;
+                    break;
+                }
+                wrappedWriter = ((ResponseWriterWrapper) wrappedWriter).getWrapped();
+            }
+            else {
+                break;
+            }
         }
-        else {
-            getWrapped().setResponseWriter(writer);
+
+        if (!alreadyWrapped) {
+            if (csp && !getPartialViewContext().isAjaxRequest()) {
+                writer = new CspResponseWriter(writer, cspState);
+            }
+
+            if (moveScriptsToBottom && !getPartialViewContext().isAjaxRequest()) {
+                writer = new MoveScriptsToBottomResponseWriter(writer, moveScriptsToBottomState);
+            }
         }
+
+        getWrapped().setResponseWriter(writer);
     }
-    
+
     @Override
     public FacesContext getWrapped() {
         return wrapped;
@@ -70,11 +115,21 @@ public class PrimeFacesContext extends FacesContextWrapper {
 
     @Override
     public void release() {
-        RequestContext requestContext = RequestContext.getCurrentInstance(wrapped);
+        PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(wrapped);
         if (requestContext != null) {
             requestContext.release();
         }
 
         super.release();
+    }
+
+    public static CspState getCspState(FacesContext context) {
+        CspState cspState = (CspState) context.getAttributes().get(CspState.class.getName());
+        if (cspState == null) {
+            cspState = new CspState(context);
+            context.getAttributes().put(CspState.class.getName(), cspState);
+        }
+
+        return cspState;
     }
 }

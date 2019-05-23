@@ -1,26 +1,30 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2019 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -28,19 +32,16 @@ import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.model.ListDataModel;
 
+import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
+import org.primefaces.component.datatable.MultiSortState;
 import org.primefaces.component.datatable.TableState;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.data.PostSortEvent;
-import org.primefaces.model.BeanPropertyComparator;
-import org.primefaces.model.ChainedBeanPropertyComparator;
-import org.primefaces.model.DynamicChainedPropertyComparator;
-import org.primefaces.model.SortMeta;
-import org.primefaces.model.SortOrder;
+import org.primefaces.model.*;
 
 public class SortFeature implements DataTableFeature {
 
@@ -57,7 +58,7 @@ public class SortFeature implements DataTableFeature {
         String sortDir = params.get(clientId + "_sortDir");
 
         if (table.isMultiSort()) {
-            List<SortMeta> multiSortMeta = new ArrayList<SortMeta>();
+            List<SortMeta> multiSortMeta = new ArrayList<>();
             String[] sortKeys = sortKey.split(",");
             String[] sortOrders = sortDir.split(",");
 
@@ -94,6 +95,14 @@ public class SortFeature implements DataTableFeature {
             if (table.isLiveScroll()) {
                 table.loadLazyScrollData(0, table.getScrollRows());
             }
+            else if (table.isVirtualScroll()) {
+                int rows = table.getRows();
+                int scrollRows = table.getScrollRows();
+                int virtualScrollRows = (scrollRows * 2);
+                scrollRows = (rows == 0) ? virtualScrollRows : ((virtualScrollRows > rows) ? rows : virtualScrollRows);
+
+                table.loadLazyScrollData(0, scrollRows);
+            }
             else {
                 table.loadLazyData();
             }
@@ -107,11 +116,7 @@ public class SortFeature implements DataTableFeature {
             }
 
             if (table.isPaginator()) {
-                RequestContext requestContext = RequestContext.getCurrentInstance(context);
-
-                if (requestContext != null) {
-                    requestContext.addCallbackParam("totalRecords", table.getRowCount());
-                }
+                PrimeFaces.current().ajax().addCallbackParam("totalRecords", table.getRowCount());
             }
 
             //save state
@@ -125,11 +130,11 @@ public class SortFeature implements DataTableFeature {
 
         if (table.isMultiViewState()) {
             ValueExpression sortVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
-            List<SortMeta> multiSortMeta = table.isMultiSort() ? table.getMultiSortMeta() : null;
-            if (sortVE != null || multiSortMeta != null) {
+            List<MultiSortState> multiSortState = table.isMultiSort() ? table.getMultiSortState() : null;
+            if (sortVE != null || multiSortState != null) {
                 TableState ts = table.getTableState(true);
                 ts.setSortBy(sortVE);
-                ts.setMultiSortMeta(multiSortMeta);
+                ts.setMultiSortState(multiSortState);
                 ts.setSortOrder(table.getSortOrder());
                 ts.setSortField(table.getSortField());
                 ts.setSortFunction(table.getSortFunction());
@@ -151,23 +156,13 @@ public class SortFeature implements DataTableFeature {
         ValueExpression sortVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
         SortOrder sortOrder = SortOrder.valueOf(table.getSortOrder().toUpperCase(Locale.ENGLISH));
         MethodExpression sortFunction = table.getSortFunction();
-        List list = null;
 
         UIColumn sortColumn = table.getSortColumn();
         if (sortColumn != null && sortColumn.isDynamic()) {
             ((DynamicColumn) sortColumn).applyStatelessModel();
         }
 
-        if (value instanceof List) {
-            list = (List) value;
-        }
-        else if (value instanceof ListDataModel) {
-            list = (List) ((ListDataModel) value).getWrappedData();
-        }
-        else {
-            throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
-        }
-
+        List list = resolveList(value);
         Collections.sort(list, new BeanPropertyComparator(
                 sortVE, table.getVar(), sortOrder, sortFunction, table.isCaseSensitiveSort(), table.resolveDataLocale(), table.getNullSortOrder()));
 
@@ -176,25 +171,15 @@ public class SortFeature implements DataTableFeature {
 
     public void multiSort(FacesContext context, DataTable table) {
         Object value = table.getValue();
-        List<SortMeta> sortMeta = table.getMultiSortMeta();
-        List list = null;
-        boolean caseSensitiveSort = table.isCaseSensitiveSort();
-        Locale locale = table.resolveDataLocale();
-        int nullSortOrder = table.getNullSortOrder();
-
         if (value == null) {
             return;
         }
 
-        if (value instanceof List) {
-            list = (List) value;
-        }
-        else if (value instanceof ListDataModel) {
-            list = (List) ((ListDataModel) value).getWrappedData();
-        }
-        else {
-            throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
-        }
+        List<SortMeta> sortMeta = table.getMultiSortMeta();
+        List list = resolveList(value);
+        boolean caseSensitiveSort = table.isCaseSensitiveSort();
+        Locale locale = table.resolveDataLocale();
+        int nullSortOrder = table.getNullSortOrder();
 
         ChainedBeanPropertyComparator chainedComparator = new ChainedBeanPropertyComparator();
         for (SortMeta meta : sortMeta) {
@@ -250,5 +235,17 @@ public class SortFeature implements DataTableFeature {
         }
 
         return sortOrder;
+    }
+
+    protected List resolveList(Object value) {
+        if (value instanceof List) {
+            return (List) value;
+        }
+        else if (value instanceof ListDataModel) {
+            return (List) ((ListDataModel) value).getWrappedData();
+        }
+        else {
+            throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
+        }
     }
 }
