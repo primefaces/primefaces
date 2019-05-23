@@ -98,7 +98,7 @@ ajax selection and more.
 | timeControlObject | null | String | Client side object to use in custom timeControlType.
 | timeInput | false | Boolean | Allows direct input in time field.
 | showHour | null | String | Whether to show the hour control.
-| shıwMinute | null | String | Whether to show the minute control.
+| showMinute | null | String | Whether to show the minute control.
 | showSecond | null | String | Whether to show the second control.
 | showMillisec | null | String | Whether to show the millisec control
 | showTodayButton | true | Boolean | Whether to show the "Current Date" button if showButtonPanel is rendered.
