@@ -15,7 +15,7 @@ stream the binary data. FileDownload presents an easier way to do the same.
 | Name | Default | Type | Description | 
 | --- | --- | --- | --- |
 | value | null | StreamedContent | A streamed content instance
-| contextDisposition | attachment | String | Specifies display mode.
+| contentDisposition | attachment | String | Specifies display mode.
 | monitorKey | null | String | Optional key to support monitoring multiple filedownloads on same page.
 
 ## Getting started with FileDownload
