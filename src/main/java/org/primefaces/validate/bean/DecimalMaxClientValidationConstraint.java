@@ -25,7 +25,6 @@ package org.primefaces.validate.bean;
 
 import java.util.HashMap;
 import java.util.Map;
-import javax.validation.constraints.DecimalMax;
 import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.util.HTML;
 
@@ -51,6 +50,6 @@ public class DecimalMaxClientValidationConstraint implements ClientValidationCon
 
     @Override
     public String getValidatorId() {
-        return DecimalMax.class.getSimpleName();
+        return "DecimalMax";
     }
 }

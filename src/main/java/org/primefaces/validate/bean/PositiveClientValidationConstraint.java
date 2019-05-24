@@ -26,17 +26,21 @@ package org.primefaces.validate.bean;
 import java.util.HashMap;
 import java.util.Map;
 import javax.validation.metadata.ConstraintDescriptor;
+import org.primefaces.util.HTML;
 
-public class FutureClientValidationConstraint implements ClientValidationConstraint {
+public class PositiveClientValidationConstraint implements ClientValidationConstraint {
 
-    private static final String MESSAGE_METADATA = "data-p-future-msg";
-    private static final String MESSAGE_ID = "{javax.validation.constraints.Future.message}";
+    public static final String MESSAGE_METADATA = "data-p-positive-msg";
+    private static final String MESSAGE_ID = "{javax.validation.constraints.Positive.message}";
 
     @Override
     public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
         Map<String, Object> metadata = new HashMap<>();
         Map attrs = constraintDescriptor.getAttributes();
         Object message = attrs.get(ATTR_MESSAGE);
+
+        // TODO not sure if this limit is correct
+        metadata.put(HTML.VALIDATION_METADATA.MIN_VALUE, Double.MIN_VALUE);
 
         if (!message.equals(MESSAGE_ID)) {
             metadata.put(MESSAGE_METADATA, message);
@@ -47,6 +51,6 @@ public class FutureClientValidationConstraint implements ClientValidationConstra
 
     @Override
     public String getValidatorId() {
-        return "Future";
+        return "Positive";
     }
 }

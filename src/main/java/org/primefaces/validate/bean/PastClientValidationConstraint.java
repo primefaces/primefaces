@@ -25,7 +25,6 @@ package org.primefaces.validate.bean;
 
 import java.util.HashMap;
 import java.util.Map;
-import javax.validation.constraints.Past;
 import javax.validation.metadata.ConstraintDescriptor;
 
 public class PastClientValidationConstraint implements ClientValidationConstraint {
@@ -48,6 +47,6 @@ public class PastClientValidationConstraint implements ClientValidationConstrain
 
     @Override
     public String getValidatorId() {
-        return Past.class.getSimpleName();
+        return "Past";
     }
 }

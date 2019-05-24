@@ -25,7 +25,6 @@ package org.primefaces.validate.bean;
 
 import java.util.HashMap;
 import java.util.Map;
-import javax.validation.constraints.Null;
 import javax.validation.metadata.ConstraintDescriptor;
 
 public class NullClientValidationConstraint implements ClientValidationConstraint {
@@ -48,6 +47,6 @@ public class NullClientValidationConstraint implements ClientValidationConstrain
 
     @Override
     public String getValidatorId() {
-        return Null.class.getSimpleName();
+        return "Null";
     }
 }
