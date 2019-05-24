@@ -160,7 +160,6 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("autocomplete", "off", null);
 
         //for keyboard accessibility and ScreenReader
-        writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
         renderAccessibilityAttributes(context, menu);
         renderPassThruAttributes(context, menu, HTML.TAB_INDEX);
         renderDomEvents(context, menu, HTML.BLUR_FOCUS_EVENTS);
