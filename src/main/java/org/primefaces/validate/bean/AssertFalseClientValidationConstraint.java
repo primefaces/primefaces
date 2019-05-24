@@ -25,7 +25,6 @@ package org.primefaces.validate.bean;
 
 import java.util.HashMap;
 import java.util.Map;
-import javax.validation.constraints.AssertFalse;
 import javax.validation.metadata.ConstraintDescriptor;
 
 public class AssertFalseClientValidationConstraint implements ClientValidationConstraint {
@@ -48,6 +47,6 @@ public class AssertFalseClientValidationConstraint implements ClientValidationCo
 
     @Override
     public String getValidatorId() {
-        return AssertFalse.class.getSimpleName();
+        return "AssertFalse";
     }
 }

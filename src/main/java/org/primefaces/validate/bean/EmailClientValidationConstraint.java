@@ -27,10 +27,10 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.validation.metadata.ConstraintDescriptor;
 
-public class FutureClientValidationConstraint implements ClientValidationConstraint {
+public class EmailClientValidationConstraint implements ClientValidationConstraint {
 
-    private static final String MESSAGE_METADATA = "data-p-future-msg";
-    private static final String MESSAGE_ID = "{javax.validation.constraints.Future.message}";
+    private static final String MESSAGE_METADATA = "data-p-email-msg";
+    private static final String MESSAGE_ID = "{javax.validation.constraints.Email.message}";
 
     @Override
     public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
@@ -47,6 +47,7 @@ public class FutureClientValidationConstraint implements ClientValidationConstra
 
     @Override
     public String getValidatorId() {
-        return "Future";
+        return "Email";
     }
+
 }

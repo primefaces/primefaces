@@ -25,7 +25,6 @@ package org.primefaces.validate.bean;
 
 import java.util.HashMap;
 import java.util.Map;
-import javax.validation.constraints.NotNull;
 import javax.validation.metadata.ConstraintDescriptor;
 
 public class NotNullClientValidationConstraint implements ClientValidationConstraint {
@@ -48,6 +47,6 @@ public class NotNullClientValidationConstraint implements ClientValidationConstr
 
     @Override
     public String getValidatorId() {
-        return NotNull.class.getSimpleName();
+        return "NotNull";
     }
 }
