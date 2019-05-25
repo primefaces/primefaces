@@ -221,7 +221,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
 
 
     addARIA: function() {
-        this.input.attr('role', 'spinner');
+        this.input.attr('role', 'spinbutton');
         this.input.attr('aria-multiline', false);
         this.input.attr('aria-valuenow', this.getValue());
 

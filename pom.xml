@@ -200,6 +200,13 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>net.sf.saxon</groupId>
+            <artifactId>Saxon-HE</artifactId>
+            <version>9.9.0-2</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- will be included and relocated by shade plugin -->
         <dependency>
             <groupId>org.json</groupId>
@@ -212,18 +219,6 @@
             <artifactId>encoder</artifactId>
             <version>1.2.1</version>
             <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.owasp.esapi</groupId>
-            <artifactId>esapi</artifactId>
-            <version>2.1.0.1</version>
-            <optional>true</optional>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
@@ -548,6 +543,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.env.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.ajax.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.csp.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.expressions.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.utils.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.widget.js</include>
@@ -817,16 +813,6 @@
                             </includes>
                         </relocation>
                         <relocation>
-                            <pattern>org.owasp.esapi</pattern>
-                            <shadedPattern>org.primefaces.shaded.owasp.esapi</shadedPattern>
-                            <includes>
-                                <include>org.owasp.esapi.SafeFile</include>
-                                <include>org.owasp.esapi.Logger</include>
-                                <include>org.owasp.esapi.errors.ValidationException</include>
-                                <include>org.owasp.esapi.errors.EnterpriseSecurityException</include>
-                            </includes>
-                        </relocation>
-                        <relocation>
                             <pattern>org.apache.commons.io</pattern>
                             <shadedPattern>org.primefaces.shaded.commons.io</shadedPattern>
                             <includes>
@@ -837,15 +823,6 @@
                         </relocation>
                     </relocations>
                     <filters>
-                        <filter>
-                            <artifact>org.owasp.esapi:esapi</artifact>
-                            <includes>
-                                <include>org/owasp/esapi/SafeFile.class</include>
-                                <include>org/owasp/esapi/Logger.class</include>
-                                <include>org/owasp/esapi/errors/ValidationException.class</include>
-                                <include>org/owasp/esapi/errors/EnterpriseSecurityException.class</include>
-                            </includes>
-                        </filter>
                         <filter>
                             <artifact>commons-io:commons-io</artifact>
                             <includes>

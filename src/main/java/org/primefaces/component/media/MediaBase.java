@@ -26,7 +26,7 @@ package org.primefaces.component.media;
 import javax.faces.component.UIComponentBase;
 
 
-abstract class MediaBase extends UIComponentBase {
+public abstract class MediaBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

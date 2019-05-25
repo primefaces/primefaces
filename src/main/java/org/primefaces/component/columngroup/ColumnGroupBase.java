@@ -26,7 +26,7 @@ package org.primefaces.component.columngroup;
 import javax.faces.component.UIComponentBase;
 
 
-abstract class ColumnGroupBase extends UIComponentBase {
+public abstract class ColumnGroupBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

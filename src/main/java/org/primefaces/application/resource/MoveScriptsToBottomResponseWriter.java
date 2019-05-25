@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.UUID;
 import org.primefaces.util.LangUtils;
 
 public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
@@ -197,6 +198,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
         }
         else if ("body".equalsIgnoreCase(name) || ("html".equalsIgnoreCase(name) && !scriptsRendered)) {
 
+            // write script includes
             for (Map.Entry<String, ArrayList<String>> entry : state.getIncludes().entrySet()) {
                 String type = entry.getKey();
                 ArrayList<String> includes = entry.getValue();
@@ -212,13 +214,17 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
                 }
             }
 
+            // write inline scripts
             for (Map.Entry<String, ArrayList<String>> entry : state.getInlines().entrySet()) {
                 String type = entry.getKey();
                 ArrayList<String> inlines = entry.getValue();
-                String merged = mergeAndMinimizeInlineScripts(type, inlines);
+
+                String id = UUID.randomUUID().toString();
+                String merged = mergeAndMinimizeInlineScripts(id, type, inlines);
 
                 if (!LangUtils.isValueBlank(merged)) {
                     getWrapped().startElement("script", null);
+                    getWrapped().writeAttribute("id", id, null);
                     getWrapped().writeAttribute("type", type, null);
                     getWrapped().write(merged);
                     getWrapped().endElement("script");
@@ -234,7 +240,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
         }
     }
 
-    protected String mergeAndMinimizeInlineScripts(String type, ArrayList<String> inlines) {
+    protected String mergeAndMinimizeInlineScripts(String id, String type, ArrayList<String> inlines) {
         StringBuilder script = new StringBuilder(inlines.size() * 100);
         for (int i = 0; i < inlines.size(); i++) {
             if (i > 0) {
@@ -246,16 +252,20 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
         String minimized = script.toString();
 
-        if ("text/javascript".equalsIgnoreCase(type)) {
-            minimized = minimized.replace(";;", ";");
+        if (!LangUtils.isValueBlank(minimized)) {
+            if ("text/javascript".equalsIgnoreCase(type)) {
+                minimized = minimized.replace(";;", ";");
 
-            if (minimized.contains("PrimeFaces")) {
-                minimized = minimized.replace("PrimeFaces.settings", "pf.settings")
-                    .replace("PrimeFaces.cw", "pf.cw")
-                    .replace("PrimeFaces.ab", "pf.ab")
-                    .replace("window.PrimeFaces", "pf");
+                if (minimized.contains("PrimeFaces")) {
+                    minimized = minimized.replace("PrimeFaces.settings", "pf.settings")
+                        .replace("PrimeFaces.cw", "pf.cw")
+                        .replace("PrimeFaces.ab", "pf.ab")
+                        .replace("window.PrimeFaces", "pf");
 
-                minimized = "var pf=window.PrimeFaces;" + minimized;
+                    minimized = "var pf=window.PrimeFaces;"
+                            + minimized
+                            + "$(PrimeFaces.escapeClientId(\"" + id + "\")).remove();";
+                }
             }
         }
 

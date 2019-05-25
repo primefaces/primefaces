@@ -31,7 +31,7 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class TextEditorBase extends UIInput implements Widget, ClientBehaviorHolder {
+public abstract class TextEditorBase extends UIInput implements Widget, ClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

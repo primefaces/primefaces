@@ -28,7 +28,7 @@ import javax.faces.component.UIColumn;
 import org.primefaces.model.menu.MenuColumn;
 
 
-abstract class ColumnBase extends UIColumn implements org.primefaces.component.api.UIColumn, MenuColumn {
+public abstract class ColumnBase extends UIColumn implements org.primefaces.component.api.UIColumn, MenuColumn {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

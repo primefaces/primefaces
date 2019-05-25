@@ -26,7 +26,7 @@ package org.primefaces.component.celleditor;
 import javax.faces.component.UIComponentBase;
 
 
-abstract class CellEditorBase extends UIComponentBase {
+public abstract class CellEditorBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

@@ -37,6 +37,7 @@ import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.renderkit.UINotificationRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
+import org.primefaces.util.MessageFactory;
 
 public class MessagesRenderer extends UINotificationRenderer {
 
@@ -195,6 +196,7 @@ public class MessagesRenderer extends UINotificationRenderer {
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", Messages.CLOSE_LINK_CLASS, null);
         writer.writeAttribute("onclick", "$(this).parent().slideUp();return false;", null);
+        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(Messages.ARIA_CLOSE, null), null);
 
         writer.startElement("span", null);
         writer.writeAttribute("class", Messages.CLOSE_ICON_CLASS, null);

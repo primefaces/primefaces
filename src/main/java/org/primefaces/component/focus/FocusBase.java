@@ -26,7 +26,7 @@ package org.primefaces.component.focus;
 import javax.faces.component.UIComponentBase;
 
 
-abstract class FocusBase extends UIComponentBase {
+public abstract class FocusBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

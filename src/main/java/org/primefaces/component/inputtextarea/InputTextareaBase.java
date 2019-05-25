@@ -30,7 +30,7 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class InputTextareaBase extends HtmlInputTextarea implements Widget, MixedClientBehaviorHolder {
+public abstract class InputTextareaBase extends HtmlInputTextarea implements Widget, MixedClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

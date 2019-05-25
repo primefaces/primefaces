@@ -66,9 +66,9 @@ thousandSeparator | , | String | Thousand separator char.
 symbol | none | String | Desired symbol or unit.
 symbolPosition | prefix | String | Position of the symbol.
 minValue | 0.00 | String | Minimum value allowed
-maxValue | 999999999.99 | String | Minimum values allowed.
+maxValue | 999999999.99 | String | Maximum values allowed.
 roundMethod | Round-Half-Up-Symmetric | String | Controls the rounding method.
-decimalPlaces | | | Number of decimal places. Default are taken from minValue and MaxValue.
+decimalPlaces | null | String | Number of decimal places. Default are taken from minValue and MaxValue.
 emptyValue | empty | String | Controls empty input display behavior, options are empty, zero, sign.
 inputStyle | null | String | Inline style of the input element.
 inputStyleClass | null | String | Style class of the input element.

@@ -26,7 +26,7 @@ package org.primefaces.component.cache;
 import javax.faces.component.UIPanel;
 
 
-abstract class UICacheBase extends UIPanel {
+public abstract class UICacheBase extends UIPanel {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

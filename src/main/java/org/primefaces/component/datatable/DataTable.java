@@ -1243,7 +1243,22 @@ public class DataTable extends DataTableBase {
         int first = getFirst();
         int rows = getRows();
         int rowCount = getRowCount();
-        int last = rows == 0 ? (isLiveScroll() ? (getScrollRows() + getScrollOffset()) : rowCount) : (first + rows);
+        int last = 0;
+
+        if (rows == 0) {
+            if (isLiveScroll()) {
+                last = getScrollRows() + getScrollOffset();
+            }
+            else if (isVirtualScroll()) {
+                last = first + (getScrollRows() * 2);
+            }
+            else {
+                last = rowCount;
+            }
+        }
+        else {
+            last = first + rows;
+        }
 
         for (int rowIndex = first; rowIndex < last; rowIndex++) {
             setRowIndex(rowIndex);
@@ -1588,6 +1603,28 @@ public class DataTable extends DataTableBase {
             sb.append("]");
 
             return sb.toString();
+        }
+        return null;
+    }
+
+    public String getSortMetaOrder(FacesContext context) {
+        List<SortMeta> multiSortMeta = getMultiSortMeta();
+        if (multiSortMeta != null) {
+            int size = multiSortMeta.size();
+            if (size > 0) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("['");
+                for (int i = 0; i < size; i++) {
+                    SortMeta sortMeta = multiSortMeta.get(i);
+                    if (i > 0) {
+                        sb.append("','");
+                    }
+                    sb.append(sortMeta.getColumn().getClientId(context));
+                }
+                sb.append("']");
+
+                return sb.toString();
+            }
         }
         return null;
     }

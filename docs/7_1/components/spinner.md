@@ -35,6 +35,7 @@ min | null | Double | Minimum boundary value
 max | null | Double | Maximum boundary value
 prefix | null | String | Prefix of the input
 suffix | null | String | Suffix of the input
+decimalPlaces | null | String | Number of decimal places
 decimalSeparator | Default is taken from the view's locale | String | Decimal separator char.
 thousandSeparator | Default is taken from the view's locale | String | Thousand separator char.
 accesskey | null | String | Access key that when pressed transfers focus to the input element.

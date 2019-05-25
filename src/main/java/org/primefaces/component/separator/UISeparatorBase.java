@@ -28,7 +28,7 @@ import javax.faces.component.UIComponentBase;
 import org.primefaces.model.menu.Separator;
 
 
-abstract class UISeparatorBase extends UIComponentBase implements Separator {
+public abstract class UISeparatorBase extends UIComponentBase implements Separator {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

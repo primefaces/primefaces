@@ -25,7 +25,7 @@ package org.primefaces.component.staticmessage;
 
 import javax.faces.component.UIComponentBase;
 
-abstract class StaticMessageBase extends UIComponentBase {
+public abstract class StaticMessageBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

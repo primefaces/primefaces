@@ -871,6 +871,14 @@
             value.setSeconds(time.second);
         },
 
+        isInMinYear: function() {
+            return this.options.minDate && this.options.minDate.getFullYear() === this.viewDate.getFullYear();
+        },
+        
+        isInMaxYear: function() {
+            return this.options.maxDate && this.options.maxDate.getFullYear() === this.viewDate.getFullYear();
+        },
+        
         _destroy: function () {
             this.restoreOverlayAppend();
             this.onOverlayHide();
@@ -1136,11 +1144,24 @@
         },
 
         renderTitleOptions: function (name, options) {
-            var _options = '';
+            var _options = '',
+                minDate = this.options.minDate,
+                maxDate = this.options.maxDate;
+                
             for (var i = 0; i < options.length; i++) {
-                var option = (name === 'month') ? this.escapeHTML(options[i]) : options[i];
-
-                _options += '<option value="' + (name === 'month' ? i : option) + '">' + option + '</option>';
+                switch(name) {
+                    case 'month':
+                        if ((!this.isInMinYear() || i >= minDate.getMonth()) && (!this.isInMaxYear() || i <= maxDate.getMonth())) {
+                            _options += '<option value="' + i + '">' + this.escapeHTML(options[i]) + '</option>';
+                        }
+                        break;
+                    case 'year':
+                        var option = options[i];
+                        if (!(minDate && minDate.getFullYear() > option) && !(maxDate && maxDate.getFullYear() < option)) {
+                            _options += '<option value="' +  option + '">' +  option + '</option>';
+                        }
+                        break;
+                }
             }
 
             return _options;
@@ -2041,6 +2062,12 @@
             }
             
             this.viewDate = value;
+            
+            if (this.options.monthNavigator && this.options.view !== 'month') {
+                var viewMonth = this.viewDate.getMonth();
+                viewMonth = (this.isInMaxYear() && Math.min(this.options.maxDate.getMonth(), viewMonth)) || (this.isInMinYear() && Math.max(this.options.minDate.getMonth(), viewMonth)) || viewMonth;
+                this.viewDate.setMonth(viewMonth);
+            }
 
             this.panel.get(0).innerHTML = this.renderPanelElements();
 

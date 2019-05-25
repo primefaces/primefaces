@@ -28,7 +28,7 @@ import javax.faces.component.UIMessages;
 import org.primefaces.component.api.UINotification;
 
 
-abstract class MessagesBase extends UIMessages implements UINotification {
+public abstract class MessagesBase extends UIMessages implements UINotification {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
