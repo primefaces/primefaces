@@ -139,7 +139,7 @@ public abstract class InputNumberBase extends HtmlInputText implements Widget, I
 
     public String getDecimalSeparator() {
         return ComponentUtils.eval(getStateHelper(), PropertyKeys.decimalSeparator,
-                () -> LocaleUtils.getDecimalSeparator(getFacesContext()));
+            () -> LocaleUtils.getDecimalSeparator(getFacesContext()));
     }
 
     public void setDecimalSeparator(final String decimalSeparator) {
@@ -148,7 +148,7 @@ public abstract class InputNumberBase extends HtmlInputText implements Widget, I
 
     public String getThousandSeparator() {
         return ComponentUtils.eval(getStateHelper(), PropertyKeys.thousandSeparator,
-                () -> LocaleUtils.getThousandSeparator(getFacesContext()));
+            () -> LocaleUtils.getThousandSeparator(getFacesContext()));
     }
 
     public void setThousandSeparator(final String thousandSeparator) {
