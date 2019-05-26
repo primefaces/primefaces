@@ -25,8 +25,6 @@ package org.primefaces.component.inputnumber;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.LocaleUtils;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -60,24 +58,6 @@ public class InputNumber extends InputNumberBase {
     @Override
     public void setLabelledBy(String labelledBy) {
         getStateHelper().put("labelledby", labelledBy);
-    }
-
-    public String getDecimalSeparator() {
-        return ComponentUtils.getValue(getStateHelper(), "decimalSeparator",
-            () -> LocaleUtils.getDecimalSeparator(getFacesContext()));
-    }
-
-    public void setDecimalSeparator(final String decimalSeparator) {
-        getStateHelper().put("decimalSeparator", decimalSeparator);
-    }
-
-    public String getThousandSeparator() {
-        return ComponentUtils.getValue(getStateHelper(), "thousandSeparator",
-            () -> LocaleUtils.getThousandSeparator(getFacesContext()));
-    }
-
-    public void setThousandSeparator(final String thousandSeparator) {
-        getStateHelper().put("thousandSeparator", thousandSeparator);
     }
 
 }

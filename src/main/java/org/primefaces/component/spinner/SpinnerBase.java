@@ -123,7 +123,7 @@ public abstract class SpinnerBase extends HtmlInputText implements Widget, Input
     }
 
     public String getDecimalSeparator() {
-        return ComponentUtils.getValue(getStateHelper(), PropertyKeys.decimalSeparator,
+        return ComponentUtils.eval(getStateHelper(), PropertyKeys.decimalSeparator,
             () -> LocaleUtils.getDecimalSeparator(getFacesContext()));
     }
 
@@ -132,7 +132,7 @@ public abstract class SpinnerBase extends HtmlInputText implements Widget, Input
     }
 
     public String getThousandSeparator() {
-        return ComponentUtils.getValue(getStateHelper(), PropertyKeys.thousandSeparator,
+        return ComponentUtils.eval(getStateHelper(), PropertyKeys.thousandSeparator,
             () -> LocaleUtils.getThousandSeparator(getFacesContext()));
     }
 
