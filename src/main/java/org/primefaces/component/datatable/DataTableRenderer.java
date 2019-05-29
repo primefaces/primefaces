@@ -886,7 +886,8 @@ public class DataTableRenderer extends DataRenderer {
         encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, ariaLabelId);
     }
 
-    protected void encodeFilterInput(UIColumn column, ResponseWriter writer, boolean disableTabbing, String filterId, String filterStyleClass, Object filterValue, String ariaLabelId) throws IOException {
+    protected void encodeFilterInput(UIColumn column, ResponseWriter writer, boolean disableTabbing,
+        String filterId, String filterStyleClass, Object filterValue, String ariaLabelId) throws IOException {
 
         if (column.getValueExpression(Column.PropertyKeys.filterOptions.toString()) == null) {
             encodeFilterInputText(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, ariaLabelId);
@@ -896,7 +897,8 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected void encodeFilterInputSelect(UIColumn column, ResponseWriter writer, boolean disableTabbing, String filterId, String filterStyleClass, Object filterValue, String ariaLabelId) throws IOException {
+    protected void encodeFilterInputSelect(UIColumn column, ResponseWriter writer, boolean disableTabbing,
+        String filterId, String filterStyleClass, Object filterValue, String ariaLabelId) throws IOException {
 
         filterStyleClass = filterStyleClass == null ? DataTable.COLUMN_FILTER_CLASS : DataTable.COLUMN_FILTER_CLASS + " " + filterStyleClass;
 
@@ -934,7 +936,8 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("select");
     }
 
-    protected void encodeFilterInputText(UIColumn column, ResponseWriter writer, boolean disableTabbing, String filterId, String filterStyleClass, Object filterValue, String ariaLabelId) throws IOException {
+    protected void encodeFilterInputText(UIColumn column, ResponseWriter writer, boolean disableTabbing,
+        String filterId, String filterStyleClass, Object filterValue, String ariaLabelId) throws IOException {
 
         filterStyleClass = filterStyleClass == null
                            ? DataTable.COLUMN_INPUT_FILTER_CLASS
