@@ -842,110 +842,11 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeFilter(FacesContext context, DataTable table, UIColumn column) throws IOException {
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         ResponseWriter writer = context.getResponseWriter();
         UIComponent filterFacet = column.getFacet("filter");
 
         if (filterFacet == null) {
-            String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
-            boolean disableTabbing = table.getScrollWidth() != null;
-
-            String filterId = column.getContainerClientId(context) + separator + "filter";
-            String filterStyleClass = column.getFilterStyleClass();
-
-            Object filterValue = null;
-            if (table.isReset()) {
-                filterValue = "";
-            }
-            else {
-                filterValue = findFilterValue(table, column);
-                if (filterValue == null) {
-                    if (params.containsKey(filterId)) {
-                        filterValue = params.get(filterId);
-                    }
-                    else {
-                        Object columnFilterValue = column.getFilterValue();
-                        filterValue = (columnFilterValue == null) ? Constants.EMPTY_STRING : columnFilterValue.toString();
-                    }
-                }
-            }
-
-            //aria
-            String ariaLabelId = filterId + "_label";
-            String ariaHeaderLabel = getHeaderLabel(context, column);
-
-            String ariaMessage = MessageFactory.getMessage(DataTable.ARIA_FILTER_BY, new Object[]{ariaHeaderLabel});
-
-            writer.startElement("label", null);
-            writer.writeAttribute("id", ariaLabelId, null);
-            writer.writeAttribute("for", filterId, null);
-            writer.writeAttribute("class", "ui-helper-hidden", null);
-            writer.writeText(ariaMessage, null);
-            writer.endElement("label");
-
-            if (column.getValueExpression(Column.PropertyKeys.filterOptions.toString()) == null) {
-                filterStyleClass = filterStyleClass == null
-                                   ? DataTable.COLUMN_INPUT_FILTER_CLASS
-                                   : DataTable.COLUMN_INPUT_FILTER_CLASS + " " + filterStyleClass;
-
-                writer.startElement("input", null);
-                writer.writeAttribute("id", filterId, null);
-                writer.writeAttribute("name", filterId, null);
-                writer.writeAttribute("class", filterStyleClass, null);
-                writer.writeAttribute("value", filterValue, null);
-                writer.writeAttribute("autocomplete", "off", null);
-                writer.writeAttribute(HTML.ARIA_LABELLEDBY, ariaLabelId, null);
-
-                if (disableTabbing) {
-                    writer.writeAttribute("tabindex", "-1", null);
-                }
-
-                if (column.getFilterStyle() != null) {
-                    writer.writeAttribute("style", column.getFilterStyle(), null);
-                }
-
-                if (column.getFilterMaxLength() != Integer.MAX_VALUE) {
-                    writer.writeAttribute("maxlength", column.getFilterMaxLength(), null);
-                }
-
-                writer.endElement("input");
-            }
-            else {
-                filterStyleClass = filterStyleClass == null ? DataTable.COLUMN_FILTER_CLASS : DataTable.COLUMN_FILTER_CLASS + " " + filterStyleClass;
-
-                writer.startElement("select", null);
-                writer.writeAttribute("id", filterId, null);
-                writer.writeAttribute("name", filterId, null);
-                writer.writeAttribute("class", filterStyleClass, null);
-                writer.writeAttribute(HTML.ARIA_LABELLEDBY, ariaLabelId, null);
-
-                if (disableTabbing) {
-                    writer.writeAttribute("tabindex", "-1", null);
-                }
-
-                SelectItem[] itemsArray = getFilterOptions(column);
-
-                for (SelectItem item : itemsArray) {
-                    Object itemValue = item.getValue();
-
-                    writer.startElement("option", null);
-                    writer.writeAttribute("value", item.getValue(), null);
-                    if (itemValue != null && String.valueOf(itemValue).equals(filterValue)) {
-                        writer.writeAttribute("selected", "selected", null);
-                    }
-
-                    if (item.isEscape()) {
-                        writer.writeText(item.getLabel(), "value");
-                    }
-                    else {
-                        writer.write(item.getLabel());
-                    }
-
-                    writer.endElement("option");
-                }
-
-                writer.endElement("select");
-            }
+            encodeDefaultFilter(context, table, column, writer);
         }
         else {
             Object filterValue = findFilterValue(table, column);
@@ -958,6 +859,131 @@ public class DataTableRenderer extends DataRenderer {
             filterFacet.encodeAll(context);
             writer.endElement("div");
         }
+    }
+
+    protected void encodeDefaultFilter(FacesContext context, DataTable table, UIColumn column,
+        ResponseWriter writer) throws IOException {
+        String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
+        boolean disableTabbing = table.getScrollWidth() != null;
+
+        String filterId = column.getContainerClientId(context) + separator + "filter";
+        String filterStyleClass = column.getFilterStyleClass();
+        Object filterValue = findFilterValueForColumn(context, table, column, filterId);
+
+        //aria
+        String ariaLabelId = filterId + "_label";
+        String ariaHeaderLabel = getHeaderLabel(context, column);
+
+        String ariaMessage = MessageFactory.getMessage(DataTable.ARIA_FILTER_BY, new Object[]{ariaHeaderLabel});
+
+        writer.startElement("label", null);
+        writer.writeAttribute("id", ariaLabelId, null);
+        writer.writeAttribute("for", filterId, null);
+        writer.writeAttribute("class", "ui-helper-hidden", null);
+        writer.writeText(ariaMessage, null);
+        writer.endElement("label");
+
+        encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, ariaLabelId);
+    }
+
+    protected void encodeFilterInput(UIColumn column, ResponseWriter writer, boolean disableTabbing, String filterId, String filterStyleClass, Object filterValue, String ariaLabelId) throws IOException {
+
+        if (column.getValueExpression(Column.PropertyKeys.filterOptions.toString()) == null) {
+            encodeFilterInputText(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, ariaLabelId);
+        }
+        else {
+            encodeFilterInputSelect(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, ariaLabelId);
+        }
+    }
+
+    protected void encodeFilterInputSelect(UIColumn column, ResponseWriter writer, boolean disableTabbing, String filterId, String filterStyleClass, Object filterValue, String ariaLabelId) throws IOException {
+
+        filterStyleClass = filterStyleClass == null ? DataTable.COLUMN_FILTER_CLASS : DataTable.COLUMN_FILTER_CLASS + " " + filterStyleClass;
+
+        writer.startElement("select", null);
+        writer.writeAttribute("id", filterId, null);
+        writer.writeAttribute("name", filterId, null);
+        writer.writeAttribute("class", filterStyleClass, null);
+        writer.writeAttribute(HTML.ARIA_LABELLEDBY, ariaLabelId, null);
+
+        if (disableTabbing) {
+            writer.writeAttribute("tabindex", "-1", null);
+        }
+
+        SelectItem[] itemsArray = getFilterOptions(column);
+
+        for (SelectItem item : itemsArray) {
+            Object itemValue = item.getValue();
+
+            writer.startElement("option", null);
+            writer.writeAttribute("value", item.getValue(), null);
+            if (itemValue != null && String.valueOf(itemValue).equals(filterValue)) {
+                writer.writeAttribute("selected", "selected", null);
+            }
+
+            if (item.isEscape()) {
+                writer.writeText(item.getLabel(), "value");
+            }
+            else {
+                writer.write(item.getLabel());
+            }
+
+            writer.endElement("option");
+        }
+
+        writer.endElement("select");
+    }
+
+    protected void encodeFilterInputText(UIColumn column, ResponseWriter writer, boolean disableTabbing, String filterId, String filterStyleClass, Object filterValue, String ariaLabelId) throws IOException {
+
+        filterStyleClass = filterStyleClass == null
+                           ? DataTable.COLUMN_INPUT_FILTER_CLASS
+                           : DataTable.COLUMN_INPUT_FILTER_CLASS + " " + filterStyleClass;
+
+        writer.startElement("input", null);
+        writer.writeAttribute("id", filterId, null);
+        writer.writeAttribute("name", filterId, null);
+        writer.writeAttribute("class", filterStyleClass, null);
+        writer.writeAttribute("value", filterValue, null);
+        writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute(HTML.ARIA_LABELLEDBY, ariaLabelId, null);
+
+        if (disableTabbing) {
+            writer.writeAttribute("tabindex", "-1", null);
+        }
+
+        if (column.getFilterStyle() != null) {
+            writer.writeAttribute("style", column.getFilterStyle(), null);
+        }
+
+        if (column.getFilterMaxLength() != Integer.MAX_VALUE) {
+            writer.writeAttribute("maxlength", column.getFilterMaxLength(), null);
+        }
+
+        writer.endElement("input");
+    }
+
+    protected Object findFilterValueForColumn(FacesContext context, DataTable table,
+        UIColumn column, String filterId) {
+
+        Object filterValue;
+        if (table.isReset()) {
+            filterValue = "";
+        }
+        else {
+            filterValue = findFilterValue(table, column);
+            if (filterValue == null) {
+                Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+                if (params.containsKey(filterId)) {
+                    filterValue = params.get(filterId);
+                }
+                else {
+                    Object columnFilterValue = column.getFilterValue();
+                    filterValue = (columnFilterValue == null) ? Constants.EMPTY_STRING : columnFilterValue.toString();
+                }
+            }
+        }
+        return filterValue;
     }
 
     protected SelectItem[] getFilterOptions(UIColumn column) {
