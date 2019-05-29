@@ -707,7 +707,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if (width != null) {
-            String unit = width.endsWith("%") ? "" : "px";
+            String unit = width.endsWith("%") ? Constants.EMPTY_STRING : "px";
             if (style != null) {
                 style = style + ";width:" + width + unit;
             }
@@ -971,7 +971,7 @@ public class DataTableRenderer extends DataRenderer {
 
         Object filterValue;
         if (table.isReset()) {
-            filterValue = "";
+            filterValue = Constants.EMPTY_STRING;
         }
         else {
             filterValue = findFilterValue(table, column);
