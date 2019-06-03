@@ -256,14 +256,18 @@ public class UIData extends javax.faces.component.UIData {
         }
 
         String rowsPerPageTemplate = data.getRowsPerPageTemplate();
+        int rowsParameter = Integer.parseInt(rowsParam);
 
         if (rowsPerPageTemplate != null) {
+            int totalRowCount = ((Collection) getValueExpression("value").getValue(getFacesContext().getELContext())).size();
+
             String[] options = rowsPerPageTemplate.split("[,]+");
 
             for (String option : options) {
                 String opt = option.trim();
 
-                if (opt.equals(rowsParam) || (opt.startsWith("{ShowAll|") && Integer.toString(getRowCount()).equals(rowsParam))) {
+                if (opt.equals(rowsParam) || (opt.startsWith("{ShowAll|"))
+                            && (getRowCount() == rowsParameter || totalRowCount == rowsParameter)) {
                     return true;
                 }
             }
@@ -274,7 +278,7 @@ public class UIData extends javax.faces.component.UIData {
         int rows = data.getRows();
 
         if (rows > 0) {
-            return Integer.toString(rows).equals(rowsParam);
+            return rows == rowsParameter;
         }
 
         return true;
