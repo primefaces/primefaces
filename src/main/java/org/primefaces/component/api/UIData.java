@@ -259,7 +259,14 @@ public class UIData extends javax.faces.component.UIData {
         int rowsParameter = Integer.parseInt(rowsParam);
 
         if (rowsPerPageTemplate != null) {
-            int totalRowCount = ((Collection) getValueExpression("value").getValue(getFacesContext().getELContext())).size();
+            int totalRowCount = 0;
+            Object valueObj = getValueExpression("value").getValue(getFacesContext().getELContext());
+            if (valueObj instanceof Collection) {
+                totalRowCount = ((Collection<?>) valueObj).size();
+            }
+            else if (valueObj instanceof DataModel) {
+                totalRowCount = ((DataModel<?>) valueObj).getRowCount();
+            }
 
             String[] options = rowsPerPageTemplate.split("[,]+");
 
