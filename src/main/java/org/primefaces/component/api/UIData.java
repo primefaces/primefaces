@@ -266,8 +266,7 @@ public class UIData extends javax.faces.component.UIData {
             for (String option : options) {
                 String opt = option.trim();
 
-                if (opt.equals(rowsParam) || (opt.startsWith("{ShowAll|"))
-                            && (getRowCount() == rowsParameter || totalRowCount == rowsParameter)) {
+                if (opt.equals(rowsParam) || (opt.startsWith("{ShowAll|")) && (getRowCount() == rowsParameter || totalRowCount == rowsParameter)) {
                     return true;
                 }
             }
