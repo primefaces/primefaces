@@ -35,8 +35,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.el.ValueExpression;
+import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.ClientBehaviorBase;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.view.AttachedObjectHandler;
@@ -64,7 +64,7 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
     public AbstractBehaviorHandler(TagConfig config) {
         super(config);
 
-        this.event = this.getAttribute("event");
+        event = getAttribute("event");
     }
 
     @Override
@@ -133,7 +133,7 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
             applyAttachedObject(faceletContext, parent);
         }
         else {
-            throw new TagException(this.tag, "Unable to attach behavior to non-ClientBehaviorHolder parent");
+            throw new TagException(tag, "Unable to attach behavior to non-ClientBehaviorHolder parent");
         }
     }
 
@@ -152,8 +152,6 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
             return (String) expression.getValue(faceletContext);
         }
     }
-
-    protected abstract E createBehavior(FaceletContext ctx, String eventName, UIComponent parent);
 
     protected void setBehaviorAttribute(FaceletContext ctx, E behavior, TagAttribute attr, Class<?> type) {
         if (attr != null) {
@@ -190,19 +188,23 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         if (null == eventName) {
             eventName = holder.getDefaultEventName();
             if (null == eventName) {
-                throw new TagException(this.tag, "Event attribute could not be determined: " + eventName);
+                throw new TagException(tag, "Event attribute could not be determined: " + eventName);
             }
         }
         else {
             Collection<String> eventNames = holder.getEventNames();
             if (!eventNames.contains(eventName)) {
-                throw new TagException(this.tag, "Event:" + eventName + " is not supported.");
+                throw new TagException(tag, "Event:" + eventName + " is not supported.");
             }
         }
 
-        ClientBehaviorBase behavior = createBehavior(faceletContext, eventName, parent);
+        Application application = faceletContext.getFacesContext().getApplication();
+        E behavior = (E) application.createBehavior(getBehaviorId());
+        init(faceletContext, behavior, eventName, parent);
         holder.addClientBehavior(eventName, behavior);
     }
+
+    public abstract String getBehaviorId();
 
     @Override
     public String getFor() {
@@ -240,6 +242,13 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         }
         catch (Exception ex) {
             Logger.getLogger(AjaxBehaviorHandler.class.getName()).log(Level.SEVERE, "Could not add AttachedObjectHandler to MyFaces!", ex);
+        }
+    }
+
+    protected void init(FaceletContext ctx, E behavior, String eventName, UIComponent parent) {
+        for (BehaviorAttribute prop : behavior.getAllProperties()) {
+            TagAttribute tag = getAttribute(prop.name());
+            setBehaviorAttribute(ctx, behavior, tag, prop.getExpectedType());
         }
     }
 }

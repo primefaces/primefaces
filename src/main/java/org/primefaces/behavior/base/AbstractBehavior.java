@@ -168,7 +168,7 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
             return null;
         }
 
-        Enum<?>[] allProperties = getAllProperties();
+        BehaviorAttribute[] allProperties = getAllProperties();
 
         Object[] values = new Object[allProperties.length];
         for (int i = 0; i < allProperties.length; i++) {
@@ -191,7 +191,7 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
             return null;
         }
 
-        Enum<?>[] allProperties = getAllProperties();
+        BehaviorAttribute[] allProperties = getAllProperties();
 
         Map<String, Object> map = new HashMap<>(allProperties.length);
         for (int i = 0; i < allProperties.length; i++) {
@@ -209,5 +209,6 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
         return map;
     }
 
-    protected abstract Enum<?>[] getAllProperties();
+    protected abstract BehaviorAttribute[] getAllProperties();
+
 }

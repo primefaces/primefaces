@@ -34,6 +34,7 @@ import javax.faces.component.behavior.ClientBehaviorHint;
 import javax.faces.event.AjaxBehaviorListener;
 
 import org.primefaces.behavior.base.AbstractBehavior;
+import org.primefaces.behavior.base.BehaviorAttribute;
 import org.primefaces.component.api.AjaxSource;
 
 @ResourceDependencies({
@@ -47,7 +48,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
 
     private static final Set<ClientBehaviorHint> HINTS = Collections.unmodifiableSet(EnumSet.of(ClientBehaviorHint.SUBMITTING));
 
-    public enum PropertyKeys {
+    public enum PropertyKeys implements BehaviorAttribute {
         update(String.class),
         process(String.class),
         global(Boolean.class),
@@ -74,12 +75,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
             this.expectedType = expectedType;
         }
 
-        /**
-         * Holds the type which ought to be passed to
-         * {@link javax.faces.view.facelets.TagAttribute#getObject(javax.faces.view.facelets.FaceletContext, java.lang.Class) }
-         * when creating the behavior.
-         * @return the expectedType the expected object type
-         */
+        @Override
         public Class<?> getExpectedType() {
             return expectedType;
         }
@@ -287,7 +283,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
 
 
     @Override
-    protected Enum<?>[] getAllProperties() {
+    protected BehaviorAttribute[] getAllProperties() {
         return PropertyKeys.values();
     }
 
