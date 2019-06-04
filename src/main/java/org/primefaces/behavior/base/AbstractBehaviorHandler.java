@@ -246,9 +246,9 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
     }
 
     protected void init(FaceletContext ctx, E behavior, String eventName, UIComponent parent) {
-        for (BehaviorAttribute prop : behavior.getAllProperties()) {
-            TagAttribute tag = getAttribute(prop.name());
-            setBehaviorAttribute(ctx, behavior, tag, prop.getExpectedType());
+        for (BehaviorAttribute attr : behavior.getAllAttributes()) {
+            TagAttribute tag = getAttribute(attr.name());
+            setBehaviorAttribute(ctx, behavior, tag, attr.getExpectedType());
         }
     }
 }

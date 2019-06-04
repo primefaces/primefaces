@@ -283,7 +283,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
 
 
     @Override
-    protected BehaviorAttribute[] getAllProperties() {
+    protected BehaviorAttribute[] getAllAttributes() {
         return PropertyKeys.values();
     }
 

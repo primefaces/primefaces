@@ -60,7 +60,7 @@ public class ClientValidator extends AbstractBehavior {
     }
 
     @Override
-    protected BehaviorAttribute[] getAllProperties() {
+    protected BehaviorAttribute[] getAllAttributes() {
         return PropertyKeys.values();
     }
 

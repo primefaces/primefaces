@@ -94,7 +94,7 @@ public class ConfirmBehavior extends AbstractBehavior {
     }
 
     @Override
-    protected BehaviorAttribute[] getAllProperties() {
+    protected BehaviorAttribute[] getAllAttributes() {
         return PropertyKeys.values();
     }
 
