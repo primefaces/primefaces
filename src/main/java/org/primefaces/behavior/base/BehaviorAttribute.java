@@ -21,20 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.behavior.confirm;
+package org.primefaces.behavior.base;
 
-import org.primefaces.behavior.base.AbstractBehaviorHandler;
+public interface BehaviorAttribute {
 
-import javax.faces.view.facelets.BehaviorConfig;
+    /**
+     * Holds the type which ought to be passed to
+     * {@link javax.faces.view.facelets.TagAttribute#getObject(javax.faces.view.facelets.FaceletContext, java.lang.Class) }
+     * when creating the behavior.
+     * @return the expectedType the expected object type
+     */
+    Class<?> getExpectedType();
 
-public class ConfirmBehaviorHandler extends AbstractBehaviorHandler<ConfirmBehavior> {
-
-    public ConfirmBehaviorHandler(BehaviorConfig config) {
-        super(config);
-    }
-
-    @Override
-    public String getBehaviorId() {
-        return ConfirmBehavior.BEHAVIOR_ID;
+    /**
+     * Gets name of tag attribute
+     * @return name of tag attribute
+     */
+    default String name() {
+        return toString();
     }
 }
