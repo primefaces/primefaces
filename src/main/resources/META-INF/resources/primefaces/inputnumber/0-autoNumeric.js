@@ -1096,6 +1096,7 @@
                         if (groupedValue === null) {
                             groupedValue = autoGroup(value, $settings);
                         }
+                        // PF GitHub #3192
                         $this.val(groupedValue);
                         if (groupedValue !== holder.inVal) {
                             $this.change();
