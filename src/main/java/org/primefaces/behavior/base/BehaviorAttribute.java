@@ -37,7 +37,7 @@ public interface BehaviorAttribute {
      * Gets name of tag attribute
      * @return name of tag attribute
      */
-    default String name() {
+    default String getName() {
         return toString();
     }
 }

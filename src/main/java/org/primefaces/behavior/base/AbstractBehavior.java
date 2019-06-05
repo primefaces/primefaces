@@ -172,7 +172,7 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
 
         Object[] values = new Object[attributes.length];
         for (int i = 0; i < attributes.length; i++) {
-            Object val = map.get(attributes[i].name());
+            Object val = map.get(attributes[i].getName());
 
             if (saveValuesAsAttachedState) {
                 val = UIComponentBase.saveAttachedState(context, val);
@@ -202,7 +202,7 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
             }
 
             if (val != null) {
-                map.put(attributes[i].name(), val);
+                map.put(attributes[i].getName(), val);
             }
         }
 
