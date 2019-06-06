@@ -121,7 +121,13 @@
          * @param the parent element of input
          */
         updateFilledState: function(input, parent) {
-            if (input.val().length) {
+            var value = input.val();
+            
+            if (typeof(value) == 'undefined') {
+                return;
+            }
+            
+            if (value.length) {
                 input.addClass('ui-state-filled');
                 
                 if(parent.is("span:not('.ui-float-label')")) {
