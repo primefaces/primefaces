@@ -11,6 +11,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         //configuration
         this.cfg.my = this.cfg.my||'left top';
         this.cfg.at = this.cfg.at||'left bottom';
+        this.cfg.collision = this.cfg.collision||'flip';
         this.cfg.showEvent = this.cfg.showEvent||'click.ui-overlaypanel';
         this.cfg.hideEvent = this.cfg.hideEvent||'click.ui-overlaypanel';
         this.cfg.dismissable = (this.cfg.dismissable === false) ? false : true;
@@ -202,7 +203,8 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 .position({
                     my: this.cfg.my
                     ,at: this.cfg.at
-                    ,of: document.getElementById(targetId)
+                    ,of: document.getElementById(targetId),
+                    collision: this.cfg.collision
                 });
 
         var widthOffset = this.jq.width() - this.content.width();

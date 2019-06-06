@@ -17290,6 +17290,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[When the positioned element overflows the window in some direction, move it to an alternative position. Similar to my and at, this accepts a single value or a pair for horizontal/vertical, e.g., "flip", "fit", "fit flip", "fit none".]]>
+            </description>
+            <name>collision</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Dynamic mode allows overlay panel to fetch it's contents before it's shown rather than on page load
                 which is useful to reduce initial page load times. Default is false.]]>
             </description>

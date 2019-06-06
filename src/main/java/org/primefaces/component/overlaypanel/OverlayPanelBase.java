@@ -50,6 +50,7 @@ public abstract class OverlayPanelBase extends UIPanel implements Widget {
         onHide,
         my,
         at,
+        collision,
         dynamic,
         dismissable,
         showCloseIcon,
@@ -183,6 +184,14 @@ public abstract class OverlayPanelBase extends UIPanel implements Widget {
 
     public void setAt(String at) {
         getStateHelper().put(PropertyKeys.at, at);
+    }
+
+    public String getCollision() {
+        return (String) getStateHelper().eval(PropertyKeys.collision, null);
+    }
+
+    public void setCollision(String collision) {
+        getStateHelper().put(PropertyKeys.collision, collision);
     }
 
     public boolean isDynamic() {
