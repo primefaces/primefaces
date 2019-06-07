@@ -617,11 +617,11 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.writeAttribute("placeholder", menu.getFilterPlaceholder(), null);
         }
 
+        writer.endElement("input");
+
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-icon ui-icon-search", id);
         writer.endElement("span");
-
-        writer.endElement("input");
 
         writer.endElement("div");
     }
