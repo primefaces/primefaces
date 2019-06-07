@@ -174,11 +174,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
     },
 
     _show: function(target) {
-        var $this = this,
-            targetId = target||this.cfg.target;
-
-        this.targetElement = $(document.getElementById(targetId));
-        this.targetZindex = this.targetElement.zIndex();
+        var $this = this;
 
         this.align(target);
 
@@ -203,15 +199,30 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
     },
 
     align: function(target) {
-        var win = $(window),
-        targetId = target||this.cfg.target;
+        var win = $(window);
+
+        if (target) {
+            if (typeof target === 'string') {
+                this.targetElement = $(document.getElementById(target));
+            }
+            else if (target instanceof $) {
+                this.targetElement = target;
+            }
+        }
+        else if (this.target) {
+            this.targetElement = this.target;
+        }
+
+        if (this.targetElement) {
+            this.targetZindex = this.targetElement.zIndex();
+        }
 
         this.jq.css({'left':'', 'top':'', 'z-index': ++PrimeFaces.zindex})
                 .position({
                     my: this.cfg.my
                     ,at: this.cfg.at
-                    ,of: document.getElementById(targetId),
-                    collision: this.cfg.collision
+                    ,of: this.targetElement
+                    ,collision: this.cfg.collision
                 });
 
         var widthOffset = this.jq.width() - this.content.width();
