@@ -27,6 +27,12 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
             this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.target);
             this.bindTargetEvents();
 
+            // set aria attributes
+            this.target.attr({
+                'aria-expanded': false,
+                'aria-controls': this.id
+            });
+
             //dialog support
             this.setupDialogSupport();
         }
@@ -104,6 +110,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 e.preventDefault();
             }
         });
+
     },
 
     bindCommonEvents: function() {
@@ -237,6 +244,10 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         }
 
         this.applyFocus();
+
+        if (this.target) {
+            this.target.attr('aria-expanded', true);
+        }
     },
 
     postHide: function() {
@@ -247,6 +258,10 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         if(this.cfg.onHide) {
             this.cfg.onHide.call(this);
+        }
+
+        if (this.target) {
+            this.target.attr('aria-expanded', false);
         }
     },
 
