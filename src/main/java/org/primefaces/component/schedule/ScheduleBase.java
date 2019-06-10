@@ -62,6 +62,7 @@ public abstract class ScheduleBase extends UIComponentBase implements Widget, Cl
         slotLabelFormat,
         timeFormat,
         columnFormat,
+        columnHeaderFormat,
         timeZone,
         clientTimeZone,
         tooltip,
@@ -267,6 +268,14 @@ public abstract class ScheduleBase extends UIComponentBase implements Widget, Cl
 
     public void setColumnFormat(String columnFormat) {
         getStateHelper().put(PropertyKeys.columnFormat, columnFormat);
+    }
+
+    public String getColumnHeaderFormat() {
+        return (String) getStateHelper().eval(PropertyKeys.columnHeaderFormat, null);
+    }
+
+    public void setColumnHeaderFormat(String columnHeaderFormat) {
+        getStateHelper().put(PropertyKeys.columnHeaderFormat, columnHeaderFormat);
     }
 
     public Object getTimeZone() {

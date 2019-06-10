@@ -192,7 +192,7 @@ public class ScheduleRenderer extends CoreRenderer {
                 .attr("urlTarget", schedule.getUrlTarget(), "_blank")
                 .attr("noOpener", schedule.isNoOpener(), true);
 
-        String columnFormat = schedule.getColumnFormat();
+        String columnFormat = schedule.getColumnHeaderFormat() != null ? schedule.getColumnHeaderFormat() : schedule.getColumnFormat();
         if (columnFormat != null) {
             wb.append(",columnFormatOptions:{" + columnFormat + "}");
         }

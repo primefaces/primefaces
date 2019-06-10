@@ -20349,9 +20349,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Format for column headers.]]>
+                <![CDATA[Deprecated, use columnHeaderFormat instead. Format for column headers.]]>
             </description>
             <name>columnFormat</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Format for column headers.]]>
+            </description>
+            <name>columnHeaderFormat</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
