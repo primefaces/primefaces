@@ -35,13 +35,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
-
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import java.util.Map.Entry;
 
 public class MultipartRequest extends HttpServletRequestWrapper {
 
@@ -134,8 +133,8 @@ public class MultipartRequest extends HttpServletRequestWrapper {
         if (parameterMap == null) {
             Map<String, String[]> map = new LinkedHashMap<>();
 
-            for (String formParam : formParams.keySet()) {
-                map.put(formParam, formParams.get(formParam).toArray(new String[0]));
+            for (Entry<String, List<String>> entry : formParams.entrySet()) {
+                map.put(entry.getKey(), entry.getValue().toArray(new String[0]));
             }
 
             map.putAll(super.getParameterMap());
