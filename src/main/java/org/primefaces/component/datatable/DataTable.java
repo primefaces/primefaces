@@ -701,7 +701,7 @@ public class DataTable extends DataTableBase {
         // new syntax is:
         // #{column.property} or even a method call
         if (expressionString.startsWith("#{" + getVar() + "[")) {
-            expressionString = expressionString.substring(expressionString.indexOf("[") + 1, expressionString.indexOf("]"));
+            expressionString = expressionString.substring(expressionString.indexOf('[') + 1, expressionString.indexOf(']'));
             expressionString = "#{" + expressionString + "}";
 
             ValueExpression dynaVE = context.getApplication()
@@ -1347,7 +1347,7 @@ public class DataTable extends DataTableBase {
                 String[] colsArr = togglableColumnsAsString.split(",");
                 for (int i = 0; i < colsArr.length; i++) {
                     String temp = colsArr[i];
-                    int sepIndex = temp.lastIndexOf("_");
+                    int sepIndex = temp.lastIndexOf('_');
                     togglableColsMap.put(temp.substring(0, sepIndex), Boolean.parseBoolean(temp.substring(sepIndex + 1, temp.length())));
                 }
             }
@@ -1383,7 +1383,7 @@ public class DataTable extends DataTableBase {
                 String[] colsArr = resizableColumnsAsString.split(",");
                 for (int i = 0; i < colsArr.length; i++) {
                     String temp = colsArr[i];
-                    int sepIndex = temp.lastIndexOf("_");
+                    int sepIndex = temp.lastIndexOf('_');
                     resizableColsMap.put(temp.substring(0, sepIndex), temp.substring(sepIndex + 1, temp.length()));
                 }
             }
