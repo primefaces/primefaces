@@ -138,19 +138,19 @@ public class CalendarUtils {
 
     public static final String getValueAsString(FacesContext context, UICalendar calendar, Object value, String pattern) {
         if (value instanceof List) {
-            String valuesAsString = "";
+            StringBuilder valuesAsString = new StringBuilder();
             String separator = "multiple".equals(calendar.getSelectionMode()) ? "," : " - ";
             List values = ((List) value);
 
             for (int i = 0; i < values.size(); i++) {
                 if (i != 0) {
-                    valuesAsString += separator;
+                    valuesAsString.append(separator);
                 }
 
-                valuesAsString += getValue(context, calendar, values.get(i), pattern);
+                valuesAsString.append(getValue(context, calendar, values.get(i), pattern));
             }
 
-            return valuesAsString;
+            return valuesAsString.toString();
         }
         else {
             return getValue(context, calendar, value, pattern);
