@@ -40,9 +40,9 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
     public AbstractBehavior() {
         super();
 
-        int propertiesCount = getAllProperties().length;
-        literals = new HashMap<>(propertiesCount);
-        bindings = new HashMap<>(propertiesCount);
+        int attrsCount = getAllAttributes().length;
+        literals = new HashMap<>(attrsCount);
+        bindings = new HashMap<>(attrsCount);
     }
 
     public void setLiteral(String attr, Object val) {
@@ -168,11 +168,11 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
             return null;
         }
 
-        Enum<?>[] allProperties = getAllProperties();
+        BehaviorAttribute[] attributes = getAllAttributes();
 
-        Object[] values = new Object[allProperties.length];
-        for (int i = 0; i < allProperties.length; i++) {
-            Object val = map.get(allProperties[i].name());
+        Object[] values = new Object[attributes.length];
+        for (int i = 0; i < attributes.length; i++) {
+            Object val = map.get(attributes[i].getName());
 
             if (saveValuesAsAttachedState) {
                 val = UIComponentBase.saveAttachedState(context, val);
@@ -191,10 +191,10 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
             return null;
         }
 
-        Enum<?>[] allProperties = getAllProperties();
+        BehaviorAttribute[] attributes = getAllAttributes();
 
-        Map<String, Object> map = new HashMap<>(allProperties.length);
-        for (int i = 0; i < allProperties.length; i++) {
+        Map<String, Object> map = new HashMap<>(attributes.length);
+        for (int i = 0; i < attributes.length; i++) {
             Object val = values[i];
 
             if (restoreValuesFromAttachedState) {
@@ -202,12 +202,13 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
             }
 
             if (val != null) {
-                map.put(allProperties[i].name(), val);
+                map.put(attributes[i].getName(), val);
             }
         }
 
         return map;
     }
 
-    protected abstract Enum<?>[] getAllProperties();
+    protected abstract BehaviorAttribute[] getAllAttributes();
+
 }

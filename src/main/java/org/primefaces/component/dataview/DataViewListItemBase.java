@@ -26,7 +26,7 @@ package org.primefaces.component.dataview;
 import javax.faces.component.UIComponentBase;
 
 
-abstract class DataViewListItemBase extends UIComponentBase {
+public abstract class DataViewListItemBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

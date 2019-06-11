@@ -28,7 +28,7 @@ import javax.faces.component.UIComponentBase;
 import org.primefaces.model.menu.Submenu;
 
 
-abstract class UISubmenuBase extends UIComponentBase implements Submenu {
+public abstract class UISubmenuBase extends UIComponentBase implements Submenu {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

@@ -31,7 +31,7 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+public abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -62,6 +62,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
         slotLabelFormat,
         timeFormat,
         columnFormat,
+        columnHeaderFormat,
         timeZone,
         clientTimeZone,
         tooltip,
@@ -267,6 +268,14 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
 
     public void setColumnFormat(String columnFormat) {
         getStateHelper().put(PropertyKeys.columnFormat, columnFormat);
+    }
+
+    public String getColumnHeaderFormat() {
+        return (String) getStateHelper().eval(PropertyKeys.columnHeaderFormat, null);
+    }
+
+    public void setColumnHeaderFormat(String columnHeaderFormat) {
+        getStateHelper().put(PropertyKeys.columnHeaderFormat, columnHeaderFormat);
     }
 
     public Object getTimeZone() {

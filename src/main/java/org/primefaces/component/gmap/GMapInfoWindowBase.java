@@ -26,7 +26,7 @@ package org.primefaces.component.gmap;
 import javax.faces.component.UIComponentBase;
 
 
-abstract class GMapInfoWindowBase extends UIComponentBase {
+public abstract class GMapInfoWindowBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

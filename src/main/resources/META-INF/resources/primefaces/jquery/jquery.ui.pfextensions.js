@@ -311,7 +311,7 @@ $.widget( "ui.sortable", $.ui.sortable, {
             
             // PrimeFaces https://github.com/primefaces/primefaces/issues/3765
             _addTimePicker: function (dp_inst) {
-                var currDT = $.trim((this.$altInput && this._defaults.altFieldTimeOnly) ? this.$input.val() + ' ' + this.$altInput.val() : this.$input.next().val());
+                var currDT = $.trim((this.$altInput && this._defaults.altFieldTimeOnly) ? this.$input.val() + ' ' + this.$altInput.val() : (dp_inst.inline ? this.$input.next().val() : this.$input.val()));
 
                 this.timeDefined = this._parseTime(currDT);
                 this._limitMinMaxDateTime(dp_inst, false);

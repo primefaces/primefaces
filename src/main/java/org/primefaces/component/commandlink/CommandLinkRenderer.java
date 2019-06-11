@@ -97,7 +97,7 @@ public class CommandLinkRenderer extends CoreRenderer {
             }
 
             if (ajax) {
-                request = buildAjaxRequest(context, link);
+                request = buildAjaxRequest(context, link, link);
             }
             else {
                 UIForm form = ComponentTraversalUtils.closestForm(context, link);

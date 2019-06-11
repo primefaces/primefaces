@@ -1534,6 +1534,12 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description><![CDATA[Defines if autocomplete results are escaped or not. Default is true.]]></description>
+            <name>escape</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -1939,6 +1945,14 @@
             <name>tabindex</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean flag indicating whether the last item should be disabled. Default is false.]]>
+            </description>
+            <name>lastItemDisabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -16070,6 +16084,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines a list of keys and clientIds, which should NOT be rendered by this component. Seperated by space or comma.]]>
+            </description>
+            <name>forIgnores</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -17263,6 +17285,14 @@
                 <![CDATA[Position of the target relative to the panel.]]>
             </description>
             <name>at</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When the positioned element overflows the window in some direction, move it to an alternative position. Similar to my and at, this accepts a single value or a pair for horizontal/vertical, e.g., "flip", "fit", "fit flip", "fit none".]]>
+            </description>
+            <name>collision</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -18634,6 +18664,14 @@
             <name>filterDelay</name>
             <required>false</required>
             <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if values of the component is escaped or not.]]>
+            </description>
+            <name>escape</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -20311,9 +20349,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Format for column headers.]]>
+                <![CDATA[Deprecated, use columnHeaderFormat instead. Format for column headers.]]>
             </description>
             <name>columnFormat</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Format for column headers.]]>
+            </description>
+            <name>columnHeaderFormat</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

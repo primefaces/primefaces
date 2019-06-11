@@ -26,7 +26,7 @@ package org.primefaces.component.roweditor;
 import javax.faces.component.UIComponentBase;
 
 
-abstract class RowEditorBase extends UIComponentBase {
+public abstract class RowEditorBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

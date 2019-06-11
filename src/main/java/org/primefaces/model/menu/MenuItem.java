@@ -25,7 +25,9 @@ package org.primefaces.model.menu;
 
 import java.util.List;
 import java.util.Map;
+import javax.el.MethodExpression;
 import org.primefaces.component.api.Confirmable;
+import org.primefaces.util.SerializableFunction;
 
 public interface MenuItem extends MenuElement, Confirmable {
 
@@ -45,10 +47,28 @@ public interface MenuItem extends MenuElement, Confirmable {
 
     public String getStyleClass();
 
+    /**
+     * The URL to redirect to after the menu item has been clicked. Similar to
+     * {@code outcome} which allows to specify a navigation case, but the value
+     * is not touched (no prepending of the contextPath, not appending the
+     * sessionId or windowId), just encoded.
+     *
+     * Specifying a {@code url} which is not {@code null} causes {@code command}
+     * to be ignored.
+     *
+     * @return the URL.
+     */
     public String getUrl();
 
     public String getTarget();
 
+    /**
+     * The JSF outcome of a navigation case which is resolved by the configured
+     * {@code NavigationHandler}. Similar to {@code url}, but {@code url}
+     * allows to specify fully qualified URLs.
+     *
+     * @return the outcome.
+     */
     public String getOutcome();
 
     public String getFragment();
@@ -67,7 +87,21 @@ public interface MenuItem extends MenuElement, Confirmable {
 
     public boolean isDynamic();
 
+    /**
+     * A {@link MethodExpression} in the form of a string which is called after the
+     * menu item has been clicked. It is ignored when {@code url} is not
+     * {@code null}.
+     *
+     * @return The outcome, which will be used for navigation.
+     */
     public String getCommand();
+
+    /**
+     * Lambda alternative to the {@link #getCommand()}.
+     *
+     * @return The outcome, which will be used for navigation.
+     */
+    public SerializableFunction<MenuItem, String> getFunction();
 
     public boolean isImmediate();
 

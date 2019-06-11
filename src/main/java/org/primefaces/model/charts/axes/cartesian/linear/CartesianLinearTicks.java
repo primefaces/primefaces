@@ -40,6 +40,7 @@ public class CartesianLinearTicks extends CartesianTicks {
     private Number min;
     private Number max;
     private Number maxTicksLimit;
+    private Number precision;
     private Number stepSize;
     private Number suggestedMax;
     private Number suggestedMin;
@@ -117,6 +118,24 @@ public class CartesianLinearTicks extends CartesianTicks {
     }
 
     /**
+     * If defined and stepSize is not specified, the step size will be rounded to this many decimal places.
+     *
+     * @return the current precision
+     */
+    public Number getPrecision() {
+        return precision;
+    }
+
+    /**
+     * If defined and stepSize is not specified, the step size will be rounded to this many decimal places.
+     *
+     * @param precision User defined precision for the scale.
+     */
+    public void setPrecision(Number precision) {
+        this.precision = precision;
+    }
+
+    /**
      * Gets the stepSize
      *
      * @return stepSize
@@ -186,6 +205,7 @@ public class CartesianLinearTicks extends CartesianTicks {
             ChartUtils.writeDataValue(fsw, "min", this.min, true);
             ChartUtils.writeDataValue(fsw, "max", this.max, true);
             ChartUtils.writeDataValue(fsw, "maxTicksLimit", this.maxTicksLimit, true);
+            ChartUtils.writeDataValue(fsw, "precision", this.precision, true);
             ChartUtils.writeDataValue(fsw, "stepSize", this.stepSize, true);
             ChartUtils.writeDataValue(fsw, "suggestedMax", this.suggestedMax, true);
             ChartUtils.writeDataValue(fsw, "suggestedMin", this.suggestedMin, true);

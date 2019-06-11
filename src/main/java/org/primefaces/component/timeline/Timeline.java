@@ -225,7 +225,7 @@ public class Timeline extends TimelineBase {
         int idx = groupParam.indexOf("</span>");
         if (idx > -1) {
             groupParam = groupParam.substring(0, idx);
-            int idxGroupOrder = groupParam.indexOf("#");
+            int idxGroupOrder = groupParam.indexOf('#');
             if (idxGroupOrder > -1) {
                 String groupOrder = groupParam.substring(idxGroupOrder + 1);
                 return groups.get(Integer.valueOf(groupOrder)).getId();

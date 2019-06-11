@@ -50,6 +50,7 @@ public class PrimeConfiguration {
     private final boolean interpolateClientSideValidationMessages;
     private final boolean earlyPostParamEvaluation;
     private final boolean moveScriptsToBottom;
+    private boolean csp;
 
     // internal config
     private final boolean stringConverterAvailable;
@@ -112,6 +113,9 @@ public class PrimeConfiguration {
 
         value = externalContext.getInitParameter(Constants.ContextParams.MOVE_SCRIPTS_TO_BOTTOM);
         moveScriptsToBottom = (value == null) ? false : Boolean.valueOf(value);
+
+        value = externalContext.getInitParameter(Constants.ContextParams.CSP);
+        csp = (value == null) ? false : Boolean.valueOf(value);
     }
 
     protected boolean resolveValidateEmptyFields(FacesContext context, PrimeEnvironment environment) {
@@ -203,5 +207,9 @@ public class PrimeConfiguration {
 
     public Map<String, String> getErrorPages() {
         return errorPages;
+    }
+
+    public boolean isCsp() {
+        return csp;
     }
 }

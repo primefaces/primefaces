@@ -160,7 +160,6 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("autocomplete", "off", null);
 
         //for keyboard accessibility and ScreenReader
-        writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
         renderAccessibilityAttributes(context, menu);
         renderPassThruAttributes(context, menu, HTML.TAB_INDEX);
         renderDomEvents(context, menu, HTML.BLUR_FOCUS_EVENTS);
@@ -618,11 +617,11 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.writeAttribute("placeholder", menu.getFilterPlaceholder(), null);
         }
 
+        writer.endElement("input");
+
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-icon ui-icon-search", id);
         writer.endElement("span");
-
-        writer.endElement("input");
 
         writer.endElement("div");
     }

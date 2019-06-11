@@ -38,19 +38,6 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.validation.MessageInterpolator;
-import javax.validation.constraints.AssertFalse;
-import javax.validation.constraints.AssertTrue;
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.Future;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
@@ -60,21 +47,30 @@ public class BeanValidationMetadataMapper {
 
     private static final Logger LOGGER = Logger.getLogger(BeanValidationMetadataMapper.class.getName());
 
-    private static final Map<Class<? extends Annotation>, ClientValidationConstraint> CONSTRAINT_MAPPING
-            = MapBuilder.<Class<? extends Annotation>, ClientValidationConstraint>builder()
-                    .put(NotNull.class, new NotNullClientValidationConstraint())
-                    .put(Null.class, new NullClientValidationConstraint())
-                    .put(Size.class, new SizeClientValidationConstraint())
-                    .put(Min.class, new MinClientValidationConstraint())
-                    .put(Max.class, new MaxClientValidationConstraint())
-                    .put(DecimalMin.class, new DecimalMinClientValidationConstraint())
-                    .put(DecimalMax.class, new DecimalMaxClientValidationConstraint())
-                    .put(AssertTrue.class, new AssertTrueClientValidationConstraint())
-                    .put(AssertFalse.class, new AssertFalseClientValidationConstraint())
-                    .put(Digits.class, new DigitsClientValidationConstraint())
-                    .put(Past.class, new PastClientValidationConstraint())
-                    .put(Future.class, new FutureClientValidationConstraint())
-                    .put(Pattern.class, new PatternClientValidationConstraint())
+    private static final Map<String, ClientValidationConstraint> CONSTRAINT_MAPPING
+            = MapBuilder.<String, ClientValidationConstraint>builder()
+                    .put("javax.validation.constraints.AssertFalse", new AssertFalseClientValidationConstraint())
+                    .put("javax.validation.constraints.AssertTrue", new AssertTrueClientValidationConstraint())
+                    .put("javax.validation.constraints.DecimalMax", new DecimalMaxClientValidationConstraint())
+                    .put("javax.validation.constraints.DecimalMin", new DecimalMinClientValidationConstraint())
+                    .put("javax.validation.constraints.Digits", new DigitsClientValidationConstraint())
+                    .put("javax.validation.constraints.Email", new EmailClientValidationConstraint())
+                    .put("javax.validation.constraints.Future", new FutureClientValidationConstraint())
+                    .put("javax.validation.constraints.FutureOrPresent", new FutureOrPresentClientValidationConstraint())
+                    .put("javax.validation.constraints.Max", new MaxClientValidationConstraint())
+                    .put("javax.validation.constraints.Min", new MinClientValidationConstraint())
+                    .put("javax.validation.constraints.Negative", new NegativeClientValidationConstraint())
+                    .put("javax.validation.constraints.NegativeOrZero", new NegativeOrZeroClientValidationConstraint())
+                    .put("javax.validation.constraints.NotBlank", new NotBlankClientValidationConstraint())
+                    .put("javax.validation.constraints.NotEmpty", new NotEmptyClientValidationConstraint())
+                    .put("javax.validation.constraints.NotNull", new NotNullClientValidationConstraint())
+                    .put("javax.validation.constraints.Null", new NullClientValidationConstraint())
+                    .put("javax.validation.constraints.Past", new PastClientValidationConstraint())
+                    .put("javax.validation.constraints.PastOrPresent", new PastOrPresentClientValidationConstraint())
+                    .put("javax.validation.constraints.Pattern", new PatternClientValidationConstraint())
+                    .put("javax.validation.constraints.Positive", new PositiveClientValidationConstraint())
+                    .put("javax.validation.constraints.PositiveOrZero", new PositiveOrZeroClientValidationConstraint())
+                    .put("javax.validation.constraints.Size", new SizeClientValidationConstraint())
                     .build();
 
     private BeanValidationMetadataMapper() {
@@ -106,7 +102,7 @@ public class BeanValidationMetadataMapper {
                     Class<?> annotationType = constraintDescriptor.getAnnotation().annotationType();
 
                     // lookup ClientValidationConstraint by constraint annotation (e.g. @NotNull)
-                    ClientValidationConstraint clientValidationConstraint = CONSTRAINT_MAPPING.get(annotationType);
+                    ClientValidationConstraint clientValidationConstraint = CONSTRAINT_MAPPING.get(annotationType.getName());
 
                     // mapping available? Otherwise try to lookup custom constraint
                     if (clientValidationConstraint == null) {
@@ -176,10 +172,10 @@ public class BeanValidationMetadataMapper {
     }
 
     public static void registerConstraintMapping(Class<? extends Annotation> constraint, ClientValidationConstraint clientValidationConstraint) {
-        CONSTRAINT_MAPPING.put(constraint, clientValidationConstraint);
+        CONSTRAINT_MAPPING.put(constraint.getName(), clientValidationConstraint);
     }
 
     public static ClientValidationConstraint removeConstraintMapping(Class<? extends Annotation> constraint) {
-        return CONSTRAINT_MAPPING.remove(constraint);
+        return CONSTRAINT_MAPPING.remove(constraint.getName());
     }
 }

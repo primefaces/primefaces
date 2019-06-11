@@ -26,7 +26,7 @@ package org.primefaces.component.rowexpansion;
 import javax.faces.component.UIColumn;
 
 
-abstract class RowExpansionBase extends UIColumn {
+public abstract class RowExpansionBase extends UIColumn {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

@@ -26,7 +26,7 @@ package org.primefaces.component.summaryrow;
 import javax.faces.component.UIComponentBase;
 
 
-abstract class SummaryRowBase extends UIComponentBase {
+public abstract class SummaryRowBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

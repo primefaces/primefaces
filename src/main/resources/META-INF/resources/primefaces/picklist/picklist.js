@@ -374,7 +374,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             itemLabel = item.attr('data-item-label') ? PrimeFaces.escapeHTML(item.attr('data-item-label')) : '',
             option = $('<option selected="selected"></option>');
 
-            if ($this.cfg.escape) {
+            if ($this.cfg.escapeValue) {
                itemValue = PrimeFaces.escapeHTML(itemValue);
             }
             option.prop('value', itemValue).text(itemLabel);
@@ -878,11 +878,15 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     },
 
     setTabIndex: function() {
-        var tabindex = (this.cfg.disabled) ? "-1" : (this.cfg.tabindex||'0');
+        var tabindex = (this.cfg.disabled) ? '-1' : this.getTabIndex();
         this.sourceList.attr('tabindex', tabindex);
         this.targetList.attr('tabindex', tabindex);
         $(this.jqId + ' button').attr('tabindex', tabindex);
         $(this.jqId + ' .ui-picklist-filter-container > input').attr('tabindex', tabindex);
+    },
+    
+    getTabIndex: function() {
+        return this.cfg.tabindex||'0';
     },
 
     updateButtonsState: function () {
@@ -911,26 +915,36 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         var addAllButton = $(this.jqId + ' .ui-picklist-button-add-all');
         if (this.sourceList.find('li.ui-picklist-item:not(.ui-state-disabled)').length) {
             this.enableButton(addAllButton);
+            this.sourceList.attr('tabindex', this.getTabIndex());
         }
         else {
             this.disableButton(addAllButton);
+            this.sourceList.attr('tabindex', '-1');
         }
 
         var removeAllButton = $(this.jqId + ' .ui-picklist-button-remove-all');
         if (this.targetList.find('li.ui-picklist-item:not(.ui-state-disabled)').length) {
             this.enableButton(removeAllButton);
+            this.targetList.attr('tabindex', this.getTabIndex());
         }
         else {
             this.disableButton(removeAllButton);
+            this.targetList.attr('tabindex', '-1');
         }
     },
 
     disableButton: function (button) {
+        if (button.hasClass('ui-state-focus')) {
+            button.blur();
+        }
+        
         button.attr('disabled', 'disabled').addClass('ui-state-disabled');
+        button.attr('tabindex', '-1');
     },
 
     enableButton: function (button) {
         button.removeAttr('disabled').removeClass('ui-state-disabled');
+        button.attr('tabindex', this.getTabIndex());
     },
 
     updateListRole: function() {

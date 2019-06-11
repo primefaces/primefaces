@@ -29,8 +29,7 @@ import org.primefaces.component.api.UINotification;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
-
-abstract class GrowlBase extends UIMessages implements Widget, UINotification {
+public abstract class GrowlBase extends UIMessages implements Widget, UINotification {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

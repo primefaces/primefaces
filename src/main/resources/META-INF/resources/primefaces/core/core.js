@@ -114,7 +114,42 @@
             return (cookieEnabled);
         },
 
+        /**
+         * Updates the Input to add style whether it contains data or not. Used particularly in Floating Labels.
+         * 
+         * @param the text input to modify
+         * @param the parent element of input
+         */
+        updateFilledState: function(input, parent) {
+            var value = input.val();
+            
+            if (typeof(value) == 'undefined') {
+                return;
+            }
+            
+            if (value.length) {
+                input.addClass('ui-state-filled');
+                
+                if(parent.is("span:not('.ui-float-label')")) {
+                    parent.addClass('ui-inputwrapper-filled');
+                }
+            } else {
+                input.removeClass('ui-state-filled');
+                parent.removeClass('ui-inputwrapper-filled');
+            }
+        },
+
         skinInput : function(input) {
+            var parent = input.parent(),
+            updateFilledStateOnBlur = function () {
+                if(parent.hasClass('ui-inputwrapper-focus')) {
+                    parent.removeClass('ui-inputwrapper-focus');
+                }
+                PrimeFaces.updateFilledState(input, parent);
+            };
+
+            PrimeFaces.updateFilledState(input, parent);
+
             input.hover(
                 function() {
                     $(this).addClass('ui-state-hover');
@@ -124,8 +159,21 @@
                 }
             ).focus(function() {
                 $(this).addClass('ui-state-focus');
+                
+                if(parent.is("span:not('.ui-float-label')")) {
+                    parent.addClass('ui-inputwrapper-focus');
+                }
             }).blur(function() {
                 $(this).removeClass('ui-state-focus');
+                
+                if(input.hasClass('hasDatepicker')) {
+                    setTimeout(function() {
+                        updateFilledStateOnBlur();
+                    }, 150);
+                }
+                else {
+                    updateFilledStateOnBlur();
+                }
             });
 
             //aria

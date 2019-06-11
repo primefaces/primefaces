@@ -26,7 +26,7 @@ package org.primefaces.component.feedreader;
 import javax.faces.component.UIComponentBase;
 
 
-abstract class FeedReaderBase extends UIComponentBase {
+public abstract class FeedReaderBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

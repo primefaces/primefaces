@@ -29,7 +29,7 @@ import org.primefaces.component.api.*;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable {
+public abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

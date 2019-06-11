@@ -167,7 +167,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
             writer.writeAttribute("href", "#", null);
             writer.writeAttribute("onclick", "return false;", null);
         }
-        else {
+        else if (!menuitem.shouldRenderChildren()) {
             setConfirmationScript(context, menuitem);
             String onclick = menuitem.getOnclick();
 
@@ -206,7 +206,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
                 }
                 else {
                     command = menuitem.isAjax()
-                              ? buildAjaxRequest(context, (AjaxSource) menuitem, form)
+                              ? buildAjaxRequest(context, menu, (AjaxSource) menuitem, form)
                               : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
                 }
 
@@ -271,16 +271,16 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", AbstractMenu.MENUITEM_TEXT_CLASS, null);
 
-        if (value != null) {
+        if (menuitem.shouldRenderChildren()) {
+            renderChildren(context, (UIComponent) menuitem);
+        }
+        else if (value != null) {
             if (menuitem.isEscape()) {
                 writer.writeText(value, "value");
             }
             else {
                 writer.write(value.toString());
             }
-        }
-        else if (menuitem.shouldRenderChildren()) {
-            renderChildren(context, (UIComponent) menuitem);
         }
 
         writer.endElement("span");

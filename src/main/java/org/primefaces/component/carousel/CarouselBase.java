@@ -28,7 +28,7 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class CarouselBase extends UIData implements Widget {
+public abstract class CarouselBase extends UIData implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

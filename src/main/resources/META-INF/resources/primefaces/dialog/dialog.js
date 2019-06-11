@@ -555,11 +555,16 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
     applyARIA: function() {
         this.jq.attr({
             'role': 'dialog'
-            ,'aria-labelledby': this.id + '_title'
             ,'aria-describedby': this.id + '_content'
             ,'aria-hidden': !this.cfg.visible
             ,'aria-modal': this.cfg.modal
         });
+        
+        // GitHub #4727
+        var title = this.id + '_title';
+        if ($(PrimeFaces.escapeClientId(title)).length) {
+            this.jq.attr('aria-labelledby', title);
+        }
 
         this.titlebar.children('a.ui-dialog-titlebar-icon').attr('role', 'button');
     },

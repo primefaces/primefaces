@@ -30,6 +30,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.el.ELContext;
+import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.EditableValueHolder;
@@ -570,6 +571,7 @@ public class TreeTableRenderer extends DataRenderer {
         String rowStyleClass = selected ? TreeTable.SELECTED_ROW_CLASS : TreeTable.ROW_CLASS;
         rowStyleClass = selectable ? rowStyleClass + " " + TreeTable.SELECTABLE_NODE_CLASS : rowStyleClass;
         rowStyleClass = rowStyleClass + " " + treeNode.getType();
+        rowStyleClass = rowStyleClass + " ui-node-level-" + (rowKey.split("_").length);
 
         if (partialSelected) {
             rowStyleClass = rowStyleClass + " " + TreeTable.PARTIAL_SELECTED_CLASS;
@@ -1210,6 +1212,7 @@ public class TreeTableRenderer extends DataRenderer {
             for (FilterMeta filterMeta : filterMetadata) {
                 Object filterValue = filterMeta.getFilterValue();
                 UIColumn column = filterMeta.getColumn();
+                MethodExpression filterFunction = column.getFilterFunction();
                 ValueExpression filterByVE = filterMeta.getFilterByVE();
 
                 if (column instanceof DynamicColumn) {
@@ -1222,8 +1225,10 @@ public class TreeTableRenderer extends DataRenderer {
                 if (hasGlobalFilter && !globalMatch) {
                     globalMatch = globalFilterConstraint.applies(columnValue, globalFilterValue, filterLocale);
                 }
-
-                if (!filterConstraint.applies(columnValue, filterValue, filterLocale)) {
+                if (filterFunction != null) {
+                    localMatch = (Boolean) filterFunction.invoke(elContext, new Object[]{columnValue, filterValue, filterLocale});
+                }
+                else if (!filterConstraint.applies(columnValue, filterValue, filterLocale)) {
                     localMatch = false;
                 }
 

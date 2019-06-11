@@ -30,7 +30,7 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class MessageBase extends UIMessage implements UINotification, Widget {
+public abstract class MessageBase extends UIMessage implements UINotification, Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

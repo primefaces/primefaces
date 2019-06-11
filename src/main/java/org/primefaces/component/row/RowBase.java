@@ -26,7 +26,7 @@ package org.primefaces.component.row;
 import javax.faces.component.UIComponentBase;
 
 
-abstract class RowBase extends UIComponentBase {
+public abstract class RowBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

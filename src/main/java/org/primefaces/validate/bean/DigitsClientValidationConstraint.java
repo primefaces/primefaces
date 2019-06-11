@@ -25,7 +25,6 @@ package org.primefaces.validate.bean;
 
 import java.util.HashMap;
 import java.util.Map;
-import javax.validation.constraints.Digits;
 import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.util.HTML;
 
@@ -52,6 +51,6 @@ public class DigitsClientValidationConstraint implements ClientValidationConstra
 
     @Override
     public String getValidatorId() {
-        return Digits.class.getSimpleName();
+        return "Digits";
     }
 }

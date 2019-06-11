@@ -29,7 +29,7 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class OverlayPanelBase extends UIPanel implements Widget {
+public abstract class OverlayPanelBase extends UIPanel implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -50,6 +50,7 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
         onHide,
         my,
         at,
+        collision,
         dynamic,
         dismissable,
         showCloseIcon,
@@ -183,6 +184,14 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
 
     public void setAt(String at) {
         getStateHelper().put(PropertyKeys.at, at);
+    }
+
+    public String getCollision() {
+        return (String) getStateHelper().eval(PropertyKeys.collision, null);
+    }
+
+    public void setCollision(String collision) {
+        getStateHelper().put(PropertyKeys.collision, collision);
     }
 
     public boolean isDynamic() {
