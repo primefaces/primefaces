@@ -58,7 +58,13 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             hidden = column.hasClass('ui-helper-hidden'),
             boxClass = hidden ? 'ui-chkbox-box ui-widget ui-corner-all ui-state-default' : 'ui-chkbox-box ui-widget ui-corner-all ui-state-default ui-state-active',
             iconClass = (hidden) ? 'ui-chkbox-icon ui-icon ui-icon-blank' : 'ui-chkbox-icon ui-icon ui-icon-check',
-            columnTitle = column.children('.ui-column-title').text();
+            columnChildren = column.children('.ui-column-title'),
+            columnTitle = columnChildren.text();
+            
+            var label = columnChildren.find('label');
+            if (label.length) {
+                columnTitle = label.text();
+            } 
 
             this.hasPriorityColumns = column.is('[class*="ui-column-p-"]');
 
