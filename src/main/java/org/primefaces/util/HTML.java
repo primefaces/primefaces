@@ -84,6 +84,22 @@ public class HTML {
         "type"
     };
 
+    public static final String[] LINK_ATTRS_WITHOUT_EVENTS_AND_STYLE = {
+        "accesskey",
+        "charset",
+        "coords",
+        "dir",
+        "disabled",
+        "hreflang",
+        "rel",
+        "rev",
+        "shape",
+        "tabindex",
+        "target",
+        "title",
+        "type"
+    };
+
     //StyleClass is omitted
     public static final String[] BUTTON_ATTRS_WITHOUT_EVENTS = {
         "accesskey",
