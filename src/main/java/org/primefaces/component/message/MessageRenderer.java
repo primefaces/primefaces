@@ -114,6 +114,8 @@ public class MessageRenderer extends UINotificationRenderer {
                 writer.writeAttribute("role", "alert", null);
                 writer.writeAttribute(HTML.ARIA_ATOMIC, "true", null);
 
+                writer.startElement("div", null);
+
                 if (!display.equals("text")) {
                     encodeIcon(writer, severityKey, msg.getDetail(), iconOnly);
                 }
@@ -126,6 +128,7 @@ public class MessageRenderer extends UINotificationRenderer {
                         encodeText(context, uiMessage, msg.getDetail(), severityKey + "-detail");
                     }
                 }
+                writer.endElement("div");
 
                 msg.rendered();
             }
