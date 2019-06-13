@@ -65,6 +65,8 @@ public class MessageRenderer extends UINotificationRenderer {
 
         writer.startElement("div", uiMessage);
         writer.writeAttribute("id", uiMessage.getClientId(context), null);
+        writer.writeAttribute("role", "alert", null);
+        writer.writeAttribute(HTML.ARIA_ATOMIC, "true", null);
         writer.writeAttribute(HTML.ARIA_LIVE, "polite", null);
 
         if (style != null) {
@@ -111,8 +113,6 @@ public class MessageRenderer extends UINotificationRenderer {
                 }
 
                 writer.writeAttribute("class", styleClass, null);
-                writer.writeAttribute("role", "alert", null);
-                writer.writeAttribute(HTML.ARIA_ATOMIC, "true", null);
 
                 writer.startElement("div", null);
 
