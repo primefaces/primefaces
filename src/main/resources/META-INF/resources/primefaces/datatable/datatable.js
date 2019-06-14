@@ -132,12 +132,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     //@override
     refresh: function(cfg) {
         this.columnWidthsFixed = false;
-        
+
         this.unbindEvents();
 
         this._super(cfg);
     },
-    
+
     /**
      * Unbinds events needed if refreshing to prevent multiple sort and pagination events.
      */
@@ -1098,13 +1098,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             $(this).children('.ui-column-title').children().remove();
         });
         clone.removeAttr('id').addClass('ui-datatable-scrollable-theadclone').height(0).prependTo(table);
-        
+
         return clone;
     },
 
     cloneHead: function() {
         var $this = this;
-        
+
         this.theadClone = this.cloneTableHeader(this.thead, this.bodyTable);
 
         //reflect events from clone to original
@@ -1232,7 +1232,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     }
 
                     $this.setOuterWidth(headerCol, width);
-                    
+
                     if($this.footerCols.length > 0) {
                         var footerCol = $this.footerCols.eq(colIndex);
                         $this.setOuterWidth(footerCol, width);
@@ -1310,7 +1310,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 return true;
             },
-            oncomplete: function(xhr, status, args) {
+            oncomplete: function(xhr, status, args, data) {
                 if(typeof args.totalRecords !== 'undefined') {
                     $this.cfg.scrollLimit = args.totalRecords;
                 }
@@ -1357,7 +1357,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 return true;
             },
-            oncomplete: function(xhr, status, args) {
+            oncomplete: function(xhr, status, args, data) {
                 if(typeof args.totalRecords !== 'undefined') {
                     $this.cfg.scrollLimit = args.totalRecords;
                 }
@@ -1410,7 +1410,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 return true;
             },
-            oncomplete: function(xhr, status, args) {
+            oncomplete: function(xhr, status, args, data) {
                 $this.paginator.cfg.page = newState.page;
                 if(args && typeof args.totalRecords !== 'undefined') {
                     $this.paginator.updateTotalRecords(args.totalRecords);
@@ -1521,7 +1521,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 return true;
             },
-            oncomplete: function(xhr, status, args) {
+            oncomplete: function(xhr, status, args, data) {
                 var paginator = $this.getPaginator();
                 if(args && args.totalRecords) {
                     $this.cfg.scrollLimit = args.totalRecords;
@@ -1658,7 +1658,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 return true;
             },
-            oncomplete: function(xhr, status, args) {
+            oncomplete: function(xhr, status, args, data) {
                 var paginator = $this.getPaginator();
                 if(args && typeof args.totalRecords !== 'undefined') {
                     $this.cfg.scrollLimit = args.totalRecords;
@@ -2438,7 +2438,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 return true;
             },
-            oncomplete: function(xhr, status, args) {
+            oncomplete: function(xhr, status, args, data) {
                 cell.data('edit-events-bound', false);
                 $this.showCurrentCell(cell);
             }
@@ -2682,7 +2682,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 return true;
             },
-            oncomplete: function(xhr, status, args) {
+            oncomplete: function(xhr, status, args, data) {
                 if(args.validationFailed){
                     cell.data('valid', false);
                     cell.addClass('ui-state-error');
@@ -2740,7 +2740,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 return true;
             },
-            oncomplete: function(xhr, status, args) {
+            oncomplete: function(xhr, status, args, data) {
                 $this.viewMode(cell);
                 cell.data('edit-events-bound', false);
 
@@ -2802,7 +2802,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 return true;
             },
-            oncomplete: function(xhr, status, args) {
+            oncomplete: function(xhr, status, args, data) {
                 if(args && args.validationFailed) {
                     $this.invalidateRow(rowIndex);
                 }
@@ -2859,7 +2859,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 return true;
             },
-            oncomplete: function(xhr, status, args) {
+            oncomplete: function(xhr, status, args, data) {
                 var index = ($this.paginator) ? (rowIndex % $this.paginator.getRows()) : rowIndex,
                 newRow = $this.tbody.children('tr').eq(index);
                 $this.showRowEditors(newRow);
@@ -4129,7 +4129,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
 
     _fixColumnWidths: function(header, footerCols) {
         var $this = this;
-        
+
         header.find('> .ui-datatable-scrollable-header-box > table > thead > tr > th').each(function() {
             var headerCol = $(this),
             colIndex = headerCol.index(),

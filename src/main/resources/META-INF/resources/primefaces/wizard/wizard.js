@@ -89,7 +89,7 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
 
                 return true;
             },
-            oncomplete: function(xhr, status, args) {
+            oncomplete: function(xhr, status, args, data) {
                 $this.currentStep = args.currentStep;
 
                 if(!args.validationFailed) {

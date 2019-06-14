@@ -57,7 +57,7 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
                     formId: $this.cfg.formId,
                     global: $this.cfg.global,
                     async: true,
-                    oncomplete: function(xhr, status, args) {
+                    oncomplete: function(xhr, status, args, data) {
                         var value = args[$this.id + '_value'];
                         $this.setValue(value);
 

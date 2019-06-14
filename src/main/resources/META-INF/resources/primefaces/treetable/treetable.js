@@ -40,7 +40,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     refresh: function(cfg) {
         this.columnWidthsFixed = false;
         this.scrollStateVal = this.scrollStateHolder ? this.scrollStateHolder.val() : null;
-        
+
         this._super(cfg);
     },
 
@@ -202,7 +202,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 return true;
             },
-            oncomplete: function(xhr, status, args) {
+            oncomplete: function(xhr, status, args, data) {
                 var paginator = $this.getPaginator();
                 if(args && args.totalRecords) {
                     if(paginator) {
@@ -514,7 +514,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 return true;
             },
-            oncomplete: function(xhr, status, args) {
+            oncomplete: function(xhr, status, args, data) {
                 if($this.cfg.selectionMode && args.selection) {
                     $this.selections = args.selection.split(',');
                     $this.writeSelections();
@@ -934,7 +934,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 {name: this.id + '_instantSelection', value: nodeKey}
             ];
 
-            options.oncomplete = function(xhr, status, args) {
+            options.oncomplete = function(xhr, status, args, data) {
                 if(args.descendantRowKeys && args.descendantRowKeys !== '') {
                     var rowKeys = args.descendantRowKeys.split(',');
                     for(var i = 0; i < rowKeys.length; i++) {
@@ -1345,7 +1345,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 return true;
             },
-            oncomplete: function(xhr, status, args) {
+            oncomplete: function(xhr, status, args, data) {
                 if(args && args.validationFailed) {
                     $this.invalidateRow(rowIndex);
                 }
@@ -1573,7 +1573,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 return true;
             },
-            oncomplete: function(xhr, status, args) {
+            oncomplete: function(xhr, status, args, data) {
                 if(args.validationFailed)
                     cell.addClass('ui-state-error');
                 else
@@ -1613,7 +1613,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 return true;
             },
-            oncomplete: function(xhr, status, args) {
+            oncomplete: function(xhr, status, args, data) {
                 $this.viewMode(cell);
                 cell.data('edit-events-bound', false);
             }
@@ -1650,7 +1650,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 return true;
             },
-            oncomplete: function(xhr, status, args) {
+            oncomplete: function(xhr, status, args, data) {
                 cell.data('edit-events-bound', false);
                 $this.showCurrentCell(cell);
             }
