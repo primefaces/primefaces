@@ -59,6 +59,7 @@ public abstract class ScheduleBase extends UIComponentBase implements Widget, Cl
         scrollTime,
         minTime,
         maxTime,
+        slotLabelInterval,
         slotLabelFormat,
         timeFormat,
         columnFormat,
@@ -244,6 +245,14 @@ public abstract class ScheduleBase extends UIComponentBase implements Widget, Cl
 
     public void setMaxTime(String maxTime) {
         getStateHelper().put(PropertyKeys.maxTime, maxTime);
+    }
+
+    public String getSlotLabelInterval() {
+        return (String) getStateHelper().eval(PropertyKeys.slotLabelInterval, null);
+    }
+
+    public void setSlotLabelInterval(String slotLabelInterval) {
+        getStateHelper().put(PropertyKeys.slotLabelFormat, slotLabelInterval);
     }
 
     public String getSlotLabelFormat() {

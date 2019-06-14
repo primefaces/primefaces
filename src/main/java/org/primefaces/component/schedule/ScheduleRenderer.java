@@ -184,6 +184,7 @@ public class ScheduleRenderer extends CoreRenderer {
                 .attr("weekends", schedule.isShowWeekends(), true)
                 .attr("eventStartEditable", schedule.isDraggable(), true)
                 .attr("eventDurationEditable", schedule.isResizable(), true)
+                .attr("slotLabelInterval", schedule.getSlotLabelInterval(), null)
                 .attr("slotLabelFormat", schedule.getSlotLabelFormat(), null)
                 .attr("timeFormat", schedule.getTimeFormat(), null)
                 .attr("weekNumbers", isShowWeekNumbers, false)

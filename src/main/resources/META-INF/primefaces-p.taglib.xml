@@ -20333,6 +20333,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[TThe frequency that the time slots should be labelled with text. Example: like "01:00" or "{hours:1}".]]>
+            </description>
+            <name>slotLabelInterval</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Determines the time-text that will be displayed within a time slot.]]>
             </description>
             <name>slotLabelFormat</name>
