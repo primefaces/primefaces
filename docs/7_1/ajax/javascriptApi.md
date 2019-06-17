@@ -54,11 +54,11 @@ PrimeFaces.ajax.Request.handle({
     source: 'userForm',
     process: 'userForm',
     update: 'msgs',
-    params:{
-    'param_name1':'value1',
-    'param_name2':'value2'
-    },
-    oncomplete:function(xhr, status, args, data) {alert('Done');}
+    params: [
+        {name: 'param_name1', value: 'value1'},
+        {name: 'param_name2', value: 'value2'},
+    ],
+    oncomplete:function(xhr, status) {alert('Done');}
 });
 ```
 
