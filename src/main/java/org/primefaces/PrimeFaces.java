@@ -421,9 +421,8 @@ public class PrimeFaces {
 
                 if (clientIdConsumer != null) {
                     states.stream()
-                            .map(s -> s.replace(stateKey + SEPARATOR, ""))
+                            .map(s -> s.replace(stateKey + SEPARATOR, Constants.EMPTY_STRING))
                             .forEach(clientIdConsumer);
-
                 }
             }
         }
@@ -482,7 +481,7 @@ public class PrimeFaces {
         }
 
         private String createViewId(String viewId) {
-            return viewId.replaceFirst("^/*", "");
+            return viewId.replaceFirst("^/*", Constants.EMPTY_STRING);
         }
 
         private Map<String, Object> getMultiViewStateSessionMap() {
