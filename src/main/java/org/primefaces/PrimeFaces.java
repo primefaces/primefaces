@@ -184,7 +184,7 @@ public class PrimeFaces {
      */
     @Deprecated
     public void clearTableStates() {
-       multiViewState().clearMultiViewStates();
+        multiViewState().clearMultiViewStates();
     }
 
     /**
@@ -464,7 +464,7 @@ public class PrimeFaces {
                 sessionMap.put(Constants.MULTI_VIEW_STATES, states);
             }
 
-            T state = (T)states.get(stateKey);
+            T state = (T) states.get(stateKey);
             if (state == null && create) {
                 state = supplier.get();
                 states.put(stateKey, state);
