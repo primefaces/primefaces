@@ -24,7 +24,6 @@
 package org.primefaces.component.datalist;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -215,23 +214,11 @@ public class DataList extends DataListBase {
 
     public DataListState getDataListState(boolean create) {
         FacesContext fc = getFacesContext();
-        Map<String, Object> sessionMap = fc.getExternalContext().getSessionMap();
-        Map<String, DataListState> dlState = (Map) sessionMap.get(Constants.DATALIST_STATE);
-        String viewId = fc.getViewRoot().getViewId().replaceFirst("^/*", "");
-        String stateKey = viewId + "_" + getClientId(fc);
+        String viewId = fc.getViewRoot().getViewId();
 
-        if (dlState == null) {
-            dlState = new HashMap<>();
-            sessionMap.put(Constants.DATALIST_STATE, dlState);
-        }
+        return PrimeFaces.current().multiViewState()
+                .getMultiViewState(viewId, getClientId(fc), create, DataListState::new);
 
-        DataListState ls = dlState.get(stateKey);
-        if (ls == null && create) {
-            ls = new DataListState();
-            dlState.put(stateKey, ls);
-        }
-
-        return ls;
     }
 
 }
