@@ -18467,7 +18467,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines if labels of the component is escaped or not.]]>
+                <![CDATA[Defines if labels of the component are escaped or not.]]>
             </description>
             <name>escape</name>
             <required>false</required>
@@ -18667,9 +18667,9 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines if values of the component is escaped or not.]]>
+                <![CDATA[Defines if values of the component are escaped or not.]]>
             </description>
-            <name>escape</name>
+            <name>escapeValue</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
