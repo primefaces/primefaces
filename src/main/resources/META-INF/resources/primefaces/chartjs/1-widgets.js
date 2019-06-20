@@ -84,3 +84,8 @@ PrimeFaces.widget.RadarChart = PrimeFaces.widget.BaseChart.extend({});
  * PrimeFaces BubbleChart Widget
  */
 PrimeFaces.widget.BubbleChart = PrimeFaces.widget.BaseChart.extend({});
+
+/**
+ * PrimeFaces ScatterChart Widget
+ */
+PrimeFaces.widget.ScatterChart = PrimeFaces.widget.BaseChart.extend({});
