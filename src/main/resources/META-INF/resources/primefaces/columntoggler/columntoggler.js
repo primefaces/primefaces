@@ -64,7 +64,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             var label = columnChildren.find('label');
             if (label.length) {
                 columnTitle = label.text();
-            } 
+            }
 
             this.hasPriorityColumns = column.is('[class*="ui-column-p-"]');
 
@@ -73,7 +73,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                     '<div class="ui-helper-hidden-accessible"><input type="checkbox" role="checkbox"></div>' +
                     '<div class="' + boxClass + '"><span class="' + iconClass + '"></span></div>' +
                     '</div>'
-                    + '<label>' + columnTitle + '</label></li>').data('column', column.attr('id'));
+                    + '<label>' + PrimeFaces.escapeHTML(columnTitle) + '</label></li>').data('column', column.attr('id'));
 
             if(this.hasPriorityColumns) {
                 var columnClasses = column.attr('class').split(' ');
