@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.primefaces.model.charts.ChartDataSet;
+import org.primefaces.model.charts.data.BubblePoint;
 import org.primefaces.util.ChartUtils;
 import org.primefaces.util.FastStringWriter;
 

@@ -21,82 +21,72 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model.charts.bubble;
+package org.primefaces.model.charts.data;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
- *
- * Used to set data to Bubble chart component.
- * Bubble chart datasets need to contain a data array of points, each points represented by an object.
+ * This alternate is used for sparse datasets, such as those in scatter charts.
+ * Each data point is specified using an object containing x and y properties.
  */
-public class BubblePoint implements Serializable {
+public class NumericPoint implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Number x;
-    private Number y;
-    private Number r;
+    private Number x = 0;
 
-    public BubblePoint() { }
+    private Number y = 0;
 
-    public BubblePoint(Number x, Number y, Number r) {
-        this.x = x;
-        this.y = y;
-        this.r = r;
+    public NumericPoint() {
+        super();
     }
 
-    /**
-     * Gets the x axis value
-     *
-     * @return x axis value
-     */
+    public NumericPoint(Number x, Number y) {
+        super();
+        this.x = x;
+        this.y = y;
+    }
+
     public Number getX() {
         return x;
     }
 
-    /**
-     * Sets the x axis value
-     *
-     * @param x the value of x axis
-     */
     public void setX(Number x) {
         this.x = x;
     }
 
-    /**
-     * Gets the y axis value
-     *
-     * @return y axis value
-     */
     public Number getY() {
         return y;
     }
 
-    /**
-     * Sets the y axis value
-     *
-     * @param y the value of y axis
-     */
     public void setY(Number y) {
         this.y = y;
     }
 
-    /**
-     * Gets the radius
-     *
-     * @return radius value
-     */
-    public Number getR() {
-        return r;
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 
-    /**
-     * Sets the radius
-     *
-     * @param r Bubble radius in pixels (not scaled).
-     */
-    public void setR(Number r) {
-        this.r = r;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        NumericPoint other = (NumericPoint) obj;
+        return Objects.equals(x, other.x) && Objects.equals(y, other.y);
     }
+
+    @Override
+    public String toString() {
+        return String.format("{x: %s, y: %s}", x, y);
+    }
+
 }
