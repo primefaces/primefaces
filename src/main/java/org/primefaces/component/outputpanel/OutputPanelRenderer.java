@@ -46,7 +46,7 @@ public class OutputPanelRenderer extends CoreRenderer {
         }
         else {
             encodeMarkup(context, panel);
-            if (panel.isDeferred()) {
+            if (isDeferredNecessary(context, panel)) {
                 encodeScript(context, panel);
             }
         }
@@ -67,7 +67,7 @@ public class OutputPanelRenderer extends CoreRenderer {
             writer.writeAttribute("style", panel.getStyle(), "style");
         }
 
-        if (panel.isDeferred()) {
+        if (isDeferredNecessary(context, panel)) {
             renderLoading(context, panel);
         }
         else {
@@ -82,10 +82,8 @@ public class OutputPanelRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("OutputPanel", panel.resolveWidgetVar(), clientId);
 
-        if (panel.isDeferred()) {
-            wb.attr("deferred", true)
-                    .attr("deferredMode", panel.getDeferredMode());
-        }
+        wb.attr("deferred", true)
+                .attr("deferredMode", panel.getDeferredMode());
 
         encodeClientBehaviors(context, panel);
 
@@ -98,6 +96,10 @@ public class OutputPanelRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", OutputPanel.LOADING_CLASS, null);
         writer.endElement("div");
+    }
+
+    protected boolean isDeferredNecessary(FacesContext context, OutputPanel panel) {
+        return !context.getPartialViewContext().isAjaxRequest() && panel.isDeferred();
     }
 
     @Override
