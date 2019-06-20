@@ -1018,6 +1018,45 @@ Extender function allows access to the underlying chart.js api using the setExte
 
 ```xhtml
 <p:radarChart model="#{bean.radarModel2}" />
+
+<h:outputScript>
+        function chartExtender() {
+           //copy the config options into a variable
+           var options = $.extend(true, {}, this.cfg.config);
+        
+           options = {
+              //remove the legend
+              legend: {
+                 display: false
+              },
+              scales: {
+                 xAxes: [{
+                    display: true,
+                    type: "time",
+                    time: {
+                       parser: 'h:mm:ss a',
+                       tooltipFormat: 'h:mm:ss a',
+                       unit: 'hour',
+                       displayFormats: {
+                          'hour': 'h:mm:ss a'
+                       }
+                    }
+                 }],
+                 yAxes: [{
+                    display: true,
+                    scaleLabel: {
+                       display: true,
+                       labelString: 'Your Y Axis',
+                       fontSize: 13,
+                    }
+                 }]
+              }
+           };
+        
+           //merge all options into the main chart options
+           $.extend(true, this.cfg.config, options);
+        };
+</h:outputScript>
 ```
 
 ```java
@@ -1027,84 +1066,13 @@ public class Bean {
 
     @PostConstruct
     public void init() {
+        // create the model
         radarModel2 = new RadarChartModel();
-        ChartData data = new ChartData();
-        
-        RadarChartDataSet radarDataSet = new RadarChartDataSet();
-        radarDataSet.setLabel("P.Practitioner");
-        radarDataSet.setLineTension(0.1);
-        radarDataSet.setBackgroundColor("rgba(102, 153, 204, 0.2)");
-        radarDataSet.setBorderColor("rgba(102, 153, 204, 1)");
-        radarDataSet.setPointBackgroundColor("rgba(102, 153, 204, 1)");
-        radarDataSet.setPointBorderColor("#fff");
-        radarDataSet.setPointHoverRadius(5);
-        radarDataSet.setPointHoverBackgroundColor("#fff");
-        radarDataSet.setPointHoverBorderColor("rgba(102, 153, 204, 1)");
-        List<Number> dataVal = new ArrayList<>();
-        dataVal.add(2);
-        dataVal.add(3);
-        dataVal.add(2);
-        dataVal.add(1);
-        dataVal.add(3);
-        radarDataSet.setData(dataVal);
 
-        RadarChartDataSet radarDataSet2 = new RadarChartDataSet();
-        radarDataSet2.setLabel("P.Manager");
-        radarDataSet2.setLineTension(0.1);
-        radarDataSet2.setBackgroundColor("rgba(255, 204, 102, 0.2)");
-        radarDataSet2.setBorderColor("rgba(255, 204, 102, 1)");
-        radarDataSet2.setPointBackgroundColor("rgba(255, 204, 102, 1)");
-        radarDataSet2.setPointBorderColor("#fff");
-        radarDataSet2.setPointHoverRadius(5);
-        radarDataSet2.setPointHoverBackgroundColor("#fff");
-        radarDataSet2.setPointHoverBorderColor("rgba(255, 204, 102, 1)");
-        List<Number> dataVal2 = new ArrayList<>();
-        dataVal2.add(2);
-        dataVal2.add(3);
-        dataVal2.add(3);
-        dataVal2.add(2);
-        dataVal2.add(3);
-        radarDataSet2.setData(dataVal2);
-        
-        data.addChartDataSet(radarDataSet);
-        data.addChartDataSet(radarDataSet2);
-        
-        List<List<String>> labels = new ArrayList<>();
-        labels.add(new ArrayList(Arrays.asList("Process","Excellence")));
-        labels.add(new ArrayList(Arrays.asList("Problem","Solving")));
-        labels.add(new ArrayList(Arrays.asList("Facilitation")));
-        labels.add(new ArrayList(Arrays.asList("Project","Mgmt")));
-        labels.add(new ArrayList(Arrays.asList("Change","Mgmt")));
-        data.setLabels(labels);
+        // REMOVED FOR BREVITY
 
-        /* Options */
-        RadarChartOptions options = new RadarChartOptions();
-        RadialScales rScales = new RadialScales();
-        
-        RadialLinearAngleLines angelLines = new RadialLinearAngleLines();
-        angelLines.setDisplay(true);
-        angelLines.setLineWidth(0.5);
-        angelLines.setColor("rgba(128, 128, 128, 0.2)");
-        rScales.setAngelLines(angelLines);
-        
-        RadialLinearPointLabels pointLabels = new RadialLinearPointLabels();
-        pointLabels.setFontSize(14);
-        pointLabels.setFontStyle("300");
-        pointLabels.setFontColor("rgba(204, 204, 204, 1)");
-        pointLabels.setFontFamily("Lato, sans-serif");
-        
-        RadialLinearTicks ticks = new RadialLinearTicks();
-        ticks.setBeginAtZero(true);
-        ticks.setMaxTicksLimit(3);
-        ticks.setMin(0);
-        ticks.setMax(3);
-        ticks.setDisplay(false);
-
-        options.setScales(rScales);
-        
-        radarModel2.setOptions(options);
-        radarModel2.setData(data);
-        radarModel2.setExtender("skinRadarChart");
+        // pass Javascript function name to be called 
+        radarModel2.setExtender("chartExtender");
     }
 
     public RadarChartModel getRadarModel() {
