@@ -35,6 +35,10 @@ import org.primefaces.renderkit.CoreRenderer;
 
 public class CellEditorRenderer extends CoreRenderer {
 
+    public static final String CELL_EDITOR_CLASS = "ui-cell-editor";
+    public static final String CELL_EDITOR_INPUT_CLASS = "ui-cell-editor-input";
+    public static final String CELL_EDITOR_OUTPUT_CLASS = "ui-cell-editor-output";
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -72,15 +76,15 @@ public class CellEditorRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", component.getClientId(context), null);
-        writer.writeAttribute("class", DataTable.CELL_EDITOR_CLASS, null);
+        writer.writeAttribute("class", CELL_EDITOR_CLASS, null);
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", DataTable.CELL_EDITOR_OUTPUT_CLASS, null);
+        writer.writeAttribute("class", CELL_EDITOR_OUTPUT_CLASS, null);
         editor.getFacet("output").encodeAll(context);
         writer.endElement("div");
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", DataTable.CELL_EDITOR_INPUT_CLASS, null);
+        writer.writeAttribute("class", CELL_EDITOR_INPUT_CLASS, null);
 
         if (!isLazyEdit) {
             editor.getFacet("input").encodeAll(context);

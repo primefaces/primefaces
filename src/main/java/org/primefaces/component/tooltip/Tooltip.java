@@ -36,6 +36,4 @@ import javax.faces.application.ResourceDependency;
 public class Tooltip extends TooltipBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Tooltip";
-
-    public static final String CONTAINER_CLASS = "ui-tooltip ui-widget";
 }

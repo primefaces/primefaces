@@ -35,6 +35,15 @@ import org.primefaces.util.WidgetBuilder;
 
 public class DataListRenderer extends DataRenderer {
 
+    public static final String DATALIST_CLASS = "ui-datalist ui-widget";
+    public static final String CONTENT_CLASS = "ui-datalist-content ui-widget-content";
+    public static final String LIST_CLASS = "ui-datalist-data";
+    public static final String NO_BULLETS_CLASS = "ui-datalist-nobullets";
+    public static final String LIST_ITEM_CLASS = "ui-datalist-item";
+    public static final String HEADER_CLASS = "ui-datalist-header ui-widget-header ui-corner-top";
+    public static final String FOOTER_CLASS = "ui-datalist-footer ui-widget-header ui-corner-bottom";
+    public static final String DATALIST_EMPTY_MESSAGE_CLASS = "ui-datalist-empty-message";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         decodeBehaviors(context, component);
@@ -91,7 +100,7 @@ public class DataListRenderer extends DataRenderer {
         boolean hasPaginator = list.isPaginator();
         boolean empty = (list.getRowCount() == 0);
         String paginatorPosition = list.getPaginatorPosition();
-        String styleClass = list.getStyleClass() == null ? DataList.DATALIST_CLASS : DataList.DATALIST_CLASS + " " + list.getStyleClass();
+        String styleClass = list.getStyleClass() == null ? DATALIST_CLASS : DATALIST_CLASS + " " + list.getStyleClass();
         String style = list.getStyle();
 
         if (hasPaginator) {
@@ -105,7 +114,7 @@ public class DataListRenderer extends DataRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
-        encodeFacet(context, list, "header", DataList.HEADER_CLASS);
+        encodeFacet(context, list, "header", HEADER_CLASS);
 
         if (hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
             encodePaginatorMarkup(context, list, "top");
@@ -113,11 +122,11 @@ public class DataListRenderer extends DataRenderer {
 
         writer.startElement("div", list);
         writer.writeAttribute("id", clientId + "_content", "id");
-        writer.writeAttribute("class", DataList.CONTENT_CLASS, "styleClass");
+        writer.writeAttribute("class", CONTENT_CLASS, "styleClass");
 
         if (empty) {
             writer.startElement("div", list);
-            writer.writeAttribute("class", DataList.DATALIST_EMPTY_MESSAGE_CLASS, null);
+            writer.writeAttribute("class", DATALIST_EMPTY_MESSAGE_CLASS, null);
             writer.writeText(list.getEmptyMessage(), "emptyMessage");
             writer.endElement("div");
         }
@@ -136,7 +145,7 @@ public class DataListRenderer extends DataRenderer {
             encodePaginatorMarkup(context, list, "bottom");
         }
 
-        encodeFacet(context, list, "footer", DataList.FOOTER_CLASS);
+        encodeFacet(context, list, "footer", FOOTER_CLASS);
 
         writer.endElement("div");
     }
@@ -169,9 +178,9 @@ public class DataListRenderer extends DataRenderer {
         UIComponent definitionFacet = list.getFacet("description");
         boolean renderDefinition = isDefinition && definitionFacet != null;
         String itemType = list.getItemType();
-        String listClass = DataList.LIST_CLASS;
+        String listClass = LIST_CLASS;
         if (itemType != null && itemType.equals("none")) {
-            listClass = listClass + " " + DataList.NO_BULLETS_CLASS;
+            listClass = listClass + " " + NO_BULLETS_CLASS;
         }
 
         String listTag = list.getListTag();
@@ -206,7 +215,7 @@ public class DataListRenderer extends DataRenderer {
 
             if (list.isRowAvailable()) {
                 String itemStyleClass = list.getItemStyleClass();
-                itemStyleClass = (itemStyleClass == null) ? DataList.LIST_ITEM_CLASS : DataList.LIST_ITEM_CLASS + " " + itemStyleClass;
+                itemStyleClass = (itemStyleClass == null) ? LIST_ITEM_CLASS : LIST_ITEM_CLASS + " " + itemStyleClass;
 
                 writer.startElement(listItemTag, null);
                 writer.writeAttribute("class", itemStyleClass, null);

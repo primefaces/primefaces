@@ -35,6 +35,9 @@ import org.primefaces.util.WidgetBuilder;
 
 public class SignatureRenderer extends InputRenderer {
 
+    public static final String STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
+    public static final String READONLY_STYLE_CLASS = "ui-widget ui-widget-content ui-corner-all";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Signature signature = (Signature) component;
@@ -64,7 +67,7 @@ public class SignatureRenderer extends InputRenderer {
         String clientId = signature.getClientId(context);
         String style = signature.getStyle();
         String styleClass = signature.getStyleClass();
-        String defaultStyle = signature.resolveStyleClass();
+        String defaultStyle = resolveStyleClass(signature);
         styleClass = styleClass == null ? defaultStyle : defaultStyle + " " + styleClass;
 
         writer.startElement("div", null);
@@ -119,5 +122,15 @@ public class SignatureRenderer extends InputRenderer {
         }
         renderAccessibilityAttributes(context, signature);
         writer.endElement("input");
+    }
+
+    protected String resolveStyleClass(Signature signature) {
+        String styleClass = STYLE_CLASS;
+
+        if (signature.isReadonly()) {
+            styleClass = READONLY_STYLE_CLASS;
+        }
+
+        return styleClass;
     }
 }

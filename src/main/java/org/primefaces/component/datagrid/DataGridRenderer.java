@@ -36,6 +36,17 @@ import org.primefaces.util.WidgetBuilder;
 
 public class DataGridRenderer extends DataRenderer {
 
+    public static final String DATAGRID_CLASS = "ui-datagrid ui-widget";
+    public static final String HEADER_CLASS = "ui-datagrid-header ui-widget-header ui-corner-top";
+    public static final String FOOTER_CLASS = "ui-datagrid-footer ui-widget-header ui-corner-bottom";
+    public static final String TABLE_CONTENT_CLASS = "ui-datagrid-content ui-widget-content";
+    public static final String EMPTY_CONTENT_CLASS = "ui-datagrid-content ui-datagrid-content-empty ui-widget-content";
+    public static final String TABLE_CLASS = "ui-datagrid-data";
+    public static final String TABLE_ROW_CLASS = "ui-datagrid-row";
+    public static final String GRID_CONTENT_CLASS = "ui-datagrid-content ui-widget-content ui-grid ui-grid-responsive";
+    public static final String GRID_ROW_CLASS = "ui-g";
+    public static final String COLUMN_CLASS = "ui-datagrid-column";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         decodeBehaviors(context, component);
@@ -86,10 +97,10 @@ public class DataGridRenderer extends DataRenderer {
         String layout = grid.getLayout();
         String paginatorPosition = grid.getPaginatorPosition();
         String style = grid.getStyle();
-        String styleClass = grid.getStyleClass() == null ? DataGrid.DATAGRID_CLASS : DataGrid.DATAGRID_CLASS + " " + grid.getStyleClass();
+        String styleClass = grid.getStyleClass() == null ? DATAGRID_CLASS : DATAGRID_CLASS + " " + grid.getStyleClass();
         String contentClass = empty
-                              ? DataGrid.EMPTY_CONTENT_CLASS
-                              : (layout.equals("tabular") ? DataGrid.TABLE_CONTENT_CLASS : DataGrid.GRID_CONTENT_CLASS);
+                              ? EMPTY_CONTENT_CLASS
+                              : (layout.equals("tabular") ? TABLE_CONTENT_CLASS : GRID_CONTENT_CLASS);
 
         if (hasPaginator) {
             grid.calculateFirst();
@@ -102,7 +113,7 @@ public class DataGridRenderer extends DataRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
-        encodeFacet(context, grid, "header", DataGrid.HEADER_CLASS);
+        encodeFacet(context, grid, "header", HEADER_CLASS);
 
         if (hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
             encodePaginatorMarkup(context, grid, "top");
@@ -131,7 +142,7 @@ public class DataGridRenderer extends DataRenderer {
             encodePaginatorMarkup(context, grid, "bottom");
         }
 
-        encodeFacet(context, grid, "footer", DataGrid.FOOTER_CLASS);
+        encodeFacet(context, grid, "footer", FOOTER_CLASS);
 
         writer.endElement("div");
     }
@@ -158,7 +169,7 @@ public class DataGridRenderer extends DataRenderer {
         int rows = grid.getRows();
         int itemsToRender = rows != 0 ? rows : grid.getRowCount();
         int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
-        String columnClass = DataGrid.COLUMN_CLASS + " " + GridLayoutUtils.getColumnClass(columns);
+        String columnClass = COLUMN_CLASS + " " + GridLayoutUtils.getColumnClass(columns);
 
         for (int i = 0; i < numberOfRowsToRender; i++) {
             grid.setRowIndex(rowIndex);
@@ -167,7 +178,7 @@ public class DataGridRenderer extends DataRenderer {
             }
 
             writer.startElement("div", null);
-            writer.writeAttribute("class", DataGrid.GRID_ROW_CLASS, null);
+            writer.writeAttribute("class", GRID_ROW_CLASS, null);
 
             for (int j = 0; j < columns; j++) {
                 writer.startElement("div", null);
@@ -198,7 +209,7 @@ public class DataGridRenderer extends DataRenderer {
         int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
 
         writer.startElement("table", grid);
-        writer.writeAttribute("class", DataGrid.TABLE_CLASS, null);
+        writer.writeAttribute("class", TABLE_CLASS, null);
         writer.startElement("tbody", null);
 
         for (int i = 0; i < numberOfRowsToRender; i++) {
@@ -208,11 +219,11 @@ public class DataGridRenderer extends DataRenderer {
             }
 
             writer.startElement("tr", null);
-            writer.writeAttribute("class", DataGrid.TABLE_ROW_CLASS, null);
+            writer.writeAttribute("class", TABLE_ROW_CLASS, null);
 
             for (int j = 0; j < columns; j++) {
                 writer.startElement("td", null);
-                writer.writeAttribute("class", DataGrid.COLUMN_CLASS, null);
+                writer.writeAttribute("class", COLUMN_CLASS, null);
 
                 grid.setRowIndex(rowIndex);
                 if (grid.isRowAvailable()) {

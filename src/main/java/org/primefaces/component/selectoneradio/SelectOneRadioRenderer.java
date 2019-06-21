@@ -48,6 +48,9 @@ import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneRadioRenderer extends SelectOneRenderer {
 
+    public static final String STYLE_CLASS = "ui-selectoneradio ui-widget";
+    public static final String NATIVE_STYLE_CLASS = "ui-selectoneradio ui-selectoneradio-native ui-widget";
+
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
@@ -112,7 +115,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         List<SelectItem> selectItems = getSelectItems(context, radio);
         String style = radio.getStyle();
         String styleClass = radio.getStyleClass();
-        String defaultStyleClass = radio.isPlain() ? SelectOneRadio.NATIVE_STYLE_CLASS : SelectOneRadio.STYLE_CLASS;
+        String defaultStyleClass = radio.isPlain() ? NATIVE_STYLE_CLASS : STYLE_CLASS;
         defaultStyleClass = defaultStyleClass + " ui-grid ui-grid-responsive";
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 
@@ -174,7 +177,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         List<SelectItem> selectItems = getSelectItems(context, radio);
         String style = radio.getStyle();
         String styleClass = radio.getStyleClass();
-        String defaultStyleClass = radio.isPlain() ? SelectOneRadio.NATIVE_STYLE_CLASS : SelectOneRadio.STYLE_CLASS;
+        String defaultStyleClass = radio.isPlain() ? NATIVE_STYLE_CLASS : STYLE_CLASS;
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 
         writer.startElement("table", radio);

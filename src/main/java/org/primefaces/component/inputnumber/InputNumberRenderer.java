@@ -37,11 +37,13 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
-import org.primefaces.component.inputtext.InputText;
+import org.primefaces.component.inputtext.InputTextRenderer;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.*;
 
 public class InputNumberRenderer extends InputRenderer {
+
+    public static final String STYLE_CLASS = "ui-inputnumber ui-widget";
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue)
@@ -136,7 +138,7 @@ public class InputNumberRenderer extends InputRenderer {
         String clientId = inputNumber.getClientId(context);
 
         String styleClass = inputNumber.getStyleClass();
-        styleClass = styleClass == null ? InputNumber.STYLE_CLASS : InputNumber.STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? STYLE_CLASS : STYLE_CLASS + " " + styleClass;
         styleClass = inputNumber.isValid() ? styleClass : styleClass + " ui-state-error"; // see #3706
 
         writer.startElement("span", inputNumber);
@@ -193,7 +195,7 @@ public class InputNumberRenderer extends InputRenderer {
 
         String style = inputStyle;
 
-        String styleClass = InputText.STYLE_CLASS;
+        String styleClass = InputTextRenderer.STYLE_CLASS;
         styleClass = inputNumber.isValid() ? styleClass : styleClass + " ui-state-error";
         styleClass = !inputNumber.isDisabled() ? styleClass : styleClass + " ui-state-disabled";
         if (!isValueBlank(inputStyleClass)) {

@@ -55,14 +55,6 @@ public class Layout extends LayoutBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Layout";
 
-    public static final String UNIT_CLASS = "ui-layout-unit ui-widget ui-widget-content ui-corner-all";
-    public static final String UNIT_HEADER_CLASS = "ui-layout-unit-header ui-widget-header ui-corner-all";
-    public static final String UNIT_CONTENT_CLASS = "ui-layout-unit-content ui-widget-content";
-    public static final String UNIT_FOOTER_CLASS = "ui-layout-unit-footer ui-widget-header ui-corner-all";
-    public static final String UNIT_HEADER_TITLE_CLASS = "ui-layout-unit-header-title";
-    public static final String UNIT_FOOTER_TITLE_CLASS = "ui-layout-unit-footer-title";
-    public static final String UNIT_HEADER_ICON_CLASS = "ui-layout-unit-header-icon ui-state-default ui-corner-all";
-
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("toggle", ToggleEvent.class)
             .put("close", CloseEvent.class)
@@ -174,7 +166,7 @@ public class Layout extends LayoutBase {
             }
 
             if (wrapperEvent == null) {
-                throw new FacesException("Component " + this.getClass().getName() + " does not support event " + eventName + "!");
+                throw new FacesException("Component " + getClass().getName() + " does not support event " + eventName + "!");
             }
 
             wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());

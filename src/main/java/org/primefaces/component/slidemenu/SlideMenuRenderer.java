@@ -29,11 +29,17 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.menu.AbstractMenu;
-import org.primefaces.component.menu.Menu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
 import org.primefaces.util.WidgetBuilder;
 
 public class SlideMenuRenderer extends TieredMenuRenderer {
+
+    public static final String STATIC_CONTAINER_CLASS = "ui-menu ui-slidemenu ui-widget ui-widget-content ui-corner-all ui-helper-clearfix";
+    public static final String DYNAMIC_CONTAINER_CLASS = "ui-menu ui-slidemenu ui-menu-dynamic ui-widget ui-widget-content ui-corner-all ui-helper-clearfix ui-shadow";
+    public static final String WRAPPER_CLASS = "ui-slidemenu-wrapper";
+    public static final String CONTENT_CLASS = "ui-slidemenu-content";
+    public static final String BACKWARD_CLASS = "ui-slidemenu-backward ui-widget-header ui-corner-all ui-helper-clearfix";
+    public static final String BACKWARD_ICON_CLASS = "ui-icon ui-icon-triangle-1-w";
 
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
@@ -57,7 +63,7 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
 
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
-        String defaultStyleClass = menu.isOverlay() ? SlideMenu.DYNAMIC_CONTAINER_CLASS : SlideMenu.STATIC_CONTAINER_CLASS;
+        String defaultStyleClass = menu.isOverlay() ? DYNAMIC_CONTAINER_CLASS : STATIC_CONTAINER_CLASS;
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 
         writer.startElement("div", menu);
@@ -70,16 +76,16 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
 
         //wrapper
         writer.startElement("div", menu);
-        writer.writeAttribute("class", SlideMenu.WRAPPER_CLASS, "styleClass");
+        writer.writeAttribute("class", WRAPPER_CLASS, "styleClass");
 
         //content
         writer.startElement("div", menu);
-        writer.writeAttribute("class", SlideMenu.CONTENT_CLASS, "styleClass");
+        writer.writeAttribute("class", CONTENT_CLASS, "styleClass");
 
         //root menu
         if (menu.getElementsCount() > 0) {
             writer.startElement("ul", null);
-            writer.writeAttribute("class", Menu.LIST_CLASS, null);
+            writer.writeAttribute("class", LIST_CLASS, null);
             encodeElements(context, abstractMenu, menu.getElements());
             writer.endElement("ul");
         }
@@ -89,9 +95,9 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
 
         //back navigator
         writer.startElement("div", menu);
-        writer.writeAttribute("class", SlideMenu.BACKWARD_CLASS, null);
+        writer.writeAttribute("class", BACKWARD_CLASS, null);
         writer.startElement("span", menu);
-        writer.writeAttribute("class", SlideMenu.BACKWARD_ICON_CLASS, null);
+        writer.writeAttribute("class", BACKWARD_ICON_CLASS, null);
         writer.endElement("span");
         writer.writeText(menu.getBackLabel(), "backLabel");
         writer.endElement("div");

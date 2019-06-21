@@ -38,6 +38,16 @@ import org.primefaces.util.WidgetBuilder;
 
 public class InplaceRenderer extends CoreRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-inplace ui-hidden-container";
+    public static final String DISPLAY_CLASS = "ui-inplace-display";
+    public static final String DISABLED_DISPLAY_CLASS = "ui-inplace-display-disabled";
+    public static final String CONTENT_CLASS = "ui-inplace-content";
+    public static final String EDITOR_CLASS = "ui-inplace-editor";
+    public static final String SAVE_BUTTON_CLASS = "ui-inplace-save";
+    public static final String CANCEL_BUTTON_CLASS = "ui-inplace-cancel";
+    public static final String DISPLAY_INLINE = "inline";
+    public static final String DISPLAY_NONE = "none";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         decodeBehaviors(context, component);
@@ -58,13 +68,13 @@ public class InplaceRenderer extends CoreRenderer {
 
         String userStyleClass = inplace.getStyleClass();
         String userStyle = inplace.getStyle();
-        String styleClass = userStyleClass == null ? Inplace.CONTAINER_CLASS : Inplace.CONTAINER_CLASS + " " + userStyleClass;
+        String styleClass = userStyleClass == null ? CONTAINER_CLASS : CONTAINER_CLASS + " " + userStyleClass;
         boolean disabled = inplace.isDisabled();
-        String displayClass = disabled ? Inplace.DISABLED_DISPLAY_CLASS : Inplace.DISPLAY_CLASS;
+        String displayClass = disabled ? DISABLED_DISPLAY_CLASS : DISPLAY_CLASS;
 
         boolean validationFailed = context.isValidationFailed() && !inplace.isValid();
-        String displayStyle = validationFailed ? Inplace.DISPLAY_NONE : Inplace.DISPLAY_INLINE;
-        String contentStyle = validationFailed ? Inplace.DISPLAY_INLINE : Inplace.DISPLAY_NONE;
+        String displayStyle = validationFailed ? DISPLAY_NONE : DISPLAY_INLINE;
+        String contentStyle = validationFailed ? DISPLAY_INLINE : DISPLAY_NONE;
 
         UIComponent outputFacet = inplace.getFacet("output");
         UIComponent inputFacet = inplace.getFacet("input");
@@ -98,7 +108,7 @@ public class InplaceRenderer extends CoreRenderer {
         if (!inplace.isDisabled()) {
             writer.startElement("span", null);
             writer.writeAttribute("id", clientId + "_content", "id");
-            writer.writeAttribute("class", Inplace.CONTENT_CLASS, null);
+            writer.writeAttribute("class", CONTENT_CLASS, null);
             writer.writeAttribute("style", "display:" + contentStyle, null);
 
             if (inputFacet != null) {
@@ -163,10 +173,10 @@ public class InplaceRenderer extends CoreRenderer {
 
         writer.startElement("span", null);
         writer.writeAttribute("id", inplace.getClientId(context) + "_editor", null);
-        writer.writeAttribute("class", Inplace.EDITOR_CLASS, null);
+        writer.writeAttribute("class", EDITOR_CLASS, null);
 
-        encodeButton(context, inplace.getSaveLabel(), Inplace.SAVE_BUTTON_CLASS, "ui-icon-check");
-        encodeButton(context, inplace.getCancelLabel(), Inplace.CANCEL_BUTTON_CLASS, "ui-icon-close");
+        encodeButton(context, inplace.getSaveLabel(), SAVE_BUTTON_CLASS, "ui-icon-check");
+        encodeButton(context, inplace.getCancelLabel(), CANCEL_BUTTON_CLASS, "ui-icon-close");
 
         writer.endElement("span");
     }

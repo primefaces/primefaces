@@ -33,11 +33,6 @@ public class RowToggler extends RowTogglerBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.RowToggler";
 
-    public static final String COLLAPSED_ICON = "ui-icon ui-icon-circle-triangle-e";
-    public static final String EXPANDED_ICON = "ui-icon ui-icon-circle-triangle-s";
-
-    public static final String ROW_TOGGLER = "primefaces.rowtoggler.aria.ROW_TOGGLER";
-
     private DataTable parentTable = null;
 
     public DataTable getParentTable(FacesContext context) {

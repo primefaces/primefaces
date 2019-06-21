@@ -34,13 +34,17 @@ import org.primefaces.renderkit.CoreRenderer;
 
 public class ToolbarRenderer extends CoreRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-toolbar ui-widget ui-widget-header ui-corner-all ui-helper-clearfix";
+    public static final String SEPARATOR_CLASS = "ui-separator";
+    public static final String SEPARATOR_ICON_CLASS = "ui-icon ui-icon-grip-dotted-vertical";
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Toolbar toolbar = (Toolbar) component;
         ResponseWriter writer = context.getResponseWriter();
         String style = toolbar.getStyle();
         String styleClass = toolbar.getStyleClass();
-        styleClass = styleClass == null ? Toolbar.CONTAINER_CLASS : Toolbar.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
 
         writer.startElement("div", toolbar);
         writer.writeAttribute("id", toolbar.getClientId(context), null);
@@ -109,7 +113,7 @@ public class ToolbarRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String style = separator.getStyle();
         String styleClass = separator.getStyleClass();
-        styleClass = styleClass == null ? Toolbar.SEPARATOR_CLASS : Toolbar.SEPARATOR_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? SEPARATOR_CLASS : SEPARATOR_CLASS + " " + styleClass;
 
         writer.startElement("span", null);
         writer.writeAttribute("class", styleClass, null);
@@ -118,7 +122,7 @@ public class ToolbarRenderer extends CoreRenderer {
         }
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", Toolbar.SEPARATOR_ICON_CLASS, null);
+        writer.writeAttribute("class", SEPARATOR_ICON_CLASS, null);
         writer.endElement("span");
 
         writer.endElement("span");

@@ -42,6 +42,9 @@ import org.primefaces.util.*;
 
 public class CommandLinkRenderer extends CoreRenderer {
 
+    public static final String STYLE_CLASS = "ui-commandlink ui-widget";
+    public static final String DISABLED_STYLE_CLASS = "ui-commandlink ui-widget ui-state-disabled";
+
     private static final String SB_BUILD_ONCLICK = CommandLinkRenderer.class.getName() + "#buildOnclick";
 
     @Override
@@ -71,7 +74,7 @@ public class CommandLinkRenderer extends CoreRenderer {
             String request;
             boolean ajax = link.isAjax();
             String styleClass = link.getStyleClass();
-            styleClass = styleClass == null ? CommandLink.STYLE_CLASS : CommandLink.STYLE_CLASS + " " + styleClass;
+            styleClass = styleClass == null ? STYLE_CLASS : STYLE_CLASS + " " + styleClass;
             PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
             boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled() && link.isValidateClient();
 
@@ -144,7 +147,7 @@ public class CommandLinkRenderer extends CoreRenderer {
         }
         else {
             String styleClass = link.getStyleClass();
-            styleClass = styleClass == null ? CommandLink.DISABLED_STYLE_CLASS : CommandLink.DISABLED_STYLE_CLASS + " " + styleClass;
+            styleClass = styleClass == null ? DISABLED_STYLE_CLASS : DISABLED_STYLE_CLASS + " " + styleClass;
 
             writer.startElement("span", link);
             writer.writeAttribute("id", clientId, "id");

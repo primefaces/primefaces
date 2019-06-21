@@ -36,6 +36,8 @@ import org.primefaces.util.WidgetBuilder;
 
 public class ContextMenuRenderer extends TieredMenuRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-menu ui-menu-dynamic ui-contextmenu ui-widget ui-widget-content ui-corner-all ui-helper-clearfix ui-shadow";
+
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         ContextMenu menu = (ContextMenu) abstractMenu;
@@ -69,7 +71,7 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
         ContextMenu menu = (ContextMenu) abstractMenu;
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
-        styleClass = styleClass == null ? ContextMenu.CONTAINER_CLASS : ContextMenu.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
 
         encodeMenu(context, menu, style, styleClass, "menu");
     }

@@ -56,10 +56,6 @@ public class Diagram extends DiagramBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Diagram";
 
-    public static final String CONTAINER_CLASS = "ui-diagram ui-widget";
-    public static final String ELEMENT_CLASS = "ui-diagram-element";
-    public static final String DRAGGABLE_ELEMENT_CLASS = "ui-diagram-draggable";
-
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("connect", ConnectEvent.class)
             .put("disconnect", DisconnectEvent.class)
@@ -116,7 +112,7 @@ public class Diagram extends DiagramBase {
                     }
 
                     if (wrapperEvent == null) {
-                        throw new FacesException("Component " + this.getClass().getName() + " does not support event " + eventName + "!");
+                        throw new FacesException("Component " + getClass().getName() + " does not support event " + eventName + "!");
                     }
 
                     wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());

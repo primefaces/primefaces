@@ -36,6 +36,8 @@ import org.primefaces.util.WidgetBuilder;
 
 public class KeyboardRenderer extends InputRenderer {
 
+    public static final String STYLE_CLASS = "ui-inputfield ui-keyboard-input ui-widget ui-state-default ui-corner-all";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Keyboard keyboard = (Keyboard) component;
@@ -96,7 +98,7 @@ public class KeyboardRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = keyboard.getClientId(context);
         String type = keyboard.isPassword() ? "password" : "text";
-        String defaultClass = Keyboard.STYLE_CLASS;
+        String defaultClass = STYLE_CLASS;
         defaultClass = !keyboard.isValid() ? defaultClass + " ui-state-error" : defaultClass;
         defaultClass = keyboard.isDisabled() ? defaultClass + " ui-state-disabled" : defaultClass;
         String styleClass = keyboard.getStyleClass();

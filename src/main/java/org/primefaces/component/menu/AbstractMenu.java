@@ -42,19 +42,6 @@ import org.primefaces.util.SerializableFunction;
 
 public abstract class AbstractMenu extends UIPanel {
 
-    public static final String LIST_CLASS = "ui-menu-list ui-helper-reset";
-    public static final String MENUITEM_CLASS = "ui-menuitem ui-widget ui-corner-all";
-    public static final String MENUITEM_LINK_CLASS = "ui-menuitem-link ui-corner-all";
-    public static final String MENUITEM_TEXT_CLASS = "ui-menuitem-text";
-    public static final String MENUITEM_ICON_CLASS = "ui-menuitem-icon ui-icon";
-    public static final String TIERED_SUBMENU_CLASS = "ui-widget ui-menuitem ui-corner-all ui-menu-parent";
-    public static final String TIERED_CHILD_SUBMENU_CLASS = "ui-widget-content ui-menu-list ui-corner-all ui-helper-clearfix ui-menu-child ui-shadow";
-    public static final String SUBMENU_RIGHT_ICON_CLASS = "ui-icon ui-icon-triangle-1-e";
-    public static final String SUBMENU_DOWN_ICON_CLASS = "ui-icon ui-icon-triangle-1-s";
-    public static final String SUBMENU_LINK_CLASS = "ui-menuitem-link ui-submenu-link ui-corner-all";
-    public static final String SEPARATOR_CLASS = "ui-separator ui-state-default";
-    public static final String OPTIONS_CLASS = "ui-menuitem ui-menubar-options ui-widget ui-corner-all";
-
     public enum PropertyKeys {
         tabindex
     }

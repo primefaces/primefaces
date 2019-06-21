@@ -37,6 +37,8 @@ import org.primefaces.util.WidgetBuilder;
 
 public class ContentFlowRenderer extends CoreRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-contentflow ui-widget ui-widget-content ui-corner-all";
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ContentFlow cf = (ContentFlow) component;
@@ -49,7 +51,7 @@ public class ContentFlowRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String style = cf.getStyle();
         String styleClass = cf.getStyleClass();
-        String containerClass = (styleClass == null) ? ContentFlow.CONTAINER_CLASS : ContentFlow.CONTAINER_CLASS + " " + styleClass;
+        String containerClass = (styleClass == null) ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
 
         writer.startElement("div", cf);
         writer.writeAttribute("id", cf.getClientId(context), null);

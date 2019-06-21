@@ -43,6 +43,41 @@ import org.primefaces.util.WidgetBuilder;
 
 public class PickListRenderer extends InputRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-picklist ui-widget ui-helper-clearfix";
+    public static final String LIST_CLASS = "ui-widget-content ui-picklist-list";
+    public static final String LIST_WRAPPER_CLASS = "ui-picklist-list-wrapper";
+    public static final String SOURCE_CLASS = LIST_CLASS + " ui-picklist-source";
+    public static final String TARGET_CLASS = LIST_CLASS + " ui-picklist-target";
+    public static final String BUTTONS_CLASS = "ui-picklist-buttons";
+    public static final String BUTTONS_CELL_CLASS = "ui-picklist-buttons-cell";
+    public static final String SOURCE_CONTROLS = "ui-picklist-source-controls ui-picklist-buttons";
+    public static final String TARGET_CONTROLS = "ui-picklist-target-controls ui-picklist-buttons";
+    public static final String ITEM_CLASS = "ui-picklist-item ui-corner-all";
+    public static final String ITEM_DISABLED_CLASS = "ui-state-disabled";
+    public static final String CAPTION_CLASS = "ui-picklist-caption ui-widget-header ui-corner-tl ui-corner-tr";
+    public static final String ADD_BUTTON_CLASS = "ui-picklist-button-add";
+    public static final String ADD_ALL_BUTTON_CLASS = "ui-picklist-button-add-all";
+    public static final String REMOVE_BUTTON_CLASS = "ui-picklist-button-remove";
+    public static final String REMOVE_ALL_BUTTON_CLASS = "ui-picklist-button-remove-all";
+    public static final String ADD_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrow-1-e";
+    public static final String ADD_ALL_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-e";
+    public static final String REMOVE_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrow-1-w";
+    public static final String REMOVE_ALL_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-w";
+    public static final String VERTICAL_ADD_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrow-1-s";
+    public static final String VERTICAL_ADD_ALL_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-s";
+    public static final String VERTICAL_REMOVE_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrow-1-n";
+    public static final String VERTICAL_REMOVE_ALL_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-n";
+    public static final String MOVE_UP_BUTTON_CLASS = "ui-picklist-button-move-up";
+    public static final String MOVE_DOWN_BUTTON_CLASS = "ui-picklist-button-move-down";
+    public static final String MOVE_TOP_BUTTON_CLASS = "ui-picklist-button-move-top";
+    public static final String MOVE_BOTTOM_BUTTON_CLASS = "ui-picklist-button-move-bottom";
+    public static final String MOVE_UP_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrow-1-n";
+    public static final String MOVE_DOWN_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrow-1-s";
+    public static final String MOVE_TOP_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-n";
+    public static final String MOVE_BOTTOM_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-s";
+    public static final String FILTER_CLASS = "ui-picklist-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
+    public static final String FILTER_CONTAINER = "ui-picklist-filter-container";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         PickList pickList = (PickList) component;
@@ -76,7 +111,7 @@ public class PickListRenderer extends InputRenderer {
         String clientId = pickList.getClientId(context);
         DualListModel model = getModelValueToRender(context, pickList);
         String styleClass = pickList.getStyleClass();
-        styleClass = styleClass == null ? PickList.CONTAINER_CLASS : PickList.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
         String labelDisplay = pickList.getLabelDisplay();
         boolean vertical = pickList.getOrientation().equals("vertical");
         if (vertical) {
@@ -96,40 +131,40 @@ public class PickListRenderer extends InputRenderer {
 
         //Target List Reorder Buttons
         if (pickList.isShowSourceControls()) {
-            encodeListControls(context, pickList, PickList.SOURCE_CONTROLS, labelDisplay);
+            encodeListControls(context, pickList, SOURCE_CONTROLS, labelDisplay);
         }
 
         //Source List
-        encodeList(context, pickList, clientId + "_source", PickList.SOURCE_CLASS, model.getSource(),
+        encodeList(context, pickList, clientId + "_source", SOURCE_CLASS, model.getSource(),
                 pickList.getFacet("sourceCaption"), pickList.isShowSourceFilter(), true);
 
         //Buttons
         writer.startElement("div", null);
-        writer.writeAttribute("class", PickList.BUTTONS_CLASS, null);
+        writer.writeAttribute("class", BUTTONS_CLASS, null);
         writer.startElement("div", null);
-        writer.writeAttribute("class", PickList.BUTTONS_CELL_CLASS, null);
+        writer.writeAttribute("class", BUTTONS_CELL_CLASS, null);
         if (vertical) {
-            encodeButton(context, pickList.getAddLabel(), PickList.ADD_BUTTON_CLASS, PickList.VERTICAL_ADD_BUTTON_ICON_CLASS, labelDisplay);
-            encodeButton(context, pickList.getAddAllLabel(), PickList.ADD_ALL_BUTTON_CLASS, PickList.VERTICAL_ADD_ALL_BUTTON_ICON_CLASS, labelDisplay);
-            encodeButton(context, pickList.getRemoveLabel(), PickList.REMOVE_BUTTON_CLASS, PickList.VERTICAL_REMOVE_BUTTON_ICON_CLASS, labelDisplay);
-            encodeButton(context, pickList.getRemoveAllLabel(), PickList.REMOVE_ALL_BUTTON_CLASS, PickList.VERTICAL_REMOVE_ALL_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, pickList.getAddLabel(), ADD_BUTTON_CLASS, VERTICAL_ADD_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, pickList.getAddAllLabel(), ADD_ALL_BUTTON_CLASS, VERTICAL_ADD_ALL_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, pickList.getRemoveLabel(), REMOVE_BUTTON_CLASS, VERTICAL_REMOVE_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, pickList.getRemoveAllLabel(), REMOVE_ALL_BUTTON_CLASS, VERTICAL_REMOVE_ALL_BUTTON_ICON_CLASS, labelDisplay);
         }
         else {
-            encodeButton(context, pickList.getAddLabel(), PickList.ADD_BUTTON_CLASS, PickList.ADD_BUTTON_ICON_CLASS, labelDisplay);
-            encodeButton(context, pickList.getAddAllLabel(), PickList.ADD_ALL_BUTTON_CLASS, PickList.ADD_ALL_BUTTON_ICON_CLASS, labelDisplay);
-            encodeButton(context, pickList.getRemoveLabel(), PickList.REMOVE_BUTTON_CLASS, PickList.REMOVE_BUTTON_ICON_CLASS, labelDisplay);
-            encodeButton(context, pickList.getRemoveAllLabel(), PickList.REMOVE_ALL_BUTTON_CLASS, PickList.REMOVE_ALL_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, pickList.getAddLabel(), ADD_BUTTON_CLASS, ADD_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, pickList.getAddAllLabel(), ADD_ALL_BUTTON_CLASS, ADD_ALL_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, pickList.getRemoveLabel(), REMOVE_BUTTON_CLASS, REMOVE_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, pickList.getRemoveAllLabel(), REMOVE_ALL_BUTTON_CLASS, REMOVE_ALL_BUTTON_ICON_CLASS, labelDisplay);
         }
         writer.endElement("div");
         writer.endElement("div");
 
         //Target List
-        encodeList(context, pickList, clientId + "_target", PickList.TARGET_CLASS, model.getTarget(),
+        encodeList(context, pickList, clientId + "_target", TARGET_CLASS, model.getTarget(),
                 pickList.getFacet("targetCaption"), pickList.isShowTargetFilter(), false);
 
         //Target List Reorder Buttons
         if (pickList.isShowTargetControls()) {
-            encodeListControls(context, pickList, PickList.TARGET_CONTROLS, labelDisplay);
+            encodeListControls(context, pickList, TARGET_CONTROLS, labelDisplay);
         }
 
         /* For ScreenReader */
@@ -168,11 +203,11 @@ public class PickListRenderer extends InputRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, null);
         writer.startElement("div", null);
-        writer.writeAttribute("class", PickList.BUTTONS_CELL_CLASS, null);
-        encodeButton(context, pickList.getMoveUpLabel(), PickList.MOVE_UP_BUTTON_CLASS, PickList.MOVE_UP_BUTTON_ICON_CLASS, labelDisplay);
-        encodeButton(context, pickList.getMoveTopLabel(), PickList.MOVE_TOP_BUTTON_CLASS, PickList.MOVE_TOP_BUTTON_ICON_CLASS, labelDisplay);
-        encodeButton(context, pickList.getMoveDownLabel(), PickList.MOVE_DOWN_BUTTON_CLASS, PickList.MOVE_DOWN_BUTTON_ICON_CLASS, labelDisplay);
-        encodeButton(context, pickList.getMoveBottomLabel(), PickList.MOVE_BOTTOM_BUTTON_CLASS, PickList.MOVE_BOTTOM_BUTTON_ICON_CLASS, labelDisplay);
+        writer.writeAttribute("class", BUTTONS_CELL_CLASS, null);
+        encodeButton(context, pickList.getMoveUpLabel(), MOVE_UP_BUTTON_CLASS, MOVE_UP_BUTTON_ICON_CLASS, labelDisplay);
+        encodeButton(context, pickList.getMoveTopLabel(), MOVE_TOP_BUTTON_CLASS, MOVE_TOP_BUTTON_ICON_CLASS, labelDisplay);
+        encodeButton(context, pickList.getMoveDownLabel(), MOVE_DOWN_BUTTON_CLASS, MOVE_DOWN_BUTTON_ICON_CLASS, labelDisplay);
+        encodeButton(context, pickList.getMoveBottomLabel(), MOVE_BOTTOM_BUTTON_CLASS, MOVE_BOTTOM_BUTTON_ICON_CLASS, labelDisplay);
         writer.endElement("div");
         writer.endElement("div");
     }
@@ -181,7 +216,7 @@ public class PickListRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", PickList.CAPTION_CLASS, null);
+        writer.writeAttribute("class", CAPTION_CLASS, null);
         caption.encodeAll(context);
         writer.endElement("div");
     }
@@ -219,7 +254,7 @@ public class PickListRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", PickList.LIST_WRAPPER_CLASS, null);
+        writer.writeAttribute("class", LIST_WRAPPER_CLASS, null);
 
         // only render required on target list
         if (!isSource) {
@@ -277,7 +312,7 @@ public class PickListRenderer extends InputRenderer {
             String itemValue = converter != null ?
                                converter.getAsString(context, pickList, pickList.getItemValue()) : pickList.getItemValue().toString();
             String itemLabel = pickList.getItemLabel();
-            String itemClass = pickList.isItemDisabled() ? PickList.ITEM_CLASS + " " + PickList.ITEM_DISABLED_CLASS : PickList.ITEM_CLASS;
+            String itemClass = pickList.isItemDisabled() ? ITEM_CLASS + " " + ITEM_DISABLED_CLASS : ITEM_CLASS;
 
             writer.startElement("li", null);
             writer.writeAttribute("class", itemClass, null);
@@ -361,10 +396,10 @@ public class PickListRenderer extends InputRenderer {
     protected void encodeFilter(FacesContext context, PickList pickList, String name, boolean isSource) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        String styleClass = PickList.FILTER_CLASS + (isSource ? " ui-source-filter-input" : " ui-target-filter-input");
+        String styleClass = FILTER_CLASS + (isSource ? " ui-source-filter-input" : " ui-target-filter-input");
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", PickList.FILTER_CONTAINER, null);
+        writer.writeAttribute("class", FILTER_CONTAINER, null);
 
         writer.startElement("input", null);
         writer.writeAttribute("id", name, null);

@@ -41,6 +41,20 @@ import org.primefaces.util.WidgetBuilder;
 
 public class OrderListRenderer extends CoreRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-orderlist ui-grid ui-widget";
+    public static final String LIST_CLASS = "ui-widget-content ui-orderlist-list";
+    public static final String CONTROLS_CLASS = "ui-orderlist-controls ui-g-12 ui-md-2";
+    public static final String CAPTION_CLASS = "ui-orderlist-caption ui-widget-header ui-corner-top";
+    public static final String ITEM_CLASS = "ui-orderlist-item ui-corner-all";
+    public static final String MOVE_UP_BUTTON_CLASS = "ui-orderlist-button-move-up";
+    public static final String MOVE_DOWN_BUTTON_CLASS = "ui-orderlist-button-move-down";
+    public static final String MOVE_TOP_BUTTON_CLASS = "ui-orderlist-button-move-top";
+    public static final String MOVE_BOTTOM_BUTTON_CLASS = "ui-orderlist-button-move-bottom";
+    public static final String MOVE_UP_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrow-1-n";
+    public static final String MOVE_DOWN_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrow-1-s";
+    public static final String MOVE_TOP_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-n";
+    public static final String MOVE_BOTTOM_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-s";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         OrderList pickList = (OrderList) component;
@@ -68,7 +82,7 @@ public class OrderListRenderer extends CoreRenderer {
         String controlsLocation = ol.getControlsLocation();
         String style = ol.getStyle();
         String styleClass = ol.getStyleClass();
-        styleClass = styleClass == null ? OrderList.CONTAINER_CLASS : OrderList.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
 
         if (ol.isDisabled()) {
             styleClass = styleClass + " ui-state-disabled";
@@ -106,7 +120,7 @@ public class OrderListRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ol.getClientId(context);
         UIComponent caption = ol.getFacet("caption");
-        String listStyleClass = OrderList.LIST_CLASS;
+        String listStyleClass = LIST_CLASS;
         String columnGridClass = ol.getControlsLocation().equals("none") ? "ui-g-12 ui-md-12" : "ui-g-12 ui-md-10";
 
         writer.startElement("div", null);
@@ -149,11 +163,11 @@ public class OrderListRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", OrderList.CONTROLS_CLASS, null);
-        encodeButton(context, ol.getMoveUpLabel(), OrderList.MOVE_UP_BUTTON_CLASS, OrderList.MOVE_UP_BUTTON_ICON_CLASS);
-        encodeButton(context, ol.getMoveTopLabel(), OrderList.MOVE_TOP_BUTTON_CLASS, OrderList.MOVE_TOP_BUTTON_ICON_CLASS);
-        encodeButton(context, ol.getMoveDownLabel(), OrderList.MOVE_DOWN_BUTTON_CLASS, OrderList.MOVE_DOWN_BUTTON_ICON_CLASS);
-        encodeButton(context, ol.getMoveBottomLabel(), OrderList.MOVE_BOTTOM_BUTTON_CLASS, OrderList.MOVE_BOTTOM_BUTTON_ICON_CLASS);
+        writer.writeAttribute("class", CONTROLS_CLASS, null);
+        encodeButton(context, ol.getMoveUpLabel(), MOVE_UP_BUTTON_CLASS, MOVE_UP_BUTTON_ICON_CLASS);
+        encodeButton(context, ol.getMoveTopLabel(), MOVE_TOP_BUTTON_CLASS, MOVE_TOP_BUTTON_ICON_CLASS);
+        encodeButton(context, ol.getMoveDownLabel(), MOVE_DOWN_BUTTON_CLASS, MOVE_DOWN_BUTTON_ICON_CLASS);
+        encodeButton(context, ol.getMoveBottomLabel(), MOVE_BOTTOM_BUTTON_CLASS, MOVE_BOTTOM_BUTTON_ICON_CLASS);
         writer.endElement("div");
     }
 
@@ -168,7 +182,7 @@ public class OrderListRenderer extends CoreRenderer {
             String value = converter != null ? converter.getAsString(context, old, old.getItemValue()) : old.getItemValue().toString();
 
             writer.startElement("li", null);
-            writer.writeAttribute("class", OrderList.ITEM_CLASS, null);
+            writer.writeAttribute("class", ITEM_CLASS, null);
             writer.writeAttribute("data-item-value", value, null);
 
             if (old.getChildCount() > 0) {
@@ -273,7 +287,7 @@ public class OrderListRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", OrderList.CAPTION_CLASS, null);
+        writer.writeAttribute("class", CAPTION_CLASS, null);
         caption.encodeAll(context);
         writer.endElement("div");
     }

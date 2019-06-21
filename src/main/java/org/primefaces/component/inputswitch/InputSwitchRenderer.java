@@ -36,6 +36,12 @@ import org.primefaces.util.WidgetBuilder;
 
 public class InputSwitchRenderer extends InputRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-inputswitch ui-widget ui-widget-content ui-corner-all";
+    public static final String ON_LABEL_CLASS = "ui-inputswitch-on ui-state-active";
+    public static final String OFF_LABEL_CLASS = "ui-inputswitch-off";
+    public static final String HANDLE_CLASS = "ui-inputswitch-handle ui-state-default ";
+    public static final String CHECKED_CLASS = "ui-inputswitch-checked";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         InputSwitch inputSwitch = (InputSwitch) component;
@@ -72,8 +78,8 @@ public class InputSwitchRenderer extends InputRenderer {
         String clientId = inputSwitch.getClientId(context);
         String style = inputSwitch.getStyle();
         String styleClass = inputSwitch.getStyleClass();
-        styleClass = (styleClass == null) ? InputSwitch.CONTAINER_CLASS : InputSwitch.CONTAINER_CLASS + " " + styleClass;
-        styleClass = (checked) ? styleClass + " " + InputSwitch.CHECKED_CLASS : styleClass;
+        styleClass = (styleClass == null) ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
+        styleClass = (checked) ? styleClass + " " + CHECKED_CLASS : styleClass;
         if (inputSwitch.isDisabled()) {
             styleClass = styleClass + " ui-state-disabled";
         }
@@ -85,8 +91,8 @@ public class InputSwitchRenderer extends InputRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
-        encodeOption(context, inputSwitch.getOffLabel(), InputSwitch.OFF_LABEL_CLASS, showLabels);
-        encodeOption(context, inputSwitch.getOnLabel(), InputSwitch.ON_LABEL_CLASS, showLabels);
+        encodeOption(context, inputSwitch.getOffLabel(), OFF_LABEL_CLASS, showLabels);
+        encodeOption(context, inputSwitch.getOnLabel(), ON_LABEL_CLASS, showLabels);
         encodeHandle(context);
         encodeInput(context, inputSwitch, clientId, checked);
 
@@ -115,7 +121,7 @@ public class InputSwitchRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", InputSwitch.HANDLE_CLASS, null);
+        writer.writeAttribute("class", HANDLE_CLASS, null);
         writer.endElement("div");
     }
 

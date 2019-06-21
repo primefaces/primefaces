@@ -48,19 +48,6 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectCheckboxMenu";
 
-    public static final String STYLE_CLASS = "ui-selectcheckboxmenu ui-widget ui-state-default ui-corner-all";
-    public static final String LABEL_CONTAINER_CLASS = "ui-selectcheckboxmenu-label-container";
-    public static final String LABEL_CLASS = "ui-selectcheckboxmenu-label ui-corner-all";
-    public static final String TRIGGER_CLASS = "ui-selectcheckboxmenu-trigger ui-state-default ui-corner-right";
-    public static final String PANEL_CLASS = "ui-selectcheckboxmenu-panel ui-widget-content ui-corner-all ui-helper-hidden";
-    public static final String LIST_CLASS = "ui-selectcheckboxmenu-items ui-selectcheckboxmenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset";
-    public static final String ITEM_CLASS = "ui-selectcheckboxmenu-item ui-selectcheckboxmenu-list-item ui-corner-all ui-helper-clearfix";
-    public static final String MULTIPLE_CLASS = "ui-selectcheckboxmenu-multiple";
-    public static final String MULTIPLE_CONTAINER_CLASS = "ui-selectcheckboxmenu-multiple-container ui-widget ui-inputfield ui-state-default ui-corner-all";
-    public static final String TOKEN_DISPLAY_CLASS = "ui-selectcheckboxmenu-token ui-state-active ui-corner-all";
-    public static final String TOKEN_LABEL_CLASS = "ui-selectcheckboxmenu-token-label";
-    public static final String TOKEN_ICON_CLASS = "ui-selectcheckboxmenu-token-icon ui-icon ui-icon-close";
-
     private static final String DEFAULT_EVENT = "change";
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("change", null)

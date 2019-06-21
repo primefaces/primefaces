@@ -36,7 +36,6 @@ import javax.faces.application.ResourceDependency;
 public class TriStateCheckbox extends TriStateCheckboxBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TriStateCheckbox";
-    public static final String UI_ICON = "ui-icon ";
 
     @Override
     public String getDefaultEventName() {

@@ -65,42 +65,6 @@ public class TreeTable extends TreeTableBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TreeTable";
 
-    public static final String CONTAINER_CLASS = "ui-treetable ui-widget";
-    public static final String RESIZABLE_CONTAINER_CLASS = "ui-treetable ui-treetable-resizable ui-widget";
-    public static final String HEADER_CLASS = "ui-treetable-header ui-widget-header ui-corner-top";
-    public static final String DATA_CLASS = "ui-treetable-data ui-widget-content";
-    public static final String FOOTER_CLASS = "ui-treetable-footer ui-widget-header ui-corner-bottom";
-    public static final String COLUMN_HEADER_CLASS = "ui-state-default";
-    public static final String SORTABLE_COLUMN_HEADER_CLASS = "ui-state-default ui-sortable-column";
-    public static final String ROW_CLASS = "ui-widget-content";
-    public static final String SELECTED_ROW_CLASS = "ui-widget-content ui-state-highlight ui-selected";
-    public static final String COLUMN_CONTENT_WRAPPER = "ui-tt-c";
-    public static final String EXPAND_ICON = "ui-treetable-toggler ui-icon ui-icon-triangle-1-e ui-c";
-    public static final String COLLAPSE_ICON = "ui-treetable-toggler ui-icon ui-icon-triangle-1-s ui-c";
-    public static final String SCROLLABLE_CONTAINER_CLASS = "ui-treetable-scrollable";
-    public static final String SCROLLABLE_HEADER_CLASS = "ui-widget-header ui-treetable-scrollable-header";
-    public static final String SCROLLABLE_HEADER_BOX_CLASS = "ui-treetable-scrollable-header-box";
-    public static final String SCROLLABLE_BODY_CLASS = "ui-treetable-scrollable-body";
-    public static final String SCROLLABLE_FOOTER_CLASS = "ui-widget-header ui-treetable-scrollable-footer";
-    public static final String SCROLLABLE_FOOTER_BOX_CLASS = "ui-treetable-scrollable-footer-box";
-    public static final String SELECTABLE_NODE_CLASS = "ui-treetable-selectable-node";
-    public static final String RESIZABLE_COLUMN_CLASS = "ui-resizable-column";
-    public static final String INDENT_CLASS = "ui-treetable-indent";
-    public static final String EMPTY_MESSAGE_ROW_CLASS = "ui-widget-content ui-treetable-empty-message";
-    public static final String PARTIAL_SELECTED_CLASS = "ui-treetable-partialselected";
-    public static final String SORTABLE_COLUMN_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon-carat-2-n-s";
-    public static final String SORTABLE_COLUMN_ASCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-n";
-    public static final String SORTABLE_COLUMN_DESCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-s";
-    public static final String REFLOW_CLASS = "ui-treetable-reflow";
-    public static final String FILTER_COLUMN_CLASS = "ui-filter-column";
-    public static final String COLUMN_INPUT_FILTER_CLASS = "ui-column-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
-    public static final String COLUMN_CUSTOM_FILTER_CLASS = "ui-column-customfilter";
-    public static final String HIDDEN_COLUMN_CLASS = "ui-helper-hidden";
-    public static final String STATIC_COLUMN_CLASS = "ui-static-column";
-
-    public static final String EDITABLE_COLUMN_CLASS = "ui-editable-column";
-    public static final String EDITING_ROW_CLASS = "ui-row-editing";
-
     public static final String STARTS_WITH_MATCH_MODE = "startsWith";
     public static final String ENDS_WITH_MATCH_MODE = "endsWith";
     public static final String CONTAINS_MATCH_MODE = "contains";
@@ -112,6 +76,7 @@ public class TreeTable extends TreeTableBase {
     public static final String EQUALS_MODE = "equals";
     public static final String IN_MODE = "in";
     public static final String GLOBAL_MODE = "global";
+
     static final Map<String, FilterConstraint> FILTER_CONSTRAINTS = MapBuilder.<String, FilterConstraint>builder()
             .put(STARTS_WITH_MATCH_MODE, new StartsWithFilterConstraint())
             .put(ENDS_WITH_MATCH_MODE, new EndsWithFilterConstraint())
@@ -635,10 +600,10 @@ public class TreeTable extends TreeTableBase {
     }
 
     private void resetDynamicColumns() {
-        Columns dynamicCols = this.getDynamicColumns();
+        Columns dynamicCols = getDynamicColumns();
         if (dynamicCols != null && isNestedWithinIterator()) {
             dynamicCols.setRowIndex(-1);
-            this.setColumns(null);
+            setColumns(null);
         }
     }
 

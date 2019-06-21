@@ -29,7 +29,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.component.dialog.Dialog;
+import org.primefaces.component.dialog.DialogRenderer;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -38,6 +38,11 @@ import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class ConfirmDialogRenderer extends CoreRenderer {
+
+    public static final String CONTAINER_CLASS = "ui-confirm-dialog ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container";
+    public static final String BUTTONPANE_CLASS = "ui-dialog-buttonpane ui-dialog-footer ui-widget-content ui-helper-clearfix";
+    public static final String SEVERITY_ICON_CLASS = "ui-confirm-dialog-severity";
+    public static final String MESSAGE_CLASS = "ui-confirm-dialog-message";
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -52,7 +57,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         String clientId = dialog.getClientId(context);
         String style = dialog.getStyle();
         String styleClass = dialog.getStyleClass();
-        styleClass = styleClass == null ? ConfirmDialog.CONTAINER_CLASS : ConfirmDialog.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
 
         if (ComponentUtils.isRTL(context, dialog)) {
             styleClass += " ui-dialog-rtl";
@@ -97,12 +102,12 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         UIComponent headerFacet = dialog.getFacet("header");
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", Dialog.TITLE_BAR_CLASS, null);
+        writer.writeAttribute("class", DialogRenderer.TITLE_BAR_CLASS, null);
 
         //title
         writer.startElement("span", null);
         writer.writeAttribute("id", dialog.getClientId(context) + "_title", null);
-        writer.writeAttribute("class", Dialog.TITLE_CLASS, null);
+        writer.writeAttribute("class", DialogRenderer.TITLE_CLASS, null);
 
         if (headerFacet != null) {
             headerFacet.encodeAll(context);
@@ -114,17 +119,17 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         writer.endElement("span");
 
         if (dialog.isClosable()) {
-            String ariaLabel = MessageFactory.getMessage(Dialog.ARIA_CLOSE, null);
+            String ariaLabel = MessageFactory.getMessage(DialogRenderer.ARIA_CLOSE, null);
 
             writer.startElement("a", null);
             writer.writeAttribute("href", "#", null);
-            writer.writeAttribute("class", Dialog.TITLE_BAR_CLOSE_CLASS, null);
+            writer.writeAttribute("class", DialogRenderer.TITLE_BAR_CLOSE_CLASS, null);
             if (ariaLabel != null) {
                 writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
             }
 
             writer.startElement("span", null);
-            writer.writeAttribute("class", Dialog.CLOSE_ICON_CLASS, null);
+            writer.writeAttribute("class", DialogRenderer.CLOSE_ICON_CLASS, null);
             writer.endElement("span");
 
             writer.endElement("a");
@@ -138,10 +143,10 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         String messageText = dialog.getMessage();
         UIComponent messageFacet = dialog.getFacet("message");
         String defaultIcon = dialog.isGlobal() ? "ui-icon" : "ui-icon ui-icon-" + dialog.getSeverity();
-        String severityIcon = defaultIcon + " " + ConfirmDialog.SEVERITY_ICON_CLASS;
+        String severityIcon = defaultIcon + " " + SEVERITY_ICON_CLASS;
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", Dialog.CONTENT_CLASS, null);
+        writer.writeAttribute("class", DialogRenderer.CONTENT_CLASS, null);
         writer.writeAttribute("id", dialog.getClientId(context) + "_content", null);
 
         //severity
@@ -150,7 +155,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         writer.endElement("span");
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", ConfirmDialog.MESSAGE_CLASS, null);
+        writer.writeAttribute("class", MESSAGE_CLASS, null);
 
         if (messageFacet != null) {
             messageFacet.encodeAll(context);
@@ -168,7 +173,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", ConfirmDialog.BUTTONPANE_CLASS, null);
+        writer.writeAttribute("class", BUTTONPANE_CLASS, null);
 
         renderChildren(context, dialog);
 

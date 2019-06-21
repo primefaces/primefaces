@@ -41,6 +41,15 @@ import org.primefaces.util.WidgetBuilder;
 
 public class AccordionPanelRenderer extends CoreRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-accordion ui-widget ui-helper-reset ui-hidden-container";
+    public static final String ACTIVE_TAB_HEADER_CLASS = "ui-accordion-header ui-helper-reset ui-state-default ui-state-active ui-corner-top";
+    public static final String TAB_HEADER_CLASS = "ui-accordion-header ui-helper-reset ui-state-default ui-corner-all";
+    public static final String TAB_HEADER_ICON_CLASS = "ui-icon ui-icon-triangle-1-e";
+    public static final String TAB_HEADER_ICON_RTL_CLASS = "ui-icon ui-icon-triangle-1-w";
+    public static final String ACTIVE_TAB_HEADER_ICON_CLASS = "ui-icon ui-icon-triangle-1-s";
+    public static final String ACTIVE_TAB_CONTENT_CLASS = "ui-accordion-content ui-helper-reset ui-widget-content";
+    public static final String INACTIVE_TAB_CONTENT_CLASS = "ui-accordion-content ui-helper-reset ui-widget-content ui-helper-hidden";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         AccordionPanel acco = (AccordionPanel) component;
@@ -96,7 +105,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
         String clientId = acco.getClientId(context);
         String widgetVar = acco.resolveWidgetVar();
         String styleClass = acco.getStyleClass();
-        styleClass = styleClass == null ? AccordionPanel.CONTAINER_CLASS : AccordionPanel.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
 
         if (ComponentUtils.isRTL(context, acco)) {
             styleClass = styleClass + " ui-accordion-rtl";
@@ -203,15 +212,15 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
         ResponseWriter writer = context.getResponseWriter();
 
-        String headerClass = active ? AccordionPanel.ACTIVE_TAB_HEADER_CLASS : AccordionPanel.TAB_HEADER_CLASS;
+        String headerClass = active ? ACTIVE_TAB_HEADER_CLASS : TAB_HEADER_CLASS;
         headerClass = tab.isDisabled() ? headerClass + " ui-state-disabled" : headerClass;
         headerClass = tab.getTitleStyleClass() == null ? headerClass : headerClass + " " + tab.getTitleStyleClass();
         String iconClass = active
-                           ? AccordionPanel.ACTIVE_TAB_HEADER_ICON_CLASS
-                           : (rtl ? AccordionPanel.TAB_HEADER_ICON_RTL_CLASS : AccordionPanel.TAB_HEADER_ICON_CLASS);
+                           ? ACTIVE_TAB_HEADER_ICON_CLASS
+                           : (rtl ? TAB_HEADER_ICON_RTL_CLASS : TAB_HEADER_ICON_CLASS);
         String contentClass = active
-                              ? AccordionPanel.ACTIVE_TAB_CONTENT_CLASS
-                              : AccordionPanel.INACTIVE_TAB_CONTENT_CLASS;
+                              ? ACTIVE_TAB_CONTENT_CLASS
+                              : INACTIVE_TAB_CONTENT_CLASS;
         UIComponent titleFacet = tab.getFacet("title");
         String title = tab.getTitle();
         String tabindex = tab.isDisabled() ? "-1" : accordionPanel.getTabindex();

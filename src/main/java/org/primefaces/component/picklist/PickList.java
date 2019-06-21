@@ -56,41 +56,6 @@ public class PickList extends PickListBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.PickList";
 
-    public static final String CONTAINER_CLASS = "ui-picklist ui-widget ui-helper-clearfix";
-    public static final String LIST_CLASS = "ui-widget-content ui-picklist-list";
-    public static final String LIST_WRAPPER_CLASS = "ui-picklist-list-wrapper";
-    public static final String SOURCE_CLASS = LIST_CLASS + " ui-picklist-source";
-    public static final String TARGET_CLASS = LIST_CLASS + " ui-picklist-target";
-    public static final String BUTTONS_CLASS = "ui-picklist-buttons";
-    public static final String BUTTONS_CELL_CLASS = "ui-picklist-buttons-cell";
-    public static final String SOURCE_CONTROLS = "ui-picklist-source-controls ui-picklist-buttons";
-    public static final String TARGET_CONTROLS = "ui-picklist-target-controls ui-picklist-buttons";
-    public static final String ITEM_CLASS = "ui-picklist-item ui-corner-all";
-    public static final String ITEM_DISABLED_CLASS = "ui-state-disabled";
-    public static final String CAPTION_CLASS = "ui-picklist-caption ui-widget-header ui-corner-tl ui-corner-tr";
-    public static final String ADD_BUTTON_CLASS = "ui-picklist-button-add";
-    public static final String ADD_ALL_BUTTON_CLASS = "ui-picklist-button-add-all";
-    public static final String REMOVE_BUTTON_CLASS = "ui-picklist-button-remove";
-    public static final String REMOVE_ALL_BUTTON_CLASS = "ui-picklist-button-remove-all";
-    public static final String ADD_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrow-1-e";
-    public static final String ADD_ALL_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-e";
-    public static final String REMOVE_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrow-1-w";
-    public static final String REMOVE_ALL_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-w";
-    public static final String VERTICAL_ADD_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrow-1-s";
-    public static final String VERTICAL_ADD_ALL_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-s";
-    public static final String VERTICAL_REMOVE_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrow-1-n";
-    public static final String VERTICAL_REMOVE_ALL_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-n";
-    public static final String MOVE_UP_BUTTON_CLASS = "ui-picklist-button-move-up";
-    public static final String MOVE_DOWN_BUTTON_CLASS = "ui-picklist-button-move-down";
-    public static final String MOVE_TOP_BUTTON_CLASS = "ui-picklist-button-move-top";
-    public static final String MOVE_BOTTOM_BUTTON_CLASS = "ui-picklist-button-move-bottom";
-    public static final String MOVE_UP_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrow-1-n";
-    public static final String MOVE_DOWN_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrow-1-s";
-    public static final String MOVE_TOP_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-n";
-    public static final String MOVE_BOTTOM_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-s";
-    public static final String FILTER_CLASS = "ui-picklist-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
-    public static final String FILTER_CONTAINER = "ui-picklist-filter-container";
-
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("transfer", TransferEvent.class)
             .put("select", SelectEvent.class)
@@ -215,7 +180,7 @@ public class PickList extends PickListBase {
                 }
 
                 if (wrapperEvent == null) {
-                    throw new FacesException("Component " + this.getClass().getName() + " does not support event " + eventName + "!");
+                    throw new FacesException("Component " + getClass().getName() + " does not support event " + eventName + "!");
                 }
 
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());

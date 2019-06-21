@@ -54,18 +54,6 @@ public class Panel extends PanelBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Panel";
 
-    public static final String PANEL_CLASS = "ui-panel ui-widget ui-widget-content ui-corner-all";
-    public static final String PANEL_TITLEBAR_CLASS = "ui-panel-titlebar ui-widget-header ui-helper-clearfix ui-corner-all";
-    public static final String PANEL_TITLE_CLASS = "ui-panel-title";
-    public static final String PANEL_TITLE_ICON_CLASS = "ui-panel-titlebar-icon ui-corner-all ui-state-default";
-    public static final String PANEL_CONTENT_CLASS = "ui-panel-content ui-widget-content";
-    public static final String PANEL_FOOTER_CLASS = "ui-panel-footer ui-widget-content";
-    public static final String PANEL_ACTIONS_CLASS = "ui-panel-actions";
-
-    public static final String ARIA_CLOSE = "primefaces.dialog.aria.CLOSE";
-    public static final String ARIA_TOGGLE = "primefaces.panel.aria.TOGGLE";
-    public static final String ARIA_OPTIONS_MENU = "primefaces.panel.aria.OPTIONS_MENU";
-
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("toggle", ToggleEvent.class)
             .put("close", CloseEvent.class)

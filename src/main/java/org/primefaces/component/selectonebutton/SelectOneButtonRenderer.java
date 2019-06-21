@@ -43,6 +43,8 @@ import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneButtonRenderer extends SelectOneRenderer {
 
+    public static final String STYLE_CLASS = "ui-selectonebutton ui-buttonset ui-widget ui-corner-all";
+
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
@@ -67,7 +69,7 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         int selectItemsSize = selectItems.size();
         String style = button.getStyle();
         String styleClass = button.getStyleClass();
-        styleClass = styleClass == null ? SelectOneButton.STYLE_CLASS : SelectOneButton.STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? STYLE_CLASS : STYLE_CLASS + " " + styleClass;
         styleClass = styleClass + " ui-buttonset-" + selectItemsSize;
         styleClass = !button.isValid() ? styleClass + " ui-state-error" : styleClass;
 

@@ -49,11 +49,6 @@ public class Rating extends RatingBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Rating";
 
-    public static final String CONTAINER_CLASS = "ui-rating";
-    public static final String CANCEL_CLASS = "ui-rating-cancel";
-    public static final String STAR_CLASS = "ui-rating-star";
-    public static final String STAR_ON_CLASS = "ui-rating-star ui-rating-star-on";
-
     private static final String DEFAULT_EVENT = "rate";
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("rate", RateEvent.class)

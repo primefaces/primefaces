@@ -32,7 +32,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
 
-import org.primefaces.component.autocomplete.AutoComplete;
 import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
@@ -41,6 +40,10 @@ import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class InputTextareaRenderer extends InputRenderer {
+
+    public static final String STYLE_CLASS = "ui-inputfield ui-inputtextarea ui-widget ui-state-default ui-corner-all";
+    public static final String LIST_CLASS = "ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset";
+    public static final String ITEM_CLASS = "ui-autocomplete-item ui-autocomplete-list-item ui-corner-all";
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -92,11 +95,11 @@ public class InputTextareaRenderer extends InputRenderer {
         List<Object> items = inputTextarea.getSuggestions();
 
         writer.startElement("ul", inputTextarea);
-        writer.writeAttribute("class", AutoComplete.LIST_CLASS, null);
+        writer.writeAttribute("class", LIST_CLASS, null);
 
         for (Object item : items) {
             writer.startElement("li", null);
-            writer.writeAttribute("class", AutoComplete.ITEM_CLASS, null);
+            writer.writeAttribute("class", ITEM_CLASS, null);
             writer.writeAttribute("data-item-value", item.toString(), null);
             writer.writeText(item, null);
 
@@ -165,7 +168,7 @@ public class InputTextareaRenderer extends InputRenderer {
     }
 
     protected String createStyleClass(InputTextarea inputTextarea) {
-        String defaultClass = InputTextarea.STYLE_CLASS;
+        String defaultClass = STYLE_CLASS;
         defaultClass = inputTextarea.isValid() ? defaultClass : defaultClass + " ui-state-error";
         defaultClass = !inputTextarea.isDisabled() ? defaultClass : defaultClass + " ui-state-disabled";
 

@@ -29,7 +29,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.column.Column;
-import org.primefaces.component.panelgrid.PanelGrid;
+import org.primefaces.component.panelgrid.PanelGridRenderer;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class PanelGridFacetColumnRenderer extends CoreRenderer implements HelperColumnRenderer {
@@ -39,7 +39,7 @@ public class PanelGridFacetColumnRenderer extends CoreRenderer implements Helper
         ResponseWriter writer = context.getResponseWriter();
         String style = column.getStyle();
         String styleClass = column.getStyleClass();
-        String defaultStyleClass = PanelGrid.CELL_CLASS + " ui-widget-header";
+        String defaultStyleClass = PanelGridRenderer.CELL_CLASS + " ui-widget-header";
         styleClass = (styleClass == null) ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 
         writer.startElement("td", null);

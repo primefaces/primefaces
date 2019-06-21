@@ -45,6 +45,12 @@ import org.primefaces.util.WidgetBuilder;
 
 public class WizardRenderer extends CoreRenderer {
 
+    public static final String STEP_STATUS_CLASS = "ui-wizard-step-titles ui-helper-reset ui-helper-clearfix";
+    public static final String STEP_CLASS = "ui-wizard-step-title ui-state-default ui-corner-all";
+    public static final String ACTIVE_STEP_CLASS = "ui-wizard-step-title ui-state-default ui-state-highlight ui-corner-all";
+    public static final String BACK_BUTTON_CLASS = "ui-wizard-nav-back";
+    public static final String NEXT_BUTTON_CLASS = "ui-wizard-nav-next";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Wizard wizard = (Wizard) component;
@@ -200,8 +206,8 @@ public class WizardRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-wizard-navbar ui-helper-clearfix", null);
 
-        encodeNavigator(facesContext, wizard, clientId + "_back", wizard.getBackLabel(), Wizard.BACK_BUTTON_CLASS, "ui-icon-arrowthick-1-w");
-        encodeNavigator(facesContext, wizard, clientId + "_next", wizard.getNextLabel(), Wizard.NEXT_BUTTON_CLASS, "ui-icon-arrowthick-1-e");
+        encodeNavigator(facesContext, wizard, clientId + "_back", wizard.getBackLabel(), BACK_BUTTON_CLASS, "ui-icon-arrowthick-1-w");
+        encodeNavigator(facesContext, wizard, clientId + "_next", wizard.getNextLabel(), NEXT_BUTTON_CLASS, "ui-icon-arrowthick-1-e");
 
         writer.endElement("div");
     }
@@ -225,7 +231,7 @@ public class WizardRenderer extends CoreRenderer {
         boolean currentFound = false;
 
         writer.startElement("ul", null);
-        writer.writeAttribute("class", Wizard.STEP_STATUS_CLASS, null);
+        writer.writeAttribute("class", STEP_STATUS_CLASS, null);
 
         for (UIComponent child : wizard.getChildren()) {
             if (child instanceof Tab && child.isRendered()) {
@@ -233,7 +239,7 @@ public class WizardRenderer extends CoreRenderer {
                 String title = tab.getTitle();
                 UIComponent titleFacet = tab.getFacet("title");
                 boolean active = (!currentFound) && (currentStep == null || tab.getId().equals(currentStep));
-                String titleStyleClass = active ? Wizard.ACTIVE_STEP_CLASS : Wizard.STEP_CLASS;
+                String titleStyleClass = active ? ACTIVE_STEP_CLASS : STEP_CLASS;
                 if (tab.getTitleStyleClass() != null) {
                     titleStyleClass = titleStyleClass + " " + tab.getTitleStyleClass();
                 }

@@ -47,6 +47,8 @@ import org.primefaces.util.WidgetBuilder;
 
 public class SelectManyCheckboxRenderer extends SelectManyRenderer {
 
+    public static final String STYLE_CLASS = "ui-selectmanycheckbox ui-widget";
+
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
@@ -103,7 +105,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         String clientId = checkbox.getClientId(context);
         String style = checkbox.getStyle();
         String styleClass = checkbox.getStyleClass();
-        styleClass = (styleClass == null) ? SelectManyCheckbox.STYLE_CLASS : SelectManyCheckbox.STYLE_CLASS + " " + styleClass;
+        styleClass = (styleClass == null) ? STYLE_CLASS : STYLE_CLASS + " " + styleClass;
         styleClass = styleClass + " ui-grid ui-grid-responsive";
         int columns = checkbox.getColumns();
 
@@ -197,7 +199,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         String clientId = checkbox.getClientId(context);
         String style = checkbox.getStyle();
         String styleClass = checkbox.getStyleClass();
-        styleClass = styleClass == null ? SelectManyCheckbox.STYLE_CLASS : SelectManyCheckbox.STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? STYLE_CLASS : STYLE_CLASS + " " + styleClass;
 
         writer.startElement("table", checkbox);
         writer.writeAttribute("id", clientId, "id");

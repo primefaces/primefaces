@@ -40,17 +40,6 @@ import javax.faces.context.FacesContext;
 public class FileUpload extends FileUploadBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.FileUpload";
-    public static final String CONTAINER_CLASS = "ui-fileupload ui-widget ui-fileupload-responsive";
-    public static final String BUTTON_BAR_CLASS = "ui-fileupload-buttonbar ui-widget-header ui-corner-top";
-    public static final String CONTENT_CLASS = "ui-fileupload-content ui-widget-content ui-corner-bottom";
-    public static final String FILES_CLASS = "ui-fileupload-files";
-    public static final String CHOOSE_BUTTON_CLASS = "ui-fileupload-choose";
-    public static final String UPLOAD_BUTTON_CLASS = "ui-fileupload-upload";
-    public static final String CANCEL_BUTTON_CLASS = "ui-fileupload-cancel";
-    public static final String BUTTON_ICON_ONLY = "ui-fileupload-icon-only";
-
-    public static final String CONTAINER_CLASS_SIMPLE = "ui-fileupload-simple ui-widget";
-    public static final String FILENAME_CLASS = "ui-fileupload-filename";
 
     @Override
     public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {

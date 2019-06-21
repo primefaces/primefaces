@@ -50,7 +50,6 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.row.Row;
-import org.primefaces.component.tree.Tree;
 import org.primefaces.model.*;
 import org.primefaces.model.filter.FilterConstraint;
 import org.primefaces.model.filter.GlobalFilterConstraint;
@@ -61,9 +60,45 @@ import org.primefaces.visit.ResetInputVisitCallback;
 
 import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
 import static org.primefaces.component.treetable.TreeTable.FILTER_CONSTRAINTS;
-import static org.primefaces.component.treetable.TreeTable.GLOBAL_MODE;
 
 public class TreeTableRenderer extends DataRenderer {
+
+    public static final String CHECKBOX_CLASS = "ui-selection";
+    public static final String CONTAINER_CLASS = "ui-treetable ui-widget";
+    public static final String RESIZABLE_CONTAINER_CLASS = "ui-treetable ui-treetable-resizable ui-widget";
+    public static final String HEADER_CLASS = "ui-treetable-header ui-widget-header ui-corner-top";
+    public static final String DATA_CLASS = "ui-treetable-data ui-widget-content";
+    public static final String FOOTER_CLASS = "ui-treetable-footer ui-widget-header ui-corner-bottom";
+    public static final String COLUMN_HEADER_CLASS = "ui-state-default";
+    public static final String SORTABLE_COLUMN_HEADER_CLASS = "ui-state-default ui-sortable-column";
+    public static final String ROW_CLASS = "ui-widget-content";
+    public static final String SELECTED_ROW_CLASS = "ui-widget-content ui-state-highlight ui-selected";
+    public static final String COLUMN_CONTENT_WRAPPER = "ui-tt-c";
+    public static final String EXPAND_ICON = "ui-treetable-toggler ui-icon ui-icon-triangle-1-e ui-c";
+    public static final String COLLAPSE_ICON = "ui-treetable-toggler ui-icon ui-icon-triangle-1-s ui-c";
+    public static final String SCROLLABLE_CONTAINER_CLASS = "ui-treetable-scrollable";
+    public static final String SCROLLABLE_HEADER_CLASS = "ui-widget-header ui-treetable-scrollable-header";
+    public static final String SCROLLABLE_HEADER_BOX_CLASS = "ui-treetable-scrollable-header-box";
+    public static final String SCROLLABLE_BODY_CLASS = "ui-treetable-scrollable-body";
+    public static final String SCROLLABLE_FOOTER_CLASS = "ui-widget-header ui-treetable-scrollable-footer";
+    public static final String SCROLLABLE_FOOTER_BOX_CLASS = "ui-treetable-scrollable-footer-box";
+    public static final String SELECTABLE_NODE_CLASS = "ui-treetable-selectable-node";
+    public static final String RESIZABLE_COLUMN_CLASS = "ui-resizable-column";
+    public static final String INDENT_CLASS = "ui-treetable-indent";
+    public static final String EMPTY_MESSAGE_ROW_CLASS = "ui-widget-content ui-treetable-empty-message";
+    public static final String PARTIAL_SELECTED_CLASS = "ui-treetable-partialselected";
+    public static final String SORTABLE_COLUMN_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon-carat-2-n-s";
+    public static final String SORTABLE_COLUMN_ASCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-n";
+    public static final String SORTABLE_COLUMN_DESCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-s";
+    public static final String REFLOW_CLASS = "ui-treetable-reflow";
+    public static final String FILTER_COLUMN_CLASS = "ui-filter-column";
+    public static final String COLUMN_INPUT_FILTER_CLASS = "ui-column-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
+    public static final String COLUMN_CUSTOM_FILTER_CLASS = "ui-column-customfilter";
+    public static final String HIDDEN_COLUMN_CLASS = "ui-helper-hidden";
+    public static final String STATIC_COLUMN_CLASS = "ui-static-column";
+
+    public static final String EDITABLE_COLUMN_CLASS = "ui-editable-column";
+    public static final String EDITING_ROW_CLASS = "ui-row-editing";
 
     private static final String SB_DECODE_SELECTION = TreeTableRenderer.class.getName() + "#decodeSelection";
 
@@ -298,8 +333,8 @@ public class TreeTableRenderer extends DataRenderer {
             sort(tt);
         }
 
-        String containerClass = tt.isResizableColumns() ? TreeTable.RESIZABLE_CONTAINER_CLASS : TreeTable.CONTAINER_CLASS;
-        containerClass = scrollable ? containerClass + " " + TreeTable.SCROLLABLE_CONTAINER_CLASS : containerClass;
+        String containerClass = tt.isResizableColumns() ? RESIZABLE_CONTAINER_CLASS : CONTAINER_CLASS;
+        containerClass = scrollable ? containerClass + " " + SCROLLABLE_CONTAINER_CLASS : containerClass;
         containerClass = tt.getStyleClass() == null ? containerClass : containerClass + " " + tt.getStyleClass();
         containerClass = tt.isShowUnselectableCheckbox() ? containerClass + " ui-treetable-checkbox-all" : containerClass;
 
@@ -334,8 +369,8 @@ public class TreeTableRenderer extends DataRenderer {
         boolean hasPaginator = tt.isPaginator();
         String paginatorPosition = tt.getPaginatorPosition();
 
-        encodeScrollAreaStart(context, tt, TreeTable.SCROLLABLE_HEADER_CLASS, TreeTable.SCROLLABLE_HEADER_BOX_CLASS,
-                tableStyle, tableStyleClass, "header", TreeTable.HEADER_CLASS);
+        encodeScrollAreaStart(context, tt, SCROLLABLE_HEADER_CLASS, SCROLLABLE_HEADER_BOX_CLASS,
+                tableStyle, tableStyleClass, "header", HEADER_CLASS);
 
         if (hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
             encodePaginatorMarkup(context, tt, "top");
@@ -346,8 +381,8 @@ public class TreeTableRenderer extends DataRenderer {
 
         encodeScrollBody(context, tt, tableStyle, tableStyleClass);
 
-        encodeScrollAreaStart(context, tt, TreeTable.SCROLLABLE_FOOTER_CLASS, TreeTable.SCROLLABLE_FOOTER_BOX_CLASS,
-                tableStyle, tableStyleClass, "footer", TreeTable.FOOTER_CLASS);
+        encodeScrollAreaStart(context, tt, SCROLLABLE_FOOTER_CLASS, SCROLLABLE_FOOTER_BOX_CLASS,
+                tableStyle, tableStyleClass, "footer", FOOTER_CLASS);
         encodeTfoot(context, tt);
 
         if (hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
@@ -361,7 +396,7 @@ public class TreeTableRenderer extends DataRenderer {
         String scrollHeight = tt.getScrollHeight();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", TreeTable.SCROLLABLE_BODY_CLASS, null);
+        writer.writeAttribute("class", SCROLLABLE_BODY_CLASS, null);
         if (scrollHeight != null && scrollHeight.indexOf('%') == -1) {
             writer.writeAttribute("style", "height:" + scrollHeight + "px", null);
         }
@@ -417,7 +452,7 @@ public class TreeTableRenderer extends DataRenderer {
         boolean hasPaginator = tt.isPaginator();
         String paginatorPosition = tt.getPaginatorPosition();
 
-        encodeFacet(context, tt, tt.getFacet("header"), TreeTable.HEADER_CLASS);
+        encodeFacet(context, tt, tt.getFacet("header"), HEADER_CLASS);
 
         if (tt.isPaginator() && !paginatorPosition.equalsIgnoreCase("bottom")) {
             encodePaginatorMarkup(context, tt, "top");
@@ -442,7 +477,7 @@ public class TreeTableRenderer extends DataRenderer {
             encodePaginatorMarkup(context, tt, "bottom");
         }
 
-        encodeFacet(context, tt, tt.getFacet("footer"), TreeTable.FOOTER_CLASS);
+        encodeFacet(context, tt, tt.getFacet("footer"), FOOTER_CLASS);
     }
 
     protected void encodeThead(FacesContext context, TreeTable tt) throws IOException {
@@ -513,12 +548,12 @@ public class TreeTableRenderer extends DataRenderer {
         if (!dataOnly) {
             writer.startElement("tbody", null);
             writer.writeAttribute("id", clientId + "_data", null);
-            writer.writeAttribute("class", TreeTable.DATA_CLASS, null);
+            writer.writeAttribute("class", DATA_CLASS, null);
         }
 
         if (empty) {
             writer.startElement("tr", null);
-            writer.writeAttribute("class", TreeTable.EMPTY_MESSAGE_ROW_CLASS, null);
+            writer.writeAttribute("class", EMPTY_MESSAGE_ROW_CLASS, null);
 
             writer.startElement("td", null);
             writer.writeAttribute("colspan", tt.getColumnsCount(), null);
@@ -557,7 +592,7 @@ public class TreeTableRenderer extends DataRenderer {
         String rowKey = treeNode.getRowKey();
         String parentRowKey = treeNode.getParent().getRowKey();
         tt.setRowKey(rowKey);
-        String icon = treeNode.isExpanded() ? TreeTable.COLLAPSE_ICON : TreeTable.EXPAND_ICON;
+        String icon = treeNode.isExpanded() ? COLLAPSE_ICON : EXPAND_ICON;
         int depth = rowKey.split(UITree.SEPARATOR).length - 1;
         String selectionMode = tt.getSelectionMode();
         boolean selectionEnabled = selectionMode != null;
@@ -568,13 +603,13 @@ public class TreeTableRenderer extends DataRenderer {
         boolean nativeElements = tt.isNativeElements();
         List<UIColumn> columns = tt.getColumns();
 
-        String rowStyleClass = selected ? TreeTable.SELECTED_ROW_CLASS : TreeTable.ROW_CLASS;
-        rowStyleClass = selectable ? rowStyleClass + " " + TreeTable.SELECTABLE_NODE_CLASS : rowStyleClass;
+        String rowStyleClass = selected ? SELECTED_ROW_CLASS : ROW_CLASS;
+        rowStyleClass = selectable ? rowStyleClass + " " + SELECTABLE_NODE_CLASS : rowStyleClass;
         rowStyleClass = rowStyleClass + " " + treeNode.getType();
         rowStyleClass = rowStyleClass + " ui-node-level-" + (rowKey.split("_").length);
 
         if (partialSelected) {
-            rowStyleClass = rowStyleClass + " " + TreeTable.PARTIAL_SELECTED_CLASS;
+            rowStyleClass = rowStyleClass + " " + PARTIAL_SELECTED_CLASS;
         }
 
         String userRowStyleClass = tt.getRowStyleClass();
@@ -583,7 +618,7 @@ public class TreeTableRenderer extends DataRenderer {
         }
 
         if (tt.isEditingRow()) {
-            rowStyleClass = rowStyleClass + " " + TreeTable.EDITING_ROW_CLASS;
+            rowStyleClass = rowStyleClass + " " + EDITING_ROW_CLASS;
         }
 
         writer.startElement("tr", null);
@@ -621,11 +656,11 @@ public class TreeTableRenderer extends DataRenderer {
                 }
 
                 if (column.getCellEditor() != null) {
-                    columnStyleClass = (columnStyleClass == null) ? TreeTable.EDITABLE_COLUMN_CLASS : TreeTable.EDITABLE_COLUMN_CLASS + " " + columnStyleClass;
+                    columnStyleClass = (columnStyleClass == null) ? EDITABLE_COLUMN_CLASS : EDITABLE_COLUMN_CLASS + " " + columnStyleClass;
                 }
 
                 if (!isColVisible) {
-                    columnStyleClass = (columnStyleClass == null) ? TreeTable.HIDDEN_COLUMN_CLASS : columnStyleClass + " " + TreeTable.HIDDEN_COLUMN_CLASS;
+                    columnStyleClass = (columnStyleClass == null) ? HIDDEN_COLUMN_CLASS : columnStyleClass + " " + HIDDEN_COLUMN_CLASS;
                 }
 
                 writer.startElement("td", null);
@@ -646,7 +681,7 @@ public class TreeTableRenderer extends DataRenderer {
                 if (i == 0) {
                     for (int j = 0; j < depth; j++) {
                         writer.startElement("span", null);
-                        writer.writeAttribute("class", TreeTable.INDENT_CLASS, null);
+                        writer.writeAttribute("class", INDENT_CLASS, null);
                         writer.endElement("span");
                     }
 
@@ -659,7 +694,7 @@ public class TreeTableRenderer extends DataRenderer {
 
                     if (checkboxSelection) {
                         if (!nativeElements) {
-                            RendererUtils.encodeCheckbox(context, selected, partialSelected, !selectable, Tree.CHECKBOX_CLASS);
+                            RendererUtils.encodeCheckbox(context, selected, partialSelected, !selectable, CHECKBOX_CLASS);
                         }
                         else {
                             renderNativeCheckbox(context, tt, selected, partialSelected);
@@ -696,17 +731,17 @@ public class TreeTableRenderer extends DataRenderer {
         String sortIcon = null;
         String style = column.getStyle();
         String width = column.getWidth();
-        String columnClass = sortable ? TreeTable.SORTABLE_COLUMN_HEADER_CLASS : TreeTable.COLUMN_HEADER_CLASS;
-        columnClass = !column.isVisible() ? columnClass + " " + TreeTable.HIDDEN_COLUMN_CLASS : columnClass;
-        columnClass = !column.isToggleable() ? columnClass + " " + TreeTable.STATIC_COLUMN_CLASS : columnClass;
+        String columnClass = sortable ? SORTABLE_COLUMN_HEADER_CLASS : COLUMN_HEADER_CLASS;
+        columnClass = !column.isVisible() ? columnClass + " " + HIDDEN_COLUMN_CLASS : columnClass;
+        columnClass = !column.isToggleable() ? columnClass + " " + STATIC_COLUMN_CLASS : columnClass;
         String userColumnClass = column.getStyleClass();
         if (column.isResizable()) {
-            columnClass = columnClass + " " + TreeTable.RESIZABLE_COLUMN_CLASS;
+            columnClass = columnClass + " " + RESIZABLE_COLUMN_CLASS;
         }
         if (userColumnClass != null) {
             columnClass = columnClass + " " + userColumnClass;
         }
-        columnClass = filterable ? columnClass + " " + TreeTable.FILTER_COLUMN_CLASS : columnClass;
+        columnClass = filterable ? columnClass + " " + FILTER_COLUMN_CLASS : columnClass;
 
         if (sortable) {
             ValueExpression tableSortByVE = tt.getValueExpression("sortBy");
@@ -715,7 +750,7 @@ public class TreeTableRenderer extends DataRenderer {
             }
 
             if (sortIcon == null) {
-                sortIcon = TreeTable.SORTABLE_COLUMN_ICON_CLASS;
+                sortIcon = SORTABLE_COLUMN_ICON_CLASS;
             }
             else {
                 columnClass += " ui-state-active";
@@ -801,7 +836,7 @@ public class TreeTableRenderer extends DataRenderer {
                 filterValue = (columnFilterValue == null) ? Constants.EMPTY_STRING : columnFilterValue.toString();
             }
 
-            filterStyleClass = filterStyleClass == null ? TreeTable.COLUMN_INPUT_FILTER_CLASS : TreeTable.COLUMN_INPUT_FILTER_CLASS + " " + filterStyleClass;
+            filterStyleClass = filterStyleClass == null ? COLUMN_INPUT_FILTER_CLASS : COLUMN_INPUT_FILTER_CLASS + " " + filterStyleClass;
 
             writer.startElement("input", null);
             writer.writeAttribute("id", filterId, null);
@@ -826,7 +861,7 @@ public class TreeTableRenderer extends DataRenderer {
         }
         else {
             writer.startElement("div", null);
-            writer.writeAttribute("class", TreeTable.COLUMN_CUSTOM_FILTER_CLASS, null);
+            writer.writeAttribute("class", COLUMN_CUSTOM_FILTER_CLASS, null);
             filterFacet.encodeAll(context);
             writer.endElement("div");
         }
@@ -935,7 +970,7 @@ public class TreeTableRenderer extends DataRenderer {
 
         String style = column.getStyle();
         String columnStyleClass = column.getStyleClass();
-        columnStyleClass = (columnStyleClass == null) ? TreeTable.COLUMN_HEADER_CLASS : TreeTable.COLUMN_HEADER_CLASS + " " + columnStyleClass;
+        columnStyleClass = (columnStyleClass == null) ? COLUMN_HEADER_CLASS : COLUMN_HEADER_CLASS + " " + columnStyleClass;
 
         int priority = column.getPriority();
         if (priority > 0) {
@@ -992,10 +1027,10 @@ public class TreeTableRenderer extends DataRenderer {
 
         if (ttSortByExpression != null && ttSortByExpression.equals(columnSortByExpression)) {
             if (sortOrder.equalsIgnoreCase("ASCENDING")) {
-                sortIcon = TreeTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
+                sortIcon = SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
             }
             else if (sortOrder.equalsIgnoreCase("DESCENDING")) {
-                sortIcon = TreeTable.SORTABLE_COLUMN_DESCENDING_ICON_CLASS;
+                sortIcon = SORTABLE_COLUMN_DESCENDING_ICON_CLASS;
             }
         }
 
@@ -1199,7 +1234,7 @@ public class TreeTableRenderer extends DataRenderer {
                                        String globalFilterValue) throws IOException {
         int childCount = node.getChildCount();
         boolean hasGlobalFilter = !LangUtils.isValueBlank(globalFilterValue);
-        GlobalFilterConstraint globalFilterConstraint = (GlobalFilterConstraint) FILTER_CONSTRAINTS.get(GLOBAL_MODE);
+        GlobalFilterConstraint globalFilterConstraint = (GlobalFilterConstraint) FILTER_CONSTRAINTS.get(TreeTable.GLOBAL_MODE);
         ELContext elContext = context.getELContext();
 
         for (int i = 0; i < childCount; i++) {

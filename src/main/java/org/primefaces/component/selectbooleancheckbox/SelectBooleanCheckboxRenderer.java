@@ -37,6 +37,13 @@ import org.primefaces.util.WidgetBuilder;
 
 public class SelectBooleanCheckboxRenderer extends InputRenderer {
 
+    public static final String STYLE_CLASS = "ui-checkbox ui-widget";
+    public static final String CHECKBOX_BOX_CLASS = "ui-checkbox-box ui-widget ui-corner-all ui-state-default";
+    public static final String CHECKBOX_INPUT_WRAPPER_CLASS = "ui-helper-hidden";
+    public static final String CHECKBOX_ICON_CLASS = "ui-checkbox-icon";
+    public static final String CHECKBOX_CHECKED_ICON_CLASS = "ui-icon ui-icon-check";
+    public static final String LABEL_CLASS = "ui-checkbox-label";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         SelectBooleanCheckbox checkbox = (SelectBooleanCheckbox) component;

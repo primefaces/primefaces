@@ -35,6 +35,9 @@ import org.primefaces.util.LangUtils;
 
 public class LinkRenderer extends OutcomeTargetRenderer {
 
+    public static final String STYLE_CLASS = "ui-link ui-widget";
+    public static final String DISABLED_STYLE_CLASS = "ui-link ui-widget ui-state-disabled";
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -42,7 +45,7 @@ public class LinkRenderer extends OutcomeTargetRenderer {
         boolean shouldWriteId = shouldWriteId(link);
         boolean disabled = link.isDisabled();
         String style = link.getStyle();
-        String defaultStyleClass = disabled ? Link.DISABLED_STYLE_CLASS : Link.STYLE_CLASS;
+        String defaultStyleClass = disabled ? DISABLED_STYLE_CLASS : STYLE_CLASS;
         String styleClass = link.getStyleClass();
         styleClass = (styleClass == null) ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 

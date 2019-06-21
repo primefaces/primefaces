@@ -33,7 +33,6 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
-import org.primefaces.component.menu.Menu;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
@@ -44,13 +43,16 @@ import org.primefaces.util.WidgetBuilder;
 
 public class MenuButtonRenderer extends BaseMenuRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-menubutton ui-widget";
+    public static final String ICON_CLASS = "ui-icon-triangle-1-s";
+
     @Override
     protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         MenuButton button = (MenuButton) abstractMenu;
         String clientId = button.getClientId(context);
         String styleClass = button.getStyleClass();
-        styleClass = styleClass == null ? MenuButton.CONTAINER_CLASS : MenuButton.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
         boolean disabled = button.isDisabled();
 
         writer.startElement("span", button);
@@ -92,7 +94,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         }
 
         // button icon
-        String iconClass = isValueBlank(button.getIcon()) ? MenuButton.ICON_CLASS : button.getIcon();
+        String iconClass = isValueBlank(button.getIcon()) ? ICON_CLASS : button.getIcon();
 
         //button icon pos
         String iconPosClass = isIconLeft ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS;
@@ -121,7 +123,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
     protected void encodeMenu(FacesContext context, MenuButton button, String menuId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String menuStyleClass = button.getMenuStyleClass();
-        menuStyleClass = (menuStyleClass == null) ? Menu.DYNAMIC_CONTAINER_CLASS : Menu.DYNAMIC_CONTAINER_CLASS + " " + menuStyleClass;
+        menuStyleClass = (menuStyleClass == null) ? DYNAMIC_CONTAINER_CLASS : DYNAMIC_CONTAINER_CLASS + " " + menuStyleClass;
 
         writer.startElement("div", null);
         writer.writeAttribute("id", menuId, null);
@@ -129,7 +131,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         writer.writeAttribute("role", "menu", null);
 
         writer.startElement("ul", null);
-        writer.writeAttribute("class", MenuButton.LIST_CLASS, "styleClass");
+        writer.writeAttribute("class", LIST_CLASS, "styleClass");
 
         if (button.getElementsCount() > 0) {
             List<MenuElement> elements = button.getElements();
@@ -138,7 +140,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
                 if (element.isRendered()) {
                     if (element instanceof MenuItem) {
                         writer.startElement("li", null);
-                        writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
+                        writer.writeAttribute("class", MENUITEM_CLASS, null);
                         writer.writeAttribute("role", "menuitem", null);
                         encodeMenuItem(context, button, (MenuItem) element, "-1");
                         writer.endElement("li");

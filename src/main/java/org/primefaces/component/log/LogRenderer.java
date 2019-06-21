@@ -34,6 +34,17 @@ import org.primefaces.util.WidgetBuilder;
 
 public class LogRenderer extends CoreRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-log ui-widget ui-widget-content ui-corner-all";
+    public static final String HEADER_CLASS = "ui-log-header ui-widget-header ui-helper-clearfix";
+    public static final String CONTENT_CLASS = "ui-log-content";
+    public static final String ITEMS_CLASS = "ui-log-items";
+    public static final String CLEAR_BUTTON_CLASS = "ui-log-button ui-log-clear ui-corner-all";
+    public static final String ALL_BUTTON_CLASS = "ui-log-button ui-log-all ui-corner-all";
+    public static final String INFO_BUTTON_CLASS = "ui-log-button ui-log-info ui-corner-all";
+    public static final String DEBUG_BUTTON_CLASS = "ui-log-button ui-log-debug ui-corner-all";
+    public static final String WARN_BUTTON_CLASS = "ui-log-button ui-log-warn ui-corner-all";
+    public static final String ERROR_BUTTON_CLASS = "ui-log-button ui-log-error ui-corner-all";
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Log log = (Log) component;
@@ -48,24 +59,24 @@ public class LogRenderer extends CoreRenderer {
         //container
         writer.startElement("div", log);
         writer.writeAttribute("id", log.getClientId(context), "id");
-        writer.writeAttribute("class", Log.CONTAINER_CLASS, null);
+        writer.writeAttribute("class", CONTAINER_CLASS, null);
 
         //header
         writer.startElement("div", null);
-        writer.writeAttribute("class", Log.HEADER_CLASS, null);
-        encodeIcon(context, Log.CLEAR_BUTTON_CLASS, "ui-icon ui-icon-trash", "Clear");
-        encodeIcon(context, Log.ALL_BUTTON_CLASS, "ui-icon ui-icon-note", "All");
-        encodeIcon(context, Log.INFO_BUTTON_CLASS, "ui-icon ui-icon-info", "Info");
-        encodeIcon(context, Log.WARN_BUTTON_CLASS, "ui-icon ui-icon-notice", "Warn");
-        encodeIcon(context, Log.DEBUG_BUTTON_CLASS, "ui-icon ui-icon-search", "Debug");
-        encodeIcon(context, Log.ERROR_BUTTON_CLASS, "ui-icon ui-icon-alert", "Error");
+        writer.writeAttribute("class", HEADER_CLASS, null);
+        encodeIcon(context, CLEAR_BUTTON_CLASS, "ui-icon ui-icon-trash", "Clear");
+        encodeIcon(context, ALL_BUTTON_CLASS, "ui-icon ui-icon-note", "All");
+        encodeIcon(context, INFO_BUTTON_CLASS, "ui-icon ui-icon-info", "Info");
+        encodeIcon(context, WARN_BUTTON_CLASS, "ui-icon ui-icon-notice", "Warn");
+        encodeIcon(context, DEBUG_BUTTON_CLASS, "ui-icon ui-icon-search", "Debug");
+        encodeIcon(context, ERROR_BUTTON_CLASS, "ui-icon ui-icon-alert", "Error");
         writer.endElement("div");
 
         //content
         writer.startElement("div", log);
-        writer.writeAttribute("class", Log.CONTENT_CLASS, null);
+        writer.writeAttribute("class", CONTENT_CLASS, null);
         writer.startElement("ul", null);
-        writer.writeAttribute("class", Log.ITEMS_CLASS, null);
+        writer.writeAttribute("class", ITEMS_CLASS, null);
         writer.endElement("ul");
         writer.endElement("div");
 

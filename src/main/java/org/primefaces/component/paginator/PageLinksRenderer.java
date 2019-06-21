@@ -29,7 +29,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.api.Pageable;
-import org.primefaces.component.api.UIData;
 
 public class PageLinksRenderer implements PaginatorElementRenderer {
 
@@ -50,10 +49,10 @@ public class PageLinksRenderer implements PaginatorElementRenderer {
         start = Math.max(0, start - delta);
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", UIData.PAGINATOR_PAGES_CLASS, null);
+        writer.writeAttribute("class", PAGINATOR_PAGES_CLASS, null);
 
         for (int i = start; i <= end; i++) {
-            String styleClass = currentPage == i ? UIData.PAGINATOR_ACTIVE_PAGE_CLASS : UIData.PAGINATOR_PAGE_CLASS;
+            String styleClass = currentPage == i ? PAGINATOR_ACTIVE_PAGE_CLASS : PAGINATOR_PAGE_CLASS;
 
             writer.startElement("a", null);
             writer.writeAttribute("class", styleClass, null);

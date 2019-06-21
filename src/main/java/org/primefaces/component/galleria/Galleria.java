@@ -38,9 +38,4 @@ import javax.faces.application.ResourceDependency;
 public class Galleria extends GalleriaBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Galleria";
-
-    public static final String CONTAINER_CLASS = "ui-galleria ui-widget ui-widget-content ui-corner-all";
-    public static final String PANEL_WRAPPER_CLASS = "ui-galleria-panel-wrapper";
-    public static final String PANEL_CLASS = "ui-galleria-panel ui-helper-hidden";
-    public static final String PANEL_CONTENT_CLASS = "ui-galleria-panel-content";
 }

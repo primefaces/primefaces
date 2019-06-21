@@ -41,13 +41,21 @@ import org.primefaces.util.MessageFactory;
 
 public class MessagesRenderer extends UINotificationRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-messages ui-widget";
+    public static final String ICONLESS_CONTAINER_CLASS = "ui-messages ui-messages-noicon ui-widget";
+    public static final String CLOSE_LINK_CLASS = "ui-messages-close";
+    public static final String CLOSE_ICON_CLASS = "ui-icon ui-icon-close";
+    public static final String SEVERITY_PREFIX_CLASS = "ui-messages-";
+
+    public static final String ARIA_CLOSE = "primefaces.messages.aria.CLOSE";
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Messages uiMessages = (Messages) component;
         ResponseWriter writer = context.getResponseWriter();
         String clientId = uiMessages.getClientId(context);
         boolean globalOnly = uiMessages.isGlobalOnly();
-        String containerClass = uiMessages.isShowIcon() ? Messages.CONTAINER_CLASS : Messages.ICONLESS_CONTAINER_CLASS;
+        String containerClass = uiMessages.isShowIcon() ? CONTAINER_CLASS : ICONLESS_CONTAINER_CLASS;
         String style = uiMessages.getStyle();
         String styleClass = uiMessages.getStyleClass();
         styleClass = (styleClass == null) ? containerClass : containerClass + " " + styleClass;
@@ -118,7 +126,7 @@ public class MessagesRenderer extends UINotificationRenderer {
 
     protected void encodeMessages(FacesContext context, Messages uiMessages, String severity, List<FacesMessage> messages) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClassPrefix = Messages.SEVERITY_PREFIX_CLASS + severity;
+        String styleClassPrefix = SEVERITY_PREFIX_CLASS + severity;
         boolean escape = uiMessages.isEscape();
 
         writer.startElement("div", null);
@@ -194,12 +202,12 @@ public class MessagesRenderer extends UINotificationRenderer {
 
         writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
-        writer.writeAttribute("class", Messages.CLOSE_LINK_CLASS, null);
+        writer.writeAttribute("class", CLOSE_LINK_CLASS, null);
         writer.writeAttribute("onclick", "$(this).parent().slideUp();return false;", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(Messages.ARIA_CLOSE, null), null);
+        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(ARIA_CLOSE, null), null);
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", Messages.CLOSE_ICON_CLASS, null);
+        writer.writeAttribute("class", CLOSE_ICON_CLASS, null);
         writer.endElement("span");
 
         writer.endElement("a");

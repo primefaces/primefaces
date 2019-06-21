@@ -43,8 +43,6 @@ public class Password extends PasswordBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Password";
 
-    public static final String STYLE_CLASS = "ui-inputfield ui-password ui-widget ui-state-default ui-corner-all";
-
     public static final String INVALID_MATCH_KEY = "primefaces.password.INVALID_MATCH";
 
     @Override

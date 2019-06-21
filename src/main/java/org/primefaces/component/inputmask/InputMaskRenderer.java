@@ -35,6 +35,8 @@ import org.primefaces.util.*;
 
 public class InputMaskRenderer extends InputRenderer {
 
+    public static final String STYLE_CLASS = "ui-inputfield ui-inputmask ui-widget ui-state-default ui-corner-all";
+
     private static final String REGEX_METACHARS = "<([{\\^-=$!|]})?*+.>";
     private static final String SB_PATTERN = InputMaskRenderer.class.getName() + "#translateMaskIntoRegex";
 
@@ -145,7 +147,7 @@ public class InputMaskRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = inputMask.getClientId(context);
         String styleClass = inputMask.getStyleClass();
-        String defaultClass = InputMask.STYLE_CLASS;
+        String defaultClass = STYLE_CLASS;
         defaultClass = !inputMask.isValid() ? defaultClass + " ui-state-error" : defaultClass;
         defaultClass = inputMask.isDisabled() ? defaultClass + " ui-state-disabled" : defaultClass;
         styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;

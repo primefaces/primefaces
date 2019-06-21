@@ -43,20 +43,17 @@ public class SelectOneRadio extends SelectOneRadioBase {
 
     public static final String[] SUPPORTED_EVENTS = new String[]{"onchange", "onclick"};
 
-    public static final String STYLE_CLASS = "ui-selectoneradio ui-widget";
-    public static final String NATIVE_STYLE_CLASS = "ui-selectoneradio ui-selectoneradio-native ui-widget";
-
     private int index = -1;
     private List<SelectItem> selectItems;
 
     public String getRadioButtonId(FacesContext context) {
         index++;
 
-        return this.getClientId(context) + UINamingContainer.getSeparatorChar(context) + index;
+        return getClientId(context) + UINamingContainer.getSeparatorChar(context) + index;
     }
 
     public List<SelectItem> getSelectItems() {
-        return this.selectItems;
+        return selectItems;
     }
 
     public void setSelectItems(List<SelectItem> selectItems) {

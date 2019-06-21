@@ -36,6 +36,8 @@ import org.primefaces.util.WidgetBuilder;
 
 public class MindmapRenderer extends CoreRenderer {
 
+    public static final String STYLE_CLASS = "ui-mindmap ui-widget ui-widget-content ui-corner-all";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         decodeBehaviors(context, component);
@@ -80,7 +82,7 @@ public class MindmapRenderer extends CoreRenderer {
         String clientId = map.getClientId(context);
         String style = map.getStyle();
         String styleClass = map.getStyleClass();
-        styleClass = (styleClass == null) ? Mindmap.STYLE_CLASS : Mindmap.STYLE_CLASS + " " + styleClass;
+        styleClass = (styleClass == null) ? STYLE_CLASS : STYLE_CLASS + " " + styleClass;
 
         writer.startElement("div", map);
         writer.writeAttribute("id", clientId, "id");

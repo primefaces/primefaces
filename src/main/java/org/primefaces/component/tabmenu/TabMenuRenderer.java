@@ -39,6 +39,11 @@ import org.primefaces.util.WidgetBuilder;
 
 public class TabMenuRenderer extends BaseMenuRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-tabmenu ui-widget ui-widget-content ui-corner-all";
+    public static final String NAVIGATOR_CLASS = "ui-tabmenu-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all";
+    public static final String INACTIVE_TAB_HEADER_CLASS = "ui-tabmenuitem ui-state-default ui-corner-top";
+    public static final String ACTIVE_TAB_HEADER_CLASS = "ui-tabmenuitem ui-state-default ui-state-active ui-corner-top";
+
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         TabMenu menu = (TabMenu) abstractMenu;
@@ -54,7 +59,7 @@ public class TabMenuRenderer extends BaseMenuRenderer {
         TabMenu menu = (TabMenu) component;
         String clientId = menu.getClientId(context);
         String styleClass = menu.getStyleClass();
-        styleClass = styleClass == null ? TabMenu.CONTAINER_CLASS : TabMenu.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
         int activeIndex = menu.getActiveIndex();
         List<?> elements = menu.getElements();
 
@@ -66,7 +71,7 @@ public class TabMenuRenderer extends BaseMenuRenderer {
         }
 
         writer.startElement("ul", null);
-        writer.writeAttribute("class", TabMenu.NAVIGATOR_CLASS, null);
+        writer.writeAttribute("class", NAVIGATOR_CLASS, null);
         writer.writeAttribute("role", "tablist", null);
 
         int i = 0;
@@ -90,7 +95,7 @@ public class TabMenuRenderer extends BaseMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String containerStyle = item.getContainerStyle();
         String containerStyleClass = item.getContainerStyleClass();
-        String containerClass = active ? TabMenu.ACTIVE_TAB_HEADER_CLASS : TabMenu.INACTIVE_TAB_HEADER_CLASS;
+        String containerClass = active ? ACTIVE_TAB_HEADER_CLASS : INACTIVE_TAB_HEADER_CLASS;
         if (item.getIcon() != null) {
             containerClass += " ui-tabmenuitem-hasicon";
         }

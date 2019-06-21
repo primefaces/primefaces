@@ -45,13 +45,21 @@ import org.primefaces.util.ComponentTraversalUtils;
 
 public class StepsRenderer extends BaseMenuRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-steps ui-widget ui-helper-clearfix";
+    public static final String READONLY_CONTAINER_CLASS = "ui-steps ui-steps-readonly ui-widget ui-helper-clearfix";
+    public static final String INACTIVE_ITEM_CLASS = "ui-steps-item ui-state-default ui-state-disabled ui-corner-all";
+    public static final String ACTIVE_ITEM_CLASS = "ui-steps-item ui-state-highlight ui-corner-all";
+    public static final String VISITED_ITEM_CLASS = "ui-steps-item ui-state-default ui-corner-all";
+    public static final String STEP_NUMBER_CLASS = "ui-steps-number";
+    public static final String STEP_TITLE_CLASS = "ui-steps-title";
+
     @Override
     protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Steps steps = (Steps) abstractMenu;
         String clientId = steps.getClientId(context);
         String styleClass = steps.getStyleClass();
-        String containerClass = steps.isReadonly() ? Steps.READONLY_CONTAINER_CLASS : Steps.CONTAINER_CLASS;
+        String containerClass = steps.isReadonly() ? READONLY_CONTAINER_CLASS : CONTAINER_CLASS;
         styleClass = styleClass == null ? containerClass : containerClass + " " + styleClass;
         int activeIndex = steps.getActiveIndex();
         List<MenuElement> elements = steps.getElements();
@@ -86,17 +94,17 @@ public class StepsRenderer extends BaseMenuRenderer {
         String itemClass;
 
         if (steps.isReadonly()) {
-            itemClass = (index == activeIndex) ? Steps.ACTIVE_ITEM_CLASS : Steps.INACTIVE_ITEM_CLASS;
+            itemClass = (index == activeIndex) ? ACTIVE_ITEM_CLASS : INACTIVE_ITEM_CLASS;
         }
         else {
             if (index == activeIndex) {
-                itemClass = Steps.ACTIVE_ITEM_CLASS;
+                itemClass = ACTIVE_ITEM_CLASS;
             }
             else if (index < activeIndex) {
-                itemClass = Steps.VISITED_ITEM_CLASS;
+                itemClass = VISITED_ITEM_CLASS;
             }
             else {
-                itemClass = Steps.INACTIVE_ITEM_CLASS;
+                itemClass = INACTIVE_ITEM_CLASS;
             }
         }
 
@@ -196,14 +204,14 @@ public class StepsRenderer extends BaseMenuRenderer {
         }
 
         writer.startElement("span", steps);
-        writer.writeAttribute("class", Steps.STEP_NUMBER_CLASS, null);
+        writer.writeAttribute("class", STEP_NUMBER_CLASS, null);
         writer.writeText((index + 1), null);
         writer.endElement("span");
 
         Object value = menuitem.getValue();
         if (value != null) {
             writer.startElement("span", steps);
-            writer.writeAttribute("class", Steps.STEP_TITLE_CLASS, null);
+            writer.writeAttribute("class", STEP_TITLE_CLASS, null);
             writer.writeText(value, null);
             writer.endElement("span");
         }

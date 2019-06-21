@@ -31,11 +31,14 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
-import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.row.Row;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class SubTableRenderer extends CoreRenderer {
+
+    public static final String SUBTABLE_HEADER = "ui-datatable-subtable-header";
+    public static final String SUBTABLE_FOOTER = "ui-datatable-subtable-footer";
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -60,7 +63,7 @@ public class SubTableRenderer extends CoreRenderer {
             writer.writeAttribute("class", "ui-widget-header", null);
 
             writer.startElement("td", null);
-            writer.writeAttribute("class", DataTable.SUBTABLE_HEADER, null);
+            writer.writeAttribute("class", SUBTABLE_HEADER, null);
             writer.writeAttribute("colspan", table.getColumns().size(), null);
 
             header.encodeAll(context);
@@ -81,7 +84,7 @@ public class SubTableRenderer extends CoreRenderer {
                     for (UIComponent headerRowChild : headerRow.getChildren()) {
                         if (headerRowChild.isRendered() && headerRowChild instanceof Column) {
                             Column footerColumn = (Column) headerRowChild;
-                            encodeFacetColumn(context, table, footerColumn, "header", DataTable.COLUMN_HEADER_CLASS, footerColumn.getHeaderText());
+                            encodeFacetColumn(context, table, footerColumn, "header", DataTableRenderer.COLUMN_HEADER_CLASS, footerColumn.getHeaderText());
                         }
                     }
 
@@ -102,7 +105,7 @@ public class SubTableRenderer extends CoreRenderer {
 
         writer.startElement("tr", null);
         writer.writeAttribute("id", clientId + "_row_" + rowIndex, null);
-        writer.writeAttribute("class", DataTable.ROW_CLASS, null);
+        writer.writeAttribute("class", DataTableRenderer.ROW_CLASS, null);
 
         for (Column column : table.getColumns()) {
             String style = column.getStyle();
@@ -133,7 +136,7 @@ public class SubTableRenderer extends CoreRenderer {
             writer.writeAttribute("class", "ui-widget-header", null);
 
             writer.startElement("td", null);
-            writer.writeAttribute("class", DataTable.SUBTABLE_FOOTER, null);
+            writer.writeAttribute("class", SUBTABLE_FOOTER, null);
             writer.writeAttribute("colspan", table.getColumns().size(), null);
 
             footer.encodeAll(context);
@@ -158,7 +161,7 @@ public class SubTableRenderer extends CoreRenderer {
                 for (UIComponent footerRowChild : footerRow.getChildren()) {
                     if (footerRowChild.isRendered() && footerRowChild instanceof Column) {
                         Column footerColumn = (Column) footerRowChild;
-                        encodeFacetColumn(context, table, footerColumn, "footer", DataTable.COLUMN_FOOTER_CLASS, footerColumn.getFooterText());
+                        encodeFacetColumn(context, table, footerColumn, "footer", DataTableRenderer.COLUMN_FOOTER_CLASS, footerColumn.getFooterText());
                     }
                 }
 

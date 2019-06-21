@@ -46,6 +46,19 @@ import org.primefaces.util.WidgetBuilder;
 
 public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
 
+    public static final String STYLE_CLASS = "ui-selectcheckboxmenu ui-widget ui-state-default ui-corner-all";
+    public static final String LABEL_CONTAINER_CLASS = "ui-selectcheckboxmenu-label-container";
+    public static final String LABEL_CLASS = "ui-selectcheckboxmenu-label ui-corner-all";
+    public static final String TRIGGER_CLASS = "ui-selectcheckboxmenu-trigger ui-state-default ui-corner-right";
+    public static final String PANEL_CLASS = "ui-selectcheckboxmenu-panel ui-widget-content ui-corner-all ui-helper-hidden";
+    public static final String LIST_CLASS = "ui-selectcheckboxmenu-items ui-selectcheckboxmenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset";
+    public static final String ITEM_CLASS = "ui-selectcheckboxmenu-item ui-selectcheckboxmenu-list-item ui-corner-all ui-helper-clearfix";
+    public static final String MULTIPLE_CLASS = "ui-selectcheckboxmenu-multiple";
+    public static final String MULTIPLE_CONTAINER_CLASS = "ui-selectcheckboxmenu-multiple-container ui-widget ui-inputfield ui-state-default ui-corner-all";
+    public static final String TOKEN_DISPLAY_CLASS = "ui-selectcheckboxmenu-token ui-state-active ui-corner-all";
+    public static final String TOKEN_LABEL_CLASS = "ui-selectcheckboxmenu-token-label";
+    public static final String TOKEN_ICON_CLASS = "ui-selectcheckboxmenu-token-icon ui-icon ui-icon-close";
+
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
@@ -72,10 +85,10 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
 
         String style = menu.getStyle();
         String styleclass = menu.getStyleClass();
-        styleclass = styleclass == null ? SelectCheckboxMenu.STYLE_CLASS : SelectCheckboxMenu.STYLE_CLASS + " " + styleclass;
+        styleclass = styleclass == null ? STYLE_CLASS : STYLE_CLASS + " " + styleclass;
         styleclass = menu.isDisabled() ? styleclass + " ui-state-disabled" : styleclass;
         styleclass = !valid ? styleclass + " ui-state-error" : styleclass;
-        styleclass = menu.isMultiple() ? SelectCheckboxMenu.MULTIPLE_CLASS + " " + styleclass : styleclass;
+        styleclass = menu.isMultiple() ? MULTIPLE_CLASS + " " + styleclass : styleclass;
 
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
@@ -212,13 +225,13 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
     protected void encodeLabel(FacesContext context, SelectCheckboxMenu menu, List<SelectItem> selectItems, boolean valid) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String label = menu.getLabel();
-        String labelClass = !valid ? SelectCheckboxMenu.LABEL_CLASS + " ui-state-error" : SelectCheckboxMenu.LABEL_CLASS;
+        String labelClass = !valid ? LABEL_CLASS + " ui-state-error" : LABEL_CLASS;
         if (label == null) {
             label = "";
         }
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", SelectCheckboxMenu.LABEL_CONTAINER_CLASS, null);
+        writer.writeAttribute("class", LABEL_CONTAINER_CLASS, null);
         writer.startElement("label", null);
         writer.writeAttribute("class", labelClass, null);
         writer.writeText(label, null);
@@ -234,7 +247,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         Object submittedValues = getSubmittedValues(menu);
         Object valuesArray = (submittedValues != null) ? submittedValues : values;
         String listClass = menu.isDisabled() ?
-                           SelectCheckboxMenu.MULTIPLE_CONTAINER_CLASS + " ui-state-disabled" : SelectCheckboxMenu.MULTIPLE_CONTAINER_CLASS;
+                           MULTIPLE_CONTAINER_CLASS + " ui-state-disabled" : MULTIPLE_CONTAINER_CLASS;
         listClass = valid ? listClass : listClass + " ui-state-error";
 
         writer.startElement("ul", null);
@@ -245,11 +258,11 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 Object value = Array.get(valuesArray, i);
                 String itemValueAsString = getOptionAsString(context, menu, converter, value);
                 writer.startElement("li", null);
-                writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_DISPLAY_CLASS, null);
+                writer.writeAttribute("class", TOKEN_DISPLAY_CLASS, null);
                 writer.writeAttribute("data-item-value", itemValueAsString, null);
 
                 writer.startElement("span", null);
-                writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_LABEL_CLASS, null);
+                writer.writeAttribute("class", TOKEN_LABEL_CLASS, null);
 
                 SelectItem selectedItem = null;
                 for (SelectItem item : selectItems) {
@@ -283,7 +296,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 writer.endElement("span");
 
                 writer.startElement("span", null);
-                writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_ICON_CLASS, null);
+                writer.writeAttribute("class", TOKEN_ICON_CLASS, null);
                 writer.endElement("span");
 
                 writer.endElement("li");
@@ -295,7 +308,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
 
     protected void encodeMenuIcon(FacesContext context, SelectCheckboxMenu menu, boolean valid) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String iconClass = valid ? SelectCheckboxMenu.TRIGGER_CLASS : SelectCheckboxMenu.TRIGGER_CLASS + " ui-state-error";
+        String iconClass = valid ? TRIGGER_CLASS : TRIGGER_CLASS + " ui-state-error";
 
         writer.startElement("div", menu);
         writer.writeAttribute("class", iconClass, null);

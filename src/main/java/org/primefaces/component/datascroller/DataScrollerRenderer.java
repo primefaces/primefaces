@@ -36,6 +36,15 @@ import org.primefaces.util.WidgetBuilder;
 
 public class DataScrollerRenderer extends CoreRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-datascroller ui-widget";
+    public static final String INLINE_CONTAINER_CLASS = "ui-datascroller ui-datascroller-inline ui-widget";
+    public static final String HEADER_CLASS = "ui-datascroller-header ui-widget-header ui-corner-top";
+    public static final String CONTENT_CLASS = "ui-datascroller-content ui-widget-content";
+    public static final String LIST_CLASS = "ui-datascroller-list";
+    public static final String ITEM_CLASS = "ui-datascroller-item";
+    public static final String LOADER_CLASS = "ui-datascroller-loader";
+    public static final String LOADING_CLASS = "ui-datascroller-loading";
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         DataScroller ds = (DataScroller) component;
@@ -64,7 +73,7 @@ public class DataScrollerRenderer extends CoreRenderer {
         UIComponent header = ds.getFacet("header");
         UIComponent loader = ds.getFacet("loader");
         String contentCornerClass = null;
-        String containerClass = inline ? DataScroller.INLINE_CONTAINER_CLASS : DataScroller.CONTAINER_CLASS;
+        String containerClass = inline ? INLINE_CONTAINER_CLASS : CONTAINER_CLASS;
 
         String style = ds.getStyle();
         String userStyleClass = ds.getStyleClass();
@@ -79,7 +88,7 @@ public class DataScrollerRenderer extends CoreRenderer {
 
         if (header != null && header.isRendered()) {
             writer.startElement("div", ds);
-            writer.writeAttribute("class", DataScroller.HEADER_CLASS, null);
+            writer.writeAttribute("class", HEADER_CLASS, null);
             header.encodeAll(context);
             writer.endElement("div");
 
@@ -90,19 +99,19 @@ public class DataScrollerRenderer extends CoreRenderer {
         }
 
         writer.startElement("div", ds);
-        writer.writeAttribute("class", DataScroller.CONTENT_CLASS + " " + contentCornerClass, null);
+        writer.writeAttribute("class", CONTENT_CLASS + " " + contentCornerClass, null);
         if (inline) {
             writer.writeAttribute("style", "height:" + ds.getScrollHeight() + "px", null);
         }
 
         writer.startElement("ul", ds);
-        writer.writeAttribute("class", DataScroller.LIST_CLASS, null);
+        writer.writeAttribute("class", LIST_CLASS, null);
         loadChunk(context, ds, 0, chunkSize);
         ds.setRowIndex(-1);
         writer.endElement("ul");
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", DataScroller.LOADER_CLASS, null);
+        writer.writeAttribute("class", LOADER_CLASS, null);
         if (loader != null && loader.isRendered()) {
             loader.encodeAll(context);
         }
@@ -141,7 +150,7 @@ public class DataScrollerRenderer extends CoreRenderer {
             }
 
             writer.startElement("li", null);
-            writer.writeAttribute("class", DataScroller.ITEM_CLASS, null);
+            writer.writeAttribute("class", ITEM_CLASS, null);
             renderChildren(context, ds);
             writer.endElement("li");
         }

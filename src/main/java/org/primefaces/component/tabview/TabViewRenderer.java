@@ -38,6 +38,20 @@ import org.primefaces.util.WidgetBuilder;
 
 public class TabViewRenderer extends CoreRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-tabs ui-widget ui-widget-content ui-corner-all ui-hidden-container";
+    public static final String NAVIGATOR_CLASS = "ui-tabs-nav ui-helper-reset ui-widget-header ui-corner-all";
+    public static final String INACTIVE_TAB_HEADER_CLASS = "ui-tabs-header ui-state-default";
+    public static final String ACTIVE_TAB_HEADER_CLASS = "ui-tabs-header ui-state-default ui-tabs-selected ui-state-active";
+    public static final String PANELS_CLASS = "ui-tabs-panels";
+    public static final String ACTIVE_TAB_CONTENT_CLASS = "ui-tabs-panel ui-widget-content ui-corner-bottom";
+    public static final String INACTIVE_TAB_CONTENT_CLASS = "ui-tabs-panel ui-widget-content ui-corner-bottom ui-helper-hidden";
+    public static final String NAVIGATOR_SCROLLER_CLASS = "ui-tabs-navscroller";
+    public static final String NAVIGATOR_LEFT_CLASS = "ui-tabs-navscroller-btn ui-tabs-navscroller-btn-left ui-state-default ui-corner-right";
+    public static final String NAVIGATOR_RIGHT_CLASS = "ui-tabs-navscroller-btn ui-tabs-navscroller-btn-right ui-state-default ui-corner-left";
+    public static final String NAVIGATOR_LEFT_ICON_CLASS = "ui-icon ui-icon-carat-1-w";
+    public static final String NAVIGATOR_RIGHT_ICON_CLASS = "ui-icon ui-icon-carat-1-e";
+    public static final String SCROLLABLE_TABS_CLASS = "ui-tabs-scrollable";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -115,9 +129,9 @@ public class TabViewRenderer extends CoreRenderer {
         String widgetVar = tabView.resolveWidgetVar();
         String orientation = tabView.getOrientation();
         String styleClass = tabView.getStyleClass();
-        String defaultStyleClass = TabView.CONTAINER_CLASS + " ui-tabs-" + orientation;
+        String defaultStyleClass = CONTAINER_CLASS + " ui-tabs-" + orientation;
         if (tabView.isScrollable()) {
-            defaultStyleClass = defaultStyleClass + " " + TabView.SCROLLABLE_TABS_CLASS;
+            defaultStyleClass = defaultStyleClass + " " + SCROLLABLE_TABS_CLASS;
         }
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 
@@ -175,14 +189,14 @@ public class TabViewRenderer extends CoreRenderer {
 
         if (scrollable) {
             writer.startElement("div", null);
-            writer.writeAttribute("class", TabView.NAVIGATOR_SCROLLER_CLASS, null);
+            writer.writeAttribute("class", NAVIGATOR_SCROLLER_CLASS, null);
 
-            encodeScrollerButton(context, tabView, TabView.NAVIGATOR_LEFT_CLASS, TabView.NAVIGATOR_LEFT_ICON_CLASS);
-            encodeScrollerButton(context, tabView, TabView.NAVIGATOR_RIGHT_CLASS, TabView.NAVIGATOR_RIGHT_ICON_CLASS);
+            encodeScrollerButton(context, tabView, NAVIGATOR_LEFT_CLASS, NAVIGATOR_LEFT_ICON_CLASS);
+            encodeScrollerButton(context, tabView, NAVIGATOR_RIGHT_CLASS, NAVIGATOR_RIGHT_ICON_CLASS);
         }
 
         writer.startElement("ul", null);
-        writer.writeAttribute("class", TabView.NAVIGATOR_CLASS, null);
+        writer.writeAttribute("class", NAVIGATOR_CLASS, null);
         writer.writeAttribute("role", "tablist", null);
 
         if (var == null) {
@@ -222,7 +236,7 @@ public class TabViewRenderer extends CoreRenderer {
     protected void encodeTabHeader(FacesContext context, TabView tabView, Tab tab, int index, boolean active)
             throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String defaultStyleClass = active ? TabView.ACTIVE_TAB_HEADER_CLASS : TabView.INACTIVE_TAB_HEADER_CLASS;
+        String defaultStyleClass = active ? ACTIVE_TAB_HEADER_CLASS : INACTIVE_TAB_HEADER_CLASS;
         defaultStyleClass = defaultStyleClass + " ui-corner-" + tabView.getOrientation();   //cornering
         if (tab.isDisabled()) {
             defaultStyleClass = defaultStyleClass + " ui-state-disabled";
@@ -291,7 +305,7 @@ public class TabViewRenderer extends CoreRenderer {
         boolean dynamic = tabView.isDynamic();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", TabView.PANELS_CLASS, null);
+        writer.writeAttribute("class", PANELS_CLASS, null);
 
         if (var == null) {
             int j = 0;
@@ -326,7 +340,7 @@ public class TabViewRenderer extends CoreRenderer {
     protected void encodeTabContent(FacesContext context, Tab tab, int index, boolean active, boolean dynamic)
             throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = active ? TabView.ACTIVE_TAB_CONTENT_CLASS : TabView.INACTIVE_TAB_CONTENT_CLASS;
+        String styleClass = active ? ACTIVE_TAB_CONTENT_CLASS : INACTIVE_TAB_CONTENT_CLASS;
 
         writer.startElement("div", null);
         writer.writeAttribute("id", tab.getClientId(context), null);

@@ -38,6 +38,8 @@ import org.primefaces.util.WidgetBuilder;
 
 public class TriStateCheckboxRenderer extends InputRenderer {
 
+    public static final String UI_ICON = "ui-icon ";
+
     @Override
     public void decode(final FacesContext context, final UIComponent component) {
         TriStateCheckbox checkbox = (TriStateCheckbox) component;
@@ -132,13 +134,13 @@ public class TriStateCheckboxRenderer extends InputRenderer {
 
         //if stateIcon is defined use it insted of default icons.
         String stateOneIconClass
-                = checkbox.getStateOneIcon() != null ? TriStateCheckbox.UI_ICON + checkbox.getStateOneIcon() : "";
+                = checkbox.getStateOneIcon() != null ? UI_ICON + checkbox.getStateOneIcon() : "";
         String stateTwoIconClass
-                = checkbox.getStateTwoIcon() != null ? TriStateCheckbox.UI_ICON + checkbox.getStateTwoIcon()
-                                                     : TriStateCheckbox.UI_ICON + "ui-icon-check";
+                = checkbox.getStateTwoIcon() != null ? UI_ICON + checkbox.getStateTwoIcon()
+                                                     : UI_ICON + "ui-icon-check";
         String stateThreeIconClass
-                = checkbox.getStateThreeIcon() != null ? TriStateCheckbox.UI_ICON + checkbox.getStateThreeIcon()
-                                                       : TriStateCheckbox.UI_ICON + "ui-icon-closethick";
+                = checkbox.getStateThreeIcon() != null ? UI_ICON + checkbox.getStateThreeIcon()
+                                                       : UI_ICON + "ui-icon-closethick";
 
         String statesIconsClasses = "[\"" + stateOneIconClass + "\",\"" + stateTwoIconClass + "\",\"" + stateThreeIconClass + "\"]";
 

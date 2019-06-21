@@ -37,6 +37,19 @@ import org.primefaces.util.WidgetBuilder;
 
 public class DataViewRenderer extends DataRenderer {
 
+    public static final String DATAVIEW_CLASS = "ui-dataview ui-widget";
+    public static final String LIST_LAYOUT_CLASS = "ui-dataview-list";
+    public static final String GRID_LAYOUT_CLASS = "ui-dataview-grid";
+    public static final String HEADER_CLASS = "ui-dataview-header ui-widget-header ui-helper-clearfix ui-corner-top";
+    public static final String FOOTER_CLASS = "ui-dataview-footer ui-widget-header ui-corner-bottom";
+    public static final String CONTENT_CLASS = "ui-dataview-content ui-widget-content";
+    public static final String BUTTON_CONTAINER_CLASS = "ui-dataview-layout-options ui-selectonebutton ui-buttonset";
+    public static final String BUTTON_CLASS = "ui-button ui-button-icon-only ui-state-default";
+    public static final String LIST_LAYOUT_CONTAINER_CLASS = "ui-dataview-list-container";
+    public static final String ROW_CLASS = "ui-dataview-row";
+    public static final String GRID_LAYOUT_ROW_CLASS = "ui-dataview-row ui-g";
+    public static final String GRID_LAYOUT_COLUMN_CLASS = "ui-dataview-column";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         decodeBehaviors(context, component);
@@ -75,8 +88,8 @@ public class DataViewRenderer extends DataRenderer {
         String paginatorPosition = dataview.getPaginatorPosition();
         String style = dataview.getStyle();
         String styleClass = dataview.getStyleClass();
-        styleClass = (styleClass == null) ? DataView.DATAVIEW_CLASS : DataView.DATAVIEW_CLASS + " " + styleClass;
-        styleClass += " " + (layout.contains("grid") ? DataView.GRID_LAYOUT_CLASS : DataView.LIST_LAYOUT_CLASS);
+        styleClass = (styleClass == null) ? DATAVIEW_CLASS : DATAVIEW_CLASS + " " + styleClass;
+        styleClass += " " + (layout.contains("grid") ? GRID_LAYOUT_CLASS : LIST_LAYOUT_CLASS);
 
         if (hasPaginator) {
             dataview.calculateFirst();
@@ -101,7 +114,7 @@ public class DataViewRenderer extends DataRenderer {
             encodePaginatorMarkup(context, dataview, "bottom");
         }
 
-        encodeFacet(context, dataview, "footer", DataView.FOOTER_CLASS);
+        encodeFacet(context, dataview, "footer", FOOTER_CLASS);
 
         writer.endElement("div");
     }
@@ -111,7 +124,7 @@ public class DataViewRenderer extends DataRenderer {
         UIComponent fHeader = dataview.getFacet("header");
 
         writer.startElement("div", dataview);
-        writer.writeAttribute("class", DataView.HEADER_CLASS, null);
+        writer.writeAttribute("class", HEADER_CLASS, null);
 
         if (fHeader != null && fHeader.isRendered()) {
             fHeader.encodeAll(context);
@@ -127,7 +140,7 @@ public class DataViewRenderer extends DataRenderer {
         String clientId = dataview.getClientId(context);
         writer.startElement("div", dataview);
         writer.writeAttribute("id", clientId + "_content", null);
-        writer.writeAttribute("class", DataView.CONTENT_CLASS, null);
+        writer.writeAttribute("class", CONTENT_CLASS, null);
 
         encodeLayout(context, dataview);
 
@@ -140,7 +153,7 @@ public class DataViewRenderer extends DataRenderer {
         boolean hasListItem = (dataview.getListItem() != null);
         String layout = dataview.getLayout();
         boolean isGridLayout = layout.contains("grid");
-        String containerClass = DataView.BUTTON_CONTAINER_CLASS;
+        String containerClass = BUTTON_CONTAINER_CLASS;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", containerClass, null);
@@ -164,7 +177,7 @@ public class DataViewRenderer extends DataRenderer {
     protected void encodeButton(FacesContext context, DataView dataview, String layout, String icon, boolean isActive) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = dataview.getClientId(context);
-        String buttonClass = isActive ? DataView.BUTTON_CLASS + " ui-state-active" : DataView.BUTTON_CLASS;
+        String buttonClass = isActive ? BUTTON_CLASS + " ui-state-active" : BUTTON_CLASS;
 
         //button
         writer.startElement("div", null);
@@ -224,7 +237,7 @@ public class DataViewRenderer extends DataRenderer {
             int rows = dataview.getRows();
             int itemsToRender = rows != 0 ? rows : dataview.getRowCount();
             int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
-            String columnClass = DataView.GRID_LAYOUT_COLUMN_CLASS + " " + GridLayoutUtils.getColumnClass(columns);
+            String columnClass = GRID_LAYOUT_COLUMN_CLASS + " " + GridLayoutUtils.getColumnClass(columns);
 
             for (int i = 0; i < numberOfRowsToRender; i++) {
                 dataview.setRowIndex(rowIndex);
@@ -233,7 +246,7 @@ public class DataViewRenderer extends DataRenderer {
                 }
 
                 writer.startElement("div", null);
-                writer.writeAttribute("class", DataView.GRID_LAYOUT_ROW_CLASS, null);
+                writer.writeAttribute("class", GRID_LAYOUT_ROW_CLASS, null);
 
                 for (int j = 0; j < columns; j++) {
                     writer.startElement("div", null);
@@ -266,7 +279,7 @@ public class DataViewRenderer extends DataRenderer {
             int pageSize = first + rows;
 
             writer.startElement("ul", null);
-            writer.writeAttribute("class", DataView.LIST_LAYOUT_CONTAINER_CLASS, null);
+            writer.writeAttribute("class", LIST_LAYOUT_CONTAINER_CLASS, null);
 
             for (int i = first; i < pageSize; i++) {
                 dataview.setRowIndex(i);
@@ -276,7 +289,7 @@ public class DataViewRenderer extends DataRenderer {
                 }
 
                 writer.startElement("li", null);
-                writer.writeAttribute("class", DataView.ROW_CLASS, null);
+                writer.writeAttribute("class", ROW_CLASS, null);
 
                 dataview.setRowIndex(i);
                 if (dataview.isRowAvailable()) {

@@ -45,12 +45,6 @@ public class InputSwitch extends InputSwitchBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.InputSwitch";
 
-    public static final String CONTAINER_CLASS = "ui-inputswitch ui-widget ui-widget-content ui-corner-all";
-    public static final String ON_LABEL_CLASS = "ui-inputswitch-on ui-state-active";
-    public static final String OFF_LABEL_CLASS = "ui-inputswitch-off";
-    public static final String HANDLE_CLASS = "ui-inputswitch-handle ui-state-default ";
-    public static final String CHECKED_CLASS = "ui-inputswitch-checked";
-
     private static final String DEFAULT_EVENT = "change";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()

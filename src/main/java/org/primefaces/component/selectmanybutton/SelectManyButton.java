@@ -42,8 +42,6 @@ public class SelectManyButton extends SelectManyButtonBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectManyButton";
 
-    public static final String STYLE_CLASS = "ui-selectmanybutton ui-buttonset ui-widget ui-corner-all";
-
     private static final String DEFAULT_EVENT = "change";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()

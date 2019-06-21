@@ -37,6 +37,15 @@ import org.primefaces.util.WidgetBuilder;
 
 public class RibbonRenderer extends CoreRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-ribbon ui-tabs ui-tabs-top ui-widget ui-widget-content ui-corner-top ui-hidden-container";
+    public static final String NAVIGATOR_CLASS = "ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all";
+    public static final String INACTIVE_TAB_HEADER_CLASS = "ui-state-default ui-corner-top ui-tabs-header";
+    public static final String ACTIVE_TAB_HEADER_CLASS = "ui-state-default ui-tabs-selected ui-tabs-header ui-state-active ui-corner-top";
+    public static final String PANELS_CLASS = "ui-tabs-panels";
+    public static final String ACTIVE_TAB_CONTENT_CLASS = "ui-tabs-panel ui-widget-content ui-corner-bottom";
+    public static final String INACTIVE_TAB_CONTENT_CLASS = "ui-tabs-panel ui-widget-content ui-corner-bottom ui-helper-hidden";
+    public static final String GROUPS_CLASS = "ui-ribbon-groups ui-helper-reset ui-helper-clearfix ui-widget-content";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         super.decode(context, component);
@@ -67,7 +76,7 @@ public class RibbonRenderer extends CoreRenderer {
         String clientId = ribbon.getClientId(context);
         String style = ribbon.getStyle();
         String styleClass = ribbon.getStyleClass();
-        styleClass = (styleClass == null) ? Ribbon.CONTAINER_CLASS : Ribbon.CONTAINER_CLASS + " " + styleClass;
+        styleClass = (styleClass == null) ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
 
         writer.startElement("div", ribbon);
         writer.writeAttribute("id", clientId, "id");
@@ -88,7 +97,7 @@ public class RibbonRenderer extends CoreRenderer {
         int childCount = ribbon.getChildCount();
 
         writer.startElement("ul", ribbon);
-        writer.writeAttribute("class", Ribbon.NAVIGATOR_CLASS, null);
+        writer.writeAttribute("class", NAVIGATOR_CLASS, null);
         writer.writeAttribute("role", "tablist", null);
 
         if (childCount > 0) {
@@ -100,7 +109,7 @@ public class RibbonRenderer extends CoreRenderer {
                     Tab tab = (Tab) child;
                     String title = tab.getTitle();
                     boolean active = (i == activeIndex);
-                    String headerClass = (active) ? Ribbon.ACTIVE_TAB_HEADER_CLASS : Ribbon.INACTIVE_TAB_HEADER_CLASS;
+                    String headerClass = (active) ? ACTIVE_TAB_HEADER_CLASS : INACTIVE_TAB_HEADER_CLASS;
 
                     // header container
                     writer.startElement("li", null);
@@ -128,7 +137,7 @@ public class RibbonRenderer extends CoreRenderer {
         int childCount = ribbon.getChildCount();
 
         writer.startElement("div", ribbon);
-        writer.writeAttribute("class", Ribbon.PANELS_CLASS, null);
+        writer.writeAttribute("class", PANELS_CLASS, null);
 
         if (childCount > 0) {
             List<UIComponent> children = ribbon.getChildren();
@@ -147,7 +156,7 @@ public class RibbonRenderer extends CoreRenderer {
 
     protected void encodeTabContent(FacesContext context, Ribbon ribbon, Tab tab, boolean active) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String contentClass = active ? Ribbon.ACTIVE_TAB_CONTENT_CLASS : Ribbon.INACTIVE_TAB_CONTENT_CLASS;
+        String contentClass = active ? ACTIVE_TAB_CONTENT_CLASS : INACTIVE_TAB_CONTENT_CLASS;
         int childCount = tab.getChildCount();
 
         writer.startElement("div", ribbon);
@@ -156,7 +165,7 @@ public class RibbonRenderer extends CoreRenderer {
 
         if (childCount > 0) {
             writer.startElement("ul", ribbon);
-            writer.writeAttribute("class", Ribbon.GROUPS_CLASS, null);
+            writer.writeAttribute("class", GROUPS_CLASS, null);
 
             List<UIComponent> children = tab.getChildren();
             for (int i = 0; i < childCount; i++) {

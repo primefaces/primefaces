@@ -35,6 +35,11 @@ import org.primefaces.util.WidgetBuilder;
 
 public class LifecycleRenderer extends CoreRenderer {
 
+    public static final String STYLE_CLASS = "ui-lifecycle ui-widget";
+    public static final String STYLE_CLASS_NAME = "ui-lifecycle-name";
+    public static final String STYLE_CLASS_RESULT = "ui-lifecycle-result";
+    public static final String STYLE_CLASS_SCORE = "ui-lifecycle-score";
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Lifecycle lifecycle = (Lifecycle) component;
@@ -43,7 +48,7 @@ public class LifecycleRenderer extends CoreRenderer {
 
         writer.startElement("table", lifecycle);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", Lifecycle.STYLE_CLASS, null);
+        writer.writeAttribute("class", STYLE_CLASS, null);
 
         writer.startElement("tr", null);
         for (PhaseId phaseId : PhaseId.VALUES) {
@@ -67,12 +72,12 @@ public class LifecycleRenderer extends CoreRenderer {
         writer.startElement("td", null);
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", Lifecycle.STYLE_CLASS_NAME, null);
+        writer.writeAttribute("class", STYLE_CLASS_NAME, null);
         writer.write(name);
         writer.endElement("div");
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", Lifecycle.STYLE_CLASS_RESULT + " " + Lifecycle.STYLE_CLASS_SCORE
+        writer.writeAttribute("class", STYLE_CLASS_RESULT + " " + STYLE_CLASS_SCORE
                 + "-" + getScore(phaseId, phaseInfo.getDuration()), null);
         writer.write(phaseInfo.getDuration() + "ms");
         writer.endElement("div");

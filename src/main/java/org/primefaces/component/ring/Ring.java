@@ -36,6 +36,4 @@ import javax.faces.application.ResourceDependency;
 public class Ring extends RingBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Ring";
-
-    public static final String STYLE_CLASS = "ui-ring ui-widget";
 }

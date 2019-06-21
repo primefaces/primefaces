@@ -37,6 +37,8 @@ import org.primefaces.util.WidgetBuilder;
 
 public class PasswordRenderer extends InputRenderer {
 
+    public static final String STYLE_CLASS = "ui-inputfield ui-password ui-widget ui-state-default ui-corner-all";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Password password = (Password) component;
@@ -85,7 +87,7 @@ public class PasswordRenderer extends InputRenderer {
         String clientId = password.getClientId(context);
         boolean disabled = password.isDisabled();
 
-        String inputClass = Password.STYLE_CLASS;
+        String inputClass = STYLE_CLASS;
         inputClass = password.isValid() ? inputClass : inputClass + " ui-state-error";
         inputClass = !disabled ? inputClass : inputClass + " ui-state-disabled";
         String styleClass = password.getStyleClass() == null ? inputClass : inputClass + " " + password.getStyleClass();

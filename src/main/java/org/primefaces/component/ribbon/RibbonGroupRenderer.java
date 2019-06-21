@@ -33,13 +33,17 @@ import org.primefaces.renderkit.CoreRenderer;
 
 public class RibbonGroupRenderer extends CoreRenderer {
 
+    public static final String GROUP_CLASS = "ui-ribbon-group";
+    public static final String GROUP_CONTENT_CLASS = "ui-ribbon-group-content";
+    public static final String GROUP_LABEL_CLASS = "ui-ribbon-group-label";
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         RibbonGroup group = (RibbonGroup) component;
         String label = group.getLabel();
         String groupClass = group.getStyleClass();
-        groupClass = (groupClass == null) ? Ribbon.GROUP_CLASS : Ribbon.GROUP_CLASS + " " + groupClass;
+        groupClass = (groupClass == null) ? GROUP_CLASS : GROUP_CLASS + " " + groupClass;
         String style = group.getStyle();
 
         writer.startElement("li", null);
@@ -49,12 +53,12 @@ public class RibbonGroupRenderer extends CoreRenderer {
         }
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", Ribbon.GROUP_CONTENT_CLASS, null);
+        writer.writeAttribute("class", GROUP_CONTENT_CLASS, null);
         renderChildren(context, group);
         writer.endElement("div");
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", Ribbon.GROUP_LABEL_CLASS, null);
+        writer.writeAttribute("class", GROUP_LABEL_CLASS, null);
         if (label != null) {
             writer.writeText(label, null);
         }

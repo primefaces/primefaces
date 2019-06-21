@@ -45,6 +45,29 @@ import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
 
 public class TreeRenderer extends CoreRenderer {
 
+    public static final String CHECKBOX_CLASS = "ui-selection";
+    public static final String FILTER_CLASS = "ui-tree-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
+    public static final String FILTER_CONTAINER = "ui-tree-filter-container";
+    public static final String CONTAINER_CLASS = "ui-tree ui-widget ui-widget-content ui-corner-all";
+    public static final String CONTAINER_RTL_CLASS = "ui-tree ui-tree-rtl ui-widget ui-widget-content ui-corner-all";
+    public static final String HORIZONTAL_CONTAINER_CLASS = "ui-tree ui-tree-horizontal ui-widget ui-widget-content ui-corner-all";
+    public static final String ROOT_NODES_CLASS = "ui-tree-container";
+    public static final String PARENT_NODE_CLASS = "ui-treenode ui-treenode-parent";
+    public static final String LEAF_NODE_CLASS = "ui-treenode ui-treenode-leaf";
+    public static final String CHILDREN_NODES_CLASS = "ui-treenode-children";
+    public static final String NODE_CONTENT_CLASS_V = "ui-treenode-content";
+    public static final String SELECTABLE_NODE_CONTENT_CLASS_V = "ui-treenode-content ui-tree-selectable";
+    public static final String NODE_CONTENT_CLASS_H = "ui-treenode-content ui-state-default ui-corner-all";
+    public static final String SELECTABLE_NODE_CONTENT_CLASS_H = "ui-treenode-content ui-tree-selectable ui-state-default ui-corner-all";
+    public static final String EXPANDED_ICON_CLASS_V = "ui-tree-toggler ui-icon ui-icon-triangle-1-s";
+    public static final String COLLAPSED_ICON_CLASS_V = "ui-tree-toggler ui-icon ui-icon-triangle-1-e";
+    public static final String COLLAPSED_ICON_RTL_CLASS_V = "ui-tree-toggler ui-icon ui-icon-triangle-1-w";
+    public static final String EXPANDED_ICON_CLASS_H = "ui-tree-toggler ui-icon ui-icon-minus";
+    public static final String COLLAPSED_ICON_CLASS_H = "ui-tree-toggler ui-icon ui-icon-plus";
+    public static final String LEAF_ICON_CLASS = "ui-treenode-leaf-icon";
+    public static final String NODE_ICON_CLASS = "ui-treenode-icon ui-icon";
+    public static final String NODE_LABEL_CLASS = "ui-treenode-label ui-corner-all";
+
     private static final String SB_DECODE_SELECTION = TreeRenderer.class.getName() + "#decodeSelection";
 
     protected enum NodeOrder {
@@ -369,7 +392,7 @@ public class TreeRenderer extends CoreRenderer {
         }
 
         //container class
-        String containerClass = tree.isRTLRendering() ? Tree.CONTAINER_RTL_CLASS : Tree.CONTAINER_CLASS;
+        String containerClass = tree.isRTLRendering() ? CONTAINER_RTL_CLASS : CONTAINER_CLASS;
         containerClass = isDisabled ? containerClass + " ui-state-disabled" : containerClass;
         if (tree.getStyleClass() != null) {
             containerClass = containerClass + " " + tree.getStyleClass();
@@ -396,7 +419,7 @@ public class TreeRenderer extends CoreRenderer {
         }
 
         writer.startElement("ul", null);
-        writer.writeAttribute("class", Tree.ROOT_NODES_CLASS, null);
+        writer.writeAttribute("class", ROOT_NODES_CLASS, null);
 
         if (root != null) {
             encodeTreeNodeChildren(context, tree, root, clientId, dynamic, checkbox, droppable);
@@ -417,14 +440,14 @@ public class TreeRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", Tree.FILTER_CONTAINER, null);
+        writer.writeAttribute("class", FILTER_CONTAINER, null);
 
         writer.startElement("input", null);
         writer.writeAttribute("id", name, null);
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute("class", Tree.FILTER_CLASS, null);
+        writer.writeAttribute("class", FILTER_CLASS, null);
         writer.endElement("input");
 
         writer.startElement("span", null);
@@ -442,8 +465,8 @@ public class TreeRenderer extends CoreRenderer {
         boolean checkbox = (selectionMode != null) && selectionMode.equals("checkbox");
 
         String containerClass = tree.getStyleClass() == null
-                                ? Tree.HORIZONTAL_CONTAINER_CLASS
-                                : Tree.HORIZONTAL_CONTAINER_CLASS + " " + tree.getStyleClass();
+                                ? HORIZONTAL_CONTAINER_CLASS
+                                : HORIZONTAL_CONTAINER_CLASS + " " + tree.getStyleClass();
         containerClass = tree.isDisabled() ? containerClass + " ui-state-disabled" : containerClass;
         if (tree.isShowUnselectableCheckbox()) {
             containerClass = containerClass + " ui-tree-checkbox-all";
@@ -478,10 +501,10 @@ public class TreeRenderer extends CoreRenderer {
 
         String nodeClass;
         if (leaf) {
-            nodeClass = Tree.LEAF_NODE_CLASS;
+            nodeClass = LEAF_NODE_CLASS;
         }
         else {
-            nodeClass = Tree.PARENT_NODE_CLASS;
+            nodeClass = PARENT_NODE_CLASS;
             nodeClass = expanded ? nodeClass + " ui-treenode-expanded" : nodeClass + " ui-treenode-collapsed";
         }
 
@@ -520,7 +543,7 @@ public class TreeRenderer extends CoreRenderer {
         nodeClass = uiTreeNode.getStyleClass() == null ? nodeClass : nodeClass + " " + uiTreeNode.getStyleClass();
         writer.writeAttribute("class", nodeClass, null);
 
-        String nodeContentClass = (tree.getSelectionMode() != null && node.isSelectable()) ? Tree.SELECTABLE_NODE_CONTENT_CLASS_H : Tree.NODE_CONTENT_CLASS_H;
+        String nodeContentClass = (tree.getSelectionMode() != null && node.isSelectable()) ? SELECTABLE_NODE_CONTENT_CLASS_H : NODE_CONTENT_CLASS_H;
         if (selected) {
             nodeContentClass += " ui-state-highlight";
         }
@@ -529,7 +552,7 @@ public class TreeRenderer extends CoreRenderer {
 
         //toggler
         if (!leaf) {
-            String toggleIcon = expanded ? Tree.EXPANDED_ICON_CLASS_H : Tree.COLLAPSED_ICON_CLASS_H;
+            String toggleIcon = expanded ? EXPANDED_ICON_CLASS_H : COLLAPSED_ICON_CLASS_H;
             writer.startElement("span", null);
             writer.writeAttribute("class", toggleIcon, null);
             writer.endElement("span");
@@ -537,7 +560,7 @@ public class TreeRenderer extends CoreRenderer {
 
         //checkbox
         if (checkbox) {
-            RendererUtils.encodeCheckbox(context, selected, partialSelected, !selectable, Tree.CHECKBOX_CLASS);
+            RendererUtils.encodeCheckbox(context, selected, partialSelected, !selectable, CHECKBOX_CLASS);
         }
 
         //icon
@@ -545,7 +568,7 @@ public class TreeRenderer extends CoreRenderer {
 
         //label
         writer.startElement("span", null);
-        writer.writeAttribute("class", Tree.NODE_LABEL_CLASS, null);
+        writer.writeAttribute("class", NODE_LABEL_CLASS, null);
         if (!tree.isDisabled()) {
             writer.writeAttribute("tabindex", "-1", null);
         }
@@ -568,7 +591,7 @@ public class TreeRenderer extends CoreRenderer {
             }
 
             writer.startElement("div", null);
-            writer.writeAttribute("class", Tree.CHILDREN_NODES_CLASS, null);
+            writer.writeAttribute("class", CHILDREN_NODES_CLASS, null);
 
             if ((dynamic && expanded) || !dynamic) {
                 encodeHorizontalTreeNodeChildren(context, tree, node, clientId, rowKey, dynamic, checkbox);
@@ -684,14 +707,14 @@ public class TreeRenderer extends CoreRenderer {
         boolean expanded = node.isExpanded();
         boolean selectable = tree.getSelectionMode() != null && node.isSelectable();
         String toggleIcon = expanded
-                            ? Tree.EXPANDED_ICON_CLASS_V
-                            : (tree.isRTLRendering() ? Tree.COLLAPSED_ICON_RTL_CLASS_V : Tree.COLLAPSED_ICON_CLASS_V);
-        String stateIcon = isLeaf ? Tree.LEAF_ICON_CLASS : toggleIcon;
+                            ? EXPANDED_ICON_CLASS_V
+                            : (tree.isRTLRendering() ? COLLAPSED_ICON_RTL_CLASS_V : COLLAPSED_ICON_CLASS_V);
+        String stateIcon = isLeaf ? LEAF_ICON_CLASS : toggleIcon;
         Object datakey = tree.getDatakey();
         String nodeId = clientId + UINamingContainer.getSeparatorChar(context) + rowKey;
 
         //style class of node
-        String containerClass = isLeaf ? Tree.LEAF_NODE_CLASS : Tree.PARENT_NODE_CLASS;
+        String containerClass = isLeaf ? LEAF_NODE_CLASS : PARENT_NODE_CLASS;
 
         if (selected) {
             containerClass += " ui-treenode-selected";
@@ -716,7 +739,7 @@ public class TreeRenderer extends CoreRenderer {
         }
 
         //content
-        String contentClass = selectable ? Tree.SELECTABLE_NODE_CONTENT_CLASS_V : Tree.NODE_CONTENT_CLASS_V;
+        String contentClass = selectable ? SELECTABLE_NODE_CONTENT_CLASS_V : NODE_CONTENT_CLASS_V;
         if (dragdrop) {
             contentClass += " ui-treenode-droppable";
         }
@@ -737,14 +760,14 @@ public class TreeRenderer extends CoreRenderer {
 
         //checkbox
         if (checkbox) {
-            RendererUtils.encodeCheckbox(context, selected, partialSelected, !selectable, Tree.CHECKBOX_CLASS);
+            RendererUtils.encodeCheckbox(context, selected, partialSelected, !selectable, CHECKBOX_CLASS);
         }
 
         //node icon
         encodeIcon(context, uiTreeNode, expanded);
 
         //label
-        String nodeLabelClass = selected ? Tree.NODE_LABEL_CLASS + " ui-state-highlight" : Tree.NODE_LABEL_CLASS;
+        String nodeLabelClass = selected ? NODE_LABEL_CLASS + " ui-state-highlight" : NODE_LABEL_CLASS;
 
         writer.startElement("span", null);
         writer.writeAttribute("class", nodeLabelClass, null);
@@ -761,7 +784,7 @@ public class TreeRenderer extends CoreRenderer {
 
         //children nodes
         writer.startElement("ul", null);
-        writer.writeAttribute("class", Tree.CHILDREN_NODES_CLASS, null);
+        writer.writeAttribute("class", CHILDREN_NODES_CLASS, null);
         writer.writeAttribute("role", "group", null);
 
         if (!expanded) {
@@ -838,7 +861,7 @@ public class TreeRenderer extends CoreRenderer {
         writer.startElement("span", null);
         String icon = uiTreeNode.getIconToRender(expanded);
         if (icon != null) {
-            writer.writeAttribute("class", Tree.NODE_ICON_CLASS + " " + icon, null);
+            writer.writeAttribute("class", NODE_ICON_CLASS + " " + icon, null);
         }
         writer.endElement("span");
     }

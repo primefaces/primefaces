@@ -52,6 +52,14 @@ import org.primefaces.util.WidgetBuilder;
 
 public class DataRenderer extends CoreRenderer {
 
+    public static final String PAGINATOR_TOP_CONTAINER_CLASS = "ui-paginator ui-paginator-top ui-widget-header";
+    public static final String PAGINATOR_BOTTOM_CONTAINER_CLASS = "ui-paginator ui-paginator-bottom ui-widget-header";
+    public static final String PAGINATOR_TOP_LEFT_CONTENT_CLASS = "ui-paginator-top-left-content";
+    public static final String PAGINATOR_TOP_RIGHT_CONTENT_CLASS = "ui-paginator-top-right-content";
+    public static final String PAGINATOR_BOTTOM_LEFT_CONTENT_CLASS = "ui-paginator-bottom-left-content";
+    public static final String PAGINATOR_BOTTOM_RIGHT_CONTENT_CLASS = "ui-paginator-bottom-right-content";
+    public static final String ARIA_HEADER_LABEL = "primefaces.paginator.aria.HEADER";
+
     private static final Map<String, PaginatorElementRenderer> PAGINATOR_ELEMENTS = new HashMap<String, PaginatorElementRenderer>();
 
     static {
@@ -86,7 +94,7 @@ public class DataRenderer extends CoreRenderer {
         UIComponent leftBottomContent = pageable.getFacet("paginatorBottomLeft");
         UIComponent rightBottomContent = pageable.getFacet("paginatorBottomRight");
 
-        String styleClass = isTop ? UIData.PAGINATOR_TOP_CONTAINER_CLASS : UIData.PAGINATOR_BOTTOM_CONTAINER_CLASS;
+        String styleClass = isTop ? PAGINATOR_TOP_CONTAINER_CLASS : PAGINATOR_BOTTOM_CONTAINER_CLASS;
         String id = pageable.getClientId(context) + "_paginator_" + position;
 
         //add corners
@@ -97,7 +105,7 @@ public class DataRenderer extends CoreRenderer {
             styleClass = styleClass + " ui-corner-top";
         }
 
-        String ariaMessage = MessageFactory.getMessage(UIData.ARIA_HEADER_LABEL, new Object[]{});
+        String ariaMessage = MessageFactory.getMessage(ARIA_HEADER_LABEL, new Object[]{});
 
         writer.startElement("div", null);
         writer.writeAttribute("id", id, null);
@@ -107,14 +115,14 @@ public class DataRenderer extends CoreRenderer {
 
         if (leftTopContent != null && isTop) {
             writer.startElement("div", null);
-            writer.writeAttribute("class", UIData.PAGINATOR_TOP_LEFT_CONTENT_CLASS, null);
+            writer.writeAttribute("class", PAGINATOR_TOP_LEFT_CONTENT_CLASS, null);
             renderChild(context, leftTopContent);
             writer.endElement("div");
         }
 
         if (rightTopContent != null && isTop) {
             writer.startElement("div", null);
-            writer.writeAttribute("class", UIData.PAGINATOR_TOP_RIGHT_CONTENT_CLASS, null);
+            writer.writeAttribute("class", PAGINATOR_TOP_RIGHT_CONTENT_CLASS, null);
             renderChild(context, rightTopContent);
             writer.endElement("div");
         }
@@ -139,13 +147,13 @@ public class DataRenderer extends CoreRenderer {
         }
         if (leftBottomContent != null && !isTop) {
             writer.startElement("div", null);
-            writer.writeAttribute("class", UIData.PAGINATOR_BOTTOM_LEFT_CONTENT_CLASS, null);
+            writer.writeAttribute("class", PAGINATOR_BOTTOM_LEFT_CONTENT_CLASS, null);
             renderChild(context, leftBottomContent);
             writer.endElement("div");
         }
         if (rightBottomContent != null && !isTop) {
             writer.startElement("div", null);
-            writer.writeAttribute("class", UIData.PAGINATOR_BOTTOM_RIGHT_CONTENT_CLASS, null);
+            writer.writeAttribute("class", PAGINATOR_BOTTOM_RIGHT_CONTENT_CLASS, null);
             renderChild(context, rightBottomContent);
             writer.endElement("div");
         }

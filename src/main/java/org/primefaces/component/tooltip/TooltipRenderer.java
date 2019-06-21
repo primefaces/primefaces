@@ -36,6 +36,8 @@ import org.primefaces.util.WidgetBuilder;
 
 public class TooltipRenderer extends CoreRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-tooltip ui-widget";
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Tooltip tooltip = (Tooltip) component;
@@ -51,8 +53,8 @@ public class TooltipRenderer extends CoreRenderer {
 
         if (target != null) {
             String styleClass = tooltip.getStyleClass();
-            styleClass = styleClass == null ? Tooltip.CONTAINER_CLASS : Tooltip.CONTAINER_CLASS + " " + styleClass;
-            styleClass = styleClass + " ui-tooltip-" + tooltip.getPosition();
+            styleClass = styleClass == null ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
+            styleClass = styleClass + " ui-tooltip-TreeTableRenderer" + tooltip.getPosition();
 
             writer.startElement("div", tooltip);
             writer.writeAttribute("id", tooltip.getClientId(context), null);

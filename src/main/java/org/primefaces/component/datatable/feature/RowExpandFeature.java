@@ -36,6 +36,8 @@ import org.primefaces.model.LazyDataModel;
 
 public class RowExpandFeature implements DataTableFeature {
 
+    public static final String EXPANDED_ROW_CONTENT_CLASS = "ui-expanded-row-content";
+
     @Override
     public void decode(FacesContext context, DataTable table) {
         throw new RuntimeException("RowExpandFeature should not encode.");
@@ -59,7 +61,7 @@ public class RowExpandFeature implements DataTableFeature {
         String rowIndexVar = table.getRowIndexVar();
         RowExpansion rowExpansion = table.getRowExpansion();
 
-        String styleClass = DataTable.EXPANDED_ROW_CONTENT_CLASS + " ui-widget-content";
+        String styleClass = EXPANDED_ROW_CONTENT_CLASS + " ui-widget-content";
         if (rowExpansion.getStyleClass() != null) {
             styleClass = styleClass + " " + rowExpansion.getStyleClass();
         }

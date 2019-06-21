@@ -37,6 +37,4 @@ public class MenuButton extends MenuButtonBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.MenuButton";
 
-    public static final String CONTAINER_CLASS = "ui-menubutton ui-widget";
-    public static final String ICON_CLASS = "ui-icon-triangle-1-s";
 }

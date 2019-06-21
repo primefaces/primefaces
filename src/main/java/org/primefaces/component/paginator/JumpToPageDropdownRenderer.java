@@ -29,7 +29,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.api.Pageable;
-import org.primefaces.component.api.UIData;
 
 public class JumpToPageDropdownRenderer implements PaginatorElementRenderer {
 
@@ -40,7 +39,7 @@ public class JumpToPageDropdownRenderer implements PaginatorElementRenderer {
         int pageCount = pageable.getPageCount();
 
         writer.startElement("select", null);
-        writer.writeAttribute("class", UIData.PAGINATOR_JTP_SELECT_CLASS, null);
+        writer.writeAttribute("class", PAGINATOR_JTP_SELECT_CLASS, null);
         writer.writeAttribute("value", pageable.getPage(), null);
 
         for (int i = 0; i < pageCount; i++) {

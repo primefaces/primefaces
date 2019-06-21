@@ -53,6 +53,11 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 
     public static final String SEPARATOR = "_";
 
+    public static final String DYNAMIC_CONTAINER_CLASS = "ui-menu ui-menu-dynamic ui-widget ui-widget-content ui-corner-all ui-helper-clearfix ui-shadow";
+    public static final String TIERED_SUBMENU_CLASS = "ui-widget ui-menuitem ui-corner-all ui-menu-parent";
+    public static final String TIERED_CHILD_SUBMENU_CLASS = "ui-widget-content ui-menu-list ui-corner-all ui-helper-clearfix ui-menu-child ui-shadow";
+    public static final String OPTIONS_CLASS = "ui-menuitem ui-menubar-options ui-widget ui-corner-all";
+
     private static final String SB_BUILD_NON_AJAX_REQUEST = BaseMenuRenderer.class.getName() + "#buildNonAjaxRequest";
 
     @Override
@@ -125,7 +130,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
     protected String getLinkStyleClass(MenuItem menuItem) {
         String styleClass = menuItem.getStyleClass();
 
-        return (styleClass == null) ? AbstractMenu.MENUITEM_LINK_CLASS : AbstractMenu.MENUITEM_LINK_CLASS + " " + styleClass;
+        return (styleClass == null) ? MENUITEM_LINK_CLASS : MENUITEM_LINK_CLASS + " " + styleClass;
     }
 
     protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
@@ -264,12 +269,12 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 
         if (icon != null) {
             writer.startElement("span", null);
-            writer.writeAttribute("class", AbstractMenu.MENUITEM_ICON_CLASS + " " + icon, null);
+            writer.writeAttribute("class", MENUITEM_ICON_CLASS + " " + icon, null);
             writer.endElement("span");
         }
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", AbstractMenu.MENUITEM_TEXT_CLASS, null);
+        writer.writeAttribute("class", MENUITEM_TEXT_CLASS, null);
 
         if (menuitem.shouldRenderChildren()) {
             renderChildren(context, (UIComponent) menuitem);
@@ -290,7 +295,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String style = separator.getStyle();
         String styleClass = separator.getStyleClass();
-        styleClass = styleClass == null ? Menu.SEPARATOR_CLASS : Menu.SEPARATOR_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? SEPARATOR_CLASS : SEPARATOR_CLASS + " " + styleClass;
 
         //title
         writer.startElement("li", null);

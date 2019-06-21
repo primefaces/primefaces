@@ -31,13 +31,28 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
-import org.primefaces.component.menu.Menu;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.Submenu;
 import org.primefaces.util.WidgetBuilder;
 
 public class PanelMenuRenderer extends BaseMenuRenderer {
+
+    public static final String CONTAINER_CLASS = "ui-panelmenu ui-widget";
+    public static final String INACTIVE_HEADER_CLASS = "ui-widget ui-panelmenu-header ui-state-default ui-corner-all";
+    public static final String ACTIVE_HEADER_CLASS = "ui-widget ui-panelmenu-header ui-state-default ui-state-active ui-corner-top";
+    public static final String INACTIVE_TAB_HEADER_ICON_CLASS = "ui-icon ui-icon-triangle-1-e";
+    public static final String ACTIVE_TAB_HEADER_ICON_CLASS = "ui-icon ui-icon-triangle-1-s";
+    public static final String INACTIVE_ROOT_SUBMENU_CONTENT = "ui-panelmenu-content ui-widget-content ui-helper-hidden";
+    public static final String ACTIVE_ROOT_SUBMENU_CONTENT = "ui-panelmenu-content ui-widget-content";
+    public static final String MENUITEM_CLASS = "ui-menuitem ui-widget ui-corner-all";
+    public static final String DESCENDANT_SUBMENU_CLASS = "ui-widget ui-menuitem ui-corner-all ui-menu-parent";
+    public static final String DESCENDANT_SUBMENU_EXPANDED_ICON_CLASS = "ui-panelmenu-icon ui-icon ui-icon-triangle-1-s";
+    public static final String DESCENDANT_SUBMENU_COLLAPSED_ICON_CLASS = "ui-panelmenu-icon ui-icon ui-icon-triangle-1-e";
+    public static final String DESCENDANT_SUBMENU_EXPANDED_LIST_CLASS = "ui-menu-list ui-helper-reset";
+    public static final String DESCENDANT_SUBMENU_COLLAPSED_LIST_CLASS = "ui-menu-list ui-helper-reset ui-helper-hidden";
+    public static final String PANEL_CLASS = "ui-panelmenu-panel";
+    public static final String MENUITEM_LINK_WITH_ICON_CLASS = "ui-menuitem-link ui-menuitem-link-hasicon ui-corner-all";
 
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
@@ -57,7 +72,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         String clientId = menu.getClientId(context);
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
-        styleClass = styleClass == null ? PanelMenu.CONTAINER_CLASS : PanelMenu.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
 
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
@@ -84,11 +99,11 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String style = submenu.getStyle();
         String styleClass = submenu.getStyleClass();
-        styleClass = styleClass == null ? PanelMenu.PANEL_CLASS : PanelMenu.PANEL_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? PANEL_CLASS : PANEL_CLASS + " " + styleClass;
         boolean expanded = submenu.isExpanded();
-        String headerClass = expanded ? PanelMenu.ACTIVE_HEADER_CLASS : PanelMenu.INACTIVE_HEADER_CLASS;
-        String headerIconClass = expanded ? PanelMenu.ACTIVE_TAB_HEADER_ICON_CLASS : PanelMenu.INACTIVE_TAB_HEADER_ICON_CLASS;
-        String contentClass = expanded ? PanelMenu.ACTIVE_ROOT_SUBMENU_CONTENT : PanelMenu.INACTIVE_ROOT_SUBMENU_CONTENT;
+        String headerClass = expanded ? ACTIVE_HEADER_CLASS : INACTIVE_HEADER_CLASS;
+        String headerIconClass = expanded ? ACTIVE_TAB_HEADER_ICON_CLASS : INACTIVE_TAB_HEADER_ICON_CLASS;
+        String contentClass = expanded ? ACTIVE_ROOT_SUBMENU_CONTENT : INACTIVE_ROOT_SUBMENU_CONTENT;
 
         //wrapper
         writer.startElement("div", null);
@@ -127,7 +142,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
             List<MenuElement> elements = submenu.getElements();
 
             writer.startElement("ul", null);
-            writer.writeAttribute("class", PanelMenu.LIST_CLASS, null);
+            writer.writeAttribute("class", LIST_CLASS, null);
 
             for (MenuElement element : elements) {
                 if (element.isRendered()) {
@@ -135,7 +150,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
                         MenuItem menuItem = (MenuItem) element;
                         String containerStyle = menuItem.getContainerStyle();
                         String containerStyleClass = menuItem.getContainerStyleClass();
-                        containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS : Menu.MENUITEM_CLASS + " " + containerStyleClass;
+                        containerStyleClass = (containerStyleClass == null) ? MENUITEM_CLASS : MENUITEM_CLASS + " " + containerStyleClass;
 
                         writer.startElement("li", null);
                         writer.writeAttribute("class", containerStyleClass, null);
@@ -164,12 +179,12 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         String icon = submenu.getIcon();
         String style = submenu.getStyle();
         String styleClass = submenu.getStyleClass();
-        styleClass = styleClass == null ? PanelMenu.DESCENDANT_SUBMENU_CLASS : PanelMenu.DESCENDANT_SUBMENU_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? DESCENDANT_SUBMENU_CLASS : DESCENDANT_SUBMENU_CLASS + " " + styleClass;
         boolean expanded = submenu.isExpanded();
-        String toggleIconClass = expanded ? PanelMenu.DESCENDANT_SUBMENU_EXPANDED_ICON_CLASS : PanelMenu.DESCENDANT_SUBMENU_COLLAPSED_ICON_CLASS;
-        String listClass = expanded ? PanelMenu.DESCENDANT_SUBMENU_EXPANDED_LIST_CLASS : PanelMenu.DESCENDANT_SUBMENU_COLLAPSED_LIST_CLASS;
+        String toggleIconClass = expanded ? DESCENDANT_SUBMENU_EXPANDED_ICON_CLASS : DESCENDANT_SUBMENU_COLLAPSED_ICON_CLASS;
+        String listClass = expanded ? DESCENDANT_SUBMENU_EXPANDED_LIST_CLASS : DESCENDANT_SUBMENU_COLLAPSED_LIST_CLASS;
         boolean hasIcon = (icon != null);
-        String linkClass = (hasIcon) ? PanelMenu.MENUITEM_LINK_WITH_ICON_CLASS : PanelMenu.MENUITEM_LINK_CLASS;
+        String linkClass = (hasIcon) ? MENUITEM_LINK_WITH_ICON_CLASS : MENUITEM_LINK_CLASS;
 
         writer.startElement("li", null);
         writer.writeAttribute("id", submenu.getClientId(), null);
@@ -195,7 +210,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
 
         //submenu label
         writer.startElement("span", null);
-        writer.writeAttribute("class", PanelMenu.MENUITEM_TEXT_CLASS, null);
+        writer.writeAttribute("class", MENUITEM_TEXT_CLASS, null);
         writer.writeText(submenu.getLabel(), null);
         writer.endElement("span");
 
@@ -212,7 +227,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
                 if (element.isRendered()) {
                     if (element instanceof MenuItem) {
                         writer.startElement("li", null);
-                        writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
+                        writer.writeAttribute("class", MENUITEM_CLASS, null);
                         encodeMenuItem(context, menu, (MenuItem) element, "-1");
                         writer.endElement("li");
                     }

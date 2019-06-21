@@ -42,6 +42,8 @@ import org.primefaces.util.WidgetBuilder;
 
 public class DatePickerRenderer extends BaseCalendarRenderer {
 
+    public static final String CONTAINER_EXTENSION_CLASS = "p-datepicker";
+
     @Override
     protected void encodeMarkup(FacesContext context, UICalendar uicalendar, String value) throws IOException {
         DatePicker datepicker = (DatePicker) uicalendar;
@@ -49,7 +51,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         String clientId = datepicker.getClientId(context);
         String styleClass = datepicker.getStyleClass();
         styleClass = (styleClass == null) ? UICalendar.CONTAINER_CLASS : UICalendar.CONTAINER_CLASS + " " + styleClass;
-        styleClass = DatePicker.CONTAINER_EXTENSION_CLASS + " " + styleClass;
+        styleClass = CONTAINER_EXTENSION_CLASS + " " + styleClass;
         String inputId = clientId + "_input";
         boolean inline = datepicker.isInline();
 

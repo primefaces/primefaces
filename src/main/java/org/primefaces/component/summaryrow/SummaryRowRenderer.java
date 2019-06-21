@@ -30,10 +30,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.column.Column;
-import org.primefaces.component.datatable.DataTable;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class SummaryRowRenderer extends CoreRenderer {
+
+    public static final String SUMMARY_ROW_CLASS = "ui-datatable-summaryrow ui-widget-header";
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -41,7 +42,7 @@ public class SummaryRowRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("tr", null);
-        writer.writeAttribute("class", DataTable.SUMMARY_ROW_CLASS, null);
+        writer.writeAttribute("class", SUMMARY_ROW_CLASS, null);
 
         for (UIComponent kid : row.getChildren()) {
             if (kid.isRendered() && kid instanceof Column) {

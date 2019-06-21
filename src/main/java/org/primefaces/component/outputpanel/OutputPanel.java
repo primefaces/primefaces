@@ -44,9 +44,6 @@ public class OutputPanel extends OutputPanelBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.OutputPanel";
 
-    public static final String CONTAINER_CLASS = "ui-outputpanel ui-widget";
-    public static final String LOADING_CLASS = "ui-outputpanel-loading ui-widget";
-
     private static final String DEFAULT_EVENT = "load";
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("load", null)

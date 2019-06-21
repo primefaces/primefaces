@@ -43,6 +43,15 @@ import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneListboxRenderer extends SelectOneRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-selectonelistbox ui-inputfield ui-widget ui-widget-content ui-corner-all";
+    public static final String LIST_CONTAINER_CLASS = "ui-selectlistbox-listcontainer";
+    public static final String LIST_CLASS = "ui-selectlistbox-list";
+    public static final String ITEM_CLASS = "ui-selectlistbox-item ui-corner-all";
+    public static final String FILTER_CONTAINER_CLASS = "ui-selectlistbox-filter-container";
+    public static final String FILTER_CLASS = "ui-selectlistbox-filter ui-inputfield ui-widget ui-state-default ui-corner-all";
+    public static final String FILTER_ICON_CLASS = "ui-icon ui-icon-search";
+    public static final String[] DOM_EVENTS = {"onchange", "onclick", "ondblclick"};
+
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
@@ -67,7 +76,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
 
         String style = listbox.getStyle();
         String styleClass = listbox.getStyleClass();
-        styleClass = styleClass == null ? SelectOneListbox.CONTAINER_CLASS : SelectOneListbox.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
         styleClass = listbox.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
         styleClass = !listbox.isValid() ? styleClass + " ui-state-error" : styleClass;
 
@@ -120,7 +129,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
 
         renderAccessibilityAttributes(context, listbox);
         renderPassThruAttributes(context, listbox, HTML.TAB_INDEX);
-        renderDomEvents(context, listbox, SelectOneListbox.DOM_EVENTS);
+        renderDomEvents(context, listbox, DOM_EVENTS);
         renderValidationMetadata(context, listbox);
 
         encodeSelectItems(context, listbox, selectItems);
@@ -138,12 +147,12 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         boolean customContent = listbox.getVar() != null;
 
         writer.startElement("div", listbox);
-        writer.writeAttribute("class", SelectOneListbox.LIST_CONTAINER_CLASS, null);
+        writer.writeAttribute("class", LIST_CONTAINER_CLASS, null);
         writer.writeAttribute("style", "height:" + calculateWrapperHeight(listbox, countSelectItems(selectItems)), null);
 
         if (customContent) {
             writer.startElement("table", null);
-            writer.writeAttribute("class", SelectOneListbox.LIST_CLASS, null);
+            writer.writeAttribute("class", LIST_CLASS, null);
             writer.startElement("tbody", null);
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);
@@ -154,7 +163,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         }
         else {
             writer.startElement("ul", null);
-            writer.writeAttribute("class", SelectOneListbox.LIST_CLASS, null);
+            writer.writeAttribute("class", LIST_CLASS, null);
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);
                 encodeItem(context, listbox, selectItem, values, submittedValues, converter, customContent);
@@ -171,7 +180,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, listbox, converter, option.getValue());
         boolean disabled = option.isDisabled() || listbox.isDisabled();
-        String itemClass = disabled ? SelectOneListbox.ITEM_CLASS + " ui-state-disabled" : SelectOneListbox.ITEM_CLASS;
+        String itemClass = disabled ? ITEM_CLASS + " ui-state-disabled" : ITEM_CLASS;
 
         Object valuesArray;
         Object itemValue;
@@ -292,13 +301,13 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String id = listbox.getClientId(context) + "_filter";
         boolean disabled = listbox.isDisabled();
-        String filterClass = disabled ? SelectOneListbox.FILTER_CLASS + " ui-state-disabled" : SelectOneListbox.FILTER_CLASS;
+        String filterClass = disabled ? FILTER_CLASS + " ui-state-disabled" : FILTER_CLASS;
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", SelectOneListbox.FILTER_CONTAINER_CLASS, null);
+        writer.writeAttribute("class", FILTER_CONTAINER_CLASS, null);
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", SelectOneListbox.FILTER_ICON_CLASS, id);
+        writer.writeAttribute("class", FILTER_ICON_CLASS, id);
         writer.endElement("span");
 
         writer.startElement("input", null);

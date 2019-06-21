@@ -47,9 +47,6 @@ public class CommandLink extends CommandLinkBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.CommandLink";
 
-    public static final String STYLE_CLASS = "ui-commandlink ui-widget";
-    public static final String DISABLED_STYLE_CLASS = "ui-commandlink ui-widget ui-state-disabled";
-
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("click", null)
             .put("dialogReturn", SelectEvent.class)

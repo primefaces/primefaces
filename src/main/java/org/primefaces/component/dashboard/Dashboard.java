@@ -51,9 +51,6 @@ public class Dashboard extends DashboardBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Dashboard";
 
-    public static final String CONTAINER_CLASS = "ui-dashboard";
-    public static final String COLUMN_CLASS = "ui-dashboard-column";
-
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("reorder", DashboardReorderEvent.class)
             .build();

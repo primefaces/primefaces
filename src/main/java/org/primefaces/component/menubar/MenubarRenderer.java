@@ -29,13 +29,14 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.menu.AbstractMenu;
-import org.primefaces.component.menu.Menu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
 import org.primefaces.model.menu.BaseMenuModel;
 import org.primefaces.model.menu.Submenu;
 import org.primefaces.util.WidgetBuilder;
 
 public class MenubarRenderer extends TieredMenuRenderer {
+
+    public static final String CONTAINER_CLASS = "ui-menu ui-menubar ui-widget ui-widget-content ui-corner-all ui-helper-clearfix";
 
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
@@ -55,7 +56,7 @@ public class MenubarRenderer extends TieredMenuRenderer {
         Menubar menubar = (Menubar) abstractMenu;
         String style = menubar.getStyle();
         String styleClass = menubar.getStyleClass();
-        styleClass = styleClass == null ? Menubar.CONTAINER_CLASS : Menubar.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
 
         encodeMenu(context, menubar, style, styleClass, "menubar");
     }
@@ -67,10 +68,10 @@ public class MenubarRenderer extends TieredMenuRenderer {
         String icon = null;
 
         if (parent == null) {
-            icon = (submenu.getId().indexOf(BaseMenuModel.ID_SEPARATOR) == -1) ? Menu.SUBMENU_DOWN_ICON_CLASS : Menu.SUBMENU_RIGHT_ICON_CLASS;
+            icon = (submenu.getId().indexOf(BaseMenuModel.ID_SEPARATOR) == -1) ? SUBMENU_DOWN_ICON_CLASS : SUBMENU_RIGHT_ICON_CLASS;
         }
         else {
-            icon = (parent instanceof Menubar) ? Menu.SUBMENU_DOWN_ICON_CLASS : Menu.SUBMENU_RIGHT_ICON_CLASS;
+            icon = (parent instanceof Menubar) ? SUBMENU_DOWN_ICON_CLASS : SUBMENU_RIGHT_ICON_CLASS;
         }
 
         writer.startElement("span", null);

@@ -53,17 +53,6 @@ public class DataGrid extends DataGridBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataGrid";
 
-    public static final String DATAGRID_CLASS = "ui-datagrid ui-widget";
-    public static final String HEADER_CLASS = "ui-datagrid-header ui-widget-header ui-corner-top";
-    public static final String FOOTER_CLASS = "ui-datagrid-footer ui-widget-header ui-corner-bottom";
-    public static final String TABLE_CONTENT_CLASS = "ui-datagrid-content ui-widget-content";
-    public static final String EMPTY_CONTENT_CLASS = "ui-datagrid-content ui-datagrid-content-empty ui-widget-content";
-    public static final String TABLE_CLASS = "ui-datagrid-data";
-    public static final String TABLE_ROW_CLASS = "ui-datagrid-row";
-    public static final String GRID_CONTENT_CLASS = "ui-datagrid-content ui-widget-content ui-grid ui-grid-responsive";
-    public static final String GRID_ROW_CLASS = "ui-g";
-    public static final String COLUMN_CLASS = "ui-datagrid-column";
-
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("page", PageEvent.class)
             .build();

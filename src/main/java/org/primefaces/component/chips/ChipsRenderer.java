@@ -43,6 +43,13 @@ import org.primefaces.util.WidgetBuilder;
 
 public class ChipsRenderer extends InputRenderer {
 
+    public static final String STYLE_CLASS = "ui-chips ui-widget";
+    public static final String CONTAINER_CLASS = "ui-chips-container ui-inputfield ui-state-default ui-corner-all";
+    public static final String TOKEN_DISPLAY_CLASS = "ui-chips-token ui-state-active ui-corner-all";
+    public static final String TOKEN_LABEL_CLASS = "ui-chips-token-label";
+    public static final String TOKEN_CLOSE_ICON_CLASS = "ui-chips-token-icon ui-icon ui-icon-close";
+    public static final String TOKEN_INPUT_CLASS = "ui-chips-input-token";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Chips chips = (Chips) component;
@@ -95,12 +102,12 @@ public class ChipsRenderer extends InputRenderer {
 
         String style = chips.getStyle();
         String styleClass = chips.getStyleClass();
-        styleClass = styleClass == null ? Chips.STYLE_CLASS : Chips.STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? STYLE_CLASS : STYLE_CLASS + " " + styleClass;
 
         String inputStyle = chips.getInputStyle();
         String inputStyleClass = chips.getInputStyleClass();
 
-        String listClass = disabled ? Chips.CONTAINER_CLASS + " ui-state-disabled" : Chips.CONTAINER_CLASS;
+        String listClass = disabled ? CONTAINER_CLASS + " ui-state-disabled" : CONTAINER_CLASS;
         listClass = (inputStyleClass == null) ? listClass : listClass + " " + inputStyleClass;
         listClass = chips.isValid() ? listClass : listClass + " ui-state-error";
 
@@ -131,15 +138,15 @@ public class ChipsRenderer extends InputRenderer {
 
                 writer.startElement("li", null);
                 writer.writeAttribute("data-token-value", tokenValue, null);
-                writer.writeAttribute("class", Chips.TOKEN_DISPLAY_CLASS, null);
+                writer.writeAttribute("class", TOKEN_DISPLAY_CLASS, null);
 
                 writer.startElement("span", null);
-                writer.writeAttribute("class", Chips.TOKEN_LABEL_CLASS, null);
+                writer.writeAttribute("class", TOKEN_LABEL_CLASS, null);
                 writer.writeText(tokenValue, null);
                 writer.endElement("span");
 
                 writer.startElement("span", null);
-                writer.writeAttribute("class", Chips.TOKEN_CLOSE_ICON_CLASS, null);
+                writer.writeAttribute("class", TOKEN_CLOSE_ICON_CLASS, null);
                 writer.endElement("span");
 
                 writer.endElement("li");
@@ -149,7 +156,7 @@ public class ChipsRenderer extends InputRenderer {
         }
 
         writer.startElement("li", null);
-        writer.writeAttribute("class", Chips.TOKEN_INPUT_CLASS, null);
+        writer.writeAttribute("class", TOKEN_INPUT_CLASS, null);
         writer.startElement("input", null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("id", inputId, null);

@@ -37,6 +37,11 @@ import org.primefaces.util.WidgetBuilder;
 
 public class MenuRenderer extends BaseMenuRenderer {
 
+    public static final String STATIC_CONTAINER_CLASS = "ui-menu ui-widget ui-widget-content ui-corner-all ui-helper-clearfix";
+    public static final String DYNAMIC_CONTAINER_CLASS = "ui-menu ui-menu-dynamic ui-widget ui-widget-content ui-corner-all ui-helper-clearfix ui-shadow";
+    public static final String EXPANDED_SUBMENU_HEADER_ICON_CLASS = "ui-icon ui-icon-triangle-1-s";
+    public static final String COLLAPSED_SUBMENU_HEADER_ICON_CLASS = "ui-icon ui-icon-triangle-1-e";
+    public static final String TOGGLEABLE_MENU_CLASS = "ui-menu-toggleable";
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         Menu menu = (Menu) abstractMenu;
@@ -60,9 +65,9 @@ public class MenuRenderer extends BaseMenuRenderer {
         String clientId = menu.getClientId(context);
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
-        String defaultStyleClass = menu.isOverlay() ? Menu.DYNAMIC_CONTAINER_CLASS : Menu.STATIC_CONTAINER_CLASS;
+        String defaultStyleClass = menu.isOverlay() ? DYNAMIC_CONTAINER_CLASS : STATIC_CONTAINER_CLASS;
         if (menu.isToggleable()) {
-            defaultStyleClass = defaultStyleClass + " " + Menu.TOGGLEABLE_MENU_CLASS;
+            defaultStyleClass = defaultStyleClass + " " + TOGGLEABLE_MENU_CLASS;
         }
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 
@@ -78,7 +83,7 @@ public class MenuRenderer extends BaseMenuRenderer {
 
         if (menu.getElementsCount() > 0) {
             writer.startElement("ul", null);
-            writer.writeAttribute("class", Menu.LIST_CLASS, null);
+            writer.writeAttribute("class", LIST_CLASS, null);
             encodeElements(context, menu, menu.getElements(), false);
             writer.endElement("ul");
         }
@@ -96,10 +101,10 @@ public class MenuRenderer extends BaseMenuRenderer {
                     MenuItem menuItem = (MenuItem) element;
                     String containerStyle = menuItem.getContainerStyle();
                     String containerStyleClass = menuItem.getContainerStyleClass();
-                    containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS : Menu.MENUITEM_CLASS + " " + containerStyleClass;
+                    containerStyleClass = (containerStyleClass == null) ? MENUITEM_CLASS : MENUITEM_CLASS + " " + containerStyleClass;
 
                     if (toggleable && isSubmenu) {
-                        containerStyleClass = containerStyleClass + " " + Menu.SUBMENU_CHILD_CLASS;
+                        containerStyleClass = containerStyleClass + " " + SUBMENU_CHILD_CLASS;
                     }
 
                     writer.startElement("li", null);
@@ -127,7 +132,7 @@ public class MenuRenderer extends BaseMenuRenderer {
         String icon = submenu.getIcon();
         String style = submenu.getStyle();
         String styleClass = submenu.getStyleClass();
-        styleClass = styleClass == null ? Menu.SUBMENU_TITLE_CLASS : Menu.SUBMENU_TITLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? SUBMENU_TITLE_CLASS : SUBMENU_TITLE_CLASS + " " + styleClass;
         boolean toggleable = menu.isToggleable();
 
         //title
@@ -143,7 +148,7 @@ public class MenuRenderer extends BaseMenuRenderer {
         writer.startElement("h3", null);
 
         if (menu.isToggleable()) {
-            encodeIcon(context, label, Menu.EXPANDED_SUBMENU_HEADER_ICON_CLASS);
+            encodeIcon(context, label, EXPANDED_SUBMENU_HEADER_ICON_CLASS);
         }
 
         if (icon != null) {

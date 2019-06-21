@@ -34,6 +34,8 @@ import org.primefaces.util.WidgetBuilder;
 
 public class RingRenderer extends CoreRenderer {
 
+    public static final String STYLE_CLASS = "ui-ring ui-widget";
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Ring ring = (Ring) component;
@@ -46,7 +48,7 @@ public class RingRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String style = ring.getStyle();
         String styleClass = ring.getStyleClass();
-        styleClass = styleClass == null ? Ring.STYLE_CLASS : Ring.STYLE_CLASS + " " + ring.getStyleClass();
+        styleClass = styleClass == null ? STYLE_CLASS : STYLE_CLASS + " " + ring.getStyleClass();
 
         writer.startElement("ul", ring);
         writer.writeAttribute("id", ring.getClientId(context), null);

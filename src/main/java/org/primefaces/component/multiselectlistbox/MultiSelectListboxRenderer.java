@@ -42,6 +42,12 @@ import org.primefaces.util.WidgetBuilder;
 
 public class MultiSelectListboxRenderer extends SelectOneRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-multiselectlistbox ui-widget ui-helper-clearfix";
+    public static final String LIST_CONTAINER_CLASS = "ui-multiselectlistbox-listcontainer";
+    public static final String LIST_HEADER_CLASS = "ui-multiselectlistbox-header ui-widget-header ui-corner-top";
+    public static final String LIST_CLASS = "ui-multiselectlistbox-list ui-inputfield ui-widget-content";
+    public static final String ITEM_CLASS = "ui-multiselectlistbox-item";
+
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
@@ -65,7 +71,7 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
         List<SelectItem> selectItems = getSelectItems(context, listbox);
         String style = listbox.getStyle();
         String styleClass = listbox.getStyleClass();
-        styleClass = styleClass == null ? MultiSelectListbox.CONTAINER_CLASS : MultiSelectListbox.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
         styleClass = listbox.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
         styleClass = !listbox.isValid() ? styleClass + " ui-state-error" : styleClass;
 
@@ -86,16 +92,16 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
         ResponseWriter writer = context.getResponseWriter();
         SelectItem[] items = (itemList == null) ? null : itemList.toArray(new SelectItem[itemList.size()]);
         String header = listbox.getHeader();
-        String listStyleClass = MultiSelectListbox.LIST_CLASS;
+        String listStyleClass = LIST_CLASS;
 
         writer.startElement("div", listbox);
-        writer.writeAttribute("class", MultiSelectListbox.LIST_CONTAINER_CLASS, null);
+        writer.writeAttribute("class", LIST_CONTAINER_CLASS, null);
 
         if (header != null) {
             listStyleClass = listStyleClass + " ui-corner-bottom";
 
             writer.startElement("div", listbox);
-            writer.writeAttribute("class", MultiSelectListbox.LIST_HEADER_CLASS, null);
+            writer.writeAttribute("class", LIST_HEADER_CLASS, null);
             writer.writeText(header, null);
             writer.endElement("div");
         }
@@ -126,7 +132,7 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
                 SelectItem selectItem = selectItems[i];
                 itemValue = converter != null ? converter.getAsString(context, listbox, selectItem.getValue()) : String.valueOf(selectItem.getValue());
                 writer.startElement("li", null);
-                writer.writeAttribute("class", MultiSelectListbox.ITEM_CLASS, null);
+                writer.writeAttribute("class", ITEM_CLASS, null);
                 writer.writeAttribute("data-value", itemValue, null);
 
                 writer.startElement("span", listbox);

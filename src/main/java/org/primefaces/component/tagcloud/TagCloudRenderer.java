@@ -36,6 +36,8 @@ import org.primefaces.util.WidgetBuilder;
 
 public class TagCloudRenderer extends CoreRenderer {
 
+    public static final String STYLE_CLASS = "ui-tagcloud ui-widget ui-widget-content ui-corner-all";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         decodeBehaviors(context, component);
@@ -54,7 +56,7 @@ public class TagCloudRenderer extends CoreRenderer {
         TagCloudModel model = tagCloud.getModel();
         String styleClass = tagCloud.getStyleClass();
         String style = tagCloud.getStyle();
-        styleClass = styleClass == null ? TagCloud.STYLE_CLASS : TagCloud.STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? STYLE_CLASS : STYLE_CLASS + " " + styleClass;
 
         writer.startElement("div", tagCloud);
         writer.writeAttribute("id", tagCloud.getClientId(context), "id");

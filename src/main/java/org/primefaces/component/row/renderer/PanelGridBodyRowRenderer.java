@@ -28,7 +28,7 @@ import java.io.IOException;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.component.panelgrid.PanelGrid;
+import org.primefaces.component.panelgrid.PanelGridRenderer;
 import org.primefaces.component.row.Row;
 import org.primefaces.renderkit.CoreRenderer;
 
@@ -39,7 +39,7 @@ public class PanelGridBodyRowRenderer extends CoreRenderer implements HelperRowR
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("tr", row);
-        writer.writeAttribute("class", PanelGrid.TABLE_ROW_CLASS, null);
+        writer.writeAttribute("class", PanelGridRenderer.TABLE_ROW_CLASS, null);
         writer.writeAttribute("role", "row", null);
         renderChildren(context, row);
         writer.endElement("tr");

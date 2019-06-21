@@ -43,6 +43,10 @@ import org.primefaces.util.WidgetBuilder;
 
 public class DiagramRenderer extends CoreRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-diagram ui-widget";
+    public static final String ELEMENT_CLASS = "ui-diagram-element";
+    public static final String DRAGGABLE_ELEMENT_CLASS = "ui-diagram-draggable";
+
     private static final String SB_DIAGRAM = CoreRenderer.class.getName() + "#diagram";
 
     @Override
@@ -364,7 +368,7 @@ public class DiagramRenderer extends CoreRenderer {
         String clientId = diagram.getClientId(context);
         String style = diagram.getStyle();
         String styleClass = diagram.getStyleClass();
-        styleClass = (styleClass == null) ? Diagram.CONTAINER_CLASS : Diagram.CONTAINER_CLASS + " " + styleClass;
+        styleClass = (styleClass == null) ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
         UIComponent elementFacet = diagram.getFacet("element");
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         String var = diagram.getVar();
@@ -382,9 +386,9 @@ public class DiagramRenderer extends CoreRenderer {
                 for (int i = 0; i < elements.size(); i++) {
                     Element element = elements.get(i);
                     String elementClass = element.getStyleClass();
-                    elementClass = (elementClass == null) ? Diagram.ELEMENT_CLASS : Diagram.ELEMENT_CLASS + " " + elementClass;
+                    elementClass = (elementClass == null) ? ELEMENT_CLASS : ELEMENT_CLASS + " " + elementClass;
                     if (element.isDraggable()) {
-                        elementClass = elementClass + " " + Diagram.DRAGGABLE_ELEMENT_CLASS;
+                        elementClass = elementClass + " " + DRAGGABLE_ELEMENT_CLASS;
                     }
                     Object data = element.getData();
                     String x = element.getX();

@@ -40,6 +40,17 @@ import org.primefaces.util.WidgetBuilder;
 
 public class FileUploadRenderer extends CoreRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-fileupload ui-widget ui-fileupload-responsive";
+    public static final String BUTTON_BAR_CLASS = "ui-fileupload-buttonbar ui-widget-header ui-corner-top";
+    public static final String CONTENT_CLASS = "ui-fileupload-content ui-widget-content ui-corner-bottom";
+    public static final String FILES_CLASS = "ui-fileupload-files";
+    public static final String CHOOSE_BUTTON_CLASS = "ui-fileupload-choose";
+    public static final String UPLOAD_BUTTON_CLASS = "ui-fileupload-upload";
+    public static final String CANCEL_BUTTON_CLASS = "ui-fileupload-cancel";
+    public static final String BUTTON_ICON_ONLY = "ui-fileupload-icon-only";
+    public static final String CONTAINER_CLASS_SIMPLE = "ui-fileupload-simple ui-widget";
+    public static final String FILENAME_CLASS = "ui-fileupload-filename";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
 
@@ -142,7 +153,7 @@ public class FileUploadRenderer extends CoreRenderer {
         String clientId = fileUpload.getClientId(context);
         String style = fileUpload.getStyle();
         String styleClass = fileUpload.getStyleClass();
-        styleClass = styleClass == null ? FileUpload.CONTAINER_CLASS : FileUpload.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
         boolean disabled = fileUpload.isDisabled();
 
         writer.startElement("div", fileUpload);
@@ -154,14 +165,14 @@ public class FileUploadRenderer extends CoreRenderer {
 
         //buttonbar
         writer.startElement("div", fileUpload);
-        writer.writeAttribute("class", FileUpload.BUTTON_BAR_CLASS, null);
+        writer.writeAttribute("class", BUTTON_BAR_CLASS, null);
 
         //choose button
         encodeChooseButton(context, fileUpload, disabled);
 
         if (!fileUpload.isAuto()) {
-            encodeButton(context, fileUpload.getUploadLabel(), FileUpload.UPLOAD_BUTTON_CLASS, " " + fileUpload.getUploadIcon());
-            encodeButton(context, fileUpload.getCancelLabel(), FileUpload.CANCEL_BUTTON_CLASS, " " + fileUpload.getCancelIcon());
+            encodeButton(context, fileUpload.getUploadLabel(), UPLOAD_BUTTON_CLASS, " " + fileUpload.getUploadIcon());
+            encodeButton(context, fileUpload.getCancelLabel(), CANCEL_BUTTON_CLASS, " " + fileUpload.getCancelIcon());
         }
 
         writer.endElement("div");
@@ -170,10 +181,10 @@ public class FileUploadRenderer extends CoreRenderer {
 
         //content
         writer.startElement("div", null);
-        writer.writeAttribute("class", FileUpload.CONTENT_CLASS, null);
+        writer.writeAttribute("class", CONTENT_CLASS, null);
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", FileUpload.FILES_CLASS, null);
+        writer.writeAttribute("class", FILES_CLASS, null);
         writer.startElement("div", null);
         writer.endElement("div");
         writer.endElement("div");
@@ -191,8 +202,8 @@ public class FileUploadRenderer extends CoreRenderer {
         String label = fileUpload.getLabel();
 
         if (fileUpload.isSkinSimple()) {
-            styleClass = (styleClass == null) ? FileUpload.CONTAINER_CLASS_SIMPLE : FileUpload.CONTAINER_CLASS_SIMPLE + " " + styleClass;
-            styleClass = isValueBlank(label) ? FileUpload.BUTTON_ICON_ONLY + " " + styleClass : styleClass;
+            styleClass = (styleClass == null) ? CONTAINER_CLASS_SIMPLE : CONTAINER_CLASS_SIMPLE + " " + styleClass;
+            styleClass = isValueBlank(label) ? BUTTON_ICON_ONLY + " " + styleClass : styleClass;
             String buttonClass = HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS;
             if (fileUpload.isDisabled()) {
                 buttonClass += " ui-state-disabled";
@@ -231,7 +242,7 @@ public class FileUploadRenderer extends CoreRenderer {
             writer.endElement("span");
 
             writer.startElement("span", fileUpload);
-            writer.writeAttribute("class", FileUpload.FILENAME_CLASS, null);
+            writer.writeAttribute("class", FILENAME_CLASS, null);
             writer.endElement("span");
 
             writer.endElement("span");
@@ -245,8 +256,8 @@ public class FileUploadRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = fileUpload.getClientId(context);
         String label = fileUpload.getLabel();
-        String cssClass = HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS + " " + FileUpload.CHOOSE_BUTTON_CLASS;
-        cssClass = isValueBlank(label) ? FileUpload.BUTTON_ICON_ONLY + " " + cssClass : cssClass;
+        String cssClass = HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS + " " + CHOOSE_BUTTON_CLASS;
+        cssClass = isValueBlank(label) ? BUTTON_ICON_ONLY + " " + cssClass : cssClass;
         String tabindex = (disabled) ? "-1" : "0";
         if (disabled) {
             cssClass += " ui-state-disabled";
@@ -342,7 +353,7 @@ public class FileUploadRenderer extends CoreRenderer {
     protected void encodeButton(FacesContext context, String label, String styleClass, String icon) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String cssClass = HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS + " ui-state-disabled " + styleClass;
-        cssClass = isValueBlank(label) ? FileUpload.BUTTON_ICON_ONLY + " " + cssClass : cssClass;
+        cssClass = isValueBlank(label) ? BUTTON_ICON_ONLY + " " + cssClass : cssClass;
 
         writer.startElement("button", null);
         writer.writeAttribute("type", "button", null);

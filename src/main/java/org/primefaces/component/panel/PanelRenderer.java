@@ -39,6 +39,18 @@ import org.primefaces.util.WidgetBuilder;
 
 public class PanelRenderer extends CoreRenderer {
 
+    public static final String PANEL_CLASS = "ui-panel ui-widget ui-widget-content ui-corner-all";
+    public static final String PANEL_TITLEBAR_CLASS = "ui-panel-titlebar ui-widget-header ui-helper-clearfix ui-corner-all";
+    public static final String PANEL_TITLE_CLASS = "ui-panel-title";
+    public static final String PANEL_TITLE_ICON_CLASS = "ui-panel-titlebar-icon ui-corner-all ui-state-default";
+    public static final String PANEL_CONTENT_CLASS = "ui-panel-content ui-widget-content";
+    public static final String PANEL_FOOTER_CLASS = "ui-panel-footer ui-widget-content";
+    public static final String PANEL_ACTIONS_CLASS = "ui-panel-actions";
+
+    public static final String ARIA_CLOSE = "primefaces.dialog.aria.CLOSE";
+    public static final String ARIA_TOGGLE = "primefaces.panel.aria.TOGGLE";
+    public static final String ARIA_OPTIONS_MENU = "primefaces.panel.aria.OPTIONS_MENU";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Panel panel = (Panel) component;
@@ -105,7 +117,7 @@ public class PanelRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
-        String styleClass = panel.getStyleClass() == null ? Panel.PANEL_CLASS : Panel.PANEL_CLASS + " " + panel.getStyleClass();
+        String styleClass = panel.getStyleClass() == null ? PANEL_CLASS : PANEL_CLASS + " " + panel.getStyleClass();
 
         if (collapsed) {
             styleClass += " ui-hidden-container";
@@ -165,11 +177,11 @@ public class PanelRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", panel.getClientId(context) + "_header", null);
-        writer.writeAttribute("class", Panel.PANEL_TITLEBAR_CLASS, null);
+        writer.writeAttribute("class", PANEL_TITLEBAR_CLASS, null);
 
         //Title
         writer.startElement("span", null);
-        writer.writeAttribute("class", Panel.PANEL_TITLE_CLASS, null);
+        writer.writeAttribute("class", PANEL_TITLE_CLASS, null);
 
         if (header != null) {
             renderChild(context, header);
@@ -182,23 +194,23 @@ public class PanelRenderer extends CoreRenderer {
 
         //Options
         if (panel.isClosable()) {
-            encodeIcon(context, panel, "ui-icon-closethick", clientId + "_closer", panel.getCloseTitle(), MessageFactory.getMessage(Panel.ARIA_CLOSE, null));
+            encodeIcon(context, panel, "ui-icon-closethick", clientId + "_closer", panel.getCloseTitle(), MessageFactory.getMessage(ARIA_CLOSE, null));
         }
 
         if (panel.isToggleable()) {
             String icon = panel.isCollapsed() ? "ui-icon-plusthick" : "ui-icon-minusthick";
-            encodeIcon(context, panel, icon, clientId + "_toggler", panel.getToggleTitle(), MessageFactory.getMessage(Panel.ARIA_TOGGLE, null));
+            encodeIcon(context, panel, icon, clientId + "_toggler", panel.getToggleTitle(), MessageFactory.getMessage(ARIA_TOGGLE, null));
         }
 
         if (panel.getOptionsMenu() != null) {
-            encodeIcon(context, panel, "ui-icon-gear", clientId + "_menu", panel.getMenuTitle(), MessageFactory.getMessage(Panel.ARIA_OPTIONS_MENU, null));
+            encodeIcon(context, panel, "ui-icon-gear", clientId + "_menu", panel.getMenuTitle(), MessageFactory.getMessage(ARIA_OPTIONS_MENU, null));
         }
 
         //Actions
         UIComponent actionsFacet = panel.getFacet("actions");
         if (actionsFacet != null) {
             writer.startElement("div", null);
-            writer.writeAttribute("class", Panel.PANEL_ACTIONS_CLASS, null);
+            writer.writeAttribute("class", PANEL_ACTIONS_CLASS, null);
             actionsFacet.encodeAll(context);
             writer.endElement("div");
         }
@@ -211,7 +223,7 @@ public class PanelRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", panel.getClientId(context) + "_content", null);
-        writer.writeAttribute("class", Panel.PANEL_CONTENT_CLASS, null);
+        writer.writeAttribute("class", PANEL_CONTENT_CLASS, null);
         if (panel.isCollapsed()) {
             writer.writeAttribute("style", "display:none", null);
         }
@@ -229,7 +241,7 @@ public class PanelRenderer extends CoreRenderer {
         if (footerText != null || ComponentUtils.shouldRenderFacet(footer)) {
             writer.startElement("div", null);
             writer.writeAttribute("id", panel.getClientId(context) + "_footer", null);
-            writer.writeAttribute("class", Panel.PANEL_FOOTER_CLASS, null);
+            writer.writeAttribute("class", PANEL_FOOTER_CLASS, null);
 
             if (footer != null) {
                 renderChild(context, footer);
@@ -250,7 +262,7 @@ public class PanelRenderer extends CoreRenderer {
             writer.writeAttribute("id", id, null);
         }
         writer.writeAttribute("href", "#", null);
-        writer.writeAttribute("class", Panel.PANEL_TITLE_ICON_CLASS, null);
+        writer.writeAttribute("class", PANEL_TITLE_ICON_CLASS, null);
         if (title != null) {
             writer.writeAttribute("title", title, null);
         }

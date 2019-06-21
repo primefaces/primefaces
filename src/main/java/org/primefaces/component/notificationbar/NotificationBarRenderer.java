@@ -34,6 +34,8 @@ import org.primefaces.util.WidgetBuilder;
 
 public class NotificationBarRenderer extends CoreRenderer {
 
+    public static final String STYLE_CLASS = "ui-notificationbar ui-widget ui-widget-content";
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         NotificationBar bar = (NotificationBar) component;
@@ -45,7 +47,7 @@ public class NotificationBarRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, NotificationBar bar) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = bar.getStyleClass();
-        styleClass = styleClass == null ? NotificationBar.STYLE_CLASS : NotificationBar.STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? STYLE_CLASS : STYLE_CLASS + " " + styleClass;
 
         writer.startElement("div", bar);
         writer.writeAttribute("id", bar.getClientId(context), null);

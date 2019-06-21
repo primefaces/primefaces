@@ -48,6 +48,20 @@ import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneMenuRenderer extends SelectOneRenderer {
 
+    public static final String STYLE_CLASS = "ui-selectonemenu ui-widget ui-state-default ui-corner-all";
+    public static final String LABEL_CLASS = "ui-selectonemenu-label ui-inputfield ui-corner-all";
+    public static final String TRIGGER_CLASS = "ui-selectonemenu-trigger ui-state-default ui-corner-right";
+    public static final String PANEL_CLASS = "ui-selectonemenu-panel ui-widget ui-widget-content ui-corner-all ui-helper-hidden ui-shadow ui-input-overlay";
+    public static final String ITEMS_WRAPPER_CLASS = "ui-selectonemenu-items-wrapper";
+    public static final String LIST_CLASS = "ui-selectonemenu-items ui-selectonemenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset";
+    public static final String TABLE_CLASS = "ui-selectonemenu-items ui-selectonemenu-table ui-widget-content ui-widget ui-corner-all ui-helper-reset";
+    public static final String ITEM_GROUP_CLASS = "ui-selectonemenu-item-group ui-corner-all";
+    public static final String ITEM_CLASS = "ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all";
+    public static final String ROW_CLASS = "ui-selectonemenu-item ui-selectonemenu-row ui-widget-content";
+    public static final String FILTER_CONTAINER_CLASS = "ui-selectonemenu-filter-container";
+    public static final String FILTER_CLASS = "ui-selectonemenu-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
+    public static final String FILTER_ICON_CLASS = "ui-icon ui-icon-search";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         SelectOneMenu menu = (SelectOneMenu) component;
@@ -120,7 +134,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
-        styleClass = styleClass == null ? SelectOneMenu.STYLE_CLASS : SelectOneMenu.STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? STYLE_CLASS : STYLE_CLASS + " " + styleClass;
         styleClass = !valid ? styleClass + " ui-state-error" : styleClass;
         styleClass = menu.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
 
@@ -215,7 +229,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.startElement("input", null);
             writer.writeAttribute("type", "text", null);
             writer.writeAttribute("name", menu.getClientId(context) + "_editableInput", null);
-            writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
+            writer.writeAttribute("class", LABEL_CLASS, null);
 
             if (menu.getTabindex() != null) {
                 writer.writeAttribute("tabindex", menu.getTabindex(), null);
@@ -257,7 +271,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         else {
             writer.startElement("label", null);
             writer.writeAttribute("id", menu.getClientId(context) + "_label", null);
-            writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
+            writer.writeAttribute("class", LABEL_CLASS, null);
             if (menu.getPlaceholder() != null) {
                 writer.writeAttribute("data-placeholder", menu.getPlaceholder(), null);
             }
@@ -272,7 +286,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
     protected void encodeMenuIcon(FacesContext context, SelectOneMenu menu, boolean valid) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String iconClass = valid ? SelectOneMenu.TRIGGER_CLASS : SelectOneMenu.TRIGGER_CLASS + " ui-state-error";
+        String iconClass = valid ? TRIGGER_CLASS : TRIGGER_CLASS + " ui-state-error";
 
         writer.startElement("div", null);
         writer.writeAttribute("class", iconClass, null);
@@ -288,7 +302,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String panelStyle = menu.getPanelStyle();
         String panelStyleClass = menu.getPanelStyleClass();
-        panelStyleClass = panelStyleClass == null ? SelectOneMenu.PANEL_CLASS : SelectOneMenu.PANEL_CLASS + " " + panelStyleClass;
+        panelStyleClass = panelStyleClass == null ? PANEL_CLASS : PANEL_CLASS + " " + panelStyleClass;
 
         String height = null;
         try {
@@ -310,7 +324,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         }
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", SelectOneMenu.ITEMS_WRAPPER_CLASS, null);
+        writer.writeAttribute("class", ITEMS_WRAPPER_CLASS, null);
         writer.writeAttribute("style", "max-height:" + height, null);
 
         if (!menu.isDynamic()) {
@@ -329,7 +343,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             List<Column> columns = menu.getColumns();
 
             writer.startElement("table", null);
-            writer.writeAttribute("class", SelectOneMenu.TABLE_CLASS, null);
+            writer.writeAttribute("class", TABLE_CLASS, null);
             encodeColumnsHeader(context, menu, columns);
             writer.startElement("tbody", null);
             encodeOptionsAsTable(context, menu, selectItems, columns);
@@ -339,7 +353,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         else {
             writer.startElement("ul", null);
             writer.writeAttribute("id", menu.getClientId(context) + "_items", null);
-            writer.writeAttribute("class", SelectOneMenu.LIST_CLASS, null);
+            writer.writeAttribute("class", LIST_CLASS, null);
             writer.writeAttribute("role", "listbox", null);
             encodeOptionsAsList(context, menu, selectItems);
             writer.endElement("ul");
@@ -406,7 +420,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             String itemLabel = selectItem.getLabel();
             itemLabel = isValueBlank(itemLabel) ? "&nbsp;" : itemLabel;
 
-            String itemStyleClass = SelectOneMenu.ROW_CLASS;
+            String itemStyleClass = ROW_CLASS;
             if (selectItem.isNoSelectionOption()) {
                 itemStyleClass = itemStyleClass + " ui-noselection-option";
             }
@@ -458,11 +472,11 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             if (selectItem instanceof SelectItemGroup) {
                 SelectItemGroup group = (SelectItemGroup) selectItem;
 
-                encodeItem(context, menu, group, SelectOneMenu.ITEM_GROUP_CLASS);
+                encodeItem(context, menu, group, ITEM_GROUP_CLASS);
                 encodeOptionsAsList(context, menu, Arrays.asList(group.getSelectItems()));
             }
             else {
-                encodeItem(context, menu, selectItem, SelectOneMenu.ITEM_CLASS);
+                encodeItem(context, menu, selectItem, ITEM_CLASS);
             }
         }
     }

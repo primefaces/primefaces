@@ -36,6 +36,12 @@ import org.primefaces.util.WidgetBuilder;
 
 public class ProgressBarRenderer extends CoreRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-progressbar ui-widget ui-widget-content ui-corner-all";
+    public static final String DETERMINATE_CLASS = "ui-progressbar-determinate";
+    public static final String INDETERMINATE_CLASS = "ui-progressbar-indeterminate";
+    public static final String VALUE_CLASS = "ui-progressbar-value ui-widget-header ui-corner-all";
+    public static final String LABEL_CLASS = "ui-progressbar-label";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         ProgressBar progressBar = (ProgressBar) component;
@@ -67,8 +73,8 @@ public class ProgressBarRenderer extends CoreRenderer {
         String labelTemplate = progressBar.getLabelTemplate();
         String style = progressBar.getStyle();
         String styleClass = progressBar.getStyleClass();
-        styleClass = styleClass == null ? ProgressBar.CONTAINER_CLASS : ProgressBar.CONTAINER_CLASS + " " + styleClass;
-        styleClass = styleClass + " " + (mode.equals("determinate") ? ProgressBar.DETERMINATE_CLASS : ProgressBar.INDETERMINATE_CLASS);
+        styleClass = styleClass == null ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass + " " + (mode.equals("determinate") ? DETERMINATE_CLASS : INDETERMINATE_CLASS);
 
         if (progressBar.isDisabled()) {
             styleClass = styleClass + " ui-state-disabled";
@@ -83,7 +89,7 @@ public class ProgressBarRenderer extends CoreRenderer {
 
         //value
         writer.startElement("div", progressBar);
-        writer.writeAttribute("class", ProgressBar.VALUE_CLASS, null);
+        writer.writeAttribute("class", VALUE_CLASS, null);
         if (value != 0) {
             writer.writeAttribute("style", "display:block;width:" + value + "%", style);
         }
@@ -91,7 +97,7 @@ public class ProgressBarRenderer extends CoreRenderer {
 
         //label
         writer.startElement("div", progressBar);
-        writer.writeAttribute("class", ProgressBar.LABEL_CLASS, null);
+        writer.writeAttribute("class", LABEL_CLASS, null);
         if (labelTemplate != null) {
             writer.writeAttribute("style", "display:block", style);
             writer.writeText(labelTemplate.replaceAll("\\{value\\}", String.valueOf(value)), null);

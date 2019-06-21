@@ -35,13 +35,17 @@ import org.primefaces.model.menu.MenuItem;
 
 public class BreadCrumbRenderer extends BaseMenuRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-breadcrumb ui-module ui-widget ui-widget-header ui-helper-clearfix ui-corner-all";
+    public static final String CHEVRON_CLASS = "ui-breadcrumb-chevron ui-icon ui-icon-triangle-1-e";
+    public static final String OPTIONS_CLASS = "ui-breadcrumb-options";
+
     @Override
     protected void encodeMarkup(FacesContext context, AbstractMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         BreadCrumb breadCrumb = (BreadCrumb) menu;
         String clientId = breadCrumb.getClientId(context);
         String styleClass = breadCrumb.getStyleClass();
-        styleClass = styleClass == null ? BreadCrumb.CONTAINER_CLASS : BreadCrumb.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
         int elementCount = menu.getElementsCount();
         List<MenuElement> menuElements = menu.getElements();
         boolean isIconHome = breadCrumb.getHomeDisplay().equals("icon");
@@ -71,7 +75,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
                     //dont render chevron before home icon
                     if (i != 0) {
                         writer.startElement("li", null);
-                        writer.writeAttribute("class", BreadCrumb.CHEVRON_CLASS, null);
+                        writer.writeAttribute("class", CHEVRON_CLASS, null);
                         writer.endElement("li");
                     }
 
@@ -92,7 +96,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
             UIComponent optionsFacet = menu.getFacet("options");
             if (optionsFacet != null) {
                 writer.startElement("li", null);
-                writer.writeAttribute("class", BreadCrumb.OPTIONS_CLASS, null);
+                writer.writeAttribute("class", OPTIONS_CLASS, null);
                 writer.writeAttribute("role", "menuitem", null);
                 optionsFacet.encodeAll(context);
                 writer.endElement("li");
@@ -124,7 +128,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 
         String style = menuItem.getStyle();
         String styleClass = menuItem.getStyleClass();
-        styleClass = styleClass == null ? BreadCrumb.MENUITEM_LINK_CLASS : BreadCrumb.MENUITEM_LINK_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? MENUITEM_LINK_CLASS : MENUITEM_LINK_CLASS + " " + styleClass;
         styleClass += " ui-state-disabled";
 
         writer.startElement("span", null); // outer span
@@ -138,12 +142,12 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 
         if (icon != null) {
             writer.startElement("span", null);
-            writer.writeAttribute("class", BreadCrumb.MENUITEM_ICON_CLASS + " " + icon, null);
+            writer.writeAttribute("class", MENUITEM_ICON_CLASS + " " + icon, null);
             writer.endElement("span");
         }
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", BreadCrumb.MENUITEM_TEXT_CLASS, null);
+        writer.writeAttribute("class", MENUITEM_TEXT_CLASS, null);
 
         if (value != null) {
             if (menuItem.isEscape()) {

@@ -38,6 +38,8 @@ import org.primefaces.util.WidgetBuilder;
 
 public class ColorPickerRenderer extends InputRenderer {
 
+    public static final String STYLE_CLASS = "ui-colorpicker";
+
     private static final Pattern COLOR_HEX_PATTERN = Pattern.compile("([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})");
 
     @Override
@@ -89,7 +91,7 @@ public class ColorPickerRenderer extends InputRenderer {
         String inputId = clientId + "_input";
         boolean isPopup = colorPicker.getMode().equals("popup");
         String styleClass = colorPicker.getStyleClass();
-        styleClass = styleClass == null ? ColorPicker.STYLE_CLASS : ColorPicker.STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? STYLE_CLASS : STYLE_CLASS + " " + styleClass;
 
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId, "id");

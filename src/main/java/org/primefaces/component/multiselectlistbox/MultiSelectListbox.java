@@ -42,11 +42,6 @@ import org.primefaces.util.MapBuilder;
 public class MultiSelectListbox extends MultiSelectListboxBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.MultiSelectListbox";
-    public static final String CONTAINER_CLASS = "ui-multiselectlistbox ui-widget ui-helper-clearfix";
-    public static final String LIST_CONTAINER_CLASS = "ui-multiselectlistbox-listcontainer";
-    public static final String LIST_HEADER_CLASS = "ui-multiselectlistbox-header ui-widget-header ui-corner-top";
-    public static final String LIST_CLASS = "ui-multiselectlistbox-list ui-inputfield ui-widget-content";
-    public static final String ITEM_CLASS = "ui-multiselectlistbox-item";
 
     private static final String DEFAULT_EVENT = "change";
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()

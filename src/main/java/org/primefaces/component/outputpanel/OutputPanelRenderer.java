@@ -34,6 +34,9 @@ import org.primefaces.util.WidgetBuilder;
 
 public class OutputPanelRenderer extends CoreRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-outputpanel ui-widget";
+    public static final String LOADING_CLASS = "ui-outputpanel-loading ui-widget";
+
     private static final String BLOCK = "div";
     private static final String INLINE = "span";
 
@@ -58,7 +61,7 @@ public class OutputPanelRenderer extends CoreRenderer {
         String clientId = panel.getClientId(context);
         String style = panel.getStyle();
         String styleClass = panel.getStyleClass();
-        styleClass = (styleClass == null) ? OutputPanel.CONTAINER_CLASS : OutputPanel.CONTAINER_CLASS + " " + styleClass;
+        styleClass = (styleClass == null) ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
 
         writer.startElement(tag, panel);
         writer.writeAttribute("id", clientId, "id");
@@ -94,7 +97,7 @@ public class OutputPanelRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", OutputPanel.LOADING_CLASS, null);
+        writer.writeAttribute("class", LOADING_CLASS, null);
         writer.endElement("div");
     }
 

@@ -42,6 +42,18 @@ import org.primefaces.context.PrimeApplicationContext;
 
 public class OutcomeTargetRenderer extends CoreRenderer {
 
+    public static final String LIST_CLASS = "ui-menu-list ui-helper-reset";
+    public static final String MENUITEM_LINK_CLASS = "ui-menuitem-link ui-corner-all";
+    public static final String MENUITEM_TEXT_CLASS = "ui-menuitem-text";
+    public static final String MENUITEM_ICON_CLASS = "ui-menuitem-icon ui-icon";
+    public static final String MENUITEM_CLASS = "ui-menuitem ui-widget ui-corner-all";
+    public static final String SUBMENU_RIGHT_ICON_CLASS = "ui-icon ui-icon-triangle-1-e";
+    public static final String SUBMENU_DOWN_ICON_CLASS = "ui-icon ui-icon-triangle-1-s";
+    public static final String SUBMENU_LINK_CLASS = "ui-menuitem-link ui-submenu-link ui-corner-all";
+    public static final String SUBMENU_TITLE_CLASS = "ui-widget-header ui-corner-all";
+    public static final String SUBMENU_CHILD_CLASS = "ui-submenu-child";
+    public static final String SEPARATOR_CLASS = "ui-separator ui-state-default";
+
     protected NavigationCase findNavigationCase(FacesContext context, UIOutcomeTarget outcomeTarget) {
         ConfigurableNavigationHandler navigationHandler = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
         String outcome = outcomeTarget.getOutcome();

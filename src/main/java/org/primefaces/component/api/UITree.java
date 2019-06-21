@@ -50,7 +50,6 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
     public static final String SEPARATOR = "_";
     public static final String REQUIRED_MESSAGE_ID = "primefaces.tree.REQUIRED";
-    public static final String CHECKBOX_CLASS = "ui-selection";
     public static final String ROOT_ROW_KEY = "root";
     private static final String SB_GET_CONTAINER_CLIENT_ID = UITree.class.getName() + "#getContainerClientId";
     private static final String SB_GET_SELECTED_ROW_KEYS_AS_STRING = UITree.class.getName() + "#getSelectedRowKeysAsString";

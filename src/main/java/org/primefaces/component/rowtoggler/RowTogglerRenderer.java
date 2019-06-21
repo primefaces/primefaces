@@ -36,18 +36,23 @@ import org.primefaces.util.MessageFactory;
 
 public class RowTogglerRenderer extends CoreRenderer {
 
+    public static final String COLLAPSED_ICON = "ui-icon ui-icon-circle-triangle-e";
+    public static final String EXPANDED_ICON = "ui-icon ui-icon-circle-triangle-s";
+    public static final String ROW_TOGGLER = "primefaces.rowtoggler.aria.ROW_TOGGLER";
+    public static final String ROW_TOGGLER_CLASS = "ui-row-toggler";
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         RowToggler toggler = (RowToggler) component;
         DataTable parentTable = toggler.getParentTable(context);
         boolean expanded = parentTable.isExpandedRow();
-        String icon = expanded ? RowToggler.EXPANDED_ICON : RowToggler.COLLAPSED_ICON;
+        String icon = expanded ? EXPANDED_ICON : COLLAPSED_ICON;
         String expandLabel = toggler.getExpandLabel();
         String collapseLabel = toggler.getCollapseLabel();
         boolean iconOnly = (expandLabel == null && collapseLabel == null);
-        String togglerClass = iconOnly ? DataTable.ROW_TOGGLER_CLASS + " " + icon : DataTable.ROW_TOGGLER_CLASS;
-        String ariaLabel = MessageFactory.getMessage(RowToggler.ROW_TOGGLER, null);
+        String togglerClass = iconOnly ? ROW_TOGGLER_CLASS + " " + icon : ROW_TOGGLER_CLASS;
+        String ariaLabel = MessageFactory.getMessage(ROW_TOGGLER, null);
 
         writer.startElement("div", toggler);
         writer.writeAttribute("class", togglerClass, null);

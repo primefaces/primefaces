@@ -35,11 +35,4 @@ public class AjaxStatus extends AjaxStatusBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.AjaxStatus";
 
-    public static final String START = "start";
-    public static final String SUCCESS = "success";
-    public static final String COMPLETE = "complete";
-    public static final String ERROR = "error";
-    public static final String DEFAULT = "default";
-    public static final String CALLBACK_SIGNATURE = "function()";
-    public static final String[] EVENTS = {START, SUCCESS, COMPLETE, ERROR};
 }

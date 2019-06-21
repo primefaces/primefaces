@@ -36,6 +36,13 @@ import org.primefaces.util.WidgetBuilder;
 
 public class FieldsetRenderer extends CoreRenderer {
 
+    public static final String FIELDSET_CLASS = "ui-fieldset ui-widget ui-widget-content ui-corner-all ui-hidden-container";
+    public static final String TOGGLEABLE_FIELDSET_CLASS = FIELDSET_CLASS + " ui-fieldset-toggleable";
+    public static final String CONTENT_CLASS = "ui-fieldset-content";
+    public static final String LEGEND_CLASS = "ui-fieldset-legend ui-corner-all ui-state-default";
+    public static final String TOGGLER_MINUS_CLASS = "ui-fieldset-toggler ui-icon ui-icon-minusthick";
+    public static final String TOGGLER_PLUS_CLASS = "ui-fieldset-toggler ui-icon ui-icon-plusthick";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Fieldset fieldset = (Fieldset) component;
@@ -65,7 +72,7 @@ public class FieldsetRenderer extends CoreRenderer {
         boolean toggleable = fieldset.isToggleable();
         String title = fieldset.getTitle();
 
-        String styleClass = toggleable ? Fieldset.TOGGLEABLE_FIELDSET_CLASS : Fieldset.FIELDSET_CLASS;
+        String styleClass = toggleable ? TOGGLEABLE_FIELDSET_CLASS : FIELDSET_CLASS;
         if (fieldset.isCollapsed()) {
             styleClass = styleClass + " ui-hidden-container";
         }
@@ -102,7 +109,7 @@ public class FieldsetRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", Fieldset.CONTENT_CLASS, null);
+        writer.writeAttribute("class", CONTENT_CLASS, null);
         if (fieldset.isCollapsed()) {
             writer.writeAttribute("style", "display:none", null);
         }
@@ -136,13 +143,13 @@ public class FieldsetRenderer extends CoreRenderer {
 
         if (legendText != null || legend != null) {
             writer.startElement("legend", null);
-            writer.writeAttribute("class", Fieldset.LEGEND_CLASS, null);
+            writer.writeAttribute("class", LEGEND_CLASS, null);
 
             if (fieldset.isToggleable()) {
                 writer.writeAttribute("role", "button", null);
                 writer.writeAttribute("tabindex", fieldset.getTabindex(), null);
 
-                String togglerClass = fieldset.isCollapsed() ? Fieldset.TOGGLER_PLUS_CLASS : Fieldset.TOGGLER_MINUS_CLASS;
+                String togglerClass = fieldset.isCollapsed() ? TOGGLER_PLUS_CLASS : TOGGLER_MINUS_CLASS;
 
                 writer.startElement("span", null);
                 writer.writeAttribute("class", togglerClass, null);

@@ -51,6 +51,9 @@ import org.primefaces.util.*;
 
 public class OutputLabelRenderer extends CoreRenderer {
 
+    public static final String STYLE_CLASS = "ui-outputlabel ui-widget";
+    public static final String REQUIRED_FIELD_INDICATOR_CLASS = "ui-outputlabel-rfi";
+
     private static final Logger LOGGER = Logger.getLogger(OutputLabelRenderer.class.getName());
 
     private static final String SB_STYLE_CLASS = OutputLabelRenderer.class.getName() + "#styleClass";
@@ -63,7 +66,7 @@ public class OutputLabelRenderer extends CoreRenderer {
         final String value = ComponentUtils.getValueToRender(context, label);
 
         final StringBuilder styleClass = SharedStringBuilder.get(context, SB_STYLE_CLASS);
-        styleClass.append(OutputLabel.STYLE_CLASS);
+        styleClass.append(STYLE_CLASS);
         if (label.getStyleClass() != null) {
             styleClass.append(" ");
             styleClass.append(label.getStyleClass());
@@ -168,7 +171,7 @@ public class OutputLabelRenderer extends CoreRenderer {
 
     protected void encodeRequiredIndicator(ResponseWriter writer, OutputLabel label) throws IOException {
         writer.startElement("span", label);
-        writer.writeAttribute("class", OutputLabel.REQUIRED_FIELD_INDICATOR_CLASS, null);
+        writer.writeAttribute("class", REQUIRED_FIELD_INDICATOR_CLASS, null);
         writer.write("*");
         writer.endElement("span");
     }

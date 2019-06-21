@@ -35,6 +35,11 @@ import org.primefaces.util.WidgetBuilder;
 
 public class SidebarRenderer extends CoreRenderer {
 
+    public static final String STYLE_CLASS = "ui-sidebar ui-widget ui-widget-content ui-shadow";
+    public static final String TITLE_BAR_CLOSE_CLASS = "ui-sidebar-close ui-corner-all";
+    public static final String CLOSE_ICON_CLASS = "ui-icon ui-icon-closethick";
+    public static final String FULL_BAR_CLASS = "ui-sidebar-full";
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Sidebar bar = (Sidebar) component;
@@ -47,8 +52,8 @@ public class SidebarRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String style = bar.getStyle();
         String styleClass = bar.getStyleClass();
-        styleClass = styleClass == null ? Sidebar.STYLE_CLASS : Sidebar.STYLE_CLASS + " " + styleClass;
-        styleClass = bar.isFullScreen() ? styleClass + " " + Sidebar.FULL_BAR_CLASS : styleClass;
+        styleClass = styleClass == null ? STYLE_CLASS : STYLE_CLASS + " " + styleClass;
+        styleClass = bar.isFullScreen() ? styleClass + " " + FULL_BAR_CLASS : styleClass;
         styleClass += " ui-sidebar-" + bar.getPosition();
 
         writer.startElement("div", bar);
@@ -70,10 +75,10 @@ public class SidebarRenderer extends CoreRenderer {
 
         writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
-        writer.writeAttribute("class", Sidebar.TITLE_BAR_CLOSE_CLASS, null);
+        writer.writeAttribute("class", TITLE_BAR_CLOSE_CLASS, null);
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", Sidebar.CLOSE_ICON_CLASS, null);
+        writer.writeAttribute("class", CLOSE_ICON_CLASS, null);
         writer.endElement("span");
 
         writer.endElement("a");

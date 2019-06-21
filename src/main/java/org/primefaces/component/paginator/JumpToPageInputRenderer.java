@@ -29,7 +29,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.api.Pageable;
-import org.primefaces.component.api.UIData;
 
 public class JumpToPageInputRenderer implements PaginatorElementRenderer {
 
@@ -38,7 +37,7 @@ public class JumpToPageInputRenderer implements PaginatorElementRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("input", null);
-        writer.writeAttribute("class", UIData.PAGINATOR_JTP_INPUT_CLASS, null);
+        writer.writeAttribute("class", PAGINATOR_JTP_INPUT_CLASS, null);
         writer.writeAttribute("value", pageable.getPage() + 1, null);
         writer.endElement("input");
     }

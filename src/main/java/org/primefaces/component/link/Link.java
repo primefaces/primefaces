@@ -41,9 +41,6 @@ public class Link extends LinkBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Link";
 
-    public static final String STYLE_CLASS = "ui-link ui-widget";
-    public static final String DISABLED_STYLE_CLASS = "ui-link ui-widget ui-state-disabled";
-
     @Override
     public Map<String, List<String>> getParams() {
         return ComponentUtils.getUIParams(this);

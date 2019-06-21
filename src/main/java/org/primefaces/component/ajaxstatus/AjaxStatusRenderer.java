@@ -34,6 +34,14 @@ import org.primefaces.util.WidgetBuilder;
 
 public class AjaxStatusRenderer extends CoreRenderer {
 
+    public static final String START = "start";
+    public static final String SUCCESS = "success";
+    public static final String COMPLETE = "complete";
+    public static final String ERROR = "error";
+    public static final String DEFAULT = "default";
+    public static final String CALLBACK_SIGNATURE = "function()";
+    public static final String[] EVENTS = {START, SUCCESS, COMPLETE, ERROR};
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         AjaxStatus status = (AjaxStatus) component;
@@ -47,10 +55,10 @@ public class AjaxStatusRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("AjaxStatus", status.resolveWidgetVar(), clientId);
 
-        wb.callback(AjaxStatus.START, AjaxStatus.CALLBACK_SIGNATURE, status.getOnstart())
-                .callback(AjaxStatus.ERROR, AjaxStatus.CALLBACK_SIGNATURE, status.getOnerror())
-                .callback(AjaxStatus.SUCCESS, AjaxStatus.CALLBACK_SIGNATURE, status.getOnsuccess())
-                .callback(AjaxStatus.COMPLETE, AjaxStatus.CALLBACK_SIGNATURE, status.getOncomplete());
+        wb.callback(START, CALLBACK_SIGNATURE, status.getOnstart())
+                .callback(ERROR, CALLBACK_SIGNATURE, status.getOnerror())
+                .callback(SUCCESS, CALLBACK_SIGNATURE, status.getOnsuccess())
+                .callback(COMPLETE, CALLBACK_SIGNATURE, status.getOncomplete());
 
         wb.finish();
     }
@@ -69,7 +77,7 @@ public class AjaxStatusRenderer extends CoreRenderer {
             writer.writeAttribute("class", status.getStyleClass(), "styleClass");
         }
 
-        for (String event : AjaxStatus.EVENTS) {
+        for (String event : EVENTS) {
             UIComponent facet = status.getFacet(event);
 
             if (facet != null) {
@@ -77,9 +85,9 @@ public class AjaxStatusRenderer extends CoreRenderer {
             }
         }
 
-        UIComponent defaultFacet = status.getFacet(AjaxStatus.DEFAULT);
+        UIComponent defaultFacet = status.getFacet(DEFAULT);
         if (defaultFacet != null) {
-            encodeFacet(context, clientId, defaultFacet, AjaxStatus.DEFAULT, false);
+            encodeFacet(context, clientId, defaultFacet, DEFAULT, false);
         }
 
         writer.endElement("div");

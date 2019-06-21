@@ -29,10 +29,11 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.component.datatable.DataTable;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class RowEditorRenderer extends CoreRenderer {
+
+    public static final String ROW_EDITOR_CLASS = "ui-row-editor ui-helper-clearfix";
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -40,7 +41,7 @@ public class RowEditorRenderer extends CoreRenderer {
         RowEditor rowEditor = (RowEditor) component;
         String style = rowEditor.getStyle();
         String styleClass = rowEditor.getStyleClass();
-        styleClass = (styleClass == null) ? DataTable.ROW_EDITOR_CLASS : DataTable.ROW_EDITOR_CLASS + " " + styleClass;
+        styleClass = (styleClass == null) ? ROW_EDITOR_CLASS : ROW_EDITOR_CLASS + " " + styleClass;
 
         writer.startElement("div", null);
         writer.writeAttribute("id", component.getClientId(context), null);

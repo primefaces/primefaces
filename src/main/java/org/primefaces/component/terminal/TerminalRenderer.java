@@ -38,6 +38,12 @@ import org.primefaces.util.WidgetBuilder;
 
 public class TerminalRenderer extends CoreRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-terminal ui-widget ui-widget-content ui-corner-all";
+    public static final String WELCOME_MESSAGE_CLASS = "ui-terminal-welcome";
+    public static final String CONTENT_CLASS = "ui-terminal-content";
+    public static final String PROMPT_CLASS = "ui-terminal-prompt";
+    public static final String INPUT_CLASS = "ui-terminal-input";
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Terminal terminal = (Terminal) component;
@@ -58,7 +64,7 @@ public class TerminalRenderer extends CoreRenderer {
         String clientId = terminal.getClientId(context);
         String style = terminal.getStyle();
         String styleClass = terminal.getStyleClass();
-        styleClass = (styleClass == null) ? Terminal.CONTAINER_CLASS : Terminal.CONTAINER_CLASS + " " + styleClass;
+        styleClass = (styleClass == null) ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
         String welcomeMessage = terminal.getWelcomeMessage();
         String prompt = terminal.getPrompt();
         String inputId = clientId + "_input";
@@ -84,12 +90,12 @@ public class TerminalRenderer extends CoreRenderer {
         }
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", Terminal.CONTENT_CLASS, null);
+        writer.writeAttribute("class", CONTENT_CLASS, null);
         writer.endElement("div");
 
         writer.startElement("div", null);
         writer.startElement("span", null);
-        writer.writeAttribute("class", Terminal.PROMPT_CLASS, null);
+        writer.writeAttribute("class", PROMPT_CLASS, null);
         if (terminal.isEscape()) {
             writer.writeText(prompt, null);
         }
@@ -103,7 +109,7 @@ public class TerminalRenderer extends CoreRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute("class", Terminal.INPUT_CLASS, null);
+        writer.writeAttribute("class", INPUT_CLASS, null);
         writer.endElement("input");
 
         writer.endElement("div");

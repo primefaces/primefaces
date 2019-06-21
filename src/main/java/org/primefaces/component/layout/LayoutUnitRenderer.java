@@ -33,13 +33,21 @@ import org.primefaces.renderkit.CoreRenderer;
 
 public class LayoutUnitRenderer extends CoreRenderer {
 
+    public static final String UNIT_CLASS = "ui-layout-unit ui-widget ui-widget-content ui-corner-all";
+    public static final String UNIT_HEADER_CLASS = "ui-layout-unit-header ui-widget-header ui-corner-all";
+    public static final String UNIT_CONTENT_CLASS = "ui-layout-unit-content ui-widget-content";
+    public static final String UNIT_FOOTER_CLASS = "ui-layout-unit-footer ui-widget-header ui-corner-all";
+    public static final String UNIT_HEADER_TITLE_CLASS = "ui-layout-unit-header-title";
+    public static final String UNIT_FOOTER_TITLE_CLASS = "ui-layout-unit-footer-title";
+    public static final String UNIT_HEADER_ICON_CLASS = "ui-layout-unit-header-icon ui-state-default ui-corner-all";
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         LayoutUnit unit = (LayoutUnit) component;
         boolean nesting = unit.isNesting();
 
-        String defaultStyleClass = Layout.UNIT_CLASS + " ui-layout-" + unit.getPosition();
+        String defaultStyleClass = UNIT_CLASS + " ui-layout-" + unit.getPosition();
         String styleClass = unit.getStyleClass();
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 
@@ -54,7 +62,7 @@ public class LayoutUnitRenderer extends CoreRenderer {
 
         if (!nesting) {
             writer.startElement("div", null);
-            writer.writeAttribute("class", Layout.UNIT_CONTENT_CLASS, null);
+            writer.writeAttribute("class", UNIT_CONTENT_CLASS, null);
         }
 
         renderChildren(context, unit);
@@ -90,10 +98,10 @@ public class LayoutUnitRenderer extends CoreRenderer {
         Layout layout = (Layout) unit.getParent();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", Layout.UNIT_HEADER_CLASS, null);
+        writer.writeAttribute("class", UNIT_HEADER_CLASS, null);
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", Layout.UNIT_HEADER_TITLE_CLASS, null);
+        writer.writeAttribute("class", UNIT_HEADER_TITLE_CLASS, null);
 
         if (headerFacet != null) {
             headerFacet.encodeAll(context);
@@ -126,10 +134,10 @@ public class LayoutUnitRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", Layout.UNIT_FOOTER_CLASS, null);
+        writer.writeAttribute("class", UNIT_FOOTER_CLASS, null);
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", Layout.UNIT_FOOTER_TITLE_CLASS, null);
+        writer.writeAttribute("class", UNIT_FOOTER_TITLE_CLASS, null);
 
         if (footerFacet != null) {
             footerFacet.encodeAll(context);
@@ -148,7 +156,7 @@ public class LayoutUnitRenderer extends CoreRenderer {
 
         writer.startElement("a", null);
         writer.writeAttribute("href", "javascript:void(0)", null);
-        writer.writeAttribute("class", Layout.UNIT_HEADER_ICON_CLASS, null);
+        writer.writeAttribute("class", UNIT_HEADER_ICON_CLASS, null);
         writer.writeAttribute("title", title, null);
 
         writer.startElement("span", null);

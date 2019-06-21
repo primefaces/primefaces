@@ -37,6 +37,8 @@ import org.primefaces.util.WidgetBuilder;
 
 public class InputTextRenderer extends InputRenderer {
 
+    public static final String STYLE_CLASS = "ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         InputText inputText = (InputText) component;
@@ -110,7 +112,7 @@ public class InputTextRenderer extends InputRenderer {
     }
 
     protected String createStyleClass(InputText inputText) {
-        String defaultClass = InputText.STYLE_CLASS;
+        String defaultClass = STYLE_CLASS;
         defaultClass = inputText.isValid() ? defaultClass : defaultClass + " ui-state-error";
         defaultClass = !inputText.isDisabled() ? defaultClass : defaultClass + " ui-state-disabled";
 

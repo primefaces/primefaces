@@ -36,6 +36,13 @@ import org.primefaces.util.WidgetBuilder;
 
 public class SpinnerRenderer extends InputRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-spinner ui-widget ui-corner-all";
+    public static final String INPUT_CLASS = "ui-spinner-input ui-inputfield ui-state-default ui-corner-all";
+    public static final String UP_BUTTON_CLASS = "ui-spinner-button ui-spinner-up ui-corner-tr ui-button ui-widget ui-state-default ui-button-text-only";
+    public static final String DOWN_BUTTON_CLASS = "ui-spinner-button ui-spinner-down ui-corner-br ui-button ui-widget ui-state-default ui-button-text-only";
+    public static final String UP_ICON_CLASS = "ui-icon ui-icon-triangle-1-n ui-c";
+    public static final String DOWN_ICON_CLASS = "ui-icon ui-icon-triangle-1-s ui-c";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Spinner spinner = (Spinner) component;
@@ -94,11 +101,11 @@ public class SpinnerRenderer extends InputRenderer {
         String clientId = spinner.getClientId(context);
         String styleClass = spinner.getStyleClass();
         boolean valid = spinner.isValid();
-        styleClass = styleClass == null ? Spinner.CONTAINER_CLASS : Spinner.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
         styleClass = spinner.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
         styleClass = !spinner.isValid() ? styleClass + " ui-state-error" : styleClass;
-        String upButtonClass = (valid) ? Spinner.UP_BUTTON_CLASS : Spinner.UP_BUTTON_CLASS + " ui-state-error";
-        String downButtonClass = (valid) ? Spinner.DOWN_BUTTON_CLASS : Spinner.DOWN_BUTTON_CLASS + " ui-state-error";
+        String upButtonClass = (valid) ? UP_BUTTON_CLASS : UP_BUTTON_CLASS + " ui-state-error";
+        String downButtonClass = (valid) ? DOWN_BUTTON_CLASS : DOWN_BUTTON_CLASS + " ui-state-error";
 
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId, null);
@@ -109,8 +116,8 @@ public class SpinnerRenderer extends InputRenderer {
 
         encodeInput(context, spinner);
 
-        encodeButton(context, upButtonClass, Spinner.UP_ICON_CLASS);
-        encodeButton(context, downButtonClass, Spinner.DOWN_ICON_CLASS);
+        encodeButton(context, upButtonClass, UP_ICON_CLASS);
+        encodeButton(context, downButtonClass, DOWN_ICON_CLASS);
 
         writer.endElement("span");
     }
@@ -118,7 +125,7 @@ public class SpinnerRenderer extends InputRenderer {
     protected void encodeInput(FacesContext context, Spinner spinner) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = spinner.getClientId(context) + "_input";
-        String inputClass = spinner.isValid() ? Spinner.INPUT_CLASS : Spinner.INPUT_CLASS + " ui-state-error";
+        String inputClass = spinner.isValid() ? INPUT_CLASS : INPUT_CLASS + " ui-state-error";
 
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);

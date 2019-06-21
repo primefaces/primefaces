@@ -36,15 +36,6 @@ public class SelectManyMenu extends SelectManyMenuBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectManyMenu";
 
-    public static final String CONTAINER_CLASS = "ui-selectmanymenu ui-inputfield ui-widget ui-widget-content ui-corner-all";
-    public static final String LIST_CONTAINER_CLASS = "ui-selectlistbox-listcontainer";
-    public static final String LIST_CLASS = "ui-selectlistbox-list";
-    public static final String ITEM_CLASS = "ui-selectlistbox-item ui-corner-all";
-    public static final String FILTER_CONTAINER_CLASS = "ui-selectlistbox-filter-container";
-    public static final String FILTER_CLASS = "ui-selectlistbox-filter ui-inputfield ui-widget ui-state-default ui-corner-all";
-    public static final String FILTER_ICON_CLASS = "ui-icon ui-icon-search";
-    public static final String[] DOM_EVENTS = {"onchange", "onclick", "ondblclick"};
-
     @Override
     public String getInputClientId() {
         return getClientId(getFacesContext()) + "_input";

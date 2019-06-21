@@ -35,6 +35,24 @@ import org.primefaces.util.WidgetBuilder;
 
 public class CarouselRenderer extends CoreRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-carousel ui-widget ui-widget-content ui-corner-all ui-hidden-container";
+    public static final String ITEM_CLASS = "ui-carousel-item ui-widget-content ui-corner-all";
+    public static final String HEADER_CLASS = "ui-carousel-header ui-widget-header ui-corner-all";
+    public static final String HEADER_TITLE_CLASS = "ui-carousel-header-title";
+    public static final String FOOTER_CLASS = "ui-carousel-footer ui-widget-header ui-corner-all";
+    public static final String HORIZONTAL_NEXT_BUTTON = "ui-carousel-button ui-carousel-next-button ui-icon ui-icon-circle-triangle-e";
+    public static final String HORIZONTAL_PREV_BUTTON = "ui-carousel-button ui-carousel-prev-button ui-icon ui-icon-circle-triangle-w";
+    public static final String VERTICAL_NEXT_BUTTON = "ui-carousel-button ui-carousel-next-button ui-icon ui-icon-circle-triangle-s";
+    public static final String VERTICAL_PREV_BUTTON = "ui-carousel-button ui-carousel-prev-button ui-icon ui-icon-circle-triangle-n";
+    public static final String VIEWPORT_CLASS = "ui-carousel-viewport";
+    public static final String ITEMS_CLASS = "ui-carousel-items";
+    public static final String VERTICAL_VIEWPORT_CLASS = "ui-carousel-viewport ui-carousel-vertical-viewport";
+    public static final String PAGE_LINKS_CONTAINER_CLASS = "ui-carousel-page-links";
+    public static final String PAGE_LINK_CLASS = "ui-icon ui-carousel-page-link ui-icon-radio-off";
+    public static final String DROPDOWN_CLASS = "ui-carousel-dropdown ui-widget ui-state-default ui-corner-left";
+    public static final String RESPONSIVE_DROPDOWN_CLASS = "ui-carousel-dropdown-responsive ui-widget ui-state-default ui-corner-left";
+    public static final String TOGGLER_LINK_CLASS = "ui-carousel-titlebar-icon ui-corner-all ui-state-default";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -93,7 +111,7 @@ public class CarouselRenderer extends CoreRenderer {
         boolean collapsed = carousel.isCollapsed();
         String style = carousel.getStyle();
         String styleClass = carousel.getStyleClass();
-        styleClass = (styleClass == null) ? Carousel.CONTAINER_CLASS : Carousel.CONTAINER_CLASS + " " + styleClass;
+        styleClass = (styleClass == null) ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
 
         //container
         writer.startElement("div", null);
@@ -120,13 +138,13 @@ public class CarouselRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         String itemStyleClass = carousel.getItemStyleClass();
-        itemStyleClass = itemStyleClass == null ? Carousel.ITEM_CLASS : Carousel.ITEM_CLASS + " " + itemStyleClass;
+        itemStyleClass = itemStyleClass == null ? ITEM_CLASS : ITEM_CLASS + " " + itemStyleClass;
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", carousel.isVertical() ? Carousel.VERTICAL_VIEWPORT_CLASS : Carousel.VIEWPORT_CLASS, null);
+        writer.writeAttribute("class", carousel.isVertical() ? VERTICAL_VIEWPORT_CLASS : VIEWPORT_CLASS, null);
 
         writer.startElement("ul", null);
-        writer.writeAttribute("class", Carousel.ITEMS_CLASS, null);
+        writer.writeAttribute("class", ITEMS_CLASS, null);
         if (carousel.isCollapsed()) {
             writer.writeAttribute("style", "display:none", null);
         }
@@ -181,11 +199,11 @@ public class CarouselRenderer extends CoreRenderer {
         int itemCount = var != null ? rowCount : renderedChildCount;
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", Carousel.HEADER_CLASS, null);
+        writer.writeAttribute("class", HEADER_CLASS, null);
 
         //title
         writer.startElement("div", null);
-        writer.writeAttribute("class", Carousel.HEADER_TITLE_CLASS, null);
+        writer.writeAttribute("class", HEADER_TITLE_CLASS, null);
 
         UIComponent facet = carousel.getFacet("header");
         String text = carousel.getHeaderText();
@@ -206,12 +224,12 @@ public class CarouselRenderer extends CoreRenderer {
 
         //next button
         writer.startElement("span", null);
-        writer.writeAttribute("class", vertical ? Carousel.VERTICAL_NEXT_BUTTON : Carousel.HORIZONTAL_NEXT_BUTTON, null);
+        writer.writeAttribute("class", vertical ? VERTICAL_NEXT_BUTTON : HORIZONTAL_NEXT_BUTTON, null);
         writer.endElement("span");
 
         //prev button
         writer.startElement("span", null);
-        writer.writeAttribute("class", vertical ? Carousel.VERTICAL_PREV_BUTTON : Carousel.HORIZONTAL_PREV_BUTTON, null);
+        writer.writeAttribute("class", vertical ? VERTICAL_PREV_BUTTON : HORIZONTAL_PREV_BUTTON, null);
         writer.endElement("span");
 
         //pageLinks
@@ -219,11 +237,11 @@ public class CarouselRenderer extends CoreRenderer {
             encodePageLinks(context, carousel, pageCount);
         }
         else {
-            encodeDropDown(context, carousel, clientId + "_dropdown", Carousel.DROPDOWN_CLASS, pageCount);
+            encodeDropDown(context, carousel, clientId + "_dropdown", DROPDOWN_CLASS, pageCount);
         }
 
         if (carousel.isResponsive()) {
-            encodeDropDown(context, carousel, clientId + "_responsivedropdown", Carousel.RESPONSIVE_DROPDOWN_CLASS, itemCount);
+            encodeDropDown(context, carousel, clientId + "_responsivedropdown", RESPONSIVE_DROPDOWN_CLASS, itemCount);
         }
 
         writer.endElement("div");
@@ -233,12 +251,12 @@ public class CarouselRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", Carousel.PAGE_LINKS_CONTAINER_CLASS, null);
+        writer.writeAttribute("class", PAGE_LINKS_CONTAINER_CLASS, null);
 
         for (int i = 0; i < pageCount; i++) {
             writer.startElement("a", null);
             writer.writeAttribute("href", "#", null);
-            writer.writeAttribute("class", Carousel.PAGE_LINK_CLASS, null);
+            writer.writeAttribute("class", PAGE_LINK_CLASS, null);
             writer.endElement("a");
         }
 
@@ -274,7 +292,7 @@ public class CarouselRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", Carousel.FOOTER_CLASS, null);
+        writer.writeAttribute("class", FOOTER_CLASS, null);
         if (carousel.isCollapsed()) {
             writer.writeAttribute("style", "display:none", null);
         }
@@ -309,7 +327,7 @@ public class CarouselRenderer extends CoreRenderer {
             writer.writeAttribute("id", id, null);
         }
         writer.writeAttribute("href", "#", null);
-        writer.writeAttribute("class", Carousel.TOGGLER_LINK_CLASS, null);
+        writer.writeAttribute("class", TOGGLER_LINK_CLASS, null);
 
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-icon " + iconClass, null);

@@ -35,6 +35,9 @@ import org.primefaces.util.WidgetBuilder;
 
 public class OverlayPanelRenderer extends CoreRenderer {
 
+    public static final String STYLE_CLASS = "ui-overlaypanel ui-widget ui-widget-content ui-overlay-hidden ui-corner-all ui-shadow";
+    public static final String CONTENT_CLASS = "ui-overlaypanel-content";
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         OverlayPanel panel = (OverlayPanel) component;
@@ -53,7 +56,7 @@ public class OverlayPanelRenderer extends CoreRenderer {
         String clientId = panel.getClientId(context);
         String style = panel.getStyle();
         String styleClass = panel.getStyleClass();
-        styleClass = styleClass == null ? OverlayPanel.STYLE_CLASS : OverlayPanel.STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? STYLE_CLASS : STYLE_CLASS + " " + styleClass;
 
         writer.startElement("div", panel);
         writer.writeAttribute("id", clientId, "id");
@@ -63,7 +66,7 @@ public class OverlayPanelRenderer extends CoreRenderer {
         }
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", OverlayPanel.CONTENT_CLASS, "styleClass");
+        writer.writeAttribute("class", CONTENT_CLASS, "styleClass");
         if (!panel.isDynamic()) {
             renderChildren(context, panel);
         }

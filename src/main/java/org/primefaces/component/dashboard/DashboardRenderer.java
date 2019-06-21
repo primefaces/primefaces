@@ -37,6 +37,9 @@ import org.primefaces.util.WidgetBuilder;
 
 public class DashboardRenderer extends CoreRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-dashboard";
+    public static final String COLUMN_CLASS = "ui-dashboard-column";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         decodeBehaviors(context, component);
@@ -56,7 +59,7 @@ public class DashboardRenderer extends CoreRenderer {
 
         writer.startElement("div", dashboard);
         writer.writeAttribute("id", clientId, "id");
-        String styleClass = dashboard.getStyleClass() != null ? Dashboard.CONTAINER_CLASS + " " + dashboard.getStyleClass() : Dashboard.CONTAINER_CLASS;
+        String styleClass = dashboard.getStyleClass() != null ? CONTAINER_CLASS + " " + dashboard.getStyleClass() : CONTAINER_CLASS;
         writer.writeAttribute("class", styleClass, "styleClass");
         if (dashboard.getStyle() != null) {
             writer.writeAttribute("style", dashboard.getStyle(), "style");
@@ -67,7 +70,7 @@ public class DashboardRenderer extends CoreRenderer {
             for (DashboardColumn column : model.getColumns()) {
                 String columnStyle = column.getStyle();
                 String columnStyleClass = column.getStyleClass();
-                columnStyleClass = (columnStyleClass == null) ? Dashboard.COLUMN_CLASS : Dashboard.COLUMN_CLASS + " " + columnStyleClass;
+                columnStyleClass = (columnStyleClass == null) ? COLUMN_CLASS : COLUMN_CLASS + " " + columnStyleClass;
 
                 writer.startElement("div", null);
                 writer.writeAttribute("class", columnStyleClass, null);

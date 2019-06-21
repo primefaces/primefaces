@@ -36,6 +36,11 @@ import org.primefaces.util.WidgetBuilder;
 
 public class RatingRenderer extends InputRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-rating";
+    public static final String CANCEL_CLASS = "ui-rating-cancel";
+    public static final String STAR_CLASS = "ui-rating-star";
+    public static final String STAR_ON_CLASS = "ui-rating-star ui-rating-star-on";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Rating rating = (Rating) component;
@@ -89,7 +94,7 @@ public class RatingRenderer extends InputRenderer {
         boolean readonly = rating.isReadonly();
         String style = rating.getStyle();
         String styleClass = rating.getStyleClass();
-        styleClass = styleClass == null ? Rating.CONTAINER_CLASS : Rating.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
 
         if (disabled) {
             styleClass = styleClass + " ui-state-disabled";
@@ -103,11 +108,11 @@ public class RatingRenderer extends InputRenderer {
         }
 
         if (rating.isCancel() && !disabled && !readonly) {
-            encodeIcon(context, Rating.CANCEL_CLASS);
+            encodeIcon(context, CANCEL_CLASS);
         }
 
         for (int i = 0; i < stars; i++) {
-            String starClass = (value != null && i < value.intValue()) ? Rating.STAR_ON_CLASS : Rating.STAR_CLASS;
+            String starClass = (value != null && i < value.intValue()) ? STAR_ON_CLASS : STAR_CLASS;
             encodeIcon(context, starClass);
         }
 

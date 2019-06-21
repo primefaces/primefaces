@@ -41,6 +41,9 @@ import org.primefaces.util.WidgetBuilder;
 
 public class ClockRenderer extends CoreRenderer {
 
+    public static final String STYLE_CLASS = "ui-clock ui-widget ui-widget-header ui-corner-all";
+    public static final String ANALOG_STYLE_CLASS = "ui-analog-clock ui-widget";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Clock clock = (Clock) component;
@@ -66,13 +69,13 @@ public class ClockRenderer extends CoreRenderer {
         if (clock.getDisplayMode().equals("analog")) {
             writer.startElement("div", clock);
             writer.writeAttribute("id", clientId, null);
-            writer.writeAttribute("class", Clock.ANALOG_STYLE_CLASS, null);
+            writer.writeAttribute("class", ANALOG_STYLE_CLASS, null);
             writer.endElement("div");
         }
         else {
             writer.startElement("span", clock);
             writer.writeAttribute("id", clientId, null);
-            writer.writeAttribute("class", Clock.STYLE_CLASS, null);
+            writer.writeAttribute("class", STYLE_CLASS, null);
             writer.endElement("span");
         }
     }

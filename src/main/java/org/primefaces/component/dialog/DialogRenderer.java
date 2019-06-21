@@ -38,6 +38,20 @@ import org.primefaces.util.WidgetBuilder;
 
 public class DialogRenderer extends CoreRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container";
+    public static final String TITLE_BAR_CLASS = "ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top";
+    public static final String TITLE_CLASS = "ui-dialog-title";
+    public static final String TITLE_BAR_CLOSE_CLASS = "ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all";
+    public static final String CLOSE_ICON_CLASS = "ui-icon ui-icon-closethick";
+    public static final String TITLE_BAR_MINIMIZE_CLASS = "ui-dialog-titlebar-icon ui-dialog-titlebar-minimize ui-corner-all";
+    public static final String MINIMIZE_ICON_CLASS = "ui-icon ui-icon-minus";
+    public static final String TITLE_BAR_MAXIMIZE_CLASS = "ui-dialog-titlebar-icon ui-dialog-titlebar-maximize ui-corner-all";
+    public static final String MAXIMIZE_ICON_CLASS = "ui-icon ui-icon-extlink";
+    public static final String CONTENT_CLASS = "ui-dialog-content ui-widget-content";
+    public static final String FOOTER_CLASS = "ui-dialog-footer ui-widget-content";
+
+    public static final String ARIA_CLOSE = "primefaces.dialog.aria.CLOSE";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         super.decodeBehaviors(context, component);
@@ -99,7 +113,7 @@ public class DialogRenderer extends CoreRenderer {
         String positionType = dialog.getPositionType();
         String style = dialog.getStyle();
         String styleClass = dialog.getStyleClass();
-        styleClass = styleClass == null ? Dialog.CONTAINER_CLASS : Dialog.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
 
         if (ComponentUtils.isRTL(context, dialog)) {
             styleClass += " ui-dialog-rtl";
@@ -134,12 +148,12 @@ public class DialogRenderer extends CoreRenderer {
         UIComponent headerFacet = dialog.getFacet("header");
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", Dialog.TITLE_BAR_CLASS, null);
+        writer.writeAttribute("class", TITLE_BAR_CLASS, null);
 
         //title
         writer.startElement("span", null);
         writer.writeAttribute("id", dialog.getClientId(context) + "_title", null);
-        writer.writeAttribute("class", Dialog.TITLE_CLASS, null);
+        writer.writeAttribute("class", TITLE_CLASS, null);
 
         if (headerFacet != null) {
             headerFacet.encodeAll(context);
@@ -151,15 +165,15 @@ public class DialogRenderer extends CoreRenderer {
         writer.endElement("span");
 
         if (dialog.isClosable()) {
-            encodeIcon(context, Dialog.TITLE_BAR_CLOSE_CLASS, Dialog.CLOSE_ICON_CLASS, MessageFactory.getMessage(Dialog.ARIA_CLOSE, null));
+            encodeIcon(context, TITLE_BAR_CLOSE_CLASS, CLOSE_ICON_CLASS, MessageFactory.getMessage(ARIA_CLOSE, null));
         }
 
         if (dialog.isMaximizable()) {
-            encodeIcon(context, Dialog.TITLE_BAR_MAXIMIZE_CLASS, Dialog.MAXIMIZE_ICON_CLASS, null);
+            encodeIcon(context, TITLE_BAR_MAXIMIZE_CLASS, MAXIMIZE_ICON_CLASS, null);
         }
 
         if (dialog.isMinimizable()) {
-            encodeIcon(context, Dialog.TITLE_BAR_MINIMIZE_CLASS, Dialog.MINIMIZE_ICON_CLASS, null);
+            encodeIcon(context, TITLE_BAR_MINIMIZE_CLASS, MINIMIZE_ICON_CLASS, null);
         }
 
         writer.endElement("div");
@@ -175,7 +189,7 @@ public class DialogRenderer extends CoreRenderer {
         }
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", Dialog.FOOTER_CLASS, null);
+        writer.writeAttribute("class", FOOTER_CLASS, null);
 
         writer.startElement("span", null);
         if (footerFacet != null) {
@@ -194,7 +208,7 @@ public class DialogRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", Dialog.CONTENT_CLASS, null);
+        writer.writeAttribute("class", CONTENT_CLASS, null);
         writer.writeAttribute("id", dialog.getClientId(context) + "_content", null);
 
         if (!dialog.isDynamic()) {

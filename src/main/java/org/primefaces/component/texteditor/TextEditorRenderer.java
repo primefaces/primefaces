@@ -43,6 +43,8 @@ import org.primefaces.util.WidgetBuilder;
 
 public class TextEditorRenderer extends InputRenderer {
 
+    public static final String EDITOR_CLASS = "ui-texteditor";
+
     private static final Logger LOGGER = Logger.getLogger(TextEditorRenderer.class.getName());
 
     @Override
@@ -96,7 +98,7 @@ public class TextEditorRenderer extends InputRenderer {
 
         String style = editor.getStyle();
         String styleClass = editor.getStyleClass();
-        styleClass = (styleClass != null) ? TextEditor.EDITOR_CLASS + " " + styleClass : TextEditor.EDITOR_CLASS;
+        styleClass = (styleClass != null) ? EDITOR_CLASS + " " + styleClass : EDITOR_CLASS;
 
         writer.startElement("div", editor);
         writer.writeAttribute("id", clientId, null);

@@ -36,6 +36,10 @@ import org.primefaces.util.WidgetBuilder;
 
 public class ToggleSwitchRenderer extends InputRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-toggleswitch ui-widget";
+    public static final String SLIDER_CLASS = "ui-toggleswitch-slider";
+    public static final String CHECKED_CLASS = "ui-toggleswitch-checked";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         ToggleSwitch toggleSwitch = (ToggleSwitch) component;
@@ -72,8 +76,8 @@ public class ToggleSwitchRenderer extends InputRenderer {
         boolean disabled = toggleSwitch.isDisabled();
         String style = toggleSwitch.getStyle();
         String styleClass = toggleSwitch.getStyleClass();
-        styleClass = (styleClass == null) ? ToggleSwitch.CONTAINER_CLASS : ToggleSwitch.CONTAINER_CLASS + " " + styleClass;
-        styleClass = (checked) ? styleClass + " " + ToggleSwitch.CHECKED_CLASS : styleClass;
+        styleClass = (styleClass == null) ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
+        styleClass = (checked) ? styleClass + " " + CHECKED_CLASS : styleClass;
         if (disabled) {
             styleClass = styleClass + " ui-state-disabled";
         }
@@ -97,7 +101,7 @@ public class ToggleSwitchRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", ToggleSwitch.SLIDER_CLASS, null);
+        writer.writeAttribute("class", SLIDER_CLASS, null);
         writer.endElement("div");
     }
 

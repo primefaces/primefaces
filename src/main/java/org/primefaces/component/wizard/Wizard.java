@@ -49,12 +49,6 @@ public class Wizard extends WizardBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Wizard";
 
-    public static final String STEP_STATUS_CLASS = "ui-wizard-step-titles ui-helper-reset ui-helper-clearfix";
-    public static final String STEP_CLASS = "ui-wizard-step-title ui-state-default ui-corner-all";
-    public static final String ACTIVE_STEP_CLASS = "ui-wizard-step-title ui-state-default ui-state-highlight ui-corner-all";
-    public static final String BACK_BUTTON_CLASS = "ui-wizard-nav-back";
-    public static final String NEXT_BUTTON_CLASS = "ui-wizard-nav-next";
-
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("next", null)
             .put("back", null)

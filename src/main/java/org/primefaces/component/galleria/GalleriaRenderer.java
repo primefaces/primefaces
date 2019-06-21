@@ -37,6 +37,11 @@ import org.primefaces.util.WidgetBuilder;
 
 public class GalleriaRenderer extends CoreRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-galleria ui-widget ui-widget-content ui-corner-all";
+    public static final String PANEL_WRAPPER_CLASS = "ui-galleria-panel-wrapper";
+    public static final String PANEL_CLASS = "ui-galleria-panel ui-helper-hidden";
+    public static final String PANEL_CONTENT_CLASS = "ui-galleria-panel-content";
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Galleria galleria = (Galleria) component;
@@ -51,7 +56,7 @@ public class GalleriaRenderer extends CoreRenderer {
         String var = galleria.getVar();
         String style = galleria.getStyle();
         String styleClass = galleria.getStyleClass();
-        styleClass = (styleClass == null) ? Galleria.CONTAINER_CLASS : Galleria.CONTAINER_CLASS + " " + styleClass;
+        styleClass = (styleClass == null) ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
         UIComponent content = galleria.getFacet("content");
 
         writer.startElement("div", component);
@@ -62,18 +67,18 @@ public class GalleriaRenderer extends CoreRenderer {
         }
 
         writer.startElement("ul", component);
-        writer.writeAttribute("class", Galleria.PANEL_WRAPPER_CLASS, null);
+        writer.writeAttribute("class", PANEL_WRAPPER_CLASS, null);
 
         if (var == null) {
             for (UIComponent child : galleria.getChildren()) {
                 if (child.isRendered()) {
                     writer.startElement("li", null);
-                    writer.writeAttribute("class", Galleria.PANEL_CLASS, null);
+                    writer.writeAttribute("class", PANEL_CLASS, null);
                     child.encodeAll(context);
 
                     if (content != null) {
                         writer.startElement("div", null);
-                        writer.writeAttribute("class", Galleria.PANEL_CONTENT_CLASS, null);
+                        writer.writeAttribute("class", PANEL_CONTENT_CLASS, null);
                         content.encodeAll(context);
                         writer.endElement("div");
                     }
@@ -90,12 +95,12 @@ public class GalleriaRenderer extends CoreRenderer {
                     requestMap.put(var, it.next());
 
                     writer.startElement("li", null);
-                    writer.writeAttribute("class", Galleria.PANEL_CLASS, null);
+                    writer.writeAttribute("class", PANEL_CLASS, null);
                     renderChildren(context, galleria);
 
                     if (content != null) {
                         writer.startElement("div", null);
-                        writer.writeAttribute("class", Galleria.PANEL_CONTENT_CLASS, null);
+                        writer.writeAttribute("class", PANEL_CONTENT_CLASS, null);
                         content.encodeAll(context);
                         writer.endElement("div");
                     }

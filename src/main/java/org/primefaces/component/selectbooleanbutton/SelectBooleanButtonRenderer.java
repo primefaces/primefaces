@@ -37,6 +37,8 @@ import org.primefaces.util.WidgetBuilder;
 
 public class SelectBooleanButtonRenderer extends InputRenderer {
 
+    public static final String STYLE_CLASS = "ui-selectbooleanbutton ui-widget";
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         SelectBooleanButton button = (SelectBooleanButton) component;

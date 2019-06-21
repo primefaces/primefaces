@@ -44,6 +44,15 @@ import org.primefaces.util.WidgetBuilder;
 
 public class SelectManyMenuRenderer extends SelectManyRenderer {
 
+    public static final String CONTAINER_CLASS = "ui-selectmanymenu ui-inputfield ui-widget ui-widget-content ui-corner-all";
+    public static final String LIST_CONTAINER_CLASS = "ui-selectlistbox-listcontainer";
+    public static final String LIST_CLASS = "ui-selectlistbox-list";
+    public static final String ITEM_CLASS = "ui-selectlistbox-item ui-corner-all";
+    public static final String FILTER_CONTAINER_CLASS = "ui-selectlistbox-filter-container";
+    public static final String FILTER_CLASS = "ui-selectlistbox-filter ui-inputfield ui-widget ui-state-default ui-corner-all";
+    public static final String FILTER_ICON_CLASS = "ui-icon ui-icon-search";
+    public static final String[] DOM_EVENTS = {"onchange", "onclick", "ondblclick"};
+
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
@@ -68,7 +77,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
 
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
-        styleClass = styleClass == null ? SelectManyMenu.CONTAINER_CLASS : SelectManyMenu.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? CONTAINER_CLASS : CONTAINER_CLASS + " " + styleClass;
         styleClass = menu.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
         styleClass = !menu.isValid() ? styleClass + " ui-state-error" : styleClass;
 
@@ -123,7 +132,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
 
         renderAccessibilityAttributes(context, menu);
         renderPassThruAttributes(context, menu, HTML.TAB_INDEX);
-        renderDomEvents(context, menu, SelectManyMenu.DOM_EVENTS);
+        renderDomEvents(context, menu, DOM_EVENTS);
         renderValidationMetadata(context, menu);
 
         encodeSelectItems(context, menu, selectItems);
@@ -142,12 +151,12 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         boolean showCheckbox = menu.isShowCheckbox();
 
         writer.startElement("div", menu);
-        writer.writeAttribute("class", SelectManyMenu.LIST_CONTAINER_CLASS, null);
+        writer.writeAttribute("class", LIST_CONTAINER_CLASS, null);
         writer.writeAttribute("style", "height:" + calculateWrapperHeight(menu, countSelectItems(selectItems)), null);
 
         if (customContent) {
             writer.startElement("table", null);
-            writer.writeAttribute("class", SelectManyMenu.LIST_CLASS, null);
+            writer.writeAttribute("class", LIST_CLASS, null);
             writer.startElement("tbody", null);
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);
@@ -158,7 +167,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         }
         else {
             writer.startElement("ul", null);
-            writer.writeAttribute("class", SelectManyMenu.LIST_CLASS, null);
+            writer.writeAttribute("class", LIST_CLASS, null);
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);
                 encodeItem(context, menu, selectItem, values, submittedValues, converter, customContent, showCheckbox);
@@ -174,7 +183,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
         boolean disabled = option.isDisabled() || menu.isDisabled();
-        String itemClass = disabled ? SelectManyMenu.ITEM_CLASS + " ui-state-disabled" : SelectManyMenu.ITEM_CLASS;
+        String itemClass = disabled ? ITEM_CLASS + " ui-state-disabled" : ITEM_CLASS;
 
         Object valuesArray;
         Object itemValue;
@@ -309,13 +318,13 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String id = menu.getClientId(context) + "_filter";
         boolean disabled = menu.isDisabled();
-        String filterClass = disabled ? SelectManyMenu.FILTER_CLASS + " ui-state-disabled" : SelectManyMenu.FILTER_CLASS;
+        String filterClass = disabled ? FILTER_CLASS + " ui-state-disabled" : FILTER_CLASS;
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", SelectManyMenu.FILTER_CONTAINER_CLASS, null);
+        writer.writeAttribute("class", FILTER_CONTAINER_CLASS, null);
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", SelectManyMenu.FILTER_ICON_CLASS, id);
+        writer.writeAttribute("class", FILTER_ICON_CLASS, id);
         writer.endElement("span");
 
         writer.startElement("input", null);
