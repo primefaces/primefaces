@@ -9369,7 +9369,7 @@
             <description>
                 <![CDATA[Method expression to listen file upload events.]]>
             </description>
-            <name>fileUploadListener</name>
+            <name>listener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
         </attribute>
