@@ -795,6 +795,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             var hasPlaceholder = this.label[0].hasAttribute('placeholder');
             this.updatePlaceholderClass((hasPlaceholder && value === '&nbsp;'));
         }
+        else if (this.cfg.label) {
+            this.label.text(this.cfg.label);
+        }
         else {
             var labelText = this.label.data('placeholder');
             if (labelText == null || labelText == "") {
