@@ -26,7 +26,7 @@ package org.primefaces.component.spacer;
 import javax.faces.component.UIComponentBase;
 
 
-abstract class SpacerBase extends UIComponentBase {
+public abstract class SpacerBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

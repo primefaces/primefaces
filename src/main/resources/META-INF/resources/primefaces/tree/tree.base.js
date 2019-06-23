@@ -167,7 +167,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                 {name: this.id + '_instantSelection', value: this.getRowKey(node)}
             ];
 
-            options.oncomplete = function(xhr, status, args) {
+            options.oncomplete = function(xhr, status, args, data) {
                 if(args.descendantRowKeys && args.descendantRowKeys !== '') {
                     var rowKeys = args.descendantRowKeys.split(',');
                     for(var i = 0; i < rowKeys.length; i++) {

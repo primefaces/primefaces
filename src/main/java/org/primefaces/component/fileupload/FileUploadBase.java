@@ -29,7 +29,7 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class FileUploadBase extends UIInput implements Widget {
+public abstract class FileUploadBase extends UIInput implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -42,7 +42,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
         styleClass,
         update,
         process,
-        fileUploadListener,
+        listener,
         multiple,
         auto,
         label,
@@ -123,12 +123,12 @@ abstract class FileUploadBase extends UIInput implements Widget {
         getStateHelper().put(PropertyKeys.process, process);
     }
 
-    public javax.el.MethodExpression getFileUploadListener() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.fileUploadListener, null);
+    public javax.el.MethodExpression getListener() {
+        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.listener, null);
     }
 
-    public void setFileUploadListener(javax.el.MethodExpression fileUploadListener) {
-        getStateHelper().put(PropertyKeys.fileUploadListener, fileUploadListener);
+    public void setListener(javax.el.MethodExpression fileUploadListener) {
+        getStateHelper().put(PropertyKeys.listener, fileUploadListener);
     }
 
     public boolean isMultiple() {

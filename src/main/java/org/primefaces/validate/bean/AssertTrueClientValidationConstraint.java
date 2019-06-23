@@ -25,7 +25,6 @@ package org.primefaces.validate.bean;
 
 import java.util.HashMap;
 import java.util.Map;
-import javax.validation.constraints.AssertTrue;
 import javax.validation.metadata.ConstraintDescriptor;
 
 public class AssertTrueClientValidationConstraint implements ClientValidationConstraint {
@@ -48,6 +47,6 @@ public class AssertTrueClientValidationConstraint implements ClientValidationCon
 
     @Override
     public String getValidatorId() {
-        return AssertTrue.class.getSimpleName();
+        return "AssertTrue";
     }
 }

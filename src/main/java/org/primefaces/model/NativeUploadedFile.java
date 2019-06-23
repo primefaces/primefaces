@@ -24,6 +24,7 @@
 package org.primefaces.model;
 
 import org.primefaces.component.fileupload.FileUpload;
+import org.primefaces.shaded.owasp.SafeFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -35,6 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.faces.FacesException;
 import javax.servlet.http.Part;
+
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.input.BoundedInputStream;
 import org.primefaces.util.FileUploadUtils;
 
@@ -128,16 +131,17 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
 
     @Override
     public void write(String filePath) throws Exception {
-        String validFilePath = FileUploadUtils.getValidFilePath(filePath);
+        SafeFile file = new SafeFile(filePath);
+        String validFileName = FileUploadUtils.getValidFilename(FilenameUtils.getName(file.getPath()));
 
         if (parts != null) {
             for (int i = 0; i < parts.size(); i++) {
                 Part p = parts.get(i);
-                p.write(validFilePath);
+                p.write(validFileName);
             }
         }
         else {
-            part.write(validFilePath);
+            part.write(validFileName);
         }
     }
 

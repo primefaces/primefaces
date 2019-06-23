@@ -26,7 +26,7 @@ package org.primefaces.component.ribbon;
 import org.primefaces.component.tabview.TabView;
 
 
-abstract class RibbonBase extends TabView {
+public abstract class RibbonBase extends TabView {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

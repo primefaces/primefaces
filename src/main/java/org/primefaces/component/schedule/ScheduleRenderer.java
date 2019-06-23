@@ -184,6 +184,7 @@ public class ScheduleRenderer extends CoreRenderer {
                 .attr("weekends", schedule.isShowWeekends(), true)
                 .attr("eventStartEditable", schedule.isDraggable(), true)
                 .attr("eventDurationEditable", schedule.isResizable(), true)
+                .attr("slotLabelInterval", schedule.getSlotLabelInterval(), null)
                 .attr("slotLabelFormat", schedule.getSlotLabelFormat(), null)
                 .attr("timeFormat", schedule.getTimeFormat(), null)
                 .attr("weekNumbers", isShowWeekNumbers, false)
@@ -192,7 +193,7 @@ public class ScheduleRenderer extends CoreRenderer {
                 .attr("urlTarget", schedule.getUrlTarget(), "_blank")
                 .attr("noOpener", schedule.isNoOpener(), true);
 
-        String columnFormat = schedule.getColumnFormat();
+        String columnFormat = schedule.getColumnHeaderFormat() != null ? schedule.getColumnHeaderFormat() : schedule.getColumnFormat();
         if (columnFormat != null) {
             wb.append(",columnFormatOptions:{" + columnFormat + "}");
         }

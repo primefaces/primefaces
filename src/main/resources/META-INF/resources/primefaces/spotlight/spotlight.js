@@ -78,7 +78,7 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
             return $this.target.find(':tabbable');
         });
 
-        $(window).on('resize.spotlight', function() {
+        $(window).on('resize.spotlight scroll.spotlight', function() {
             $this.calculatePositions();
         });
     },
@@ -88,7 +88,7 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
         if (this.cfg.blockScroll) {
             PrimeFaces.utils.enableScrolling();
         }
-        $(window).off('resize.spotlight');
+        $(window).off('resize.spotlight scroll.spotlight');
     },
 
     hide: function() {

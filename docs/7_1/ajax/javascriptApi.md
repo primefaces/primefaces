@@ -25,7 +25,7 @@ params | Additional parameters to send in ajax request.
 onstart() | Javascript callback to process before sending the ajax request, return false to cancel the request.
 onsuccess(data, status, xhr) | Javascript callback to process when ajax request returns with success code. Takes three arguments, xml response, status code and xmlhttprequest.
 onerror(xhr, status, error) | Javascript callback to process when ajax request fails. Takes three arguments, xmlhttprequest, status string and exception thrown if any.
-oncomplete(xhr, status, args) | Javascript callback to process when ajax request completes. Takes three arguments, xmlhttprequest, status string and optional arguments provided by PrimeFaces.current() API.
+oncomplete(xhr, status, args, data) | Javascript callback to process when ajax request completes. Takes three arguments, xmlhttprequest, status string and optional arguments provided by PrimeFaces.current() API.
 
 
 ### Examples
@@ -54,10 +54,10 @@ PrimeFaces.ajax.Request.handle({
     source: 'userForm',
     process: 'userForm',
     update: 'msgs',
-    params:{
-    'param_name1':'value1',
-    'param_name2':'value2'
-    },
+    params: [
+        {name: 'param_name1', value: 'value1'},
+        {name: 'param_name2', value: 'value2'},
+    ],
     oncomplete:function(xhr, status) {alert('Done');}
 });
 ```

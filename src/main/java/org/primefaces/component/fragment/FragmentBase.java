@@ -26,7 +26,7 @@ package org.primefaces.component.fragment;
 import javax.faces.component.UIPanel;
 
 
-abstract class FragmentBase extends UIPanel {
+public abstract class FragmentBase extends UIPanel {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

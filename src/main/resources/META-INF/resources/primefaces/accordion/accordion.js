@@ -247,7 +247,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
 
             if(this.cfg.controlled) {
                 var $this = this;
-                ext.oncomplete = function(xhr, status, args) {
+                ext.oncomplete = function(xhr, status, args, data) {
                     if(args.access && !args.validationFailed) {
                         $this.show(panel);
                     }
@@ -270,7 +270,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
 
             if(this.cfg.controlled) {
                 var $this = this;
-                ext.oncomplete = function(xhr, status, args) {
+                ext.oncomplete = function(xhr, status, args, data) {
                     if(args.access && !args.validationFailed) {
                         $this.hide(index);
                     }

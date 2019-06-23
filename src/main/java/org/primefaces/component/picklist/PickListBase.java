@@ -31,7 +31,7 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+public abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -72,7 +72,8 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
         responsive,
         tabindex,
         filterEvent,
-        filterDelay
+        filterDelay,
+        escapeValue
     }
 
     public PickListBase() {
@@ -354,6 +355,14 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
 
     public void setEscape(boolean escape) {
         getStateHelper().put(PropertyKeys.escape, escape);
+    }
+
+    public boolean isEscapeValue() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.escapeValue, true);
+    }
+
+    public void setEscapeValue(boolean escapeValue) {
+        getStateHelper().put(PropertyKeys.escapeValue, escapeValue);
     }
 
     @Override

@@ -14,6 +14,7 @@ any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 | commons-io | 2.4 | Optional | FileUpload |
 | barcode4j-light | 2.1 | Optional | Barcode |
 | qrgen |  1.4 | Optional | QR Code support for Barcode |
+| owasp-java-html-sanitizer |  20181114.1 | Optional | TextEditor |
 
 *Listed versions are tested and known to be working with PrimeFaces, other versions of these
 dependencies may also work but not tested.

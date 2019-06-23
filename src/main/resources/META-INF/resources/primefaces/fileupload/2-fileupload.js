@@ -91,7 +91,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                             filename: file.name,
                             filesize: file.size
                         });
-                        
+
                         $this.postSelectFile(data);
                     }
                     else {
@@ -157,14 +157,14 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             },
             always: function(e, data) {
                 if($this.cfg.oncomplete) {
-                    $this.cfg.oncomplete.call($this, data.jqXHR.pfArgs);
+                    $this.cfg.oncomplete.call($this, data.jqXHR.pfArgs, data);
                 }
             }
         };
 
         this.jq.fileupload(this.ucfg);
     },
-    
+
     addFileToRow: function(file, data) {
         var $this = this,
             row = $('<div class="ui-fileupload-row"></div>').append('<div class="ui-fileupload-preview"></td>')
@@ -219,10 +219,10 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.auto) {
             this.upload();
         }
-        
+
         this.postSelectFile(data);
     },
-    
+
     postSelectFile: function(data) {
         if(this.files.length > 0) {
             this.enableButton(this.uploadButton);
@@ -424,7 +424,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
     removeFileRow: function(row) {
         if(row) {
             this.disableButton(row.find('> div:last-child').children('.ui-fileupload-cancel'));
-            
+
             row.fadeOut(function() {
                 $(this).remove();
             });
@@ -502,7 +502,7 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
 
         this.cfg.invalidSizeMessage = this.cfg.invalidSizeMessage || 'Invalid file size';
         this.maxFileSize = this.cfg.maxFileSize;
-        
+
         if(this.cfg.skinSimple) {
             this.button = this.jq.children('.ui-button');
             this.input = $(this.jqId + '_input');
@@ -539,7 +539,7 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.input.on('change.fileupload', function() {
             var files = $this.input[0].files;
             var file = files.length > 0 ? files[files.length - 1] : null;
-            var validMsg = $this.validate($this.input[0], file); 
+            var validMsg = $this.validate($this.input[0], file);
             if(validMsg) {
                 $this.display.text(validMsg);
             } else {
@@ -554,10 +554,10 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
         });
 
     },
-    
+
     validate: function(input, file) {
         var $this = this;
-        
+
         if(file && $this.cfg.maxFileSize && file.size > $this.cfg.maxFileSize) {
             $(input).replaceWith($(input).val('').clone(true));
             return $this.cfg.invalidSizeMessage;

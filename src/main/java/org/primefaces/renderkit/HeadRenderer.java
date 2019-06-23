@@ -130,6 +130,10 @@ public class HeadRenderer extends Renderer {
             writer.write("PrimeFaces.settings.earlyPostParamEvaluation=true;");
         }
 
+        if (applicationContext.getConfig().isPartialSubmitEnabled()) {
+            writer.write("PrimeFaces.settings.partialSubmit=true;");
+        }
+
         if (!projectStage.equals(ProjectStage.Production)) {
             writer.write("PrimeFaces.settings.projectStage='" + projectStage.toString() + "';");
         }

@@ -29,6 +29,11 @@ public class SelectableDataModelWrapper extends ListDataModel implements Selecta
 
     private SelectableDataModel original;
 
+    // for serialization
+    public SelectableDataModelWrapper() {
+
+    }
+
     public SelectableDataModelWrapper(SelectableDataModel original, Object data) {
         this.original = original;
         setWrappedData(data);

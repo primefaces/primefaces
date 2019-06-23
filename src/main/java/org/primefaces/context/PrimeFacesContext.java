@@ -27,8 +27,12 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextWrapper;
 import javax.faces.context.ResponseWriter;
+import javax.faces.context.ResponseWriterWrapper;
 import org.primefaces.application.resource.MoveScriptsToBottomResponseWriter;
 import org.primefaces.application.resource.MoveScriptsToBottomState;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.csp.CspResponseWriter;
+import org.primefaces.csp.CspState;
 
 /**
  * Custom {@link FacesContextWrapper} to init and release our {@link PrimeRequestContext}.
@@ -37,8 +41,10 @@ public class PrimeFacesContext extends FacesContextWrapper {
 
     private final FacesContext wrapped;
     private final boolean moveScriptsToBottom;
+    private final boolean csp;
 
     private MoveScriptsToBottomState moveScriptsToBottomState;
+    private CspState cspState;
     private PrimeExternalContext externalContext;
 
     @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
@@ -48,9 +54,16 @@ public class PrimeFacesContext extends FacesContextWrapper {
         PrimeRequestContext requestContext = new PrimeRequestContext(wrapped);
         PrimeRequestContext.setCurrentInstance(requestContext, wrapped);
 
-        moveScriptsToBottom = requestContext.getApplicationContext().getConfig().isMoveScriptsToBottom();
+        PrimeConfiguration config = requestContext.getApplicationContext().getConfig();
+
+        moveScriptsToBottom = config.isMoveScriptsToBottom();
         if (moveScriptsToBottom) {
             moveScriptsToBottomState = new MoveScriptsToBottomState();
+        }
+
+        csp = config.isCsp();
+        if (csp) {
+            cspState = getCspState(this);
         }
     }
 
@@ -64,12 +77,35 @@ public class PrimeFacesContext extends FacesContextWrapper {
 
     @Override
     public void setResponseWriter(ResponseWriter writer) {
-        if (!getPartialViewContext().isAjaxRequest() && moveScriptsToBottom && !(writer instanceof MoveScriptsToBottomResponseWriter)) {
-            getWrapped().setResponseWriter(new MoveScriptsToBottomResponseWriter(writer, moveScriptsToBottomState));
+
+        boolean alreadyWrapped = false;
+
+        ResponseWriter wrappedWriter = writer;
+        while (wrappedWriter != null) {
+            if (wrappedWriter instanceof ResponseWriterWrapper) {
+                if (wrappedWriter instanceof MoveScriptsToBottomResponseWriter
+                        || wrappedWriter instanceof CspResponseWriter) {
+                    alreadyWrapped = true;
+                    break;
+                }
+                wrappedWriter = ((ResponseWriterWrapper) wrappedWriter).getWrapped();
+            }
+            else {
+                break;
+            }
         }
-        else {
-            getWrapped().setResponseWriter(writer);
+
+        if (!alreadyWrapped) {
+            if (csp && !getPartialViewContext().isAjaxRequest()) {
+                writer = new CspResponseWriter(writer, cspState);
+            }
+
+            if (moveScriptsToBottom && !getPartialViewContext().isAjaxRequest()) {
+                writer = new MoveScriptsToBottomResponseWriter(writer, moveScriptsToBottomState);
+            }
         }
+
+        getWrapped().setResponseWriter(writer);
     }
 
     @Override
@@ -85,5 +121,15 @@ public class PrimeFacesContext extends FacesContextWrapper {
         }
 
         super.release();
+    }
+
+    public static CspState getCspState(FacesContext context) {
+        CspState cspState = (CspState) context.getAttributes().get(CspState.class.getName());
+        if (cspState == null) {
+            cspState = new CspState(context);
+            context.getAttributes().put(CspState.class.getName(), cspState);
+        }
+
+        return cspState;
     }
 }

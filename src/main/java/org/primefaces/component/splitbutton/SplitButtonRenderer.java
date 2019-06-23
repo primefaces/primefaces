@@ -234,7 +234,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         }
 
         if (button.isAjax()) {
-            onclick.append(buildAjaxRequest(context, button));
+            onclick.append(buildAjaxRequest(context, button, button));
         }
         else {
             UIForm form = ComponentTraversalUtils.closestForm(context, button);
@@ -385,7 +385,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
                     }
                     else {
                         command = menuitem.isAjax()
-                                ? buildAjaxRequest(context, (AjaxSource) menuitem, form)
+                                ? buildAjaxRequest(context, button, (AjaxSource) menuitem, form)
                                 : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
                     }
 

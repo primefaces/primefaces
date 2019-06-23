@@ -2,18 +2,18 @@
  * PrimeFaces Wizard Component
  */
 PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
-    
+
     init: function(cfg) {
         this._super(cfg);
-        
+
         this.content = $(this.jqId + '_content');
         this.backNav = $(this.jqId + '_back');
         this.nextNav = $(this.jqId + '_next');
         this.cfg.formId = this.jq.parents('form:first').attr('id');
         this.currentStep = this.cfg.initialStep;
-        
+
         var _self = this;
-        
+
         //Step controls
         if(this.cfg.showStepStatus) {
             this.stepControls = $(this.jqId + ' .ui-wizard-step-titles li.ui-wizard-step-title');
@@ -22,7 +22,7 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
         //Navigation controls
         if(this.cfg.showNavBar) {
             var currentStepIndex = this.getStepIndex(this.currentStep);
-            
+
             //visuals
             PrimeFaces.skinButton(this.backNav);
             PrimeFaces.skinButton(this.nextNav);
@@ -37,7 +37,7 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
                 this.nextNav.hide();
         }
     },
-    
+
     back: function() {
         if(this.cfg.onback) {
             var value = this.cfg.onback.call(this);
@@ -49,10 +49,10 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
         var targetStepIndex = this.getStepIndex(this.currentStep) - 1;
         if(targetStepIndex >= 0) {
             var stepToGo = this.cfg.steps[targetStepIndex];
-            this.loadStep(stepToGo, true);
+            this.loadStep(stepToGo, "back");
         }
     },
-    
+
     next: function() {
         if(this.cfg.onnext) {
             var value = this.cfg.onnext.call(this);
@@ -64,11 +64,11 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
         var targetStepIndex = this.getStepIndex(this.currentStep) + 1;
         if(targetStepIndex < this.cfg.steps.length) {
             var stepToGo = this.cfg.steps[targetStepIndex];
-            this.loadStep(stepToGo, false);
+            this.loadStep(stepToGo, "next");
         }
     },
-    
-    loadStep: function(stepToGo, isBack) {
+
+    loadStep: function(stepToGo, event) {
         var $this = this,
         options = {
             source: this.id,
@@ -76,7 +76,7 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
             update: this.id,
             formId: this.cfg.formId,
             params: [
-                {name: this.id + '_wizardRequest', value: true},
+                {name: this.id + '_direction', value: event},
                 {name: this.id + '_stepToGo', value: stepToGo}
             ],
             onsuccess: function(responseXML, status, xhr) {
@@ -89,9 +89,9 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
 
                 return true;
             },
-            oncomplete: function(xhr, status, args) {
+            oncomplete: function(xhr, status, args, data) {
                 $this.currentStep = args.currentStep;
-                
+
                 if(!args.validationFailed) {
                     var currentStepIndex = $this.getStepIndex($this.currentStep);
 
@@ -117,13 +117,14 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
             }
         };
 
-        if(isBack) {
-            options.params.push({name: this.id + '_backRequest', value: true});
+        if(this.hasBehavior(event)) {
+            this.callBehavior(event, options);
         }
-
-        PrimeFaces.ajax.Request.handle(options);
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
     },
-    
+
     getStepIndex: function(step) {
         for(var i=0; i < this.cfg.steps.length; i++) {
             if(this.cfg.steps[i] == step)
@@ -132,21 +133,21 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
 
         return -1;
     },
-    
+
     showNextNav: function() {
         this.nextNav.fadeIn();
     },
-    
+
     hideNextNav: function() {
         this.nextNav.fadeOut();
     },
-    
+
     showBackNav: function() {
         this.backNav.fadeIn();
     },
-    
+
     hideBackNav: function() {
         this.backNav.fadeOut();
     }
-    
+
 });

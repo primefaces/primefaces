@@ -23,7 +23,6 @@
  */
 package org.primefaces;
 
-import org.primefaces.component.datatable.TableState;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.expression.ComponentNotFoundException;
 import org.primefaces.expression.SearchExpressionFacade;
@@ -40,12 +39,14 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialViewContext;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class PrimeFaces {
 
@@ -58,6 +59,7 @@ public class PrimeFaces {
 
     private final Dialog dialog;
     private final Ajax ajax;
+    private final MultiViewState multiViewState;
 
     /**
      * Protected constructor to allow CDI proxying - and also allow customizations, or setting a mock.
@@ -65,6 +67,7 @@ public class PrimeFaces {
     protected PrimeFaces() {
         dialog = new Dialog();
         ajax = new Ajax();
+        multiViewState = new MultiViewState();
     }
 
     public static PrimeFaces current() {
@@ -176,39 +179,51 @@ public class PrimeFaces {
 
     /**
      * Removes the multiViewState for all DataTables within the current session.
+     *
+     * @deprecated Use {@link MultiViewState#clearMultiViewStates()} instead
      */
+    @Deprecated
     public void clearTableStates() {
-        getFacesContext().getExternalContext().getSessionMap().remove(Constants.TABLE_STATE);
+        multiViewState().clearMultiViewStates();
     }
 
     /**
      * Removes the multiViewState for one specific DataTable within the current session.
      * @param key Key of the DataTable. See {@link org.primefaces.component.datatable.DataTable#getTableState(boolean)} for the namebuild of this key.
+     *
+     * @deprecated Use {@link MultiViewState#clearMultiViewState(String, String)} instead
      */
+    @Deprecated
     public void clearTableState(String key) {
-        Map<String, Object> sessionMap = getFacesContext().getExternalContext().getSessionMap();
-        Map<String, TableState> dtState = (Map) sessionMap.get(Constants.TABLE_STATE);
-        if (dtState != null) {
-            dtState.remove(key);
-        }
+        clearDataListState(key);
     }
 
     /**
      * Removes the multiViewState for all DataLists within the current session.
+     *
+     * @deprecated Use {@link MultiViewState#clearMultiViewStates()} instead
      */
+    @Deprecated
     public void clearDataListStates() {
-        getFacesContext().getExternalContext().getSessionMap().remove(Constants.DATALIST_STATE);
+        multiViewState().clearMultiViewStates();
     }
 
     /**
      * Removes the multiViewState for one specific DataList within the current session.
      * @param key Key of the DataList. See {@link org.primefaces.component.datalist.DataList#getDataListState(boolean)}} for the namebuild of this key.
+     *
+     * @deprecated Use {@link MultiViewState#clearMultiViewState(String, String)} instead
      */
+    @Deprecated
     public void clearDataListState(String key) {
-        Map<String, Object> sessionMap = getFacesContext().getExternalContext().getSessionMap();
-        Map<String, TableState> dtState = (Map) sessionMap.get(Constants.DATALIST_STATE);
-        if (dtState != null) {
-            dtState.remove(key);
+        Pattern p = Pattern.compile("(.*\\.(?:xhtml|jsf|jsp))_(.*)");
+        Matcher m = p.matcher(key);
+        if (m.find()) {
+            multiViewState().clearMultiViewState(m.group(1), m.group(2));
+        }
+        else {
+            LOGGER.warning("'" + key + "' does not follow format: " + p.pattern() + "." +
+                    " Use PrimeFaces.multiViewState().clearMultiViewState(String viewId, String clientId) instead");
         }
     }
 
@@ -300,6 +315,15 @@ public class PrimeFaces {
         return ajax;
     }
 
+    /**
+     * Returns the MultiViewState helpers.
+     *
+     * @return the MultiViewState helpers.
+     */
+    public MultiViewState multiViewState() {
+        return multiViewState;
+    }
+
     public class Ajax {
         /**
          * Add a parameter for ajax oncomplete client side callbacks. Value will be serialized to json.
@@ -339,7 +363,7 @@ public class PrimeFaces {
                 catch (ComponentNotFoundException e) {
                     LOGGER.log(Level.WARNING,
                             "PrimeFaces.current().ajax().update() called but component can't be resolved!"
-                            + "Expression will just be added to the renderIds.", e);
+                            + " Expression will just be added to the renderIds.", e);
 
                     facesContext.getPartialViewContext().getRenderIds().add(expression);
                 }
@@ -357,6 +381,113 @@ public class PrimeFaces {
             }
 
             update(Arrays.asList(expressions));
+        }
+    }
+
+    public class MultiViewState {
+
+        private static final String SEPARATOR = "_";
+
+        /**
+         * Removes all multiViewState within the current session.
+         */
+        public void clearMultiViewStates() {
+            getFacesContext().getExternalContext().getSessionMap().remove(Constants.MULTI_VIEW_STATES);
+        }
+
+        /**
+         * Removes all multiViewState in specific view within the current session.
+         *
+         * @param viewId viewId in which multiview state should be cleared
+         */
+        public void clearMultiViewStates(String viewId) {
+            clearMultiViewStates(viewId, null);
+        }
+
+        /**
+         * Removes all multiViewState in specific view within the current session.
+         *
+         * @param viewId viewId in which multiview state should be cleared
+         * @param clientIdConsumer operation to execute for every clientId after multiview state has been cleared
+         */
+        public void clearMultiViewStates(String viewId, Consumer<String> clientIdConsumer) {
+            String stateKey = createViewId(viewId);
+            Map<String, Object> multiViewStates = getMultiViewStateSessionMap();
+            Set<String> states = multiViewStates.keySet().stream()
+                    .filter(s -> s.startsWith(stateKey))
+                    .collect(Collectors.toSet());
+            if (!states.isEmpty()) {
+                multiViewStates.keySet().removeAll(states);
+
+                if (clientIdConsumer != null) {
+                    states.stream()
+                            .map(s -> s.replace(stateKey + SEPARATOR, Constants.EMPTY_STRING))
+                            .forEach(clientIdConsumer);
+                }
+            }
+        }
+
+        /**
+         * Removes multiViewState of a component in specific view within the current session.
+         *
+         * @param viewId viewId of a page
+         * @param clientId clientId of a component for which multiview state should be cleared
+         */
+        public void clearMultiViewState(String viewId, String clientId) {
+            String stateKey = createMultiViewStateKey(viewId, clientId);
+            Map<String, Object> multiViewStates = getMultiViewStateSessionMap();
+            if (multiViewStates.remove(stateKey) == null) {
+                LOGGER.warning("Multiview state for viewId: '" + viewId + "' and clientId '" + clientId + "' not found");
+            }
+        }
+
+        /**
+         * Gets multiview state bean attached to a component in a specific view
+         *
+         * @param viewId viewId of a page
+         * @param clientId clientId of a component
+         * @param create flag indicating if bean state should be created if does not exist in curent session
+         * @param supplier bean state instance
+         * @param <T> bean state generic
+         *
+         * @return multiview state bean attached to a component
+         */
+        public <T> T getMultiViewState(String viewId, String clientId, boolean create, Supplier<T> supplier) {
+            FacesContext fc = getFacesContext();
+            Map<String, Object> sessionMap = fc.getExternalContext().getSessionMap();
+            Map<String, Object> states =  getMultiViewStateSessionMap();
+            String stateKey = createMultiViewStateKey(viewId, clientId);
+
+            if (states == null) {
+                states = new HashMap<>();
+                sessionMap.put(Constants.MULTI_VIEW_STATES, states);
+            }
+
+            T state = (T) states.get(stateKey);
+            if (state == null && create) {
+                state = supplier.get();
+                states.put(stateKey, state);
+            }
+
+            return state;
+        }
+
+        private String createMultiViewStateKey(String viewId, String clientId) {
+            String stateKey = createViewId(viewId);
+            if (clientId != null) {
+                stateKey += SEPARATOR + clientId;
+            }
+            return stateKey;
+        }
+
+        private String createViewId(String viewId) {
+            return viewId.replaceFirst("^/*", Constants.EMPTY_STRING);
+        }
+
+        private Map<String, Object> getMultiViewStateSessionMap() {
+            FacesContext fc = getFacesContext();
+            Map<String, Object> sessionMap = fc.getExternalContext().getSessionMap();
+            return (Map) sessionMap.get(Constants.MULTI_VIEW_STATES);
         }
     }
 }

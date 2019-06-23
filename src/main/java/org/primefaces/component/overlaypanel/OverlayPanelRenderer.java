@@ -87,6 +87,7 @@ public class OverlayPanelRenderer extends CoreRenderer {
                 .callback("onHide", "function()", panel.getOnHide())
                 .attr("my", panel.getMy(), null)
                 .attr("at", panel.getAt(), null)
+                .attr("collision", panel.getCollision(), null)
                 .attr("appendTo", panel.getAppendTo(), null)
                 .attr("dynamic", panel.isDynamic(), false)
                 .attr("dismissable", panel.isDismissable(), true)

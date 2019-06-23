@@ -31,6 +31,7 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
+import org.primefaces.util.SerializableFunction;
 
 public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, Serializable {
 
@@ -44,34 +45,16 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private String onclick;
     private String style;
     private String styleClass;
-    /**
-     * The URL to redirect to after the menu item has been clicked. Similar to
-     * {@code outcome} which allows to specify a navigation case, but the value
-     * is not touched (no prepending of the contextPath, not appending the
-     * sessionId or windowId), just encoded.
-     *
-     * Specifying a {@code url} which is not {@code null} causes {@code command}
-     * to be ignored.
-     */
     private String url;
     private String target;
     private boolean ajax = true;
     private Object value;
-    /**
-     * The JSF outcome of a navigation case which is resolved by the configured
-     * {@code NavigationHandler}. Similar to {@code url}, but {@code url}
-     * allows to specify fully qualified URLs.
-     */
     private String outcome;
     private boolean includeViewParams;
     private String fragment;
     private Map<String, List<String>> params;
-    /**
-     * A method expression in the form of a string which is called after the
-     * menu item has been clicked. It is ignored when {@code url} is not
-     * {@code null}.
-     */
     private String command;
+    private SerializableFunction<MenuItem, String> function;
     private boolean rendered = true;
     private String onstart;
     private String onerror;
@@ -331,6 +314,15 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
 
     public void setCommand(String command) {
         this.command = command;
+    }
+
+    @Override
+    public SerializableFunction<MenuItem, String> getFunction() {
+        return function;
+    }
+
+    public void setFunction(SerializableFunction<MenuItem, String> function) {
+        this.function = function;
     }
 
     @Override

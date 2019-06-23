@@ -184,7 +184,7 @@
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
-            <version>3.9.2</version>
+            <version>3.12</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -196,8 +196,15 @@
         <dependency>
             <groupId>org.ehcache</groupId>
             <artifactId>ehcache</artifactId>
-            <version>3.0.2</version>
+            <version>3.7.1</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sf.saxon</groupId>
+            <artifactId>Saxon-HE</artifactId>
+            <version>9.9.0-2</version>
+            <scope>test</scope>
         </dependency>
 
         <!-- will be included and relocated by shade plugin -->
@@ -213,23 +220,11 @@
             <version>1.2.1</version>
             <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>org.owasp.esapi</groupId>
-            <artifactId>esapi</artifactId>
-            <version>2.1.0.1</version>
-            <optional>true</optional>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
 
         <dependency>
             <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
             <artifactId>owasp-java-html-sanitizer</artifactId>
-            <version>20181114.1</version>
+            <version>20190503.1</version>
             <scope>provided</scope>
         </dependency>
 
@@ -469,6 +464,24 @@
             </plugin>
 
             <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>5.0.0-M3</version>
+                <configuration>
+                    <skipProvidedScope>false</skipProvidedScope>
+                    <skipRuntimeScope>false</skipRuntimeScope>
+                    <failBuildOnCVSS>5</failBuildOnCVSS>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>yuicompressor-maven-plugin</artifactId>
                 <version>1.5.1</version>
@@ -548,6 +561,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.env.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.ajax.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.csp.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.expressions.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.utils.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.widget.js</include>
@@ -817,16 +831,6 @@
                             </includes>
                         </relocation>
                         <relocation>
-                            <pattern>org.owasp.esapi</pattern>
-                            <shadedPattern>org.primefaces.shaded.owasp.esapi</shadedPattern>
-                            <includes>
-                                <include>org.owasp.esapi.SafeFile</include>
-                                <include>org.owasp.esapi.Logger</include>
-                                <include>org.owasp.esapi.errors.ValidationException</include>
-                                <include>org.owasp.esapi.errors.EnterpriseSecurityException</include>
-                            </includes>
-                        </relocation>
-                        <relocation>
                             <pattern>org.apache.commons.io</pattern>
                             <shadedPattern>org.primefaces.shaded.commons.io</shadedPattern>
                             <includes>
@@ -837,15 +841,6 @@
                         </relocation>
                     </relocations>
                     <filters>
-                        <filter>
-                            <artifact>org.owasp.esapi:esapi</artifact>
-                            <includes>
-                                <include>org/owasp/esapi/SafeFile.class</include>
-                                <include>org/owasp/esapi/Logger.class</include>
-                                <include>org/owasp/esapi/errors/ValidationException.class</include>
-                                <include>org/owasp/esapi/errors/EnterpriseSecurityException.class</include>
-                            </includes>
-                        </filter>
                         <filter>
                             <artifact>commons-io:commons-io</artifact>
                             <includes>

@@ -44,10 +44,10 @@ import javax.script.ScriptException;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.owasp.esapi.SafeFile;
-import org.owasp.esapi.errors.ValidationException;
 import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.shaded.owasp.SafeFile;
+import org.primefaces.shaded.owasp.ValidationException;
 import org.primefaces.virusscan.VirusException;
 
 /**

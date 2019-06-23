@@ -29,7 +29,7 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements Widget {
+public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

@@ -39,6 +39,7 @@ import org.primefaces.component.tabview.Tab;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -48,7 +49,7 @@ public class WizardRenderer extends CoreRenderer {
     public void decode(FacesContext context, UIComponent component) {
         Wizard wizard = (Wizard) component;
 
-        if (wizard.isWizardRequest(context)) {
+        if (ComponentUtils.isRequestSource(wizard, context)) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String clientId = wizard.getClientId(context);
             String stepToGo = params.get(clientId + "_stepToGo");
@@ -59,13 +60,15 @@ public class WizardRenderer extends CoreRenderer {
 
             wizard.queueEvent(event);
         }
+
+        decodeBehaviors(context, component);
     }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Wizard wizard = (Wizard) component;
 
-        if (wizard.isWizardRequest(context)) {
+        if (ComponentUtils.isRequestSource(wizard, context)) {
             encodeStep(context, wizard);
         }
         else {
@@ -145,6 +148,8 @@ public class WizardRenderer extends CoreRenderer {
         }
 
         wb.attr("initialStep", wizard.getStep());
+
+        encodeClientBehaviors(context, wizard);
 
         wb.finish();
     }

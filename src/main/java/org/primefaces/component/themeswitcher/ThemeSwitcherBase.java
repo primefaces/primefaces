@@ -28,7 +28,7 @@ import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class ThemeSwitcherBase extends SelectOneMenu implements Widget {
+public abstract class ThemeSwitcherBase extends SelectOneMenu implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

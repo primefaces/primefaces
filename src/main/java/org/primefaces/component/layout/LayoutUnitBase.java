@@ -26,7 +26,7 @@ package org.primefaces.component.layout;
 import javax.faces.component.UIComponentBase;
 
 
-abstract class LayoutUnitBase extends UIComponentBase {
+public abstract class LayoutUnitBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

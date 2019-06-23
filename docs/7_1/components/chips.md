@@ -31,6 +31,7 @@ Chips is used to enter multiple values on an inputfield.
 | validatorMessage | null | String | Message to be displayed when validation fields.
 | widgetVar | null | String | Name of the client side widget.
 | max | null | Integer | Maximum number of entries allowed.
+| addOnBlur | false | Boolean | Whether to add an item when the input loses focus.
 
 ## Getting started with Chips
 Value of the component should be a List where type of the elements it contains can be a string or a

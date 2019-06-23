@@ -26,7 +26,7 @@ package org.primefaces.component.graphicimage;
 import javax.faces.component.html.HtmlGraphicImage;
 
 
-abstract class GraphicImageBase extends HtmlGraphicImage {
+public abstract class GraphicImageBase extends HtmlGraphicImage {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

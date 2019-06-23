@@ -15,7 +15,7 @@ AutoComplete provides live suggestions while an input is being typed.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 | id | null | String | Unique identifier of the component.
 | rendered | true | Boolean | Boolean value to specify the rendering of the component.
@@ -97,6 +97,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | unique | false | Boolean | Ensures uniqueness of selected items.
 | dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the overlay is not rendered on page load to improve performance.
 | autoSelection | true | Boolean | Defines if auto selection of items that are equal to the typed input is enabled. If true, an item that is equal to the typed input is selected.
+| escape | true | Boolean | Defines if autocomplete results are escaped or not.
 
 ## Getting Started with AutoComplete
 AutoComplete is an input component so it requires a value as usual. Suggestions are loaded by
@@ -109,7 +110,7 @@ calling a server side completeMethod that takes a single string parameter which 
 ```java
 public class Bean {
     private | String | text;
-    
+
     public List<String> complete(String query) {
         List<String> results = new ArrayList<String>();
         for (int i = 0; i < 10; i++)
@@ -127,7 +128,7 @@ itemValue is the submitted value. Note that when working with pojos, you need to
 converter.
 
 ```xhtml
-<p:autoComplete value="#{playerBean.selectedPlayer}" completeMethod="#{playerBean.completePlayer}" 
+<p:autoComplete value="#{playerBean.selectedPlayer}" completeMethod="#{playerBean.completePlayer}"
     var="player" itemLabel="#{player.name}" itemValue="#{player}" converter="playerConverter" />
 ```
 
@@ -264,7 +265,7 @@ case _org.primefaces.event.Unselect_ instance is passed to a listener if defined
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
 | itemSelect | org.primefaces.event.SelectEvent | On item selection. |
-| itemUnselect | org.primefaces.event.UnselectEvent | On item unselection. | 
+| itemUnselect | org.primefaces.event.UnselectEvent | On item unselection. |
 | query | - | On query. |
 | moreText | - | When moreText is clicked. |
 
@@ -295,8 +296,8 @@ tooltip is defined via the _itemtip_ facet.
 Widget: _PrimeFaces.widget.AutoComplete_
 
 
-| Method | Params | Return Type | Description | 
-| --- | --- | --- | --- | 
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
 | search(value) | value: keyword for search | void | Initiates a search with given value |
 | close() | - | void | Hides suggested items menu |
 | disable() | - | void | Disables the input field |
@@ -307,8 +308,8 @@ Widget: _PrimeFaces.widget.AutoComplete_
 ## Skinning
 Following is the list of structural style classes;
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 | .ui-autocomplete | Container element. |
 | .ui-autocomplete-input | Input field. |
 | .ui-autocomplete-panel | Container of suggestions list. |

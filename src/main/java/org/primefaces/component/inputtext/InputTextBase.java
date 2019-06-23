@@ -30,7 +30,7 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class InputTextBase extends HtmlInputText implements Widget, RTLAware {
+public abstract class InputTextBase extends HtmlInputText implements Widget, RTLAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

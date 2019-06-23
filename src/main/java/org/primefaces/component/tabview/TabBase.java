@@ -26,7 +26,7 @@ package org.primefaces.component.tabview;
 import javax.faces.component.UIPanel;
 
 
-abstract class TabBase extends UIPanel {
+public abstract class TabBase extends UIPanel {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

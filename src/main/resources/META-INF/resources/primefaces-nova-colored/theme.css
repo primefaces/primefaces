@@ -1817,9 +1817,13 @@ body .ui-button {
     margin-top: -0.5em;
     right: 0.5em; }
   body .ui-button.ui-button-icon-only {
-    width: 2.143em; }
+    width: 2.143em;
+    overflow: hidden; }
     body .ui-button.ui-button-icon-only .ui-button-text {
-      padding: 0.429em; }
+      padding: 0.429em;
+      text-indent: 0;
+      white-space: nowrap;
+      visibility: hidden; }
     body .ui-button.ui-button-icon-only .ui-icon {
       position: absolute;
       top: 50%;
@@ -2453,7 +2457,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
   color: #333333;
   padding: 0.571em 1em; }
   body .ui-panelgrid .ui-panelgrid-cell.ui-widget-header {
-    border: 1px solid #007ad9;
+    border: 1px solid #409BE2;
     background-color: #007ad9;
     color: #ffffff;
     padding: 0.571em 1em 0.571em 1em;
