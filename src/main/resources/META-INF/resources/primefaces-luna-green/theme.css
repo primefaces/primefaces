@@ -1817,8 +1817,7 @@ body .ui-button {
     margin-top: -0.5em;
     right: 0.5em; }
   body .ui-button.ui-button-icon-only {
-    width: 2.143em;
-    overflow: hidden; }
+    width: 2.143em; }
     body .ui-button.ui-button-icon-only .ui-button-text {
       padding: 0.429em;
       text-indent: 0;
