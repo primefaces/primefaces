@@ -44,7 +44,6 @@ import org.primefaces.util.WidgetBuilder;
 
 public class AutoCompleteRenderer extends InputRenderer {
 
-    public static final String COMPONENT_TYPE = "org.primefaces.component.AutoComplete";
     public static final String STYLE_CLASS = "ui-autocomplete";
     public static final String MULTIPLE_STYLE_CLASS = "ui-autocomplete ui-autocomplete-multiple";
     public static final String INPUT_CLASS = "ui-autocomplete-input ui-inputfield ui-widget ui-state-default ui-corner-all";

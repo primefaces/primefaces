@@ -53,6 +53,8 @@ import org.primefaces.util.LangUtils;
 })
 public class AutoComplete extends AutoCompleteBase {
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.AutoComplete";
+
     private static final Collection<String> EVENT_NAMES = LangUtils.unmodifiableList("blur", "change", "valueChange", "click", "dblclick",
             "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "itemSelect", "itemUnselect",
             "query", "moreText", "clear");
