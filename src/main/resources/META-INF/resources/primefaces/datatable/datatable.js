@@ -472,7 +472,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
     setupRowHover: function() {
         var selector = '> tr.ui-widget-content';
-        if(!this.cfg.selectionMode) {
+        if(!this.cfg.selectionMode || this.cfg.selectionMode === 'checkbox') {
             this.bindRowHover(selector);
         }
     },
