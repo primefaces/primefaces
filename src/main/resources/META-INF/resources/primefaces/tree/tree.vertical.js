@@ -1082,7 +1082,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         ];
 
         if(this.cfg.controlled) {
-            options.oncomplete = function(xhr, status, args) {
+            options.oncomplete = function(xhr, status, args, data) {
                 if(args.access) {
                     for(var i = 0; i < $this.droppedNodeParams.length; i++) {
                         var params = $this.droppedNodeParams[i];
@@ -1149,11 +1149,11 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             },
             oncomplete: function() {
                 if ($this.cfg.filterMode === 'contains') {
-                    var notLeafNodes = $this.container.find('li.ui-treenode:not(.ui-treenode-leaf):visible'); 
+                    var notLeafNodes = $this.container.find('li.ui-treenode:not(.ui-treenode-leaf):visible');
                     for(var i = 0; i < notLeafNodes.length; i++) {
                         var node = notLeafNodes.eq(i),
                         hasChildNodes = node.children('.ui-treenode-children:empty').length;
-                        
+
                         if(hasChildNodes) {
                             node.removeClass('ui-treenode-parent').addClass('ui-treenode-leaf')
                                 .find('> .ui-treenode-content > .ui-tree-toggler').removeClass('ui-tree-toggler ui-icon ui-icon-triangle-1-e').addClass('ui-treenode-leaf-icon');

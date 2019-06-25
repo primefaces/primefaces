@@ -106,7 +106,7 @@ public class FileUploadRenderer extends CoreRenderer {
                     .attr("previewWidth", fileUpload.getPreviewWidth(), 80)
                     .attr("disabled", fileUpload.isDisabled(), false)
                     .attr("sequentialUploads", fileUpload.isSequential(), false)
-                    .nativeAttr("onAdd", fileUpload.getOnAdd())
+                    .callback("onAdd", "function(file, callback)", fileUpload.getOnAdd())
                     .callback("onstart", "function()", fileUpload.getOnstart())
                     .callback("onerror", "function()", fileUpload.getOnerror())
                     .callback("oncancel", "function()", fileUpload.getOncancel())

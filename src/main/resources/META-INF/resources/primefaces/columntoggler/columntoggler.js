@@ -43,7 +43,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
 
     render: function() {
         this.columns = this.thead.find('> tr > th:not(.ui-static-column)');
-        this.panel = $('<div></div>').attr('id', this.cfg.id).attr('role', 'dialog').addClass('ui-columntoggler ui-widget ui-widget-content ui-shadow ui-corner-all')
+        this.panel = $(PrimeFaces.escapeClientId(this.cfg.id)).attr('role', 'dialog').addClass('ui-columntoggler ui-widget ui-widget-content ui-shadow ui-corner-all')
                 .append('<ul class="ui-columntoggler-items" role="group"></ul>').appendTo(document.body);
         this.itemContainer = this.panel.children('ul');
 
@@ -58,7 +58,13 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             hidden = column.hasClass('ui-helper-hidden'),
             boxClass = hidden ? 'ui-chkbox-box ui-widget ui-corner-all ui-state-default' : 'ui-chkbox-box ui-widget ui-corner-all ui-state-default ui-state-active',
             iconClass = (hidden) ? 'ui-chkbox-icon ui-icon ui-icon-blank' : 'ui-chkbox-icon ui-icon ui-icon-check',
-            columnTitle = column.children('.ui-column-title').text();
+            columnChildren = column.children('.ui-column-title'),
+            columnTitle = columnChildren.text();
+            
+            var label = columnChildren.find('label');
+            if (label.length) {
+                columnTitle = label.text();
+            }
 
             this.hasPriorityColumns = column.is('[class*="ui-column-p-"]');
 
@@ -67,7 +73,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                     '<div class="ui-helper-hidden-accessible"><input type="checkbox" role="checkbox"></div>' +
                     '<div class="' + boxClass + '"><span class="' + iconClass + '"></span></div>' +
                     '</div>'
-                    + '<label>' + columnTitle + '</label></li>').data('column', column.attr('id'));
+                    + '<label>' + PrimeFaces.escapeHTML(columnTitle) + '</label></li>').data('column', column.attr('id'));
 
             if(this.hasPriorityColumns) {
                 var columnClasses = column.attr('class').split(' ');

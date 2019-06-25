@@ -154,7 +154,7 @@ public class SplitButton extends SplitButtonBase {
                 return (MenuItem) childElement;
             }
             else {
-                String relativeIndex = id.substring(id.indexOf("_") + 1);
+                String relativeIndex = id.substring(id.indexOf('_') + 1);
 
                 return findMenuitem(((MenuGroup) childElement).getElements(), relativeIndex);
             }

@@ -709,14 +709,15 @@ public class AutoCompleteRenderer extends InputRenderer {
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         AutoComplete ac = (AutoComplete) component;
+        boolean isMultiple = ac.isMultiple();
 
         if (submittedValue == null || submittedValue.equals("") || ac.isMoreTextRequest(context)) {
-            return null;
+            return isMultiple ? new ArrayList() : null;
         }
 
         Converter converter = ComponentUtils.getConverter(context, component);
 
-        if (ac.isMultiple()) {
+        if (isMultiple) {
             String[] values = (String[]) submittedValue;
             List list = new ArrayList();
 

@@ -9369,7 +9369,7 @@
             <description>
                 <![CDATA[Method expression to listen file upload events.]]>
             </description>
-            <name>fileUploadListener</name>
+            <name>listener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
         </attribute>
@@ -17290,6 +17290,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[When the positioned element overflows the window in some direction, move it to an alternative position. Similar to my and at, this accepts a single value or a pair for horizontal/vertical, e.g., "flip", "fit", "fit flip", "fit none".]]>
+            </description>
+            <name>collision</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Dynamic mode allows overlay panel to fetch it's contents before it's shown rather than on page load
                 which is useful to reduce initial page load times. Default is false.]]>
             </description>
@@ -18459,7 +18467,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines if labels of the component is escaped or not.]]>
+                <![CDATA[Defines if labels of the component are escaped or not.]]>
             </description>
             <name>escape</name>
             <required>false</required>
@@ -18659,9 +18667,9 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines if values of the component is escaped or not.]]>
+                <![CDATA[Defines if values of the component are escaped or not.]]>
             </description>
-            <name>escape</name>
+            <name>escapeValue</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -20325,6 +20333,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[TThe frequency that the time slots should be labelled with text. Example: like "01:00" or "{hours:1}".]]>
+            </description>
+            <name>slotLabelInterval</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Determines the time-text that will be displayed within a time slot.]]>
             </description>
             <name>slotLabelFormat</name>
@@ -20341,9 +20357,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Format for column headers.]]>
+                <![CDATA[Deprecated, use columnHeaderFormat instead. Format for column headers.]]>
             </description>
             <name>columnFormat</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Format for column headers.]]>
+            </description>
+            <name>columnHeaderFormat</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -28389,6 +28413,72 @@
             <name>model</name>
             <required>false</required>
             <type>org.primefaces.model.charts.line.LineChartModel</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of the component.]]>
+            </description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the component.]]>
+            </description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>
+            <![CDATA[Scatter Chart]]>
+        </description>
+        <tag-name>scatterChart</tag-name>
+        <component>
+            <component-type>org.primefaces.component.ScatterChart</component-type>
+            <renderer-type>org.primefaces.component.ScatterChartRenderer</renderer-type>
+        </component>
+        <attribute>
+            <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the client side widget.]]>
+            </description>
+            <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Model of the chart.]]>
+            </description>
+            <name>model</name>
+            <required>false</required>
+            <type>org.primefaces.model.charts.scatter.ScatterChartModel</type>
         </attribute>
         <attribute>
             <description>

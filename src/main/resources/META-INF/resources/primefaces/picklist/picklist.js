@@ -776,9 +776,9 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                         $this.saveState();
                         $this.fireTransferEvent(items, from, to, type);
                     }
-
-                    $this.updateListRole();
                 });
+                
+                $this.updateListRole();
             });
         }
         else {

@@ -59,9 +59,11 @@ public abstract class ScheduleBase extends UIComponentBase implements Widget, Cl
         scrollTime,
         minTime,
         maxTime,
+        slotLabelInterval,
         slotLabelFormat,
         timeFormat,
         columnFormat,
+        columnHeaderFormat,
         timeZone,
         clientTimeZone,
         tooltip,
@@ -245,6 +247,14 @@ public abstract class ScheduleBase extends UIComponentBase implements Widget, Cl
         getStateHelper().put(PropertyKeys.maxTime, maxTime);
     }
 
+    public String getSlotLabelInterval() {
+        return (String) getStateHelper().eval(PropertyKeys.slotLabelInterval, null);
+    }
+
+    public void setSlotLabelInterval(String slotLabelInterval) {
+        getStateHelper().put(PropertyKeys.slotLabelFormat, slotLabelInterval);
+    }
+
     public String getSlotLabelFormat() {
         return (String) getStateHelper().eval(PropertyKeys.slotLabelFormat, null);
     }
@@ -267,6 +277,14 @@ public abstract class ScheduleBase extends UIComponentBase implements Widget, Cl
 
     public void setColumnFormat(String columnFormat) {
         getStateHelper().put(PropertyKeys.columnFormat, columnFormat);
+    }
+
+    public String getColumnHeaderFormat() {
+        return (String) getStateHelper().eval(PropertyKeys.columnHeaderFormat, null);
+    }
+
+    public void setColumnHeaderFormat(String columnHeaderFormat) {
+        getStateHelper().put(PropertyKeys.columnHeaderFormat, columnHeaderFormat);
     }
 
     public Object getTimeZone() {

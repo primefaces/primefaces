@@ -21,26 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.staticmessage;
+package org.primefaces.component.scatterchart;
 
 import javax.faces.component.UIComponentBase;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 
-public abstract class StaticMessageBase extends UIComponentBase {
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.Widget;
+import org.primefaces.util.ComponentUtils;
+
+
+public abstract class ScatterChartBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-    public static final String DEFAULT_RENDERER = "org.primefaces.component.StaticMessageRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.ScatterChartRenderer";
 
     public enum PropertyKeys {
-        summary,
-        detail,
-        escape,
+
+        widgetVar,
+        model,
         style,
-        styleClass,
-        severity;
+        styleClass
     }
 
-    public StaticMessageBase() {
+    public ScatterChartBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
@@ -49,36 +54,20 @@ public abstract class StaticMessageBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public boolean isEscape() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+    public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setEscape(boolean escape) {
-        getStateHelper().put(PropertyKeys.escape, escape);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public String getSeverity() {
-        return (String) getStateHelper().eval(PropertyKeys.severity, null);
+    public org.primefaces.model.charts.scatter.ScatterChartModel getModel() {
+        return (org.primefaces.model.charts.scatter.ScatterChartModel) getStateHelper().eval(PropertyKeys.model, null);
     }
 
-    public void setSeverity(String severity) {
-        getStateHelper().put(PropertyKeys.severity, severity);
-    }
-
-    public String getSummary() {
-        return (String) getStateHelper().eval(PropertyKeys.summary, null);
-    }
-
-    public void setSummary(String summary) {
-        getStateHelper().put(PropertyKeys.summary, summary);
-    }
-
-    public String getDetail() {
-        return (String) getStateHelper().eval(PropertyKeys.detail, null);
-    }
-
-    public void setDetail(String detail) {
-        getStateHelper().put(PropertyKeys.detail, detail);
+    public void setModel(org.primefaces.model.charts.scatter.ScatterChartModel model) {
+        getStateHelper().put(PropertyKeys.model, model);
     }
 
     public String getStyle() {
@@ -95,5 +84,10 @@ public abstract class StaticMessageBase extends UIComponentBase {
 
     public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+    @Override
+    public String resolveWidgetVar() {
+        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

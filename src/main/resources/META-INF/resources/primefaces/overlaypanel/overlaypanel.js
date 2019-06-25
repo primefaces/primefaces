@@ -11,6 +11,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         //configuration
         this.cfg.my = this.cfg.my||'left top';
         this.cfg.at = this.cfg.at||'left bottom';
+        this.cfg.collision = this.cfg.collision||'flip';
         this.cfg.showEvent = this.cfg.showEvent||'click.ui-overlaypanel';
         this.cfg.hideEvent = this.cfg.hideEvent||'click.ui-overlaypanel';
         this.cfg.dismissable = (this.cfg.dismissable === false) ? false : true;
@@ -25,6 +26,12 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         if(this.cfg.target) {
             this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.target);
             this.bindTargetEvents();
+
+            // set aria attributes
+            this.target.attr({
+                'aria-expanded': false,
+                'aria-controls': this.id
+            });
 
             //dialog support
             this.setupDialogSupport();
@@ -103,6 +110,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 e.preventDefault();
             }
         });
+
     },
 
     bindCommonEvents: function() {
@@ -166,11 +174,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
     },
 
     _show: function(target) {
-        var $this = this,
-            targetId = target||this.cfg.target;
-
-        this.targetElement = $(document.getElementById(targetId));
-        this.targetZindex = this.targetElement.zIndex();
+        var $this = this;
 
         this.align(target);
 
@@ -195,14 +199,30 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
     },
 
     align: function(target) {
-        var win = $(window),
-        targetId = target||this.cfg.target;
+        var win = $(window);
+
+        if (target) {
+            if (typeof target === 'string') {
+                this.targetElement = $(document.getElementById(target));
+            }
+            else if (target instanceof $) {
+                this.targetElement = target;
+            }
+        }
+        else if (this.target) {
+            this.targetElement = this.target;
+        }
+
+        if (this.targetElement) {
+            this.targetZindex = this.targetElement.zIndex();
+        }
 
         this.jq.css({'left':'', 'top':'', 'z-index': ++PrimeFaces.zindex})
                 .position({
                     my: this.cfg.my
                     ,at: this.cfg.at
-                    ,of: document.getElementById(targetId)
+                    ,of: this.targetElement
+                    ,collision: this.cfg.collision
                 });
 
         var widthOffset = this.jq.width() - this.content.width();
@@ -235,6 +255,10 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         }
 
         this.applyFocus();
+
+        if (this.target) {
+            this.target.attr('aria-expanded', true);
+        }
     },
 
     postHide: function() {
@@ -245,6 +269,10 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         if(this.cfg.onHide) {
             this.cfg.onHide.call(this);
+        }
+
+        if (this.target) {
+            this.target.attr('aria-expanded', false);
         }
     },
 

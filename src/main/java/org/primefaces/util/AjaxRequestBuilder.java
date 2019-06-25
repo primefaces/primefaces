@@ -258,7 +258,7 @@ public class AjaxRequestBuilder {
 
     public AjaxRequestBuilder oncomplete(String oncomplete) {
         if (oncomplete != null) {
-            buffer.append(",onco:function(xhr,status,args){").append(oncomplete).append(";}");
+            buffer.append(",onco:function(xhr,status,args,data){").append(oncomplete).append(";}");
         }
 
         return this;
