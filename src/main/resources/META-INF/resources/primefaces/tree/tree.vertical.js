@@ -627,7 +627,9 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 if (!draggedSourceKeys) {
                     draggedSourceKeys = [dragNodeKey];
                 }
-                draggedSourceKeys = draggedSourceKeys.filter(x => !$this.invalidSourceKeys.includes(x));
+                draggedSourceKeys = draggedSourceKeys.filter(function(key) {
+                    return !$this.invalidSourceKeys.includes(key);
+                });
 
                 if (draggedSourceKeys && draggedSourceKeys.length) {
                     draggedSourceKeys = draggedSourceKeys.reverse().join(',');
@@ -773,7 +775,9 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 if (!draggedSourceKeys) {
                     draggedSourceKeys = [dragNodeKey];
                 }
-                draggedSourceKeys = draggedSourceKeys.filter(x => !$this.invalidSourceKeys.includes(x));
+                draggedSourceKeys = draggedSourceKeys.filter(function(key) {
+                    return !$this.invalidSourceKeys.includes(key);
+                });
 
                 if (draggedSourceKeys && draggedSourceKeys.length) {
                     draggedSourceKeys = draggedSourceKeys.reverse().join(',');
