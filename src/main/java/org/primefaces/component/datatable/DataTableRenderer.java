@@ -889,18 +889,12 @@ public class DataTableRenderer extends DataRenderer {
     protected void encodeFilterInput(UIColumn column, ResponseWriter writer, boolean disableTabbing,
         String filterId, String filterStyleClass, Object filterValue, String ariaLabelId) throws IOException {
 
-        if (hasFilterOptions(column)) {
+        if (column.getValueExpression(Column.PropertyKeys.filterOptions.toString()) == null) {
             encodeFilterInputText(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, ariaLabelId);
         }
         else {
             encodeFilterInputSelect(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, ariaLabelId);
         }
-    }
-
-    private boolean hasFilterOptions(UIColumn column) {
-        return column.getValueExpression(Column.PropertyKeys.filterOptions.toString()) == null
-            || getFilterOptions(column) == null
-            || getFilterOptions(column).length == 0;
     }
 
     protected void encodeFilterInputSelect(UIColumn column, ResponseWriter writer, boolean disableTabbing,
