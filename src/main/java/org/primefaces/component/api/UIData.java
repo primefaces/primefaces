@@ -294,10 +294,16 @@ public class UIData extends javax.faces.component.UIData {
         }
 
         data.setFirst(Integer.valueOf(firstParam));
-        data.setRows(Integer.valueOf(rowsParam));
+
+        ValueExpression rowsVe = data.getValueExpression("rows");
+        if (rowsVe != null && !rowsVe.isReadOnly(elContext)) {
+            rowsVe.setValue(context.getELContext(), Integer.valueOf(rowsParam));
+        }
+        else {
+            data.setRows(Integer.valueOf(rowsParam));
+        }
 
         ValueExpression firstVe = data.getValueExpression("first");
-        ValueExpression rowsVe = data.getValueExpression("rows");
 
         if (firstVe != null && !firstVe.isReadOnly(elContext)) {
             firstVe.setValue(context.getELContext(), data.getFirst());
