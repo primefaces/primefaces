@@ -81,7 +81,6 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
                 writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelId, null);
             }
             writer.writeAttribute("class", UIData.PAGINATOR_RPP_OPTIONS_CLASS, null);
-            writer.writeAttribute("value", pageable.getRows(), null);
             writer.writeAttribute("autocomplete", "off", null);
 
             for (String option : options) {
