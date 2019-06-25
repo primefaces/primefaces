@@ -311,8 +311,8 @@ public class UIData extends javax.faces.component.UIData {
         }
     }
 
-    private boolean isWriteable(ELContext elContext, ValueExpression firstVe) {
-        return firstVe != null && !firstVe.isReadOnly(elContext);
+    private boolean isWriteable(ELContext elContext, ValueExpression ve) {
+        return ve != null && !ve.isReadOnly(elContext);
     }
 
     @Override
