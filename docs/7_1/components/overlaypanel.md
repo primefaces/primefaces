@@ -15,7 +15,7 @@ OverlayPanel is a generic panel component that can be displayed on top of other 
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -32,6 +32,7 @@ onShow | null | String | Client side callback to execute when panel is shown.
 onHide | null | String | Client side callback to execute when panel is hidden.
 my | left top | String | Position of the panel relative to the target.
 at | left bottom | String | Position of the target relative to the panel.
+collision | flip | String | When the positioned element overflows the window in some direction, move it to an alternative position. Similar to my and at, this accepts a single value or a pair for horizontal/vertical, e.g., "flip", "fit", "fit flip", "fit none".
 dynamic | false | Boolean | Defines content loading mode.
 dismissable | true | Boolean | When set true, clicking outside of the panel hides the overlay.
 showCloseIcon | false | Boolean | Displays a close icon to hide the overlay, default is false.
@@ -82,12 +83,21 @@ from ideal, requires client side memory and slows down page performance. Instead
 overlayPanel can be used by calling show passing the client id of the component to be relatively
 positioned. See overlayPanel demo in showcase for an example.
 
+## Client Side API
+Widget: _PrimeFaces.widget.OverlayPanel_
+
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
+| show(target) | - | void | Displays the OverlayPanel. The target parameter is optional and can be used to dynamically overwrite the _for_ attribute.
+| hide() | - | void | Closes the OverlayPanel.
+| isVisible() | - | void | Returns visibility as a boolean.
+
 ## Skinning
 Panel resides in a main container which _style_ and _styleClass_ attributes apply. Following is the list of
 structural style classes;
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 .ui-overlaypanel | Main container element of panel
 
 As skinning style classes are global, see the main theming section for more information.

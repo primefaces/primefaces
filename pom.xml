@@ -184,7 +184,7 @@
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
-            <version>3.9.2</version>
+            <version>3.12</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -196,7 +196,7 @@
         <dependency>
             <groupId>org.ehcache</groupId>
             <artifactId>ehcache</artifactId>
-            <version>3.0.2</version>
+            <version>3.7.1</version>
             <scope>provided</scope>
         </dependency>
 
@@ -224,7 +224,7 @@
         <dependency>
             <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
             <artifactId>owasp-java-html-sanitizer</artifactId>
-            <version>20181114.1</version>
+            <version>20190503.1</version>
             <scope>provided</scope>
         </dependency>
 
@@ -459,6 +459,24 @@
                                 </resource>
                             </resources>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>5.0.0-M3</version>
+                <configuration>
+                    <skipProvidedScope>false</skipProvidedScope>
+                    <skipRuntimeScope>false</skipRuntimeScope>
+                    <failBuildOnCVSS>5</failBuildOnCVSS>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

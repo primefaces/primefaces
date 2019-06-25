@@ -309,7 +309,7 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
     //@override
     refresh: function(cfg) {
         clearInterval(this.interval);
-        
+
         this._super(cfg);
     },
 
@@ -347,7 +347,7 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
             params: [{
                 name: this.id + '_sync', value: true
             }],
-            oncomplete: function(xhr, status, args) {
+            oncomplete: function(xhr, status, args, data) {
                 if($this.isAnalogClock()) {
                     $this.current = new Date(args.datetime);
                 }

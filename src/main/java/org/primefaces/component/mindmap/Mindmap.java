@@ -110,7 +110,7 @@ public class Mindmap extends MindmapBase {
             return searchRoot;
         }
         else {
-            String relativeRowKey = rowKey.substring(rowKey.indexOf("_") + 1);
+            String relativeRowKey = rowKey.substring(rowKey.indexOf('_') + 1);
 
             return findNode(searchRoot, relativeRowKey);
         }

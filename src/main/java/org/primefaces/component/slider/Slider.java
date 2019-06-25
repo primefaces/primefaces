@@ -119,8 +119,8 @@ public class Slider extends SliderBase {
             }
             String valueFromStr = submittedValueFrom.toString();
             String valueToStr = submittedValueTo.toString();
-            double valueFrom = Double.valueOf(valueFromStr);
-            double valueTo = Double.valueOf(valueToStr);
+            double valueFrom = Double.parseDouble(valueFromStr);
+            double valueTo = Double.parseDouble(valueToStr);
             if (valueTo < valueFrom) {
                 setValid(false);
                 inputFrom.setValid(false);
@@ -156,7 +156,7 @@ public class Slider extends SliderBase {
                 return;
             }
 
-            double submittedValueDouble = Double.valueOf(submittedValueString);
+            double submittedValueDouble = Double.parseDouble(submittedValueString);
             if (submittedValueDouble < getMinValue() || submittedValueDouble > getMaxValue()) {
                 setValid(false);
                 input.setValid(false);

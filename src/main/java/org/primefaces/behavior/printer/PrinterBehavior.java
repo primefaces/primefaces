@@ -29,6 +29,7 @@ import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
 import org.primefaces.behavior.base.AbstractBehavior;
 
+import org.primefaces.behavior.base.BehaviorAttribute;
 import org.primefaces.expression.SearchExpressionFacade;
 
 @ResourceDependencies({
@@ -39,7 +40,7 @@ import org.primefaces.expression.SearchExpressionFacade;
     })
 public class PrinterBehavior extends AbstractBehavior {
 
-    public enum PropertyKeys {
+    public enum PropertyKeys implements BehaviorAttribute {
         target(String.class);
 
         private final Class<?> expectedType;
@@ -48,12 +49,7 @@ public class PrinterBehavior extends AbstractBehavior {
             this.expectedType = expectedType;
         }
 
-        /**
-         * Holds the type which ought to be passed to
-         * {@link javax.faces.view.facelets.TagAttribute#getObject(javax.faces.view.facelets.FaceletContext, java.lang.Class) }
-         * when creating the behavior.
-         * @return the expectedType the expected object type
-         */
+        @Override
         public Class<?> getExpectedType() {
             return expectedType;
         }
@@ -70,7 +66,7 @@ public class PrinterBehavior extends AbstractBehavior {
     }
 
     @Override
-    protected Enum<?>[] getAllProperties() {
+    protected BehaviorAttribute[] getAllAttributes() {
         return PropertyKeys.values();
     }
 

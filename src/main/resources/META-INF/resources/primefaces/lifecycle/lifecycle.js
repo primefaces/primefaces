@@ -48,7 +48,7 @@ PrimeFaces.widget.Lifecycle = PrimeFaces.widget.BaseWidget.extend({
             ignoreAutoUpdate: true,
             formId: this.cfg.formId,
             params: [{ name: this.id + '_getlifecycleinfo', value: true }],
-            oncomplete: function(xhr, status, args) {
+            oncomplete: function(xhr, status, args, data) {
                 $this.updating = false;
             }
         };

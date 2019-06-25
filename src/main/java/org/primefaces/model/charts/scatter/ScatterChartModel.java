@@ -21,20 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.behavior.confirm;
+package org.primefaces.model.charts.scatter;
 
-import org.primefaces.behavior.base.AbstractBehaviorHandler;
+import org.primefaces.model.charts.line.LineChartModel;
 
-import javax.faces.view.facelets.BehaviorConfig;
+/**
+ * Scatter charts are based on basic line charts with the x axis changed to a linear axis.
+ * To use a scatter chart, data must be passed as NumericPoint objects containing X and Y properties.
+ */
+public class ScatterChartModel extends LineChartModel {
 
-public class ConfirmBehaviorHandler extends AbstractBehaviorHandler<ConfirmBehavior> {
+    private static final long serialVersionUID = 1L;
 
-    public ConfirmBehaviorHandler(BehaviorConfig config) {
-        super(config);
-    }
-
+    /**
+     * Gets the type
+     *
+     * @return type of current chart
+     */
     @Override
-    public String getBehaviorId() {
-        return ConfirmBehavior.BEHAVIOR_ID;
+    public String getType() {
+        return "scatter";
     }
+
 }

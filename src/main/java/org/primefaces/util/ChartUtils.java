@@ -26,7 +26,9 @@ package org.primefaces.util;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
-import org.primefaces.model.charts.bubble.BubblePoint;
+
+import org.primefaces.model.charts.data.BubblePoint;
+import org.primefaces.model.charts.data.NumericPoint;
 
 /**
  * Utilities for Chart components that use chartJs
@@ -65,8 +67,13 @@ public class ChartUtils {
 
                 if (item instanceof BubblePoint) {
                     BubblePoint point = (BubblePoint) item;
-                    writeText = (i == 0) ? "" : ",";
+                    writeText = (i == 0) ? Constants.EMPTY_STRING : ",";
                     writeText += "{\"x\":" + point.getX() + ",\"y\":" + point.getY() + ",\"r\":" + point.getR() + "}";
+                }
+                else if (item instanceof NumericPoint) {
+                    NumericPoint point = (NumericPoint) item;
+                    writeText = (i == 0) ? Constants.EMPTY_STRING : ",";
+                    writeText += "{\"x\":" + point.getX() + ",\"y\":" + point.getY() + "}";
                 }
                 else if (item instanceof String) {
                     String escapedText = EscapeUtils.forJavaScript((String) item);
@@ -76,7 +83,7 @@ public class ChartUtils {
                     writeText = (i == 0) ? item : "," + item;
                 }
 
-                fsw.write("" + writeText);
+                fsw.write(Constants.EMPTY_STRING + writeText);
             }
             fsw.write("]");
         }
@@ -85,7 +92,7 @@ public class ChartUtils {
                 fsw.write("\"" + EscapeUtils.forJavaScript((String) value) + "\"");
             }
             else {
-                fsw.write("" + value);
+                fsw.write(Constants.EMPTY_STRING + value);
             }
         }
     }
