@@ -877,21 +877,29 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             this.itemsContainer.children('.ui-selectonemenu-item-group').show();
         }
         else {
+            var hide = [];
+            var show = [];
+
             for(var i = 0; i < this.options.length; i++) {
                 var option = this.options.eq(i),
                 itemLabel = this.cfg.caseSensitive ? option.text() : option.text().toLowerCase(),
                 item = this.items.eq(i);
 
                 if(item.hasClass('ui-noselection-option')) {
-                    item.hide();
+                    hide.push(item);
                 }
                 else {
                     if(this.filterMatcher(itemLabel, filterValue))
-                        item.show();
+                        show.push(item);
                     else
-                        item.hide();
+                        hide.push(item);
                 }
             }
+
+            $.each(hide, function(i, o) { o.hide() });
+            $.each(show, function(i, o) { o.show() });
+            hide = [];
+            show = [];
 
             //Toggle groups
             var groups = this.itemsContainer.children('.ui-selectonemenu-item-group');
@@ -900,17 +908,20 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
                 if(g === (groups.length - 1)) {
                     if(group.nextAll().filter(':visible').length === 0)
-                        group.hide();
+                        hide.push(group);
                     else
-                        group.show();
+                        show.push(group);
                 }
                 else {
                     if(group.nextUntil('.ui-selectonemenu-item-group').filter(':visible').length === 0)
-                        group.hide();
+                        hide.push(group);
                     else
-                        group.show();
+                        show.push(group);
                 }
             }
+
+            $.each(hide, function(i, o) { o.hide() });
+            $.each(show, function(i, o) { o.show() });
         }
 
         var firstVisibleItem = this.items.filter(':visible:not(.ui-state-disabled):first');
