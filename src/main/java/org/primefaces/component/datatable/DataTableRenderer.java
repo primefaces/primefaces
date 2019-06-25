@@ -889,11 +889,11 @@ public class DataTableRenderer extends DataRenderer {
     protected void encodeFilterInput(UIColumn column, ResponseWriter writer, boolean disableTabbing,
         String filterId, String filterStyleClass, Object filterValue, String ariaLabelId) throws IOException {
 
-        if (!hasFilterOptions(column)) {
-            encodeFilterInputText(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, ariaLabelId);
+        if (hasFilterOptions(column)) {
+            encodeFilterInputSelect(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, ariaLabelId);
         }
         else {
-            encodeFilterInputSelect(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, ariaLabelId);
+            encodeFilterInputText(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, ariaLabelId);
         }
     }
 
