@@ -289,6 +289,10 @@ public class UIData extends javax.faces.component.UIData {
         String firstParam = params.get(componentClientId + "_first");
         String rowsParam = params.get(componentClientId + "_rows");
 
+        int filteredRowCount = getRowCount();
+        if (Integer.valueOf(rowsParam) > filteredRowCount) {
+            rowsParam = Integer.toString(filteredRowCount);
+        }
         if (!isRowsPerPageValid(data, rowsParam)) {
             throw new IllegalArgumentException("Unsupported rows per page value: " + rowsParam);
         }
