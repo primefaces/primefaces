@@ -46,6 +46,7 @@ import org.primefaces.model.menu.*;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.HTML;
 import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
 
@@ -265,6 +266,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         if (icon != null) {
             writer.startElement("span", null);
             writer.writeAttribute("class", AbstractMenu.MENUITEM_ICON_CLASS + " " + icon, null);
+            writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
             writer.endElement("span");
         }
 

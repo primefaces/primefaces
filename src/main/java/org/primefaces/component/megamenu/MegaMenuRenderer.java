@@ -147,6 +147,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         if (icon != null) {
             writer.startElement("span", null);
             writer.writeAttribute("class", Menu.MENUITEM_ICON_CLASS + " " + icon, null);
+            writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
             writer.endElement("span");
         }
 
