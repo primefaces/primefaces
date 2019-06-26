@@ -24620,7 +24620,7 @@
                 <![CDATA[The severity of the message: error, info, warn, fatal.]]>
             </description>
             <name>severity</name>
-            <required>false</required>
+            <required>true</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
