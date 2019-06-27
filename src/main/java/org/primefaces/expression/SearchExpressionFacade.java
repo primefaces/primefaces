@@ -284,7 +284,7 @@ public class SearchExpressionFacade {
             if (LangUtils.isValueBlank(component.getRendererType())) {
                 LOGGER.warning("Can not update component \"" + component.getClass().getName()
                         + "\" with id \"" + component.getClientId(context)
-                        + "\" without a attached renderer. Expression \"" + expression
+                        + "\" without an attached renderer. Expression \"" + expression
                         + "\" referenced from \"" + source.getClientId(context) + "\"");
             }
         }
