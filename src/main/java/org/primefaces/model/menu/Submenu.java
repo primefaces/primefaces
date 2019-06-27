@@ -25,19 +25,19 @@ package org.primefaces.model.menu;
 
 public interface Submenu extends MenuGroup {
 
-    public String getStyle();
+    String getStyle();
 
-    public String getStyleClass();
+    String getStyleClass();
 
-    public String getIcon();
+    String getIcon();
 
-    public String getLabel();
+    String getLabel();
 
-    public boolean isDisabled();
+    boolean isDisabled();
 
-    public Object getParent();
+    Object getParent();
 
-    public String getClientId();
+    String getClientId();
 
-    public boolean isExpanded();
+    boolean isExpanded();
 }

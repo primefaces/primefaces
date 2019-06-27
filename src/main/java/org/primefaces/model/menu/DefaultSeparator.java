@@ -80,4 +80,46 @@ public class DefaultSeparator implements Separator, Serializable {
     public void setRendered(boolean rendered) {
         this.rendered = rendered;
     }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+
+        private DefaultSeparator separator;
+
+        private Builder() {
+            separator = new DefaultSeparator();
+        }
+
+        public Builder id(String id) {
+            separator.setId(id);
+            return this;
+        }
+
+        public Builder title(String title) {
+            separator.setTitle(title);
+            return this;
+        }
+
+        public Builder style(String style) {
+            separator.setStyle(style);
+            return this;
+        }
+
+        public Builder styleClass(String styleClass) {
+            separator.setStyleClass(styleClass);
+            return this;
+        }
+
+        public Builder rendered(boolean rendered) {
+            separator.setRendered(rendered);
+            return this;
+        }
+
+        public DefaultSeparator build() {
+            return separator;
+        }
+    }
 }
