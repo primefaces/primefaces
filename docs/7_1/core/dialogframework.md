@@ -155,7 +155,7 @@ At host page, the button that triggered the dialog should have _dialogReturn_ ev
 
 ```xhtml
 <p:commandButton value="View Cars" actionListener="#{hostBean.viewCars}">
-    <p:ajax event="dialogReturn" listener="#{hostBean.handleReturn}"
+    <p:ajax event="dialogReturn" listener="#{hostBean.handleReturn}" />
 </p:commandButton>
 ```
 ```java
