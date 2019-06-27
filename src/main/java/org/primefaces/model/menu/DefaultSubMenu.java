@@ -202,6 +202,11 @@ public class DefaultSubMenu implements Submenu, Serializable {
             return this;
         }
 
+        public Builder addElement(MenuElement element) {
+            subMenu.getElements().add(element);
+            return this;
+        }
+
         public Builder rendered(boolean rendered) {
             subMenu.setRendered(rendered);
             return this;

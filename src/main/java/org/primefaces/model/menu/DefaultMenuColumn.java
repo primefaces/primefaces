@@ -119,6 +119,11 @@ public class DefaultMenuColumn implements MenuColumn, Serializable {
             return this;
         }
 
+        public Builder addElement(MenuElement element) {
+            column.getElements().add(element);
+            return this;
+        }
+
         public Builder rendered(boolean rendered) {
             column.setRendered(rendered);
             return this;
