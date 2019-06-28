@@ -32,17 +32,20 @@ import javax.faces.context.FacesContext;
 
 public interface Exporter<T extends UIComponent> {
 
-    void export(FacesContext facesContext, T component, String outputFileName, boolean pageOnly, boolean selectionOnly,
-           String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
-           MethodExpression onTableRender) throws IOException;
+    void export(FacesContext facesContext, T component,
+            String outputFileName, boolean pageOnly, boolean selectionOnly,
+            String encodingType, MethodExpression preProcessor,
+            MethodExpression postProcessor, ExporterOptions options, MethodExpression onTableRender) throws IOException;
 
-    void export(FacesContext facesContext, List<String> clientIds, String outputFileName, boolean pageOnly,
-            boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor,
-            ExporterOptions options, MethodExpression onTableRender) throws IOException;
+    void export(FacesContext facesContext, List<String> clientIds,
+            String outputFileName, boolean pageOnly, boolean selectionOnly,
+            String encodingType, MethodExpression preProcessor,
+            MethodExpression postProcessor, ExporterOptions options, MethodExpression onTableRender) throws IOException;
 
-    void export(FacesContext facesContext, String outputFileName, List<T> components, boolean pageOnly,
-            boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor,
-            ExporterOptions options, MethodExpression onTableRender) throws IOException;
+    void export(FacesContext facesContext,
+            String outputFileName, List<T> components, boolean pageOnly, boolean selectionOnly,
+            String encodingType, MethodExpression preProcessor,
+            MethodExpression postProcessor, ExporterOptions options, MethodExpression onTableRender) throws IOException;
 
     String getSheetName(FacesContext context, T component);
 
