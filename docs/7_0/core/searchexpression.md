@@ -132,7 +132,7 @@ update="compId :form:compId @(:input) @parent:@child(2)"
 PFS provides an alternative, flexible, grouping based approach to reference components to partially
 process and update.
 There is less CPU server load compared to regular referencing, because JSF component tree is not traversed on server side
-(to find a component and figure out the client id) as PFS is implemented on client side by looking at dom tree.
+(to find a component and figure out the client id) as PFS is implemented on client side by looking at DOM tree.
 
 Another advantage is avoiding naming container limitations.
 Just remember the times you’ve faced with "cannot find component" exception,
