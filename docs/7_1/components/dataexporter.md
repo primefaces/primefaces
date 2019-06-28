@@ -31,7 +31,7 @@ onTableRender | null | MethodExpression | OnTableRender to be used to set the op
 ## Getting Started with DataExporter
 
 DataExporter is nested in a UICommand component such as commandButton or commandLink.
-Exporting via AJAX is not supported.
+NOTE: Exporting via AJAX is not supported.
 For PDF exporting **iText** and for XLS exporting **Apache POI** libraries are required in the classpath. Target must
 point to a PrimeFaces Datatable. Assume the table to be exported is defined as;
 
