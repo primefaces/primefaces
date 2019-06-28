@@ -28,7 +28,7 @@ provides more along with composite expression support.
 @next | PrimeFaces | Next sibling.
 @widgetVar(name) | PrimeFaces | Component with given widgetVar.
 @root | PrimeFaces | UIViewRoot instance of the view, can be used to start searching from the root instead the current component.
-@id | PrimeFaces | Used to search components by their id ignoring the component tree structure and naming containers.
+@id(id) | PrimeFaces | Used to search components by their id ignoring the component tree structure and naming containers.
 
 Consider the following case where ids are used for referencing;
 
@@ -47,7 +47,8 @@ Using keywords, same can be written as;
     <h:outputText value="#{bean.value}"/>
 </h:form>
 ```
-**Composite Expressions**
+
+### Composite Expressions
 Multiple keywords can be combined in a single expression using colon;
 
 - @form:@parent
@@ -55,7 +56,7 @@ Multiple keywords can be combined in a single expression using colon;
 - @this:@parent:@parent
 - @form:@child(2)
 
-**Usage Scenarios**
+### Usage Scenarios
 SEF is not just at partial process and update, they are also available whenever a component is
 referencing another.
 
@@ -129,10 +130,12 @@ update="compId :form:compId @(:input) @parent:@child(2)"
 </h:form>
 ```
 PFS provides an alternative, flexible, grouping based approach to reference components to partially
-process and update. There is less CPU server load compared to regular referencing because JSF
-component tree is not traversed on server side to find a component and figure out the client id as
-PFS is implemented on client side by looking at dom tree. Another advantage is avoiding naming
-container limitations, just remember the times you’ve faced with cannot find component exception
+process and update.
+There is less CPU server load compared to regular referencing, because JSF component tree is not traversed on server side
+(to find a component and figure out the client id) as PFS is implemented on client side by looking at dom tree.
+
+Another advantage is avoiding naming container limitations.
+Just remember the times you’ve faced with "cannot find component" exception,
 since the component you are looking for is in a different naming container like a form or a
 datatable. PFS can help you out in tricky situations by following jQuery’s “write less do more” style.
 
