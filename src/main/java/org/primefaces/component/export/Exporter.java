@@ -30,9 +30,9 @@ import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public interface Exporter<TABLE extends UIComponent> {
+public interface Exporter<T extends UIComponent> {
 
-    void export(FacesContext facesContext, TABLE table, String outputFileName, boolean pageOnly, boolean selectionOnly,
+    void export(FacesContext facesContext, T component, String outputFileName, boolean pageOnly, boolean selectionOnly,
            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
            MethodExpression onTableRender) throws IOException;
 
@@ -40,10 +40,10 @@ public interface Exporter<TABLE extends UIComponent> {
             boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor,
             ExporterOptions options, MethodExpression onTableRender) throws IOException;
 
-    void export(FacesContext facesContext, String outputFileName, List<TABLE> tables, boolean pageOnly,
+    void export(FacesContext facesContext, String outputFileName, List<T> components, boolean pageOnly,
             boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor,
             ExporterOptions options, MethodExpression onTableRender) throws IOException;
 
-    String getSheetName(FacesContext context, TABLE table);
+    String getSheetName(FacesContext context, T component);
 
 }
