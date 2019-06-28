@@ -1051,7 +1051,7 @@ public class DataTable extends DataTableBase {
         String name = getClientId() + "_scrollState";
         String value = params.get(name);
 
-        return value == null ? "0,0" : value;
+        return value == null ? (isRTL() ? "-1,0" : "0,0") : value;
     }
 
     @Override
