@@ -42,12 +42,20 @@ public class AutoUpdateTagHandler extends TagHandler {
 
     @Override
     public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException, FacesException, FaceletException, ELException {
-
-        boolean disabled = false;
-        if (disabledAttribute != null) {
-            disabled = disabledAttribute.getBoolean(faceletContext);
+        if (!ComponentHandler.isNew(parent)) {
+            return;
         }
 
-        AutoUpdateListener.subscribe(parent, disabled);
+        if (disabledAttribute == null) {
+            AutoUpdateListener.subscribe(parent);
+        }
+        else {
+            if (disabledAttribute.isLiteral()) {
+                AutoUpdateListener.subscribe(parent, disabledAttribute.getBoolean(faceletContext));
+            }
+            else {
+                AutoUpdateListener.subscribe(parent, disabledAttribute.getValueExpression(faceletContext, Boolean.class));
+            }
+        }
     }
 }

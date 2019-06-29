@@ -25,6 +25,7 @@ package org.primefaces.component.autoupdate;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.el.ValueExpression;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -43,19 +44,30 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
     private static final AutoUpdateListener INSTANCE_ENABLED = new AutoUpdateListener(false);
     private static final AutoUpdateListener INSTANCE_DISABLED = new AutoUpdateListener(true);
 
-    private final boolean disabled;
+    private boolean staticDisabled;
+    private ValueExpression disabledExpression;
 
     public AutoUpdateListener() {
-        disabled = false;
+        this.staticDisabled = false;
     }
 
-    public AutoUpdateListener(boolean disabled) {
-        this.disabled = disabled;
+    public AutoUpdateListener(boolean staticDisabled) {
+        this.staticDisabled = staticDisabled;
+    }
+
+    public AutoUpdateListener(ValueExpression disabledExpression) {
+        this();
+        this.disabledExpression = disabledExpression;
     }
 
     @Override
     public void processEvent(ComponentSystemEvent cse) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
+
+        boolean disabled = disabledExpression == null
+                ? staticDisabled
+                : (boolean) disabledExpression.getValue(context.getELContext());
+
         String clientId = ((UIComponent) cse.getSource()).getClientId(context);
 
         List<String> clientIds = getOrCreateAutoUpdateComponentClientIds(context);
@@ -82,14 +94,28 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
         return (List<String>) context.getViewRoot().getAttributes().get(COMPONENT_CLIENT_IDS);
     }
 
+    public static void subscribe(UIComponent component) {
+        subscribe(component, false);
+    }
+
     public static void subscribe(UIComponent component, boolean disabled) {
+        subscribe(component, disabled ? INSTANCE_DISABLED : INSTANCE_ENABLED);
+    }
+
+    public static void subscribe(UIComponent component, ValueExpression disabled) {
+        AutoUpdateListener listener = new AutoUpdateListener(disabled);
+        subscribe(component, listener);
+    }
+
+    public static void subscribe(UIComponent component, AutoUpdateListener listener) {
+
         // PostAddToViewEvent should work for stateless views
         //                  but fails for MyFaces ViewPooling
         //                  and sometimes on postbacks as PostAddToViewEvent should actually ony be called once
-        component.subscribeToEvent(PostAddToViewEvent.class, disabled ? INSTANCE_DISABLED : INSTANCE_ENABLED);
+        component.subscribeToEvent(PostAddToViewEvent.class, listener);
 
         // PreRenderComponentEvent should work for normal cases and MyFaces ViewPooling
         //                      but likely fails for stateless view as we save the clientIds in the viewRoot
-        component.subscribeToEvent(PreRenderComponentEvent.class, disabled ? INSTANCE_DISABLED : INSTANCE_ENABLED);
+        component.subscribeToEvent(PreRenderComponentEvent.class, listener);
     }
 }
