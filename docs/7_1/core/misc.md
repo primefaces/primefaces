@@ -71,7 +71,7 @@ There may be cases where you need values from backing beans in ajax callbacks. C
 parameters are serialized to JSON and provided as an argument in ajax callbacks for this.
 
 ```xhtml
-<p:commandButton actionListener="#{bean.validate}" oncomplete="handleComplete(xhr, status, args, data)" />
+<p:commandButton action="#{bean.validate}" oncomplete="handleComplete(xhr, status, args, data)" />
 ```
 ```java
 public void validate() {

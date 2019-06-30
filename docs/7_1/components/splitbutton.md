@@ -84,9 +84,9 @@ method of the bean and updates messages. Nested options defined as menuitems do 
 requests as well as regular navigation to an external url.
 
 ```xhtml
-<p:splitButton value="Save" actionListener="#{buttonBean.save}" update="messages" icon="ui-icon-disk">
-    <p:menuitem value="Update" actionListener="#{buttonBean.update}" update="messages" icon="ui-icon-arrowrefresh-1-w"/>
-    <p:menuitem value="Delete" actionListener="#{buttonBean.delete}" ajax="false" icon="ui-icon-close"/>
+<p:splitButton value="Save" action="#{buttonBean.save}" update="messages" icon="ui-icon-disk">
+    <p:menuitem value="Update" action="#{buttonBean.update}" update="messages" icon="ui-icon-arrowrefresh-1-w"/>
+    <p:menuitem value="Delete" action="#{buttonBean.delete}" ajax="false" icon="ui-icon-close"/>
     <p:separator />
     <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="ui-icon-extlink"/>
 </p:splitButton>
