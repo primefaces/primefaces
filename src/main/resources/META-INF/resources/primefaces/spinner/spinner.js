@@ -120,6 +120,8 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                     $this.spin(1);
                 else
                     $this.spin(-1);
+                
+                $this.input.trigger('change');
 
                 return false;
             }
