@@ -51,9 +51,12 @@ public class AutoUpdateTagHandler extends TagHandler {
             AutoUpdateListener.subscribe(parent);
         }
         else {
-            if (disabledAttribute.isLiteral() && !disabledAttribute.getBoolean(faceletContext)) {
-                // enabled
-                AutoUpdateListener.subscribe(parent);
+            if (disabledAttribute.isLiteral()) {
+                // static
+                if (!disabledAttribute.getBoolean(faceletContext)) {
+                    // enabled
+                    AutoUpdateListener.subscribe(parent);
+                }
             }
             else {
                 // dynamic
