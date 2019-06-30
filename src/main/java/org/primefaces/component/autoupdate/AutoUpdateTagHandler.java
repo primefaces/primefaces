@@ -47,13 +47,16 @@ public class AutoUpdateTagHandler extends TagHandler {
         }
 
         if (disabledAttribute == null) {
+            // enabled
             AutoUpdateListener.subscribe(parent);
         }
         else {
-            if (disabledAttribute.isLiteral()) {
-                AutoUpdateListener.subscribe(parent, disabledAttribute.getBoolean(faceletContext));
+            if (disabledAttribute.isLiteral() && !disabledAttribute.getBoolean(faceletContext)) {
+                // enabled
+                AutoUpdateListener.subscribe(parent);
             }
             else {
+                // dynamic
                 AutoUpdateListener.subscribe(parent, disabledAttribute.getValueExpression(faceletContext, Boolean.class));
             }
         }

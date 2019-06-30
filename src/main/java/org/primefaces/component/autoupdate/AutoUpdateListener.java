@@ -41,43 +41,32 @@ import javax.faces.event.PreRenderComponentEvent;
 public class AutoUpdateListener implements ComponentSystemEventListener {
 
     private static final String COMPONENT_CLIENT_IDS = AutoUpdateListener.class.getName() + ".COMPONENT_CLIENT_IDS";
-    private static final AutoUpdateListener INSTANCE_ENABLED = new AutoUpdateListener(false);
-    private static final AutoUpdateListener INSTANCE_DISABLED = new AutoUpdateListener(true);
 
-    private boolean staticDisabled;
-    private ValueExpression disabledExpression;
+    private static final AutoUpdateListener INSTANCE = new AutoUpdateListener();
+
+    private ValueExpression disabled;
 
     public AutoUpdateListener() {
-        this.staticDisabled = false;
     }
 
-    public AutoUpdateListener(boolean staticDisabled) {
-        this.staticDisabled = staticDisabled;
-    }
-
-    public AutoUpdateListener(ValueExpression disabledExpression) {
+    public AutoUpdateListener(ValueExpression disabled) {
         this();
-        this.disabledExpression = disabledExpression;
+        this.disabled = disabled;
     }
 
     @Override
     public void processEvent(ComponentSystemEvent cse) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
-
-        boolean disabled = disabledExpression == null
-                ? staticDisabled
-                : (boolean) disabledExpression.getValue(context.getELContext());
-
         String clientId = ((UIComponent) cse.getSource()).getClientId(context);
 
         List<String> clientIds = getOrCreateAutoUpdateComponentClientIds(context);
-        if (disabled) {
-            clientIds.remove(clientId);
-        }
-        else {
+        if (disabled == null || ((boolean) disabled.getValue(context.getELContext())) != true) {
             if (!clientIds.contains(clientId)) {
                 clientIds.add(clientId);
             }
+        }
+        else {
+            clientIds.remove(clientId);
         }
     }
 
@@ -95,11 +84,7 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
     }
 
     public static void subscribe(UIComponent component) {
-        subscribe(component, false);
-    }
-
-    public static void subscribe(UIComponent component, boolean disabled) {
-        subscribe(component, disabled ? INSTANCE_DISABLED : INSTANCE_ENABLED);
+        subscribe(component, INSTANCE);
     }
 
     public static void subscribe(UIComponent component, ValueExpression disabled) {
@@ -107,7 +92,7 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
         subscribe(component, listener);
     }
 
-    public static void subscribe(UIComponent component, AutoUpdateListener listener) {
+    protected static void subscribe(UIComponent component, ComponentSystemEventListener listener) {
 
         // PostAddToViewEvent should work for stateless views
         //                  but fails for MyFaces ViewPooling
