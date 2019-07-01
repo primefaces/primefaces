@@ -308,8 +308,9 @@ public class UIData extends javax.faces.component.UIData {
         if (firstVe != null && !firstVe.isReadOnly(elContext)) {
             firstVe.setValue(context.getELContext(), data.getFirst());
         }
+
         if (rowsVe != null && !rowsVe.isReadOnly(elContext)) {
-            rowsVe.setValue(context.getELContext(), data.getRows());
+            rowsVe.setValue(context.getElContext(), data.getRows());
         }
     }
 
