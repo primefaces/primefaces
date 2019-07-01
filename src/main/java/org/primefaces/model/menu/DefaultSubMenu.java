@@ -45,19 +45,11 @@ public class DefaultSubMenu implements Submenu, Serializable {
         elements = new ArrayList<>();
     }
 
-    /**
-     * @deprecated Use {@link Builder} instead
-     */
-    @Deprecated
     public DefaultSubMenu(String label) {
         this.label = label;
         elements = new ArrayList<>();
     }
 
-    /**
-     * @deprecated Use {@link Builder} instead
-     */
-    @Deprecated
     public DefaultSubMenu(String label, String icon) {
         this.label = label;
         this.icon = icon;
