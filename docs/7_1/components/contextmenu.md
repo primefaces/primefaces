@@ -38,8 +38,8 @@ page meaning, right-click on anywhere on page will display the menu.
 
 ```xhtml
 <p:contextMenu>
-    <p:menuitem value="Save" actionListener="#{bean.save}" update="msg"/>
-    <p:menuitem value="Delete" actionListener="#{bean.delete}" ajax="false"/>
+    <p:menuitem value="Save" action="#{bean.save}" update="msg"/>
+    <p:menuitem value="Delete" action="#{bean.delete}" ajax="false"/>
     <p:menuitem value="Go Home" url=" http://www.primefaces.org " target="_blank"/>
 </p:contextMenu
 ```

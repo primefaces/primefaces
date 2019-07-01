@@ -100,7 +100,7 @@ Below is an example to save the cropped image to file system.
 
 ```xhtml
 <p:imageCropper value="#{cropper.croppedImage}" image="/campnou.jpg" />
-<p:commandButton value="Crop" actionListener="#{myBean.crop}" />
+<p:commandButton value="Crop" action="#{myBean.crop}" />
 ```
 
 ```java

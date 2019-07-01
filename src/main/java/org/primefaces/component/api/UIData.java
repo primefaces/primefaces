@@ -263,7 +263,7 @@ public class UIData extends javax.faces.component.UIData {
             for (String option : options) {
                 String opt = option.trim();
 
-                if (opt.equals(rowsParam) || (opt.startsWith("{ShowAll|") && Integer.toString(getRowCount()).equals(rowsParam))) {
+                if (opt.equals(rowsParam) || (opt.startsWith("{ShowAll|") && "*".equals(rowsParam))) {
                     return true;
                 }
             }
@@ -303,11 +303,13 @@ public class UIData extends javax.faces.component.UIData {
         }
 
         ValueExpression rowsVe = data.getValueExpression("rows");
+        int newRowsValue = "*".equals(rowsParam) ? getRowCount() : Integer.valueOf(rowsParam);
         if (isWriteable(elContext, rowsVe)) {
-            rowsVe.setValue(elContext, Integer.valueOf(rowsParam));
+            rowsVe.setValue(elContext, newRowsValue);
         }
         else {
-            data.setRows(Integer.valueOf(rowsParam));
+            data.setRows(newRowsValue);
+
         }
     }
 

@@ -850,7 +850,7 @@ just call addRow() client side method and it will append the tr element only.
         <h:inputText value="#{car.brand}" />
     </p:column>
 </p:dataTable>
-<p:commandButton value="Add" actionListener="#{dtBasicView.addCar}" oncomplete="PF('dt').addRow()" process="@this"/>
+<p:commandButton value="Add" action="#{dtBasicView.addCar}" oncomplete="PF('dt').addRow()" process="@this"/>
 ```
 
 ## Reordering Rows

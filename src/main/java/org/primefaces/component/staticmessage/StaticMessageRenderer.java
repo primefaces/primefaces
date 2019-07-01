@@ -38,9 +38,10 @@ public class StaticMessageRenderer extends UINotificationRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         boolean escape = staticMessage.isEscape();
-        String severity = staticMessage.getSeverity().toLowerCase();
         String summary = staticMessage.getSummary();
         String detail = staticMessage.getDetail();
+        String severity = staticMessage.getSeverity();
+        severity = severity == null ? "info" : severity.toLowerCase();
 
         String styleClass = "ui-message ui-staticmessage ui-message-" + severity + " ui-widget ui-corner-all";
         String style = staticMessage.getStyle();

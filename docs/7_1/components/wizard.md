@@ -135,7 +135,7 @@ that last tab contains read-only data for confirmation and the submit button.
                     <h:outputText />
                     <h:outputText />
                 </h:panelGrid>
-                <p:commandButton value="Submit" actionListener="#{userWizard.save}" />
+                <p:commandButton value="Submit" action="#{userWizard.save}" />
             </p:panel>
         </p:tab>
     </p:wizard>

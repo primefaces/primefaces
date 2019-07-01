@@ -152,7 +152,7 @@ Let’s put it altogether to come up a fully editable and complex schedule.
             <h:outputLabel for="allDay" value="All Day:" />
             <h:selectBooleanCheckbox id="allDay" value="#{bean.event.allDay}" />
             <p:commandButton type="reset" value="Reset" />
-            <p:commandButton value="Save" actionListener="#{bean.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
+            <p:commandButton value="Save" action="#{bean.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
         </h:panelGrid>
     </p:dialog>
 </h:form>

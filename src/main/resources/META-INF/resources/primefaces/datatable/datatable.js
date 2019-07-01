@@ -65,6 +65,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     _render: function() {
+        this.isRTL = this.jq.hasClass('ui-datatable-rtl');
+        
         if(this.cfg.scrollable) {
             this.setupScrolling();
         }
@@ -967,7 +969,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.percentageScrollHeight = this.cfg.scrollHeight && (this.cfg.scrollHeight.indexOf('%') !== -1);
         this.percentageScrollWidth = this.cfg.scrollWidth && (this.cfg.scrollWidth.indexOf('%') !== -1);
         var $this = this,
-        scrollBarWidth = this.getScrollbarWidth() + 'px';
+        scrollBarWidth = this.getScrollbarWidth() + 'px',
+        hScrollWidth = this.scrollBody[0].scrollWidth;
 
         if(this.cfg.scrollHeight) {
             if(this.percentageScrollHeight) {
@@ -1025,8 +1028,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         this.scrollBody.on('scroll.dataTable', function() {
             var scrollLeft = $this.scrollBody.scrollLeft();
-            $this.scrollHeaderBox.css('margin-left', -scrollLeft);
-            $this.scrollFooterBox.css('margin-left', -scrollLeft);
+            
+            if ($this.isRTL) {
+                $this.scrollHeaderBox.css('margin-right', (scrollLeft - hScrollWidth + this.clientWidth));
+                $this.scrollFooterBox.css('margin-right', (scrollLeft - hScrollWidth + this.clientWidth));
+            }
+            else {
+                $this.scrollHeaderBox.css('margin-left', -scrollLeft);
+                $this.scrollFooterBox.css('margin-left', -scrollLeft);
+            }
 
             if($this.isEmpty()) {
                 return;
@@ -1202,6 +1212,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var scrollState = this.scrollStateHolder.val(),
         scrollValues = scrollState.split(',');
 
+        if (scrollValues[0] == '-1') {
+            scrollValues[0] = this.scrollBody[0].scrollWidth;
+        }
+        
         this.scrollBody.scrollLeft(scrollValues[0]);
         this.scrollBody.scrollTop(scrollValues[1]);
     },
@@ -3949,7 +3963,8 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         this.frozenThead.find('> tr > th').addClass('ui-frozen-column');
 
         var $this = this,
-        scrollBarWidth = this.getScrollbarWidth() + 'px';
+        scrollBarWidth = this.getScrollbarWidth() + 'px',
+        hScrollWidth = this.scrollBody[0].scrollWidth;
 
         if(this.cfg.scrollHeight) {
             if(this.percentageScrollHeight) {
@@ -4010,8 +4025,16 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         this.scrollBody.scroll(function() {
             var scrollLeft = $this.scrollBody.scrollLeft(),
             scrollTop = $this.scrollBody.scrollTop();
-            $this.scrollHeaderBox.css('margin-left', -scrollLeft);
-            $this.scrollFooterBox.css('margin-left', -scrollLeft);
+            
+            if ($this.isRTL) {
+                $this.scrollHeaderBox.css('margin-right', (scrollLeft - hScrollWidth + this.clientWidth));
+                $this.scrollFooterBox.css('margin-right', (scrollLeft - hScrollWidth + this.clientWidth));
+            }
+            else {
+                $this.scrollHeaderBox.css('margin-left', -scrollLeft);
+                $this.scrollFooterBox.css('margin-left', -scrollLeft);
+            }
+            
             $this.frozenBody.scrollTop(scrollTop);
 
             if($this.cfg.virtualScroll) {

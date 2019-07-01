@@ -50,7 +50,7 @@ Following is a simple example;
             <h:inputText id="surname" value="#{pprBean.surname}" required="true" label="Surname"/>
             <p:message for="surname" />
         </h:panelGrid>
-        <p:commandButton value="Submit" update="panel" actionListener="#{pprBean.savePerson}" />
+        <p:commandButton value="Submit" update="panel" action="#{pprBean.savePerson}" />
     </p:panel>
 </h:form>
 ```

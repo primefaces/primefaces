@@ -32,6 +32,7 @@ import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
+import org.primefaces.util.HTML;
 
 public class BreadCrumbRenderer extends BaseMenuRenderer {
 
@@ -139,6 +140,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         if (icon != null) {
             writer.startElement("span", null);
             writer.writeAttribute("class", BreadCrumb.MENUITEM_ICON_CLASS + " " + icon, null);
+            writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
             writer.endElement("span");
         }
 
