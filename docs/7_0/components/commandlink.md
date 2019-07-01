@@ -81,7 +81,7 @@ public class BookBean {
 }
 ```
 ```xhtml
-<p:commandLink actionListener="#{bookBean.saveBook}">
+<p:commandLink action="#{bookBean.saveBook}">
     <h:outputText value="Save" />
 </p:commandLink>
 ```

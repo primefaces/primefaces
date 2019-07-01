@@ -34,7 +34,7 @@ public interface MenuElement {
      *
      * @return the id property
      */
-    public String getId();
+    String getId();
 
     /**
      * Sets the id property which is described in {@link #getId() }. You should
@@ -46,7 +46,7 @@ public interface MenuElement {
      *
      * @param id the id value
      */
-    public void setId(String id);
+    void setId(String id);
 
-    public boolean isRendered();
+    boolean isRendered();
 }

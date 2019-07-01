@@ -39,11 +39,11 @@ submenu will be displayed in an overlay.
 ```xhtml
 <p:tieredMenu>
     <p:submenu label="Ajax Menuitems" icon="ui-icon-refresh">
-        <p:menuitem value="Save" actionListener="#{buttonBean.save}" update="messages" icon="ui-icon-disk" />
-        <p:menuitem value="Update" actionListener="#{buttonBean.update}" update="messages" icon="ui-icon-arrowrefresh-1-w" />
+        <p:menuitem value="Save" action="#{buttonBean.save}" update="messages" icon="ui-icon-disk" />
+        <p:menuitem value="Update" action="#{buttonBean.update}" update="messages" icon="ui-icon-arrowrefresh-1-w" />
     </p:submenu>
     <p:submenu label="Non-Ajax Menuitem" icon="ui-icon-newwin">
-        <p:menuitem value="Delete" actionListener="#{buttonBean.delete}" update="messages" ajax="false" icon="ui-icon-close"/>
+        <p:menuitem value="Delete" action="#{buttonBean.delete}" update="messages" ajax="false" icon="ui-icon-close"/>
     </p:submenu>
     <p:separator />
     <p:submenu label="Navigations" icon="ui-icon-extlink">

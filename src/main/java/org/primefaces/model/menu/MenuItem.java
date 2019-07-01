@@ -31,21 +31,21 @@ import org.primefaces.util.SerializableFunction;
 
 public interface MenuItem extends MenuElement, Confirmable {
 
-    public String getIcon();
+    String getIcon();
 
-    public String getIconPos();
+    String getIconPos();
 
-    public String getTitle();
+    String getTitle();
 
-    public boolean shouldRenderChildren();
+    boolean shouldRenderChildren();
 
-    public boolean isDisabled();
+    boolean isDisabled();
 
-    public String getOnclick();
+    String getOnclick();
 
-    public String getStyle();
+    String getStyle();
 
-    public String getStyleClass();
+    String getStyleClass();
 
     /**
      * The URL to redirect to after the menu item has been clicked. Similar to
@@ -58,9 +58,9 @@ public interface MenuItem extends MenuElement, Confirmable {
      *
      * @return the URL.
      */
-    public String getUrl();
+    String getUrl();
 
-    public String getTarget();
+    String getTarget();
 
     /**
      * The JSF outcome of a navigation case which is resolved by the configured
@@ -69,23 +69,23 @@ public interface MenuItem extends MenuElement, Confirmable {
      *
      * @return the outcome.
      */
-    public String getOutcome();
+    String getOutcome();
 
-    public String getFragment();
+    String getFragment();
 
-    public boolean isIncludeViewParams();
+    boolean isIncludeViewParams();
 
-    public boolean isAjax();
+    boolean isAjax();
 
-    public Object getValue();
+    Object getValue();
 
-    public void setStyleClass(String styleClass);
+    void setStyleClass(String styleClass);
 
-    public Map<String, List<String>> getParams();
+    Map<String, List<String>> getParams();
 
-    public void setParam(String key, Object value);
+    void setParam(String key, Object value);
 
-    public boolean isDynamic();
+    boolean isDynamic();
 
     /**
      * A {@link MethodExpression} in the form of a string which is called after the
@@ -94,25 +94,25 @@ public interface MenuItem extends MenuElement, Confirmable {
      *
      * @return The outcome, which will be used for navigation.
      */
-    public String getCommand();
+    String getCommand();
 
     /**
      * Lambda alternative to the {@link #getCommand()}.
      *
      * @return The outcome, which will be used for navigation.
      */
-    public SerializableFunction<MenuItem, String> getFunction();
+    SerializableFunction<MenuItem, String> getFunction();
 
-    public boolean isImmediate();
+    boolean isImmediate();
 
-    public String getClientId();
+    String getClientId();
 
-    public String getContainerStyle();
+    String getContainerStyle();
 
-    public String getContainerStyleClass();
+    String getContainerStyleClass();
 
-    public boolean isEscape();
+    boolean isEscape();
 
-    public String getRel();
+    String getRel();
 
 }

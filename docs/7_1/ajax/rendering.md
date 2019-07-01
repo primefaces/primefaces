@@ -119,7 +119,7 @@ There may be cases where you need to define which component(s) to update at runt
  _update_ method is added to handle this case. In example below, button actionListener decides which part of the page to update on-the-fly.
 
 ```xhtml
-<p:commandButton value="Save" actionListener="#{bean.save}" />
+<p:commandButton value="Save" action="#{bean.save}" />
 <p:panel id="panel"> ... </p:panel>
 <p:dataTable id="table"> ... </p:panel>
 ```

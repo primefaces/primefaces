@@ -25,9 +25,9 @@ package org.primefaces.model.menu;
 
 public interface Separator extends MenuElement {
 
-    public String getTitle();
+    String getTitle();
 
-    public String getStyle();
+    String getStyle();
 
-    public String getStyleClass();
+    String getStyleClass();
 }

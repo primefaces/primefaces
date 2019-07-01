@@ -34,11 +34,11 @@ ResetInput is attached to action source components like commandButton and comman
             <p:inputText id="surname" value="#{pprBean.surname}" required="true" label="Surname"/>
         </h:panelGrid>
     </p:panel>
-    <p:commandButton value="Submit" update="panel" actionListener="#{pprBean.savePerson}" />
+    <p:commandButton value="Submit" update="panel" action="#{pprBean.savePerson}" />
     <p:commandButton value="Reset Tag" update="panel" process="@this">
         <p:resetInput target="panel" />
     </p:commandButton>
-    <p:commandButton value="Reset Non-Ajax" actionListener="#{pprBean.reset}" immediate="true" ajax="false">
+    <p:commandButton value="Reset Non-Ajax" action="#{pprBean.reset}" immediate="true" ajax="false">
         <p:resetInput target="panel" />
     </p:commandButton>
 </h:form>

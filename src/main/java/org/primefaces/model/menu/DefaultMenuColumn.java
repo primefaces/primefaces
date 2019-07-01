@@ -87,12 +87,50 @@ public class DefaultMenuColumn implements MenuColumn, Serializable {
         this.elements = elements;
     }
 
-    @Override
-    public int getElementsCount() {
-        return (elements == null) ? 0 : elements.size();
+    public static Builder builder() {
+        return new Builder();
     }
 
-    public void addElement(MenuElement element) {
-        elements.add(element);
+    public static final class Builder {
+
+        private DefaultMenuColumn column;
+
+        private Builder() {
+            column = new DefaultMenuColumn();
+        }
+
+        public Builder id(String id) {
+            column.setId(id);
+            return this;
+        }
+
+        public Builder style(String style) {
+            column.setStyle(style);
+            return this;
+        }
+
+        public Builder styleClass(String styleClass) {
+            column.setStyleClass(styleClass);
+            return this;
+        }
+
+        public Builder elements(List<MenuElement> elements) {
+            column.setElements(elements);
+            return this;
+        }
+
+        public Builder addElement(MenuElement element) {
+            column.getElements().add(element);
+            return this;
+        }
+
+        public Builder rendered(boolean rendered) {
+            column.setRendered(rendered);
+            return this;
+        }
+
+        public DefaultMenuColumn build() {
+            return column;
+        }
     }
 }

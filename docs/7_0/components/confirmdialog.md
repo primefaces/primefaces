@@ -47,7 +47,7 @@ dialog component used with a simple client side api, _show()_ and _hide()_.
 <h:form>
     <p:commandButton type="button" onclick="PF('cd').show()" />
     <p:confirmDialog message="Are you sure about destroying the world?" header="Initiating destroy process" severity="alert" widgetVar="cd">
-        <p:commandButton value="Yes Sure" actionListener="#{buttonBean.destroyWorld}" update="messages" oncomplete="PF('cd').hide()"/>
+        <p:commandButton value="Yes Sure" action="#{buttonBean.destroyWorld}" update="messages" oncomplete="PF('cd').hide()"/>
         <p:commandButton value="Not Yet" onclick="PF('cd').hide();" type="button" />
     </p:confirmDialog>
 </h:form>
@@ -76,7 +76,7 @@ At the moment p:confirm is supported by p:commandButton, p:commandLink and p:men
 
 ```xhtml
 <p:growl id="messages" />
-<p:commandButton value="Save" actionListener="#{bean.save}" update="messages">
+<p:commandButton value="Save" action="#{bean.save}" update="messages">
     <p:confirm header="Confirmation" message="Sure?" icon="ui-icon-alert"/>
 </p:commandButton>
 <p:confirmDialog global="true">

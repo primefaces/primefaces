@@ -1,6 +1,6 @@
 # Dependencies
 
-PrimeFaces only requires a JAVA 6+ runtime and a JSF 2.x implementation as mandatory
+PrimeFaces only requires a Java 8+ runtime and a JSF 2.x implementation as mandatory
 dependencies. There’re some optional libraries for certain features. Licenses of all dependencies and
 any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 
@@ -25,7 +25,7 @@ by not having compile time dependency to a specific version. As a result some fe
 available depending on the runtime.
 
 A good example for runtime compatibility is the passthrough attributes, a JSF 2.2 specific feature to
-display dynamic attributes. In following page, pass through attribute placeholder only gets rendered
+display dynamic attributes. In following page, the passthrough attribute **placeholder** only gets rendered
 if the runtime is JSF 2.2.
 
 ```xml
