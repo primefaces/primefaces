@@ -293,28 +293,25 @@ public class UIData extends javax.faces.component.UIData {
             throw new IllegalArgumentException("Unsupported rows per page value: " + rowsParam);
         }
 
+        data.setFirst(Integer.valueOf(firstParam));
+
+        if ("*".equals(rowsParam)) {
+            data.setRows(getRowCount());
+        }
+        else {
+            data.setRows(Integer.valueOf(rowsParam));
+        }
 
         ValueExpression firstVe = data.getValueExpression("first");
-        if (isWriteable(elContext, firstVe)) {
-            firstVe.setValue(elContext, Integer.valueOf(firstParam));
-        }
-        else {
-            data.setFirst(Integer.valueOf(firstParam));
-        }
-
         ValueExpression rowsVe = data.getValueExpression("rows");
-        int newRowsValue = "*".equals(rowsParam) ? getRowCount() : Integer.valueOf(rowsParam);
-        if (isWriteable(elContext, rowsVe)) {
-            rowsVe.setValue(elContext, newRowsValue);
-        }
-        else {
-            data.setRows(newRowsValue);
 
+        if (firstVe != null && !firstVe.isReadOnly(elContext)) {
+            firstVe.setValue(context.getELContext(), data.getFirst());
         }
-    }
 
-    private boolean isWriteable(ELContext elContext, ValueExpression ve) {
-        return ve != null && !ve.isReadOnly(elContext);
+        if (rowsVe != null && !rowsVe.isReadOnly(elContext)) {
+            rowsVe.setValue(context.getElContext(), data.getRows());
+        }
     }
 
     @Override
