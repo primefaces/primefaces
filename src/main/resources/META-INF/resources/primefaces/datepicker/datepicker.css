@@ -2,7 +2,6 @@
     position: relative;
     display: inline-block;
     width: auto;
-    min-width: 17em;
 }
 
 .p-datepicker-panel .ui-datepicker-header .ui-datepicker-next, 
