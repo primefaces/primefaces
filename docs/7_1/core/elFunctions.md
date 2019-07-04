@@ -9,7 +9,7 @@ PrimeFaces provides built-in EL extensions that are helpers to common use cases.
 resolveClientId(expression, context) | Returns clientId of the component from a given expression.
 resolveWidgetVar(expression, context) | Returns widget variable name of the component from a given expression.
 
-## resolveClientId
+### resolveClientId
 
 ```xhtml
 //Example to search from root:
@@ -18,7 +18,7 @@ var clientId = #{p:resolveClientId('form:tabView:myDataTable', view)};
 <p:commandButton onclick="#{p:resolveClientId('@parent', component)}">
 ```
 
-## resolveWidgetVar
+### resolveWidgetVar
 
 ```xhtml
 <cc:implementation>

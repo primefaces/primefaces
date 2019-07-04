@@ -12,7 +12,7 @@ Instance can be obtained similarly to the FacesContext or CDI.
 PrimeFaces instance = PrimeFaces.current();
 ```
 
-### API
+### Methods
 
 | Method | Description |
 | --- | --- |
