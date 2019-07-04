@@ -2,9 +2,9 @@
 
 PrimeFaces renders unobstrusive javascript which cleanly separates behavior from the html. Client side engine is powered by jQuery.
 
-## PrimeFaces Namespace
+## PrimeFaces Core (PrimeFaces.core.*)
 
-_PrimeFaces_ is the main javascript object providing utilities and namespace.
+_PrimeFaces.core_ is the main javascript object providing utilities and namespace.
 
 | Method | Description |
 | --- | --- |
@@ -20,10 +20,19 @@ cleanWatermarks() | Watermark component extension, cleans all watermarks on page
 showWatermarks() | Shows watermarks on form.
 getWidgetById(clientid) | Returns the widget instance from the client id
 
-To be compatible with other javascript entities on a page, PrimeFaces defines two javascript
-namespaces;
+## PrimeFaces Environment (PrimeFaces.env.*)
 
-**PrimeFaces.widget.**
+_PrimeFaces.env_ is the namespace for detecting the used client and features.
+
+| Method | Description |
+| --- | --- |
+PrimeFaces.env.mobile | If the used client is a mobile browes
+PrimeFaces.env.touch | If the client supports touch
+PrimeFaces.env.ios | If the client is iOS
+PrimeFaces.env.isIE(version) | If the client is IE and the version matches the parameter
+PrimeFaces.env.isLtIE(version) | If the client is IE and the version is lesser than the parameter
+
+## PrimeFaces Widget (PrimeFaces.widget.*)
 
 Contains custom PrimeFaces widgets like;
 
