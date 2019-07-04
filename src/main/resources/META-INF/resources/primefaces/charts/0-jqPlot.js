@@ -9278,13 +9278,17 @@
                     newContext.strokeRect(left, top, $(el).innerWidth(), $(el).innerHeight());
                 }
 
+                // PrimeFaces Github #4967
+                var _top = top + parseInt(css.borderSpacing, 10) + parseInt($(el).css('border-top-width'), 10),
+                    _left = left + parseInt(css.borderSpacing, 10) + parseInt($(el).css('border-left-width'), 10);
+                
                 // find all the swatches
                 $(el).find('div.jqplot-table-legend-swatch-outline').each(function() {
                     // get the first div and stroke it
                     var elem = $(this);
                     newContext.strokeStyle = elem.css('border-top-color');
-                    var l = left + elem.position().left;
-                    var t = top + elem.position().top;
+                    var l = _left + elem.position().left;
+                    var t = _top + elem.position().top;
                     newContext.strokeRect(l, t, elem.innerWidth(), elem.innerHeight());
 
                     // now fill the swatch
@@ -9294,6 +9298,8 @@
                     var h = elem.innerHeight() - 2 * parseInt(elem.css('padding-top'), 10);
                     var w = elem.innerWidth() - 2 * parseInt(elem.css('padding-left'), 10);
 
+                    _top += elem.outerHeight(true) + parseInt(css.borderSpacing, 10) + parseInt($(el).css('border-top-width'), 10);
+                    
                     var swatch = elem.children('div.jqplot-table-legend-swatch');
                     newContext.fillStyle = swatch.css('background-color');
                     newContext.fillRect(l, t, w, h);
@@ -9304,7 +9310,7 @@
                 $(el).find('td.jqplot-table-legend-label').each(function(){
                     var elem = $(this);
                     var l = left + elem.position().left;
-                    var t = top + elem.position().top + parseInt(elem.css('padding-top'), 10);
+                    var t = top + elem.position().top + parseInt(elem.css('padding-top'), 10) + parseInt(css.borderSpacing, 10) + parseInt($(el).css('border-top-width'), 10);
                     newContext.font = elem.jqplotGetComputedFontStyle();
                     newContext.fillStyle = elem.css('color');
                     writeWrappedText(elem, newContext, elem.text(), l, t, w);
