@@ -29419,5 +29419,13 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Separator for joining start and end dates on range selection mode. Default value is "-".]]>
+            </description>
+            <name>rangeSeparator</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
 </facelet-taglib>

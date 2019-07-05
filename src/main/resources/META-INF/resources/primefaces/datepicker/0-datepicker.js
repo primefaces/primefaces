@@ -28,6 +28,7 @@
             styleClass: null,
             inline: false,
             selectionMode: 'single',
+            rangeSeparator: '-',
             inputId: null,
             inputStyle: null,
             inputStyleClass: null,
@@ -476,7 +477,7 @@
 
                             formattedValue = this.formatDateTime(startDate);
                             if (endDate) {
-                                formattedValue += ' - ' + this.formatDateTime(endDate);
+                                formattedValue += ' ' + this.options.rangeSeparator + ' ' + this.formatDateTime(endDate);
                             }
                         }
                     }
@@ -829,7 +830,7 @@
                 }
             }
             else if (this.isRangeSelection()) {
-                var tokens = text.split(/-| - /);
+                var tokens = text.split(new RegExp(this.options.rangeSeparator + '| ' + this.options.rangeSeparator + ' ', 'g'));
                 value = [];
                 for (var i = 0; i < tokens.length; i++) {
                     value[i] = this.parseDateTime(tokens[i].trim());

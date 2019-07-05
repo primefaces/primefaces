@@ -110,6 +110,7 @@ widgetVar | null | String | Name of the client side widget.
 | styleClass | null | String | Style class of the input element.
 | tabindex | null | Integer | Position of the input element in the tabbing order.
 | title | null | String | Advisory tooltip informaton.
+| rangeSeparator | - | String | Separator for joining start and end dates on range selection mode.
 
 ## Getting Started with DatePicker
 Value of the DatePicker should be a java.util.Date in single selection mode which is the default.
