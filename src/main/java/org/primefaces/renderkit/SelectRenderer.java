@@ -331,16 +331,12 @@ public abstract class SelectRenderer extends InputRenderer {
             SelectItem selectItem = selectItems.get(i);
             if (selectItem instanceof SelectItemGroup) {
                 SelectItem[] groupItemsArray = ((SelectItemGroup) selectItem).getSelectItems();
-                List<SelectItem> groupItems = Collections.emptyList();
-                if (groupItemsArray != null) {
-                    groupItems = Arrays.asList(groupItemsArray);
-                }
                 // if it's a SelectItemGroup also include its children in the checked values
                 validSubmittedValues.addAll(
                         doValidateSubmittedValues(context,
                                 component,
                                 oldValues,
-                                groupItems,
+                                groupItemsArray == null ? Collections.emptyList() : Arrays.asList(groupItemsArray),
                                 submittedValues));
             }
             else {
