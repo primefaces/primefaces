@@ -182,7 +182,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         String selectionMode = datepicker.getSelectionMode();
         switch (selectionMode) {
             case "multiple": {
-                String[] parts = submittedValue.split(", ");
+                String[] parts = submittedValue.split(",");
                 List<Object> multi = new ArrayList<>();
                 for (String part : parts) {
                     multi.add(super.getConvertedValue(context, component, part));
