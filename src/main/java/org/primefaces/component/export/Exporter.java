@@ -114,7 +114,7 @@ public abstract class Exporter {
         return "";
     }
 
-    protected String exportValue(FacesContext context, UIComponent component) {
+    public String exportValue(FacesContext context, UIComponent component) {
 
         if (component instanceof HtmlCommandLink) {  //support for PrimeFaces and standard HtmlCommandLink
             HtmlCommandLink link = (HtmlCommandLink) component;
