@@ -41,6 +41,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -329,12 +330,17 @@ public abstract class SelectRenderer extends InputRenderer {
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
             if (selectItem instanceof SelectItemGroup) {
+                SelectItem[] groupItemsArray = ((SelectItemGroup) selectItem).getSelectItems();
+                List<SelectItem> groupItems = Collections.emptyList();
+                if (groupItemsArray != null) {
+                    groupItems = Arrays.asList(groupItemsArray);
+                }
                 // if it's a SelectItemGroup also include its children in the checked values
                 validSubmittedValues.addAll(
                         doValidateSubmittedValues(context,
                                 component,
                                 oldValues,
-                                Arrays.asList(((SelectItemGroup) selectItem).getSelectItems()),
+                                groupItems,
                                 submittedValues));
             }
             else {
