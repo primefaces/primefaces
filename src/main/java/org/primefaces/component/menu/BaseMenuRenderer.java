@@ -62,8 +62,8 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         String clientId = menu.getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        if (params.containsKey(clientId)) {
-            String menuid = params.get(clientId + "_menuid");
+        String menuid = params.get(clientId + "_menuid");
+        if (menuid != null) {
             MenuItem menuitem = findMenuitem(menu.getElements(), menuid);
             MenuActionEvent event = new MenuActionEvent(menu, menuitem);
 
@@ -207,7 +207,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
                 }
                 else {
                     command = menuitem.isAjax()
-                              ? buildAjaxRequest(context, (UIComponent) menuitem, (AjaxSource) menuitem, form)
+                              ? buildAjaxRequest(context, (UIComponent & AjaxSource) menuitem, form)
                               : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
                 }
 

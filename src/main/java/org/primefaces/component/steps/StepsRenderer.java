@@ -183,7 +183,7 @@ public class StepsRenderer extends BaseMenuRenderer {
                 }
                 else {
                     command = menuitem.isAjax()
-                              ? buildAjaxRequest(context, steps, (AjaxSource) menuitem, form)
+                              ? buildAjaxRequest(context, (UIComponent & AjaxSource) menuitem, form)
                               : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
                 }
 

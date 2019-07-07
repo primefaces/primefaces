@@ -60,7 +60,7 @@ public class RemoteCommandRenderer extends CoreRenderer {
         String clientId = command.getClientId(context);
         String name = resolveName(command, context);
 
-        String request = preconfiguredAjaxRequestBuilder(context, command, command)
+        String request = preConfiguredAjaxRequestBuilder(context, command)
                 .passParams()
                 .build();
 

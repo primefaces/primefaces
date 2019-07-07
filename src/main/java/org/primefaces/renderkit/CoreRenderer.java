@@ -395,13 +395,11 @@ public abstract class CoreRenderer extends Renderer {
         return LangUtils.isValueBlank(value);
     }
 
-    protected AjaxRequestBuilder preconfiguredAjaxRequestBuilder(FacesContext context,
-            UIComponent component, AjaxSource source) {
-        return preconfiguredAjaxRequestBuilder(context, component, source, null);
+    protected <T extends UIComponent & AjaxSource> AjaxRequestBuilder preConfiguredAjaxRequestBuilder(FacesContext context, T source) {
+        return preConfiguredAjaxRequestBuilder(context, source, source, null);
     }
 
-    protected AjaxRequestBuilder preconfiguredAjaxRequestBuilder(FacesContext context,
-            UIComponent component, AjaxSource source, UIForm form) {
+    protected AjaxRequestBuilder preConfiguredAjaxRequestBuilder(FacesContext context, UIComponent component, AjaxSource source, UIForm form) {
         String clientId = component.getClientId(context);
         AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
 
@@ -425,21 +423,20 @@ public abstract class CoreRenderer extends Renderer {
         return builder;
     }
 
-    protected String buildAjaxRequest(FacesContext context, UIComponent component, AjaxSource source) {
-        return buildAjaxRequest(context, component, source, null);
+    protected <T extends UIComponent & AjaxSource> String buildAjaxRequest(FacesContext context, T source) {
+        return buildAjaxRequest(context, source, null);
     }
 
-    protected String buildAjaxRequest(FacesContext context, UIComponent component, AjaxSource source, UIForm form) {
-        AjaxRequestBuilder builder = preconfiguredAjaxRequestBuilder(context, component, source, form)
-                .params((UIComponent) source)
+    protected <T extends UIComponent & AjaxSource> String buildAjaxRequest(FacesContext context, T source, UIForm form) {
+        AjaxRequestBuilder builder = preConfiguredAjaxRequestBuilder(context, source, source, form)
+                .params(source)
                 .preventDefault();
 
         return builder.build();
     }
 
-    protected String buildAjaxRequest(FacesContext context, UIComponent component, AjaxSource source, UIForm form,
-            Map<String, List<String>> params) {
-        AjaxRequestBuilder builder = preconfiguredAjaxRequestBuilder(context, component, source, form)
+    protected String buildAjaxRequest(FacesContext context, UIComponent component, AjaxSource source, UIForm form, Map<String, List<String>> params) {
+        AjaxRequestBuilder builder = preConfiguredAjaxRequestBuilder(context, component, source, form)
                 .params(params)
                 .preventDefault();
 

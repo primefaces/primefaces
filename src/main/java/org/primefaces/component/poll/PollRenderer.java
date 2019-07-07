@@ -57,7 +57,7 @@ public class PollRenderer extends CoreRenderer {
         Poll poll = (Poll) component;
         String clientId = poll.getClientId(context);
 
-        String request = preconfiguredAjaxRequestBuilder(context, poll, poll)
+        String request = preConfiguredAjaxRequestBuilder(context, poll)
                 .params(poll)
                 .build();
 
