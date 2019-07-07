@@ -207,7 +207,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
                 }
                 else {
                     command = menuitem.isAjax()
-                              ? buildAjaxRequest(context, menu, (AjaxSource) menuitem, form)
+                              ? buildAjaxRequest(context, (UIComponent) menuitem, (AjaxSource) menuitem, form)
                               : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
                 }
 
