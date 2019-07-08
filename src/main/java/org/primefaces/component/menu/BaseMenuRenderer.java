@@ -23,20 +23,6 @@
  */
 package org.primefaces.component.menu;
 
-import java.io.IOException;
-import java.util.*;
-
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.component.UIParameter;
-import javax.faces.component.behavior.ClientBehavior;
-import javax.faces.component.behavior.ClientBehaviorContext;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.event.PhaseId;
-
 import org.primefaces.behavior.confirm.ConfirmBehavior;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
@@ -45,16 +31,24 @@ import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.menu.*;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.ComponentTraversalUtils;
-import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
+
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
+import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorContext;
+import javax.faces.component.behavior.ClientBehaviorHolder;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.event.PhaseId;
+import java.io.IOException;
+import java.util.*;
 
 public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 
     public static final String SEPARATOR = "_";
-
-    private static final String SB_BUILD_NON_AJAX_REQUEST = BaseMenuRenderer.class.getName() + "#buildNonAjaxRequest";
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -324,57 +318,6 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
-    }
-
-    protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam,
-                                         Map<String, List<String>> parameters, boolean submit) {
-
-        StringBuilder request = SharedStringBuilder.get(context, SB_BUILD_NON_AJAX_REQUEST);
-        String formId = form.getClientId(context);
-        Map<String, Object> params = new HashMap<>();
-
-        if (decodeParam != null) {
-            params.put(decodeParam, decodeParam);
-        }
-
-        for (UIComponent child : component.getChildren()) {
-            if (child instanceof UIParameter && child.isRendered()) {
-                UIParameter param = (UIParameter) child;
-                params.put(param.getName(), param.getValue());
-            }
-        }
-
-        if (parameters != null && !parameters.isEmpty()) {
-            for (Iterator<String> it = parameters.keySet().iterator(); it.hasNext(); ) {
-                String paramName = it.next();
-                params.put(paramName, parameters.get(paramName).get(0));
-            }
-        }
-
-        //append params
-        if (!params.isEmpty()) {
-            request.append("PrimeFaces.addSubmitParam(\"").append(formId).append("\",{");
-
-            for (Iterator<String> it = params.keySet().iterator(); it.hasNext(); ) {
-                String key = it.next();
-                Object value = params.get(key);
-                String valueStr = value == null ? null : EscapeUtils.forJavaScript(value.toString());
-
-                request.append("\"").append(EscapeUtils.forJavaScript(key)).append("\":\"").append(valueStr).append("\"");
-
-                if (it.hasNext()) {
-                    request.append(",");
-                }
-            }
-
-            request.append("})");
-        }
-
-        if (submit) {
-            request.append(".submit(\"").append(formId).append("\");return false;");
-        }
-
-        return request.toString();
     }
 
     protected void encodeKeyboardTarget(FacesContext context, AbstractMenu menu) throws IOException {

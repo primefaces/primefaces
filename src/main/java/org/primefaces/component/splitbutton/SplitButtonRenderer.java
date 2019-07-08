@@ -23,27 +23,6 @@
  */
 package org.primefaces.component.splitbutton;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.component.UIParameter;
-import javax.faces.component.behavior.ClientBehavior;
-import javax.faces.component.behavior.ClientBehaviorContext;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.PhaseId;
-
 import org.primefaces.behavior.confirm.ConfirmBehavior;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
@@ -57,13 +36,27 @@ import org.primefaces.model.menu.MenuModel;
 import org.primefaces.model.menu.Separator;
 import org.primefaces.model.menu.Submenu;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
-import org.primefaces.util.*;
+import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.util.WidgetBuilder;
+
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
+import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorContext;
+import javax.faces.component.behavior.ClientBehaviorHolder;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.PhaseId;
+import java.io.IOException;
+import java.util.*;
 
 public class SplitButtonRenderer extends OutcomeTargetRenderer {
 
     private static final String SB_BUILD_ONCLICK = SplitButtonRenderer.class.getName() + "#buildOnclick";
-
-    private static final String SB_BUILD_NON_AJAX_REQUEST = SplitButtonRenderer.class.getName() + "#buildNonAjaxRequest";
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -525,55 +518,5 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
                 }
             }
         }
-    }
-
-    protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam,
-            Map<String, List<String>> parameters, boolean submit) {
-
-        StringBuilder request = SharedStringBuilder.get(context, SB_BUILD_NON_AJAX_REQUEST);
-        String formId = form.getClientId(context);
-        Map<String, Object> params = new HashMap<>();
-
-        if (decodeParam != null) {
-            params.put(decodeParam, decodeParam);
-        }
-
-        for (UIComponent child : component.getChildren()) {
-            if (child instanceof UIParameter && child.isRendered()) {
-                UIParameter param = (UIParameter) child;
-                params.put(param.getName(), param.getValue());
-            }
-        }
-
-        if (parameters != null && !parameters.isEmpty()) {
-            for (Iterator<String> it = parameters.keySet().iterator(); it.hasNext();) {
-                String paramName = it.next();
-                params.put(paramName, parameters.get(paramName).get(0));
-            }
-        }
-
-        //append params
-        if (!params.isEmpty()) {
-            request.append("PrimeFaces.addSubmitParam('").append(formId).append("',{");
-
-            for (Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
-                String key = it.next();
-                Object value = params.get(key);
-
-                request.append("'").append(key).append("':'").append(value).append("'");
-
-                if (it.hasNext()) {
-                    request.append(",");
-                }
-            }
-
-            request.append("})");
-        }
-
-        if (submit) {
-            request.append(".submit('").append(formId).append("');return false;");
-        }
-
-        return request.toString();
     }
 }

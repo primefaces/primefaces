@@ -51,6 +51,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.faces.component.UIForm;
 
 public abstract class CoreRenderer extends Renderer {
@@ -444,6 +445,11 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam, boolean submit) {
+        return buildNonAjaxRequest(context, component, form, decodeParam, Collections.emptyMap(), submit);
+    }
+
+    protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam,
+                                         Map<String, List<String>> parameters, boolean submit) {
         StringBuilder request = SharedStringBuilder.get(context, SB_BUILD_NON_AJAX_REQUEST);
         String formId = form.getClientId(context);
         Map<String, Object> params = new HashMap<>();
@@ -456,25 +462,23 @@ public abstract class CoreRenderer extends Renderer {
             UIComponent child = component.getChildren().get(i);
             if (child instanceof UIParameter) {
                 UIParameter param = (UIParameter) child;
-
                 params.put(param.getName(), param.getValue());
             }
+        }
+
+        if (parameters != null && !parameters.isEmpty()) {
+            parameters.forEach((k, v) -> params.put(k, v.get(0)));
         }
 
         //append params
         if (!params.isEmpty()) {
             request.append("PrimeFaces.addSubmitParam('").append(formId).append("',{");
 
-            for (Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
-                String key = it.next();
-                String value = EscapeUtils.forJavaScript(String.valueOf(params.get(key))) ;
-
-                request.append("'").append(key).append("':'").append(value).append("'");
-
-                if (it.hasNext()) {
-                    request.append(",");
-                }
-            }
+            request.append(
+                    params.entrySet().stream()
+                            .map(e -> "'" + e.getKey() + "':'" + EscapeUtils.forJavaScript(String.valueOf(e.getValue())) + "'")
+                            .collect(Collectors.joining(","))
+            );
 
             request.append("})");
         }
