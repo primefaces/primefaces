@@ -159,6 +159,14 @@ public class TreeTable extends TreeTableBase {
         return EVENT_NAMES;
     }
 
+    public boolean isExpandRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_expand");
+    }
+
+    public boolean isCollapseRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_collapse");
+    }
+
     public boolean isSelectionRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_instantSelection");
     }
@@ -215,7 +223,7 @@ public class TreeTable extends TreeTableBase {
                 String nodeKey = params.get(clientId + "_collapse");
                 setRowKey(nodeKey);
                 TreeNode node = getRowNode();
-                node.setExpanded(false);
+                node.collapse();
 
                 wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), node);
                 wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);

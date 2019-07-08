@@ -244,4 +244,13 @@ public class DefaultTreeNode implements TreeNode, Serializable {
     public void setPartialSelected(boolean value) {
         //nothing
     }
+
+    @Override
+    public void collapse() {
+        this.setExpanded(false);
+
+        if (!isLeaf()) {
+            children.forEach(TreeNode::collapse);
+        }
+    }
 }

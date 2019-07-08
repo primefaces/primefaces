@@ -319,4 +319,13 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
     public void setPartialSelected(boolean value) {
         this.partialSelected = value;
     }
+
+    @Override
+    public void collapse() {
+        this.setExpanded(false);
+
+        if (!isLeaf()) {
+            children.forEach(TreeNode::collapse);
+        }
+    }
 }

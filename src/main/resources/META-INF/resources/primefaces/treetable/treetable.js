@@ -576,57 +576,56 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     collapseNode: function(node) {
-        var nodeKey = node.attr('data-rk'),
-        nextNodes = node.nextAll();
+        var $this = this;
+        var nodeKey = node.attr('data-rk');
+        var options = {
+            source: this.id,
+            process: this.id,
+            update: this.id,
+            params: [
+                {name: this.id + '_collapse', value: nodeKey}
+            ],
+            onsuccess: function (responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                    widget: $this,
+                    handle: function () {
+                        var nextNodes = node.nextAll();
 
-        for(var i = 0; i < nextNodes.length; i++) {
-            var nextNode = nextNodes.eq(i),
-            nextNodeRowKey = nextNode.attr('data-rk');
+                        for(var i = 0; i < nextNodes.length; i++) {
+                            var nextNode = nextNodes.eq(i),
+                                nextNodeRowKey = nextNode.attr('data-rk');
 
-            if(nextNodeRowKey.indexOf(nodeKey) !== -1) {
-               nextNode.remove();
+                            if(nextNodeRowKey.indexOf(nodeKey) !== -1) {
+                                nextNode.remove();
+                            }
+                            else {
+                                break;
+                            }
+                        }
+
+                        node.find('.ui-treetable-toggler:first').addClass('ui-icon-triangle-1-e').removeClass('ui-icon-triangle-1-s');
+                        node.attr('aria-expanded', false);
+
+                        if(this.cfg.scrollable) {
+                            this.alignScrollBody();
+                        }
+                    }
+                });
+
+
+                return true;
+            },
+            oncomplete: function () {
+                node.data('processing', false);
+                $this.updateVerticalScroll();
             }
-            else {
-                break;
-            }
-        }
-
-        node.attr('aria-expanded', false).find('.ui-treetable-toggler:first').addClass('ui-icon-triangle-1-e').removeClass('ui-icon-triangle-1-s');
-        node.data('processing', false);
-
-        if(this.cfg.scrollable) {
-            this.alignScrollBody();
-        }
+        };
 
         if(this.hasBehavior('collapse')) {
-            var $this = this,
-            nodeKey = node.attr('data-rk'),
-            options = {
-                source: this.id,
-                process: this.id,
-                update: this.id,
-                params: [
-                    {name: this.id + '_collapse', value: nodeKey}
-                ],
-                onsuccess: function(responseXML, status, xhr) {
-                    PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                            widget: $this,
-                            handle: function(content) {
-                                // do nothing
-                            }
-                        });
-
-                    return true;
-                },
-                oncomplete: function() {
-                    $this.updateVerticalScroll();
-                }
-            };
-
             this.callBehavior('collapse', options);
         }
         else {
-            this.updateVerticalScroll();
+            PrimeFaces.ajax.Request.handle(options);
         }
     },
 
