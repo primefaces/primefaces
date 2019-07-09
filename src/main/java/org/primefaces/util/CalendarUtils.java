@@ -23,13 +23,10 @@
  */
 package org.primefaces.util;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
+import org.primefaces.component.api.UICalendar;
+import org.primefaces.convert.DatePatternConverter;
+import org.primefaces.convert.PatternConverter;
+import org.primefaces.convert.TimePatternConverter;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -37,11 +34,16 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import org.primefaces.component.api.UICalendar;
-
-import org.primefaces.convert.DatePatternConverter;
-import org.primefaces.convert.PatternConverter;
-import org.primefaces.convert.TimePatternConverter;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Utility class for calendar component
@@ -69,6 +71,7 @@ public class CalendarUtils {
      * @param calendar the calendar component
      * @param value the value to convert
      * @return the {@link Date} object or <code>null</code>
+     * @deprecated Use eg {@link CalendarUtils#getObjectAsLocalDate(FacesContext, UICalendar, Object)} instead.
      */
     public static Date getObjectAsDate(FacesContext context, UICalendar calendar, Object value) {
         if (value == null) {
@@ -110,6 +113,64 @@ public class CalendarUtils {
             Object obj = converter.getAsObject(context, calendar, value.toString());
             if (obj instanceof Date) {
                 return (Date) obj;
+            }
+        }
+
+        // TODO Currently we do not support conversion of jquery datepicker's special dates like 'today' or '+1m +7d'
+        // See http://api.jqueryui.com/datepicker/#option-maxDate, https://github.com/primefaces/primefaces/issues/4621
+
+        return null;
+    }
+
+    /**
+     * Try to convert the given value to {@link Date} or return <code>null</code> if there is no appropriate converter for doing so.
+     * @param context the faces context
+     * @param calendar the calendar component
+     * @param value the value to convert
+     * @return the {@link Date} object or <code>null</code>
+     */
+    public static LocalDate getObjectAsLocalDate(FacesContext context, UICalendar calendar, Object value) {
+        //TODO: do we need getObjectAsLocalDateTime additional or instead?
+
+        if (value == null) {
+            return null;
+        }
+
+        if (value instanceof LocalDate) {
+            return (LocalDate) value;
+        }
+
+        String pattern = calendar.calculatePattern();
+        if (pattern != null) {
+            Locale locale = calendar.calculateLocale(context);
+            if (locale != null) {
+                DateTimeFormatter formatter =  DateTimeFormatter.ofPattern(pattern, locale);
+                try {
+                    return LocalDate.parse(value.toString(), formatter);
+                }
+                catch (DateTimeParseException ex) {
+                    // NO-OP
+                }
+            }
+        }
+
+        if (calendar.getConverter() != null) {
+            try {
+                Object obj = calendar.getConverter().getAsObject(context, calendar, value.toString());
+                if (obj instanceof LocalDate) {
+                    return (LocalDate) obj;
+                }
+            }
+            catch (ConverterException ex) {
+                // NO-OP
+            }
+        }
+
+        Converter converter = context.getApplication().createConverter(value.getClass());
+        if (converter != null) {
+            Object obj = converter.getAsObject(context, calendar, value.toString());
+            if (obj instanceof LocalDate) {
+                return (LocalDate) obj;
             }
         }
 
@@ -172,12 +233,28 @@ public class CalendarUtils {
 
             return format.format((Date) value);
         }
+        else if (value instanceof LocalDate || value instanceof LocalDateTime || value instanceof LocalTime || value instanceof YearMonth) {
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern, calendar.calculateLocale(context));
+            if (value instanceof LocalDate) {
+                return ((LocalDate) value).format(dateTimeFormatter);
+            }
+            else if (value instanceof LocalDateTime) {
+                return ((LocalDateTime) value).format(dateTimeFormatter);
+            }
+            else if (value instanceof LocalTime) {
+                return ((LocalTime) value).format(dateTimeFormatter);
+            }
+            else { //if (value instanceof YearMonth)
+                return ((YearMonth) value).format(dateTimeFormatter);
+            }
+        }
         else {
-            //Delegate to global defined converter (e.g. joda or java8)
+            //Delegate to global defined converter (e.g. joda)
             ValueExpression ve = calendar.getValueExpression("value");
             if (ve != null) {
                 Class type = ve.getType(context.getELContext());
-                if (type != null && type != Object.class && type != Date.class) {
+                if (type != null && type != Object.class && type != Date.class &&
+                        type != LocalDate.class && type != LocalDateTime.class && type != LocalTime.class && type != Year.class) {
                     Converter converter = context.getApplication().createConverter(type);
                     if (converter != null) {
                         return converter.getAsString(context, calendar, value);
@@ -216,7 +293,7 @@ public class CalendarUtils {
      * @param uicalendar component
      * @param optionName the name of an option
      * @param values the List values of an option
-     * @throws java.io.IOException if writer is null
+     * @throws IOException if writer is null
      */
     public static void encodeListValue(FacesContext context, UICalendar uicalendar, String optionName, List<Object> values) throws IOException {
         if (values == null) {
@@ -233,6 +310,9 @@ public class CalendarUtils {
             if (item instanceof Date) {
                 writer.write(preText + "\"" + EscapeUtils.forJavaScript(getValueAsString(context, uicalendar, item)) + "\"");
             }
+            else if (item instanceof LocalDate || item instanceof LocalDateTime || item instanceof LocalTime) {
+                writer.write(preText + "\"" + EscapeUtils.forJavaScript(getValueAsString(context, uicalendar, item)) + "\"");
+            }
             else {
                 writer.write(preText + "" + item);
             }
@@ -241,10 +321,45 @@ public class CalendarUtils {
         writer.write("]");
     }
 
+    public static ZoneId calculateZoneId(Object usertimeZone) {
+        return calculateZoneId(usertimeZone, ZoneId.systemDefault());
+    }
+
+    public static ZoneId calculateZoneId(Object usertimeZone, ZoneId defaultZoneId) {
+        if (usertimeZone != null) {
+            if (usertimeZone instanceof String) {
+                return ZoneId.of((String) usertimeZone);
+            }
+            else if (usertimeZone instanceof ZoneId) {
+                return (ZoneId) usertimeZone;
+            }
+            else if (usertimeZone instanceof TimeZone) {
+                return ((TimeZone) usertimeZone).toZoneId();
+            }
+            else {
+                throw new IllegalArgumentException("TimeZone could be either String or java.time.ZoneId or java.util.TimeZone");
+            }
+        }
+        else {
+            return defaultZoneId;
+        }
+    }
+
+    /**
+     * @deprecated  use {@link #calculateZoneId(Object)} instead.
+     * @param usertimeZone
+     * @return
+     */
     public static TimeZone calculateTimeZone(Object usertimeZone) {
         return calculateTimeZone(usertimeZone, TimeZone.getDefault());
     }
 
+    /**
+     * @deprecated  use {@link #calculateZoneId(Object, ZoneId)} instead.
+     * @param usertimeZone
+     * @param defaultTimeZone
+     * @return
+     */
     public static TimeZone calculateTimeZone(Object usertimeZone, TimeZone defaultTimeZone) {
         if (usertimeZone != null) {
             if (usertimeZone instanceof String) {
@@ -260,5 +375,33 @@ public class CalendarUtils {
         else {
             return defaultTimeZone;
         }
+    }
+
+    private static ZonedDateTime convertDate2ZonedDateTime(Date date, ZoneId zoneId) {
+        return date.toInstant().atZone(zoneId);
+    }
+
+    public static LocalDate convertDate2LocalDate(Date date, ZoneId zoneId) {
+        return convertDate2ZonedDateTime(date, zoneId).toLocalDate();
+    }
+
+    public static LocalDateTime convertDate2LocalDateTime(Date date, ZoneId zoneId) {
+        return convertDate2ZonedDateTime(date, zoneId).toLocalDateTime();
+    }
+
+    public static LocalTime convertDate2LocalTime(Date date, ZoneId zoneId) {
+        return convertDate2ZonedDateTime(date, zoneId).toLocalTime();
+    }
+
+    public static Date convertLocalDate2Date(LocalDate localDate, ZoneId zoneId) {
+        return Date.from(localDate.atStartOfDay(zoneId).toInstant());
+    }
+
+    public static Date convertLocalDateTime2Date(LocalDateTime localDateTime, ZoneId zoneId) {
+        return Date.from(localDateTime.atZone(zoneId).toInstant());
+    }
+
+    public static Date convertLocalTime2Date(LocalTime localTime, ZoneId zoneId) {
+        return Date.from(localTime.atDate(LocalDate.now()).atZone(zoneId).toInstant());
     }
 }
