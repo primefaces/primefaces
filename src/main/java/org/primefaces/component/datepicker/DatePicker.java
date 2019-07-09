@@ -34,9 +34,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.*;
 
 @ResourceDependencies({
@@ -139,6 +137,9 @@ public class DatePicker extends DatePickerBase {
             }
             else if (value instanceof LocalTime) {
                 //no check necessary
+            }
+            else if (value instanceof YearMonth) {
+                isDisabledDate = validateDateValue(context, ((YearMonth) value).atDay(1));
             }
             else if (value instanceof Date) {
                 isDisabledDate = validateDateValue(context, CalendarUtils.convertDate2LocalDate((Date) value, CalendarUtils.calculateZoneId(getTimeZone())));

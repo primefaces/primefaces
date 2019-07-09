@@ -45,10 +45,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
@@ -220,7 +217,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
                 }
             }
 
-            if (type == LocalDate.class) {
+            if (type == LocalDate.class || type == YearMonth.class) {
                 formatter = new DateTimeFormatterBuilder()
                         .parseCaseInsensitive()
                         .appendPattern(uicalendar.calculatePattern())
@@ -228,7 +225,12 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
                         .toFormatter();
                 formatter = formatter.withLocale(uicalendar.calculateLocale(context));
                 formatter = formatter.withZone(CalendarUtils.calculateZoneId(uicalendar.getTimeZone()));
-                return LocalDate.parse(submittedValue, formatter);
+                if (type == LocalDate.class) {
+                    return LocalDate.parse(submittedValue, formatter);
+                }
+                else { //if (type == YearMonth.class)
+                    return YearMonth.parse(submittedValue, formatter);
+                }
             }
             else if (type == LocalTime.class) {
                 formatter =  DateTimeFormatter.ofPattern(uicalendar.calculateTimeOnlyPattern(), uicalendar.calculateLocale(context));

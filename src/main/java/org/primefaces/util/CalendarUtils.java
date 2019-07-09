@@ -233,7 +233,7 @@ public class CalendarUtils {
 
             return format.format((Date) value);
         }
-        else if (value instanceof LocalDate || value instanceof LocalDateTime || value instanceof LocalTime) {
+        else if (value instanceof LocalDate || value instanceof LocalDateTime || value instanceof LocalTime || value instanceof YearMonth) {
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern, calendar.calculateLocale(context));
             if (value instanceof LocalDate) {
                 return ((LocalDate) value).format(dateTimeFormatter);
@@ -241,8 +241,11 @@ public class CalendarUtils {
             else if (value instanceof LocalDateTime) {
                 return ((LocalDateTime) value).format(dateTimeFormatter);
             }
-            else /*if (value instanceof LocalTime)*/ {
+            else if (value instanceof LocalTime) {
                 return ((LocalTime) value).format(dateTimeFormatter);
+            }
+            else { //if (value instanceof YearMonth)
+                return ((YearMonth) value).format(dateTimeFormatter);
             }
         }
         else {
@@ -251,7 +254,7 @@ public class CalendarUtils {
             if (ve != null) {
                 Class type = ve.getType(context.getELContext());
                 if (type != null && type != Object.class && type != Date.class &&
-                        type != LocalDate.class && type != LocalDateTime.class && type != LocalTime.class) {
+                        type != LocalDate.class && type != LocalDateTime.class && type != LocalTime.class && type != Year.class) {
                     Converter converter = context.getApplication().createConverter(type);
                     if (converter != null) {
                         return converter.getAsString(context, calendar, value);
