@@ -23,9 +23,6 @@
  */
 package org.primefaces.component.splitbutton;
 
-import org.primefaces.behavior.confirm.ConfirmBehavior;
-import org.primefaces.component.api.AjaxSource;
-import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menubutton.MenuButton;
@@ -44,9 +41,6 @@ import org.primefaces.util.WidgetBuilder;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
-import javax.faces.component.behavior.ClientBehavior;
-import javax.faces.component.behavior.ClientBehaviorContext;
-import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
@@ -340,60 +334,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
                 writer.writeAttribute("onclick", "return false;", null);
             }
             else {
-                setConfirmationScript(context, menuitem);
-                String onclick = menuitem.getOnclick();
-
-                //GET
-                if (menuitem.getUrl() != null || menuitem.getOutcome() != null) {
-                    String targetURL = getTargetURL(context, (UIOutcomeTarget) menuitem);
-                    writer.writeAttribute("href", targetURL, null);
-
-                    if (menuitem.getTarget() != null) {
-                        writer.writeAttribute("target", menuitem.getTarget(), null);
-                    }
-                }
-                //POST
-                else {
-                    writer.writeAttribute("href", "#", null);
-
-                    UIForm form = ComponentTraversalUtils.closestForm(context, button);
-                    if (form == null) {
-                        throw new FacesException("MenuItem must be inside a form element");
-                    }
-
-                    String command;
-                    if (menuitem.isDynamic()) {
-                        String buttonClientId = button.getClientId(context);
-                        Map<String, List<String>> params = menuitem.getParams();
-                        if (params == null) {
-                            params = new LinkedHashMap<>();
-                        }
-                        List<String> idParams = new ArrayList<>();
-                        idParams.add(menuitem.getId());
-                        params.put(buttonClientId + "_menuid", idParams);
-
-                        command = menuitem.isAjax()
-                                ? buildAjaxRequest(context, button, (AjaxSource) menuitem, form, params)
-                                : buildNonAjaxRequest(context, button, form, buttonClientId, params, true);
-                    }
-                    else {
-                        command = menuitem.isAjax()
-                                ? buildAjaxRequest(context, (UIComponent & AjaxSource) menuitem, form)
-                                : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
-                    }
-
-                    onclick = (onclick == null) ? command : onclick + ";" + command;
-                }
-
-                if (onclick != null) {
-                    if (menuitem.requiresConfirmation()) {
-                        writer.writeAttribute("data-pfconfirmcommand", onclick, null);
-                        writer.writeAttribute("onclick", menuitem.getConfirmationScript(), "onclick");
-                    }
-                    else {
-                        writer.writeAttribute("onclick", onclick, null);
-                    }
-                }
+                encodeOnClick(context, button, menuitem);
             }
 
             if (icon != null) {
@@ -499,24 +440,5 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
-    }
-
-    protected void setConfirmationScript(FacesContext context, MenuItem item) {
-        if (item instanceof ClientBehaviorHolder) {
-            Map<String, List<ClientBehavior>> behaviors = ((ClientBehaviorHolder) item).getClientBehaviors();
-            List<ClientBehavior> clickBehaviors = (behaviors == null) ? null : behaviors.get("click");
-
-            if (clickBehaviors != null && !clickBehaviors.isEmpty()) {
-                for (int i = 0; i < clickBehaviors.size(); i++) {
-                    ClientBehavior clientBehavior = clickBehaviors.get(i);
-                    if (clientBehavior instanceof ConfirmBehavior) {
-                        ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
-                                context, (UIComponent) item, "click", item.getClientId(), Collections.EMPTY_LIST);
-                        clientBehavior.getScript(cbc);
-                        break;
-                    }
-                }
-            }
-        }
     }
 }
