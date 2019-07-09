@@ -395,7 +395,21 @@
         },
 
         isMonthSelected: function (month) {
-            return this.value ? (this.value.getMonth() === month && this.value.getFullYear() === this.viewDate.getFullYear()) : false;
+            if (this.value) {
+                if (this.isRangeSelection()) {
+                    var dateMeta = { year: this.viewDate.getFullYear(), month: month, day: 1, selectable: true };
+                    
+                    if (this.value[1])
+                        return this.isDateEquals(this.value[0], dateMeta) || this.isDateEquals(this.value[1], dateMeta) || this.isDateBetween(this.value[0], this.value[1], dateMeta);
+                    else
+                        return this.isDateEquals(this.value[0], dateMeta)
+                }
+                else {
+                    return (this.value.getMonth() === month && this.value.getFullYear() === this.viewDate.getFullYear());
+                }
+            }
+            
+            return false;
         },
 
         isDateEquals: function (value, dateMeta) {
