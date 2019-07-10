@@ -207,7 +207,12 @@ public class TimelineRenderer extends CoreRenderer {
                               Map<String, String> groupsContent, TimelineEvent event) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        fsw.write("{\"start\":" + encodeDate(browserTZ, targetTZ, event.getStartDate()));
+        if (event.getStartDate() != null) {
+            fsw.write("{\"start\":" + encodeDate(browserTZ, targetTZ, event.getStartDate()));
+        }
+        else {
+            fsw.write("{\"start\":null");
+        }
 
         if (event.getEndDate() != null) {
             fsw.write(",\"end\":" + encodeDate(browserTZ, targetTZ, event.getEndDate()));
