@@ -153,7 +153,7 @@ Let’s put it altogether to come up a fully editable and complex schedule.
             <h:outputLabel for="allDay" value="All Day:" />
             <h:selectBooleanCheckbox id="allDay" value="#{bean.event.allDay}" />
             <p:commandButton type="reset" value="Reset" />
-            <p:commandButton value="Save" actionListener="#{bean.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
+            <p:commandButton value="Save" action="#{bean.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
         </h:panelGrid>
     </p:dialog>
 </h:form>
@@ -161,35 +161,42 @@ Let’s put it altogether to come up a fully editable and complex schedule.
 
 ```java
 public class ScheduleBean {
-    private ScheduleModel<ScheduleEvent> model;
-    private ScheduleEventImpl event = new DefaultScheduleEvent();
 
-    public ScheduleBean() {
-        eventModel = new ScheduleModel<ScheduleEvent>();
-    }
-    public ScheduleModel<ScheduleEvent> getModel() { 
-        return model; 
-    }
-    public ScheduleEventImpl getEvent() { 
-        return event; 
-    }
-    public void setEvent(ScheduleEventImpl event) { 
-        this.event = event; 
-    }
-    public void addEvent() {
-        if(event.getId() == null)
-            eventModel.addEvent(event);
-        else
-            eventModel.updateEvent(event);
-        event = new DefaultScheduleEvent(); //reset dialog form
-    }
-    public void onEventSelect(SelectEvent e) {
-        event = (ScheduleEvent) e.getObject();
-    }
-    public void onDateSelect(SelectEvent e) {
-        Date date = (Date) e.getObject();
-        event = new DefaultScheduleEvent("", date, date);
-    }
+  private ScheduleModel model;
+  private ScheduleEvent event = new DefaultScheduleEvent();
+
+  public ScheduleBean() {
+    model = new DefaultScheduleModel();
+  }
+
+  public ScheduleModel getModel() {
+    return model;
+  }
+
+  public ScheduleEvent getEvent() {
+    return event;
+  }
+
+  public void setEvent(ScheduleEvent event) {
+    this.event = event;
+  }
+
+  public void addEvent() {
+    if (event.getId() == null)
+      model.addEvent( event );
+    else
+      model.updateEvent(event);
+    event = new DefaultScheduleEvent(); //reset dialog form
+  }
+
+  public void onEventSelect(SelectEvent e) {
+    event = (ScheduleEvent)e.getObject();
+  }
+
+  public void onDateSelect(SelectEvent e) {
+    Date date = (Date)e.getObject();
+    event = new DefaultScheduleEvent("", date, date);
+  }
 }
 ```
 ## Lazy Loading

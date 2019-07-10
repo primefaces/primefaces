@@ -93,7 +93,7 @@ public abstract class StaticMessageBase extends UIComponentBase {
         return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void getStyleClass(String styleClass) {
+    public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 }

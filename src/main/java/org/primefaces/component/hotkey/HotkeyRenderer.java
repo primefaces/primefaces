@@ -31,9 +31,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 
-import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.AjaxRequestBuilder;
 
 public class HotkeyRenderer extends CoreRenderer {
 
@@ -62,24 +60,7 @@ public class HotkeyRenderer extends CoreRenderer {
         writer.write("$(document).off('" + event + "').on('" + event + "',null,'" + hotkey.getBind() + "',function(){");
 
         if (hotkey.isAjaxified()) {
-            AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
-
-            String request = builder.init()
-                    .source(clientId)
-                    .form(hotkey, hotkey)
-                    .process(component, hotkey.getProcess())
-                    .update(component, hotkey.getUpdate())
-                    .async(hotkey.isAsync())
-                    .global(hotkey.isGlobal())
-                    .delay(hotkey.getDelay())
-                    .timeout(hotkey.getTimeout())
-                    .partialSubmit(hotkey.isPartialSubmit(), hotkey.isPartialSubmitSet(), hotkey.getPartialSubmitFilter())
-                    .resetValues(hotkey.isResetValues(), hotkey.isResetValuesSet())
-                    .ignoreAutoUpdate(hotkey.isIgnoreAutoUpdate())
-                    .onstart(hotkey.getOnstart())
-                    .onerror(hotkey.getOnerror())
-                    .onsuccess(hotkey.getOnsuccess())
-                    .oncomplete(hotkey.getOncomplete())
+            String request = preConfiguredAjaxRequestBuilder(context, hotkey)
                     .params(hotkey)
                     .build();
 

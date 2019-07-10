@@ -21,13 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model.menu;
+package org.primefaces.validate.bean;
 
-/**
- * Default implementation of a MenuModel optimized for dynamic menus that may change after getting initialized.
- */
-public class DynamicMenuModel extends BaseMenuModel {
+import java.util.HashMap;
+import java.util.Map;
+import javax.validation.metadata.ConstraintDescriptor;
 
-    private static final long serialVersionUID = 1L;
+public class NotEmptyClientValidationConstraint implements ClientValidationConstraint {
 
+    private static final String MESSAGE_METADATA = "data-p-notempty-msg";
+    private static final String MESSAGE_ID = "{javax.validation.constraints.NotEmpty.message}";
+
+    @Override
+    public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
+        Map<String, Object> metadata = new HashMap<>();
+        Map attrs = constraintDescriptor.getAttributes();
+        Object message = attrs.get(ATTR_MESSAGE);
+
+        if (!message.equals(MESSAGE_ID)) {
+            metadata.put(MESSAGE_METADATA, message);
+        }
+
+        return metadata;
+    }
+
+    @Override
+    public String getValidatorId() {
+        return "NotEmpty";
+    }
 }

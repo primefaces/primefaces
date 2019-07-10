@@ -57,7 +57,7 @@ public class FileUpload extends FileUploadBase {
         super.broadcast(event);
 
         FacesContext facesContext = getFacesContext();
-        MethodExpression me = getFileUploadListener();
+        MethodExpression me = getListener();
 
         if (me != null && event instanceof org.primefaces.event.FileUploadEvent) {
             me.invoke(facesContext.getELContext(), new Object[]{event});

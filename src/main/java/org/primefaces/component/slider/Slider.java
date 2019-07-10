@@ -112,10 +112,15 @@ public class Slider extends SliderBase {
             String[] inputIds = getFor().split(",");
             UIInput inputFrom = (UIInput) SearchExpressionFacade.resolveComponent(context, this, inputIds[0]);
             UIInput inputTo = (UIInput) SearchExpressionFacade.resolveComponent(context, this, inputIds[1]);
-            String valueFromStr = getSubmittedValue(inputFrom).toString();
-            String valueToStr = getSubmittedValue(inputTo).toString();
-            double valueFrom = Double.valueOf(valueFromStr);
-            double valueTo = Double.valueOf(valueToStr);
+            Object submittedValueFrom = getSubmittedValue(inputFrom);
+            Object submittedValueTo = getSubmittedValue(inputTo);
+            if (submittedValueFrom == null || submittedValueTo == null) {
+                return;
+            }
+            String valueFromStr = submittedValueFrom.toString();
+            String valueToStr = submittedValueTo.toString();
+            double valueFrom = Double.parseDouble(valueFromStr);
+            double valueTo = Double.parseDouble(valueToStr);
             if (valueTo < valueFrom) {
                 setValid(false);
                 inputFrom.setValid(false);
@@ -151,7 +156,7 @@ public class Slider extends SliderBase {
                 return;
             }
 
-            double submittedValueDouble = Double.valueOf(submittedValueString);
+            double submittedValueDouble = Double.parseDouble(submittedValueString);
             if (submittedValueDouble < getMinValue() || submittedValueDouble > getMaxValue()) {
                 setValid(false);
                 input.setValid(false);

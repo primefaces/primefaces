@@ -40,8 +40,8 @@ ajax and third one is used for redirect purposes.
 
 ```xhtml
 <p:menuButton value="Options">
-    <p:menuitem value="Save" actionListener="#{bean.save}" update="comp" />
-    <p:menuitem value="Update" actionListener="#{bean.update}" ajax="false" />
+    <p:menuitem value="Save" action="#{bean.save}" update="comp" />
+    <p:menuitem value="Update" action="#{bean.update}" ajax="false" />
     <p:menuitem value="Go Home" url="/home.jsf" />
 </p:menuButton>
 ```

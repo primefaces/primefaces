@@ -99,8 +99,8 @@ menuitem documentation for more information about the capabilities.
 ```xhtml
 <p:menu>
     <p:submenu label="Options">
-        <p:menuitem value="Save" actionListener="#{bean.save}" update="comp"/>
-        <p:menuitem value="Update" actionListener="#{bean.update}" ajax="false"/>
+        <p:menuitem value="Save" action="#{bean.save}" update="comp"/>
+        <p:menuitem value="Update" action="#{bean.update}" ajax="false"/>
         <p:menuitem value="Navigate" url="http://www.primefaces.org"/>
     </p:submenu>
 </p:menu>

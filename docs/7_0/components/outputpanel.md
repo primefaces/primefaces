@@ -43,7 +43,7 @@ doesn’t exist.
 <p:dataTable id="tbl" rendered="#{bean.condition}" ...>
     //columns
 </p:dataTable>
-<p:commandButton update="tbl" actionListener="#{bean.search}" />
+<p:commandButton update="tbl" action="#{bean.search}" />
 ```
 Solution is to use the outputPanel as a placeHolder.
 
@@ -53,7 +53,7 @@ Solution is to use the outputPanel as a placeHolder.
         //columns
     </p:dataTable>
 </p:outputPanel>
-<p:commandButton update="out" actionListener="#{bean.list}" />
+<p:commandButton update="out" action="#{bean.list}" />
 ```
 **Note** that you won’t need an outputPanel if commandButton has no update attribute specified, in
 this case parent form will be updated partially implicitly making an outputPanel use obselete.

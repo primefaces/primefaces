@@ -43,7 +43,8 @@ public abstract class ChipsBase extends HtmlInputText implements Widget, InputHo
         widgetVar,
         max,
         inputStyle,
-        inputStyleClass
+        inputStyleClass,
+        addOnBlur
     }
 
     public ChipsBase() {
@@ -93,6 +94,14 @@ public abstract class ChipsBase extends HtmlInputText implements Widget, InputHo
 
     public void setInputStyleClass(String inputStyleClass) {
         getStateHelper().put(PropertyKeys.inputStyleClass, inputStyleClass);
+    }
+
+    public boolean isAddOnBlur() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.addOnBlur, false);
+    }
+
+    public void setAddOnBlur(boolean addOnBlur) {
+        getStateHelper().put(PropertyKeys.addOnBlur, addOnBlur);
     }
 
     @Override

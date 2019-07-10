@@ -1817,9 +1817,13 @@ body .ui-button {
     margin-top: -0.5em;
     right: 0.5em; }
   body .ui-button.ui-button-icon-only {
-    width: 2.143em; }
+    width: 2.143em;
+    overflow: hidden; }
     body .ui-button.ui-button-icon-only .ui-button-text {
-      padding: 0.429em; }
+      padding: 0.429em;
+      text-indent: 0;
+      white-space: nowrap;
+      visibility: hidden; }
     body .ui-button.ui-button-icon-only .ui-icon {
       position: absolute;
       top: 50%;
@@ -1938,6 +1942,14 @@ body .ui-button {
       background-color: #a90000;
       color: #ffffff;
       border-color: #a90000; }
+body .ui-linkbutton.ui-button-icon-only {
+  overflow: visible; }
+  body .ui-linkbutton.ui-button-icon-only .ui-button-text {
+    -webkit-transform: scale(0);
+    -moz-transform: scale(0);
+    -o-transform: scale(0);
+    -ms-transform: scale(0);
+    transform: scale(0); }
 body .ui-selectbooleanbutton,
 body .ui-buttonset:not(.ui-splitbutton) > .ui-button {
   background-color: #dadada;

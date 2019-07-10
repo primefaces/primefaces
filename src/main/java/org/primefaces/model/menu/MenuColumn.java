@@ -25,7 +25,7 @@ package org.primefaces.model.menu;
 
 public interface MenuColumn extends MenuGroup {
 
-    public String getStyle();
+    String getStyle();
 
-    public String getStyleClass();
+    String getStyleClass();
 }

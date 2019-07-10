@@ -32,10 +32,7 @@ import javax.faces.event.PhaseId;
 
 import java.io.IOException;
 
-import org.primefaces.component.api.AjaxSource;
-import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.AjaxRequestBuilder;
 
 public class RemoteCommandRenderer extends CoreRenderer {
 
@@ -60,28 +57,10 @@ public class RemoteCommandRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         RemoteCommand command = (RemoteCommand) component;
-        AjaxSource source = command;
         String clientId = command.getClientId(context);
         String name = resolveName(command, context);
 
-        AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
-
-        String request = builder.init()
-                .source(clientId)
-                .form(source, command)
-                .process(component, source.getProcess())
-                .update(component, source.getUpdate())
-                .async(source.isAsync())
-                .global(source.isGlobal())
-                .delay(source.getDelay())
-                .timeout(source.getTimeout())
-                .partialSubmit(source.isPartialSubmit(), command.isPartialSubmitSet(), command.getPartialSubmitFilter())
-                .resetValues(source.isResetValues(), source.isResetValuesSet())
-                .ignoreAutoUpdate(source.isIgnoreAutoUpdate())
-                .onstart(source.getOnstart())
-                .onerror(source.getOnerror())
-                .onsuccess(source.getOnsuccess())
-                .oncomplete(source.getOncomplete())
+        String request = preConfiguredAjaxRequestBuilder(context, command)
                 .passParams()
                 .build();
 

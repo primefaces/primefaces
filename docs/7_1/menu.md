@@ -10,11 +10,17 @@
 - Core
 
   - [Search Expression](/core/searchexpression.md)
-  - [Client Side Validation](/core/clientsidevalidation.md)  
+  - [Client Side Validation](/core/clientsidevalidation.md)
   - [Dialog Framework](/core/dialogframework.md)
   - [Error Handling](/core/errorhandling.md)
   - [BeanValidation Transformation](/core/beanvalidationtransformation.md)
-  - [Misc](/core/misc.md)
+  - [Java API](/core/javaAPI.md)
+  - [Javascript API](/core/javascriptAPI.md)
+  - [EL Functions](/core/elFunctions.md)
+  - [Localization](/core/localization.md)
+  - [Accessibility](/core/accessibility.md)
+  - [Responsive Design](/core/responsive.md)
+  - [Portlets](/core/portlets.md)
 
 - AJAX
 

@@ -458,7 +458,7 @@ if (!PrimeFaces.ajax) {
                             else {
                                 componentPostParams = jqProcess.find(partialSubmitFilter).serializeArray();
                             }
-                            
+
                             postParams = PrimeFaces.ajax.Request.arrayCompare(componentPostParams, postParams);
 
                             if (cfg.ext && cfg.ext.partialSubmitParameterFilter) {
@@ -577,12 +577,12 @@ if (!PrimeFaces.ajax) {
                     .always(function(data, status, xhr) {
                         // first call the extension callback (e.g. datatable paging)
                         if(cfg.ext && cfg.ext.oncomplete) {
-                            cfg.ext.oncomplete.call(this, xhr, status, xhr.pfArgs);
+                            cfg.ext.oncomplete.call(this, xhr, status, xhr.pfArgs, data);
                         }
 
                         // after that, call the endusers callback, which should be called when everything is ready
                         if(cfg.oncomplete) {
-                            cfg.oncomplete.call(this, xhr, status, xhr.pfArgs);
+                            cfg.oncomplete.call(this, xhr, status, xhr.pfArgs, data);
                         }
 
                         if(global) {
@@ -670,7 +670,7 @@ if (!PrimeFaces.ajax) {
 
                 return null;
             },
-            
+
             arrayCompare: function(arr1, arr2) {
                 // loop arr1 params
                 $.each(arr1, function(index1, param1) {
@@ -682,7 +682,7 @@ if (!PrimeFaces.ajax) {
                         return true;
                     });
                 });
-                
+
                 return arr2;
             }
         },

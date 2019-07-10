@@ -199,7 +199,8 @@ public class ChipsRenderer extends InputRenderer {
         String clientId = chips.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Chips", chips.resolveWidgetVar(), clientId)
-                .attr("max", chips.getMax(), Integer.MAX_VALUE);
+                .attr("max", chips.getMax(), Integer.MAX_VALUE)
+                .attr("addOnBlur", chips.isAddOnBlur(), false);
 
         encodeClientBehaviors(context, chips);
 

@@ -72,7 +72,8 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
         responsive,
         tabindex,
         filterEvent,
-        filterDelay
+        filterDelay,
+        escapeValue
     }
 
     public PickListBase() {
@@ -354,6 +355,14 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
 
     public void setEscape(boolean escape) {
         getStateHelper().put(PropertyKeys.escape, escape);
+    }
+
+    public boolean isEscapeValue() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.escapeValue, true);
+    }
+
+    public void setEscapeValue(boolean escapeValue) {
+        getStateHelper().put(PropertyKeys.escapeValue, escapeValue);
     }
 
     @Override

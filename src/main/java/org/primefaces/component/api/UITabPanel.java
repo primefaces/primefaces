@@ -45,6 +45,8 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.model.CollectionDataModel;
+import org.primefaces.model.IterableDataModel;
 
 /**
  * UITabPanel is a specialized version of UIRepeat focusing on components that repeat tabs like tabView and accordionPanel.
@@ -177,8 +179,17 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         else if (OBJECT_ARRAY_CLASS.isAssignableFrom(value.getClass())) {
             return new ArrayDataModel((Object[]) value);
         }
+        else if (value instanceof Collection) {
+            return new CollectionDataModel((Collection) value);
+        }
+        else if (value instanceof Iterable) {
+            return new IterableDataModel((Iterable<?>) value);
+        }
         else if (value instanceof ResultSet) {
             return new ResultSetDataModel((ResultSet) value);
+        }
+        else if (value instanceof Map) {
+            return new IterableDataModel(((Map<?, ?>) value).entrySet());
         }
         else {
             return new ScalarDataModel(value);

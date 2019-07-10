@@ -417,15 +417,15 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                         break;
                     }
 
-                   
+
                     var matchedOptions = null,
                     metaKey = e.metaKey||e.ctrlKey||e.shiftKey;
 
                     if(!metaKey) {
                         clearTimeout($this.searchTimer);
-                        
+
                         // #4682: check for word match
-                        var text = $(this).val(); 
+                        var text = $(this).val();
                         matchedOptions = $this.matchOptions(text);
                         if(matchedOptions.length) {
                             var highlightItem = $this.items.eq(matchedOptions.index());
@@ -443,7 +443,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                             matchedOptions = $this.matchOptions(text);
                             if(matchedOptions.length) {
                                 var selectedIndex = -1;
-                                
+
                                 // is current selection one of our matches?
                                 matchedOptions.each(function() {
                                    var option = $(this);
@@ -483,7 +483,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }
         });
     },
-  
+
     matchOptions: function(text) {
         return this.options.filter(function() {
             var option = $(this);
@@ -675,9 +675,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         this.panel.css({'display':'block', 'opacity':0, 'pointer-events': 'none'});
-        
+
         this.alignPanel();
-        
+
         this.panel.css({'display':'none', 'opacity':'', 'pointer-events': '', 'z-index': ++PrimeFaces.zindex});
 
         if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
@@ -791,16 +791,19 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 this.label.val('');
             else
                 this.label.val(displayedLabel);
-            
+
             var hasPlaceholder = this.label[0].hasAttribute('placeholder');
             this.updatePlaceholderClass((hasPlaceholder && value === '&nbsp;'));
+        }
+        else if (this.cfg.label) {
+            this.label.text(this.cfg.label);
         }
         else {
             var labelText = this.label.data('placeholder');
             if (labelText == null || labelText == "") {
                 labelText = '&nbsp;';
             }
-            
+
             this.updatePlaceholderClass((value === '&nbsp;' && labelText !== '&nbsp;'));
 
             if (value === '&nbsp;') {
@@ -810,7 +813,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                     this.label.html(labelText);
                 }
             }
-            else {               
+            else {
                 this.label.removeClass('ui-state-disabled');
 
                 var option = null;
@@ -874,21 +877,29 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             this.itemsContainer.children('.ui-selectonemenu-item-group').show();
         }
         else {
+            var hide = [];
+            var show = [];
+
             for(var i = 0; i < this.options.length; i++) {
                 var option = this.options.eq(i),
                 itemLabel = this.cfg.caseSensitive ? option.text() : option.text().toLowerCase(),
                 item = this.items.eq(i);
 
                 if(item.hasClass('ui-noselection-option')) {
-                    item.hide();
+                    hide.push(item);
                 }
                 else {
                     if(this.filterMatcher(itemLabel, filterValue))
-                        item.show();
+                        show.push(item);
                     else
-                        item.hide();
+                        hide.push(item);
                 }
             }
+
+            $.each(hide, function(i, o) { o.hide() });
+            $.each(show, function(i, o) { o.show() });
+            hide = [];
+            show = [];
 
             //Toggle groups
             var groups = this.itemsContainer.children('.ui-selectonemenu-item-group');
@@ -897,17 +908,20 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
                 if(g === (groups.length - 1)) {
                     if(group.nextAll().filter(':visible').length === 0)
-                        group.hide();
+                        hide.push(group);
                     else
-                        group.show();
+                        show.push(group);
                 }
                 else {
                     if(group.nextUntil('.ui-selectonemenu-item-group').filter(':visible').length === 0)
-                        group.hide();
+                        hide.push(group);
                     else
-                        group.show();
+                        show.push(group);
                 }
             }
+
+            $.each(hide, function(i, o) { o.hide() });
+            $.each(show, function(i, o) { o.show() });
         }
 
         var firstVisibleItem = this.items.filter(':visible:not(.ui-state-disabled):first');
@@ -973,7 +987,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
                 return true;
             },
-            oncomplete: function(xhr, status, args) {
+            oncomplete: function(xhr, status, args, data) {
                 $this.isDynamicLoaded = true;
                 $this.input = $($this.jqId + '_input');
                 $this.options = $this.input.children('option');
@@ -1020,7 +1034,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         return this.cfg.appendTo;
     },
-    
+
     updatePlaceholderClass: function(add) {
         if (add) {
             this.label.addClass('ui-selectonemenu-label-placeholder');

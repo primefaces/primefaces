@@ -23,15 +23,17 @@
  */
 package org.primefaces.csp;
 
+import org.owasp.encoder.Encode;
+import org.primefaces.PrimeFaces;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeFacesContext;
+
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.servlet.http.HttpServletResponse;
-import org.primefaces.PrimeFaces;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeFacesContext;
 
 public class CspPhaseListener implements PhaseListener {
 
@@ -56,13 +58,14 @@ public class CspPhaseListener implements PhaseListener {
 
         FacesContext context = event.getFacesContext();
         ExternalContext externalContext = context.getExternalContext();
+        // TODO Support portlet environments?
         if (externalContext.getResponse() instanceof HttpServletResponse) {
             CspState state = PrimeFacesContext.getCspState(context);
 
             HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
-            response.setHeader("Content-Security-Policy", "script-src 'nonce-" + state.getNonce() + "'");
+            response.addHeader("Content-Security-Policy", "script-src 'nonce-" + state.getNonce() + "'");
 
-            PrimeFaces.current().executeScript("PrimeFaces.csp.init('" + state.getNonce() + "');");
+            PrimeFaces.current().executeScript("PrimeFaces.csp.init('" + Encode.forJavaScript(state.getNonce()) + "');");
         }
     }
 

@@ -37,6 +37,10 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
             $this.itemContainer.addClass('ui-state-focus');
         }).on('blur.chips', function() {
             $this.itemContainer.removeClass('ui-state-focus');
+            
+            if ($this.cfg.addOnBlur) {
+                $this.addItem($(this).val(), false);
+            }
         }).on('keydown.chips', function(e) {
             var value = $(this).val();
 
@@ -52,9 +56,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
 
                 //enter
                 case 13:
-                    if(value && value.trim().length && (!$this.cfg.max||$this.cfg.max > $this.hinput.children('option').length)) {
-                        $this.addItem(value);
-                    }
+                    $this.addItem(value, true);
                     e.preventDefault();
                 break;
 
@@ -72,18 +74,24 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
-    addItem : function(value) {
-        var escapedValue = PrimeFaces.escapeHTML(value);
-        var itemDisplayMarkup = '<li class="ui-chips-token ui-state-active ui-corner-all">';
-        itemDisplayMarkup += '<span class="ui-chips-token-icon ui-icon ui-icon-close" />';
-        itemDisplayMarkup += '<span class="ui-chips-token-label">' + escapedValue + '</span></li>';
+    addItem : function(value, refocus) {
+        if(value && value.trim().length && (!this.cfg.max||this.cfg.max > this.hinput.children('option').length)) {
+            var escapedValue = PrimeFaces.escapeHTML(value);
+            var itemDisplayMarkup = '<li class="ui-chips-token ui-state-active ui-corner-all">';
+            itemDisplayMarkup += '<span class="ui-chips-token-icon ui-icon ui-icon-close" />';
+            itemDisplayMarkup += '<span class="ui-chips-token-label">' + escapedValue + '</span></li>';
 
-        this.inputContainer.before(itemDisplayMarkup);
-        this.input.val('').focus();
-        this.input.removeAttr('placeholder');
+            this.inputContainer.before(itemDisplayMarkup);
+            this.input.val('');
+            this.input.removeAttr('placeholder');
+            
+            if (refocus) {
+                this.input.focus();
+            }
 
-        this.hinput.append('<option value="' + escapedValue + '" selected="selected"></option>');
-        this.invokeItemSelectBehavior(escapedValue);
+            this.hinput.append('<option value="' + escapedValue + '" selected="selected"></option>');
+            this.invokeItemSelectBehavior(escapedValue);
+        }
     },
 
     removeItem: function(item) {

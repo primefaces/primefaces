@@ -34,11 +34,11 @@ menuitems can be utilized to do ajax requests, non-ajax requests and simple GET 
 ```xhtml
 <p:panelMenu style="width:200px">
     <p:submenu label="Ajax Menuitems">
-        <p:menuitem value="Save" actionListener="#{buttonBean.save}" />
-        <p:menuitem value="Update" actionListener="#{buttonBean.update}" />
+        <p:menuitem value="Save" action="#{buttonBean.save}" />
+        <p:menuitem value="Update" action="#{buttonBean.update}" />
     </p:submenu>
     <p:submenu label="Non-Ajax Menuitem">
-        <p:menuitem value="Delete" actionListener="#{buttonBean.delete}" ajax="false"/>
+        <p:menuitem value="Delete" action="#{buttonBean.delete}" ajax="false"/>
     </p:submenu>
     <p:submenu label="Navigations" >
         <p:submenu label="Links" icon="ui-icon-extlink">

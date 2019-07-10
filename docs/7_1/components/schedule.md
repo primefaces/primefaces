@@ -37,11 +37,14 @@ centerHeaderTemplate | title | String | Content of center of header.
 rightHeaderTemplate | month, agendaWeek, agendaDay | String | Content of right side of header.
 allDaySlot | true | Boolean | Determines if all-day slot will be displayed in agendaWeek or agendaDay views
 slotDuration | 00:30:00 | String | The frequency for displaying time slots.
+slotLabelInterval | null | String | The frequency that the time slots should be labeled with text. If not specified, a reasonable value will be automatically computed based on slotDuration. When specifying this option, give a Duration-ish input, like "01:00" or {hours:1}. This will cause the header labels to appear on the hour marks, even if slotDuration was hypothetically 15 or 30 minutes long.
+slotLabelFormat | null | String | Determines the text that will be displayed within a time slot. The default English value will produce times that look like 5pm and 5:30pm.
 scrollTime | 06:00:00 | String | Determines how far down the scroll pane is initially scrolled down.
 minTime | null | String | Minimum time to display in a day view.
 maxTime | null | String | Maximum time to display in a day view.
 timeFormat | null | String | Determines the time-text that will be displayed on each event.
-columnFormat | null | String | Format for column headers.
+columnFormat | null | String | Deprecated, use columnHeaderFormat instead. Format for column headers.
+columnHeaderFormat | null | String | Format for column headers.
 timeZone | null | Object | String or a java.util.TimeZone instance to specify the timezone used for date conversion.
 tooltip | false | Boolean | Displays description of events on a tooltip.
 clientTimeZone | null | String | Timezone to define how to interpret the dates at browser. Valid values are "false", "local", "UTC" and ids like "America/Chicago".
@@ -149,7 +152,7 @@ Let’s put it altogether to come up a fully editable and complex schedule.
             <h:outputLabel for="allDay" value="All Day:" />
             <h:selectBooleanCheckbox id="allDay" value="#{bean.event.allDay}" />
             <p:commandButton type="reset" value="Reset" />
-            <p:commandButton value="Save" actionListener="#{bean.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
+            <p:commandButton value="Save" action="#{bean.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
         </h:panelGrid>
     </p:dialog>
 </h:form>
@@ -157,35 +160,42 @@ Let’s put it altogether to come up a fully editable and complex schedule.
 
 ```java
 public class ScheduleBean {
-    private ScheduleModel<ScheduleEvent> model;
-    private ScheduleEventImpl event = new DefaultScheduleEvent();
 
-    public ScheduleBean() {
-        eventModel = new ScheduleModel<ScheduleEvent>();
-    }
-    public ScheduleModel<ScheduleEvent> getModel() { 
-        return model; 
-    }
-    public ScheduleEventImpl getEvent() { 
-        return event; 
-    }
-    public void setEvent(ScheduleEventImpl event) { 
-        this.event = event; 
-    }
-    public void addEvent() {
-        if(event.getId() == null)
-            eventModel.addEvent(event);
-        else
-            eventModel.updateEvent(event);
-        event = new DefaultScheduleEvent(); //reset dialog form
-    }
-    public void onEventSelect(SelectEvent e) {
-        event = (ScheduleEvent) e.getObject();
-    }
-    public void onDateSelect(SelectEvent e) {
-        Date date = (Date) e.getObject();
-        event = new DefaultScheduleEvent("", date, date);
-    }
+  private ScheduleModel model;
+  private ScheduleEvent event = new DefaultScheduleEvent();
+
+  public ScheduleBean() {
+    model = new DefaultScheduleModel();
+  }
+
+  public ScheduleModel getModel() {
+    return model;
+  }
+
+  public ScheduleEvent getEvent() {
+    return event;
+  }
+
+  public void setEvent(ScheduleEvent event) {
+    this.event = event;
+  }
+
+  public void addEvent() {
+    if (event.getId() == null)
+      model.addEvent( event );
+    else
+      model.updateEvent(event);
+    event = new DefaultScheduleEvent(); //reset dialog form
+  }
+
+  public void onEventSelect(SelectEvent e) {
+    event = (ScheduleEvent)e.getObject();
+  }
+
+  public void onDateSelect(SelectEvent e) {
+    Date date = (Date)e.getObject();
+    event = new DefaultScheduleEvent("", date, date);
+  }
 }
 ```
 ## Lazy Loading

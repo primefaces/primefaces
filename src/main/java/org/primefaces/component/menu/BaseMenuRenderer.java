@@ -23,37 +23,23 @@
  */
 package org.primefaces.component.menu;
 
-import java.io.IOException;
-import java.util.*;
-
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.component.UIParameter;
-import javax.faces.component.behavior.ClientBehavior;
-import javax.faces.component.behavior.ClientBehaviorContext;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.event.PhaseId;
-
-import org.primefaces.behavior.confirm.ConfirmBehavior;
-import org.primefaces.component.api.AjaxSource;
-import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.event.MenuActionEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.menu.*;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
-import org.primefaces.util.ComponentTraversalUtils;
-import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.event.PhaseId;
+import java.io.IOException;
+import java.util.*;
 
 public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 
     public static final String SEPARATOR = "_";
-
-    private static final String SB_BUILD_NON_AJAX_REQUEST = BaseMenuRenderer.class.getName() + "#buildNonAjaxRequest";
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -61,8 +47,8 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         String clientId = menu.getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        if (params.containsKey(clientId)) {
-            String menuid = params.get(clientId + "_menuid");
+        String menuid = params.get(clientId + "_menuid");
+        if (menuid != null) {
             MenuItem menuitem = findMenuitem(menu.getElements(), menuid);
             MenuActionEvent event = new MenuActionEvent(menu, menuitem);
 
@@ -168,84 +154,12 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
             writer.writeAttribute("onclick", "return false;", null);
         }
         else if (!menuitem.shouldRenderChildren()) {
-            setConfirmationScript(context, menuitem);
-            String onclick = menuitem.getOnclick();
-
-            //GET
-            if (menuitem.getUrl() != null || menuitem.getOutcome() != null) {
-                String targetURL = getTargetURL(context, (UIOutcomeTarget) menuitem);
-                writer.writeAttribute("href", targetURL, null);
-
-                if (menuitem.getTarget() != null) {
-                    writer.writeAttribute("target", menuitem.getTarget(), null);
-                }
-            }
-            //POST
-            else {
-                writer.writeAttribute("href", "#", null);
-
-                UIForm form = ComponentTraversalUtils.closestForm(context, menu);
-                if (form == null) {
-                    throw new FacesException("MenuItem must be inside a form element");
-                }
-
-                String command;
-                if (menuitem.isDynamic()) {
-                    String menuClientId = menu.getClientId(context);
-                    Map<String, List<String>> params = menuitem.getParams();
-                    if (params == null) {
-                        params = new LinkedHashMap<>();
-                    }
-                    List<String> idParams = new ArrayList<>();
-                    idParams.add(menuitem.getId());
-                    params.put(menuClientId + "_menuid", idParams);
-
-                    command = menuitem.isAjax()
-                              ? buildAjaxRequest(context, menu, (AjaxSource) menuitem, form, params)
-                              : buildNonAjaxRequest(context, menu, form, menuClientId, params, true);
-                }
-                else {
-                    command = menuitem.isAjax()
-                              ? buildAjaxRequest(context, (AjaxSource) menuitem, form)
-                              : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
-                }
-
-                onclick = (onclick == null) ? command : onclick + ";" + command;
-            }
-
-            if (onclick != null) {
-                if (menuitem.requiresConfirmation()) {
-                    writer.writeAttribute("data-pfconfirmcommand", onclick, null);
-                    writer.writeAttribute("onclick", menuitem.getConfirmationScript(), "onclick");
-                }
-                else {
-                    writer.writeAttribute("onclick", onclick, null);
-                }
-            }
+            encodeOnClick(context, menu, menuitem);
         }
 
         encodeMenuItemContent(context, menu, menuitem);
 
         writer.endElement("a");
-    }
-
-    protected void setConfirmationScript(FacesContext context, MenuItem item) {
-        if (item instanceof ClientBehaviorHolder) {
-            Map<String, List<ClientBehavior>> behaviors = ((ClientBehaviorHolder) item).getClientBehaviors();
-            List<ClientBehavior> clickBehaviors = (behaviors == null) ? null : behaviors.get("click");
-
-            if (clickBehaviors != null && !clickBehaviors.isEmpty()) {
-                for (int i = 0; i < clickBehaviors.size(); i++) {
-                    ClientBehavior clientBehavior = clickBehaviors.get(i);
-                    if (clientBehavior instanceof ConfirmBehavior) {
-                        ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
-                                context, (UIComponent) item, "click", item.getClientId(), Collections.EMPTY_LIST);
-                        clientBehavior.getScript(cbc);
-                        break;
-                    }
-                }
-            }
-        }
     }
 
     protected boolean shouldRenderId(MenuElement element) {
@@ -265,6 +179,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         if (icon != null) {
             writer.startElement("span", null);
             writer.writeAttribute("class", AbstractMenu.MENUITEM_ICON_CLASS + " " + icon, null);
+            writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
             writer.endElement("span");
         }
 
@@ -322,57 +237,6 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
-    }
-
-    protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam,
-                                         Map<String, List<String>> parameters, boolean submit) {
-
-        StringBuilder request = SharedStringBuilder.get(context, SB_BUILD_NON_AJAX_REQUEST);
-        String formId = form.getClientId(context);
-        Map<String, Object> params = new HashMap<>();
-
-        if (decodeParam != null) {
-            params.put(decodeParam, decodeParam);
-        }
-
-        for (UIComponent child : component.getChildren()) {
-            if (child instanceof UIParameter && child.isRendered()) {
-                UIParameter param = (UIParameter) child;
-                params.put(param.getName(), param.getValue());
-            }
-        }
-
-        if (parameters != null && !parameters.isEmpty()) {
-            for (Iterator<String> it = parameters.keySet().iterator(); it.hasNext(); ) {
-                String paramName = it.next();
-                params.put(paramName, parameters.get(paramName).get(0));
-            }
-        }
-
-        //append params
-        if (!params.isEmpty()) {
-            request.append("PrimeFaces.addSubmitParam(\"").append(formId).append("\",{");
-
-            for (Iterator<String> it = params.keySet().iterator(); it.hasNext(); ) {
-                String key = it.next();
-                Object value = params.get(key);
-                String valueStr = value == null ? null : EscapeUtils.forJavaScript(value.toString());
-
-                request.append("\"").append(EscapeUtils.forJavaScript(key)).append("\":\"").append(valueStr).append("\"");
-
-                if (it.hasNext()) {
-                    request.append(",");
-                }
-            }
-
-            request.append("})");
-        }
-
-        if (submit) {
-            request.append(".submit(\"").append(formId).append("\");return false;");
-        }
-
-        return request.toString();
     }
 
     protected void encodeKeyboardTarget(FacesContext context, AbstractMenu menu) throws IOException {
