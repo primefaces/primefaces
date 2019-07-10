@@ -195,7 +195,7 @@ public class TreeNodeChildren extends TreeNodeList {
         }
 
         int index = super.indexOf(node);
-        if (index != -1) {
+        if (super.remove(node)) {
             updateRowKeys(index, parent);
             return true;
         }
@@ -219,7 +219,7 @@ public class TreeNodeChildren extends TreeNodeList {
         int childCount = node.getChildCount();
         if (childCount > 0) {
             for (int i = index; i < childCount; i++) {
-                TreeNode childNode = (TreeNode) node.getChildren().get(i);
+                TreeNode childNode = node.getChildren().get(i);
                 updateRowKeys(node, childNode, i);
             }
         }
