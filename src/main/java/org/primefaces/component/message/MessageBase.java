@@ -42,7 +42,8 @@ public abstract class MessageBase extends UIMessage implements UINotification, W
         escape,
         severity,
         style,
-        styleClass
+        styleClass,
+        skipDetailIfEqualsSummary
     }
 
     public MessageBase() {
@@ -93,6 +94,15 @@ public abstract class MessageBase extends UIMessage implements UINotification, W
 
     public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+    @Override
+    public boolean isSkipDetailIfEqualsSummary() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.skipDetailIfEqualsSummary, false);
+    }
+
+    public void setSkipDetailIfEqualsSummary(boolean skipDetailIfEqualsSummary) {
+        getStateHelper().put(PropertyKeys.skipDetailIfEqualsSummary, skipDetailIfEqualsSummary);
     }
 
     @Override

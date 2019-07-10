@@ -29,6 +29,7 @@ escape | true | Boolean | Defines whether html would be escaped or not.
 severity | null | String | Comma separated list of severities to display only.
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the component.
+skipDetailIfEqualsSummary | false | Boolean | Defines if rendering of the detail text should be skipped, if the detail and summaray are equals.
 
 ## Getting started with Message
 Message usage is exactly same as standard message.

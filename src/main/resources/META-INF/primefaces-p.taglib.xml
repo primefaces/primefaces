@@ -10396,6 +10396,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if rendering of the detail text should be skipped, if the detail and summaray are equals. Default is false.]]>
+            </description>
+            <name>skipDetailIfEqualsSummary</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -15850,7 +15858,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[Message is a pre-skinned extended version of the standard JSF message component with extensions.]]>
         </description>
         <tag-name>message</tag-name>
         <component>
@@ -15953,10 +15961,18 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if rendering of the detail text should be skipped, if the detail and summaray are equals. Default is false.]]>
+            </description>
+            <name>skipDetailIfEqualsSummary</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
-            <![CDATA[Message is a pre-skinned extended version of the standard JSF message component with extensions.]]>
+            <![CDATA[Messages is a pre-skinned extended version of the standard JSF messages component with extensions.]]>
         </description>
         <tag-name>messages</tag-name>
         <component>
@@ -16091,6 +16107,14 @@
             <name>forIgnores</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if rendering of the detail text should be skipped, if the detail and summaray are equals. Default is false.]]>
+            </description>
+            <name>skipDetailIfEqualsSummary</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
     <tag>
