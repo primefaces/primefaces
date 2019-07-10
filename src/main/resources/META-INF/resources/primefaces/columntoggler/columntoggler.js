@@ -59,7 +59,8 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             boxClass = hidden ? 'ui-chkbox-box ui-widget ui-corner-all ui-state-default' : 'ui-chkbox-box ui-widget ui-corner-all ui-state-default ui-state-active',
             iconClass = (hidden) ? 'ui-chkbox-icon ui-icon ui-icon-blank' : 'ui-chkbox-icon ui-icon ui-icon-check',
             columnChildren = column.children('.ui-column-title'),
-            columnTitle = columnChildren.text();
+            columnTitle = columnChildren.text(),
+            columnTogglerCheckboxId = this.tableId + "_columnTogglerChkbx" + i;
             
             var label = columnChildren.find('label');
             if (label.length) {
@@ -70,10 +71,9 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
 
             var item = $('<li class="ui-columntoggler-item">' +
                     '<div class="ui-chkbox ui-widget">' +
-                    '<div class="ui-helper-hidden-accessible"><input type="checkbox" role="checkbox"></div>' +
-                    '<div class="' + boxClass + '"><span class="' + iconClass + '"></span></div>' +
-                    '</div>'
-                    + '<label>' + PrimeFaces.escapeHTML(columnTitle) + '</label></li>').data('column', column.attr('id'));
+                    '<div role="checkbox" tabindex="0" aria-checked="'+ !hidden + '" aria-labelledby="'+ columnTogglerCheckboxId + '" class="' + boxClass + '">' +
+                    '<span class="' + iconClass + '"></span></div></div>' +
+                    '<label id="' + columnTogglerCheckboxId + '">' + PrimeFaces.escapeHTML(columnTitle) + '</label></li>').data('column', column.attr('id'));
 
             if(this.hasPriorityColumns) {
                 var columnClasses = column.attr('class').split(' ');
@@ -84,10 +84,6 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                         item.addClass(columnClass.substring(pindex , pindex + 13));
                     }
                 }
-            }
-
-            if(!hidden) {
-                item.find('> .ui-chkbox > .ui-helper-hidden-accessible > input').prop('checked', true).attr('aria-checked', true);
             }
 
             item.appendTo(this.itemContainer);
@@ -163,7 +159,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
 
     bindKeyEvents: function() {
         var $this = this,
-        inputs = this.itemContainer.find('> li > div.ui-chkbox > div.ui-helper-hidden-accessible > input');
+        inputs = this.itemContainer.find('> li > div.ui-chkbox > div.ui-chkbox-box');
 
         this.trigger.on('focus.columnToggler', function() {
             $(this).addClass('ui-state-focus');
@@ -187,7 +183,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
 
                 case keyCode.TAB:
                     if($this.visible) {
-                        $this.itemContainer.children('li:not(.ui-state-disabled):first').find('div.ui-helper-hidden-accessible > input').trigger('focus');
+                        $this.itemContainer.children('li:not(.ui-state-disabled):first').find('div.ui-chkbox-box').trigger('focus');
                         e.preventDefault();
                     }
                 break;
@@ -195,45 +191,45 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         });
 
         inputs.on('focus.columnToggler', function() {
-            var input = $(this),
-            box = input.parent().next();
-
-            box.addClass('ui-state-focus');
-
+            $(this).addClass('ui-state-focus');
             //PrimeFaces.scrollInView($this.panel, box);
         })
         .on('blur.columnToggler', function(e) {
-            var input = $(this),
-            box = input.parent().next();
-
-            box.removeClass('ui-state-focus');
+            $(this).removeClass('ui-state-focus');
         })
         .on('keydown.columnToggler', function(e) {
-            if(e.which === $.ui.keyCode.TAB) {
-                var index = $(this).closest('li').index();
-                if(e.shiftKey) {
-                    if(index === 0)
-                        $this.closer.focus();
-                    else
-                        inputs.eq(index - 1).focus();
-                }
-                else {
-                    if(index === ($this.columns.length - 1) && !e.shiftKey)
-                        $this.closer.focus();
-                    else
-                        inputs.eq(index + 1).focus();
-                }
+            var keyCode = $.ui.keyCode,
+            key = e.which;
 
-                e.preventDefault();
+            switch(key) {
+                case keyCode.TAB:
+                    var index = $(this).closest('li').index();
+                    if(e.shiftKey) {
+                        if(index === 0)
+                            $this.closer.focus();
+                        else
+                            inputs.eq(index - 1).focus();
+                    }
+                    else {
+                        if(index === ($this.columns.length - 1) && !e.shiftKey)
+                            $this.closer.focus();
+                        else
+                            inputs.eq(index + 1).focus();
+                    }
+
+                    e.preventDefault();
+                    break;
+                case keyCode.ENTER:
+                case keyCode.SPACE:
+                    $this.toggle($(this));
+                    e.preventDefault();
+                    break;
             }
         })
         .on('change.columnToggler', function(e) {
-            var input = $(this),
-            box = input.parent().next();
-
-            if(input.prop('checked')) {
+            if($(this).attr('aria-checked')) {
                 $this.check(box);
-                box.removeClass('ui-state-active');
+                $(this).removeClass('ui-state-active');
             }
             else {
                 $this.uncheck(box);
@@ -279,10 +275,9 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         tfoot = this.hasFrozenColumn ? (column.hasClass('ui-frozen-column') ? this.tfoot.eq(0) : this.tfoot.eq(1)) : this.tfoot;
 
         var rowHeader = thead.children('tr'),
-        columnHeader = rowHeader.find('th:nth-child(' + index + ')'),
-        checkedInput = chkbox.prev().children('input');
+        columnHeader = rowHeader.find('th:nth-child(' + index + ')');
 
-        checkedInput.prop('checked', true).attr('aria-checked', true);
+        chkbox.attr('aria-checked', true);
         columnHeader.removeClass('ui-helper-hidden');
         $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).removeClass('ui-helper-hidden');
         tbody.children('tr').find('td:nth-child(' + index + ')').removeClass('ui-helper-hidden');
@@ -318,10 +313,9 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         tfoot = this.hasFrozenColumn ? (column.hasClass('ui-frozen-column') ? this.tfoot.eq(0) : this.tfoot.eq(1)) : this.tfoot;
 
         var rowHeader = thead.children('tr'),
-        columnHeader = rowHeader.find('th:nth-child(' + index + ')'),
-        uncheckedInput = chkbox.prev().children('input');
+        columnHeader = rowHeader.find('th:nth-child(' + index + ')');
 
-        uncheckedInput.prop('checked', false).attr('aria-checked', false);
+        chkbox.attr('aria-checked', false);
         columnHeader.addClass('ui-helper-hidden');
         $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).addClass('ui-helper-hidden');
         tbody.children('tr').find('td:nth-child(' + index + ')').addClass('ui-helper-hidden');
