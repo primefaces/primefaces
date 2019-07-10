@@ -15,13 +15,13 @@ Poll is an ajax component that has the ability to send periodical ajax requests.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component.
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
 widgetVar | null | String | Name of the client side widget.
-interval | 2 | Integer | Interval in seconds to do periodic ajax requests.
+interval | 2 | Integer, java.time.Duration | Interval in seconds to do periodic ajax requests.
 process | @all | String | Component id(s) to process partially instead of whole view.
 update | @none | String | Component(s) to be updated with ajax.
 listener | null | MethodExpr | A method expression to invoke by polling.

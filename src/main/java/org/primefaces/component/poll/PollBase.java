@@ -78,11 +78,11 @@ public abstract class PollBase extends UIComponentBase implements AjaxSource, Wi
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public int getInterval() {
+    public Object getInterval() {
         return (Integer) getStateHelper().eval(PropertyKeys.interval, 2);
     }
 
-    public void setInterval(int interval) {
+    public void setInterval(Object interval) {
         getStateHelper().put(PropertyKeys.interval, interval);
     }
 
