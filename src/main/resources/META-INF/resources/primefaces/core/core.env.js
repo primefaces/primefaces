@@ -123,6 +123,35 @@ if (!PrimeFaces.env) {
 
         isLtIE: function(version) {
             return (this.browser.msie) ? parseInt(this.browser.version, 10) < version : false;
+        },
+
+        /**
+         * Get the current media size of the browser.
+         *
+         * @return int mode represented in 5 down to 0 from largest to smallest
+         */
+        getMediaSize : function() {
+            var size;
+            if (window.matchMedia('(min-width: 960px) and (max-width:1200px)').matches) {
+                /* Large desktop */
+                size = 5;
+            } else if (window.matchMedia('(min-width: 960px)').matches) {
+                /* Intermediate sized desktop */   
+               size = 4;
+            } else if (window.matchMedia('(min-width: 640px) and (max-width: 960px)').matches) {   
+                /* Portrait tablet to landscape and small desktop */
+                size = 3
+            } else if (window.matchMedia('(min-width:480px) and (max-width: 640px)').matches) {   
+                /* Landscape phone to portrait tablet */
+                size = 2;
+            } else  if (window.matchMedia('(min-width:320px) and (max-width: 480px)').matches) {
+                /* Portrait phones and down */
+                size = 1;
+            } else {
+                /* Extremely small */
+                size = 0;
+            }
+            return size;
         }
     };
 
