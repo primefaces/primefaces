@@ -315,8 +315,9 @@ public class DataTable extends DataTableBase {
                         columnFilterValueVE.setValue(eLContext, fm.getFilterValue());
                         dynamicColumn.cleanStatelessModel();
                     }
-
-                    columnFilterValueVE.setValue(eLContext, fm.getFilterValue());
+                    else {
+                        columnFilterValueVE.setValue(eLContext, fm.getFilterValue());
+                    }
                 }
             }
         }
