@@ -87,7 +87,7 @@ public class DataScrollerRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
         if (style != null) {
-            writer.writeAttribute("style", styleClass, null);
+            writer.writeAttribute("style", style, null);
         }
 
         if (header != null && header.isRendered()) {
