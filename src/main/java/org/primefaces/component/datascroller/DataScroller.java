@@ -45,9 +45,14 @@ public class DataScroller extends DataScrollerBase {
     public static final String ITEM_CLASS = "ui-datascroller-item";
     public static final String LOADER_CLASS = "ui-datascroller-loader";
     public static final String LOADING_CLASS = "ui-datascroller-loading";
+    public static final String VIRTUALSCROLL_WRAPPER_CLASS = "ui-datascroller-virtualscroll-wrapper";
 
     public boolean isLoadRequest() {
         FacesContext context = getFacesContext();
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_load");
+    }
+
+    public boolean isVirtualScrollingRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_virtualScrolling");
     }
 }
