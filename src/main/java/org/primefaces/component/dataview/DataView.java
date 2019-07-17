@@ -24,6 +24,7 @@
 package org.primefaces.component.dataview;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import javax.faces.application.ResourceDependencies;
@@ -33,8 +34,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
+import javax.faces.model.DataModel;
 
+import org.primefaces.PrimeFaces;
 import org.primefaces.event.data.PageEvent;
+import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
@@ -138,5 +142,19 @@ public class DataView extends DataViewBase {
         }
     }
 
+    public void loadLazyData() {
+        DataModel model = getDataModel();
+        if (model instanceof LazyDataModel) {
+            LazyDataModel lazyModel = (LazyDataModel) model;
+            List<?> data = lazyModel.load(getFirst(), getRows(), null, null, null);
 
+            lazyModel.setPageSize(getRows());
+            lazyModel.setWrappedData(data);
+
+            //Update paginator
+            if (ComponentUtils.isRequestSource(this, getFacesContext()) && isPaginator() ) {
+                PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
+            }
+        }
+    }
 }
