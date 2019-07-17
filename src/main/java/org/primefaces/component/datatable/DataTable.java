@@ -1567,7 +1567,7 @@ public class DataTable extends DataTableBase {
         String viewId = fc.getViewRoot().getViewId();
 
         return PrimeFaces.current().multiViewState()
-                .getMultiViewState(viewId, getClientId(fc), create, TableState::new);
+                .get(viewId, getClientId(fc), create, TableState::new);
     }
 
     public String getGroupedColumnIndexes() {

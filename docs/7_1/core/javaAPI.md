@@ -21,10 +21,11 @@ isAjaxRequest() | Returns a boolean value if current request is a PrimeFaces aja
 scrollTo(String clientId) | Scrolls to the component with given clientId after ajax request completes.
 focus(String expression) | Focus the input(s) targeted by the given search expression.
 resetInputs(Collection<String>/String... expressions) | Resets all UIInput targeted by the search expression(s).
-clearTableStates() | Removes the multiViewState for all DataTables within the current session.
-clearTableState(String key) | Removes the multiViewState for DataTable with the defined key.
-clearDataListStates() | Removes the multiViewState for all DataList within the current session.
-clearDataListState(String key) | Removes the multiViewState for DataList with the defined key.
+multiViewState().clearAll() | Removes all multiViewState within the current session.
+multiViewState().clearAll(String viewId) | Removes all multiViewState in specific view within the current session.
+multiViewState().clear(String viewId, Consumer<String> clientIdConsumer) | Removes all multiViewState in specific view within the current session.
+multiViewState().clear(String viewId, String clientId) | Removes multiViewState of a component in specific view within the current session.
+multiViewState().get(String viewId, String clientId, boolean create, Supplier<T> supplier) | Gets multiview state bean attached to a component in a specific view.
 ajax().addCallBackParam(String name, Object value) | Adds parameters to ajax callbacks like oncomplete.
 ajax().update(Collection<String>/String... expressions); | Specifies component(s) to update at runtime.
 
