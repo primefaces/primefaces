@@ -574,7 +574,7 @@ public abstract class CoreRenderer extends Renderer {
         }
     }
 
-    protected void decodeBehaviors(FacesContext context, UIComponent component) {
+    public static void decodeBehaviors(FacesContext context, UIComponent component) {
         if (!(component instanceof ClientBehaviorHolder)) {
             return;
         }

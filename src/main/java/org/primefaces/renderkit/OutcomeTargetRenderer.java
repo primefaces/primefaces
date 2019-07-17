@@ -23,12 +23,15 @@
  */
 package org.primefaces.renderkit;
 
+import org.primefaces.application.DialogReturn;
 import org.primefaces.behavior.confirm.ConfirmBehavior;
 import org.primefaces.component.api.AjaxSource;
+import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.Constants;
 
 import javax.faces.FacesException;
 import javax.faces.application.ConfigurableNavigationHandler;
@@ -266,6 +269,15 @@ public class OutcomeTargetRenderer extends CoreRenderer {
             }
             else {
                 writer.writeAttribute("onclick", onclick, null);
+            }
+        }
+
+        if (menuitem instanceof DialogReturn) {
+            List<ClientBehaviorContext.Parameter> behaviorParams = new ArrayList<>();
+            behaviorParams.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
+            String dialogReturnBehavior = getEventBehaviors(context, (ClientBehaviorHolder) menuitem, "dialogReturn", behaviorParams);
+            if (dialogReturnBehavior != null) {
+                writer.writeAttribute("data-dialogreturn", dialogReturnBehavior, null);
             }
         }
     }

@@ -23,9 +23,9 @@
  */
 package org.primefaces.component.menuitem;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import org.primefaces.application.DialogReturn;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 
 import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
@@ -33,37 +33,36 @@ import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.BehaviorEvent;
-
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.MapBuilder;
+import javax.faces.event.FacesEvent;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 
 public class UIMenuItem extends UIMenuItemBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.UIMenuItem";
 
-    private static final String DEFAULT_EVENT = "click";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("click", null)
-            .build();
-
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
     private String confirmationScript;
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
+        return DialogReturn.BEHAVIOR_EVENT_MAPPING;
     }
 
     @Override
     public Collection<String> getEventNames() {
-        return EVENT_NAMES;
+        return DialogReturn.EVENT_NAMES;
     }
 
     @Override
     public String getDefaultEventName() {
-        return DEFAULT_EVENT;
+        return DialogReturn.DEFAULT_EVENT;
+    }
+
+    @Override
+    public void queueEvent(FacesEvent event) {
+        handleEvent(event, this, super::queueEvent);
     }
 
     @Override
@@ -74,6 +73,8 @@ public class UIMenuItem extends UIMenuItemBase {
         if (params.containsKey(clientId)) {
             queueEvent(new ActionEvent(this));
         }
+
+        CoreRenderer.decodeBehaviors(facesContext, this);
     }
 
     @Override

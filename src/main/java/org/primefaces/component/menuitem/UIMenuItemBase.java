@@ -23,19 +23,17 @@
  */
 package org.primefaces.component.menuitem;
 
-import javax.faces.component.UICommand;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
+import org.primefaces.application.DialogReturn;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.Confirmable;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.SerializableFunction;
 
+import javax.faces.component.UICommand;
 
-public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcomeTarget, MenuItem, Confirmable,
-        ClientBehaviorHolder, PrimeClientBehaviorHolder {
+
+public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcomeTarget, MenuItem, Confirmable, DialogReturn {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

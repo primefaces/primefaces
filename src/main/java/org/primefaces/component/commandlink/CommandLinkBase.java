@@ -23,14 +23,14 @@
  */
 package org.primefaces.component.commandlink;
 
-import javax.faces.component.html.HtmlCommandLink;
-
+import org.primefaces.application.DialogReturn;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.Confirmable;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
+
+import javax.faces.component.html.HtmlCommandLink;
 
 
-public abstract class CommandLinkBase extends HtmlCommandLink implements AjaxSource, Confirmable, PrimeClientBehaviorHolder {
+public abstract class CommandLinkBase extends HtmlCommandLink implements AjaxSource, Confirmable, DialogReturn {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
