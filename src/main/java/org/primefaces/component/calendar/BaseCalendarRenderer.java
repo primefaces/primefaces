@@ -280,10 +280,20 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             Object[] params = new Object[3];
             params[0] = submittedValue;
             if (e instanceof DateTimeParseException) {
-                params[1] = formatter.format(LocalDate.now());
+                if (formatter != null) {
+                    params[1] = formatter.format(LocalDate.now());
+                }
+                else {
+                    params[1] = "unknown"; //formatter may be null in theory; so check for null to keep sonarcloud happy
+                }
             }
             else {
-                params[1] = format.format(new Date());
+                if (format != null ) {
+                    params[1] = format.format(new Date());
+                }
+                else {
+                    params[1] = "unknown"; //format may be null in theory; so check for null to keep sonarcloud happy
+                }
             }
             params[2] = MessageFactory.getLabel(context, uicalendar);
 
