@@ -52,10 +52,10 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
                     this.blockScrollEvent = true;
                     var pageHeight = this.itemHeight * this.cfg.chunkSize,
                     virtualListHeight = parseFloat(this.cfg.totalSize * this.itemHeight),
-                    pageCount = (virtualListHeight / pageHeight)||1,
-                    page = (pageCount > 2) ? pageCount - 2 : 0;
-            
-                    this.list.css('top', (page * pageHeight) + 'px');
+                    pageCount = Math.floor(virtualListHeight / pageHeight)||1,
+                    page = (this.cfg.totalSize % this.cfg.chunkSize) == 0 ? pageCount - 2 : pageCount - 1;
+
+                    this.list.css('top', (Math.max(page, 0) * pageHeight) + 'px');
                     this.content.scrollTop(this.content[0].scrollHeight);
                 }
             }
