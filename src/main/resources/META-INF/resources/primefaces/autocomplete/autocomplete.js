@@ -316,10 +316,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         break;
 
                     case keyCode.TAB:
-                        if(highlightedItem.length) {
+                        if(highlightedItem.length && $this.cfg.autoSelection) {
                             highlightedItem.trigger('click');
+                        } else {
+                            $this.hide();
+                            if ($this.timeout) {
+                                $this.deleteTimeout();
+                            }
                         }
-                        $this.hide();
                         $this.isTabPressed = true;
                         break;
                 }

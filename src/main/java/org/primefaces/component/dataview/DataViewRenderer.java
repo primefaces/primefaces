@@ -53,6 +53,10 @@ public class DataViewRenderer extends DataRenderer {
         if (dataview.isPaginationRequest(context)) {
             dataview.updatePaginationData(context, dataview);
 
+            if (dataview.isLazy()) {
+                dataview.loadLazyData();
+            }
+
             encodeLayout(context, dataview);
         }
         else if (dataview.isLayoutRequest(context)) {
@@ -68,6 +72,9 @@ public class DataViewRenderer extends DataRenderer {
     }
 
     protected void encodeMarkup(FacesContext context, DataView dataview) throws IOException {
+        if (dataview.isLazy()) {
+            dataview.loadLazyData();
+        }
         ResponseWriter writer = context.getResponseWriter();
         String clientId = dataview.getClientId(context);
         String layout = dataview.getLayout();
