@@ -29,7 +29,8 @@ PrimeFaces.widget.Poll = PrimeFaces.widget.BaseWidget.extend({
 
     start: function() {
         if (!this.active) {
-            this.timer = setInterval(this.cfg.fn, (this.cfg.frequency * 1000));
+            var frequency = this.cfg.intervalType == 'millisecond' ? this.cfg.frequency : (this.cfg.frequency * 1000);
+            this.timer = setInterval(this.cfg.fn, frequency);
             this.active = true;
         }
     },

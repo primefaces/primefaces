@@ -58,7 +58,8 @@ public abstract class PollBase extends UIComponentBase implements AjaxSource, Wi
         resetValues,
         ignoreAutoUpdate,
         partialSubmitFilter,
-        form
+        form,
+        intervalType
     }
 
     public PollBase() {
@@ -251,6 +252,14 @@ public abstract class PollBase extends UIComponentBase implements AjaxSource, Wi
 
     public void setForm(String form) {
         getStateHelper().put(PropertyKeys.form, form);
+    }
+
+    public String getIntervalType() {
+        return (String) getStateHelper().eval(PropertyKeys.intervalType, "second");
+    }
+
+    public void setIntervalType(String intervalType) {
+        getStateHelper().put(PropertyKeys.intervalType, intervalType);
     }
 
     @Override

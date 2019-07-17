@@ -18925,6 +18925,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Type of interval value. Valid values are "second" (default) and "millisecond".]]>
+            </description>
+            <name>intervalType</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
