@@ -23991,6 +23991,22 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+		<attribute>
+            <description>
+                <![CDATA[Decimal separator char. Default is taken from the view's locale.]]>
+            </description>
+            <name>decimalSeparator</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Thousand separator char. Default is taken from the view's locale.]]>
+            </description>
+            <name>thousandSeparator</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
