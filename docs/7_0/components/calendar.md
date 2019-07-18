@@ -6,7 +6,7 @@ ajax selection and more.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | calendar
 | Component Class | org.primefaces.component.calendar.Calendar
 | Component Type | org.primefaces.component.Calendar
@@ -22,7 +22,7 @@ ajax selection and more.
 | rendered | true | Boolean | Boolean value to specify the rendering of the component.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 | value | null | java.util.Date | Value of the component
-| converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a | converter instance. In case it’s a static text, it must refer to a converter id
+| converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
 | immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
 | required | false | Boolean | Marks component as required
 | validator | null | Method Expr | A method expression that refers to a method validationg the input
@@ -98,7 +98,7 @@ ajax selection and more.
 | timeControlObject | null | String | Client side object to use in custom timeControlType.
 | timeInput | false | Boolean | Allows direct input in time field.
 | showHour | null | String | Whether to show the hour control.
-| shıwMinute | null | String | Whether to show the minute control.
+| showMinute | null | String | Whether to show the minute control.
 | showSecond | null | String | Whether to show the second control.
 | showMillisec | null | String | Whether to show the millisec control
 | showTodayButton | true | Boolean | Whether to show the "Current Date" button if showButtonPanel is rendered.

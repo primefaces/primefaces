@@ -29,7 +29,7 @@ import org.primefaces.component.menu.OverlayMenu;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class SlideMenuBase extends AbstractMenu implements Widget, OverlayMenu {
+public abstract class SlideMenuBase extends AbstractMenu implements Widget, OverlayMenu {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

@@ -5,7 +5,7 @@ CommandButton is an extended version of standard commandButton with ajax and the
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | commandButton
 | Component Class | org.primefaces.component.commandbutton.CommandButton
 | Component Type | org.primefaces.component.CommandButton
@@ -79,7 +79,7 @@ CommandButton usage is similar to standard commandButton, by default commandButt
 its enclosing form with ajax.
 
 ```xhtml
-<p:commandButton value="Save" actionListener="#{bookBean.saveBook}" />
+<p:commandButton value="Save" action="#{bookBean.saveBook}" />
 ```
 ```java
 public class BookBean {

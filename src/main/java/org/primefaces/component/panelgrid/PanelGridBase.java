@@ -26,7 +26,7 @@ package org.primefaces.component.panelgrid;
 import javax.faces.component.UIPanel;
 
 
-abstract class PanelGridBase extends UIPanel {
+public abstract class PanelGridBase extends UIPanel {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

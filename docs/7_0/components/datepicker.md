@@ -8,7 +8,7 @@ ajax selection and more.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | datePicker
 | Component Class | org.primefaces.component.datepicker.DatePicker
 | Component Type | org.primefaces.component.DatePicker
@@ -37,18 +37,18 @@ ajax selection and more.
 widgetVar | null | String | Name of the client side widget.
 | timeOnly | false | Boolean | Shows only timepicker without date.
 | inline |  false | Boolean | Whether to show the datepicker inline or as a popup  
-| buttonTabindex | null | String | Tabindex of the datepicker button
+| buttonTabindex | null | String | Tabindex of the datepicker button
 | showIcon | false | String | Whether to show an icon to display the picker in an overlay
 | beforeShow | null | String | Callback to execute before displaying DatePicker, element and DatePicker instance are passed as parameters
-| focusOnSelect | false | Boolean | When enabled, input receives focus after a value is picked.
-| yearRange | null | String | Year range for the navigator, default "c-10:c+10"
+| focusOnSelect | false | Boolean | When enabled, input receives focus after a value is picked.
+| yearRange | null | String | The range of years displayed in the year drop-down in (nnnn:nnnn) format such as (2000:2020).
 | selectionMode | single | String | Defines the selection mode, valid values are "single", "multiple" and "range"  
 | showOtherMonths | false | Boolean | Displays days belonging to other months.
 | selectOtherMonths | false | Boolean | Enables selection of days belonging to other months.
 | showOnFocus | true | Boolean | Whether to show the popup when input receives focus.
-| shortYearCutoff | +10 | String | The cutoff year for determining the century for a date. Any dates entered with a year value less than or equal to the cutoff year are considered to be in the current century, while those greater than it are deemed to be in the previous century.
+| shortYearCutoff | +10 | String | The cutoff year for determining the century for a date. Any dates entered with a year value less than or equal to the cutoff year are considered to be in the current century, while those greater than it are deemed to be in the previous century.
 | monthNavigator | false | Boolean | Whether to show the month navigator
-| yearNavigator | false | Boolean | Whether to show the year navigator
+| yearNavigator | false | Boolean | Whether to show the year navigator. The yearRange attribute is required to use this feature.
 | showTime | false | Boolean | Specifies if the timepicker should be displayed
 | hourFormat | '24' | String | Defines the hour format, valid values are '12' and '24'
 | showSeconds | false | Boolean | Whether to show the seconds in time picker. Default is false.
@@ -63,7 +63,7 @@ widgetVar | null | String | Name of the client side widget.
 | maxDateCount | null | Integer | Defines the maximum number of selectable dates in multiple selection mode.
 | numberOfMonths | 1 | Integer | Number of months to display concurrently.
 | view | date | String | Defines the view mode, valid values are "date" for datepicker and "month" for month picker.
-| touchUI | false | Boolean | Activates touch friendly mode
+| touchUI | false | Boolean | Activates touch friendly mode
 | dateTemplate | null | Function | Javascript function that takes a date object and returns the content for the date cell.
 | appendTo | null | String | Appends the dialog to the element defined by the given search expression.
 | triggerButtonIcon | null | String | Icon of the datepicker element that toggles the visibility in popup mode.
@@ -238,7 +238,7 @@ public void init() {
 Navigator is an easy way to jump between months/years quickly.
 
 ```xhtml
-<p:datePicker value="#{dateBean.date}" monthNavigator="true" yearNavigator="true" />
+<p:datePicker value="#{dateBean.date}" monthNavigator="true" yearNavigator="true" yearRange="2000:2050"/>
 ```
 
 ## TimePicker

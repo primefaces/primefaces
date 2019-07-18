@@ -32,7 +32,7 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+public abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -55,6 +55,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
         styleClass,
         showEffect,
         hideEffect,
+        my,
         position,
         closable,
         onShow,
@@ -200,6 +201,14 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
 
     public void setHideEffect(String hideEffect) {
         getStateHelper().put(PropertyKeys.hideEffect, hideEffect);
+    }
+
+    public String getMy() {
+        return (String) getStateHelper().eval(PropertyKeys.my, null);
+    }
+
+    public void setMy(String my) {
+        getStateHelper().put(PropertyKeys.my, my);
     }
 
     public String getPosition() {

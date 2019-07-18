@@ -25,7 +25,7 @@ package org.primefaces.component.staticmessage;
 
 import javax.faces.component.UIComponentBase;
 
-abstract class StaticMessageBase extends UIComponentBase {
+public abstract class StaticMessageBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -93,7 +93,7 @@ abstract class StaticMessageBase extends UIComponentBase {
         return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void getStyleClass(String styleClass) {
+    public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 }

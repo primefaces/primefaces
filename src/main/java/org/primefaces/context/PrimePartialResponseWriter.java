@@ -24,9 +24,9 @@
 package org.primefaces.context;
 
 import org.primefaces.application.resource.DynamicResourcesPhaseListener;
-import org.primefaces.json.JSONArray;
-import org.primefaces.json.JSONException;
-import org.primefaces.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.primefaces.util.BeanUtils;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.ResourceUtils;

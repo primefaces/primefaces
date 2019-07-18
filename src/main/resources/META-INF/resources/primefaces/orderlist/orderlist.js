@@ -18,8 +18,6 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
 
             this.setupButtons();
 
-            this.bindEvents();
-
             //Enable dnd
             this.list.sortable({
                 revert: 1,
@@ -30,6 +28,8 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
                     $this.onDragDrop(event, ui);
                 }
             });
+            
+            this.bindEvents();
         }
     },
 
@@ -48,6 +48,22 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
 
     bindEvents: function() {
         var $this = this;
+        
+        if (PrimeFaces.env.browser.mobile) {
+            var disabledSortable = function() {
+                $this.list.sortable('disable');
+                $this.items.css('touch-action', 'auto');
+            };
+            
+            disabledSortable();
+            
+            this.items.on('touchend.orderList-mobile', function() {
+                disabledSortable();
+            })
+            .on('click.orderList-mobile', function() {
+                $this.list.sortable('enable');
+            });
+        }
 
         this.items.on('mouseover.orderList', function(e) {
             var element = $(this);

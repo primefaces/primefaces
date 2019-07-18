@@ -6,16 +6,16 @@ such as excel, pdf, csv and xml.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | dataExporter
 | Tag Class | org.primefaces.component.export.DataExporterTag
 | ActionListener Class | org.primefaces.component.export.DataExporter
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
-type | null | String | Export type: "xls","pdf","csv", "xml"
+type | null | String | Export type: "xls", "pdf", "csv", "xml"
 target | null | String | Search expression to resolve one or multiple datatables.
 fileName | null | String | Filename of the generated export file, defaults to datatable id.
 pageOnly | false | Boolean | Exports only current page instead of whole dataset
@@ -30,8 +30,9 @@ onTableRender | null | MethodExpression | OnTableRender to be used to set the op
 
 ## Getting Started with DataExporter
 
-DataExporter is nested in a UICommand component such as commandButton or commandLink. For
-pdf exporting **itext** and for xls exporting **poi** libraries are required in the classpath. Target must
+DataExporter is nested in a UICommand component such as commandButton or commandLink.
+NOTE: Exporting via AJAX is not supported.  
+For PDF exporting **iText** and for XLS exporting **Apache POI** libraries are required in the classpath. Target must
 point to a PrimeFaces Datatable. Assume the table to be exported is defined as;
 
 ```xhtml
@@ -153,7 +154,7 @@ configuration object that implements _ExporterOptions_.
 ```java
 public class CustomizedDocumentsView implements Serializable {
     private ExcelOptions excelOpt;
-    
+
     @PostConstruct
     public void init() {
         excelOpt = new ExcelOptions();

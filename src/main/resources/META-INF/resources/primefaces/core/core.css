@@ -1,3 +1,11 @@
+.ui-helper-hidden-accessible input,
+.ui-helper-hidden-accessible select {
+    -webkit-transform: scale(0); 
+    -moz-transform: scale(0); 
+    -ms-transform: scale(0);
+    transform: scale(0);
+}
+
 .ui-shadow {
     -moz-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
     -webkit-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);

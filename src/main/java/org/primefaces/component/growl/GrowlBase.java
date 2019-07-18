@@ -29,8 +29,7 @@ import org.primefaces.component.api.UINotification;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
-
-abstract class GrowlBase extends UIMessages implements Widget, UINotification {
+public abstract class GrowlBase extends UIMessages implements Widget, UINotification {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -43,7 +42,8 @@ abstract class GrowlBase extends UIMessages implements Widget, UINotification {
         life,
         escape,
         severity,
-        keepAlive
+        keepAlive,
+        skipDetailIfEqualsSummary
     }
 
     public GrowlBase() {
@@ -102,6 +102,15 @@ abstract class GrowlBase extends UIMessages implements Widget, UINotification {
 
     public void setKeepAlive(boolean keepAlive) {
         getStateHelper().put(PropertyKeys.keepAlive, keepAlive);
+    }
+
+    @Override
+    public boolean isSkipDetailIfEqualsSummary() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.skipDetailIfEqualsSummary, false);
+    }
+
+    public void setSkipDetailIfEqualsSummary(boolean skipDetailIfEqualsSummary) {
+        getStateHelper().put(PropertyKeys.skipDetailIfEqualsSummary, skipDetailIfEqualsSummary);
     }
 
     @Override

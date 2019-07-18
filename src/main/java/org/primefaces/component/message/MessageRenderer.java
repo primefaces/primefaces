@@ -25,6 +25,7 @@ package org.primefaces.component.message;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Objects;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
@@ -65,6 +66,8 @@ public class MessageRenderer extends UINotificationRenderer {
 
         writer.startElement("div", uiMessage);
         writer.writeAttribute("id", uiMessage.getClientId(context), null);
+        writer.writeAttribute("role", "alert", null);
+        writer.writeAttribute(HTML.ARIA_ATOMIC, "true", null);
         writer.writeAttribute(HTML.ARIA_LIVE, "polite", null);
 
         if (style != null) {
@@ -111,21 +114,28 @@ public class MessageRenderer extends UINotificationRenderer {
                 }
 
                 writer.writeAttribute("class", styleClass, null);
-                writer.writeAttribute("role", "alert", null);
-                writer.writeAttribute(HTML.ARIA_ATOMIC, "true", null);
+
+                writer.startElement("div", null);
 
                 if (!display.equals("text")) {
                     encodeIcon(writer, severityKey, msg.getDetail(), iconOnly);
                 }
 
                 if (!iconOnly) {
+                    String summary = msg.getSummary();
+                    String detail = msg.getDetail();
+                    if (uiMessage.isSkipDetailIfEqualsSummary() && Objects.equals(summary, detail)) {
+                        detail = "";
+                    }
+
                     if (uiMessage.isShowSummary()) {
-                        encodeText(context, uiMessage, msg.getSummary(), severityKey + "-summary");
+                        encodeText(context, uiMessage, summary, severityKey + "-summary");
                     }
                     if (uiMessage.isShowDetail()) {
-                        encodeText(context, uiMessage, msg.getDetail(), severityKey + "-detail");
+                        encodeText(context, uiMessage, detail, severityKey + "-detail");
                     }
                 }
+                writer.endElement("div");
 
                 msg.rendered();
             }

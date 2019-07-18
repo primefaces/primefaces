@@ -25,6 +25,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.cfg.resizable = this.cfg.resizable === false ? false : true;
         this.cfg.minWidth = this.cfg.minWidth||150;
         this.cfg.minHeight = this.cfg.minHeight||this.titlebar.outerHeight();
+        this.cfg.my = this.cfg.my||'center';
         this.cfg.position = this.cfg.position||'center';
         this.parent = this.jq.parent();
 
@@ -346,7 +347,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             this.cfg.position = this.cfg.position.replace(',', ' ');
 
             this.jq.position({
-                        my: 'center'
+                        my: this.cfg.my
                         ,at: this.cfg.position
                         ,collision: 'fit'
                         ,of: window
@@ -554,11 +555,16 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
     applyARIA: function() {
         this.jq.attr({
             'role': 'dialog'
-            ,'aria-labelledby': this.id + '_title'
             ,'aria-describedby': this.id + '_content'
             ,'aria-hidden': !this.cfg.visible
             ,'aria-modal': this.cfg.modal
         });
+        
+        // GitHub #4727
+        var title = this.id + '_title';
+        if ($(PrimeFaces.escapeClientId(title)).length) {
+            this.jq.attr('aria-labelledby', title);
+        }
 
         this.titlebar.children('a.ui-dialog-titlebar-icon').attr('role', 'button');
     },

@@ -648,7 +648,7 @@ public class TreeTable extends TreeTableBase {
         if (columnTogglerParam != null) {
             String[] togglableColumns = columnTogglerParam.split(",");
             for (String togglableColumn : togglableColumns) {
-                int sepIndex = togglableColumn.lastIndexOf("_");
+                int sepIndex = togglableColumn.lastIndexOf('_');
                 UIColumn column = findColumn(togglableColumn.substring(0, sepIndex));
 
                 if (column != null) {

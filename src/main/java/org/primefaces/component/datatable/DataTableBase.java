@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.datatable;
 
+import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
-
 import org.primefaces.component.api.*;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable {
+public abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -107,7 +107,8 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
         disableContextMenuIfEmpty,
         escapeText,
         rowEditMode,
-        stickyTopAt
+        stickyTopAt,
+        globalFilterFunction
     }
 
     public DataTableBase() {
@@ -685,6 +686,14 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
 
     public void setStickyTopAt(String stickyTopAt) {
         getStateHelper().put(PropertyKeys.stickyTopAt, stickyTopAt);
+    }
+
+    public MethodExpression getGlobalFilterFunction() {
+        return (MethodExpression) getStateHelper().eval(PropertyKeys.globalFilterFunction, null);
+    }
+
+    public void setGlobalFilterFunction(MethodExpression globalFilterFunction) {
+        getStateHelper().put(PropertyKeys.globalFilterFunction, globalFilterFunction);
     }
 
     @Override

@@ -30,7 +30,7 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class SelectOneListboxBase extends HtmlSelectOneListbox implements Widget, InputHolder {
+public abstract class SelectOneListboxBase extends HtmlSelectOneListbox implements Widget, InputHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

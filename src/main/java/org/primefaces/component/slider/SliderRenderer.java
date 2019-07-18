@@ -33,6 +33,7 @@ import org.primefaces.component.api.InputHolder;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.WidgetBuilder;
 
 public class SliderRenderer extends CoreRenderer {
@@ -78,8 +79,16 @@ public class SliderRenderer extends CoreRenderer {
             String[] inputIds = slider.getFor().split(",");
             UIComponent inputMin = getTarget(context, slider, inputIds[0]);
             UIComponent inputMax = getTarget(context, slider, inputIds[1]);
+
             String inputMinValue = ComponentUtils.getValueToRender(context, inputMin);
+            if (inputMinValue == null) {
+                inputMinValue = Constants.EMPTY_STRING;
+            }
+
             String inputMaxValue = ComponentUtils.getValueToRender(context, inputMax);
+            if (inputMaxValue == null) {
+                inputMaxValue = Constants.EMPTY_STRING;
+            }
 
             wb.attr("input", inputMin.getClientId(context) + "," + inputMax.getClientId(context))
                     .append(",values:[").append(inputMinValue).append(",").append(inputMaxValue).append("]");

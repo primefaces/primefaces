@@ -26,6 +26,7 @@ package org.primefaces.component.selectcheckboxmenu;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.List;
+import java.util.Objects;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
@@ -261,7 +262,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                             }
                         }
                     }
-                    else if (value.equals(item.getValue())) {
+                    else if (Objects.equals(value, item.getValue())) {
                         selectedItem = item;
                         break;
                     }

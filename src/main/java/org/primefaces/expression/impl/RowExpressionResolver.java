@@ -55,9 +55,9 @@ public class RowExpressionResolver implements SearchExpressionResolver, ClientId
 
         int row = validate(context, source, last, expression);
         UIData data = (UIData) last;
-        char seperatorChar = UINamingContainer.getSeparatorChar(context);
+        char separatorChar = UINamingContainer.getSeparatorChar(context);
 
-        String clientIds = "";
+        StringBuilder clientIds = new StringBuilder();
 
         for (UIComponent column : data.getChildren()) {
             // handle dynamic columns
@@ -69,11 +69,18 @@ public class RowExpressionResolver implements SearchExpressionResolver, ClientId
                     for (UIComponent comp : column.getChildren()) {
 
                         if (clientIds.length() > 0) {
-                            clientIds += " ";
+                            clientIds.append(" ");
                         }
 
-                        clientIds += data.getClientId(context) + seperatorChar + row + seperatorChar
-                                + dynamicColumn.getId() + seperatorChar + i + seperatorChar + comp.getId();
+                        clientIds.append(data.getClientId(context));
+                        clientIds.append(separatorChar);
+                        clientIds.append(row);
+                        clientIds.append(separatorChar);
+                        clientIds.append(dynamicColumn.getId());
+                        clientIds.append(separatorChar);
+                        clientIds.append(i);
+                        clientIds.append(separatorChar);
+                        clientIds.append(comp.getId());
                     }
                 }
             }
@@ -81,15 +88,19 @@ public class RowExpressionResolver implements SearchExpressionResolver, ClientId
                 for (UIComponent cell : column.getChildren()) {
 
                     if (clientIds.length() > 0) {
-                        clientIds += " ";
+                        clientIds.append(" ");
                     }
 
-                    clientIds += data.getClientId(context) + seperatorChar + row + seperatorChar + cell.getId();
+                    clientIds.append(data.getClientId(context));
+                    clientIds.append(separatorChar);
+                    clientIds.append(row);
+                    clientIds.append(separatorChar);
+                    clientIds.append(cell.getId());
                 }
             }
         }
 
-        return clientIds;
+        return clientIds.toString();
     }
 
     protected int validate(FacesContext context, UIComponent source, UIComponent last, String expression) {

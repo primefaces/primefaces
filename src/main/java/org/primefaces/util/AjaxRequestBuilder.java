@@ -204,16 +204,15 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder partialSubmit(boolean value, boolean partialSubmitSet, String partialSubmitFilter) {
-        PrimeConfiguration config = PrimeApplicationContext.getCurrentInstance(context).getConfig();
+        // when set on the component/ajax behavior, always pass the argument
+        // otherwise the global setting is passed by the HeadRenderer (PrimeFaces.settings.partialSubmit)
+        if (partialSubmitSet) {
+            buffer.append(",ps:").append(value);
 
-        //component can override global setting
-        boolean partialSubmit = partialSubmitSet ? value : config.isPartialSubmitEnabled();
-
-        if (partialSubmit) {
-            buffer.append(",ps:true");
-
-            if (partialSubmitFilter != null) {
-                buffer.append(",psf:\"").append(partialSubmitFilter).append("\"");
+            if (value) {
+                if (partialSubmitFilter != null) {
+                    buffer.append(",psf:\"").append(partialSubmitFilter).append("\"");
+                }
             }
         }
 
@@ -259,7 +258,7 @@ public class AjaxRequestBuilder {
 
     public AjaxRequestBuilder oncomplete(String oncomplete) {
         if (oncomplete != null) {
-            buffer.append(",onco:function(xhr,status,args){").append(oncomplete).append(";}");
+            buffer.append(",onco:function(xhr,status,args,data){").append(oncomplete).append(";}");
         }
 
         return this;

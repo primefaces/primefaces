@@ -24,13 +24,12 @@
 package org.primefaces.component.spinner;
 
 import javax.faces.component.html.HtmlInputText;
-
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LocaleUtils;
 
-
-abstract class SpinnerBase extends HtmlInputText implements Widget, InputHolder {
+public abstract class SpinnerBase extends HtmlInputText implements Widget, InputHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -45,7 +44,9 @@ abstract class SpinnerBase extends HtmlInputText implements Widget, InputHolder 
         max,
         prefix,
         suffix,
-        decimalPlaces
+        decimalPlaces,
+        decimalSeparator,
+        thousandSeparator
     }
 
     public SpinnerBase() {
@@ -119,6 +120,24 @@ abstract class SpinnerBase extends HtmlInputText implements Widget, InputHolder 
 
     public void setDecimalPlaces(String decimalPlaces) {
         getStateHelper().put(PropertyKeys.decimalPlaces, decimalPlaces);
+    }
+
+    public String getDecimalSeparator() {
+        return ComponentUtils.eval(getStateHelper(), PropertyKeys.decimalSeparator,
+            () -> LocaleUtils.getDecimalSeparator(getFacesContext()));
+    }
+
+    public void setDecimalSeparator(String decimalSeparator) {
+        getStateHelper().put(PropertyKeys.decimalSeparator, decimalSeparator);
+    }
+
+    public String getThousandSeparator() {
+        return ComponentUtils.eval(getStateHelper(), PropertyKeys.thousandSeparator,
+            () -> LocaleUtils.getThousandSeparator(getFacesContext()));
+    }
+
+    public void setThousandSeparator(String thousandSeparator) {
+        getStateHelper().put(PropertyKeys.thousandSeparator, thousandSeparator);
     }
 
     @Override

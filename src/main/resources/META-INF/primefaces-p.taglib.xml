@@ -7,12 +7,6 @@
     <namespace>http://primefaces.org/ui</namespace>
 
     <function>
-        <function-name>component</function-name>
-        <function-class>org.primefaces.util.ComponentUtils</function-class>
-        <function-signature>java.lang.String findComponentClientId(java.lang.String)</function-signature>
-    </function>
-
-    <function>
         <function-name>resolveClientId</function-name>
         <function-class>org.primefaces.expression.SearchExpressionUtils</function-class>
         <function-signature>java.lang.String resolveClientId(java.lang.String, javax.faces.component.UIComponent)</function-signature>
@@ -27,18 +21,6 @@
     <function>
         <function-name>resolveWidgetVar</function-name>
         <function-class>org.primefaces.expression.SearchExpressionUtils</function-class>
-        <function-signature>java.lang.String resolveWidgetVar(java.lang.String, javax.faces.component.UIComponent)</function-signature>
-    </function>
-
-    <function>
-        <function-name>widgetVar</function-name>
-        <function-class>org.primefaces.util.ComponentUtils</function-class>
-        <function-signature>java.lang.String resolveWidgetVar(java.lang.String)</function-signature>
-    </function>
-
-    <function>
-        <function-name>widgetVarFromContext</function-name>
-        <function-class>org.primefaces.util.ComponentUtils</function-class>
         <function-signature>java.lang.String resolveWidgetVar(java.lang.String, javax.faces.component.UIComponent)</function-signature>
     </function>
 
@@ -1552,6 +1534,12 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description><![CDATA[Defines if autocomplete results are escaped or not. Default is true.]]></description>
+            <name>escape</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -1958,6 +1946,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean flag indicating whether the last item should be disabled. Default is false.]]>
+            </description>
+            <name>lastItemDisabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -2061,14 +2057,6 @@
                 <![CDATA[Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.]]>
             </description>
             <name>dir</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style class for button icon.]]>
-            </description>
-            <name>image</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -5240,14 +5228,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Style class representing the button icon.]]>
-            </description>
-            <name>image</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[A localized user presentable name.]]>
             </description>
             <name>label</name>
@@ -6915,6 +6895,22 @@
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Loads data on demand as the scrollbar gets close to the bottom. Default is false.]]>
+            </description>
+            <name>virtualScroll</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[if the scrollAtBottom is enabled, scroll position is at bottom and data loading starts from the bottom. Default value is false.]]>
+            </description>
+            <name>startAtBottom</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -7640,6 +7636,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Custom implementation to globally filter a value against a constraint.]]>
+            </description>
+            <name>globalFilterFunction</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -7713,6 +7717,14 @@
             <name>widgetVar</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if lazy loading is enabled for the data component.]]>
+            </description>
+            <name>lazy</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -8213,7 +8225,15 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines where the dialog should be displayed.]]>
+                <![CDATA[Position of the dialog relative to the target. Default is "center".]]>
+            </description>
+            <name>my</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines where the dialog should be displayed. Default is "center".]]>
             </description>
             <name>position</name>
             <required>false</required>
@@ -9373,7 +9393,7 @@
             <description>
                 <![CDATA[Method expression to listen file upload events.]]>
             </description>
-            <name>fileUploadListener</name>
+            <name>listener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
         </attribute>
@@ -10397,6 +10417,14 @@
                 <![CDATA[Defines if previous messages should be kept on a new message is shown. Default is false.]]>
             </description>
             <name>keepAlive</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if rendering of the detail text should be skipped, if the detail and summaray are equals. Default is false.]]>
+            </description>
+            <name>skipDetailIfEqualsSummary</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -11583,10 +11611,10 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Mask template. Required.]]>
+                <![CDATA[Mask template.]]>
             </description>
             <name>mask</name>
-            <required>true</required>
+            <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
@@ -15854,7 +15882,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[Message is a pre-skinned extended version of the standard JSF message component with extensions.]]>
         </description>
         <tag-name>message</tag-name>
         <component>
@@ -15957,10 +15985,18 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if rendering of the detail text should be skipped, if the detail and summaray are equals. Default is false.]]>
+            </description>
+            <name>skipDetailIfEqualsSummary</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
-            <![CDATA[Message is a pre-skinned extended version of the standard JSF message component with extensions.]]>
+            <![CDATA[Messages is a pre-skinned extended version of the standard JSF messages component with extensions.]]>
         </description>
         <tag-name>messages</tag-name>
         <component>
@@ -16087,6 +16123,22 @@
             <name>forType</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines a list of keys and clientIds, which should NOT be rendered by this component. Seperated by space or comma.]]>
+            </description>
+            <name>forIgnores</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if rendering of the detail text should be skipped, if the detail and summaray are equals. Default is false.]]>
+            </description>
+            <name>skipDetailIfEqualsSummary</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -17286,6 +17338,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[When the positioned element overflows the window in some direction, move it to an alternative position. Similar to my and at, this accepts a single value or a pair for horizontal/vertical, e.g., "flip", "fit", "fit flip", "fit none".]]>
+            </description>
+            <name>collision</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Dynamic mode allows overlay panel to fetch it's contents before it's shown rather than on page load
                 which is useful to reduce initial page load times. Default is false.]]>
             </description>
@@ -18455,7 +18515,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines if labels of the component is escaped or not.]]>
+                <![CDATA[Defines if labels of the component are escaped or not.]]>
             </description>
             <name>escape</name>
             <required>false</required>
@@ -18652,6 +18712,14 @@
             <name>filterDelay</name>
             <required>false</required>
             <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if values of the component are escaped or not.]]>
+            </description>
+            <name>escapeValue</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -18854,6 +18922,14 @@
                 <![CDATA[Form to serialize for an ajax request. Default is the enclosing form.]]>
             </description>
             <name>form</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Type of interval value. Valid values are "second" (default) and "millisecond".]]>
+            </description>
+            <name>intervalType</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -20289,27 +20365,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Deprecated, use slotDuration instead. Interval in minutes in an hour to create a slot. Default is 30.]]>
-            </description>
-            <name>slotMinutes</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Determines how far down the scroll pane is initially scrolled down. Default is 06:00:00.]]>
             </description>
             <name>scrollTime</name>
             <required>false</required>
             <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Deprecated, use scrollTime instead. First hour to display in day view. Default is 6.]]>
-            </description>
-            <name>firstHour</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
         </attribute>
         <attribute>
             <description>
@@ -20329,17 +20389,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Determines the time-text that will be displayed within a time slot.]]>
+                <![CDATA[TThe frequency that the time slots should be labelled with text. Example: like "01:00" or "{hours:1}".]]>
             </description>
-            <name>slotLabelFormat</name>
+            <name>slotLabelInterval</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Deprecated, use slotLabelFormat instead. Determines the time-text that will be displayed on the vertical axis of the agenda views.]]>
+                <![CDATA[Determines the time-text that will be displayed within a time slot.]]>
             </description>
-            <name>axisFormat</name>
+            <name>slotLabelFormat</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -20353,9 +20413,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Format for column headers.]]>
+                <![CDATA[Deprecated, use columnHeaderFormat instead. Format for column headers.]]>
             </description>
             <name>columnFormat</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Format for column headers.]]>
+            </description>
+            <name>columnHeaderFormat</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -20374,14 +20442,6 @@
             <name>clientTimeZone</name>
             <required>false</required>
             <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Deprecated, use clientTimezone instead with 'local' setting. When parsing dates, whether UTC offsets should be ignored while processing event data. Default is true]]>
-            </description>
-            <name>ignoreTimezone</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -23931,6 +23991,22 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+		<attribute>
+            <description>
+                <![CDATA[Decimal separator char. Default is taken from the view's locale.]]>
+            </description>
+            <name>decimalSeparator</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Thousand separator char. Default is taken from the view's locale.]]>
+            </description>
+            <name>thousandSeparator</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -24125,14 +24201,6 @@
             <name>disabled</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style class representing the button icon.]]>
-            </description>
-            <name>image</name>
-            <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -24624,7 +24692,7 @@
                 <![CDATA[The severity of the message: error, info, warn, fatal.]]>
             </description>
             <name>severity</name>
-            <required>false</required>
+            <required>true</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
@@ -28437,6 +28505,72 @@
     </tag>
     <tag>
         <description>
+            <![CDATA[Scatter Chart]]>
+        </description>
+        <tag-name>scatterChart</tag-name>
+        <component>
+            <component-type>org.primefaces.component.ScatterChart</component-type>
+            <renderer-type>org.primefaces.component.ScatterChartRenderer</renderer-type>
+        </component>
+        <attribute>
+            <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the client side widget.]]>
+            </description>
+            <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Model of the chart.]]>
+            </description>
+            <name>model</name>
+            <required>false</required>
+            <type>org.primefaces.model.charts.scatter.ScatterChartModel</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of the component.]]>
+            </description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the component.]]>
+            </description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>
             <![CDATA[]]>
         </description>
         <tag-name>pieChart</tag-name>
@@ -29354,6 +29488,14 @@
                 <![CDATA[Callback to invoke when a year is changed using the navigators.]]>
             </description>
             <name>onYearChange</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Separator for joining start and end dates on range selection mode. Default value is "-".]]>
+            </description>
+            <name>rangeSeparator</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

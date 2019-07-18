@@ -31,7 +31,7 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class ChipsBase extends HtmlInputText implements Widget, InputHolder, MixedClientBehaviorHolder {
+public abstract class ChipsBase extends HtmlInputText implements Widget, InputHolder, MixedClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -43,7 +43,8 @@ abstract class ChipsBase extends HtmlInputText implements Widget, InputHolder, M
         widgetVar,
         max,
         inputStyle,
-        inputStyleClass
+        inputStyleClass,
+        addOnBlur
     }
 
     public ChipsBase() {
@@ -93,6 +94,14 @@ abstract class ChipsBase extends HtmlInputText implements Widget, InputHolder, M
 
     public void setInputStyleClass(String inputStyleClass) {
         getStateHelper().put(PropertyKeys.inputStyleClass, inputStyleClass);
+    }
+
+    public boolean isAddOnBlur() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.addOnBlur, false);
+    }
+
+    public void setAddOnBlur(boolean addOnBlur) {
+        getStateHelper().put(PropertyKeys.addOnBlur, addOnBlur);
     }
 
     @Override

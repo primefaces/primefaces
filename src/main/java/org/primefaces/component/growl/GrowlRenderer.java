@@ -25,6 +25,7 @@ package org.primefaces.component.growl;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Objects;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -106,6 +107,9 @@ public class GrowlRenderer extends UINotificationRenderer {
                 writer.write("{");
 
                 if (growl.isShowSummary() && growl.isShowDetail()) {
+                    if (growl.isSkipDetailIfEqualsSummary() && Objects.equals(summary, detail)) {
+                        detail = "";
+                    }
                     writer.writeText("summary:\"" + summary + "\",detail:\"" + detail + "\"", null);
                 }
                 else if (growl.isShowSummary() && !growl.isShowDetail()) {

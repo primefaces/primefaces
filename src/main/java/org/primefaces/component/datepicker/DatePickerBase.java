@@ -30,7 +30,7 @@ import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
-abstract class DatePickerBase extends UICalendar implements Widget, InputHolder, MixedClientBehaviorHolder {
+public abstract class DatePickerBase extends UICalendar implements Widget, InputHolder, MixedClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -75,7 +75,8 @@ abstract class DatePickerBase extends UICalendar implements Widget, InputHolder,
         disabledDates,
         disabledDays,
         onMonthChange,
-        onYearChange
+        onYearChange,
+        rangeSeparator
     }
 
     public DatePickerBase() {
@@ -381,6 +382,14 @@ abstract class DatePickerBase extends UICalendar implements Widget, InputHolder,
 
     public void setOnYearChange(String onYearChange) {
         getStateHelper().put(PropertyKeys.onYearChange, onYearChange);
+    }
+
+    public String getRangeSeparator() {
+        return (String) getStateHelper().eval(PropertyKeys.rangeSeparator, "-");
+    }
+
+    public void setRangeSeparator(java.lang.String _rangeSeparator) {
+        getStateHelper().put(PropertyKeys.rangeSeparator, _rangeSeparator);
     }
 
     @Override

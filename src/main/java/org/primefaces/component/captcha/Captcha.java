@@ -38,7 +38,7 @@ import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.json.JSONObject;
+import org.json.JSONObject;
 import org.primefaces.util.MessageFactory;
 
 @ResourceDependencies({

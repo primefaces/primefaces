@@ -23,16 +23,21 @@
  */
 package org.primefaces.component.wizard;
 
+import java.util.Collection;
+import java.util.Map;
 import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
+import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.event.FlowEvent;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.MapBuilder;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -50,7 +55,24 @@ public class Wizard extends WizardBase {
     public static final String BACK_BUTTON_CLASS = "ui-wizard-nav-back";
     public static final String NEXT_BUTTON_CLASS = "ui-wizard-nav-next";
 
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("next", null)
+            .put("back", null)
+            .build();
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
     private Tab current;
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+        return BEHAVIOR_EVENT_MAPPING;
+    }
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
 
     @Override
     public void processDecodes(FacesContext context) {
@@ -91,12 +113,12 @@ public class Wizard extends WizardBase {
         return current;
     }
 
-    public boolean isWizardRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_wizardRequest");
+    public boolean isBackRequest(FacesContext context) {
+        return ComponentUtils.isRequestSource(this, context) && "back".equals(getRequestDirection(context));
     }
 
-    public boolean isBackRequest(FacesContext context) {
-        return isWizardRequest(context) && context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_backRequest");
+    public String getRequestDirection(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().get(getClientId(context) + "_direction");
     }
 
     @Override
@@ -118,4 +140,5 @@ public class Wizard extends WizardBase {
             }
         }
     }
+
 }

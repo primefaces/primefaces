@@ -25,15 +25,14 @@ package org.primefaces.component.breadcrumb;
 
 import java.io.IOException;
 import java.util.List;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
+import org.primefaces.util.HTML;
 
 public class BreadCrumbRenderer extends BaseMenuRenderer {
 
@@ -80,7 +79,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
                     writer.startElement("li", null);
                     writer.writeAttribute("role", "menuitem", null);
 
-                    if (item.isDisabled()) {
+                    if (item.isDisabled() || (breadCrumb.isLastItemDisabled() && i + 1 == elementCount)) {
                         encodeDisabledMenuItem(context, item);
                     }
                     else {
@@ -141,6 +140,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         if (icon != null) {
             writer.startElement("span", null);
             writer.writeAttribute("class", BreadCrumb.MENUITEM_ICON_CLASS + " " + icon, null);
+            writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
             writer.endElement("span");
         }
 

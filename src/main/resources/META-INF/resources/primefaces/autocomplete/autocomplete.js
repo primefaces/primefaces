@@ -24,6 +24,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.active = (this.cfg.active === false) ? false : true;
         this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
         this.cfg.autoSelection = this.cfg.autoSelection === false ? false : true;
+        this.cfg.escape = this.cfg.escape === false ? false : true;
         this.suppressInput = true;
         this.touchToDropdownButton = false;
         this.isTabPressed = false;
@@ -315,10 +316,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         break;
 
                     case keyCode.TAB:
-                        if(highlightedItem.length) {
+                        if(highlightedItem.length && $this.cfg.autoSelection) {
                             highlightedItem.trigger('click');
+                        } else {
+                            $this.hide();
+                            if ($this.timeout) {
+                                $this.deleteTimeout();
+                            }
                         }
-                        $this.hide();
                         $this.isTabPressed = true;
                         break;
                 }
@@ -571,9 +576,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             //highlight query string
             if(this.panel.children().is('ul') && query.length > 0) {
                 this.items.filter(':not(.ui-autocomplete-moretext)').each(function() {
-                    var item = $(this),
-                    text = item.html(),
-                    re = new RegExp(PrimeFaces.escapeRegExp(query), 'gi'),
+                    var item = $(this);
+                    var text = $this.cfg.escape ? item.html() : item.text();
+                    var re = new RegExp(PrimeFaces.escapeRegExp(query), 'gi'),
                     highlighedText = text.replace(re, '<span class="ui-autocomplete-query">$&</span>');
 
                     item.html(highlighedText);

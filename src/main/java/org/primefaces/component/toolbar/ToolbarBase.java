@@ -26,7 +26,7 @@ package org.primefaces.component.toolbar;
 import javax.faces.component.UIComponentBase;
 
 
-abstract class ToolbarBase extends UIComponentBase {
+public abstract class ToolbarBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

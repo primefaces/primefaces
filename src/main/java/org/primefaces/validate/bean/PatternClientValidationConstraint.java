@@ -25,7 +25,6 @@ package org.primefaces.validate.bean;
 
 import java.util.HashMap;
 import java.util.Map;
-import javax.validation.constraints.Pattern;
 import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.util.HTML;
 
@@ -51,7 +50,7 @@ public class PatternClientValidationConstraint implements ClientValidationConstr
 
     @Override
     public String getValidatorId() {
-        return Pattern.class.getSimpleName();
+        return "Pattern";
     }
 
 }

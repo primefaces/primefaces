@@ -29,6 +29,8 @@ public class HTML {
 
     public static final String[] TAB_INDEX = {"tabindex"};
 
+    public static final String[] TITLE = {"title"};
+
     public static final String[] BLUR_FOCUS_EVENTS = {
         "onblur",
         "onfocus"
@@ -77,6 +79,22 @@ public class HTML {
         "shape",
         "tabindex",
         "style",
+        "target",
+        "title",
+        "type"
+    };
+
+    public static final String[] LINK_ATTRS_WITHOUT_EVENTS_AND_STYLE = {
+        "accesskey",
+        "charset",
+        "coords",
+        "dir",
+        "disabled",
+        "hreflang",
+        "rel",
+        "rev",
+        "shape",
+        "tabindex",
         "target",
         "title",
         "type"

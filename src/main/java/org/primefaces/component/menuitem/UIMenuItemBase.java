@@ -31,9 +31,11 @@ import org.primefaces.component.api.Confirmable;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.model.menu.MenuItem;
+import org.primefaces.util.SerializableFunction;
 
 
-abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcomeTarget, MenuItem, Confirmable, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcomeTarget, MenuItem, Confirmable,
+        ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -381,4 +383,8 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
         getStateHelper().put(PropertyKeys.rel, rel);
     }
 
+    @Override
+    public SerializableFunction<MenuItem, String> getFunction() {
+        return null;
+    }
 }

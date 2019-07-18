@@ -160,7 +160,6 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("autocomplete", "off", null);
 
         //for keyboard accessibility and ScreenReader
-        writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
         renderAccessibilityAttributes(context, menu);
         renderPassThruAttributes(context, menu, HTML.TAB_INDEX);
         renderDomEvents(context, menu, HTML.BLUR_FOCUS_EVENTS);
@@ -261,6 +260,10 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
             if (menu.getPlaceholder() != null) {
                 writer.writeAttribute("data-placeholder", menu.getPlaceholder(), null);
+            }
+            String label = menu.getLabel();
+            if (label != null) {
+                writer.writeText(label, null);
             }
             writer.write("&nbsp;");
             writer.endElement("label");
@@ -506,6 +509,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 .attr("editable", menu.isEditable(), false)
                 .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo()), null)
                 .attr("syncTooltip", menu.isSyncTooltip(), false)
+                .attr("label", menu.getLabel(), null)
                 .attr("labelTemplate", menu.getLabelTemplate(), null)
                 .attr("autoWidth", menu.isAutoWidth(), true)
                 .attr("dynamic", menu.isDynamic(), false);
@@ -618,11 +622,11 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.writeAttribute("placeholder", menu.getFilterPlaceholder(), null);
         }
 
+        writer.endElement("input");
+
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-icon ui-icon-search", id);
         writer.endElement("span");
-
-        writer.endElement("input");
 
         writer.endElement("div");
     }

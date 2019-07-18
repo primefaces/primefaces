@@ -31,7 +31,7 @@ import org.primefaces.model.menu.MenuModel;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class SplitButtonBase extends HtmlCommandButton implements AjaxSource, Widget {
+public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxSource, Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

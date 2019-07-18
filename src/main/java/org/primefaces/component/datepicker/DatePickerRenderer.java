@@ -105,7 +105,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("minDate", CalendarUtils.getValueAsString(context, datepicker, datepicker.getMindate()), null)
             .attr("maxDate", CalendarUtils.getValueAsString(context, datepicker, datepicker.getMaxdate()), null)
             .attr("selectionMode", datepicker.getSelectionMode(), null)
-            .attr("showOnFocus", datepicker.isShowOnFocus(), false)
+            .attr("showOnFocus", datepicker.isShowOnFocus())
             .attr("shortYearCutoff", datepicker.getShortYearCutoff(), null)
             .attr("monthNavigator", datepicker.isMonthNavigator(), false)
             .attr("yearNavigator", datepicker.isYearNavigator(), false)
@@ -118,7 +118,8 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("view", datepicker.getView(), null)
             .attr("touchUI", datepicker.isTouchUI(), false)
             .attr("appendTo", SearchExpressionFacade.resolveClientId(context, datepicker, datepicker.getAppendTo()), null)
-            .attr("icon", datepicker.getTriggerButtonIcon(), null);
+            .attr("icon", datepicker.getTriggerButtonIcon(), null)
+            .attr("rangeSeparator", datepicker.getRangeSeparator(), null);
 
         List<Object> disabledDays = datepicker.getDisabledDays();
         if (disabledDays != null) {
@@ -191,7 +192,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
                 return multi;
             }
             case "range": {
-                String[] parts = submittedValue.split("-");
+                String[] parts = submittedValue.split(datepicker.getRangeSeparator());
                 List<Object> range = new ArrayList<>();
                 if (parts.length == 2) {
                     for (String part : parts) {

@@ -35,8 +35,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.json.JSONArray;
-import org.primefaces.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
@@ -172,48 +172,20 @@ public class ScheduleRenderer extends CoreRenderer {
             wb.attr("header", false);
         }
 
-        //deprecated options
-        String slotDuration = schedule.getSlotDuration();
-        int slotMinutes = schedule.getSlotMinutes();
-        if (slotMinutes != 30) {
-            LOGGER.warning("slotMinutes is deprecated, use slotDuration instead.");
-            slotDuration = "00:" + slotMinutes + ":00";
-        }
-
-        String scrollTime = schedule.getScrollTime();
-        int firstHour = schedule.getFirstHour();
-        if (firstHour != 6) {
-            LOGGER.warning("firstHour is deprecated, use scrollTime instead.");
-            scrollTime = firstHour + ":00:00";
-        }
-
-        String clientTimezone = schedule.getClientTimeZone();
-        boolean ignoreTimezone = schedule.isIgnoreTimezone();
-        if (!ignoreTimezone) {
-            LOGGER.warning("ignoreTimezone is deprecated, use clientTimezone instead with 'local' setting.");
-            clientTimezone = "local";
-        }
-
-        String slotLabelFormat = schedule.getSlotLabelFormat();
-        String axisFormat = schedule.getAxisFormat();
-        if (axisFormat != null) {
-            LOGGER.warning("axisFormat is deprecated, use slotLabelFormat instead.");
-            slotLabelFormat = axisFormat;
-        }
-
         boolean isShowWeekNumbers = schedule.isShowWeekNumbers();
 
         wb.attr("allDaySlot", schedule.isAllDaySlot(), true)
-                .attr("slotDuration", slotDuration, "00:30:00")
-                .attr("scrollTime", scrollTime, "06:00:00")
-                .attr("timezone", clientTimezone, null)
+                .attr("slotDuration", schedule.getSlotDuration(), "00:30:00")
+                .attr("scrollTime", schedule.getScrollTime(), "06:00:00")
+                .attr("timezone", schedule.getClientTimeZone(), null)
                 .attr("minTime", schedule.getMinTime(), null)
                 .attr("maxTime", schedule.getMaxTime(), null)
                 .attr("aspectRatio", schedule.getAspectRatio(), Double.MIN_VALUE)
                 .attr("weekends", schedule.isShowWeekends(), true)
                 .attr("eventStartEditable", schedule.isDraggable(), true)
                 .attr("eventDurationEditable", schedule.isResizable(), true)
-                .attr("slotLabelFormat", slotLabelFormat, null)
+                .attr("slotLabelInterval", schedule.getSlotLabelInterval(), null)
+                .attr("slotLabelFormat", schedule.getSlotLabelFormat(), null)
                 .attr("timeFormat", schedule.getTimeFormat(), null)
                 .attr("weekNumbers", isShowWeekNumbers, false)
                 .attr("nextDayThreshold", schedule.getNextDayThreshold(), "09:00:00")
@@ -221,7 +193,7 @@ public class ScheduleRenderer extends CoreRenderer {
                 .attr("urlTarget", schedule.getUrlTarget(), "_blank")
                 .attr("noOpener", schedule.isNoOpener(), true);
 
-        String columnFormat = schedule.getColumnFormat();
+        String columnFormat = schedule.getColumnHeaderFormat() != null ? schedule.getColumnHeaderFormat() : schedule.getColumnFormat();
         if (columnFormat != null) {
             wb.append(",columnFormatOptions:{" + columnFormat + "}");
         }

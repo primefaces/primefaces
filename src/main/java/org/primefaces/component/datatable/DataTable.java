@@ -315,8 +315,9 @@ public class DataTable extends DataTableBase {
                         columnFilterValueVE.setValue(eLContext, fm.getFilterValue());
                         dynamicColumn.cleanStatelessModel();
                     }
-
-                    columnFilterValueVE.setValue(eLContext, fm.getFilterValue());
+                    else {
+                        columnFilterValueVE.setValue(eLContext, fm.getFilterValue());
+                    }
                 }
             }
         }
@@ -438,7 +439,7 @@ public class DataTable extends DataTableBase {
             }
 
             if (wrapperEvent == null) {
-                throw new FacesException("Component " + this.getClass().getName() + " does not support event " + eventName + "!");
+                throw new FacesException("Component " + getClass().getName() + " does not support event " + eventName + "!");
             }
 
             wrapperEvent.setPhaseId(event.getPhaseId());
@@ -701,7 +702,7 @@ public class DataTable extends DataTableBase {
         // new syntax is:
         // #{column.property} or even a method call
         if (expressionString.startsWith("#{" + getVar() + "[")) {
-            expressionString = expressionString.substring(expressionString.indexOf("[") + 1, expressionString.indexOf("]"));
+            expressionString = expressionString.substring(expressionString.indexOf('[') + 1, expressionString.indexOf(']'));
             expressionString = "#{" + expressionString + "}";
 
             ValueExpression dynaVE = context.getApplication()
@@ -1051,7 +1052,7 @@ public class DataTable extends DataTableBase {
         String name = getClientId() + "_scrollState";
         String value = params.get(name);
 
-        return value == null ? "0,0" : value;
+        return value == null ? (isRTL() ? "-1,0" : "0,0") : value;
     }
 
     @Override
@@ -1243,7 +1244,22 @@ public class DataTable extends DataTableBase {
         int first = getFirst();
         int rows = getRows();
         int rowCount = getRowCount();
-        int last = rows == 0 ? (isLiveScroll() ? (getScrollRows() + getScrollOffset()) : rowCount) : (first + rows);
+        int last = 0;
+
+        if (rows == 0) {
+            if (isLiveScroll()) {
+                last = getScrollRows() + getScrollOffset();
+            }
+            else if (isVirtualScroll()) {
+                last = first + (getScrollRows() * 2);
+            }
+            else {
+                last = rowCount;
+            }
+        }
+        else {
+            last = first + rows;
+        }
 
         for (int rowIndex = first; rowIndex < last; rowIndex++) {
             setRowIndex(rowIndex);
@@ -1332,7 +1348,7 @@ public class DataTable extends DataTableBase {
                 String[] colsArr = togglableColumnsAsString.split(",");
                 for (int i = 0; i < colsArr.length; i++) {
                     String temp = colsArr[i];
-                    int sepIndex = temp.lastIndexOf("_");
+                    int sepIndex = temp.lastIndexOf('_');
                     togglableColsMap.put(temp.substring(0, sepIndex), Boolean.parseBoolean(temp.substring(sepIndex + 1, temp.length())));
                 }
             }
@@ -1368,7 +1384,7 @@ public class DataTable extends DataTableBase {
                 String[] colsArr = resizableColumnsAsString.split(",");
                 for (int i = 0; i < colsArr.length; i++) {
                     String temp = colsArr[i];
-                    int sepIndex = temp.lastIndexOf("_");
+                    int sepIndex = temp.lastIndexOf('_');
                     resizableColsMap.put(temp.substring(0, sepIndex), temp.substring(sepIndex + 1, temp.length()));
                 }
             }
@@ -1548,23 +1564,10 @@ public class DataTable extends DataTableBase {
 
     public TableState getTableState(boolean create) {
         FacesContext fc = getFacesContext();
-        Map<String, Object> sessionMap = fc.getExternalContext().getSessionMap();
-        Map<String, TableState> dtState = (Map) sessionMap.get(Constants.TABLE_STATE);
-        String viewId = fc.getViewRoot().getViewId().replaceFirst("^/*", "");
-        String stateKey = viewId + "_" + getClientId(fc);
+        String viewId = fc.getViewRoot().getViewId();
 
-        if (dtState == null) {
-            dtState = new HashMap<>();
-            sessionMap.put(Constants.TABLE_STATE, dtState);
-        }
-
-        TableState ts = dtState.get(stateKey);
-        if (ts == null && create) {
-            ts = new TableState();
-            dtState.put(stateKey, ts);
-        }
-
-        return ts;
+        return PrimeFaces.current().multiViewState()
+                .get(viewId, getClientId(fc), create, TableState::new);
     }
 
     public String getGroupedColumnIndexes() {
@@ -1588,6 +1591,28 @@ public class DataTable extends DataTableBase {
             sb.append("]");
 
             return sb.toString();
+        }
+        return null;
+    }
+
+    public String getSortMetaOrder(FacesContext context) {
+        List<SortMeta> multiSortMeta = getMultiSortMeta();
+        if (multiSortMeta != null) {
+            int size = multiSortMeta.size();
+            if (size > 0) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("['");
+                for (int i = 0; i < size; i++) {
+                    SortMeta sortMeta = multiSortMeta.get(i);
+                    if (i > 0) {
+                        sb.append("','");
+                    }
+                    sb.append(sortMeta.getColumn().getClientId(context));
+                }
+                sb.append("']");
+
+                return sb.toString();
+            }
         }
         return null;
     }

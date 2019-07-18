@@ -25,60 +25,94 @@ package org.primefaces.model.menu;
 
 import java.util.List;
 import java.util.Map;
+import javax.el.MethodExpression;
 import org.primefaces.component.api.Confirmable;
+import org.primefaces.util.SerializableFunction;
 
 public interface MenuItem extends MenuElement, Confirmable {
 
-    public String getIcon();
+    String getIcon();
 
-    public String getIconPos();
+    String getIconPos();
 
-    public String getTitle();
+    String getTitle();
 
-    public boolean shouldRenderChildren();
+    boolean shouldRenderChildren();
 
-    public boolean isDisabled();
+    boolean isDisabled();
 
-    public String getOnclick();
+    String getOnclick();
 
-    public String getStyle();
+    String getStyle();
 
-    public String getStyleClass();
+    String getStyleClass();
 
-    public String getUrl();
+    /**
+     * The URL to redirect to after the menu item has been clicked. Similar to
+     * {@code outcome} which allows to specify a navigation case, but the value
+     * is not touched (no prepending of the contextPath, not appending the
+     * sessionId or windowId), just encoded.
+     *
+     * Specifying a {@code url} which is not {@code null} causes {@code command}
+     * to be ignored.
+     *
+     * @return the URL.
+     */
+    String getUrl();
 
-    public String getTarget();
+    String getTarget();
 
-    public String getOutcome();
+    /**
+     * The JSF outcome of a navigation case which is resolved by the configured
+     * {@code NavigationHandler}. Similar to {@code url}, but {@code url}
+     * allows to specify fully qualified URLs.
+     *
+     * @return the outcome.
+     */
+    String getOutcome();
 
-    public String getFragment();
+    String getFragment();
 
-    public boolean isIncludeViewParams();
+    boolean isIncludeViewParams();
 
-    public boolean isAjax();
+    boolean isAjax();
 
-    public Object getValue();
+    Object getValue();
 
-    public void setStyleClass(String styleClass);
+    void setStyleClass(String styleClass);
 
-    public Map<String, List<String>> getParams();
+    Map<String, List<String>> getParams();
 
-    public void setParam(String key, Object value);
+    void setParam(String key, Object value);
 
-    public boolean isDynamic();
+    boolean isDynamic();
 
-    public String getCommand();
+    /**
+     * A {@link MethodExpression} in the form of a string which is called after the
+     * menu item has been clicked. It is ignored when {@code url} is not
+     * {@code null}.
+     *
+     * @return The outcome, which will be used for navigation.
+     */
+    String getCommand();
 
-    public boolean isImmediate();
+    /**
+     * Lambda alternative to the {@link #getCommand()}.
+     *
+     * @return The outcome, which will be used for navigation.
+     */
+    SerializableFunction<MenuItem, String> getFunction();
 
-    public String getClientId();
+    boolean isImmediate();
 
-    public String getContainerStyle();
+    String getClientId();
 
-    public String getContainerStyleClass();
+    String getContainerStyle();
 
-    public boolean isEscape();
+    String getContainerStyleClass();
 
-    public String getRel();
+    boolean isEscape();
+
+    String getRel();
 
 }

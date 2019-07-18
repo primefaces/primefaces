@@ -5,7 +5,7 @@ Editor is an input component with rich text editing capabilities based on Quill.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | textEditor
 | Component Class | org.primefaces.component.texteditor.TextEditor
 | Component Type | org.primefaces.component.TextEditor
@@ -36,14 +36,16 @@ style | null | String | Inline style of the editor container.
 styleClass | null | String | Style class of the editor container.
 placeholder | null | String | Placeholder text to show when editor is empty
 toolbarVisible | true | Boolean | Whether the toolbar of the editor is visible.
-allowFormatting | false | Boolean | Whether to allow formatting to be included.
-allowBlocks | false | Boolean | Whether to allow blocks to be included.
-allowStyles | false | Boolean | Whether to allow styles to be included.
-allowLinks | false | Boolean | Whether to allow links to be included.
-allowImages | false | Boolean | Whether to allow images to be included.
+allowFormatting | true | Boolean | Whether to allow formatting to be included.
+allowBlocks | true | Boolean | Whether to allow blocks to be included.
+allowStyles | true | Boolean | Whether to allow styles to be included.
+allowLinks | true | Boolean | Whether to allow links to be included.
+allowImages | true | Boolean | Whether to allow images to be included.
 formats | null | List | Define a list of formats to allow in the editor. By default all formats are allowed.
 
 ## Getting started with the Editor
+!>TextEditor requires the **owasp-java-html-sanitizer** dependency added to your pom.xml to prevent XSS. 
+
 Rich Text entered using the Editor is passed to the server using _value_ expression.
 
 ```java

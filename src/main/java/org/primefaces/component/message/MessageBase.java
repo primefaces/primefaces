@@ -30,7 +30,7 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class MessageBase extends UIMessage implements UINotification, Widget {
+public abstract class MessageBase extends UIMessage implements UINotification, Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -42,7 +42,8 @@ abstract class MessageBase extends UIMessage implements UINotification, Widget {
         escape,
         severity,
         style,
-        styleClass
+        styleClass,
+        skipDetailIfEqualsSummary
     }
 
     public MessageBase() {
@@ -93,6 +94,15 @@ abstract class MessageBase extends UIMessage implements UINotification, Widget {
 
     public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+    @Override
+    public boolean isSkipDetailIfEqualsSummary() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.skipDetailIfEqualsSummary, false);
+    }
+
+    public void setSkipDetailIfEqualsSummary(boolean skipDetailIfEqualsSummary) {
+        getStateHelper().put(PropertyKeys.skipDetailIfEqualsSummary, skipDetailIfEqualsSummary);
     }
 
     @Override

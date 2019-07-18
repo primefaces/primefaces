@@ -74,6 +74,7 @@ public class DialogRenderer extends CoreRenderer {
                 .attr("dynamic", dialog.isDynamic(), false)
                 .attr("showEffect", dialog.getShowEffect(), null)
                 .attr("hideEffect", dialog.getHideEffect(), null)
+                .attr("my", dialog.getMy(), null)
                 .attr("position", dialog.getPosition(), null)
                 .attr("closeOnEscape", dialog.isCloseOnEscape(), false)
                 .attr("fitViewport", dialog.isFitViewport(), false)

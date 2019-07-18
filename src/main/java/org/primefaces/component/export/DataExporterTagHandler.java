@@ -66,54 +66,56 @@ public class DataExporterTagHandler extends TagHandler {
 
     @Override
     public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException, FacesException, FaceletException, ELException {
-        if (ComponentHandler.isNew(parent)) {
-            ValueExpression targetVE = target.getValueExpression(faceletContext, Object.class);
-            ValueExpression typeVE = type.getValueExpression(faceletContext, Object.class);
-            ValueExpression fileNameVE = fileName.getValueExpression(faceletContext, Object.class);
-            ValueExpression pageOnlyVE = null;
-            ValueExpression selectionOnlyVE = null;
-            ValueExpression encodingVE = null;
-            MethodExpression preProcessorME = null;
-            MethodExpression postProcessorME = null;
-            ValueExpression repeatVE = null;
-            ValueExpression optionsVE = null;
-            MethodExpression onTableRenderME = null;
-            ValueExpression customExporterVE = null;
-
-            if (encoding != null) {
-                encodingVE = encoding.getValueExpression(faceletContext, Object.class);
-            }
-            if (pageOnly != null) {
-                pageOnlyVE = pageOnly.getValueExpression(faceletContext, Object.class);
-            }
-            if (selectionOnly != null) {
-                selectionOnlyVE = selectionOnly.getValueExpression(faceletContext, Object.class);
-            }
-            if (preProcessor != null) {
-                preProcessorME = preProcessor.getMethodExpression(faceletContext, null, new Class[]{Object.class});
-            }
-            if (postProcessor != null) {
-                postProcessorME = postProcessor.getMethodExpression(faceletContext, null, new Class[]{Object.class});
-            }
-            if (repeat != null) {
-                repeatVE = repeat.getValueExpression(faceletContext, Object.class);
-            }
-            if (options != null) {
-                optionsVE = options.getValueExpression(faceletContext, Object.class);
-            }
-            if (onTableRender != null) {
-                onTableRenderME = onTableRender.getMethodExpression(faceletContext, null, new Class[]{Object.class, Object.class});
-            }
-            if (customExporter != null) {
-                customExporterVE = customExporter.getValueExpression(faceletContext, Object.class);
-            }
-            ActionSource actionSource = (ActionSource) parent;
-            DataExporter dataExporter = new DataExporter(targetVE, typeVE, fileNameVE, pageOnlyVE, selectionOnlyVE,
-                    encodingVE, preProcessorME, postProcessorME, optionsVE, onTableRenderME);
-            dataExporter.setRepeat(repeatVE);
-            dataExporter.setCustomExporter(customExporterVE);
-            actionSource.addActionListener(dataExporter);
+        if (!ComponentHandler.isNew(parent)) {
+            return;
         }
+
+        ValueExpression targetVE = target.getValueExpression(faceletContext, Object.class);
+        ValueExpression typeVE = type.getValueExpression(faceletContext, Object.class);
+        ValueExpression fileNameVE = fileName.getValueExpression(faceletContext, Object.class);
+        ValueExpression pageOnlyVE = null;
+        ValueExpression selectionOnlyVE = null;
+        ValueExpression encodingVE = null;
+        MethodExpression preProcessorME = null;
+        MethodExpression postProcessorME = null;
+        ValueExpression repeatVE = null;
+        ValueExpression optionsVE = null;
+        MethodExpression onTableRenderME = null;
+        ValueExpression customExporterVE = null;
+
+        if (encoding != null) {
+            encodingVE = encoding.getValueExpression(faceletContext, Object.class);
+        }
+        if (pageOnly != null) {
+            pageOnlyVE = pageOnly.getValueExpression(faceletContext, Object.class);
+        }
+        if (selectionOnly != null) {
+            selectionOnlyVE = selectionOnly.getValueExpression(faceletContext, Object.class);
+        }
+        if (preProcessor != null) {
+            preProcessorME = preProcessor.getMethodExpression(faceletContext, null, new Class[]{Object.class});
+        }
+        if (postProcessor != null) {
+            postProcessorME = postProcessor.getMethodExpression(faceletContext, null, new Class[]{Object.class});
+        }
+        if (repeat != null) {
+            repeatVE = repeat.getValueExpression(faceletContext, Object.class);
+        }
+        if (options != null) {
+            optionsVE = options.getValueExpression(faceletContext, Object.class);
+        }
+        if (onTableRender != null) {
+            onTableRenderME = onTableRender.getMethodExpression(faceletContext, null, new Class[]{Object.class, Object.class});
+        }
+        if (customExporter != null) {
+            customExporterVE = customExporter.getValueExpression(faceletContext, Object.class);
+        }
+        ActionSource actionSource = (ActionSource) parent;
+        DataExporter dataExporter = new DataExporter(targetVE, typeVE, fileNameVE, pageOnlyVE, selectionOnlyVE,
+                encodingVE, preProcessorME, postProcessorME, optionsVE, onTableRenderME);
+        dataExporter.setRepeat(repeatVE);
+        dataExporter.setCustomExporter(customExporterVE);
+        actionSource.addActionListener(dataExporter);
     }
 
 }

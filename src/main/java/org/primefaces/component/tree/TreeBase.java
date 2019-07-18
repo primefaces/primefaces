@@ -32,7 +32,7 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+public abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -50,8 +50,6 @@ abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehavi
         datakey,
         animate,
         orientation,
-        propagateSelectionUp,
-        propagateSelectionDown,
         dir,
         draggable,
         droppable,
@@ -155,22 +153,6 @@ abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehavi
 
     public void setOrientation(String orientation) {
         getStateHelper().put(PropertyKeys.orientation, orientation);
-    }
-
-    public boolean isPropagateSelectionUp() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.propagateSelectionUp, true);
-    }
-
-    public void setPropagateSelectionUp(boolean propagateSelectionUp) {
-        getStateHelper().put(PropertyKeys.propagateSelectionUp, propagateSelectionUp);
-    }
-
-    public boolean isPropagateSelectionDown() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.propagateSelectionDown, true);
-    }
-
-    public void setPropagateSelectionDown(boolean propagateSelectionDown) {
-        getStateHelper().put(PropertyKeys.propagateSelectionDown, propagateSelectionDown);
     }
 
     public String getDir() {

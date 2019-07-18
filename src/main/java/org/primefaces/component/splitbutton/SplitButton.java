@@ -25,6 +25,7 @@ package org.primefaces.component.splitbutton;
 
 import java.util.List;
 import javax.el.ELContext;
+import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
 import javax.el.MethodNotFoundException;
 import javax.faces.application.ResourceDependencies;
@@ -42,6 +43,7 @@ import org.primefaces.model.menu.MenuModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
+import org.primefaces.util.SerializableFunction;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -152,7 +154,7 @@ public class SplitButton extends SplitButtonBase {
                 return (MenuItem) childElement;
             }
             else {
-                String relativeIndex = id.substring(id.indexOf("_") + 1);
+                String relativeIndex = id.substring(id.indexOf('_') + 1);
 
                 return findMenuitem(((MenuGroup) childElement).getElements(), relativeIndex);
             }
@@ -163,44 +165,44 @@ public class SplitButton extends SplitButtonBase {
     public void broadcast(FacesEvent event) throws AbortProcessingException {
         if (event instanceof MenuActionEvent) {
             FacesContext facesContext = getFacesContext();
-            ELContext eLContext = facesContext.getELContext();
+
             MenuActionEvent menuActionEvent = (MenuActionEvent) event;
             MenuItem menuItem = menuActionEvent.getMenuItem();
+
+            SerializableFunction<MenuItem, String> function = menuItem.getFunction();
             String command = menuItem.getCommand();
+            if (function != null) {
+                String outcome = function.apply(menuItem);
+                facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, null, outcome);
+            }
+            else if (command != null) {
+                ELContext elContext = facesContext.getELContext();
+                ExpressionFactory expressionFactory = facesContext.getApplication().getExpressionFactory();
 
-            if (command != null) {
-                String actionExpressionString = menuItem.getCommand();
-                MethodExpression noArgExpr = facesContext.getApplication().getExpressionFactory().
-                        createMethodExpression(eLContext, actionExpressionString,
-                                String.class, new Class[0]);
                 Object invokeResult = null;
-
                 try {
-                    invokeResult = noArgExpr.invoke(eLContext, null);
+                    MethodExpression me = expressionFactory.createMethodExpression(elContext, command,
+                                String.class, new Class[0]);
+                    invokeResult = me.invoke(elContext, null);
                 }
-                catch (MethodNotFoundException methodNotFoundException) {
+                catch (MethodNotFoundException mnfe1) {
                     try {
-                        MethodExpression argExpr = facesContext.getApplication().getExpressionFactory().
-                                createMethodExpression(eLContext, actionExpressionString,
+                        MethodExpression me = expressionFactory.createMethodExpression(elContext, command,
                                         String.class, new Class[]{ActionEvent.class});
-
-                        invokeResult = argExpr.invoke(eLContext, new Object[]{event});
+                        invokeResult = me.invoke(elContext, new Object[]{event});
                     }
-                    catch (MethodNotFoundException methodNotFoundException2) {
-                        MethodExpression argExpr = facesContext.getApplication().getExpressionFactory().
-                                createMethodExpression(eLContext, actionExpressionString,
+                    catch (MethodNotFoundException mnfe2) {
+                        MethodExpression me = expressionFactory.createMethodExpression(elContext, command,
                                         String.class, new Class[]{MenuActionEvent.class});
-
-                        invokeResult = argExpr.invoke(eLContext, new Object[]{event});
+                        invokeResult = me.invoke(elContext, new Object[]{event});
                     }
                 }
                 finally {
                     String outcome = (invokeResult != null) ? invokeResult.toString() : null;
 
-                    facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, actionExpressionString, outcome);
+                    facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, command, outcome);
                 }
             }
-
         }
         else {
             super.broadcast(event);

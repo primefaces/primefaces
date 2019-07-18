@@ -31,7 +31,7 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
                         $this.unselectAll();
                     }
 
-                    if(metaKey && item.hasClass('ui-state-highlight')) {
+                    if((metaKey || $this.cfg.showCheckbox) && item.hasClass('ui-state-highlight')) {
                         $this.unselectItem(item);
                     }
                     else {

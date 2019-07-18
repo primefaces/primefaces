@@ -154,7 +154,8 @@ public class PickListRenderer extends InputRenderer {
                 .nativeAttr("filterFunction", pickList.getFilterFunction(), null)
                 .attr("showCheckbox", pickList.isShowCheckbox(), false)
                 .callback("onTransfer", "function(e)", pickList.getOnTransfer())
-                .attr("tabindex", pickList.getTabindex(), "0");
+                .attr("tabindex", pickList.getTabindex(), "0")
+                .attr("escapeValue", pickList.isEscapeValue());
 
         encodeClientBehaviors(context, pickList);
 

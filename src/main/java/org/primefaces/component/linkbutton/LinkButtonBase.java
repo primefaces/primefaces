@@ -29,7 +29,7 @@ import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
-abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UIOutcomeTarget, Widget {
+public abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UIOutcomeTarget, Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

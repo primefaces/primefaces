@@ -5,7 +5,7 @@ Poll is an ajax component that has the ability to send periodical ajax requests.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | poll
 | Component Class | org.primefaces.component.poll.Poll
 | Component Type | org.primefaces.component.Poll
@@ -80,7 +80,7 @@ Poll can be started and stopped using client side api;
 ```xhtml
 <h:form>
     <h:outputText id="txt_count" value="#{counterBean.count}" />
-    <p:poll interval="5" actionListener="#{counterBean.increment}" update="txt_count" widgetVar="myPoll" autoStart="false" />
+    <p:poll interval="5" action="#{counterBean.increment}" update="txt_count" widgetVar="myPoll" autoStart="false" />
     <a href="#" onclick="PF('myPoll').start();">Start</a>
     <a href="#" onclick="PF('myPoll').stop();">Stop</a>
 </h:form>

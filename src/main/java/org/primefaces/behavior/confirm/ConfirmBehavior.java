@@ -28,14 +28,15 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
 import org.primefaces.behavior.base.AbstractBehavior;
+import org.primefaces.behavior.base.BehaviorAttribute;
 import org.primefaces.component.api.Confirmable;
-import org.primefaces.json.JSONObject;
+import org.json.JSONObject;
 
 public class ConfirmBehavior extends AbstractBehavior {
 
     public static final String BEHAVIOR_ID = "org.primefaces.behavior.ConfirmBehavior";
 
-    public enum PropertyKeys {
+    public enum PropertyKeys implements BehaviorAttribute {
         header(String.class),
         message(String.class),
         icon(String.class),
@@ -49,12 +50,7 @@ public class ConfirmBehavior extends AbstractBehavior {
             this.expectedType = expectedType;
         }
 
-        /**
-         * Holds the type which ought to be passed to
-         * {@link javax.faces.view.facelets.TagAttribute#getObject(javax.faces.view.facelets.FaceletContext, java.lang.Class) }
-         * when creating the behavior.
-         * @return the expectedType the expected object type
-         */
+        @Override
         public Class<?> getExpectedType() {
             return expectedType;
         }
@@ -74,14 +70,14 @@ public class ConfirmBehavior extends AbstractBehavior {
         }
 
         String source = component.getClientId(context);
-        String headerText = JSONObject.quote(this.getHeader());
-        String messageText = JSONObject.quote(this.getMessage());
-        String beforeShow = JSONObject.quote(this.getBeforeShow());
+        String headerText = JSONObject.quote(getHeader());
+        String messageText = JSONObject.quote(getMessage());
+        String beforeShow = JSONObject.quote(getBeforeShow());
 
         if (component instanceof Confirmable) {
             String sourceProperty = (source == null) ? "source:this" : "source:\"" + source + "\"";
             String script = "PrimeFaces.confirm({" + sourceProperty
-                                                   + ",escape:" + this.isEscape()
+                                                   + ",escape:" + isEscape()
                                                    + ",header:" + headerText
                                                    + ",message:" + messageText
                                                    + ",icon:\"" + getIcon()
@@ -98,7 +94,7 @@ public class ConfirmBehavior extends AbstractBehavior {
     }
 
     @Override
-    protected Enum<?>[] getAllProperties() {
+    protected BehaviorAttribute[] getAllAttributes() {
         return PropertyKeys.values();
     }
 

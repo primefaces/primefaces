@@ -95,26 +95,30 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
-    testStrength: function(str) {
-        var grade = 0,
-        val = 0,
-        _self = this;
+    testStrength: function(password) {
+        // return a number between 0 and 100.
+        var score = 0;
 
-        val = str.match('[0-9]');
-        grade += _self.normalize(val ? val.length : 1/4, 1) * 25;
+        // must be at least 8 characters
+        if (!password || password.length < 8)
+            return score;
 
-        val = str.match('[a-zA-Z]');
-        grade += _self.normalize(val ? val.length : 1/2, 3) * 10;
 
-        val = str.match('[!@#$%^&*?_~.,;=]');
-        grade += _self.normalize(val ? val.length : 1/6, 1) * 35;
+        // require 3 of the following 4 categories
+        var variations = {
+            digits : /\d/.test(password),
+            lower : /[a-z]/.test(password),
+            upper : /[A-Z]/.test(password),
+            nonWords : /\W/.test(password)
+        }
 
-        val = str.match('[A-Z]');
-        grade += _self.normalize(val ? val.length : 1/6, 1) * 30;
+        variationCount = 0;
+        for ( var check in variations) {
+            variationCount += (variations[check] == true) ? 1 : 0;
+        }
+        score += variationCount * 28;
 
-        grade *= str.length / 8;
-
-        return grade > 100 ? 100 : grade;
+        return parseInt(score);
     },
 
     normalize: function(x, y) {

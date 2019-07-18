@@ -25,7 +25,6 @@ package org.primefaces.validate.bean;
 
 import java.util.HashMap;
 import java.util.Map;
-import javax.validation.constraints.Future;
 import javax.validation.metadata.ConstraintDescriptor;
 
 public class FutureClientValidationConstraint implements ClientValidationConstraint {
@@ -48,6 +47,6 @@ public class FutureClientValidationConstraint implements ClientValidationConstra
 
     @Override
     public String getValidatorId() {
-        return Future.class.getSimpleName();
+        return "Future";
     }
 }

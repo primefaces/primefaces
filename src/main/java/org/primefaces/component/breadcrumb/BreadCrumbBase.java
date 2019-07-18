@@ -28,7 +28,7 @@ import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class BreadCrumbBase extends AbstractMenu implements Widget {
+public abstract class BreadCrumbBase extends AbstractMenu implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -40,7 +40,8 @@ abstract class BreadCrumbBase extends AbstractMenu implements Widget {
         style,
         styleClass,
         homeDisplay,
-        tabindex;
+        tabindex,
+        lastItemDisabled;
     }
 
     public BreadCrumbBase() {
@@ -93,6 +94,14 @@ abstract class BreadCrumbBase extends AbstractMenu implements Widget {
     @Override
     public void setTabindex(String tabindex) {
         getStateHelper().put(PropertyKeys.tabindex, tabindex);
+    }
+
+    public boolean isLastItemDisabled() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.lastItemDisabled, false);
+    }
+
+    public void setLastItemDisabled(boolean lastItemDisabled) {
+        getStateHelper().put(PropertyKeys.lastItemDisabled, lastItemDisabled);
     }
 
     @Override

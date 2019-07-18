@@ -28,7 +28,7 @@ import javax.faces.component.UIMessages;
 import org.primefaces.component.api.UINotification;
 
 
-abstract class MessagesBase extends UIMessages implements UINotification {
+public abstract class MessagesBase extends UIMessages implements UINotification {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -42,7 +42,9 @@ abstract class MessagesBase extends UIMessages implements UINotification {
         style,
         styleClass,
         showIcon,
-        forType
+        forType,
+        forIgnores,
+        skipDetailIfEqualsSummary
     }
 
     public MessagesBase() {
@@ -111,4 +113,20 @@ abstract class MessagesBase extends UIMessages implements UINotification {
         getStateHelper().put(PropertyKeys.forType, forType);
     }
 
+    public String getForIgnores() {
+        return (String) getStateHelper().eval(PropertyKeys.forIgnores, null);
+    }
+
+    public void setForIgnores(String forIgnores) {
+        getStateHelper().put(PropertyKeys.forIgnores, forIgnores);
+    }
+
+    @Override
+    public boolean isSkipDetailIfEqualsSummary() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.skipDetailIfEqualsSummary, false);
+    }
+
+    public void setSkipDetailIfEqualsSummary(boolean skipDetailIfEqualsSummary) {
+        getStateHelper().put(PropertyKeys.skipDetailIfEqualsSummary, skipDetailIfEqualsSummary);
+    }
 }

@@ -74,7 +74,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.skinSelect(this.rppSelect);
         this.rppSelect.change(function(e) {
             if(!$(this).hasClass("ui-state-disabled")){
-                $this.setRowsPerPage(parseInt($(this).val()));
+                $this.setRowsPerPage($(this).val());
             }
         });
 
@@ -193,6 +193,17 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    unbindEvents: function() {
+        var buttons = this.jq.children('a.ui-state-default');
+        if (buttons.length > 0) {
+            buttons.off();
+        }
+        var pageLinks = this.pagesContainer.children('.ui-paginator-page');
+        if (pageLinks.length > 0) {
+            pageLinks.off();
+        }
+    },
+
     updateUI: function() {
         //boundaries
         if(this.cfg.page === 0) {
@@ -230,7 +241,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
 
         //rows per page dropdown
         if(this.cfg.prevRows !== this.cfg.rows) {
-            this.rppSelect.filter(':not(.ui-state-focus)').children('option').filter('option[value=' + this.cfg.rows + ']').prop('selected', true);
+            this.rppSelect.filter(':not(.ui-state-focus)').children('option').filter('option[value="' + this.cfg.rows + '"]').prop('selected', true);
             this.cfg.prevRows = this.cfg.rows;
         }
 
@@ -319,15 +330,30 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
     },
 
     setRowsPerPage: function(rpp) {
-        var first = this.cfg.rows * this.cfg.page,
-        page = parseInt(first / rpp);
-
         this.cfg.rows = rpp;
 
-        this.cfg.pageCount = Math.ceil(this.cfg.rowCount / this.cfg.rows);
+        if (rpp === '*') {
+            this.cfg.pageCount = 1;
+            this.cfg.page = 0;
 
-        this.cfg.page = -1;
-        this.setPage(page);
+            var newState = {
+                first: 1,
+                rows: rpp,
+                page: this.cfg.page
+            };
+
+            this.cfg.paginate.call(this, newState);
+        }
+        else {
+            rpp = parseInt(rpp);
+            var first = this.cfg.rows * this.cfg.page,
+            page = parseInt(first / rpp);
+
+            this.cfg.pageCount = Math.ceil(this.cfg.rowCount / this.cfg.rows);
+            this.cfg.page = -1;
+
+            this.setPage(page);
+        }
     },
 
     setTotalRecords: function(value) {

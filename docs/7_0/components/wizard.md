@@ -6,7 +6,7 @@ consists of several child tab components where each tab represents a step in the
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | wizard
 | Component Class | org.primefaces.component.wizard.Wizard
 | Component Type | org.primefaces.component.Wizard
@@ -127,7 +127,7 @@ that last tab contains read-only data for confirmation and the submit button.
                     <h:outputText />
                     <h:outputText />
                 </h:panelGrid>
-                <p:commandButton value="Submit" actionListener="#{userWizard.save}" />
+                <p:commandButton value="Submit" action="#{userWizard.save}" />
             </p:panel>
         </p:tab>
     </p:wizard>

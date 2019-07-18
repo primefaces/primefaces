@@ -24,15 +24,15 @@
 package org.primefaces.component.poll;
 
 import java.io.IOException;
+import java.time.Duration;
+import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseId;
 
-import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.WidgetBuilder;
 
 public class PollRenderer extends CoreRenderer {
@@ -59,31 +59,28 @@ public class PollRenderer extends CoreRenderer {
         Poll poll = (Poll) component;
         String clientId = poll.getClientId(context);
 
-        AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
-
-        String request = builder.init()
-                .source(clientId)
-                .form(poll, poll)
-                .process(component, poll.getProcess())
-                .update(component, poll.getUpdate())
-                .async(poll.isAsync())
-                .global(poll.isGlobal())
-                .delay(poll.getDelay())
-                .timeout(poll.getTimeout())
-                .partialSubmit(poll.isPartialSubmit(), poll.isPartialSubmitSet(), poll.getPartialSubmitFilter())
-                .resetValues(poll.isResetValues(), poll.isResetValuesSet())
-                .ignoreAutoUpdate(poll.isIgnoreAutoUpdate())
-                .onstart(poll.getOnstart())
-                .onerror(poll.getOnerror())
-                .onsuccess(poll.getOnsuccess())
-                .oncomplete(poll.getOncomplete())
+        String request = preConfiguredAjaxRequestBuilder(context, poll)
                 .params(poll)
                 .build();
 
+        Object interval = poll.getInterval();
+
+        int convertedInterval;
+        if (interval instanceof Integer) {
+            convertedInterval = (Integer) interval;
+        }
+        else if (interval instanceof Duration) {
+            convertedInterval = (int) ((Duration) interval).getSeconds();
+        }
+        else {
+            throw new FacesException(interval.getClass() + " is not supported as \"interval\" for p:poll");
+        }
+
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Poll", poll.resolveWidgetVar(), clientId)
-                .attr("frequency", poll.getInterval())
+                .attr("frequency", convertedInterval)
                 .attr("autoStart", poll.isAutoStart())
+                .attr("intervalType", poll.getIntervalType(), "second")
                 .callback("fn", "function()", request);
 
         wb.finish();

@@ -51,6 +51,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.faces.component.UIForm;
 
 public abstract class CoreRenderer extends Renderer {
@@ -395,14 +396,12 @@ public abstract class CoreRenderer extends Renderer {
         return LangUtils.isValueBlank(value);
     }
 
-    protected String buildAjaxRequest(FacesContext context, AjaxSource source) {
-        return buildAjaxRequest(context, source, null);
+    protected <T extends UIComponent & AjaxSource> AjaxRequestBuilder preConfiguredAjaxRequestBuilder(FacesContext context, T source) {
+        return preConfiguredAjaxRequestBuilder(context, source, source, null);
     }
 
-    protected String buildAjaxRequest(FacesContext context, AjaxSource source, UIForm form) {
-        UIComponent component = (UIComponent) source;
+    protected AjaxRequestBuilder preConfiguredAjaxRequestBuilder(FacesContext context, UIComponent component, AjaxSource source, UIForm form) {
         String clientId = component.getClientId(context);
-
         AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
 
         builder.init()
@@ -420,45 +419,37 @@ public abstract class CoreRenderer extends Renderer {
                 .onstart(source.getOnstart())
                 .onerror(source.getOnerror())
                 .onsuccess(source.getOnsuccess())
-                .oncomplete(source.getOncomplete())
-                .params(component);
+                .oncomplete(source.getOncomplete());
 
-        builder.preventDefault();
+        return builder;
+    }
+
+    protected <T extends UIComponent & AjaxSource> String buildAjaxRequest(FacesContext context, T source) {
+        return buildAjaxRequest(context, source, null);
+    }
+
+    protected <T extends UIComponent & AjaxSource> String buildAjaxRequest(FacesContext context, T source, UIForm form) {
+        AjaxRequestBuilder builder = preConfiguredAjaxRequestBuilder(context, source, source, form)
+                .params(source)
+                .preventDefault();
 
         return builder.build();
     }
 
-    protected String buildAjaxRequest(FacesContext context, UIComponent component, AjaxSource source, UIForm form,
-            Map<String, List<String>> params) {
-
-        String clientId = component.getClientId(context);
-
-        AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
-
-        builder.init()
-                .source(clientId)
-                .form(source, component, form)
-                .process(component, source.getProcess())
-                .update(component, source.getUpdate())
-                .async(source.isAsync())
-                .global(source.isGlobal())
-                .delay(source.getDelay())
-                .timeout(source.getTimeout())
-                .partialSubmit(source.isPartialSubmit(), source.isPartialSubmitSet(), source.getPartialSubmitFilter())
-                .resetValues(source.isResetValues(), source.isResetValuesSet())
-                .ignoreAutoUpdate(source.isIgnoreAutoUpdate())
-                .onstart(source.getOnstart())
-                .onerror(source.getOnerror())
-                .onsuccess(source.getOnsuccess())
-                .oncomplete(source.getOncomplete())
-                .params(params);
-
-        builder.preventDefault();
+    protected String buildAjaxRequest(FacesContext context, UIComponent component, AjaxSource source, UIForm form, Map<String, List<String>> params) {
+        AjaxRequestBuilder builder = preConfiguredAjaxRequestBuilder(context, component, source, form)
+                .params(params)
+                .preventDefault();
 
         return builder.build();
     }
 
     protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam, boolean submit) {
+        return buildNonAjaxRequest(context, component, form, decodeParam, Collections.emptyMap(), submit);
+    }
+
+    protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam,
+                                         Map<String, List<String>> parameters, boolean submit) {
         StringBuilder request = SharedStringBuilder.get(context, SB_BUILD_NON_AJAX_REQUEST);
         String formId = form.getClientId(context);
         Map<String, Object> params = new HashMap<>();
@@ -471,25 +462,23 @@ public abstract class CoreRenderer extends Renderer {
             UIComponent child = component.getChildren().get(i);
             if (child instanceof UIParameter) {
                 UIParameter param = (UIParameter) child;
-
                 params.put(param.getName(), param.getValue());
             }
+        }
+
+        if (parameters != null && !parameters.isEmpty()) {
+            parameters.forEach((k, v) -> params.put(k, v.get(0)));
         }
 
         //append params
         if (!params.isEmpty()) {
             request.append("PrimeFaces.addSubmitParam('").append(formId).append("',{");
 
-            for (Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
-                String key = it.next();
-                String value = EscapeUtils.forJavaScript(String.valueOf(params.get(key))) ;
-
-                request.append("'").append(key).append("':'").append(value).append("'");
-
-                if (it.hasNext()) {
-                    request.append(",");
-                }
-            }
+            request.append(
+                    params.entrySet().stream()
+                            .map(e -> "'" + e.getKey() + "':'" + EscapeUtils.forJavaScript(String.valueOf(e.getValue())) + "'")
+                            .collect(Collectors.joining(","))
+            );
 
             request.append("})");
         }

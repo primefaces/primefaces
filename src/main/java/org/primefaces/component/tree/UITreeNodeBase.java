@@ -26,7 +26,7 @@ package org.primefaces.component.tree;
 import javax.faces.component.UIColumn;
 
 
-abstract class UITreeNodeBase extends UIColumn {
+public abstract class UITreeNodeBase extends UIColumn {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

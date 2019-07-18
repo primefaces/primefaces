@@ -5,7 +5,7 @@ Message is a pre-skinned extended version of the standard JSF message component.
 ## Info
 
 | Name | Value |
-| - | - |
+| --- | --- |
 | Tag | message
 | Component Class | org.primefaces.component.message.Message
 | Component Type | org.primefaces.component.Message

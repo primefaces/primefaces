@@ -30,6 +30,8 @@ import javax.faces.context.PartialResponseWriter;
 import javax.faces.context.PartialViewContext;
 import javax.faces.context.PartialViewContextWrapper;
 import javax.faces.event.PhaseId;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.csp.CspPartialResponseWriter;
 import org.primefaces.expression.SearchExpressionConstants;
 
 import org.primefaces.util.ComponentUtils;
@@ -73,6 +75,12 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
         if (writer == null) {
             PartialResponseWriter parentWriter = getWrapped().getPartialResponseWriter();
             writer = new PrimePartialResponseWriter(parentWriter);
+
+            FacesContext context = FacesContext.getCurrentInstance();
+            PrimeConfiguration config = PrimeApplicationContext.getCurrentInstance(context).getConfig();
+            if (config.isCsp()) {
+                writer = new CspPartialResponseWriter(writer, context, PrimeFacesContext.getCspState(context));
+            }
         }
 
         return writer;

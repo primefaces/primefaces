@@ -30,7 +30,7 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
+public abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -58,7 +58,8 @@ abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
         resetValues,
         ignoreAutoUpdate,
         partialSubmitFilter,
-        form
+        form,
+        intervalType
     }
 
     public PollBase() {
@@ -78,11 +79,11 @@ abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public int getInterval() {
+    public Object getInterval() {
         return (Integer) getStateHelper().eval(PropertyKeys.interval, 2);
     }
 
-    public void setInterval(int interval) {
+    public void setInterval(Object interval) {
         getStateHelper().put(PropertyKeys.interval, interval);
     }
 
@@ -251,6 +252,14 @@ abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
 
     public void setForm(String form) {
         getStateHelper().put(PropertyKeys.form, form);
+    }
+
+    public String getIntervalType() {
+        return (String) getStateHelper().eval(PropertyKeys.intervalType, "second");
+    }
+
+    public void setIntervalType(String intervalType) {
+        getStateHelper().put(PropertyKeys.intervalType, intervalType);
     }
 
     @Override
