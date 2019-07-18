@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.menuitem;
 
-import org.primefaces.application.DialogReturn;
+import org.primefaces.application.DialogReturnHolder;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.Confirmable;
 import org.primefaces.component.api.UIOutcomeTarget;
@@ -33,7 +33,7 @@ import org.primefaces.util.SerializableFunction;
 import javax.faces.component.UICommand;
 
 
-public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcomeTarget, MenuItem, Confirmable, DialogReturn {
+public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcomeTarget, MenuItem, Confirmable, DialogReturnHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

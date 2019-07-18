@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.commandbutton;
 
-import org.primefaces.application.DialogReturn;
+import org.primefaces.application.DialogReturnHolder;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 
@@ -52,17 +52,17 @@ public class CommandButton extends CommandButtonBase {
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return DialogReturn.BEHAVIOR_EVENT_MAPPING;
+        return DialogReturnHolder.BEHAVIOR_EVENT_MAPPING;
     }
 
     @Override
     public Collection<String> getEventNames() {
-        return DialogReturn.EVENT_NAMES;
+        return DialogReturnHolder.EVENT_NAMES;
     }
 
     @Override
     public String getDefaultEventName() {
-        return DialogReturn.DEFAULT_EVENT;
+        return DialogReturnHolder.DEFAULT_EVENT;
     }
 
     @Override

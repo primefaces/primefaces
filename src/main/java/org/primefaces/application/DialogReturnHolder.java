@@ -39,7 +39,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public interface DialogReturn extends ClientBehaviorHolder, PrimeClientBehaviorHolder {
+public interface DialogReturnHolder extends ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("dialogReturn", SelectEvent.class)
@@ -65,8 +65,6 @@ public interface DialogReturn extends ClientBehaviorHolder, PrimeClientBehaviorH
         return DEFAULT_EVENT;
     }
 
-    void queueEvent(FacesEvent event);
-
     default void handleEvent(FacesEvent event, UIComponent source, Consumer<FacesEvent> queueEvent) {
         FacesContext context = event.getFacesContext();
 
@@ -74,7 +72,7 @@ public interface DialogReturn extends ClientBehaviorHolder, PrimeClientBehaviorH
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-            if (eventName.equals("dialogReturn")) {
+            if ("dialogReturn".equals(eventName)) {
                 AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
                 Map<String, Object> session = context.getExternalContext().getSessionMap();
                 String dcid = params.get(source.getClientId(context) + "_pfdlgcid");
@@ -84,7 +82,7 @@ public interface DialogReturn extends ClientBehaviorHolder, PrimeClientBehaviorH
                 event = new SelectEvent(source, behaviorEvent.getBehavior(), selectedValue);
                 queueEvent.accept(event);
             }
-            else if (eventName.equals("click")) {
+            else if (DEFAULT_EVENT.equals(eventName)) {
                 queueEvent.accept(event);
             }
         }

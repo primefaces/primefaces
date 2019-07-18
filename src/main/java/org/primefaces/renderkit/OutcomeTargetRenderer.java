@@ -23,7 +23,7 @@
  */
 package org.primefaces.renderkit;
 
-import org.primefaces.application.DialogReturn;
+import org.primefaces.application.DialogReturnHolder;
 import org.primefaces.behavior.confirm.ConfirmBehavior;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
@@ -272,7 +272,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
             }
         }
 
-        if (menuitem instanceof DialogReturn) {
+        if (menuitem instanceof DialogReturnHolder) {
             List<ClientBehaviorContext.Parameter> behaviorParams = new ArrayList<>();
             behaviorParams.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
             String dialogReturnBehavior = getEventBehaviors(context, (ClientBehaviorHolder) menuitem, "dialogReturn", behaviorParams);

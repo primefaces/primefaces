@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.menuitem;
 
-import org.primefaces.application.DialogReturn;
+import org.primefaces.application.DialogReturnHolder;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 
@@ -47,22 +47,22 @@ public class UIMenuItem extends UIMenuItemBase {
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return DialogReturn.BEHAVIOR_EVENT_MAPPING;
+        return DialogReturnHolder.BEHAVIOR_EVENT_MAPPING;
     }
 
     @Override
     public Collection<String> getEventNames() {
-        return DialogReturn.EVENT_NAMES;
+        return DialogReturnHolder.EVENT_NAMES;
     }
 
     @Override
     public String getDefaultEventName() {
-        return DialogReturn.DEFAULT_EVENT;
+        return DialogReturnHolder.DEFAULT_EVENT;
     }
 
     @Override
-    public void queueEvent(FacesEvent event) {
-        handleEvent(event, this, super::queueEvent);
+    public void queueEvent(FacesEvent e) {
+        handleEvent(e, this, super::queueEvent);
     }
 
     @Override
