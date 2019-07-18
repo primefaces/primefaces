@@ -63,7 +63,7 @@ public class CommandLink extends CommandLinkBase {
 
     @Override
     public void queueEvent(FacesEvent event) {
-        handleEvent(event, this, super::queueEvent);
+        handleEvent(event, getFacesContext(), this, super::queueEvent);
     }
 
     @Override

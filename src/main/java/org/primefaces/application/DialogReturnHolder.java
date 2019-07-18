@@ -65,9 +65,7 @@ public interface DialogReturnHolder extends ClientBehaviorHolder, PrimeClientBeh
         return DEFAULT_EVENT;
     }
 
-    default void handleEvent(FacesEvent event, UIComponent source, Consumer<FacesEvent> queueEvent) {
-        FacesContext context = event.getFacesContext();
-
+    default void handleEvent(FacesEvent event, FacesContext context, UIComponent source, Consumer<FacesEvent> queueEvent) {
         if (event instanceof AjaxBehaviorEvent) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
