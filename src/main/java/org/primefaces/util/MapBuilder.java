@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Fluent builder for {@link Map}'s
+ * Fluent builder for {@link Map}
  *
  * @param <K> key type
  * @param <V> value type
@@ -54,10 +54,18 @@ public final class MapBuilder<K, V> {
         return this;
     }
 
+    /**
+     * Returns a mutable map.
+     * @return a mutable map.
+     */
     public Map<K, V> build() {
         return map;
     }
 
+    /**
+     * Returns a newly-created immutable map.
+     * @return a newly-created immutable map.
+     */
     public Map<K, V> ibuild() {
         return Collections.unmodifiableMap(map);
     }
