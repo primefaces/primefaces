@@ -227,7 +227,7 @@ BarChartModel is used to created a BarChart.
 public class Bean {
     private BarChartModel model;
 
-    public ChartBean() {
+    public Bean() {
         model = new BarChartModel();
         ChartSeries boys = new ChartSeries();
         boys.setLabel("Boys");
@@ -269,7 +269,7 @@ public class Bean {
 public class Bean {
     private HorizontalBarChartModel model;
 
-    public ChartBean() {
+    public Bean() {
         model = new HorizontalBarChartModel();
         ChartSeries boys = new ChartSeries();
         boys.setLabel("Boys");
@@ -316,7 +316,7 @@ DonutChart is generated using DonutChartModel.
 public class Bean {
     private DonutChartModel model;
     
-    public ChartBean() {
+    public Bean() {
         model = new DonutChartModel();
         Map<String, Number> circle1 = new LinkedHashMap<String, Number>();
         circle1.put("Brand 1", 150);
@@ -354,7 +354,7 @@ public class Bean {
 public class Bean {
     private DonutChartModel model;
 
-    public ChartBean() {
+    public Bean() {
         model = new DonutChartModel();
         Map<String, Number> circle1 = new LinkedHashMap<String, Number>();
         circle1.put("Brand 1", 150);
@@ -402,7 +402,7 @@ BubbleChart is created with a BubbleChartModel.
 public class Bean {
     private BubbleChartModel model;
 
-    public ChartBean() {
+    public Bean() {
         model = new BubbleChartModel();
         model.add(new BubbleChartSeries("Acura", 70, 183,55));
         model.add(new BubbleChartSeries("Alfa Romeo", 45, 92, 36));
@@ -433,7 +433,7 @@ public class Bean {
 public class Bean {
     private BubbleChartModel model;
 
-    public ChartBean() {
+    public Bean() {
         model = new BubbleChartModel();
         model.add(new BubbleChartSeries("Acura", 70, 183,55));
         model.add(new BubbleChartSeries("Alfa Romeo", 45, 92, 36));
@@ -472,7 +472,7 @@ OhlcChartModel is used to display Ohlc Charts.
 public class Bean {
     private OhlcChartModel model;
 
-    public ChartBean() {
+    public Bean() {
         ohlcModel = new OhlcChartModel();
         ohlcModel.add(new OhlcChartSeries(2007, 143.82, 144.56, 136.04, 136.97));
         ohlcModel.add(new OhlcChartSeries(2008, 138.7, 139.68, 135.18, 135.4));
@@ -500,7 +500,7 @@ public class Bean {
 public class Bean {
     private OhlcChartModel model;
 
-    public ChartBean() {
+    public Bean() {
         model = new OhlcChartModel();
         for( int i=1 ; i < 41 ; i++) {
             ohlcModel2.add(new OhlcChartSeries(i, Math.random() * 80 + 80,
@@ -529,7 +529,7 @@ MeterGauge Chart is created using MeterGaugeChartModel.
 ```java
 public class Bean {
     private MeterGaugeChartModel model;
-    public ChartBean() {
+    public Bean() {
         List<Number> intervals = new ArrayList<Number>(){{
             add(20);
             add(50);
@@ -554,7 +554,7 @@ public class Bean {
 public class Bean {
     private MeterGaugeChartModel model;
 
-    public ChartBean() {
+    public Bean() {
         List<Number> intervals = new ArrayList<Number>(){{
             add(20);
             add(50);
@@ -589,7 +589,7 @@ On same graph, different series type can be displayed together.
 public class Bean {
     private BarChartModel model;
 
-    public ChartBean() {
+    public Bean() {
         combinedModel = new BarChartModel();
         BarChartSeries boys = new BarChartSeries();
         boys.setLabel("Boys");
@@ -635,7 +635,7 @@ Up to 9 axes (xaxis-x9axis, yaxis-y9axis) can be displayed on the same chart.
 public class Bean {
     private LineChartModel model;
 
-    public ChartBean() {
+    public Bean() {
         model = new LineChartModel();
         BarChartSeries boys = new BarChartSeries();
         boys.setLabel("Boys");
@@ -687,7 +687,7 @@ Use DateAxis if you are displaying dates in an axis.
 public class Bean {
     private LineChartModel model;
 
-    public ChartBean() {
+    public Bean() {
         dateModel = new LineChartModel();
         LineChartSeries series1 = new LineChartSeries();
         series1.setLabel("Series 1");
@@ -737,7 +737,7 @@ ajax to a JSF backing bean using ItemSelectEvent.
 ```java
 public class Bean {
     private PieChartModel model;
-    public ChartBean() {
+    public Bean() {
         model = new PieChartModel();
         model.set("Brand 1", 540);
         model.set("Brand 2", 325);
