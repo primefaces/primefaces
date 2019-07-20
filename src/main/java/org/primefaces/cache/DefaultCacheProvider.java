@@ -35,7 +35,7 @@ public class DefaultCacheProvider implements CacheProvider {
 
     private static final Logger LOGGER = Logger.getLogger(DefaultCacheProvider.class.getName());
 
-    private final ConcurrentMap<String, ConcurrentMap<String, Object>> cache;
+    private final Map<String, ConcurrentMap<String, Object>> cache;
 
     public DefaultCacheProvider() {
         cache = new ConcurrentHashMap<>();
@@ -45,21 +45,18 @@ public class DefaultCacheProvider implements CacheProvider {
     @Override
     public Object get(String region, String key) {
         Map<String, Object> cacheRegion = getRegion(region);
-
         return cacheRegion.get(key);
     }
 
     @Override
     public void put(String region, String key, Object object) {
         Map<String, Object> cacheRegion = getRegion(region);
-
         cacheRegion.put(key, object);
     }
 
     @Override
     public void remove(String region, String key) {
         Map<String, Object> cacheRegion = getRegion(region);
-
         cacheRegion.remove(key);
     }
 
@@ -69,12 +66,6 @@ public class DefaultCacheProvider implements CacheProvider {
     }
 
     private Map<String, Object> getRegion(String name) {
-        ConcurrentMap<String, Object> region = cache.get(name);
-        if (region == null) {
-            region = new ConcurrentHashMap<>();
-            cache.put(name, region);
-        }
-
-        return region;
+        return cache.computeIfAbsent(name, k -> new ConcurrentHashMap<>());
     }
 }

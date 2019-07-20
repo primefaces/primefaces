@@ -23,15 +23,16 @@
  */
 package org.primefaces.application.resource;
 
+import org.primefaces.util.LangUtils;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseWriterWrapper;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import org.primefaces.util.LangUtils;
 
 public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
@@ -154,23 +155,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
     @Override
     public void writeURIAttribute(String name, Object value, String property) throws IOException {
-        if (inScript) {
-            if ("src".equalsIgnoreCase(name)) {
-                String strValue = (String) value;
-                if (!LangUtils.isValueBlank(strValue)) {
-                    include.append(strValue);
-                }
-            }
-            else if ("type".equalsIgnoreCase(name)) {
-                String strValue = (String) value;
-                if (!LangUtils.isValueBlank(strValue)) {
-                    scriptType = strValue;
-                }
-            }
-        }
-        else {
-            getWrapped().writeURIAttribute(name, value, property);
-        }
+        writeAttribute(name, value, property);
     }
 
     @Override
@@ -199,9 +184,9 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
         else if ("body".equalsIgnoreCase(name) || ("html".equalsIgnoreCase(name) && !scriptsRendered)) {
 
             // write script includes
-            for (Map.Entry<String, ArrayList<String>> entry : state.getIncludes().entrySet()) {
+            for (Map.Entry<String, List<String>> entry : state.getIncludes().entrySet()) {
                 String type = entry.getKey();
-                ArrayList<String> includes = entry.getValue();
+                List<String> includes = entry.getValue();
 
                 for (int i = 0; i < includes.size(); i++) {
                     String src = includes.get(i);
@@ -215,9 +200,9 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
             }
 
             // write inline scripts
-            for (Map.Entry<String, ArrayList<String>> entry : state.getInlines().entrySet()) {
+            for (Map.Entry<String, List<String>> entry : state.getInlines().entrySet()) {
                 String type = entry.getKey();
-                ArrayList<String> inlines = entry.getValue();
+                List<String> inlines = entry.getValue();
 
                 String id = UUID.randomUUID().toString();
                 String merged = mergeAndMinimizeInlineScripts(id, type, inlines);
@@ -240,7 +225,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
         }
     }
 
-    protected String mergeAndMinimizeInlineScripts(String id, String type, ArrayList<String> inlines) {
+    protected String mergeAndMinimizeInlineScripts(String id, String type, List<String> inlines) {
         StringBuilder script = new StringBuilder(inlines.size() * 100);
         for (int i = 0; i < inlines.size(); i++) {
             if (i > 0) {

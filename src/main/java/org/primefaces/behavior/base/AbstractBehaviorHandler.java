@@ -219,13 +219,7 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         }
 
         Map<String, Object> attrs = component.getAttributes();
-        List<AttachedObjectHandler> result = (List<AttachedObjectHandler>) attrs.get(key);
-
-        if (result == null) {
-            result = new ArrayList<>();
-            attrs.put(key, result);
-        }
-
+        List<AttachedObjectHandler> result = (List<AttachedObjectHandler>) attrs.computeIfAbsent(key, k -> new ArrayList());
         result.add(this);
     }
 
