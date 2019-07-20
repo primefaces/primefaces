@@ -41,14 +41,14 @@ import java.util.function.Consumer;
 
 public interface DialogReturnHolder extends ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
+    String DEFAULT_EVENT = "click";
+
     Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("dialogReturn", SelectEvent.class)
-            .put("click", null)
+            .put(DEFAULT_EVENT, null)
             .ibuild();
 
     Collection<String> EVENT_NAMES = Collections.unmodifiableSet(BEHAVIOR_EVENT_MAPPING.keySet());
-
-    String DEFAULT_EVENT = "click";
 
     @Override
     default Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
