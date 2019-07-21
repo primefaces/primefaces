@@ -1,4 +1,4 @@
-/* Primefaces Extensions */
+/* PrimeFaces Extensions */
 (function () {
     var original_gotoToday = $.datepicker._gotoToday;
 

@@ -77,7 +77,7 @@
     </tag>
 
     <tag>
-        <description>DataExporter is handy for exporting data listed using a Primefaces Datatable to various formats such as excel, pdf, csv and xml.
+        <description>DataExporter is handy for exporting data listed using a PrimeFaces Datatable to various formats such as excel, pdf, csv and xml.
         </description>
         <tag-name>dataExporter</tag-name>
         <handler-class>
