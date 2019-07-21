@@ -26,7 +26,7 @@ package org.primefaces.event;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 
-public class DragDropEvent extends AbstractAjaxBehaviorEvent {
+public class DragDropEvent<T> extends AbstractAjaxBehaviorEvent {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,7 +34,7 @@ public class DragDropEvent extends AbstractAjaxBehaviorEvent {
 
     private String dropId;
 
-    private Object data;
+    private T data;
 
     public DragDropEvent(UIComponent component, Behavior behavior, String dragId, String dropId) {
         super(component, behavior);
@@ -42,7 +42,7 @@ public class DragDropEvent extends AbstractAjaxBehaviorEvent {
         this.dropId = dropId;
     }
 
-    public DragDropEvent(UIComponent component, Behavior behavior, String dragId, String dropId, Object data) {
+    public DragDropEvent(UIComponent component, Behavior behavior, String dragId, String dropId, T data) {
         super(component, behavior);
         this.dragId = dragId;
         this.dropId = dropId;
@@ -57,7 +57,7 @@ public class DragDropEvent extends AbstractAjaxBehaviorEvent {
         return dropId;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 }
