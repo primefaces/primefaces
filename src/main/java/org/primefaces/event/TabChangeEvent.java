@@ -26,7 +26,6 @@ package org.primefaces.event;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 
-import org.apache.poi.ss.formula.functions.T;
 import org.primefaces.component.tabview.Tab;
 
 public class TabChangeEvent<T> extends AbstractAjaxBehaviorEvent implements TabEvent<T> {
