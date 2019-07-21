@@ -67,7 +67,7 @@ public class CommandButton extends CommandButtonBase {
 
     @Override
     public void queueEvent(FacesEvent event) {
-        handleEvent(event, getFacesContext(), this, super::queueEvent);
+        handleQueueEvent(event, getFacesContext(), this, super::queueEvent);
     }
 
     public String resolveStyleClass() {

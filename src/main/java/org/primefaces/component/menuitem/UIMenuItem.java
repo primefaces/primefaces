@@ -62,7 +62,7 @@ public class UIMenuItem extends UIMenuItemBase {
 
     @Override
     public void queueEvent(FacesEvent e) {
-        handleEvent(e, getFacesContext(), this, super::queueEvent);
+        handleQueueEvent(e, getFacesContext(), this, super::queueEvent);
     }
 
     @Override
