@@ -27,12 +27,12 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 import org.primefaces.component.tabview.Tab;
 
-public class TabCloseEvent extends AbstractAjaxBehaviorEvent implements TabEvent {
+public class TabCloseEvent<T> extends AbstractAjaxBehaviorEvent implements TabEvent<T> {
 
     private static final long serialVersionUID = 1L;
 
     private Tab tab;
-    private Object data;
+    private T data;
 
     public TabCloseEvent(UIComponent component, Behavior behavior, Tab tab) {
         super(component, behavior);
@@ -49,11 +49,11 @@ public class TabCloseEvent extends AbstractAjaxBehaviorEvent implements TabEvent
     }
 
     @Override
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 }

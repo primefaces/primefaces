@@ -26,18 +26,18 @@ package org.primefaces.event;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 
-public class UnselectEvent extends AbstractAjaxBehaviorEvent {
+public class UnselectEvent<T> extends AbstractAjaxBehaviorEvent {
 
     private static final long serialVersionUID = 1L;
 
-    private Object object;
+    private T object;
 
-    public UnselectEvent(UIComponent component, Behavior behavior, Object object) {
+    public UnselectEvent(UIComponent component, Behavior behavior, T object) {
         super(component, behavior);
         this.object = object;
     }
 
-    public Object getObject() {
+    public T getObject() {
         return object;
     }
 }
