@@ -27,7 +27,6 @@ import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.MenuModel;
-import org.primefaces.model.menu.Separator;
 import org.primefaces.renderkit.MenuItemHolderRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
