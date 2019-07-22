@@ -29,6 +29,7 @@ import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.MessageFactory;
 
 import javax.el.ValueExpression;
@@ -45,11 +46,16 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoField;
+import java.time.temporal.Temporal;
+import java.util.Collection;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -136,178 +142,190 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object value) throws ConverterException {
-        UICalendar uicalendar = (UICalendar) component;
-        String submittedValue = ((String) value);
-        Class type = null;
-        DateTimeFormatter formatter = null;
-        SimpleDateFormat format = null;
-
-        if (isValueBlank(submittedValue)) {
+        String submittedValue = isValueBlank((String) value) ? null : ((String) value).trim();
+        if (submittedValue == null) {
             return null;
         }
-        else {
-            submittedValue = submittedValue.trim();
-        }
+
+        UICalendar calendar = (UICalendar) component;
 
         //Delegate to user supplied converter if defined
-        try {
-            Converter converter = uicalendar.getConverter();
-            if (converter != null) {
-                return converter.getAsObject(context, uicalendar, submittedValue);
+        Class type = resolveDateType(context, calendar);
+        Converter converter = resolveConverter(context, calendar, type);
+        if (converter != null) {
+            try {
+                return converter.getAsObject(context, calendar, submittedValue);
+            }
+            catch (ConverterException e) {
+                calendar.setConversionFailed(true);
+                throw e;
             }
         }
-        catch (ConverterException e) {
-            uicalendar.setConversionFailed(true);
 
-            throw e;
+        // Java 8 Date/Time API
+        if (Temporal.class.isAssignableFrom(type)) {
+            return getConvertedValueFromJava8DateTimeAPI(context, calendar, type, submittedValue);
+        }
+        else if (Date.class.isAssignableFrom(type)) {
+            return getConvertedValueFromLegacyDateAPI(context, submittedValue, calendar);
+        }
+
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, type.getName() + " not supported", null);
+        throw new ConverterException(message);
+    }
+
+    protected Date getConvertedValueFromLegacyDateAPI(FacesContext context, String submittedValue, UICalendar calendar) {
+        //Code for backward-compatibility with java.util.Date - may be removed at some point in the future
+        SimpleDateFormat format = new SimpleDateFormat(calendar.calculatePattern(), calendar.calculateLocale(context));
+        format.setLenient(false);
+        format.setTimeZone(TimeZone.getTimeZone(CalendarUtils.calculateZoneId(calendar.getTimeZone())));
+
+        try {
+            return format.parse(submittedValue);
+        }
+        catch (ParseException e) {
+            throw createConverterException(context, calendar, submittedValue, format.format(new Date()));
+        }
+    }
+
+    protected Temporal getConvertedValueFromJava8DateTimeAPI(FacesContext context, UICalendar calendar, Class type, String submittedValue) {
+        if (type == LocalDate.class || type == YearMonth.class) {
+            DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+                    .parseCaseInsensitive()
+                    .appendPattern(calendar.calculatePattern())
+                    .parseDefaulting(ChronoField.DAY_OF_MONTH, 1) //because of Month Picker which does not contain day of month
+                    .toFormatter(calendar.calculateLocale(context))
+                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()));
+
+            try {
+                return type == LocalDate.class
+                        ? LocalDate.parse(submittedValue, formatter)
+                        : YearMonth.parse(submittedValue, formatter);
+            }
+            catch (DateTimeParseException e) {
+                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDate.now()));
+            }
+        }
+        else if (type == LocalTime.class) {
+            DateTimeFormatter formatter = DateTimeFormatter
+                    .ofPattern(calendar.calculateTimeOnlyPattern(), calendar.calculateLocale(context))
+                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()));
+
+            try {
+                return LocalTime.parse(submittedValue, formatter);
+            }
+            catch (DateTimeParseException e) {
+                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDate.now()));
+            }
+        }
+        else if (type == LocalDateTime.class) {
+            //known issue: https://github.com/primefaces/primefaces/issues/4625
+            //known issue: https://github.com/primefaces/primefaces/issues/4626
+
+            //TODO: remove temporary (ugly) work-around for adding fixed time-pattern
+            String pattern = calendar.calculatePattern();
+            if (this instanceof DatePickerRenderer) {
+                pattern += " HH:mm";
+            }
+
+            DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+                    .parseCaseInsensitive()
+                    .appendPattern(pattern)
+                    .toFormatter(calendar.calculateLocale(context))
+                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()));
+
+            try {
+                return LocalDateTime.parse(submittedValue, formatter);
+            }
+            catch (DateTimeParseException e) {
+                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDate.now()));
+            }
+        }
+
+        //TODO: implement if necessary
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ZonedDateTime not supported", null);
+        throw new ConverterException(message);
+    }
+
+    protected ConverterException createConverterException(FacesContext context,
+                                                          UICalendar calendar,
+                                                          String submittedValue,
+                                                          Object param1) {
+        calendar.setConversionFailed(true);
+
+        FacesMessage message = null;
+        Object[] params = new Object[3];
+        params[0] = submittedValue;
+        params[1] = param1;
+        params[2] = MessageFactory.getLabel(context, calendar);
+
+        if (calendar.isTimeOnly()) {
+            message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.TIME", FacesMessage.SEVERITY_ERROR, params);
+        }
+        else if (calendar.hasTime()) {
+            message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.DATETIME", FacesMessage.SEVERITY_ERROR, params);
+        }
+        else {
+            message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.DATE", FacesMessage.SEVERITY_ERROR, params);
+        }
+
+        return new ConverterException(message);
+    }
+
+    protected Class resolveDateType(FacesContext context, UICalendar calendar) {
+        ValueExpression ve = calendar.getValueExpression("value");
+        Class type = ve.getType(context.getELContext());
+
+        // If type could not be determined via value-expression try it this way. (Very unlikely, this happens in real world.)
+        if (type == null) {
+            if (calendar.isTimeOnly()) {
+                type = LocalTime.class;
+            }
+            else if (calendar.hasTime()) {
+                type = LocalDateTime.class;
+            }
+            else {
+                type = LocalDate.class;
+            }
+        }
+        else if (Collection.class.isAssignableFrom(type)) {
+            //Datepicker with selectionMode = multiple and selectionMode = range.
+            ValueReference valueReference = ValueExpressionAnalyzer.getReference(context.getELContext(), ve);
+            Object base = valueReference.getBase();
+            Object property = valueReference.getProperty();
+
+            try {
+                Field field = LangUtils.getUnproxiedClass(base.getClass()).getDeclaredField((String) property);
+                ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
+                Type listType = parameterizedType.getActualTypeArguments()[0];
+                type = Class.forName(listType.getTypeName());
+            }
+            catch (ReflectiveOperationException ex) {
+                //NOOP
+            }
+        }
+
+        return type;
+    }
+
+    protected Converter resolveConverter(FacesContext context, UICalendar calendar, Class type) {
+        //Delegate to user supplied converter if defined
+        Converter converter = calendar.getConverter();
+        if (converter != null) {
+            return converter;
         }
 
         //Delegate to global defined converter (e.g. joda)
-        ValueExpression ve = uicalendar.getValueExpression("value");
-        try {
-            if (ve != null) {
-                type = ve.getType(context.getELContext());
-                if (type != null && type != Object.class && type != Date.class &&
-                        type != LocalDate.class && type != LocalDateTime.class && type != LocalTime.class) {
-                    Converter converter = context.getApplication().createConverter(type);
-                    if (converter != null) {
-                        return converter.getAsObject(context, uicalendar, submittedValue);
-                    }
-                }
-            }
-        }
-        catch (ConverterException e) {
-            uicalendar.setConversionFailed(true);
+        if (type != null
+                && type != Object.class
+                && type != Date.class
+                && type != LocalDate.class
+                && type != LocalDateTime.class
+                && type != LocalTime.class) {
 
-            throw e;
+            converter = context.getApplication().createConverter(type);
         }
 
-        try {
-            if (type == java.util.List.class) {
-                //Datepicker with selectionMode = multiple and selectionMode = range.
-
-                ValueReference valueReference = ValueExpressionAnalyzer.getReference(context.getELContext(), ve);
-                Object base = valueReference.getBase();
-                Object property = valueReference.getProperty();
-
-                try {
-                    Field field = base.getClass().getDeclaredField((String) property);
-                    ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
-                    Type listType = parameterizedType.getActualTypeArguments()[0];
-                    type = Class.forName(listType.getTypeName());
-                }
-                catch (NoSuchFieldException | ClassNotFoundException ex) {
-                    //NOOP
-                }
-            }
-
-            if (type == null) {
-                /*
-                If type could not be determined via value-expression try it this way.
-                (Very unlikely, this happens in real world.)
-                 */
-                if (uicalendar.isTimeOnly()) {
-                    type = LocalTime.class;
-                }
-                else if (uicalendar.hasTime()) {
-                    type = LocalDateTime.class;
-                }
-                else {
-                    type = LocalDate.class;
-                }
-            }
-
-            if (type == LocalDate.class || type == YearMonth.class) {
-                formatter = new DateTimeFormatterBuilder()
-                        .parseCaseInsensitive()
-                        .appendPattern(uicalendar.calculatePattern())
-                        .parseDefaulting(ChronoField.DAY_OF_MONTH, 1) //because of Month Picker which does not contain day of month
-                        .toFormatter();
-                formatter = formatter.withLocale(uicalendar.calculateLocale(context));
-                formatter = formatter.withZone(CalendarUtils.calculateZoneId(uicalendar.getTimeZone()));
-                if (type == LocalDate.class) {
-                    return LocalDate.parse(submittedValue, formatter);
-                }
-                else { //if (type == YearMonth.class)
-                    return YearMonth.parse(submittedValue, formatter);
-                }
-            }
-            else if (type == LocalTime.class) {
-                formatter =  DateTimeFormatter.ofPattern(uicalendar.calculateTimeOnlyPattern(), uicalendar.calculateLocale(context));
-                formatter = formatter.withZone(CalendarUtils.calculateZoneId(uicalendar.getTimeZone()));
-                return LocalTime.parse(submittedValue, formatter);
-            }
-            else if (type == LocalDateTime.class) {
-                //known issue: https://github.com/primefaces/primefaces/issues/4625
-                //known issue: https://github.com/primefaces/primefaces/issues/4626
-
-                //TODO: remove temporary (ugly) work-around for adding fixed time-pattern
-                String pattern = uicalendar.calculatePattern();
-                if (this instanceof DatePickerRenderer) {
-                    pattern += " HH:mm";
-                }
-
-                formatter = new DateTimeFormatterBuilder()
-                        .parseCaseInsensitive()
-                        .appendPattern(pattern)
-                        .toFormatter();
-                formatter = formatter.withLocale(uicalendar.calculateLocale(context));
-                formatter = formatter.withZone(CalendarUtils.calculateZoneId(uicalendar.getTimeZone()));
-                return LocalDateTime.parse(submittedValue, formatter);
-            }
-            else if (type == java.util.Date.class) {
-                //Code for backward-compatibility with java.util.Date - may be removed at some point in the future
-                format = new SimpleDateFormat(uicalendar.calculatePattern(), uicalendar.calculateLocale(context));
-                format.setLenient(false);
-                format.setTimeZone(TimeZone.getTimeZone(CalendarUtils.calculateZoneId(uicalendar.getTimeZone())));
-
-                return format.parse(submittedValue);
-            }
-            else if (type == ZonedDateTime.class) {
-                //TODO: implement if necessary
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ZonedDateTime not supported", null);
-                throw new ConverterException(message);
-            }
-            else {
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, type.getName() + " not supported", null);
-                throw new ConverterException(message);
-            }
-        }
-        catch (DateTimeParseException | ParseException e) {
-            uicalendar.setConversionFailed(true);
-
-            FacesMessage message = null;
-            Object[] params = new Object[3];
-            params[0] = submittedValue;
-            if (e instanceof DateTimeParseException) {
-                if (formatter != null) {
-                    params[1] = formatter.format(LocalDate.now());
-                }
-                else {
-                    params[1] = "unknown"; //formatter may be null in theory; so check for null to keep sonarcloud happy
-                }
-            }
-            else {
-                if (format != null ) {
-                    params[1] = format.format(new Date());
-                }
-                else {
-                    params[1] = "unknown"; //format may be null in theory; so check for null to keep sonarcloud happy
-                }
-            }
-            params[2] = MessageFactory.getLabel(context, uicalendar);
-
-            if (uicalendar.isTimeOnly()) {
-                message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.TIME", FacesMessage.SEVERITY_ERROR, params);
-            }
-            else if (uicalendar.hasTime()) {
-                message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.DATETIME", FacesMessage.SEVERITY_ERROR, params);
-            }
-            else {
-                message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.DATE", FacesMessage.SEVERITY_ERROR, params);
-            }
-
-            throw new ConverterException(message);
-        }
+        return converter;
     }
 }
