@@ -135,18 +135,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     @Override
     public void writeAttribute(String name, Object value, String property) throws IOException {
         if (inScript) {
-            if ("src".equalsIgnoreCase(name)) {
-                String strValue = (String) value;
-                if (!LangUtils.isValueBlank(strValue)) {
-                    include.append(strValue);
-                }
-            }
-            else if ("type".equalsIgnoreCase(name)) {
-                String strValue = (String) value;
-                if (!LangUtils.isValueBlank(strValue)) {
-                    scriptType = strValue;
-                }
-            }
+            updateSrcOrScriptTypeValue(name, (String) value);
         }
         else {
             getWrapped().writeAttribute(name, value, property);
@@ -155,7 +144,12 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
     @Override
     public void writeURIAttribute(String name, Object value, String property) throws IOException {
-        writeAttribute(name, value, property);
+        if (inScript) {
+            updateSrcOrScriptTypeValue(name, (String) value);
+        }
+        else {
+            getWrapped().writeURIAttribute(name, value, property);
+        }
     }
 
     @Override
@@ -260,5 +254,19 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     @Override
     public ResponseWriter cloneWithWriter(Writer writer) {
         return getWrapped().cloneWithWriter(writer);
+    }
+
+    protected void updateSrcOrScriptTypeValue(String name, String value) {
+        if ("src".equalsIgnoreCase(name)) {
+            String strValue = value;
+            if (!LangUtils.isValueBlank(strValue)) {
+                include.append(strValue);
+            }
+        } else if ("type".equalsIgnoreCase(name)) {
+            String strValue = value;
+            if (!LangUtils.isValueBlank(strValue)) {
+                scriptType = strValue;
+            }
+        }
     }
 }
