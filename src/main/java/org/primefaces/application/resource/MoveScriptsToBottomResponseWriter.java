@@ -262,7 +262,8 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
             if (!LangUtils.isValueBlank(strValue)) {
                 include.append(strValue);
             }
-        } else if ("type".equalsIgnoreCase(name)) {
+        }
+        else if ("type".equalsIgnoreCase(name)) {
             String strValue = value;
             if (!LangUtils.isValueBlank(strValue)) {
                 scriptType = strValue;
