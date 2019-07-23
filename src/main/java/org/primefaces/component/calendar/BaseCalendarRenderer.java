@@ -164,17 +164,17 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
 
         // Java 8 Date/Time API
         if (Temporal.class.isAssignableFrom(type)) {
-            return getConvertedValueFromJava8DateTimeAPI(context, calendar, type, submittedValue);
+            return convertToJava8DateTimeAPI(context, calendar, type, submittedValue);
         }
         else if (Date.class.isAssignableFrom(type)) {
-            return getConvertedValueFromLegacyDateAPI(context, submittedValue, calendar);
+            return convertToLegacyDateAPI(context, submittedValue, calendar);
         }
 
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, type.getName() + " not supported", null);
         throw new ConverterException(message);
     }
 
-    protected Date getConvertedValueFromLegacyDateAPI(FacesContext context, String submittedValue, UICalendar calendar) {
+    protected Date convertToLegacyDateAPI(FacesContext context, String submittedValue, UICalendar calendar) {
         //Code for backward-compatibility with java.util.Date - may be removed at some point in the future
         SimpleDateFormat format = new SimpleDateFormat(calendar.calculatePattern(), calendar.calculateLocale(context));
         format.setLenient(false);
@@ -188,7 +188,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         }
     }
 
-    protected Temporal getConvertedValueFromJava8DateTimeAPI(FacesContext context, UICalendar calendar, Class type, String submittedValue) {
+    protected Temporal convertToJava8DateTimeAPI(FacesContext context, UICalendar calendar, Class type, String submittedValue) {
         if (type == LocalDate.class || type == YearMonth.class) {
             DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                     .parseCaseInsensitive()

@@ -135,7 +135,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     @Override
     public void writeAttribute(String name, Object value, String property) throws IOException {
         if (inScript) {
-            updateSrcOrScriptTypeValue(name, (String) value);
+            updateScriptSrcOrType(name, (String) value);
         }
         else {
             getWrapped().writeAttribute(name, value, property);
@@ -145,7 +145,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     @Override
     public void writeURIAttribute(String name, Object value, String property) throws IOException {
         if (inScript) {
-            updateSrcOrScriptTypeValue(name, (String) value);
+            updateScriptSrcOrType(name, (String) value);
         }
         else {
             getWrapped().writeURIAttribute(name, value, property);
@@ -256,17 +256,15 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
         return getWrapped().cloneWithWriter(writer);
     }
 
-    protected void updateSrcOrScriptTypeValue(String name, String value) {
+    protected void updateScriptSrcOrType(String name, String value) {
         if ("src".equalsIgnoreCase(name)) {
-            String strValue = value;
-            if (!LangUtils.isValueBlank(strValue)) {
-                include.append(strValue);
+            if (!LangUtils.isValueBlank(value)) {
+                include.append(value);
             }
         }
         else if ("type".equalsIgnoreCase(name)) {
-            String strValue = value;
-            if (!LangUtils.isValueBlank(strValue)) {
-                scriptType = strValue;
+            if (!LangUtils.isValueBlank(value)) {
+                scriptType = value;
             }
         }
     }
