@@ -178,7 +178,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
             };
 
             if(this.hasBehavior('select')) {
-                this.callBehavior('select', ext);
+                this.callBehavior('select', options);
             }
             else {
                 PrimeFaces.ajax.Request.handle(options);

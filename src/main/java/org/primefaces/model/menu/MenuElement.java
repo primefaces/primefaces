@@ -34,19 +34,19 @@ public interface MenuElement {
      *
      * @return the id property
      */
-    public String getId();
+    String getId();
 
     /**
      * Sets the id property which is described in {@link #getId() }. You should
      * have a good reason to call this if you're not extending, but only using
-     * Primefaces.
+     * PrimeFaces.
      *
      * The property is unrelated to the {@code id} attribute in the generated
      * XHTML.
      *
      * @param id the id value
      */
-    public void setId(String id);
+    void setId(String id);
 
-    public boolean isRendered();
+    boolean isRendered();
 }

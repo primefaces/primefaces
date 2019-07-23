@@ -25,6 +25,7 @@ package org.primefaces.component.message;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Objects;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
@@ -121,11 +122,17 @@ public class MessageRenderer extends UINotificationRenderer {
                 }
 
                 if (!iconOnly) {
+                    String summary = msg.getSummary();
+                    String detail = msg.getDetail();
+                    if (uiMessage.isSkipDetailIfEqualsSummary() && Objects.equals(summary, detail)) {
+                        detail = "";
+                    }
+
                     if (uiMessage.isShowSummary()) {
-                        encodeText(context, uiMessage, msg.getSummary(), severityKey + "-summary");
+                        encodeText(context, uiMessage, summary, severityKey + "-summary");
                     }
                     if (uiMessage.isShowDetail()) {
-                        encodeText(context, uiMessage, msg.getDetail(), severityKey + "-detail");
+                        encodeText(context, uiMessage, detail, severityKey + "-detail");
                     }
                 }
                 writer.endElement("div");

@@ -50,7 +50,18 @@ public class DateTimeConverter extends javax.faces.convert.DateTimeConverter imp
             }
 
             if (type != null) {
-                metadata.put(HTML.VALIDATION_METADATA.DATETIME_TYPE, type);
+                String typeCleared = type;
+                if (typeCleared.equalsIgnoreCase("localDate")) {
+                    typeCleared = "date";
+                }
+                else if (typeCleared.equalsIgnoreCase("localTime")) {
+                    typeCleared = "time";
+                }
+                else if (typeCleared.equalsIgnoreCase("localDateTime")) {
+                    typeCleared = "both";
+                }
+
+                metadata.put(HTML.VALIDATION_METADATA.DATETIME_TYPE, typeCleared);
                 if (pattern == null) {
                     DateFormat df = null;
                     if (type.equals("both")) {

@@ -117,11 +117,11 @@ public class TimelineModel implements Serializable {
      * @param groups collection of groups to be added
      */
     public void addAllGroups(Collection<TimelineGroup> groups) {
-        if (groups == null) {
-            groups = new ArrayList<>();
+        if (this.groups == null) {
+            this.groups = new ArrayList<>();
         }
 
-        groups.addAll(groups);
+        this.groups.addAll(groups);
     }
 
     /**

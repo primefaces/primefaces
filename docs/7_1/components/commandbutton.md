@@ -78,7 +78,7 @@ CommandButton usage is similar to standard commandButton, by default commandButt
 its enclosing form with ajax.
 
 ```xhtml
-<p:commandButton value="Save" actionListener="#{bookBean.saveBook}" />
+<p:commandButton value="Save" action="#{bookBean.saveBook}" />
 ```
 ```java
 public class BookBean {

@@ -15,7 +15,7 @@ Messages is a pre-skinned extended version of the standard JSF messages componen
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component.
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -24,7 +24,7 @@ showSummary | true | Boolean | Specifies if the summary of the FacesMessages sho
 showDetail | false | Boolean | Specifies if the detail of the FacesMessages should be displayed.
 globalOnly | false | String | When true, only facesmessages with no clientIds are displayed.
 redisplay | true | Boolean | Defines if already rendered messages should be displayed
-for | null | String | Name of associated key, takes precedence when used with globalOnly.
+for | null | String | The clientId or name of associated key, takes precedence when used with globalOnly.
 forType | null | String | Type of the "for" attribute. Valid values are "key" and "expression".
 forIgnores | null | String | Defines a list of keys and clientIds, which should NOT be rendered by this component. Seperated by space or comma.
 escape | true | Boolean | Defines whether html would be escaped or not.
@@ -33,6 +33,7 @@ closable | false | Boolean | Adds a close icon to hide the messages.
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the component.
 showIcon | true | Boolean | Defines if severity icons would be displayed.
+skipDetailIfEqualsSummary | false | Boolean | Defines if rendering of the detail text should be skipped, if the detail and summaray are equals.
 
 ## Getting started with Messages
 Message usage is exactly same as standard messages.
@@ -77,8 +78,8 @@ Messages escapes html content in messages, disable escape option to display cont
 ## Skinning
 Full list of CSS selectors of message is as follows;
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 ui-messages-{severity} | Container element of the message
 ui-messages-{severity}-summary | Summary text
 ui-messages-{severity}-detail | Detail text

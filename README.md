@@ -107,7 +107,7 @@ User Guide is available here: [click](https://primefaces.github.io/primefaces/).
 
 ### Contribution
 ***
-Visit [Contribution Wiki](https://github.com/primefaces/primefaces/wiki/Contributing-to-Primefaces) page for the detailed information.
+Visit [Contribution Wiki](https://github.com/primefaces/primefaces/wiki/Contributing-to-PrimeFaces) page for the detailed information.
 
 
 ### License

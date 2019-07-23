@@ -42,7 +42,9 @@ public abstract class DataScrollerBase extends UIData implements Widget {
         chunkSize,
         mode,
         scrollHeight,
-        buffer
+        buffer,
+        virtualScroll,
+        startAtBottom
     }
 
     public DataScrollerBase() {
@@ -108,6 +110,22 @@ public abstract class DataScrollerBase extends UIData implements Widget {
 
     public void setBuffer(int buffer) {
         getStateHelper().put(PropertyKeys.buffer, buffer);
+    }
+
+    public boolean isVirtualScroll() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.virtualScroll, false);
+    }
+
+    public void setVirtualScroll(boolean virtualScroll) {
+        getStateHelper().put(PropertyKeys.virtualScroll, virtualScroll);
+    }
+
+    public boolean isStartAtBottom() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.startAtBottom, false);
+    }
+
+    public void setStartAtBottom(boolean startAtBottom) {
+        getStateHelper().put(PropertyKeys.startAtBottom, startAtBottom);
     }
 
     @Override

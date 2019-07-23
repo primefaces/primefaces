@@ -96,7 +96,7 @@ client side bundle and message components are required for the displays.
 Default language is English for the CSV messages and for other languages or to customize the
 default messages, PrimeFaces Locales bundle needs to be present at the page if you'd like to provide
 translations. For more info on PrimeFaces Locales, visit
-[http://code.google.com/p/primefaces/wiki/PrimeFacesLocales.](http://code.google.com/p/primefaces/wiki/PrimeFacesLocales.)
+[https://github.com/primefaces/primefaces/wiki/Locales.](https://github.com/primefaces/primefaces/wiki/Locales.)
 
 
 **Rendering**

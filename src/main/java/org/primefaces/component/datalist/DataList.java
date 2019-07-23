@@ -217,7 +217,7 @@ public class DataList extends DataListBase {
         String viewId = fc.getViewRoot().getViewId();
 
         return PrimeFaces.current().multiViewState()
-                .getMultiViewState(viewId, getClientId(fc), create, DataListState::new);
+                .get(viewId, getClientId(fc), create, DataListState::new);
 
     }
 

@@ -26,14 +26,15 @@ package org.primefaces.application.resource;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MoveScriptsToBottomState implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private HashMap<String, ArrayList<String>> includes;
-    private HashMap<String, ArrayList<String>> inlines;
+    private Map<String, List<String>> includes;
+    private Map<String, List<String>> inlines;
     private int savedInlineTags;
 
     public MoveScriptsToBottomState() {
@@ -44,33 +45,25 @@ public class MoveScriptsToBottomState implements Serializable {
 
     public void addInclude(String type, StringBuilder src) {
         if (src.length() > 0) {
-            ArrayList<String> includeList = includes.get(type);
-            if (includeList == null) {
-                includeList = new ArrayList<>(20);
-                includes.put(type, includeList);
-            }
+            List<String> includeList = includes.computeIfAbsent(type, k -> new ArrayList<>(20));
             includeList.add(src.toString());
         }
     }
 
     public void addInline(String type, StringBuilder content) {
         if (content.length() > 0) {
-            ArrayList<String> inlineList = inlines.get(type);
-            if (inlineList == null) {
-                inlineList = new ArrayList<>(100);
-                inlines.put(type, inlineList);
-            }
+            List<String> inlineList = inlines.computeIfAbsent(type, k -> new ArrayList<>(100));
             inlineList.add(content.toString());
 
             savedInlineTags++;
         }
     }
 
-    public Map<String, ArrayList<String>> getIncludes() {
+    public Map<String, List<String>> getIncludes() {
         return includes;
     }
 
-    public Map<String, ArrayList<String>> getInlines() {
+    public Map<String, List<String>> getInlines() {
         return inlines;
     }
 

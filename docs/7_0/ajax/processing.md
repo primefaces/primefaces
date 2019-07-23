@@ -43,7 +43,7 @@ processing that should happen is cities dropdown.
 <h:form>
     <h:selectOneMenu id="cities" value="#{bean.city}">
         <f:selectItems value="#{bean.cityChoices}" />
-        <p:ajax actionListener="#{bean.populateSuburbs}" event="change" update="suburbs" process="@this"/>
+        <p:ajax action="#{bean.populateSuburbs}" event="change" update="suburbs" process="@this"/>
     </h:selectOneMenu>
     <h:selectOneMenu id="suburbs" value="#{bean.suburb}">
         <f:selectItems value="#{bean.suburbChoices}" />

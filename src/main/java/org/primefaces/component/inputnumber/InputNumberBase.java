@@ -28,7 +28,7 @@ import javax.faces.component.html.HtmlInputText;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
-
+import org.primefaces.util.LocaleUtils;
 
 public abstract class InputNumberBase extends HtmlInputText implements Widget, InputHolder {
 
@@ -47,6 +47,8 @@ public abstract class InputNumberBase extends HtmlInputText implements Widget, I
         maxValue,
         roundMethod,
         decimalPlaces,
+        decimalSeparator,
+        thousandSeparator,
         emptyValue,
         inputStyle,
         inputStyleClass,
@@ -133,6 +135,24 @@ public abstract class InputNumberBase extends HtmlInputText implements Widget, I
 
     public void setDecimalPlaces(String decimalPlaces) {
         getStateHelper().put(PropertyKeys.decimalPlaces, decimalPlaces);
+    }
+
+    public String getDecimalSeparator() {
+        return ComponentUtils.eval(getStateHelper(), PropertyKeys.decimalSeparator,
+            () -> LocaleUtils.getDecimalSeparator(getFacesContext()));
+    }
+
+    public void setDecimalSeparator(final String decimalSeparator) {
+        getStateHelper().put(PropertyKeys.decimalSeparator, decimalSeparator);
+    }
+
+    public String getThousandSeparator() {
+        return ComponentUtils.eval(getStateHelper(), PropertyKeys.thousandSeparator,
+            () -> LocaleUtils.getThousandSeparator(getFacesContext()));
+    }
+
+    public void setThousandSeparator(final String thousandSeparator) {
+        getStateHelper().put(PropertyKeys.thousandSeparator, thousandSeparator);
     }
 
     public String getEmptyValue() {

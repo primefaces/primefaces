@@ -27,18 +27,18 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 import javax.faces.event.PhaseId;
 
-public class RowEditEvent extends AbstractAjaxBehaviorEvent {
+public class RowEditEvent<T> extends AbstractAjaxBehaviorEvent {
 
     private static final long serialVersionUID = 1L;
 
-    private Object object;
+    private T object;
 
-    public RowEditEvent(UIComponent component, Behavior behavior, Object object) {
+    public RowEditEvent(UIComponent component, Behavior behavior, T object) {
         super(component, behavior);
         this.object = object;
     }
 
-    public Object getObject() {
+    public T getObject() {
         return object;
     }
 

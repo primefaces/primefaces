@@ -24,6 +24,8 @@
 package org.primefaces.component.poll;
 
 import java.io.IOException;
+import java.time.Duration;
+import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -57,14 +59,28 @@ public class PollRenderer extends CoreRenderer {
         Poll poll = (Poll) component;
         String clientId = poll.getClientId(context);
 
-        String request = preconfiguredAjaxRequestBuilder(context, poll, poll)
+        String request = preConfiguredAjaxRequestBuilder(context, poll)
                 .params(poll)
                 .build();
 
+        Object interval = poll.getInterval();
+
+        int convertedInterval;
+        if (interval instanceof Integer) {
+            convertedInterval = (Integer) interval;
+        }
+        else if (interval instanceof Duration) {
+            convertedInterval = (int) ((Duration) interval).getSeconds();
+        }
+        else {
+            throw new FacesException(interval.getClass() + " is not supported as \"interval\" for p:poll");
+        }
+
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Poll", poll.resolveWidgetVar(), clientId)
-                .attr("frequency", poll.getInterval())
+                .attr("frequency", convertedInterval)
                 .attr("autoStart", poll.isAutoStart())
+                .attr("intervalType", poll.getIntervalType(), "second")
                 .callback("fn", "function()", request);
 
         wb.finish();

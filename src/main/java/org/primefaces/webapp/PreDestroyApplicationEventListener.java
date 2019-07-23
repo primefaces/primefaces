@@ -38,7 +38,7 @@ public class PreDestroyApplicationEventListener implements SystemEventListener {
 
     @Override
     public void processEvent(SystemEvent event) throws AbortProcessingException {
-        PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance());
+        PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance(), false);
         if (applicationContext != null) {
             applicationContext.release();
         }

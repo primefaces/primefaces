@@ -142,7 +142,7 @@ public class CommandButtonRenderer extends CoreRenderer {
         boolean ajax = button.isAjax();
 
         if (ajax) {
-            request = buildAjaxRequest(context, button, button);
+            request = buildAjaxRequest(context, button);
         }
         else {
             UIForm form = ComponentTraversalUtils.closestForm(context, button);

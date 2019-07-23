@@ -315,8 +315,9 @@ public class DataTable extends DataTableBase {
                         columnFilterValueVE.setValue(eLContext, fm.getFilterValue());
                         dynamicColumn.cleanStatelessModel();
                     }
-
-                    columnFilterValueVE.setValue(eLContext, fm.getFilterValue());
+                    else {
+                        columnFilterValueVE.setValue(eLContext, fm.getFilterValue());
+                    }
                 }
             }
         }
@@ -1051,7 +1052,7 @@ public class DataTable extends DataTableBase {
         String name = getClientId() + "_scrollState";
         String value = params.get(name);
 
-        return value == null ? "0,0" : value;
+        return value == null ? (isRTL() ? "-1,0" : "0,0") : value;
     }
 
     @Override
@@ -1566,7 +1567,7 @@ public class DataTable extends DataTableBase {
         String viewId = fc.getViewRoot().getViewId();
 
         return PrimeFaces.current().multiViewState()
-                .getMultiViewState(viewId, getClientId(fc), create, TableState::new);
+                .get(viewId, getClientId(fc), create, TableState::new);
     }
 
     public String getGroupedColumnIndexes() {

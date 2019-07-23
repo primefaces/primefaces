@@ -66,7 +66,7 @@ xmlns:p="http://primefaces.org/ui">
 On the host page, call PrimeFaces.current().dialog().openDynamic("viewname");
 
 ```xhtml
-<p:commandButton value="View Cars" actionListener="#{hostBean.view}" />
+<p:commandButton value="View Cars" action="#{hostBean.view}" />
 ```
 ```java
 public void view() {
@@ -82,7 +82,7 @@ Overloaded openDialog method provides advanced configuration regarding the visua
 along with parameters to send to the dialog content.
 
 ```xhtml
-<p:commandButton value="View Cars" actionListener="#{hostBean.viewCustomized}" />
+<p:commandButton value="View Cars" action="#{hostBean.viewCustomized}" />
 ```
 ```java
 public void view() {
@@ -139,7 +139,7 @@ have _dialogReturn_ ajax behavior event to hook-in when data is returned from di
         <p:dataTable var="car" value="#{tableBean.cars}">
             //columns
             <p:column headerText="Select">
-                <p:commandButton icon="ui-icon-search" actionListener="#{tableBean.selectCarFromDialog(car)}" />
+                <p:commandButton icon="ui-icon-search" action="#{tableBean.selectCarFromDialog(car)}" />
             </p:column>
         </p:dataTable>
     </h:body>
@@ -154,7 +154,7 @@ public void selectCarFromDialog(Car car) {
 At host page, the button that triggered the dialog should have _dialogReturn_ event.
 
 ```xhtml
-<p:commandButton value="View Cars" actionListener="#{hostBean.viewCars}">
+<p:commandButton value="View Cars" action="#{hostBean.viewCars}">
     <p:ajax event="dialogReturn" listener="#{hostBean.handleReturn}" />
 </p:commandButton>
 ```
@@ -187,7 +187,7 @@ public abstract void showMessageInDialog(FacesMessage message);
 Using this shortcut it is just one line to implement the same functionality;
 
 ```xhtml
-<p:commandButton value="Show" actionListener="#{bean.save}" />
+<p:commandButton value="Show" action="#{bean.save}" />
 ```
 ```java
 public void save() {

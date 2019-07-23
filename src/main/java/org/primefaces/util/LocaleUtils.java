@@ -23,8 +23,8 @@
  */
 package org.primefaces.util;
 
+import java.text.DecimalFormatSymbols;
 import java.util.Locale;
-
 import javax.faces.context.FacesContext;
 
 public class LocaleUtils {
@@ -124,5 +124,17 @@ public class LocaleUtils {
 
     public static Locale getCurrentLocale() {
         return getCurrentLocale(FacesContext.getCurrentInstance());
+    }
+
+    public static String getDecimalSeparator(FacesContext context) {
+        Locale locale = getCurrentLocale(context);
+        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(locale);
+        return Character.toString(decimalFormatSymbols.getDecimalSeparator());
+    }
+
+    public static String getThousandSeparator(FacesContext context) {
+        Locale locale = getCurrentLocale(context);
+        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(locale);
+        return Character.toString(decimalFormatSymbols.getGroupingSeparator());
     }
 }

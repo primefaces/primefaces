@@ -36,13 +36,13 @@ import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.treetable.TreeTable;
 
-public class CellEditEvent extends AbstractAjaxBehaviorEvent {
+public class CellEditEvent<T> extends AbstractAjaxBehaviorEvent {
 
     private static final long serialVersionUID = 1L;
 
-    private Object oldValue;
+    private T oldValue;
 
-    private Object newValue;
+    private T newValue;
 
     private int rowIndex;
 
@@ -69,11 +69,11 @@ public class CellEditEvent extends AbstractAjaxBehaviorEvent {
         this.oldValue = resolveValue();
     }
 
-    public Object getOldValue() {
+    public T getOldValue() {
         return this.oldValue;
     }
 
-    public Object getNewValue() {
+    public T getNewValue() {
         if (newValue == null) {
             newValue = resolveValue();
         }
@@ -92,7 +92,7 @@ public class CellEditEvent extends AbstractAjaxBehaviorEvent {
         return rowKey;
     }
 
-    private Object resolveValue() {
+    private T resolveValue() {
         if (source instanceof UIData) {
             DataTable data = (DataTable) source;
             data.setRowModel(rowIndex);
@@ -102,7 +102,7 @@ public class CellEditEvent extends AbstractAjaxBehaviorEvent {
             data.setRowKey(rowKey);
         }
 
-        Object value = null;
+        T value = null;
 
         for (UIComponent child : column.getChildren()) {
             if (child instanceof CellEditor) {
@@ -117,11 +117,11 @@ public class CellEditEvent extends AbstractAjaxBehaviorEvent {
                         }
                     }
 
-                    value = values;
+                    value = (T) values;
                 }
 //single
                 else {
-                    value = ((ValueHolder) inputFacet).getValue();
+                    value = (T) ((ValueHolder) inputFacet).getValue();
                 }
 
             }

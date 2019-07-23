@@ -43,7 +43,8 @@ public abstract class MessagesBase extends UIMessages implements UINotification 
         styleClass,
         showIcon,
         forType,
-        forIgnores
+        forIgnores,
+        skipDetailIfEqualsSummary
     }
 
     public MessagesBase() {
@@ -120,4 +121,12 @@ public abstract class MessagesBase extends UIMessages implements UINotification 
         getStateHelper().put(PropertyKeys.forIgnores, forIgnores);
     }
 
+    @Override
+    public boolean isSkipDetailIfEqualsSummary() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.skipDetailIfEqualsSummary, false);
+    }
+
+    public void setSkipDetailIfEqualsSummary(boolean skipDetailIfEqualsSummary) {
+        getStateHelper().put(PropertyKeys.skipDetailIfEqualsSummary, skipDetailIfEqualsSummary);
+    }
 }

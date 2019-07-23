@@ -49,27 +49,29 @@ public class CollectorTagHandler extends TagHandler {
 
     @Override
     public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException, FacesException, FaceletException, ELException {
-        if (ComponentHandler.isNew(parent)) {
-            ValueExpression addToVE = null;
-            ValueExpression removeFromVE = null;
-            ValueExpression uniqueVE = null;
-
-            if (addTo != null) {
-                addToVE = addTo.getValueExpression(faceletContext, Object.class);
-            }
-
-            if (removeFrom != null) {
-                removeFromVE = removeFrom.getValueExpression(faceletContext, Object.class);
-            }
-
-            if (unique != null) {
-                uniqueVE = unique.getValueExpression(faceletContext, Object.class);
-            }
-
-            ValueExpression valueVE = value.getValueExpression(faceletContext, Object.class);
-
-            ActionSource actionSource = (ActionSource) parent;
-            actionSource.addActionListener(new Collector(addToVE, removeFromVE, valueVE, uniqueVE));
+        if (!ComponentHandler.isNew(parent)) {
+            return;
         }
+
+        ValueExpression addToVE = null;
+        ValueExpression removeFromVE = null;
+        ValueExpression uniqueVE = null;
+
+        if (addTo != null) {
+            addToVE = addTo.getValueExpression(faceletContext, Object.class);
+        }
+
+        if (removeFrom != null) {
+            removeFromVE = removeFrom.getValueExpression(faceletContext, Object.class);
+        }
+
+        if (unique != null) {
+            uniqueVE = unique.getValueExpression(faceletContext, Object.class);
+        }
+
+        ValueExpression valueVE = value.getValueExpression(faceletContext, Object.class);
+
+        ActionSource actionSource = (ActionSource) parent;
+        actionSource.addActionListener(new Collector(addToVE, removeFromVE, valueVE, uniqueVE));
     }
 }

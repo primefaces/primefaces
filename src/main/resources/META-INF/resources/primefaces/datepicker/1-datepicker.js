@@ -185,11 +185,32 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
+    /**
+     * Sets the date value the DatePicker.
+     */
     setDate: function(date) {
         this.jq.datePicker('setDate', date);
     },
 
+    /**
+     * Gets the date value of the DatePicker
+     */
     getDate: function() {
         return this.jq.datePicker('getDate');
-    }
+    },
+    
+    /**
+     * Sets the displayed visible calendar date.
+     */
+    setViewDate: function(date) {
+        this.jq.datePicker('updateViewDate', null, date);
+    },
+
+    /**
+     * Gets the displayed visible calendar date.
+     */
+    getViewDate: function() {
+        return this.jq.datePicker().data().primeDatePicker.viewDate;
+    },
+    
 });

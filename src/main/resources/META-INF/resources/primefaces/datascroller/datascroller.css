@@ -38,3 +38,13 @@
     margin: 0;
     display: inline-block;
 }
+
+.ui-datascroller .ui-datascroller-virtualscroll-wrapper {
+    position: relative;
+}
+
+.ui-datascroller .ui-datascroller-virtualscroll-wrapper .ui-datascroller-list {
+    top: 0px;
+    left: 0px;
+    position: absolute;
+}

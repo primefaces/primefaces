@@ -27,7 +27,10 @@ import java.util.List;
 
 public interface MenuGroup extends MenuElement {
 
-    public int getElementsCount();
+    List getElements();
 
-    public List getElements();
+    default int getElementsCount() {
+        List elements = getElements();
+        return elements == null ? 0 : elements.size();
+    }
 }

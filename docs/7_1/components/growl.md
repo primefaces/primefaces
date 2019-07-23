@@ -16,7 +16,7 @@ overlay.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -27,10 +27,11 @@ showDetail | false | Boolean | Specifies if the detail of message should be disp
 globalOnly | false | Boolean | When true, only facesmessages without clientids are displayed.
 life | 6000 | Integer | Duration in milliseconds to display non-sticky messages.
 redisplay | true | Boolean | Defines if already rendered messaged should be displayed.
-for | null | String | Name of associated key, takes precedence when used with globalOnly.
+for | null | String | The clientId or name of associated key, takes precedence when used with globalOnly.
 escape | true | Boolean | Defines whether html would be escaped or not.
 severity | null | String | Comma separated list of severities to display only.
 keepAlive | false | Boolean | Defines if previous messages should be kept on a new message is shown.
+skipDetailIfEqualsSummary | false | Boolean | Defines if rendering of the detail text should be skipped, if the detail and summaray are equals.
 
 ## Getting Started with Growl
 Growl usage is similar to standard h:messages component. Simply place growl anywhere on your
@@ -99,8 +100,8 @@ option to false.
 ## Skinning
 Following is the list of structural style classes;
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 .ui-growl | Main container element of growl
 .ui-growl-item-container | Container of messages
 .ui-growl-item | Container of a message

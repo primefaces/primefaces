@@ -24,10 +24,7 @@
 package org.primefaces.model.map;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class DefaultMapModel implements MapModel, Serializable {
 
@@ -109,27 +106,25 @@ public class DefaultMapModel implements MapModel, Serializable {
     @SuppressWarnings("unchecked")
     @Override
     public Overlay findOverlay(String id) {
-        List list = null;
+        List<? extends Overlay> overlays = Collections.emptyList();
 
         if (id.startsWith(MARKER_ID_PREFIX)) {
-            list = markers;
+            overlays = markers;
         }
         else if (id.startsWith(POLYLINE_ID_PREFIX)) {
-            list = polylines;
+            overlays = polylines;
         }
         else if (id.startsWith(POLYGON_ID_PREFIX)) {
-            list = polygons;
+            overlays = polygons;
         }
         else if (id.startsWith(CIRCLE_ID_PREFIX)) {
-            list = circles;
+            overlays = circles;
         }
         else if (id.startsWith(RECTANGLE_ID_PREFIX)) {
-            list = rectangles;
+            overlays = rectangles;
         }
 
-        for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-            Overlay overlay = (Overlay) iterator.next();
-
+        for (Overlay overlay : overlays) {
             if (overlay.getId().equals(id)) {
                 return overlay;
             }
