@@ -42,9 +42,9 @@ focused due to browser nature.
         <p:inputText id="name" value="#{defaultCommandBean.text}" />
         <h:outputText value="#{defaultCommandBean.text}" id="display" />
     </h:panelGrid>
-    <p:commandButton value="Button1" id="btn1" actionListener="#{bean.submit1}" ajax="false"/>
-    <p:commandButton value="Button2" id="btn2" actionListener="#{bean.submit2}" />
-    <h:commandButton value="Button3" id="btn3" actionListener="#{bean.submit3}" />
+    <p:commandButton value="Button1" id="btn1" action="#{bean.submit1}" ajax="false"/>
+    <p:commandButton value="Button2" id="btn2" action="#{bean.submit2}" />
+    <h:commandButton value="Button3" id="btn3" action="#{bean.submit3}" />
     <p:defaultCommand target="bt2" />
 </h:form>
 ```

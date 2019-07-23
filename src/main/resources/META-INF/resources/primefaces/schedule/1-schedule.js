@@ -7,7 +7,6 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         this._super(cfg);
         this.cfg.formId = this.jq.closest('form').attr('id');
         this.cfg.theme = true;
-        this.jqc = $(this.jqId + '_container');
         this.viewNameState = $(this.jqId + '_view');
         this.cfg.urlTarget = this.cfg.urlTarget || "_blank";
 
@@ -35,7 +34,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     _render: function() {
-        this.jqc.fullCalendar(this.cfg);
+        this.jq.fullCalendar(this.cfg);
 
         this.bindViewChangeListener();
     },
@@ -191,12 +190,12 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     update: function() {
-        this.jqc.fullCalendar('refetchEvents');
+        this.jq.fullCalendar('refetchEvents');
     },
 
     bindViewChangeListener: function() {
         var excludedClasses = '.fc-prev-button,.fc-next-button,.fc-prevYear-button,.fc-nextYear-button,.fc-today-button';
-        var viewButtons = this.jqc.find('> .fc-toolbar button:not(' + excludedClasses + ')'),
+        var viewButtons = this.jq.find('> .fc-toolbar button:not(' + excludedClasses + ')'),
             $this = this;
 
         viewButtons.each(function(i) {

@@ -73,4 +73,95 @@ public class TreeNodeTest {
             assertEquals(1, root.getChildren().indexOf(child1));
             assertEquals(2, root.getChildren().indexOf(child2));
         }
+	
+	@Test
+	public void shouldHaveConsistenKeys() {
+		TreeNode root = new DefaultTreeNode(null);
+
+		TreeNode child0 = new DefaultTreeNode(null, root);
+		TreeNode child1 = new DefaultTreeNode(null, root);
+		String childRowKey0 = child0.getRowKey();
+		String childRowKey1 = child1.getRowKey();
+		//check that the row key is the same after inserting the first node
+		assertEquals(child0.getRowKey(), root.getChildren().get(0).getRowKey());
+		TreeNode child2 = new DefaultTreeNode(null, root);
+		String childRowKey2 = child2.getRowKey();
+		//check that the row key is the same after inserting the second node
+		assertEquals(child0.getRowKey(), root.getChildren().get(0).getRowKey());
+		assertEquals(child1.getRowKey(), root.getChildren().get(1).getRowKey());
+		assertEquals(childRowKey0,child0.getRowKey());
+		assertEquals(childRowKey1,child1.getRowKey());
+		assertEquals(childRowKey2,child2.getRowKey());
+
+		//add and remove node (at the end)
+		TreeNode child3 = new DefaultTreeNode(null, root);
+		root.getChildren().remove(3);
+		//check that the row key is the same after adding and removing a node at the end
+		assertEquals(child0.getRowKey(), root.getChildren().get(0).getRowKey());
+		assertEquals(child1.getRowKey(), root.getChildren().get(1).getRowKey());
+		assertEquals(child2.getRowKey(), root.getChildren().get(2).getRowKey());
+		assertEquals(childRowKey0,child0.getRowKey());
+		assertEquals(childRowKey1,child1.getRowKey());
+		assertEquals(childRowKey2,child2.getRowKey());
+
+		//add and remove node (at the begin)
+		child3 = new DefaultTreeNode(null);
+		root.getChildren().add(0,child3);
+		root.getChildren().remove(0);
+		//check that the row key is the same after adding and remove a node at the begin
+		assertEquals(child0.getRowKey(), root.getChildren().get(0).getRowKey());
+		assertEquals(child1.getRowKey(), root.getChildren().get(1).getRowKey());
+		assertEquals(child2.getRowKey(), root.getChildren().get(2).getRowKey());
+		assertEquals(childRowKey0,child0.getRowKey());
+		assertEquals(childRowKey1,child1.getRowKey());
+		assertEquals(childRowKey2,child2.getRowKey());
+
+		//check the keys are not equal
+		assertNotEquals(child0.getRowKey(), child1.getRowKey());
+		assertNotEquals(child1.getRowKey(), child2.getRowKey());
+		assertNotEquals(child0.getRowKey(), child2.getRowKey());
+
+		//add sub children / remove them / add again
+		TreeNode subChild0 = new DefaultTreeNode(null, child0);
+		TreeNode subChild1 = new DefaultTreeNode(null, child0);
+		assertNotEquals(subChild0.getRowKey(), subChild1.getRowKey());
+		String subChildRowKey0 = subChild0.getRowKey();
+		String subChildRowKey1 = subChild1.getRowKey();
+		child0.getChildren().remove(subChild0);
+		child0.getChildren().remove(subChild1);
+		//add same order
+		child0.getChildren().add(0,subChild1);
+		child0.getChildren().add(0,subChild0);
+		assertEquals(subChildRowKey0, subChild0.getRowKey());
+		assertEquals(subChildRowKey1, subChild1.getRowKey());
+		child0.getChildren().remove(1);
+		child0.getChildren().remove(0);
+		//add inverse order
+		child0.getChildren().add(subChild1);
+		child0.getChildren().add(subChild0);
+		assertEquals(subChildRowKey0, subChild1.getRowKey());
+		assertEquals(subChildRowKey1, subChild0.getRowKey());
+		child0.getChildren().remove(subChild0);
+		child0.getChildren().remove(subChild1);
+
+		child0.getChildren().add(subChild0);
+		child0.getChildren().add(subChild1);
+		assertEquals(subChildRowKey0, subChild0.getRowKey());
+		assertEquals(subChildRowKey1, subChild1.getRowKey());
+
+		assertEquals(childRowKey0,child0.getRowKey());
+		assertEquals(childRowKey1,child1.getRowKey());
+		assertEquals(childRowKey2,child2.getRowKey());
+
+		TreeNode child4 = new DefaultTreeNode(null);
+		root.getChildren().add(0,child4);
+		assertEquals(childRowKey0,child4.getRowKey());
+		root.getChildren().remove(0);
+
+		assertEquals(subChildRowKey0, subChild0.getRowKey());
+		assertEquals(subChildRowKey1, subChild1.getRowKey());
+		assertEquals(childRowKey0,child0.getRowKey());
+		assertEquals(childRowKey1,child1.getRowKey());
+		assertEquals(childRowKey2,child2.getRowKey());
+        }
 }

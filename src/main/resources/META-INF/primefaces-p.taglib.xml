@@ -77,7 +77,7 @@
     </tag>
 
     <tag>
-        <description>DataExporter is handy for exporting data listed using a Primefaces Datatable to various formats such as excel, pdf, csv and xml.
+        <description>DataExporter is handy for exporting data listed using a PrimeFaces Datatable to various formats such as excel, pdf, csv and xml.
         </description>
         <tag-name>dataExporter</tag-name>
         <handler-class>
@@ -6895,6 +6895,22 @@
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Loads data on demand as the scrollbar gets close to the bottom. Default is false.]]>
+            </description>
+            <name>virtualScroll</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[if the scrollAtBottom is enabled, scroll position is at bottom and data loading starts from the bottom. Default value is false.]]>
+            </description>
+            <name>startAtBottom</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -7701,6 +7717,14 @@
             <name>widgetVar</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if lazy loading is enabled for the data component.]]>
+            </description>
+            <name>lazy</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -10393,6 +10417,14 @@
                 <![CDATA[Defines if previous messages should be kept on a new message is shown. Default is false.]]>
             </description>
             <name>keepAlive</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if rendering of the detail text should be skipped, if the detail and summaray are equals. Default is false.]]>
+            </description>
+            <name>skipDetailIfEqualsSummary</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -15850,7 +15882,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[Message is a pre-skinned extended version of the standard JSF message component with extensions.]]>
         </description>
         <tag-name>message</tag-name>
         <component>
@@ -15953,10 +15985,18 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if rendering of the detail text should be skipped, if the detail and summaray are equals. Default is false.]]>
+            </description>
+            <name>skipDetailIfEqualsSummary</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
-            <![CDATA[Message is a pre-skinned extended version of the standard JSF message component with extensions.]]>
+            <![CDATA[Messages is a pre-skinned extended version of the standard JSF messages component with extensions.]]>
         </description>
         <tag-name>messages</tag-name>
         <component>
@@ -16091,6 +16131,14 @@
             <name>forIgnores</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if rendering of the detail text should be skipped, if the detail and summaray are equals. Default is false.]]>
+            </description>
+            <name>skipDetailIfEqualsSummary</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -18874,6 +18922,14 @@
                 <![CDATA[Form to serialize for an ajax request. Default is the enclosing form.]]>
             </description>
             <name>form</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Type of interval value. Valid values are "second" (default) and "millisecond".]]>
+            </description>
+            <name>intervalType</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -23932,6 +23988,22 @@
                 <![CDATA[Number of decimal places.]]>
             </description>
             <name>decimalPlaces</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+		<attribute>
+            <description>
+                <![CDATA[Decimal separator char. Default is taken from the view's locale.]]>
+            </description>
+            <name>decimalSeparator</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Thousand separator char. Default is taken from the view's locale.]]>
+            </description>
+            <name>thousandSeparator</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -29416,6 +29488,14 @@
                 <![CDATA[Callback to invoke when a year is changed using the navigators.]]>
             </description>
             <name>onYearChange</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Separator for joining start and end dates on range selection mode. Default value is "-".]]>
+            </description>
+            <name>rangeSeparator</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

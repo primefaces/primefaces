@@ -340,8 +340,8 @@ that selection must be enabled in tree component for context menu integration.
 
 ```xhtml
 <p:contextMenu for="tree">
-    <p:menuitem value="View" update="messages" actionListener="#{bean.view}" icon="ui-icon-search" />
-    <p:menuitem value="View" update="tree" actionListener="#{bean.delete}" icon="ui-icon-close" />
+    <p:menuitem value="View" update="messages" action="#{bean.view}" icon="ui-icon-search" />
+    <p:menuitem value="View" update="tree" action="#{bean.delete}" icon="ui-icon-close" />
 </p:contextMenu>
 <p:tree id="tree" value="#{bean.root}" var="node" selectionMode="single" selection="#{bean.selectedNode}">
     <p:treeNode>

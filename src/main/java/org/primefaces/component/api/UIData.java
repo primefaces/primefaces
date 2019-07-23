@@ -263,7 +263,7 @@ public class UIData extends javax.faces.component.UIData {
             for (String option : options) {
                 String opt = option.trim();
 
-                if (opt.equals(rowsParam) || (opt.startsWith("{ShowAll|") && Integer.toString(getRowCount()).equals(rowsParam))) {
+                if (opt.equals(rowsParam) || (opt.startsWith("{ShowAll|") && "*".equals(rowsParam))) {
                     return true;
                 }
             }
@@ -294,7 +294,13 @@ public class UIData extends javax.faces.component.UIData {
         }
 
         data.setFirst(Integer.valueOf(firstParam));
-        data.setRows(Integer.valueOf(rowsParam));
+
+        if ("*".equals(rowsParam)) {
+            data.setRows(getRowCount());
+        }
+        else {
+            data.setRows(Integer.valueOf(rowsParam));
+        }
 
         ValueExpression firstVe = data.getValueExpression("first");
         ValueExpression rowsVe = data.getValueExpression("rows");

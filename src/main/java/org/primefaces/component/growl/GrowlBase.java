@@ -42,7 +42,8 @@ public abstract class GrowlBase extends UIMessages implements Widget, UINotifica
         life,
         escape,
         severity,
-        keepAlive
+        keepAlive,
+        skipDetailIfEqualsSummary
     }
 
     public GrowlBase() {
@@ -101,6 +102,15 @@ public abstract class GrowlBase extends UIMessages implements Widget, UINotifica
 
     public void setKeepAlive(boolean keepAlive) {
         getStateHelper().put(PropertyKeys.keepAlive, keepAlive);
+    }
+
+    @Override
+    public boolean isSkipDetailIfEqualsSummary() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.skipDetailIfEqualsSummary, false);
+    }
+
+    public void setSkipDetailIfEqualsSummary(boolean skipDetailIfEqualsSummary) {
+        getStateHelper().put(PropertyKeys.skipDetailIfEqualsSummary, skipDetailIfEqualsSummary);
     }
 
     @Override

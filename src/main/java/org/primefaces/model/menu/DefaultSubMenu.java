@@ -121,11 +121,6 @@ public class DefaultSubMenu implements Submenu, Serializable {
     }
 
     @Override
-    public int getElementsCount() {
-        return (elements == null) ? 0 : elements.size();
-    }
-
-    @Override
     public boolean isRendered() {
         return rendered;
     }
@@ -148,12 +143,74 @@ public class DefaultSubMenu implements Submenu, Serializable {
         return null;
     }
 
-    public void addElement(MenuElement element) {
-        elements.add(element);
-    }
-
     @Override
     public String getClientId() {
-        return this.id;
+        return id;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private DefaultSubMenu subMenu;
+
+        private Builder() {
+            subMenu = new DefaultSubMenu();
+        }
+
+        public Builder id(String id) {
+            subMenu.setId(id);
+            return this;
+        }
+
+        public Builder style(String style) {
+            subMenu.setStyle(style);
+            return this;
+        }
+
+        public Builder styleClass(String styleClass) {
+            subMenu.setStyleClass(styleClass);
+            return this;
+        }
+
+        public Builder icon(String icon) {
+            subMenu.setIcon(icon);
+            return this;
+        }
+
+        public Builder label(String label) {
+            subMenu.setLabel(label);
+            return this;
+        }
+
+        public Builder disabled(boolean disabled) {
+            subMenu.setDisabled(disabled);
+            return this;
+        }
+
+        public Builder elements(List<MenuElement> elements) {
+            subMenu.setElements(elements);
+            return this;
+        }
+
+        public Builder addElement(MenuElement element) {
+            subMenu.getElements().add(element);
+            return this;
+        }
+
+        public Builder rendered(boolean rendered) {
+            subMenu.setRendered(rendered);
+            return this;
+        }
+
+        public Builder expanded(boolean expanded) {
+            subMenu.setExpanded(expanded);
+            return this;
+        }
+
+        public DefaultSubMenu build() {
+            return subMenu;
+        }
     }
 }

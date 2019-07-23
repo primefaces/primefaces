@@ -24,14 +24,13 @@
 package org.primefaces.component.spinner;
 
 import java.io.IOException;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class SpinnerRenderer extends InputRenderer {
@@ -50,20 +49,17 @@ public class SpinnerRenderer extends InputRenderer {
         String prefix = spinner.getPrefix();
         String suffix = spinner.getSuffix();
 
-        try {
-            if (prefix != null && submittedValue.startsWith(prefix)) {
-                submittedValue = submittedValue.substring(prefix.length());
-            }
-            if (suffix != null && submittedValue.endsWith(suffix)) {
-                submittedValue = submittedValue.substring(0, (submittedValue.length() - suffix.length()));
-            }
+        if (prefix != null && submittedValue.startsWith(prefix)) {
+            submittedValue = submittedValue.substring(prefix.length());
         }
-        catch (Exception e) {
-
+        if (suffix != null && submittedValue.endsWith(suffix)) {
+            submittedValue = submittedValue.substring(0, (submittedValue.length() - suffix.length()));
         }
-        finally {
-            spinner.setSubmittedValue(submittedValue);
+        if (!LangUtils.isValueEmpty(spinner.getThousandSeparator())) {
+            submittedValue = submittedValue.replace(spinner.getThousandSeparator(), "");
         }
+        submittedValue = submittedValue.replace(spinner.getDecimalSeparator(), ".");
+        spinner.setSubmittedValue(submittedValue);
     }
 
     @Override
@@ -84,7 +80,9 @@ public class SpinnerRenderer extends InputRenderer {
                 .attr("prefix", spinner.getPrefix(), null)
                 .attr("suffix", spinner.getSuffix(), null)
                 .attr("required", spinner.isRequired(), false)
-                .attr("decimalPlaces", spinner.getDecimalPlaces(), null);
+                .attr("decimalPlaces", spinner.getDecimalPlaces(), null)
+                .attr(SpinnerBase.PropertyKeys.thousandSeparator.name(), spinner.getThousandSeparator())
+                .attr(SpinnerBase.PropertyKeys.decimalSeparator.name(), spinner.getDecimalSeparator());
 
         wb.finish();
     }

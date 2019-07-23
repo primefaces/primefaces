@@ -89,7 +89,7 @@ public class BasicTimelineView implements Serializable {
         cal.set(2014, Calendar.JUNE, 12, 0, 0, 0);
         model.add(new TimelineEvent("PrimeUI 1.1", cal.getTime()));
         cal.set(2014, Calendar.OCTOBER, 11, 0, 0, 0);
-        model.add(new TimelineEvent("Primefaces 5.1.3", cal.getTime()));
+        model.add(new TimelineEvent("PrimeFaces 5.1.3", cal.getTime()));
     }
 }
 ```

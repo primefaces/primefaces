@@ -120,7 +120,7 @@ public class PrimeApplicationContext {
 
         virusScannerService = new Lazy<>(() -> new VirusScannerService(applicationClassLoader));
 
-        cacheProvider = new Lazy<CacheProvider>(() -> {
+        cacheProvider = new Lazy<>(() -> {
             String cacheProviderConfigValue = FacesContext.getCurrentInstance().getExternalContext()
                     .getInitParameter(Constants.ContextParams.CACHE_PROVIDER);
             if (cacheProviderConfigValue == null) {
@@ -138,6 +138,10 @@ public class PrimeApplicationContext {
     }
 
     public static PrimeApplicationContext getCurrentInstance(FacesContext facesContext) {
+        return getCurrentInstance(facesContext, true);
+    }
+
+    public static PrimeApplicationContext getCurrentInstance(FacesContext facesContext, boolean create) {
         if (facesContext == null || facesContext.getExternalContext() == null) {
             return null;
         }
@@ -145,7 +149,7 @@ public class PrimeApplicationContext {
         PrimeApplicationContext applicationContext =
                 (PrimeApplicationContext) facesContext.getExternalContext().getApplicationMap().get(INSTANCE_KEY);
 
-        if (applicationContext == null) {
+        if (create && applicationContext == null) {
             applicationContext = new PrimeApplicationContext(facesContext);
             setCurrentInstance(applicationContext, facesContext);
         }

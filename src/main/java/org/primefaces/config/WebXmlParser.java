@@ -133,21 +133,12 @@ public class WebXmlParser {
     }
 
     private static Document toDocument(URL url) throws Exception {
+        // web.xml is optional
+        if (url == null) {
+            return null;
+        }
 
-        InputStream is = null;
-
-        try {
-            // web.xml is optional
-            if (url == null) {
-                return null;
-            }
-
-            is = url.openStream();
-
-            if (is == null) {
-                return null;
-            }
-
+        try (InputStream is = url.openStream()) {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setValidating(false);
             factory.setNamespaceAware(false);
@@ -184,16 +175,6 @@ public class WebXmlParser {
             }
 
             return document;
-        }
-        finally {
-            if (is != null) {
-                try {
-                    is.close();
-                }
-                catch (IOException e) {
-                    // ignore
-                }
-            }
         }
     }
 

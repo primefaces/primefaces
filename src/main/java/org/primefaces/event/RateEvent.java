@@ -26,18 +26,18 @@ package org.primefaces.event;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 
-public class RateEvent extends AbstractAjaxBehaviorEvent {
+public class RateEvent<T> extends AbstractAjaxBehaviorEvent {
 
     private static final long serialVersionUID = 1L;
 
-    private Object rating;
+    private T rating;
 
-    public RateEvent(UIComponent component, Behavior behavior, Object rating) {
+    public RateEvent(UIComponent component, Behavior behavior, T rating) {
         super(component, behavior);
         this.rating = rating;
     }
 
-    public Object getRating() {
+    public T getRating() {
         return rating;
     }
 }

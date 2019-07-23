@@ -30,9 +30,7 @@ import java.util.List;
  */
 public interface MenuModel {
 
-    public List<MenuElement> getElements();
+    List<MenuElement> getElements();
 
-    public void addElement(MenuElement element);
-
-    public void generateUniqueIds();
+    void generateUniqueIds();
 }

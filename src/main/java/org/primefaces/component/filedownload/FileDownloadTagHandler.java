@@ -47,20 +47,22 @@ public class FileDownloadTagHandler extends TagHandler {
 
     @Override
     public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException, FacesException, FaceletException, ELException {
-        if (ComponentHandler.isNew(parent)) {
-            ValueExpression valueVE = value.getValueExpression(faceletContext, Object.class);
-            ValueExpression contentDispositionVE = null;
-            ValueExpression monitorKeyVE = null;
-
-            if (contentDisposition != null) {
-                contentDispositionVE = contentDisposition.getValueExpression(faceletContext, String.class);
-            }
-            if (monitorKey != null) {
-                monitorKeyVE = monitorKey.getValueExpression(faceletContext, String.class);
-            }
-
-            ActionSource actionSource = (ActionSource) parent;
-            actionSource.addActionListener(new FileDownloadActionListener(valueVE, contentDispositionVE, monitorKeyVE));
+        if (!ComponentHandler.isNew(parent)) {
+            return;
         }
+
+        ValueExpression valueVE = value.getValueExpression(faceletContext, Object.class);
+        ValueExpression contentDispositionVE = null;
+        ValueExpression monitorKeyVE = null;
+
+        if (contentDisposition != null) {
+            contentDispositionVE = contentDisposition.getValueExpression(faceletContext, String.class);
+        }
+        if (monitorKey != null) {
+            monitorKeyVE = monitorKey.getValueExpression(faceletContext, String.class);
+        }
+
+        ActionSource actionSource = (ActionSource) parent;
+        actionSource.addActionListener(new FileDownloadActionListener(valueVE, contentDispositionVE, monitorKeyVE));
     }
 }

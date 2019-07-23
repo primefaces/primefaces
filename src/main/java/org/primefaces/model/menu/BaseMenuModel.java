@@ -36,16 +36,10 @@ public class BaseMenuModel implements MenuModel, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-
     private List<MenuElement> elements;
 
     public BaseMenuModel() {
         elements = new ArrayList<>();
-    }
-
-    @Override
-    public void addElement(MenuElement element) {
-        elements.add(element);
     }
 
     @Override
@@ -55,7 +49,7 @@ public class BaseMenuModel implements MenuModel, Serializable {
 
     @Override
     public void generateUniqueIds() {
-        this.generateUniqueIds(getElements(), null);
+        generateUniqueIds(getElements(), null);
     }
 
     private void generateUniqueIds(List<MenuElement> elements, String seed) {

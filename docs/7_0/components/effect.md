@@ -111,5 +111,5 @@ with pulsate effect after ajax request completes.
         <f:param name="mode" value="'show'" />
     </p:effect>
 </p:messages>
-<p:commandButton value="Save" actionListener="#{bean.action}" update="messages"/>
+<p:commandButton value="Save" action="#{bean.action}" update="messages"/>
 ```

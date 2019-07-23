@@ -23,30 +23,6 @@
  */
 package org.primefaces.component.splitbutton;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.component.UIParameter;
-import javax.faces.component.behavior.ClientBehavior;
-import javax.faces.component.behavior.ClientBehaviorContext;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.PhaseId;
-
-import org.primefaces.behavior.confirm.ConfirmBehavior;
-import org.primefaces.component.api.AjaxSource;
-import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menubutton.MenuButton;
@@ -57,13 +33,24 @@ import org.primefaces.model.menu.MenuModel;
 import org.primefaces.model.menu.Separator;
 import org.primefaces.model.menu.Submenu;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
-import org.primefaces.util.*;
+import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.util.WidgetBuilder;
+
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.PhaseId;
+import java.io.IOException;
+import java.util.*;
 
 public class SplitButtonRenderer extends OutcomeTargetRenderer {
 
     private static final String SB_BUILD_ONCLICK = SplitButtonRenderer.class.getName() + "#buildOnclick";
-
-    private static final String SB_BUILD_NON_AJAX_REQUEST = SplitButtonRenderer.class.getName() + "#buildNonAjaxRequest";
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -234,7 +221,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         }
 
         if (button.isAjax()) {
-            onclick.append(buildAjaxRequest(context, button, button));
+            onclick.append(buildAjaxRequest(context, button));
         }
         else {
             UIForm form = ComponentTraversalUtils.closestForm(context, button);
@@ -347,60 +334,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
                 writer.writeAttribute("onclick", "return false;", null);
             }
             else {
-                setConfirmationScript(context, menuitem);
-                String onclick = menuitem.getOnclick();
-
-                //GET
-                if (menuitem.getUrl() != null || menuitem.getOutcome() != null) {
-                    String targetURL = getTargetURL(context, (UIOutcomeTarget) menuitem);
-                    writer.writeAttribute("href", targetURL, null);
-
-                    if (menuitem.getTarget() != null) {
-                        writer.writeAttribute("target", menuitem.getTarget(), null);
-                    }
-                }
-                //POST
-                else {
-                    writer.writeAttribute("href", "#", null);
-
-                    UIForm form = ComponentTraversalUtils.closestForm(context, button);
-                    if (form == null) {
-                        throw new FacesException("MenuItem must be inside a form element");
-                    }
-
-                    String command;
-                    if (menuitem.isDynamic()) {
-                        String buttonClientId = button.getClientId(context);
-                        Map<String, List<String>> params = menuitem.getParams();
-                        if (params == null) {
-                            params = new LinkedHashMap<>();
-                        }
-                        List<String> idParams = new ArrayList<>();
-                        idParams.add(menuitem.getId());
-                        params.put(buttonClientId + "_menuid", idParams);
-
-                        command = menuitem.isAjax()
-                                ? buildAjaxRequest(context, button, (AjaxSource) menuitem, form, params)
-                                : buildNonAjaxRequest(context, button, form, buttonClientId, params, true);
-                    }
-                    else {
-                        command = menuitem.isAjax()
-                                ? buildAjaxRequest(context, button, (AjaxSource) menuitem, form)
-                                : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
-                    }
-
-                    onclick = (onclick == null) ? command : onclick + ";" + command;
-                }
-
-                if (onclick != null) {
-                    if (menuitem.requiresConfirmation()) {
-                        writer.writeAttribute("data-pfconfirmcommand", onclick, null);
-                        writer.writeAttribute("onclick", menuitem.getConfirmationScript(), "onclick");
-                    }
-                    else {
-                        writer.writeAttribute("onclick", onclick, null);
-                    }
-                }
+                encodeOnClick(context, button, menuitem);
             }
 
             if (icon != null) {
@@ -506,74 +440,5 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
-    }
-
-    protected void setConfirmationScript(FacesContext context, MenuItem item) {
-        if (item instanceof ClientBehaviorHolder) {
-            Map<String, List<ClientBehavior>> behaviors = ((ClientBehaviorHolder) item).getClientBehaviors();
-            List<ClientBehavior> clickBehaviors = (behaviors == null) ? null : behaviors.get("click");
-
-            if (clickBehaviors != null && !clickBehaviors.isEmpty()) {
-                for (int i = 0; i < clickBehaviors.size(); i++) {
-                    ClientBehavior clientBehavior = clickBehaviors.get(i);
-                    if (clientBehavior instanceof ConfirmBehavior) {
-                        ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
-                                context, (UIComponent) item, "click", item.getClientId(), Collections.EMPTY_LIST);
-                        clientBehavior.getScript(cbc);
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam,
-            Map<String, List<String>> parameters, boolean submit) {
-
-        StringBuilder request = SharedStringBuilder.get(context, SB_BUILD_NON_AJAX_REQUEST);
-        String formId = form.getClientId(context);
-        Map<String, Object> params = new HashMap<>();
-
-        if (decodeParam != null) {
-            params.put(decodeParam, decodeParam);
-        }
-
-        for (UIComponent child : component.getChildren()) {
-            if (child instanceof UIParameter && child.isRendered()) {
-                UIParameter param = (UIParameter) child;
-                params.put(param.getName(), param.getValue());
-            }
-        }
-
-        if (parameters != null && !parameters.isEmpty()) {
-            for (Iterator<String> it = parameters.keySet().iterator(); it.hasNext();) {
-                String paramName = it.next();
-                params.put(paramName, parameters.get(paramName).get(0));
-            }
-        }
-
-        //append params
-        if (!params.isEmpty()) {
-            request.append("PrimeFaces.addSubmitParam('").append(formId).append("',{");
-
-            for (Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
-                String key = it.next();
-                Object value = params.get(key);
-
-                request.append("'").append(key).append("':'").append(value).append("'");
-
-                if (it.hasNext()) {
-                    request.append(",");
-                }
-            }
-
-            request.append("})");
-        }
-
-        if (submit) {
-            request.append(".submit('").append(formId).append("');return false;");
-        }
-
-        return request.toString();
     }
 }
