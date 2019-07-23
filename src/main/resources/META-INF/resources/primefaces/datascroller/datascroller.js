@@ -45,17 +45,18 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
                 var item = this.list.children('li.ui-datascroller-item');
                 if(item) {
                     this.itemHeight = item.outerHeight();
-                    this.content.children('div').css('height', parseFloat((this.cfg.totalSize * this.itemHeight) + 'px'));
+                    this.content.children('div').css('min-height', parseFloat((this.cfg.totalSize * this.itemHeight) + 'px'));
                 }
 
                 if (this.cfg.startAtBottom) {
-                    this.blockScrollEvent = true;
                     var pageHeight = this.itemHeight * this.cfg.chunkSize,
                     virtualListHeight = parseFloat(this.cfg.totalSize * this.itemHeight),
+                    viewportHeight = this.content.height(),
                     pageCount = Math.floor(virtualListHeight / pageHeight)||1,
-                    page = (this.cfg.totalSize % this.cfg.chunkSize) == 0 ? pageCount - 2 : pageCount - 1;
+                    page = (this.cfg.totalSize % this.cfg.chunkSize) == 0 ? pageCount - 2 : pageCount - 1,
+                    top = (virtualListHeight < viewportHeight) ? (viewportHeight - virtualListHeight) : (Math.max(page, 0) * pageHeight);
 
-                    this.list.css('top', (Math.max(page, 0) * pageHeight) + 'px');
+                    this.list.css('top', top);
                     this.content.scrollTop(this.content[0].scrollHeight);
                 }
             }
