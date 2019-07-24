@@ -1078,9 +1078,10 @@
         },
 
         renderMonthViewMonth: function (index) {
-            var monthName = this.options.locale.monthNamesShort[index];
+            var monthName = this.options.locale.monthNamesShort[index],
+                content = this.options.dateTemplate ? this.options.dateTemplate.call(this, monthName) : this.escapeHTML(monthName);
 
-            return '<a tabindex="0" class="ui-monthpicker-month' + this.getClassesToAdd({ 'ui-state-active': this.isMonthSelected(index) }) + '">' + this.escapeHTML(monthName) + '</a>';
+            return '<a tabindex="0" class="ui-monthpicker-month' + this.getClassesToAdd({ 'ui-state-active': this.isMonthSelected(index) }) + '">' + content + '</a>';
         },
 
         renderMonthViewMonths: function () {
