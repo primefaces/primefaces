@@ -21,36 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.event;
+package org.primefaces.model.file;
 
-import org.primefaces.model.file.SingleUploadedFile;
+public interface UploadedFile {
 
-import javax.faces.component.UIComponent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.FacesListener;
+    long getSize();
 
-public class FileUploadEvent extends FacesEvent {
-
-    private static final long serialVersionUID = 1L;
-
-    private SingleUploadedFile file;
-
-    public FileUploadEvent(UIComponent component, SingleUploadedFile file) {
-        super(component);
-        this.file = file;
-    }
-
-    @Override
-    public boolean isAppropriateListener(FacesListener listener) {
-        return false;
-    }
-
-    @Override
-    public void processListener(FacesListener listener) {
-        throw new UnsupportedOperationException();
-    }
-
-    public SingleUploadedFile getFile() {
-        return file;
-    }
+    /**
+     * Writes the uploaded file to the given file path.
+     *
+     * @param filePath The target file path.
+     * @throws Exception If something went wrong.
+     */
+    void write(String filePath) throws Exception;
 }

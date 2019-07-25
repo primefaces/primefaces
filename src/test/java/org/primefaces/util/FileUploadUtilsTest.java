@@ -36,6 +36,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.primefaces.component.fileupload.FileUpload;
+import org.primefaces.model.file.MultipleUploadedFile;
+import org.primefaces.model.file.UploadedFileWrapper;
 
 public class FileUploadUtilsTest {
 

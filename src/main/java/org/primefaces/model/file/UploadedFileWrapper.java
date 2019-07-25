@@ -21,11 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model;
+package org.primefaces.model.file;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
 import javax.faces.FacesWrapper;
 import javax.faces.component.StateHolder;
 import javax.faces.context.FacesContext;
@@ -38,7 +35,7 @@ public class UploadedFileWrapper implements UploadedFile, FacesWrapper<UploadedF
     private UploadedFile wrapped;
 
     public UploadedFileWrapper() {
-
+        // NOOP
     }
 
     public UploadedFileWrapper(UploadedFile wrapped) {
@@ -46,33 +43,8 @@ public class UploadedFileWrapper implements UploadedFile, FacesWrapper<UploadedF
     }
 
     @Override
-    public String getFileName() {
-        return getWrapped().getFileName();
-    }
-
-    @Override
-    public List<String> getFileNames() {
-        return getWrapped().getFileNames();
-    }
-
-    @Override
-    public InputStream getInputstream() throws IOException {
-        return getWrapped().getInputstream();
-    }
-
-    @Override
     public long getSize() {
         return getWrapped().getSize();
-    }
-
-    @Override
-    public byte[] getContents() {
-        return getWrapped().getContents();
-    }
-
-    @Override
-    public String getContentType() {
-        return getWrapped().getContentType();
     }
 
     @Override
@@ -92,7 +64,7 @@ public class UploadedFileWrapper implements UploadedFile, FacesWrapper<UploadedF
 
     @Override
     public void restoreState(FacesContext fc, Object o) {
-
+        // NOOP
     }
 
     @Override
@@ -102,7 +74,7 @@ public class UploadedFileWrapper implements UploadedFile, FacesWrapper<UploadedF
 
     @Override
     public void setTransient(boolean value) {
-
+        // NOOP
     }
 
 }
