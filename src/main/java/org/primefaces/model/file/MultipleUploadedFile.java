@@ -21,31 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model;
+package org.primefaces.model.file;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
-public interface UploadedFile {
+public class MultipleUploadedFile implements UploadedFile {
 
-    public String getFileName();
+    private long size;
+    private List<SingleUploadedFile> files;
 
-    public List<String> getFileNames();
+    public MultipleUploadedFile(List<SingleUploadedFile> files) {
+        this.files = files;
+        size = files.stream().mapToLong(UploadedFile::getSize).sum();
+    }
 
-    public InputStream getInputstream() throws IOException;
+    public List<SingleUploadedFile> getFiles() {
+        return files;
+    }
 
-    public long getSize();
+    @Override
+    public long getSize() {
+        return size;
+    }
 
-    public byte[] getContents();
-
-    public String getContentType();
-
-    /**
-     * Writes the uploaded file to the given file path.
-     *
-     * @param filePath The target file path.
-     * @throws Exception If something went wrong.
-     */
-    public void write(String filePath) throws Exception;
+    @Override
+    public void write(String path) throws Exception {
+        for (SingleUploadedFile file : files) {
+            file.write(path);
+        }
+    }
 }

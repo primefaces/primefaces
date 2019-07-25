@@ -23,18 +23,17 @@
  */
 package org.primefaces.component.fileupload;
 
+import org.apache.commons.fileupload.FileItem;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.file.DefaultSingleUploadedFile;
+import org.primefaces.model.file.SingleUploadedFile;
+import org.primefaces.model.file.UploadedFileWrapper;
+import org.primefaces.util.FileUploadUtils;
+import org.primefaces.webapp.MultipartRequest;
+
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequestWrapper;
-
-import org.apache.commons.fileupload.FileItem;
-import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.DefaultUploadedFile;
-import org.primefaces.model.UploadedFileWrapper;
-import org.primefaces.util.FileUploadUtils;
-import org.primefaces.virusscan.VirusException;
-import org.primefaces.webapp.MultipartRequest;
-
 import java.io.IOException;
 
 public class CommonsFileUploadDecoder {
@@ -65,8 +64,8 @@ public class CommonsFileUploadDecoder {
                     decodeAdvanced(context, fileUpload, multipartRequest);
                 }
             }
-            catch (IOException ioe) {
-                throw new FacesException(ioe);
+            catch (IOException e) {
+                throw new FacesException(e);
             }
         }
     }
@@ -75,8 +74,8 @@ public class CommonsFileUploadDecoder {
         FileItem file = request.getFileItem(inputToDecodeId);
 
         if (file != null && !file.getName().isEmpty()) {
-            DefaultUploadedFile uploadedFile = new DefaultUploadedFile(file, fileUpload);
-            if (isValidFile(context, fileUpload, uploadedFile)) {
+            SingleUploadedFile uploadedFile = new DefaultSingleUploadedFile(file, fileUpload.getSizeLimit());
+            if (FileUploadUtils.isValidFile(context, fileUpload, uploadedFile)) {
                 fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
             }
             else {
@@ -90,25 +89,10 @@ public class CommonsFileUploadDecoder {
         FileItem file = request.getFileItem(clientId);
 
         if (file != null) {
-            DefaultUploadedFile uploadedFile = new DefaultUploadedFile(file, fileUpload);
-            if (isValidFile(context, fileUpload, uploadedFile)) {
+            SingleUploadedFile uploadedFile = new DefaultSingleUploadedFile(file, fileUpload.getSizeLimit());
+            if (FileUploadUtils.isValidFile(context, fileUpload, uploadedFile)) {
                 fileUpload.queueEvent(new FileUploadEvent(fileUpload, uploadedFile));
             }
         }
     }
-
-    private static boolean isValidFile(FacesContext context, FileUpload fileUpload, DefaultUploadedFile uploadedFile) throws IOException {
-        boolean valid = (fileUpload.getSizeLimit() == null || uploadedFile.getSize() <= fileUpload.getSizeLimit()) && FileUploadUtils.isValidType(fileUpload,
-                uploadedFile.getFileName(), uploadedFile.getInputstream());
-        if (valid) {
-            try {
-                FileUploadUtils.performVirusScan(context, fileUpload, uploadedFile.getInputstream());
-            }
-            catch (VirusException ex) {
-                return false;
-            }
-        }
-        return valid;
-    }
-
 }
