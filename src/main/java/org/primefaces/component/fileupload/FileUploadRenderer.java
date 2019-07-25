@@ -23,14 +23,6 @@
  */
 package org.primefaces.component.fileupload;
 
-import java.io.IOException;
-
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.ConverterException;
-
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
@@ -38,11 +30,17 @@ import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.convert.ConverterException;
+import java.io.IOException;
+
 public class FileUploadRenderer extends CoreRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
-
         if (!context.getExternalContext().getRequestContentType().toLowerCase().startsWith("multipart/")) {
             return;
         }

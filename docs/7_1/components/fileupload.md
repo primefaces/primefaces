@@ -115,7 +115,7 @@ UploadedFile instance. Ajax uploads are not supported in simple upload.
 </h:form>
 ```
 ```java
-import org.primefaces.model.UploadedFile;
+import org.primefaces.model.file.UploadedFile;
 public class FileBean {
     private UploadedFile file;
     //getter-setter

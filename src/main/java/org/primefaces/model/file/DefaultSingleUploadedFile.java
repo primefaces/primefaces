@@ -21,36 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model;
+package org.primefaces.model.file;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.io.input.BoundedInputStream;
+import org.primefaces.util.FileUploadUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.util.List;
-
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.io.input.BoundedInputStream;
-import org.primefaces.component.fileupload.FileUpload;
-import org.primefaces.util.FileUploadUtils;
 
 /**
  *
- * UploadedFile implementation based on Commons FileUpload FileItem
+ * Default UploadedFile implementation based on Commons FileUpload FileItem
  */
-public class DefaultUploadedFile implements UploadedFile, Serializable {
+public class DefaultSingleUploadedFile implements SingleUploadedFile, Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private FileItem fileItem;
     private Long sizeLimit;
 
-    public DefaultUploadedFile() {
+    public DefaultSingleUploadedFile() {
+        // NOOP
     }
 
-    public DefaultUploadedFile(FileItem fileItem, FileUpload fileUpload) {
+    public DefaultSingleUploadedFile(FileItem fileItem, Long sizeLimit) {
         this.fileItem = fileItem;
-        this.sizeLimit = fileUpload.getSizeLimit();
+        this.sizeLimit = sizeLimit;
     }
 
     @Override
@@ -59,13 +58,10 @@ public class DefaultUploadedFile implements UploadedFile, Serializable {
     }
 
     @Override
-    public List<String> getFileNames() {
-        return null;
-    }
-
-    @Override
-    public InputStream getInputstream() throws IOException {
-        return sizeLimit == null ? fileItem.getInputStream() : new BoundedInputStream(fileItem.getInputStream(), sizeLimit);
+    public InputStream getInputStream() throws IOException {
+        return sizeLimit == null
+                ? fileItem.getInputStream()
+                : new BoundedInputStream(fileItem.getInputStream(), sizeLimit);
     }
 
     @Override
@@ -74,7 +70,7 @@ public class DefaultUploadedFile implements UploadedFile, Serializable {
     }
 
     @Override
-    public byte[] getContents() {
+    public byte[] getContent() {
         return fileItem.get();
     }
 
