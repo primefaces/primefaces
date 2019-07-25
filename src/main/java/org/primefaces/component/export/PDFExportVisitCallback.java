@@ -33,6 +33,7 @@ import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Paragraph;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.datatable.PDFExporter;
 
 public class PDFExportVisitCallback implements VisitCallback {
 

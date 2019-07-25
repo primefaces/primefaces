@@ -32,6 +32,7 @@ import javax.faces.context.FacesContext;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.datatable.ExcelExporter;
 
 public class ExcelExportVisitCallback implements VisitCallback {
 

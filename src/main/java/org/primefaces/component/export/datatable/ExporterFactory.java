@@ -21,9 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.export;
+package org.primefaces.component.export.datatable;
 
 import javax.faces.FacesException;
+
+import org.primefaces.component.export.Exporter;
+import org.primefaces.component.export.ExporterOptions;
+import org.primefaces.component.export.ExporterType;
 
 public class ExporterFactory {
 

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.export;
+package org.primefaces.component.export.datatable;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -46,6 +46,8 @@ import javax.faces.convert.Converter;
 
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.Exporter;
+import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.util.ComponentUtils;
 
