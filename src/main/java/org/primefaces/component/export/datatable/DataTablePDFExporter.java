@@ -57,7 +57,7 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
-public class DataTablePDFExporter extends DataTableExporterBase implements PDFExporter {
+public class DataTablePDFExporter extends DataTableExporterBase implements PDFExporter<DataTable> {
 
     private Font cellFont;
     private Font facetFont;

@@ -44,7 +44,7 @@ import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
-public class DataTableCSVExporter extends DataTableExporterBase implements CSVExporter {
+public class DataTableCSVExporter extends DataTableExporterBase implements CSVExporter<DataTable> {
 
     private CSVOptions csvOptions;
 

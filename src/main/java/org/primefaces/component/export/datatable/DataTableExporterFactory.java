@@ -36,7 +36,7 @@ public class DataTableExporterFactory {
     }
 
     public static Exporter<DataTable> getExporterForType(String type, ExporterOptions options) {
-        DataTableExporterBase exporter = null;
+        Exporter<DataTable> exporter = null;
 
         try {
             ExporterType exporterType = ExporterType.valueOf(type.toUpperCase());

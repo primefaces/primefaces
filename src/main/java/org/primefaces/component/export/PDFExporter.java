@@ -29,7 +29,7 @@ import javax.faces.context.FacesContext;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPTable;
 
-public interface PDFExporter {
+public interface PDFExporter <T extends UIComponent> extends Exporter<T> {
 
     PdfPTable exportTable(FacesContext context, UIComponent component, boolean pageOnly, boolean selectionOnly, String encoding);
 

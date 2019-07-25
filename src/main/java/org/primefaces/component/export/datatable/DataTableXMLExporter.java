@@ -45,7 +45,7 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
 
-public class DataTableXMLExporter extends DataTableExporterBase implements XMLExporter {
+public class DataTableXMLExporter extends DataTableExporterBase implements XMLExporter<DataTable> {
 
     @Override
     public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly,

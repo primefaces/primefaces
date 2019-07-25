@@ -23,7 +23,6 @@
  */
 package org.primefaces.component.export.datatable;
 
-import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,12 +45,10 @@ import javax.faces.convert.Converter;
 
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.export.ExporterBase;
-import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.util.ComponentUtils;
 
-public abstract class DataTableExporterBase extends ExporterBase<DataTable> {
+public abstract class DataTableExporterBase {
 
     protected enum ColumnType {
         HEADER("header"),
@@ -72,21 +69,6 @@ public abstract class DataTableExporterBase extends ExporterBase<DataTable> {
             return facet;
         }
     }
-
-    public abstract void export(FacesContext facesContext, DataTable table,
-                                String outputFileName, boolean pageOnly, boolean selectionOnly,
-                                String encodingType, MethodExpression preProcessor,
-                                MethodExpression postProcessor, ExporterOptions options, MethodExpression onTableRender) throws IOException;
-
-    public abstract void export(FacesContext facesContext, List<String> clientIds,
-                                String outputFileName, boolean pageOnly, boolean selectionOnly,
-                                String encodingType, MethodExpression preProcessor,
-                                MethodExpression postProcessor, ExporterOptions options, MethodExpression onTableRender) throws IOException;
-
-    public abstract void export(FacesContext facesContext,
-                                String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
-                                String encodingType, MethodExpression preProcessor,
-                                MethodExpression postProcessor, ExporterOptions options, MethodExpression onTableRender) throws IOException;
 
     protected List<UIColumn> getColumnsToExport(UIData table) {
         List<UIColumn> columns = new ArrayList<>();

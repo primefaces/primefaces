@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.export;
 
-public interface CSVExporter {
+import javax.faces.component.UIComponent;
+
+public interface CSVExporter<T extends UIComponent> extends Exporter<T> {
 
 }

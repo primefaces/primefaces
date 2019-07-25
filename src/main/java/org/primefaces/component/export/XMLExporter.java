@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.export;
 
-public interface XMLExporter {
+import javax.faces.component.UIComponent;
+
+public interface XMLExporter <T extends UIComponent> extends Exporter<T> {
 
 }

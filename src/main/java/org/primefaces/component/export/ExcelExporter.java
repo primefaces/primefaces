@@ -28,7 +28,7 @@ import javax.faces.context.FacesContext;
 
 import org.apache.poi.ss.usermodel.Sheet;
 
-public interface ExcelExporter {
+public interface ExcelExporter <T extends UIComponent> extends Exporter<T> {
 
     String getSheetName(FacesContext context, UIComponent component);
 

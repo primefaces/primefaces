@@ -63,7 +63,7 @@ import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
-public class DataTableExcelExporter extends DataTableExporterBase implements ExcelExporter {
+public class DataTableExcelExporter extends DataTableExporterBase implements ExcelExporter<DataTable> {
 
     private CellStyle cellStyle;
     private CellStyle facetStyle;
