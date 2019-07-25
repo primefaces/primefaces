@@ -239,7 +239,6 @@ public class CalendarAndDatePickerTest {
 	@PrepareForTest(MessageFactory.class)
 	public void convertToJava8DateTimeAPI_LocalDate_WrongFormat() {
 		//https://stackoverflow.com/questions/21105403/mocking-static-methods-with-mockito
-		//https://www.baeldung.com/junit-assert-exception
 
 		PowerMockito.mockStatic(MessageFactory.class);
 		BDDMockito.given(MessageFactory.getMessage(eq("javax.faces.converter.DateTimeConverter.DATE"), eq(FacesMessage.SEVERITY_ERROR), any())).willReturn(new FacesMessage("dummy"));
@@ -258,7 +257,7 @@ public class CalendarAndDatePickerTest {
 		when(calendar.getPattern()).thenReturn("ddaMMbyyyy");
 
 		exceptionRule.expect(IllegalArgumentException.class);
-		exceptionRule.expectMessage(startsWith("Unknown pattern lette"));
+		exceptionRule.expectMessage(startsWith("Unknown pattern letter"));
 
 		Temporal temporal = renderer.convertToJava8DateTimeAPI(context, calendar, type, "23.07.2019");
 		assertEquals(type, temporal.getClass());
