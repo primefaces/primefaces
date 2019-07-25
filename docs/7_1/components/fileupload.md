@@ -117,7 +117,7 @@ UploadedFile instance. Ajax uploads are not supported in simple upload.
 ```java
 import org.primefaces.model.file.UploadedFile;
 public class FileBean {
-    private UploadedFile file;
+    private SingleUploadedFile file;
     //getter-setter
 }
 ```
@@ -134,7 +134,7 @@ defined `listener` is processed with a `FileUploadEvent` as the parameter.
 ```java
 public class FileBean {
     public void handleFileUpload(FileUploadEvent event) {
-        UploadedFile file = event.getFile();
+        SingleUploadedFile file = event.getFile();
         //application code
     }
 }
@@ -142,13 +142,45 @@ public class FileBean {
 
 ## Multiple Uploads
 Multiple uploads can be enabled using the multiple attribute so that multiple files can be selected
-from browser dialog. Multiple uploads are not supported in legacy browsers. Note that multiple
-mode is for selection only, it does not send all files in one request. FileUpload component always
+from browser dialog. Multiple uploads are not supported in legacy browsers. In advanced mode, it does not send all files in one request, but always
 uses a new request for each file.
 
 ```xhtml
 <p:fileUpload listener="#{fileBean.handleFileUpload}" multiple="true" />
 ```
+
+However, in simple mode, it is possible to get all updated files at once. Files will be wrapped in a `UploadedFileWrapper` bean:
+```xhtml
+<p:fileUpload value="#{fileBean.file}" multiple="true" mode="simple" />
+<p:commandButton value="Submit" action="#{fileUploadView.upload}" />
+```
+
+```java
+@Named
+@RequestScoped
+public class FileUploadView {
+
+    private UploadedFileWrapper file;
+
+    public UploadedFileWrapper getFile() {
+        return file;
+    }
+
+    public void setFile(UploadedFileWrapper file) {
+        this.file = file;
+    }
+
+    public void upload() {
+        if (file != null) {
+            FileUploadUtils.consume(file, f -> {
+                FacesMessage message = new FacesMessage("Successful", f.getFileName() + " is uploaded.");
+                FacesContext.getCurrentInstance().addMessage(null, message);
+            });
+        }
+    }
+}
+```
+
 ## Auto Upload
 Default behavior requires users to trigger the upload process, you can change this way by setting
 auto to true. Auto uploads are triggered as soon as files are selected from the dialog.
