@@ -25,6 +25,7 @@ package org.primefaces.component.export.datatable;
 
 import javax.faces.FacesException;
 
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
 import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.component.export.ExporterType;
@@ -34,7 +35,7 @@ public class DataTableExporterFactory {
     private DataTableExporterFactory() {
     }
 
-    public static Exporter getExporterForType(String type, ExporterOptions options) {
+    public static Exporter<DataTable> getExporterForType(String type, ExporterOptions options) {
         DataTableExporterBase exporter = null;
 
         try {

@@ -319,7 +319,7 @@ public abstract class DataTableExporterBase implements Exporter<DataTable> {
         }
     }
 
-    public String getSheetName(FacesContext context, DataTable table) {
+    public String getSheetName(FacesContext context, UIComponent table) {
         UIComponent header = table.getFacet("header");
         if (header != null) {
             if (header instanceof UIPanel) {

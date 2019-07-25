@@ -23,19 +23,6 @@
  */
 package org.primefaces.component.export.datatable;
 
-import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.export.ExporterOptions;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.EscapeUtils;
-
-import javax.el.MethodExpression;
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -43,7 +30,22 @@ import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.List;
 
-public class DataTableXMLExporter extends DataTableExporterBase {
+import javax.el.MethodExpression;
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.ExporterOptions;
+import org.primefaces.component.export.XMLExporter;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.EscapeUtils;
+
+public class DataTableXMLExporter extends DataTableExporterBase implements XMLExporter {
 
     @Override
     public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly,

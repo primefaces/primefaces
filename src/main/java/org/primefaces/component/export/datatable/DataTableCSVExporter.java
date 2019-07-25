@@ -38,12 +38,13 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.CSVExporter;
 import org.primefaces.component.export.CSVOptions;
 import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
-public class DataTableCSVExporter extends DataTableExporterBase {
+public class DataTableCSVExporter extends DataTableExporterBase implements CSVExporter {
 
     private CSVOptions csvOptions;
 

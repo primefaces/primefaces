@@ -23,28 +23,14 @@
  */
 package org.primefaces.component.export;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public interface Exporter<T extends UIComponent> {
+import org.apache.poi.ss.usermodel.Sheet;
 
-    void export(FacesContext facesContext, T component,
-            String outputFileName, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor,
-            MethodExpression postProcessor, ExporterOptions options, MethodExpression onTableRender) throws IOException;
+public interface ExcelExporter {
 
-    void export(FacesContext facesContext, List<String> clientIds,
-            String outputFileName, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor,
-            MethodExpression postProcessor, ExporterOptions options, MethodExpression onTableRender) throws IOException;
+    String getSheetName(FacesContext context, UIComponent component);
 
-    void export(FacesContext facesContext,
-            String outputFileName, List<T> components, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor,
-            MethodExpression postProcessor, ExporterOptions options, MethodExpression onTableRender) throws IOException;
-
+    void exportTable(FacesContext context, UIComponent component, Sheet sheet, boolean pageOnly, boolean selectionOnly);
 }

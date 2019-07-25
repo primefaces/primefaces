@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.export.datatable;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -38,20 +38,26 @@ import javax.faces.component.visit.VisitContext;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-import com.lowagie.text.*;
-import com.lowagie.text.Font;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.component.export.PDFExportVisitCallback;
+import org.primefaces.component.export.PDFExporter;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
-public class DataTablePDFExporter extends DataTableExporterBase {
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
+import com.lowagie.text.Font;
+import com.lowagie.text.FontFactory;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
+
+public class DataTablePDFExporter extends DataTableExporterBase implements PDFExporter {
 
     private Font cellFont;
     private Font facetFont;
@@ -82,7 +88,7 @@ public class DataTablePDFExporter extends DataTableExporterBase {
                 expOptions = options;
             }
 
-            document.add(exportPDFTable(context, table, pageOnly, selectionOnly, encodingType));
+            document.add(exportTable(context, table, pageOnly, selectionOnly, encodingType));
 
             if (postProcessor != null) {
                 postProcessor.invoke(context.getELContext(), new Object[]{document});
@@ -163,7 +169,7 @@ public class DataTablePDFExporter extends DataTableExporterBase {
             }
 
             for (DataTable table : tables) {
-                document.add(exportPDFTable(context, table, pageOnly, selectionOnly, encodingType));
+                document.add(exportTable(context, table, pageOnly, selectionOnly, encodingType));
 
                 Paragraph preface = new Paragraph();
                 addEmptyLine(preface, 3);
@@ -184,7 +190,9 @@ public class DataTablePDFExporter extends DataTableExporterBase {
         }
     }
 
-    protected PdfPTable exportPDFTable(FacesContext context, DataTable table, boolean pageOnly, boolean selectionOnly, String encoding) {
+    @Override
+    public PdfPTable exportTable(FacesContext context, UIComponent component, boolean pageOnly, boolean selectionOnly, String encoding) {
+        DataTable table = (DataTable) component;
         int columnsCount = getColumnsCount(table);
         PdfPTable pdfTable = new PdfPTable(columnsCount);
         cellFont = FontFactory.getFont(FontFactory.TIMES, encoding);
@@ -384,7 +392,8 @@ public class DataTablePDFExporter extends DataTableExporterBase {
         return count;
     }
 
-    protected void addEmptyLine(Paragraph paragraph, int number) {
+    @Override
+    public void addEmptyLine(Paragraph paragraph, int number) {
         for (int i = 0; i < number; i++) {
             paragraph.add(new Paragraph(" "));
         }

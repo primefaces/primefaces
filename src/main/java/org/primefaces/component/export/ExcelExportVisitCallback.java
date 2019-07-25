@@ -31,17 +31,15 @@ import javax.faces.context.FacesContext;
 
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.export.datatable.DataTableExcelExporter;
 
 public class ExcelExportVisitCallback implements VisitCallback {
 
-    private final DataTableExcelExporter exporter;
+    private final ExcelExporter exporter;
     private final boolean pageOnly;
     private final boolean selectionOnly;
     private final Workbook workbook;
 
-    public ExcelExportVisitCallback(DataTableExcelExporter exporter, Workbook workbook, boolean pageOnly, boolean selectionOnly) {
+    public ExcelExportVisitCallback(ExcelExporter exporter, Workbook workbook, boolean pageOnly, boolean selectionOnly) {
         this.exporter = exporter;
         this.pageOnly = pageOnly;
         this.selectionOnly = selectionOnly;
@@ -50,15 +48,14 @@ public class ExcelExportVisitCallback implements VisitCallback {
 
     @Override
     public VisitResult visit(VisitContext context, UIComponent target) {
-        DataTable dt = (DataTable) target;
         FacesContext facesContext = context.getFacesContext();
-        String sheetName = exporter.getSheetName(facesContext, dt);
+        String sheetName = exporter.getSheetName(facesContext, target);
         if (sheetName == null) {
-            sheetName = dt.getClientId().replaceAll(":", "_");
+            sheetName = target.getClientId().replaceAll(":", "_");
         }
 
         Sheet sheet = workbook.createSheet(sheetName);
-        exporter.exportTable(facesContext, dt, sheet, pageOnly, selectionOnly);
+        exporter.exportTable(facesContext, target, sheet, pageOnly, selectionOnly);
         return VisitResult.ACCEPT;
     }
 

@@ -23,28 +23,15 @@
  */
 package org.primefaces.component.export;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public interface Exporter<T extends UIComponent> {
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfPTable;
 
-    void export(FacesContext facesContext, T component,
-            String outputFileName, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor,
-            MethodExpression postProcessor, ExporterOptions options, MethodExpression onTableRender) throws IOException;
+public interface PDFExporter {
 
-    void export(FacesContext facesContext, List<String> clientIds,
-            String outputFileName, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor,
-            MethodExpression postProcessor, ExporterOptions options, MethodExpression onTableRender) throws IOException;
+    PdfPTable exportTable(FacesContext context, UIComponent component, boolean pageOnly, boolean selectionOnly, String encoding);
 
-    void export(FacesContext facesContext,
-            String outputFileName, List<T> components, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor,
-            MethodExpression postProcessor, ExporterOptions options, MethodExpression onTableRender) throws IOException;
-
+    void addEmptyLine(Paragraph paragraph, int number);
 }
