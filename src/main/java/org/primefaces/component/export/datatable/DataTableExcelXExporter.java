@@ -31,7 +31,7 @@ import org.apache.poi.xssf.usermodel.*;
 import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.util.ComponentUtils;
 
-public class ExcelXExporter extends ExcelExporter {
+public class DataTableExcelXExporter extends DataTableExcelExporter {
 
     @Override
     protected Workbook createWorkBook() {

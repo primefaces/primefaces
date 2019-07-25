@@ -29,39 +29,39 @@ import org.primefaces.component.export.Exporter;
 import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.component.export.ExporterType;
 
-public class ExporterFactory {
+public class DataTableExporterFactory {
 
-    private ExporterFactory() {
+    private DataTableExporterFactory() {
     }
 
     public static Exporter getExporterForType(String type, ExporterOptions options) {
-        DataTableExporter exporter = null;
+        DataTableExporterBase exporter = null;
 
         try {
             ExporterType exporterType = ExporterType.valueOf(type.toUpperCase());
 
             switch (exporterType) {
                 case XLS:
-                    exporter = new ExcelExporter();
+                    exporter = new DataTableExcelExporter();
                     break;
 
                 case PDF:
-                    exporter = new PDFExporter();
+                    exporter = new DataTablePDFExporter();
                     break;
 
                 case CSV:
-                    exporter = new CSVExporter(options);
+                    exporter = new DataTableCSVExporter(options);
                     break;
 
                 case XML:
-                    exporter = new XMLExporter();
+                    exporter = new DataTableXMLExporter();
                     break;
 
                 case XLSX:
-                    exporter = new ExcelXExporter();
+                    exporter = new DataTableExcelXExporter();
                     break;
                 case XLSXSTREAM:
-                    exporter = new ExcelXStreamExporter();
+                    exporter = new DataTableExcelXStreamExporter();
                     break;
 
             }

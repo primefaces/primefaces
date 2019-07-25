@@ -43,11 +43,11 @@ import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
-public class CSVExporter extends DataTableExporter {
+public class DataTableCSVExporter extends DataTableExporterBase {
 
     private CSVOptions csvOptions;
 
-    public CSVExporter(ExporterOptions options) {
+    public DataTableCSVExporter(ExporterOptions options) {
         csvOptions = CSVOptions.EXCEL;
         if (options != null) {
             if (options instanceof CSVOptions) {

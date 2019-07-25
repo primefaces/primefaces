@@ -43,7 +43,7 @@ import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.List;
 
-public class XMLExporter extends DataTableExporter {
+public class DataTableXMLExporter extends DataTableExporterBase {
 
     @Override
     public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly,

@@ -32,16 +32,16 @@ import javax.faces.context.FacesContext;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.export.datatable.ExcelExporter;
+import org.primefaces.component.export.datatable.DataTableExcelExporter;
 
 public class ExcelExportVisitCallback implements VisitCallback {
 
-    private final ExcelExporter exporter;
+    private final DataTableExcelExporter exporter;
     private final boolean pageOnly;
     private final boolean selectionOnly;
     private final Workbook workbook;
 
-    public ExcelExportVisitCallback(ExcelExporter exporter, Workbook workbook, boolean pageOnly, boolean selectionOnly) {
+    public ExcelExportVisitCallback(DataTableExcelExporter exporter, Workbook workbook, boolean pageOnly, boolean selectionOnly) {
         this.exporter = exporter;
         this.pageOnly = pageOnly;
         this.selectionOnly = selectionOnly;

@@ -51,7 +51,7 @@ import org.primefaces.component.export.PDFExportVisitCallback;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
-public class PDFExporter extends DataTableExporter {
+public class DataTablePDFExporter extends DataTableExporterBase {
 
     private Font cellFont;
     private Font facetFont;

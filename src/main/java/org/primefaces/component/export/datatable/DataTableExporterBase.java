@@ -51,7 +51,7 @@ import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.util.ComponentUtils;
 
-public abstract class DataTableExporter implements Exporter<DataTable> {
+public abstract class DataTableExporterBase implements Exporter<DataTable> {
 
     protected enum ColumnType {
         HEADER("header"),

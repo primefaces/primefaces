@@ -38,7 +38,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
 import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.export.datatable.ExporterFactory;
+import org.primefaces.component.export.datatable.DataTableExporterFactory;
 import org.primefaces.expression.SearchExpressionFacade;
 
 public class DataExporter implements ActionListener, StateHolder {
@@ -167,7 +167,7 @@ public class DataExporter implements ActionListener, StateHolder {
     protected Exporter getExporter(String exportAs, ExporterOptions exporterOptions, Object customExporterInstance) {
 
         if (customExporterInstance == null) {
-            return ExporterFactory.getExporterForType(exportAs, exporterOptions);
+            return DataTableExporterFactory.getExporterForType(exportAs, exporterOptions);
         }
 
         if (customExporterInstance instanceof Exporter) {

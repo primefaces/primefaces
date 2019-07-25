@@ -39,7 +39,7 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
  * to be used when very large spreadsheets have to be produced, and heap space is limited.
  * SXSSF achieves its low memory footprint by limiting access to the rows that are within a sliding window.
  */
-public class ExcelXStreamExporter extends ExcelXExporter {
+public class DataTableExcelXStreamExporter extends DataTableExcelXExporter {
 
     @Override
     protected Workbook createWorkBook() {
