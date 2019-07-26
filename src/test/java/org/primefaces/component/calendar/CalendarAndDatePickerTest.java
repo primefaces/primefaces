@@ -25,7 +25,6 @@ package org.primefaces.component.calendar;
 
 import org.junit.*;
 import org.junit.rules.ExpectedException;
-import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.datepicker.DatePicker;
 import org.primefaces.component.datepicker.DatePickerRenderer;
 import org.primefaces.util.CalendarUtils;
@@ -52,7 +51,7 @@ import java.util.*;
 public class CalendarAndDatePickerTest {
 
 	private DatePickerRenderer renderer;
-	private UICalendar calendar;
+	private DatePicker datePicker;
 	private FacesContext context;
 	private ExternalContext externalContext;
 	private ELContext elContext;
@@ -64,21 +63,27 @@ public class CalendarAndDatePickerTest {
 	@Before
 	public void setup() {
 		renderer =mock(DatePickerRenderer.class);
-		calendar = mock(Calendar.class);
+		datePicker = mock(DatePicker.class);
+		when(datePicker.getSelectionMode()).thenReturn("single");
+
 		context = mock(FacesContext.class);
-		when(renderer.resolveDateType(context, calendar)).thenCallRealMethod();
-		when(renderer.convertToJava8DateTimeAPI(eq(context), eq(calendar), any(), any())).thenCallRealMethod();
+		when(renderer.resolveDateType(context, datePicker)).thenCallRealMethod();
+		when(renderer.convertToJava8DateTimeAPI(eq(context), eq(datePicker), any(), any())).thenCallRealMethod();
+		when(renderer.convertToLegacyDateAPI(eq(context), eq(datePicker), any())).thenCallRealMethod();
 
 		externalContext = mock(ExternalContext.class);
 		elContext = mock(ELContext.class);
 		when(context.getExternalContext()).thenReturn(externalContext);
 		when(context.getELContext()).thenReturn(elContext);
+
+		valueExpression = mock(ValueExpression.class);
+		when(datePicker.getValueExpression(anyString())).thenReturn(valueExpression);
 	}
 
 	@After
 	public void teardown() {
 		renderer = null;
-		calendar = null;
+		datePicker = null;
 		context = null;
 		externalContext = null;
 		elContext = null;
@@ -86,13 +91,10 @@ public class CalendarAndDatePickerTest {
 	}
 
 	private void setupValues(Class type, Locale locale) {
-		when(calendar.calculatePattern()).thenCallRealMethod();
-		when(calendar.calculateLocale(context)).thenReturn(locale);
-		when(calendar.calculateLocale(null)).thenReturn(locale);
-		when(calendar.calculateTimeOnlyPattern()).thenReturn("HH:mm");
+		when(datePicker.calculatePattern()).thenCallRealMethod();
+		when(datePicker.calculateLocale(any())).thenReturn(locale);
+		when(datePicker.calculateTimeOnlyPattern()).thenReturn("HH:mm");
 
-		valueExpression = mock(ValueExpression.class);
-		when(calendar.getValueExpression(anyString())).thenReturn(valueExpression);
 		when(valueExpression.getType(elContext)).thenReturn(type);
 	}
 
@@ -148,38 +150,45 @@ public class CalendarAndDatePickerTest {
 	@Test
 	public void resolveDateType_Date() {
 		setupValues(Date.class, Locale.ENGLISH);
-		Class type = renderer.resolveDateType(context, calendar);
+		Class type = renderer.resolveDateType(context, datePicker);
 		assertEquals(Date.class, type);
 	}
 
 	@Test
 	public void resolveDateType_LocalDate() {
 		setupValues(LocalDate.class, Locale.ENGLISH);
-		Class type = renderer.resolveDateType(context, calendar);
+		Class type = renderer.resolveDateType(context, datePicker);
 		assertEquals(LocalDate.class, type);
 	}
 
 	@Test
 	public void resolveDateType_LocalTime() {
 		setupValues(LocalTime.class, Locale.ENGLISH);
-		Class type = renderer.resolveDateType(context, calendar);
+		Class type = renderer.resolveDateType(context, datePicker);
 		assertEquals(LocalTime.class, type);
 	}
 
 	@Test
 	public void resolveDateType_LocalDateTime() {
 		setupValues(LocalDateTime.class, Locale.ENGLISH);
-		Class type = renderer.resolveDateType(context, calendar);
+		Class type = renderer.resolveDateType(context, datePicker);
 		assertEquals(LocalDateTime.class, type);
 	}
 
 	@Test
 	@Ignore
 	public void resolveDateType_ListLocalDate() {
-		//TODO: need´s more mocking-work
+		/*
+			Unable to mock this with Mockito only.
+			Cause:
+			BaseCalendarRenderer#resolveDateType calls a static method.
+			(ValueExpressionAnalyzer.getReference)
+			It would require https://github.com/powermock/powermock to mock this static method.
+		 */
+
 		setupValues(List.class, Locale.ENGLISH);
 		when(valueExpression.getValueReference(elContext)).thenReturn(null);
-		Class type = renderer.resolveDateType(context, calendar);
+		Class type = renderer.resolveDateType(context, datePicker);
 		assertEquals(LocalDate.class, type);
 	}
 
@@ -187,7 +196,7 @@ public class CalendarAndDatePickerTest {
 	public void convertToJava8DateTimeAPI_LocalDate() {
 		Class type = LocalDate.class;
 		setupValues(type, Locale.ENGLISH);
-		Temporal temporal = renderer.convertToJava8DateTimeAPI(context, calendar, type, "7/23/19");
+		Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "7/23/19");
 		assertEquals(type, temporal.getClass());
 		assertEquals(LocalDate.of(2019, 07, 23), temporal);
 	}
@@ -196,7 +205,7 @@ public class CalendarAndDatePickerTest {
 	public void convertToJava8DateTimeAPI_LocalDate_German() {
 		Class type = LocalDate.class;
 		setupValues(type, Locale.GERMAN);
-		Temporal temporal = renderer.convertToJava8DateTimeAPI(context, calendar, type, "23.07.19");
+		Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "23.07.19");
 		assertEquals(type, temporal.getClass());
 		assertEquals(LocalDate.of(2019, 07, 23), temporal);
 	}
@@ -205,9 +214,9 @@ public class CalendarAndDatePickerTest {
 	public void convertToJava8DateTimeAPI_LocalDate_German_ExplicitPattern() {
 		Class type = LocalDate.class;
 		setupValues(type, Locale.GERMAN);
-		when(calendar.getPattern()).thenReturn("dd.MM.yyyy");
+		when(datePicker.getPattern()).thenReturn("dd.MM.yyyy");
 
-		Temporal temporal = renderer.convertToJava8DateTimeAPI(context, calendar, type, "23.07.2019");
+		Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "23.07.2019");
 		assertEquals(type, temporal.getClass());
 		assertEquals(LocalDate.of(2019, 07, 23), temporal);
 	}
@@ -216,7 +225,7 @@ public class CalendarAndDatePickerTest {
 	public void convertToJava8DateTimeAPI_LocalTime() {
 		Class type = LocalTime.class;
 		setupValues(type, Locale.ENGLISH);
-		Temporal temporal = renderer.convertToJava8DateTimeAPI(context, calendar, type, "21:31");
+		Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "21:31");
 		assertEquals(type, temporal.getClass());
 		assertEquals(LocalTime.of(21, 31), temporal);
 	}
@@ -225,7 +234,7 @@ public class CalendarAndDatePickerTest {
 	public void convertToJava8DateTimeAPI_LocalDateTime() {
 		Class type = LocalDateTime.class;
 		setupValues(type, Locale.ENGLISH);
-		Temporal temporal = renderer.convertToJava8DateTimeAPI(context, calendar, type, "7/23/19 21:31");
+		Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "7/23/19 21:31");
 		assertEquals(type, temporal.getClass());
 		assertEquals(LocalDateTime.of(2019, 7, 23,  21, 31), temporal);
 	}
@@ -236,9 +245,9 @@ public class CalendarAndDatePickerTest {
 		setupValues(type, Locale.ENGLISH);
 
 		FacesMessage message=new FacesMessage("dummy");
-		when(renderer.createConverterException(eq(context), eq(calendar), any(), any())).thenReturn(new ConverterException(message));
+		when(renderer.createConverterException(eq(context), eq(datePicker), any(), any())).thenReturn(new ConverterException(message));
 
-		Temporal temporal = renderer.convertToJava8DateTimeAPI(context, calendar, type, "23.07.2019");
+		Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "23.07.2019");
 		assertEquals(type, temporal.getClass());
 		assertEquals(LocalDate.of(2019, 07, 23), temporal);
 	}
@@ -247,13 +256,43 @@ public class CalendarAndDatePickerTest {
 	public void convertToJava8DateTimeAPI_LocalDate_WrongPattern() {
 		Class type = LocalDate.class;
 		setupValues(type, Locale.GERMAN);
-		when(calendar.getPattern()).thenReturn("ddaMMbyyyy");
+		when(datePicker.getPattern()).thenReturn("ddaMMbyyyy");
 
 		exceptionRule.expect(IllegalArgumentException.class);
 		exceptionRule.expectMessage(startsWith("Unknown pattern letter"));
 
-		Temporal temporal = renderer.convertToJava8DateTimeAPI(context, calendar, type, "23.07.2019");
+		Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "23.07.2019");
 		assertEquals(type, temporal.getClass());
 		assertEquals(LocalDate.of(2019, 07, 23), temporal);
+	}
+
+    @Test
+    public void getConvertValue_Date() {
+        Class type = Date.class;
+        setupValues(type, Locale.ENGLISH);
+
+        when(renderer.getConvertedValue(eq(context), eq(datePicker), any())).thenCallRealMethod();
+
+        Object object = renderer.getConvertedValue(context, datePicker, "7/23/19");
+        assertEquals(type, object.getClass());
+        Date date = (Date)object;
+        java.util.Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        assertEquals(2019, calendar.get(java.util.Calendar.YEAR));
+        assertEquals(6, calendar.get(java.util.Calendar.MONTH));
+        assertEquals(23, calendar.get(java.util.Calendar.DAY_OF_MONTH));
+    }
+
+	@Test
+	public void getConvertValue_LocalDate() {
+		Class type = LocalDate.class;
+		setupValues(type, Locale.ENGLISH);
+
+		when(renderer.getConvertedValue(eq(context), eq(datePicker), any())).thenCallRealMethod();
+
+		Object object = renderer.getConvertedValue(context, datePicker, "7/23/19");
+		assertEquals(type, object.getClass());
+		LocalDate localDate = (LocalDate)object;
+		assertEquals(LocalDate.of(2019, 07, 23), localDate);
 	}
 }
