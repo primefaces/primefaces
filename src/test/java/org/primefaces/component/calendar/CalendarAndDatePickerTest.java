@@ -25,11 +25,6 @@ package org.primefaces.component.calendar;
 
 import org.junit.*;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.mockito.BDDMockito;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.datepicker.DatePicker;
 import org.primefaces.component.datepicker.DatePickerRenderer;
@@ -41,8 +36,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.hamcrest.core.StringStartsWith.startsWith;
-
-import org.primefaces.util.MessageFactory;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -56,7 +49,6 @@ import java.time.LocalTime;
 import java.time.temporal.Temporal;
 import java.util.*;
 
-@RunWith(PowerMockRunner.class)
 public class CalendarAndDatePickerTest {
 
 	private DatePickerRenderer renderer;
@@ -71,9 +63,12 @@ public class CalendarAndDatePickerTest {
 
 	@Before
 	public void setup() {
-		renderer = new DatePickerRenderer();
+		renderer =mock(DatePickerRenderer.class);
 		calendar = mock(Calendar.class);
 		context = mock(FacesContext.class);
+		when(renderer.resolveDateType(context, calendar)).thenCallRealMethod();
+		when(renderer.convertToJava8DateTimeAPI(eq(context), eq(calendar), any(), any())).thenCallRealMethod();
+
 		externalContext = mock(ExternalContext.class);
 		elContext = mock(ELContext.class);
 		when(context.getExternalContext()).thenReturn(externalContext);
@@ -236,15 +231,13 @@ public class CalendarAndDatePickerTest {
 	}
 
 	@Test(expected = ConverterException.class)
-	@PrepareForTest(MessageFactory.class)
 	public void convertToJava8DateTimeAPI_LocalDate_WrongFormat() {
-		//https://stackoverflow.com/questions/21105403/mocking-static-methods-with-mockito
-
-		PowerMockito.mockStatic(MessageFactory.class);
-		BDDMockito.given(MessageFactory.getMessage(eq("javax.faces.converter.DateTimeConverter.DATE"), eq(FacesMessage.SEVERITY_ERROR), any())).willReturn(new FacesMessage("dummy"));
-
 		Class type = LocalDate.class;
 		setupValues(type, Locale.ENGLISH);
+
+		FacesMessage message=new FacesMessage("dummy");
+		when(renderer.createConverterException(eq(context), eq(calendar), any(), any())).thenReturn(new ConverterException(message));
+
 		Temporal temporal = renderer.convertToJava8DateTimeAPI(context, calendar, type, "23.07.2019");
 		assertEquals(type, temporal.getClass());
 		assertEquals(LocalDate.of(2019, 07, 23), temporal);
