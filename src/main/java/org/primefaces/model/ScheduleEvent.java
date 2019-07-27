@@ -37,7 +37,21 @@ public interface ScheduleEvent {
 
     public String getTitle();
 
+    /**
+     * @deprecated Use {@link #getStartLocalDateTime()} instead.
+     * @return
+     */
     public Date getStartDate();
+
+    public LocalDateTime getStartLocalDateTime();
+
+    public void setStartLocalDateTime(LocalDateTime start);
+
+    /**
+     * @deprecated Use {@link #getEndLocalDateTime()} instead.
+     * @return
+     */
+    public Date getEndDate();
 
     public LocalDateTime getEndLocalDateTime();
 

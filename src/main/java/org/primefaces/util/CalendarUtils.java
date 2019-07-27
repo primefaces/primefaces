@@ -378,7 +378,12 @@ public class CalendarUtils {
     }
 
     private static ZonedDateTime convertDate2ZonedDateTime(Date date, ZoneId zoneId) {
-        return date.toInstant().atZone(zoneId);
+        if (date == null) {
+            return null;
+        }
+        else {
+            return date.toInstant().atZone(zoneId);
+        }
     }
 
     public static LocalDate convertDate2LocalDate(Date date) {
@@ -386,7 +391,12 @@ public class CalendarUtils {
     }
 
     public static LocalDate convertDate2LocalDate(Date date, ZoneId zoneId) {
-        return convertDate2ZonedDateTime(date, zoneId).toLocalDate();
+        if (date == null) {
+            return null;
+        }
+        else {
+            return convertDate2ZonedDateTime(date, zoneId).toLocalDate();
+        }
     }
 
     public static LocalDateTime convertDate2LocalDateTime(Date date) {
@@ -394,22 +404,51 @@ public class CalendarUtils {
     }
 
     public static LocalDateTime convertDate2LocalDateTime(Date date, ZoneId zoneId) {
-        return convertDate2ZonedDateTime(date, zoneId).toLocalDateTime();
+        if (date == null) {
+            return null;
+        }
+        else {
+            return convertDate2ZonedDateTime(date, zoneId).toLocalDateTime();
+        }
     }
 
     public static LocalTime convertDate2LocalTime(Date date, ZoneId zoneId) {
-        return convertDate2ZonedDateTime(date, zoneId).toLocalTime();
+        if (date == null) {
+            return null;
+        }
+        else {
+            return convertDate2ZonedDateTime(date, zoneId).toLocalTime();
+        }
     }
 
     public static Date convertLocalDate2Date(LocalDate localDate, ZoneId zoneId) {
-        return Date.from(localDate.atStartOfDay(zoneId).toInstant());
+        if (localDate == null) {
+            return null;
+        }
+        else {
+            return Date.from(localDate.atStartOfDay(zoneId).toInstant());
+        }
+    }
+
+    public static Date convertLocalDateTime2Date(LocalDateTime localDateTime) {
+        return convertLocalDateTime2Date(localDateTime, ZoneId.systemDefault());
     }
 
     public static Date convertLocalDateTime2Date(LocalDateTime localDateTime, ZoneId zoneId) {
-        return Date.from(localDateTime.atZone(zoneId).toInstant());
+        if (localDateTime == null)  {
+            return null;
+        }
+        else {
+            return Date.from(localDateTime.atZone(zoneId).toInstant());
+        }
     }
 
     public static Date convertLocalTime2Date(LocalTime localTime, ZoneId zoneId) {
-        return Date.from(localTime.atDate(LocalDate.now()).atZone(zoneId).toInstant());
+        if (localTime == null) {
+            return null;
+        }
+        else {
+            return Date.from(localTime.atDate(LocalDate.now()).atZone(zoneId).toInstant());
+        }
     }
 }

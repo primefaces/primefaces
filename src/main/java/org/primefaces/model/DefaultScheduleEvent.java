@@ -30,6 +30,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
 
@@ -53,28 +54,28 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
 
     public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end) {
         this.title = title;
-        this.startDate = start;
-        this.endDate = end;
+        this.startLocalDateTime = start;
+        this.endLocalDateTime = end;
     }
 
     public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end, boolean allDay) {
         this.title = title;
-        this.startDate = start;
-        this.endDate = end;
+        this.startLocalDateTime = start;
+        this.endLocalDateTime = end;
         this.allDay = allDay;
     }
 
     public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end, String styleClass) {
         this.title = title;
-        this.startDate = start;
-        this.endDate = end;
+        this.startLocalDateTime = start;
+        this.endLocalDateTime = end;
         this.styleClass = styleClass;
     }
 
     public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end, Object data) {
         this.title = title;
-        this.startDate = start;
-        this.endDate = end;
+        this.startLocalDateTime = start;
+        this.endLocalDateTime = end;
         this.data = data;
     }
 
@@ -142,6 +143,15 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
         return startLocalDateTime;
     }
 
+    /**
+     * @deprecated Use {@link #getStartLocalDateTime()} instead.
+     * @return
+     */
+    @Override
+    public Date getStartDate() {
+        return CalendarUtils.convertLocalDateTime2Date(startLocalDateTime);
+    }
+
     public void setStartLocalDateTime(LocalDateTime startDate) {
         this.startLocalDateTime = startDate;
     }
@@ -157,6 +167,15 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
     @Override
     public LocalDateTime getEndLocalDateTime() {
         return endLocalDateTime;
+    }
+
+    /**
+     * @deprecated Use {@link #getEndLocalDateTime()} instead.
+     * @return
+     */
+    @Override
+    public Date getEndDate() {
+        return CalendarUtils.convertLocalDateTime2Date(endLocalDateTime);
     }
 
     public void setEndLocalDateTime(LocalDateTime endDate) {
@@ -255,13 +274,13 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
             return false;
         }
         final DefaultScheduleEvent other = (DefaultScheduleEvent) obj;
-        if ((this.title == null) ? (other.title != null) : !this.title.equals(other.title)) {
+        if (!Objects.equals(this.title, other.title)) {
             return false;
         }
-        if (this.startDate != other.startDate && (this.startDate == null || !this.startDate.equals(other.startDate))) {
+        if (!Objects.equals(this.startLocalDateTime, other.startLocalDateTime)) {
             return false;
         }
-        if (this.endDate != other.endDate && (this.endDate == null || !this.endDate.equals(other.endDate))) {
+        if (!Objects.equals(this.endLocalDateTime, other.endLocalDateTime)) {
             return false;
         }
         return true;
@@ -271,13 +290,13 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
     public int hashCode() {
         int hash = 5;
         hash = 61 * hash + (this.title != null ? this.title.hashCode() : 0);
-        hash = 61 * hash + (this.startDate != null ? this.startDate.hashCode() : 0);
-        hash = 61 * hash + (this.endDate != null ? this.endDate.hashCode() : 0);
+        hash = 61 * hash + (this.startLocalDateTime != null ? this.startLocalDateTime.hashCode() : 0);
+        hash = 61 * hash + (this.endLocalDateTime != null ? this.endLocalDateTime.hashCode() : 0);
         return hash;
     }
 
     @Override
     public String toString() {
-        return "DefaultScheduleEvent{title=" + title + ",startDate=" + startDate + ",endDate=" + endDate + "}";
+        return "DefaultScheduleEvent{title=" + title + ",startDate=" + startLocalDateTime + ",endDate=" + endLocalDateTime + "}";
     }
 }
