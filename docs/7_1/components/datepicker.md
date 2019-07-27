@@ -113,7 +113,7 @@ widgetVar | null | String | Name of the client side widget.
 | rangeSeparator | - | String | Separator for joining start and end dates on range selection mode.
 
 ## Getting Started with DatePicker
-Value of the DatePicker should be a java.util.Date in single selection mode which is the default.
+Value of the DatePicker should be a java.time.LocalDate in single selection mode which is the default.
 
 ```xhtml
 <p:datePicker value="#{dateBean.date}"/>
