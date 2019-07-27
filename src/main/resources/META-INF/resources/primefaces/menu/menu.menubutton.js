@@ -159,9 +159,10 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
         }
         else {
             this.menu.position({
-                my: 'left top'
-                ,at: 'left bottom'
-                ,of: this.button
+                my: 'left top',
+                at: 'left bottom',
+                of: this.button,
+                collision: this.cfg.collision || "flip"
             });
         }
     }

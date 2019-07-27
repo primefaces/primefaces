@@ -26,9 +26,10 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.utils.registerDynamicOverlay(this, this.jq, this.id);
 
         this.cfg.pos = {
-            my: this.cfg.my
-            ,at: this.cfg.at
-            ,of: this.trigger
+            my: this.cfg.my,
+            at: this.cfg.at,
+            of: this.trigger,
+            collision: this.cfg.collision || "flip"
         };
 
         this.trigger.off(this.cfg.triggerEvent + '.ui-menu').on(this.cfg.triggerEvent + '.ui-menu', function(e) {

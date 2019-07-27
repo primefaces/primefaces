@@ -47,7 +47,9 @@ public abstract class MenuButtonBase extends AbstractMenu implements Widget {
         appendTo,
         menuStyleClass,
         title,
-        ariaLabel
+        ariaLabel,
+        collision,
+        maxHeight
     }
 
     public MenuButtonBase() {
@@ -154,6 +156,22 @@ public abstract class MenuButtonBase extends AbstractMenu implements Widget {
 
     public void setAriaLabel(String ariaLabel) {
         getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
+    }
+
+    public String getCollision() {
+        return (String) getStateHelper().eval(PropertyKeys.collision, "flip");
+    }
+
+    public void setCollision(String collision) {
+        getStateHelper().put(PropertyKeys.collision, collision);
+    }
+
+    public String getMaxHeight() {
+        return (String) getStateHelper().eval(PropertyKeys.maxHeight, null);
+    }
+
+    public void setMaxHeight(String maxHeight) {
+        getStateHelper().put(PropertyKeys.maxHeight, maxHeight);
     }
 
     @Override
