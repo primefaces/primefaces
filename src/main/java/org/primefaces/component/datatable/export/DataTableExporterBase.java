@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.export.datatable;
+package org.primefaces.component.datatable.export;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
