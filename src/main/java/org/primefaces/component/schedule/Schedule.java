@@ -23,7 +23,11 @@
  */
 package org.primefaces.component.schedule;
 
-import java.util.*;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Collection;
+import java.util.Map;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -91,7 +95,7 @@ public class Schedule extends ScheduleBase {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
         String clientId = getClientId(context);
-        TimeZone tz = CalendarUtils.calculateTimeZone(this.getTimeZone(), TimeZone.getTimeZone("UTC"));
+        ZoneId zoneId = CalendarUtils.calculateZoneId(this.getTimeZone());
 
         if (isSelfRequest(context)) {
 
@@ -100,9 +104,7 @@ public class Schedule extends ScheduleBase {
 
             if (eventName.equals("dateSelect")) {
                 Long milliseconds = Long.valueOf(params.get(clientId + "_selectedDate"));
-                Calendar calendar = Calendar.getInstance(tz);
-                calendar.setTimeInMillis(milliseconds - tz.getOffset(milliseconds));
-                Date selectedDate = calendar.getTime();
+                LocalDateTime selectedDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(milliseconds), zoneId);
                 SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), selectedDate);
                 selectEvent.setPhaseId(behaviorEvent.getPhaseId());
 
@@ -120,19 +122,13 @@ public class Schedule extends ScheduleBase {
                 int dayDelta = Double.valueOf(params.get(clientId + "_dayDelta")).intValue();
                 int minuteDelta = Double.valueOf(params.get(clientId + "_minuteDelta")).intValue();
 
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(movedEvent.getStartDate());
-                calendar.setTimeZone(tz);
-                calendar.add(Calendar.DATE, dayDelta);
-                calendar.add(Calendar.MINUTE, minuteDelta);
-                movedEvent.getStartDate().setTime(calendar.getTimeInMillis());
-
-                calendar = Calendar.getInstance();
-                calendar.setTime(movedEvent.getEndDate());
-                calendar.setTimeZone(tz);
-                calendar.add(Calendar.DATE, dayDelta);
-                calendar.add(Calendar.MINUTE, minuteDelta);
-                movedEvent.getEndDate().setTime(calendar.getTimeInMillis());
+                LocalDateTime startDate = movedEvent.getStartLocalDateTime();
+                LocalDateTime endDate = movedEvent.getEndLocalDateTime();
+                //TODO: Timezone-Handling (if necessary)
+                startDate = startDate.plusDays(dayDelta).plusMinutes(minuteDelta);
+                endDate = endDate.plusDays(dayDelta).plusMinutes(minuteDelta);
+                movedEvent.setStartLocalDateTime(startDate);
+                movedEvent.setEndLocalDateTime(endDate);
 
                 wrapperEvent = new ScheduleEntryMoveEvent(this, behaviorEvent.getBehavior(), movedEvent, dayDelta, minuteDelta);
             }
@@ -142,12 +138,10 @@ public class Schedule extends ScheduleBase {
                 int dayDelta = Double.valueOf(params.get(clientId + "_dayDelta")).intValue();
                 int minuteDelta = Double.valueOf(params.get(clientId + "_minuteDelta")).intValue();
 
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(resizedEvent.getEndDate());
-                calendar.setTimeZone(tz);
-                calendar.add(Calendar.DATE, dayDelta);
-                calendar.add(Calendar.MINUTE, minuteDelta);
-                resizedEvent.getEndDate().setTime(calendar.getTimeInMillis());
+                LocalDateTime endDate = resizedEvent.getEndLocalDateTime();
+                //TODO: Timezone-Handling (if necessary)
+                endDate = endDate.plusDays(dayDelta).plusMinutes(minuteDelta);
+                resizedEvent.setEndLocalDateTime(endDate);
 
                 wrapperEvent = new ScheduleEntryResizeEvent(this, behaviorEvent.getBehavior(), resizedEvent, dayDelta, minuteDelta);
             }

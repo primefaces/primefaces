@@ -23,7 +23,7 @@
  */
 package org.primefaces.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class LazyScheduleModel extends DefaultScheduleModel {
 
@@ -35,6 +35,6 @@ public class LazyScheduleModel extends DefaultScheduleModel {
      * @param start Start date of period
      * @param end   End date of period
      */
-    public void loadEvents(Date start, Date end) {
+    public void loadEvents(LocalDateTime start, LocalDateTime end) {
     }
 }

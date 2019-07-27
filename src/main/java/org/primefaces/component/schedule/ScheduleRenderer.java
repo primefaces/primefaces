@@ -24,11 +24,12 @@
 package org.primefaces.component.schedule;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
@@ -87,9 +88,9 @@ public class ScheduleRenderer extends CoreRenderer {
             Long startMillis = Long.valueOf(startDateParam);
             Long endMillis = Long.valueOf(endDateParam);
 
-            TimeZone tz = CalendarUtils.calculateTimeZone(schedule.getTimeZone(), TimeZone.getTimeZone("UTC"));
-            Date startDate = new Date(startMillis - tz.getOffset(startMillis));
-            Date endDate = new Date(endMillis - tz.getOffset(endMillis));
+            ZoneId zoneId = CalendarUtils.calculateZoneId(schedule.getTimeZone());
+            LocalDateTime startDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(startMillis), zoneId);
+            LocalDateTime endDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(endMillis), zoneId);
 
             LazyScheduleModel lazyModel = ((LazyScheduleModel) model);
             lazyModel.clear(); //Clear old events
@@ -100,10 +101,9 @@ public class ScheduleRenderer extends CoreRenderer {
     }
 
     protected void encodeEventsAsJSON(FacesContext context, Schedule schedule, ScheduleModel model) throws IOException {
-        TimeZone timeZone = CalendarUtils.calculateTimeZone(schedule.getTimeZone(), TimeZone.getTimeZone("UTC"));
+        ZoneId zoneId = CalendarUtils.calculateZoneId(schedule.getTimeZone());
 
-        SimpleDateFormat iso = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-        iso.setTimeZone(timeZone);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE_TIME.withZone(zoneId);
 
         JSONArray jsonEvents = new JSONArray();
 
@@ -126,8 +126,8 @@ public class ScheduleRenderer extends CoreRenderer {
                     for (Map.Entry<String, Object> dynaProperty : event.getDynamicProperties().entrySet()) {
                         String key = dynaProperty.getKey();
                         Object value = dynaProperty.getValue();
-                        if (value instanceof Date) {
-                            value = iso.format((Date) value);
+                        if (value instanceof  LocalDateTime) {
+                            value = ((LocalDateTime) value).format(dateTimeFormatter);
                         }
                         jsonObject.put(key, value);
                     }
@@ -156,9 +156,11 @@ public class ScheduleRenderer extends CoreRenderer {
 
         Object initialDate = schedule.getInitialDate();
         if (initialDate != null) {
-            DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+            if (initialDate instanceof LocalDate) {
+                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE;
 
-            wb.attr("defaultDate", fmt.format((Date) initialDate), null);
+                wb.attr("defaultDate", ((LocalDate) initialDate).format(dateTimeFormatter), null);
+            }
         }
 
         if (schedule.isShowHeader()) {

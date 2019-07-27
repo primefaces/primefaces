@@ -23,7 +23,10 @@
  */
 package org.primefaces.model;
 
+import org.primefaces.util.CalendarUtils;
+
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,8 +37,8 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
 
     private String id;
     private String title;
-    private Date startDate;
-    private Date endDate;
+    private LocalDateTime startLocalDateTime;
+    private LocalDateTime endLocalDateTime;
     private boolean allDay = false;
     private String styleClass;
     private Object data;
@@ -48,30 +51,70 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
     public DefaultScheduleEvent() {
     }
 
-    public DefaultScheduleEvent(String title, Date start, Date end) {
+    public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end) {
         this.title = title;
         this.startDate = start;
         this.endDate = end;
     }
 
-    public DefaultScheduleEvent(String title, Date start, Date end, boolean allDay) {
+    public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end, boolean allDay) {
         this.title = title;
         this.startDate = start;
         this.endDate = end;
         this.allDay = allDay;
     }
 
-    public DefaultScheduleEvent(String title, Date start, Date end, String styleClass) {
+    public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end, String styleClass) {
         this.title = title;
         this.startDate = start;
         this.endDate = end;
         this.styleClass = styleClass;
     }
 
-    public DefaultScheduleEvent(String title, Date start, Date end, Object data) {
+    public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end, Object data) {
         this.title = title;
         this.startDate = start;
         this.endDate = end;
+        this.data = data;
+    }
+
+    /**
+     * @deprecated  Use {@link #DefaultScheduleEvent(String, LocalDateTime, LocalDateTime)} instead.
+     */
+    public DefaultScheduleEvent(String title, Date start, Date end) {
+        this.title = title;
+        this.startLocalDateTime = CalendarUtils.convertDate2LocalDateTime(start);
+        this.endLocalDateTime = CalendarUtils.convertDate2LocalDateTime(end);
+    }
+
+    /**
+     * @deprecated  Use {@link #DefaultScheduleEvent(String, LocalDateTime, LocalDateTime, boolean)} instead.
+     */
+    public DefaultScheduleEvent(String title, Date start, Date end, boolean allDay) {
+        this.title = title;
+        this.startLocalDateTime = CalendarUtils.convertDate2LocalDateTime(start);
+        this.endLocalDateTime = CalendarUtils.convertDate2LocalDateTime(end);
+        this.allDay = allDay;
+    }
+
+    /**
+     * @deprecated  Use {@link #DefaultScheduleEvent(String, LocalDateTime, LocalDateTime, String)} instead.
+     */
+    public DefaultScheduleEvent(String title, Date start, Date end, String styleClass) {
+        this.title = title;
+        this.startLocalDateTime = CalendarUtils.convertDate2LocalDateTime(start);
+        this.endLocalDateTime = CalendarUtils.convertDate2LocalDateTime(end);
+        this.styleClass = styleClass;
+    }
+
+    /**
+     * @deprecated  Use {@link #DefaultScheduleEvent(String, LocalDateTime, LocalDateTime, Object)} instead.
+     */
+    public DefaultScheduleEvent(String title, Date start, Date end, Object data) {
+        this.title = title;
+
+        this.startLocalDateTime = CalendarUtils.convertDate2LocalDateTime(start);
+        this.endLocalDateTime = CalendarUtils.convertDate2LocalDateTime(end);
         this.data = data;
     }
 
@@ -95,21 +138,37 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
     }
 
     @Override
-    public Date getStartDate() {
-        return startDate;
+    public LocalDateTime getStartLocalDateTime() {
+        return startLocalDateTime;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setStartLocalDateTime(LocalDateTime startDate) {
+        this.startLocalDateTime = startDate;
+    }
+
+    /**
+     * @deprecated Use {@link #setStartLocalDateTime(LocalDateTime)} instead.
+     * @param startLocalDate
+     */
+    public void setStartLocalDate(Date startLocalDate) {
+        this.startLocalDateTime = CalendarUtils.convertDate2LocalDateTime(startLocalDate);
     }
 
     @Override
-    public Date getEndDate() {
-        return endDate;
+    public LocalDateTime getEndLocalDateTime() {
+        return endLocalDateTime;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setEndLocalDateTime(LocalDateTime endDate) {
+        this.endLocalDateTime = endDate;
+    }
+
+    /**
+     * @deprecated Use {@link #setEndLocalDateTime(LocalDateTime)}  instead.
+     * @param endLocalDate
+     */
+    public void setEndLocalDate(Date endLocalDate) {
+        this.endLocalDateTime = CalendarUtils.convertDate2LocalDateTime(endLocalDate);
     }
 
     @Override

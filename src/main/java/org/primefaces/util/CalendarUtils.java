@@ -381,8 +381,16 @@ public class CalendarUtils {
         return date.toInstant().atZone(zoneId);
     }
 
+    public static LocalDate convertDate2LocalDate(Date date) {
+        return convertDate2LocalDate(date, ZoneId.systemDefault());
+    }
+
     public static LocalDate convertDate2LocalDate(Date date, ZoneId zoneId) {
         return convertDate2ZonedDateTime(date, zoneId).toLocalDate();
+    }
+
+    public static LocalDateTime convertDate2LocalDateTime(Date date) {
+        return convertDate2LocalDateTime(date, ZoneId.systemDefault());
     }
 
     public static LocalDateTime convertDate2LocalDateTime(Date date, ZoneId zoneId) {
