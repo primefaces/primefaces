@@ -39,7 +39,7 @@ public interface MenuElement {
     /**
      * Sets the id property which is described in {@link #getId() }. You should
      * have a good reason to call this if you're not extending, but only using
-     * Primefaces.
+     * PrimeFaces.
      *
      * The property is unrelated to the {@code id} attribute in the generated
      * XHTML.

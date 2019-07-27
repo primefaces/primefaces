@@ -23,7 +23,7 @@ ajax selection and more.
 | id | null | String | Unique identifier of the component
 | rendered | true | Boolean | Boolean value to specify the rendering of the component.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| value | null | java.util.Date | Value of the component
+| value | null | java.time.LocalDate, java.time.LocalDateTime, java.time.LocalTime, java.time.YearMonth, java.util.Date (deprecated) | Value of the component
 | converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a | converter instance. In case it’s a static text, it must refer to a converter id
 | immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
 | required | false | Boolean | Marks component as required
@@ -67,15 +67,15 @@ widgetVar | null | String | Name of the client side widget.
 | dateTemplate | null | Function | Javascript function that takes a date object and returns the content for the date cell.
 | appendTo | null | String | Appends the dialog to the element defined by the given search expression.
 | triggerButtonIcon | null | String | Icon of the datepicker element that toggles the visibility in popup mode.
-| disabledDates | null | List | List of dates that should be disabled.
-| disabledDays | null | List | List of week day indexes that should be disabled.
+| disabledDates | null | List<java.time.LocalDate>, List<java.util.Date> (deprecated) | List of dates that should be disabled.
+| disabledDays | null | List<int> | List of week day indexes that should be disabled.
 | onMonthChange | null | Function | Javascript function to invoke when month changes.
 | onYearChange | null | Function | Javascript function to invoke when year changes.
 | locale | null | Object | Locale to be used for labels and conversion.
 | timeZone | null | Time Zone | String or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to TimeZone.getDefault()
 | pattern | MM/dd/yyyy | String | DateFormat pattern for localization
-| mindate | null | Date or String | Sets DatePicker's minimum visible date
-| maxdate | null | Date or String | Sets DatePicker's maximum visible date
+| mindate | null | java.time.LocalDate, java.util.Date (deprecated) or String | Sets DatePicker's minimum visible date
+| maxdate | null | java.time.LocalDate, java.util.Date (deprecated) or String | Sets DatePicker's maximum visible date
 | timeOnly | false | Boolean | Shows only timepicker without date.
 | readonlyInput | false | Boolean | Makes input text of a popup DatePicker readonly.
 | inputStyle | null | String | Inline style of the input element. Used when mode is popup.
@@ -110,6 +110,7 @@ widgetVar | null | String | Name of the client side widget.
 | styleClass | null | String | Style class of the input element.
 | tabindex | null | Integer | Position of the input element in the tabbing order.
 | title | null | String | Advisory tooltip informaton.
+| rangeSeparator | - | String | Separator for joining start and end dates on range selection mode.
 
 ## Getting Started with DatePicker
 Value of the DatePicker should be a java.util.Date in single selection mode which is the default.

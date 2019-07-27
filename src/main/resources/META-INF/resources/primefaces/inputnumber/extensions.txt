@@ -1,0 +1,1 @@
+Fix #3192: Edited lines 1099-1101 to not fire change event if the InputNumber contains a suffix

@@ -1,6 +1,6 @@
 # DataExporter
 
-DataExporter is handy for exporting data listed using a Primefaces Datatable to various formats
+DataExporter is handy for exporting data listed using a PrimeFaces Datatable to various formats
 such as excel, pdf, csv and xml.
 
 ## Info

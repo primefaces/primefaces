@@ -34,17 +34,14 @@ public class EHCache3Provider implements CacheProvider {
 
     public EHCache3Provider() {
         XmlConfiguration xmlConfig = new XmlConfiguration(this.getClass().getResource("/ehcache.xml"));
-        CacheManager cacheManager = CacheManagerBuilder.newCacheManager(xmlConfig);
+        cacheManager = CacheManagerBuilder.newCacheManager(xmlConfig);
         cacheManager.init();
-        this.cacheManager = cacheManager;
     }
 
     @Override
     public Object get(String region, String key) {
         Cache cacheRegion = getRegion(region);
-        Object val = cacheRegion.get(key);
-
-        return val;
+        return cacheRegion.get(key);
     }
 
     @Override
@@ -67,9 +64,7 @@ public class EHCache3Provider implements CacheProvider {
     }
 
     protected Cache getRegion(String regionName) {
-        Cache region = getCacheManager().getCache(regionName, String.class, Object.class);
-
-        return region;
+        return getCacheManager().getCache(regionName, String.class, Object.class);
     }
 
     public CacheManager getCacheManager() {

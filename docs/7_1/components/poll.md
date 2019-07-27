@@ -15,13 +15,13 @@ Poll is an ajax component that has the ability to send periodical ajax requests.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component.
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
 widgetVar | null | String | Name of the client side widget.
-interval | 2 | Integer | Interval in seconds to do periodic ajax requests.
+interval | 2 | Integer, java.time.Duration | Interval in seconds to do periodic ajax requests.
 process | @all | String | Component id(s) to process partially instead of whole view.
 update | @none | String | Component(s) to be updated with ajax.
 listener | null | MethodExpr | A method expression to invoke by polling.
@@ -41,6 +41,7 @@ resetValues | false | Boolean | If true, local values of input components to be 
 ignoreAutoUpdate | false | Boolean | If true, components which autoUpdate="true" will not be updated for this request. If not specified, or the value is false, no such indication is made.
 timeout | 0 | Integer | Timeout for the ajax request in milliseconds.
 form | null | String | Form to serialize for an ajax request. Default is the enclosing form.
+intervalType | second | String | Type of interval value. Valid values are "second" (default) and "millisecond".
 
 ## Getting started with Poll
 Poll below invokes increment method on CounterBean every 2 seconds and _txt_count_ is updated

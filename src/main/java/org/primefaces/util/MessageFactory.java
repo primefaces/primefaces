@@ -183,7 +183,7 @@ public class MessageFactory {
 
     private static FacesContext getWrappedFacesContextImpl(FacesContext facesContext) {
 
-        if (facesContext == null || !(facesContext instanceof FacesContextWrapper)) {
+        if (!(facesContext instanceof FacesContextWrapper)) {
             return facesContext;
         }
 

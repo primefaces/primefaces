@@ -28,6 +28,7 @@
             styleClass: null,
             inline: false,
             selectionMode: 'single',
+            rangeSeparator: '-',
             inputId: null,
             inputStyle: null,
             inputStyleClass: null,
@@ -394,7 +395,21 @@
         },
 
         isMonthSelected: function (month) {
-            return this.value ? (this.value.getMonth() === month && this.value.getFullYear() === this.viewDate.getFullYear()) : false;
+            if (this.value) {
+                if (this.isRangeSelection()) {
+                    var dateMeta = { year: this.viewDate.getFullYear(), month: month, day: 1, selectable: true };
+                    
+                    if (this.value[1])
+                        return this.isDateEquals(this.value[0], dateMeta) || this.isDateEquals(this.value[1], dateMeta) || this.isDateBetween(this.value[0], this.value[1], dateMeta);
+                    else
+                        return this.isDateEquals(this.value[0], dateMeta)
+                }
+                else {
+                    return (this.value.getMonth() === month && this.value.getFullYear() === this.viewDate.getFullYear());
+                }
+            }
+            
+            return false;
         },
 
         isDateEquals: function (value, dateMeta) {
@@ -476,7 +491,7 @@
 
                             formattedValue = this.formatDateTime(startDate);
                             if (endDate) {
-                                formattedValue += ' - ' + this.formatDateTime(endDate);
+                                formattedValue += ' ' + this.options.rangeSeparator + ' ' + this.formatDateTime(endDate);
                             }
                         }
                     }
@@ -829,7 +844,7 @@
                 }
             }
             else if (this.isRangeSelection()) {
-                var tokens = text.split(/-| - /);
+                var tokens = text.split(new RegExp(this.options.rangeSeparator + '| ' + this.options.rangeSeparator + ' ', 'g'));
                 value = [];
                 for (var i = 0; i < tokens.length; i++) {
                     value[i] = this.parseDateTime(tokens[i].trim());
@@ -1063,9 +1078,10 @@
         },
 
         renderMonthViewMonth: function (index) {
-            var monthName = this.options.locale.monthNamesShort[index];
+            var monthName = this.options.locale.monthNamesShort[index],
+                content = this.options.dateTemplate ? this.options.dateTemplate.call(this, monthName) : this.escapeHTML(monthName);
 
-            return '<a tabindex="0" class="ui-monthpicker-month' + this.getClassesToAdd({ 'ui-state-active': this.isMonthSelected(index) }) + '">' + this.escapeHTML(monthName) + '</a>';
+            return '<a tabindex="0" class="ui-monthpicker-month' + this.getClassesToAdd({ 'ui-state-active': this.isMonthSelected(index) }) + '">' + content + '</a>';
         },
 
         renderMonthViewMonths: function () {

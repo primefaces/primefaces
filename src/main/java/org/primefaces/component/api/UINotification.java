@@ -28,4 +28,6 @@ public interface UINotification {
     boolean isRedisplay();
 
     String getSeverity();
+
+    boolean isSkipDetailIfEqualsSummary();
 }

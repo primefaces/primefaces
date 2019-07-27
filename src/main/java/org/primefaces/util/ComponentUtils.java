@@ -23,10 +23,12 @@
  */
 package org.primefaces.util;
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
 
+import java.util.function.Supplier;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.FacesWrapper;
@@ -554,4 +556,25 @@ public class ComponentUtils {
 
         return false;
     }
+
+    /**
+     * Tries to retrieve value from stateHelper by key first. If the value is not present (or is null),
+     * then it is retrieved from defaultValueSupplier.
+     *
+     * Should be removed when {@link StateHelper} is extended with similar functionality.
+     * (see https://github.com/eclipse-ee4j/mojarra/issues/4568 for details)
+     * @param stateHelper The stateHelper to try to retrieve value from
+     * @param key The key under which value is stored in the stateHelper
+     * @param defaultValueSupplier The object, from which default value is retrieved
+     * @param <T> the expected type of returned value
+     * @return value from stateHelper or defaultValueSupplier
+     */
+    public static <T> T eval(StateHelper stateHelper, Serializable key, Supplier<T> defaultValueSupplier) {
+        T value = (T) stateHelper.eval(key, null);
+        if (value == null) {
+            value = defaultValueSupplier.get();
+        }
+        return value;
+    }
+
 }

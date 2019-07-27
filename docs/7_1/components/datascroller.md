@@ -33,6 +33,8 @@ DataScroller displays a collection of data with on demand loading using scrollin
 | scrollHeight | null | String | Defines pixel height of the viewport in inline mode.
 | lazy | false | Boolean | Defines if lazy loading is enabled for the data component.
 | buffer | 10 | Integer | Percentage height of the buffer between the bottom of the page and the scroll position to initiate the load for the new chunk. Value is defined in integer and default is 10 meaning load would happen after 90% of the viewport is scrolled down.
+| virtualScroll | false | Boolean | Loads data on demand as the scrollbar gets close to the bottom. Default is false.
+| startAtBottom | false | Boolean | if the scrollAtBottom is enabled, scroll position is at bottom and data loading starts from the bottom. Default value is false.
 
 ## Getting started with the DataScroller
 DataScroller requires a collection of data to display, when the page is scrolled down, datascroller

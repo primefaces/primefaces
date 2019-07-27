@@ -26,27 +26,27 @@ package org.primefaces.event;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 
-public class SelectEvent extends AbstractAjaxBehaviorEvent {
+public class SelectEvent<T> extends AbstractAjaxBehaviorEvent {
 
     private static final long serialVersionUID = 1L;
 
-    private Object object;
+    private T object;
     private boolean metaKey;
     private boolean ctrlKey;
 
-    public SelectEvent(UIComponent component, Behavior behavior, Object object) {
+    public SelectEvent(UIComponent component, Behavior behavior, T object) {
         super(component, behavior);
         this.object = object;
     }
 
-    public SelectEvent(UIComponent component, Behavior behavior, Object object, boolean metaKey, boolean ctrlKey) {
+    public SelectEvent(UIComponent component, Behavior behavior, T object, boolean metaKey, boolean ctrlKey) {
         super(component, behavior);
         this.object = object;
         this.metaKey = metaKey;
         this.ctrlKey = ctrlKey;
     }
 
-    public Object getObject() {
+    public T getObject() {
         return object;
     }
 

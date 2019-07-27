@@ -9,10 +9,18 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         this.input = this.jq.children('.ui-spinner-input');
         this.upButton = this.jq.children('a.ui-spinner-up');
         this.downButton = this.jq.children('a.ui-spinner-down');
-        this.cfg.step = this.cfg.step||1;
+        this.cfg.step = this.cfg.step || 1;
+        if (this.cfg.thousandSeparator == undefined) {
+          this.cfg.thousandSeparator = '';
+        }
+        if (!this.cfg.decimalSeparator) {
+          this.cfg.decimalSeparator = '.';
+        }
         this.cursorOffset = this.cfg.prefix ? this.cfg.prefix.length: 0;
 
-        if(this.input.val().indexOf('.') > 0 && this.cfg.decimalPlaces) {
+        var inputValue = this.input.val();
+
+        if(inputValue.indexOf('.') > 0 && this.cfg.decimalPlaces) {
             this.cfg.precision = this.cfg.decimalPlaces;
         }
         else if(!(typeof this.cfg.step === 'number' && this.cfg.step % 1 === 0)) {
@@ -24,7 +32,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.maxlength = parseInt(maxlength);
         }
 
-        this.updateValue();
+        this.value = this.parseValue(inputValue);
 
         this.format();
 
@@ -140,31 +148,13 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         this.spin(dir);
     },
 
-    toFixed: function (value, precision) {
-        var power = Math.pow(10, precision||0);
-        return String(Math.round(value * power) / power);
-    },
-
     spin: function(dir) {
         var step = this.cfg.step * dir,
         currentValue = this.value ? this.value : 0,
-        newValue = null;
-
-        if(this.cfg.precision)
-            newValue = parseFloat(this.toFixed(currentValue + step, this.cfg.precision));
-        else
-            newValue = parseInt(currentValue + step);
+        newValue = this.parseValue(currentValue + step);
 
         if(this.cfg.maxlength !== undefined && newValue.toString().length > this.cfg.maxlength) {
             newValue = currentValue;
-        }
-
-        if(this.cfg.min !== undefined && newValue < this.cfg.min) {
-            newValue = this.cfg.min;
-        }
-
-        if(this.cfg.max !== undefined && newValue > this.cfg.max) {
-            newValue = this.cfg.max;
         }
 
         this.value = newValue;
@@ -175,45 +165,52 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
     updateValue: function() {
         var value = this.input.val();
 
-        if($.trim(value) === '') {
-            if(this.cfg.min !== undefined && this.cfg.required)
-                this.value = this.cfg.min;
-            else
-                this.value = null;
-        }
-        else {
-            if(this.cfg.prefix && value.indexOf(this.cfg.prefix) === 0) {
-                value = value.substring(this.cfg.prefix.length, value.length);
-            }  else {
-                var ix = value.indexOf(this.cfg.suffix);
-                if(this.cfg.suffix && ix > -1 && ix === (value.length - this.cfg.suffix.length)) {
-                    value = value.substring(0, value.length - this.cfg.suffix.length);
-                }
-            }
-
-            if(this.cfg.precision)
-                value = parseFloat(value);
-            else
-                value = parseInt(value);
-
-            if(!isNaN(value)) {
-                if(this.cfg.max !== undefined && value > this.cfg.max) {
-                    value = this.cfg.max;
-                }
-
-                if(this.cfg.min !== undefined && value < this.cfg.min) {
-                    value = this.cfg.min;
-                }
-
-                this.value = value;
+        if(this.cfg.prefix && value.indexOf(this.cfg.prefix) === 0) {
+            value = value.substring(this.cfg.prefix.length, value.length);
+        }  else {
+            var ix = value.indexOf(this.cfg.suffix);
+            if(this.cfg.suffix && ix > -1 && ix === (value.length - this.cfg.suffix.length)) {
+                value = value.substring(0, value.length - this.cfg.suffix.length);
             }
         }
+
+        value = value.replace(new RegExp(PrimeFaces.escapeRegExp(this.cfg.thousandSeparator), 'g'), '');
+        value = value.replace(new RegExp(PrimeFaces.escapeRegExp(this.cfg.decimalSeparator), 'g'), '\.');
+        this.value = this.parseValue(value);
+    },
+
+    parseValue: function(value) {
+        var parsedValue;
+        if(this.cfg.precision) {
+            parsedValue = parseFloat(value);
+        } else {
+            parsedValue = parseInt(value);
+        }
+        if(isNaN(parsedValue)) {
+            if($.trim(value) === '' && this.cfg.min !== undefined && this.cfg.required) {
+                parsedValue = this.cfg.min;
+            } else {
+                parsedValue = null;
+            }
+        } else {
+            if(this.cfg.max !== undefined && parsedValue > this.cfg.max) {
+              parsedValue = this.cfg.max;
+            }
+            if(this.cfg.min !== undefined && parsedValue < this.cfg.min) {
+              parsedValue = this.cfg.min;
+            }
+        }
+        return parsedValue;
     },
 
     format: function() {
         if(this.value !== null) {
             var value = this.getValue();
-
+            var numAndFract = value.toString().split('.');
+            value = numAndFract[0].replace(/(\d)(?=(?:\d{3})+\b)/g, '$1' + this.cfg.thousandSeparator);
+            if (numAndFract.length === 2) {
+              value += this.cfg.decimalSeparator + numAndFract[1];
+            }
             if(this.cfg.prefix)
                 value = this.cfg.prefix + value;
 

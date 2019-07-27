@@ -28,7 +28,7 @@ import java.util.Date;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 
-public class TimelineDragDropEvent extends TimelineAddEvent {
+public class TimelineDragDropEvent<T> extends TimelineAddEvent {
 
     private static final long serialVersionUID = 1L;
 
@@ -40,10 +40,10 @@ public class TimelineDragDropEvent extends TimelineAddEvent {
     /**
      * dragged model object if draggable item is within a data iteration component or null
      */
-    private Object data;
+    private T data;
 
     public TimelineDragDropEvent(UIComponent component, Behavior behavior, Date startDate, Date endDate, String group,
-            String dragId, Object data) {
+            String dragId, T data) {
         super(component, behavior, startDate, endDate, group);
         this.dragId = dragId;
         this.data = data;
@@ -53,7 +53,7 @@ public class TimelineDragDropEvent extends TimelineAddEvent {
         return dragId;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 }

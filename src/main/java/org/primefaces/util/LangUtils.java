@@ -152,4 +152,38 @@ public class LangUtils {
         return cl;
     }
 
+    /**
+     * NOTE: copied from DeltaSpike
+     *
+     * @param currentClass current class
+     *
+     * @return class of the real implementation
+     */
+    public static Class getUnproxiedClass(Class currentClass) {
+        Class unproxiedClass = currentClass;
+
+        while (isProxiedClass(unproxiedClass)) {
+            unproxiedClass = unproxiedClass.getSuperclass();
+        }
+
+        return unproxiedClass;
+    }
+
+    /**
+     * NOTE: copied from DeltaSpike
+     *
+     * Analyses if the given class is a generated proxy class
+     *
+     * @param currentClass current class
+     *
+     * @return true if the given class is a known proxy class, false otherwise
+     */
+    public static boolean isProxiedClass(Class currentClass) {
+        if (currentClass == null || currentClass.getSuperclass() == null) {
+            return false;
+        }
+
+        return currentClass.getName().startsWith(currentClass.getSuperclass().getName())
+                && currentClass.getName().contains("$$");
+    }
 }

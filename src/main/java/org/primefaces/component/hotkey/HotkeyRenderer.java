@@ -60,7 +60,7 @@ public class HotkeyRenderer extends CoreRenderer {
         writer.write("$(document).off('" + event + "').on('" + event + "',null,'" + hotkey.getBind() + "',function(){");
 
         if (hotkey.isAjaxified()) {
-            String request = preconfiguredAjaxRequestBuilder(context, hotkey, hotkey)
+            String request = preConfiguredAjaxRequestBuilder(context, hotkey)
                     .params(hotkey)
                     .build();
 
