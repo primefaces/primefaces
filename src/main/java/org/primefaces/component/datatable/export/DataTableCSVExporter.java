@@ -141,13 +141,13 @@ public class DataTableCSVExporter extends DataTableExporterBase implements CSVEx
                 }
 
                 if (textValue != null) {
-                    this.addColumnValue(builder, textValue);
+                    addColumnValue(builder, textValue);
                 }
                 else if (facet != null) {
-                    this.addColumnValue(builder, facet);
+                    addColumnValue(builder, facet);
                 }
                 else {
-                    this.addColumnValue(builder, Constants.EMPTY_STRING);
+                    addColumnValue(builder, Constants.EMPTY_STRING);
                 }
 
                 firstCellWritten = true;
