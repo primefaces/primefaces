@@ -193,8 +193,8 @@ _org.primefaces.event.SelectEvent_ instance.
 <p:messages id="msg" />
 ```
 ```java
-public void handleDateSelect(SelectEvent event) {
-    Date date = (Date) event.getObject();
+public void handleDateSelect(SelectEvent<LocalDate> event) {
+    LocalDate date = event.getObject();
     //Add facesmessage
 }
 ```
@@ -211,27 +211,25 @@ In case you'd like to restrict certain dates or weekdays use _disabledDates_ and
 ```
 
 ```java
-private List<Date> invalidDates;
+private List<LocalDate> invalidDates;
 private List<Integer> invalidDays;
-private Date minDate;
-private Date maxDate;
+private LocalDate minDate;
+private LocalDate maxDate;
 
 @PostConstruct
 public void init() {
-    invalidDates = new ArrayList<>();
-    Date today = new Date();
-    invalidDates.add(today);
-    long oneDay = 24 * 60 * 60 * 1000;
-    for (int i = 0; i < 5; i++) {
-        invalidDates.add(new Date(invalidDates.get(i).getTime() + oneDay));
-    }
+        invalidDates = new ArrayList<>();
+        invalidDates.add(LocalDate.now());
+        for (int i = 0; i < 5; i++) {
+            invalidDates.add(invalidDates.get(i).plusDays(1));
+        }
 
-    invalidDays = new ArrayList<>();
-    invalidDays.add(0); /* the first day of week is disabled */
-    invalidDays.add(3);
+        invalidDays = new ArrayList<>();
+        invalidDays.add(0); /* the first day of week is disabled */
+        invalidDays.add(3);
 
-    minDate = new Date(today.getTime() - (365 * oneDay));
-    maxDate = new Date(today.getTime() + (365 * oneDay));
+        minDate = LocalDate.now().minusYears(1);
+        maxDate = LocalDate.now().plusYears(1);
 }
 ```
 

@@ -121,7 +121,7 @@ Value of the calendar should be a java.util.Date.
 ```
 ```java
 public class DateBean {
-    private Date date;
+    private LocalDate date;
     //Getter and Setter
 }
 ```
@@ -206,8 +206,8 @@ _org.primefaces.event.SelectEvent_ instance.
 <p:messages id="msg" />
 ```
 ```java
-public void handleDateSelect(SelectEvent event) {
-    Date date = (Date) event.getObject();
+public void handleDateSelect(SelectEvent<LocalDate> event) {
+    LocalDate date = event.getObject();
     //Add facesmessage
 }
 ```

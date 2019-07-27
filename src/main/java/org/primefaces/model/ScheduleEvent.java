@@ -39,7 +39,6 @@ public interface ScheduleEvent {
 
     /**
      * @deprecated Use {@link #getStartLocalDateTime()} instead.
-     * @return
      */
     public Date getStartDate();
 
@@ -49,7 +48,6 @@ public interface ScheduleEvent {
 
     /**
      * @deprecated Use {@link #getEndLocalDateTime()} instead.
-     * @return
      */
     public Date getEndDate();
 

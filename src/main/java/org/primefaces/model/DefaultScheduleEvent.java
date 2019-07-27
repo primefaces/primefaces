@@ -145,23 +145,22 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
 
     /**
      * @deprecated Use {@link #getStartLocalDateTime()} instead.
-     * @return
      */
     @Override
     public Date getStartDate() {
         return CalendarUtils.convertLocalDateTime2Date(startLocalDateTime);
     }
 
+    @Override
     public void setStartLocalDateTime(LocalDateTime startDate) {
         this.startLocalDateTime = startDate;
     }
 
     /**
      * @deprecated Use {@link #setStartLocalDateTime(LocalDateTime)} instead.
-     * @param startLocalDate
      */
-    public void setStartLocalDate(Date startLocalDate) {
-        this.startLocalDateTime = CalendarUtils.convertDate2LocalDateTime(startLocalDate);
+    public void setStartDate(Date startDate) {
+        this.startLocalDateTime = CalendarUtils.convertDate2LocalDateTime(startDate);
     }
 
     @Override
@@ -171,23 +170,22 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
 
     /**
      * @deprecated Use {@link #getEndLocalDateTime()} instead.
-     * @return
      */
     @Override
     public Date getEndDate() {
         return CalendarUtils.convertLocalDateTime2Date(endLocalDateTime);
     }
 
+    @Override
     public void setEndLocalDateTime(LocalDateTime endDate) {
         this.endLocalDateTime = endDate;
     }
 
     /**
      * @deprecated Use {@link #setEndLocalDateTime(LocalDateTime)}  instead.
-     * @param endLocalDate
      */
-    public void setEndLocalDate(Date endLocalDate) {
-        this.endLocalDateTime = CalendarUtils.convertDate2LocalDateTime(endLocalDate);
+    public void setEndDate(Date endDate) {
+        this.endLocalDateTime = CalendarUtils.convertDate2LocalDateTime(endDate);
     }
 
     @Override

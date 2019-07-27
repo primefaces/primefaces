@@ -124,7 +124,6 @@ public class Schedule extends ScheduleBase {
 
                 LocalDateTime startDate = movedEvent.getStartLocalDateTime();
                 LocalDateTime endDate = movedEvent.getEndLocalDateTime();
-                //TODO: Timezone-Handling (if necessary)
                 startDate = startDate.plusDays(dayDelta).plusMinutes(minuteDelta);
                 endDate = endDate.plusDays(dayDelta).plusMinutes(minuteDelta);
                 movedEvent.setStartLocalDateTime(startDate);
@@ -139,7 +138,6 @@ public class Schedule extends ScheduleBase {
                 int minuteDelta = Double.valueOf(params.get(clientId + "_minuteDelta")).intValue();
 
                 LocalDateTime endDate = resizedEvent.getEndLocalDateTime();
-                //TODO: Timezone-Handling (if necessary)
                 endDate = endDate.plusDays(dayDelta).plusMinutes(minuteDelta);
                 resizedEvent.setEndLocalDateTime(endDate);
 

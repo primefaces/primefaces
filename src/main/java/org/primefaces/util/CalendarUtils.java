@@ -24,6 +24,7 @@
 package org.primefaces.util;
 
 import org.primefaces.component.api.UICalendar;
+import org.primefaces.component.datepicker.DatePicker;
 import org.primefaces.convert.DatePatternConverter;
 import org.primefaces.convert.PatternConverter;
 import org.primefaces.convert.TimePatternConverter;
@@ -239,6 +240,15 @@ public class CalendarUtils {
                 return ((LocalDate) value).format(dateTimeFormatter);
             }
             else if (value instanceof LocalDateTime) {
+                //known issue: https://github.com/primefaces/primefaces/issues/4625
+                //known issue: https://github.com/primefaces/primefaces/issues/4626
+
+                //TODO: remove temporary (ugly) work-around for adding fixed time-pattern
+                if (calendar instanceof DatePicker) {
+                    pattern += " HH:mm";
+                }
+                dateTimeFormatter = DateTimeFormatter.ofPattern(pattern, calendar.calculateLocale(context));
+
                 return ((LocalDateTime) value).format(dateTimeFormatter);
             }
             else if (value instanceof LocalTime) {
