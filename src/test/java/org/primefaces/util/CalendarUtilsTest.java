@@ -31,6 +31,7 @@ import javax.el.ELContext;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
@@ -113,5 +114,26 @@ public class CalendarUtilsTest {
 
 		String value = CalendarUtils.getValueAsString (context, datePicker);
 		assertEquals("23.07.19", value);
+	}
+
+	@Test
+	public void calculateZoneId_String() {
+		String timeZone = "GMT+2";
+		ZoneId calculateZoneId = CalendarUtils.calculateZoneId(timeZone);
+		assertEquals(ZoneId.of("GMT+2"), calculateZoneId);
+	}
+
+	@Test
+	public void calculateZoneId_ZoneId() {
+		ZoneId zoneId = ZoneId.of("GMT+2");
+		ZoneId calculateZoneId = CalendarUtils.calculateZoneId(zoneId);
+		assertEquals(ZoneId.of("GMT+2"), calculateZoneId);
+	}
+
+	@Test
+	public void calculateZoneId_TimeZone() {
+		TimeZone timeZone = TimeZone.getTimeZone("GMT+2");
+		ZoneId calculateZoneId = CalendarUtils.calculateZoneId(timeZone);
+		assertEquals(ZoneId.of("GMT+2"), calculateZoneId);
 	}
 }
