@@ -32,9 +32,8 @@ import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.hamcrest.core.StringStartsWith.startsWith;
+import static org.mockito.Mockito.*;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -48,10 +47,34 @@ import java.time.LocalTime;
 import java.time.temporal.Temporal;
 import java.util.*;
 
-public class CalendarAndDatePickerTest {
+public class DatePickerTest {
+
+	class MyDatePicker extends DatePicker {
+		private boolean valid;
+
+		@Override
+		public boolean isValid() {
+			return valid;
+		}
+
+		@Override
+		public void setValid(boolean valid) {
+			this.valid = valid;
+		}
+
+		@Override
+		public boolean validateDateValue(FacesContext context, LocalDate date) {
+			return super.validateDateValue(context, date);
+		}
+
+        @Override
+		public ValidationResult validateValueInternal(FacesContext context, Object value) {
+		    return super.validateValueInternal(context, value);
+        }
+	}
 
 	private DatePickerRenderer renderer;
-	private DatePicker datePicker;
+	private MyDatePicker datePicker;
 	private FacesContext context;
 	private ExternalContext externalContext;
 	private ELContext elContext;
@@ -62,14 +85,21 @@ public class CalendarAndDatePickerTest {
 
 	@Before
 	public void setup() {
-		renderer =mock(DatePickerRenderer.class);
-		datePicker = mock(DatePicker.class);
+		renderer = mock(DatePickerRenderer.class);
+		datePicker = mock(MyDatePicker.class);
+		when(datePicker.calculatePattern()).thenCallRealMethod();
+		when(datePicker.calculateTimeOnlyPattern()).thenReturn("HH:mm");
+		when(datePicker.isValid()).thenCallRealMethod();
+		doCallRealMethod().when(datePicker).setValid(anyBoolean());
 		when(datePicker.getSelectionMode()).thenReturn("single");
+		datePicker.setValid(true);
 
 		context = mock(FacesContext.class);
 		when(renderer.resolveDateType(context, datePicker)).thenCallRealMethod();
 		when(renderer.convertToJava8DateTimeAPI(eq(context), eq(datePicker), any(), any())).thenCallRealMethod();
 		when(renderer.convertToLegacyDateAPI(eq(context), eq(datePicker), any())).thenCallRealMethod();
+		when(datePicker.validateDateValue(eq(context), any())).thenCallRealMethod();
+		when(datePicker.validateValueInternal(eq(context), any())).thenCallRealMethod();
 
 		externalContext = mock(ExternalContext.class);
 		elContext = mock(ELContext.class);
@@ -91,10 +121,7 @@ public class CalendarAndDatePickerTest {
 	}
 
 	private void setupValues(Class type, Locale locale) {
-		when(datePicker.calculatePattern()).thenCallRealMethod();
 		when(datePicker.calculateLocale(any())).thenReturn(locale);
-		when(datePicker.calculateTimeOnlyPattern()).thenReturn("HH:mm");
-
 		when(valueExpression.getType(elContext)).thenReturn(type);
 	}
 
@@ -294,5 +321,139 @@ public class CalendarAndDatePickerTest {
 		assertEquals(type, object.getClass());
 		LocalDate localDate = (LocalDate)object;
 		assertEquals(LocalDate.of(2019, 07, 23), localDate);
+	}
+
+	@Test
+	public void validateValueInternal_simple() {
+    	datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
+		assertTrue(datePicker.isValid());
+	}
+
+	@Test
+	public void validateValueInternal_minDate_LocalDate() {
+        when(datePicker.getMindate()).thenReturn(LocalDate.of(2019, 1, 1));
+        datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
+        assertTrue(datePicker.isValid());
+	}
+
+	@Test
+	public void validateValueInternal_minDate_LocalDate_wrong() {
+        when(datePicker.getMindate()).thenReturn(LocalDate.of(2019, 1, 1));
+        datePicker.validateValueInternal(context, LocalDate.of(2018, 7, 23));
+        assertFalse(datePicker.isValid());
+	}
+
+	@Test
+	@Ignore
+	//TODO: test breaks - fix root cause
+	public void validateValueInternal_minDate_Date_wrong() {
+		setupValues(null, Locale.ENGLISH);
+		java.util.Calendar cal = GregorianCalendar.getInstance();
+		cal.set(2019, 0, 1);
+
+		when(datePicker.getMindate()).thenReturn(cal.getTime());
+		datePicker.validateValueInternal(context, LocalDate.of(2018, 7, 23));
+		assertFalse(datePicker.isValid());
+	}
+
+	@Test
+	public void validateValueInternal_maxDate_LocalDate() {
+		when(datePicker.getMaxdate()).thenReturn(LocalDate.of(2019, 12, 31));
+		datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
+		assertTrue(datePicker.isValid());
+	}
+
+	@Test
+	public void validateValueInternal_maxDate_LocalDate_wrong() {
+		when(datePicker.getMaxdate()).thenReturn(LocalDate.of(2019, 12, 31));
+		datePicker.validateValueInternal(context, LocalDate.of(2020, 7, 23));
+		assertFalse(datePicker.isValid());
+	}
+
+	@Test
+	@Ignore
+	//TODO: test breaks - fix root cause
+	public void validateValueInternal_maxDate_Date_wrong() {
+		setupValues(null, Locale.ENGLISH);
+		java.util.Calendar cal = GregorianCalendar.getInstance();
+		cal.set(2019, 11, 31);
+
+		when(datePicker.getMaxdate()).thenReturn(cal.getTime());
+		datePicker.validateValueInternal(context, LocalDate.of(2020, 7, 23));
+		assertFalse(datePicker.isValid());
+	}
+
+	@Test
+	public void validateValueInternal_disabledDates_LocalDate() {
+		when(datePicker.getDisabledDates()).thenReturn(Arrays.asList(LocalDate.of(2019, 7, 22), LocalDate.of(2019, 7, 24)));
+		datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
+		assertTrue(datePicker.isValid());
+	}
+
+	@Test
+	public void validateValueInternal_disabledDates_LocalDate_wrong() {
+		when(datePicker.getDisabledDates()).thenReturn(Arrays.asList(LocalDate.of(2019, 7, 22), LocalDate.of(2019, 7, 24)));
+		datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 22));
+		assertFalse(datePicker.isValid());
+	}
+
+	@Test
+	public void validateValueInternal_disabledDays() {
+		when(datePicker.getDisabledDays()).thenReturn(Arrays.asList(0, 1));
+		datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
+		assertTrue(datePicker.isValid());
+	}
+
+	@Test
+	public void validateValueInternal_disabledDays_wrong() {
+		int weekDay = LocalDate.of(2019, 7, 22).getDayOfWeek().getValue();
+
+		when(datePicker.getDisabledDays()).thenReturn(Arrays.asList(0, 1));
+		datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 22));
+		assertFalse(datePicker.isValid());
+	}
+
+	@Test
+	public void validateValueInternal_LocalDate_range() {
+		when(datePicker.getSelectionMode()).thenReturn("range");
+		List<LocalDate> range=Arrays.asList(LocalDate.of(2019, 7, 23), LocalDate.of(2019, 7, 30));
+		datePicker.validateValueInternal(context, range);
+		assertTrue(datePicker.isValid());
+	}
+
+	@Test
+	public void validateValueInternal_LocalDate_range_wrong() {
+		when(datePicker.getSelectionMode()).thenReturn("range");
+		List<LocalDate> range=Arrays.asList(LocalDate.of(2019, 7, 30), LocalDate.of(2019, 7, 23));
+		datePicker.validateValueInternal(context, range);
+		assertFalse(datePicker.isValid());
+	}
+
+	@Test
+	public void validateValueInternal_Date_range() {
+		setupValues(null, Locale.ENGLISH);
+		java.util.Calendar calFrom = GregorianCalendar.getInstance();
+		calFrom.set(2019, 6, 23);
+		java.util.Calendar calTo = GregorianCalendar.getInstance();
+		calTo.set(2019, 6, 30);
+
+		when(datePicker.getSelectionMode()).thenReturn("range");
+		List<Date> range=Arrays.asList(calFrom.getTime(), calTo.getTime());
+		datePicker.validateValueInternal(context, range);
+		assertTrue(datePicker.isValid());
+	}
+
+	@Test
+	public void validateValueInternal_Date_range_wrong() {
+		setupValues(null, Locale.ENGLISH);
+		java.util.Calendar calFrom = GregorianCalendar.getInstance();
+		calFrom.set(2019, 6, 30);
+		java.util.Calendar calTo = GregorianCalendar.getInstance();
+		calTo.set(2019, 6, 23);
+
+		when(datePicker.getSelectionMode()).thenReturn("range");
+		List<Date> range=Arrays.asList(calFrom.getTime(), calTo.getTime());
+		datePicker.validateValueInternal(context, range);
+		assertFalse(datePicker.isValid());
 	}
 }

@@ -126,61 +126,7 @@ public class DatePicker extends DatePickerBase {
         super.validateValue(context, value);
 
         if (isValid() && !isEmpty(value)) {
-            boolean isDisabledDate = false;
-            boolean isRangeDatesSequential = true;
-
-            if (value instanceof LocalDate) {
-                isDisabledDate = validateDateValue(context, (LocalDate) value);
-            }
-            else if (value instanceof LocalDateTime) {
-                isDisabledDate = validateDateValue(context, ((LocalDateTime) value).toLocalDate());
-            }
-            else if (value instanceof LocalTime) {
-                //no check necessary
-            }
-            else if (value instanceof YearMonth) {
-                isDisabledDate = validateDateValue(context, ((YearMonth) value).atDay(1));
-            }
-            else if (value instanceof Date) {
-                isDisabledDate = validateDateValue(context, CalendarUtils.convertDate2LocalDate((Date) value, CalendarUtils.calculateZoneId(getTimeZone())));
-            }
-            else if (value instanceof List && getSelectionMode().equals("range")) {
-                List rangeValues = (List) value;
-
-                if (rangeValues.get(0) instanceof LocalDate) {
-                    LocalDate startDate = (LocalDate) rangeValues.get(0);
-                    isDisabledDate = validateDateValue(context, startDate);
-
-                    if (!isDisabledDate) {
-                        LocalDate endDate = (LocalDate) rangeValues.get(1);
-                        isDisabledDate = validateDateValue(context, endDate);
-
-                        if (isValid() && startDate.isAfter(endDate)) {
-                            setValid(false);
-                            isRangeDatesSequential = false;
-                        }
-                    }
-                }
-                else if (rangeValues.get(0) instanceof Date) {
-                    Date startDate = (Date) rangeValues.get(0);
-                    isDisabledDate = validateDateValue(context, CalendarUtils.convertDate2LocalDate(startDate, CalendarUtils.calculateZoneId(getTimeZone())));
-
-                    if (!isDisabledDate) {
-                        Date endDate = (Date) rangeValues.get(1);
-                        isDisabledDate = validateDateValue(context, CalendarUtils.convertDate2LocalDate(endDate, CalendarUtils.calculateZoneId(getTimeZone())));
-
-                        if (isValid() && startDate.after(endDate)) {
-                            setValid(false);
-                            isRangeDatesSequential = false;
-                        }
-                    }
-                }
-                else {
-                    //no other type possible (as of 05/2019)
-                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, rangeValues.get(0).getClass().getTypeName() + " not supported", null);
-                    context.addMessage(getClientId(context), message);
-                }
-            }
+            ValidationResult validationResult = validateValueInternal(context, value);
 
             if (!isValid()) {
                 FacesMessage msg = null;
@@ -189,10 +135,10 @@ public class DatePicker extends DatePickerBase {
                 if (validatorMessage != null) {
                     msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessage, validatorMessage);
                 }
-                else if (isDisabledDate) {
+                else if (validationResult.isDisabledDate()) {
                     msg = MessageFactory.getMessage(DATE_INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
                 }
-                else if (!isRangeDatesSequential) {
+                else if (!validationResult.isRangeDatesSequential()) {
                     msg = MessageFactory.getMessage(DATE_INVALID_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
                 }
                 else {
@@ -201,6 +147,66 @@ public class DatePicker extends DatePickerBase {
                 context.addMessage(getClientId(context), msg);
             }
         }
+    }
+
+    protected ValidationResult validateValueInternal(FacesContext context, Object value) {
+        boolean isDisabledDate = false;
+        boolean isRangeDatesSequential = true;
+
+        if (value instanceof LocalDate) {
+            isDisabledDate = validateDateValue(context, (LocalDate) value);
+        }
+        else if (value instanceof LocalDateTime) {
+            isDisabledDate = validateDateValue(context, ((LocalDateTime) value).toLocalDate());
+        }
+        else if (value instanceof LocalTime) {
+            //no check necessary
+        }
+        else if (value instanceof YearMonth) {
+            isDisabledDate = validateDateValue(context, ((YearMonth) value).atDay(1));
+        }
+        else if (value instanceof Date) {
+            isDisabledDate = validateDateValue(context, CalendarUtils.convertDate2LocalDate((Date) value, CalendarUtils.calculateZoneId(getTimeZone())));
+        }
+        else if (value instanceof List && getSelectionMode().equals("range")) {
+            List rangeValues = (List) value;
+
+            if (rangeValues.get(0) instanceof LocalDate) {
+                LocalDate startDate = (LocalDate) rangeValues.get(0);
+                isDisabledDate = validateDateValue(context, startDate);
+
+                if (!isDisabledDate) {
+                    LocalDate endDate = (LocalDate) rangeValues.get(1);
+                    isDisabledDate = validateDateValue(context, endDate);
+
+                    if (isValid() && startDate.isAfter(endDate)) {
+                        setValid(false);
+                        isRangeDatesSequential = false;
+                    }
+                }
+            }
+            else if (rangeValues.get(0) instanceof Date) {
+                Date startDate = (Date) rangeValues.get(0);
+                isDisabledDate = validateDateValue(context, CalendarUtils.convertDate2LocalDate(startDate, CalendarUtils.calculateZoneId(getTimeZone())));
+
+                if (!isDisabledDate) {
+                    Date endDate = (Date) rangeValues.get(1);
+                    isDisabledDate = validateDateValue(context, CalendarUtils.convertDate2LocalDate(endDate, CalendarUtils.calculateZoneId(getTimeZone())));
+
+                    if (isValid() && startDate.after(endDate)) {
+                        setValid(false);
+                        isRangeDatesSequential = false;
+                    }
+                }
+            }
+            else {
+                //no other type possible (as of 05/2019)
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, rangeValues.get(0).getClass().getTypeName() + " not supported", null);
+                context.addMessage(getClientId(context), message);
+            }
+        }
+
+        return new ValidationResult(isDisabledDate, isRangeDatesSequential);
     }
 
     protected boolean validateDateValue(FacesContext context, LocalDate date) {
@@ -249,7 +255,7 @@ public class DatePicker extends DatePickerBase {
         if (isValid()) {
             List<Object> disabledDays = getDisabledDays();
             if (disabledDays != null) {
-                if (disabledDays.contains(date.getDayOfWeek())) {
+                if (disabledDays.contains(date.getDayOfWeek().getValue())) {
                     setValid(false);
                     isDisabledDate = true;
                 }
@@ -257,5 +263,31 @@ public class DatePicker extends DatePickerBase {
         }
 
         return isDisabledDate;
+    }
+
+    protected class ValidationResult {
+        private boolean isDisabledDate;
+        private boolean isRangeDatesSequential;
+
+        public ValidationResult(boolean isDisabledDate, boolean isRangeDatesSequential) {
+            this.isDisabledDate = isDisabledDate;
+            this.isRangeDatesSequential = isRangeDatesSequential;
+        }
+
+        public boolean isDisabledDate() {
+            return isDisabledDate;
+        }
+
+        public void setDisabledDate(boolean disabledDate) {
+            isDisabledDate = disabledDate;
+        }
+
+        public boolean isRangeDatesSequential() {
+            return isRangeDatesSequential;
+        }
+
+        public void setRangeDatesSequential(boolean rangeDatesSequential) {
+            isRangeDatesSequential = rangeDatesSequential;
+        }
     }
 }
