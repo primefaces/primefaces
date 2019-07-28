@@ -1,18 +1,18 @@
 /**
  * The MIT License
- *
+ * <p>
  * Copyright (c) 2009-2019 PrimeTek
- *
+ * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,29 +23,22 @@
  */
 package org.primefaces.validate.bean;
 
-import java.util.HashMap;
-import java.util.Map;
-import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.util.HTML;
 
-public class MaxClientValidationConstraint implements ClientValidationConstraint {
+import java.util.Map;
+
+public class MaxClientValidationConstraint extends AbstractClientValidationConstraint {
 
     public static final String MESSAGE_METADATA = "data-p-max-msg";
-    private static final String MESSAGE_ID = "{javax.validation.constraints.Max.message}";
+    public static final String MESSAGE_ID = "{javax.validation.constraints.Max.message}";
+
+    public MaxClientValidationConstraint() {
+        super(MESSAGE_ID, MESSAGE_METADATA);
+    }
 
     @Override
-    public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
-        Map<String, Object> metadata = new HashMap<>();
-        Map attrs = constraintDescriptor.getAttributes();
-        Object message = attrs.get(ATTR_MESSAGE);
-
+    protected void processMetadata(Map<String, Object> metadata, Map<String, Object> attrs) {
         metadata.put(HTML.VALIDATION_METADATA.MAX_VALUE, attrs.get("value"));
-
-        if (!message.equals(MESSAGE_ID)) {
-            metadata.put(MESSAGE_METADATA, message);
-        }
-
-        return metadata;
     }
 
     @Override

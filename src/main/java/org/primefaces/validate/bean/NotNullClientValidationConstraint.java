@@ -23,26 +23,13 @@
  */
 package org.primefaces.validate.bean;
 
-import java.util.HashMap;
-import java.util.Map;
-import javax.validation.metadata.ConstraintDescriptor;
+public class NotNullClientValidationConstraint extends AbstractClientValidationConstraint {
 
-public class NotNullClientValidationConstraint implements ClientValidationConstraint {
+    public static final String MESSAGE_METADATA = "data-p-notnull-msg";
+    public static final String MESSAGE_ID = "{javax.validation.constraints.NotNull.message}";
 
-    private static final String MESSAGE_METADATA = "data-p-notnull-msg";
-    private static final String MESSAGE_ID = "{javax.validation.constraints.NotNull.message}";
-
-    @Override
-    public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
-        Map<String, Object> metadata = new HashMap<>();
-        Map attrs = constraintDescriptor.getAttributes();
-        Object message = attrs.get(ATTR_MESSAGE);
-
-        if (!message.equals(MESSAGE_ID)) {
-            metadata.put(MESSAGE_METADATA, message);
-        }
-
-        return metadata;
+    public NotNullClientValidationConstraint() {
+        super(MESSAGE_ID, MESSAGE_METADATA);
     }
 
     @Override

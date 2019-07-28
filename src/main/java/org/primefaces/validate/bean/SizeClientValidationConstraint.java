@@ -23,30 +23,23 @@
  */
 package org.primefaces.validate.bean;
 
-import java.util.HashMap;
-import java.util.Map;
-import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.util.HTML;
 
-public class SizeClientValidationConstraint implements ClientValidationConstraint {
+import java.util.Map;
 
-    private static final String MESSAGE_METADATA = "data-p-size-msg";
-    private static final String MESSAGE_ID = "{javax.validation.constraints.Size.message}";
+public class SizeClientValidationConstraint extends AbstractClientValidationConstraint {
+
+    public static final String MESSAGE_METADATA = "data-p-size-msg";
+    public static final String MESSAGE_ID = "{javax.validation.constraints.Size.message}";
+
+    public SizeClientValidationConstraint() {
+        super(MESSAGE_ID, MESSAGE_METADATA);
+    }
 
     @Override
-    public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
-        Map<String, Object> metadata = new HashMap<>();
-        Map attrs = constraintDescriptor.getAttributes();
-        Object message = attrs.get(ATTR_MESSAGE);
-
+    protected void processMetadata(Map<String, Object> metadata, Map<String, Object> attrs) {
         metadata.put(HTML.VALIDATION_METADATA.MIN_LENGTH, attrs.get("min"));
         metadata.put(HTML.VALIDATION_METADATA.MAX_LENGTH, attrs.get("max"));
-
-        if (!message.equals(MESSAGE_ID)) {
-            metadata.put(MESSAGE_METADATA, message);
-        }
-
-        return metadata;
     }
 
     @Override

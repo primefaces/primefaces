@@ -23,26 +23,13 @@
  */
 package org.primefaces.validate.bean;
 
-import java.util.HashMap;
-import java.util.Map;
-import javax.validation.metadata.ConstraintDescriptor;
+public class NotEmptyClientValidationConstraint extends AbstractClientValidationConstraint {
 
-public class NotEmptyClientValidationConstraint implements ClientValidationConstraint {
+    public static final String MESSAGE_METADATA = "data-p-notempty-msg";
+    public static final String MESSAGE_ID = "{javax.validation.constraints.NotEmpty.message}";
 
-    private static final String MESSAGE_METADATA = "data-p-notempty-msg";
-    private static final String MESSAGE_ID = "{javax.validation.constraints.NotEmpty.message}";
-
-    @Override
-    public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
-        Map<String, Object> metadata = new HashMap<>();
-        Map attrs = constraintDescriptor.getAttributes();
-        Object message = attrs.get(ATTR_MESSAGE);
-
-        if (!message.equals(MESSAGE_ID)) {
-            metadata.put(MESSAGE_METADATA, message);
-        }
-
-        return metadata;
+    public NotEmptyClientValidationConstraint() {
+        super(MESSAGE_ID, MESSAGE_METADATA);
     }
 
     @Override

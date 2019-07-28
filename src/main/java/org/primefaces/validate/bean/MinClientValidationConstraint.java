@@ -23,29 +23,22 @@
  */
 package org.primefaces.validate.bean;
 
-import java.util.HashMap;
-import java.util.Map;
-import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.util.HTML;
 
-public class MinClientValidationConstraint implements ClientValidationConstraint {
+import java.util.Map;
+
+public class MinClientValidationConstraint extends AbstractClientValidationConstraint {
 
     public static final String MESSAGE_METADATA = "data-p-min-msg";
-    private static final String MESSAGE_ID = "{javax.validation.constraints.Min.message}";
+    public static final String MESSAGE_ID = "{javax.validation.constraints.Min.message}";
+
+    public MinClientValidationConstraint() {
+        super(MESSAGE_ID, MESSAGE_METADATA);
+    }
 
     @Override
-    public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
-        Map<String, Object> metadata = new HashMap<>();
-        Map attrs = constraintDescriptor.getAttributes();
-        Object message = attrs.get(ATTR_MESSAGE);
-
+    protected void processMetadata(Map<String, Object> metadata, Map<String, Object> attrs) {
         metadata.put(HTML.VALIDATION_METADATA.MIN_VALUE, attrs.get("value"));
-
-        if (!message.equals(MESSAGE_ID)) {
-            metadata.put(MESSAGE_METADATA, message);
-        }
-
-        return metadata;
     }
 
     @Override
