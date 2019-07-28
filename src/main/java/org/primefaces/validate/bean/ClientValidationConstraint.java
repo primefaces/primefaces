@@ -28,9 +28,9 @@ import javax.validation.metadata.ConstraintDescriptor;
 
 public interface ClientValidationConstraint {
 
-    public static final String ATTR_MESSAGE = "message";
+    String ATTR_MESSAGE = "message";
 
-    public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor);
+    Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor);
 
-    public String getValidatorId();
+    String getValidatorId();
 }

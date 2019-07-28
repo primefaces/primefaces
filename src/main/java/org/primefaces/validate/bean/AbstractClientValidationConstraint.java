@@ -23,26 +23,37 @@
  */
 package org.primefaces.validate.bean;
 
-import org.primefaces.util.HTML;
-
+import javax.validation.metadata.ConstraintDescriptor;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
-public class MaxClientValidationConstraint extends AbstractClientValidationConstraint {
+public abstract class AbstractClientValidationConstraint implements ClientValidationConstraint {
 
-    public static final String MESSAGE_METADATA = "data-p-max-msg";
-    public static final String MESSAGE_ID = "{javax.validation.constraints.Max.message}";
+    private String messageId;
+    private String messageMetadata;
 
-    public MaxClientValidationConstraint() {
-        super(MESSAGE_ID, MESSAGE_METADATA);
+    public AbstractClientValidationConstraint(String messageId, String messageMetadata) {
+        this.messageId = messageId;
+        this.messageMetadata = messageMetadata;
     }
 
     @Override
+    public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
+        Map<String, Object> metadata = new HashMap<>();
+        Map<String, Object> attrs = constraintDescriptor.getAttributes();
+        Object message = attrs.get(ATTR_MESSAGE);
+
+        processMetadata(metadata, attrs);
+
+        if (!Objects.equals(message, messageId)) {
+            metadata.put(messageMetadata, message);
+        }
+
+        return metadata;
+    }
+
     protected void processMetadata(Map<String, Object> metadata, Map<String, Object> attrs) {
-        metadata.put(HTML.VALIDATION_METADATA.MAX_VALUE, attrs.get("value"));
-    }
-
-    @Override
-    public String getValidatorId() {
-        return "Max";
+        // NOOP
     }
 }

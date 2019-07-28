@@ -23,26 +23,13 @@
  */
 package org.primefaces.validate.bean;
 
-import java.util.HashMap;
-import java.util.Map;
-import javax.validation.metadata.ConstraintDescriptor;
+public class PastClientValidationConstraint extends AbstractClientValidationConstraint {
 
-public class PastClientValidationConstraint implements ClientValidationConstraint {
+    public static final String MESSAGE_METADATA = "data-p-past-msg";
+    public static final String MESSAGE_ID = "{javax.validation.constraints.Past.message}";
 
-    private static final String MESSAGE_METADATA = "data-p-past-msg";
-    private static final String MESSAGE_ID = "{javax.validation.constraints.Past.message}";
-
-    @Override
-    public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
-        Map<String, Object> metadata = new HashMap<>();
-        Map attrs = constraintDescriptor.getAttributes();
-        Object message = attrs.get(ATTR_MESSAGE);
-
-        if (!message.equals(MESSAGE_ID)) {
-            metadata.put(MESSAGE_METADATA, message);
-        }
-
-        return metadata;
+    public PastClientValidationConstraint() {
+        super(MESSAGE_ID, MESSAGE_METADATA);
     }
 
     @Override
