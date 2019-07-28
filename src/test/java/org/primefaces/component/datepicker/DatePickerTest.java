@@ -68,26 +68,26 @@ public class DatePickerTest {
 	}
 
 	class MyDatePickerRenderer extends DatePickerRenderer {
-        @Override
-	    public Class resolveDateType(FacesContext context, UICalendar calendar) {
-            return super.resolveDateType(context, calendar);
+		@Override
+		public Class resolveDateType(FacesContext context, UICalendar calendar) {
+			return super.resolveDateType(context, calendar);
         }
 
-        @Override
-        public Temporal convertToJava8DateTimeAPI(FacesContext context, UICalendar calendar, Class type, String submittedValue) {
-            return super.convertToJava8DateTimeAPI(context, calendar, type, submittedValue);
-        }
+		@Override
+		public Temporal convertToJava8DateTimeAPI(FacesContext context, UICalendar calendar, Class type, String submittedValue) {
+			return super.convertToJava8DateTimeAPI(context, calendar, type, submittedValue);
+		}
 
-        @Override
-        public Date convertToLegacyDateAPI(FacesContext context, UICalendar calendar, String submittedValue) {
-            return super.convertToLegacyDateAPI(context, calendar, submittedValue);
-        }
+		@Override
+		public Date convertToLegacyDateAPI(FacesContext context, UICalendar calendar, String submittedValue) {
+			return super.convertToLegacyDateAPI(context, calendar, submittedValue);
+		}
 
-        @Override
-        public ConverterException createConverterException(FacesContext context, UICalendar calendar, String submittedValue, Object param1) {
-            return super.createConverterException(context, calendar, submittedValue, param1);
-        }
-    }
+		@Override
+		public ConverterException createConverterException(FacesContext context, UICalendar calendar, String submittedValue, Object param1) {
+			return super.createConverterException(context, calendar, submittedValue, param1);
+		}
+	}
 
 	private MyDatePickerRenderer renderer;
 	private MyDatePicker datePicker;
@@ -309,25 +309,25 @@ public class DatePickerTest {
 		assertEquals(LocalDate.of(2019, 07, 23), temporal);
 	}
 
-    @Test
-    public void getConvertValue_Date() {
-        Class type = Date.class;
-        setupValues(type, Locale.ENGLISH);
+	@Test
+	public void getConvertedValue_Date() {
+		Class type = Date.class;
+		setupValues(type, Locale.ENGLISH);
 
-        when(renderer.getConvertedValue(eq(context), eq(datePicker), any())).thenCallRealMethod();
+		when(renderer.getConvertedValue(eq(context), eq(datePicker), any())).thenCallRealMethod();
 
-        Object object = renderer.getConvertedValue(context, datePicker, "7/23/19");
-        assertEquals(type, object.getClass());
-        Date date = (Date)object;
-        java.util.Calendar calendar = new GregorianCalendar();
-        calendar.setTime(date);
-        assertEquals(2019, calendar.get(java.util.Calendar.YEAR));
-        assertEquals(6, calendar.get(java.util.Calendar.MONTH));
-        assertEquals(23, calendar.get(java.util.Calendar.DAY_OF_MONTH));
-    }
+		Object object = renderer.getConvertedValue(context, datePicker, "7/23/19");
+		assertEquals(type, object.getClass());
+		Date date = (Date)object;
+		java.util.Calendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		assertEquals(2019, calendar.get(java.util.Calendar.YEAR));
+		assertEquals(6, calendar.get(java.util.Calendar.MONTH));
+		assertEquals(23, calendar.get(java.util.Calendar.DAY_OF_MONTH));
+	}
 
 	@Test
-	public void getConvertValue_LocalDate() {
+	public void getConvertedValue_LocalDate() {
 		Class type = LocalDate.class;
 		setupValues(type, Locale.ENGLISH);
 
@@ -341,22 +341,22 @@ public class DatePickerTest {
 
 	@Test
 	public void validateValueInternal_simple() {
-    	datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
+		datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
 		assertTrue(datePicker.isValid());
 	}
 
 	@Test
 	public void validateValueInternal_minDate_LocalDate() {
-        when(datePicker.getMindate()).thenReturn(LocalDate.of(2019, 1, 1));
-        datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
-        assertTrue(datePicker.isValid());
+		when(datePicker.getMindate()).thenReturn(LocalDate.of(2019, 1, 1));
+		datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
+		assertTrue(datePicker.isValid());
 	}
 
 	@Test
 	public void validateValueInternal_minDate_LocalDate_wrong() {
-        when(datePicker.getMindate()).thenReturn(LocalDate.of(2019, 1, 1));
-        datePicker.validateValueInternal(context, LocalDate.of(2018, 7, 23));
-        assertFalse(datePicker.isValid());
+		when(datePicker.getMindate()).thenReturn(LocalDate.of(2019, 1, 1));
+		datePicker.validateValueInternal(context, LocalDate.of(2018, 7, 23));
+		assertFalse(datePicker.isValid());
 	}
 
 	@Test
