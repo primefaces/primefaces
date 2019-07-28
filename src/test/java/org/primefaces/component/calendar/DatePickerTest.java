@@ -344,6 +344,22 @@ public class DatePickerTest {
 	}
 
 	@Test
+	public void validateValueInternal_minDate_String() {
+		setupValues(null, Locale.ENGLISH);
+		when(datePicker.getMindate()).thenReturn("1/1/19");
+		datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
+		assertTrue(datePicker.isValid());
+	}
+
+	@Test
+	public void validateValueInternal_minDate_String_wrong() {
+		setupValues(null, Locale.ENGLISH);
+		when(datePicker.getMindate()).thenReturn("1/1/19");
+		datePicker.validateValueInternal(context, LocalDate.of(2018, 7, 23));
+		assertFalse(datePicker.isValid());
+	}
+
+	@Test
 	@Ignore
 	//TODO: test breaks - fix root cause
 	public void validateValueInternal_minDate_Date_wrong() {
@@ -366,6 +382,22 @@ public class DatePickerTest {
 	@Test
 	public void validateValueInternal_maxDate_LocalDate_wrong() {
 		when(datePicker.getMaxdate()).thenReturn(LocalDate.of(2019, 12, 31));
+		datePicker.validateValueInternal(context, LocalDate.of(2020, 7, 23));
+		assertFalse(datePicker.isValid());
+	}
+
+	@Test
+	public void validateValueInternal_maxDate_String() {
+		setupValues(null, Locale.ENGLISH);
+		when(datePicker.getMaxdate()).thenReturn("12/31/19");
+		datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
+		assertTrue(datePicker.isValid());
+	}
+
+	@Test
+	public void validateValueInternal_maxDate_String_wrong() {
+		setupValues(null, Locale.ENGLISH);
+		when(datePicker.getMaxdate()).thenReturn("12/31/19");
 		datePicker.validateValueInternal(context, LocalDate.of(2020, 7, 23));
 		assertFalse(datePicker.isValid());
 	}
