@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright (c) 2009-2019 PrimeTek
@@ -41,99 +41,99 @@ import static org.mockito.Mockito.when;
 
 public class CalendarUtilsTest {
 
-	private DatePicker datePicker;
-	private FacesContext context;
-	private ExternalContext externalContext;
-	private ELContext elContext;
+    private DatePicker datePicker;
+    private FacesContext context;
+    private ExternalContext externalContext;
+    private ELContext elContext;
 
-	@Rule
-	public ExpectedException exceptionRule = ExpectedException.none();
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
 
-	@Before
-	public void setup() {
-		datePicker = mock(DatePicker.class);
-		when(datePicker.getSelectionMode()).thenReturn("single");
+    @Before
+    public void setup() {
+        datePicker = mock(DatePicker.class);
+        when(datePicker.getSelectionMode()).thenReturn("single");
 
-		context = mock(FacesContext.class);
-		externalContext = mock(ExternalContext.class);
-		elContext = mock(ELContext.class);
-		when(context.getExternalContext()).thenReturn(externalContext);
-		when(context.getELContext()).thenReturn(elContext);
-	}
+        context = mock(FacesContext.class);
+        externalContext = mock(ExternalContext.class);
+        elContext = mock(ELContext.class);
+        when(context.getExternalContext()).thenReturn(externalContext);
+        when(context.getELContext()).thenReturn(elContext);
+    }
 
-	@After
-	public void teardown() {
-		datePicker = null;
-		context = null;
-		externalContext = null;
-		elContext = null;
-	}
+    @After
+    public void teardown() {
+        datePicker = null;
+        context = null;
+        externalContext = null;
+        elContext = null;
+    }
 
-	private void setupValues(Object value, Locale locale) {
-		when(datePicker.getValue()).thenReturn(value);
-		when(datePicker.calculatePattern()).thenCallRealMethod();
-		when(datePicker.calculateLocale(any())).thenReturn(locale);
-		when(datePicker.calculateTimeOnlyPattern()).thenReturn("HH:mm");
-	}
+    private void setupValues(Object value, Locale locale) {
+        when(datePicker.getValue()).thenReturn(value);
+        when(datePicker.calculatePattern()).thenCallRealMethod();
+        when(datePicker.calculateLocale(any())).thenReturn(locale);
+        when(datePicker.calculateTimeOnlyPattern()).thenReturn("HH:mm");
+    }
 
-	@Test
-	public void getValueAsString_LocalDate() {
-		LocalDate localDate = LocalDate.of(2019, 7, 23);
-		setupValues(localDate, Locale.ENGLISH);
+    @Test
+    public void getValueAsString_LocalDate() {
+        LocalDate localDate = LocalDate.of(2019, 7, 23);
+        setupValues(localDate, Locale.ENGLISH);
 
-		String value = CalendarUtils.getValueAsString (context, datePicker);
-		assertEquals("7/23/19", value);
-	}
+        String value = CalendarUtils.getValueAsString (context, datePicker);
+        assertEquals("7/23/19", value);
+    }
 
-	@Test
-	public void getValueAsString_LocalDate_German() {
-		LocalDate localDate = LocalDate.of(2019, 7, 23);
-		setupValues(localDate, Locale.GERMAN);
+    @Test
+    public void getValueAsString_LocalDate_German() {
+        LocalDate localDate = LocalDate.of(2019, 7, 23);
+        setupValues(localDate, Locale.GERMAN);
 
-		String value = CalendarUtils.getValueAsString (context, datePicker);
-		assertEquals("23.07.19", value);
-	}
+        String value = CalendarUtils.getValueAsString (context, datePicker);
+        assertEquals("23.07.19", value);
+    }
 
-	@Test
-	public void getValueAsString_Date() {
-		Calendar cal = new GregorianCalendar();
-		cal.set(2019, 6, 23);
-		Date date = cal.getTime();
-		setupValues(date, Locale.ENGLISH);
+    @Test
+    public void getValueAsString_Date() {
+        Calendar cal = new GregorianCalendar();
+        cal.set(2019, 6, 23);
+        Date date = cal.getTime();
+        setupValues(date, Locale.ENGLISH);
 
-		String value = CalendarUtils.getValueAsString (context, datePicker);
-		assertEquals("7/23/19", value);
-	}
+        String value = CalendarUtils.getValueAsString (context, datePicker);
+        assertEquals("7/23/19", value);
+    }
 
-	@Test
-	public void getValueAsString_Date_German() {
-		Calendar cal = new GregorianCalendar();
-		cal.set(2019, 6, 23);
-		Date date = cal.getTime();
-		setupValues(date, Locale.GERMAN);
+    @Test
+    public void getValueAsString_Date_German() {
+        Calendar cal = new GregorianCalendar();
+        cal.set(2019, 6, 23);
+        Date date = cal.getTime();
+        setupValues(date, Locale.GERMAN);
 
-		String value = CalendarUtils.getValueAsString (context, datePicker);
-		assertEquals("23.07.19", value);
-	}
+        String value = CalendarUtils.getValueAsString (context, datePicker);
+        assertEquals("23.07.19", value);
+    }
 
-	@Test
-	public void calculateZoneId_String() {
-		String timeZone = "GMT+2";
-		ZoneId calculateZoneId = CalendarUtils.calculateZoneId(timeZone);
-		assertEquals(ZoneId.of("GMT+2"), calculateZoneId);
-	}
+    @Test
+    public void calculateZoneId_String() {
+        String timeZone = "GMT+2";
+        ZoneId calculateZoneId = CalendarUtils.calculateZoneId(timeZone);
+        assertEquals(ZoneId.of("GMT+2"), calculateZoneId);
+    }
 
-	@Test
-	public void calculateZoneId_ZoneId() {
-		ZoneId zoneId = ZoneId.of("GMT+2");
-		ZoneId calculateZoneId = CalendarUtils.calculateZoneId(zoneId);
-		assertEquals(ZoneId.of("GMT+2"), calculateZoneId);
-	}
+    @Test
+    public void calculateZoneId_ZoneId() {
+        ZoneId zoneId = ZoneId.of("GMT+2");
+        ZoneId calculateZoneId = CalendarUtils.calculateZoneId(zoneId);
+        assertEquals(ZoneId.of("GMT+2"), calculateZoneId);
+    }
 
-	@Test
-	public void calculateZoneId_TimeZone() {
-		TimeZone timeZone = TimeZone.getTimeZone("GMT+2");
-		ZoneId calculateZoneId = CalendarUtils.calculateZoneId(timeZone);
-		assertEquals(ZoneId.of("GMT+2"), calculateZoneId);
-	}
+    @Test
+    public void calculateZoneId_TimeZone() {
+        TimeZone timeZone = TimeZone.getTimeZone("GMT+2");
+        ZoneId calculateZoneId = CalendarUtils.calculateZoneId(timeZone);
+        assertEquals(ZoneId.of("GMT+2"), calculateZoneId);
+    }
 }
