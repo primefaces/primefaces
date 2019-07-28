@@ -21,10 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.calendar;
+package org.primefaces.component.datepicker;
 
 import org.junit.*;
 import org.junit.rules.ExpectedException;
+import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.datepicker.DatePicker;
 import org.primefaces.component.datepicker.DatePickerRenderer;
 import org.primefaces.util.CalendarUtils;
@@ -47,6 +48,9 @@ import java.time.LocalTime;
 import java.time.temporal.Temporal;
 import java.util.*;
 
+/*
+This tests covers DatePicker and partially (due to shared code) Calendar.
+ */
 public class DatePickerTest {
 
 	class MyDatePicker extends DatePicker {
@@ -61,19 +65,31 @@ public class DatePickerTest {
 		public void setValid(boolean valid) {
 			this.valid = valid;
 		}
-
-		@Override
-		public boolean validateDateValue(FacesContext context, LocalDate date) {
-			return super.validateDateValue(context, date);
-		}
-
-        @Override
-		public ValidationResult validateValueInternal(FacesContext context, Object value) {
-		    return super.validateValueInternal(context, value);
-        }
 	}
 
-	private DatePickerRenderer renderer;
+	class MyDatePickerRenderer extends DatePickerRenderer {
+        @Override
+	    public Class resolveDateType(FacesContext context, UICalendar calendar) {
+            return super.resolveDateType(context, calendar);
+        }
+
+        @Override
+        public Temporal convertToJava8DateTimeAPI(FacesContext context, UICalendar calendar, Class type, String submittedValue) {
+            return super.convertToJava8DateTimeAPI(context, calendar, type, submittedValue);
+        }
+
+        @Override
+        public Date convertToLegacyDateAPI(FacesContext context, UICalendar calendar, String submittedValue) {
+            return super.convertToLegacyDateAPI(context, calendar, submittedValue);
+        }
+
+        @Override
+        public ConverterException createConverterException(FacesContext context, UICalendar calendar, String submittedValue, Object param1) {
+            return super.createConverterException(context, calendar, submittedValue, param1);
+        }
+    }
+
+	private MyDatePickerRenderer renderer;
 	private MyDatePicker datePicker;
 	private FacesContext context;
 	private ExternalContext externalContext;
@@ -85,7 +101,7 @@ public class DatePickerTest {
 
 	@Before
 	public void setup() {
-		renderer = mock(DatePickerRenderer.class);
+		renderer = mock(MyDatePickerRenderer.class);
 		datePicker = mock(MyDatePicker.class);
 		when(datePicker.calculatePattern()).thenCallRealMethod();
 		when(datePicker.calculateTimeOnlyPattern()).thenReturn("HH:mm");
@@ -127,7 +143,7 @@ public class DatePickerTest {
 
 	@Test
 	public void dateAsStringShouldBeNullIfValueIsNull() {
-		Calendar calendar = new Calendar();
+		org.primefaces.component.calendar.Calendar calendar = new org.primefaces.component.calendar.Calendar();
 		String dateAsString = CalendarUtils.getValueAsString(null, calendar);
 
 		assertEquals(null, dateAsString);
@@ -135,7 +151,7 @@ public class DatePickerTest {
 
 	@Test
 	public void dateAsStringShouldBeSubmittedValueIfExists() {
-		Calendar calendar = new Calendar();
+		org.primefaces.component.calendar.Calendar calendar = new org.primefaces.component.calendar.Calendar();
 		calendar.setSubmittedValue("05.07.2010");
 		String dateAsString = CalendarUtils.getValueAsString(null, calendar);
 
