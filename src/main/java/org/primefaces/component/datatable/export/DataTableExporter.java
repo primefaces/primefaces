@@ -45,10 +45,11 @@ import javax.faces.convert.Converter;
 
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.Exporter;
 import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.util.ComponentUtils;
 
-public abstract class DataTableExporter {
+public abstract class DataTableExporter implements Exporter<DataTable> {
 
     protected enum ColumnType {
         HEADER("header"),
