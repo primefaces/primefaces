@@ -736,7 +736,8 @@
                 'calendar.BUTTON': 'Show Calendar',
                 'datatable.sort.ASC': 'activate to sort column ascending',
                 'datatable.sort.DESC': 'activate to sort column descending',
-                'columntoggler.CLOSE': 'Close'
+                'columntoggler.CLOSE': 'Close',
+                'overlaypanel.CLOSE': 'Close'
             }
         }
 
