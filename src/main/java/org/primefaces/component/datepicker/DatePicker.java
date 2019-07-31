@@ -265,29 +265,29 @@ public class DatePicker extends DatePickerBase {
         return isDisabledDate;
     }
 
-    protected class ValidationResult {
-        private boolean isDisabledDate;
-        private boolean isRangeDatesSequential;
+    protected static class ValidationResult {
+        private boolean disabledDate;
+        private boolean rangeDatesSequential;
 
-        public ValidationResult(boolean isDisabledDate, boolean isRangeDatesSequential) {
-            this.isDisabledDate = isDisabledDate;
-            this.isRangeDatesSequential = isRangeDatesSequential;
+        public ValidationResult(boolean disabledDate, boolean rangeDatesSequential) {
+            this.disabledDate = disabledDate;
+            this.rangeDatesSequential = rangeDatesSequential;
         }
 
         public boolean isDisabledDate() {
-            return isDisabledDate;
+            return disabledDate;
         }
 
         public void setDisabledDate(boolean disabledDate) {
-            isDisabledDate = disabledDate;
+            this.disabledDate = disabledDate;
         }
 
         public boolean isRangeDatesSequential() {
-            return isRangeDatesSequential;
+            return rangeDatesSequential;
         }
 
         public void setRangeDatesSequential(boolean rangeDatesSequential) {
-            isRangeDatesSequential = rangeDatesSequential;
+            this.rangeDatesSequential = rangeDatesSequential;
         }
     }
 }
