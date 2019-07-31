@@ -38,6 +38,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.datatable.export.DataTableExporterFactory;
 import org.primefaces.expression.SearchExpressionFacade;
 
 public class DataExporter implements ActionListener, StateHolder {
@@ -141,13 +142,12 @@ public class DataExporter implements ActionListener, StateHolder {
                 }
                 else {
                     UIComponent component = (UIComponent) components.get(0);
-                    if (!(component instanceof DataTable)) {
+                    if (!(component instanceof DataTable) && this.customExporter == null) {
                         throw new FacesException("Unsupported datasource target:\"" + component.getClass().getName()
-                                + "\", exporter must target a PrimeFaces DataTable.");
+                                + "\", exporter must target a PrimeFaces DataTable or provide a customExporter for " + component.getClass().getName());
                     }
 
-                    DataTable table = (DataTable) component;
-                    exporter.export(context, table, outputFileName, isPageOnly, isSelectionOnly, encodingType,
+                    exporter.export(context, component, outputFileName, isPageOnly, isSelectionOnly, encodingType,
                             preProcessor, postProcessor, exporterOptions, onTableRender);
                 }
             }
@@ -167,7 +167,7 @@ public class DataExporter implements ActionListener, StateHolder {
     protected Exporter getExporter(String exportAs, ExporterOptions exporterOptions, Object customExporterInstance) {
 
         if (customExporterInstance == null) {
-            return ExporterFactory.getExporterForType(exportAs, exporterOptions);
+            return DataTableExporterFactory.getExporterForType(exportAs, exporterOptions);
         }
 
         if (customExporterInstance instanceof Exporter) {

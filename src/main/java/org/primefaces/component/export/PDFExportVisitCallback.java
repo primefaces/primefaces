@@ -32,7 +32,6 @@ import javax.faces.view.facelets.FaceletException;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Paragraph;
-import org.primefaces.component.datatable.DataTable;
 
 public class PDFExportVisitCallback implements VisitCallback {
 
@@ -52,9 +51,8 @@ public class PDFExportVisitCallback implements VisitCallback {
 
     @Override
     public VisitResult visit(VisitContext context, UIComponent target) {
-        DataTable dt = (DataTable) target;
         try {
-            document.add(exporter.exportPDFTable(context.getFacesContext(), dt, pageOnly, selectionOnly, encoding));
+            document.add(exporter.exportTable(context.getFacesContext(), target, pageOnly, selectionOnly, encoding));
 
             Paragraph preface = new Paragraph();
             exporter.addEmptyLine(preface, 3);

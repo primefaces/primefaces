@@ -21,16 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.export;
+package org.primefaces.component.datatable.export;
 
 import java.awt.Color;
 
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.xssf.usermodel.*;
+import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.util.ComponentUtils;
 
-public class ExcelXExporter extends ExcelExporter {
+public class DataTableExcelXExporter extends DataTableExcelExporter {
 
     @Override
     protected Workbook createWorkBook() {

@@ -21,43 +21,48 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.export;
+package org.primefaces.component.datatable.export;
 
 import javax.faces.FacesException;
 
-public class ExporterFactory {
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.Exporter;
+import org.primefaces.component.export.ExporterOptions;
+import org.primefaces.component.export.ExporterType;
 
-    private ExporterFactory() {
+public class DataTableExporterFactory {
+
+    private DataTableExporterFactory() {
     }
 
-    public static Exporter getExporterForType(String type, ExporterOptions options) {
-        Exporter exporter = null;
+    public static Exporter<DataTable> getExporterForType(String type, ExporterOptions options) {
+        Exporter<DataTable> exporter = null;
 
         try {
             ExporterType exporterType = ExporterType.valueOf(type.toUpperCase());
 
             switch (exporterType) {
                 case XLS:
-                    exporter = new ExcelExporter();
+                    exporter = new DataTableExcelExporter();
                     break;
 
                 case PDF:
-                    exporter = new PDFExporter();
+                    exporter = new DataTablePDFExporter();
                     break;
 
                 case CSV:
-                    exporter = new CSVExporter(options);
+                    exporter = new DataTableCSVExporter(options);
                     break;
 
                 case XML:
-                    exporter = new XMLExporter();
+                    exporter = new DataTableXMLExporter();
                     break;
 
                 case XLSX:
-                    exporter = new ExcelXExporter();
+                    exporter = new DataTableExcelXExporter();
                     break;
                 case XLSXSTREAM:
-                    exporter = new ExcelXStreamExporter();
+                    exporter = new DataTableExcelXStreamExporter();
                     break;
 
             }
