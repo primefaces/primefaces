@@ -69,15 +69,6 @@ _XML export (type="xml")_
     <p:dataExporter type="xml" target="tableId" fileName="cars"/>
 </p:commandLink>
 ```
-_Custom export (optional type="text")_
-
-```xhtml
-<p:commandButton value="Export as Text" ajax="false" >
-    <p:dataExporter type="text" target="tableId" fileName="cars" customExporter="#{dataExporterView.textExporter}"/>
-</p:commandLink>
-```
-
-
 ## PageOnly
 By default dataExporter works on whole dataset, if you’d like export only the data displayed on
 current page, set pageOnly to true.
