@@ -73,6 +73,7 @@ public class CalendarUtils {
      * @return the {@link Date} object or <code>null</code>
      * @deprecated Use eg {@link CalendarUtils#getObjectAsLocalDate(FacesContext, UICalendar, Object)} instead.
      */
+    @Deprecated
     public static Date getObjectAsDate(FacesContext context, UICalendar calendar, Object value) {
         if (value == null) {
             return null;
@@ -350,6 +351,7 @@ public class CalendarUtils {
      * @param usertimeZone
      * @return
      */
+    @Deprecated
     public static TimeZone calculateTimeZone(Object usertimeZone) {
         return calculateTimeZone(usertimeZone, TimeZone.getDefault());
     }
@@ -360,6 +362,7 @@ public class CalendarUtils {
      * @param defaultTimeZone
      * @return
      */
+    @Deprecated
     public static TimeZone calculateTimeZone(Object usertimeZone, TimeZone defaultTimeZone) {
         if (usertimeZone != null) {
             if (usertimeZone instanceof String) {
