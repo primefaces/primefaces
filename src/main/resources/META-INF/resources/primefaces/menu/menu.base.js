@@ -90,10 +90,13 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
     },
 
     show: function() {
-        this.align();
         this.jq.css({
-            'z-index': ++PrimeFaces.zindex
-        }).show();
+            'z-index': ++PrimeFaces.zindex,
+            'visibility': 'hidden'
+        });
+        this.align();
+        this.jq..show();
+        this.jq.css('visibility', '');
     },
 
     hide: function() {
