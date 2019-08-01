@@ -167,14 +167,14 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             return convertToJava8DateTimeAPI(context, calendar, type, submittedValue);
         }
         else if (Date.class.isAssignableFrom(type)) {
-            return convertToLegacyDateAPI(context, submittedValue, calendar);
+            return convertToLegacyDateAPI(context, calendar, submittedValue);
         }
 
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, type.getName() + " not supported", null);
         throw new ConverterException(message);
     }
 
-    protected Date convertToLegacyDateAPI(FacesContext context, String submittedValue, UICalendar calendar) {
+    protected Date convertToLegacyDateAPI(FacesContext context, UICalendar calendar, String submittedValue) {
         //Code for backward-compatibility with java.util.Date - may be removed at some point in the future
         SimpleDateFormat format = new SimpleDateFormat(calendar.calculatePattern(), calendar.calculateLocale(context));
         format.setLenient(false);
