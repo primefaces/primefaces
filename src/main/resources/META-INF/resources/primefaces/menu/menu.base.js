@@ -95,7 +95,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
             'visibility': 'hidden'
         });
         this.align();
-        this.jq..show();
+        this.jq.show();
         this.jq.css('visibility', '');
     },
 
