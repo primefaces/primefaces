@@ -57,6 +57,7 @@ public class TooltipRenderer extends CoreRenderer {
             writer.startElement("div", tooltip);
             writer.writeAttribute("id", tooltip.getClientId(context), null);
             writer.writeAttribute("class", styleClass, "styleClass");
+            writer.writeAttribute("role", "tooltip", null);
 
             if (tooltip.getStyle() != null) {
                 writer.writeAttribute("style", tooltip.getStyle(), "style");
