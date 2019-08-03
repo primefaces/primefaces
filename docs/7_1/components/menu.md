@@ -31,6 +31,8 @@ styleClass | null | String | Style class of the main container element.
 triggerEvent | click | String | Event to show the dynamic positioned menu.
 tabindex | 0 | String | Position of the element in the tabbing order. Default is 0.
 toggleable | false | Boolean | Defines whether clicking the header of a submenu toggles the visibility of children menuitems.
+collision | flip | String | Applied only when overlay is set to true. When the overlay menu overflows the window in some direction, move it to an alternative position. Supported values are flip, fit, flipfit and none. See https://api.jqueryui.com/position/ for more details. Defaults to flip. When you the body of your layout does not scroll, you may also want to set the option maxHeight.
+maxHeight | null | String | The maximum height of the menu. May be either a number (such as 200), which is interpreted as a height in pixels. Alternatively, may also be a CSS length such as 90vh or 10em. Often used when overlay is set to true, but also works when it is set to false. Useful in case the body of your layout does not scroll, especially in combination with the collision property.
 
 ## Getting started with the Menu
 A menu is composed of submenus and menuitems.
@@ -166,6 +168,21 @@ content.
 ```xhtml
 <p:menu toggleable="true">
 ```
+
+## Accessibility
+
+When the menu contains more than a few items and the menu is shown in an overlay, the height of the overlay may grow taller than the available height of the browser's viewport. Even when the height is smaller, part of the overlay may still end up outside the viewport, as by default the overlay is rendered at the current position of the menu button. 
+
+If the body of your web page is scrollable, this is not an issue, users can scroll down to see the remaining entries. However, it is also common to use a layout where the body of the web page takes up 100% of the available height and is not scrollable. Then users may end up with no way of accessing some entries of the overlay menu. In this case, please consider using the `collision` and `maxHeight` options to ensure the overlay menu is always within the bounds of the viewport:
+
+```xml
+<p:menu overlay="true" collision="flipfit" maxHeight="90vh"
+    trigger="btn" my="left top" at="bottom left">
+    <!-- many submenus and menuitems -->
+</p:menu>
+<p:commandButton id="btn" value="Show Menu" type="button"/>
+```
+
 ## Skinning
 Menu resides in a main container element which _style_ and _styleClass_ attributes apply. Following is
 the list of structural style classes;

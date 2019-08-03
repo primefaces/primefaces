@@ -32,6 +32,8 @@ title | null | String | Advisory tooltip information.
 appendTo | null | String | Appends the overlay to the element defined by search expression. Defaults to document body.
 menuStyleClass | null | String | Style class of the overlay menu element.
 ariaLabel | null | String | The aria-label attribute is used to define a string that labels the current element for accessibility.
+collision | flip | String | For the overlay menu that shows up when the menu button is clicked. When the overlay menu overflows the window in some direction, move it to an alternative position. Supported values are flip, fit, flipfit and none. See https://api.jqueryui.com/position/ for more details. Defaults to flip. When you the body of your layout does not scroll, you may also want to set the option maxHeight.
+maxHeight | null | String | The maximum height of the overlay menu that shows up when the menu button is clicked. May be either a number (such as 200), which is interpreted as a height in pixels. Alternatively, may also be a CSS length such as 90vh or 10em. Useful in case the body of your layout does not scroll, especially in combination with the collision property.
 
 ## Getting started with the MenuButton
 MenuButton consists of one ore more menuitems. Following menubutton example has three
@@ -48,6 +50,18 @@ ajax and third one is used for redirect purposes.
 ## Dynamic Menus
 Menus can be created programmatically as well, see the dynamic menus part in menu component
 section for more information and an example.
+
+## Accessibility
+
+When the menu contains more than a few items, the height of the overlay may grow taller than the available height of the browser's viewport. Even when the height is smaller, part of the overlay may still end up outside the viewport, as by default the overlay is rendered at the current position of the menu button. 
+
+If the body of your web page is scrollable, this is not an issue, users can scroll down to see the remaining entries. However, it is also common to use a layout where the body of the web page takes up 100% of the available height and is not scrollable. Then users may end up with no way of accessing some entries of the overlay menu. In this case, please consider using the `collision` and `maxHeight` options to ensure the overlay menu is always within the bounds of the viewport:
+
+```xhtml
+<p:menuButton value="Options" collision="flipfit" maxHeight="90vh">
+    <!-- many menuitems -->
+</p:menuButton>
+```
 
 ## Skinning
 MenuButton resides in a main container which _style_ and _styleClass_ attributes apply. As skinning
