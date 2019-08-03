@@ -24,7 +24,6 @@
 package org.primefaces.model;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Map;
 
 public interface ScheduleEvent {
@@ -37,19 +36,9 @@ public interface ScheduleEvent {
 
     public String getTitle();
 
-    /**
-     * @deprecated Use {@link #getStartLocalDateTime()} instead.
-     */
-    public Date getStartDate();
-
     public LocalDateTime getStartLocalDateTime();
 
     public void setStartLocalDateTime(LocalDateTime start);
-
-    /**
-     * @deprecated Use {@link #getEndLocalDateTime()} instead.
-     */
-    public Date getEndDate();
 
     public LocalDateTime getEndLocalDateTime();
 

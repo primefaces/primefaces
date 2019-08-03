@@ -25,7 +25,7 @@ value | null | Object | An org.primefaces.model.ScheduleModel instance represent
 locale | null | Object | Locale for localization, can be String or a java.util.Locale instance
 aspectRatio | null | Float | Ratio of calendar width to height, higher the value shorter the height is
 view | month | String | The view type to use, possible values are 'month', 'agendaDay', 'agendaWeek', 'basicWeek', 'basicDay'
-initialDate | null | java.time.LocalDate, java.util.Date (deprecated) | The initial date that is used when schedule loads. If ommitted, the schedule starts on the current date
+initialDate | null | java.time.LocalDate | The initial date that is used when schedule loads. If ommitted, the schedule starts on the current date
 showWeekends | true | Boolean | Specifies inclusion Saturday/Sunday columns in any of the views
 style | null | String | Style of the main container element of schedule
 styleClass | null | String | Style class of the main container element of schedule
@@ -45,7 +45,7 @@ maxTime | null | String | Maximum time to display in a day view.
 timeFormat | null | String | Determines the time-text that will be displayed on each event.
 columnFormat | null | String | Deprecated, use columnHeaderFormat instead. Format for column headers.
 columnHeaderFormat | null | String | Format for column headers.
-timeZone | null | Object | String or a java.time.ZoneId instance or a java.util.TimeZone instance to specify the timezone used for date conversion.
+timeZone | null | Object | String or a java.time.ZoneId instance to specify the timezone used for date conversion.
 tooltip | false | Boolean | Displays description of events on a tooltip.
 clientTimeZone | null | String | Timezone to define how to interpret the dates at browser. Valid values are "false", "local", "UTC" and ids like "America/Chicago".
 showWeekNumbers | false | Boolean | Display week numbers in schedule.
@@ -91,9 +91,7 @@ Table below describes each property in detail.
 id | Used internally by PrimeFaces, auto generated.
 title | Title of the event.
 startLocalDateTime | Start date of type java.time.LocalDateTime.
-startDate | Start date of type java.util.Date. (deprecated)
 endLocalDateTime | End date of type java.time.LocalDateTime.
-endDate | End date of type java.util.Date. (deprecated)
 allDay | Flag indicating event is all day.
 styleClass | Visual style class to enable multi resource display.
 data | Optional data you can set to be represented by Event.
@@ -109,11 +107,11 @@ Schedule provides various ajax behavior events to respond user actions.
 
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
-dateSelect | org.primefaces.event.SelectEvent | When a date is selected.
-eventSelect | org.primefaces.event.SelectEvent | When an event is selected.
+dateSelect | org.primefaces.event.SelectEvent<LocalDateTime> | When a date is selected.
+eventSelect | org.primefaces.event.SelectEvent<ScheduleEvent> | When an event is selected.
 eventMove | org.primefaces.event.ScheduleEntryMoveEvent | When an event is moved.
 eventResize | org.primefaces.event.ScheduleEntryResizeEvent | When an event is resized.
-viewChange | org.primefaces.event.SelectEvent | When a view is changed.
+viewChange | org.primefaces.event.SelectEvent<String> | When a view is changed.
 
 ## Ajax Updates
 Schedule has a quite complex UI which is generated on-the-fly by the client side

@@ -24,16 +24,12 @@
 package org.primefaces.component.schedule;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
@@ -130,15 +126,7 @@ public class ScheduleRenderer extends CoreRenderer {
                     for (Map.Entry<String, Object> dynaProperty : event.getDynamicProperties().entrySet()) {
                         String key = dynaProperty.getKey();
                         Object value = dynaProperty.getValue();
-                        if (value instanceof LocalDateTime) {
-                            value = ((LocalDateTime) value).format(dateTimeFormatter);
-                        }
-                        else if (value instanceof Date) {
-                            TimeZone timeZone = CalendarUtils.calculateTimeZone(schedule.getTimeZone(), TimeZone.getTimeZone("UTC"));
-                            SimpleDateFormat iso = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-                            iso.setTimeZone(timeZone);
-                            value = iso.format((Date) value);
-                        }
+                        value = ((LocalDateTime) value).format(dateTimeFormatter);
                         jsonObject.put(key, value);
                     }
                 }
@@ -166,14 +154,9 @@ public class ScheduleRenderer extends CoreRenderer {
 
         Object initialDate = schedule.getInitialDate();
         if (initialDate != null) {
-            if (initialDate instanceof LocalDate) {
-                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE;
-                wb.attr("defaultDate", ((LocalDate) initialDate).format(dateTimeFormatter), null);
-            }
-            else if (initialDate instanceof Date) {
-                DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-                wb.attr("defaultDate", fmt.format((Date) initialDate), null);
-            }
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE;
+            wb.attr("defaultDate", ((LocalDate) initialDate).format(dateTimeFormatter), null);
+
         }
 
         if (schedule.isShowHeader()) {
