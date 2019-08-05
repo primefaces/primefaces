@@ -1175,8 +1175,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     setOuterWidth: function(element, width) {
-        var diff = element.outerWidth() - element.width();
-        element.width(parseFloat(width) - diff);
+        if (element.css('box-sizing') === 'border-box') { // Github issue: #5014
+            var diff = element.outerWidth() - element.width();
+            element.width(parseFloat(width) - diff);
+        }
+        else {
+            element.width(width);
+        }
     },
 
     setScrollWidth: function(width) {
