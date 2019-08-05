@@ -107,6 +107,14 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.jq = $(this.jqId);
         this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.target);
 
+        var describedBy = this.target.attr("aria-describedby");
+        if (!describedBy || 0 === describedBy.length) {
+            describedBy = this.id;
+        } else {
+            describedBy += " " + this.id;
+        }
+        this.target.attr("aria-describedby", describedBy);
+
         var $this = this;
         if(this.cfg.delegate) {
             var targetSelector = "*[id='" + this.target.attr('id') + "']";
