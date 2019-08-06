@@ -38,7 +38,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
     },
 
     bindGlobal: function() {
-        this.jq = $('<div class="ui-tooltip ui-tooltip-global ui-widget ui-tooltip-' + this.cfg.position + '"></div>')
+        this.jq = $('<div class="ui-tooltip ui-tooltip-global ui-widget ui-tooltip-' + this.cfg.position + '" role="tooltip"></div>')
             .appendTo('body');
         this.jq.append('<div class="ui-tooltip-arrow"></div><div class="ui-tooltip-text ui-shadow ui-corner-all"></div>');
 
@@ -106,6 +106,14 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.jqId = PrimeFaces.escapeClientId(this.id);
         this.jq = $(this.jqId);
         this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.target);
+
+        var describedBy = this.target.attr("aria-describedby");
+        if (!describedBy || 0 === describedBy.length) {
+            describedBy = this.id;
+        } else {
+            describedBy += " " + this.id;
+        }
+        this.target.attr("aria-describedby", describedBy);
 
         var $this = this;
         if(this.cfg.delegate) {
