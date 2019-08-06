@@ -23,146 +23,83 @@
  */
 package org.primefaces.component.datatable.export;
 
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.WorkbookUtil;
+import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.ExportConfiguration;
+import org.primefaces.component.export.ExporterOptions;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIPanel;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collections;
 import java.util.List;
 
-import javax.el.MethodExpression;
-import javax.faces.component.UIComponent;
-import javax.faces.component.visit.VisitCallback;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFPalette;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.PrintSetup;
-import org.apache.poi.ss.usermodel.RichTextString;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.VerticalAlignment;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.util.WorkbookUtil;
-import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.export.ExcelExportVisitCallback;
-import org.primefaces.component.export.ExcelExporter;
-import org.primefaces.component.export.ExporterOptions;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-
-public class DataTableExcelExporter extends DataTableExporter implements ExcelExporter<DataTable> {
+public class DataTableExcelExporter extends DataTableExporter {
 
     private CellStyle cellStyle;
     private CellStyle facetStyle;
+    private Workbook wb;
+    private int counter = 0;
 
     @Override
-    public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType,
-                       MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
-                       MethodExpression onTableRender) throws IOException {
+    protected void preExport(FacesContext context, ExportConfiguration config) throws IOException {
+        wb = createWorkBook();
 
-        Workbook wb = createWorkBook();
+        if (config.getPreProcessor() != null) {
+            config.getPreProcessor().invoke(context.getELContext(), new Object[]{wb});
+        }
+    }
+
+    @Override
+    public void doExport(FacesContext context, DataTable table, ExportConfiguration config) throws IOException {
         String sheetName = getSheetName(context, table);
         if (sheetName == null) {
-            sheetName = table.getId();
+            sheetName = table.getId() + (counter + 1);
         }
 
         sheetName = WorkbookUtil.createSafeSheetName(sheetName);
         if (sheetName.equals("empty") || sheetName.equals("null")) {
-            sheetName = "Sheet";
+            sheetName = "Sheet" + (counter + 1);
         }
+
+        ++counter;
 
         Sheet sheet = createSheet(wb, sheetName);
+        applyOptions(wb, table, sheet, config.getOptions());
+        exportTable(context, table, sheet, config.isPageOnly(), config.isSelectionOnly());
 
-        if (preProcessor != null) {
-            preProcessor.invoke(context.getELContext(), new Object[]{wb});
+        for (int j = 0; j < table.getColumnsCount(); j++) {
+            sheet.autoSizeColumn((short) j);
         }
-
-        applyOptions(wb, table, sheet, options);
-        exportTable(context, table, sheet, pageOnly, selectionOnly);
-
-        for (int i = 0; i < table.getColumnsCount(); i++) {
-            sheet.autoSizeColumn((short) i);
-        }
-
-        if (postProcessor != null) {
-            postProcessor.invoke(context.getELContext(), new Object[]{wb});
-        }
-
-        writeExcelToResponse(context.getExternalContext(), wb, filename);
     }
 
     @Override
-    public void export(FacesContext context, String filename, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
-                       String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
-                       MethodExpression onTableRender) throws IOException {
-
-        Workbook wb = createWorkBook();
-
-        if (preProcessor != null) {
-            preProcessor.invoke(context.getELContext(), new Object[]{wb});
+    protected void postExport(FacesContext context, ExportConfiguration config) throws IOException {
+        if (config.getPostProcessor() != null) {
+            config.getPostProcessor().invoke(context.getELContext(), new Object[]{wb});
         }
 
-        for (int i = 0; i < tables.size(); i++) {
-            DataTable table = tables.get(i);
-            String sheetName = getSheetName(context, table);
-            if (sheetName == null) {
-                sheetName = table.getId();
-            }
+        writeExcelToResponse(context.getExternalContext(), wb, config.getOutputFileName());
 
-            sheetName = WorkbookUtil.createSafeSheetName(sheetName);
-            if (sheetName.equals("empty") || sheetName.equals("null")) {
-                sheetName = "Sheet" + String.valueOf(i + 1);
-            }
-
-            Sheet sheet = createSheet(wb, sheetName);
-            applyOptions(wb, table, sheet, options);
-            exportTable(context, table, sheet, pageOnly, selectionOnly);
-
-            for (int j = 0; j < table.getColumnsCount(); j++) {
-                sheet.autoSizeColumn((short) j);
-            }
-        }
-
-        if (postProcessor != null) {
-            postProcessor.invoke(context.getELContext(), new Object[]{wb});
-        }
-
-        writeExcelToResponse(context.getExternalContext(), wb, filename);
+        reset();
     }
 
-    @Override
-    public void export(FacesContext context, List<String> clientIds, String filename, boolean pageOnly, boolean selectionOnly,
-                       String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
-                       MethodExpression onTableRender) throws IOException {
-
-        Workbook wb = createWorkBook();
-
-        if (preProcessor != null) {
-            preProcessor.invoke(context.getELContext(), new Object[]{wb});
-        }
-
-        VisitContext visitContext = VisitContext.createVisitContext(context, clientIds, null);
-        VisitCallback visitCallback = new ExcelExportVisitCallback(this, wb, pageOnly, selectionOnly);
-        context.getViewRoot().visitTree(visitContext, visitCallback);
-
-        if (postProcessor != null) {
-            postProcessor.invoke(context.getELContext(), new Object[]{wb});
-        }
-
-        writeExcelToResponse(context.getExternalContext(), wb, filename);
+    protected void reset() throws IOException {
+        wb.close();
+        wb = null;
+        counter = 0;
     }
 
     @Override
@@ -297,7 +234,6 @@ public class DataTableExcelExporter extends DataTableExporter implements ExcelEx
         return ComponentUtils.createContentDisposition("attachment", filename + ".xls");
     }
 
-    @Override
     public void exportTable(FacesContext context, UIComponent component, Sheet sheet, boolean pageOnly, boolean selectionOnly) {
         DataTable table = (DataTable) component;
         addColumnFacets(table, sheet, DataTableExporter.ColumnType.HEADER);
@@ -357,7 +293,7 @@ public class DataTableExcelExporter extends DataTableExporter implements ExcelEx
             if (facetBackground != null) {
                 color = Color.decode(facetBackground);
                 HSSFColor backgroundColor = palette.findSimilarColor(color.getRed(), color.getGreen(), color.getBlue());
-                ((HSSFCellStyle) facetStyle).setFillForegroundColor(backgroundColor.getIndex());
+                facetStyle.setFillForegroundColor(backgroundColor.getIndex());
                 facetStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
             }
 
@@ -365,7 +301,7 @@ public class DataTableExcelExporter extends DataTableExporter implements ExcelEx
             if (facetFontColor != null) {
                 color = Color.decode(facetFontColor);
                 HSSFColor facetColor = palette.findSimilarColor(color.getRed(), color.getGreen(), color.getBlue());
-                ((HSSFFont) facetFont).setColor(facetColor.getIndex());
+                facetFont.setColor(facetColor.getIndex());
             }
 
             String facetFontSize = options.getFacetFontSize();
@@ -386,7 +322,7 @@ public class DataTableExcelExporter extends DataTableExporter implements ExcelEx
                 HSSFPalette palette = ((HSSFWorkbook) wb).getCustomPalette();
                 Color color = Color.decode(cellFontColor);
                 HSSFColor cellColor = palette.findSimilarColor(color.getRed(), color.getGreen(), color.getBlue());
-                ((HSSFFont) cellFont).setColor(cellColor.getIndex());
+                cellFont.setColor(cellColor.getIndex());
             }
 
             String cellFontSize = options.getCellFontSize();
@@ -406,5 +342,27 @@ public class DataTableExcelExporter extends DataTableExporter implements ExcelEx
         }
 
         cellStyle.setFont(cellFont);
+    }
+
+    public String getSheetName(FacesContext context, UIComponent table) {
+        UIComponent header = table.getFacet("header");
+        if (header != null) {
+            if (header instanceof UIPanel) {
+                for (UIComponent child : header.getChildren()) {
+                    if (child.isRendered()) {
+                        String value = ComponentUtils.getValueToRender(context, child);
+
+                        if (value != null) {
+                            return value;
+                        }
+                    }
+                }
+            }
+            else {
+                return ComponentUtils.getValueToRender(context, header);
+            }
+        }
+
+        return null;
     }
 }

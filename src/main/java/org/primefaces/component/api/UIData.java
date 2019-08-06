@@ -53,6 +53,7 @@ import org.primefaces.component.inputtext.InputText;
 import org.primefaces.model.CollectionDataModel;
 import org.primefaces.model.IterableDataModel;
 import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.SharedStringBuilder;
 
 public class UIData extends javax.faces.component.UIData {
@@ -1361,22 +1362,10 @@ public class UIData extends javax.faces.component.UIData {
 
     protected Boolean isNestedWithinIterator() {
         if (isNested == null) {
-            UIComponent parent = this;
-            while (null != (parent = parent.getParent())) {
-                if (parent instanceof javax.faces.component.UIData || parent.getClass().getName().endsWith("UIRepeat")
-                        || (parent instanceof UITabPanel && ((UITabPanel) parent).isRepeating())) {
-                    isNested = Boolean.TRUE;
-                    break;
-                }
-            }
-            if (isNested == null) {
-                isNested = Boolean.FALSE;
-            }
-            return isNested;
+            isNested = ComponentUtils.isNestedWithinIterator(this);
         }
-        else {
-            return isNested;
-        }
+
+        return isNested;
     }
 
     protected void preDecode(FacesContext context) {

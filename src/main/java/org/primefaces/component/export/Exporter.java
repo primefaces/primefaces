@@ -23,28 +23,12 @@
  */
 package org.primefaces.component.export;
 
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.util.List;
 
-import javax.el.MethodExpression;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-
 public interface Exporter<T extends UIComponent> {
 
-    void export(FacesContext facesContext, T component,
-            String outputFileName, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor,
-            MethodExpression postProcessor, ExporterOptions options, MethodExpression onTableRender) throws IOException;
-
-    void export(FacesContext facesContext, List<String> clientIds,
-            String outputFileName, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor,
-            MethodExpression postProcessor, ExporterOptions options, MethodExpression onTableRender) throws IOException;
-
-    void export(FacesContext facesContext,
-            String outputFileName, List<T> components, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor,
-            MethodExpression postProcessor, ExporterOptions options, MethodExpression onTableRender) throws IOException;
-
+    void export(FacesContext facesContext, List<T> component, ExportConfiguration config) throws IOException;
 }
