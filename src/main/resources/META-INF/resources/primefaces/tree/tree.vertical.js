@@ -628,7 +628,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     draggedSourceKeys = [dragNodeKey];
                 }
                 draggedSourceKeys = draggedSourceKeys.filter(function(key) {
-                    return !$this.invalidSourceKeys.includes(key);
+                    return $.inArray(key, $this.invalidSourceKeys) === -1;
                 });
 
                 if (draggedSourceKeys && draggedSourceKeys.length) {
@@ -776,7 +776,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     draggedSourceKeys = [dragNodeKey];
                 }
                 draggedSourceKeys = draggedSourceKeys.filter(function(key) {
-                    return !$this.invalidSourceKeys.includes(key);
+                    return $.inArray(key, $this.invalidSourceKeys) === -1;
                 });
 
                 if (draggedSourceKeys && draggedSourceKeys.length) {
