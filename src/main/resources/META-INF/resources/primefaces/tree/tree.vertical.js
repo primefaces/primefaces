@@ -730,7 +730,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     targetDragNode = $this.findTargetDragNode(dragNode, dragMode);
 
                     if(i === 0) {
-                        dndIndex = targetDragNode.prevAll('li.ui-treenode').length;
+                        dndIndex = dropNode.find('>.ui-treenode-children>li.ui-treenode').length;
                     }
 
                     dragNodeKey = $this.getRowKey(targetDragNode);
