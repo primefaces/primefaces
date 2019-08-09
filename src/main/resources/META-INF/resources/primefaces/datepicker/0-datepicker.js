@@ -1703,6 +1703,13 @@
                 this.datepickerClick = false;
 
                 this.panel.hide();
+                
+                var viewDate = this.options.viewDate && !this.value ? 
+                    this.parseValue(this.options.viewDate) 
+                    :
+                    ((((this.isMultipleSelection() || this.isRangeSelection()) && this.value instanceof Array) ? this.value[0] : this.value) || this.parseValue(new Date()));
+                
+                this.updateViewDate(null, viewDate);
             }
         },
 
