@@ -112,7 +112,6 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
             }
         }
         else if (component instanceof ValueHolder) {
-
             if (component instanceof EditableValueHolder) {
                 Object submittedValue = ((EditableValueHolder) component).getSubmittedValue();
                 if (submittedValue != null) {
