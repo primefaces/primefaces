@@ -112,6 +112,37 @@ Another powerful feature of tooltip is the ability to display custom content as 
     <h:outputText value="Visit PrimeFaces Home" />
 </p:tooltip>
 ```
+
+## Global Selector 
+When using tooltip inside a Column the tooltip value is displayed in the ColumnToggle and Export. 
+Problem scenario:
+
+```xhtml
+<p:dataTable id="cars" var="car" value="#{dtBasicView.cars}">
+	<p:column>
+   		<h:outputText value="#{car.id}" />
+    	<f:facet name="header">
+			<p:outputLabel value="ID" id="outputTextID"/>
+			<p:tooltip value="Tooltip for ID" for="outputTextID"></p:tooltip>
+		</f:facet>
+	</p:column>
+```
+
+Solution:
+To only display the text without the tooltip value use globalTooltip with globalSelector attribute.
+
+```xhtml
+<p:tooltip globalSelector="a,:input,:button,.header" />
+<p:dataTable id="cars" var="car" value="#{dtBasicView.cars}">
+	<p:column>
+    	<h:outputText value="#{car.id}" />
+        <f:facet name="header">
+        	<p:outputLabel value="ID" id="outputTextID" styleClass="header" pt:data-tooltip="Tooltip for ID"/>
+         </f:facet>
+   </p:column>
+```
+
+
 ## Skinning
 Tooltip has only _.ui-tooltip_ as a style class and is styled with global skinning selectors, see main
 skinning section for more information.
