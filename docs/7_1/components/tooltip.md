@@ -114,8 +114,8 @@ Another powerful feature of tooltip is the ability to display custom content as 
 ```
 
 ## Global Selector 
-When using tooltip inside a Column the tooltip value is displayed in the ColumnToggle and Export. 
 Problem scenario:
+When using tooltip inside a Column the tooltip value is displayed in the ColumnToggle and Export. 
 
 ```xhtml
 <p:dataTable id="cars" var="car" value="#{dtBasicView.cars}">
