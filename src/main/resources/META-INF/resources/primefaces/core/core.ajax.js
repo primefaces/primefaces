@@ -292,6 +292,7 @@ if (!PrimeFaces.ajax) {
                 PrimeFaces.debug('Initiating ajax request.');
 
                 PrimeFaces.customFocus = false;
+                PrimeFaces.isAjaxRequest = true;
 
                 var global = (cfg.global === true || cfg.global === undefined) ? true : false,
                 form = null,
@@ -596,6 +597,8 @@ if (!PrimeFaces.ajax) {
                         if(!cfg.async && !PrimeFaces.nonAjaxPosted) {
                             PrimeFaces.ajax.Queue.poll();
                         }
+
+                        PrimeFaces.isAjaxRequest = false;
                     });
 
                 PrimeFaces.ajax.Queue.addXHR(jqXhr);

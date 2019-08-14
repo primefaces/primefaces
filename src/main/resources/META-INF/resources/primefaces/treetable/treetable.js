@@ -379,7 +379,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             width: table.outerWidth(),
             top: offset.top,
             left: offset.left,
-            'z-index': ++PrimeFaces.zindex
+            'z-index': PrimeFaces.getZindex()
         });
 
         this.jq.prepend(this.stickyContainer);

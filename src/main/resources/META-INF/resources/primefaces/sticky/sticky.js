@@ -51,7 +51,7 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
             this.target.css({
                 'position': 'fixed',
                 'top': this.cfg.margin,
-                'z-index': ++PrimeFaces.zindex
+                'z-index': PrimeFaces.getZindex()
             })
             .addClass('ui-shadow ui-sticky');
 

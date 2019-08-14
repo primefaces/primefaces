@@ -136,7 +136,7 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         this.panel.css({
             left:'',
             top:'',
-            'z-index': ++PrimeFaces.zindex
+            'z-index': PrimeFaces.getZindex()
         })
         .position({
             my: 'left top',

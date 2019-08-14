@@ -398,7 +398,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
     },
 
     moveToTop: function() {
-        this.jq.css('z-index', ++PrimeFaces.zindex);
+        this.jq.css('z-index', PrimeFaces.getZindex());
     },
 
     toggleMaximize: function() {

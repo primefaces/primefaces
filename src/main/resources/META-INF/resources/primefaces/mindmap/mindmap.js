@@ -128,7 +128,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
                             {
                                 'left': offset.left + node.attr('cx') + 20,
                                 'top':offset.top + node.attr('cy') + 10,
-                                'z-index': ++PrimeFaces.zindex
+                                'z-index': PrimeFaces.getZindex()
                             })
                         .show();
         }

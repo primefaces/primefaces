@@ -42,7 +42,7 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
         }
 
         this.jq.addClass('ui-sidebar-active');
-        this.jq.css('z-index', this.cfg.baseZIndex + (++PrimeFaces.zindex));
+        this.jq.css('z-index', this.cfg.baseZIndex + (PrimeFaces.getZindex()));
 
         this.postShow();
         this.enableModality();

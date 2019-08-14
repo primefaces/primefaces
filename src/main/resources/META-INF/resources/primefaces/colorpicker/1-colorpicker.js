@@ -49,7 +49,7 @@
         this.cfg.onShow = function() {
             if($this.cfg.popup) {
                 $this.overlay.css({
-                    'z-index': ++PrimeFaces.zindex,
+                    'z-index': PrimeFaces.getZindex(),
                     'display':'block', 
                     'opacity':0, 
                     'pointer-events': 'none'
@@ -79,7 +79,7 @@
         };
 
         this.cfg.onHide = function(cp) {
-            $this.overlay.css('z-index', ++PrimeFaces.zindex);
+            $this.overlay.css('z-index', PrimeFaces.getZindex());
             $(cp).fadeOut('fast');
             return false;
         };

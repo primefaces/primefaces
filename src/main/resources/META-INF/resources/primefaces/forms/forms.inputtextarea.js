@@ -365,7 +365,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
 
     show: function() {
         this.panel.css({
-            'z-index': ++PrimeFaces.zindex,
+            'z-index': PrimeFaces.getZindex(),
             'width': this.jq.innerWidth(),
             'visibility': 'hidden'
         }).show();

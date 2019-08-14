@@ -342,7 +342,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     alignPanel: function() {
-        this.panel.css({'left':'', 'top':'', 'z-index': ++PrimeFaces.zindex}).position({
+        this.panel.css({'left':'', 'top':'', 'z-index': PrimeFaces.getZindex()}).position({
                             my: 'left top'
                             ,at: 'left bottom'
                             ,of: this.trigger

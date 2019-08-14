@@ -13,7 +13,7 @@
             this.cfg.layout = PrimeFaces.widget.KeyboardUtils.getPresetLayout(this.cfg.layoutName);
 
         this.cfg.beforeShow = function(div, inst) {
-            $(div).addClass('ui-input-overlay').css('z-index', ++PrimeFaces.zindex);
+            $(div).addClass('ui-input-overlay').css('z-index', PrimeFaces.getZindex());
         };
 
         this.jq.keypad(this.cfg);

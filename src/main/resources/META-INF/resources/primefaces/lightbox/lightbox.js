@@ -269,7 +269,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
     show: function() {
         this.center();
 
-        this.panel.css('z-index', ++PrimeFaces.zindex).show();
+        this.panel.css('z-index', PrimeFaces.getZindex()).show();
 
         if(!PrimeFaces.utils.isModalActive(this.id)) {
             this.enableModality();

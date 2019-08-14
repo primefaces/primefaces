@@ -678,7 +678,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         this.alignPanel();
 
-        this.panel.css({'display':'none', 'opacity':'', 'pointer-events': '', 'z-index': ++PrimeFaces.zindex});
+        this.panel.css({'display':'none', 'opacity':'', 'pointer-events': '', 'z-index': PrimeFaces.getZindex()});
 
         if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
             this.panel.parent().css('z-index', PrimeFaces.zindex - 1);

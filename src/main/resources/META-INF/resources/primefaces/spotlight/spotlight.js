@@ -69,7 +69,7 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
     bindEvents: function() {
         var $this = this;
 
-        this.target.data('zindex',this.target.zIndex()).css('z-index', ++PrimeFaces.zindex);
+        this.target.data('zindex',this.target.zIndex()).css('z-index', PrimeFaces.getZindex());
 
         if (this.cfg.blockScroll) {
             PrimeFaces.utils.preventScrolling();

@@ -338,7 +338,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
     },
 
     alignPanel: function() {
-        this.menu.css({left:'', top:'','z-index': ++PrimeFaces.zindex});
+        this.menu.css({left:'', top:'','z-index': PrimeFaces.getZindex()});
 
         if(this.menu.parent().is(this.jq)) {
             this.menu.css({

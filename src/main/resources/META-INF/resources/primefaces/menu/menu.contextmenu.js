@@ -119,7 +119,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         this.jq.css({
             'left': left,
             'top': top,
-            'z-index': ++PrimeFaces.zindex
+            'z-index': PrimeFaces.getZindex()
         }).show();
 
         e.preventDefault();

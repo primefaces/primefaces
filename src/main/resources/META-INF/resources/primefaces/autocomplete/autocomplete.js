@@ -524,7 +524,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         .css({
                             'left':'',
                             'top':'',
-                            'z-index': ++PrimeFaces.zindex,
+                            'z-index': PrimeFaces.getZindex(),
                             'width': content.outerWidth()
                         })
                         .position({
@@ -850,7 +850,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.panel.css({'left':'',
                         'top':'',
                         'width': panelWidth,
-                        'z-index': ++PrimeFaces.zindex
+                        'z-index': PrimeFaces.getZindex()
                 });
 
         if(this.panel.parent().is(this.jq)) {

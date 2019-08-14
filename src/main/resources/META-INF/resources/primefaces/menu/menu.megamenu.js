@@ -352,7 +352,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
             };
         }
 
-        submenu.css('z-index', ++PrimeFaces.zindex)
+        submenu.css('z-index', PrimeFaces.getZindex())
                 .show()
                 .position(pos);
     }

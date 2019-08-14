@@ -192,7 +192,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
          this.jq.css({
             left:'',
             top:'',
-            'z-index': ++PrimeFaces.zindex
+            'z-index': PrimeFaces.getZindex()
         });
 
         if(this.cfg.trackMouse && this.mouseEvent) {

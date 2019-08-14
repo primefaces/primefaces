@@ -59,7 +59,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     },
     
     show: function() {
-        this.blocker.css('z-index', ++PrimeFaces.zindex);
+        this.blocker.css('z-index', PrimeFaces.getZindex());
         
         //center position of content
         for(var i = 0; i < this.block.length; i++) {
@@ -69,7 +69,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             content.css({
                 'left': (blocker.width() - content.outerWidth()) / 2,
                 'top': (blocker.height() - content.outerHeight()) / 2,
-                'z-index': ++PrimeFaces.zindex
+                'z-index': PrimeFaces.getZindex()
             });
         }
 

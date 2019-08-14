@@ -196,7 +196,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
             collision: 'flipfit'
         };
 
-        submenu.css('z-index', ++PrimeFaces.zindex)
+        submenu.css('z-index', PrimeFaces.getZindex())
             .show()
             .position(pos);
     },

@@ -131,7 +131,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                         $this.tip.css({
                             'left': jsEvent.pageX,
                             'top': jsEvent.pageY + 15,
-                            'z-index': ++PrimeFaces.zindex
+                            'z-index': PrimeFaces.getZindex()
                         });
                         $this.tip[0].innerHTML = event.description;
                         $this.tip.show();

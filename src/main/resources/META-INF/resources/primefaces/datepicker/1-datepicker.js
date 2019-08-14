@@ -32,7 +32,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                     return false;
                 }
                 
-                this.panel.css('z-index', ++PrimeFaces.zindex);
+                this.panel.css('z-index', PrimeFaces.getZindex());
                 
                 var inst = this; // the instance of prime.datePicker API
 

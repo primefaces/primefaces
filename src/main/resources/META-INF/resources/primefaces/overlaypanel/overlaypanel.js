@@ -218,7 +218,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
             this.targetZindex = this.targetElement.zIndex();
         }
 
-        this.jq.css({'left':'', 'top':'', 'z-index': ++PrimeFaces.zindex})
+        this.jq.css({'left':'', 'top':'', 'z-index': PrimeFaces.getZindex()})
                 .position({
                     my: this.cfg.my
                     ,at: this.cfg.at

@@ -20,7 +20,7 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
             };
         }
 
-        submenu.css('z-index', ++PrimeFaces.zindex)
+        submenu.css('z-index', PrimeFaces.getZindex())
                 .show()
                 .position(pos);
     },
