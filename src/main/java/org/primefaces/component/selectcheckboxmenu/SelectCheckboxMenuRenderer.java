@@ -183,7 +183,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         if (menu.getOnchange() != null) {
             writer.writeAttribute("onchange", menu.getOnchange(), null);
         }
-        renderAccessibilityAttributes(context, menu);
+        renderAccessibilityAttributes(context, menu, option.isDisabled(), false);
 
         writer.endElement("input");
 
