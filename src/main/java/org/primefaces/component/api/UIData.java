@@ -98,6 +98,7 @@ public class UIData extends javax.faces.component.UIData {
     public enum PropertyKeys {
         paginator,
         paginatorTemplate,
+        rows,
         rowsPerPageTemplate,
         rowsPerPageLabel,
         currentPageReportTemplate,
@@ -126,6 +127,19 @@ public class UIData extends javax.faces.component.UIData {
 
     public void setPaginatorTemplate(java.lang.String _paginatorTemplate) {
         getStateHelper().put(PropertyKeys.paginatorTemplate, _paginatorTemplate);
+    }
+
+    @Override
+    public int getRows() {
+        return (Integer) getStateHelper().eval(PropertyKeys.rows, 0);
+    }
+
+    @Override
+    public void setRows(int rows) {
+        if (rows < 0) {
+            throw new IllegalArgumentException(String.valueOf(rows));
+        }
+        getStateHelper().put(PropertyKeys.rows, rows);
     }
 
     public java.lang.String getRowsPerPageTemplate() {
@@ -200,6 +214,10 @@ public class UIData extends javax.faces.component.UIData {
     @Override
     public void setRowStatePreserved(boolean _paginator) {
         getStateHelper().put(PropertyKeys.rowStatePreserved, _paginator);
+    }
+
+    public void resetRows() {
+        getStateHelper().remove(PropertyKeys.rows);
     }
 
     public void calculateFirst() {
