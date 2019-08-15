@@ -130,6 +130,8 @@ public class InputTextareaRenderer extends InputRenderer {
                     .attr("scrollHeight", inputTextarea.getScrollHeight(), Integer.MAX_VALUE);
         }
 
+        encodeClientBehaviors(context, inputTextarea);
+
         wb.finish();
     }
 
