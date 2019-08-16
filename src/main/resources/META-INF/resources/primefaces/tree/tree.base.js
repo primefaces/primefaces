@@ -42,8 +42,14 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
             var nodeContent = $(this);
 
             if($(e.target).is(':not(.ui-tree-toggler)') && (cfg.nodeType === undefined || nodeContent.parent().data('nodetype') === cfg.nodeType)) {
-                targetWidget.nodeRightClick(e, nodeContent);
-                menuWidget.show(e);
+                var isContextMenuDelayed = targetWidget.nodeRightClick(e, nodeContent, function(){
+                    menuWidget.show(e);
+                });
+
+                if(isContextMenuDelayed) {
+                    e.preventDefault();
+                    e.stopPropagation(); 
+                }
             }
         });
 
@@ -209,12 +215,15 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
-    fireContextMenuEvent: function(node) {
+    fireContextMenuEvent: function(node, fnShowMenu) {
         if(this.hasBehavior('contextMenu')) {
             var ext = {
                 params: [
                     {name: this.id + '_contextMenuNode', value: this.getRowKey(node)}
-                ]
+                ],
+                oncomplete: function() {
+                    fnShowMenu();
+                }
             };
 
             this.callBehavior('contextMenu', ext);
@@ -324,7 +333,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
-    nodeRightClick: function(event, nodeContent) {
+    nodeRightClick: function(event, nodeContent, fnShowMenu) {
         PrimeFaces.clearSelection();
 
         if($(event.target).is(':not(.ui-tree-toggler)')) {
@@ -344,9 +353,11 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                     }
                 }
 
-                this.fireContextMenuEvent(node);
+                this.fireContextMenuEvent(node, fnShowMenu);
+                return true;
             }
         }
+        return false;
     },
 
     bindEvents: function() {
