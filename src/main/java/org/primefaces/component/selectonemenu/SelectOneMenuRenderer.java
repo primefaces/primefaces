@@ -429,19 +429,21 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             else {
                 for (int j = 0; j < columns.size(); j++) {
                     Column column = columns.get(j);
-                    String style = column.getStyle();
-                    String styleClass = column.getStyleClass();
+                    if (column.isRendered()) {
+                        String style = column.getStyle();
+                        String styleClass = column.getStyleClass();
 
-                    writer.startElement("td", null);
-                    if (style != null) {
-                        writer.writeAttribute("style", style, null);
-                    }
-                    if (styleClass != null) {
-                        writer.writeAttribute("class", styleClass, null);
-                    }
+                        writer.startElement("td", null);
+                        if (style != null) {
+                            writer.writeAttribute("style", style, null);
+                        }
+                        if (styleClass != null) {
+                            writer.writeAttribute("class", styleClass, null);
+                        }
 
-                    renderChildren(context, column);
-                    writer.endElement("td");
+                        renderChildren(context, column);
+                        writer.endElement("td");
+                    }
                 }
             }
 
