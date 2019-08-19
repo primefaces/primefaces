@@ -429,6 +429,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             else {
                 for (int j = 0; j < columns.size(); j++) {
                     Column column = columns.get(j);
+                    if (!column.isRendered()) {
+                        continue;
+                    }
                     String style = column.getStyle();
                     String styleClass = column.getStyleClass();
 
