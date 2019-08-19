@@ -25,7 +25,7 @@
 }(function ($) {
 
   // Detect touch support
-  $.support.touch = ('ontouchstart' in document || 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0);
+  $.support.touch = ('ontouchstart' in document || 'ontouchstart' in window || window.TouchEvent  || (window.DocumentTouch && document instanceof DocumentTouch) || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0);
 
   // Ignore browsers without touch or mouse support
   if (!$.support.touch || !$.ui.mouse) {
