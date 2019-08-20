@@ -1,16 +1,20 @@
 /*!
- * Query UI Touch Punch 1.0.3 as modified by RWAP Software (based on original touchpunch v0.2.3 which has not been updated since 2014)
+ * jQuery UI Touch Punch 1.0.5 as modified by RWAP Software (based on original touchpunch v0.2.3 which has not been updated since 2014)
  *
- *
- * Original jquery-ui-touch-punch Copyright 2011, Dave Furfero
+ * Updates to take account of various suggested changes on the original code issues
+ * Copyright 2011–2014, Dave Furfero
  * Dual licensed under the MIT or GPL Version 2 licenses.
- * 
+ *
  * Original: https://github.com/furf/jquery-ui-touch-punch
  * Fork: https://github.com/RWAP/jquery-ui-touch-punch
  *
  * Depends:
  * jquery.ui.widget.js
  * jquery.ui.mouse.js
+ *
+ * Depends:
+ *  jquery.ui.widget.js
+ *  jquery.ui.mouse.js
  */
 (function( factory ) {
     if ( typeof define === "function" && define.amd ) {
@@ -25,7 +29,13 @@
 }(function ($) {
 
   // Detect touch support
-  $.support.touch = ('ontouchstart' in document || 'ontouchstart' in window || window.TouchEvent  || (window.DocumentTouch && document instanceof DocumentTouch) || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0);
+  $.support.touch = ( 'ontouchstart' in document 
+   	|| 'ontouchstart' in window 
+   	|| window.TouchEvent 
+   	|| (window.DocumentTouch && document instanceof DocumentTouch) 
+   	|| navigator.maxTouchPoints > 0 
+   	|| navigator.msMaxTouchPoints > 0
+  );	
 
   // Ignore browsers without touch or mouse support
   if (!$.support.touch || !$.ui.mouse) {
