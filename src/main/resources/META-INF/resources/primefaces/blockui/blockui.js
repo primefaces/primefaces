@@ -58,7 +58,14 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         });
     },
     
-    show: function() {
+    /**
+     * Show the component with optional duration animation.
+     * 
+     * @param [duration] Durations are given in milliseconds; higher values indicate slower animations, not faster ones. 
+     *                 The strings 'fast' and 'slow' can be supplied to indicate durations of 200 and 600 milliseconds, 
+     *                 respectively.
+     */
+    show: function(duration) {
         this.blocker.css('z-index', ++PrimeFaces.zindex);
         
         //center position of content
@@ -73,32 +80,42 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             });
         }
 
-        if(this.cfg.animate)
+        var animated = this.cfg.animate && typeof duration === 'undefined';
+        if(animated)
             this.blocker.fadeIn();    
         else
-            this.blocker.show();
+            this.blocker.show(duration);
 
         if(this.hasContent()) {
-            if(this.cfg.animate)
+            if(animated)
                 this.content.fadeIn();
             else
-                this.content.show();
+                this.content.show(duration);
         }
         
         this.block.attr('aria-busy', true);
     },
     
-    hide: function() {
-        if(this.cfg.animate)
+    /**
+     * Hide the component with optional duration animation.
+     * 
+     * @param [duration] Durations are given in milliseconds; higher values indicate slower animations, not faster ones. 
+     *                 The strings 'fast' and 'slow' can be supplied to indicate durations of 200 and 600 milliseconds, 
+     *                 respectively.
+     */
+    hide: function(duration) {
+        var animated = this.cfg.animate && typeof duration === 'undefined';
+
+        if(animated)
             this.blocker.fadeOut();
         else
-            this.blocker.hide();
+            this.blocker.hide(duration);
 
         if(this.hasContent()) {
-            if(this.cfg.animate)
+            if(animated)
                 this.content.fadeOut();
             else
-                this.content.hide();
+                this.content.hide(duration);
         }
         
         this.block.attr('aria-busy', false);

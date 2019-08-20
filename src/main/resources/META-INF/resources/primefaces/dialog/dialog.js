@@ -111,7 +111,14 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         return this.jq.find(':tabbable').add(this.footer.find(':tabbable'));
     },
 
-    show: function() {
+    /**
+     * Show the dialog with optional animation duration.
+     * 
+     * @param [duration] Durations are given in milliseconds; higher values indicate slower animations, not faster ones. 
+     *                 The strings 'fast' and 'slow' can be supplied to indicate durations of 200 and 600 milliseconds, 
+     *                 respectively.
+     */
+    show: function(duration) {
         if(this.isVisible()) {
             return;
         }
@@ -128,11 +135,11 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 this.jqEl.style.visibility = "visible";
             }
 
-            this._show();
+            this._show(duration);
         }
     },
 
-    _show: function() {
+    _show: function(duration) {
         this.moveToTop();
 
         //offset
@@ -142,7 +149,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             this.lastScrollTop = winScrollTop;
         }
 
-        if(this.cfg.showEffect) {
+        var animated = this.cfg.showEffect && typeof duration === 'undefined';
+        if(animated) {
             var $this = this;
 
             this.jq.show(this.cfg.showEffect, null, 'normal', function() {
@@ -151,7 +159,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         }
         else {
             //display dialog
-            this.jq.show();
+            this.jq.show(duration);
 
             this.postShow();
         }
@@ -183,12 +191,20 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.applyFocus();
     },
 
-    hide: function() {
+    /**
+     * Hide the dialog with optional duration animation.
+     * 
+     * @param [duration] Durations are given in milliseconds; higher values indicate slower animations, not faster ones. 
+     *                 The strings 'fast' and 'slow' can be supplied to indicate durations of 200 and 600 milliseconds, 
+     *                 respectively.
+     */
+    hide: function(duration) {
         if(!this.isVisible()) {
             return;
         }
 
-        if(this.cfg.hideEffect) {
+        var animated = this.cfg.showEffect && typeof duration === 'undefined';
+        if(animated) {
             var $this = this;
 
             this.jq.hide(this.cfg.hideEffect, null, 'normal', function() {
@@ -203,7 +219,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             if(this.cfg.modal) {
                 this.disableModality();
             }
-            this.onHide();
+            this.onHide(duration);
         }
     },
 
