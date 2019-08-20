@@ -11,10 +11,6 @@
  * Depends:
  * jquery.ui.widget.js
  * jquery.ui.mouse.js
- *
- * Depends:
- *  jquery.ui.widget.js
- *  jquery.ui.mouse.js
  */
 (function( factory ) {
     if ( typeof define === "function" && define.amd ) {
