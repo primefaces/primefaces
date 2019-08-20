@@ -149,11 +149,11 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             this.lastScrollTop = winScrollTop;
         }
 
-        var animated = this.cfg.showEffect && typeof duration === 'undefined';
+        var animated = this.cfg.showEffect;
         if(animated) {
             var $this = this;
 
-            this.jq.show(this.cfg.showEffect, null, 'normal', function() {
+            this.jq.show(this.cfg.showEffect, duration, 'normal', function() {
                 $this.postShow();
             });
         }
@@ -203,11 +203,11 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             return;
         }
 
-        var animated = this.cfg.showEffect && typeof duration === 'undefined';
+        var animated = this.cfg.showEffect;
         if(animated) {
             var $this = this;
 
-            this.jq.hide(this.cfg.hideEffect, null, 'normal', function() {
+            this.jq.hide(this.cfg.hideEffect, duration, 'normal', function() {
                 if($this.cfg.modal) {
                     $this.disableModality();
                 }

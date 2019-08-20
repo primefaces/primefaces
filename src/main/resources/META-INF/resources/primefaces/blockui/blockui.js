@@ -80,15 +80,15 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             });
         }
 
-        var animated = this.cfg.animate && typeof duration === 'undefined';
+        var animated = this.cfg.animate;
         if(animated)
-            this.blocker.fadeIn();    
+            this.blocker.fadeIn(duration);    
         else
             this.blocker.show(duration);
 
         if(this.hasContent()) {
             if(animated)
-                this.content.fadeIn();
+                this.content.fadeIn(duration);
             else
                 this.content.show(duration);
         }
@@ -104,16 +104,16 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
      *                 respectively.
      */
     hide: function(duration) {
-        var animated = this.cfg.animate && typeof duration === 'undefined';
+        var animated = this.cfg.animate;
 
         if(animated)
-            this.blocker.fadeOut();
+            this.blocker.fadeOut(duration);
         else
             this.blocker.hide(duration);
 
         if(this.hasContent()) {
             if(animated)
-                this.content.fadeOut();
+                this.content.fadeOut(duration);
             else
                 this.content.hide(duration);
         }
