@@ -599,6 +599,14 @@ button.ui-button::-moz-focus-inner {
     border: 0;
 }
 
+.ui-selectcheckboxmenu-multiple-container:empty:after {
+    content: attr(label);
+    padding: 1px 3px;
+    white-space: nowrap;
+    margin:2px;
+    display: inline-block;
+}
+
 .ui-selectcheckboxmenu-token {
     cursor: default;
     float: left;

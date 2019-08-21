@@ -238,6 +238,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         listClass = valid ? listClass : listClass + " ui-state-error";
 
         writer.startElement("ul", null);
+        writer.writeAttribute("label", menu.getLabel(), null);
         writer.writeAttribute("class", listClass, null);
         if (valuesArray != null) {
             int length = Array.getLength(valuesArray);
