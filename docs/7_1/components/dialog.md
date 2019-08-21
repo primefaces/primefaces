@@ -146,8 +146,8 @@ Widget: _PrimeFaces.widget.Dialog_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 
-| show() | - | void | Displays dialog.
-| hide() | - | void | Closes dialog.
+| show(duration) | duration: (optional) duration of the animation | void | Displays dialog.
+| hide(duration) | duration: (optional) duration of the animation | void | Closes dialog.
 | isVisible() | - | void | Returns visibility as a boolean.
 | resetPosition | - | void | Reset the dialog position based on the configured "position".
 
