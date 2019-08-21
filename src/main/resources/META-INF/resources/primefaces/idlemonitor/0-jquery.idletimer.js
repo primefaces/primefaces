@@ -16,7 +16,7 @@
 */
 (function ($) {
 
-    $.idleTimer = function (firstParam, elem) {
+    $.idleTimer = function (firstParam, elem, uniqueId) {
         var opts;
         if ( typeof firstParam === "object" ) {
             opts = firstParam;
@@ -37,14 +37,14 @@
         }, opts);
 
         var jqElem = $(elem),
-            obj = jqElem.data("idleTimerObj") || {},
+            obj = jqElem.data("idleTimerObj" + uniqueId) || {},
 
             /* (intentionally not documented)
              * Toggles the idle state and fires an appropriate event.
              * @return {void}
              */
             toggleIdleState = function (e) {
-                var obj = $.data(elem, "idleTimerObj") || {};
+                var obj = $.data(elem, "idleTimerObj" + uniqueId) || {};
 
                 // toggle the state
                 obj.idle = !obj.idle;
@@ -53,7 +53,7 @@
                 obj.olddate = +new Date();
 
                 // create a custom event, with state and name space
-                var event = $.Event((obj.idle ? "idle" : "active") + ".idleTimer");
+                var event = $.Event((obj.idle ? "idle" : "active") + ".idleTimer" + uniqueId);
 
                 // trigger event on object with elem and copy of obj
                 $(elem).trigger(event, [elem, $.extend({}, obj), e]);
@@ -65,7 +65,7 @@
              * @static
              */
             handleEvent = function (e) {
-                var obj = $.data(elem, "idleTimerObj") || {};
+                var obj = $.data(elem, "idleTimerObj" + uniqueId) || {};
 
                 if (e.type === "storage" && e.originalEvent.key !== obj.timerSyncId) {
                     return;
@@ -129,7 +129,7 @@
              */
             reset = function () {
 
-                var obj = $.data(elem, "idleTimerObj") || {};
+                var obj = $.data(elem, "idleTimerObj" + uniqueId) || {};
 
                 // reset settings
                 obj.idle = obj.idleBackup;
@@ -153,7 +153,7 @@
              */
             pause = function () {
 
-                var obj = $.data(elem, "idleTimerObj") || {};
+                var obj = $.data(elem, "idleTimerObj" + uniqueId) || {};
 
                 // this is already paused
                 if ( obj.remaining != null ) { return; }
@@ -172,7 +172,7 @@
              */
             resume = function () {
 
-                var obj = $.data(elem, "idleTimerObj") || {};
+                var obj = $.data(elem, "idleTimerObj" + uniqueId) || {};
 
                 // this isn't paused yet
                 if ( obj.remaining == null ) { return; }
@@ -194,16 +194,16 @@
              */
             destroy = function () {
 
-                var obj = $.data(elem, "idleTimerObj") || {};
+                var obj = $.data(elem, "idleTimerObj" + uniqueId) || {};
 
                 //clear any pending timeouts
                 clearTimeout(obj.tId);
 
                 //Remove data
-                jqElem.removeData("idleTimerObj");
+                jqElem.removeData("idleTimerObj" + uniqueId);
 
                 //detach the event handlers
-                jqElem.off("._idleTimer");
+                jqElem.off("._idleTimer" + uniqueId);
             },
             /**
             * Returns the time until becoming idle
@@ -213,7 +213,7 @@
             */
             remainingtime = function () {
 
-                var obj = $.data(elem, "idleTimerObj") || {};
+                var obj = $.data(elem, "idleTimerObj" + uniqueId) || {};
 
                 //If idle there is no time remaining
                 if ( obj.idle ) { return 0; }
@@ -268,7 +268,7 @@
          * @param {Event} event A DOM2-normalized event object.
          * @return {void}
          */
-        jqElem.on($.trim((opts.events + " ").split(" ").join("._idleTimer ")), function (e) {
+        jqElem.on($.trim((opts.events + " ").split(" ").join("._idleTimer" + uniqueId + " ")), function (e) {
             handleEvent(e);
         });
 
@@ -297,15 +297,15 @@
         }
 
         // store our instance on the object
-        $.data(elem, "idleTimerObj", obj);
+        $.data(elem, "idleTimerObj" + uniqueId, obj);
 
         return jqElem;
     };
 
     // This allows binding to element
-    $.fn.idleTimer = function (firstParam) {
+    $.fn.idleTimer = function (firstParam, uniqueId) {
         if (this[0]) {
-            return $.idleTimer(firstParam, this[0]);
+            return $.idleTimer(firstParam, this[0], uniqueId);
         }
 
         return this;

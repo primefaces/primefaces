@@ -8,7 +8,7 @@ PrimeFaces.widget.IdleMonitor = PrimeFaces.widget.BaseWidget.extend({
 
         var $this = this;
 
-        $(document).on("idle.idleTimer", function(){
+        $(document).on("idle.idleTimer" + this.cfg.id, function(){
 
             if($this.cfg.onidle) {
                 $this.cfg.onidle.call($this);
@@ -16,7 +16,7 @@ PrimeFaces.widget.IdleMonitor = PrimeFaces.widget.BaseWidget.extend({
 
             $this.callBehavior('idle');
         })
-        .on("active.idleTimer", function(){
+        .on("active.idleTimer" + this.cfg.id, function(){
             if($this.cfg.onactive) {
                 $this.cfg.onactive.call(this);
             }
@@ -24,18 +24,18 @@ PrimeFaces.widget.IdleMonitor = PrimeFaces.widget.BaseWidget.extend({
             $this.callBehavior('active');
         });
 
-        $.idleTimer(this.cfg.timeout);
+        $.idleTimer(this.cfg.timeout, document, this.cfg.id);
 
 
         if (cfg.multiWindowSupport) {
             var globalLastActiveKey = $this.cfg.contextPath + '_idleMonitor_lastActive';
 
             // always reset with current time on init
-            localStorage.setItem(globalLastActiveKey, $(document).data('idleTimerObj').lastActive);
+            localStorage.setItem(globalLastActiveKey, $(document).data('idleTimerObj' + this.cfg.id).lastActive);
 
             $this.timer = setInterval(function() {
 
-                var idleTimerObj = $(document).data('idleTimerObj');
+                var idleTimerObj = $(document).data('idleTimerObj' + $this.cfg.id);
 
                 var globalLastActive = parseInt(localStorage.getItem(globalLastActiveKey));
                 var localLastActive = idleTimerObj.lastActive;
