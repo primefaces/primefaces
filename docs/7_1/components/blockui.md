@@ -72,8 +72,8 @@ Widget: _PrimeFaces.widget.BlockUI_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 
-| show() | - | void Blocks the UI.
-| hide() | - | void Unblocks the UI
+| show(duration) | duration: (optional) duration of the animation | void | Blocks the UI.
+| hide(duration) | duration: (optional) duration of the animation | void | Unblocks the UI
 
 ## Skinning
 Following is the list of structural style classes;
