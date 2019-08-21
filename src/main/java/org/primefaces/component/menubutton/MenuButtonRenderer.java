@@ -129,7 +129,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
             menuStyleClass = menuStyleClass + " " + Menu.CONTAINER_MAXHEIGHT_CLASS;
             // If maxHeight is a number, add the unit "px", otherwise use it as is
             char lastChar = button.getMaxHeight().charAt(button.getMaxHeight().length() - 1);
-            String style = lastChar >= '0' && lastChar <= '9' ? button.getMaxHeight() + "px" : button.getMaxHeight();
+            String style = Character.isDigit(lastChar) ? button.getMaxHeight() + "px" : button.getMaxHeight();
             writer.writeAttribute("style", "max-height:" + style, null);
         }
         writer.writeAttribute("id", menuId, null);

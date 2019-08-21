@@ -75,7 +75,7 @@ public class MenuRenderer extends BaseMenuRenderer {
             style += ";max-height:" + menu.getMaxHeight();
             // If maxHeight is a number, add the unit "px", otherwise use it as is
             char lastChar = menu.getMaxHeight().charAt(menu.getMaxHeight().length() - 1);
-            if (lastChar >= '0' && lastChar <= '9') {
+            if (Character.isDigit(lastChar)) {
                 style += "px";
             }
         }
