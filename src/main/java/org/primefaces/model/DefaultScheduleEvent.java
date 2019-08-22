@@ -35,8 +35,8 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
 
     private String id;
     private String title;
-    private LocalDateTime startLocalDateTime;
-    private LocalDateTime endLocalDateTime;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private boolean allDay = false;
     private String styleClass;
     private Object data;
@@ -51,28 +51,28 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
 
     public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end) {
         this.title = title;
-        this.startLocalDateTime = start;
-        this.endLocalDateTime = end;
+        this.startDate = start;
+        this.endDate = end;
     }
 
     public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end, boolean allDay) {
         this.title = title;
-        this.startLocalDateTime = start;
-        this.endLocalDateTime = end;
+        this.startDate = start;
+        this.endDate = end;
         this.allDay = allDay;
     }
 
     public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end, String styleClass) {
         this.title = title;
-        this.startLocalDateTime = start;
-        this.endLocalDateTime = end;
+        this.startDate = start;
+        this.endDate = end;
         this.styleClass = styleClass;
     }
 
     public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end, Object data) {
         this.title = title;
-        this.startLocalDateTime = start;
-        this.endLocalDateTime = end;
+        this.startDate = start;
+        this.endDate = end;
         this.data = data;
     }
 
@@ -97,22 +97,22 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
 
     @Override
     public LocalDateTime getStartDate() {
-        return startLocalDateTime;
+        return startDate;
     }
 
     @Override
     public void setStartDate(LocalDateTime startDate) {
-        this.startLocalDateTime = startDate;
+        this.startDate = startDate;
     }
 
     @Override
     public LocalDateTime getEndDate() {
-        return endLocalDateTime;
+        return endDate;
     }
 
     @Override
     public void setEndDate(LocalDateTime endDate) {
-        this.endLocalDateTime = endDate;
+        this.endDate = endDate;
     }
 
     @Override
@@ -202,10 +202,10 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
         if (!Objects.equals(this.title, other.title)) {
             return false;
         }
-        if (!Objects.equals(this.startLocalDateTime, other.startLocalDateTime)) {
+        if (!Objects.equals(this.startDate, other.startDate)) {
             return false;
         }
-        if (!Objects.equals(this.endLocalDateTime, other.endLocalDateTime)) {
+        if (!Objects.equals(this.endDate, other.endDate)) {
             return false;
         }
         return true;
@@ -215,13 +215,13 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
     public int hashCode() {
         int hash = 5;
         hash = 61 * hash + (this.title != null ? this.title.hashCode() : 0);
-        hash = 61 * hash + (this.startLocalDateTime != null ? this.startLocalDateTime.hashCode() : 0);
-        hash = 61 * hash + (this.endLocalDateTime != null ? this.endLocalDateTime.hashCode() : 0);
+        hash = 61 * hash + (this.startDate != null ? this.startDate.hashCode() : 0);
+        hash = 61 * hash + (this.endDate != null ? this.endDate.hashCode() : 0);
         return hash;
     }
 
     @Override
     public String toString() {
-        return "DefaultScheduleEvent{title=" + title + ",startDate=" + startLocalDateTime + ",endDate=" + endLocalDateTime + "}";
+        return "DefaultScheduleEvent{title=" + title + ",startDate=" + startDate + ",endDate=" + endDate + "}";
     }
 }
