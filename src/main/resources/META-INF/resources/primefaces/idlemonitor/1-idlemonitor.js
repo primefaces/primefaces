@@ -28,7 +28,7 @@ PrimeFaces.widget.IdleMonitor = PrimeFaces.widget.BaseWidget.extend({
 
 
         if (cfg.multiWindowSupport) {
-            var globalLastActiveKey = $this.cfg.contextPath + '_idleMonitor_lastActive';
+            var globalLastActiveKey = $this.cfg.contextPath + '_idleMonitor_lastActive' + this.cfg.id;
 
             // always reset with current time on init
             localStorage.setItem(globalLastActiveKey, $(document).data('idleTimerObj' + this.cfg.id).lastActive);
