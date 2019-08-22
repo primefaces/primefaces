@@ -113,8 +113,8 @@ public class ScheduleRenderer extends CoreRenderer {
 
                 jsonObject.put("id", event.getId());
                 jsonObject.put("title", event.getTitle());
-                jsonObject.put("start", dateTimeFormatter.format(event.getStartLocalDateTime()));
-                jsonObject.put("end", dateTimeFormatter.format(event.getEndLocalDateTime()));
+                jsonObject.put("start", dateTimeFormatter.format(event.getStartDate()));
+                jsonObject.put("end", dateTimeFormatter.format(event.getEndDate()));
                 jsonObject.put("allDay", event.isAllDay());
                 jsonObject.put("editable", event.isEditable());
                 jsonObject.put("className", event.getStyleClass());

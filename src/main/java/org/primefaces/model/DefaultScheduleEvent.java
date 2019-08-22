@@ -96,22 +96,22 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
     }
 
     @Override
-    public LocalDateTime getStartLocalDateTime() {
+    public LocalDateTime getStartDate() {
         return startLocalDateTime;
     }
 
     @Override
-    public void setStartLocalDateTime(LocalDateTime startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startLocalDateTime = startDate;
     }
 
     @Override
-    public LocalDateTime getEndLocalDateTime() {
+    public LocalDateTime getEndDate() {
         return endLocalDateTime;
     }
 
     @Override
-    public void setEndLocalDateTime(LocalDateTime endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endLocalDateTime = endDate;
     }
 

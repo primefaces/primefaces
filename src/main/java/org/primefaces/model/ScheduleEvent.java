@@ -36,13 +36,13 @@ public interface ScheduleEvent {
 
     public String getTitle();
 
-    public LocalDateTime getStartLocalDateTime();
+    public LocalDateTime getStartDate();
 
-    public void setStartLocalDateTime(LocalDateTime start);
+    public void setStartDate(LocalDateTime start);
 
-    public LocalDateTime getEndLocalDateTime();
+    public LocalDateTime getEndDate();
 
-    public void setEndLocalDateTime(LocalDateTime end);
+    public void setEndDate(LocalDateTime end);
 
     public boolean isAllDay();
 

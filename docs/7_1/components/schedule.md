@@ -90,8 +90,8 @@ Table below describes each property in detail.
 | --- | --- |
 id | Used internally by PrimeFaces, auto generated.
 title | Title of the event.
-startLocalDateTime | Start date of type java.time.LocalDateTime.
-endLocalDateTime | End date of type java.time.LocalDateTime.
+startDate | Start date of type java.time.LocalDateTime.
+endDate | End date of type java.time.LocalDateTime.
 allDay | Flag indicating event is all day.
 styleClass | Visual style class to enable multi resource display.
 data | Optional data you can set to be represented by Event.
@@ -144,9 +144,9 @@ Let’s put it altogether to come up a fully editable and complex schedule.
             <p:outputLabel for="title" value="Titles:" />
             <p:inputText id="title" value="#{bean.event.title}" required="true" />
             <p:outputLabel for="from" value="From:" />
-            <p:calendar id="from" value="#{bean.event.startLocalDateTime}" timeZone="GMT+2" pattern="dd/MM/yyyy HH:mm" />
+            <p:calendar id="from" value="#{bean.event.startDate}" timeZone="GMT+2" pattern="dd/MM/yyyy HH:mm" />
             <p:outputLabel for="to" value="To:" />
-            <p:calendar id="to" value="#{bean.event.endLocalDateTime}" timeZone="GMT+2" pattern="dd/MM/yyyy HH:mm" />
+            <p:calendar id="to" value="#{bean.event.endDate}" timeZone="GMT+2" pattern="dd/MM/yyyy HH:mm" />
             <p:outputLabel for="allDay" value="All Day (see #1164):" />
             <h:selectBooleanCheckbox id="allDay" value="#{bean.event.allDay}" />
             <p:commandButton type="reset" value="Reset" />

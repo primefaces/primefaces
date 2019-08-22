@@ -122,12 +122,12 @@ public class Schedule extends ScheduleBase {
                 int dayDelta = Double.valueOf(params.get(clientId + "_dayDelta")).intValue();
                 int minuteDelta = Double.valueOf(params.get(clientId + "_minuteDelta")).intValue();
 
-                LocalDateTime startDate = movedEvent.getStartLocalDateTime();
-                LocalDateTime endDate = movedEvent.getEndLocalDateTime();
+                LocalDateTime startDate = movedEvent.getStartDate();
+                LocalDateTime endDate = movedEvent.getEndDate();
                 startDate = startDate.plusDays(dayDelta).plusMinutes(minuteDelta);
                 endDate = endDate.plusDays(dayDelta).plusMinutes(minuteDelta);
-                movedEvent.setStartLocalDateTime(startDate);
-                movedEvent.setEndLocalDateTime(endDate);
+                movedEvent.setStartDate(startDate);
+                movedEvent.setEndDate(endDate);
 
                 wrapperEvent = new ScheduleEntryMoveEvent(this, behaviorEvent.getBehavior(), movedEvent, dayDelta, minuteDelta);
             }
@@ -137,9 +137,9 @@ public class Schedule extends ScheduleBase {
                 int dayDelta = Double.valueOf(params.get(clientId + "_dayDelta")).intValue();
                 int minuteDelta = Double.valueOf(params.get(clientId + "_minuteDelta")).intValue();
 
-                LocalDateTime endDate = resizedEvent.getEndLocalDateTime();
+                LocalDateTime endDate = resizedEvent.getEndDate();
                 endDate = endDate.plusDays(dayDelta).plusMinutes(minuteDelta);
-                resizedEvent.setEndLocalDateTime(endDate);
+                resizedEvent.setEndDate(endDate);
 
                 wrapperEvent = new ScheduleEntryResizeEvent(this, behaviorEvent.getBehavior(), resizedEvent, dayDelta, minuteDelta);
             }
