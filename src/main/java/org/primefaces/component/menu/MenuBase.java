@@ -44,7 +44,9 @@ public abstract class MenuBase extends AbstractMenu implements Widget, OverlayMe
         style,
         styleClass,
         triggerEvent,
-        toggleable
+        toggleable,
+        collision,
+        maxHeight
     }
 
     public MenuBase() {
@@ -139,6 +141,22 @@ public abstract class MenuBase extends AbstractMenu implements Widget, OverlayMe
 
     public void setToggleable(boolean toggleable) {
         getStateHelper().put(PropertyKeys.toggleable, toggleable);
+    }
+
+    public String getCollision() {
+        return (String) getStateHelper().eval(PropertyKeys.collision, "flip");
+    }
+
+    public void setCollision(String collision) {
+        getStateHelper().put(PropertyKeys.collision, collision);
+    }
+
+    public String getMaxHeight() {
+        return (String) getStateHelper().eval(PropertyKeys.maxHeight, null);
+    }
+
+    public void setMaxHeight(String maxHeight) {
+        getStateHelper().put(PropertyKeys.maxHeight, maxHeight);
     }
 
     @Override

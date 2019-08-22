@@ -40,6 +40,7 @@ import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.Separator;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class MenuButtonRenderer extends BaseMenuRenderer {
@@ -124,6 +125,13 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         menuStyleClass = (menuStyleClass == null) ? Menu.DYNAMIC_CONTAINER_CLASS : Menu.DYNAMIC_CONTAINER_CLASS + " " + menuStyleClass;
 
         writer.startElement("div", null);
+        if (!LangUtils.isValueEmpty(button.getMaxHeight())) {
+            menuStyleClass = menuStyleClass + " " + Menu.CONTAINER_MAXHEIGHT_CLASS;
+            // If maxHeight is a number, add the unit "px", otherwise use it as is
+            char lastChar = button.getMaxHeight().charAt(button.getMaxHeight().length() - 1);
+            String style = Character.isDigit(lastChar) ? button.getMaxHeight() + "px" : button.getMaxHeight();
+            writer.writeAttribute("style", "max-height:" + style, null);
+        }
         writer.writeAttribute("id", menuId, null);
         writer.writeAttribute("class", menuStyleClass, "styleClass");
         writer.writeAttribute("role", "menu", null);
@@ -168,6 +176,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("MenuButton", button.resolveWidgetVar(), clientId);
         wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo()), null);
+        wb.attr("collision", button.getCollision());
         wb.finish();
     }
 }

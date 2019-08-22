@@ -11,6 +11,10 @@
     z-index: 100000;
 }
 
+.ui-menu.ui-menu-dynamic-maxheight {
+    overflow-y: auto;
+}
+
 .ui-menu-list {
     position:static;
 }

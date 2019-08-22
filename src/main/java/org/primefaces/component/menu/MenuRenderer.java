@@ -33,6 +33,7 @@ import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.Separator;
 import org.primefaces.model.menu.Submenu;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class MenuRenderer extends BaseMenuRenderer {
@@ -48,6 +49,7 @@ public class MenuRenderer extends BaseMenuRenderer {
 
         if (menu.isOverlay()) {
             encodeOverlayConfig(context, menu, wb);
+            wb.attr("collision", menu.getCollision());
         }
 
         wb.finish();
@@ -67,6 +69,16 @@ public class MenuRenderer extends BaseMenuRenderer {
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 
         writer.startElement("div", menu);
+        if (!LangUtils.isValueEmpty(menu.getMaxHeight())) {
+            styleClass = styleClass + " "  + Menu.CONTAINER_MAXHEIGHT_CLASS;
+            style = style != null ? style : "";
+            style += ";max-height:" + menu.getMaxHeight();
+            // If maxHeight is a number, add the unit "px", otherwise use it as is
+            char lastChar = menu.getMaxHeight().charAt(menu.getMaxHeight().length() - 1);
+            if (Character.isDigit(lastChar)) {
+                style += "px";
+            }
+        }
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
