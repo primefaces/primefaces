@@ -43,7 +43,7 @@ PrimeFaces.widget.IdleMonitor = PrimeFaces.widget.BaseWidget.extend({
                 // reset local state
                 if (globalLastActive > localLastActive) {
                     // pause timer
-                    $.idleTimer('pause');
+                    $.idleTimer('pause', document, $this.cfg.id);
 
                     // overwrite real state
                     idleTimerObj.idle = false;
@@ -52,7 +52,7 @@ PrimeFaces.widget.IdleMonitor = PrimeFaces.widget.BaseWidget.extend({
                     idleTimerObj.remaining = $this.cfg.timeout;
 
                     // resume timer
-                    $.idleTimer('resume');
+                    $.idleTimer('resume', document, $this.cfg.id);
                 }
                 // update global state
                 else if (localLastActive > globalLastActive) {
@@ -73,15 +73,15 @@ PrimeFaces.widget.IdleMonitor = PrimeFaces.widget.BaseWidget.extend({
     },
 
     pause: function() {
-        $.idleTimer('pause');
+        $.idleTimer('pause', document, this.cfg.id);
     },
 
     resume: function() {
-        $.idleTimer('resume');
+        $.idleTimer('resume', document, this.cfg.id);
     },
 
     reset: function() {
-        $.idleTimer('reset');
+        $.idleTimer('reset', document, this.cfg.id);
     }
 
 });
