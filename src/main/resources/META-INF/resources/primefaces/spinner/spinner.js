@@ -20,7 +20,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
 
         var inputValue = this.input.val();
 
-        if(inputValue.indexOf('.') > 0 && this.cfg.decimalPlaces) {
+        if(this.cfg.decimalPlaces > 0) {
             this.cfg.precision = this.cfg.decimalPlaces;
         }
         else if(!(typeof this.cfg.step === 'number' && this.cfg.step % 1 === 0)) {
