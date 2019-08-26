@@ -23,7 +23,7 @@
  */
 package org.primefaces.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 public interface ScheduleEvent {
@@ -36,9 +36,13 @@ public interface ScheduleEvent {
 
     public String getTitle();
 
-    public Date getStartDate();
+    public LocalDateTime getStartDate();
 
-    public Date getEndDate();
+    public void setStartDate(LocalDateTime start);
+
+    public LocalDateTime getEndDate();
+
+    public void setEndDate(LocalDateTime end);
 
     public boolean isAllDay();
 

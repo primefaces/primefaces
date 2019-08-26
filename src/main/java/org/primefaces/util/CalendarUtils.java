@@ -24,6 +24,7 @@
 package org.primefaces.util;
 
 import org.primefaces.component.api.UICalendar;
+import org.primefaces.component.datepicker.DatePicker;
 import org.primefaces.convert.DatePatternConverter;
 import org.primefaces.convert.PatternConverter;
 import org.primefaces.convert.TimePatternConverter;
@@ -240,6 +241,15 @@ public class CalendarUtils {
                 return ((LocalDate) value).format(dateTimeFormatter);
             }
             else if (value instanceof LocalDateTime) {
+                //known issue: https://github.com/primefaces/primefaces/issues/4625
+                //known issue: https://github.com/primefaces/primefaces/issues/4626
+
+                //TODO: remove temporary (ugly) work-around for adding fixed time-pattern
+                if (calendar instanceof DatePicker) {
+                    pattern += " HH:mm";
+                }
+                dateTimeFormatter = DateTimeFormatter.ofPattern(pattern, calendar.calculateLocale(context));
+
                 return ((LocalDateTime) value).format(dateTimeFormatter);
             }
             else if (value instanceof LocalTime) {
@@ -381,30 +391,77 @@ public class CalendarUtils {
     }
 
     private static ZonedDateTime convertDate2ZonedDateTime(Date date, ZoneId zoneId) {
-        return date.toInstant().atZone(zoneId);
+        if (date == null) {
+            return null;
+        }
+        else {
+            return date.toInstant().atZone(zoneId);
+        }
+    }
+
+    public static LocalDate convertDate2LocalDate(Date date) {
+        return convertDate2LocalDate(date, ZoneId.systemDefault());
     }
 
     public static LocalDate convertDate2LocalDate(Date date, ZoneId zoneId) {
-        return convertDate2ZonedDateTime(date, zoneId).toLocalDate();
+        if (date == null) {
+            return null;
+        }
+        else {
+            return convertDate2ZonedDateTime(date, zoneId).toLocalDate();
+        }
+    }
+
+    public static LocalDateTime convertDate2LocalDateTime(Date date) {
+        return convertDate2LocalDateTime(date, ZoneId.systemDefault());
     }
 
     public static LocalDateTime convertDate2LocalDateTime(Date date, ZoneId zoneId) {
-        return convertDate2ZonedDateTime(date, zoneId).toLocalDateTime();
+        if (date == null) {
+            return null;
+        }
+        else {
+            return convertDate2ZonedDateTime(date, zoneId).toLocalDateTime();
+        }
     }
 
     public static LocalTime convertDate2LocalTime(Date date, ZoneId zoneId) {
-        return convertDate2ZonedDateTime(date, zoneId).toLocalTime();
+        if (date == null) {
+            return null;
+        }
+        else {
+            return convertDate2ZonedDateTime(date, zoneId).toLocalTime();
+        }
     }
 
     public static Date convertLocalDate2Date(LocalDate localDate, ZoneId zoneId) {
-        return Date.from(localDate.atStartOfDay(zoneId).toInstant());
+        if (localDate == null) {
+            return null;
+        }
+        else {
+            return Date.from(localDate.atStartOfDay(zoneId).toInstant());
+        }
+    }
+
+    public static Date convertLocalDateTime2Date(LocalDateTime localDateTime) {
+        return convertLocalDateTime2Date(localDateTime, ZoneId.systemDefault());
     }
 
     public static Date convertLocalDateTime2Date(LocalDateTime localDateTime, ZoneId zoneId) {
-        return Date.from(localDateTime.atZone(zoneId).toInstant());
+        if (localDateTime == null)  {
+            return null;
+        }
+        else {
+            return Date.from(localDateTime.atZone(zoneId).toInstant());
+        }
     }
 
     public static Date convertLocalTime2Date(LocalTime localTime, ZoneId zoneId) {
-        return Date.from(localTime.atDate(LocalDate.now()).atZone(zoneId).toInstant());
+        if (localTime == null) {
+            return null;
+        }
+        else {
+            return Date.from(localTime.atDate(LocalDate.now()).atZone(zoneId).toInstant());
+        }
     }
 }

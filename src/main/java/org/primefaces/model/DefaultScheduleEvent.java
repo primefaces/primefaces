@@ -24,9 +24,10 @@
 package org.primefaces.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
 
@@ -34,8 +35,8 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
 
     private String id;
     private String title;
-    private Date startDate;
-    private Date endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private boolean allDay = false;
     private String styleClass;
     private Object data;
@@ -48,27 +49,27 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
     public DefaultScheduleEvent() {
     }
 
-    public DefaultScheduleEvent(String title, Date start, Date end) {
+    public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end) {
         this.title = title;
         this.startDate = start;
         this.endDate = end;
     }
 
-    public DefaultScheduleEvent(String title, Date start, Date end, boolean allDay) {
+    public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end, boolean allDay) {
         this.title = title;
         this.startDate = start;
         this.endDate = end;
         this.allDay = allDay;
     }
 
-    public DefaultScheduleEvent(String title, Date start, Date end, String styleClass) {
+    public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end, String styleClass) {
         this.title = title;
         this.startDate = start;
         this.endDate = end;
         this.styleClass = styleClass;
     }
 
-    public DefaultScheduleEvent(String title, Date start, Date end, Object data) {
+    public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end, Object data) {
         this.title = title;
         this.startDate = start;
         this.endDate = end;
@@ -95,20 +96,22 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
     }
 
     @Override
-    public Date getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    @Override
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
     @Override
-    public Date getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    @Override
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
@@ -196,13 +199,13 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
             return false;
         }
         final DefaultScheduleEvent other = (DefaultScheduleEvent) obj;
-        if ((this.title == null) ? (other.title != null) : !this.title.equals(other.title)) {
+        if (!Objects.equals(this.title, other.title)) {
             return false;
         }
-        if (this.startDate != other.startDate && (this.startDate == null || !this.startDate.equals(other.startDate))) {
+        if (!Objects.equals(this.startDate, other.startDate)) {
             return false;
         }
-        if (this.endDate != other.endDate && (this.endDate == null || !this.endDate.equals(other.endDate))) {
+        if (!Objects.equals(this.endDate, other.endDate)) {
             return false;
         }
         return true;

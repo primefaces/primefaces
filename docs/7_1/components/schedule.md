@@ -25,7 +25,7 @@ value | null | Object | An org.primefaces.model.ScheduleModel instance represent
 locale | null | Object | Locale for localization, can be String or a java.util.Locale instance
 aspectRatio | null | Float | Ratio of calendar width to height, higher the value shorter the height is
 view | month | String | The view type to use, possible values are 'month', 'agendaDay', 'agendaWeek', 'basicWeek', 'basicDay'
-initialDate | null | Object | The initial date that is used when schedule loads. If ommitted, the schedule starts on the current date
+initialDate | null | java.time.LocalDate | The initial date that is used when schedule loads. If ommitted, the schedule starts on the current date
 showWeekends | true | Boolean | Specifies inclusion Saturday/Sunday columns in any of the views
 style | null | String | Style of the main container element of schedule
 styleClass | null | String | Style class of the main container element of schedule
@@ -45,7 +45,7 @@ maxTime | null | String | Maximum time to display in a day view.
 timeFormat | null | String | Determines the time-text that will be displayed on each event.
 columnFormat | null | String | Deprecated, use columnHeaderFormat instead. Format for column headers.
 columnHeaderFormat | null | String | Format for column headers.
-timeZone | null | Object | String or a java.util.TimeZone instance to specify the timezone used for date conversion.
+timeZone | null | Object | String or a java.time.ZoneId instance to specify the timezone used for date conversion.
 tooltip | false | Boolean | Displays description of events on a tooltip.
 clientTimeZone | null | String | Timezone to define how to interpret the dates at browser. Valid values are "false", "local", "UTC" and ids like "America/Chicago".
 showWeekNumbers | false | Boolean | Display week numbers in schedule.
@@ -68,7 +68,9 @@ public class ScheduleBean {
 
     public ScheduleBean() {
         eventModel = new ScheduleModel<ScheduleEvent>();
-        eventModel.addEvent(new DefaultScheduleEvent("title", new Date(), new Date()));
+		LocalDateTime start = LocalDateTime.of(2019, 7, 27, 12, 00);
+		LocalDateTime end = LocalDateTime.of(2019, 7, 27, 12, 30);
+        eventModel.addEvent(new DefaultScheduleEvent("title", start, end));
     }
     public ScheduleModel getModel() {
         return model;
@@ -88,8 +90,8 @@ Table below describes each property in detail.
 | --- | --- |
 id | Used internally by PrimeFaces, auto generated.
 title | Title of the event.
-startDate | Start date of type java.util.Date.
-endDate | End date of type java.util.Date.
+startDate | Start date of type java.time.LocalDateTime.
+endDate | End date of type java.time.LocalDateTime.
 allDay | Flag indicating event is all day.
 styleClass | Visual style class to enable multi resource display.
 data | Optional data you can set to be represented by Event.
@@ -105,11 +107,11 @@ Schedule provides various ajax behavior events to respond user actions.
 
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
-dateSelect | org.primefaces.event.SelectEvent | When a date is selected.
-eventSelect | org.primefaces.event.SelectEvent | When an event is selected.
+dateSelect | org.primefaces.event.SelectEvent<LocalDateTime> | When a date is selected.
+eventSelect | org.primefaces.event.SelectEvent<ScheduleEvent> | When an event is selected.
 eventMove | org.primefaces.event.ScheduleEntryMoveEvent | When an event is moved.
 eventResize | org.primefaces.event.ScheduleEntryResizeEvent | When an event is resized.
-viewChange | org.primefaces.event.SelectEvent | When a view is changed.
+viewChange | org.primefaces.event.SelectEvent<String> | When a view is changed.
 
 ## Ajax Updates
 Schedule has a quite complex UI which is generated on-the-fly by the client side
@@ -139,20 +141,16 @@ Let’s put it altogether to come up a fully editable and complex schedule.
     </p:schedule>
     <p:dialog widgetVar="eventDialog" header="Event Details">
         <h:panelGrid id="eventDetails" columns="2">
-            <h:outputLabel for="title" value="Title:" />
-            <h:inputText id="title" value="#{bean.event.title}" required="true"/>
-            <h:outputLabel for="from" value="From:" />
-            <p:inputMask id="from" value="#{bean.event.startDate}" mask="99/99/9999">
-                <f:convertDateTime pattern="dd/MM/yyyy" />
-            </p:inputMask>
-            <h:outputLabel for="to" value="To:" />
-            <p:inputMask id="to" value="#{bean.event.endDate}" mask="99/99/9999">
-                <f:convertDateTime pattern="dd/MM/yyyy" />
-            </p:inputMask>
-            <h:outputLabel for="allDay" value="All Day:" />
+            <p:outputLabel for="title" value="Titles:" />
+            <p:inputText id="title" value="#{bean.event.title}" required="true" />
+            <p:outputLabel for="from" value="From:" />
+            <p:calendar id="from" value="#{bean.event.startDate}" timeZone="GMT+2" pattern="dd/MM/yyyy HH:mm" />
+            <p:outputLabel for="to" value="To:" />
+            <p:calendar id="to" value="#{bean.event.endDate}" timeZone="GMT+2" pattern="dd/MM/yyyy HH:mm" />
+            <p:outputLabel for="allDay" value="All Day (see #1164):" />
             <h:selectBooleanCheckbox id="allDay" value="#{bean.event.allDay}" />
             <p:commandButton type="reset" value="Reset" />
-            <p:commandButton value="Save" action="#{bean.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
+            <p:commandButton id="addButton" value="Save" action="#{bean.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
         </h:panelGrid>
     </p:dialog>
 </h:form>
@@ -188,13 +186,12 @@ public class ScheduleBean {
     event = new DefaultScheduleEvent(); //reset dialog form
   }
 
-  public void onEventSelect(SelectEvent e) {
-    event = (ScheduleEvent)e.getObject();
+  public void onEventSelect(SelectEvent<ScheduleEvent> selectEvent) {
+    event = selectEvent.getObject();
   }
-
-  public void onDateSelect(SelectEvent e) {
-    Date date = (Date)e.getObject();
-    event = new DefaultScheduleEvent("", date, date);
+	
+  public void onDateSelect(SelectEvent<LocalDateTime> selectEvent) {
+    event = new DefaultScheduleEvent("", selectEvent.getObject(), selectEvent.getObject());
   }
 }
 ```
@@ -219,7 +216,7 @@ public class ScheduleBean {
     public ScheduleBean() {
         lazyModel = new LazyScheduleModel() {
         @Override
-        public void loadEvents(Date start, Date end) {
+        public void loadEvents(LocalDateTime start, LocalDateTime end) {
             //addEvent(...);
             //addEvent(...);
         }
@@ -283,7 +280,7 @@ as PrimeFaces does not include language translations. PrimeFaces Wiki Page for
 PrimeFacesLocales is a community driven page where you may find the translations you need.
 Please contribute to this wiki with your own translations.
 
-http://wiki.primefaces.org/display/Components/PrimeFaces+Locales
+https://github.com/primefaces/primefaces/wiki/Locales
 
 Translation is a simple javascript object, we suggest adding the code to a javascript file and include
 in your application. Following is a Turkish calendar.

@@ -31,15 +31,15 @@ ajax selection and more.
 | converterMessage | null | String | Message to be displayed when conversion fails.
 | validatorMessage | null | String | Message to be displayed when validation fails.
 | widgetVar | null | String | Name of the client side widget.
-| mindate | null | java.time.LocalDate, java.util.Date or String | Sets calendar's minimum visible date
-| maxdate | null | java.time.LocalDate, java.util.Date or String | Sets calendar's maximum visible date
+| mindate | null | java.time.LocalDate, java.util.Date (deprecated) or String | Sets calendar's minimum visible date
+| maxdate | null | java.time.LocalDate, java.util.Date (deprecated) or String | Sets calendar's maximum visible date
 | pages | 1 | Integer | Enables multiple page rendering.
 | disabled | false | Boolean | Disables the calendar when set to true.
 | mode | popup | String | Defines how the calendar will be displayed.
 | pattern | MM/dd/yyyy | String | DateFormat pattern for localization
 | locale | null | Object | Locale to be used for labels and conversion.
 | navigator | false | Boolean | Enables month/year navigator
-| timeZone | null | Time Zone | String or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to TimeZone.getDefault()
+| timeZone | null | Time Zone | String or a java.time.ZoneId instance or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to TimeZone.getDefault()
 | readonlyInput | false | Boolean | Makes input text of a popup calendar readonly.
 | showButtonPanel | false | Boolean | Visibility of button panel containing today and done buttons.
 | effect | null | String | Effect to use when displaying and showing the popup calendar.
@@ -114,14 +114,14 @@ ajax selection and more.
 | defaultMillisec | 0 | Integer | Default for millisecond selection, if no date is given. Default is 0.
 
 ## Getting Started with Calendar
-Value of the calendar should be a java.util.Date.
+Value of the calendar should be a java.time.LocalDate.
 
 ```xhtml
 <p:calendar value="#{dateBean.date}"/>
 ```
 ```java
 public class DateBean {
-    private Date date;
+    private LocalDate date;
     //Getter and Setter
 }
 ```
@@ -206,8 +206,8 @@ _org.primefaces.event.SelectEvent_ instance.
 <p:messages id="msg" />
 ```
 ```java
-public void handleDateSelect(SelectEvent event) {
-    Date date = (Date) event.getObject();
+public void handleDateSelect(SelectEvent<LocalDate> event) {
+    LocalDate date = event.getObject();
     //Add facesmessage
 }
 ```
@@ -221,7 +221,7 @@ In case, you need to know about when a calendar gets hidden, use _close_ event.
 
 ## Date Ranges
 Using mindate and maxdate options, selectable dates can be restricted. Values for these attributes
-can either be a string or a java.util.Date.
+can either be a string or a java.time.LocalDate.
 
 ```xhtml
 <p:calendar value="#{dateBean.date}" mode="inline" mindate="07/10/2010" maxdate="07/15/2010"/>

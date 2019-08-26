@@ -72,7 +72,7 @@ widgetVar | null | String | Name of the client side widget.
 | onMonthChange | null | Function | Javascript function to invoke when month changes.
 | onYearChange | null | Function | Javascript function to invoke when year changes.
 | locale | null | Object | Locale to be used for labels and conversion.
-| timeZone | null | Time Zone | String or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to TimeZone.getDefault()
+| timeZone | null | Time Zone | String a java.time.ZoneId instance or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to TimeZone.getDefault()
 | pattern | MM/dd/yyyy | String | DateFormat pattern for localization
 | mindate | null | java.time.LocalDate, java.util.Date (deprecated) or String | Sets DatePicker's minimum visible date
 | maxdate | null | java.time.LocalDate, java.util.Date (deprecated) or String | Sets DatePicker's maximum visible date
@@ -113,7 +113,7 @@ widgetVar | null | String | Name of the client side widget.
 | rangeSeparator | - | String | Separator for joining start and end dates on range selection mode.
 
 ## Getting Started with DatePicker
-Value of the DatePicker should be a java.util.Date in single selection mode which is the default.
+Value of the DatePicker should be a java.time.LocalDate in single selection mode which is the default.
 
 ```xhtml
 <p:datePicker value="#{dateBean.date}"/>
@@ -193,8 +193,8 @@ _org.primefaces.event.SelectEvent_ instance.
 <p:messages id="msg" />
 ```
 ```java
-public void handleDateSelect(SelectEvent event) {
-    Date date = (Date) event.getObject();
+public void handleDateSelect(SelectEvent<LocalDate> event) {
+    LocalDate date = event.getObject();
     //Add facesmessage
 }
 ```
@@ -211,27 +211,25 @@ In case you'd like to restrict certain dates or weekdays use _disabledDates_ and
 ```
 
 ```java
-private List<Date> invalidDates;
+private List<LocalDate> invalidDates;
 private List<Integer> invalidDays;
-private Date minDate;
-private Date maxDate;
+private LocalDate minDate;
+private LocalDate maxDate;
 
 @PostConstruct
 public void init() {
-    invalidDates = new ArrayList<>();
-    Date today = new Date();
-    invalidDates.add(today);
-    long oneDay = 24 * 60 * 60 * 1000;
-    for (int i = 0; i < 5; i++) {
-        invalidDates.add(new Date(invalidDates.get(i).getTime() + oneDay));
-    }
+        invalidDates = new ArrayList<>();
+        invalidDates.add(LocalDate.now());
+        for (int i = 0; i < 5; i++) {
+            invalidDates.add(invalidDates.get(i).plusDays(1));
+        }
 
-    invalidDays = new ArrayList<>();
-    invalidDays.add(0); /* the first day of week is disabled */
-    invalidDays.add(3);
+        invalidDays = new ArrayList<>();
+        invalidDays.add(0); /* the first day of week is disabled */
+        invalidDays.add(3);
 
-    minDate = new Date(today.getTime() - (365 * oneDay));
-    maxDate = new Date(today.getTime() + (365 * oneDay));
+        minDate = LocalDate.now().minusYears(1);
+        maxDate = LocalDate.now().plusYears(1);
 }
 ```
 
