@@ -666,7 +666,7 @@ public class TreeRenderer extends CoreRenderer {
                 if (filteredRowKey.startsWith(rowKeyExt) || (!isStrictMode && rowKey.startsWith(filteredRowKeyExt))
                         || filteredRowKey.equals(rowKey)) {
                     match = true;
-                    if (!node.isLeaf() && !rowKey.startsWith(filteredRowKey)) {
+                    if (!node.isLeaf()) {
                         node.setExpanded(true);
                     }
                     break;
