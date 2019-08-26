@@ -15,7 +15,7 @@ such as excel, pdf, csv and xml.
 
 | Name | Default | Type | Description |
 | --- | --- | --- | --- |
-type | null | String | Export type: "xls", "pdf", "csv", "xml"
+type | null | String | Export type: "xls", "xlsx", "xlsxstream", "pdf", "csv", "xml"
 target | null | String | Search expression to resolve one or multiple datatables.
 fileName | null | String | Filename of the generated export file, defaults to datatable id.
 pageOnly | false | Boolean | Exports only current page instead of whole dataset
