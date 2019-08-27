@@ -2627,7 +2627,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     inputVal = input.val(),
                     oldValue = oldValues[i];
 
-                if(input.is(':checkbox')) {
+                if(input.is(':checkbox') || input.is(':radio')) {
                     inputVal = inputVal + "_" + input.is(':checked');
                 }
 
@@ -2642,7 +2642,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 inputVal = input.val(),
                 oldValue = cell.data('old-value');
 
-            if(input.is(':checkbox')) {
+            if(input.is(':checkbox') || input.is(':radio')) {
                 inputVal = inputVal + "_" + input.is(':checked');
             } 
             changed = (inputVal != oldValue);
