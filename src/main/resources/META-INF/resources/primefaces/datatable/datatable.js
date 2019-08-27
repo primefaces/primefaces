@@ -2624,23 +2624,28 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var oldValues = cell.data('old-value');
             for(var i = 0; i < inputs.length; i++) {
                 var input = inputs.eq(i),
-                inputVal = input.val();
+                    inputVal = input.val(),
+                    oldValue = oldValues[i];
 
                 if(input.is(':checkbox')) {
-                    var checkboxVal = inputVal + "_" + input.is(':checked');
-                    if(checkboxVal != oldValues[i]) {
-                        changed = true;
-                        break;
-                    }
+                    inputVal = inputVal + "_" + input.is(':checked');
                 }
-                else if(inputVal != oldValues[i]) {
+
+                if(inputVal != oldValue) {
                     changed = true;
                     break;
                 }
             }
         }
         else {
-            changed = (inputs.eq(0).val() != cell.data('old-value'));
+            var input = inputs.eq(0),
+                inputVal = input.val(),
+                oldValue = cell.data('old-value');
+
+            if(input.is(':checkbox')) {
+                inputVal = inputVal + "_" + input.is(':checked');
+            } 
+            changed = (inputVal != oldValue);
         }
 
         if(changed || valid == false)
