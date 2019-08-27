@@ -47,6 +47,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseId;
 import java.io.IOException;
 import java.util.*;
+import org.primefaces.expression.SearchExpressionHint;
 
 public class SplitButtonRenderer extends OutcomeTargetRenderer {
 
@@ -203,7 +204,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("SplitButton", button.resolveWidgetVar(), clientId);
-        wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo()), null);
+        wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo(), SearchExpressionHint.RESOLVE_CLIENT_SIDE), null);
 
         if (button.isFilter()) {
             wb.attr("filter", true)

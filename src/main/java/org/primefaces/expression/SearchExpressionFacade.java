@@ -336,7 +336,8 @@ public class SearchExpressionFacade {
         else if (expression.contains(SearchExpressionConstants.KEYWORD_PREFIX)) {
             SearchExpressionResolver resolver = SearchExpressionResolverFactory.findResolver(expression);
 
-            if (resolver instanceof ClientIdSearchExpressionResolver) {
+            if (SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.RESOLVE_CLIENT_SIDE)
+                    && resolver instanceof ClientIdSearchExpressionResolver) {
                 return ((ClientIdSearchExpressionResolver) resolver).resolveClientIds(context, source, source, expression, hints);
             }
             else {

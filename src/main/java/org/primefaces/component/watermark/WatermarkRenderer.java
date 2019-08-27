@@ -30,6 +30,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -42,7 +43,7 @@ public class WatermarkRenderer extends CoreRenderer {
 
         String _for = watermark.getFor();
         if (_for != null) {
-            target = SearchExpressionFacade.resolveClientIds(context, watermark, _for);
+            target = SearchExpressionFacade.resolveClientIds(context, watermark, _for, SearchExpressionHint.RESOLVE_CLIENT_SIDE);
         }
         else {
             throw new FacesException("\"For\" option must be used to define a watermark.");

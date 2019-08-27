@@ -41,6 +41,7 @@ import javax.faces.render.Renderer;
 
 import org.primefaces.component.column.Column;
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -510,7 +511,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 .attr("effect", menu.getEffect(), null)
                 .attr("effectSpeed", menu.getEffectSpeed(), null)
                 .attr("editable", menu.isEditable(), false)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo()), null)
+                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo(), SearchExpressionHint.RESOLVE_CLIENT_SIDE), null)
                 .attr("syncTooltip", menu.isSyncTooltip(), false)
                 .attr("label", menu.getLabel(), null)
                 .attr("labelTemplate", menu.getLabelTemplate(), null)

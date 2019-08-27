@@ -33,6 +33,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.TableState;
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -78,8 +79,10 @@ public class ColumnTogglerRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
 
         wb.init("ColumnToggler", columnToggler.resolveWidgetVar(), columnToggler.getClientId(context));
-        wb.attr("trigger", SearchExpressionFacade.resolveClientIds(context, columnToggler, columnToggler.getTrigger()))
-                .attr("datasource", SearchExpressionFacade.resolveClientIds(context, columnToggler, columnToggler.getDatasource()));
+        wb.attr("trigger",
+                SearchExpressionFacade.resolveClientIds(context, columnToggler, columnToggler.getTrigger(), SearchExpressionHint.RESOLVE_CLIENT_SIDE));
+        wb.attr("datasource",
+                SearchExpressionFacade.resolveClientIds(context, columnToggler, columnToggler.getDatasource(), SearchExpressionHint.RESOLVE_CLIENT_SIDE));
 
         encodeClientBehaviors(context, columnToggler);
 

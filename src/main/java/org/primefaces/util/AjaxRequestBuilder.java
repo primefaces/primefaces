@@ -120,13 +120,14 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder process(UIComponent component, String expressions) {
-        addExpressions(component, expressions, "p", SearchExpressionHint.NONE);
+        addExpressions(component, expressions, "p", SearchExpressionHint.RESOLVE_CLIENT_SIDE);
 
         return this;
     }
 
     public AjaxRequestBuilder update(UIComponent component, String expressions) {
-        addExpressions(component, expressions, "u", SearchExpressionHint.VALIDATE_RENDERER | SearchExpressionHint.SKIP_UNRENDERED);
+        addExpressions(component, expressions, "u",
+                SearchExpressionHint.VALIDATE_RENDERER | SearchExpressionHint.SKIP_UNRENDERED | SearchExpressionHint.RESOLVE_CLIENT_SIDE);
 
         return this;
     }

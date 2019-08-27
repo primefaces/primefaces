@@ -40,6 +40,7 @@ import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
 
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -323,7 +324,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 .attr("emptyLabel", menu.getEmptyLabel())
                 .attr("multiple", menu.isMultiple(), false)
                 .attr("dynamic", menu.isDynamic(), false)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo()), null);
+                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo(), SearchExpressionHint.RESOLVE_CLIENT_SIDE), null);
 
         if (menu.isFilter()) {
             wb.attr("filter", true)

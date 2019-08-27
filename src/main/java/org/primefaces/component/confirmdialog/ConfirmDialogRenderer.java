@@ -31,6 +31,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.dialog.Dialog;
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -81,7 +82,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
                 .attr("visible", dialog.isVisible(), false)
                 .attr("width", dialog.getWidth(), null)
                 .attr("height", dialog.getHeight(), null)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, dialog, dialog.getAppendTo()), null)
+                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, dialog, dialog.getAppendTo(), SearchExpressionHint.RESOLVE_CLIENT_SIDE), null)
                 .attr("showEffect", dialog.getShowEffect(), null)
                 .attr("hideEffect", dialog.getHideEffect(), null)
                 .attr("closeOnEscape", dialog.isCloseOnEscape(), false)

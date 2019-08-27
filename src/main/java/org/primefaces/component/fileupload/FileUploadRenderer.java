@@ -36,6 +36,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 import java.io.IOException;
+import org.primefaces.expression.SearchExpressionHint;
 
 public class FileUploadRenderer extends CoreRenderer {
 
@@ -93,8 +94,8 @@ public class FileUploadRenderer extends CoreRenderer {
 
             wb.attr("auto", fileUpload.isAuto(), false)
                     .attr("dnd", fileUpload.isDragDropSupport(), true)
-                    .attr("update", SearchExpressionFacade.resolveClientIds(context, fileUpload, update), null)
-                    .attr("process", SearchExpressionFacade.resolveClientIds(context, fileUpload, process), null)
+                    .attr("update", SearchExpressionFacade.resolveClientIds(context, fileUpload, update, SearchExpressionHint.RESOLVE_CLIENT_SIDE), null)
+                    .attr("process", SearchExpressionFacade.resolveClientIds(context, fileUpload, process, SearchExpressionHint.RESOLVE_CLIENT_SIDE), null)
                     .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
                     .attr("fileLimit", fileUpload.getFileLimit(), Integer.MAX_VALUE)
                     .attr("invalidFileMessage", fileUpload.getInvalidFileMessage(), null)

@@ -39,6 +39,11 @@ public class SearchExpressionHint {
 
     public static final int SKIP_UNRENDERED = 0x8;
 
+    /**
+     * Indicate that some expressions can be resolved on the client side.
+     */
+    public static final int RESOLVE_CLIENT_SIDE = 0x16;
+
     private SearchExpressionHint() {
     }
 }

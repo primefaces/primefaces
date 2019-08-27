@@ -48,6 +48,7 @@ import javax.faces.context.FacesContext;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.primefaces.component.dialog.Dialog;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.expression.SearchExpressionFacade;
 
@@ -79,6 +80,12 @@ public class SearchExpressionFacadeTest {
         FacesContext context = FacesContext.getCurrentInstance();
 
         return SearchExpressionFacade.resolveClientId(context, source, expression);
+    }
+    
+    private String resolveClientId(UIComponent source, String expression, int hints) {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        return SearchExpressionFacade.resolveClientId(context, source, expression, hints);
     }
 
     private List<UIComponent> resolveComponents(UIComponent source, String expression) {
@@ -575,7 +582,7 @@ public class SearchExpressionFacadeTest {
         UIComponent source = new UICommand();
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", "@none", resolveClientId(source, " @none"));
+        assertEquals("Failed", "@none", resolveClientId(source, " @none", SearchExpressionHint.RESOLVE_CLIENT_SIDE));
     }
 
     @Test
@@ -621,30 +628,7 @@ public class SearchExpressionFacadeTest {
         UIComponent source = new UICommand();
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", "@all", resolveClientId(source, "@all"));
-    }
-
-    @Test
-    public void resolveClientId_WidgetVar() {
-
-        UIComponent root = new UIPanel();
-
-        UIForm form = new UIForm();
-        root.getChildren().add(form);
-
-        UINamingContainer outerContainer = new UINamingContainer();
-        form.getChildren().add(outerContainer);
-
-        UINamingContainer innerContainer = new UINamingContainer();
-        outerContainer.getChildren().add(innerContainer);
-
-        UIComponent component = new UIOutput();
-        innerContainer.getChildren().add(component);
-
-        UIComponent source = new UICommand();
-        innerContainer.getChildren().add(source);
-
-        assertEquals("Failed", "@widgetVar(myDialog_widget)", resolveClientId(source, " @widgetVar(myDialog_widget)"));
+        assertEquals("Failed", "@all", resolveClientId(source, "@all", SearchExpressionHint.RESOLVE_CLIENT_SIDE));
     }
 
     @Test
@@ -1916,7 +1900,7 @@ public class SearchExpressionFacadeTest {
         UIComponent source = new UICommand();
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", "@all", resolveClientId(source, "@root"));
+        assertEquals("Failed", "@all", resolveClientId(source, "@root", SearchExpressionHint.RESOLVE_CLIENT_SIDE));
     }
 
     @Test
@@ -1991,4 +1975,38 @@ public class SearchExpressionFacadeTest {
         assertTrue(result.contains(innerContainer3));
     }
 
+    
+    
+    
+    
+    
+    @Test
+    public void resolveClientIdClientSide() {
+
+        UIComponent root = new UIPanel();
+        FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
+
+        Dialog dialog = new Dialog();
+        dialog.setId("dlg");
+        dialog.setWidgetVar("myDlg");
+        root.getChildren().add(dialog);
+
+        String clientId = resolveClientId(root, " @widgetVar(myDlg) ", SearchExpressionHint.RESOLVE_CLIENT_SIDE);
+        assertEquals(clientId, "@widgetVar(myDlg)");
+    }
+    
+    @Test
+    public void resolveClientId() {
+
+        UIComponent root = new UIPanel();
+        FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
+
+        Dialog dialog = new Dialog();
+        dialog.setId("dlg");
+        dialog.setWidgetVar("myDlg");
+        root.getChildren().add(dialog);
+
+        String clientId = resolveClientId(root, " @widgetVar(myDlg) ");
+        assertSame(clientId, "dlg");
+    }
 }

@@ -37,6 +37,7 @@ import javax.faces.convert.ConverterException;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.calendar.BaseCalendarRenderer;
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.WidgetBuilder;
 
@@ -117,7 +118,8 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("numberOfMonths", datepicker.getNumberOfMonths(), 1)
             .attr("view", datepicker.getView(), null)
             .attr("touchUI", datepicker.isTouchUI(), false)
-            .attr("appendTo", SearchExpressionFacade.resolveClientId(context, datepicker, datepicker.getAppendTo()), null)
+            .attr("appendTo",
+                    SearchExpressionFacade.resolveClientId(context, datepicker, datepicker.getAppendTo(), SearchExpressionHint.RESOLVE_CLIENT_SIDE), null)
             .attr("icon", datepicker.getTriggerButtonIcon(), null)
             .attr("rangeSeparator", datepicker.getRangeSeparator(), null);
 

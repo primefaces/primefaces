@@ -30,6 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -86,7 +87,7 @@ public class SidebarRenderer extends CoreRenderer {
                 .attr("visible", bar.isVisible(), false)
                 .attr("blockScroll", bar.isBlockScroll(), false)
                 .attr("baseZIndex", bar.getBaseZIndex(), 0)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, bar, bar.getAppendTo()), null)
+                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, bar, bar.getAppendTo(), SearchExpressionHint.RESOLVE_CLIENT_SIDE), null)
                 .callback("onHide", "function()", bar.getOnHide())
                 .callback("onShow", "function()", bar.getOnShow());
 

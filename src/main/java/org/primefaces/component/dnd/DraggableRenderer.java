@@ -53,7 +53,8 @@ public class DraggableRenderer extends CoreRenderer {
                 .attr("disabled", draggable.isDisabled(), false)
                 .attr("axis", draggable.getAxis(), null)
                 .attr("containment", draggable.getContainment(), null)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, draggable, draggable.getAppendTo()), null)
+                .attr("appendTo",
+                        SearchExpressionFacade.resolveClientId(context, draggable, draggable.getAppendTo(), SearchExpressionHint.RESOLVE_CLIENT_SIDE), null)
                 .attr("helper", draggable.getHelper(), null)
                 .attr("zIndex", draggable.getZindex(), -1)
                 .attr("handle", draggable.getHandle(), null)
