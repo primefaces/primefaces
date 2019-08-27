@@ -15,7 +15,7 @@ ColorPicker is an input component with a color palette.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 | id | null | String | Unique identifier of the component
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -59,16 +59,20 @@ ColorPicker has two modes, default mode is _popup_ and other available option is
 ```xhtml
 <p:colorPicker value="#{bean.color}" mode="inline"/>
 ```
+
 ## Ajax Behavior Events
-“change” is the one and only ajax behavior event provided by the color picker.
+
+| Event | Listener Parameter | Fired |
+| --- | --- | --- |
+| change | javax.faces.event.AjaxBehaviorEvent | On change.
 
 
 ## Skinning
 ColorPicker resides in a container element which _style_ and _styleClass_ options apply. Following is
 the list of structural style classes;
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 | .ui-colorpicker | Container element.
 | .ui-colorpicker_color | Background of gradient.
 | .ui-colorpicker_hue | Hue element.

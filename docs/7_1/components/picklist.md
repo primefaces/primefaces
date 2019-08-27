@@ -15,7 +15,7 @@ PickList is used for transferring data between two different collections.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -185,7 +185,9 @@ to _onTransfer_ attribute.
     }
 </script>
 ```
+
 ## Ajax Behavior Events
+
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
 select | org.primefaces.event.SelectEvent | When an item selected.
@@ -212,8 +214,8 @@ public class PickListBean {
 PickList resides in a main container which _style_ and _styleClass_ attributes apply. Following is the list
 of structural style classes;
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 .ui-picklist | Main container element(table) of picklist
 .ui-picklist-list | Lists of a picklist
 .ui-picklist-list-source | Source list

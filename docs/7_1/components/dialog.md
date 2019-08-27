@@ -15,7 +15,7 @@ Dialog is a panel component that can overlay other elements on page.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 | id | null | String | Unique identifier of the component
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -108,6 +108,20 @@ the dialog shows a popup calendar. To customize default focus behavior, use focu
 
 
 ## Ajax Behavior Events
+
+| Event | Listener Parameter | Fired |
+| --- | --- | --- |
+| open | javax.faces.event.AjaxBehaviorEvent | On open.
+| close | org.primefaces.event.CloseEvent | On close.
+| minimize | javax.faces.event.AjaxBehaviorEvent | On minimize.
+| restoreMinimize | javax.faces.event.AjaxBehaviorEvent | On restore minimize.
+| maximize | javax.faces.event.AjaxBehaviorEvent | On maximize.
+| restoreMaximize | javax.faces.event.AjaxBehaviorEvent | On restore maximize.
+| move | org.primefaces.event.MoveEvent | On move.
+| loadContent | javax.faces.event.AjaxBehaviorEvent | On lazy loading the content when dynamic=true
+| resizeStart | org.primefaces.event.ResizeEvent | On resize start.
+| resizeStop | org.primefaces.event.ResizeEvent | On resize stop.
+
 close** event is one of the ajax behavior events provided by dialog that is fired when the dialog is
 hidden. If there is a listener defined it’ll be executed by passing an instance of
 _org.primefaces.event.CloseEvent_.
@@ -129,8 +143,7 @@ public class DialogBean {
     }
 }
 ```
-Other provided ajax behavior events are **maximize, minimize, move, restoreMinimize,
-restoreMaximize** , **open** and **loadContent (** lazy loading of content with dynamic property **).
+
 
 ## Client Side Callbacks
 Similar to close listener, onShow and onHide are handy callbacks for client side in case you need to
@@ -144,8 +157,8 @@ execute custom javascript.
 ## Client Side API
 Widget: _PrimeFaces.widget.Dialog_
 
-| Method | Params | Return Type | Description | 
-| --- | --- | --- | --- | 
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
 | show(duration) | duration: (optional) duration of the animation | void | Displays dialog.
 | hide(duration) | duration: (optional) duration of the animation | void | Closes dialog.
 | isVisible() | - | void | Returns visibility as a boolean.
@@ -157,8 +170,8 @@ structural style classes;
 
 
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 | .ui-dialog | Container element of dialog
 | .ui-dialog-titlebar | Title bar
 | .ui-dialog-title-dialog | Header text

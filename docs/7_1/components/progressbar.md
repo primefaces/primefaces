@@ -16,7 +16,7 @@ server side using ajax.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -77,9 +77,15 @@ the interval attribute.
 ```xhtml
 <p:progressBar interval="5000" />
 ```
+
 ## Ajax Behavior Events
-ProgressBar provides _complete_ as the default and only ajax behavior event that is fired when the
-progress is completed. Example below demonstrates how to use this event.
+
+| Event | Listener Parameter | Fired |
+| --- | --- | --- |
+| complete | javax.faces.event.AjaxBehaviorEvent | Is fired when the progress is completed
+
+
+Example below demonstrates how to use this event:
 
 ```java
 public class ProgressBean {
@@ -102,6 +108,7 @@ public class ProgressBean {
 </p:progressBar>
 <p:growl id="messages" />
 ```
+
 ## Display Only
 Assume you have a process like a ticket purchase that spans various pages where each page has
 different use cases such as customer info, seat selection, billing, payment and more. In order to
@@ -113,8 +120,8 @@ display static value of the process on each page, you can use a static progressB
 ## Client Side API
 Widget: _PrimeFaces.widget.ProgressBar_
 
-| Method | Params | Return Type | Description | 
-| --- | --- | --- | --- | 
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
 getValue() | - | Number | Returns current value
 setValue(value) | value: Value to display | void | Sets current value
 start() | - | void | Starts ajax progress bar
@@ -124,8 +131,8 @@ cancel() | - | void | Stops ajax progress bar
 ProgressBar resides in a main container which _style_ and _styleClass_ attributes apply. Following is the
 list of structural style classes;
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 .ui-progressbar | Main container.
 .ui-progressbar-value | Value of the progressbar
 .ui-progressbar-label | Progress label.
