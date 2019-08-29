@@ -158,6 +158,7 @@ public class DataGridRenderer extends DataRenderer {
         int rows = grid.getRows();
         int itemsToRender = rows != 0 ? rows : grid.getRowCount();
         int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
+        int displayedItemsToRender = rowIndex + itemsToRender;
         String columnClass = DataGrid.COLUMN_CLASS + " " + GridLayoutUtils.getColumnClass(columns);
 
         for (int i = 0; i < numberOfRowsToRender; i++) {
@@ -180,6 +181,10 @@ public class DataGridRenderer extends DataRenderer {
                 rowIndex++;
 
                 writer.endElement("div");
+
+                if (rowIndex >= displayedItemsToRender) {
+                    break;
+                }
             }
 
             writer.endElement("div");
