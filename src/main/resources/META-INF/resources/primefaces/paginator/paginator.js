@@ -304,7 +304,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             this.pagesContainer.append('<a class="' + styleClass + '" aria-label="' + ariaLabel + '" tabindex="0" href="#">' + (i + 1) + '</a>');
         }
 
-        if(focusContainer) {
+        if(focusContainer && this.allowRefocus()) {
             focusContainer.children().filter('.ui-state-active').trigger('focus');
         }
 
@@ -406,5 +406,13 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
 
     prev: function() {
         this.setPage(this.cfg.page - 1);
+    },
+    
+    /**
+     * Override this widget method if you don't want the paginator to refocus after paging.
+     * @see GitHub #688
+     */
+    allowRefocus: function() {
+        return true;
     }
 });
