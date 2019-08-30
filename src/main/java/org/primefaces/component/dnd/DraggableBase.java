@@ -60,6 +60,7 @@ public abstract class DraggableBase extends UIComponentBase implements Widget {
         appendTo,
         onStart,
         onStop,
+        onDrag,
         cancel;
 
         private String toString;
@@ -268,6 +269,14 @@ public abstract class DraggableBase extends UIComponentBase implements Widget {
 
     public void setOnStop(String onStop) {
         getStateHelper().put(PropertyKeys.onStop, onStop);
+    }
+
+    public String getOnDrag() {
+        return (String) getStateHelper().eval(PropertyKeys.onDrag, null);
+    }
+
+    public void setOnDrag(String onDrag) {
+        getStateHelper().put(PropertyKeys.onDrag, onDrag);
     }
 
     public String getCancel() {

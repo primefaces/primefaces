@@ -64,7 +64,8 @@ public class DraggableRenderer extends CoreRenderer {
                 .attr("cancel", draggable.getCancel(), null);
 
         wb.callback("onStart", "function(event,ui)", draggable.getOnStart())
-                .callback("onStop", "function(event,ui)", draggable.getOnStop());
+                .callback("onStop", "function(event,ui)", draggable.getOnStop())
+                .callback("onDrag", "function(event,ui)", draggable.getOnDrag());
 
         if (draggable.isRevert()) {
             wb.attr("revert", "invalid");
