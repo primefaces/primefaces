@@ -43,6 +43,9 @@ Drag&Drop utilities of PrimeFaces consists of two components; Draggable and Drop
 | cursor | crosshair | String | CSS cursor to display in dragging.
 | dashboard | null | String | Id of the dashboard to connect with.
 | appendTo | null | String | A search expression to define which element to append the draggable helper to.
+| onStart | null | String | Client side callback to execute when dragging starts.
+| onDrag | null | String | Client side callback to execute while dragging.
+| onStop | null | String | Client side callback to execute when dragging stops.
 
 ### Getting started with Draggable
 Any component can be enhanced with draggable behavior, basically this is achieved by defining the

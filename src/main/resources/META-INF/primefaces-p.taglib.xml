@@ -8671,6 +8671,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Client side callback to execute while dragging.]]>
+            </description>
+            <name>onDrag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Prevents dragging from starting on specified elements.]]>
             </description>
             <name>cancel</name>
