@@ -21,11 +21,12 @@ id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 mask | null | String | Mask template
+validateMask | false | Boolean | Defines whether mask pattern would be validated or not on the server side.
 slotChar | null | String | PlaceHolder in mask template.
 value | null | Object | Value of the component than can be either an EL expression of a literal text
 converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
 immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
-required | false | Boolean | Marks component as required
+required | false | Boolean | Mask component as required
 validator | null | MethodExpr | A method binding expression that refers to a method validationg the input
 valueChangeListener | null | MethodExpr | A method binding expression that refers to a method for handling a valuchangeevent
 requiredMessage | null | String | Message to be displayed when required field validation fails.

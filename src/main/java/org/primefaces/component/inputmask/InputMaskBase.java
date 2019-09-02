@@ -42,7 +42,8 @@ public abstract class InputMaskBase extends HtmlInputText implements Widget {
         mask,
         slotChar,
         autoClear,
-        type
+        type,
+        validateMask
     }
 
     public InputMaskBase() {
@@ -100,6 +101,14 @@ public abstract class InputMaskBase extends HtmlInputText implements Widget {
 
     public void setType(String type) {
         getStateHelper().put(PropertyKeys.type, type);
+    }
+
+    public boolean isValidateMask() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.validateMask, false);
+    }
+
+    public void setValidateMask(boolean validateMask) {
+        getStateHelper().put(PropertyKeys.validateMask, validateMask);
     }
 
     @Override
