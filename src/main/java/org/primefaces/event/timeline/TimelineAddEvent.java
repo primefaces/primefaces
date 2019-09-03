@@ -23,7 +23,7 @@
  */
 package org.primefaces.event.timeline;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
@@ -34,22 +34,22 @@ public class TimelineAddEvent extends AbstractAjaxBehaviorEvent {
 
     private static final long serialVersionUID = 1L;
 
-    private Date startDate;
-    private Date endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private String group;
 
-    public TimelineAddEvent(UIComponent component, Behavior behavior, Date startDate, Date endDate, String group) {
+    public TimelineAddEvent(UIComponent component, Behavior behavior, LocalDateTime startDate, LocalDateTime endDate, String group) {
         super(component, behavior);
         this.startDate = startDate;
         this.endDate = endDate;
         this.group = group;
     }
 
-    public Date getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 

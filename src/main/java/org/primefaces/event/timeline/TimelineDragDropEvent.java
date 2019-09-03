@@ -23,7 +23,7 @@
  */
 package org.primefaces.event.timeline;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
@@ -42,8 +42,8 @@ public class TimelineDragDropEvent<T> extends TimelineAddEvent {
      */
     private T data;
 
-    public TimelineDragDropEvent(UIComponent component, Behavior behavior, Date startDate, Date endDate, String group,
-            String dragId, T data) {
+    public TimelineDragDropEvent(UIComponent component, Behavior behavior, LocalDateTime startDate, LocalDateTime endDate, String group,
+                                 String dragId, T data) {
         super(component, behavior, startDate, endDate, group);
         this.dragId = dragId;
         this.data = data;

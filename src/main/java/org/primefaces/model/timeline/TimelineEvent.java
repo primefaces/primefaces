@@ -24,26 +24,28 @@
 package org.primefaces.model.timeline;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
-public class TimelineEvent implements Serializable {
+public class TimelineEvent<T> implements Serializable {
 
     private static final long serialVersionUID = 20130316L;
 
     /**
      * any custom data object (required to show content of the event)
      */
-    private Object data;
+    private T data;
 
     /**
      * event's start date (required)
      */
-    private Date startDate;
+    private LocalDateTime startDate;
 
     /**
      * event's end date (optional)
      */
-    private Date endDate;
+    private LocalDateTime endDate;
 
     /**
      * is this event editable? (optional. if null, see the timeline's attribute "editable"
@@ -63,91 +65,107 @@ public class TimelineEvent implements Serializable {
     public TimelineEvent() {
     }
 
-    public TimelineEvent(Object data, Date startDate) {
+    public TimelineEvent(T data, LocalDateTime startDate) {
         checkStartDate(startDate);
         this.data = data;
         this.startDate = startDate;
     }
 
-    public TimelineEvent(Object data, Date startDate, Boolean editable) {
+    public TimelineEvent(T data, LocalDate startDate) {
+        checkStartDate(startDate);
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        this.data = data;
+        this.startDate = startDateTime;
+    }
+
+    public TimelineEvent(T data, LocalDateTime startDate, Boolean editable) {
         checkStartDate(startDate);
         this.data = data;
         this.startDate = startDate;
         this.editable = editable;
     }
 
-    public TimelineEvent(Object data, Date startDate, Boolean editable, String group) {
+    public TimelineEvent(T data, LocalDateTime startDate, Boolean editable, String group) {
         checkStartDate(startDate);
         this.data = data;
         this.startDate = startDate;
-        this.editable = editable;
-        this.group = group;
-    }
-
-    public TimelineEvent(Object data, Date startDate, Boolean editable, String group, String styleClass) {
-        checkStartDate(startDate);
-        this.data = data;
-        this.startDate = startDate;
-        this.editable = editable;
-        this.group = group;
-        this.styleClass = styleClass;
-    }
-
-    public TimelineEvent(Object data, Date startDate, Date endDate) {
-        checkStartDate(startDate);
-        this.data = data;
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
-
-    public TimelineEvent(Object data, Date startDate, Date endDate, Boolean editable) {
-        checkStartDate(startDate);
-        this.data = data;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.editable = editable;
-    }
-
-    public TimelineEvent(Object data, Date startDate, Date endDate, Boolean editable, String group) {
-        checkStartDate(startDate);
-        this.data = data;
-        this.startDate = startDate;
-        this.endDate = endDate;
         this.editable = editable;
         this.group = group;
     }
 
-    public TimelineEvent(Object data, Date startDate, Date endDate, Boolean editable, String group, String styleClass) {
+    public TimelineEvent(T data, LocalDateTime startDate, Boolean editable, String group, String styleClass) {
         checkStartDate(startDate);
         this.data = data;
         this.startDate = startDate;
-        this.endDate = endDate;
         this.editable = editable;
         this.group = group;
         this.styleClass = styleClass;
     }
 
-    public Object getData() {
+    public TimelineEvent(T data, LocalDateTime startDate, LocalDateTime endDate) {
+        checkStartDate(startDate);
+        this.data = data;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public TimelineEvent(T data, LocalDate startDate, LocalDate endDate) {
+        checkStartDate(startDate);
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        LocalDateTime endDateTime = endDate.atStartOfDay();
+        this.data = data;
+        this.startDate = startDateTime;
+        this.endDate = endDateTime;
+    }
+
+    public TimelineEvent(T data, LocalDateTime startDate, LocalDateTime endDate, Boolean editable) {
+        checkStartDate(startDate);
+        this.data = data;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.editable = editable;
+    }
+
+    public TimelineEvent(T data, LocalDateTime startDate, LocalDateTime endDate, Boolean editable, String group) {
+        checkStartDate(startDate);
+        this.data = data;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.editable = editable;
+        this.group = group;
+    }
+
+    public TimelineEvent(T data, LocalDateTime startDate, LocalDateTime endDate, Boolean editable, String group, String styleClass) {
+        checkStartDate(startDate);
+        this.data = data;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.editable = editable;
+        this.group = group;
+        this.styleClass = styleClass;
+    }
+
+    public T getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 
-    public Date getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
@@ -187,7 +205,7 @@ public class TimelineEvent implements Serializable {
 
         TimelineEvent that = (TimelineEvent) o;
 
-        if (data != null ? !data.equals(that.data) : that.data != null) {
+        if (!Objects.equals(data, that.data)) {
             return false;
         }
 
@@ -211,7 +229,13 @@ public class TimelineEvent implements Serializable {
                 + '}';
     }
 
-    private void checkStartDate(Date startDate) {
+    private void checkStartDate(LocalDate startDate) {
+        if (startDate == null) {
+            throw new IllegalArgumentException("Event start date can not be null!");
+        }
+    }
+
+    private void checkStartDate(LocalDateTime startDate) {
         if (startDate == null) {
             throw new IllegalArgumentException("Event start date can not be null!");
         }

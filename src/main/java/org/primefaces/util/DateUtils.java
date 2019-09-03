@@ -28,16 +28,11 @@ import java.util.TimeZone;
 
 public class DateUtils {
 
+    /*
+    Only used by Timeline-Component
+     */
+
     private DateUtils() {
-    }
-
-    // convert from local date to UTC
-    public static Date toUtcDate(TimeZone browserTZ, TimeZone targetTZ, String localDate) {
-        if (localDate == null) {
-            return null;
-        }
-
-        return toUtcDate(browserTZ, targetTZ, Long.valueOf(localDate));
     }
 
     // convert from local date to UTC

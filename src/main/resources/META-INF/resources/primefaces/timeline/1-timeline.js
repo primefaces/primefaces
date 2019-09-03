@@ -101,13 +101,13 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
                 var params = [];
                 params.push({
                     name: this.id + '_startDate',
-                    value: event.start.getTime()
+                    value: event.start.toISOString()
                 });
 
                 if (event.end) {
                     params.push({
                         name: this.id + '_endDate',
-                        value: event.end.getTime()
+                        value: event.end.toISOString()
                     });
                 }
 
@@ -148,13 +148,13 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
 
                 params.push({
                     name: this.id + '_startDate',
-                    value: event.start.getTime()
+                    value: event.start.toISOString()
                 });
 
                 if (event.end) {
                     params.push({
                         name: this.id + '_endDate',
-                        value: event.end.getTime()
+                        value: event.end.toISOString()
                     });
                 }
 
@@ -195,13 +195,13 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
 
                 params.push({
                     name: this.id + '_startDate',
-                    value: event.start.getTime()
+                    value: event.start.toISOString()
                 });
 
                 if (event.end) {
                     params.push({
                         name: this.id + '_endDate',
-                        value: event.end.getTime()
+                        value: event.end.toISOString()
                     });
                 }
 
@@ -269,8 +269,8 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
 
                 var options = {
                     params: [
-                        {name: this.id + '_startDate', value: range.start.getTime()},
-                        {name: this.id + '_endDate', value: range.end.getTime()}
+                        {name: this.id + '_startDate', value: range.start.toISOString()},
+                        {name: this.id + '_endDate', value: range.end.toISOString()}
                     ]
                 };
 
@@ -285,8 +285,8 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
 
                 var options = {
                     params: [
-                        {name: this.id + '_startDate', value: range.start.getTime()},
-                        {name: this.id + '_endDate', value: range.end.getTime()}
+                        {name: this.id + '_startDate', value: range.start.toISOString()},
+                        {name: this.id + '_endDate', value: range.end.toISOString()}
                     ]
                 };
 
@@ -341,12 +341,12 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
                 var params = [];
                 params.push({
                     name: this.id + '_startDate',
-                    value: xstart.getTime()
+                    value: xstart.toISOString()
                 });
 
                 params.push({
                     name: this.id + '_endDate',
-                    value: xend.getTime()
+                    value: xend.toISOString()
                 });
 
                 var group = inst.getGroupFromHeight(y); // (group may be undefined)
@@ -445,13 +445,13 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if (range.startFirst != null && range.endFirst != null) {
-            options.params[0] = {name: this.id + '_startDateFirst', value: range.startFirst};
-            options.params[1] = {name: this.id + '_endDateFirst', value: range.endFirst};
+            options.params[0] = {name: this.id + '_startDateFirst', value: range.startFirst.toISOString()};
+            options.params[1] = {name: this.id + '_endDateFirst', value: range.endFirst.toISOString()};
         }
 
         if (range.startSecond != null && range.endSecond != null) {
-            options.params[2] = {name: this.id + '_startDateSecond', value: range.startSecond};
-            options.params[3] = {name: this.id + '_endDateSecond', value: range.endSecond};
+            options.params[2] = {name: this.id + '_startDateSecond', value: range.startSecond.toISOString()};
+            options.params[3] = {name: this.id + '_endDateSecond', value: range.endSecond.toISOString()};
         }
 
         this.getBehavior("lazyload").call(this, options);

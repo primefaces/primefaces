@@ -24,6 +24,9 @@
 package org.primefaces.component.timeline;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import javax.faces.component.UIComponent;
@@ -76,8 +79,8 @@ public class TimelineRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = timeline.getClientId(context);
 
-        TimeZone targetTZ = ComponentUtils.resolveTimeZone(timeline.getTimeZone());
-        TimeZone browserTZ = ComponentUtils.resolveTimeZone(timeline.getBrowserTimeZone());
+        ZoneId zoneId = CalendarUtils.calculateZoneId(timeline.getTimeZone());
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE_TIME.withZone(zoneId);
 
         FastStringWriter fsw = new FastStringWriter();
         FastStringWriter fswHtml = new FastStringWriter();
@@ -99,7 +102,7 @@ public class TimelineRenderer extends CoreRenderer {
         int size = events != null ? events.size() : 0;
         for (int i = 0; i < size; i++) {
             // encode events
-            writer.write(encodeEvent(context, fsw, fswHtml, timeline, browserTZ, targetTZ, groups, groupFacet, groupsContent,
+            writer.write(encodeEvent(context, fsw, fswHtml, timeline, zoneId, groups, groupFacet, groupsContent,
                     events.get(i)));
             if (i + 1 < size) {
                 writer.write(",");
@@ -123,19 +126,19 @@ public class TimelineRenderer extends CoreRenderer {
         wb.attr("timeChangeable", timeline.isTimeChangeable());
 
         if (timeline.getStart() != null) {
-            wb.nativeAttr("start", encodeDate(browserTZ, targetTZ, timeline.getStart()));
+            wb.nativeAttr("start", encodeDate(dateTimeFormatter, timeline.getStart()));
         }
 
         if (timeline.getEnd() != null) {
-            wb.nativeAttr("end", encodeDate(browserTZ, targetTZ, timeline.getEnd()));
+            wb.nativeAttr("end", encodeDate(dateTimeFormatter, timeline.getEnd()));
         }
 
         if (timeline.getMin() != null) {
-            wb.nativeAttr("min", encodeDate(browserTZ, targetTZ, timeline.getMin()));
+            wb.nativeAttr("min", encodeDate(dateTimeFormatter, timeline.getMin()));
         }
 
         if (timeline.getMax() != null) {
-            wb.nativeAttr("max", encodeDate(browserTZ, targetTZ, timeline.getMax()));
+            wb.nativeAttr("max", encodeDate(dateTimeFormatter, timeline.getMax()));
         }
 
         wb.attr("zoomMin", timeline.getZoomMin());
@@ -165,7 +168,7 @@ public class TimelineRenderer extends CoreRenderer {
 
         wb.attr("showCurrentTime", timeline.isShowCurrentTime());
         if (timeline.isShowCurrentTime()) {
-            wb.nativeAttr("currentTime", encodeDate(browserTZ, targetTZ, Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTime()));
+            wb.nativeAttr("currentTime", encodeDate(dateTimeFormatter, LocalDateTime.now()));
         }
 
         wb.attr("showMajorLabels", timeline.isShowMajorLabels());
@@ -203,19 +206,21 @@ public class TimelineRenderer extends CoreRenderer {
     }
 
     public String encodeEvent(FacesContext context, FastStringWriter fsw, FastStringWriter fswHtml, Timeline timeline,
-                              TimeZone browserTZ, TimeZone targetTZ, List<TimelineGroup> groups, UIComponent groupFacet,
+                              ZoneId zoneId, List<TimelineGroup> groups, UIComponent groupFacet,
                               Map<String, String> groupsContent, TimelineEvent event) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE_TIME.withZone(zoneId);
+
         if (event.getStartDate() != null) {
-            fsw.write("{\"start\":" + encodeDate(browserTZ, targetTZ, event.getStartDate()));
+            fsw.write("{\"start\":" + encodeDate(dateTimeFormatter, event.getStartDate()));
         }
         else {
             fsw.write("{\"start\":null");
         }
 
         if (event.getEndDate() != null) {
-            fsw.write(",\"end\":" + encodeDate(browserTZ, targetTZ, event.getEndDate()));
+            fsw.write(",\"end\":" + encodeDate(dateTimeFormatter, event.getEndDate()));
         }
         else {
             fsw.write(",\"end\":null");
@@ -339,9 +344,8 @@ public class TimelineRenderer extends CoreRenderer {
         return eventJson;
     }
 
-    // convert from UTC to locale date
-    private String encodeDate(TimeZone browserTZ, TimeZone targetTZ, Date utcDate) {
-        return "new Date(" + DateUtils.toLocalDate(browserTZ, targetTZ, utcDate) + ")";
+    private String encodeDate(DateTimeFormatter dateTimeFormatter, LocalDateTime date) {
+        return "new Date('" + dateTimeFormatter.format(date) + "')";
     }
 
     @Override

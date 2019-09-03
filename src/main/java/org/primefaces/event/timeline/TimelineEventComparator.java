@@ -44,11 +44,11 @@ public class TimelineEventComparator implements Comparator<TimelineEvent>, Seria
                 return 1;
             }
             else {
-                return (a.getEndDate().before(b.getEndDate()) ? -1 : 1);
+                return (a.getEndDate().isBefore(b.getEndDate()) ? -1 : 1);
             }
         }
         else {
-            return (a.getStartDate().before(b.getStartDate()) ? -1 : 1);
+            return (a.getStartDate().isBefore(b.getStartDate()) ? -1 : 1);
         }
     }
 }
