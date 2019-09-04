@@ -99,7 +99,7 @@ public class TimelineRenderer extends CoreRenderer {
         if (groupsSize > 0) {
             writer.write(",groups:[");
             for (int i = 0; i < groupsSize; i++) {
-                //If groups was not setted in model then order by content.
+                //If groups was not set in model then order by content.
                 Integer order = model.getGroups() != null ? i : null;
                 //encode groups
                 writer.write(encodeGroup(context, fsw, fswHtml, timeline, groupFacet, groupsContent, groups.get(i), order));
@@ -305,24 +305,24 @@ public class TimelineRenderer extends CoreRenderer {
 
         if (event.isEditableTime() != null || event.isEditableGroup() != null || event.isEditableRemove() != null) {
             fsw.write(", editable: {");
-            boolean wasSetted = false;
+            boolean isSet = false;
             if (event.isEditableTime() != null) {
                 fsw.write("updateTime: " + event.isEditableTime());
-                wasSetted = true;
+                isSet = true;
             }
             if (event.isEditableGroup() != null) {
-                if (wasSetted) {
+                if (isSet) {
                     fsw.write(",");
                 }
                 fsw.write("updateGroup: " + event.isEditableGroup());
-                wasSetted = true;
+                isSet = true;
             }
             if (event.isEditableRemove() != null) {
-                if (wasSetted) {
+                if (isSet) {
                     fsw.write(",");
                 }
                 fsw.write("remove: " + event.isEditableRemove());
-                wasSetted = true;
+                isSet = true;
             }
             fsw.write("}");
         }
@@ -331,7 +331,7 @@ public class TimelineRenderer extends CoreRenderer {
         TimelineGroup<?> foundGroup = null;
         if (event.getGroup() != null) {
             for (TimelineGroup<?> group : groups) {
-                if (group.getId() != null && group.getId().equals(event.getGroup())) {
+                if (Objects.equals(group.getId(), event.getGroup())) {
                     foundGroup = group;
                     break;
                 }

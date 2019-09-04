@@ -146,7 +146,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
                         }
                     }
                     if (foundGroup != null) {
-                        //If groups was not setted in model then order by content.
+                        //If groups was not set in model then order by content.
                         orderGroup = model.getGroups() != null ? orderGroup : null;
                         sb.append(";PF('");
                         sb.append(widgetVar);
