@@ -1081,3 +1081,25 @@ div.vis-tooltip {
 
   z-index: 5;
 }
+/**************************/
+/** Custom PrimeFaces css */
+/**************************/
+div.timeline-menu {
+    position: absolute;
+    right: 0;
+    margin: 10px;
+    z-index: 999;
+}
+
+div.timeline-menu-axis-both {
+    top: 50px;
+}
+
+div.timeline-menu-axis-top {
+    bottom: 0px;
+}
+
+div.timeline-menu-rtl {
+    left: 0px;
+    right: inherit;
+}

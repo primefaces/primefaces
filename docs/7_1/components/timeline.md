@@ -72,6 +72,7 @@ dropHoverStyleClass | null | String | Style class to apply when an acceptable dr
 dropActiveStyleClass | null | String | Style class to apply when an acceptable draggable is being dragged over.
 dropAccept | null | String | Selector to define the accepted draggables.
 dropScope | null | String | Scope key to match draggables and droppables.
+dir | ltr | String | Defines direction of timeline. Valid values are "ltr" (default) and "rtl".
 extender | null | String | Name of javascript function to extend the options of the underlying timeline javascript component.
 
 ## Getting started with the TimeLine
@@ -96,6 +97,30 @@ public class BasicTimelineView implements Serializable {
         model.add(new TimelineEvent("PrimeFaces 5.1.3", cal.getTime()));
     }
 }
+```
+## Custom Menu
+A custom menu can be defined using menu facet.
+
+```xhtml
+<p:timeline id="timeline" value="#{basicTimelineView.model}" widgetVar="timeline">
+    <f:facet name="menu">
+        <p:commandButton type="button" icon="fa fa-arrow-left" onclick="PF('timeline').move(-0.2);" />
+        <p:commandButton type="button" icon="fa fa-arrow-right" onclick="PF('timeline').move(0.2);" />
+        <p:commandButton type="button" icon="fa fa-search-plus" onclick="PF('timeline').zoom(0.2);" />
+        <p:commandButton type="button" icon="fa fa-search-minus" onclick="PF('timeline').zoom(-0.2);" />
+    </f:facet>
+</p:timeline>
+```
+## Loading Screen
+A loading screen can be defined using loading facet.
+
+```xhtml
+<p:timeline id="timeline" value="#{basicTimelineView.model}">
+    <f:facet name="loading">
+        LOADING<br />
+        <p:graphicImage name="/demo/images/ajaxloadingbar.gif" />
+    </f:facet>
+</p:timeline>
 ```
 ## Extender
 Extender property is a javascript function that allows access to the underlying timeline api.

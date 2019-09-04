@@ -21,6 +21,13 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
             };
         }
         
+        if (this.cfg.isMenuPresent) {
+            this.cfg.opts.onInitialDrawComplete = $.proxy(function() {
+                var el = document.getElementById(this.id);
+                $(el).find(".timeline-menu").show();                
+            }, this);
+        }
+
         if (this.cfg.extender) {
             this.cfg.extender.call(this);
         }
@@ -109,7 +116,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         // "change" event        
-        if (this.cfg.opts.selectable && this.cfg.opts.editable && this.cfg.opts.timeChangeable && this.getBehavior("change")) {
+        if (this.cfg.opts.selectable && (this.cfg.opts.editable.updateTime || this.cfg.opts.editable.updateGroup) && this.getBehavior("change")) {
             this.instance.setOptions({
                 onMoving: $.proxy(function(item, callback) {
                     var params = [];
@@ -144,7 +151,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         // "changed" event
-        if (this.cfg.opts.selectable && this.cfg.opts.editable && this.cfg.opts.timeChangeable && this.getBehavior("changed")) {
+        if (this.cfg.opts.selectable && (this.cfg.opts.editable.updateTime || this.cfg.opts.editable.updateGroup) && this.getBehavior("changed")) {
             this.instance.setOptions({
                 onMove: $.proxy(function(item, callback) {
                     var params = [];

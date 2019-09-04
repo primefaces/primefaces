@@ -26709,6 +26709,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines direction of timeline. Valid values are "ltr" (default) and "rtl".]]>
+            </description>
+            <name>dir</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Name of javascript function to extend the options of the underlying timeline javascript component.]]>
             </description>
             <name>extender</name>

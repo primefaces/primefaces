@@ -29,13 +29,14 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.model.timeline.TimelineModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LocaleUtils;
 
 
-public abstract class TimelineBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+public abstract class TimelineBase extends UIComponentBase implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -92,6 +93,7 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, Cl
         dropActiveStyleClass,
         dropAccept,
         dropScope,
+        dir,
         extender
     }
 
@@ -542,6 +544,14 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, Cl
         getStateHelper().put(PropertyKeys.dropScope, dropScope);
     }
 
+    public String getDir() {
+        return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
+    }
+
+    public void setDir(String dir) {
+        getStateHelper().put(PropertyKeys.dir, dir);
+    }
+
     public String getExtender() {
         return (String) getStateHelper().eval(PropertyKeys.extender, null);
     }
@@ -553,5 +563,10 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, Cl
     @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    }
+
+    @Override
+    public boolean isRTL() {
+        return "rtl".equalsIgnoreCase(getDir());
     }
 }

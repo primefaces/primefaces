@@ -65,6 +65,29 @@ public class TimelineRenderer extends CoreRenderer {
             writer.writeAttribute("class", timeline.getStyleClass(), "styleClass");
         }
 
+        UIComponent menuFacet = timeline.getFacet("menu");
+        if (menuFacet != null) {
+            writer.startElement("div", null);
+            StringBuilder cssMenu = new StringBuilder("timeline-menu");
+
+            if ("top".equals(timeline.getOrientationAxis())) {
+                cssMenu.append(" timeline-menu-axis-top");
+            }
+            else if ("both".equals(timeline.getOrientationAxis())) {
+                cssMenu.append(" timeline-menu-axis-both");
+            }
+
+            if (timeline.isRTL()) {
+                cssMenu.append(" timeline-menu-rtl");
+            }
+
+            writer.writeAttribute("class", cssMenu.toString(), null);
+            //It will be displayed when timeline is displayed
+            writer.writeAttribute("style", "display:none;", null);
+            menuFacet.encodeAll(context);
+            writer.endElement("div");
+        }
+
         writer.endElement("div");
     }
 
@@ -152,6 +175,10 @@ public class TimelineRenderer extends CoreRenderer {
         if (timeline.getExtender() != null) {
             wb.nativeAttr("extender", timeline.getExtender());
         }
+        UIComponent menuFacet = timeline.getFacet("menu");
+        if (menuFacet != null) {
+            wb.attr("isMenuPresent", Boolean.TRUE);
+        }
 
         writer.write(",opts:{");
 
@@ -228,6 +255,23 @@ public class TimelineRenderer extends CoreRenderer {
 
         wb.attr("locale", timeline.calculateLocale(context).toString());
         wb.attr("clickToUse", timeline.isClickToUse());
+
+        if (timeline.isRTL()) {
+            wb.attr("rtl", Boolean.TRUE);
+        }
+
+        UIComponent loadingFacet = timeline.getFacet("loading");
+        if (loadingFacet != null) {
+            ResponseWriter clonedWriter = writer.cloneWithWriter(fswHtml);
+
+            context.setResponseWriter(clonedWriter);
+            loadingFacet.encodeAll(context);
+            // restore writer
+            context.setResponseWriter(writer);
+            // writing facet content's
+            wb.nativeAttr("loadingScreenTemplate", "function() { return \"" + EscapeUtils.forJavaScriptBlock(fswHtml.toString()) + "\";}");
+            fswHtml.reset();
+        }
 
         writer.write("}");
         encodeClientBehaviors(context, timeline);
