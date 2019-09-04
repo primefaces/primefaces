@@ -26375,7 +26375,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If true, item specific editable properties are overridden by timeline settings. Default is false.]]>
+                <![CDATA[If true, TimelineEvent specific editables properties are overridden by timeline settings. Default is false.]]>
             </description>
             <name>editableOverrideItems</name>
             <required>false</required>
@@ -26503,9 +26503,8 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Specifies the default type for the timeline items. Choose from 'box', 'point', 'range', and 'background'. Note that individual 
-                items can override this default type. If undefined, the Timeline will auto detect the type from the items data: if a start and end date is 
-                available, a 'range' will be created, and else, a 'box' is created. Items of type 'background' are not editable.]]>
+                <![CDATA[Specifies the default type for the timeline items. Choose from 'box', 'point' and 'range'. If undefined, the Timeline will auto detect 
+                the type from the items data: if a start and end date is available, a 'range' will be created, and else, a 'box' is created. Default null.]]>
             </description>
             <name>eventStyle</name>
             <required>false</required>
@@ -26573,7 +26572,7 @@
         <attribute>
             <description>
                 <![CDATA[When moving items on the Timeline, they will be snapped to nice dates like full hours or days, depending on the current scale. 
-                The snap function can be replaced with a custom function, or can be set to null to disable snapping. 
+                The snap function can be replaced with a custom javascript function, or can be set to null to disable snapping. 
                 The signature of the snap function is:
                 
                 function snap(date: Date, scale: string, step: number) : Date or number
@@ -26702,7 +26701,7 @@
             <description>
                 <![CDATA[When a Timeline is configured to be clickToUse, it will react to mouse and touch events only when active. When active, a blue shadow 
                 border is displayed around the Timeline. The Timeline is set active by clicking on it, and is changed to inactive again by clicking outside 
-                the Timeline or by pressing the ESC key.]]>
+                the Timeline or by pressing the ESC key. Default is false.]]>
             </description>
             <name>clickToUse</name>
             <required>false</required>

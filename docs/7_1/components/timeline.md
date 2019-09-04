@@ -26,18 +26,23 @@ styleClass | null | String | Style class of the component.
 var | null | String | Name of the request-scoped variable for underlaying object in the TimelineEvent for each iteration.
 value | null | TimelineModel | An instance of TimelineModel representing the backing model.
 varGroup | null | String | Name of the request-scoped variable for underlaying object in the TimelineGroup for each iteration.
-locale | null | Object | User locale for i18n messages. The attribute can be either a String or Locale object.
+locale | view Locale | Object | User locale for i18n localization messages. The attribute can be either a String or java.util.Locale object.
 timeZone | null | Object | Target time zone to convert start / end dates for displaying. This time zone is the time zone the user would like to see dates in UI. The attribute can be either a String or TimeZone object or null. If null, timeZone defaults to the server's time zone the application is running in.
 browserTimeZone | null | Object | Time zone the user's browser / PC is running in. This time zone allows to correct the conversion of start / end dates to the target timeZone for displaying. The attribute can be either a String or TimeZone object or null. Note: browserTimeZone should be provided if the target timeZone is provided. If null, browserTimeZone defaults to the server's timeZone.
-height | auto | String | The height of the timeline in pixels, as a percentage, or "auto". When the height is set to "auto", the height of the timeline is automatically adjusted to fit the contents. If not, it is possible that events get stacked so high, that they are not visible in the timeline. When height is set to "auto", a minimum height can be specified with the option minHeight. Default is "auto".
-minHeight | 0 | Integer | Specifies a minimum height for the Timeline in pixels. Useful when height is set to "auto".
+height | null | String | The height of the timeline in pixels or as a percentage. When height is undefined or null, the height of the timeline is automatically adjusted to fit the contents. It is possible to set a maximum height using option maxHeight to prevent the timeline from getting too high in case of automatically calculated height.
+maxHeight | null | Integer | Specifies the maximum height for the Timeline in pixels.
+minHeight | 0 | Integer | Specifies a minimum height for the Timeline in pixels.
 width | 100% | String | The width of the timeline in pixels or as a percentage.
 responsive | true | Boolean | Check if the timeline container is resized, and if so, resize the timeline. Useful when the webpage (browser window) or a layout pane / unit containing the timeline component is resized.
-axisOnTop | false | Boolean | If false, the horizontal axis is drawn at the bottom. If true, the axis is drawn on top.
-dragAreaWidth | 10 | Integer | The width of the drag areas in pixels. When an event with date range is selected, it has a drag area on the left and right side, with which the start or end dates of the event can be manipulated.
-editable | false | Boolean | If true, the events can be edited, changed, created and deleted. Events can only be editable when the option selectable is true (default). When editable is true, the timeline can fire AJAX events "change", "edit", "add", "delete", "drop". This global setting "editable" can be overwritten for individual events by setting a value in field "editable".
+axisOnTop | false | Boolean | (Deprecated, use orientationAxis instead.) If false, the horizontal axis is drawn at the bottom. If true, the axis is drawn on top.
+orientationAxis | bottom | String | Orientation of the timeline axis: 'top', 'bottom' (default), 'both', or 'none'. If orientation is 'bottom', the time axis is drawn at the bottom. When 'top', the axis is drawn on top. When 'both', two axes are drawn, both on top and at the bottom. In case of 'none', no axis is drawn at all.
+orientationItem | bottom | String | Orientation of the timeline items: 'top' or 'bottom' (default). Determines whether items are aligned to the top or bottom of the Timeline.
+editable | false | Boolean | If true, the items in the timeline can be manipulated. Only applicable when option selectable is true.
+editableAdd | false | Boolean | If true, new items can be created by double tapping an empty space in the Timeline. Takes precedence over editable.
+editableGroup | false | Boolean | If true, items can be dragged from one group to another. Only applicable when the Timeline has groups. Takes precedence over editable.
+editableRemove | false | Boolean | If true, items can be deleted by first selecting them, and then clicking the delete button on the top right of the item. Takes precedence over editable.
+editableOverrideItems | false | Boolean | If true, TimelineEvent specific editables properties are overridden by timeline settings.
 selectable | true | Boolean | If true, events on the timeline are selectable. Selectable events can fire AJAX "select" events.
-unselectable | true | Boolean | If true, you can unselect an item by clicking in the empty space of the timeline. If false, you cannot unselect an item, there will be always one item selected.
 zoomable | true | Boolean | If true, the timeline is zoomable. When the timeline is zoomed, AJAX "rangechange" events are fired.
 moveable | true | Boolean | If true, the timeline is movable. When the timeline is moved, AJAX "rangechange" events are fired.
 start | null | Date | The initial start date for the axis of the timeline. If not provided, the earliest date present in the events is taken as start date.
@@ -49,26 +54,25 @@ zoomMax | 315360000000000L | Long | Set a maximum zoom interval for the visible 
 preloadFactor | 0.0f | Float | Preload factor is a positive float value or 0 which can be used for lazy loading of events. When the lazy loading feature is active, the calculated time range for preloading will be multiplicated by the preload factor. The result of this multiplication specifies the additional time range which will be considered for the preloading during moving / zooming too. For example, if the calculated time range for preloading is 5 days and the preload factor is 0.2, the result is 5 * 0.2 = 1 day. That means, 1 day backwards and / or 1 day onwards will be added to the original calculated time range. The event's area to be preloaded is wider then. This helps to avoid frequently, time-consuming fetching of events. Default value is 0.
 eventMargin | 10 | Integer | The minimal margin in pixels between events.
 eventMarginAxis | 10 | Integer | The minimal margin in pixels between events and the horizontal axis.
-eventStyle | box | String | Specifies the style for the timeline events. Choose from "dot" or "box".
-groupsChangeable | true | Boolean | If true, items can be moved from one group to another. Only applicable when groups are used.
-groupsOnRight | false | Boolean | If false, the groups legend is drawn at the left side of the timeline. If true, the groups legend is drawn on the right side.
+eventHorizontalMargin | 10 | Integer | The minimal horizontal margin in pixels between items. Takes precedence over eventMargin property.
+eventVerticalMargin | 10 | Integer | The minimal vertical margin in pixels between items. Takes precedence over eventMargin property.
+eventStyle | null | String | Specifies the default type for the timeline items. Choose from 'box', 'point' and 'range'. If undefined, the Timeline will auto detect the type from the items data: if a start and end date is available, a 'range' will be created, and else, a 'box' is created.
+groupsChangeable | true | Boolean | (Deprecated, use editableGroup property instead.) If true, items can be moved from one group to another. Only applicable when groups are used.
 groupsOrder | true | Boolean | Allows to customize the way groups are ordered. When true (default), groups will be ordered by content alphabetically (when the list of groups is missing) or by native ordering of TimelineGroup object in the list of groups (when the list of groups is available). When false, groups will not be ordered at all.
-groupsWidth | null | String | By default, the width of the groups legend is adjusted to the group names. A fixed width can be set for the groups legend by specifying the "groupsWidth" as a string, for example "200px".
-groupMinHeight | 0 | Integer | The minimum height of each individual group even if they have no items. The group height is set as the greatest value between items height and the groupMinHeight. Default is 0.
-snapEvents | true | Boolean | If true, the start and end of an event will be snapped nice integer values when moving or resizing the event. Default is true.
+groupStyle | null | String | A css text string to apply custom styling for an individual group label, for example "color: red; background-color: pink;".
+snap | function | String | When moving items on the Timeline, they will be snapped to nice dates like full hours or days, depending on the current scale. The snap function can be replaced with a custom javascript function, or can be set to null to disable snapping. The signature of the snap function is:<br><br> ````function snap(date: Date, scale: string, step: number) : Date or number````<br><br>The parameter scale can be can be 'millisecond', 'second', 'minute', 'hour', 'weekday, 'week', 'day, 'month, or 'year'. The parameter step is a number like 1, 2, 4, 5.
+snapEvents | true | Boolean | (Deprecated, use snap property instead) If true, the start and end of an event will be snapped nice integer values when moving or resizing the event. Default is true.
 stackEvents | true | Boolean | If true, the start and end of an event will be snapped nice integer values when moving or resizing the event.
 showCurrentTime | true | Boolean | If true, the timeline shows a red, vertical line displaying the current time.
 showMajorLabels | true | Boolean | By default, the timeline shows both minor and major date labels on the horizontal axis. For example the minor labels show minutes and the major labels show hours. When "showMajorLabels" is false, no major labels are shown.
 showMinorLabels | true | Boolean | By default, the timeline shows both minor and major date labels on the horizontal axis. For example the minor labels show minutes and the major labels show hours. When "showMinorLabels" is false, no minor labels are shown. When both "showMajorLabels" and "showMinorLabels" are false, no horizontal axis will be visible.
-showButtonNew | false | Boolean | Show the button "Create new event" in the a navigation menu.
-showNavigation | false | Boolean | Show a navigation menu with buttons to move and zoom the timeline.
-timeChangeable | true | Boolean | If false, items can not be moved or dragged horizontally (neither start time nor end time is changable). This is useful when items should be editable but can only be changed regarding group or content (typical use case: scheduling events).
+timeChangeable | true | Boolean | (Deprecated, use editableTime property instead.) If false, items can not be moved or dragged horizontally (neither start time nor end time is changable). This is useful when items should be editable but can only be changed regarding group or content (typical use case: scheduling events).
+clickToUse | false | Boolean | When a Timeline is configured to be clickToUse, it will react to mouse and touch events only when active. When active, a blue shadow border is displayed around the Timeline. The Timeline is set active by clicking on it, and is changed to inactive again by clicking outside the Timeline or by pressing the ESC key.
 dropHoverStyleClass | null | String | Style class to apply when an acceptable draggable is dragged over.
 dropActiveStyleClass | null | String | Style class to apply when an acceptable draggable is being dragged over.
 dropAccept | null | String | Selector to define the accepted draggables.
 dropScope | null | String | Scope key to match draggables and droppables.
-animate | true | Boolean | When true, events are moved animated when resizing or moving them. This is very pleasing for the eye, but does require more computational power.
-animateZoom | true | Boolean | When true, events are moved animated when zooming the Timeline. This looks cool, but does require more computational power.
+extender | null | String | Name of javascript function to extend the options of the underlying timeline javascript component.
 
 ## Getting started with the TimeLine
 TimeLine requires a value of org.primefaces.model.timeline.TimelineModel type. An event should
@@ -92,6 +96,31 @@ public class BasicTimelineView implements Serializable {
         model.add(new TimelineEvent("PrimeFaces 5.1.3", cal.getTime()));
     }
 }
+```
+## Extender
+Extender property is a javascript function that allows access to the underlying timeline api.
+
+```xhtml
+<p:timeline id="timeline" value="#{basicTimelineView.model}" extender="timelineExtender" />
+
+<h:outputScript>
+    function timelineExtender() {
+       //copy the config options into a variable
+       var options = $.extend(true, {}, this.cfg.opts);
+
+       options = {
+          //hide weekends and non labor hours
+          hiddenDates: [
+                {start: '2014-08-09 00:00:00', end: '2014-08-11 00:00:00', repeat:'weekly'},
+                {start: '2014-08-09 00:00:00', end: '2014-08-09 06:00:00', repeat:'daily'},
+                {start: '2014-08-09 18:00:00', end: '2014-08-09 23:59:59', repeat:'daily'}
+          ]
+       };
+
+       //merge all options into the main timeline options
+       $.extend(true, this.cfg.opts, options);
+    };
+</h:outputScript>
 ```
 ## Examples
 For examples on editing, grouping, styling, ranges, linked timelines and lazy loading please visit:
