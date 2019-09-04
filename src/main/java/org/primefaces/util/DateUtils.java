@@ -23,42 +23,33 @@
  */
 package org.primefaces.util;
 
-import java.util.Date;
-import java.util.TimeZone;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 public class DateUtils {
 
     /*
     Only used by Timeline-Component
+    TODO: Maybe we should move this to CalendarUtils.
      */
 
     private DateUtils() {
     }
 
-    // convert from local date to UTC
-    public static Date toUtcDate(TimeZone browserTZ, TimeZone targetTZ, long localDate) {
-        return toUtcDate(browserTZ, targetTZ, new Date(localDate));
-    }
-
-    // convert from local date to UTC
-    public static Date toUtcDate(TimeZone browserTZ, TimeZone targetTZ, Date localDate) {
-        if (localDate == null) {
+    /**
+     * Convert ISO-String (@see <a href="https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString">https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString</a>)
+     * to LocalDateTime.
+     * @param isoDateString
+     * @return
+     */
+    public static LocalDateTime toLocalDateTime(ZoneId zoneId, String isoDateString) {
+        if (isoDateString == null) {
             return null;
         }
 
-        long local = localDate.getTime();
-        int targetOffsetFromUTC = targetTZ.getOffset(local);
-        int browserOffsetFromUTC = browserTZ.getOffset(local);
-
-        return new Date(local - targetOffsetFromUTC + browserOffsetFromUTC);
-    }
-
-    // convert from UTC to local date
-    public static long toLocalDate(TimeZone browserTZ, TimeZone targetTZ, Date utcDate) {
-        long utc = utcDate.getTime();
-        int targetOffsetFromUTC = targetTZ.getOffset(utc);
-        int browserOffsetFromUTC = browserTZ.getOffset(utc);
-
-        return utc + targetOffsetFromUTC - browserOffsetFromUTC;
+        Instant instant = Instant.parse(isoDateString);
+        LocalDateTime result = LocalDateTime.ofInstant(instant, zoneId);
+        return result;
     }
 }

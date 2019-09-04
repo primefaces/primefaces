@@ -49,7 +49,6 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, Cl
         varGroup,
         locale,
         timeZone,
-        browserTimeZone,
         height,
         minHeight,
         width,
@@ -163,14 +162,6 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, Cl
 
     public void setTimeZone(Object timeZone) {
         getStateHelper().put(PropertyKeys.timeZone, timeZone);
-    }
-
-    public Object getBrowserTimeZone() {
-        return getStateHelper().eval(PropertyKeys.browserTimeZone, null);
-    }
-
-    public void setBrowserTimeZone(Object browserTimeZone) {
-        getStateHelper().put(PropertyKeys.browserTimeZone, browserTimeZone);
     }
 
     public String getHeight() {

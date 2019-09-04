@@ -23,9 +23,7 @@
  */
 package org.primefaces.component.timeline;
 
-import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import javax.faces.application.ResourceDependencies;
@@ -91,14 +89,13 @@ public class Timeline extends TimelineBase {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             ZoneId zoneId = CalendarUtils.calculateZoneId(getTimeZone());
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE_TIME.withZone(zoneId);
 
             if ("add".equals(eventName)) {
                 // preset start / end date and the group
                 TimelineAddEvent te =
                         new TimelineAddEvent(this, behaviorEvent.getBehavior(),
-                                LocalDateTime.parse(params.get(clientId + "_startDate"), dateTimeFormatter),
-                                LocalDateTime.parse(params.get(clientId + "_endDate"), dateTimeFormatter),
+                                DateUtils.toLocalDateTime(zoneId, params.get(clientId + "_startDate")),
+                                DateUtils.toLocalDateTime(zoneId, params.get(clientId + "_endDate")),
                                 getGroup(params.get(clientId + "_group")));
                 te.setPhaseId(behaviorEvent.getPhaseId());
                 super.queueEvent(te);
@@ -116,8 +113,8 @@ public class Timeline extends TimelineBase {
                     clonedEvent.setStyleClass(timelineEvent.getStyleClass());
 
                     // update start / end date and the group
-                    clonedEvent.setStartDate(LocalDateTime.parse(params.get(clientId + "_startDate"), dateTimeFormatter));
-                    clonedEvent.setEndDate(LocalDateTime.parse(params.get(clientId + "_endDate"), dateTimeFormatter));
+                    clonedEvent.setStartDate(DateUtils.toLocalDateTime(zoneId, params.get(clientId + "_startDate")));
+                    clonedEvent.setEndDate(DateUtils.toLocalDateTime(zoneId, params.get(clientId + "_endDate")));
                     clonedEvent.setGroup(getGroup(params.get(clientId + "_group")));
                 }
 
@@ -158,8 +155,8 @@ public class Timeline extends TimelineBase {
             else if ("rangechange".equals(eventName) || "rangechanged".equals(eventName)) {
                 TimelineRangeEvent te =
                         new TimelineRangeEvent(this, behaviorEvent.getBehavior(),
-                                LocalDateTime.parse(params.get(clientId + "_startDate"), dateTimeFormatter),
-                                LocalDateTime.parse(params.get(clientId + "_endDate"), dateTimeFormatter));
+                                DateUtils.toLocalDateTime(zoneId, params.get(clientId + "_startDate")),
+                                DateUtils.toLocalDateTime(zoneId, params.get(clientId + "_endDate")));
                 te.setPhaseId(behaviorEvent.getPhaseId());
                 super.queueEvent(te);
 
@@ -168,10 +165,10 @@ public class Timeline extends TimelineBase {
             else if ("lazyload".equals(eventName)) {
                 TimelineLazyLoadEvent te =
                         new TimelineLazyLoadEvent(this, behaviorEvent.getBehavior(),
-                                LocalDateTime.parse(params.get(clientId + "_startDateFirst"), dateTimeFormatter),
-                                LocalDateTime.parse(params.get(clientId + "_endDateFirst"), dateTimeFormatter),
-                                LocalDateTime.parse(params.get(clientId + "_startDateSecond"), dateTimeFormatter),
-                                LocalDateTime.parse(params.get(clientId + "_endDateSecond"), dateTimeFormatter));
+                                DateUtils.toLocalDateTime(zoneId, params.get(clientId + "_startDateFirst")),
+                                DateUtils.toLocalDateTime(zoneId, params.get(clientId + "_endDateFirst")),
+                                DateUtils.toLocalDateTime(zoneId, params.get(clientId + "_startDateSecond")),
+                                DateUtils.toLocalDateTime(zoneId, params.get(clientId + "_endDateSecond")));
                 te.setPhaseId(behaviorEvent.getPhaseId());
                 super.queueEvent(te);
 
@@ -192,8 +189,8 @@ public class Timeline extends TimelineBase {
                 // preset start / end date, group, dragId and data object
                 TimelineDragDropEvent te =
                         new TimelineDragDropEvent(this, behaviorEvent.getBehavior(),
-                                LocalDateTime.parse(params.get(clientId + "_startDate"), dateTimeFormatter),
-                                LocalDateTime.parse(params.get(clientId + "_endDate"), dateTimeFormatter),
+                                DateUtils.toLocalDateTime(zoneId, params.get(clientId + "_startDate")),
+                                DateUtils.toLocalDateTime(zoneId, params.get(clientId + "_endDate")),
                                 getGroup(params.get(clientId + "_group")), dragId, data);
                 te.setPhaseId(behaviorEvent.getPhaseId());
                 super.queueEvent(te);
@@ -229,6 +226,5 @@ public class Timeline extends TimelineBase {
                 .equals(context.getExternalContext().getRequestParameterMap().get(
                         Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }
-
 
 }
