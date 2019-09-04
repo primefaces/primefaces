@@ -37,12 +37,12 @@ public class TimelineRangeEvent extends AbstractAjaxBehaviorEvent {
     /**
      * new start time of the visible range
      */
-    private Date startDate;
+    private final Date startDate;
 
     /**
      * new end time of the visible range
      */
-    private Date endDate;
+    private final Date endDate;
 
     public TimelineRangeEvent(UIComponent component, Behavior behavior, Date startDate, Date endDate) {
         super(component, behavior);

@@ -34,9 +34,9 @@ public class TimelineAddEvent extends AbstractAjaxBehaviorEvent {
 
     private static final long serialVersionUID = 1L;
 
-    private Date startDate;
-    private Date endDate;
-    private String group;
+    private final Date startDate;
+    private final Date endDate;
+    private final String group;
 
     public TimelineAddEvent(UIComponent component, Behavior behavior, Date startDate, Date endDate, String group) {
         super(component, behavior);

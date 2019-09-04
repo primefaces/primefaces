@@ -25,7 +25,7 @@ package org.primefaces.model.timeline;
 
 import java.io.Serializable;
 
-public class TimelineGroup implements Serializable {
+public class TimelineGroup<T> implements Serializable {
 
     private static final long serialVersionUID = 20140413L;
 
@@ -37,12 +37,17 @@ public class TimelineGroup implements Serializable {
     /**
      * any custom data object (required to show content of the group)
      */
-    private Object data;
+    private T data;
+
+    /**
+     * any custom style class for this event in UI (optional)
+     */
+    private String styleClass;
 
     public TimelineGroup() {
     }
 
-    public TimelineGroup(String id, Object data) {
+    public TimelineGroup(String id, T data) {
         this.id = id;
         this.data = data;
     }
@@ -55,12 +60,20 @@ public class TimelineGroup implements Serializable {
         this.id = id;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
+    }
+
+    public String getStyleClass() {
+        return styleClass;
+    }
+
+    public void setStyleClass(String styleClass) {
+        this.styleClass = styleClass;
     }
 
     @Override
@@ -72,13 +85,9 @@ public class TimelineGroup implements Serializable {
             return false;
         }
 
-        TimelineGroup that = (TimelineGroup) o;
+        TimelineGroup<?> that = (TimelineGroup) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) {
-            return false;
-        }
-
-        return true;
+        return !(id != null ? !id.equals(that.id) : that.id != null);
     }
 
     @Override

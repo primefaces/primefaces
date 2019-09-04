@@ -67,9 +67,9 @@ public abstract class TimelineUpdater {
         return timelineUpdater;
     }
 
-    public abstract void add(TimelineEvent event);
+    public abstract void add(TimelineEvent<?> event, int index);
 
-    public abstract void update(TimelineEvent event, int index);
+    public abstract void update(TimelineEvent<?> event, int index);
 
     public abstract void delete(int index);
 

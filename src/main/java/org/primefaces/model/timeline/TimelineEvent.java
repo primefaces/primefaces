@@ -26,14 +26,14 @@ package org.primefaces.model.timeline;
 import java.io.Serializable;
 import java.util.Date;
 
-public class TimelineEvent implements Serializable {
+public class TimelineEvent<T> implements Serializable {
 
     private static final long serialVersionUID = 20130316L;
 
     /**
      * any custom data object (required to show content of the event)
      */
-    private Object data;
+    private T data;
 
     /**
      * event's start date (required)
@@ -46,9 +46,24 @@ public class TimelineEvent implements Serializable {
     private Date endDate;
 
     /**
-     * is this event editable? (optional. if null, see the timeline's attribute "editable"
+     * is this event editable? (optional). if null, see the timeline's attribute "editable"
      */
     private Boolean editable;
+
+    /**
+     * is this event time editable? (optional). Overrides editable. if null, see the timeline's attribute "editableTime"
+     */
+    private Boolean editableTime;
+
+    /**
+     * is this event group editable? (optional). Overrides editable. if null, see the timeline's attribute "editable"
+     */
+    private Boolean editableGroup;
+
+    /**
+     * is this event group editable? (optional). Overrides editable. if null, see the timeline's attribute "editable"
+     */
+    private Boolean editableRemove;
 
     /**
      * group this event belongs to (optional). this can be either the group's content or group's position in the list of all groups
@@ -63,75 +78,93 @@ public class TimelineEvent implements Serializable {
     public TimelineEvent() {
     }
 
-    public TimelineEvent(Object data, Date startDate) {
+    public TimelineEvent(T data, Date startDate) {
         checkStartDate(startDate);
         this.data = data;
         this.startDate = startDate;
     }
 
-    public TimelineEvent(Object data, Date startDate, Boolean editable) {
+    public TimelineEvent(T data, Date startDate, Boolean editable) {
         checkStartDate(startDate);
         this.data = data;
         this.startDate = startDate;
         this.editable = editable;
+        this.editableTime = editable;
+        this.editableGroup = editable;
+        this.editableRemove = editable;
     }
 
-    public TimelineEvent(Object data, Date startDate, Boolean editable, String group) {
+    public TimelineEvent(T data, Date startDate, Boolean editable, String group) {
         checkStartDate(startDate);
         this.data = data;
         this.startDate = startDate;
         this.editable = editable;
+        this.editableTime = editable;
+        this.editableGroup = editable;
+        this.editableRemove = editable;
         this.group = group;
     }
 
-    public TimelineEvent(Object data, Date startDate, Boolean editable, String group, String styleClass) {
+    public TimelineEvent(T data, Date startDate, Boolean editable, String group, String styleClass) {
         checkStartDate(startDate);
         this.data = data;
         this.startDate = startDate;
         this.editable = editable;
-        this.group = group;
-        this.styleClass = styleClass;
-    }
-
-    public TimelineEvent(Object data, Date startDate, Date endDate) {
-        checkStartDate(startDate);
-        this.data = data;
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
-
-    public TimelineEvent(Object data, Date startDate, Date endDate, Boolean editable) {
-        checkStartDate(startDate);
-        this.data = data;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.editable = editable;
-    }
-
-    public TimelineEvent(Object data, Date startDate, Date endDate, Boolean editable, String group) {
-        checkStartDate(startDate);
-        this.data = data;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.editable = editable;
-        this.group = group;
-    }
-
-    public TimelineEvent(Object data, Date startDate, Date endDate, Boolean editable, String group, String styleClass) {
-        checkStartDate(startDate);
-        this.data = data;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.editable = editable;
+        this.editableTime = editable;
+        this.editableGroup = editable;
+        this.editableRemove = editable;
         this.group = group;
         this.styleClass = styleClass;
     }
 
-    public Object getData() {
+    public TimelineEvent(T data, Date startDate, Date endDate) {
+        checkStartDate(startDate);
+        this.data = data;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public TimelineEvent(T data, Date startDate, Date endDate, Boolean editable) {
+        checkStartDate(startDate);
+        this.data = data;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.editable = editable;
+        this.editableTime = editable;
+        this.editableGroup = editable;
+        this.editableRemove = editable;
+    }
+
+    public TimelineEvent(T data, Date startDate, Date endDate, Boolean editable, String group) {
+        checkStartDate(startDate);
+        this.data = data;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.editable = editable;
+        this.editableTime = editable;
+        this.editableGroup = editable;
+        this.editableRemove = editable;
+        this.group = group;
+    }
+
+    public TimelineEvent(T data, Date startDate, Date endDate, Boolean editable, String group, String styleClass) {
+        checkStartDate(startDate);
+        this.data = data;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.editable = editable;
+        this.editableTime = editable;
+        this.editableGroup = editable;
+        this.editableRemove = editable;
+        this.group = group;
+        this.styleClass = styleClass;
+    }
+
+    public T getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 
@@ -157,6 +190,33 @@ public class TimelineEvent implements Serializable {
 
     public void setEditable(Boolean editable) {
         this.editable = editable;
+        this.editableTime = editable;
+        this.editableGroup = editable;
+        this.editableRemove = editable;
+    }
+
+    public Boolean isEditableTime() {
+        return editableTime;
+    }
+
+    public void setEditableTime(Boolean editableTime) {
+        this.editableTime = editableTime;
+    }
+
+    public Boolean isEditableGroup() {
+        return editableGroup;
+    }
+
+    public void setEditableGroup(Boolean editableGroup) {
+        this.editableGroup = editableGroup;
+    }
+
+    public Boolean isEditableRemove() {
+        return editableRemove;
+    }
+
+    public void setEditableRemove(Boolean editableRemove) {
+        this.editableRemove = editableRemove;
     }
 
     public String getGroup() {
@@ -185,13 +245,9 @@ public class TimelineEvent implements Serializable {
             return false;
         }
 
-        TimelineEvent that = (TimelineEvent) o;
+        TimelineEvent<?> that = (TimelineEvent) o;
 
-        if (data != null ? !data.equals(that.data) : that.data != null) {
-            return false;
-        }
-
-        return true;
+        return !(data != null ? !data.equals(that.data) : that.data != null);
     }
 
     @Override

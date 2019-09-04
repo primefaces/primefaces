@@ -106,11 +106,11 @@ public class Timeline extends TimelineBase {
                 return;
             }
             else if ("change".equals(eventName) || "changed".equals(eventName)) {
-                TimelineEvent clonedEvent = null;
-                TimelineEvent timelineEvent = getValue().getEvent(params.get(clientId + "_eventIdx"));
+                TimelineEvent<Object> clonedEvent = null;
+                TimelineEvent<Object> timelineEvent = getValue().getEvent(params.get(clientId + "_eventIdx"));
 
                 if (timelineEvent != null) {
-                    clonedEvent = new TimelineEvent();
+                    clonedEvent = new TimelineEvent<>();
                     clonedEvent.setData(timelineEvent.getData());
                     clonedEvent.setEditable(timelineEvent.isEditable());
                     clonedEvent.setStyleClass(timelineEvent.getStyleClass());
@@ -123,18 +123,18 @@ public class Timeline extends TimelineBase {
                     clonedEvent.setGroup(getGroup(params.get(clientId + "_group")));
                 }
 
-                TimelineModificationEvent te = new TimelineModificationEvent(this, behaviorEvent.getBehavior(), clonedEvent);
+                TimelineModificationEvent<Object> te = new TimelineModificationEvent<>(this, behaviorEvent.getBehavior(), clonedEvent);
                 te.setPhaseId(behaviorEvent.getPhaseId());
                 super.queueEvent(te);
 
                 return;
             }
             else if ("edit".equals(eventName) || "delete".equals(eventName)) {
-                TimelineEvent clonedEvent = null;
-                TimelineEvent timelineEvent = getValue().getEvent(params.get(clientId + "_eventIdx"));
+                TimelineEvent<Object> clonedEvent = null;
+                TimelineEvent<Object> timelineEvent = getValue().getEvent(params.get(clientId + "_eventIdx"));
 
                 if (timelineEvent != null) {
-                    clonedEvent = new TimelineEvent();
+                    clonedEvent = new TimelineEvent<>();
                     clonedEvent.setData(timelineEvent.getData());
                     clonedEvent.setStartDate((Date) timelineEvent.getStartDate().clone());
                     clonedEvent.setEndDate(timelineEvent.getEndDate() != null ? (Date) timelineEvent.getEndDate().clone() : null);
@@ -143,15 +143,15 @@ public class Timeline extends TimelineBase {
                     clonedEvent.setStyleClass(timelineEvent.getStyleClass());
                 }
 
-                TimelineModificationEvent te = new TimelineModificationEvent(this, behaviorEvent.getBehavior(), clonedEvent);
+                TimelineModificationEvent<Object> te = new TimelineModificationEvent<>(this, behaviorEvent.getBehavior(), clonedEvent);
                 te.setPhaseId(behaviorEvent.getPhaseId());
                 super.queueEvent(te);
 
                 return;
             }
             else if ("select".equals(eventName)) {
-                TimelineEvent timelineEvent = getValue().getEvent(params.get(clientId + "_eventIdx"));
-                TimelineSelectEvent te = new TimelineSelectEvent(this, behaviorEvent.getBehavior(), timelineEvent);
+                TimelineEvent<Object> timelineEvent = getValue().getEvent(params.get(clientId + "_eventIdx"));
+                TimelineSelectEvent<Object> te = new TimelineSelectEvent<>(this, behaviorEvent.getBehavior(), timelineEvent);
                 te.setPhaseId(behaviorEvent.getPhaseId());
                 super.queueEvent(te);
 
@@ -201,8 +201,8 @@ public class Timeline extends TimelineBase {
                 TimeZone targetTZ = ComponentUtils.resolveTimeZone(getTimeZone());
                 TimeZone browserTZ = ComponentUtils.resolveTimeZone(getBrowserTimeZone());
 
-                TimelineDragDropEvent te =
-                        new TimelineDragDropEvent(this, behaviorEvent.getBehavior(),
+                TimelineDragDropEvent<Object> te =
+                        new TimelineDragDropEvent<>(this, behaviorEvent.getBehavior(),
                                 DateUtils.toUtcDate(browserTZ, targetTZ, params.get(clientId + "_startDate")),
                                 DateUtils.toUtcDate(browserTZ, targetTZ, params.get(clientId + "_endDate")),
                                 getGroup(params.get(clientId + "_group")), dragId, data);
@@ -217,7 +217,7 @@ public class Timeline extends TimelineBase {
     }
 
     private String getGroup(String groupParam) {
-        List<TimelineGroup> groups = getValue().getGroups();
+        List<TimelineGroup<Object>> groups = getValue().getGroups();
         if (groups == null || groupParam == null) {
             return groupParam;
         }

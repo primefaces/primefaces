@@ -13,12 +13,16 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
         if (this.lazy) {
             this.min = (typeof this.cfg.opts.min !== 'undefined' ? this.cfg.opts.min.getTime() : null);
             this.max = (typeof this.cfg.opts.max !== 'undefined' ? this.cfg.opts.max.getTime() : null);
-            this.pFactor = this.cfg.opts.preloadFactor;
+            this.pFactor = this.cfg.preloadFactor;
 
             this.rangeLoadedEvents = {
                 start: null,
                 end: null
             };
+        }
+        
+        if (this.cfg.extender) {
+            this.cfg.extender.call(this);
         }
 
         this.renderDeferred();
@@ -28,24 +32,18 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * Creates timeline widget with all initialization steps.
      */
     _render: function () {
-        // configure localized text
-        var settings = PrimeFaces.getLocaleSettings();
-        if(settings) {
-            for(var setting in settings) {
-                this.cfg.opts[setting] = settings[setting];
-            }
-        }
-
         // instantiate a timeline object
         var el = document.getElementById(this.id);
-        this.instance = new links.Timeline(el, this.cfg.opts);
-
-        // draw the timeline with created data and options
-        this.instance.draw(this.cfg.data, null);
-
-        // set current time (workaround)
-        if (this.cfg.opts.currentTime) {
-            this.instance.setCurrentTime(this.cfg.opts.currentTime);
+        var items = new vis.DataSet(this.cfg.data);
+        
+        if (this.cfg.groups) {
+            this.instance = new vis.Timeline(el, items, new vis.DataSet(this.cfg.groups), this.cfg.opts);
+        } else {
+            this.instance = new vis.Timeline(el, items, this.cfg.opts);
+        }
+        
+        if (this.cfg.currentTime) {
+            this.instance.setCurrentTime(this.cfg.currentTime);
         }
 
         // bind events
@@ -56,25 +54,9 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * Binds timeline's events.
      */
     bindEvents: function (el) {
-        if (this.cfg.opts.responsive) {
-            var layoutPane = $(el).closest(".ui-layout-pane");
-            if (layoutPane.length > 0) {
-                // timeline is within layout pane / unit ==> resize it when resizing layout pane / unit
-                layoutPane.on('layoutpaneonresize', $.proxy(function () {
-                    this.instance.checkResize();
-                }, this));
-            } else {
-                // resize timeline on window resizing
-                var nsevent = "resize.timeline" + PrimeFaces.escapeClientId(this.id);
-                $(window).off(nsevent).on(nsevent, $.proxy(function () {
-                    this.instance.checkResize();
-                }, this));
-            }
-        }
-
         // "select" event
         if (this.cfg.opts.selectable && this.getBehavior("select")) {
-            links.events.addListener(this.instance, 'select', $.proxy(function () {
+            this.instance.on('select', $.proxy(function () {
                 var index = this.getSelectedIndex();
                 if (index < 0) {
                     return;
@@ -92,186 +74,158 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
 
         // "add" event
         if (this.cfg.opts.selectable && this.cfg.opts.editable && this.getBehavior("add")) {
-            links.events.addListener(this.instance, 'add', $.proxy(function () {
-                var event = this.getSelectedEvent();
-                if (event == null) {
-                    return;
-                }
-
-                var params = [];
-                params.push({
-                    name: this.id + '_startDate',
-                    value: event.start.getTime()
-                });
-
-                if (event.end) {
+            this.instance.setOptions({
+               onAdd: $.proxy(function(item, callback) {
+                    var params = [];
                     params.push({
-                        name: this.id + '_endDate',
-                        value: event.end.getTime()
+                        name: this.id + '_startDate',
+                        value: item.start.getTime()
                     });
-                }
 
-                if (event.group) {
-                    params.push({
-                        name: this.id + '_group',
-                        value: event.group
-                    });
-                }
+                    if (item.end) {
+                        params.push({
+                            name: this.id + '_endDate',
+                            value: item.end.getTime()
+                        });
+                    }
 
-                this.getBehavior("add").call(this, {params: params});
-            }, this));
+                    if (item.group) {
+                        params.push({
+                            name: this.id + '_group',
+                            value: item.group
+                        });
+                    }
+                    
+                    var maxId = this.instance.itemsData.max("id");
+                    
+                    item.id = 1 + (maxId ? maxId : 0);
+                    this.addCallback = callback;
+                    
+                    this.getBehavior("add").call(this, {params: params, item: item});
+                    
+                    this.addCallback = null;
+               }, this)
+            });            
         }
 
-        // "change" event
+        // "change" event        
         if (this.cfg.opts.selectable && this.cfg.opts.editable && this.cfg.opts.timeChangeable && this.getBehavior("change")) {
-            links.events.addListener(this.instance, 'change', $.proxy(function () {
-                var index = this.getSelectedIndex();
-                if (index < 0) {
-                    return;
-                }
-
-                var event = this.getEvent(index);
-                if (event == null) {
-                    return;
-                }
-
-                if (!this.instance.isEditable(event)) {
-                    // only editable events can be changed
-                    return;
-                }
-
-                var params = [];
-                params.push({
-                    name: this.id + '_eventIdx',
-                    value: index
-                });
-
-                params.push({
-                    name: this.id + '_startDate',
-                    value: event.start.getTime()
-                });
-
-                if (event.end) {
+            this.instance.setOptions({
+                onMoving: $.proxy(function(item, callback) {
+                    var params = [];
                     params.push({
-                        name: this.id + '_endDate',
-                        value: event.end.getTime()
+                        name: this.id + '_eventIdx',
+                        value: item.id
                     });
-                }
 
-                if (event.group) {
                     params.push({
-                        name: this.id + '_group',
-                        value: event.group
+                        name: this.id + '_startDate',
+                        value: item.start.getTime()
                     });
-                }
 
-                this.getBehavior("change").call(this, {params: params});
-            }, this));
+                    if (item.end) {
+                        params.push({
+                            name: this.id + '_endDate',
+                            value: item.end.getTime()
+                        });
+                    }
+
+                    if (item.group) {
+                        params.push({
+                            name: this.id + '_group',
+                            value: item.group
+                        });
+                    }
+
+                    this.getBehavior("change").call(this, {params: params, item: item, callback: callback});
+                    callback(item);
+                }, this)
+            });
         }
 
         // "changed" event
         if (this.cfg.opts.selectable && this.cfg.opts.editable && this.cfg.opts.timeChangeable && this.getBehavior("changed")) {
-            links.events.addListener(this.instance, 'changed', $.proxy(function () {
-                var index = this.getSelectedIndex();
-                if (index < 0) {
-                    return;
-                }
-
-                var event = this.getEvent(index);
-                if (event == null) {
-                    return;
-                }
-
-                if (!this.instance.isEditable(event)) {
-                    // only editable events can be changed
-                    return;
-                }
-
-                var params = [];
-                params.push({
-                    name: this.id + '_eventIdx',
-                    value: index
-                });
-
-                params.push({
-                    name: this.id + '_startDate',
-                    value: event.start.getTime()
-                });
-
-                if (event.end) {
+            this.instance.setOptions({
+                onMove: $.proxy(function(item, callback) {
+                    var params = [];
                     params.push({
-                        name: this.id + '_endDate',
-                        value: event.end.getTime()
+                        name: this.id + '_eventIdx',
+                        value: item.id
                     });
-                }
 
-                if (event.group) {
                     params.push({
-                        name: this.id + '_group',
-                        value: event.group
+                        name: this.id + '_startDate',
+                        value: item.start.getTime()
                     });
-                }
 
-                this.getBehavior("changed").call(this, {params: params});
-            }, this));
+                    if (item.end) {
+                        params.push({
+                            name: this.id + '_endDate',
+                            value: item.end.getTime()
+                        });
+                    }
+
+                    if (item.group) {
+                        params.push({
+                            name: this.id + '_group',
+                            value: item.group
+                        });
+                    }
+
+                    this.changedCallback = callback;
+                    this.getBehavior("changed").call(this, {params: params, item: item, callback: callback});
+                    this.changedCallback = null;
+                }, this)
+            });
         }
 
         // "edit" event
         if (this.cfg.opts.selectable && this.cfg.opts.editable && this.getBehavior("edit")) {
-            links.events.addListener(this.instance, 'edit', $.proxy(function () {
-                var index = this.getSelectedIndex();
-                if (index < 0) {
-                    return;
-                }
-
-                if (!this.isEditable(index)) {
-                    // only editable events can be edited
-                    return;
-                }
-
-                var options = {
-                    params: [
-                        {name: this.id + '_eventIdx', value: index}
-                    ]
-                };
-
-                this.getBehavior("edit").call(this, options);
-            }, this));
+            this.instance.setOptions({
+                onUpdate: $.proxy(function(item, callback) {
+                    var options = {
+                        params: [
+                            {name: this.id + '_eventIdx', value: item.id}
+                        ],
+                        item: item,
+                        callback: callback
+                    };
+                    
+                    this.changedCallback = callback;
+                    this.getBehavior("edit").call(this, options);
+                    this.changedCallback = null;
+                }, this)
+            });
         }
 
         // "delete" event
         if (this.cfg.opts.selectable && this.cfg.opts.editable && this.getBehavior("delete")) {
-            links.events.addListener(this.instance, 'delete', $.proxy(function () {
-                var index = this.getSelectedIndex();
-                if (index < 0) {
-                    return;
-                }
+            this.instance.setOptions({
+                onRemove: $.proxy(function(item, callback) {
+                    var options = {
+                        params: [
+                            {name: this.id + '_eventIdx', value: item.id}
+                        ],
+                        item: item,
+                        callback: callback
+                    };
 
-                if (!this.isEditable(index)) {
-                    // only editable events can be deleted
-                    return;
-                }
-
-                var options = {
-                    params: [
-                        {name: this.id + '_eventIdx', value: index}
-                    ]
-                };
-
-                this.getBehavior("delete").call(this, options);
-            }, this));
+                    this.deleteCallback = callback;
+                    this.getBehavior("delete").call(this, options);
+                    this.deleteCallback = null;
+                }, this)
+            });
         }
 
         // "rangechange" event
         if ((this.cfg.opts.zoomable || this.cfg.opts.moveable) && this.getBehavior("rangechange")) {
-            links.events.addListener(this.instance, 'rangechange', $.proxy(function () {
-                var range = this.instance.getVisibleChartRange();
-
+            this.instance.on('rangechange', $.proxy(function (properties) {
                 var options = {
                     params: [
-                        {name: this.id + '_startDate', value: range.start.getTime()},
-                        {name: this.id + '_endDate', value: range.end.getTime()}
-                    ]
+                        {name: this.id + '_startDate', value: properties.start.getTime()},
+                        {name: this.id + '_endDate', value: properties.end.getTime()}
+                    ],
+                    properties: properties
                 };
 
                 this.getBehavior("rangechange").call(this, options);
@@ -280,14 +234,13 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
 
         // "rangechanged" event
         if ((this.cfg.opts.zoomable || this.cfg.opts.moveable) && this.getBehavior("rangechanged")) {
-            links.events.addListener(this.instance, 'rangechanged', $.proxy(function () {
-                var range = this.instance.getVisibleChartRange();
-
+            this.instance.on('rangechanged', $.proxy(function (properties) {
                 var options = {
                     params: [
-                        {name: this.id + '_startDate', value: range.start.getTime()},
-                        {name: this.id + '_endDate', value: range.end.getTime()}
-                    ]
+                        {name: this.id + '_startDate', value: properties.start.getTime()},
+                        {name: this.id + '_endDate', value: properties.end.getTime()}
+                    ],
+                    properties: properties
                 };
 
                 this.getBehavior("rangechanged").call(this, options);
@@ -300,7 +253,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
             this.fireLazyLoading();
 
             // moving / zooming
-            links.events.addListener(this.instance, 'rangechanged', $.proxy(function () {
+            this.instance.on('rangechanged', $.proxy(function () {
                 this.fireLazyLoading();
             }, this));
         }
@@ -308,53 +261,54 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
         // register this timeline as droppable if needed
         if (this.cfg.opts.selectable && this.cfg.opts.editable && this.getBehavior("drop")) {
             var droppableOpts = {tolerance: "pointer"};
-            if (this.cfg.opts.hoverClass) {
-                droppableOpts.hoverClass = this.cfg.opts.hoverClass;
+            if (this.cfg.hoverClass) {
+                droppableOpts.hoverClass = this.cfg.hoverClass;
             }
 
-            if (this.cfg.opts.activeClass) {
-                droppableOpts.activeClass = this.cfg.opts.activeClass;
+            if (this.cfg.activeClass) {
+                droppableOpts.activeClass = this.cfg.activeClass;
             }
 
-            if (this.cfg.opts.accept) {
-                droppableOpts.accept = this.cfg.opts.accept;
+            if (this.cfg.accept) {
+                droppableOpts.accept = this.cfg.accept;
             }
 
-            if (this.cfg.opts.scope) {
-                droppableOpts.scope = this.cfg.opts.scope;
+            if (this.cfg.scope) {
+                droppableOpts.scope = this.cfg.scope;
             }
 
             droppableOpts.drop = $.proxy(function (evt, ui) {
                 var inst = this.getInstance();
 
-                var x = evt.pageX - links.Timeline.getAbsoluteLeft(inst.dom.content);
-                var y = evt.pageY - links.Timeline.getAbsoluteTop(inst.dom.content);
+                var x = evt.pageX - vis.util.getAbsoluteLeft(inst.dom.center);
+                var y = evt.pageY - vis.util.getAbsoluteTop(inst.dom.center);
 
-                var xstart = inst.screenToTime(x);
-                var xend = inst.screenToTime(x + inst.size.frameWidth / 10); // add 10% of timeline width
+                var xstart = inst._toTime(x);
+                var xend = inst._toTime(x + inst.dom.container.clientWidth / 10); // add 10% of timeline width
 
-                if (this.cfg.opts.snapEvents) {
-                    inst.step.snap(xstart);
-                    inst.step.snap(xend);
-                }
-
+                var snap = inst.itemSet.options.snap || null;
+                var scale = inst.body.util.getScale();
+                var step = inst.body.util.getStep();
+                var snappedStart = snap ? snap(xstart, scale, step).toDate() : xstart;
+                var snappedEnd = snap ? snap(xend, scale, step).toDate() : xend;
+                
                 var params = [];
                 params.push({
                     name: this.id + '_startDate',
-                    value: xstart.getTime()
+                    value: snappedStart.getTime()
                 });
 
                 params.push({
                     name: this.id + '_endDate',
-                    value: xend.getTime()
+                    value: snappedEnd.getTime()
                 });
 
-                var group = inst.getGroupFromHeight(y); // (group may be undefined)
+                var group = inst.itemSet.groupFromTarget(evt); // (group may be undefined)
 
                 if (group) {
                     params.push({
                         name: this.id + '_group',
-                        value: inst.getGroupName(group)
+                        value: group.content
                     });
                 }
 
@@ -390,7 +344,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * @return {Object}
      */
     getData: function () {
-        var newData = $.map(this.instance.getData(), $.proxy(function(item) {
+        var newData = this.instance.itemsData.map($.proxy(function(item) {
             var newItem = {};
             if (item.hasOwnProperty('content')) {
                 newItem.data = item.content;
@@ -464,7 +418,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * @return {Object}
      */
     getLazyLoadRange: function() {
-        var visibleRange = this.instance.getVisibleChartRange();
+        var visibleRange = this.instance.getWindow();
 
         if (this.rangeLoadedEvents.start == null || this.rangeLoadedEvents.end == null) {
             // initial load
@@ -556,11 +510,9 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Force render the timeline component.
-     *
-     * @param animate flag to animate the render action (optional)
      */
-    renderTimeline: function (animate) {
-        this.instance.render({'animate': animate});
+    renderTimeline: function () {
+        this.instance.redraw();
     },
 
     /**
@@ -568,10 +520,9 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * "start" (Date), "end" (Date), "content" (String), "group" (String). Parameters "end" and "group" are optional.
      *
      * @param properties event's properties
-     * @param preventRender flag indicating whether to preventRendering or not (optional)
      */
-    addEvent: function (properties, preventRender) {
-        this.instance.addItem(properties, preventRender);
+    addEvent: function (properties) {
+        this.instance.itemsData.add(properties);
     },
 
     /**
@@ -580,50 +531,64 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      *
      * @param index index of the event.
      * @param properties event's properties
-     * @param preventRender flag indicating whether to preventRendering or not (optional)
      */
-    changeEvent: function (index, properties, preventRender) {
-        this.instance.changeItem(index, properties, preventRender);
+    changeEvent: function (index, properties) {
+        properties.id = index;
+        this.instance.itemsData.update(properties);
     },
 
     /**
      * Deletes an existing event.
      *
-     * @param index index of the event.
-     * @param preventRender optional boolean parameter to prevent re-render timeline immediately after delete
-     * @param preventRender flag indicating whether to preventRendering or not (optional)
-     *        (for multiple deletions). Default is false.
+     * @param index Number index of the event.
      */
-    deleteEvent: function (index, preventRender) {
-        this.instance.deleteItem(index, preventRender);
+    deleteEvent: function (index) {
+        this.instance.itemsData.remove(index);
     },
-
+    
     /**
      * Deletes all events from the timeline.
      */
     deleteAllEvents: function () {
-        this.instance.deleteAllItems();
+        this.instance.itemsData.clear();
     },
-
+    
+    /**
+     * Update a group to the timeline adding if not exists. The provided parameter properties is an object, containing parameters
+     * "id" (String), "content" (String), "style" (String), "className" (String), "order" (Number). Parameters "style", "className" and "order" are optional.
+     *
+     * @param properties event's properties
+     */
+    updateGroup: function (properties) {
+        var dataset = this.instance.groupsData.getDataSet();
+        dataset.update(properties);
+    },
+    
     /**
      * Cancels event adding.
      */
     cancelAdd: function () {
-        this.instance.cancelAdd();
+        if (this.addCallback) {
+            this.addCallback(null);
+        }
     },
 
     /**
      * Cancels event changing.
      */
     cancelChange: function () {
-        this.instance.cancelChange();
+        if (this.changedCallback) {
+            this.changedCallback(null);
+        }
     },
 
     /**
      * Cancels event deleting.
      */
     cancelDelete: function () {
-        this.instance.cancelDelete();
+        if (this.deleteCallback) {
+            this.deleteCallback(null);
+        }
     },
 
     /**
@@ -633,17 +598,17 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * @return {Object}
      */
     getEvent: function (index) {
-        return this.instance.getItem(index);
+        return this.instance.itemsData.get(index);
     },
 
     /**
      * Is the event by given index editable?
      *
      * @param index index of the event
-     * @return {boolean} true - editable, false - not
+     * @return {object} Object with properties updateTime, updateGroup and remove.
      */
-    isEditable: function(index) {
-        return this.instance.isEditable(this.getEvent(index));
+    getEditable: function(index) {
+        return this.instance.itemSet.getItemById(index).editable;
     },
 
     /**
@@ -653,52 +618,74 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * @return {Object}
      */
     getVisibleRange: function () {
-        return this.instance.getVisibleChartRange();
+        return this.instance.getWindow();
     },
 
     /**
-     * Sets the visible range (zoom) to the specified range. Accepts two parameters of type Date
-     * that represent the first and last times of the wanted selected visible range.
-     * Set start to null to include everything from the earliest date to end;
-     * set end to null to include everything from start to the last date.
+     * Set the current visible window. The parameters start and end can be a Date, Number, or String. 
+     * If the parameter value of start or end is null, the parameter will be left unchanged. Available options:
+     * 
+     * animation: boolean or {duration: number, easingFunction: string} If true (default) or an Object, 
+     * the range is animated smoothly to the new window. An object can be provided to specify duration 
+     * and easing function. Default duration is 500 ms, and default easing function is 'easeInOutQuad'. 
+     * Available easing functions: "linear", "easeInQuad", "easeOutQuad", "easeInOutQuad", "easeInCubic", 
+     * "easeOutCubic", "easeInOutCubic", "easeInQuart", "easeOutQuart", "easeInOutQuart", "easeInQuint", 
+     * "easeOutQuint", "easeInOutQuint".
      *
      * @param start start Date
      * @param end end Date
+     * @param options Object
+     * @param callback Function A callback function can be passed as an optional parameter. 
+     * This function will be called at the end of setVisibleRange function.
      */
-    setVisibleRange: function (start, end) {
-        return this.instance.setVisibleChartRange(start, end);
+    setVisibleRange: function (start, end, options, callback) {
+        return this.instance.setWindow(start, end, options, callback);
     },
 
     /**
-     * Moves the timeline the given movefactor to the left or right. Start and end date will be adjusted,
-     * and the timeline will be redrawn. For example, try moveFactor = 0.1 or -0.1. moveFactor is a Number
-     * that determines the moving amount. A positive value will move right, a negative value will move left.
+     * Move the window such that given time is centered on screen. Parameter time can be a Date, Number, or String. 
+     * Available options:
+     * 
+     * animation: boolean or {duration: number, easingFunction: string} 
+     * If true (default) or an Object, the range is animated smoothly to the new window. An object can be provided 
+     * to specify duration and easing function. Default duration is 500 ms, and default easing function 
+     * is 'easeInOutQuad'. Available easing functions: "linear", "easeInQuad", "easeOutQuad", "easeInOutQuad", 
+     * "easeInCubic", "easeOutCubic", "easeInOutCubic", "easeInQuart", "easeOutQuart", "easeInOutQuart", 
+     * "easeInQuint", "easeOutQuint", "easeInOutQuint".
      *
-     * @param moveFactor Number
+     * @param time Date, Number or String
+     * @param options Object 
+     * @param callback Function A callback function can be passed as an optional parameter. 
+     * This function will be called at the end of moveTo function.
      */
-    move: function (moveFactor) {
-        return this.instance.move(moveFactor);
+    move: function (time, options, callback) {
+        return this.instance.moveTo(time, options, callback);
     },
 
     /**
-     * Zooms the timeline the given zoomfactor in or out. Start and end date will be adjusted,
-     * and the timeline will be redrawn. You can optionally give a date around which to zoom.
-     * For example, try zoomfactor = 0.1 or -0.1. zoomFactor is a Number that determines the zooming amount.
-     * Positive value will zoom in, negative value will zoom out.
-     * zoomAroundDate is a Date around which to zoom and it is optional.
+     * Zoom in the current visible window. The parameter percentage can be a Number and must be between -1 and +1. 
+     * If the parameter value of percentage is null, the window will be left unchanged. Available options:
+     * 
+     * animation: boolean or {duration: number, easingFunction: string} 
+     * If true (default) or an Object, the range is animated smoothly to the new window. An object can be provided 
+     * to specify duration and easing function. Default duration is 500 ms, and default easing function 
+     * is 'easeInOutQuad'. Available easing functions: "linear", "easeInQuad", "easeOutQuad", "easeInOutQuad", 
+     * "easeInCubic", "easeOutCubic", "easeInOutCubic", "easeInQuart", "easeOutQuart", "easeInOutQuart", 
+     * "easeInQuint", "easeOutQuint", "easeInOutQuint".
      *
-     * @param zoomFactor Number
-     * @param zoomAroundDate Date
+     * @param percentage Number An number between -1 and +1. If positive zoom in, and if negative zoom out.
+     * @param options Object
+     * @param callback Function A callback function can be passed as an optional parameter. This function 
+     * will be called at the end of zoomIn function.
      */
-    zoom: function (zoomFactor, zoomAroundDate) {
-        return this.instance.zoom(zoomFactor, zoomAroundDate);
-    },
-
-    /**
-     * Check if the timeline container is resized, and if so, resize the timeline. Useful when the webpage is resized.
-     */
-    checkResize: function () {
-        this.instance.checkResize();
+    zoom: function (percentage, options, callback) {
+        if (percentage) { 
+            if (percentage >= 0) {
+                return this.instance.zoomIn(percentage, options, callback);
+            } else {
+                return this.instance.zoomOut(-percentage, options, callback);
+            }
+        }
     },
 
     /**
@@ -707,7 +694,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * @return {Integer}
      */
     getNumberOfEvents: function () {
-        return this.instance.getData().length;
+        return this.instance.itemsData.length;
     },
 
     /**
@@ -718,8 +705,8 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
     getSelectedIndex: function () {
         var selection = this.instance.getSelection();
         if (selection.length) {
-            if (selection[0].row != undefined) {
-                return selection[0].row;
+            if (selection[0] != undefined) {
+                return selection[0];
             }
         }
 
@@ -735,7 +722,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
     getSelectedEvent: function () {
         var index = this.getSelectedIndex();
         if (index != -1) {
-            return this.instance.getItem(index);
+            return this.instance.itemsData.get(index);
         }
 
         return null;
@@ -744,15 +731,13 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Selects an event by index. The visible range will be moved,
      * so that the selected event is placed in the middle.
-     * To unselect all events, use a negative index, e.g. index = -1.
+     * To unselect all events, use a negative id, e.g. index = -1.
      *
      * @param index
      */
     setSelection: function(index) {
         if (index >= 0) {
-            this.instance.setSelection([{
-                'row': index
-            }]);
+            this.instance.setSelection(index);
         } else {
             // unselect all events
             this.instance.setSelection([]);

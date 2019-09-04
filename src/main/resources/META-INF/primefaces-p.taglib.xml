@@ -26227,7 +26227,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[User locale for i18n localization messages. The attribute can be either a String or java.util.Locale object.]]>
+                <![CDATA[User locale for i18n localization messages. The attribute can be either a String or java.util.Locale object. Default to view Locale.]]>
             </description>
             <name>locale</name>
             <required>false</required>
@@ -26253,8 +26253,9 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[The height of the timeline in pixels, as a percentage, or "auto". When the height is set to "auto", the height of the timeline is automatically adjusted to fit the contents.
-                If not, it is possible that events get stacked so high, that they are not visible in the timeline. When height is set to "auto", a minimum height can be specified with the option minHeight. Default is "auto".]]>
+                <![CDATA[The height of the timeline in pixels or as a percentage. When height is undefined or null, the height of the timeline is automatically 
+                adjusted to fit the contents. It is possible to set a maximum height using option maxHeight to prevent the timeline from getting too high in 
+                case of automatically calculated height.]]>
             </description>
             <name>height</name>
             <required>false</required>
@@ -26262,9 +26263,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Specifies a minimum height for the Timeline in pixels. Useful when height is set to "auto". Default is 0.]]>
+                <![CDATA[Specifies a minimum height for the Timeline in pixels.]]>
             </description>
             <name>minHeight</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies the maximum height for the Timeline in pixels.]]>
+            </description>
+            <name>maxHeight</name>
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
@@ -26287,7 +26296,8 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If false, the horizontal axis is drawn at the bottom. If true, the axis is drawn on top. Default is false.]]>
+                <![CDATA[Deprecated, use orientationAxis instead of this. 
+                If false, the horizontal axis is drawn at the bottom. If true, the axis is drawn on top. Default is false.]]>
             </description>
             <name>axisOnTop</name>
             <required>false</required>
@@ -26295,8 +26305,26 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[The width of the drag areas in pixels. When an event with date range is selected, it has a drag area on the left and right side, with which the start or end dates of the event can be manipulated.
-                Default is 10.]]>
+                <![CDATA[Orientation of the timeline axis: 'top', 'bottom' (default), 'both', or 'none'. If orientation is 'bottom', the time axis is drawn 
+                at the bottom. When 'top', the axis is drawn on top. When 'both', two axes are drawn, both on top and at the bottom. In case of 'none', no axis 
+                is drawn at all.]]>
+            </description>
+            <name>orientationAxis</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Orientation of the timeline items: 'top' or 'bottom' (default). Determines whether items are aligned to the top or bottom 
+                of the Timeline.]]>
+            </description>
+            <name>orientationItem</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Deprecated, use css classes: 'vis-drag-left' and 'vis-drag-right' instead.]]>
             </description>
             <name>dragAreaWidth</name>
             <required>false</required>
@@ -26304,10 +26332,52 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If true, the events can be edited, changed, created and deleted. Events can only be editable when the option selectable is true (default). When editable is true, the timeline can fire AJAX events "change", "edit", "add", "delete", "drop".
-                This global setting "editable" can be overwritten for individual events by setting a value in field "editable". Default is false.]]>
+                <![CDATA[If true, the items in the timeline can be manipulated. Only applicable when option selectable is true. Default is false.]]>
             </description>
             <name>editable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If true, new items can be created by double tapping an empty space in the Timeline. Takes precedence over editable.
+                Default is false.]]>
+            </description>
+            <name>editableAdd</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If true, items can be deleted by first selecting them, and then clicking the delete button on the top right of the item. 
+                Takes precedence over editable. Default is false.]]>
+            </description>
+            <name>editableRemove</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If true, items can be dragged from one group to another. Only applicable when the Timeline has groups. 
+                Takes precedence over editable. Default is false.]]>
+            </description>
+            <name>editableGroup</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If true, items can be dragged to another moment in time. Takes precedence over editable. Default is false.]]>
+            </description>
+            <name>editableTime</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If true, item specific editable properties are overridden by timeline settings. Default is false.]]>
+            </description>
+            <name>editableOverrideItems</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -26321,7 +26391,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If true, you can unselect an item by clicking in the empty space of the timeline. If false, you cannot unselect an item, there will be always one item selected. Default is true.]]>
+                <![CDATA[Deprecated with no replacement.]]>
             </description>
             <name>unselectable</name>
             <required>false</required>
@@ -26409,6 +26479,22 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[The minimal horizontal margin in pixels between items. Takes precedence over eventMargin property. Default is 10.]]>
+            </description>
+            <name>eventHorizontalMargin</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The minimal vertical margin in pixels between items. Takes precedence over eventMargin property. Default is 10.]]>
+            </description>
+            <name>eventVerticalMargin</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[The minimal margin in pixels between events and the horizontal axis. Default is 10.]]>
             </description>
             <name>eventMarginAxis</name>
@@ -26417,7 +26503,9 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Specifies the style for the timeline events. Choose from "dot" or "box". Default is "box".]]>
+                <![CDATA[Specifies the default type for the timeline items. Choose from 'box', 'point', 'range', and 'background'. Note that individual 
+                items can override this default type. If undefined, the Timeline will auto detect the type from the items data: if a start and end date is 
+                available, a 'range' will be created, and else, a 'box' is created. Items of type 'background' are not editable.]]>
             </description>
             <name>eventStyle</name>
             <required>false</required>
@@ -26425,7 +26513,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If true, items can be moved from one group to another. Only applicable when groups are used. Default is true.]]>
+                <![CDATA[Deprecated, use editableGroup property instead.]]>
             </description>
             <name>groupsChangeable</name>
             <required>false</required>
@@ -26433,7 +26521,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If false, the groups legend is drawn at the left side of the timeline. If true, the groups legend is drawn on the right side. Default is false.]]>
+                <![CDATA[Deprecated with no direct replacement.]]>
             </description>
             <name>groupsOnRight</name>
             <required>false</required>
@@ -26441,7 +26529,9 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Allows to customize the way groups are ordered. When true (default), groups will be ordered by content alphabetically (when the list of groups is missing) or by native ordering of TimelineGroup object in the list of groups (when the list of groups is available). When false, groups will not be ordered at all.]]>
+                <![CDATA[Allows to customize the way groups are ordered. When true (default), groups will be ordered by content alphabetically 
+                (when the list of groups is missing) or by native ordering of TimelineGroup object in the list of groups (when the list of groups is available). 
+                When false, groups will not be ordered at all.]]>
             </description>
             <name>groupsOrder</name>
             <required>false</required>
@@ -26449,7 +26539,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[By default, the width of the groups legend is adjusted to the group names. A fixed width can be set for the groups legend by specifying the "groupsWidth" as a string, for example "200px". Default is null.]]>
+                <![CDATA[Deprecated, use groupStyle property instead.]]>
             </description>
             <name>groupsWidth</name>
             <required>false</required>
@@ -26457,7 +26547,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[The minimum height of each individual group even if they have no items. The group height is set as the greatest value between items height and the groupMinHeight. Default is 0.]]>
+                <![CDATA[Deprecated, use groupStyle property instead.]]>
             </description>
             <name>groupMinHeight</name>
             <required>false</required>
@@ -26465,11 +26555,36 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If true, the start and end of an event will be snapped nice integer values when moving or resizing the event. Default is true.]]>
+                <![CDATA[A css text string to apply custom styling for an individual group label, for example "color: red; background-color: pink;".]]>
+            </description>
+            <name>groupStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Deprecated, use snap property instead. 
+                If true, the start and end of an event will be snapped nice integer values when moving or resizing the event. Default is true.]]>
             </description>
             <name>snapEvents</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When moving items on the Timeline, they will be snapped to nice dates like full hours or days, depending on the current scale. 
+                The snap function can be replaced with a custom function, or can be set to null to disable snapping. 
+                The signature of the snap function is:
+                
+                function snap(date: Date, scale: string, step: number) : Date or number
+                
+                The parameter scale can be can be 'millisecond', 'second', 'minute', 'hour', 'weekday, 'week', 'day, 'month, or 'year'. 
+                The parameter step is a number like 1, 2, 4, 5.
+                ]]>
+            </description>
+            <name>snap</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -26509,7 +26624,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Show the button "Create new event" in the a navigation menu. Default is false.]]>
+                <![CDATA[Deprecated with no replacement.]]>
             </description>
             <name>showButtonNew</name>
             <required>false</required>
@@ -26517,7 +26632,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Show a navigation menu with buttons to move and zoom the timeline. Default is false.]]>
+                <![CDATA[Deprecated with no replacement.]]>
             </description>
             <name>showNavigation</name>
             <required>false</required>
@@ -26525,7 +26640,8 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If false, items can not be moved or dragged horizontally (neither start time nor end time is changable).
+                <![CDATA[Deprecated, use editableTime property instead. 
+                If false, items can not be moved or dragged horizontally (neither start time nor end time is changable).
                 This is useful when items should be editable but can only be changed regarding group or content (typical use case: scheduling events).
                 Default is true.]]>
             </description>
@@ -26567,7 +26683,8 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[When true, events are moved animated when resizing or moving them. This is very pleasing for the eye, but does require more computational power. Default is true.]]>
+                <![CDATA[Deprecated with no direct replacement, you could use 'animation' property in options parameter in widget's 
+                javascript functions setVisibleRange, move and zoom.]]>
             </description>
             <name>animate</name>
             <required>false</required>
@@ -26575,11 +26692,29 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[When true, events are moved animated when zooming the Timeline. This looks cool, but does require more computational power. Default is true.]]>
+                <![CDATA[Deprecated with no direct replacement, you could use 'animation' property in options parameter in widget's javascript function zoom.]]>
             </description>
             <name>animateZoom</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When a Timeline is configured to be clickToUse, it will react to mouse and touch events only when active. When active, a blue shadow 
+                border is displayed around the Timeline. The Timeline is set active by clicking on it, and is changed to inactive again by clicking outside 
+                the Timeline or by pressing the ESC key.]]>
+            </description>
+            <name>clickToUse</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of javascript function to extend the options of the underlying timeline javascript component.]]>
+            </description>
+            <name>extender</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>

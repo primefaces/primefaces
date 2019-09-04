@@ -29,18 +29,18 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 import org.primefaces.model.timeline.TimelineEvent;
 
-public class TimelineSelectEvent extends AbstractAjaxBehaviorEvent {
+public class TimelineSelectEvent<T> extends AbstractAjaxBehaviorEvent {
 
     private static final long serialVersionUID = 1L;
 
-    private TimelineEvent timelineEvent;
+    private final TimelineEvent<T> timelineEvent;
 
-    public TimelineSelectEvent(UIComponent component, Behavior behavior, TimelineEvent timelineEvent) {
+    public TimelineSelectEvent(UIComponent component, Behavior behavior, TimelineEvent<T> timelineEvent) {
         super(component, behavior);
         this.timelineEvent = timelineEvent;
     }
 
-    public TimelineEvent getTimelineEvent() {
+    public TimelineEvent<T> getTimelineEvent() {
         return timelineEvent;
     }
 }
