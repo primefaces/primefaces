@@ -1,7 +1,7 @@
 /*
  * This plugin filters keyboard input by specified regular expression.
  * Version 1.8
- * $Id$
+ * https://github.com/akzhan/jquery-keyfilter
  *
  * Source code inspired by Ext.JS (Ext.form.TextField, Ext.EventManager)
  *
@@ -93,14 +93,7 @@
 		63275 : 35  // end
 	};
 
-	var isNavKeyPress = function(e)
-	{
-		var k = e.keyCode;
-		k = $.browser.safari ? (SafariKeys[k] || k) : k;
-		return (k >= 33 && k <= 40) || k == Keys.RETURN || k == Keys.TAB || k == Keys.ESC;
-	};
-
-        var isSpecialKey = function(e)
+    var isSpecialKey = function(e)
 	{
 		var k = e.keyCode;
 		var c = e.charCode;
@@ -141,11 +134,6 @@
 				return;
 			}
 			
-			var k = getKey(e);
-			if($.browser.mozilla && (isNavKeyPress(e) || k == Keys.BACKSPACE || (k == Keys.DELETE && e.charCode == 0)))
-			{
-				return;
-			}
 			var c = getCharCode(e), cc = String.fromCharCode(c), ok = true;
 			if(!$.browser.mozilla && (isSpecialKey(e) || !cc))
 			{
@@ -170,7 +158,7 @@
 		defaults: {
 			masks: defaultMasks
 		},
-		version: 1.7
+		version: 1.8
 	});
 
 	/* 
