@@ -29,6 +29,10 @@ PrimeFaces.widget.KeyFilter = PrimeFaces.widget.BaseWidget.extend({
      */
     applyKeyFilter : function(input, cfg) {
         if (this.cfg.regEx) {
+            //disable drop
+            input.on('drop', function(e) {
+                e.preventDefault();
+            });
             input.keyfilter(this.cfg.regEx);
         } else if(this.cfg.inputRegEx) {
             var inputRegEx = this.cfg.inputRegEx;
