@@ -61,7 +61,7 @@ public class TimelineEvent<T> implements Serializable {
     private Boolean editableGroup;
 
     /**
-     * is this event group editable? (optional). Overrides editable. if null, see the timeline's attribute "editable"
+     * is this event removable? (optional). Overrides editable. if null, see the timeline's attribute "editable"
      */
     private Boolean editableRemove;
 

@@ -643,7 +643,9 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Move the window such that given time is centered on screen. Parameter time can be a Date, Number, or String. 
+     * Moves the timeline the given movefactor to the left or right. Start and end date will be adjusted,
+     * and the timeline will be redrawn. For example, try moveFactor = 0.1 or -0.1. moveFactor is a Number
+     * that determines the moving amount. A positive value will move right, a negative value will move left.
      * Available options:
      * 
      * animation: boolean or {duration: number, easingFunction: string} 
@@ -653,18 +655,22 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * "easeInCubic", "easeOutCubic", "easeInOutCubic", "easeInQuart", "easeOutQuart", "easeInOutQuart", 
      * "easeInQuint", "easeOutQuint", "easeInOutQuint".
      *
-     * @param time Date, Number or String
+     * @param moveFactor Number
      * @param options Object 
      * @param callback Function A callback function can be passed as an optional parameter. 
-     * This function will be called at the end of moveTo function.
+     * This function will be called at the end of move function.
      */
-    move: function (time, options, callback) {
-        return this.instance.moveTo(time, options, callback);
+    move: function (moveFactor, options, callback) {
+        var range = this.instance.getWindow();
+        var interval = range.end - range.start;
+        var start = range.start.valueOf() + interval * moveFactor;
+        var end = range.end.valueOf() + interval * moveFactor;
+
+        this.instance.setWindow(start, end, options, callback);
     },
 
     /**
-     * Zoom in the current visible window. The parameter percentage can be a Number and must be between -1 and +1. 
-     * If the parameter value of percentage is null, the window will be left unchanged. Available options:
+     * Zooms the timeline the given zoomfactor in or out. Available options:
      * 
      * animation: boolean or {duration: number, easingFunction: string} 
      * If true (default) or an Object, the range is animated smoothly to the new window. An object can be provided 
@@ -673,18 +679,16 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * "easeInCubic", "easeOutCubic", "easeInOutCubic", "easeInQuart", "easeOutQuart", "easeInOutQuart", 
      * "easeInQuint", "easeOutQuint", "easeInOutQuint".
      *
-     * @param percentage Number An number between -1 and +1. If positive zoom in, and if negative zoom out.
-     * @param options Object
+     * @param zoomFactor Number An number between -1 and +1. If positive zoom in, and if negative zoom out.
+     * @param options Object Optional.
      * @param callback Function A callback function can be passed as an optional parameter. This function 
      * will be called at the end of zoomIn function.
      */
-    zoom: function (percentage, options, callback) {
-        if (percentage) { 
-            if (percentage >= 0) {
-                return this.instance.zoomIn(percentage, options, callback);
-            } else {
-                return this.instance.zoomOut(-percentage, options, callback);
-            }
+    zoom: function (zoomFactor, options, callback) {        
+        if (zoomFactor >= 0) {
+            return this.instance.zoomIn(zoomFactor, options, callback);
+        } else {
+            return this.instance.zoomOut(-zoomFactor, options, callback);
         }
     },
 
