@@ -663,12 +663,16 @@ public class TreeRenderer extends CoreRenderer {
             for (String filteredRowKey : filteredRowKeys) {
                 String rowKeyExt = rowKey + "_";
                 String filteredRowKeyExt = filteredRowKey + "_";
-                if (filteredRowKey.startsWith(rowKeyExt) || (!isStrictMode && rowKey.startsWith(filteredRowKeyExt))
+                boolean isNodeAncestorOfMatch = filteredRowKey.startsWith(rowKeyExt);
+                boolean isNodeDescendantOfMatch = rowKey.startsWith(filteredRowKeyExt);
+                if (isNodeAncestorOfMatch || (!isStrictMode && isNodeDescendantOfMatch)
                         || filteredRowKey.equals(rowKey)) {
                     match = true;
-                    if (!node.isLeaf() && !rowKey.startsWith(filteredRowKey)) {
+                    if (!node.isLeaf() && isNodeAncestorOfMatch) {
                         node.setExpanded(true);
                     }
+                }
+                else if (match) {
                     break;
                 }
             }
