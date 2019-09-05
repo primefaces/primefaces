@@ -147,6 +147,31 @@ Extender property is a javascript function that allows access to the underlying 
     };
 </h:outputScript>
 ```
+## Localization
+By default locale information is retrieved from the view’s locale and can be overridden by the _locale_
+attribute which can take a locale key as a | String | or a java.util.Locale instance. Default
+language of labels are English and you need to add the necessary translations to your page manually
+as PrimeFaces does not include language translations. Localization of Timeline component depends largely on 
+the localization of javascript library moment.js. To enable localization, your moment.js must be loaded with locales <strong>before</strong> 
+timeline javascript gets loaded. Following is an example of Spanish localization.
+
+```xhtml
+<!DOCTYPE html>
+<html xmlns="http://www.w3c.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <f:facet name="first">
+            <h:outputScript name=”path/to/your/moment.js” />
+            <h:outputScript name=”path/to/your/moment/locale/es.js” />
+        </f:facet>
+    </h:head>
+    <h:body>
+        <p:timeline id="timeline" value="#{basicTimelineView.model}" locale="es" />
+    </h:body>
+</html>
+```
 ## Examples
 For examples on editing, grouping, styling, ranges, linked timelines and lazy loading please visit:
 
