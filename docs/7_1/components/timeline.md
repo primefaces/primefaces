@@ -194,3 +194,14 @@ rangechanged | org.primefaces.event.timeline.TimelineRangeEvent | On range chang
 lazyload | org.primefaces.event.timeline.TimelineLazyLoadEvent | On lazy load.
 drop | org.primefaces.event.timeline.TimelineDragDropEvent | On drop from outside.
 
+## Client Side API
+Widget: _PrimeFaces.widget.Timeline_
+
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
+| move(moveFactor, options, callback) | __moveFactor:__ a Number that determines the moving amount. A positive value will move right, a negative value will move left.<br><br> __animation:__ (optional) boolean or {duration: number, easingFunction: string}. If true (default) or an Object, the range is animated smoothly to the new window. An object can be provided to specify duration and easing function. Default duration is 500 ms, and default easing function is 'easeInOutQuad'. Available easing functions: "linear", "easeInQuad", "easeOutQuad", "easeInOutQuad", "easeInCubic", "easeOutCubic", "easeInOutCubic", "easeInQuart", "easeOutQuart", "easeInOutQuart", "easeInQuint", "easeOutQuint", "easeInOutQuint". <br><br> __callback:__ (optional) A callback function that executes after move Timeline. | void | Moves the timeline the given movefactor to the left or right.
+| zoom(zoomFactor, options, callback) | __zoomFactor:__ a number between -1 and +1. If positive zoom in, and if negative zoom out. <br><br> __animation:__ (optional) boolean or {duration: number, easingFunction: string}. If true (default) or an Object, the range is animated smoothly to the new window. An object can be provided to specify duration and easing function. Default duration is 500 ms, and default easing function is 'easeInOutQuad'. Available easing functions: "linear", "easeInQuad", "easeOutQuad", "easeInOutQuad", "easeInCubic", "easeOutCubic", "easeInOutCubic", "easeInQuart", "easeOutQuart", "easeInOutQuart", "easeInQuint", "easeOutQuint", "easeInOutQuint". <br><br> __callback:__ (optional) A callback function that executes after Timeline gets zoomed in or out. | void | Zooms the timeline the given zoomfactor in or out.
+| cancelAdd() | - | void | Cancel the event of adding a Timeline item. It must be called inside the _onstart_ property of Ajax Behavior _add_ event.
+| cancelChange() | - | void | Cancel the event of change a Timeline item. It must be called inside the _onstart_ property of Ajax Behavior _changed_ event.
+| cancelDelete() | - | void | Cancel the event of delete a Timeline item. It must be called inside the _onstart_ property of Ajax Behavior _delete_ event.
+
