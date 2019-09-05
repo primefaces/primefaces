@@ -23,6 +23,23 @@
  */
 package org.primefaces.component.datatable.export;
 
+import com.lowagie.text.Font;
+import com.lowagie.text.*;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
+import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.ExportConfiguration;
+import org.primefaces.component.export.ExporterOptions;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIPanel;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -30,74 +47,44 @@ import java.io.OutputStream;
 import java.util.Collections;
 import java.util.List;
 
-import javax.el.MethodExpression;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIPanel;
-import javax.faces.component.visit.VisitCallback;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-
-import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.export.ExporterOptions;
-import org.primefaces.component.export.PDFExportVisitCallback;
-import org.primefaces.component.export.PDFExporter;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
-import com.lowagie.text.Font;
-import com.lowagie.text.FontFactory;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
-
-public class DataTablePDFExporter extends DataTableExporter implements PDFExporter<DataTable> {
+public class DataTablePDFExporter extends DataTableExporter {
 
     private Font cellFont;
     private Font facetFont;
     private Color facetBgColor;
-    private ExporterOptions expOptions;
-    private MethodExpression onTableRender;
+    private ExportConfiguration config;
+    private Document document;
+    private ByteArrayOutputStream baos;
 
     @Override
-    public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType,
-                       MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
-                       MethodExpression onTableRender) throws IOException {
+    protected void preExport(FacesContext context, ExportConfiguration config) throws IOException {
+        document = new Document();
+        baos = new ByteArrayOutputStream();
+        this.config = config;
 
         try {
-            Document document = new Document();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
             PdfWriter.getInstance(document, baos);
-            this.onTableRender = onTableRender;
+        }
+        catch (DocumentException e) {
+            throw new IOException(e);
+        }
 
-            if (preProcessor != null) {
-                preProcessor.invoke(context.getELContext(), new Object[]{document});
-            }
+        if (config.getPreProcessor() != null) {
+            config.getPreProcessor().invoke(context.getELContext(), new Object[]{document});
+        }
 
-            if (!document.isOpen()) {
-                document.open();
-            }
+        if (!document.isOpen()) {
+            document.open();
+        }
+    }
 
-            if (options != null) {
-                expOptions = options;
-            }
-
-            document.add(exportTable(context, table, pageOnly, selectionOnly, encodingType));
-
-            if (postProcessor != null) {
-                postProcessor.invoke(context.getELContext(), new Object[]{document});
-            }
-
-            document.close();
-
-            writePDFToResponse(context.getExternalContext(), baos, filename);
-
+    @Override
+    protected void doExport(FacesContext context, DataTable table, ExportConfiguration config) throws IOException {
+        try {
+            document.add(exportTable(context, table, config));
+            Paragraph preface = new Paragraph();
+            addEmptyLine(preface, 3);
+            document.add(preface);
         }
         catch (DocumentException e) {
             throw new IOException(e.getMessage());
@@ -105,116 +92,46 @@ public class DataTablePDFExporter extends DataTableExporter implements PDFExport
     }
 
     @Override
-    public void export(FacesContext context, List<String> clientIds, String outputFileName, boolean pageOnly, boolean selectionOnly,
-                       String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
-                       MethodExpression onTableRender) throws IOException {
-
-        try {
-            Document document = new Document();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            PdfWriter.getInstance(document, baos);
-            this.onTableRender = onTableRender;
-
-            if (preProcessor != null) {
-                preProcessor.invoke(context.getELContext(), new Object[]{document});
-            }
-
-            if (!document.isOpen()) {
-                document.open();
-            }
-
-            if (options != null) {
-                expOptions = options;
-            }
-
-            VisitContext visitContext = VisitContext.createVisitContext(context, clientIds, null);
-            VisitCallback visitCallback = new PDFExportVisitCallback(this, document, pageOnly, selectionOnly, encodingType);
-            context.getViewRoot().visitTree(visitContext, visitCallback);
-
-            if (postProcessor != null) {
-                postProcessor.invoke(context.getELContext(), new Object[]{document});
-            }
-
-            document.close();
-
-            writePDFToResponse(context.getExternalContext(), baos, outputFileName);
-
+    protected void postExport(FacesContext context, ExportConfiguration config) throws IOException {
+        if (config.getPostProcessor() != null) {
+            config.getPostProcessor().invoke(context.getELContext(), new Object[]{document});
         }
-        catch (DocumentException e) {
-            throw new IOException(e.getMessage());
-        }
+
+        writePDFToResponse(context.getExternalContext(), baos, config.getOutputFileName());
+
+        reset();
     }
 
-    @Override
-    public void export(FacesContext context, String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
-                       String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
-                       MethodExpression onTableRender) throws IOException {
-
-        try {
-            Document document = new Document();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            PdfWriter.getInstance(document, baos);
-            this.onTableRender = onTableRender;
-
-            if (preProcessor != null) {
-                preProcessor.invoke(context.getELContext(), new Object[]{document});
-            }
-
-            if (!document.isOpen()) {
-                document.open();
-            }
-
-            if (options != null) {
-                expOptions = options;
-            }
-
-            for (DataTable table : tables) {
-                document.add(exportTable(context, table, pageOnly, selectionOnly, encodingType));
-
-                Paragraph preface = new Paragraph();
-                addEmptyLine(preface, 3);
-                document.add(preface);
-            }
-
-            if (postProcessor != null) {
-                postProcessor.invoke(context.getELContext(), new Object[]{document});
-            }
-
-            document.close();
-
-            writePDFToResponse(context.getExternalContext(), baos, outputFileName);
-
-        }
-        catch (DocumentException e) {
-            throw new IOException(e.getMessage());
-        }
+    protected void reset() throws IOException {
+        document.close();
+        document = null;
+        baos.close();
+        baos = null;
     }
 
-    @Override
-    public PdfPTable exportTable(FacesContext context, UIComponent component, boolean pageOnly, boolean selectionOnly, String encoding) {
-        DataTable table = (DataTable) component;
+    protected PdfPTable exportTable(FacesContext context, DataTable table, ExportConfiguration config) {
         int columnsCount = getColumnsCount(table);
         PdfPTable pdfTable = new PdfPTable(columnsCount);
-        cellFont = FontFactory.getFont(FontFactory.TIMES, encoding);
-        facetFont = FontFactory.getFont(FontFactory.TIMES, encoding, Font.DEFAULTSIZE, Font.BOLD);
+        cellFont = FontFactory.getFont(FontFactory.TIMES, config.getEncodingType());
+        facetFont = FontFactory.getFont(FontFactory.TIMES, config.getEncodingType(), Font.DEFAULTSIZE, Font.BOLD);
 
-        if (onTableRender != null) {
-            onTableRender.invoke(context.getELContext(), new Object[]{pdfTable, table});
+        if (config.getOnTableRender() != null) {
+            config.getOnTableRender().invoke(context.getELContext(), new Object[]{pdfTable, table});
         }
 
-        if (expOptions != null) {
-            applyFacetOptions(expOptions);
-            applyCellOptions(expOptions);
+        if (config.getOptions() != null) {
+            applyFacetOptions(config.getOptions());
+            applyCellOptions(config.getOptions());
         }
 
         addTableFacets(context, table, pdfTable, "header");
 
         addColumnFacets(table, pdfTable, ColumnType.HEADER);
 
-        if (pageOnly) {
+        if (config.isPageOnly()) {
             exportPageOnly(context, table, pdfTable);
         }
-        else if (selectionOnly) {
+        else if (config.isSelectionOnly()) {
             exportSelectionOnly(context, table, pdfTable);
         }
         else {
@@ -359,9 +276,7 @@ public class DataTablePDFExporter extends DataTableExporter implements PDFExport
         }
     }
 
-    protected void writePDFToResponse(ExternalContext externalContext, ByteArrayOutputStream baos, String fileName)
-            throws IOException, DocumentException {
-
+    protected void writePDFToResponse(ExternalContext externalContext, ByteArrayOutputStream baos, String fileName) throws IOException {
         externalContext.setResponseContentType("application/pdf");
         externalContext.setResponseHeader("Expires", "0");
         externalContext.setResponseHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
@@ -392,8 +307,7 @@ public class DataTablePDFExporter extends DataTableExporter implements PDFExport
         return count;
     }
 
-    @Override
-    public void addEmptyLine(Paragraph paragraph, int number) {
+    protected void addEmptyLine(Paragraph paragraph, int number) {
         for (int i = 0; i < number; i++) {
             paragraph.add(new Paragraph(" "));
         }
@@ -416,19 +330,7 @@ public class DataTablePDFExporter extends DataTableExporter implements PDFExport
         }
 
         String facetFontStyle = options.getFacetFontStyle();
-        if (facetFontStyle != null) {
-            if (facetFontStyle.equalsIgnoreCase("NORMAL")) {
-                facetFontStyle = "" + Font.NORMAL;
-            }
-            if (facetFontStyle.equalsIgnoreCase("BOLD")) {
-                facetFontStyle = "" + Font.BOLD;
-            }
-            if (facetFontStyle.equalsIgnoreCase("ITALIC")) {
-                facetFontStyle = "" + Font.ITALIC;
-            }
-
-            facetFont.setStyle(facetFontStyle);
-        }
+        setFontStyle(facetFont, facetFontStyle);
     }
 
     protected void applyCellOptions(ExporterOptions options) {
@@ -443,6 +345,10 @@ public class DataTablePDFExporter extends DataTableExporter implements PDFExport
         }
 
         String cellFontStyle = options.getCellFontStyle();
+        setFontStyle(cellFont, cellFontStyle);
+    }
+
+    protected void setFontStyle(Font cellFont, String cellFontStyle) {
         if (cellFontStyle != null) {
             if (cellFontStyle.equalsIgnoreCase("NORMAL")) {
                 cellFontStyle = "" + Font.NORMAL;

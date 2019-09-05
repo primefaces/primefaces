@@ -23,12 +23,13 @@
  */
 package org.primefaces.util;
 
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.*;
+import org.primefaces.component.api.RTLAware;
+import org.primefaces.component.api.UITabPanel;
+import org.primefaces.component.api.Widget;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
 
-import java.util.function.Supplier;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.FacesWrapper;
@@ -40,12 +41,13 @@ import javax.faces.component.visit.VisitHint;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
-
-import org.primefaces.component.api.RTLAware;
-import org.primefaces.component.api.Widget;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeRequestContext;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class ComponentUtils {
 
@@ -577,4 +579,28 @@ public class ComponentUtils {
         return value;
     }
 
+    public static boolean isNestedWithinIterator(UIComponent component) {
+        return invokeOnClosestIteratorParent(component, p -> { }, false);
+    }
+
+    public static boolean invokeOnClosestIteratorParent(UIComponent component, Consumer<UIComponent> function, boolean includeSelf) {
+        Predicate<UIComponent> iterator = p -> p instanceof javax.faces.component.UIData
+                || p.getClass().getName().endsWith("UIRepeat")
+                || (p instanceof UITabPanel && ((UITabPanel) p).isRepeating());
+
+        UIComponent parent = component;
+        while (null != (parent = parent.getParent())) {
+            if (iterator.test(parent)) {
+                function.accept(parent);
+                return true;
+            }
+        }
+
+        if (includeSelf && iterator.test(component)) {
+            function.accept(component);
+            return true;
+        }
+
+        return false;
+    }
 }

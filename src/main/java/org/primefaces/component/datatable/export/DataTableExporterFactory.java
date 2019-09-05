@@ -35,7 +35,7 @@ public class DataTableExporterFactory {
     private DataTableExporterFactory() {
     }
 
-    public static Exporter<DataTable> getExporterForType(String type, ExporterOptions options) {
+    public static Exporter<DataTable> getExporter(String type, ExporterOptions options) {
         Exporter<DataTable> exporter = null;
 
         try {
@@ -51,7 +51,7 @@ public class DataTableExporterFactory {
                     break;
 
                 case CSV:
-                    exporter = new DataTableCSVExporter(options);
+                    exporter = new DataTableCSVExporter();
                     break;
 
                 case XML:

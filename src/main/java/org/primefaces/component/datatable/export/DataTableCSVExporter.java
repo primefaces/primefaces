@@ -29,7 +29,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.el.MethodExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
@@ -38,18 +37,20 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.export.CSVExporter;
 import org.primefaces.component.export.CSVOptions;
+import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
-public class DataTableCSVExporter extends DataTableExporter implements CSVExporter<DataTable> {
+public class DataTableCSVExporter extends DataTableExporter {
 
     private CSVOptions csvOptions;
 
-    public DataTableCSVExporter(ExporterOptions options) {
+    @Override
+    protected void preExport(FacesContext context, ExportConfiguration config) throws IOException {
         csvOptions = CSVOptions.EXCEL;
+        ExporterOptions options = config.getOptions();
         if (options != null) {
             if (options instanceof CSVOptions) {
                 csvOptions = (CSVOptions) options;
@@ -61,24 +62,21 @@ public class DataTableCSVExporter extends DataTableExporter implements CSVExport
     }
 
     @Override
-    public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly,
-                       String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
-                       MethodExpression onTableRender) throws IOException {
-
+    public void doExport(FacesContext context, DataTable table, ExportConfiguration config) throws IOException {
         ExternalContext externalContext = context.getExternalContext();
-        configureResponse(externalContext, filename, encodingType);
+        configureResponse(externalContext, config.getOutputFileName(), config.getEncodingType());
         StringBuilder builder = new StringBuilder();
 
-        if (preProcessor != null) {
-            preProcessor.invoke(context.getELContext(), new Object[]{builder});
+        if (config.getPreProcessor() != null) {
+            config.getPreProcessor().invoke(context.getELContext(), new Object[]{builder});
         }
 
         addColumnFacets(builder, table, ColumnType.HEADER);
 
-        if (pageOnly) {
+        if (config.isPageOnly()) {
             exportPageOnly(context, table, builder);
         }
-        else if (selectionOnly) {
+        else if (config.isSelectionOnly()) {
             exportSelectionOnly(context, table, builder);
         }
         else {
@@ -89,28 +87,14 @@ public class DataTableCSVExporter extends DataTableExporter implements CSVExport
             addColumnFacets(builder, table, ColumnType.FOOTER);
         }
 
-        if (postProcessor != null) {
-            postProcessor.invoke(context.getELContext(), new Object[]{builder});
+        if (config.getPostProcessor() != null) {
+            config.getPostProcessor().invoke(context.getELContext(), new Object[]{builder});
         }
 
         Writer writer = externalContext.getResponseOutputWriter();
         writer.write(builder.toString());
         writer.flush();
         writer.close();
-    }
-
-    @Override
-    public void export(FacesContext facesContext, List<String> clientIds, String outputFileName, boolean pageOnly, boolean selectionOnly,
-                       String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
-                       MethodExpression onTableRender) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void export(FacesContext facesContext, String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
-                       String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
-                       MethodExpression onTableRender) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     protected void addColumnFacets(StringBuilder builder, DataTable table, ColumnType columnType) throws IOException {

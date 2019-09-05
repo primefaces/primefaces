@@ -23,31 +23,30 @@
  */
 package org.primefaces.component.datatable.export;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import javax.el.MethodExpression;
-import javax.faces.FacesException;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIColumn;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
-import javax.faces.component.UIPanel;
-import javax.faces.component.UISelectMany;
-import javax.faces.component.ValueHolder;
-import javax.faces.component.html.HtmlCommandLink;
-import javax.faces.component.html.HtmlGraphicImage;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.Exporter;
 import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.util.ComponentUtils;
+
+import javax.el.MethodExpression;
+import javax.faces.FacesException;
+import javax.faces.component.*;
+import javax.faces.component.html.HtmlCommandLink;
+import javax.faces.component.html.HtmlGraphicImage;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitResult;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public abstract class DataTableExporter implements Exporter<DataTable> {
 
@@ -72,27 +71,14 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
     }
 
     protected List<UIColumn> getColumnsToExport(UIData table) {
-        List<UIColumn> columns = new ArrayList<>();
-
-        for (UIComponent child : table.getChildren()) {
-            if (child instanceof UIColumn) {
-                UIColumn column = (UIColumn) child;
-
-                columns.add(column);
-            }
-        }
-
-        return columns;
+        return table.getChildren().stream()
+                .filter(UIColumn.class::isInstance)
+                .map(UIColumn.class::cast)
+                .collect(Collectors.toList());
     }
 
     protected boolean hasColumnFooter(List<UIColumn> columns) {
-        for (UIColumn column : columns) {
-            if (column.getFooter() != null) {
-                return true;
-            }
-        }
-
-        return false;
+        return columns.stream().anyMatch(c -> c.getFooter() != null);
     }
 
     protected String exportColumnByFunction(FacesContext context, org.primefaces.component.api.UIColumn column) {
@@ -126,7 +112,6 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
             }
         }
         else if (component instanceof ValueHolder) {
-
             if (component instanceof EditableValueHolder) {
                 Object submittedValue = ((EditableValueHolder) component).getSubmittedValue();
                 if (submittedValue != null) {
@@ -185,7 +170,7 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
             }
         }
         else if (component instanceof CellEditor) {
-            return exportValue(context, ((CellEditor) component).getFacet("output"));
+            return exportValue(context, component.getFacet("output"));
         }
         else if (component instanceof HtmlGraphicImage) {
             return (String) component.getAttributes().get("alt");
@@ -287,11 +272,9 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
                     exportRow(table, document);
                 }
             }
-            else if (List.class.isAssignableFrom(selection.getClass())) {
-                List<?> list = (List) selection;
-
-                for (int i = 0; i < list.size(); i++) {
-                    requestMap.put(var, list.get(i));
+            else if (Collection.class.isAssignableFrom(selection.getClass())) {
+                for (Object obj : (Collection) selection) {
+                    requestMap.put(var, obj);
                     exportRow(table, document);
                 }
             }
@@ -302,33 +285,63 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
         }
     }
 
-    public String getSheetName(FacesContext context, UIComponent table) {
-        UIComponent header = table.getFacet("header");
-        if (header != null) {
-            if (header instanceof UIPanel) {
-                for (UIComponent child : header.getChildren()) {
-                    if (child.isRendered()) {
-                        String value = ComponentUtils.getValueToRender(context, child);
+    protected void preExport(FacesContext context, ExportConfiguration config) throws IOException {
+        // NOOP
+    }
 
-                        if (value != null) {
-                            return value;
-                        }
-                    }
-                }
-            }
-            else {
-                return ComponentUtils.getValueToRender(context, header);
-            }
-        }
-
-        return null;
+    protected void postExport(FacesContext context, ExportConfiguration config) throws IOException {
+        // NOOP
     }
 
     protected void preRowExport(DataTable table, Object document) {
+        // NOOP
     }
 
     protected void postRowExport(DataTable table, Object document) {
+        // NOOP
     }
 
     protected abstract void exportCells(DataTable table, Object document);
+
+    @Override
+    public void export(FacesContext context, List<DataTable> tables, ExportConfiguration config) throws IOException {
+        preExport(context,  config);
+
+        for (DataTable table : tables) {
+            ComponentUtils.invokeOnClosestIteratorParent(table, p -> {
+                VisitContext visitContext = VisitContext.createVisitContext(context);
+                VisitCallback visitCallback = new DataTableVisitCallBack(table, config);
+                p.visitTree(visitContext, visitCallback);
+            }, true);
+        }
+
+        postExport(context, config);
+    }
+
+    protected abstract void doExport(FacesContext facesContext, DataTable table, ExportConfiguration config) throws IOException;
+
+    private class DataTableVisitCallBack implements VisitCallback {
+
+        private ExportConfiguration config;
+
+        private DataTable target;
+
+        public DataTableVisitCallBack(DataTable target, ExportConfiguration config) {
+            this.target = target;
+            this.config = config;
+        }
+
+        @Override
+        public VisitResult visit(VisitContext context, UIComponent component) {
+            if (target == component) {
+                try {
+                    doExport(context.getFacesContext(), target, config);
+                }
+                catch (IOException e) {
+                    throw new FacesException(e);
+                }
+            }
+            return VisitResult.ACCEPT;
+        }
+    }
 }

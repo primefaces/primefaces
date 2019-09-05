@@ -43,6 +43,7 @@ import org.primefaces.component.columns.Columns;
 import org.primefaces.component.tree.UITreeNode;
 import org.primefaces.model.CheckboxTreeNode;
 import org.primefaces.model.TreeNode;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.MessageFactory;
 import org.primefaces.util.SharedStringBuilder;
 
@@ -999,21 +1000,8 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
     protected Boolean isNestedWithinIterator() {
         if (isNested == null) {
-            UIComponent parent = this;
-            while (null != (parent = parent.getParent())) {
-                if (parent instanceof javax.faces.component.UIData || parent.getClass().getName().endsWith("UIRepeat")
-                        || (parent instanceof UITabPanel && ((UITabPanel) parent).isRepeating())) {
-                    isNested = Boolean.TRUE;
-                    break;
-                }
-            }
-            if (isNested == null) {
-                isNested = Boolean.FALSE;
-            }
-            return isNested;
+            isNested = ComponentUtils.isNestedWithinIterator(this);
         }
-        else {
-            return isNested;
-        }
+        return isNested;
     }
 }
