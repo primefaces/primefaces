@@ -262,10 +262,6 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             if (menu.getPlaceholder() != null) {
                 writer.writeAttribute("data-placeholder", menu.getPlaceholder(), null);
             }
-            String label = menu.getLabel();
-            if (label != null) {
-                writer.writeText(label, null);
-            }
             writer.write("&nbsp;");
             writer.endElement("label");
         }
@@ -513,7 +509,6 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 .attr("editable", menu.isEditable(), false)
                 .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo(), SearchExpressionHint.RESOLVE_CLIENT_SIDE), null)
                 .attr("syncTooltip", menu.isSyncTooltip(), false)
-                .attr("label", menu.getLabel(), null)
                 .attr("labelTemplate", menu.getLabelTemplate(), null)
                 .attr("autoWidth", menu.isAutoWidth(), true)
                 .attr("dynamic", menu.isDynamic(), false);
