@@ -104,7 +104,8 @@ if (!PrimeFaces.dialog) {
                         maximizable: cfg.options.maximizable,
                         headerElement: cfg.options.headerElement,
                         responsive: cfg.options.responsive,
-                        closeOnEscape: cfg.options.closeOnEscape
+                        closeOnEscape: cfg.options.closeOnEscape,
+                        focus: cfg.options.focus
                     });
                 }
 
