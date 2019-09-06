@@ -105,12 +105,15 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
                     
                     var maxId = this.instance.itemsData.max("id");
                     
-                    item.id = 1 + (maxId ? maxId : 0);
+                    item.id = 1 + (maxId ? maxId.id : 0);
                     this.addCallback = callback;
                     
-                    this.getBehavior("add").call(this, {params: params, item: item});
+                    this.getBehavior("add").call(this, {params: params, item: item, callback: callback});
                     
-                    this.addCallback = null;
+                    if (this.addCallback) {
+                        this.addCallback(item);
+                        this.addCallback = null;
+                    }
                }, this)
             });            
         }
@@ -181,7 +184,10 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
 
                     this.changedCallback = callback;
                     this.getBehavior("changed").call(this, {params: params, item: item, callback: callback});
-                    this.changedCallback = null;
+                    if (this.changedCallback) {
+                        this.changedCallback(item);
+                        this.changedCallback = null;
+                    }
                 }, this)
             });
         }
@@ -200,7 +206,10 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
                     
                     this.changedCallback = callback;
                     this.getBehavior("edit").call(this, options);
-                    this.changedCallback = null;
+                    if (changedCallback) {
+                        this.changedCallback(item);
+                        this.changedCallback = null;
+                    }
                 }, this)
             });
         }
@@ -219,7 +228,10 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
 
                     this.deleteCallback = callback;
                     this.getBehavior("delete").call(this, options);
-                    this.deleteCallback = null;
+                    if (this.deleteCallback) {
+                        this.deleteCallback(item);
+                        this.deleteCallback = null;
+                    }
                 }, this)
             });
         }
@@ -577,6 +589,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
     cancelAdd: function () {
         if (this.addCallback) {
             this.addCallback(null);
+            this.addCallback = null;
         }
     },
 
@@ -586,6 +599,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
     cancelChange: function () {
         if (this.changedCallback) {
             this.changedCallback(null);
+            this.changedCallback = null;
         }
     },
 
@@ -595,6 +609,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
     cancelDelete: function () {
         if (this.deleteCallback) {
             this.deleteCallback(null);
+            this.deleteCallback = null;
         }
     },
 

@@ -138,7 +138,7 @@ Extender property is a javascript function that allows access to the underlying 
           hiddenDates: [
                 {start: '2014-08-09 00:00:00', end: '2014-08-11 00:00:00', repeat:'weekly'},
                 {start: '2014-08-09 00:00:00', end: '2014-08-09 06:00:00', repeat:'daily'},
-                {start: '2014-08-09 18:00:00', end: '2014-08-09 23:59:59', repeat:'daily'}
+                {start: '2014-08-09 18:00:00', end: '2014-08-10 00:00:00', repeat:'daily'}
           ]
        };
 
