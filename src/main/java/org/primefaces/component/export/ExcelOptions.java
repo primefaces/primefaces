@@ -39,6 +39,8 @@ public class ExcelOptions implements ExporterOptions {
 
     private String cellFontSize;
 
+    private String fontName;
+
     public ExcelOptions() {
     }
 
@@ -129,7 +131,11 @@ public class ExcelOptions implements ExporterOptions {
 
     @Override
     public String getFontName() {
-        throw new UnsupportedOperationException("Excel does not support styling.");
+        return fontName;
+    }
+
+    public void setFontName(String fontName) {
+        this.fontName = fontName;
     }
 
 
