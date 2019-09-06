@@ -35,6 +35,7 @@ import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
@@ -112,16 +113,19 @@ public class DataTablePDFExporter extends DataTableExporter {
     protected PdfPTable exportTable(FacesContext context, DataTable table, ExportConfiguration config) {
         int columnsCount = getColumnsCount(table);
         PdfPTable pdfTable = new PdfPTable(columnsCount);
-        cellFont = FontFactory.getFont(FontFactory.TIMES, config.getEncodingType());
-        facetFont = FontFactory.getFont(FontFactory.TIMES, config.getEncodingType(), Font.DEFAULTSIZE, Font.BOLD);
+
+        ExporterOptions options = config.getOptions();
+        if (options != null) {
+            applyFont(options.getFontName(), config.getEncodingType());
+            applyFacetOptions(options);
+            applyCellOptions(options);
+        }
+        else {
+            applyFont(FontFactory.TIMES, config.getEncodingType());
+        }
 
         if (config.getOnTableRender() != null) {
             config.getOnTableRender().invoke(context.getELContext(), new Object[]{pdfTable, table});
-        }
-
-        if (config.getOptions() != null) {
-            applyFacetOptions(config.getOptions());
-            applyCellOptions(config.getOptions());
         }
 
         addTableFacets(context, table, pdfTable, "header");
@@ -362,5 +366,14 @@ public class DataTablePDFExporter extends DataTableExporter {
 
             cellFont.setStyle(cellFontStyle);
         }
+    }
+
+    protected void applyFont(String fontName, String encoding) {
+        String newFont = fontName;
+        if (LangUtils.isValueBlank(newFont)) {
+            newFont = FontFactory.TIMES;
+        }
+        cellFont = FontFactory.getFont(newFont, encoding);
+        facetFont = FontFactory.getFont(newFont, encoding, Font.DEFAULTSIZE, Font.BOLD);
     }
 }

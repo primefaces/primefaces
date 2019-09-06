@@ -127,4 +127,10 @@ public class ExcelOptions implements ExporterOptions {
         this.cellFontSize = cellFontSize;
     }
 
+    @Override
+    public String getFontName() {
+        throw new UnsupportedOperationException("Excel does not support styling.");
+    }
+
+
 }
