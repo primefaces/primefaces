@@ -206,7 +206,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
                     
                     this.changedCallback = callback;
                     this.getBehavior("edit").call(this, options);
-                    if (changedCallback) {
+                    if (this.changedCallback) {
                         this.changedCallback(item);
                         this.changedCallback = null;
                     }
