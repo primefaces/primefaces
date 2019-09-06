@@ -870,6 +870,8 @@ if (window.PrimeFaces) {
                 var growl = growlComponents.eq(i),
                 redisplay = growl.data('redisplay'),
                 globalOnly = growl.data('global'),
+                showSummary = growl.data('summary'),
+                showDetail = growl.data('detail'),
                 growlWidget = PF(growl.data('widget'));
 
                 growlWidget.removeAll();
@@ -882,6 +884,14 @@ if (window.PrimeFaces) {
 
                         if(globalOnly || (msg.rendered && !redisplay)) {
                             continue;
+                        }
+
+                        if (!showSummary) {
+                            msg.summary = '';
+                        }
+
+                        if (!showDetail) {
+                            msg.detail = '';
                         }
 
                         growlWidget.renderMessage(msg);
