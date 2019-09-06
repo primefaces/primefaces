@@ -150,6 +150,7 @@ public class InputTextareaRenderer extends InputRenderer {
         writer.writeAttribute("class", createStyleClass(inputTextarea), "styleClass");
 
         renderAccessibilityAttributes(context, inputTextarea);
+        renderRTLDirection(context, inputTextarea);
         renderPassThruAttributes(context, inputTextarea, HTML.TEXTAREA_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, inputTextarea, HTML.INPUT_TEXT_EVENTS);
         renderValidationMetadata(context, inputTextarea);
