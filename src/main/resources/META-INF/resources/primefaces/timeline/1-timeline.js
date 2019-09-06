@@ -97,6 +97,9 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
                 if (event == null) {
                     return;
                 }
+                
+                // block the ghost event from being added
+                this.instance.applyAdd = false;
 
                 var params = [];
                 params.push({
