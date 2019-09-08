@@ -26,11 +26,12 @@ package org.primefaces.component.inputtextarea;
 import javax.faces.component.html.HtmlInputTextarea;
 
 import org.primefaces.component.api.MixedClientBehaviorHolder;
+import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-public abstract class InputTextareaBase extends HtmlInputTextarea implements Widget, MixedClientBehaviorHolder {
+public abstract class InputTextareaBase extends HtmlInputTextarea implements Widget, RTLAware, MixedClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -151,5 +152,10 @@ public abstract class InputTextareaBase extends HtmlInputTextarea implements Wid
     @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    }
+
+    @Override
+    public boolean isRTL() {
+        return "rtl".equalsIgnoreCase(getDir());
     }
 }
