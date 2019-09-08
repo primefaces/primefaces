@@ -42,7 +42,7 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
         String clientId = menu.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("ContextMenu", menu.resolveWidgetVar(), clientId);
+        wb.init("ContextMenu", menu.resolveWidgetVar(context), clientId);
 
         String _for = menu.getFor();
         if (_for != null) {
@@ -51,7 +51,7 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
             wb.attr("target", target.getClientId(context));
 
             if (target instanceof Widget) {
-                wb.attr("targetWidgetVar", ((Widget) target).resolveWidgetVar());
+                wb.attr("targetWidgetVar", ((Widget) target).resolveWidgetVar(context));
             }
         }
 

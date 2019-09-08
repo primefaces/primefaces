@@ -39,7 +39,7 @@ public class TimelineListener implements SystemEventListener {
 
         FacesContext context = FacesContext.getCurrentInstance();
         Timeline timeline = (Timeline) cse.getSource();
-        String widgetVar = timeline.resolveWidgetVar();
+        String widgetVar = timeline.resolveWidgetVar(context);
 
         Map<String, TimelineUpdater> map
                 = (Map<String, TimelineUpdater>) context.getAttributes().get(TimelineUpdater.class.getName());

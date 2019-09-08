@@ -53,10 +53,10 @@ public class ResizableRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
 
         if (target instanceof UIGraphic) {
-            wb.initWithComponentLoad("Resizable", resizable.resolveWidgetVar(), clientId, targetId);
+            wb.initWithComponentLoad("Resizable", resizable.resolveWidgetVar(context), clientId, targetId);
         }
         else {
-            wb.init("Resizable", resizable.resolveWidgetVar(), clientId);
+            wb.init("Resizable", resizable.resolveWidgetVar(context), clientId);
         }
 
         wb.attr("target", targetId)

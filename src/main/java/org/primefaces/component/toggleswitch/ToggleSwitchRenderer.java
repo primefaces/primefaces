@@ -131,7 +131,7 @@ public class ToggleSwitchRenderer extends InputRenderer {
     protected void encodeScript(FacesContext context, ToggleSwitch toggleSwitch) throws IOException {
         String clientId = toggleSwitch.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("ToggleSwitch", toggleSwitch.resolveWidgetVar(), clientId).finish();
+        wb.init("ToggleSwitch", toggleSwitch.resolveWidgetVar(context), clientId).finish();
     }
 
     protected boolean isChecked(String value) {

@@ -70,7 +70,7 @@ public class ImageCropperRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, ImageCropper cropper) throws IOException {
-        String widgetVar = cropper.resolveWidgetVar();
+        String widgetVar = cropper.resolveWidgetVar(context);
         String clientId = cropper.getClientId(context);
         String image = clientId + "_image";
         String select = null;

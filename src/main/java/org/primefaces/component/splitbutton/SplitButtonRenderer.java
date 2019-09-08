@@ -203,7 +203,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
     protected void encodeScript(FacesContext context, SplitButton button) throws IOException {
         String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SplitButton", button.resolveWidgetVar(), clientId);
+        wb.init("SplitButton", button.resolveWidgetVar(context), clientId);
         wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo(), SearchExpressionHint.RESOLVE_CLIENT_SIDE), null);
 
         if (button.isFilter()) {

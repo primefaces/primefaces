@@ -163,7 +163,7 @@ public class DataScrollerRenderer extends CoreRenderer {
         String loadEvent = ds.getFacet("loader") == null ? "scroll" : "manual";
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DataScroller", ds.resolveWidgetVar(), clientId)
+        wb.init("DataScroller", ds.resolveWidgetVar(context), clientId)
                 .attr("chunkSize", chunkSize)
                 .attr("totalSize", ds.getRowCount())
                 .attr("loadEvent", loadEvent)

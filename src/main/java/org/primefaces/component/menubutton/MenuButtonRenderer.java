@@ -175,7 +175,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         }
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("MenuButton", button.resolveWidgetVar(), clientId);
+        wb.init("MenuButton", button.resolveWidgetVar(context), clientId);
         wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo(), SearchExpressionHint.RESOLVE_CLIENT_SIDE), null);
         wb.attr("collision", button.getCollision());
         wb.finish();

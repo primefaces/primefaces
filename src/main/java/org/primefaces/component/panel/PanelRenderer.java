@@ -71,7 +71,7 @@ public class PanelRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Panel panel) throws IOException {
         String clientId = panel.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Panel", panel.resolveWidgetVar(), clientId);
+        wb.init("Panel", panel.resolveWidgetVar(context), clientId);
 
         if (panel.isToggleable()) {
             wb.attr("toggleable", true)
@@ -98,7 +98,7 @@ public class PanelRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, Panel panel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = panel.getClientId(context);
-        String widgetVar = panel.resolveWidgetVar();
+        String widgetVar = panel.resolveWidgetVar(context);
         Menu optionsMenu = panel.getOptionsMenu();
         boolean collapsed = panel.isCollapsed();
         boolean visible = panel.isVisible();

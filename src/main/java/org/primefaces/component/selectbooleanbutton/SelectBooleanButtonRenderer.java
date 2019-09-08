@@ -142,7 +142,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
 
         String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectBooleanButton", button.resolveWidgetVar(), clientId)
+        wb.init("SelectBooleanButton", button.resolveWidgetVar(context), clientId)
                 .attr("onLabel", isValueBlank(onLabel) ? "ui-button" : onLabel)
                 .attr("offLabel", isValueBlank(offLabel) ? "ui-button" : offLabel)
                 .attr("onIcon", button.getOnIcon(), null)

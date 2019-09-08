@@ -179,7 +179,7 @@ public class MessageRenderer extends UINotificationRenderer {
             String targetClientId = (target instanceof InputHolder) ? ((InputHolder) target).getInputClientId() : target.getClientId(context);
             WidgetBuilder wb = getWidgetBuilder(context);
 
-            wb.init("Message", uiMessage.resolveWidgetVar(), clientId)
+            wb.init("Message", uiMessage.resolveWidgetVar(context), clientId)
                     .attr("target", targetClientId)
                     .attr("tooltip", tooltip, false)
                     .finish();

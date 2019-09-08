@@ -50,7 +50,7 @@ public class ScatterChartRenderer extends ChartRenderer {
         String clientId = chart.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("ScatterChart", chart.resolveWidgetVar(), clientId);
+        wb.init("ScatterChart", chart.resolveWidgetVar(context), clientId);
 
         encodeConfig(context, chart.getModel());
         encodeClientBehaviors(context, chart);

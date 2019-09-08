@@ -67,7 +67,7 @@ public class InputTextRenderer extends InputRenderer {
         String clientId = inputText.getClientId(context);
         String counter = inputText.getCounter();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("InputText", inputText.resolveWidgetVar(), clientId)
+        wb.init("InputText", inputText.resolveWidgetVar(context), clientId)
                 .attr("maxlength", inputText.getMaxlength(), Integer.MAX_VALUE);
 
         if (counter != null) {

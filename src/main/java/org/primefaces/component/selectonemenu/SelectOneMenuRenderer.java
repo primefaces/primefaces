@@ -503,7 +503,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
     protected void encodeScript(FacesContext context, SelectOneMenu menu) throws IOException {
         String clientId = menu.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectOneMenu", menu.resolveWidgetVar(), clientId)
+        wb.init("SelectOneMenu", menu.resolveWidgetVar(context), clientId)
                 .attr("effect", menu.getEffect(), null)
                 .attr("effectSpeed", menu.getEffectSpeed(), null)
                 .attr("editable", menu.isEditable(), false)

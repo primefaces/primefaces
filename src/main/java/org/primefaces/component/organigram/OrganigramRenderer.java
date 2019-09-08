@@ -226,7 +226,7 @@ public class OrganigramRenderer extends CoreRenderer {
         String clientId = organigram.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Organigram", organigram.resolveWidgetVar(), clientId)
+        wb.init("Organigram", organigram.resolveWidgetVar(context), clientId)
                 .attr("zoom", organigram.isZoom())
                 .attr("leafNodeConnectorHeight", organigram.getLeafNodeConnectorHeight())
                 .attr("autoScrollToSelection", organigram.isAutoScrollToSelection());

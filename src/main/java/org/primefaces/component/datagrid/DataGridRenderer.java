@@ -63,7 +63,7 @@ public class DataGridRenderer extends DataRenderer {
     protected void encodeScript(FacesContext context, DataGrid grid) throws IOException {
         String clientId = grid.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DataGrid", grid.resolveWidgetVar(), clientId);
+        wb.init("DataGrid", grid.resolveWidgetVar(context), clientId);
 
         if (grid.isPaginator()) {
             encodePaginatorConfig(context, grid, wb);

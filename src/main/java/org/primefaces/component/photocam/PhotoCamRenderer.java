@@ -88,7 +88,7 @@ public class PhotoCamRenderer extends CoreRenderer {
         String camera = getResourceRequestPath(context, "photocam/webcam.swf");
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("PhotoCam", cam.resolveWidgetVar(), clientId)
+        wb.init("PhotoCam", cam.resolveWidgetVar(context), clientId)
                 .attr("camera", camera)
                 .attr("width", cam.getWidth(), 320)
                 .attr("height", cam.getHeight(), 240)

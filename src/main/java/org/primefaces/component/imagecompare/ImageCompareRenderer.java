@@ -46,7 +46,7 @@ public class ImageCompareRenderer extends CoreRenderer {
         String clientId = compare.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("ImageCompare", compare.resolveWidgetVar(), clientId)
+        wb.init("ImageCompare", compare.resolveWidgetVar(context), clientId)
                 .attr("leftimage", getResourceURL(context, compare.getLeftImage()))
                 .attr("rightimage", getResourceURL(context, compare.getRightImage()));
         wb.finish();

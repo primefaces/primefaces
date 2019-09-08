@@ -163,7 +163,7 @@ public class DiagramRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Diagram diagram) throws IOException {
         String clientId = diagram.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Diagram", diagram.resolveWidgetVar(), clientId);
+        wb.init("Diagram", diagram.resolveWidgetVar(context), clientId);
 
         DiagramModel model = (DiagramModel) diagram.getValue();
         if (model != null) {

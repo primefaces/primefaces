@@ -89,7 +89,7 @@ public class TabViewRenderer extends CoreRenderer {
         boolean dynamic = tabView.isDynamic();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("TabView", tabView.resolveWidgetVar(), clientId);
+        wb.init("TabView", tabView.resolveWidgetVar(context), clientId);
 
         if (dynamic) {
             wb.attr("dynamic", true).attr("cache", tabView.isCache());
@@ -112,7 +112,7 @@ public class TabViewRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, TabView tabView) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = tabView.getClientId(context);
-        String widgetVar = tabView.resolveWidgetVar();
+        String widgetVar = tabView.resolveWidgetVar(context);
         String orientation = tabView.getOrientation();
         String styleClass = tabView.getStyleClass();
         String defaultStyleClass = TabView.CONTAINER_CLASS + " ui-tabs-" + orientation;

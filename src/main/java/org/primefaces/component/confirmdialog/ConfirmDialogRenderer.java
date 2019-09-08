@@ -78,7 +78,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         String clientId = dialog.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        wb.init("ConfirmDialog", dialog.resolveWidgetVar(), clientId)
+        wb.init("ConfirmDialog", dialog.resolveWidgetVar(context), clientId)
                 .attr("visible", dialog.isVisible(), false)
                 .attr("width", dialog.getWidth(), null)
                 .attr("height", dialog.getHeight(), null)

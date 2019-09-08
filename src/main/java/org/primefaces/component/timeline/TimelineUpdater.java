@@ -46,20 +46,20 @@ public abstract class TimelineUpdater {
      * @throws FacesException if the Timeline component can not be found by the given Id
      */
     public static TimelineUpdater getCurrentInstance(String id) {
-        FacesContext fc = FacesContext.getCurrentInstance();
+        FacesContext context = FacesContext.getCurrentInstance();
 
         @SuppressWarnings("unchecked")
-        Map<String, TimelineUpdater> map = (Map<String, TimelineUpdater>) fc.getAttributes().get(TimelineUpdater.class.getName());
+        Map<String, TimelineUpdater> map = (Map<String, TimelineUpdater>) context.getAttributes().get(TimelineUpdater.class.getName());
         if (map == null) {
             return null;
         }
 
-        UIComponent timeline = fc.getViewRoot().findComponent(id);
+        UIComponent timeline = context.getViewRoot().findComponent(id);
         if (timeline == null || !(timeline instanceof Timeline)) {
             throw new FacesException("Timeline component with Id " + id + " was not found");
         }
 
-        TimelineUpdater timelineUpdater = map.get(((Timeline) timeline).resolveWidgetVar());
+        TimelineUpdater timelineUpdater = map.get(((Timeline) timeline).resolveWidgetVar(context));
         if (timelineUpdater != null) {
             timelineUpdater.id = id;
         }

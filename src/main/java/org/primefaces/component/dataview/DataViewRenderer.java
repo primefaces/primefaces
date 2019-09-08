@@ -303,7 +303,7 @@ public class DataViewRenderer extends DataRenderer {
     protected void encodeScript(FacesContext context, DataView dataview) throws IOException {
         String clientId = dataview.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DataView", dataview.resolveWidgetVar(), clientId);
+        wb.init("DataView", dataview.resolveWidgetVar(context), clientId);
 
         if (dataview.isPaginator()) {
             encodePaginatorConfig(context, dataview, wb);

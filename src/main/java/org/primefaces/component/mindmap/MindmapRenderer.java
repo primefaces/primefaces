@@ -62,7 +62,7 @@ public class MindmapRenderer extends CoreRenderer {
         MindmapNode root = map.getValue();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Mindmap", map.resolveWidgetVar(), clientId)
+        wb.init("Mindmap", map.resolveWidgetVar(context), clientId)
                 .attr("effectSpeed", map.getEffectSpeed());
 
         if (root != null) {

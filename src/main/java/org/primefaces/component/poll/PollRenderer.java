@@ -77,7 +77,7 @@ public class PollRenderer extends CoreRenderer {
         }
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Poll", poll.resolveWidgetVar(), clientId)
+        wb.init("Poll", poll.resolveWidgetVar(context), clientId)
                 .attr("frequency", convertedInterval)
                 .attr("autoStart", poll.isAutoStart())
                 .attr("intervalType", poll.getIntervalType(), "second")

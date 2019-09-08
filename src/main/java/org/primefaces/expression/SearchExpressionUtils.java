@@ -65,13 +65,14 @@ public class SearchExpressionUtils {
 
     // used by p:resolveWidgetVar
     public static String resolveWidgetVar(String expression, UIComponent component) {
+        FacesContext context = FacesContext.getCurrentInstance();
         UIComponent resolvedComponent = SearchExpressionFacade.resolveComponent(
-                FacesContext.getCurrentInstance(),
+                context,
                 component,
                 expression);
 
         if (resolvedComponent instanceof Widget) {
-            return "PF('" + ((Widget) resolvedComponent).resolveWidgetVar() + "')";
+            return "PF('" + ((Widget) resolvedComponent).resolveWidgetVar(context) + "')";
         }
         else {
             throw new FacesException("Component with clientId " + resolvedComponent.getClientId() + " is not a Widget");

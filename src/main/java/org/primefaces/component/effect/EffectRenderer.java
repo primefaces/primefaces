@@ -51,7 +51,7 @@ public class EffectRenderer extends CoreRenderer {
         String animation = getEffectBuilder(effect, target).build();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Effect", effect.resolveWidgetVar(), clientId)
+        wb.init("Effect", effect.resolveWidgetVar(context), clientId)
                 .attr("source", source)
                 .attr("event", event)
                 .attr("delay", delay)

@@ -50,7 +50,7 @@ public class BubbleChartRenderer extends ChartRenderer {
         String clientId = chart.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("BubbleChart", chart.resolveWidgetVar(), clientId);
+        wb.init("BubbleChart", chart.resolveWidgetVar(context), clientId);
 
         encodeConfig(context, chart.getModel());
         encodeClientBehaviors(context, chart);

@@ -313,7 +313,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         String clientId = menu.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectCheckboxMenu", menu.resolveWidgetVar(), clientId)
+        wb.init("SelectCheckboxMenu", menu.resolveWidgetVar(context), clientId)
                 .callback("onShow", "function()", menu.getOnShow())
                 .callback("onHide", "function()", menu.getOnHide())
                 .callback("onChange", "function()", menu.getOnchange())

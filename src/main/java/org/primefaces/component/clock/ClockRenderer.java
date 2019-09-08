@@ -82,7 +82,7 @@ public class ClockRenderer extends CoreRenderer {
         String mode = clock.getMode();
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        wb.init("Clock", clock.resolveWidgetVar(), clientId);
+        wb.init("Clock", clock.resolveWidgetVar(context), clientId);
         wb.attr("mode", mode)
                 .attr("pattern", clock.getPattern(), null)
                 .attr("displayMode", clock.getDisplayMode())

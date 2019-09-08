@@ -104,7 +104,7 @@ public class EditorRenderer extends InputRenderer {
     private void encodeScript(FacesContext context, Editor editor) throws IOException {
         String clientId = editor.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Editor", editor.resolveWidgetVar(), clientId)
+        wb.init("Editor", editor.resolveWidgetVar(context), clientId)
                 .attr("disabled", editor.isDisabled(), false)
                 .attr("invalid", editor.isValid(), true)
                 .attr("controls", editor.getControls(), null)

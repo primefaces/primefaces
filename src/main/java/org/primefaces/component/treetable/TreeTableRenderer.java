@@ -230,7 +230,7 @@ public class TreeTableRenderer extends DataRenderer {
         String clientId = tt.getClientId(context);
         String selectionMode = tt.getSelectionMode();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("TreeTable", tt.resolveWidgetVar(), clientId)
+        wb.init("TreeTable", tt.resolveWidgetVar(context), clientId)
                 .attr("selectionMode", selectionMode, null)
                 .attr("resizableColumns", tt.isResizableColumns(), false)
                 .attr("liveResize", tt.isLiveResize(), false)

@@ -160,7 +160,7 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
         String clientId = listbox.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        wb.init("MultiSelectListbox", listbox.resolveWidgetVar(), clientId)
+        wb.init("MultiSelectListbox", listbox.resolveWidgetVar(context), clientId)
                 .attr("effect", listbox.getEffect(), null)
                 .attr("showHeaders", listbox.isShowHeaders(), false);
         encodeClientBehaviors(context, listbox);

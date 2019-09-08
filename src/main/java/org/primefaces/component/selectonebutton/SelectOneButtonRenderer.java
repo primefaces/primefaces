@@ -175,7 +175,7 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
     protected void encodeScript(FacesContext context, SelectOneButton button) throws IOException {
         String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectOneButton", button.resolveWidgetVar(), clientId)
+        wb.init("SelectOneButton", button.resolveWidgetVar(context), clientId)
                 .attr("unselectable", button.isUnselectable(), true)
                 .callback("change", "function()", button.getOnchange());
 

@@ -144,7 +144,7 @@ public class DataListRenderer extends DataRenderer {
     protected void encodeScript(FacesContext context, DataList list) throws IOException {
         String clientId = list.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DataList", list.resolveWidgetVar(), clientId);
+        wb.init("DataList", list.resolveWidgetVar(context), clientId);
 
         if (list.isPaginator()) {
             encodePaginatorConfig(context, list, wb);

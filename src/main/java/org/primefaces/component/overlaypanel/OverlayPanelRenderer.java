@@ -77,7 +77,7 @@ public class OverlayPanelRenderer extends CoreRenderer {
         String clientId = panel.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("OverlayPanel", panel.resolveWidgetVar(), clientId)
+        wb.init("OverlayPanel", panel.resolveWidgetVar(context), clientId)
                 .attr("target", target)
                 .attr("showEvent", panel.getShowEvent(), null)
                 .attr("hideEvent", panel.getHideEvent(), null)
