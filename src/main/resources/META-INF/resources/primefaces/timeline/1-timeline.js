@@ -445,13 +445,13 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if (range.startFirst != null && range.endFirst != null) {
-            options.params[0] = {name: this.id + '_startDateFirst', value: range.startFirst.toISOString()};
-            options.params[1] = {name: this.id + '_endDateFirst', value: range.endFirst.toISOString()};
+            options.params[0] = {name: this.id + '_startDateFirst', value: new Date(range.startFirst).toISOString()};
+            options.params[1] = {name: this.id + '_endDateFirst', value: new Date(range.endFirst).toISOString()};
         }
 
         if (range.startSecond != null && range.endSecond != null) {
-            options.params[2] = {name: this.id + '_startDateSecond', value: range.startSecond.toISOString()};
-            options.params[3] = {name: this.id + '_endDateSecond', value: range.endSecond.toISOString()};
+            options.params[2] = {name: this.id + '_startDateSecond', value: new Date(range.startSecond).toISOString()};
+            options.params[3] = {name: this.id + '_endDateSecond', value: new Date(range.endSecond).toISOString()};
         }
 
         this.getBehavior("lazyload").call(this, options);
