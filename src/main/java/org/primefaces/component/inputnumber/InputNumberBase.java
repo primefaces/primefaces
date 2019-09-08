@@ -194,9 +194,4 @@ public abstract class InputNumberBase extends HtmlInputText implements Widget, I
     public void setLeadingZero(String leadingZero) {
         getStateHelper().put(PropertyKeys.leadingZero, leadingZero);
     }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
-    }
 }

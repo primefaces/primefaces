@@ -28,8 +28,6 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class SliderBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
@@ -206,10 +204,5 @@ public abstract class SliderBase extends UIInput implements Widget, ClientBehavi
 
     public void setDisplayTemplate(String displayTemplate) {
         getStateHelper().put(PropertyKeys.displayTemplate, displayTemplate);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

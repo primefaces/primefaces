@@ -26,8 +26,6 @@ package org.primefaces.component.defaultcommand;
 import javax.faces.component.UIComponentBase;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class DefaultCommandBase extends UIComponentBase implements Widget {
 
@@ -73,10 +71,5 @@ public abstract class DefaultCommandBase extends UIComponentBase implements Widg
 
     public void setScope(String scope) {
         getStateHelper().put(PropertyKeys.scope, scope);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

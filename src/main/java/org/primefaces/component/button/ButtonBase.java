@@ -27,8 +27,6 @@ import javax.faces.component.html.HtmlOutcomeTargetButton;
 
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class ButtonBase extends HtmlOutcomeTargetButton implements Widget, UIOutcomeTarget {
 
@@ -143,10 +141,5 @@ public abstract class ButtonBase extends HtmlOutcomeTargetButton implements Widg
     @Override
     public void setDisableClientWindow(boolean disableClientWindow) {
         getStateHelper().put(PropertyKeys.disableClientWindow, disableClientWindow);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

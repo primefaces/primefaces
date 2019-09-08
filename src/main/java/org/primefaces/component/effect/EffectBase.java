@@ -26,8 +26,6 @@ package org.primefaces.component.effect;
 import javax.faces.component.UIComponentBase;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class EffectBase extends UIComponentBase implements Widget {
 
@@ -123,10 +121,5 @@ public abstract class EffectBase extends UIComponentBase implements Widget {
 
     public void setQueue(boolean queue) {
         getStateHelper().put(PropertyKeys.queue, queue);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

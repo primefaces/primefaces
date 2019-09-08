@@ -25,8 +25,6 @@ package org.primefaces.component.contextmenu;
 
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class ContextMenuBase extends AbstractMenu implements Widget {
 
@@ -150,10 +148,5 @@ public abstract class ContextMenuBase extends AbstractMenu implements Widget {
 
     public void setTargetFilter(String targetFilter) {
         getStateHelper().put(PropertyKeys.targetFilter, targetFilter);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

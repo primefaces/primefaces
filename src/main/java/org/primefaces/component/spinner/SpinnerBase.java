@@ -139,9 +139,4 @@ public abstract class SpinnerBase extends HtmlInputText implements Widget, Input
     public void setThousandSeparator(String thousandSeparator) {
         getStateHelper().put(PropertyKeys.thousandSeparator, thousandSeparator);
     }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
-    }
 }

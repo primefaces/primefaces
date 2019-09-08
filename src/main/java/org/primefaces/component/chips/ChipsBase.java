@@ -28,8 +28,6 @@ import javax.faces.component.html.HtmlInputText;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class ChipsBase extends HtmlInputText implements Widget, InputHolder, MixedClientBehaviorHolder {
 
@@ -102,10 +100,5 @@ public abstract class ChipsBase extends HtmlInputText implements Widget, InputHo
 
     public void setAddOnBlur(boolean addOnBlur) {
         getStateHelper().put(PropertyKeys.addOnBlur, addOnBlur);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

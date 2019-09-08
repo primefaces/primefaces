@@ -28,8 +28,6 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class DroppableBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
@@ -161,10 +159,5 @@ public abstract class DroppableBase extends UIComponentBase implements Widget, C
 
     public void setGreedy(boolean greedy) {
         getStateHelper().put(PropertyKeys.greedy, greedy);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

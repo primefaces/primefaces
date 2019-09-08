@@ -268,6 +268,7 @@ public class ComponentUtils {
         }
     }
 
+    @Deprecated // Widget itselfs implements it now
     public static String resolveWidgetVar(FacesContext context, Widget widget) {
         UIComponent component = (UIComponent) widget;
         String userWidgetVar = (String) component.getAttributes().get("widgetVar");

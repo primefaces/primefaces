@@ -26,8 +26,6 @@ package org.primefaces.component.tristatecheckbox;
 import javax.faces.component.html.HtmlInputText;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class TriStateCheckboxBase extends HtmlInputText implements Widget {
 
@@ -118,10 +116,5 @@ public abstract class TriStateCheckboxBase extends HtmlInputText implements Widg
 
     public void setStateThreeTitle(String stateThreeTitle) {
         getStateHelper().put(PropertyKeys.stateThreeTitle, stateThreeTitle);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

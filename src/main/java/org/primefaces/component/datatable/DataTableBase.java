@@ -26,8 +26,6 @@ package org.primefaces.component.datatable;
 import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import org.primefaces.component.api.*;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable {
 
@@ -694,15 +692,5 @@ public abstract class DataTableBase extends UIData implements Widget, RTLAware, 
 
     public void setGlobalFilterFunction(MethodExpression globalFilterFunction) {
         getStateHelper().put(PropertyKeys.globalFilterFunction, globalFilterFunction);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
-    }
-
-    @Override
-    public boolean isRTL() {
-        return "rtl".equalsIgnoreCase(getDir());
     }
 }

@@ -28,8 +28,6 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class InplaceBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
@@ -165,10 +163,5 @@ public abstract class InplaceBase extends UIComponentBase implements Widget, Cli
 
     public void setToggleable(boolean toggleable) {
         getStateHelper().put(PropertyKeys.toggleable, toggleable);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

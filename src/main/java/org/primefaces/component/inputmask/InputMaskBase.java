@@ -26,8 +26,6 @@ package org.primefaces.component.inputmask;
 import javax.faces.component.html.HtmlInputText;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class InputMaskBase extends HtmlInputText implements Widget {
 
@@ -109,10 +107,5 @@ public abstract class InputMaskBase extends HtmlInputText implements Widget {
 
     public void setValidateMask(boolean validateMask) {
         getStateHelper().put(PropertyKeys.validateMask, validateMask);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

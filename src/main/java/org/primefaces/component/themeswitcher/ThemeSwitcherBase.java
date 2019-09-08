@@ -25,8 +25,6 @@ package org.primefaces.component.themeswitcher;
 
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class ThemeSwitcherBase extends SelectOneMenu implements Widget {
 
@@ -65,10 +63,5 @@ public abstract class ThemeSwitcherBase extends SelectOneMenu implements Widget 
 
     public void setButtonPreText(String buttonPreText) {
         getStateHelper().put(PropertyKeys.buttonPreText, buttonPreText);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

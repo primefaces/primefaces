@@ -29,8 +29,6 @@ import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.UITree;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
@@ -262,17 +260,8 @@ public abstract class TreeBase extends UITree implements Widget, RTLAware, Clien
     public String getFilterMode() {
         return (String) getStateHelper().eval(PropertyKeys.filterMode, "lenient");
     }
+
     public void setFilterMode(String filterMode) {
         getStateHelper().put(PropertyKeys.filterMode, filterMode);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
-    }
-
-    @Override
-    public boolean isRTL() {
-        return "rtl".equalsIgnoreCase(getDir());
     }
 }

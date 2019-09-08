@@ -25,5 +25,9 @@ package org.primefaces.component.api;
 
 public interface RTLAware {
 
-    boolean isRTL();
+    String getDir();
+
+    default boolean isRTL() {
+        return "rtl".equalsIgnoreCase(getDir());
+    }
 }

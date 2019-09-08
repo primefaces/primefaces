@@ -29,8 +29,6 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
@@ -337,15 +335,5 @@ public abstract class DialogBase extends UIPanel implements Widget, RTLAware, Cl
 
     public void setResponsive(boolean responsive) {
         getStateHelper().put(PropertyKeys.responsive, responsive);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
-    }
-
-    @Override
-    public boolean isRTL() {
-        return "rtl".equalsIgnoreCase(getDir());
     }
 }

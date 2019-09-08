@@ -23,7 +23,27 @@
  */
 package org.primefaces.component.api;
 
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.context.FacesContext;
+import org.primefaces.util.LangUtils;
+
 public interface Widget {
 
-    String resolveWidgetVar();
+    // backwards compatibility
+    default String resolveWidgetVar() {
+        return resolveWidgetVar(FacesContext.getCurrentInstance());
+    }
+
+    default String resolveWidgetVar(FacesContext context) {
+        UIComponent component = (UIComponent) this;
+        String userWidgetVar = (String) component.getAttributes().get("widgetVar");
+
+        if (!LangUtils.isValueBlank(userWidgetVar)) {
+            return userWidgetVar;
+        }
+        else {
+            return "widget_" + component.getClientId(context).replaceAll("-|" + UINamingContainer.getSeparatorChar(context), "_");
+        }
+    }
 }

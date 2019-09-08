@@ -28,8 +28,6 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class OutputPanelBase extends UIPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
@@ -93,10 +91,5 @@ public abstract class OutputPanelBase extends UIPanel implements Widget, ClientB
 
     public void setLayout(String layout) {
         getStateHelper().put(PropertyKeys.layout, layout);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

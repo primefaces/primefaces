@@ -28,7 +28,6 @@ import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
 
 public abstract class DatePickerBase extends UICalendar implements Widget, InputHolder, MixedClientBehaviorHolder {
 
@@ -395,10 +394,5 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
     @Override
     public boolean hasTime() {
         return this.isShowTime() || this.isTimeOnly() || super.hasTime();
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

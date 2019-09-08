@@ -26,8 +26,6 @@ package org.primefaces.component.clock;
 import javax.faces.component.UIOutput;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class ClockBase extends UIOutput implements Widget {
 
@@ -100,10 +98,5 @@ public abstract class ClockBase extends UIOutput implements Widget {
 
     public void setDisplayMode(String displayMode) {
         getStateHelper().put(PropertyKeys.displayMode, displayMode);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

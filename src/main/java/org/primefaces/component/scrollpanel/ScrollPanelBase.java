@@ -26,8 +26,6 @@ package org.primefaces.component.scrollpanel;
 import javax.faces.component.UIPanel;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class ScrollPanelBase extends UIPanel implements Widget {
 
@@ -82,10 +80,5 @@ public abstract class ScrollPanelBase extends UIPanel implements Widget {
 
     public void setMode(String mode) {
         getStateHelper().put(PropertyKeys.mode, mode);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

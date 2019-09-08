@@ -27,8 +27,6 @@ import javax.faces.component.html.HtmlSelectBooleanCheckbox;
 
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class SelectBooleanCheckboxBase extends HtmlSelectBooleanCheckbox implements Widget, InputHolder {
 
@@ -74,10 +72,5 @@ public abstract class SelectBooleanCheckboxBase extends HtmlSelectBooleanCheckbo
 
     public void setEscape(boolean escape) {
         getStateHelper().put(SelectBooleanCheckboxBase.PropertyKeys.escape, escape);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

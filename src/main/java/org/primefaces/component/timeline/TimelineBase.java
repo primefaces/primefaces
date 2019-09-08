@@ -28,8 +28,6 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class TimelineBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
@@ -489,10 +487,5 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, Cl
 
     public void setAnimateZoom(boolean animateZoom) {
         getStateHelper().put(PropertyKeys.animateZoom, animateZoom);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

@@ -27,8 +27,6 @@ import javax.faces.component.html.HtmlSelectOneListbox;
 
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class SelectOneListboxBase extends HtmlSelectOneListbox implements Widget, InputHolder {
 
@@ -110,10 +108,5 @@ public abstract class SelectOneListboxBase extends HtmlSelectOneListbox implemen
 
     public void setScrollHeight(int scrollHeight) {
         getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

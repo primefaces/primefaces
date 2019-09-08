@@ -25,8 +25,6 @@ package org.primefaces.component.carousel;
 
 import org.primefaces.component.api.UIData;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class CarouselBase extends UIData implements Widget {
 
@@ -254,10 +252,5 @@ public abstract class CarouselBase extends UIData implements Widget {
 
     public void setStateful(boolean stateful) {
         getStateHelper().put(PropertyKeys.stateful, stateful);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

@@ -27,7 +27,6 @@ import javax.faces.component.UIMessages;
 
 import org.primefaces.component.api.UINotification;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
 
 public abstract class GrowlBase extends UIMessages implements Widget, UINotification {
 
@@ -111,10 +110,5 @@ public abstract class GrowlBase extends UIMessages implements Widget, UINotifica
 
     public void setSkipDetailIfEqualsSummary(boolean skipDetailIfEqualsSummary) {
         getStateHelper().put(PropertyKeys.skipDetailIfEqualsSummary, skipDetailIfEqualsSummary);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

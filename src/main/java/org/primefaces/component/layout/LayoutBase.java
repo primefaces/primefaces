@@ -28,8 +28,6 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class LayoutBase extends UIPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
@@ -156,10 +154,5 @@ public abstract class LayoutBase extends UIPanel implements Widget, ClientBehavi
 
     public void setStateful(boolean stateful) {
         getStateHelper().put(PropertyKeys.stateful, stateful);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

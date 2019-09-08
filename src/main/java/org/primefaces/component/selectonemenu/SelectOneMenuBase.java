@@ -27,8 +27,6 @@ import javax.faces.component.html.HtmlSelectOneMenu;
 
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, InputHolder {
 
@@ -238,10 +236,5 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
 
     public void setDynamic(boolean dynamic) {
         getStateHelper().put(PropertyKeys.dynamic, dynamic);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

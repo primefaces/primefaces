@@ -26,8 +26,6 @@ package org.primefaces.component.notificationbar;
 import javax.faces.component.UIComponentBase;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class NotificationBarBase extends UIComponentBase implements Widget {
 
@@ -109,10 +107,5 @@ public abstract class NotificationBarBase extends UIComponentBase implements Wid
 
     public void setAutoDisplay(boolean autoDisplay) {
         getStateHelper().put(PropertyKeys.autoDisplay, autoDisplay);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }
