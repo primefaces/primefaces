@@ -98,8 +98,6 @@ https://www.primefaces.org/showcase/ui/data/timeline/basic.xhtml
 
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
-page | org.primefaces.event.data.PageEvent | On pagination.
-sort | org.primefaces.event.data.SortEvent | When a column is sorted.
 add | org.primefaces.event.timeline.TimelineAddEvent | On event add.
 change | org.primefaces.event.timeline.TimelineModificationEvent | On event change.
 changed | org.primefaces.event.timeline.TimelineModificationEvent | On event change complete.
