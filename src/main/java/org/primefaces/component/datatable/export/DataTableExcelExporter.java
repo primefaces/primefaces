@@ -27,6 +27,7 @@ import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.WorkbookUtil;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
@@ -48,7 +49,6 @@ import java.util.List;
 
 public class DataTableExcelExporter extends DataTableExporter {
 
-    protected static final String DEFAULT_FONT = "Arial";
     private CellStyle cellStyle;
     private CellStyle facetStyle;
     private Workbook wb;
@@ -375,11 +375,11 @@ public class DataTableExcelExporter extends DataTableExporter {
         Font font = wb.createFont();
 
         if (options != null) {
-            String fontName = LangUtils.isValueBlank(options.getFontName()) ? DEFAULT_FONT : options.getFontName();
+            String fontName = LangUtils.isValueBlank(options.getFontName()) ? XSSFFont.DEFAULT_FONT_NAME : options.getFontName();
             font.setFontName(fontName);
         }
         else {
-            font.setFontName(DEFAULT_FONT);
+            font.setFontName(XSSFFont.DEFAULT_FONT_NAME);
         }
         return font;
     }
