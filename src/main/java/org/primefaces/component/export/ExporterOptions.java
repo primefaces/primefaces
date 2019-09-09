@@ -39,4 +39,6 @@ public interface ExporterOptions {
 
     String getCellFontSize();
 
+    String getFontName();
+
 }

@@ -25,7 +25,6 @@ package org.primefaces.component.datatable.export;
 
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.WorkbookUtil;
 import org.primefaces.component.api.DynamicColumn;
@@ -35,6 +34,7 @@ import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
@@ -48,6 +48,7 @@ import java.util.List;
 
 public class DataTableExcelExporter extends DataTableExporter {
 
+    protected static final String DEFAULT_FONT = HSSFFont.FONT_ARIAL;
     private CellStyle cellStyle;
     private CellStyle facetStyle;
     private Workbook wb;
@@ -256,13 +257,17 @@ public class DataTableExcelExporter extends DataTableExporter {
     }
 
     protected void applyOptions(Workbook wb, DataTable table, Sheet sheet, ExporterOptions options) {
+        Font font = getFont(wb, options);
+
         facetStyle = wb.createCellStyle();
+        facetStyle.setFont(font);
         facetStyle.setAlignment(HorizontalAlignment.CENTER);
         facetStyle.setVerticalAlignment(VerticalAlignment.CENTER);
         facetStyle.setWrapText(true);
         applyFacetOptions(wb, options, facetStyle);
 
         cellStyle = wb.createCellStyle();
+        cellStyle.setFont(font);
         cellStyle.setAlignment(HorizontalAlignment.LEFT);
         applyCellOptions(wb, options, cellStyle);
 
@@ -273,7 +278,7 @@ public class DataTableExcelExporter extends DataTableExporter {
     }
 
     protected void applyFacetOptions(Workbook wb, ExporterOptions options, CellStyle facetStyle) {
-        Font facetFont = wb.createFont();
+        Font facetFont = getFont(wb, options);
 
         if (options != null) {
             String facetFontStyle = options.getFacetFontStyle();
@@ -314,7 +319,7 @@ public class DataTableExcelExporter extends DataTableExporter {
     }
 
     protected void applyCellOptions(Workbook wb, ExporterOptions options, CellStyle cellStyle) {
-        Font cellFont = wb.createFont();
+        Font cellFont = getFont(wb, options);
 
         if (options != null) {
             String cellFontColor = options.getCellFontColor();
@@ -364,5 +369,18 @@ public class DataTableExcelExporter extends DataTableExporter {
         }
 
         return null;
+    }
+
+    public Font getFont(Workbook wb, ExporterOptions options) {
+        Font font = wb.createFont();
+
+        if (options != null) {
+            String fontName = LangUtils.isValueBlank(options.getFontName()) ? DEFAULT_FONT : options.getFontName();
+            font.setFontName(fontName);
+        }
+        else {
+            font.setFontName(DEFAULT_FONT);
+        }
+        return font;
     }
 }

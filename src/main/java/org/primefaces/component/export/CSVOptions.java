@@ -108,4 +108,9 @@ public class CSVOptions implements ExporterOptions {
         throw new UnsupportedOperationException(STYLING_NOT_SUPPORTED);
     }
 
+    @Override
+    public String getFontName() {
+        throw new UnsupportedOperationException(STYLING_NOT_SUPPORTED);
+    }
+
 }

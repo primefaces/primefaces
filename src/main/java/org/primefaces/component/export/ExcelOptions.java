@@ -39,6 +39,8 @@ public class ExcelOptions implements ExporterOptions {
 
     private String cellFontSize;
 
+    private String fontName;
+
     public ExcelOptions() {
     }
 
@@ -126,5 +128,15 @@ public class ExcelOptions implements ExporterOptions {
     public void setCellFontSize(String cellFontSize) {
         this.cellFontSize = cellFontSize;
     }
+
+    @Override
+    public String getFontName() {
+        return fontName;
+    }
+
+    public void setFontName(String fontName) {
+        this.fontName = fontName;
+    }
+
 
 }
