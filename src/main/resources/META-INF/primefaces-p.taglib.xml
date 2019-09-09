@@ -13,6 +13,12 @@
     </function>
 
     <function>
+        <function-name>resolveComponent</function-name>
+        <function-class>org.primefaces.expression.SearchExpressionUtils</function-class>
+        <function-signature>javax.faces.component.UIComponent resolveComponent(java.lang.String, javax.faces.component.UIComponent)</function-signature>
+    </function>
+
+    <function>
         <function-name>resolveClientIds</function-name>
         <function-class>org.primefaces.expression.SearchExpressionUtils</function-class>
         <function-signature>java.lang.String resolveClientIds(java.lang.String, javax.faces.component.UIComponent)</function-signature>

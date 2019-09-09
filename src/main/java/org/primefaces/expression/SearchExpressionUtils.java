@@ -55,6 +55,14 @@ public class SearchExpressionUtils {
                 expression);
     }
 
+    // used by p:resolveComponent
+    public static UIComponent resolveComponent(String expression, UIComponent source) {
+        return SearchExpressionFacade.resolveComponent(
+                FacesContext.getCurrentInstance(),
+                source,
+                expression);
+    }
+
     // used by p:resolveClientIds
     public static String resolveClientIds(String expressions, UIComponent source) {
         return SearchExpressionFacade.resolveClientIds(
