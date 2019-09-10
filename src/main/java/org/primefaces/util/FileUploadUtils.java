@@ -138,13 +138,13 @@ public class FileUploadUtils {
      * as well as {@link FileUpload#getAccept} and uses the installed {@link java.nio.file.spi.FileTypeDetector} implementation.
      * For most reliable content type checking it's recommended to plug in Apache Tika as an implementation.
      * @param fileUpload the fileUpload component
-     * @param fileName the name of the uploaded file
-     * @param inputStream the input stream to receive the file's content from
+     * @param uploadedFile the details of the uploaded file
      * @return <code>true</code>, if all validations regarding filename and content type passed, <code>false</code> else
      */
-    public static boolean isValidType(FileUpload fileUpload, String fileName, InputStream inputStream) {
+    public static boolean isValidType(FileUpload fileUpload, SingleUploadedFile uploadedFile) {
+        String fileName = uploadedFile.getFileName();
         try {
-            boolean validType = isValidFileName(fileUpload, fileName) && isValidFileContent(fileUpload, fileName, inputStream);
+            boolean validType = isValidFileName(fileUpload, uploadedFile) && isValidFileContent(fileUpload, fileName, uploadedFile.getInputStream());
             if (validType) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine(String.format("The uploaded file %s meets the filename and content type specifications", fileName));
@@ -160,9 +160,9 @@ public class FileUploadUtils {
         }
     }
 
-    private static boolean isValidFileName(FileUpload fileUpload, String fileName) throws ScriptException {
-        String fileNameRegex = fileUpload.getAllowTypes();
-        if (!LangUtils.isValueBlank(fileNameRegex)) {
+    private static boolean isValidFileName(FileUpload fileUpload, SingleUploadedFile uploadedFile) throws ScriptException {
+        String allowTypesRegex = fileUpload.getAllowTypes();
+        if (!LangUtils.isValueBlank(allowTypesRegex)) {
             //We use rhino or nashorn javascript engine bundled with java to re-evaluate javascript regex that cannot be easily translated to java regex
             //TODO If at some day nashorn will not be bundled with java (http://openjdk.java.net/jeps/335), we have to put some notes in the user guide
             ScriptEngine engine = new ScriptEngineManager().getEngineByName("javascript");
@@ -180,10 +180,13 @@ public class FileUploadUtils {
                     "JavaScript ScriptEngine not available via the context ClassLoader or the extension ClassLoader."));
             }
 
-            String evalJs = String.format("%s.test(\"%s\")", fileNameRegex, EscapeUtils.forJavaScriptAttribute(fileName));
+            String fileName = EscapeUtils.forJavaScriptAttribute(uploadedFile.getFileName());
+            String contentType = EscapeUtils.forJavaScriptAttribute(uploadedFile.getContentType());
+
+            String evalJs = String.format("%s.test(\"%s\") || %s.test(\"%s\")", allowTypesRegex, contentType, allowTypesRegex, fileName);
             if (!Boolean.TRUE.equals(engine.eval(evalJs))) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(String.format("The uploaded filename %s does not match the specified regex %s", fileName, fileNameRegex));
+                if (LOGGER.isLoggable(Level.WARNING)) {
+                    LOGGER.warning(String.format("The uploaded filename %s does not match the specified regex %s", fileName, allowTypesRegex));
                 }
                 return false;
             }
@@ -286,7 +289,7 @@ public class FileUploadUtils {
     public static boolean isValidFile(FacesContext context, FileUpload fileUpload, SingleUploadedFile uploadedFile) throws IOException {
         Long sizeLimit = fileUpload.getSizeLimit();
         boolean valid = (sizeLimit == null || uploadedFile.getSize() <= sizeLimit)
-                && FileUploadUtils.isValidType(fileUpload, uploadedFile.getFileName(), uploadedFile.getInputStream());
+                && FileUploadUtils.isValidType(fileUpload, uploadedFile);
         if (valid) {
             try {
                 FileUploadUtils.performVirusScan(context, fileUpload, uploadedFile.getInputStream());

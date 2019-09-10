@@ -10,6 +10,7 @@ any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 | itext | 2.1.7 | Optional | DataExporter (PDF) |
 | apache poi | 3.17 | Optional | DataExporter (Excel) |
 | rome | 1.9.0 | Optional | FeedReader |
+| apache tika | 1.22 | Optional | FileUpload |
 | commons-fileupload | 1.3.3 | Optional | FileUpload |
 | commons-io | 2.4 | Optional | FileUpload |
 | barcode4j-light | 2.1 | Optional | Barcode |
