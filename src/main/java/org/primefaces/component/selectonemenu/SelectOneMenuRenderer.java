@@ -125,6 +125,10 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         styleClass = !valid ? styleClass + " ui-state-error" : styleClass;
         styleClass = menu.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
 
+        if (ComponentUtils.isRTL(context, menu)) {
+            styleClass = styleClass + " " + SelectOneMenu.RTL_CLASS;
+        }
+
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleclass");
@@ -286,6 +290,10 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         String panelStyle = menu.getPanelStyle();
         String panelStyleClass = menu.getPanelStyleClass();
         panelStyleClass = panelStyleClass == null ? SelectOneMenu.PANEL_CLASS : SelectOneMenu.PANEL_CLASS + " " + panelStyleClass;
+
+        if (ComponentUtils.isRTL(context, menu)) {
+            panelStyleClass = panelStyleClass + " " + SelectOneMenu.RTL_PANEL_CLASS;
+        }
 
         String height = null;
         try {

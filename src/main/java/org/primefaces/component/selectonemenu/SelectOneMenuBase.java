@@ -26,9 +26,10 @@ package org.primefaces.component.selectonemenu;
 import javax.faces.component.html.HtmlSelectOneMenu;
 
 import org.primefaces.component.api.InputHolder;
+import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 
-public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, InputHolder {
+public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, InputHolder, RTLAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -56,7 +57,8 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
         labelTemplate,
         placeholder,
         autoWidth,
-        dynamic
+        dynamic,
+        dir
     }
 
     public SelectOneMenuBase() {
@@ -236,5 +238,13 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
 
     public void setDynamic(boolean dynamic) {
         getStateHelper().put(PropertyKeys.dynamic, dynamic);
+    }
+
+    public String getDir() {
+        return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
+    }
+
+    public void setDir(String dir) {
+        getStateHelper().put(PropertyKeys.dir, dir);
     }
 }

@@ -346,6 +346,28 @@ input[type=text]::-ms-clear {
     right: 10px;
 }
 
+.ui-selectonemenu-rtl { 
+	direction: rtl;
+	-moz-transform: scaleX(-1); 
+	-webkit-transform: scaleX(-1); 
+	-o-transform: scaleX(-1); 
+	-ms-transform: scaleX(-1); 
+	transform: scaleX(-1); 
+}
+
+.ui-selectonemenu-rtl .ui-selectonemenu-label { 
+	-moz-transform: scaleX(-1); 
+	-webkit-transform: scaleX(-1); 
+	-o-transform: scaleX(-1); 
+	-ms-transform: scaleX(-1); 
+	transform: scaleX(-1); 
+	text-align: right; 
+}
+
+.ui-selectonemenu-panel-rtl .ui-selectonemenu-list-item { 
+	text-align: right; 
+}
+
 .ui-state-disabled a{outline: none;}
 
 /* Button */
