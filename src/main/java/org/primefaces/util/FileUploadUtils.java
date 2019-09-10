@@ -88,12 +88,8 @@ public class FileUploadUtils {
         }
 
         String name = FilenameUtils.getName(filename);
-        String extension = FilenameUtils.EXTENSION_SEPARATOR_STR + FilenameUtils.getExtension(filename);
-
-        if (extension.equals(FilenameUtils.EXTENSION_SEPARATOR_STR)) {
-            throw new FacesException("File must have an extension");
-        }
-        else if (name.isEmpty() || extension.equals(name)) {
+        String extension = FilenameUtils.getExtension(filename);
+        if (name.isEmpty() && extension.isEmpty()) {
             throw new FacesException("Filename can not be the empty string");
         }
 
