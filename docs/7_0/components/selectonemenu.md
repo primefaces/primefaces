@@ -120,6 +120,18 @@ function customFilter(itemLabel, filterValue) {
 In addition to the standard events like "change", custom "itemSelect" event is also available to
 invoke when an item is selected from dropdown.
 
+## Ajax Behavior Events
+
+The following AJAX behavior events are available for this component. If no event is specific the default event is called.  
+In addition to the standard events like "change", custom "itemSelect" event is also available to invoke when an item is selected from dropdown.  
+  
+**Default Event:** valueChange  
+**Available Events:** blur, change, click, dblclick, focus, itemSelect, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, select, valueChange  
+
+```xhtml
+<p:ajax event="valueChange" listener="#{bean.handlevalueChange}" update="msgs" />
+```
+
 ## Client Side API
 Widget: _PrimeFaces.widget.SelectOneMenu_
 

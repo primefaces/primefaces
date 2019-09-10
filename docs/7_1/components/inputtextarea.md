@@ -134,3 +134,13 @@ list of structural style classes;
 
 As skinning style classes are global, see the main theming section for more information.
 
+## Ajax Behavior Events
+
+The following AJAX behavior events are available for this component. If no event is specific the default event is called.  
+  
+**Default Event:** valueChange  
+**Available Events:** blur, change, click, dblclick, focus, itemSelect, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, select, valueChange  
+
+```xhtml
+<p:ajax event="valueChange" listener="#{bean.handlevalueChange}" update="msgs" />
+```
