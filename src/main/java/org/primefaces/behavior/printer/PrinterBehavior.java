@@ -62,7 +62,7 @@ public class PrinterBehavior extends AbstractBehavior {
         String components = SearchExpressionFacade.resolveClientId(
                 context, behaviorContext.getComponent(), getTarget());
 
-        return "PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector('" + components + "').jqprint();return false;";
+        return "PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector('" + components + "').print();return false;";
     }
 
     @Override
