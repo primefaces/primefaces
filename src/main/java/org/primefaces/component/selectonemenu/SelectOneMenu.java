@@ -63,6 +63,7 @@ public class SelectOneMenu extends SelectOneMenuBase {
     public static final String LABEL_CLASS = "ui-selectonemenu-label ui-inputfield ui-corner-all";
     public static final String TRIGGER_CLASS = "ui-selectonemenu-trigger ui-state-default ui-corner-right";
     public static final String PANEL_CLASS = "ui-selectonemenu-panel ui-widget ui-widget-content ui-corner-all ui-helper-hidden ui-shadow ui-input-overlay";
+    public static final String FOOTER_CLASS = "ui-selectonemenu-footer";
     public static final String ITEMS_WRAPPER_CLASS = "ui-selectonemenu-items-wrapper";
     public static final String LIST_CLASS = "ui-selectonemenu-items ui-selectonemenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset";
     public static final String TABLE_CLASS = "ui-selectonemenu-items ui-selectonemenu-table ui-widget-content ui-widget ui-corner-all ui-helper-reset";

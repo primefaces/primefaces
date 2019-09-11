@@ -312,6 +312,12 @@ input[type=text]::-ms-clear {
     white-space: nowrap;
 }
 
+.ui-selectonemenu-footer {
+    border:0px none;
+    margin:1px 0;
+    padding:3px 5px;
+}
+
 .ui-selectonemenu-panel .ui-selectonemenu-table {
     border-collapse:collapse;
     width:100%;

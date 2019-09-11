@@ -315,6 +315,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         }
 
         writer.endElement("div");
+
+        encodePanelFooter(context, menu);
         writer.endElement("div");
     }
 
@@ -341,6 +343,19 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             encodeOptionsAsList(context, menu, selectItems);
             writer.endElement("ul");
         }
+    }
+
+    protected void encodePanelFooter(FacesContext context, SelectOneMenu menu) throws IOException {
+        UIComponent facet = menu.getFacet("footer");
+        if (facet == null) {
+            return;
+        }
+
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", null);
+        writer.writeAttribute("class", SelectOneMenu.FOOTER_CLASS, null);
+        facet.encodeAll(context);
+        writer.endElement("div");
     }
 
     protected void encodeColumnsHeader(FacesContext context, SelectOneMenu menu, List<Column> columns)
