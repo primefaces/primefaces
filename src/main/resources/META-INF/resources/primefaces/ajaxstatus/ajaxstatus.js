@@ -15,9 +15,13 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
 
         doc.on('pfAjaxStart', function() {
             var delay = $this.cfg.delay;
-            $this.timeout = setTimeout(function () {
+            if (delay > 0 ) {
+                $this.timeout = setTimeout(function () {
+                    $this.trigger('start', arguments);
+                }, delay);
+            } else {
                 $this.trigger('start', arguments);
-            }, delay);
+            }
         })
         .on('pfAjaxError', function() {
             $this.trigger('error', arguments);
