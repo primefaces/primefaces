@@ -831,6 +831,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Delay in milliseconds before displaying the ajax status. Default is 0 meaning immediate.]]>
+            </description>
+            <name>delay</name>
+            <required>false</required>
+            <type>int</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Client side callback to execute after ajax requests start.]]>
             </description>
             <name>onstart</name>

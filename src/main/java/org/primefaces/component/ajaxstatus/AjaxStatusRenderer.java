@@ -46,6 +46,7 @@ public class AjaxStatusRenderer extends CoreRenderer {
         String clientId = status.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("AjaxStatus", status.resolveWidgetVar(context), clientId);
+        wb.attr("delay", status.getDelay());
 
         wb.callback(AjaxStatus.START, AjaxStatus.CALLBACK_SIGNATURE, status.getOnstart())
                 .callback(AjaxStatus.ERROR, AjaxStatus.CALLBACK_SIGNATURE, status.getOnerror())

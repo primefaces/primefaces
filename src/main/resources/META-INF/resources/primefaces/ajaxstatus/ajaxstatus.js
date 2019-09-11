@@ -14,7 +14,10 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
         $this = this;
 
         doc.on('pfAjaxStart', function() {
-            $this.trigger('start', arguments);
+            var delay = $this.cfg.delay;
+            $this.timeout = setTimeout(function () {
+                $this.trigger('start', arguments);
+            }, delay);
         })
         .on('pfAjaxError', function() {
             $this.trigger('error', arguments);
@@ -23,6 +26,9 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
             $this.trigger('success', arguments);
         })
         .on('pfAjaxComplete', function() {
+            if($this.timeout) {
+                $this.deleteTimeout();
+            }
             $this.trigger('complete', arguments);
         });
 
@@ -64,6 +70,11 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
                 doc.trigger('pfAjaxError', arguments);
             });
         }
+    },
+
+    deleteTimeout: function() {
+        clearTimeout(this.timeout);
+        this.timeout = null;
     }
 
 });
