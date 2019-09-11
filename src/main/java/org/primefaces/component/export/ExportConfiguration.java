@@ -27,14 +27,14 @@ import javax.el.MethodExpression;
 
 public class ExportConfiguration {
 
-    String outputFileName;
-    boolean pageOnly;
-    boolean selectionOnly;
-    String encodingType;
-    MethodExpression preProcessor;
-    MethodExpression postProcessor;
-    ExporterOptions options;
-    MethodExpression onTableRender;
+    private String outputFileName;
+    private boolean pageOnly;
+    private boolean selectionOnly;
+    private String encodingType;
+    private MethodExpression preProcessor;
+    private MethodExpression postProcessor;
+    private ExporterOptions options;
+    private MethodExpression onTableRender;
 
     public String getOutputFileName() {
         return outputFileName;
