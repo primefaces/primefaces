@@ -34,14 +34,15 @@ import org.primefaces.util.Constants;
 
 public interface DialogReturnAware {
 
-    public static final String EVENT_NAME_DIALOG_RETURN = "dialogReturn";
+    public static final String EVENT_DIALOG_RETURN = "dialogReturn";
+    public static final String ATTRIBUTE_DIALOG_RETURN_SCRIPT = "data-dialogreturn";
 
     default boolean isDialogReturnEvent(FacesEvent event, FacesContext context) {
         if (event instanceof AjaxBehaviorEvent) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-            return eventName.equals(EVENT_NAME_DIALOG_RETURN);
+            return eventName.equals(EVENT_DIALOG_RETURN);
         }
         return false;
     }
