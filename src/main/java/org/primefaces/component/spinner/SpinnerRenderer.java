@@ -80,6 +80,7 @@ public class SpinnerRenderer extends InputRenderer {
                 .attr("prefix", spinner.getPrefix(), null)
                 .attr("suffix", spinner.getSuffix(), null)
                 .attr("required", spinner.isRequired(), false)
+                .attr("rotate", spinner.isRotate(), false)
                 .attr("decimalPlaces", spinner.getDecimalPlaces(), null)
                 .attr(SpinnerBase.PropertyKeys.thousandSeparator.name(), spinner.getThousandSeparator())
                 .attr(SpinnerBase.PropertyKeys.decimalSeparator.name(), spinner.getDecimalSeparator());

@@ -24031,6 +24031,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Rotate to the minimum value when maximum value is reached and vice versa. Default is false.]]>
+            </description>
+            <name>rotate</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Prefix of the input.]]>
             </description>
             <name>prefix</name>

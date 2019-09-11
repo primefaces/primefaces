@@ -46,7 +46,8 @@ public abstract class SpinnerBase extends HtmlInputText implements Widget, Input
         suffix,
         decimalPlaces,
         decimalSeparator,
-        thousandSeparator
+        thousandSeparator,
+        rotate
     }
 
     public SpinnerBase() {
@@ -138,5 +139,13 @@ public abstract class SpinnerBase extends HtmlInputText implements Widget, Input
 
     public void setThousandSeparator(String thousandSeparator) {
         getStateHelper().put(PropertyKeys.thousandSeparator, thousandSeparator);
+    }
+
+    public boolean isRotate() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.rotate, false);
+    }
+
+    public void setRotate(boolean rotate) {
+        getStateHelper().put(PropertyKeys.rotate, rotate);
     }
 }
