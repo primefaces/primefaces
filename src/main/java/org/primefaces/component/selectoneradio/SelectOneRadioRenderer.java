@@ -274,8 +274,9 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         if (columns > 0) {
             int idx = 0;
             int colMod;
+            int totalItems = selectItems.size();
 
-            for (int i = 0; i < selectItems.size(); i++) {
+            for (int i = 0; i < totalItems; i++) {
                 SelectItem selectItem = selectItems.get(i);
                 boolean disabled = selectItem.isDisabled() || radio.isDisabled();
                 String id = name + UINamingContainer.getSeparatorChar(context) + idx;
@@ -292,7 +293,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
                 idx++;
                 colMod = idx % columns;
 
-                if (colMod == 0) {
+                if (colMod == 0 || idx == totalItems) {
                     writer.endElement("tr");
                 }
             }
