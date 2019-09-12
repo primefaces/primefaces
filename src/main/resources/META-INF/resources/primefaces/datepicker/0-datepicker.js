@@ -108,6 +108,7 @@
             if (this.options.userLocale && typeof this.options.userLocale === 'object') {
                 $.extend(this.options.locale, this.options.userLocale);
             }
+            
             var parsedDefaultDate = this.parseValue(this.options.defaultDate);
 
             this.value = parsedDefaultDate;
@@ -122,10 +123,6 @@
             if (this.options.yearRange === null && this.options.yearNavigator) {
                 var viewYear = this.viewDate.getFullYear();
                 this.options.yearRange = (viewYear - 10) + ':' + (viewYear + 10);
-            }
-            
-            if (this.options.userLocale && typeof this.options.userLocale === 'object') {
-                $.extend(this.options.locale, this.options.userLocale);
             }
             
             if (this.options.disabledDates) {
