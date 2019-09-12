@@ -105,6 +105,9 @@
         },
         
         _setInitValues: function () {
+            if (this.options.userLocale && typeof this.options.userLocale === 'object') {
+                $.extend(this.options.locale, this.options.userLocale);
+            }
             var parsedDefaultDate = this.parseValue(this.options.defaultDate);
 
             this.value = parsedDefaultDate;
