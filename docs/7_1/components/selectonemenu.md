@@ -165,14 +165,6 @@ structural style classes;
 .ui-selectonemenu-trigger | Container of dropdown icon.
 .ui-selectonemenu-items | Items list.
 .ui-selectonemenu-items | Each item in the list.
+.ui-selectonemenu-rtl | When RTL direction is set
+.ui-selectonemenu-footer | Style applie to footer facet
 
-## Facets
-
-
-| Class | Applies | 
-| --- | --- | 
-.ui-selectonemenu | Main container.
-.ui-selectonemenu-label | Label of the component.
-.ui-selectonemenu-trigger | Container of dropdown icon.
-.ui-selectonemenu-items | Items list.
-.ui-selectonemenu-items | Each item in the list.
