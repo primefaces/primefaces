@@ -105,6 +105,11 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                     //do nothing
                 break;
             }
+
+            /* Github #1964 do not allow minus */
+            if ($this.cfg.min >= 0 && event.key === "-") {
+                e.preventDefault();
+            }
         })
         .on('keyup.spinner', function (e) {
             $this.updateValue();
