@@ -1088,7 +1088,7 @@ div.timeline-menu {
     position: absolute;
     right: 0;
     margin: 10px;
-    z-index: 999;
+    z-index: 5;/*it must be equals to vis-tooltip*/
 }
 
 div.timeline-menu-axis-both {
