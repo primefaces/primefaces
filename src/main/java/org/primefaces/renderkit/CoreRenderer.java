@@ -575,32 +575,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected void decodeBehaviors(FacesContext context, UIComponent component) {
-        if (!(component instanceof ClientBehaviorHolder)) {
-            return;
-        }
-
-        Map<String, List<ClientBehavior>> behaviors = ((ClientBehaviorHolder) component).getClientBehaviors();
-        if (behaviors.isEmpty()) {
-            return;
-        }
-
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String behaviorEvent = params.get("javax.faces.behavior.event");
-
-        if (null != behaviorEvent) {
-            List<ClientBehavior> behaviorsForEvent = behaviors.get(behaviorEvent);
-
-            if (behaviorsForEvent != null && !behaviorsForEvent.isEmpty()) {
-                String behaviorSource = params.get("javax.faces.source");
-                String clientId = component.getClientId(context);
-
-                if (behaviorSource != null && clientId.equals(behaviorSource)) {
-                    for (ClientBehavior behavior : behaviorsForEvent) {
-                        behavior.decode(context, component);
-                    }
-                }
-            }
-        }
+        ComponentUtils.decodeBehaviors(context, component);
     }
 
     /**

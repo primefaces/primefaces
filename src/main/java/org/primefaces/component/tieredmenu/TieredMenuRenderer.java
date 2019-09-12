@@ -48,7 +48,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         String clientId = menu.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("TieredMenu", menu.resolveWidgetVar(), clientId)
+        wb.init("TieredMenu", menu.resolveWidgetVar(context), clientId)
                 .attr("autoDisplay", menu.isAutoDisplay())
                 .attr("toggleEvent", menu.getToggleEvent(), null);
 

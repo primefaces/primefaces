@@ -29,12 +29,11 @@ import java.util.Map;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
+import org.primefaces.component.api.DialogReturnAware;
 
 import org.primefaces.event.SelectEvent;
-import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
 
 @ResourceDependencies({
@@ -43,7 +42,7 @@ import org.primefaces.util.MapBuilder;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class CommandLink extends CommandLinkBase {
+public class CommandLink extends CommandLinkBase implements DialogReturnAware {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.CommandLink";
 
@@ -52,7 +51,7 @@ public class CommandLink extends CommandLinkBase {
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("click", null)
-            .put("dialogReturn", SelectEvent.class)
+            .put(EVENT_DIALOG_RETURN, SelectEvent.class)
             .build();
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
@@ -76,24 +75,8 @@ public class CommandLink extends CommandLinkBase {
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
-
-        if (event instanceof AjaxBehaviorEvent) {
-            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
-
-            if (eventName.equals("dialogReturn")) {
-                AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
-                Map<String, Object> session = context.getExternalContext().getSessionMap();
-                String dcid = params.get(getClientId(context) + "_pfdlgcid");
-                Object selectedValue = session.get(dcid);
-                session.remove(dcid);
-
-                event = new SelectEvent(this, behaviorEvent.getBehavior(), selectedValue);
-                super.queueEvent(event);
-            }
-            else if (eventName.equals("click")) {
-                super.queueEvent(event);
-            }
+        if (isDialogReturnEvent(event, context)) {
+            queueDialogReturnEvent(event, context, this, super::queueEvent);
         }
         else {
             super.queueEvent(event);

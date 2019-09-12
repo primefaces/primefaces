@@ -26,8 +26,6 @@ package org.primefaces.component.selectbooleanbutton;
 import javax.faces.component.html.HtmlSelectBooleanCheckbox;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox implements Widget {
 
@@ -91,10 +89,5 @@ public abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox 
 
     public void setOffIcon(String offIcon) {
         getStateHelper().put(PropertyKeys.offIcon, offIcon);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

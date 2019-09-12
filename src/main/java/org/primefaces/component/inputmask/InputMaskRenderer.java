@@ -129,7 +129,7 @@ public class InputMaskRenderer extends InputRenderer {
         String clientId = inputMask.getClientId(context);
         String mask = inputMask.getMask();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("InputMask", inputMask.resolveWidgetVar(), clientId);
+        wb.init("InputMask", inputMask.resolveWidgetVar(context), clientId);
         String slotChar = inputMask.getSlotChar();
 
         if (mask != null) {

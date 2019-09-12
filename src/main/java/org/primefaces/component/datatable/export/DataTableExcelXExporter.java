@@ -55,8 +55,7 @@ public class DataTableExcelXExporter extends DataTableExcelExporter {
 
     @Override
     protected void applyFacetOptions(Workbook wb, ExporterOptions options, CellStyle facetStyle) {
-        Font facetFont = wb.createFont();
-        facetFont.setFontName("Arial");
+        Font facetFont = getFont(wb, options);
 
         if (options != null) {
             String facetFontStyle = options.getFacetFontStyle();
@@ -93,8 +92,7 @@ public class DataTableExcelXExporter extends DataTableExcelExporter {
 
     @Override
     protected void applyCellOptions(Workbook wb, ExporterOptions options, CellStyle cellStyle) {
-        Font cellFont = wb.createFont();
-        cellFont.setFontName("Arial");
+        Font cellFont = getFont(wb, options);
 
         if (options != null) {
             String cellFontColor = options.getCellFontColor();

@@ -29,8 +29,6 @@ import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.UIData;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class DataListBase extends UIData implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable {
 
@@ -130,10 +128,5 @@ public abstract class DataListBase extends UIData implements Widget, ClientBehav
 
     public void setMultiViewState(boolean multiViewState) {
         getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

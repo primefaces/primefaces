@@ -50,7 +50,7 @@ public class PolarAreaChartRenderer extends ChartRenderer {
         String clientId = chart.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("PolarAreaChart", chart.resolveWidgetVar(), clientId);
+        wb.init("PolarAreaChart", chart.resolveWidgetVar(context), clientId);
 
         encodeConfig(context, chart.getModel());
         encodeClientBehaviors(context, chart);

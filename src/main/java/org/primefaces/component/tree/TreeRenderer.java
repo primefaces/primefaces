@@ -286,7 +286,7 @@ public class TreeRenderer extends CoreRenderer {
         String widget = tree.getOrientation().equals("vertical") ? "VerticalTree" : "HorizontalTree";
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init(widget, tree.resolveWidgetVar(), clientId);
+        wb.init(widget, tree.resolveWidgetVar(context), clientId);
 
         wb.attr("dynamic", dynamic)
                 .attr("highlight", tree.isHighlight(), true)
@@ -663,12 +663,16 @@ public class TreeRenderer extends CoreRenderer {
             for (String filteredRowKey : filteredRowKeys) {
                 String rowKeyExt = rowKey + "_";
                 String filteredRowKeyExt = filteredRowKey + "_";
-                if (filteredRowKey.startsWith(rowKeyExt) || (!isStrictMode && rowKey.startsWith(filteredRowKeyExt))
+                boolean isNodeAncestorOfMatch = filteredRowKey.startsWith(rowKeyExt);
+                boolean isNodeDescendantOfMatch = rowKey.startsWith(filteredRowKeyExt);
+                if (isNodeAncestorOfMatch || (!isStrictMode && isNodeDescendantOfMatch)
                         || filteredRowKey.equals(rowKey)) {
                     match = true;
-                    if (!node.isLeaf() && !rowKey.startsWith(filteredRowKey)) {
+                    if (!node.isLeaf() && isNodeAncestorOfMatch) {
                         node.setExpanded(true);
                     }
+                }
+                else if (match) {
                     break;
                 }
             }

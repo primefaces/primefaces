@@ -221,10 +221,10 @@ public class DataTableRenderer extends DataRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
 
         if (initMode.equals("load")) {
-            wb.init(widgetClass, table.resolveWidgetVar(), clientId);
+            wb.init(widgetClass, table.resolveWidgetVar(context), clientId);
         }
         else if (initMode.equals("immediate")) {
-            wb.init(widgetClass, table.resolveWidgetVar(), clientId);
+            wb.init(widgetClass, table.resolveWidgetVar(context), clientId);
         }
         else {
             throw new FacesException(initMode + " is not a valid value for initMode, possible values are \"load\" and \"immediate.");

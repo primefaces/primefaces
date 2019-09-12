@@ -61,7 +61,7 @@ public class FieldsetRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, Fieldset fieldset) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = fieldset.getClientId(context);
-        String widgetVar = fieldset.resolveWidgetVar();
+        String widgetVar = fieldset.resolveWidgetVar(context);
         boolean toggleable = fieldset.isToggleable();
         String title = fieldset.getTitle();
 
@@ -116,7 +116,7 @@ public class FieldsetRenderer extends CoreRenderer {
         String clientId = fieldset.getClientId(context);
         boolean toggleable = fieldset.isToggleable();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Fieldset", fieldset.resolveWidgetVar(), clientId);
+        wb.init("Fieldset", fieldset.resolveWidgetVar(context), clientId);
 
         if (toggleable) {
             wb.attr("toggleable", true)

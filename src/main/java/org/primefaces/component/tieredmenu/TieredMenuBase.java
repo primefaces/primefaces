@@ -26,8 +26,6 @@ package org.primefaces.component.tieredmenu;
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.OverlayMenu;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class TieredMenuBase extends AbstractMenu implements Widget, OverlayMenu {
 
@@ -150,10 +148,5 @@ public abstract class TieredMenuBase extends AbstractMenu implements Widget, Ove
 
     public void setToggleEvent(String toggleEvent) {
         getStateHelper().put(PropertyKeys.toggleEvent, toggleEvent);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

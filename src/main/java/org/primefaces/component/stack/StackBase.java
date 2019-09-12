@@ -25,8 +25,6 @@ package org.primefaces.component.stack;
 
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class StackBase extends AbstractMenu implements Widget {
 
@@ -100,10 +98,5 @@ public abstract class StackBase extends AbstractMenu implements Widget {
 
     public void setExpanded(boolean expanded) {
         getStateHelper().put(PropertyKeys.expanded, expanded);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

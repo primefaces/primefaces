@@ -25,8 +25,6 @@ package org.primefaces.component.menubutton;
 
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class MenuButtonBase extends AbstractMenu implements Widget {
 
@@ -172,10 +170,5 @@ public abstract class MenuButtonBase extends AbstractMenu implements Widget {
 
     public void setMaxHeight(String maxHeight) {
         getStateHelper().put(PropertyKeys.maxHeight, maxHeight);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

@@ -92,7 +92,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
     protected void encodeScript(FacesContext context, SelectManyMenu menu) throws IOException {
         String clientId = menu.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectManyMenu", menu.resolveWidgetVar(), clientId)
+        wb.init("SelectManyMenu", menu.resolveWidgetVar(context), clientId)
                 .attr("disabled", menu.isDisabled(), false)
                 .attr("showCheckbox", menu.isShowCheckbox(), false);
 

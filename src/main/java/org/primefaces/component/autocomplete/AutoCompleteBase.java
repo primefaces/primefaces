@@ -28,8 +28,6 @@ import javax.faces.component.html.HtmlInputText;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHolder, MixedClientBehaviorHolder {
 
@@ -426,10 +424,5 @@ public abstract class AutoCompleteBase extends HtmlInputText implements Widget, 
 
     public void setEscape(boolean escape) {
         getStateHelper().put(PropertyKeys.escape, escape);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

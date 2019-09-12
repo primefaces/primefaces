@@ -45,7 +45,7 @@ public class GrowlRenderer extends UINotificationRenderer {
         ResponseWriter writer = context.getResponseWriter();
         Growl growl = (Growl) component;
         String clientId = growl.getClientId(context);
-        String widgetVar = growl.resolveWidgetVar();
+        String widgetVar = growl.resolveWidgetVar(context);
 
         writer.startElement("span", growl);
         writer.writeAttribute("id", clientId, "id");
@@ -63,7 +63,7 @@ public class GrowlRenderer extends UINotificationRenderer {
         writer.endElement("span");
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Growl", growl.resolveWidgetVar(), clientId)
+        wb.init("Growl", growl.resolveWidgetVar(context), clientId)
                 .attr("sticky", growl.isSticky())
                 .attr("life", growl.getLife())
                 .attr("escape", growl.isEscape())

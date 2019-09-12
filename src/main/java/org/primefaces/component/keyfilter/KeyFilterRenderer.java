@@ -55,7 +55,7 @@ public class KeyFilterRenderer extends CoreRenderer {
         String targetClientId = target instanceof InputHolder ? ((InputHolder) target).getInputClientId() : target.getClientId();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init(KeyFilter.class.getSimpleName(), keyFilter.resolveWidgetVar(), keyFilter.getClientId(context));
+        wb.init(KeyFilter.class.getSimpleName(), keyFilter.resolveWidgetVar(context), keyFilter.getClientId(context));
         wb.attr("target", targetClientId);
 
         if (keyFilter.getRegEx() != null) {

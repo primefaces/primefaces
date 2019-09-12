@@ -26,8 +26,6 @@ package org.primefaces.component.sticky;
 import javax.faces.component.UIPanel;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class StickyBase extends UIPanel implements Widget {
 
@@ -73,10 +71,5 @@ public abstract class StickyBase extends UIPanel implements Widget {
 
     public void setMargin(int margin) {
         getStateHelper().put(PropertyKeys.margin, margin);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

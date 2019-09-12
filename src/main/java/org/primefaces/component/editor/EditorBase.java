@@ -26,8 +26,6 @@ package org.primefaces.component.editor;
 import javax.faces.component.UIInput;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class EditorBase extends UIInput implements Widget {
 
@@ -127,10 +125,5 @@ public abstract class EditorBase extends UIInput implements Widget {
 
     public void setMaxlength(int maxlength) {
         getStateHelper().put(PropertyKeys.maxlength, maxlength);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

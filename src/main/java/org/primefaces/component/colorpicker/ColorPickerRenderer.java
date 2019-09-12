@@ -162,7 +162,7 @@ public class ColorPickerRenderer extends InputRenderer {
         String clientId = colorPicker.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        wb.init("ColorPicker", colorPicker.resolveWidgetVar(), clientId)
+        wb.init("ColorPicker", colorPicker.resolveWidgetVar(context), clientId)
                 .attr("mode", colorPicker.getMode())
                 .attr("color", value, null);
 

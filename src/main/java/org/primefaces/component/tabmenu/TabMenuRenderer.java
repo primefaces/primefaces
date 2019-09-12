@@ -44,7 +44,7 @@ public class TabMenuRenderer extends BaseMenuRenderer {
         TabMenu menu = (TabMenu) abstractMenu;
         String clientId = menu.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("TabMenu", menu.resolveWidgetVar(), clientId);
+        wb.init("TabMenu", menu.resolveWidgetVar(context), clientId);
         wb.finish();
     }
 

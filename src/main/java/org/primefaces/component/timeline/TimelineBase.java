@@ -32,7 +32,6 @@ import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.model.timeline.TimelineModel;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LocaleUtils;
 
 
@@ -558,11 +557,6 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
 
     public void setExtender(String extender) {
         getStateHelper().put(PropertyKeys.extender, extender);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 
     @Override

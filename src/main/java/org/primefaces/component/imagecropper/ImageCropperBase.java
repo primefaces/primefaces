@@ -26,8 +26,6 @@ package org.primefaces.component.imagecropper;
 import javax.faces.component.UIInput;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class ImageCropperBase extends UIInput implements Widget {
 
@@ -154,10 +152,5 @@ public abstract class ImageCropperBase extends UIInput implements Widget {
 
     public void setSizeLimit(Long sizeLimit) {
         getStateHelper().put(PropertyKeys.sizeLimit, sizeLimit);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

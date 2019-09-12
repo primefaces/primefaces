@@ -25,8 +25,6 @@ package org.primefaces.component.dock;
 
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class DockBase extends AbstractMenu implements Widget {
 
@@ -109,10 +107,5 @@ public abstract class DockBase extends AbstractMenu implements Widget {
 
     public void setHalign(String halign) {
         getStateHelper().put(PropertyKeys.halign, halign);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

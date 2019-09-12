@@ -61,7 +61,7 @@ public class ImageSwitchRenderer extends CoreRenderer {
         writer.endElement("div");
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("ImageSwitch", imageSwitch.resolveWidgetVar(), clientId)
+        wb.init("ImageSwitch", imageSwitch.resolveWidgetVar(context), clientId)
                 .attr("fx", imageSwitch.getEffect())
                 .attr("speed", imageSwitch.getSpeed())
                 .attr("timeout", slideshowSpeed)

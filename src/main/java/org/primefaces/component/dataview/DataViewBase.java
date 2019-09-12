@@ -29,8 +29,6 @@ import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.UIData;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class DataViewBase extends UIData implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable {
 
@@ -103,10 +101,5 @@ public abstract class DataViewBase extends UIData implements Widget, ClientBehav
 
     public void setListIcon(String listIcon) {
         getStateHelper().put(PropertyKeys.listIcon, listIcon);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

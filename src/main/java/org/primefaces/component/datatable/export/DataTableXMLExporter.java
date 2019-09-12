@@ -23,6 +23,18 @@
  */
 package org.primefaces.component.datatable.export;
 
+import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.ExportConfiguration;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.EscapeUtils;
+
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -30,43 +42,25 @@ import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.List;
 
-import javax.el.MethodExpression;
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-
-import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.export.ExporterOptions;
-import org.primefaces.component.export.XMLExporter;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.EscapeUtils;
-
-public class DataTableXMLExporter extends DataTableExporter implements XMLExporter<DataTable> {
+public class DataTableXMLExporter extends DataTableExporter {
 
     @Override
-    public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly,
-                       String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
-                       MethodExpression onTableRender) throws IOException {
-
+    public void doExport(FacesContext context, DataTable table, ExportConfiguration config) throws IOException {
         ExternalContext externalContext = context.getExternalContext();
-        configureResponse(externalContext, filename);
+        configureResponse(externalContext, config.getOutputFileName());
         StringBuilder builder = new StringBuilder();
 
-        if (preProcessor != null) {
-            preProcessor.invoke(context.getELContext(), new Object[]{builder});
+        if (config.getPreProcessor() != null) {
+            config.getPostProcessor().invoke(context.getELContext(), new Object[]{builder});
         }
 
         builder.append("<?xml version=\"1.0\"?>\n");
         builder.append("<" + table.getId() + ">\n");
 
-        if (pageOnly) {
+        if (config.isPageOnly()) {
             exportPageOnly(context, table, builder);
         }
-        else if (selectionOnly) {
+        else if (config.isSelectionOnly()) {
             exportSelectionOnly(context, table, builder);
         }
         else {
@@ -77,32 +71,16 @@ public class DataTableXMLExporter extends DataTableExporter implements XMLExport
 
         table.setRowIndex(-1);
 
-        if (postProcessor != null) {
-            postProcessor.invoke(context.getELContext(), new Object[]{builder});
+        if (config.getPostProcessor() != null) {
+            config.getPostProcessor().invoke(context.getELContext(), new Object[]{builder});
         }
 
         OutputStream os = externalContext.getResponseOutputStream();
-        OutputStreamWriter osw = new OutputStreamWriter(os, encodingType);
+        OutputStreamWriter osw = new OutputStreamWriter(os, config.getEncodingType());
         PrintWriter writer = new PrintWriter(osw);
         writer.write(builder.toString());
         writer.flush();
         writer.close();
-    }
-
-    @Override
-    public void export(FacesContext facesContext, List<String> clientIds, String outputFileName, boolean pageOnly, boolean selectionOnly,
-                       String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
-                       MethodExpression onTableRender) throws IOException {
-
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void export(FacesContext facesContext, String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
-                       String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
-                       MethodExpression onTableRender) throws IOException {
-
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override

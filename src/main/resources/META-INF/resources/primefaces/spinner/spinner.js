@@ -193,11 +193,23 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                 parsedValue = null;
             }
         } else {
-            if(this.cfg.max !== undefined && parsedValue > this.cfg.max) {
-              parsedValue = this.cfg.max;
-            }
-            if(this.cfg.min !== undefined && parsedValue < this.cfg.min) {
-              parsedValue = this.cfg.min;
+            var minimum = this.cfg.min;
+            var maximum = this.cfg.max;
+
+            if (this.cfg.rotate) {
+                if(parsedValue < minimum) {
+                    parsedValue = maximum;
+                }
+                if(parsedValue > maximum) {
+                    parsedValue = minimum;
+                }
+            } else {
+                if(parsedValue > maximum) {
+                    parsedValue = maximum;
+                }
+                if(parsedValue < minimum) {
+                    parsedValue = minimum;
+                }
             }
         }
         return parsedValue;

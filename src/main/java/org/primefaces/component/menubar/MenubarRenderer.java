@@ -43,7 +43,7 @@ public class MenubarRenderer extends TieredMenuRenderer {
         String clientId = menubar.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Menubar", menubar.resolveWidgetVar(), clientId)
+        wb.init("Menubar", menubar.resolveWidgetVar(context), clientId)
                 .attr("autoDisplay", menubar.isAutoDisplay())
                 .attr("toggleEvent", menubar.getToggleEvent(), null);
 

@@ -50,7 +50,7 @@ public class DonutChartRenderer extends ChartRenderer {
         String clientId = chart.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DonutChart", chart.resolveWidgetVar(), clientId);
+        wb.init("DonutChart", chart.resolveWidgetVar(context), clientId);
 
         encodeConfig(context, chart.getModel());
         encodeClientBehaviors(context, chart);

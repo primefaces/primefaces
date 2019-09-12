@@ -26,8 +26,6 @@ package org.primefaces.component.overlaypanel;
 import javax.faces.component.UIPanel;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class OverlayPanelBase extends UIPanel implements Widget {
 
@@ -240,10 +238,5 @@ public abstract class OverlayPanelBase extends UIPanel implements Widget {
 
     public void setShowDelay(int showDelay) {
         getStateHelper().put(PropertyKeys.showDelay, showDelay);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

@@ -23,12 +23,13 @@
  */
 package org.primefaces.util;
 
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.*;
+import org.primefaces.component.api.RTLAware;
+import org.primefaces.component.api.UITabPanel;
+import org.primefaces.component.api.Widget;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
 
-import java.util.function.Supplier;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.FacesWrapper;
@@ -40,12 +41,15 @@ import javax.faces.component.visit.VisitHint;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
-
-import org.primefaces.component.api.RTLAware;
-import org.primefaces.component.api.Widget;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeRequestContext;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 
 public class ComponentUtils {
 
@@ -167,6 +171,35 @@ public class ComponentUtils {
         return context.getApplication().createConverter(converterType);
     }
 
+    public static void decodeBehaviors(FacesContext context, UIComponent component) {
+        if (!(component instanceof ClientBehaviorHolder)) {
+            return;
+        }
+
+        Map<String, List<ClientBehavior>> behaviors = ((ClientBehaviorHolder) component).getClientBehaviors();
+        if (behaviors.isEmpty()) {
+            return;
+        }
+
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String behaviorEvent = params.get("javax.faces.behavior.event");
+
+        if (null != behaviorEvent) {
+            List<ClientBehavior> behaviorsForEvent = behaviors.get(behaviorEvent);
+
+            if (behaviorsForEvent != null && !behaviorsForEvent.isEmpty()) {
+                String behaviorSource = params.get("javax.faces.source");
+                String clientId = component.getClientId(context);
+
+                if (behaviorSource != null && clientId.equals(behaviorSource)) {
+                    for (ClientBehavior behavior : behaviorsForEvent) {
+                        behavior.decode(context, component);
+                    }
+                }
+            }
+        }
+    }
+
     public static String escapeSelector(String selector) {
         return selector.replaceAll(":", "\\\\\\\\:");
     }
@@ -266,6 +299,7 @@ public class ComponentUtils {
         }
     }
 
+    @Deprecated // Widget itselfs implements it now
     public static String resolveWidgetVar(FacesContext context, Widget widget) {
         UIComponent component = (UIComponent) widget;
         String userWidgetVar = (String) component.getAttributes().get("widgetVar");
@@ -577,4 +611,28 @@ public class ComponentUtils {
         return value;
     }
 
+    public static boolean isNestedWithinIterator(UIComponent component) {
+        return invokeOnClosestIteratorParent(component, p -> { }, false);
+    }
+
+    public static boolean invokeOnClosestIteratorParent(UIComponent component, Consumer<UIComponent> function, boolean includeSelf) {
+        Predicate<UIComponent> iterator = p -> p instanceof javax.faces.component.UIData
+                || p.getClass().getName().endsWith("UIRepeat")
+                || (p instanceof UITabPanel && ((UITabPanel) p).isRepeating());
+
+        UIComponent parent = component;
+        while (null != (parent = parent.getParent())) {
+            if (iterator.test(parent)) {
+                function.accept(parent);
+                return true;
+            }
+        }
+
+        if (includeSelf && iterator.test(component)) {
+            function.accept(component);
+            return true;
+        }
+
+        return false;
+    }
 }

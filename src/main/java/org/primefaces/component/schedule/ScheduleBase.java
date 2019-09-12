@@ -28,8 +28,6 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
@@ -381,11 +379,5 @@ public abstract class ScheduleBase extends UIComponentBase implements Widget, Cl
 
     public void setNoOpener(boolean noOpener) {
         getStateHelper().put(PropertyKeys.noOpener, noOpener);
-    }
-
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

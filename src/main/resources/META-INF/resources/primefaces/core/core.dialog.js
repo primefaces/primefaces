@@ -12,8 +12,12 @@ if (!PrimeFaces.dialog) {
                 return;
             }
 
-            var dialogWidgetVar = cfg.sourceComponentId.replace(/:/g, '_') + '_dlgwidget',
-            styleClass = cfg.options.styleClass||'',
+            var dialogWidgetVar = cfg.options.widgetVar;
+            if (!dialogWidgetVar) {
+                dialogWidgetVar = cfg.sourceComponentId.replace(/:/g, '_') + '_dlgwidget';
+            }
+
+            var styleClass = cfg.options.styleClass||'',
             dialogDOM = $('<div id="' + dialogId + '" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container ui-overlay-hidden ' + styleClass + '"' +
                     ' data-pfdlgcid="' + PrimeFaces.escapeHTML(cfg.pfdlgcid) + '" data-widget="' + dialogWidgetVar + '"></div>')
                     .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"><span id="' + dialogId + '_title" class="ui-dialog-title"></span></div>');
@@ -100,7 +104,8 @@ if (!PrimeFaces.dialog) {
                         maximizable: cfg.options.maximizable,
                         headerElement: cfg.options.headerElement,
                         responsive: cfg.options.responsive,
-                        closeOnEscape: cfg.options.closeOnEscape
+                        closeOnEscape: cfg.options.closeOnEscape,
+                        focus: cfg.options.focus
                     });
                 }
 

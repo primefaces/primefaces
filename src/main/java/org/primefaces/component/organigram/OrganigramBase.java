@@ -28,8 +28,6 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class OrganigramBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
@@ -129,10 +127,5 @@ public abstract class OrganigramBase extends UIComponentBase implements Widget, 
 
     public void setAutoScrollToSelection(boolean autoScrollToSelection) {
         getStateHelper().put(PropertyKeys.autoScrollToSelection, autoScrollToSelection);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

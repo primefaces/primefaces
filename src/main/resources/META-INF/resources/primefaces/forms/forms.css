@@ -312,6 +312,12 @@ input[type=text]::-ms-clear {
     white-space: nowrap;
 }
 
+.ui-selectonemenu-footer {
+    border:0px none;
+    margin:1px 0;
+    padding:3px 5px;
+}
+
 .ui-selectonemenu-panel .ui-selectonemenu-table {
     border-collapse:collapse;
     width:100%;
@@ -344,6 +350,28 @@ input[type=text]::-ms-clear {
     position: absolute;
     top: 10px;
     right: 10px;
+}
+
+.ui-selectonemenu-rtl { 
+    direction: rtl;
+    -moz-transform: scaleX(-1); 
+    -webkit-transform: scaleX(-1); 
+    -o-transform: scaleX(-1); 
+    -ms-transform: scaleX(-1); 
+    transform: scaleX(-1); 
+}
+
+.ui-selectonemenu-rtl .ui-selectonemenu-label { 
+    -moz-transform: scaleX(-1); 
+    -webkit-transform: scaleX(-1); 
+    -o-transform: scaleX(-1); 
+    -ms-transform: scaleX(-1); 
+    transform: scaleX(-1); 
+    text-align: right; 
+}
+
+.ui-selectonemenu-panel-rtl .ui-selectonemenu-list-item { 
+    text-align: right; 
 }
 
 .ui-state-disabled a{outline: none;}

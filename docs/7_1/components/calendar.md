@@ -16,7 +16,7 @@ ajax selection and more.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 | id | null | String | Unique identifier of the component
 | rendered | true | Boolean | Boolean value to specify the rendering of the component.
@@ -31,8 +31,8 @@ ajax selection and more.
 | converterMessage | null | String | Message to be displayed when conversion fails.
 | validatorMessage | null | String | Message to be displayed when validation fails.
 | widgetVar | null | String | Name of the client side widget.
-| mindate | null | java.time.LocalDate, java.util.Date (deprecated) or String | Sets calendar's minimum visible date
-| maxdate | null | java.time.LocalDate, java.util.Date (deprecated) or String | Sets calendar's maximum visible date
+| mindate | null | java.time.LocalDate, java.util.Date (deprecated) or String | Sets calendar's minimum visible date; Also used for validation on the server-side.
+| maxdate | null | java.time.LocalDate, java.util.Date (deprecated) or String | Sets calendar's maximum visible date; Also used for validation on the server-side.
 | pages | 1 | Integer | Enables multiple page rendering.
 | disabled | false | Boolean | Disables the calendar when set to true.
 | mode | popup | String | Defines how the calendar will be displayed.
@@ -262,8 +262,8 @@ enable mask support.
 ## Client Side API
 Widget: _PrimeFaces.widget.Calendar_
 
-| Method | Params | Return Type | Description | 
-| --- | --- | --- | --- | 
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
 | getDate() | - | Date | Return selected date
 | setDate(date) | date: Date to display | void | Sets display date
 | disable() | - | void | Disables calendar
@@ -274,8 +274,8 @@ Calendar resides in a container element which _style_ and _styleClass_ options a
 
 Following is the list of structural style classes;
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 | .ui-datepicker | Main container
 | .ui-datepicker-header | Header container
 | .ui-datepicker-prev | Previous month navigator

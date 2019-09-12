@@ -105,6 +105,10 @@
         },
         
         _setInitValues: function () {
+            if (this.options.userLocale && typeof this.options.userLocale === 'object') {
+                $.extend(this.options.locale, this.options.userLocale);
+            }
+            
             var parsedDefaultDate = this.parseValue(this.options.defaultDate);
 
             this.value = parsedDefaultDate;
@@ -119,10 +123,6 @@
             if (this.options.yearRange === null && this.options.yearNavigator) {
                 var viewYear = this.viewDate.getFullYear();
                 this.options.yearRange = (viewYear - 10) + ':' + (viewYear + 10);
-            }
-            
-            if (this.options.userLocale && typeof this.options.userLocale === 'object') {
-                $.extend(this.options.locale, this.options.userLocale);
             }
             
             if (this.options.disabledDates) {
@@ -224,15 +224,27 @@
             return { 'month': m, 'year': y };
         },
 
-        createWeekDays: function () {
+        createWeekDaysInternal: function (dayNames) {
             var weekDays = [],
                 dayIndex = this.options.locale.firstDay !== undefined ? this.options.locale.firstDay : this.options.locale.firstDayOfWeek;
             for (var i = 0; i < 7; i++) {
-                weekDays.push(this.options.locale.dayNamesMin[dayIndex]);
+                weekDays.push(dayNames[dayIndex]);
                 dayIndex = (dayIndex === 6) ? 0 : ++dayIndex;
             }
 
             return weekDays;
+        },
+
+        createWeekDaysMin: function () {
+            return this.createWeekDaysInternal(this.options.locale.dayNamesMin);
+        },
+
+        createWeekDaysShort: function () {
+            return this.createWeekDaysInternal(this.options.locale.dayNamesShort);
+        },
+
+        createWeekDays: function () {
+            return this.createWeekDaysInternal(this.options.locale.dayNames);
         },
 
         createMonths: function (month, year) {
@@ -1104,11 +1116,12 @@
         },
 
         renderMonth: function (monthMetaData, index) {
-            var weekDays = this.createWeekDays(),
+            var weekDaysMin = this.createWeekDaysMin(),
+                weekDays = this.createWeekDays(),
                 backwardNavigator = (index === 0) ? this.renderBackwardNavigator() : '',
                 forwardNavigator = (this.options.numberOfMonths === 1) || (index === this.options.numberOfMonths - 1) ? this.renderForwardNavigator() : '',
                 title = this.renderTitle(monthMetaData),
-                dateViewGrid = this.renderDateViewGrid(monthMetaData, weekDays);
+                dateViewGrid = this.renderDateViewGrid(monthMetaData, weekDaysMin, weekDays);
 
             return ('<div class="ui-datepicker-group ui-widget-content">' +
                 '<div class="ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all">' +
@@ -1195,12 +1208,12 @@
             );
         },
 
-        renderDayNames: function (weekDays) {
+        renderDayNames: function (weekDaysMin, weekDays) {
             var dayNamesHtml = '';
-            for (var i = 0; i < weekDays.length; i++) {
+            for (var i = 0; i < weekDaysMin.length; i++) {
                 dayNamesHtml += '<th scope="col">' +
-                    '<span title="' + this.escapeHTML(this.options.locale.dayNames[i]) + '">' +
-                    weekDays[i] +
+                    '<span title="' + this.escapeHTML(weekDays[i]) + '">' +
+                    weekDaysMin[i] +
                     '</span>' +
                     '</th>';
             }
@@ -1260,8 +1273,8 @@
             return datesHtml;
         },
 
-        renderDateViewGrid: function (monthMetaData, weekDays) {
-            var dayNames = this.renderDayNames(weekDays),
+        renderDateViewGrid: function (monthMetaData, weekDaysMin, weekDays) {
+            var dayNames = this.renderDayNames(weekDaysMin, weekDays),
                 dates = this.renderDates(monthMetaData);
 
             return (

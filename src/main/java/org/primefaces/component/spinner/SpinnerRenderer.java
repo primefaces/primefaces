@@ -73,13 +73,14 @@ public class SpinnerRenderer extends InputRenderer {
     protected void encodeScript(FacesContext context, Spinner spinner) throws IOException {
         String clientId = spinner.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Spinner", spinner.resolveWidgetVar(), clientId)
+        wb.init("Spinner", spinner.resolveWidgetVar(context), clientId)
                 .attr("step", spinner.getStepFactor(), 1.0)
                 .attr("min", spinner.getMin(), Double.MIN_VALUE)
                 .attr("max", spinner.getMax(), Double.MAX_VALUE)
                 .attr("prefix", spinner.getPrefix(), null)
                 .attr("suffix", spinner.getSuffix(), null)
                 .attr("required", spinner.isRequired(), false)
+                .attr("rotate", spinner.isRotate(), false)
                 .attr("decimalPlaces", spinner.getDecimalPlaces(), null)
                 .attr(SpinnerBase.PropertyKeys.thousandSeparator.name(), spinner.getThousandSeparator())
                 .attr(SpinnerBase.PropertyKeys.decimalSeparator.name(), spinner.getDecimalSeparator());

@@ -25,8 +25,6 @@ package org.primefaces.component.megamenu;
 
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class MegaMenuBase extends AbstractMenu implements Widget {
 
@@ -109,10 +107,5 @@ public abstract class MegaMenuBase extends AbstractMenu implements Widget {
 
     public void setOrientation(String orientation) {
         getStateHelper().put(PropertyKeys.orientation, orientation);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

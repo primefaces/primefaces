@@ -26,8 +26,6 @@ package org.primefaces.component.radiobutton;
 import javax.faces.component.UIComponentBase;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class RadioButtonBase extends UIComponentBase implements Widget {
 
@@ -132,10 +130,5 @@ public abstract class RadioButtonBase extends UIComponentBase implements Widget 
 
     public void setTabindex(String tabindex) {
         getStateHelper().put(PropertyKeys.tabindex, tabindex);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

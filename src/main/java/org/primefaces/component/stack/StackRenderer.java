@@ -43,7 +43,7 @@ public class StackRenderer extends BaseMenuRenderer {
         Stack stack = (Stack) menu;
         String clientId = stack.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Stack", stack.resolveWidgetVar(), clientId)
+        wb.init("Stack", stack.resolveWidgetVar(context), clientId)
                 .attr("openSpeed", stack.getOpenSpeed())
                 .attr("closeSpeed", stack.getCloseSpeed())
                 .attr("expanded", stack.isExpanded(), false);

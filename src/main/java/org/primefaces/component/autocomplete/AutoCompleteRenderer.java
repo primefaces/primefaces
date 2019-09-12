@@ -659,7 +659,7 @@ public class AutoCompleteRenderer extends InputRenderer {
     protected void encodeScript(FacesContext context, AutoComplete ac) throws IOException {
         String clientId = ac.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("AutoComplete", ac.resolveWidgetVar(), clientId);
+        wb.init("AutoComplete", ac.resolveWidgetVar(context), clientId);
 
         wb.attr("minLength", ac.getMinQueryLength(), 1)
                 .attr("delay", ac.getQueryDelay())

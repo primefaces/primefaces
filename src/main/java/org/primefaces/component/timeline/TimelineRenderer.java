@@ -107,7 +107,7 @@ public class TimelineRenderer extends CoreRenderer {
         FastStringWriter fswHtml = new FastStringWriter();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Timeline", timeline.resolveWidgetVar(), clientId);
+        wb.init("Timeline", timeline.resolveWidgetVar(context), clientId);
 
         List<TimelineEvent<Object>> events = model.getEvents();
         List<TimelineGroup<Object>> groups = calculateGroupsFromModel(model);

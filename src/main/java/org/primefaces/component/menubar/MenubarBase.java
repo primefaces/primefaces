@@ -25,8 +25,6 @@ package org.primefaces.component.menubar;
 
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class MenubarBase extends AbstractMenu implements Widget {
 
@@ -100,10 +98,5 @@ public abstract class MenubarBase extends AbstractMenu implements Widget {
 
     public void setToggleEvent(String toggleEvent) {
         getStateHelper().put(PropertyKeys.toggleEvent, toggleEvent);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

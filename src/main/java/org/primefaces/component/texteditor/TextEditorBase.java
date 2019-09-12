@@ -28,8 +28,6 @@ import javax.faces.component.UIInput;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class TextEditorBase extends UIInput implements Widget, ClientBehaviorHolder {
 
@@ -165,10 +163,5 @@ public abstract class TextEditorBase extends UIInput implements Widget, ClientBe
 
     public void setFormats(List formats) {
         getStateHelper().put(PropertyKeys.formats, formats);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

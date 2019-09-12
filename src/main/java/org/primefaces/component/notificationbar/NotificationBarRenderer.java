@@ -62,7 +62,7 @@ public class NotificationBarRenderer extends CoreRenderer {
     private void encodeScript(FacesContext context, NotificationBar bar) throws IOException {
         String clientId = bar.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("NotificationBar", bar.resolveWidgetVar(), clientId)
+        wb.init("NotificationBar", bar.resolveWidgetVar(context), clientId)
                 .attr("position", bar.getPosition())
                 .attr("effect", bar.getEffect())
                 .attr("effectSpeed", bar.getEffectSpeed())

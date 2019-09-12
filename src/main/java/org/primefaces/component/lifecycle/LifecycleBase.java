@@ -26,8 +26,6 @@ package org.primefaces.component.lifecycle;
 import javax.faces.component.UIComponentBase;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class LifecycleBase extends UIComponentBase implements Widget {
 
@@ -55,10 +53,5 @@ public abstract class LifecycleBase extends UIComponentBase implements Widget {
 
     public void setWidgetVar(String widgetVar) {
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

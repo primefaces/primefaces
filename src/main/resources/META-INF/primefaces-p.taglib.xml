@@ -13,6 +13,12 @@
     </function>
 
     <function>
+        <function-name>resolveComponent</function-name>
+        <function-class>org.primefaces.expression.SearchExpressionUtils</function-class>
+        <function-signature>javax.faces.component.UIComponent resolveComponent(java.lang.String, javax.faces.component.UIComponent)</function-signature>
+    </function>
+
+    <function>
         <function-name>resolveClientIds</function-name>
         <function-class>org.primefaces.expression.SearchExpressionUtils</function-class>
         <function-signature>java.lang.String resolveClientIds(java.lang.String, javax.faces.component.UIComponent)</function-signature>
@@ -822,6 +828,14 @@
             <name>widgetVar</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Delay in milliseconds before displaying the ajax status. Default is 0 meaning immediate.]]>
+            </description>
+            <name>delay</name>
+            <required>false</required>
+            <type>int</type>
         </attribute>
         <attribute>
             <description>
@@ -22699,6 +22713,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines text direction, valid values are "ltr" (default) and "rtl".]]>
+            </description>
+            <name>dir</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -24014,6 +24036,14 @@
             <name>max</name>
             <required>false</required>
             <type>java.lang.Double</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Rotate to the minimum value when maximum value is reached and vice versa. Default is false.]]>
+            </description>
+            <name>rotate</name>
+            <required>false</required>
+            <type>boolean</type>
         </attribute>
         <attribute>
             <description>

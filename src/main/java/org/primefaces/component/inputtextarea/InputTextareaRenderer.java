@@ -112,7 +112,7 @@ public class InputTextareaRenderer extends InputRenderer {
         String counter = inputTextarea.getCounter();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("InputTextarea", inputTextarea.resolveWidgetVar(), clientId)
+        wb.init("InputTextarea", inputTextarea.resolveWidgetVar(context), clientId)
                 .attr("autoResize", autoResize)
                 .attr("maxlength", inputTextarea.getMaxlength(), Integer.MAX_VALUE);
 
@@ -150,6 +150,7 @@ public class InputTextareaRenderer extends InputRenderer {
         writer.writeAttribute("class", createStyleClass(inputTextarea), "styleClass");
 
         renderAccessibilityAttributes(context, inputTextarea);
+        renderRTLDirection(context, inputTextarea);
         renderPassThruAttributes(context, inputTextarea, HTML.TEXTAREA_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, inputTextarea, HTML.INPUT_TEXT_EVENTS);
         renderValidationMetadata(context, inputTextarea);

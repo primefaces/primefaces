@@ -26,8 +26,6 @@ package org.primefaces.component.ajaxstatus;
 import javax.faces.component.UIComponentBase;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class AjaxStatusBase extends UIComponentBase implements Widget {
 
@@ -38,6 +36,7 @@ public abstract class AjaxStatusBase extends UIComponentBase implements Widget {
     public enum PropertyKeys {
 
         widgetVar,
+        delay,
         onstart,
         oncomplete,
         onsuccess,
@@ -61,6 +60,14 @@ public abstract class AjaxStatusBase extends UIComponentBase implements Widget {
 
     public void setWidgetVar(String widgetVar) {
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+    public int getDelay() {
+        return (Integer) getStateHelper().eval(PropertyKeys.delay, 0);
+    }
+
+    public void setDelay(int delay) {
+        getStateHelper().put(PropertyKeys.delay, delay);
     }
 
     public String getOnstart() {
@@ -109,10 +116,5 @@ public abstract class AjaxStatusBase extends UIComponentBase implements Widget {
 
     public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

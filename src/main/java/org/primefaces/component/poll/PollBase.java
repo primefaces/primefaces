@@ -27,8 +27,6 @@ import javax.faces.component.UIComponentBase;
 
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
 
@@ -260,10 +258,5 @@ public abstract class PollBase extends UIComponentBase implements AjaxSource, Wi
 
     public void setIntervalType(String intervalType) {
         getStateHelper().put(PropertyKeys.intervalType, intervalType);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

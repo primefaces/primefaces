@@ -25,8 +25,6 @@ package org.primefaces.component.steps;
 
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class StepsBase extends AbstractMenu implements Widget {
 
@@ -100,10 +98,5 @@ public abstract class StepsBase extends AbstractMenu implements Widget {
 
     public void setReadonly(boolean readonly) {
         getStateHelper().put(PropertyKeys.readonly, readonly);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

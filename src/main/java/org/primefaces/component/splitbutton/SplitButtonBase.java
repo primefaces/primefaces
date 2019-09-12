@@ -28,8 +28,6 @@ import javax.faces.component.html.HtmlCommandButton;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.Widget;
 import org.primefaces.model.menu.MenuModel;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxSource, Widget {
 
@@ -306,10 +304,5 @@ public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxS
 
     public void setFilterPlaceholder(String filterPlaceholder) {
         getStateHelper().put(PropertyKeys.filterPlaceholder, filterPlaceholder);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

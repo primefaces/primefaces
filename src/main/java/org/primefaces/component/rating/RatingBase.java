@@ -28,8 +28,6 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class RatingBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
@@ -120,10 +118,5 @@ public abstract class RatingBase extends UIInput implements Widget, ClientBehavi
 
     public void setCancel(boolean cancel) {
         getStateHelper().put(PropertyKeys.cancel, cancel);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

@@ -26,8 +26,6 @@ package org.primefaces.component.galleria;
 import javax.faces.component.UIOutput;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class GalleriaBase extends UIOutput implements Widget {
 
@@ -183,10 +181,5 @@ public abstract class GalleriaBase extends UIOutput implements Widget {
 
     public void setShowCaption(boolean showCaption) {
         getStateHelper().put(PropertyKeys.showCaption, showCaption);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

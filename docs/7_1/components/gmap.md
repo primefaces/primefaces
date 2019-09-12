@@ -200,6 +200,8 @@ GMap provides many custom ajax behavior events for you to hook-in to various fea
 | stateChange | org.primefaces.event.map.StateChangeEvent | When map state changes.
 | pointSelect | org.primefaces.event.map.PointSelectEvent | When an empty point is selected.
 | markerDrag | org.primefaces.event.map.MarkerDragEvent | When a marker is dragged.
+| geocode | org.primefaces.event.map.GeocodeEvent | When the map is geocoded
+| reverseGeocode | org.primefaces.event.map.ReverseGeocodeEvent | When a geocode is reversed.
 
 Following example displays a FacesMessage about the selected marker with growl component.
 

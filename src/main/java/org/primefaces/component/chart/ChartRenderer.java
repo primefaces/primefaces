@@ -94,7 +94,7 @@ public class ChartRenderer extends CoreRenderer {
         String clientId = chart.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Chart", chart.resolveWidgetVar(), clientId)
+        wb.init("Chart", chart.resolveWidgetVar(context), clientId)
                 .attr("type", type);
 
         if (chart.isResponsive()) {

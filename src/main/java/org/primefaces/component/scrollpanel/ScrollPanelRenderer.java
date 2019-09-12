@@ -69,7 +69,7 @@ public class ScrollPanelRenderer extends CoreRenderer {
         if (!nativeMode) {
             String clientId = panel.getClientId(context);
             WidgetBuilder wb = getWidgetBuilder(context);
-            wb.init("ScrollPanel", panel.resolveWidgetVar(), clientId).finish();
+            wb.init("ScrollPanel", panel.resolveWidgetVar(context), clientId).finish();
         }
     }
 

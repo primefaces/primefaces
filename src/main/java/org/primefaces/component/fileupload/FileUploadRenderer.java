@@ -90,7 +90,7 @@ public class FileUploadRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
 
         if (fileUpload.getMode().equals("advanced")) {
-            wb.init("FileUpload", fileUpload.resolveWidgetVar(), clientId);
+            wb.init("FileUpload", fileUpload.resolveWidgetVar(context), clientId);
 
             wb.attr("auto", fileUpload.isAuto(), false)
                     .attr("dnd", fileUpload.isDragDropSupport(), true)
@@ -118,7 +118,7 @@ public class FileUploadRenderer extends CoreRenderer {
             }
         }
         else {
-            wb.init("SimpleFileUpload", fileUpload.resolveWidgetVar(), clientId)
+            wb.init("SimpleFileUpload", fileUpload.resolveWidgetVar(context), clientId)
                     .attr("skinSimple", fileUpload.isSkinSimple(), false)
                     .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
                     .attr("invalidSizeMessage", EscapeUtils.forJavaScript(fileUpload.getInvalidSizeMessage()), null);

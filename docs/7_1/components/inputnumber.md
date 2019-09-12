@@ -121,3 +121,13 @@ Here are some examples demonstrating various cases;
 <p:inputNumber id="Input8" value="1234.000000001" decimalPlaces="15" />
 ```
 
+## Ajax Behavior Events
+
+The following AJAX behavior events are available for this component. If no event is specific the default event is called.  
+  
+**Default Event:** valueChange  
+**Available Events:** blur, change, click, dblclick, focus, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, select, valueChange  
+
+```xhtml
+<p:ajax event="valueChange" listener="#{bean.handlevalueChange}" update="msgs" />
+```

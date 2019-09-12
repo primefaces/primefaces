@@ -56,7 +56,7 @@ public class SpotlightRenderer extends CoreRenderer {
         String clientId = spotlight.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Spotlight", spotlight.resolveWidgetVar(), clientId)
+        wb.init("Spotlight", spotlight.resolveWidgetVar(context), clientId)
                 .attr("target", SearchExpressionFacade.resolveClientIds(context, spotlight, spotlight.getTarget(), SearchExpressionHint.RESOLVE_CLIENT_SIDE))
                 .attr("active", spotlight.isActive(), false)
                 .attr("blockScroll", spotlight.isBlockScroll(), false);

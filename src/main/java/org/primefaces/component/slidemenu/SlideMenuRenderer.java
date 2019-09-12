@@ -41,7 +41,7 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
         String clientId = menu.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SlideMenu", menu.resolveWidgetVar(), clientId);
+        wb.init("SlideMenu", menu.resolveWidgetVar(context), clientId);
 
         if (menu.isOverlay()) {
             encodeOverlayConfig(context, menu, wb);

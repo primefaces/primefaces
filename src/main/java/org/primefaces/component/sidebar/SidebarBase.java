@@ -26,8 +26,6 @@ package org.primefaces.component.sidebar;
 import javax.faces.component.UIComponentBase;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class SidebarBase extends UIComponentBase implements Widget {
 
@@ -145,10 +143,5 @@ public abstract class SidebarBase extends UIComponentBase implements Widget {
 
     public void setOnHide(String onHide) {
         getStateHelper().put(PropertyKeys.onHide, onHide);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

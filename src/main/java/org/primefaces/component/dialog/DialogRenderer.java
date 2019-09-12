@@ -60,7 +60,7 @@ public class DialogRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Dialog dialog) throws IOException {
         String clientId = dialog.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Dialog", dialog.resolveWidgetVar(), clientId);
+        wb.init("Dialog", dialog.resolveWidgetVar(context), clientId);
 
         wb.attr("visible", dialog.isVisible(), false)
                 .attr("draggable", dialog.isDraggable(), true)

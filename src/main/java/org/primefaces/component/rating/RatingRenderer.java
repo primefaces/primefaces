@@ -69,7 +69,7 @@ public class RatingRenderer extends InputRenderer {
     private void encodeScript(FacesContext context, Rating rating) throws IOException {
         String clientId = rating.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Rating", rating.resolveWidgetVar(), clientId)
+        wb.init("Rating", rating.resolveWidgetVar(context), clientId)
                 .callback("onRate", "function(value)", rating.getOnRate())
                 .attr("readonly", rating.isReadonly(), false)
                 .attr("disabled", rating.isDisabled(), false);

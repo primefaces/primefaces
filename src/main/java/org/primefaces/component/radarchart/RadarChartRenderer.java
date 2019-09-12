@@ -50,7 +50,7 @@ public class RadarChartRenderer extends ChartRenderer {
         String clientId = chart.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("RadarChart", chart.resolveWidgetVar(), clientId);
+        wb.init("RadarChart", chart.resolveWidgetVar(context), clientId);
 
         encodeConfig(context, chart.getModel());
         encodeClientBehaviors(context, chart);

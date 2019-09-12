@@ -83,7 +83,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         Locale locale = datepicker.calculateLocale(context);
         String pattern = datepicker.isTimeOnly() ? datepicker.calculateTimeOnlyPattern() : datepicker.calculatePattern();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DatePicker", datepicker.resolveWidgetVar(), clientId);
+        wb.init("DatePicker", datepicker.resolveWidgetVar(context), clientId);
 
         String defaultDate = null;
 

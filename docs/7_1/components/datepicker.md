@@ -18,7 +18,7 @@ ajax selection and more.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 | id | null | String | Unique identifier of the component
 | rendered | true | Boolean | Boolean value to specify the rendering of the component.
@@ -36,13 +36,13 @@ ajax selection and more.
 | placeholder | null | String | Specifies a short hint.
 widgetVar | null | String | Name of the client side widget.
 | timeOnly | false | Boolean | Shows only timepicker without date.
-| inline |  false | Boolean | Whether to show the datepicker inline or as a popup  
+| inline |  false | Boolean | Whether to show the datepicker inline or as a popup
 | buttonTabindex | null | String | Tabindex of the datepicker button
 | showIcon | false | String | Whether to show an icon to display the picker in an overlay
 | beforeShow | null | String | Callback to execute before displaying DatePicker, element and DatePicker instance are passed as parameters
 | focusOnSelect | false | Boolean | When enabled, input receives focus after a value is picked.
 | yearRange | null | String | The range of years displayed in the year drop-down in (nnnn:nnnn) format such as (2000:2020). Default value is "displayed_date - 10 : displayed_date + 10".
-| selectionMode | single | String | Defines the selection mode, valid values are "single", "multiple" and "range"  
+| selectionMode | single | String | Defines the selection mode, valid values are "single", "multiple" and "range"
 | showOtherMonths | false | Boolean | Displays days belonging to other months.
 | selectOtherMonths | false | Boolean | Enables selection of days belonging to other months.
 | showOnFocus | true | Boolean | Whether to show the popup when input receives focus.
@@ -74,8 +74,8 @@ widgetVar | null | String | Name of the client side widget.
 | locale | null | Object | Locale to be used for labels and conversion.
 | timeZone | null | Time Zone | String a java.time.ZoneId instance or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to TimeZone.getDefault()
 | pattern | MM/dd/yyyy | String | DateFormat pattern for localization
-| mindate | null | java.time.LocalDate, java.util.Date (deprecated) or String | Sets DatePicker's minimum visible date
-| maxdate | null | java.time.LocalDate, java.util.Date (deprecated) or String | Sets DatePicker's maximum visible date
+| mindate | null | java.time.LocalDate, java.util.Date (deprecated) or String | Sets DatePicker's minimum visible date; Also used for validation on the server-side.
+| maxdate | null | java.time.LocalDate, java.util.Date (deprecated) or String | Sets DatePicker's maximum visible date; Also used for validation on the server-side.
 | timeOnly | false | Boolean | Shows only timepicker without date.
 | readonlyInput | false | Boolean | Makes input text of a popup DatePicker readonly.
 | inputStyle | null | String | Inline style of the input element. Used when mode is popup.
@@ -252,8 +252,8 @@ DatePicker resides in a container element which _style_ and _styleClass_ options
 
 Following is the list of structural style classes;
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 | .ui-datepicker | Main container
 | .ui-datepicker-header | Header container
 | .ui-datepicker-prev | Previous month navigator

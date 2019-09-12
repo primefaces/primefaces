@@ -26,8 +26,6 @@ package org.primefaces.component.tooltip;
 import javax.faces.component.UIOutput;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class TooltipBase extends UIOutput implements Widget {
 
@@ -222,10 +220,5 @@ public abstract class TooltipBase extends UIOutput implements Widget {
 
     public void setDelegate(boolean delegate) {
         getStateHelper().put(PropertyKeys.delegate, delegate);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }
