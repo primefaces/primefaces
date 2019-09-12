@@ -33,6 +33,7 @@ widgetVar | null | String | Name of the client side widget.
 stepFactor | 1 | Double | Stepping factor for each increment and decrement
 min | null | Double | Minimum boundary value
 max | null | Double | Maximum boundary value
+rotate | false | Boolean | Rotate to the minimum value when maximum value is reached and vice versa
 prefix | null | String | Prefix of the input
 suffix | null | String | Suffix of the input
 decimalPlaces | null | String | Number of decimal places
