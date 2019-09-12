@@ -56,6 +56,7 @@ public class GalleriaRenderer extends CoreRenderer {
 
         writer.startElement("div", component);
         writer.writeAttribute("id", galleria.getClientId(context), "id");
+        writer.writeAttribute("tabindex", "0", null);
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
