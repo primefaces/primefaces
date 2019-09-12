@@ -69,6 +69,23 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
     bindEvents: function() {
         var $this = this;
 
+        // Touch Swipe Events
+        this.jq.swipe({
+            swipeLeft:function(event) {
+                var activeIndex = $this.getActiveIndex();
+                if (activeIndex < $this.getLength() - 1) {
+                    $this.select(activeIndex + 1);
+                }
+            },
+            swipeRight: function(event) {
+                var activeIndex = $this.getActiveIndex();
+                if (activeIndex > 0) {
+                    $this.select(activeIndex - 1);
+                }
+            },
+            excludedElements: "button, input, select, textarea, a, .noSwipe"
+        });
+
         //Tab header events
         this.headerContainer
                 .on('mouseover.tabview', function(e) {
