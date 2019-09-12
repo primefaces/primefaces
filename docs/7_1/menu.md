@@ -20,6 +20,7 @@
   - [Localization](/core/localization.md)
   - [Accessibility](/core/accessibility.md)
   - [Responsive Design](/core/responsive.md)
+  - [Performance](/core/performance.md)
   - [Portlets](/core/portlets.md)
 
 - AJAX

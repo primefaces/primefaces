@@ -22,5 +22,5 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 | TRANSFORM_METADATA | false | Transforms bean validation metadata to HTML attributes. |
 | LEGACY_WIDGET_NAMESPACE | false | Enables window scope so that widgets can be accessed using widgetVar.method() in addition to default PF namespace approach like PF('widgetVar').method(). |
 | FONT_AWESOME | false | Auto includes Font-Awesome 4.7. |
-| INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES | false | Whether to load messages for the client side validaiton (CSV) from server via the MessageInterpolator. |
+| INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES | false | Whether to load messages for the client side validation (CSV) from server via the MessageInterpolator. |
 | MOVE_SCRIPTS_TO_BOTTOM | false | Moves all inline scripts to end of body tag for better performance and smaller html output. |
