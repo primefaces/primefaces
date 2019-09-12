@@ -355,7 +355,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
     protected void encodePanelFooter(FacesContext context, SelectOneMenu menu) throws IOException {
         UIComponent facet = menu.getFacet("footer");
-        if (facet == null) {
+        if (!ComponentUtils.shouldRenderFacet(facet)) {
             return;
         }
 
@@ -389,7 +389,6 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 }
 
                 String headerText = column.getHeaderText();
-                UIComponent headerFacet = column.getFacet("header");
                 String styleClass = column.getStyleClass() == null ? "ui-state-default" : "ui-state-default " + column.getStyleClass();
 
                 writer.startElement("th", null);
@@ -399,7 +398,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                     writer.writeAttribute("style", column.getStyle(), null);
                 }
 
-                if (headerFacet != null) {
+                UIComponent headerFacet = column.getFacet("header");
+                if (ComponentUtils.shouldRenderFacet(headerFacet)) {
                     headerFacet.encodeAll(context);
                 }
                 else if (headerText != null) {
