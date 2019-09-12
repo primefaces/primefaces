@@ -63,7 +63,7 @@ Basic SelectOneMenu usage is same as the standard one.
 
 ## Custom Content
 SelectOneMenu can display custom content in overlay panel by using column component and the
-var option to refer to each item.
+var option to refer to each item. Facets for column _header_ and overall _footer_ may also be used.
 
 ```java
 public class MenuBean {
@@ -87,7 +87,15 @@ public class MenuBean {
     </p:column>
     <p:column>
         #{p.name} - #{p.number}
+        <f:facet name="header">
+             <h:outputText value="Player"/>
+         </f:facet>
     </p:column>
+
+    <f:facet name="footer">
+         <p:separator />
+         <h:outputText value="#{menuBean.players.size()} available players" style="font-weight:bold;"/>
+    </f:facet>
 </p:selectOneMenu>
 ```
 
@@ -157,4 +165,6 @@ structural style classes;
 .ui-selectonemenu-trigger | Container of dropdown icon.
 .ui-selectonemenu-items | Items list.
 .ui-selectonemenu-items | Each item in the list.
+.ui-selectonemenu-rtl | When RTL direction is set
+.ui-selectonemenu-footer | Style applied to footer facet
 
