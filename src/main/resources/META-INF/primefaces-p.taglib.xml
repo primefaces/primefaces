@@ -22713,6 +22713,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines text direction, valid values are "ltr" (default) and "rtl".]]>
+            </description>
+            <name>dir</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -24028,6 +24036,14 @@
             <name>max</name>
             <required>false</required>
             <type>java.lang.Double</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Rotate to the minimum value when maximum value is reached and vice versa. Default is false.]]>
+            </description>
+            <name>rotate</name>
+            <required>false</required>
+            <type>boolean</type>
         </attribute>
         <attribute>
             <description>

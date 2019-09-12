@@ -51,7 +51,7 @@ public class CommandLink extends CommandLinkBase implements DialogReturnAware {
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("click", null)
-            .put(EVENT_NAME_DIALOG_RETURN, SelectEvent.class)
+            .put(EVENT_DIALOG_RETURN, SelectEvent.class)
             .build();
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();

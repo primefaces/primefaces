@@ -203,7 +203,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             return;
         }
 
-        var animated = this.cfg.showEffect;
+        var animated = this.cfg.hideEffect;
         if(animated) {
             var $this = this;
 

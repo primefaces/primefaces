@@ -33,12 +33,15 @@ import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.BehaviorEvent;
+import javax.faces.event.FacesEvent;
+import org.primefaces.component.api.DialogReturnAware;
+import org.primefaces.event.SelectEvent;
 
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.MapBuilder;
 
 
-public class UIMenuItem extends UIMenuItemBase {
+public class UIMenuItem extends UIMenuItemBase implements DialogReturnAware {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.UIMenuItem";
 
@@ -46,6 +49,7 @@ public class UIMenuItem extends UIMenuItemBase {
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("click", null)
+            .put(EVENT_DIALOG_RETURN, SelectEvent.class)
             .build();
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
@@ -73,6 +77,19 @@ public class UIMenuItem extends UIMenuItemBase {
 
         if (params.containsKey(clientId)) {
             queueEvent(new ActionEvent(this));
+        }
+
+        ComponentUtils.decodeBehaviors(facesContext, this);
+    }
+
+    @Override
+    public void queueEvent(FacesEvent e) {
+        FacesContext context = getFacesContext();
+        if (isDialogReturnEvent(e, context)) {
+            queueDialogReturnEvent(e, context, this, super::queueEvent);
+        }
+        else {
+            super.queueEvent(e);
         }
     }
 
