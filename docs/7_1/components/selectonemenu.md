@@ -166,5 +166,5 @@ structural style classes;
 .ui-selectonemenu-items | Items list.
 .ui-selectonemenu-items | Each item in the list.
 .ui-selectonemenu-rtl | When RTL direction is set
-.ui-selectonemenu-footer | Style applie to footer facet
+.ui-selectonemenu-footer | Style applied to footer facet
 
