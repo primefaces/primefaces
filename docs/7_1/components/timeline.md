@@ -68,6 +68,10 @@ showMajorLabels | true | Boolean | By default, the timeline shows both minor and
 showMinorLabels | true | Boolean | By default, the timeline shows both minor and major date labels on the horizontal axis. For example the minor labels show minutes and the major labels show hours. When "showMinorLabels" is false, no minor labels are shown. When both "showMajorLabels" and "showMinorLabels" are false, no horizontal axis will be visible.
 timeChangeable | true | Boolean | (Deprecated, use editableTime property instead.) If false, items can not be moved or dragged horizontally (neither start time nor end time is changable). This is useful when items should be editable but can only be changed regarding group or content (typical use case: scheduling events).
 clickToUse | false | Boolean | When a Timeline is configured to be clickToUse, it will react to mouse and touch events only when active. When active, a blue shadow border is displayed around the Timeline. The Timeline is set active by clicking on it, and is changed to inactive again by clicking outside the Timeline or by pressing the ESC key.
+showTooltips | true | Boolean | If true, items with titles will display a tooltip. If false, item tooltips are prevented from showing.
+tooltipFollowMouse | false | Boolean | If true, tooltips will follow the mouse as they move around in the item.
+tooltipOverflowMethod | flip | String | Set how the tooltip should act if it is about to overflow out of the timeline. Choose from 'cap', 'flip' and 'none'. If it is set to 'cap', the tooltip will just cap its position to inside to timeline. If set to 'flip', the position of the tooltip will flip around the cursor so that a corner is at the cursor, and the rest of it is visible. If set to 'none', the tooltip will be positioned independently of the timeline, so parts of the tooltip could possibly be hidden or stick ouf of the timeline, depending how CSS overflow is defined for the timeline (by default it's hidden).
+tooltipDelay | 500 | Integer | Set a value (in ms) that the tooltip is delayed before showing. Default is 500.
 dropHoverStyleClass | null | String | Style class to apply when an acceptable draggable is dragged over.
 dropActiveStyleClass | null | String | Style class to apply when an acceptable draggable is being dragged over.
 dropAccept | null | String | Selector to define the accepted draggables.
@@ -119,6 +123,23 @@ A loading screen can be defined using loading facet.
     <f:facet name="loading">
         LOADING<br />
         <p:graphicImage name="/demo/images/ajaxloadingbar.gif" />
+    </f:facet>
+</p:timeline>
+```
+## Tooltip
+If you define title property in _TimelineEvent_ and/or _TimelineGroup_ java objects, then a tooltip is displayed when holding the mouse on the item and/or 
+group respectively. Title property can be plain text or html in case of TimelineEvent and only plain text in case of TimelineGroup.
+
+A facet called "eventTitle" can be defined in <p:timeline> to provide custom content for event's title.
+```xhtml
+<p:timeline id="timeline" value="#{basicTimelineView.model}" var="data">
+    <f:facet name="eventTitle">
+        <h:panelGrid columns="2">
+            <strong>My property:</strong>
+            <h:outputText value="#{data.myproperty}" />
+            <strong>Another property:</strong>
+            <h:outputText value="#{data.anotherProperty}" />
+        </h:panelGrid>
     </f:facet>
 </p:timeline>
 ```

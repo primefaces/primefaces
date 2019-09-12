@@ -26739,6 +26739,43 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[If true, items with titles will display a tooltip. If false, item tooltips are prevented from showing. Default is true.]]>
+            </description>
+            <name>showTooltips</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If true, tooltips will follow the mouse as they move around in the item. Default is false.]]>
+            </description>
+            <name>tooltipFollowMouse</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Set how the tooltip should act if it is about to overflow out of the timeline.
+                    Choose from 'cap', 'flip' and 'none'.
+                    If it is set to 'cap', the tooltip will just cap its position to inside to timeline.
+                    If set to 'flip', the position of the tooltip will flip around the cursor so that a corner is at the cursor, and the rest of it is visible.
+                    If set to 'none', the tooltip will be positioned independently of the timeline, so parts of the tooltip could possibly be hidden or stick 
+                    ouf of the timeline, depending how CSS overflow is defined for the timeline (by default it's hidden). Default is 'flip'.]]>
+            </description>
+            <name>tooltipOverflowMethod</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Set a value (in ms) that the tooltip is delayed before showing. Default is 500.]]>
+            </description>
+            <name>tooltipDelay</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines direction of timeline. Valid values are "ltr" (default) and "rtl".]]>
             </description>
             <name>dir</name>

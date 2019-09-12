@@ -71,6 +71,11 @@ public class TimelineEvent<T> implements Serializable {
     private String group;
 
     /**
+     * A title that is displayed when holding the mouse on the item. The title can be a string containing plain text or HTML.
+     */
+    private String title;
+
+    /**
      * any custom style class for this event in UI (optional)
      */
     private String styleClass;
@@ -233,6 +238,14 @@ public class TimelineEvent<T> implements Serializable {
 
     public void setStyleClass(String styleClass) {
         this.styleClass = styleClass;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override

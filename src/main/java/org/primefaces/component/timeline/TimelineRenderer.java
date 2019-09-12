@@ -66,7 +66,7 @@ public class TimelineRenderer extends CoreRenderer {
         }
 
         UIComponent menuFacet = timeline.getFacet("menu");
-        if (menuFacet != null) {
+        if (ComponentUtils.shouldRenderFacet(menuFacet)) {
             writer.startElement("div", null);
             StringBuilder cssMenu = new StringBuilder("timeline-menu");
 
@@ -134,10 +134,11 @@ public class TimelineRenderer extends CoreRenderer {
         }
 
         writer.write(",data:[");
+        UIComponent eventTitleFacet = timeline.getFacet("eventTitle");
         int size = events != null ? events.size() : 0;
         for (int i = 0; i < size; i++) {
             // encode events
-            writer.write(encodeEvent(context, fsw, fswHtml, timeline, browserTZ, targetTZ, groups, events.get(i), i));
+            writer.write(encodeEvent(context, fsw, fswHtml, timeline, eventTitleFacet, browserTZ, targetTZ, groups, events.get(i), i));
             if (i + 1 < size) {
                 writer.write(",");
             }
@@ -176,7 +177,7 @@ public class TimelineRenderer extends CoreRenderer {
             wb.nativeAttr("extender", timeline.getExtender());
         }
         UIComponent menuFacet = timeline.getFacet("menu");
-        if (menuFacet != null) {
+        if (ComponentUtils.shouldRenderFacet(menuFacet)) {
             wb.attr("isMenuPresent", Boolean.TRUE);
         }
 
@@ -194,13 +195,13 @@ public class TimelineRenderer extends CoreRenderer {
             wb.attr("maxHeight", timeline.getMaxHeight());
         }
         wb.attr("width", timeline.getWidth());
-        wb.nativeAttr("orientation", "{axis: '" + timeline.getOrientationAxis() + "', "
-                + "item: '" + timeline.getOrientationItem() + "' }" );
-        wb.nativeAttr("editable", "{add: " + timeline.isEditableAdd() + ", "
-                + "remove: " + timeline.isEditableRemove() + ", "
-                + "updateTime: " + timeline.isEditableTime() + ", "
-                + "updateGroup: " + timeline.isEditableGroup() + ","
-                + "overrideItems: " + timeline.isEditableOverrideItems() + " }" );
+        wb.nativeAttr("orientation", "{axis:'" + timeline.getOrientationAxis() + "',"
+                + "item:'" + timeline.getOrientationItem() + "'}" );
+        wb.nativeAttr("editable", "{add:" + timeline.isEditableAdd() + ","
+                + "remove:" + timeline.isEditableRemove() + ","
+                + "updateTime:" + timeline.isEditableTime() + ","
+                + "updateGroup:" + timeline.isEditableGroup() + ","
+                + "overrideItems:" + timeline.isEditableOverrideItems() + "}" );
         wb.attr("selectable", timeline.isSelectable());
         wb.attr("zoomable", timeline.isZoomable());
         wb.attr("moveable", timeline.isMoveable());
@@ -224,9 +225,9 @@ public class TimelineRenderer extends CoreRenderer {
         wb.attr("zoomMin", timeline.getZoomMin());
         wb.attr("zoomMax", timeline.getZoomMax());
 
-        wb.nativeAttr("margin", "{axis: " + timeline.getEventMarginAxis() + ", "
-                + "item: {horizontal: " + timeline.getEventHorizontalMargin() + ", "
-                + "vertical: " + timeline.getEventVerticalMargin() + "}}");
+        wb.nativeAttr("margin", "{axis:" + timeline.getEventMarginAxis() + ","
+                + "item:{horizontal:" + timeline.getEventHorizontalMargin() + ","
+                + "vertical:" + timeline.getEventVerticalMargin() + "}}");
 
         if (timeline.getEventStyle() != null) {
             wb.attr("type", timeline.getEventStyle());
@@ -255,22 +256,21 @@ public class TimelineRenderer extends CoreRenderer {
 
         wb.attr("locale", timeline.calculateLocale(context).toString());
         wb.attr("clickToUse", timeline.isClickToUse());
+        wb.attr("showTooltips", timeline.isShowTooltips());
+
+        wb.nativeAttr("tooltip", "{followMouse:" + timeline.isTooltipFollowMouse() + ","
+                + "overflowMethod:'" + timeline.getTooltipOverflowMethod() + "',"
+                + "delay:" + timeline.getTooltipDelay() + "}");
 
         if (timeline.isRTL()) {
             wb.attr("rtl", Boolean.TRUE);
         }
 
         UIComponent loadingFacet = timeline.getFacet("loading");
-        if (loadingFacet != null) {
-            ResponseWriter clonedWriter = writer.cloneWithWriter(fswHtml);
-
-            context.setResponseWriter(clonedWriter);
-            loadingFacet.encodeAll(context);
-            // restore writer
-            context.setResponseWriter(writer);
+        if (ComponentUtils.shouldRenderFacet(loadingFacet)) {
+            String loading = encodeAllToString(context, writer, fswHtml, loadingFacet);
             // writing facet content's
-            wb.nativeAttr("loadingScreenTemplate", "function() { return \"" + EscapeUtils.forJavaScriptBlock(fswHtml.toString()) + "\";}");
-            fswHtml.reset();
+            wb.nativeAttr("loadingScreenTemplate", "function() { return \"" + EscapeUtils.forJavaScript(loading) + "\";}");
         }
 
         writer.write("}");
@@ -289,21 +289,14 @@ public class TimelineRenderer extends CoreRenderer {
         if (!LangUtils.isValueBlank(timeline.getVarGroup()) && data != null) {
             context.getExternalContext().getRequestMap().put(timeline.getVarGroup(), data);
         }
-        if (groupFacet != null) {
-            ResponseWriter clonedWriter = writer.cloneWithWriter(fswHtml);
-            context.setResponseWriter(clonedWriter);
-
-            groupFacet.encodeAll(context);
-
-            // restore writer
-            context.setResponseWriter(writer);
+        if (ComponentUtils.shouldRenderFacet(groupFacet)) {
+            String groupRender = encodeAllToString(context, writer, fswHtml, groupFacet);
             // extract the content of the group, first buffer and then render it
-            groupsContent.put(group.getId(), EscapeUtils.forJavaScript(fswHtml.toString()));
+            groupsContent.put(group.getId(), EscapeUtils.forJavaScript(groupRender));
             fsw.write(", content:\"" + groupsContent.get(group.getId()) + "\"");
-            fswHtml.reset();
         }
         else if (data != null) {
-            groupsContent.put(group.getId(), EscapeUtils.forJavaScriptBlock(data.toString()));
+            groupsContent.put(group.getId(), EscapeUtils.forJavaScript(data.toString()));
             fsw.write(", content:\"" + groupsContent.get(group.getId()) + "\"");
         }
 
@@ -313,6 +306,10 @@ public class TimelineRenderer extends CoreRenderer {
 
         if (group.getStyleClass() != null) {
             fsw.write(", className: \"" + group.getStyleClass() + "\"");
+        }
+
+        if (group.getTitle() != null) {
+            fsw.write(", title: \"" + EscapeUtils.forJavaScript(group.getTitle()) + "\"");
         }
 
         if (order != null) {
@@ -327,7 +324,7 @@ public class TimelineRenderer extends CoreRenderer {
     }
 
     protected String encodeEvent(FacesContext context, FastStringWriter fsw, FastStringWriter fswHtml, Timeline timeline,
-                              TimeZone browserTZ, TimeZone targetTZ, List<TimelineGroup<Object>> groups,
+                              UIComponent eventTitleFacet, TimeZone browserTZ, TimeZone targetTZ, List<TimelineGroup<Object>> groups,
                               TimelineEvent<?> event, int index) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
@@ -383,7 +380,7 @@ public class TimelineRenderer extends CoreRenderer {
         }
 
         if (foundGroup != null) {
-            fsw.write(", group: \"" + EscapeUtils.forJavaScriptBlock(foundGroup.getId()) + "\"");
+            fsw.write(", group: \"" + EscapeUtils.forJavaScript(foundGroup.getId()) + "\"");
         }
         else {
             // no group for the event
@@ -397,13 +394,25 @@ public class TimelineRenderer extends CoreRenderer {
             fsw.write(", className: null");
         }
 
+        Object data = event.getData();
+        if (!LangUtils.isValueBlank(timeline.getVar()) && data != null) {
+            context.getExternalContext().getRequestMap().put(timeline.getVar(), data);
+        }
+
+        if (event.getTitle() != null) {
+            fsw.write(", title:\"");
+            fsw.write(EscapeUtils.forJavaScript(event.getTitle()));
+            fsw.write("\"");
+        }
+        else if (ComponentUtils.shouldRenderFacet(eventTitleFacet)) {
+            String title = encodeAllToString(context, writer, fswHtml, eventTitleFacet);
+            fsw.write(", title:\"");
+            fsw.write(EscapeUtils.forJavaScript(title));
+            fsw.write("\"");
+        }
+
         fsw.write(", content:\"");
         if (timeline.getChildCount() > 0) {
-            Object data = event.getData();
-            if (!LangUtils.isValueBlank(timeline.getVar()) && data != null) {
-                context.getExternalContext().getRequestMap().put(timeline.getVar(), data);
-            }
-
             ResponseWriter clonedWriter = writer.cloneWithWriter(fswHtml);
             context.setResponseWriter(clonedWriter);
 
@@ -415,8 +424,8 @@ public class TimelineRenderer extends CoreRenderer {
             fsw.write(EscapeUtils.forJavaScript(fswHtml.toString()));
             fswHtml.reset();
         }
-        else if (event.getData() != null) {
-            fsw.write(event.getData().toString());
+        else if (data != null) {
+            fsw.write(data.toString());
         }
 
         fsw.write("\"");
@@ -441,6 +450,18 @@ public class TimelineRenderer extends CoreRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
+    }
+
+    private String encodeAllToString(FacesContext context, ResponseWriter writer, FastStringWriter fswHtml, UIComponent component) throws IOException {
+        ResponseWriter clonedWriter = writer.cloneWithWriter(fswHtml);
+        context.setResponseWriter(clonedWriter);
+
+        component.encodeAll(context);
+        // restore writer
+        context.setResponseWriter(writer);
+        String encoded = fswHtml.toString();
+        fswHtml.reset();
+        return encoded;
     }
 
     List<TimelineGroup<Object>> calculateGroupsFromModel(TimelineModel<Object, Object> model) {

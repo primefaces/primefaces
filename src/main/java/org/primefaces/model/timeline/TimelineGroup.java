@@ -40,6 +40,11 @@ public class TimelineGroup<T> implements Serializable {
     private T data;
 
     /**
+     * A title for the group, displayed when holding the mouse on the groups label. The title can only contain plain text.
+     */
+    private String title;
+
+    /**
      * any custom style class for this event in UI (optional)
      */
     private String styleClass;
@@ -50,6 +55,12 @@ public class TimelineGroup<T> implements Serializable {
     public TimelineGroup(String id, T data) {
         this.id = id;
         this.data = data;
+    }
+
+    public TimelineGroup(String id, T data, String title) {
+        this.id = id;
+        this.data = data;
+        this.title = title;
     }
 
     public String getId() {
@@ -74,6 +85,14 @@ public class TimelineGroup<T> implements Serializable {
 
     public void setStyleClass(String styleClass) {
         this.styleClass = styleClass;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override

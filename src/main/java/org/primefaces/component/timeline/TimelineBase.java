@@ -88,6 +88,10 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
         showMajorLabels,
         showMinorLabels,
         clickToUse,
+        showTooltips,
+        tooltipFollowMouse,
+        tooltipOverflowMethod,
+        tooltipDelay,
         dropHoverStyleClass,
         dropActiveStyleClass,
         dropAccept,
@@ -509,6 +513,38 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
 
     public void setClickToUse(boolean clickToUse) {
         getStateHelper().put(PropertyKeys.clickToUse, clickToUse);
+    }
+
+    public boolean isShowTooltips() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showTooltips, Boolean.TRUE);
+    }
+
+    public void setShowTooltips(boolean showTooltips) {
+        getStateHelper().put(PropertyKeys.showTooltips, showTooltips);
+    }
+
+    public boolean isTooltipFollowMouse() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.tooltipFollowMouse, Boolean.FALSE);
+    }
+
+    public void setTooltipFollowMouse(boolean tooltipFollowMouse) {
+        getStateHelper().put(PropertyKeys.tooltipFollowMouse, tooltipFollowMouse);
+    }
+
+    public String getTooltipOverflowMethod() {
+        return (String) getStateHelper().eval(PropertyKeys.tooltipOverflowMethod, "flip");
+    }
+
+    public void setTooltipOverflowMethod(String tooltipOverflowMethod) {
+        getStateHelper().put(PropertyKeys.tooltipOverflowMethod, tooltipOverflowMethod);
+    }
+
+    public int getTooltipDelay() {
+        return (Integer) getStateHelper().eval(PropertyKeys.tooltipDelay, 500);
+    }
+
+    public void setTooltipDelay(int tooltipDelay) {
+        getStateHelper().put(PropertyKeys.tooltipDelay, tooltipDelay);
     }
 
     public String getDropHoverStyleClass() {
