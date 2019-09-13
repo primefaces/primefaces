@@ -126,7 +126,7 @@ and Whitespace compression: http://lu4242.blogspot.com/2012/12/html-white-space-
 
 ### Other
 
-- Only required for non-JSF managed resources :Use a custom ServletFilter to set the correct expires/cache headers of your resources (images, stylesheets, javascripts).
+- Only required for non-JSF managed resources: Use a custom ServletFilter to set the correct expires/cache headers of your resources (images, stylesheets, javascripts).
 - Compress and optimize your Javascripts in your build process. If you use maven, try primefaces-extensions' closure compiler maven plugin.
 - Enable GZIP in your webserver. If it's not supported by your webserver/container, you can still add the GzipResponseFilter from OmniFaces: http://showcase.omnifaces.org/filters/GzipResponseFilter
 
@@ -136,7 +136,7 @@ and Whitespace compression: http://lu4242.blogspot.com/2012/12/html-white-space-
 - If you don't use ViewScoped beans, it's a good but small improvement to mark the view as stateless.
 - Try using HTML over JSF tags
     - Especially avoid using h:outputText if you don't need the escaping or other features like converters. Just use EL expressions inside your XHTML.
-    - The same applies for some other components like p:outputPanel. Just use a plain div. If you need to make it updateable, you can still use "passtrough elements" (<div jsf:id="...">...</div>)
+    - The same applies for some other components like p:outputPanel. Just use a plain div. If you need to make it updateable, you can still use "passtrough elements" (\<div jsf:id="..."\>...\</div\>)
 - Try to avoid logic in getters because they can be called multiple times - especially for the rendered attribute!
 - Avoid logic (like inline if-statements) in EL expression! It's better to move those logic into the bean. It's faster and often easier to read and maintain.
 - Prefer AJAX over a full postback
