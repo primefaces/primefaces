@@ -106,29 +106,22 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
 
     @Override
     public void beforePhase(PhaseEvent event) {
-        if (event.getPhaseId().equals(PhaseId.RENDER_RESPONSE)) {
-            processCrudOperations(event.getFacesContext());
-        }
-        else if (event.getPhaseId().equals(PhaseId.APPLY_REQUEST_VALUES)) {
+        if (event.getPhaseId().equals(PhaseId.APPLY_REQUEST_VALUES)) {
             populateTimelineUpdater(event.getFacesContext());
+        }
+        else if (event.getPhaseId().equals(PhaseId.RENDER_RESPONSE)) {
+            processCrudOperations(event.getFacesContext());
         }
     }
 
     private void populateTimelineUpdater(FacesContext context) {
-        //This method assumes TimelineListener.processEvent(cse) was called before.
-        Map<String, TimelineUpdater> map
-                = (Map<String, TimelineUpdater>) context.getAttributes().get(TimelineUpdater.class.getName());
+        Map<String, TimelineUpdater> map = (Map<String, TimelineUpdater>) context.getAttributes().get(TimelineUpdater.class.getName());
         if (map == null) {
             map = new HashMap<>();
             context.getAttributes().put(TimelineUpdater.class.getName(), map);
         }
-        for (PhaseListener listener : context.getViewRoot().getPhaseListeners()) {
-            if (listener instanceof DefaultTimelineUpdater
-                    && ((DefaultTimelineUpdater) listener).getWidgetVar().equals(widgetVar)) {
-                if (!map.containsKey(widgetVar)) {
-                    map.put(widgetVar, (DefaultTimelineUpdater) listener);
-                }
-            }
+        if (!map.containsKey(widgetVar)) {
+            map.put(widgetVar, this);
         }
     }
 
