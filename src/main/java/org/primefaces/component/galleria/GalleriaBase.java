@@ -40,6 +40,7 @@ public abstract class GalleriaBase extends UIOutput implements Widget {
         var,
         style,
         styleClass,
+        tabindex,
         effect,
         effectSpeed,
         frameWidth,
@@ -181,5 +182,13 @@ public abstract class GalleriaBase extends UIOutput implements Widget {
 
     public void setShowCaption(boolean showCaption) {
         getStateHelper().put(PropertyKeys.showCaption, showCaption);
+    }
+
+    public String getTabindex() {
+        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
+    }
+
+    public void setTabindex(String tabindex) {
+        getStateHelper().put(PropertyKeys.tabindex, tabindex);
     }
 }
