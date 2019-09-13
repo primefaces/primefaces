@@ -352,9 +352,16 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
             };
         }
 
-        submenu.css('z-index', ++PrimeFaces.zindex)
-                .show()
-                .position(pos);
+        //avoid queuing multiple runs
+        if(this.timeoutId) {
+            clearTimeout(this.timeoutId);
+        }
+
+        this.timeoutId = setTimeout(function () {
+           submenu.css('z-index', ++PrimeFaces.zindex)
+                  .show()
+                  .position(pos)
+        }, this.cfg.delay);
     }
 
 });

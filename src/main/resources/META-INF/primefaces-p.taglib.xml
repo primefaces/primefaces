@@ -15219,6 +15219,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.]]>
+            </description>
+            <name>delay</name>
+            <required>false</required>
+            <type>int</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Index of the active root menu to display as highlighted. By default no root is highlighted.]]>
             </description>
             <name>activeIndex</name>
