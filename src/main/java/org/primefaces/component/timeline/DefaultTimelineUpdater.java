@@ -106,10 +106,10 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
 
     @Override
     public void beforePhase(PhaseEvent event) {
-        if (event.getPhaseId().equals(PhaseId.APPLY_REQUEST_VALUES)) {
+        if (PhaseId.APPLY_REQUEST_VALUES.equals(event.getPhaseId())) {
             populateTimelineUpdater(event.getFacesContext());
         }
-        else if (event.getPhaseId().equals(PhaseId.RENDER_RESPONSE)) {
+        else if (PhaseId.RENDER_RESPONSE.equals(event.getPhaseId())) {
             processCrudOperations(event.getFacesContext());
         }
     }
