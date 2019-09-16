@@ -138,7 +138,7 @@ public class TimelineRenderer extends CoreRenderer {
         int size = events != null ? events.size() : 0;
         for (int i = 0; i < size; i++) {
             // encode events
-            writer.write(encodeEvent(context, fsw, fswHtml, timeline, eventTitleFacet, browserTZ, targetTZ, groups, events.get(i), i));
+            writer.write(encodeEvent(context, fsw, fswHtml, timeline, eventTitleFacet, browserTZ, targetTZ, groups, events.get(i)));
             if (i + 1 < size) {
                 writer.write(",");
             }
@@ -325,10 +325,10 @@ public class TimelineRenderer extends CoreRenderer {
 
     protected String encodeEvent(FacesContext context, FastStringWriter fsw, FastStringWriter fswHtml, Timeline timeline,
                               UIComponent eventTitleFacet, TimeZone browserTZ, TimeZone targetTZ, List<TimelineGroup<Object>> groups,
-                              TimelineEvent<?> event, int index) throws IOException {
+                              TimelineEvent<?> event) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        fsw.write("{id: " + index);
+        fsw.write("{id: \"" + EscapeUtils.forJavaScript(event.getId()) + "\"");
 
         if (event.getStartDate() != null) {
             fsw.write(", start: " + encodeDate(browserTZ, targetTZ, event.getStartDate()));

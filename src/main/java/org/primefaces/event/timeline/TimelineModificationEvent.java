@@ -40,6 +40,11 @@ public class TimelineModificationEvent<T> extends AbstractAjaxBehaviorEvent {
         this.timelineEvent = timelineEvent;
     }
 
+    /**
+     * Gets a cloned {@link TimelineEvent} with the modifications if any. You should update your {@link TimelineModel} with this instance to keep sync between
+     * UI and model.
+     * @return
+     */
     public TimelineEvent<T> getTimelineEvent() {
         return timelineEvent;
     }

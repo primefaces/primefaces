@@ -67,13 +67,24 @@ public abstract class TimelineUpdater {
         return timelineUpdater;
     }
 
-    public abstract void add(TimelineEvent<?> event, int index);
+    public abstract void add(TimelineEvent<?> event);
 
-    public abstract void update(TimelineEvent<?> event, int index);
+    @Deprecated
+    public void update(TimelineEvent<?> event, int index) {
+        update(event);
+    }
 
+    public abstract void update(TimelineEvent<?> event);
+
+    @Deprecated
     public abstract void delete(int index);
 
+    public abstract void delete(String id);
+
+    @Deprecated
     public abstract void select(int index);
+
+    public abstract void select(String id);
 
     public abstract void clear();
 }

@@ -98,7 +98,7 @@ public class TimelineModel<E, G> implements Serializable {
 
         if (timelineUpdater != null) {
             // update UI
-            timelineUpdater.add(event, events.size() - 1);
+            timelineUpdater.add(event);
         }
     }
 
@@ -160,7 +160,7 @@ public class TimelineModel<E, G> implements Serializable {
 
             if (timelineUpdater != null) {
                 // update UI
-                timelineUpdater.update(event, index);
+                timelineUpdater.update(event);
             }
         }
     }
@@ -204,14 +204,11 @@ public class TimelineModel<E, G> implements Serializable {
      * @param timelineUpdater TimelineUpdater instance to delete the event in UI
      */
     public void delete(TimelineEvent<E> event, TimelineUpdater timelineUpdater) {
-        int index = getIndex(event);
-        if (index >= 0) {
-            events.remove(event);
+        events.remove(event);
 
-            if (timelineUpdater != null) {
-                // update UI
-                timelineUpdater.delete(index);
-            }
+        if (timelineUpdater != null) {
+            // update UI
+            timelineUpdater.delete(event.getId());
         }
     }
 
@@ -245,11 +242,9 @@ public class TimelineModel<E, G> implements Serializable {
      * @param timelineUpdater TimelineUpdater instance to select the event in UI
      */
     public void select(TimelineEvent<E> event, TimelineUpdater timelineUpdater) {
-        int index = getIndex(event);
-
         if (timelineUpdater != null) {
             // update UI
-            timelineUpdater.select(index);
+            timelineUpdater.select(event != null ? event.getId() : null);
         }
     }
 
@@ -427,21 +422,38 @@ public class TimelineModel<E, G> implements Serializable {
     }
 
     /**
-     * Gets event by its index as String
+     * Gets event by its id property.
      *
-     * @param index index
+     * @param id id property of the event
      * @return TimelineEvent found event or null
      */
-    public TimelineEvent<E> getEvent(String index) {
-        return getEvent(index != null ? Integer.valueOf(index) : -1);
+    public TimelineEvent<E> getEvent(String id) {
+        if (id != null) {
+            return events.stream()
+                    .filter(event -> id.equals(event.getId()))
+                    .findAny()
+                    .orElse(null);
+        }
+        return null;
     }
 
     /**
-     * Gets event by its index as int
+     * Check if current model has the event passed as parameter.
+     * @param event
+     * @return
+     */
+    public boolean hasEvent(TimelineEvent<E> event) {
+        return events.contains(event);
+    }
+
+    /**
+     * Gets event by its positional index according to this instance.
      *
      * @param index index
      * @return TimelineEvent found event or null
+     * @deprecated get event by id using {@link #getEvent(java.lang.String)} instead.
      */
+    @Deprecated
     public TimelineEvent<E> getEvent(int index) {
         if (index < 0) {
             return null;
@@ -455,7 +467,11 @@ public class TimelineModel<E, G> implements Serializable {
      *
      * @param event given event
      * @return int positive index or -1 if the given event is not available in the timeline
+     * @deprecated The index property is no longer necessary with the addition of {@link TimelineEvent#getId()} property.
+     * This method could be changed to private in next releases.
+     * See <a href='https://github.com/primefaces/primefaces/issues/5143'>issue 5143</a> for more information.
      */
+    @Deprecated
     public int getIndex(TimelineEvent<E> event) {
         int index = -1;
 

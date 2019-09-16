@@ -25,10 +25,17 @@ package org.primefaces.model.timeline;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
+import java.util.UUID;
 
 public class TimelineEvent<T> implements Serializable {
 
     private static final long serialVersionUID = 20130316L;
+
+    /**
+     * a unique id for this event.
+     */
+    private String id;
 
     /**
      * any custom data object (required to show content of the event)
@@ -71,7 +78,7 @@ public class TimelineEvent<T> implements Serializable {
     private String group;
 
     /**
-     * A title that is displayed when holding the mouse on the item. The title can be a string containing plain text or HTML.
+     * A title that is displayed when holding the mouse on the item. The title can be a string containing plain text or HTML (optional).
      */
     private String title;
 
@@ -81,79 +88,44 @@ public class TimelineEvent<T> implements Serializable {
     private String styleClass;
 
     public TimelineEvent() {
+        this.id = UUID.randomUUID().toString();
     }
 
     public TimelineEvent(T data, Date startDate) {
-        checkStartDate(startDate);
-        this.data = data;
-        this.startDate = startDate;
+        this(data, startDate, null, null, null, null);
     }
 
     public TimelineEvent(T data, Date startDate, Boolean editable) {
-        checkStartDate(startDate);
-        this.data = data;
-        this.startDate = startDate;
-        this.editable = editable;
-        this.editableTime = editable;
-        this.editableGroup = editable;
-        this.editableRemove = editable;
+        this(data, startDate, null, editable, null, null);
     }
 
     public TimelineEvent(T data, Date startDate, Boolean editable, String group) {
-        checkStartDate(startDate);
-        this.data = data;
-        this.startDate = startDate;
-        this.editable = editable;
-        this.editableTime = editable;
-        this.editableGroup = editable;
-        this.editableRemove = editable;
-        this.group = group;
+        this(data, startDate, null, editable, group, null);
     }
 
     public TimelineEvent(T data, Date startDate, Boolean editable, String group, String styleClass) {
-        checkStartDate(startDate);
-        this.data = data;
-        this.startDate = startDate;
-        this.editable = editable;
-        this.editableTime = editable;
-        this.editableGroup = editable;
-        this.editableRemove = editable;
-        this.group = group;
-        this.styleClass = styleClass;
+        this(data, startDate, null, editable, group, styleClass);
     }
 
     public TimelineEvent(T data, Date startDate, Date endDate) {
-        checkStartDate(startDate);
-        this.data = data;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this(data, startDate, endDate, null, null, null);
     }
 
     public TimelineEvent(T data, Date startDate, Date endDate, Boolean editable) {
-        checkStartDate(startDate);
-        this.data = data;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.editable = editable;
-        this.editableTime = editable;
-        this.editableGroup = editable;
-        this.editableRemove = editable;
+        this(data, startDate, endDate, editable, null, null);
     }
 
     public TimelineEvent(T data, Date startDate, Date endDate, Boolean editable, String group) {
-        checkStartDate(startDate);
-        this.data = data;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.editable = editable;
-        this.editableTime = editable;
-        this.editableGroup = editable;
-        this.editableRemove = editable;
-        this.group = group;
+        this(data, startDate, endDate, editable, group, null);
     }
 
     public TimelineEvent(T data, Date startDate, Date endDate, Boolean editable, String group, String styleClass) {
+        this(UUID.randomUUID().toString(), data, startDate, endDate, editable, group, styleClass);
+    }
+
+    public TimelineEvent(String id, T data, Date startDate, Date endDate, Boolean editable, String group, String styleClass) {
         checkStartDate(startDate);
+        this.id = id;
         this.data = data;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -163,6 +135,24 @@ public class TimelineEvent<T> implements Serializable {
         this.editableRemove = editable;
         this.group = group;
         this.styleClass = styleClass;
+    }
+
+    public TimelineEvent(TimelineEvent<T> event) {
+        this.id = event.id;
+        this.data = event.data;
+        this.startDate = (Date) event.startDate.clone();
+        this.endDate = event.endDate != null ? (Date) event.endDate.clone() : null;
+        this.editable = event.editable;
+        this.editableTime = event.editableTime;
+        this.editableGroup = event.editableGroup;
+        this.editableRemove = event.editableRemove;
+        this.group = event.group;
+        this.title = event.title;
+        this.styleClass = event.styleClass;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public T getData() {
@@ -178,6 +168,7 @@ public class TimelineEvent<T> implements Serializable {
     }
 
     public void setStartDate(Date startDate) {
+        checkStartDate(startDate);
         this.startDate = startDate;
     }
 
@@ -248,30 +239,37 @@ public class TimelineEvent<T> implements Serializable {
         this.title = title;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        TimelineEvent<?> that = (TimelineEvent) o;
-
-        return !(data != null ? !data.equals(that.data) : that.data != null);
+    public static <T> Builder<T> builder() {
+        return new Builder<T>();
     }
 
     @Override
     public int hashCode() {
-        return data != null ? data.hashCode() : 0;
+        int hash = 5;
+        hash = 79 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final TimelineEvent<?> other = (TimelineEvent<?>) obj;
+        return Objects.equals(this.id, other.id);
     }
 
     @Override
     public String toString() {
         return "TimelineEvent{"
-                + "data=" + data
+                + "id=" + id
+                + ", data=" + data
                 + ", startDate=" + startDate
                 + ", endDate=" + endDate
                 + ", editable=" + editable
@@ -283,6 +281,73 @@ public class TimelineEvent<T> implements Serializable {
     private void checkStartDate(Date startDate) {
         if (startDate == null) {
             throw new IllegalArgumentException("Event start date can not be null!");
+        }
+    }
+
+    public static final class Builder<T> {
+        private final TimelineEvent<T> event;
+
+        public Builder() {
+            event = new TimelineEvent<>();
+        }
+
+        public Builder<T> id(String id) {
+            event.id = id;
+            return this;
+        }
+
+        public Builder<T> data(T data) {
+            event.setData(data);
+            return this;
+        }
+
+        public Builder<T> startDate(Date startDate) {
+            event.setStartDate(startDate);
+            return this;
+        }
+
+        public Builder<T> endDate(Date endDate) {
+            event.setEndDate(endDate);
+            return this;
+        }
+
+        public Builder<T> editable(Boolean editable) {
+            event.setEditable(editable);
+            return this;
+        }
+
+        public Builder<T> group(String group) {
+            event.setGroup(group);
+            return this;
+        }
+
+        public Builder<T> styleClass(String styleClass) {
+            event.setStyleClass(styleClass);
+            return this;
+        }
+
+        public Builder<T> title(String title) {
+            event.setTitle(title);
+            return this;
+        }
+
+        public Builder<T> editableTime(Boolean editableTime) {
+            event.setEditableTime(editableTime);
+            return this;
+        }
+
+        public Builder<T> editableGroup(Boolean editableGroup) {
+            event.setEditableGroup(editableGroup);
+            return this;
+        }
+
+        public Builder<T> editableRemove(Boolean editableRemove) {
+            event.setEditableRemove(editableRemove);
+            return this;
+        }
+
+        public TimelineEvent<T> build() {
+            return event;
         }
     }
 }

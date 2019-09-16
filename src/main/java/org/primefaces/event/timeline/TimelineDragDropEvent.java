@@ -44,7 +44,7 @@ public class TimelineDragDropEvent<T> extends TimelineAddEvent {
 
     public TimelineDragDropEvent(UIComponent component, Behavior behavior, Date startDate, Date endDate, String group,
             String dragId, T data) {
-        super(component, behavior, startDate, endDate, group);
+        super(component, behavior, null, startDate, endDate, group);
         this.dragId = dragId;
         this.data = data;
     }

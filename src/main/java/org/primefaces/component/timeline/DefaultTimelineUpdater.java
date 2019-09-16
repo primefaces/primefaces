@@ -48,8 +48,6 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
 
     private static final long serialVersionUID = 20130317L;
 
-    private static final String PREVENT_RENDER = Boolean.TRUE.toString();
-
     private static final Logger LOGGER = Logger.getLogger(DefaultTimelineUpdater.class.getName());
 
     private String widgetVar;
@@ -65,35 +63,49 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
     }
 
     @Override
-    public void add(TimelineEvent<?> event, int index) {
+    public void add(TimelineEvent<?> event) {
         if (event == null) {
             return;
         }
 
         checkCrudOperationDataList();
-        crudOperationDatas.add(new CrudOperationData(CrudOperation.ADD, event, index));
+        crudOperationDatas.add(new CrudOperationData(CrudOperation.ADD, event));
     }
 
     @Override
-    public void update(TimelineEvent<?> event, int index) {
+    public void update(TimelineEvent<?> event) {
         if (event == null) {
             return;
         }
 
         checkCrudOperationDataList();
-        crudOperationDatas.add(new CrudOperationData(CrudOperation.UPDATE, event, index));
+        crudOperationDatas.add(new CrudOperationData(CrudOperation.UPDATE, event));
     }
 
     @Override
+    @Deprecated
     public void delete(int index) {
         checkCrudOperationDataList();
         crudOperationDatas.add(new CrudOperationData(CrudOperation.DELETE, index));
     }
 
     @Override
+    public void delete(String id) {
+        checkCrudOperationDataList();
+        crudOperationDatas.add(new CrudOperationData(CrudOperation.DELETE, id));
+    }
+
+    @Override
+    @Deprecated
     public void select(int index) {
         checkCrudOperationDataList();
         crudOperationDatas.add(new CrudOperationData(CrudOperation.SELECT, index));
+    }
+
+    @Override
+    public void select(String id) {
+        checkCrudOperationDataList();
+        crudOperationDatas.add(new CrudOperationData(CrudOperation.SELECT, id));
     }
 
     @Override
@@ -173,7 +185,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
                         sb.append(widgetVar);
                         sb.append("').addEvent(");
                         sb.append(EscapeUtils.forCDATA(timelineRenderer.encodeEvent(fc, fsw, fswHtml, timeline, eventTitleFacet, browserTZ, targetTZ,
-                                groups, crudOperationData.getEvent(), crudOperationData.getIndex())));
+                                groups, crudOperationData.getEvent())));
                         sb.append(")");
                         renderComponent = true;
                         break;
@@ -184,10 +196,8 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
                         sb.append(";PF('");
                         sb.append(widgetVar);
                         sb.append("').changeEvent(");
-                        sb.append(crudOperationData.getIndex());
-                        sb.append(",");
                         sb.append(EscapeUtils.forCDATA(timelineRenderer.encodeEvent(fc, fsw, fswHtml, timeline, eventTitleFacet, browserTZ, targetTZ,
-                                groups, crudOperationData.getEvent(), crudOperationData.getIndex())));
+                                groups, crudOperationData.getEvent())));
                         sb.append(")");
                         renderComponent = true;
                         break;
@@ -196,9 +206,9 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
 
                         sb.append(";PF('");
                         sb.append(widgetVar);
-                        sb.append("').deleteEvent(");
-                        sb.append(crudOperationData.getIndex());
-                        sb.append(", ").append(PREVENT_RENDER).append(")");
+                        sb.append("').deleteEvent(\"");
+                        sb.append(EscapeUtils.forJavaScript(crudOperationData.calculateId(model)));
+                        sb.append("\")");
                         renderComponent = true;
                         break;
 
@@ -206,9 +216,9 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
 
                         sb.append(";PF('");
                         sb.append(widgetVar);
-                        sb.append("').setSelection(");
-                        sb.append(crudOperationData.getIndex());
-                        sb.append(")");
+                        sb.append("').setSelection(\"");
+                        sb.append(EscapeUtils.forJavaScript(crudOperationData.calculateId(model)));
+                        sb.append("\")");
                         break;
 
                     case CLEAR:
@@ -278,34 +288,53 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
         private static final long serialVersionUID = 1L;
 
         private final CrudOperation crudOperation;
-        private TimelineEvent<?> event;
-        private int index;
+        private final TimelineEvent<?> event;
+        @Deprecated
+        private final int index;
+        private final String id;
 
         CrudOperationData(CrudOperation crudOperation) {
-            this.crudOperation = crudOperation;
+            this(crudOperation, null, null, -1);
         }
 
+        @Deprecated
         CrudOperationData(CrudOperation crudOperation, int index) {
-            this.crudOperation = crudOperation;
-            this.index = index;
+            this(crudOperation, null, null, index);
         }
 
-        CrudOperationData(CrudOperation crudOperation, TimelineEvent<?> event, int index) {
+        CrudOperationData(CrudOperation crudOperation, TimelineEvent<?> event) {
+            this(crudOperation, event, null, -1);
+        }
+
+        CrudOperationData(CrudOperation crudOperation, String id) {
+            this(crudOperation, null, id, -1);
+        }
+
+        private CrudOperationData(CrudOperation crudOperation, TimelineEvent<?> event, String id, int index) {
             this.crudOperation = crudOperation;
             this.event = event;
+            this.id = id;
             this.index = index;
         }
 
-        public CrudOperation getCrudOperation() {
+        CrudOperation getCrudOperation() {
             return crudOperation;
         }
 
-        public TimelineEvent<?> getEvent() {
+        TimelineEvent<?> getEvent() {
             return event;
         }
 
-        public int getIndex() {
-            return index;
+        String calculateId(TimelineModel<?, ?> model) {
+            if (id != null) {
+                return id;
+            }
+            @SuppressWarnings("deprecation")
+            TimelineEvent<?> timelineEvent = model.getEvent(index);
+            if (timelineEvent != null) {
+                return timelineEvent.getId();
+            }
+            return null;
         }
     }
 }

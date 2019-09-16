@@ -20,11 +20,11 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
                 end: null
             };
         }
-        
+
         if (this.cfg.isMenuPresent) {
             this.cfg.opts.onInitialDrawComplete = $.proxy(function() {
                 var el = document.getElementById(this.id);
-                $(el).find(".timeline-menu").show();                
+                $(el).find(".timeline-menu").show();
             }, this);
         }
 
@@ -42,13 +42,13 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
         // instantiate a timeline object
         var el = document.getElementById(this.id);
         var items = new vis.DataSet(this.cfg.data);
-        
+
         if (this.cfg.groups) {
             this.instance = new vis.Timeline(el, items, new vis.DataSet(this.cfg.groups), this.cfg.opts);
         } else {
             this.instance = new vis.Timeline(el, items, this.cfg.opts);
         }
-        
+
         if (this.cfg.currentTime) {
             this.instance.setCurrentTime(this.cfg.currentTime);
         }
@@ -64,14 +64,14 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
         // "select" event
         if (this.cfg.opts.selectable && this.getBehavior("select")) {
             this.instance.on('select', $.proxy(function () {
-                var index = this.getSelectedIndex();
-                if (index < 0) {
+                var selectedId = this.getSelectedId();
+                if (!selectedId) {
                     return;
                 }
 
                 var options = {
                     params: [
-                        {name: this.id + '_eventIdx', value: index}
+                        {name: this.id + '_eventId', value: selectedId}
                     ]
                 };
 
@@ -84,6 +84,16 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
             this.instance.setOptions({
                onAdd: $.proxy(function(item, callback) {
                     var params = [];
+                    if (!item.id) {
+                        //item.undefined until https://github.com/visjs/vis-timeline/issues/97 is fixed.
+                        item.id = item.undefined;
+                    }
+
+                    params.push({
+                        name: this.id + '_id',
+                        value: item.id
+                    });
+
                     params.push({
                         name: this.id + '_startDate',
                         value: item.start.getTime()
@@ -102,29 +112,26 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
                             value: item.group
                         });
                     }
-                    
-                    var maxId = this.instance.itemsData.max("id");
-                    
-                    item.id = 1 + (maxId ? maxId.id : 0);
+
                     this.addCallback = callback;
-                    
+
                     this.getBehavior("add").call(this, {params: params, item: item, callback: callback});
-                    
+
                     if (this.addCallback) {
                         this.addCallback(item);
                         this.addCallback = null;
                     }
                }, this)
-            });            
+            });
         }
 
-        // "change" event        
+        // "change" event
         if (this.cfg.opts.selectable && (this.cfg.opts.editable.updateTime || this.cfg.opts.editable.updateGroup) && this.getBehavior("change")) {
             this.instance.setOptions({
                 onMoving: $.proxy(function(item, callback) {
                     var params = [];
                     params.push({
-                        name: this.id + '_eventIdx',
+                        name: this.id + '_eventId',
                         value: item.id
                     });
 
@@ -159,7 +166,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
                 onMove: $.proxy(function(item, callback) {
                     var params = [];
                     params.push({
-                        name: this.id + '_eventIdx',
+                        name: this.id + '_eventId',
                         value: item.id
                     });
 
@@ -198,12 +205,12 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
                 onUpdate: $.proxy(function(item, callback) {
                     var options = {
                         params: [
-                            {name: this.id + '_eventIdx', value: item.id}
+                            {name: this.id + '_eventId', value: item.id}
                         ],
                         item: item,
                         callback: callback
                     };
-                    
+
                     this.changedCallback = callback;
                     this.getBehavior("edit").call(this, options);
                     if (this.changedCallback) {
@@ -220,7 +227,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
                 onRemove: $.proxy(function(item, callback) {
                     var options = {
                         params: [
-                            {name: this.id + '_eventIdx', value: item.id}
+                            {name: this.id + '_eventId', value: item.id}
                         ],
                         item: item,
                         callback: callback
@@ -310,7 +317,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
                 var step = inst.body.util.getStep();
                 var snappedStart = snap ? snap(xstart, scale, step).toDate() : xstart;
                 var snappedEnd = snap ? snap(xend, scale, step).toDate() : xend;
-                
+
                 var params = [];
                 params.push({
                     name: this.id + '_startDate',
@@ -548,30 +555,28 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * Changes properties of an existing item in the timeline. The provided parameter properties is an object,
      * and can contain parameters "start" (Date), "end" (Date), "content" (String), "group" (String).
      *
-     * @param index index of the event.
      * @param properties event's properties
      */
-    changeEvent: function (index, properties) {
-        properties.id = index;
+    changeEvent: function (properties) {
         this.instance.itemsData.update(properties);
     },
 
     /**
      * Deletes an existing event.
      *
-     * @param index Number index of the event.
+     * @param id String id of the event.
      */
-    deleteEvent: function (index) {
-        this.instance.itemsData.remove(index);
+    deleteEvent: function (id) {
+        this.instance.itemsData.remove(id);
     },
-    
+
     /**
      * Deletes all events from the timeline.
      */
     deleteAllEvents: function () {
         this.instance.itemsData.clear();
     },
-    
+
     /**
      * Update a group to the timeline adding if not exists. The provided parameter properties is an object, containing parameters
      * "id" (String), "content" (String), "style" (String), "className" (String), "order" (Number). Parameters "style", "className" and "order" are optional.
@@ -582,7 +587,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
         var dataset = this.instance.groupsData.getDataSet();
         dataset.update(properties);
     },
-    
+
     /**
      * Cancels event adding.
      */
@@ -617,20 +622,21 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * Retrieves the properties of a single event. The returned object can contain parameters
      * "start" (Date), "end" (Date), "content" (String), "group" (String).
      *
+     * @param {String} id the id of the event.
      * @return {Object}
      */
-    getEvent: function (index) {
-        return this.instance.itemsData.get(index);
+    getEvent: function (id) {
+        return this.instance.itemsData.get(id);
     },
 
     /**
-     * Is the event by given index editable?
+     * Is the event by given id editable?
      *
-     * @param index index of the event
+     * @param id the id of the event
      * @return {object} Object with properties updateTime, updateGroup and remove.
      */
-    getEditable: function(index) {
-        return this.instance.itemSet.getItemById(index).editable;
+    getEditable: function(id) {
+        return this.instance.itemSet.getItemById(id).editable;
     },
 
     /**
@@ -644,20 +650,20 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Set the current visible window. The parameters start and end can be a Date, Number, or String. 
+     * Set the current visible window. The parameters start and end can be a Date, Number, or String.
      * If the parameter value of start or end is null, the parameter will be left unchanged. Available options:
-     * 
-     * animation: boolean or {duration: number, easingFunction: string} If true (default) or an Object, 
-     * the range is animated smoothly to the new window. An object can be provided to specify duration 
-     * and easing function. Default duration is 500 ms, and default easing function is 'easeInOutQuad'. 
-     * Available easing functions: "linear", "easeInQuad", "easeOutQuad", "easeInOutQuad", "easeInCubic", 
-     * "easeOutCubic", "easeInOutCubic", "easeInQuart", "easeOutQuart", "easeInOutQuart", "easeInQuint", 
+     *
+     * animation: boolean or {duration: number, easingFunction: string} If true (default) or an Object,
+     * the range is animated smoothly to the new window. An object can be provided to specify duration
+     * and easing function. Default duration is 500 ms, and default easing function is 'easeInOutQuad'.
+     * Available easing functions: "linear", "easeInQuad", "easeOutQuad", "easeInOutQuad", "easeInCubic",
+     * "easeOutCubic", "easeInOutCubic", "easeInQuart", "easeOutQuart", "easeInOutQuart", "easeInQuint",
      * "easeOutQuint", "easeInOutQuint".
      *
      * @param start start Date
      * @param end end Date
      * @param options Object
-     * @param callback Function A callback function can be passed as an optional parameter. 
+     * @param callback Function A callback function can be passed as an optional parameter.
      * This function will be called at the end of setVisibleRange function.
      */
     setVisibleRange: function (start, end, options, callback) {
@@ -669,17 +675,17 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * and the timeline will be redrawn. For example, try moveFactor = 0.1 or -0.1. moveFactor is a Number
      * that determines the moving amount. A positive value will move right, a negative value will move left.
      * Available options:
-     * 
-     * animation: boolean or {duration: number, easingFunction: string} 
-     * If true (default) or an Object, the range is animated smoothly to the new window. An object can be provided 
-     * to specify duration and easing function. Default duration is 500 ms, and default easing function 
-     * is 'easeInOutQuad'. Available easing functions: "linear", "easeInQuad", "easeOutQuad", "easeInOutQuad", 
-     * "easeInCubic", "easeOutCubic", "easeInOutCubic", "easeInQuart", "easeOutQuart", "easeInOutQuart", 
+     *
+     * animation: boolean or {duration: number, easingFunction: string}
+     * If true (default) or an Object, the range is animated smoothly to the new window. An object can be provided
+     * to specify duration and easing function. Default duration is 500 ms, and default easing function
+     * is 'easeInOutQuad'. Available easing functions: "linear", "easeInQuad", "easeOutQuad", "easeInOutQuad",
+     * "easeInCubic", "easeOutCubic", "easeInOutCubic", "easeInQuart", "easeOutQuart", "easeInOutQuart",
      * "easeInQuint", "easeOutQuint", "easeInOutQuint".
      *
      * @param moveFactor Number
-     * @param options Object 
-     * @param callback Function A callback function can be passed as an optional parameter. 
+     * @param options Object
+     * @param callback Function A callback function can be passed as an optional parameter.
      * This function will be called at the end of move function.
      */
     move: function (moveFactor, options, callback) {
@@ -693,20 +699,20 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Zooms the timeline the given zoomfactor in or out. Available options:
-     * 
-     * animation: boolean or {duration: number, easingFunction: string} 
-     * If true (default) or an Object, the range is animated smoothly to the new window. An object can be provided 
-     * to specify duration and easing function. Default duration is 500 ms, and default easing function 
-     * is 'easeInOutQuad'. Available easing functions: "linear", "easeInQuad", "easeOutQuad", "easeInOutQuad", 
-     * "easeInCubic", "easeOutCubic", "easeInOutCubic", "easeInQuart", "easeOutQuart", "easeInOutQuart", 
+     *
+     * animation: boolean or {duration: number, easingFunction: string}
+     * If true (default) or an Object, the range is animated smoothly to the new window. An object can be provided
+     * to specify duration and easing function. Default duration is 500 ms, and default easing function
+     * is 'easeInOutQuad'. Available easing functions: "linear", "easeInQuad", "easeOutQuad", "easeInOutQuad",
+     * "easeInCubic", "easeOutCubic", "easeInOutCubic", "easeInQuart", "easeOutQuart", "easeInOutQuart",
      * "easeInQuint", "easeOutQuint", "easeInOutQuint".
      *
      * @param zoomFactor Number An number between -1 and +1. If positive zoom in, and if negative zoom out.
      * @param options Object Optional.
-     * @param callback Function A callback function can be passed as an optional parameter. This function 
+     * @param callback Function A callback function can be passed as an optional parameter. This function
      * will be called at the end of zoomIn function.
      */
-    zoom: function (zoomFactor, options, callback) {        
+    zoom: function (zoomFactor, options, callback) {
         if (zoomFactor >= 0) {
             return this.instance.zoomIn(zoomFactor, options, callback);
         } else {
@@ -724,11 +730,11 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Gets index of the currently selected event or -1.
+     * Gets id of the currently selected event or null.
      *
      * @return {Number}
      */
-    getSelectedIndex: function () {
+    getSelectedId: function () {
         var selection = this.instance.getSelection();
         if (selection.length) {
             if (selection[0] != undefined) {
@@ -736,7 +742,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
             }
         }
 
-        return -1;
+        return null;
     },
 
     /**
@@ -746,24 +752,24 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * @return {Object} JSON object
      */
     getSelectedEvent: function () {
-        var index = this.getSelectedIndex();
-        if (index != -1) {
-            return this.instance.itemsData.get(index);
+        var id = this.getSelectedId();
+        if (id) {
+            return this.instance.itemsData.get(id);
         }
 
         return null;
     },
 
     /**
-     * Selects an event by index. The visible range will be moved,
+     * Selects an event by id. The visible range will be moved,
      * so that the selected event is placed in the middle.
-     * To unselect all events, use a negative id, e.g. index = -1.
+     * To unselect all events, pass null as parameter.
      *
-     * @param index
+     * @param id
      */
-    setSelection: function(index) {
-        if (index >= 0) {
-            this.instance.setSelection(index);
+    setSelection: function(id) {
+        if (id) {
+            this.instance.setSelection(id);
         } else {
             // unselect all events
             this.instance.setSelection([]);
