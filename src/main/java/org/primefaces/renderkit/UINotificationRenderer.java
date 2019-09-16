@@ -62,7 +62,7 @@ public class UINotificationRenderer extends CoreRenderer {
     }
 
     /**
-     * Gets the severity in IL8N human readable text for ARIA screen readers.
+     * Gets the severity in I18N human readable text for ARIA screen readers.
      *
      * @param message the message to process
      * @return the human readable text for the severity
