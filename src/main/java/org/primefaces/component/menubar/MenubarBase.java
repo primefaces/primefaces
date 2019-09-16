@@ -38,6 +38,7 @@ public abstract class MenubarBase extends AbstractMenu implements Widget {
         model,
         style,
         styleClass,
+        delay,
         autoDisplay,
         toggleEvent
     }
@@ -98,5 +99,13 @@ public abstract class MenubarBase extends AbstractMenu implements Widget {
 
     public void setToggleEvent(String toggleEvent) {
         getStateHelper().put(PropertyKeys.toggleEvent, toggleEvent);
+    }
+
+    public int getDelay() {
+        return (Integer) getStateHelper().eval(PropertyKeys.delay, 0);
+    }
+
+    public void setDelay(int delay) {
+        getStateHelper().put(PropertyKeys.delay, delay);
     }
 }
