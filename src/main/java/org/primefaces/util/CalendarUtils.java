@@ -36,7 +36,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -47,7 +46,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- * Utility class for calendar component
+ * Utility class for calendar- and datepicker-component
  */
 public class CalendarUtils {
 
@@ -67,73 +66,13 @@ public class CalendarUtils {
     }
 
     /**
-     * Try to convert the given value to {@link Date} or return <code>null</code> if there is no appropriate converter for doing so.
+     * Try to convert the given value to {@link LocalDate} or return <code>null</code> if there is no appropriate converter for doing so.
      * @param context the faces context
      * @param calendar the calendar component
      * @param value the value to convert
-     * @return the {@link Date} object or <code>null</code>
-     * @deprecated Use eg {@link CalendarUtils#getObjectAsLocalDate(FacesContext, UICalendar, Object)} instead.
-     */
-    @Deprecated
-    public static Date getObjectAsDate(FacesContext context, UICalendar calendar, Object value) {
-        if (value == null) {
-            return null;
-        }
-
-        if (value instanceof Date) {
-            return (Date) value;
-        }
-
-        String pattern = calendar.calculatePattern();
-        if (pattern != null) {
-            Locale locale = calendar.calculateLocale(context);
-            if (locale != null) {
-                SimpleDateFormat dateFormat = new SimpleDateFormat(pattern, locale);
-                try {
-                    return dateFormat.parse(value.toString());
-                }
-                catch (ParseException ex) {
-                    // NO-OP
-                }
-            }
-        }
-
-        if (calendar.getConverter() != null) {
-            try {
-                Object obj = calendar.getConverter().getAsObject(context, calendar, value.toString());
-                if (obj instanceof Date) {
-                    return (Date) obj;
-                }
-            }
-            catch (ConverterException ex) {
-                // NO-OP
-            }
-        }
-
-        Converter converter = context.getApplication().createConverter(value.getClass());
-        if (converter != null) {
-            Object obj = converter.getAsObject(context, calendar, value.toString());
-            if (obj instanceof Date) {
-                return (Date) obj;
-            }
-        }
-
-        // TODO Currently we do not support conversion of jquery datepicker's special dates like 'today' or '+1m +7d'
-        // See http://api.jqueryui.com/datepicker/#option-maxDate, https://github.com/primefaces/primefaces/issues/4621
-
-        return null;
-    }
-
-    /**
-     * Try to convert the given value to {@link Date} or return <code>null</code> if there is no appropriate converter for doing so.
-     * @param context the faces context
-     * @param calendar the calendar component
-     * @param value the value to convert
-     * @return the {@link Date} object or <code>null</code>
+     * @return the {@link LocalDate} object or <code>null</code>
      */
     public static LocalDate getObjectAsLocalDate(FacesContext context, UICalendar calendar, Object value) {
-        //TODO: do we need getObjectAsLocalDateTime additional or instead?
-
         if (value == null) {
             return null;
         }
