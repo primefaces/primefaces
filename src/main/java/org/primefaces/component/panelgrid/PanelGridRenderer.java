@@ -47,10 +47,10 @@ public class PanelGridRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         PanelGrid grid = (PanelGrid) component;
 
-        if (grid.getLayout().equals(LAYOUT_TABULAR)) {
+        if (LAYOUT_TABULAR.equalsIgnoreCase(grid.getLayout())) {
             encodeTableLayout(context, grid);
         }
-        else if (grid.getLayout().equals(LAYOUT_GRID) || grid.getLayout().equals(LAYOUT_FLEX)) {
+        else if (LAYOUT_GRID.equalsIgnoreCase(grid.getLayout()) || LAYOUT_FLEX.equalsIgnoreCase(grid.getLayout())) {
             encodeGridLayout(context, grid, grid.getLayout());
         }
         else {
@@ -252,7 +252,7 @@ public class PanelGridRenderer extends CoreRenderer {
         String[] columnClasses = columnClassesValue == null ? new String[0] : columnClassesValue.split(",");
         String contentClass = PanelGrid.CONTENT_CLASS;
 
-        if (LAYOUT_FLEX.equals(layout)) {
+        if (LAYOUT_FLEX.equalsIgnoreCase(layout)) {
             contentClass += " " + PanelGrid.FLEX_ROW_CLASS;
         }
 
@@ -267,7 +267,7 @@ public class PanelGridRenderer extends CoreRenderer {
             }
 
             int colMod = i % columns;
-            if ((LAYOUT_GRID.equals(layout)) && (colMod == 0)) {
+            if ((LAYOUT_GRID.equalsIgnoreCase(layout)) && (colMod == 0)) {
                 //GRID-Layout creates an additional div per row (maybe due to backward-compatibility to the old PrimeFaces < 6.0 Grid)
                 writer.startElement("div", null);
                 String rowClass = (columnClasses.length > 0 && columnClasses[0].contains("ui-grid-col-")) ? "ui-grid-row" : PanelGrid.GRID_ROW_CLASS;
@@ -275,7 +275,7 @@ public class PanelGridRenderer extends CoreRenderer {
             }
 
             String columnClass = (colMod < columnClasses.length) ? PanelGrid.CELL_CLASS + " " + columnClasses[colMod].trim() : PanelGrid.CELL_CLASS;
-            if (LAYOUT_FLEX.equals(layout)) {
+            if (LAYOUT_FLEX.equalsIgnoreCase(layout)) {
                 if (!columnClass.contains("p-")) {
                     columnClass = columnClass + " " + GridLayoutUtils.getFlexColumnClass(columns);
                 }
@@ -294,7 +294,7 @@ public class PanelGridRenderer extends CoreRenderer {
             i++;
             colMod = i % columns;
 
-            if ((LAYOUT_GRID.equals(layout)) && (colMod == 0)) {
+            if ((LAYOUT_GRID.equalsIgnoreCase(layout)) && (colMod == 0)) {
                 //close the div per row
                 writer.endElement("div");
             }
