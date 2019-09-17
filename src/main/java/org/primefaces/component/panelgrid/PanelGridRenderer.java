@@ -276,7 +276,9 @@ public class PanelGridRenderer extends CoreRenderer {
 
             String columnClass = (colMod < columnClasses.length) ? PanelGrid.CELL_CLASS + " " + columnClasses[colMod].trim() : PanelGrid.CELL_CLASS;
             if (LAYOUT_FLEX.equals(layout)) {
-                columnClass = columnClass + " " + GridLayoutUtils.getFlexColumnClass(columns);
+                if (!columnClass.contains("p-")) {
+                    columnClass = columnClass + " " + GridLayoutUtils.getFlexColumnClass(columns);
+                }
             }
             else { //LAYOUT_GRID
                 if (!columnClass.contains("ui-md-") && !columnClass.contains("ui-g-") && !columnClass.contains("ui-grid-col-")) {
