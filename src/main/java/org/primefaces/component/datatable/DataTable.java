@@ -25,8 +25,6 @@ package org.primefaces.component.datatable;
 
 import java.lang.reflect.Array;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
@@ -671,7 +669,7 @@ public class DataTable extends DataTableBase {
     }
 
     public String resolveStaticField(ValueExpression expression) {
-        if(expression != null) {
+        if (expression != null) {
             String expressionString = expression.getExpressionString();
             expressionString = expressionString.substring(2, expressionString.length() - 1);      //Remove #{}
 
