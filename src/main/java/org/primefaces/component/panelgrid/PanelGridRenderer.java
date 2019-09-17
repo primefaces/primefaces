@@ -250,10 +250,15 @@ public class PanelGridRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String columnClassesValue = grid.getColumnClasses();
         String[] columnClasses = columnClassesValue == null ? new String[0] : columnClassesValue.split(",");
+        String contentClass = PanelGrid.CONTENT_CLASS;
+
+        if (LAYOUT_FLEX.equals(layout)) {
+            contentClass += " " + PanelGrid.FLEX_ROW_CLASS;
+        }
 
         writer.startElement("div", grid);
         writer.writeAttribute("id", clientId + "_content", null);
-        writer.writeAttribute("class", PanelGrid.CONTENT_CLASS, null);
+        writer.writeAttribute("class", contentClass, null);
 
         int i = 0;
         for (UIComponent child : grid.getChildren()) {
@@ -262,15 +267,10 @@ public class PanelGridRenderer extends CoreRenderer {
             }
 
             int colMod = i % columns;
-            if (colMod == 0) {
+            if ((LAYOUT_GRID.equals(layout)) && (colMod == 0)) {
+                //GRID-Layout creates an additional div per row (maybe due to backward-compatibility to the old PrimeFaces < 6.0 Grid)
                 writer.startElement("div", null);
-                String rowClass;
-                if (LAYOUT_FLEX.equals(layout)) {
-                    rowClass = PanelGrid.FLEX_ROW_CLASS;
-                }
-                else { //LAYOUT_GRID
-                    rowClass = (columnClasses.length > 0 && columnClasses[0].contains("ui-grid-col-")) ? "ui-grid-row" : PanelGrid.GRID_ROW_CLASS;
-                }
+                String rowClass = (columnClasses.length > 0 && columnClasses[0].contains("ui-grid-col-")) ? "ui-grid-row" : PanelGrid.GRID_ROW_CLASS;
                 writer.writeAttribute("class", rowClass, null);
             }
 
@@ -294,7 +294,8 @@ public class PanelGridRenderer extends CoreRenderer {
             i++;
             colMod = i % columns;
 
-            if (colMod == 0) {
+            if ((LAYOUT_GRID.equals(layout)) && (colMod == 0)) {
+                //close the div per row
                 writer.endElement("div");
             }
         }
