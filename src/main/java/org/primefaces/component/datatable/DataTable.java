@@ -178,7 +178,7 @@ public class DataTable extends DataTableBase {
             .put("cellEditCancel", CellEditEvent.class)
             .put("virtualScroll", PageEvent.class)
             .build();
-    private static final Pattern STATIC_FIELD_PATTERN = Pattern.compile("^#\\{\\w+\\.(.*)\\}$");
+
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
     private int columnsCountWithSpan = -1;
     private List filterMetadata;
@@ -670,20 +670,16 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    /**
-     * Extract bean's property from a value expression (e.g "#{car.year}")
-     * @param exprVE value expression
-     * @return bean's property name (e.g "year")
-     */
-    public String resolveStaticField(ValueExpression exprVE) {
-        if (exprVE != null) {
-            String exprStr = exprVE.getExpressionString();
-            Matcher matcher = STATIC_FIELD_PATTERN.matcher(exprStr);
-            if (matcher.find()) {
-                return matcher.group(1);
-            }
+    public String resolveStaticField(ValueExpression expression) {
+        if(expression != null) {
+            String expressionString = expression.getExpressionString();
+            expressionString = expressionString.substring(2, expressionString.length() - 1);      //Remove #{}
+
+            return expressionString.substring(expressionString.indexOf(".") + 1);                //Remove var
         }
-        return null;
+        else {
+            return null;
+        }
     }
 
     public String resolveDynamicField(ValueExpression expression) {
