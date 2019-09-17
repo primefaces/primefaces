@@ -671,9 +671,12 @@ public class DataTable extends DataTableBase {
     public String resolveStaticField(ValueExpression expression) {
         if (expression != null) {
             String expressionString = expression.getExpressionString();
-            expressionString = expressionString.substring(2, expressionString.length() - 1);      //Remove #{}
+            //Remove #{}
+            if (expressionString.contains("{")) {
+                expressionString = expressionString.substring(expressionString.indexOf('{') + 1, expressionString.indexOf('}'));
+            }
 
-            return expressionString.substring(expressionString.indexOf(".") + 1);                //Remove var
+            return expressionString.substring(expressionString.indexOf(".") + 1); //Remove var
         }
         else {
             return null;

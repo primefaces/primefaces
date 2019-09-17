@@ -48,10 +48,10 @@ public class DataTableTest {
 
         when(exprVE.getExpressionString()).thenReturn("#{car}");
         field = table.resolveStaticField(exprVE);
-        Assert.assertNull(field);
+        Assert.assertEquals("car", field);
 
         when(exprVE.getExpressionString()).thenReturn("car.year");
         field = table.resolveStaticField(exprVE);
-        Assert.assertNull(field);
+        Assert.assertEquals("year", field);
     }
 }
