@@ -39,15 +39,19 @@ import org.primefaces.util.GridLayoutUtils;
 
 public class PanelGridRenderer extends CoreRenderer {
 
+    public static final String LAYOUT_TABULAR = "tabular";
+    public static final String LAYOUT_GRID = "grid";
+    public static final String LAYOUT_FLEX = "flex";
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         PanelGrid grid = (PanelGrid) component;
 
-        if (grid.getLayout().equals("tabular")) {
+        if (grid.getLayout().equals(LAYOUT_TABULAR)) {
             encodeTableLayout(context, grid);
         }
-        else if (grid.getLayout().equals("grid")) {
-            encodeGridLayout(context, grid);
+        else if (grid.getLayout().equals(LAYOUT_GRID) || grid.getLayout().equals(LAYOUT_FLEX)) {
+            encodeGridLayout(context, grid, grid.getLayout());
         }
         else {
             throw new FacesException("The value of 'layout' attribute must be 'grid' or 'tabular'. Default value is 'tabular'.");
@@ -77,7 +81,7 @@ public class PanelGridRenderer extends CoreRenderer {
         writer.endElement("table");
     }
 
-    public void encodeGridLayout(FacesContext context, PanelGrid grid) throws IOException {
+    public void encodeGridLayout(FacesContext context, PanelGrid grid, String layout) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = grid.getClientId(context);
         int columns = grid.getColumns();
@@ -97,7 +101,7 @@ public class PanelGridRenderer extends CoreRenderer {
         }
 
         encodeGridFacet(context, grid, columns, "header", PanelGrid.HEADER_CLASS);
-        encodeGridBody(context, grid, columns);
+        encodeGridBody(context, grid, columns, layout);
         encodeGridFacet(context, grid, columns, "footer", PanelGrid.FOOTER_CLASS);
 
         writer.endElement("div");
@@ -241,7 +245,7 @@ public class PanelGridRenderer extends CoreRenderer {
         writer.endElement("tr");
     }
 
-    public void encodeGridBody(FacesContext context, PanelGrid grid, int columns) throws IOException {
+    public void encodeGridBody(FacesContext context, PanelGrid grid, int columns, String layout) throws IOException {
         String clientId = grid.getClientId(context);
         ResponseWriter writer = context.getResponseWriter();
         String columnClassesValue = grid.getColumnClasses();
@@ -260,13 +264,24 @@ public class PanelGridRenderer extends CoreRenderer {
             int colMod = i % columns;
             if (colMod == 0) {
                 writer.startElement("div", null);
-                String rowClass = (columnClasses.length > 0 && columnClasses[0].contains("ui-grid-col-")) ? "ui-grid-row" : PanelGrid.GRID_ROW_CLASS;
+                String rowClass;
+                if (LAYOUT_FLEX.equals(layout)) {
+                    rowClass = PanelGrid.FLEX_ROW_CLASS;
+                }
+                else { //LAYOUT_GRID
+                    rowClass = (columnClasses.length > 0 && columnClasses[0].contains("ui-grid-col-")) ? "ui-grid-row" : PanelGrid.GRID_ROW_CLASS;
+                }
                 writer.writeAttribute("class", rowClass, null);
             }
 
             String columnClass = (colMod < columnClasses.length) ? PanelGrid.CELL_CLASS + " " + columnClasses[colMod].trim() : PanelGrid.CELL_CLASS;
-            if (!columnClass.contains("ui-md-") && !columnClass.contains("ui-g-") && !columnClass.contains("ui-grid-col-")) {
-                columnClass = columnClass + " " + GridLayoutUtils.getColumnClass(columns);
+            if (LAYOUT_FLEX.equals(layout)) {
+                columnClass = columnClass + " " + GridLayoutUtils.getFlexColumnClass(columns);
+            }
+            else { //LAYOUT_GRID
+                if (!columnClass.contains("ui-md-") && !columnClass.contains("ui-g-") && !columnClass.contains("ui-grid-col-")) {
+                    columnClass = columnClass + " " + GridLayoutUtils.getColumnClass(columns);
+                }
             }
 
             writer.startElement("div", null);

@@ -36,6 +36,7 @@ public class PanelGrid extends PanelGridBase {
     public static final String CONTAINER_CLASS = "ui-panelgrid ui-widget";
     public static final String CONTENT_CLASS = "ui-panelgrid-content ui-widget-content ui-grid ui-grid-responsive";
     public static final String GRID_ROW_CLASS = "ui-g";
+    public static final String FLEX_ROW_CLASS = "p-grid";
     public static final String HEADER_CLASS = "ui-panelgrid-header";
     public static final String FOOTER_CLASS = "ui-panelgrid-footer";
     public static final String TABLE_ROW_CLASS = "ui-widget-content";
