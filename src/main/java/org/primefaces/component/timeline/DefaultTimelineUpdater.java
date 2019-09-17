@@ -101,21 +101,39 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
 
     @Override
     public PhaseId getPhaseId() {
-        return PhaseId.RENDER_RESPONSE;
+        return PhaseId.ANY_PHASE;
     }
 
     @Override
     public void beforePhase(PhaseEvent event) {
+        if (PhaseId.APPLY_REQUEST_VALUES.equals(event.getPhaseId())) {
+            populateTimelineUpdater(event.getFacesContext());
+        }
+        else if (PhaseId.RENDER_RESPONSE.equals(event.getPhaseId())) {
+            processCrudOperations(event.getFacesContext());
+        }
+    }
+
+    private void populateTimelineUpdater(FacesContext context) {
+        Map<String, TimelineUpdater> map = (Map<String, TimelineUpdater>) context.getAttributes().get(TimelineUpdater.class.getName());
+        if (map == null) {
+            map = new HashMap<>();
+            context.getAttributes().put(TimelineUpdater.class.getName(), map);
+        }
+        if (!map.containsKey(widgetVar)) {
+            map.put(widgetVar, this);
+        }
+    }
+
+    private void processCrudOperations(FacesContext context) {
         if (crudOperationDatas == null) {
             return;
         }
-
-        FacesContext fc = event.getFacesContext();
         StringBuilder sb = new StringBuilder();
 
-        Timeline timeline = (Timeline) fc.getViewRoot().findComponent(id);
+        Timeline timeline = (Timeline) context.getViewRoot().findComponent(id);
         TimelineRenderer timelineRenderer = ComponentUtils.getUnwrappedRenderer(
-                fc,
+                context,
                 Timeline.COMPONENT_FAMILY,
                 Timeline.DEFAULT_RENDERER);
 
@@ -141,7 +159,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
                         sb.append(";PF('");
                         sb.append(widgetVar);
                         sb.append("').addEvent(");
-                        sb.append(timelineRenderer.encodeEvent(fc, fsw, fswHtml, timeline, browserTZ, targetTZ,
+                        sb.append(timelineRenderer.encodeEvent(context, fsw, fswHtml, timeline, browserTZ, targetTZ,
                                 groups, groupFacet, groupsContent, crudOperationData.getEvent()));
                         sb.append(", " + PREVENT_RENDER + ")");
                         renderComponent = true;
@@ -154,7 +172,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
                         sb.append("').changeEvent(");
                         sb.append(crudOperationData.getIndex());
                         sb.append(",");
-                        sb.append(timelineRenderer.encodeEvent(fc, fsw, fswHtml, timeline, browserTZ, targetTZ,
+                        sb.append(timelineRenderer.encodeEvent(context, fsw, fswHtml, timeline, browserTZ, targetTZ,
                                 groups, groupFacet, groupsContent, crudOperationData.getEvent()));
                         sb.append(", " + PREVENT_RENDER + ")");
                         renderComponent = true;
