@@ -15,15 +15,21 @@ provides English translations by default and you may use the following keys in y
 bundle to provide your own values.
 
 - primefaces.datatable.aria.FILTER_BY = Filter by {0}
-- primefaces.paginator.aria.HEADER = Pagination
-- primefaces.paginator.aria.FIRST_PAGE = First Page
-- primefaces.paginator.aria.PREVIOUS_PAGE = Previous Page
-- primefaces.paginator.aria.NEXT_PAGE = Next Page
-- primefaces.paginator.aria.LAST_PAGE = Last Page
-- primefaces.paginator.aria.ROWS_PER_PAGE = Rows Per Page
 - primefaces.datatable.aria.HEADER_CHECKBOX_ALL = Select All
 - primefaces.dialog.aria.CLOSE = Close
+- primefaces.messages.aria.CLOSE = Close
+- primefaces.messages.aria.ERROR = Error
+- primefaces.messages.aria.FATAL = Fatal
+- primefaces.messages.aria.INFO = Information
+- primefaces.messages.aria.WARN = Warning
+- primefaces.paginator.aria.FIRST_PAGE = First Page
+- primefaces.paginator.aria.HEADER = Pagination
+- primefaces.paginator.aria.LAST_PAGE = Last Page
+- primefaces.paginator.aria.NEXT_PAGE = Next Page
+- primefaces.paginator.aria.PREVIOUS_PAGE = Previous Page
+- primefaces.paginator.aria.ROWS_PER_PAGE = Rows Per Page
+- primefaces.panel.aria.OPTIONS_MENU = Toggle Options Menu
+- primefaces.panel.aria.TOGGLE = Toggle Panel
+- primefaces.rowgrouptoggler.aria.ROW_GROUP_TOGGLER = Toggle Row Group
 - primefaces.rowtoggler.aria.ROW_TOGGLER = Toggle Row
-- primefaces.datatable.SORT_LABEL = Sort
-- primefaces.datatable.SORT_ASC = Ascending
-- primefaces.datatable.SORT_DESC = Descending
+

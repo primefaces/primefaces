@@ -35,6 +35,7 @@ Galleria is used to display a set of images.
 | showCaption | false | Boolean | Defines visibility of captions.
 | transitionInterval | 4000 | Integer | Defines interval of slideshow.
 | autoPlay | true | Boolean | Images are displayed in a slideshow in autoPlay.
+| tabindex | 0 | String | Specifies the tab order of element in tab navigation.
 
 ## Getting Started with Galleria
 Images to displayed are defined as children of galleria;

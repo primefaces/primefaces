@@ -116,21 +116,39 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
 
     @Override
     public PhaseId getPhaseId() {
-        return PhaseId.RENDER_RESPONSE;
+        return PhaseId.ANY_PHASE;
     }
 
     @Override
     public void beforePhase(PhaseEvent event) {
+        if (PhaseId.APPLY_REQUEST_VALUES.equals(event.getPhaseId())) {
+            populateTimelineUpdater(event.getFacesContext());
+        }
+        else if (PhaseId.RENDER_RESPONSE.equals(event.getPhaseId())) {
+            processCrudOperations(event.getFacesContext());
+        }
+    }
+
+    private void populateTimelineUpdater(FacesContext context) {
+        Map<String, TimelineUpdater> map = (Map<String, TimelineUpdater>) context.getAttributes().get(TimelineUpdater.class.getName());
+        if (map == null) {
+            map = new HashMap<>();
+            context.getAttributes().put(TimelineUpdater.class.getName(), map);
+        }
+        if (!map.containsKey(widgetVar)) {
+            map.put(widgetVar, this);
+        }
+    }
+
+    private void processCrudOperations(FacesContext context) {
         if (crudOperationDatas == null) {
             return;
         }
-
-        FacesContext fc = event.getFacesContext();
         StringBuilder sb = new StringBuilder();
 
-        Timeline timeline = (Timeline) fc.getViewRoot().findComponent(id);
+        Timeline timeline = (Timeline) context.getViewRoot().findComponent(id);
         TimelineRenderer timelineRenderer = ComponentUtils.getUnwrappedRenderer(
-                fc,
+                context,
                 Timeline.COMPONENT_FAMILY,
                 Timeline.DEFAULT_RENDERER);
 
@@ -166,7 +184,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
                         sb.append(widgetVar);
                         sb.append("').updateGroup(");
                         try {
-                            sb.append(timelineRenderer.encodeGroup(fc, fsw, fswHtml, timeline, groupFacet, groupsContent, foundGroup, orderGroup));
+                            sb.append(timelineRenderer.encodeGroup(context, fsw, fswHtml, timeline, groupFacet, groupsContent, foundGroup, orderGroup));
                         }
                         catch (IOException e) {
                             LOGGER.log(Level.WARNING, "Timeline with id " + id + " could not be updated, at least one CRUD operation failed", e);
@@ -184,7 +202,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
                         sb.append(";PF('");
                         sb.append(widgetVar);
                         sb.append("').addEvent(");
-                        sb.append(EscapeUtils.forCDATA(timelineRenderer.encodeEvent(fc, fsw, fswHtml, timeline, eventTitleFacet, browserTZ, targetTZ,
+                        sb.append(EscapeUtils.forCDATA(timelineRenderer.encodeEvent(context, fsw, fswHtml, timeline, eventTitleFacet, browserTZ, targetTZ,
                                 groups, crudOperationData.getEvent())));
                         sb.append(")");
                         renderComponent = true;
@@ -196,7 +214,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
                         sb.append(";PF('");
                         sb.append(widgetVar);
                         sb.append("').changeEvent(");
-                        sb.append(EscapeUtils.forCDATA(timelineRenderer.encodeEvent(fc, fsw, fswHtml, timeline, eventTitleFacet, browserTZ, targetTZ,
+                        sb.append(EscapeUtils.forCDATA(timelineRenderer.encodeEvent(context, fsw, fswHtml, timeline, eventTitleFacet, browserTZ, targetTZ,
                                 groups, crudOperationData.getEvent())));
                         sb.append(")");
                         renderComponent = true;

@@ -5,7 +5,7 @@ Most of the performance bottlenecks are in the backend and probably database que
 However, there are some settings and patterns that can improve the performance.
 
 
-## Configuration
+## Recommended configuration
 
 ### Common
 ```xml
@@ -62,7 +62,7 @@ However, there are some settings and patterns that can improve the performance.
 <!-- Cache EL expressions; See: https://myfaces.apache.org/wiki/core/user-guide/configuration-of-special-features/cache-el-expressions.html-->
 <context-param>
     <param-name>org.apache.myfaces.CACHE_EL_EXPRESSIONS</param-name>
-    <param-value>always</param-value>
+    <param-value>alwaysRecompile</param-value>
 </context-param>
 
 <!-- reduce saved view states -->
@@ -86,6 +86,7 @@ However, there are some settings and patterns that can improve the performance.
     <param-value>false</param-value>
 </context-param>
 
+<!-- Flush the response directly after the head to allow start loading resources on the browser side -->
 <context-param>
     <param-name>org.apache.myfaces.EARLY_FLUSH_ENABLED</param-name>
     <param-value>true</param-value>
@@ -125,18 +126,18 @@ and Whitespace compression: http://lu4242.blogspot.com/2012/12/html-white-space-
 
 ### Other
 
-- Use a custom ServletFilter to set the correct expires/cache headers of your resources (images, stylesheets, javascripts). This is only required if you don't use the JSF resource handling for every resource. The JSF impl should already do it correctly for all JSF managed resources.
+- Only required for non-JSF managed resources: Use a custom ServletFilter to set the correct expires/cache headers of your resources (images, stylesheets, javascripts).
 - Compress and optimize your Javascripts in your build process. If you use maven, try primefaces-extensions' closure compiler maven plugin.
-- Enable GZIP in your webserver! If it's not supported by your webserver/container, you can still add the GzipResponseFilter from OmniFaces: http://showcase.omnifaces.org/filters/GzipResponseFilter
+- Enable GZIP in your webserver. If it's not supported by your webserver/container, you can still add the GzipResponseFilter from OmniFaces: http://showcase.omnifaces.org/filters/GzipResponseFilter
 
 ## Patterns
 
-- Correctly define update/render and process/execute! Often this is a huge improvement as many times the whole form is updated instead only a small part. But i also prefer maintainability over performance here.
-- If you don't use ViewScoped beans, it's a good but small improvement to mark the view as stateless via transient=true.
-- Try using HTML over JSF tags.
-        Especially avoid using h:outputText if you don't need the escaping. Just use EL expressions inside your xhtml template.
-        The same applies for some other components like p:outputPanel. Just use a plain div. If you need to make it updateable, you can still use "passtrough elements" (<div jsf:id="...">...</div>)
-- Never put logic in getters because they can be called multiple times - especially for the rendered attribute!
+- Correctly define update/render and process/execute! Often this is a huge improvement as many times the whole form is updated instead only a small part. But also think about maintainability over performance here.
+- If you don't use ViewScoped beans, it's a good but small improvement to mark the view as stateless.
+- Try using HTML over JSF tags
+    - Especially avoid using h:outputText if you don't need the escaping or other features like converters. Just use EL expressions inside your XHTML.
+    - The same applies for some other components like p:outputPanel. Just use a plain div. If you need to make it updateable, you can still use "passtrough elements" (`<div jsf:id="...">...</div>`)
+- Try to avoid logic in getters because they can be called multiple times - especially for the rendered attribute!
 - Avoid logic (like inline if-statements) in EL expression! It's better to move those logic into the bean. It's faster and often easier to read and maintain.
 - Prefer AJAX over a full postback
 - If you have many p:outputLabel's on the page and you know that the input field is required or not, it's a good performance improvemet to set the input to required=true or the outputLabel to indicateRequired=true|false. The default value for indicateRequired since 6.2 is auto, which tries to lookup BeanValidation constrains to check if @NotNull|@NotEmpty|@NotBlank are defined.

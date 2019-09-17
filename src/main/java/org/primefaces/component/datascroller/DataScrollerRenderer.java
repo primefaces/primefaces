@@ -108,11 +108,12 @@ public class DataScrollerRenderer extends CoreRenderer {
             writer.writeAttribute("style", "height:" + ds.getScrollHeight() + "px", null);
         }
 
+        int rowCount = ds.getRowCount();
+        int start = 0;
+
         if (inline && ds.isVirtualScroll()) {
-            int rowCount = ds.getRowCount();
             int virtualScrollRowCount = (chunkSize * 2);
             int rowCountToRender = (isLazy && rowCount == 0) ? virtualScrollRowCount : ((virtualScrollRowCount > rowCount) ? rowCount : virtualScrollRowCount);
-            int start = 0;
 
             if (ds.isStartAtBottom()) {
                 int totalPage = (int) Math.ceil(rowCount * 1d / chunkSize);
@@ -122,7 +123,11 @@ public class DataScrollerRenderer extends CoreRenderer {
             encodeVirtualScrollList(context, ds, start, rowCountToRender);
         }
         else {
-            encodeList(context, ds, 0, chunkSize);
+            if (ds.isStartAtBottom()) {
+                start = rowCount > chunkSize ? rowCount - chunkSize : 0;
+            }
+
+            encodeList(context, ds, start, chunkSize);
 
             writer.startElement("div", null);
             writer.writeAttribute("class", DataScroller.LOADER_CLASS, null);
@@ -177,7 +182,6 @@ public class DataScrollerRenderer extends CoreRenderer {
     protected void loadChunk(FacesContext context, DataScroller ds, int start, int size) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean isLazy = ds.isLazy();
-        boolean isVirtualScroll = ds.isVirtualScroll();
 
         if (isLazy) {
             loadLazyData(context, ds, start, size);
@@ -186,7 +190,7 @@ public class DataScrollerRenderer extends CoreRenderer {
         String rowIndexVar = ds.getRowIndexVar();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
-        int firstIndex = (isLazy && isVirtualScroll) ? 0 : start;
+        int firstIndex = isLazy ? 0 : start;
         int lastIndex = (firstIndex + size);
 
         for (int i = firstIndex; i < lastIndex; i++) {
