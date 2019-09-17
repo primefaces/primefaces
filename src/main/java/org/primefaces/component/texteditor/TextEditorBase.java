@@ -49,7 +49,8 @@ public abstract class TextEditorBase extends UIInput implements Widget, ClientBe
         allowLinks,
         allowStyles,
         allowImages,
-        formats
+        formats,
+        secure
     }
 
     public TextEditorBase() {
@@ -163,5 +164,13 @@ public abstract class TextEditorBase extends UIInput implements Widget, ClientBe
 
     public void setFormats(List formats) {
         getStateHelper().put(PropertyKeys.formats, formats);
+    }
+
+    public boolean isSecure() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.secure, true);
+    }
+
+    public void setSecure(boolean secure) {
+        getStateHelper().put(PropertyKeys.secure, secure);
     }
 }
