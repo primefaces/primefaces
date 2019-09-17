@@ -40,7 +40,7 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
         }
         else {
             this.itemHeight = 0;
-            
+
             if(this.cfg.virtualScroll) {
                 var item = this.list.children('li.ui-datascroller-item');
                 if(item) {
@@ -60,14 +60,20 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
                     this.content.scrollTop(this.content[0].scrollHeight);
                 }
             }
-
+            else if (this.cfg.startAtBottom) {                
+                this.content.scrollTop(this.content[0].scrollHeight);
+                this.cfg.offset = this.cfg.totalSize;
+                
+                var paddingTop = '';
+                if (this.content.height() > this.list.height()) {
+                    paddingTop = (this.getInnerContentHeight() - this.list.outerHeight() - this.loaderContainer.outerHeight());
+                }
+                
+                this.list.css('padding-top', paddingTop);
+            }
+            
             this.content.on('scroll', function () {
-                if($this.cfg.virtualScroll) {
-                    if ($this.blockScrollEvent) {
-                        $this.blockScrollEvent = false;
-                        return;
-                    }
-                    
+                if($this.cfg.virtualScroll) {                    
                     var virtualScrollContent = this;
                     
                     clearTimeout($this.scrollTimeout);
@@ -86,12 +92,16 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
                         }
                     }, 200);
                 }
-                else {
+                else {                    
                     var scrollTop = this.scrollTop,
                     scrollHeight = this.scrollHeight,
-                    viewportHeight = this.clientHeight;
-                
-                    if((scrollTop >= ((scrollHeight * $this.cfg.buffer) - (viewportHeight))) && $this.shouldLoad()) {
+                    viewportHeight = this.clientHeight,
+                    shouldLoad = $this.shouldLoad() && ($this.cfg.startAtBottom ?
+                                (scrollTop <= (scrollHeight - (scrollHeight * $this.cfg.buffer)))
+                                :
+                                (scrollTop >= ((scrollHeight * $this.cfg.buffer) - viewportHeight)));
+                        
+                    if (shouldLoad) {
                         $this.load();
                     }
                 }
@@ -138,11 +148,13 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.ajax.Request.handle(options);
     },
     
-    updateData: function(data, clear) {
+    updateData: function(data, clear, pre) {
         var empty = (clear === undefined) ? true: clear;
 
         if(empty)
             this.list.html(data);
+        else if (pre)
+            this.list.prepend(data);
         else
             this.list.append(data);
     },
@@ -158,7 +170,11 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
 
     load: function() {
         this.loading = true;
-        this.cfg.offset += this.cfg.chunkSize;
+        this.cfg.offset += (this.cfg.chunkSize * (this.cfg.startAtBottom ? -1 : 1));
+        
+        if (this.cfg.offset < 0) {
+            this.cfg.offset = 0;
+        }
 
         this.loadStatus.appendTo(this.loaderContainer);
         if(this.loadTrigger) {
@@ -176,7 +192,7 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                     widget: $this,
                     handle: function(content) {
-                        this.updateData(content, false);
+                        this.updateData(content, false, $this.cfg.startAtBottom);
                     }
                 });
 
@@ -184,7 +200,7 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
             },
             oncomplete: function() {
                 $this.loading = false;
-                $this.allLoaded = ($this.cfg.offset + $this.cfg.chunkSize) >= $this.cfg.totalSize;
+                $this.allLoaded = ($this.cfg.startAtBottom) ? $this.cfg.offset <= 0 : ($this.cfg.offset + $this.cfg.chunkSize) >= $this.cfg.totalSize;
 
                 $this.loadStatus.remove();
 
@@ -199,6 +215,10 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
 
     shouldLoad: function() {
         return (!this.loading && !this.allLoaded);
+    },
+            
+    getInnerContentHeight: function() {
+        return (this.content.innerHeight() - parseFloat(this.content.css('padding-top')) - parseFloat(this.content.css('padding-bottom')));
     }
-
+    
 });
