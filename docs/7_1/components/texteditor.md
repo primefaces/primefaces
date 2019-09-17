@@ -36,6 +36,7 @@ style | null | String | Inline style of the editor container.
 styleClass | null | String | Style class of the editor container.
 placeholder | null | String | Placeholder text to show when editor is empty
 toolbarVisible | true | Boolean | Whether the toolbar of the editor is visible.
+secure | true | Boolean | Secure the component with the OWASP HTML Sanitizer library on the classpath.
 allowFormatting | true | Boolean | Whether to allow formatting to be included.
 allowBlocks | true | Boolean | Whether to allow blocks to be included.
 allowStyles | true | Boolean | Whether to allow styles to be included.

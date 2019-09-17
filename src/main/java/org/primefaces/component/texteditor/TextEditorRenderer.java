@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -37,6 +38,7 @@ import org.primefaces.context.PrimeApplicationContext;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HtmlSanitizer;
 import org.primefaces.util.WidgetBuilder;
@@ -72,7 +74,7 @@ public class TextEditorRenderer extends InputRenderer {
         }
 
         if (value != null && value.equals("<br/>")) {
-            value = "";
+            value = Constants.EMPTY_STRING;
         }
 
         editor.setSubmittedValue(value);
@@ -81,6 +83,9 @@ public class TextEditorRenderer extends InputRenderer {
     @Override
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
         TextEditor editor = (TextEditor) component;
+
+        // #5163 fail rendering if insecure
+        checkSecurity(facesContext, editor);
 
         encodeMarkup(facesContext, editor);
         encodeScript(facesContext, editor);
@@ -169,5 +174,21 @@ public class TextEditorRenderer extends InputRenderer {
         }
 
         return value;
+    }
+
+    /**
+     * Enforce security by default requiring the OWASP sanitizer on the classpath.  Only if a user marks the editor
+     * with secure="false" will they opt-out of security.
+     *
+     * @param context the FacesContext
+     * @param editor the editor to check for security
+     */
+    private void checkSecurity(FacesContext context, TextEditor editor) {
+        boolean sanitizerAvailable = PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isHtmlSanitizerAvailable();
+        if (editor.isSecure() && !sanitizerAvailable) {
+            throw new FacesException("TextEditor component is marked secure='true' but the HTML Sanitizer was not found on the classpath. "
+                        + "Either add the HTML sanitizer to the classpath per the documentation"
+                        + " or mark secure='false' if you would like to use the component without the sanitizer.");
+        }
     }
 }

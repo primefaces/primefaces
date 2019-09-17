@@ -25800,6 +25800,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Secure the component with the HTML Sanitizer library on the classpath. Default is true.]]>
+            </description>
+            <name>secure</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Whether to allow formatting to be included.]]>
             </description>
             <name>allowFormatting</name>
