@@ -54,7 +54,8 @@ public abstract class UICalendar extends HtmlInputText {
         readonlyInput,
         inputStyle,
         inputStyleClass,
-        type
+        type,
+        rangeSeparator
     }
 
     public Object getLocale() {
@@ -214,6 +215,14 @@ public abstract class UICalendar extends HtmlInputText {
 
     public void setLabelledBy(String labelledBy) {
         getStateHelper().put("labelledby", labelledBy);
+    }
+
+    public String getRangeSeparator() {
+        return (String) getStateHelper().eval(PropertyKeys.rangeSeparator, "-");
+    }
+
+    public void setRangeSeparator(java.lang.String _rangeSeparator) {
+        getStateHelper().put(PropertyKeys.rangeSeparator, _rangeSeparator);
     }
 
     /*
