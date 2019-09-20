@@ -32,7 +32,10 @@ import java.io.OutputStream;
 import java.io.PushbackInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.spi.FileTypeDetector;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ServiceLoader;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -64,6 +67,7 @@ public class FileUploadUtils {
     private static final Logger LOGGER = Logger.getLogger(FileUploadUtils.class.getName());
 
     private static final Pattern INVALID_FILENAME_PATTERN = Pattern.compile("([\\/:*?\"<>|])");
+    private static final String TIKA_CLASS = "org.apache.tika.filetypedetector.TikaFileTypeDetector";
 
     private FileUploadUtils() {
     }
@@ -206,7 +210,7 @@ public class FileUploadUtils {
             return true;
         }
 
-        boolean tika = LangUtils.tryToLoadClassForName("org.apache.tika.filetypedetector.TikaFileTypeDetector") != null;
+        boolean tika = LangUtils.tryToLoadClassForName(TIKA_CLASS) != null;
         if (!tika && LOGGER.isLoggable(Level.WARNING)) {
             LOGGER.warning("Could not find Apache Tika in classpath which is recommended for reliable content type checking");
         }
@@ -220,7 +224,23 @@ public class FileUploadUtils {
             try (OutputStream out = new FileOutputStream(tempFile.toFile())) {
                 IOUtils.copyLarge(in, out);
             }
-            String contentType = Files.probeContentType(tempFile);
+
+            String contentType = null;
+            if (tika) {
+                Iterator<FileTypeDetector> iterator = ServiceLoader.load(FileTypeDetector.class).iterator();
+                while (iterator.hasNext()) {
+                    FileTypeDetector fileTypeDetector = iterator.next();
+                    if (TIKA_CLASS.equals(fileTypeDetector.getClass().getName())) {
+                        contentType = fileTypeDetector.probeContentType(tempFile);
+                        break;
+                    }
+                }
+            }
+            else {
+                // use default Java fallback
+                contentType = Files.probeContentType(tempFile);
+            }
+
             if (contentType == null) {
                 if (LOGGER.isLoggable(Level.WARNING)) {
                     LOGGER.warning(String.format("Could not determine content type of uploaded file %s, consider plugging in an adequate " +

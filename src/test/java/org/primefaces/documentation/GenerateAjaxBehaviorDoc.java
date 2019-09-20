@@ -29,9 +29,6 @@ import java.util.List;
 
 import javax.faces.component.UIComponentBase;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
-
 /**
  * Utility class to scan a component and generated the Markdown information 
  * for the AJAX behavior events the component supports.
@@ -58,9 +55,8 @@ public class GenerateAjaxBehaviorDoc {
         String defaultEvent = comp.getDefaultEventName();
         List<String> events = new ArrayList<>(comp.getEventNames());
         Collections.sort(events);
-        String eventString = ArrayUtils.toString(events);
-        eventString = StringUtils.remove(eventString, "[");
-        eventString = StringUtils.remove(eventString, "]");
+        String eventString = events.toString();
+        eventString =  eventString.substring(eventString.indexOf("[")+1, eventString.indexOf("]"));
         System.out.println("## Ajax Behavior Events");
         System.out.println();
         System.out.println("The following AJAX behavior events are available for this component. If no event is specific the default event is called.  ");
