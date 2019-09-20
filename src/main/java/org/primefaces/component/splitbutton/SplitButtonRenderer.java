@@ -109,6 +109,9 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         writer.startElement("div", button);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "id");
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
+        writer.writeAttribute(HTML.ARIA_CONTROLS, menuId, null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
         if (button.getStyle() != null) {
             writer.writeAttribute("style", button.getStyle(), "id");
         }
