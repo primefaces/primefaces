@@ -30,11 +30,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.primefaces.component.fileupload.FileUpload;
+import org.primefaces.config.PrimeEnvironment;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.file.SingleUploadedFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -43,11 +48,15 @@ public class FileUploadUtilsTest {
 
     private FileUpload fileUpload;
     private InputStream inputStream;
+    private PrimeEnvironment environment;
 
     @Before
     public void setup() {
         fileUpload = mock(FileUpload.class);
         inputStream = mock(InputStream.class);
+        
+        FacesContext context = mock(FacesContext.class);
+        environment = new PrimeEnvironment(context);
     }
 
     @After
@@ -71,12 +80,12 @@ public class FileUploadUtilsTest {
     @Test
     public void isValidTypeFilenameCheck() {
         when(fileUpload.getAllowTypes()).thenReturn(null);
-        Assert.assertTrue(FileUploadUtils.isValidType(fileUpload, createFile("test.png", "image/png", inputStream)));
+        Assert.assertTrue(FileUploadUtils.isValidType(environment, fileUpload, createFile("test.png", "image/png", inputStream)));
 
         when(fileUpload.getAllowTypes()).thenReturn("/\\.(gif|png|jpe?g)$/i");
-        Assert.assertTrue(FileUploadUtils.isValidType(fileUpload, createFile("test.PNG", "image/png", inputStream)));
-        Assert.assertTrue(FileUploadUtils.isValidType(fileUpload, createFile("test.jpeg", "image/png", inputStream)));
-        Assert.assertFalse(FileUploadUtils.isValidType(fileUpload,createFile( "test.bmp", "text/plain", inputStream)));
+        Assert.assertTrue(FileUploadUtils.isValidType(environment, fileUpload, createFile("test.PNG", "image/png", inputStream)));
+        Assert.assertTrue(FileUploadUtils.isValidType(environment, fileUpload, createFile("test.jpeg", "image/png", inputStream)));
+        Assert.assertFalse(FileUploadUtils.isValidType(environment, fileUpload,createFile( "test.bmp", "text/plain", inputStream)));
     }
 
     //TODO Once including Apache Tika as test scope dependency, we never check the default implementation which should work well also for the non-tampered cases
@@ -93,32 +102,32 @@ public class FileUploadUtilsTest {
         when(fileUpload.isValidateContentType()).thenReturn(false);
 
         when(fileUpload.getAccept()).thenReturn("image/png");
-        Assert.assertTrue(FileUploadUtils.isValidType(fileUpload, createFile("test.TIF", "image/tif", tif)));
-        Assert.assertTrue(FileUploadUtils.isValidType(fileUpload, createFile("test.mp4", "application/music", mp4)));
+        Assert.assertTrue(FileUploadUtils.isValidType(environment, fileUpload, createFile("test.TIF", "image/tif", tif)));
+        Assert.assertTrue(FileUploadUtils.isValidType(environment, fileUpload, createFile("test.mp4", "application/music", mp4)));
         
         when(fileUpload.isValidateContentType()).thenReturn(true);
 
         when(fileUpload.getAccept()).thenReturn("");
-        Assert.assertTrue(FileUploadUtils.isValidType(fileUpload, createFile("test.png", "image/png", png)));
+        Assert.assertTrue(FileUploadUtils.isValidType(environment, fileUpload, createFile("test.png", "image/png", png)));
 
         when(fileUpload.getAccept()).thenReturn(".png,.bmp");
-        Assert.assertTrue(FileUploadUtils.isValidType(fileUpload, createFile("test.png", "image/png", png)));
-        Assert.assertTrue(FileUploadUtils.isValidType(fileUpload, createFile("test.bmp", "image/bmp", bmp)));
-        Assert.assertFalse(FileUploadUtils.isValidType(fileUpload, createFile("test.tif", "image/tif", tif)));
+        Assert.assertTrue(FileUploadUtils.isValidType(environment, fileUpload, createFile("test.png", "image/png", png)));
+        Assert.assertTrue(FileUploadUtils.isValidType(environment, fileUpload, createFile("test.bmp", "image/bmp", bmp)));
+        Assert.assertFalse(FileUploadUtils.isValidType(environment, fileUpload, createFile("test.tif", "image/tif", tif)));
 
         when(fileUpload.getAccept()).thenReturn("video/*");
-        Assert.assertFalse(FileUploadUtils.isValidType(fileUpload, createFile("test.png", "image/png", png)));
-        Assert.assertTrue(FileUploadUtils.isValidType(fileUpload, createFile("test.mp4", "application/music", mp4)));
+        Assert.assertFalse(FileUploadUtils.isValidType(environment, fileUpload, createFile("test.png", "image/png", png)));
+        Assert.assertTrue(FileUploadUtils.isValidType(environment, fileUpload, createFile("test.mp4", "application/music", mp4)));
 
         when(fileUpload.getAccept()).thenReturn("image/png");
         //FIXME PNG not recognized by Apache Tika?
 //        Assert.assertTrue(FileUploadUtils.isValidType(fileUpload, "test.Png", png));
-        Assert.assertFalse(FileUploadUtils.isValidType(fileUpload, createFile("test.tif", "image/tiff", tif)));
+        Assert.assertFalse(FileUploadUtils.isValidType(environment, fileUpload, createFile("test.tif", "image/tiff", tif)));
 
         //Tampered - Apache Tika must be in the classpath for this to work
         when(fileUpload.getAccept()).thenReturn("image/gif");
-        Assert.assertFalse(FileUploadUtils.isValidType(fileUpload, createFile("test.gif", "image/gif", exe)));
-        Assert.assertTrue(FileUploadUtils.isValidType(fileUpload, createFile("test.png", "image/png", gif)));
+        Assert.assertFalse(FileUploadUtils.isValidType(environment, fileUpload, createFile("test.gif", "image/gif", exe)));
+        Assert.assertTrue(FileUploadUtils.isValidType(environment, fileUpload, createFile("test.png", "image/png", gif)));
     }
     
 }

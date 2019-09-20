@@ -25,7 +25,9 @@ package org.primefaces.config;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.spi.FileTypeDetector;
 import java.util.Properties;
+import java.util.ServiceLoader;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,6 +38,7 @@ import org.primefaces.util.LangUtils;
 public class PrimeEnvironment {
 
     private static final Logger LOGGER = Logger.getLogger(PrimeEnvironment.class.getName());
+    private static final String TIKA_CLASS = "org.apache.tika.filetypedetector.TikaFileTypeDetector";
 
     private final boolean beanValidationAvailable;
 
@@ -53,6 +56,9 @@ public class PrimeEnvironment {
 
     private final boolean htmlSanitizerAvailable;
 
+    private final boolean tikaAvailable;
+    private FileTypeDetector tikaDetector;
+
     public PrimeEnvironment(FacesContext context) {
         atLeastEl22 = LangUtils.tryToLoadClassForName("javax.el.ValueReference") != null;
 
@@ -68,7 +74,17 @@ public class PrimeEnvironment {
 
         htmlSanitizerAvailable = LangUtils.tryToLoadClassForName("org.owasp.html.PolicyFactory") != null;
 
-        if (context == null) {
+        tikaAvailable = LangUtils.tryToLoadClassForName(TIKA_CLASS) != null;
+        if (tikaAvailable) {
+            for (FileTypeDetector detector : ServiceLoader.load(FileTypeDetector.class)) {
+                if (TIKA_CLASS.equals(detector.getClass().getName())) {
+                    tikaDetector = detector;
+                    break;
+                }
+            }
+        }
+
+        if (context == null || context.getExternalContext() == null) {
             this.mojarra = false;
         }
         else {
@@ -162,5 +178,13 @@ public class PrimeEnvironment {
 
     public boolean isHtmlSanitizerAvailable() {
         return htmlSanitizerAvailable;
+    }
+
+    public boolean isTikaAvailable() {
+        return tikaAvailable;
+    }
+
+    public FileTypeDetector getFileTypeDetector() {
+        return tikaDetector;
     }
 }
