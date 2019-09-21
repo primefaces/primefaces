@@ -6,8 +6,9 @@ PrimeFaces provides built-in EL extensions that are helpers to common use cases.
 
 | Function | Description |
 | --- | --- |
-resolveClientId(expression, context) | Returns clientId of the component from a given expression.
-resolveWidgetVar(expression, context) | Returns widget variable name of the component from a given expression.
+resolveClientId(String expression, UIComponent source) | Returns the clientId of the resolved component for the given expression.
+resolveWidgetVar(String expression, UIComponent source) | Returns the widgetVar of the resolvee component for the given expression.
+resolveComponent(String expression, UIComponent source) | Returns the resolved UIComponent for the given expression.
 
 ### resolveClientId
 
