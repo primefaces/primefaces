@@ -20,12 +20,14 @@ var clientId = #{p:resolveClientId('form:tabView:myDataTable', view)};
 
 ### resolveWidgetVar
 
+NOTE: this example passes "cc" as component to start the search. To start from root, can you simply pass "view".
+
 ```xhtml
 <cc:implementation>
-    <p:dialog id="dlg">
+    <p:dialog id="dlg" widgetVar="dlg">
         //contents
     </p:dialog>
-    <p:commandButton type="button" value="Show" onclick="#{p:resolveWidgetVar(‘dlg’), cc}.show()" />
+    <p:commandButton type="button" value="Show" onclick="#{p:resolveWidgetVar(‘dlg’, cc)}.show()" />
 </cc:implementation>
 ```
 
