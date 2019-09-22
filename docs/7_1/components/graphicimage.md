@@ -121,7 +121,7 @@ Default dynamic image display works as follows;
 - A UID is generated for each StreamedContent reference
 - The mapping between the UID and the ValueExpression string of StreamedContent ref is put into the HTTP session
 - This UID is appended to the image url that points to JSF resource handler.
-- Our custom PrimeFaces ResourceHandler gets the UID from the url, gets the ValueExpression from the session and resolves the
+- Our custom PrimeFaces ResourceHandler gets the UID from the URL, gets the ValueExpression from the session and resolves the
     StreamedContent instance and finally streams it to client.
 
 As a result there will be 2 requests to display an image, at first browser will make a request to load
@@ -133,9 +133,9 @@ You can pass request parameters to the graphicImage via f:param tags, as a resul
 rendering the image can have access to these values. This is extremely handy to display dynamic
 images if your image is in a data iteration component like datatable or ui:repeat.
 
-## ViewScope Support via Data URI
+## ViewScope support via Data URI
 Setting stream attribute to false uses an alternative approach by converting the value to base64 and
-displays the image via data uri. In this approach, only one request is required so ViewScope is
+displays the image via data URI. In this approach, only one request is required so ViewScope is
 supported.
 
 ## StreamedContent
