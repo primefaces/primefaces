@@ -39,6 +39,7 @@ public abstract class MegaMenuBase extends AbstractMenu implements Widget {
         style,
         styleClass,
         autoDisplay,
+        delay,
         activeIndex,
         orientation
     }
@@ -107,5 +108,13 @@ public abstract class MegaMenuBase extends AbstractMenu implements Widget {
 
     public void setOrientation(String orientation) {
         getStateHelper().put(PropertyKeys.orientation, orientation);
+    }
+
+    public int getDelay() {
+        return (Integer) getStateHelper().eval(PropertyKeys.delay, 0);
+    }
+
+    public void setDelay(int delay) {
+        getStateHelper().put(PropertyKeys.delay, delay);
     }
 }

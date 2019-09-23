@@ -25,6 +25,7 @@ model | null | MenuModel | MenuModel instance to create menus programmatically
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the component.
 autoDisplay | true | Boolean | Defines whether submenus will be displayed on mouseover or not. When set to false, click event is required to display.
+delay | 0 | int | Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.
 activeIndex | null | Integer | Index of the active root menu to display as highlighted. By default no root is highlighted.
 orientation | horizontal | String | Defines the orientation of the root menuitems, valid values are "horizontal" and "vertical".
 

@@ -102,7 +102,7 @@ public abstract class InputMaskBase extends HtmlInputText implements Widget {
     }
 
     public boolean isValidateMask() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.validateMask, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.validateMask, true);
     }
 
     public void setValidateMask(boolean validateMask) {

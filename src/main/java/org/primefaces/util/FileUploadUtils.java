@@ -347,4 +347,36 @@ public class FileUploadUtils {
             throw new IllegalArgumentException("Unsupported UploadedFile type: " + file.getClass().getName());
         }
     }
+
+    /**
+     * OWASP prevent directory path traversal of "../../image.png".
+     *
+     * @see https://www.owasp.org/index.php/Path_Traversal
+     * @param relativePath the relative path to check for path traversal
+     * @return the relative path
+     * @throws FacesException if any error is detected
+     */
+    public static String checkPathTraversal(String relativePath) {
+        File file = new File(relativePath);
+
+        if (file.isAbsolute()) {
+            throw new FacesException("Path traversal attempt - absolute path not allowed.");
+        }
+
+        try  {
+            String pathUsingCanonical = file.getCanonicalPath();
+            String pathUsingAbsolute = file.getAbsolutePath();
+
+            // Require the absolute path and canonicalized path match.
+            // This is done to avoid directory traversal
+            // attacks, e.g. "1/../2/"
+            if (!pathUsingCanonical.equals(pathUsingAbsolute))  {
+                throw new FacesException("Path traversal attempt for path " + relativePath);
+            }
+        }
+        catch (IOException ex) {
+            throw new FacesException("Path traversal - unexpected exception.", ex);
+        }
+        return relativePath;
+    }
 }

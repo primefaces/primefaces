@@ -37,10 +37,13 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+
 import javax.faces.application.Application;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -132,6 +135,50 @@ public class FileUploadUtilsTest {
         when(fileUpload.getAccept()).thenReturn("image/gif");
         Assert.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.gif", "image/gif", exe)));
         Assert.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", gif)));
+    }
+    
+    @Test
+    public void checkPathTraversal_AbsoluteFile() {
+        // Arrange
+        String relativePath = FileUploadUtilsTest.class.getResource("/test.png").getFile();
+        
+        // Act
+        try {
+            FileUploadUtils.checkPathTraversal(relativePath);
+            fail("File was absolute path and should have failed");
+        }
+        catch (Exception e) {
+            // Assert
+            assertEquals("Path traversal attempt - absolute path not allowed.", e.getMessage());
+        }
+    }
+    
+    @Test
+    public void checkPathTraversal_PathTraversal() {
+        // Arrange
+        String relativePath = "../../test.png";
+        
+        // Act
+        try {
+            FileUploadUtils.checkPathTraversal(relativePath);
+            fail("File was absolute path and should have failed");
+        }
+        catch (Exception e) {
+            // Assert
+            assertEquals("Path traversal attempt for path ../../test.png", e.getMessage());
+        }
+    }
+    
+    @Test
+    public void checkPathTraversal_Valid() {
+        // Arrange
+        String relativePath = "test.png";
+        
+        // Act
+        String result = FileUploadUtils.checkPathTraversal(relativePath);
+
+        // Assert
+        assertEquals(relativePath, result);
     }
     
 }
