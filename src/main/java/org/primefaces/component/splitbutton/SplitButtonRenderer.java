@@ -253,6 +253,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         writer.writeAttribute("id", menuId, null);
         writer.writeAttribute("class", menuStyleClass, "styleClass");
         writer.writeAttribute("role", "menu", null);
+        writer.writeAttribute("tabindex", "-1", null);
 
         if (button.isFilter()) {
             encodeFilter(context, button);
@@ -319,6 +320,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
 
             writer.startElement("a", null);
             writer.writeAttribute("id", menuitem.getClientId(), null);
+            writer.writeAttribute("tabindex", "-1", null);
             if (title != null) {
                 writer.writeAttribute("title", title, null);
             }
