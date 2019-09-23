@@ -39,7 +39,7 @@ response.addHeader("Content-Security-Policy", "script-src 'nonce-" + state.getNo
 ```
 
 ## Known Limitations
-Currently `<f:ajax>` cannot be used with CSP and is a limitation in Faces core implementations.
+Currently `<f:ajax>` cannot be used with CSP and is a limitation in the core Faces implementations.
 
 - MyFaces: https://issues.apache.org/jira/browse/MYFACES-4280
 - Mojarra: https://github.com/eclipse-ee4j/mojarra/issues/4542
