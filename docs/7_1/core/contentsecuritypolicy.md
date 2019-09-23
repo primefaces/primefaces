@@ -19,6 +19,32 @@ CSP is disabled by default and a global parameter is required to turn it on.
     <param-value>true</param-value>
 </context-param>
 ```
+## Policy
+There are many ways to configure CSP for different levels of security. Currently, PrimeFaces has chosen to
+support the NONCE based checking for script evaluation only. Nonces attributes are added to script tags. Nonce 
+attributes are composed of base64 values. This nonce is verified against the nonce sent in the CSP header, 
+and only matching nonces are allowed to execute.
+
+**HTTP Header**
+```java
+response.addHeader("Content-Security-Policy", "script-src 'nonce-" + state.getNonce() + "'");
+
+```
+
+**Script Output**
+```xml
+<script type="text/javascript" 
+        src="/showcase/javax.faces.resource/jquery/jquery.js.xhtml?ln=primefaces&amp;v=7.1" 
+        nonce="YTQyM2ZiNTktNjFhZS00ZjI1LWEzMWItZGYzOTE0ZWQ1NDU1" />
+```
+
+## Known Limitations
+Currently `<f:ajax>` cannot be used with CSP and is a limitation in Faces core implementations.
+
+- MyFaces: https://issues.apache.org/jira/browse/MYFACES-4280
+- Mojarra: https://github.com/eclipse-ee4j/mojarra/issues/4542
+
+If you need AJAX support you must use `<p:ajax>` instead.
 
 ## Troubleshooting
 
