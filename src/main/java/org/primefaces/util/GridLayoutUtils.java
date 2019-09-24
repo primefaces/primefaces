@@ -27,7 +27,7 @@ import java.util.Map;
 
 public class GridLayoutUtils {
 
-    private static final Map<Integer, String> COLUMN_MAP = MapBuilder.<Integer, String>builder()
+    private static final Map<Integer, String> GRID_COLUMN_MAP = MapBuilder.<Integer, String>builder()
             .put(1, "ui-g-12 ui-md-12")
             .put(2, "ui-g-12 ui-md-6")
             .put(3, "ui-g-12 ui-md-4")
@@ -36,10 +36,33 @@ public class GridLayoutUtils {
             .put(12, "ui-g-12 ui-md-1")
             .build();
 
+    private static final Map<Integer, String> FLEX_COLUMN_MAP = MapBuilder.<Integer, String>builder()
+            .put(1, "p-col-12 p-md-12")
+            .put(2, "p-col-12 p-md-6")
+            .put(3, "p-col-12 p-md-4")
+            .put(4, "p-col-12 p-md-3")
+            .put(6, "p-col-12 p-md-2")
+            .put(12, "p-col-12 p-md-1")
+            .build();
+
     private GridLayoutUtils() {
     }
 
+    /**
+     * Get Grid-CSS-Column-Class.
+     * @param columns
+     * @return
+     */
     public static String getColumnClass(int columns) {
-        return COLUMN_MAP.get(columns);
+        return GRID_COLUMN_MAP.get(columns);
+    }
+
+    /**
+     * Get PrimeFlex-Column-Class.
+     * @param columns
+     * @return
+     */
+    public static String getFlexColumnClass(int columns) {
+        return FLEX_COLUMN_MAP.get(columns);
     }
 }
