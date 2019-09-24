@@ -15219,6 +15219,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.]]>
+            </description>
+            <name>delay</name>
+            <required>false</required>
+            <type>int</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Index of the active root menu to display as highlighted. By default no root is highlighted.]]>
             </description>
             <name>activeIndex</name>
@@ -25795,6 +25803,14 @@
                 <![CDATA[Whether the toolbar of the editor is visible.]]>
             </description>
             <name>toolbarVisible</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Secure the component with the HTML Sanitizer library on the classpath. Default is true.]]>
+            </description>
+            <name>secure</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>

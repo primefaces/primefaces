@@ -44,6 +44,8 @@ import org.apache.commons.io.input.BoundedInputStream;
 
 import org.primefaces.model.CroppedImage;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.Constants;
+import org.primefaces.util.FileUploadUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class ImageCropperRenderer extends CoreRenderer {
@@ -186,7 +188,10 @@ public class ImageCropperRenderer extends CoreRenderer {
                 }
                 else {
                     ExternalContext externalContext = context.getExternalContext();
-                    File file = new File(externalContext.getRealPath("") + imagePath);
+                    // GitHub #3268 OWASP Path Traversal
+                    imagePath = FileUploadUtils.checkPathTraversal(imagePath);
+                    String webRoot = externalContext.getRealPath(Constants.EMPTY_STRING);
+                    File file = new File(webRoot + imagePath);
                     inputStream = new FileInputStream(file);
                 }
             }
