@@ -20,9 +20,16 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
             };
         }
 
-        submenu.css('z-index', ++PrimeFaces.zindex)
-                .show()
-                .position(pos);
+        //avoid queuing multiple runs
+        if(this.timeoutId) {
+            clearTimeout(this.timeoutId);
+        }
+
+        this.timeoutId = setTimeout(function () {
+           submenu.css('z-index', ++PrimeFaces.zindex)
+                  .show()
+                  .position(pos)
+        }, this.cfg.delay);
     },
 
     //@Override

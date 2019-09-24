@@ -6,8 +6,9 @@ PrimeFaces provides built-in EL extensions that are helpers to common use cases.
 
 | Function | Description |
 | --- | --- |
-resolveClientId(expression, context) | Returns clientId of the component from a given expression.
-resolveWidgetVar(expression, context) | Returns widget variable name of the component from a given expression.
+resolveClientId(String expression, UIComponent source) | Returns the clientId of the resolved component for the given expression.
+resolveWidgetVar(String expression, UIComponent source) | Returns the widgetVar of the resolvee component for the given expression.
+resolveComponent(String expression, UIComponent source) | Returns the resolved UIComponent for the given expression.
 
 ### resolveClientId
 
@@ -20,12 +21,14 @@ var clientId = #{p:resolveClientId('form:tabView:myDataTable', view)};
 
 ### resolveWidgetVar
 
+NOTE: this example passes "cc" as component to start the search. To start from root, can you simply pass "view".
+
 ```xhtml
 <cc:implementation>
-    <p:dialog id="dlg">
+    <p:dialog id="dlg" widgetVar="dlg">
         //contents
     </p:dialog>
-    <p:commandButton type="button" value="Show" onclick="#{p:resolveWidgetVar(‘dlg’), cc}.show()" />
+    <p:commandButton type="button" value="Show" onclick="PF('#{p:resolveWidgetVar(‘dlg’, cc)}').show()" />
 </cc:implementation>
 ```
 

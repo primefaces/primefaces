@@ -118,26 +118,24 @@ dynamic images just like standard graphicImage component using name and optional
 ## How It Works
 Default dynamic image display works as follows;
 
-- Streamed content is put in http session with an encrypted key
-- This key is appended to the image url that points to JSF resource handler.
-
-
-- Custom PrimeFaces ResourceHandler gets the key from the url, decrypts it to get the instance of
-    StreamedContent from session, evaluates the content and streams it to client. Finally key is
-    removed from http session.
+- A UID is generated for each StreamedContent reference
+- The mapping between the UID and the ValueExpression string of StreamedContent ref is put into the HTTP session
+- This UID is appended to the image url that points to JSF resource handler.
+- Our custom PrimeFaces ResourceHandler gets the UID from the URL, gets the ValueExpression from the session and resolves the
+    StreamedContent instance and finally streams it to client.
 
 As a result there will be 2 requests to display an image, at first browser will make a request to load
 the page initially and then another one to the dynamic image url that points to JSF resource handler.
-Note that you cannot use viewscope beans in this way as they are not available in resource loading
-request. See Data URI section below for an alternative to support view scope.
+Note that you cannot use ViewScope beans in this way as they are not available in resource loading
+request. See Data URI section below for an alternative to support ViewScope.
 
 You can pass request parameters to the graphicImage via f:param tags, as a result the actual request
 rendering the image can have access to these values. This is extremely handy to display dynamic
 images if your image is in a data iteration component like datatable or ui:repeat.
 
-## ViewScope Support via Data URI
+## ViewScope support via Data URI
 Setting stream attribute to false uses an alternative approach by converting the value to base64 and
-displays the image via data uri. In this approach, only one request is required so view scope is
+displays the image via data URI. In this approach, only one request is required so ViewScope is
 supported.
 
 ## StreamedContent

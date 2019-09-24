@@ -48,6 +48,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("MegaMenu", menu.resolveWidgetVar(context), clientId)
                 .attr("autoDisplay", menu.isAutoDisplay())
+                .attr("delay", menu.getDelay())
                 .attr("activeIndex", menu.getActiveIndex(), Integer.MIN_VALUE);
 
         wb.finish();
