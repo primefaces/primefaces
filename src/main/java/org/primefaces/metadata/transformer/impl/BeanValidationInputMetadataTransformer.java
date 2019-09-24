@@ -25,7 +25,7 @@ package org.primefaces.metadata.transformer.impl;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -154,12 +154,21 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
 
         if (input instanceof UICalendar) {
             UICalendar uicalendar = (UICalendar) input;
+            boolean hasTime = uicalendar.hasTime();
+            // for BeanValidation 2.0
+            String annotationClassName = annotationType.getSimpleName();
 
             if (annotationType.equals(Past.class) && uicalendar.getMaxdate() == null) {
-                uicalendar.setMaxdate(new Date());
+                uicalendar.setMaxdate(hasTime ? LocalDate.now() : LocalDate.now().minusDays(1));
+            }
+            if (annotationClassName.equals("PastOrPresent") && uicalendar.getMaxdate() == null) {
+                uicalendar.setMaxdate(LocalDate.now());
             }
             if (annotationType.equals(Future.class) && uicalendar.getMindate() == null) {
-                uicalendar.setMindate(new Date());
+                uicalendar.setMindate(hasTime ? LocalDate.now() : LocalDate.now().plusDays(1));
+            }
+            if (annotationClassName.equals("FutureOrPresent") && uicalendar.getMindate() == null) {
+                uicalendar.setMindate(LocalDate.now());
             }
         }
     }
