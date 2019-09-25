@@ -207,8 +207,11 @@ public class HTML {
     public static final String[] SELECT_ATTRS = LangUtils.concat(
             SELECT_ATTRS_WITHOUT_EVENTS, COMMON_EVENTS, CHANGE_SELECT_EVENTS, BLUR_FOCUS_EVENTS);
 
+    public static final String ARIA_ACTIVEDESCENDANT = "aria-activedescendant";
     public static final String ARIA_ATOMIC = "aria-atomic";
+    public static final String ARIA_AUTOCOMPLETE = "aria-autocomplete";
     public static final String ARIA_CHECKED = "aria-checked";
+    public static final String ARIA_CONTROLS = "aria-controls";
     public static final String ARIA_DESCRIBEDBY = "aria-describedby";
     public static final String ARIA_DISABLED = "aria-disabled";
     public static final String ARIA_EXPANDED = "aria-expanded";
