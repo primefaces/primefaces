@@ -109,6 +109,9 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         writer.startElement("div", button);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "id");
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
+        writer.writeAttribute(HTML.ARIA_CONTROLS, menuId, null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
         if (button.getStyle() != null) {
             writer.writeAttribute("style", button.getStyle(), "id");
         }
@@ -250,6 +253,8 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         writer.writeAttribute("id", menuId, null);
         writer.writeAttribute("class", menuStyleClass, "styleClass");
         writer.writeAttribute("role", "menu", null);
+        writer.writeAttribute(HTML.ARIA_LABELLEDBY, button.getClientId(context), null);
+        writer.writeAttribute("tabindex", "-1", null);
 
         if (button.isFilter()) {
             encodeFilter(context, button);
@@ -316,6 +321,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
 
             writer.startElement("a", null);
             writer.writeAttribute("id", menuitem.getClientId(), null);
+            writer.writeAttribute("tabindex", "-1", null);
             if (title != null) {
                 writer.writeAttribute("title", title, null);
             }
