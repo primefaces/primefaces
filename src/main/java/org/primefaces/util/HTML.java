@@ -222,6 +222,7 @@ public class HTML {
     public static final String ARIA_LABELLEDBY = "aria-labelledby";
     public static final String ARIA_LIVE = "aria-live";
     public static final String ARIA_MULITSELECTABLE = "aria-multiselectable";
+    public static final String ARIA_OWNS = "aria-owns";
     public static final String ARIA_READONLY = "aria-readonly";
     public static final String ARIA_REQUIRED = "aria-required";
     public static final String ARIA_SELECTED = "aria-selected";

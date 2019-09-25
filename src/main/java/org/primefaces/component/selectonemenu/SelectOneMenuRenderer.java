@@ -132,6 +132,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleclass");
+        writer.writeAttribute(HTML.ARIA_OWNS, clientId + "_panel", null);
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
