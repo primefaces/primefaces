@@ -25,8 +25,10 @@ package org.primefaces.validate.bean;
 
 public class FutureOrPresentClientValidationConstraint extends AbstractClientValidationConstraint {
 
-    private static final String MESSAGE_METADATA = "data-p-futureorpresent-msg";
-    private static final String MESSAGE_ID = "{javax.validation.constraints.FutureOrPresent.message}";
+    public static final String ID = "FutureOrPresent";
+    public static final String MESSAGE_METADATA = "data-p-futureorpresent-msg";
+    public static final String CLASS_ID = PACKAGE  + "." + ID;
+    public static final String MESSAGE_ID = "{" + CLASS_ID + ".message}";
 
     public FutureOrPresentClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);
@@ -34,6 +36,6 @@ public class FutureOrPresentClientValidationConstraint extends AbstractClientVal
 
     @Override
     public String getValidatorId() {
-        return "FutureOrPresent";
+        return ID;
     }
 }

@@ -29,8 +29,10 @@ import java.util.Map;
 
 public class NegativeClientValidationConstraint extends AbstractClientValidationConstraint {
 
+    public static final String ID = "Negative";
     public static final String MESSAGE_METADATA = "data-p-negative-msg";
-    private static final String MESSAGE_ID = "{javax.validation.constraints.Negative.message}";
+    public static final String CLASS_ID = PACKAGE  + "." + ID;
+    public static final String MESSAGE_ID = "{" + CLASS_ID + ".message}";
 
     public NegativeClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);
@@ -44,6 +46,6 @@ public class NegativeClientValidationConstraint extends AbstractClientValidation
 
     @Override
     public String getValidatorId() {
-        return "Negative";
+        return ID;
     }
 }

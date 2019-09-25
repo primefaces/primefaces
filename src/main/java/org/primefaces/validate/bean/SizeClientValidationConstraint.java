@@ -29,8 +29,10 @@ import java.util.Map;
 
 public class SizeClientValidationConstraint extends AbstractClientValidationConstraint {
 
+    public static final String ID = "Size";
     public static final String MESSAGE_METADATA = "data-p-size-msg";
-    public static final String MESSAGE_ID = "{javax.validation.constraints.Size.message}";
+    public static final String CLASS_ID = PACKAGE  + "." + ID;
+    public static final String MESSAGE_ID = "{" + CLASS_ID + ".message}";
 
     public SizeClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);
@@ -44,6 +46,6 @@ public class SizeClientValidationConstraint extends AbstractClientValidationCons
 
     @Override
     public String getValidatorId() {
-        return "Size";
+        return ID;
     }
 }

@@ -25,8 +25,10 @@ package org.primefaces.validate.bean;
 
 public class NullClientValidationConstraint extends AbstractClientValidationConstraint {
 
+    public static final String ID = "Null";
     public static final String MESSAGE_METADATA = "data-p-null-msg";
-    public static final String MESSAGE_ID = "{javax.validation.constraints.Null.message}";
+    public static final String CLASS_ID = PACKAGE  + "." + ID;
+    public static final String MESSAGE_ID = "{" + CLASS_ID + ".message}";
 
     public NullClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);
@@ -34,6 +36,6 @@ public class NullClientValidationConstraint extends AbstractClientValidationCons
 
     @Override
     public String getValidatorId() {
-        return "Null";
+        return ID;
     }
 }

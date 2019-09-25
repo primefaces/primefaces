@@ -25,8 +25,10 @@ package org.primefaces.validate.bean;
 
 public class AssertTrueClientValidationConstraint extends AbstractClientValidationConstraint {
 
+    public static final String ID = "AssertTrue";
     public static final String MESSAGE_METADATA = "data-p-atrue-msg";
-    public static final String MESSAGE_ID = "{javax.validation.constraints.AssertTrue.message}";
+    public static final String CLASS_ID = PACKAGE  + "." + ID;
+    public static final String MESSAGE_ID = "{" + CLASS_ID + ".message}";
 
     public AssertTrueClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);
@@ -34,6 +36,6 @@ public class AssertTrueClientValidationConstraint extends AbstractClientValidati
 
     @Override
     public String getValidatorId() {
-        return "AssertTrue";
+        return ID;
     }
 }

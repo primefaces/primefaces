@@ -29,8 +29,10 @@ import java.util.Map;
 
 public class MinClientValidationConstraint extends AbstractClientValidationConstraint {
 
+    public static final String ID = "Min";
     public static final String MESSAGE_METADATA = "data-p-min-msg";
-    public static final String MESSAGE_ID = "{javax.validation.constraints.Min.message}";
+    public static final String CLASS_ID = PACKAGE  + "." + ID;
+    public static final String MESSAGE_ID = "{" + CLASS_ID + ".message}";
 
     public MinClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);
@@ -43,6 +45,6 @@ public class MinClientValidationConstraint extends AbstractClientValidationConst
 
     @Override
     public String getValidatorId() {
-        return "Min";
+        return ID;
     }
 }

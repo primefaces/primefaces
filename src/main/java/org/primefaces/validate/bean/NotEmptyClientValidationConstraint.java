@@ -25,8 +25,10 @@ package org.primefaces.validate.bean;
 
 public class NotEmptyClientValidationConstraint extends AbstractClientValidationConstraint {
 
+    public static final String ID = "NotEmpty";
     public static final String MESSAGE_METADATA = "data-p-notempty-msg";
-    public static final String MESSAGE_ID = "{javax.validation.constraints.NotEmpty.message}";
+    public static final String CLASS_ID = PACKAGE  + "." + ID;
+    public static final String MESSAGE_ID = "{" + CLASS_ID + ".message}";
 
     public NotEmptyClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);
@@ -34,6 +36,6 @@ public class NotEmptyClientValidationConstraint extends AbstractClientValidation
 
     @Override
     public String getValidatorId() {
-        return "NotEmpty";
+        return ID;
     }
 }

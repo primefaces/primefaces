@@ -25,8 +25,10 @@ package org.primefaces.validate.bean;
 
 public class FutureClientValidationConstraint extends AbstractClientValidationConstraint {
 
+    public static final String ID = "Future";
     public static final String MESSAGE_METADATA = "data-p-future-msg";
-    public static final String MESSAGE_ID = "{javax.validation.constraints.Future.message}";
+    public static final String CLASS_ID = PACKAGE  + "." + ID;
+    public static final String MESSAGE_ID = "{" + CLASS_ID + ".message}";
 
     public FutureClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);
@@ -34,6 +36,6 @@ public class FutureClientValidationConstraint extends AbstractClientValidationCo
 
     @Override
     public String getValidatorId() {
-        return "Future";
+        return ID;
     }
 }

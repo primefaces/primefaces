@@ -29,8 +29,10 @@ import java.util.Map;
 
 public class DigitsClientValidationConstraint extends AbstractClientValidationConstraint {
 
-    private static final String MESSAGE_METADATA = "data-p-digits-msg";
-    private static final String MESSAGE_ID = "{javax.validation.constraints.Digits.message}";
+    public static final String ID = "Digits";
+    public static final String MESSAGE_METADATA = "data-p-digits-msg";
+    public static final String CLASS_ID = PACKAGE  + "." + ID;
+    public static final String MESSAGE_ID = "{" + CLASS_ID + ".message}";
 
     public DigitsClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);
@@ -44,6 +46,6 @@ public class DigitsClientValidationConstraint extends AbstractClientValidationCo
 
     @Override
     public String getValidatorId() {
-        return "Digits";
+        return ID;
     }
 }

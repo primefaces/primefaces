@@ -25,8 +25,10 @@ package org.primefaces.validate.bean;
 
 public class PastOrPresentClientValidationConstraint extends AbstractClientValidationConstraint {
 
+    public static final String ID = "PastOrPresent";
     public static final String MESSAGE_METADATA = "data-p-pastorpresent-msg";
-    public static final String MESSAGE_ID = "{javax.validation.constraints.PastOrPresent.message}";
+    public static final String CLASS_ID = PACKAGE  + "." + ID;
+    public static final String MESSAGE_ID = "{" + CLASS_ID + ".message}";
 
     public PastOrPresentClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);
@@ -35,6 +37,6 @@ public class PastOrPresentClientValidationConstraint extends AbstractClientValid
 
     @Override
     public String getValidatorId() {
-        return "PastOrPresent";
+        return ID;
     }
 }

@@ -25,8 +25,10 @@ package org.primefaces.validate.bean;
 
 public class EmailClientValidationConstraint extends AbstractClientValidationConstraint {
 
+    public static final String ID = "Email";
     public static final String MESSAGE_METADATA = "data-p-email-msg";
-    public static final String MESSAGE_ID = "{javax.validation.constraints.Email.message}";
+    public static final String CLASS_ID = PACKAGE  + "." + ID;
+    public static final String MESSAGE_ID = "{" + CLASS_ID + ".message}";
 
     public EmailClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);
@@ -34,7 +36,7 @@ public class EmailClientValidationConstraint extends AbstractClientValidationCon
 
     @Override
     public String getValidatorId() {
-        return "Email";
+        return ID;
     }
 
 }
