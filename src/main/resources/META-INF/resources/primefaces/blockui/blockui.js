@@ -115,9 +115,13 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         if(this.block.length > 1) {
             this.content = this.content.clone();
         }
-        
-        this.block.css('position', 'relative').attr('aria-busy', this.cfg.blocked).append(this.blocker).append(this.content);
-    
+
+        var position = this.block.css("position");
+        if (position !== "fixed" && position  !== "absolute") {
+            this.block.css('position', 'relative');
+        }
+        this.block.attr('aria-busy', this.cfg.blocked).append(this.blocker).append(this.content);
+
         if(this.block.length > 1) {
             this.blocker = $(PrimeFaces.escapeClientId(this.id + '_blocker'));
             this.content = this.block.children('.ui-blockui-content');
