@@ -24,7 +24,6 @@
 package org.primefaces.component.calendar;
 
 import org.primefaces.component.api.UICalendar;
-import org.primefaces.component.datepicker.DatePickerRenderer;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.CalendarUtils;
@@ -219,18 +218,9 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             }
         }
         else if (type == LocalDateTime.class) {
-            //known issue: https://github.com/primefaces/primefaces/issues/4625
-            //known issue: https://github.com/primefaces/primefaces/issues/4626
-
-            //TODO: remove temporary (ugly) work-around for adding fixed time-pattern
-            String pattern = calendar.calculatePattern();
-            if (this instanceof DatePickerRenderer) {
-                pattern += " HH:mm";
-            }
-
             DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                     .parseCaseInsensitive()
-                    .appendPattern(pattern)
+                    .appendPattern(calendar.calculatePattern())
                     .toFormatter(calendar.calculateLocale(context))
                     .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()));
 

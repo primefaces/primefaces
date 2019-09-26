@@ -104,7 +104,8 @@ public class DatePickerTest {
         renderer = mock(MyDatePickerRenderer.class);
         datePicker = mock(MyDatePicker.class);
         when(datePicker.calculatePattern()).thenCallRealMethod();
-        when(datePicker.calculateTimeOnlyPattern()).thenReturn("HH:mm");
+        when(datePicker.calculateTimeOnlyPattern()).thenCallRealMethod();
+        when(datePicker.calculateWidgetPattern()).thenCallRealMethod();
         when(datePicker.isValid()).thenCallRealMethod();
         doCallRealMethod().when(datePicker).setValid(anyBoolean());
         when(datePicker.getSelectionMode()).thenReturn("single");
@@ -277,9 +278,22 @@ public class DatePickerTest {
     public void convertToJava8DateTimeAPI_LocalDateTime() {
         Class type = LocalDateTime.class;
         setupValues(type, Locale.ENGLISH);
+        when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
         Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "7/23/19 21:31");
         assertEquals(type, temporal.getClass());
         assertEquals(LocalDateTime.of(2019, 7, 23,  21, 31), temporal);
+    }
+
+    @Test
+    public void convertToJava8DateTimeAPI_LocalDateTimeSecondsAmPm() {
+        Class type = LocalDateTime.class;
+        setupValues(type, Locale.ENGLISH);
+        when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
+        when(datePicker.getHourFormat()).thenReturn("12");
+        when(datePicker.isShowSeconds()).thenReturn(Boolean.TRUE);
+        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "7/23/19 09:31:48 PM");
+        assertEquals(type, temporal.getClass());
+        assertEquals(LocalDateTime.of(2019, 7, 23,  21, 31, 48), temporal);
     }
 
     @Test(expected = ConverterException.class)

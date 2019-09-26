@@ -24,7 +24,6 @@
 package org.primefaces.util;
 
 import org.primefaces.component.api.UICalendar;
-import org.primefaces.component.datepicker.DatePicker;
 import org.primefaces.convert.DatePatternConverter;
 import org.primefaces.convert.PatternConverter;
 import org.primefaces.convert.TimePatternConverter;
@@ -50,6 +49,8 @@ import java.util.TimeZone;
  * Utility class for calendar component
  */
 public class CalendarUtils {
+
+    private static final String[] TIME_CHARS = {"H", "K", "h", "k", "m", "s"};
 
     private static final PatternConverter[] PATTERN_CONVERTERS =
             new PatternConverter[]{new TimePatternConverter(), new DatePatternConverter()};
@@ -241,15 +242,6 @@ public class CalendarUtils {
                 return ((LocalDate) value).format(dateTimeFormatter);
             }
             else if (value instanceof LocalDateTime) {
-                //known issue: https://github.com/primefaces/primefaces/issues/4625
-                //known issue: https://github.com/primefaces/primefaces/issues/4626
-
-                //TODO: remove temporary (ugly) work-around for adding fixed time-pattern
-                if (calendar instanceof DatePicker) {
-                    pattern += " HH:mm";
-                }
-                dateTimeFormatter = DateTimeFormatter.ofPattern(pattern, calendar.calculateLocale(context));
-
                 return ((LocalDateTime) value).format(dateTimeFormatter);
             }
             else if (value instanceof LocalTime) {
@@ -265,7 +257,7 @@ public class CalendarUtils {
             if (ve != null) {
                 Class type = ve.getType(context.getELContext());
                 if (type != null && type != Object.class && type != Date.class &&
-                        type != LocalDate.class && type != LocalDateTime.class && type != LocalTime.class && type != Year.class) {
+                        type != LocalDate.class && type != LocalDateTime.class && type != LocalTime.class && type != YearMonth.class) {
                     Converter converter = context.getApplication().createConverter(type);
                     if (converter != null) {
                         return converter.getAsString(context, calendar, value);
@@ -273,7 +265,7 @@ public class CalendarUtils {
                 }
             }
 
-            throw new FacesException("Value could be either String or java.util.Date");
+            throw new FacesException("Value could be either String, LocalDate, LocalDateTime, LocalTime, YearMonth or java.util.Date (deprecated)");
         }
     }
 
@@ -464,4 +456,14 @@ public class CalendarUtils {
             return Date.from(localTime.atDate(LocalDate.now()).atZone(zoneId).toInstant());
         }
     }
+
+    public static final String removeTime(String pattern) {
+        for (String timeChar : TIME_CHARS) {
+            if (pattern.contains(timeChar)) {
+                pattern = pattern.substring(0, pattern.indexOf(timeChar));
+            }
+        }
+        return pattern.trim();
+    }
+
 }

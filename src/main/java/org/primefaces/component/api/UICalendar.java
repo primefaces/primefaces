@@ -27,7 +27,7 @@ import org.primefaces.util.LocaleUtils;
 
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
-import java.time.format.DateTimeFormatter;
+import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.util.Locale;
@@ -158,11 +158,10 @@ public abstract class UICalendar extends HtmlInputText {
      */
     public String calculatePattern() {
         String pattern = getPattern();
-        Locale locale = calculateLocale(getFacesContext());
 
         if (pattern == null) {
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT);
-            return DateTimeFormatterBuilder.getLocalizedDateTimePattern(FormatStyle.SHORT, null, dateTimeFormatter.getChronology(), locale);
+            Locale locale = calculateLocale(getFacesContext());
+            return DateTimeFormatterBuilder.getLocalizedDateTimePattern(FormatStyle.SHORT, null, IsoChronology.INSTANCE, locale);
         }
         else return pattern;
     }
@@ -173,6 +172,10 @@ public abstract class UICalendar extends HtmlInputText {
         }
 
         return timeOnlyPattern;
+    }
+
+    public String calculateWidgetPattern() {
+        return calculatePattern();
     }
 
     public String convertPattern(String patternTemplate) {
