@@ -202,7 +202,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
                         : YearMonth.parse(submittedValue, formatter);
             }
             catch (DateTimeParseException e) {
-                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDate.now()));
+                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDateTime.now()));
             }
         }
         else if (type == LocalTime.class) {
@@ -214,7 +214,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
                 return LocalTime.parse(submittedValue, formatter);
             }
             catch (DateTimeParseException e) {
-                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDate.now()));
+                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDateTime.now()));
             }
         }
         else if (type == LocalDateTime.class) {
@@ -228,7 +228,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
                 return LocalDateTime.parse(submittedValue, formatter);
             }
             catch (DateTimeParseException e) {
-                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDate.now()));
+                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDateTime.now()));
             }
         }
 
