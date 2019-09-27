@@ -78,6 +78,8 @@ model. An element should have at least width and height defined to be displayed 
 be styled globally using .ui-diagram-element style class or individually using the styleClass
 property on DiagramElement class.
 
+An element that is draggable will always sync its position with the model on the server side.
+
 ## EndPoints
 EndPoints are the ports available on an element that can be used for connections. An endpoint has a
 location defined by EndPointAnchor. Anchors can be static like "TopLeft" or dynamic like
@@ -137,7 +139,7 @@ conn.getOverlays().add(new LabelOverlay(label, "flow-label", 0.5));
 ## Dynamic Diagrams
 A diagram can be edited after being initialized, to create new connections an element should be set
 as source and to receive new connections it should be a target. Ajax event callbacks such as
-"connect", "disconnect" and "connectionChange" are available.
+"connect", "disconnect", "connectionChange" and "positionChange" are available.
 
 ```java
 ElementA.setSource(true);
@@ -150,4 +152,5 @@ Diagram provides ajax behavior event callbacks invoked by interactive diagrams.
 | --- | --- | --- |
 | connect | org.primefaces.event.diagram.ConnectEvent | On new connection.
 | disconnect | org.primefaces.event.diagram.DisconnectEvent | When a connection is removed.
-| connectionChange | org.primefaces.event.diagram.ConnectionChange | When a connection has changed.
+| connectionChange | org.primefaces.event.diagram.ConnectionChangeEvent | When a connection has changed.
+| positionChange | org.primefaces.event.diagram.PositionChangeEvent | When the position of a draggable element has changed.
