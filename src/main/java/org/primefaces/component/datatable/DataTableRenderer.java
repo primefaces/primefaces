@@ -820,7 +820,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", DataTable.COLUMN_TITLE_CLASS, null);
 
-        if (header != null) {
+        if (ComponentUtils.shouldRenderFacet(header)) {
             header.encodeAll(context);
         }
         else if (headerText != null) {
@@ -845,7 +845,7 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent filterFacet = column.getFacet("filter");
 
-        if (filterFacet == null) {
+        if (!ComponentUtils.shouldRenderFacet(filterFacet)) {
             encodeDefaultFilter(context, table, column, writer);
         }
         else {
@@ -1056,7 +1056,7 @@ public class DataTableRenderer extends DataRenderer {
         //Footer content
         UIComponent facet = column.getFacet("footer");
         String text = column.getFooterText();
-        if (facet != null) {
+        if (ComponentUtils.shouldRenderFacet(facet)) {
             facet.encodeAll(context);
         }
         else if (text != null) {
@@ -1221,7 +1221,7 @@ public class DataTableRenderer extends DataRenderer {
             writer.startElement("td", null);
             writer.writeAttribute("colspan", table.getColumnsCountWithSpan(), null);
 
-            if (emptyFacet != null) {
+            if (ComponentUtils.shouldRenderFacet(emptyFacet)) {
                 emptyFacet.encodeAll(context);
             }
             else {

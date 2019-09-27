@@ -523,7 +523,7 @@ public class TreeTableRenderer extends DataRenderer {
             writer.startElement("td", null);
             writer.writeAttribute("colspan", tt.getColumnsCount(), null);
 
-            if (emptyFacet != null) {
+            if (ComponentUtils.shouldRenderFacet(emptyFacet)) {
                 emptyFacet.encodeAll(context);
             }
             else {
@@ -757,7 +757,7 @@ public class TreeTableRenderer extends DataRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-column-title", null);
 
-        if (header != null) {
+        if (ComponentUtils.shouldRenderFacet(header)) {
             header.encodeAll(context);
         }
         else if (headerText != null) {
@@ -785,7 +785,7 @@ public class TreeTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent filterFacet = column.getFacet("filter");
 
-        if (filterFacet == null) {
+        if (!ComponentUtils.shouldRenderFacet(filterFacet)) {
             String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
             boolean disableTabbing = tt.getScrollWidth() != null;
 
@@ -853,7 +853,7 @@ public class TreeTableRenderer extends DataRenderer {
     }
 
     protected void encodeFacet(FacesContext context, TreeTable tt, UIComponent facet, String styleClass) throws IOException {
-        if (facet == null) {
+        if (!ComponentUtils.shouldRenderFacet(facet)) {
             return;
         }
 
@@ -954,7 +954,7 @@ public class TreeTableRenderer extends DataRenderer {
             writer.writeAttribute("colspan", colspan, null);
         }
 
-        if (footerFacet != null) {
+        if (ComponentUtils.shouldRenderFacet(footerFacet)) {
             footerFacet.encodeAll(context);
         }
         else if (footerText != null) {

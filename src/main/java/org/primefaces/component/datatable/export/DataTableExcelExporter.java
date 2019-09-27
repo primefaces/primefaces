@@ -149,7 +149,7 @@ public class DataTableExcelExporter extends DataTableExporter {
                 if (textValue != null) {
                     addColumnValue(rowHeader, textValue);
                 }
-                else if (facet != null) {
+                else if (ComponentUtils.shouldRenderFacet(facet)) {
                     addColumnValue(rowHeader, facet);
                 }
                 else {

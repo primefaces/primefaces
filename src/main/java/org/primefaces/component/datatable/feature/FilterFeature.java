@@ -48,6 +48,7 @@ import org.primefaces.component.row.Row;
 import org.primefaces.event.data.PostFilterEvent;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.filter.*;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
 
 public class FilterFeature implements DataTableFeature {
@@ -357,7 +358,7 @@ public class FilterFeature implements DataTableFeature {
                             ValueExpression filterVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
                             if (filterVE != null) {
                                 UIComponent filterFacet = column.getFacet("filter");
-                                Object filterValue = (filterFacet == null)
+                                Object filterValue = (!ComponentUtils.shouldRenderFacet(filterFacet))
                                                      ? params.get(column.getClientId(context) + separator + "filter")
                                                      : ((ValueHolder) filterFacet).getLocalValue();
 
@@ -376,7 +377,9 @@ public class FilterFeature implements DataTableFeature {
                                 if (filterVE != null) {
                                     String filterId = dynaColumn.getContainerClientId(context) + separator + "filter";
                                     UIComponent filterFacet = dynaColumn.getFacet("filter");
-                                    Object filterValue = (filterFacet == null) ? params.get(filterId) : ((ValueHolder) filterFacet).getLocalValue();
+                                    Object filterValue = !ComponentUtils.shouldRenderFacet(filterFacet)
+                                                          ? params.get(filterId)
+                                                          : ((ValueHolder) filterFacet).getLocalValue();
 
                                     filterMetadata.add(new FilterMeta(dynaColumn, filterVE, filterValue));
                                 }
@@ -400,13 +403,13 @@ public class FilterFeature implements DataTableFeature {
 
                 if (column instanceof Column) {
                     filterId = column.getClientId(context) + separator + "filter";
-                    filterValue = (filterFacet == null) ? params.get(filterId) : ((ValueHolder) filterFacet).getLocalValue();
+                    filterValue = !ComponentUtils.shouldRenderFacet(filterFacet) ? params.get(filterId) : ((ValueHolder) filterFacet).getLocalValue();
                 }
                 else if (column instanceof DynamicColumn) {
                     DynamicColumn dynamicColumn = (DynamicColumn) column;
                     dynamicColumn.applyModel();
                     filterId = dynamicColumn.getContainerClientId(context) + separator + "filter";
-                    filterValue = (filterFacet == null) ? params.get(filterId) : ((ValueHolder) filterFacet).getLocalValue();
+                    filterValue = !ComponentUtils.shouldRenderFacet(filterFacet) ? params.get(filterId) : ((ValueHolder) filterFacet).getLocalValue();
                     dynamicColumn.cleanModel();
                 }
 

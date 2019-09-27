@@ -32,6 +32,7 @@ import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
 public class BreadCrumbRenderer extends BaseMenuRenderer {
@@ -91,7 +92,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
             }
 
             UIComponent optionsFacet = menu.getFacet("options");
-            if (optionsFacet != null) {
+            if (ComponentUtils.shouldRenderFacet(optionsFacet)) {
                 writer.startElement("li", null);
                 writer.writeAttribute("class", BreadCrumb.OPTIONS_CLASS, null);
                 writer.writeAttribute("role", "menuitem", null);

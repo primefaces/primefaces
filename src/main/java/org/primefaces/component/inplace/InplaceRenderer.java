@@ -85,7 +85,7 @@ public class InplaceRenderer extends CoreRenderer {
         writer.writeAttribute("class", displayClass, null);
         writer.writeAttribute("style", "display:" + displayStyle, null);
 
-        if (outputFacet != null) {
+        if (ComponentUtils.shouldRenderFacet(outputFacet)) {
             outputFacet.encodeAll(context);
         }
         else {
@@ -101,7 +101,7 @@ public class InplaceRenderer extends CoreRenderer {
             writer.writeAttribute("class", Inplace.CONTENT_CLASS, null);
             writer.writeAttribute("style", "display:" + contentStyle, null);
 
-            if (inputFacet != null) {
+            if (ComponentUtils.shouldRenderFacet(inputFacet)) {
                 inputFacet.encodeAll(context);
             }
             else {

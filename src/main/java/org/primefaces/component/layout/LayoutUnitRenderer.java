@@ -30,6 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 
 public class LayoutUnitRenderer extends CoreRenderer {
 
@@ -81,8 +82,9 @@ public class LayoutUnitRenderer extends CoreRenderer {
     public void encodeHeader(FacesContext context, LayoutUnit unit) throws IOException {
         String headerText = unit.getHeader();
         UIComponent headerFacet = unit.getFacet("header");
+        boolean renderFacet = ComponentUtils.shouldRenderFacet(headerFacet);
 
-        if (headerText == null && headerFacet == null) {
+        if (headerText == null && !renderFacet) {
             return;
         }
 
@@ -95,7 +97,7 @@ public class LayoutUnitRenderer extends CoreRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", Layout.UNIT_HEADER_TITLE_CLASS, null);
 
-        if (headerFacet != null) {
+        if (renderFacet) {
             headerFacet.encodeAll(context);
         }
         else if (headerText != null) {

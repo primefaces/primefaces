@@ -34,6 +34,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.row.Row;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.GridLayoutUtils;
 
@@ -312,7 +313,7 @@ public class PanelGridRenderer extends CoreRenderer {
 
         UIComponent component = grid.getFacet(facet);
 
-        if (component != null && component.isRendered()) {
+        if (ComponentUtils.shouldRenderFacet(component)) {
             ResponseWriter writer = context.getResponseWriter();
             writer.startElement(tag, null);
             writer.writeAttribute("class", styleClass, null);
@@ -362,7 +363,7 @@ public class PanelGridRenderer extends CoreRenderer {
     public void encodeGridFacet(FacesContext context, PanelGrid grid, int columns, String facet, String styleClass) throws IOException {
         UIComponent component = grid.getFacet(facet);
 
-        if (component != null && component.isRendered()) {
+        if (ComponentUtils.shouldRenderFacet(component)) {
             ResponseWriter writer = context.getResponseWriter();
 
             writer.startElement("div", null);

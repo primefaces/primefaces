@@ -236,7 +236,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
         writer.writeAttribute("class", iconClass, null);
         writer.endElement("span");
 
-        if (titleFacet != null) {
+        if (ComponentUtils.shouldRenderFacet(titleFacet)) {
             titleFacet.encodeAll(context);
         }
         else if (title != null) {

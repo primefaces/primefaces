@@ -121,7 +121,7 @@ public class DataTableXMLExporter extends DataTableExporter {
         if (headerText != null) {
             columnTag = headerText.toLowerCase();
         }
-        else if (facet != null) {
+        else if (ComponentUtils.shouldRenderFacet(facet)) {
             columnTag = exportValue(FacesContext.getCurrentInstance(), facet).toLowerCase();
         }
         else {

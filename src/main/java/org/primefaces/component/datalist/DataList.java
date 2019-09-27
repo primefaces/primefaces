@@ -197,7 +197,7 @@ public class DataList extends DataListBase {
             }
 
             UIComponent descriptionFacet = getFacet("description");
-            if (descriptionFacet != null && isDefinition()) {
+            if (ComponentUtils.shouldRenderFacet(descriptionFacet) && isDefinition()) {
                 process(context, descriptionFacet, phaseId);
             }
         }

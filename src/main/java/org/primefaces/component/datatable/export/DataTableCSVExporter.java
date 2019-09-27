@@ -127,7 +127,7 @@ public class DataTableCSVExporter extends DataTableExporter {
                 if (textValue != null) {
                     addColumnValue(builder, textValue);
                 }
-                else if (facet != null) {
+                else if (ComponentUtils.shouldRenderFacet(facet)) {
                     addColumnValue(builder, facet);
                 }
                 else {
