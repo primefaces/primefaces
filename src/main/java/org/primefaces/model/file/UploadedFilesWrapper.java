@@ -29,7 +29,7 @@ import javax.faces.component.StateHolder;
 import javax.faces.context.FacesContext;
 
 /**
- * Internal wrapper to avoid a UploadedFiles to beeing saved in the ViewState.
+ * Internal wrapper to avoid the file binaries to beeing saved in the ViewState.
  */
 public class UploadedFilesWrapper extends UploadedFiles implements FacesWrapper<UploadedFiles>, StateHolder {
 
