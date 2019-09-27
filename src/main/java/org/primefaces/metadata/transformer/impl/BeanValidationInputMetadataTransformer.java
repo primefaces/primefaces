@@ -51,6 +51,8 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
 import org.primefaces.metadata.transformer.AbstractInputMetadataTransformer;
 import org.primefaces.util.LangUtils;
+import org.primefaces.validate.bean.FutureOrPresentClientValidationConstraint;
+import org.primefaces.validate.bean.PastOrPresentClientValidationConstraint;
 
 public class BeanValidationInputMetadataTransformer extends AbstractInputMetadataTransformer {
 
@@ -161,13 +163,13 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
             if (annotationType.equals(Past.class) && uicalendar.getMaxdate() == null) {
                 uicalendar.setMaxdate(hasTime ? LocalDate.now() : LocalDate.now().minusDays(1));
             }
-            if (annotationClassName.equals("PastOrPresent") && uicalendar.getMaxdate() == null) {
+            if (annotationClassName.equals(PastOrPresentClientValidationConstraint.CONSTRAINT_ID) && uicalendar.getMaxdate() == null) {
                 uicalendar.setMaxdate(LocalDate.now());
             }
             if (annotationType.equals(Future.class) && uicalendar.getMindate() == null) {
                 uicalendar.setMindate(hasTime ? LocalDate.now() : LocalDate.now().plusDays(1));
             }
-            if (annotationClassName.equals("FutureOrPresent") && uicalendar.getMindate() == null) {
+            if (annotationClassName.equals(FutureOrPresentClientValidationConstraint.CONSTRAINT_ID) && uicalendar.getMindate() == null) {
                 uicalendar.setMindate(LocalDate.now());
             }
         }
