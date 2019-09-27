@@ -29,8 +29,10 @@ import java.util.Map;
 
 public class PositiveClientValidationConstraint extends AbstractClientValidationConstraint {
 
+    public static final String CONSTRAINT_ID = "Positive";
     public static final String MESSAGE_METADATA = "data-p-positive-msg";
-    public static final String MESSAGE_ID = "{javax.validation.constraints.Positive.message}";
+    public static final String CONSTRAINT_CLASS_NAME = CONSTRAINT_PACKAGE  + "." + CONSTRAINT_ID;
+    public static final String MESSAGE_ID = "{" + CONSTRAINT_CLASS_NAME + ".message}";
 
     public PositiveClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);
@@ -43,6 +45,6 @@ public class PositiveClientValidationConstraint extends AbstractClientValidation
 
     @Override
     public String getValidatorId() {
-        return "Positive";
+        return CONSTRAINT_ID ;
     }
 }
