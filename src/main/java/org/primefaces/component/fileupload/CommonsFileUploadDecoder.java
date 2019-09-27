@@ -25,8 +25,7 @@ package org.primefaces.component.fileupload;
 
 import org.apache.commons.fileupload.FileItem;
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.file.DefaultSingleUploadedFile;
-import org.primefaces.model.file.SingleUploadedFile;
+import org.primefaces.model.file.CommonsUploadedFile;
 import org.primefaces.model.file.UploadedFileWrapper;
 import org.primefaces.util.FileUploadUtils;
 import org.primefaces.webapp.MultipartRequest;
@@ -35,6 +34,7 @@ import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequestWrapper;
 import java.io.IOException;
+import org.primefaces.model.file.UploadedFile;
 
 public class CommonsFileUploadDecoder {
 
@@ -74,7 +74,7 @@ public class CommonsFileUploadDecoder {
         FileItem file = request.getFileItem(inputToDecodeId);
 
         if (file != null && !file.getName().isEmpty()) {
-            SingleUploadedFile uploadedFile = new DefaultSingleUploadedFile(file, fileUpload.getSizeLimit());
+            UploadedFile uploadedFile = new CommonsUploadedFile(file, fileUpload.getSizeLimit());
             if (FileUploadUtils.isValidFile(context, fileUpload, uploadedFile)) {
                 fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
             }
@@ -89,7 +89,7 @@ public class CommonsFileUploadDecoder {
         FileItem file = request.getFileItem(clientId);
 
         if (file != null) {
-            SingleUploadedFile uploadedFile = new DefaultSingleUploadedFile(file, fileUpload.getSizeLimit());
+            UploadedFile uploadedFile = new CommonsUploadedFile(file, fileUpload.getSizeLimit());
             if (FileUploadUtils.isValidFile(context, fileUpload, uploadedFile)) {
                 fileUpload.queueEvent(new FileUploadEvent(fileUpload, uploadedFile));
             }

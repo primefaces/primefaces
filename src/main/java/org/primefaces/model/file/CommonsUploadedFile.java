@@ -36,18 +36,18 @@ import java.io.Serializable;
  *
  * Default UploadedFile implementation based on Commons FileUpload FileItem
  */
-public class DefaultSingleUploadedFile implements SingleUploadedFile, Serializable {
+public class CommonsUploadedFile implements UploadedFile, Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private FileItem fileItem;
     private Long sizeLimit;
 
-    public DefaultSingleUploadedFile() {
+    public CommonsUploadedFile() {
         // NOOP
     }
 
-    public DefaultSingleUploadedFile(FileItem fileItem, Long sizeLimit) {
+    public CommonsUploadedFile(FileItem fileItem, Long sizeLimit) {
         this.fileItem = fileItem;
         this.sizeLimit = sizeLimit;
     }

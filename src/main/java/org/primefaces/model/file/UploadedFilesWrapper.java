@@ -23,29 +23,28 @@
  */
 package org.primefaces.model.file;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.List;
 import javax.faces.FacesWrapper;
 import javax.faces.component.StateHolder;
 import javax.faces.context.FacesContext;
 
 /**
- * Internal wrapper to avoid a UploadedFile to beeing saved in the ViewState.
+ * Internal wrapper to avoid a UploadedFiles to beeing saved in the ViewState.
  */
-public class UploadedFileWrapper implements UploadedFile, FacesWrapper<UploadedFile>, StateHolder {
+public class UploadedFilesWrapper extends UploadedFiles implements FacesWrapper<UploadedFiles>, StateHolder {
 
-    private UploadedFile wrapped;
+    private UploadedFiles wrapped;
 
-    public UploadedFileWrapper() {
+    public UploadedFilesWrapper() {
         // NOOP
     }
 
-    public UploadedFileWrapper(UploadedFile wrapped) {
+    public UploadedFilesWrapper(UploadedFiles wrapped) {
         this.wrapped = wrapped;
     }
 
     @Override
-    public UploadedFile getWrapped() {
+    public UploadedFiles getWrapped() {
         return wrapped;
     }
 
@@ -70,33 +69,17 @@ public class UploadedFileWrapper implements UploadedFile, FacesWrapper<UploadedF
     }
 
     @Override
+    public List<UploadedFile> getFiles() {
+        return getWrapped().getFiles();
+    }
+
+    @Override
     public long getSize() {
         return getWrapped().getSize();
     }
 
     @Override
-    public void write(String filePath) throws Exception {
-        getWrapped().write(filePath);
+    public void write(String path) throws Exception {
+        getWrapped().write(path);
     }
-
-    @Override
-    public String getFileName() {
-        return getWrapped().getFileName();
-    }
-
-    @Override
-    public InputStream getInputStream() throws IOException {
-        return getWrapped().getInputStream();
-    }
-
-    @Override
-    public byte[] getContent() {
-        return getWrapped().getContent();
-    }
-
-    @Override
-    public String getContentType() {
-        return getWrapped().getContentType();
-    }
-
 }
