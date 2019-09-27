@@ -163,13 +163,13 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
             if (annotationType.equals(Past.class) && uicalendar.getMaxdate() == null) {
                 uicalendar.setMaxdate(hasTime ? LocalDate.now() : LocalDate.now().minusDays(1));
             }
-            if (annotationClassName.equals(PastOrPresentClientValidationConstraint.ID) && uicalendar.getMaxdate() == null) {
+            if (annotationClassName.equals(PastOrPresentClientValidationConstraint.CONSTRAINT_ID) && uicalendar.getMaxdate() == null) {
                 uicalendar.setMaxdate(LocalDate.now());
             }
             if (annotationType.equals(Future.class) && uicalendar.getMindate() == null) {
                 uicalendar.setMindate(hasTime ? LocalDate.now() : LocalDate.now().plusDays(1));
             }
-            if (annotationClassName.equals(FutureOrPresentClientValidationConstraint.ID) && uicalendar.getMindate() == null) {
+            if (annotationClassName.equals(FutureOrPresentClientValidationConstraint.CONSTRAINT_ID) && uicalendar.getMindate() == null) {
                 uicalendar.setMindate(LocalDate.now());
             }
         }

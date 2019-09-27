@@ -30,7 +30,7 @@ import java.util.Objects;
 
 public abstract class AbstractClientValidationConstraint implements ClientValidationConstraint {
 
-    public static final String PACKAGE = "javax.validation.constraints";
+    public static final String CONSTRAINT_PACKAGE = "javax.validation.constraints";
 
     private String messageId;
     private String messageMetadata;

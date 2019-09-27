@@ -25,10 +25,10 @@ package org.primefaces.validate.bean;
 
 public class NotBlankClientValidationConstraint extends AbstractClientValidationConstraint {
 
-    public static final String ID = "NotBlank";
+    public static final String CONSTRAINT_ID = "NotBlank";
     public static final String MESSAGE_METADATA = "data-p-notblank-msg";
-    public static final String CLASS_ID = PACKAGE  + "." + ID;
-    public static final String MESSAGE_ID = "{" + CLASS_ID + ".message}";
+    public static final String CONSTRAINT_CLASS_NAME = CONSTRAINT_PACKAGE  + "." + CONSTRAINT_ID;
+    public static final String MESSAGE_ID = "{" + CONSTRAINT_CLASS_NAME + ".message}";
 
     public NotBlankClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);
@@ -36,6 +36,6 @@ public class NotBlankClientValidationConstraint extends AbstractClientValidation
 
     @Override
     public String getValidatorId() {
-        return ID;
+        return CONSTRAINT_ID ;
     }
 }

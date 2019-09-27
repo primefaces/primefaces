@@ -25,10 +25,10 @@ package org.primefaces.validate.bean;
 
 public class PastClientValidationConstraint extends AbstractClientValidationConstraint {
 
-    public static final String ID = "Past";
+    public static final String CONSTRAINT_ID = "Past";
     public static final String MESSAGE_METADATA = "data-p-past-msg";
-    public static final String CLASS_ID = PACKAGE  + "." + ID;
-    public static final String MESSAGE_ID = "{" + CLASS_ID + ".message}";
+    public static final String CONSTRAINT_CLASS_NAME = CONSTRAINT_PACKAGE  + "." + CONSTRAINT_ID;
+    public static final String MESSAGE_ID = "{" + CONSTRAINT_CLASS_NAME + ".message}";
 
     public PastClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);
@@ -36,6 +36,6 @@ public class PastClientValidationConstraint extends AbstractClientValidationCons
 
     @Override
     public String getValidatorId() {
-        return ID;
+        return CONSTRAINT_ID ;
     }
 }

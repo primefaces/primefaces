@@ -29,10 +29,10 @@ import java.util.Map;
 
 public class PositiveOrZeroClientValidationConstraint extends AbstractClientValidationConstraint {
 
-    public static final String ID = "PositiveOrZero";
+    public static final String CONSTRAINT_ID = "PositiveOrZero";
     public static final String MESSAGE_METADATA = "data-p-positiveorzero-msg";
-    public static final String CLASS_ID = PACKAGE  + "." + ID;
-    public static final String MESSAGE_ID = "{" + CLASS_ID + ".message}";
+    public static final String CONSTRAINT_CLASS_NAME = CONSTRAINT_PACKAGE  + "." + CONSTRAINT_ID;
+    public static final String MESSAGE_ID = "{" + CONSTRAINT_CLASS_NAME + ".message}";
 
     public PositiveOrZeroClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);
@@ -45,6 +45,6 @@ public class PositiveOrZeroClientValidationConstraint extends AbstractClientVali
 
     @Override
     public String getValidatorId() {
-        return ID;
+        return CONSTRAINT_ID ;
     }
 }

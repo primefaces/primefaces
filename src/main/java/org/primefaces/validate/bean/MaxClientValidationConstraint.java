@@ -29,10 +29,10 @@ import java.util.Map;
 
 public class MaxClientValidationConstraint extends AbstractClientValidationConstraint {
 
-    public static final String ID = "Max";
+    public static final String CONSTRAINT_ID = "Max";
     public static final String MESSAGE_METADATA = "data-p-max-msg";
-    public static final String CLASS_ID = PACKAGE  + "." + ID;
-    public static final String MESSAGE_ID = "{" + CLASS_ID + ".message}";
+    public static final String CONSTRAINT_CLASS_NAME = CONSTRAINT_PACKAGE  + "." + CONSTRAINT_ID;
+    public static final String MESSAGE_ID = "{" + CONSTRAINT_CLASS_NAME + ".message}";
 
     public MaxClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);
@@ -45,6 +45,6 @@ public class MaxClientValidationConstraint extends AbstractClientValidationConst
 
     @Override
     public String getValidatorId() {
-        return ID;
+        return CONSTRAINT_ID ;
     }
 }
