@@ -136,7 +136,7 @@ public class FieldsetRenderer extends CoreRenderer {
         UIComponent legend = fieldset.getFacet("legend");
         boolean renderFacet = ComponentUtils.shouldRenderFacet(legend);
 
-        if (legendText != null || renderFacet) {
+        if (renderFacet || legendText != null) {
             writer.startElement("legend", null);
             writer.writeAttribute("class", Fieldset.LEGEND_CLASS, null);
 

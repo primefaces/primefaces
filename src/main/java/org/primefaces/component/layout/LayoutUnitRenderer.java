@@ -84,7 +84,7 @@ public class LayoutUnitRenderer extends CoreRenderer {
         UIComponent headerFacet = unit.getFacet("header");
         boolean renderFacet = ComponentUtils.shouldRenderFacet(headerFacet);
 
-        if (headerText == null && !renderFacet) {
+        if (!renderFacet && headerText == null) {
             return;
         }
 
