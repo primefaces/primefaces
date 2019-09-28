@@ -37,6 +37,13 @@ public class DynamicResourcesPhaseListener implements PhaseListener {
     private static final long serialVersionUID = 1L;
     private static final String INITIAL_RESOURCES = DynamicResourcesPhaseListener.class.getName() + ".INITIAL_RESOURCES";
 
+    private boolean enabled;
+
+    public DynamicResourcesPhaseListener() {
+        // JSF 2.3+ contains a own dynamic resource handling
+        enabled = !PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnvironment().isAtLeastJsf23();
+    }
+
     @Override
     public void beforePhase(PhaseEvent event) {
 
@@ -44,6 +51,10 @@ public class DynamicResourcesPhaseListener implements PhaseListener {
 
     @Override
     public void afterPhase(PhaseEvent event) {
+        if (!enabled) {
+            return;
+        }
+
         FacesContext context = event.getFacesContext();
 
         // we only need to collect resources on ajax requests
@@ -59,11 +70,6 @@ public class DynamicResourcesPhaseListener implements PhaseListener {
 
         // skip update=@all as the head, with all resources, will already be rendered
         if (context.getPartialViewContext().isRenderAll()) {
-            return;
-        }
-
-        // JSF 2.3 contains a own dynamic resource handling
-        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf23()) {
             return;
         }
 

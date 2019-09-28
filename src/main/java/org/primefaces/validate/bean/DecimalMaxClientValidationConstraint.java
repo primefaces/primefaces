@@ -29,8 +29,10 @@ import java.util.Map;
 
 public class DecimalMaxClientValidationConstraint extends AbstractClientValidationConstraint {
 
+    public static final String CONSTRAINT_ID = "DecimalMax";
     public static final String MESSAGE_METADATA = "data-p-decimalmax-msg";
-    public static final String MESSAGE_ID = "{javax.validation.constraints.DecimalMax.message}";
+    public static final String CONSTRAINT_CLASS_NAME = CONSTRAINT_PACKAGE  + "." + CONSTRAINT_ID;
+    public static final String MESSAGE_ID = "{" + CONSTRAINT_CLASS_NAME + ".message}";
 
     public DecimalMaxClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);
@@ -43,6 +45,6 @@ public class DecimalMaxClientValidationConstraint extends AbstractClientValidati
 
     @Override
     public String getValidatorId() {
-        return "DecimalMax";
+        return CONSTRAINT_ID ;
     }
 }

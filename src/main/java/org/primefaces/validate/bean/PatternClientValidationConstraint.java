@@ -29,8 +29,10 @@ import java.util.Map;
 
 public class PatternClientValidationConstraint extends AbstractClientValidationConstraint {
 
-    private static final String MESSAGE_METADATA = "data-p-pattern-msg";
-    private static final String MESSAGE_ID = "{javax.validation.constraints.Pattern.message}";
+    public static final String CONSTRAINT_ID = "Pattern";
+    public static final String MESSAGE_METADATA = "data-p-pattern-msg";
+    public static final String CONSTRAINT_CLASS_NAME = CONSTRAINT_PACKAGE  + "." + CONSTRAINT_ID;
+    public static final String MESSAGE_ID = "{" + CONSTRAINT_CLASS_NAME + ".message}";
 
     public PatternClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);
@@ -43,7 +45,7 @@ public class PatternClientValidationConstraint extends AbstractClientValidationC
 
     @Override
     public String getValidatorId() {
-        return "Pattern";
+        return CONSTRAINT_ID ;
     }
 
 }

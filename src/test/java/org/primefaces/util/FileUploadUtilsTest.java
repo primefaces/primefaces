@@ -31,7 +31,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.model.file.SingleUploadedFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -46,6 +45,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import org.primefaces.model.file.UploadedFile;
 
 public class FileUploadUtilsTest {
 
@@ -72,8 +72,8 @@ public class FileUploadUtilsTest {
         fileUpload = null;
     }
     
-    private SingleUploadedFile createFile(String filename, String contentType, InputStream stream) {
-        SingleUploadedFile file = Mockito.mock(SingleUploadedFile.class);
+    private UploadedFile createFile(String filename, String contentType, InputStream stream) {
+        UploadedFile file = Mockito.mock(UploadedFile.class);
         when(file.getFileName()).thenReturn(filename);
         when(file.getContentType()).thenReturn(contentType);
         try {

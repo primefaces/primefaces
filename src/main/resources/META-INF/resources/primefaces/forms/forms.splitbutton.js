@@ -318,6 +318,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
     },
 
     show: function() {
+        this.jq.attr('aria-expanded', true);
         this.alignPanel();
 
         this.menu.show();
@@ -331,6 +332,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
     },
 
     hide: function() {
+        this.jq.attr('aria-expanded', false);
         this.menuitems.filter('.ui-state-hover').removeClass('ui-state-hover');
         this.menuButton.removeClass('ui-state-focus');
 

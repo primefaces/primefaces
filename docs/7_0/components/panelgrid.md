@@ -24,8 +24,8 @@ binding | null | Object | An el expression that maps to a server side UIComponen
 columns | 0 | Integer | Number of columns in grid.
 style | null | String | Inline style of the panel.
 styleClass | null | String | Style class of the panel.
-columnClasses | null | String | Comma separated list of column style classes.
-layout | tabular | String | Displays data in a 'table' layout or 'grid' layout. The grid layout is a responsive layout.
+columnClasses | null | String | Comma separated list of column style classes.<br/>For layout=grid: Grid CSS - classes 
+layout | tabular | String | Displays data in a 'tabular' layout or 'grid' layout. The grid layout is a responsive layout.
 role | grid | String | Role for aria.
 
 ## Getting started with PanelGrid

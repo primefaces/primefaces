@@ -149,9 +149,9 @@ uses a new request for each file.
 <p:fileUpload listener="#{fileBean.handleFileUpload}" multiple="true" />
 ```
 
-However, in simple mode, it is possible to get all updated files at once. Files will be wrapped in a `UploadedFileWrapper` bean:
+However, in simple mode, it is possible to get all updated files at once via the `UploadedFiles` model:
 ```xhtml
-<p:fileUpload value="#{fileBean.file}" multiple="true" mode="simple" />
+<p:fileUpload value="#{fileUploadView.files}" multiple="true" mode="simple" />
 <p:commandButton value="Submit" action="#{fileUploadView.upload}" />
 ```
 
@@ -160,22 +160,22 @@ However, in simple mode, it is possible to get all updated files at once. Files 
 @RequestScoped
 public class FileUploadView {
 
-    private UploadedFileWrapper file;
+    private UploadedFiles files;
 
-    public UploadedFileWrapper getFile() {
-        return file;
+    public UploadedFiles getFiles() {
+        return files;
     }
 
-    public void setFile(UploadedFileWrapper file) {
-        this.file = file;
+    public void setFile(UploadedFiles files) {
+        this.files = files;
     }
 
     public void upload() {
-        if (file != null) {
-            FileUploadUtils.consume(file, f -> {
+        if (files != null) {
+            for (UploadedFile f : files.getFiles()) {
                 FacesMessage message = new FacesMessage("Successful", f.getFileName() + " is uploaded.");
                 FacesContext.getCurrentInstance().addMessage(null, message);
-            });
+            }
         }
     }
 }

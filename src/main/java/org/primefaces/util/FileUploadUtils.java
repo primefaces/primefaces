@@ -34,7 +34,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -48,13 +47,10 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.model.file.MultipleUploadedFile;
-import org.primefaces.model.file.SingleUploadedFile;
-import org.primefaces.model.file.UploadedFile;
-import org.primefaces.model.file.UploadedFileWrapper;
 import org.primefaces.shaded.owasp.SafeFile;
 import org.primefaces.shaded.owasp.ValidationException;
 import org.primefaces.virusscan.VirusException;
+import org.primefaces.model.file.UploadedFile;
 
 /**
  * Utilities for FileUpload components.
@@ -141,7 +137,7 @@ public class FileUploadUtils {
      * @param uploadedFile the details of the uploaded file
      * @return <code>true</code>, if all validations regarding filename and content type passed, <code>false</code> else
      */
-    public static boolean isValidType(PrimeApplicationContext context, FileUpload fileUpload, SingleUploadedFile uploadedFile) {
+    public static boolean isValidType(FileUpload fileUpload, UploadedFile uploadedFile) {
         String fileName = uploadedFile.getFileName();
         try {
             boolean validType = isValidFileName(fileUpload, uploadedFile) &&
@@ -161,7 +157,7 @@ public class FileUploadUtils {
         }
     }
 
-    private static boolean isValidFileName(FileUpload fileUpload, SingleUploadedFile uploadedFile) throws ScriptException {
+    private static boolean isValidFileName(FileUpload fileUpload, UploadedFile uploadedFile) throws ScriptException {
         String allowTypesRegex = fileUpload.getAllowTypes();
         if (!LangUtils.isValueBlank(allowTypesRegex)) {
             //We use rhino or nashorn javascript engine bundled with java to re-evaluate javascript regex that cannot be easily translated to java regex
@@ -296,7 +292,7 @@ public class FileUploadUtils {
         }
     }
 
-    public static boolean isValidFile(FacesContext context, FileUpload fileUpload, SingleUploadedFile uploadedFile) throws IOException {
+    public static boolean isValidFile(FacesContext context, FileUpload fileUpload, UploadedFile uploadedFile) throws IOException {
         Long sizeLimit = fileUpload.getSizeLimit();
         PrimeApplicationContext appContext = PrimeApplicationContext.getCurrentInstance(context);
         boolean valid = (sizeLimit == null || uploadedFile.getSize() <= sizeLimit)
@@ -312,10 +308,10 @@ public class FileUploadUtils {
         return valid;
     }
 
-    public static boolean areValidFiles(FacesContext context, FileUpload fileUpload, List<SingleUploadedFile> files) throws IOException {
+    public static boolean areValidFiles(FacesContext context, FileUpload fileUpload, List<UploadedFile> files) throws IOException {
         long totalPartSize = 0;
         Long sizeLimit = fileUpload.getSizeLimit();
-        for (SingleUploadedFile file : files) {
+        for (UploadedFile file : files) {
             totalPartSize += file.getSize();
             if (!isValidFile(context, fileUpload, file)) {
                 return false;
@@ -323,29 +319,6 @@ public class FileUploadUtils {
         }
 
         return sizeLimit == null || totalPartSize <= sizeLimit;
-    }
-
-    /**
-     * As FileUpload comes with different subtypes of {@link UploadedFile}
-     * {@link FileUploadUtils#consume(UploadedFile, Consumer)} makes completely
-     * these transparent by avoiding painful casting (e.g FileUploadUtils.consume(uploadedFile, f -> doSth(f));
-     *
-     * @param file uploaded file
-     * @param consumer operation to execute on every single file
-     */
-    public static void consume(UploadedFile file, Consumer<SingleUploadedFile> consumer) {
-        if (file instanceof SingleUploadedFile) {
-            consumer.accept((SingleUploadedFile) file);
-        }
-        else if (file instanceof MultipleUploadedFile) {
-            ((MultipleUploadedFile) file).getFiles().stream().forEach(consumer);
-        }
-        else if (file instanceof UploadedFileWrapper) {
-            consume(((UploadedFileWrapper) file).getWrapped(), consumer);
-        }
-        else {
-            throw new IllegalArgumentException("Unsupported UploadedFile type: " + file.getClass().getName());
-        }
     }
 
     /**

@@ -25,8 +25,10 @@ package org.primefaces.validate.bean;
 
 public class NotNullClientValidationConstraint extends AbstractClientValidationConstraint {
 
+    public static final String CONSTRAINT_ID = "NotNull";
     public static final String MESSAGE_METADATA = "data-p-notnull-msg";
-    public static final String MESSAGE_ID = "{javax.validation.constraints.NotNull.message}";
+    public static final String CONSTRAINT_CLASS_NAME = CONSTRAINT_PACKAGE  + "." + CONSTRAINT_ID;
+    public static final String MESSAGE_ID = "{" + CONSTRAINT_CLASS_NAME + ".message}";
 
     public NotNullClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);
@@ -34,6 +36,6 @@ public class NotNullClientValidationConstraint extends AbstractClientValidationC
 
     @Override
     public String getValidatorId() {
-        return "NotNull";
+        return CONSTRAINT_ID ;
     }
 }

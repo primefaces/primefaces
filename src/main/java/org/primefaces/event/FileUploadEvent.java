@@ -23,19 +23,19 @@
  */
 package org.primefaces.event;
 
-import org.primefaces.model.file.SingleUploadedFile;
 
 import javax.faces.component.UIComponent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
+import org.primefaces.model.file.UploadedFile;
 
 public class FileUploadEvent extends FacesEvent {
 
     private static final long serialVersionUID = 1L;
 
-    private SingleUploadedFile file;
+    private UploadedFile file;
 
-    public FileUploadEvent(UIComponent component, SingleUploadedFile file) {
+    public FileUploadEvent(UIComponent component, UploadedFile file) {
         super(component);
         this.file = file;
     }
@@ -50,7 +50,7 @@ public class FileUploadEvent extends FacesEvent {
         throw new UnsupportedOperationException();
     }
 
-    public SingleUploadedFile getFile() {
+    public UploadedFile getFile() {
         return file;
     }
 }

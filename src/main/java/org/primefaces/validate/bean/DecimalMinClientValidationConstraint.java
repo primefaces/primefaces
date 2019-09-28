@@ -29,8 +29,10 @@ import java.util.Map;
 
 public class DecimalMinClientValidationConstraint extends AbstractClientValidationConstraint {
 
+    public static final String CONSTRAINT_ID = "DecimalMin";
     public static final String MESSAGE_METADATA = "data-p-decimalmin-msg";
-    public static final String MESSAGE_ID = "{javax.validation.constraints.DecimalMin.message}";
+    public static final String CONSTRAINT_CLASS_NAME = CONSTRAINT_PACKAGE  + "." + CONSTRAINT_ID;
+    public static final String MESSAGE_ID = "{" + CONSTRAINT_CLASS_NAME + ".message}";
 
     public DecimalMinClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);
@@ -43,6 +45,6 @@ public class DecimalMinClientValidationConstraint extends AbstractClientValidati
 
     @Override
     public String getValidatorId() {
-        return "DecimalMin";
+        return CONSTRAINT_ID ;
     }
 }

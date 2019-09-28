@@ -23,30 +23,33 @@
  */
 package org.primefaces.model.file;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class MultipleUploadedFile implements UploadedFile {
+public class UploadedFiles implements Serializable {
 
     private long size;
-    private List<SingleUploadedFile> files;
+    private List<UploadedFile> files;
 
-    public MultipleUploadedFile(List<SingleUploadedFile> files) {
+    public UploadedFiles() {
+        // NOOP
+    }
+
+    public UploadedFiles(List<UploadedFile> files) {
         this.files = files;
         size = files.stream().mapToLong(UploadedFile::getSize).sum();
     }
 
-    public List<SingleUploadedFile> getFiles() {
+    public List<UploadedFile> getFiles() {
         return files;
     }
 
-    @Override
     public long getSize() {
         return size;
     }
 
-    @Override
     public void write(String path) throws Exception {
-        for (SingleUploadedFile file : files) {
+        for (UploadedFile file : files) {
             file.write(path);
         }
     }

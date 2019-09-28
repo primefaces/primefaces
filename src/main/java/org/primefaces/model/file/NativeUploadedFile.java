@@ -33,7 +33,7 @@ import javax.servlet.http.Part;
 import java.io.*;
 import java.net.URLDecoder;
 
-public class NativeUploadedFile implements SingleUploadedFile, Serializable {
+public class NativeUploadedFile implements UploadedFile, Serializable {
 
     private static final long serialVersionUID = 1L;
     private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;

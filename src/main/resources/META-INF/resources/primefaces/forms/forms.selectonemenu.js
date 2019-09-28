@@ -270,10 +270,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     highlightItem: function(item) {
+        this.items.attr('aria-selected', false);
         this.items.filter('.ui-state-highlight').removeClass('ui-state-highlight');
 
         if(item.length > 0) {
             item.addClass('ui-state-highlight');
+            item.attr('aria-selected', true)
             this.setLabel(item.data('label'));
         }
     },
