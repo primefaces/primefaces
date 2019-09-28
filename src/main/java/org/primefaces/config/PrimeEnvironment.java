@@ -35,6 +35,7 @@ import org.primefaces.util.LangUtils;
 
 public class PrimeEnvironment {
 
+    public static final String TIKA_FILE_DETECTOR_CLASS = "org.apache.tika.filetypedetector.TikaFileTypeDetector";
     private static final Logger LOGGER = Logger.getLogger(PrimeEnvironment.class.getName());
 
     private final boolean beanValidationAvailable;
@@ -53,6 +54,8 @@ public class PrimeEnvironment {
 
     private final boolean htmlSanitizerAvailable;
 
+    private final boolean tikaAvailable;
+
     public PrimeEnvironment(FacesContext context) {
         atLeastEl22 = LangUtils.tryToLoadClassForName("javax.el.ValueReference") != null;
 
@@ -68,7 +71,9 @@ public class PrimeEnvironment {
 
         htmlSanitizerAvailable = LangUtils.tryToLoadClassForName("org.owasp.html.PolicyFactory") != null;
 
-        if (context == null) {
+        tikaAvailable = LangUtils.tryToLoadClassForName(TIKA_FILE_DETECTOR_CLASS) != null;
+
+        if (context == null || context.getExternalContext() == null) {
             this.mojarra = false;
         }
         else {
@@ -162,5 +167,9 @@ public class PrimeEnvironment {
 
     public boolean isHtmlSanitizerAvailable() {
         return htmlSanitizerAvailable;
+    }
+
+    public boolean isTikaAvailable() {
+        return tikaAvailable;
     }
 }

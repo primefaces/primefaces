@@ -25,7 +25,9 @@ package org.primefaces.context;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.file.spi.FileTypeDetector;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -69,6 +71,7 @@ public class PrimeApplicationContext {
     private final Lazy<Validator> validator;
     private final Lazy<CacheProvider> cacheProvider;
     private final Lazy<VirusScannerService> virusScannerService;
+    private FileTypeDetector fileTypeDetector;
 
     public PrimeApplicationContext(FacesContext facesContext) {
         environment = new PrimeEnvironment(facesContext);
@@ -119,6 +122,15 @@ public class PrimeApplicationContext {
         }
 
         virusScannerService = new Lazy<>(() -> new VirusScannerService(applicationClassLoader));
+
+        if (environment.isTikaAvailable()) {
+            for (FileTypeDetector detector : ServiceLoader.load(FileTypeDetector.class)) {
+                if (PrimeEnvironment.TIKA_FILE_DETECTOR_CLASS.equals(detector.getClass().getName())) {
+                    fileTypeDetector = detector;
+                    break;
+                }
+            }
+        }
 
         cacheProvider = new Lazy<>(() -> {
             String cacheProviderConfigValue = FacesContext.getCurrentInstance().getExternalContext()
@@ -199,6 +211,10 @@ public class PrimeApplicationContext {
 
     public VirusScannerService getVirusScannerService() {
         return virusScannerService.get();
+    }
+
+    public FileTypeDetector getFileTypeDetector() {
+        return fileTypeDetector;
     }
 
     public void release() {
