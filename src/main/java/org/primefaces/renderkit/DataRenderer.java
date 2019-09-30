@@ -105,14 +105,14 @@ public class DataRenderer extends CoreRenderer {
         writer.writeAttribute("role", "navigation", null);
         writer.writeAttribute(HTML.ARIA_LABEL, ariaMessage, null);
 
-        if (ComponentUtils.shouldRenderFacet(leftTopContent) && isTop) {
+        if (isTop && ComponentUtils.shouldRenderFacet(leftTopContent)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", UIData.PAGINATOR_TOP_LEFT_CONTENT_CLASS, null);
             renderChild(context, leftTopContent);
             writer.endElement("div");
         }
 
-        if (ComponentUtils.shouldRenderFacet(rightTopContent) && isTop) {
+        if (isTop && ComponentUtils.shouldRenderFacet(rightTopContent)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", UIData.PAGINATOR_TOP_RIGHT_CONTENT_CLASS, null);
             renderChild(context, rightTopContent);
@@ -137,13 +137,13 @@ public class DataRenderer extends CoreRenderer {
                 }
             }
         }
-        if (ComponentUtils.shouldRenderFacet(leftBottomContent) && !isTop) {
+        if (!isTop && ComponentUtils.shouldRenderFacet(leftBottomContent)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", UIData.PAGINATOR_BOTTOM_LEFT_CONTENT_CLASS, null);
             renderChild(context, leftBottomContent);
             writer.endElement("div");
         }
-        if (ComponentUtils.shouldRenderFacet(rightBottomContent) && !isTop) {
+        if (!isTop && ComponentUtils.shouldRenderFacet(rightBottomContent)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", UIData.PAGINATOR_BOTTOM_RIGHT_CONTENT_CLASS, null);
             renderChild(context, rightBottomContent);

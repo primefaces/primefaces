@@ -399,7 +399,7 @@ public class DiagramRenderer extends CoreRenderer {
                     writer.writeAttribute("style", coords, null);
                     writer.writeAttribute("data-tooltip", title, null);
 
-                    if (ComponentUtils.shouldRenderFacet(elementFacet) && var != null) {
+                    if (var != null && ComponentUtils.shouldRenderFacet(elementFacet)) {
                         requestMap.put(var, data);
                         elementFacet.encodeAll(context);
                     }

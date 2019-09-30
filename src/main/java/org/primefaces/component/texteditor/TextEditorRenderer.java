@@ -110,7 +110,7 @@ public class TextEditorRenderer extends InputRenderer {
             writer.writeAttribute("style", style, null);
         }
 
-        if (ComponentUtils.shouldRenderFacet(toolbar) && editor.isToolbarVisible()) {
+        if (editor.isToolbarVisible() && ComponentUtils.shouldRenderFacet(toolbar)) {
             writer.startElement("div", editor);
             writer.writeAttribute("id", clientId + "_toolbar", null);
             writer.writeAttribute("class", "ui-editor-toolbar", null);

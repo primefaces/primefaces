@@ -525,7 +525,7 @@ public class DataTable extends DataTableBase {
             if (child.isRendered() && (child instanceof UIColumn)) {
                 UIColumn column = (UIColumn) child;
 
-                if (ComponentUtils.shouldRenderFacet(column.getFacet("footer")) || column.getFooterText() != null) {
+                if (column.getFooterText() != null || ComponentUtils.shouldRenderFacet(column.getFacet("footer"))) {
                     return true;
                 }
             }
