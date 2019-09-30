@@ -137,10 +137,11 @@ public class FileUploadUtils {
      * @param uploadedFile the details of the uploaded file
      * @return <code>true</code>, if all validations regarding filename and content type passed, <code>false</code> else
      */
-    public static boolean isValidType(FileUpload fileUpload, UploadedFile uploadedFile) {
+    public static boolean isValidType(PrimeApplicationContext context, FileUpload fileUpload, UploadedFile uploadedFile) {
         String fileName = uploadedFile.getFileName();
         try {
-            boolean validType = isValidFileName(fileUpload, uploadedFile) && isValidFileContent(fileUpload, fileName, uploadedFile.getInputStream());
+            boolean validType = isValidFileName(fileUpload, uploadedFile)
+                        && isValidFileContent(context, fileUpload, fileName, uploadedFile.getInputStream());
             if (validType) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine(String.format("The uploaded file %s meets the filename and content type specifications", fileName));
@@ -190,7 +191,7 @@ public class FileUploadUtils {
         return true;
     }
 
-    private static boolean isValidFileContent(FileUpload fileUpload, String fileName, InputStream inputStream) throws IOException {
+    private static boolean isValidFileContent(PrimeApplicationContext context, FileUpload fileUpload, String fileName, InputStream stream) throws IOException {
         if (!fileUpload.isValidateContentType()) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Content type checking is disabled");
@@ -202,7 +203,7 @@ public class FileUploadUtils {
             return true;
         }
 
-        boolean tika = LangUtils.tryToLoadClassForName("org.apache.tika.filetypedetector.TikaFileTypeDetector") != null;
+        boolean tika = context.getEnvironment().isTikaAvailable();
         if (!tika && LOGGER.isLoggable(Level.WARNING)) {
             LOGGER.warning("Could not find Apache Tika in classpath which is recommended for reliable content type checking");
         }
@@ -212,11 +213,19 @@ public class FileUploadUtils {
         String tempFilePrefix = UUID.randomUUID().toString();
         Path tempFile = Files.createTempFile(tempFilePrefix, tempFileSuffix);
         try {
-            InputStream in = new PushbackInputStream(new BufferedInputStream(inputStream));
+            InputStream in = new PushbackInputStream(new BufferedInputStream(stream));
             try (OutputStream out = new FileOutputStream(tempFile.toFile())) {
                 IOUtils.copyLarge(in, out);
             }
-            String contentType = Files.probeContentType(tempFile);
+            String contentType = null;
+            if (context.getFileTypeDetector() != null) {
+                contentType = context.getFileTypeDetector().probeContentType(tempFile);
+            }
+            else {
+                // use default Java fallback
+                contentType = Files.probeContentType(tempFile);
+            }
+
             if (contentType == null) {
                 if (LOGGER.isLoggable(Level.WARNING)) {
                     LOGGER.warning(String.format("Could not determine content type of uploaded file %s, consider plugging in an adequate " +
@@ -284,8 +293,9 @@ public class FileUploadUtils {
 
     public static boolean isValidFile(FacesContext context, FileUpload fileUpload, UploadedFile uploadedFile) throws IOException {
         Long sizeLimit = fileUpload.getSizeLimit();
+        PrimeApplicationContext appContext = PrimeApplicationContext.getCurrentInstance(context);
         boolean valid = (sizeLimit == null || uploadedFile.getSize() <= sizeLimit)
-                && FileUploadUtils.isValidType(fileUpload, uploadedFile);
+                && FileUploadUtils.isValidType(appContext, fileUpload, uploadedFile);
         if (valid) {
             try {
                 FileUploadUtils.performVirusScan(context, fileUpload, uploadedFile.getInputStream());
