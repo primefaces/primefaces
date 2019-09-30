@@ -150,8 +150,8 @@
             <type>java.lang.Object</type>
         </attribute>
         <attribute>
-            <description>Custom Exporter to be used in place of Default DataExporter.</description>
-            <name>customExporter</name>
+            <description>Custom Exporter to be used instead of built-in exporters.</description>
+            <name>exporter</name>
             <required>false</required>
             <type>java.lang.Object</type>
         </attribute>

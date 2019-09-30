@@ -616,19 +616,19 @@ public class ComponentUtils {
     }
 
     public static boolean invokeOnClosestIteratorParent(UIComponent component, Consumer<UIComponent> function, boolean includeSelf) {
-        Predicate<UIComponent> iterator = p -> p instanceof javax.faces.component.UIData
+        Predicate<UIComponent> isIteratorComponent = p -> p instanceof javax.faces.component.UIData
                 || p.getClass().getName().endsWith("UIRepeat")
                 || (p instanceof UITabPanel && ((UITabPanel) p).isRepeating());
 
         UIComponent parent = component;
         while (null != (parent = parent.getParent())) {
-            if (iterator.test(parent)) {
+            if (isIteratorComponent.test(parent)) {
                 function.accept(parent);
                 return true;
             }
         }
 
-        if (includeSelf && iterator.test(component)) {
+        if (includeSelf && isIteratorComponent.test(component)) {
             function.accept(component);
             return true;
         }

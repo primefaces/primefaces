@@ -53,7 +53,6 @@ public class DataTablePDFExporter extends DataTableExporter {
     private Font cellFont;
     private Font facetFont;
     private Color facetBgColor;
-    private ExportConfiguration config;
     private Document document;
     private ByteArrayOutputStream baos;
 
@@ -61,7 +60,6 @@ public class DataTablePDFExporter extends DataTableExporter {
     protected void preExport(FacesContext context, ExportConfiguration config) throws IOException {
         document = new Document();
         baos = new ByteArrayOutputStream();
-        this.config = config;
 
         try {
             PdfWriter.getInstance(document, baos);
@@ -80,12 +78,16 @@ public class DataTablePDFExporter extends DataTableExporter {
     }
 
     @Override
-    protected void doExport(FacesContext context, DataTable table, ExportConfiguration config) throws IOException {
+    protected void doExport(FacesContext context, DataTable table, ExportConfiguration config, int index) throws IOException {
         try {
+            // Add empty paragraph between each exported tables
+            if (index > 0) {
+                Paragraph preface = new Paragraph();
+                addEmptyLine(preface, 3);
+                document.add(preface);
+            }
+
             document.add(exportTable(context, table, config));
-            Paragraph preface = new Paragraph();
-            addEmptyLine(preface, 3);
-            document.add(preface);
         }
         catch (DocumentException e) {
             throw new IOException(e.getMessage());
@@ -103,10 +105,8 @@ public class DataTablePDFExporter extends DataTableExporter {
         reset();
     }
 
-    protected void reset() throws IOException {
-        document.close();
+    protected void reset() {
         document = null;
-        baos.close();
         baos = null;
     }
 
@@ -281,6 +281,11 @@ public class DataTablePDFExporter extends DataTableExporter {
     }
 
     protected void writePDFToResponse(ExternalContext externalContext, ByteArrayOutputStream baos, String fileName) throws IOException {
+        document.close();
+
+        OutputStream out = externalContext.getResponseOutputStream();
+        baos.writeTo(out);
+
         externalContext.setResponseContentType("application/pdf");
         externalContext.setResponseHeader("Expires", "0");
         externalContext.setResponseHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
@@ -288,9 +293,7 @@ public class DataTablePDFExporter extends DataTableExporter {
         externalContext.setResponseHeader("Content-disposition", ComponentUtils.createContentDisposition("attachment", fileName + ".pdf"));
         externalContext.setResponseContentLength(baos.size());
         externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
-        document.close();
-        OutputStream out = externalContext.getResponseOutputStream();
-        baos.writeTo(out);
+
         externalContext.responseFlushBuffer();
     }
 
