@@ -5,7 +5,7 @@ PrimeFaces is an open source JSF component suite with various extensions.
 - Lightweight, one jar, zero-configuration and no required dependencies.
 - Automatic XSS and CSRF prevention.
 - Pluggable HTML sanitizing via OWASP.
-- Built-in responsiveness & accessibility
+- Built-in responsiveness & accessibility.
 - Skinning Framework with 35+ built-in themes and support for visual theme designer tool.
 - Premium themes and layouts.
 - Extensive documentation.
