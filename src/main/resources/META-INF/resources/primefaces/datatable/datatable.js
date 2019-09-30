@@ -2424,11 +2424,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         });
     },
 
-    cellEditInit: function(cell) {
+    getCellMeta: function(cell) {
         var rowMeta = this.getRowMeta(cell.closest('tr')),
-        cellEditor = cell.children('.ui-cell-editor'),
-        cellIndex = cell.index(),
-        $this = this;
+            cellIndex = cell.index();
 
         if(this.cfg.scrollable && this.cfg.frozenColumns) {
             cellIndex = (this.scrollTbody.is(cell.closest('tbody'))) ? (cellIndex + $this.cfg.frozenColumns) : cellIndex;
@@ -2438,6 +2436,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(rowMeta.key) {
             cellInfo = cellInfo + ',' + rowMeta.key;
         }
+
+        return cellInfo;
+    },
+
+    cellEditInit: function(cell) {
+        var cellInfo = this.getCellMeta(cell),
+        cellEditor = cell.children('.ui-cell-editor'),
+        $this = this;
 
         var options = {
             source: this.id,
@@ -2495,6 +2501,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         else {
             this.showCurrentCell(cell);
+
+            if(this.hasBehavior('cellEditInit')) {
+                var cellInfo = this.getCellMeta(cell);
+                var ext = {
+                    params: [{name: this.id + '_cellInfo', value: cellInfo}]
+                };
+                this.callBehavior('cellEditInit', ext);
+            }
         }
     },
 
