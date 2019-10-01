@@ -24,7 +24,7 @@ if (!PrimeFaces.csp) {
 
         register: function(id, event, js){
             if (event) {
-                event = event.substring(2, event.length);
+                var shortenedEvent = event.substring(2, event.length);
 
                 var element = document.getElementById(id);
 
@@ -36,13 +36,13 @@ if (!PrimeFaces.csp) {
                     }
                 };
 
-                element.addEventListener(event, jsWrapper);
+                $(element).on(shortenedEvent, jsWrapper);
             }
         },
 
         /**
          * Perform a CSP safe eval().
-         * 
+         *
          * @param js the Javascript to evaluate
          * @param nonceValue nonce value or null if not using CSP
          */
@@ -60,7 +60,7 @@ if (!PrimeFaces.csp) {
         /**
          * CSP won't allow  string-to-JavaScript methods like eval() and new Function().
          * This method uses JQuery globalEval to safely evaluate the function if CSP enabled.
-         * 
+         *
          * @param id the element executing the function (aka this)
          * @param js the Javascript to evaluate
          * @param e the event from the caller to pass through
@@ -69,7 +69,7 @@ if (!PrimeFaces.csp) {
             // create the wrapper function
             var scriptEval = 'var cspFunction = function(event){'+ js +'}';
 
-            // evaluate JS into a function 
+            // evaluate JS into a function
             PrimeFaces.csp.eval(scriptEval, PrimeFaces.csp.NONCE_VALUE);
 
             // call the function
