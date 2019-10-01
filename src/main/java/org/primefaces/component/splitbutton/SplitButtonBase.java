@@ -27,10 +27,10 @@ import javax.faces.component.html.HtmlCommandButton;
 
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.Widget;
-import org.primefaces.model.menu.MenuItemHolder;
+import org.primefaces.model.menu.MenuItemAware;
 import org.primefaces.model.menu.MenuModel;
 
-public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxSource, Widget, MenuItemHolder {
+public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxSource, Widget, MenuItemAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

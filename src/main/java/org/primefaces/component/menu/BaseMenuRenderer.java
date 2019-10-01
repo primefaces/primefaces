@@ -27,7 +27,7 @@ import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.MenuModel;
-import org.primefaces.renderkit.MenuItemHolderRenderer;
+import org.primefaces.renderkit.MenuItemAwareRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -36,7 +36,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
-public abstract class BaseMenuRenderer extends MenuItemHolderRenderer {
+public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {

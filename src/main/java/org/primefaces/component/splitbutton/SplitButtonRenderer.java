@@ -31,7 +31,7 @@ import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.MenuModel;
 import org.primefaces.model.menu.Separator;
 import org.primefaces.model.menu.Submenu;
-import org.primefaces.renderkit.MenuItemHolderRenderer;
+import org.primefaces.renderkit.MenuItemAwareRenderer;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.SharedStringBuilder;
@@ -48,7 +48,7 @@ import java.util.List;
 import java.util.Map;
 import org.primefaces.expression.SearchExpressionHint;
 
-public class SplitButtonRenderer extends MenuItemHolderRenderer {
+public class SplitButtonRenderer extends MenuItemAwareRenderer {
 
     private static final String SB_BUILD_ONCLICK = SplitButtonRenderer.class.getName() + "#buildOnclick";
 

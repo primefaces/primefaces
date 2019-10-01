@@ -25,11 +25,14 @@ package org.primefaces.renderkit;
 
 import org.primefaces.behavior.confirm.ConfirmBehavior;
 import org.primefaces.component.api.AjaxSource;
+import org.primefaces.component.api.ClientBehaviorRenderingMode;
+import org.primefaces.component.api.DialogReturnAware;
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.event.MenuActionEvent;
 import org.primefaces.model.menu.*;
 import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.Constants;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -41,12 +44,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class MenuItemHolderRenderer extends OutcomeTargetRenderer {
+public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
 
     private static final String SEPARATOR = "_";
 
@@ -57,7 +57,7 @@ public class MenuItemHolderRenderer extends OutcomeTargetRenderer {
 
         String menuid = params.get(clientId + "_menuid");
         if (menuid != null) {
-            MenuItem menuitem = findMenuitem(((MenuItemHolder) component).getElements(), menuid);
+            MenuItem menuitem = findMenuitem(((MenuItemAware) component).getElements(), menuid);
             MenuActionEvent event = new MenuActionEvent(component, menuitem);
 
             if (menuitem.isImmediate()) {
@@ -125,6 +125,16 @@ public class MenuItemHolderRenderer extends OutcomeTargetRenderer {
             }
             else {
                 writer.writeAttribute("onclick", onclick, null);
+            }
+        }
+
+        if (menuitem instanceof DialogReturnAware) {
+            List<ClientBehaviorContext.Parameter> behaviorParams = new ArrayList<>();
+            behaviorParams.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
+            String dialogReturnBehavior = getEventBehaviors(context, (ClientBehaviorHolder) menuitem, DialogReturnAware.EVENT_DIALOG_RETURN,
+                    behaviorParams);
+            if (dialogReturnBehavior != null) {
+                writer.writeAttribute(DialogReturnAware.ATTRIBUTE_DIALOG_RETURN_SCRIPT, dialogReturnBehavior, null);
             }
         }
     }

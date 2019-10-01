@@ -123,6 +123,6 @@ public class SplitButton extends SplitButtonBase {
 
     @Override
     public void broadcast(FacesEvent event) throws AbortProcessingException {
-        handleBroadcast(event, getFacesContext(), super::broadcast);
+        doBroadcast(event, getFacesContext(), super::broadcast);
     }
 }

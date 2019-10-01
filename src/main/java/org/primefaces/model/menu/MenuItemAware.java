@@ -24,7 +24,6 @@
 package org.primefaces.model.menu;
 
 import org.primefaces.event.MenuActionEvent;
-import org.primefaces.util.SerializableFunction;
 
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
@@ -36,17 +35,18 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.FacesEvent;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
-public interface MenuItemHolder {
+public interface MenuItemAware {
 
     List getElements();
 
-    default void handleBroadcast(FacesEvent event, FacesContext context, Consumer<FacesEvent> broadcast) throws AbortProcessingException {
+    default void doBroadcast(FacesEvent event, FacesContext context, Consumer<FacesEvent> broadcast) throws AbortProcessingException {
         if (event instanceof MenuActionEvent) {
             MenuActionEvent menuActionEvent = (MenuActionEvent) event;
             MenuItem menuItem = menuActionEvent.getMenuItem();
 
-            SerializableFunction<MenuItem, String> function = menuItem.getFunction();
+            Function<MenuItem, String> function = menuItem.getFunction();
             String command = menuItem.getCommand();
             if (function != null) {
                 String outcome = function.apply(menuItem);

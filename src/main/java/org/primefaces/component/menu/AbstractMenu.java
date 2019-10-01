@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.menu;
 
-import org.primefaces.model.menu.MenuItemHolder;
+import org.primefaces.model.menu.MenuItemAware;
 import org.primefaces.model.menu.MenuModel;
 
 import javax.faces.component.UIPanel;
@@ -31,7 +31,7 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import java.util.List;
 
-public abstract class AbstractMenu extends UIPanel implements MenuItemHolder {
+public abstract class AbstractMenu extends UIPanel implements MenuItemAware {
 
     public static final String LIST_CLASS = "ui-menu-list ui-helper-reset";
     public static final String MENUITEM_CLASS = "ui-menuitem ui-widget ui-corner-all";
@@ -82,6 +82,6 @@ public abstract class AbstractMenu extends UIPanel implements MenuItemHolder {
 
     @Override
     public void broadcast(FacesEvent event) throws AbortProcessingException {
-        handleBroadcast(event, getFacesContext(), super::broadcast);
+        doBroadcast(event, getFacesContext(), super::broadcast);
     }
 }

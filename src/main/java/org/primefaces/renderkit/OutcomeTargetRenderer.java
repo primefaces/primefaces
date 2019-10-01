@@ -35,9 +35,6 @@ import javax.faces.event.ActionListener;
 import javax.faces.flow.FlowHandler;
 import javax.faces.lifecycle.ClientWindow;
 import java.util.*;
-import org.primefaces.component.api.ClientBehaviorRenderingMode;
-import org.primefaces.component.api.DialogReturnAware;
-import org.primefaces.util.Constants;
 
 public class OutcomeTargetRenderer extends CoreRenderer {
 
