@@ -171,7 +171,7 @@ public class PanelRenderer extends CoreRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", Panel.PANEL_TITLE_CLASS, null);
 
-        if (header != null) {
+        if (ComponentUtils.shouldRenderFacet(header)) {
             renderChild(context, header);
         }
         else if (headerText != null) {
@@ -196,7 +196,7 @@ public class PanelRenderer extends CoreRenderer {
 
         //Actions
         UIComponent actionsFacet = panel.getFacet("actions");
-        if (actionsFacet != null) {
+        if (ComponentUtils.shouldRenderFacet(actionsFacet)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", Panel.PANEL_ACTIONS_CLASS, null);
             actionsFacet.encodeAll(context);

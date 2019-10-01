@@ -31,6 +31,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.DataRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class DataListRenderer extends DataRenderer {
@@ -167,7 +168,7 @@ public class DataListRenderer extends DataRenderer {
         String clientId = list.getClientId(context);
         boolean isDefinition = list.isDefinition();
         UIComponent definitionFacet = list.getFacet("description");
-        boolean renderDefinition = isDefinition && definitionFacet != null;
+        boolean renderDefinition = isDefinition && ComponentUtils.shouldRenderFacet(definitionFacet);
         String itemType = list.getItemType();
         String listClass = DataList.LIST_CLASS;
         if (itemType != null && itemType.equals("none")) {

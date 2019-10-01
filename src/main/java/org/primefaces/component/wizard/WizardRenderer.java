@@ -251,7 +251,7 @@ public class WizardRenderer extends CoreRenderer {
                     writer.writeAttribute("title", tab.getTitletip(), null);
                 }
 
-                if (titleFacet != null) {
+                if (ComponentUtils.shouldRenderFacet(titleFacet)) {
                     titleFacet.encodeAll(context);
                 }
                 else if (title != null) {

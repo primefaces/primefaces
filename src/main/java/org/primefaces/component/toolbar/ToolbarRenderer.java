@@ -31,6 +31,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.separator.UISeparator;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 
 public class ToolbarRenderer extends CoreRenderer {
 
@@ -97,7 +98,7 @@ public class ToolbarRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent facet = toolbar.getFacet(facetName);
 
-        if (facet != null) {
+        if (ComponentUtils.shouldRenderFacet(facet)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", "ui-toolbar-group-" + facetName, null);
             facet.encodeAll(context);

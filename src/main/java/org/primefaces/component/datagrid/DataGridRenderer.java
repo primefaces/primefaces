@@ -31,6 +31,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.DataRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.WidgetBuilder;
 
@@ -114,7 +115,7 @@ public class DataGridRenderer extends DataRenderer {
 
         if (empty) {
             UIComponent emptyFacet = grid.getFacet("emptyMessage");
-            if (emptyFacet != null) {
+            if (ComponentUtils.shouldRenderFacet(emptyFacet)) {
                 emptyFacet.encodeAll(context);
             }
             else {

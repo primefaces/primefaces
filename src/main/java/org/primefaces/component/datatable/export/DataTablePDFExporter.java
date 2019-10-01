@@ -156,7 +156,7 @@ public class DataTablePDFExporter extends DataTableExporter {
     protected void addTableFacets(FacesContext context, DataTable table, PdfPTable pdfTable, String facetType) {
         String facetText = null;
         UIComponent facet = table.getFacet(facetType);
-        if (facet != null) {
+        if (ComponentUtils.shouldRenderFacet(facet)) {
             if (facet instanceof UIPanel) {
                 for (UIComponent child : facet.getChildren()) {
                     if (child.isRendered()) {
@@ -234,7 +234,7 @@ public class DataTablePDFExporter extends DataTableExporter {
                 if (textValue != null) {
                     addColumnValue(pdfTable, textValue);
                 }
-                else if (facet != null) {
+                else if (ComponentUtils.shouldRenderFacet(facet)) {
                     addColumnValue(pdfTable, facet);
                 }
                 else {

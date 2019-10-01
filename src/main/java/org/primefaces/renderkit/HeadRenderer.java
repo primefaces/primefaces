@@ -38,6 +38,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LocaleUtils;
 
 /**
@@ -66,7 +67,7 @@ public class HeadRenderer extends Renderer {
 
         //First facet
         UIComponent first = component.getFacet("first");
-        if (first != null) {
+        if (ComponentUtils.shouldRenderFacet(first)) {
             first.encodeAll(context);
         }
 
@@ -95,7 +96,7 @@ public class HeadRenderer extends Renderer {
 
         //Middle facet
         UIComponent middle = component.getFacet("middle");
-        if (middle != null) {
+        if (ComponentUtils.shouldRenderFacet(middle)) {
             middle.encodeAll(context);
         }
 
@@ -148,7 +149,7 @@ public class HeadRenderer extends Renderer {
 
         //Last facet
         UIComponent last = component.getFacet("last");
-        if (last != null) {
+        if (ComponentUtils.shouldRenderFacet(last)) {
             last.encodeAll(context);
         }
 
