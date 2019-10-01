@@ -24,15 +24,17 @@ if (!PrimeFaces.csp) {
             if (event) {
                 event = event.substring(2, event.length);
 
+                var element = document.getElementById(id);
+
                 // if the eventhandler return false, we must use preventDefault
                 var jsWrapper = function(event) {
-                    var retVal = js();
+                    var retVal = js.call(element, event);
                     if (retVal === false && event.cancelable) {
                         event.preventDefault();
                     }
                 };
 
-                document.getElementById(id).addEventListener(event, jsWrapper);
+                element.addEventListener(event, jsWrapper);
             }
         }
 
