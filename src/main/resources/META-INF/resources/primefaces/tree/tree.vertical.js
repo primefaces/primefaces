@@ -94,51 +94,24 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             })
             .on('keyup.tree-filter', function(e) {
                 var keyCode = $.ui.keyCode,
-                key = e.which;
-
-                switch(key) {
-                    case keyCode.UP:
-                    case keyCode.LEFT:
-                    case keyCode.DOWN:
-                    case keyCode.RIGHT:
-                    case keyCode.ENTER:
-                    case keyCode.TAB:
-                    case keyCode.ESCAPE:
-                    case keyCode.SPACE:
-                    case keyCode.HOME:
-                    case keyCode.PAGE_DOWN:
-                    case keyCode.PAGE_UP:
-                    case keyCode.END:
-                    case keyCode.DELETE:
-                    case 16: //shift
-                    case 17: //keyCode.CONTROL:
-                    case 18: //keyCode.ALT:
-                    case 91: //left window or cmd:
-                    case 92: //right window:
-                    case 93: //right cmd:
-                    case 20: //capslock:
-                    break;
-
-                    default:
-                        //function keys (F1,F2 etc.)
-                        if(key >= 112 && key <= 123) {
-                            break;
-                        }
-
-                        var metaKey = e.metaKey||e.ctrlKey;
-
-                        if(!metaKey) {
-                            if($this.filterTimeout) {
-                                clearTimeout($this.filterTimeout);
-                            }
-
-                            $this.filterTimeout = setTimeout(function() {
-                                $this.filter();
-                                $this.filterTimeout = null;
-                            }, 300);
-                        }
-                    break;
+                key = e.which,
+                ignoredKeys = [keyCode.END, keyCode.HOME, keyCode.LEFT, keyCode.RIGHT, keyCode.UP, keyCode.DOWN,
+                    keyCode.TAB, 16/*Shift*/, 17/*Ctrl*/, 18/*Alt*/, 91, 92, 93/*left/right Win/Cmd*/,
+                    keyCode.ESCAPE, keyCode.PAGE_UP, keyCode.PAGE_DOWN,
+                    19/*pause/break*/, 20/*caps lock*/, 44/*print screen*/, 144/*num lock*/, 145/*scroll lock*/];
+                
+                if (ignoredKeys.indexOf(key) > -1) {
+                    return;
                 }
+                
+                if($this.filterTimeout) {
+                    clearTimeout($this.filterTimeout);
+                }
+
+                $this.filterTimeout = setTimeout(function() {
+                    $this.filter();
+                    $this.filterTimeout = null;
+                }, 300);
             });
         }
 
