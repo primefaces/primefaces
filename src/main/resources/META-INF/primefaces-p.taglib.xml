@@ -150,7 +150,7 @@
             <type>java.lang.Object</type>
         </attribute>
         <attribute>
-            <description>Custom Exporter to be used instead of built-in exporters.</description>
+            <description>Custom exporter to be used instead of built-in exporters.</description>
             <name>exporter</name>
             <required>false</required>
             <type>java.lang.Object</type>

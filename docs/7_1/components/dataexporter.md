@@ -23,9 +23,8 @@ preProcessor | null | MethodExpr | PreProcessor for the exported document.
 postProcessor | null | MethodExpr | PostProcessor for the exported document.
 encoding | UTF-8 | String | Character encoding to use
 selectionOnly | false | Boolean | When enabled, only selection would be exported.
-repeat | false | Boolean | Set to true if target is a datatable that is rendered multiple times in a repeating component.
 options | null | ExporterOptions | Options object to customize document.
-customExporter | null | Object | Custom org.primefaces.component.export.Exporter to be used in place of default Exporter.
+exporter | null | Object | Custom `org.primefaces.component.export.Exporter` to be used instead of built-in exporters.
 onTableRender | null | MethodExpression | OnTableRender to be used to set the options of exported table.
 
 ## Getting Started with DataExporter
