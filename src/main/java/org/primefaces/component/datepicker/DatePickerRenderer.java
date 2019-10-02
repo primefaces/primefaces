@@ -24,8 +24,8 @@
 package org.primefaces.component.datepicker;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -88,7 +88,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         String defaultDate = null;
 
         if (datepicker.isConversionFailed()) {
-            defaultDate = CalendarUtils.getValueAsString(context, datepicker, new Date());
+            defaultDate = CalendarUtils.getValueAsString(context, datepicker, LocalDateTime.now());
         }
         else if (!isValueBlank(value)) {
             defaultDate = value;
@@ -103,8 +103,8 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("focusOnSelect", datepicker.isFocusOnSelect(), false)
             .attr("disabled", datepicker.isDisabled(), false)
             .attr("yearRange", datepicker.getYearRange(), null)
-            .attr("minDate", CalendarUtils.getValueAsString(context, datepicker, datepicker.getMindate()), null)
-            .attr("maxDate", CalendarUtils.getValueAsString(context, datepicker, datepicker.getMaxdate()), null)
+            .attr("minDate", CalendarUtils.getValueAsString(context, datepicker, datepicker.getMindate(), pattern), null)
+            .attr("maxDate", CalendarUtils.getValueAsString(context, datepicker, datepicker.getMaxdate(), pattern), null)
             .attr("selectionMode", datepicker.getSelectionMode(), null)
             .attr("showOnFocus", datepicker.isShowOnFocus())
             .attr("shortYearCutoff", datepicker.getShortYearCutoff(), null)

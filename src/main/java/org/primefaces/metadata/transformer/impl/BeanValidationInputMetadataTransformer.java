@@ -26,6 +26,7 @@ package org.primefaces.metadata.transformer.impl;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -161,16 +162,16 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
             String annotationClassName = annotationType.getSimpleName();
 
             if (annotationType.equals(Past.class) && uicalendar.getMaxdate() == null) {
-                uicalendar.setMaxdate(hasTime ? LocalDate.now() : LocalDate.now().minusDays(1));
+                uicalendar.setMaxdate(hasTime ? LocalDateTime.now() : LocalDate.now().minusDays(1));
             }
             if (annotationClassName.equals(PastOrPresentClientValidationConstraint.CONSTRAINT_ID) && uicalendar.getMaxdate() == null) {
-                uicalendar.setMaxdate(LocalDate.now());
+                uicalendar.setMaxdate(hasTime ? LocalDateTime.now() : LocalDate.now());
             }
             if (annotationType.equals(Future.class) && uicalendar.getMindate() == null) {
-                uicalendar.setMindate(hasTime ? LocalDate.now() : LocalDate.now().plusDays(1));
+                uicalendar.setMindate(hasTime ? LocalDateTime.now() : LocalDate.now().plusDays(1));
             }
             if (annotationClassName.equals(FutureOrPresentClientValidationConstraint.CONSTRAINT_ID) && uicalendar.getMindate() == null) {
-                uicalendar.setMindate(LocalDate.now());
+                uicalendar.setMindate(hasTime ? LocalDateTime.now() : LocalDate.now());
             }
         }
     }

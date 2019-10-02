@@ -442,4 +442,10 @@ public abstract class CalendarBase extends UICalendar implements Widget, InputHo
     public void setDefaultMillisec(int defaultMillisec) {
         getStateHelper().put(PropertyKeys.defaultMillisec, defaultMillisec);
     }
+
+    @Override
+    public String calculateWidgetPattern() {
+        return isTimeOnly() ? calculateTimeOnlyPattern() : calculatePattern();
+    }
+
 }

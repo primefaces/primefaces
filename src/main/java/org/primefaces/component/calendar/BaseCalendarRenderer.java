@@ -206,8 +206,9 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             }
         }
         else if (type == LocalTime.class) {
+            String pattern = calendar instanceof Calendar ? calendar.calculatePattern() : calendar.calculateTimeOnlyPattern();
             DateTimeFormatter formatter = DateTimeFormatter
-                    .ofPattern(calendar.calculateTimeOnlyPattern(), calendar.calculateLocale(context))
+                    .ofPattern(pattern, calendar.calculateLocale(context))
                     .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()));
 
             try {
@@ -233,7 +234,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         }
 
         //TODO: implement if necessary
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ZonedDateTime not supported", null);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, type.getName() + " not supported", null);
         throw new ConverterException(message);
     }
 
@@ -310,6 +311,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
                 && type != Object.class
                 && type != Date.class
                 && type != LocalDate.class
+                && type != YearMonth.class
                 && type != LocalDateTime.class
                 && type != LocalTime.class) {
 

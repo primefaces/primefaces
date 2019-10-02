@@ -197,10 +197,18 @@ public class CalendarUtils {
             return null;
         }
 
-        return getValueAsString(context, calendar, value, calendar.calculateTimeOnlyPattern());
+        return getValueAsString(context, calendar, value, calendar.calculateTimeOnlyPattern(), true);
     }
 
     public static final String getValueAsString(FacesContext context, UICalendar calendar, Object value, String pattern) {
+        return getValueAsString(context, calendar, value, pattern, false);
+    }
+
+    public static final String getValueAsString(FacesContext context, UICalendar calendar, Object value, String pattern, boolean forCalendarInput) {
+        if (value == null) {
+            return null;
+        }
+
         if (value instanceof List) {
             StringBuilder valuesAsString = new StringBuilder();
             String separator = "multiple".equals(calendar.getSelectionMode()) ? "," : " " + calendar.getRangeSeparator() + " ";
@@ -211,17 +219,21 @@ public class CalendarUtils {
                     valuesAsString.append(separator);
                 }
 
-                valuesAsString.append(getValue(context, calendar, values.get(i), pattern));
+                valuesAsString.append(getValue(context, calendar, values.get(i), pattern, forCalendarInput));
             }
 
             return valuesAsString.toString();
         }
         else {
-            return getValue(context, calendar, value, pattern);
+            return getValue(context, calendar, value, pattern, forCalendarInput);
         }
     }
 
     public static final String getValue(FacesContext context, UICalendar calendar, Object value, String pattern) {
+        return getValue(context, calendar, value, pattern, false);
+    }
+
+    public static final String getValue(FacesContext context, UICalendar calendar, Object value, String pattern, boolean forCalendarInput) {
         //first ask the converter
         if (calendar.getConverter() != null) {
             return calendar.getConverter().getAsString(context, calendar, value);
@@ -245,6 +257,9 @@ public class CalendarUtils {
                 return ((LocalDateTime) value).format(dateTimeFormatter);
             }
             else if (value instanceof LocalTime) {
+                if (forCalendarInput) {
+                    return LocalDateTime.of(LocalDate.now(), (LocalTime) value).format(dateTimeFormatter);
+                }
                 return ((LocalTime) value).format(dateTimeFormatter);
             }
             else { //if (value instanceof YearMonth)

@@ -23,14 +23,15 @@
  */
 package org.primefaces.component.api;
 
-import org.primefaces.util.LocaleUtils;
-
-import javax.faces.component.html.HtmlInputText;
-import javax.faces.context.FacesContext;
 import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.util.Locale;
+
+import javax.faces.component.html.HtmlInputText;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.util.LocaleUtils;
 
 public abstract class UICalendar extends HtmlInputText {
 
@@ -40,7 +41,7 @@ public abstract class UICalendar extends HtmlInputText {
     public static final String DATE_INVALID_MESSAGE_ID = "primefaces.calendar.INVALID";
     public static final String DATE_INVALID_RANGE_MESSAGE_ID = "primefaces.calendar.DATE_INVALID_RANGE_MESSAGE_ID";
 
-    private String timeOnlyPattern = null;
+    protected String timeOnlyPattern = null;
 
     private boolean conversionFailed = false;
 
@@ -152,10 +153,6 @@ public abstract class UICalendar extends HtmlInputText {
         return (pattern != null && (pattern.contains("HH") || pattern.contains("mm") || pattern.contains("ss")));
     }
 
-    /**
-     * date-only pattern
-     * @return
-     */
     public String calculatePattern() {
         String pattern = getPattern();
 
@@ -168,15 +165,17 @@ public abstract class UICalendar extends HtmlInputText {
 
     public String calculateTimeOnlyPattern() {
         if (timeOnlyPattern == null) {
-            return getPattern();
+            Locale locale = calculateLocale(getFacesContext());
+            String localePattern = DateTimeFormatterBuilder.getLocalizedDateTimePattern(FormatStyle.SHORT, null, IsoChronology.INSTANCE, locale);
+            String userTimePattern = getPattern();
+
+            timeOnlyPattern = localePattern + " " + userTimePattern;
         }
 
         return timeOnlyPattern;
     }
 
-    public String calculateWidgetPattern() {
-        return calculatePattern();
-    }
+    public abstract String calculateWidgetPattern();
 
     public String convertPattern(String patternTemplate) {
         String pattern = patternTemplate.replaceAll("MMM", "###");

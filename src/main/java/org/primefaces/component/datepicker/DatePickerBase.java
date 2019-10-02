@@ -385,7 +385,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     @Override
     public boolean hasTime() {
-        return this.isShowTime() || this.isTimeOnly() || super.hasTime();
+        return this.isShowTime() || this.isTimeOnly();
     }
 
     @Override
@@ -406,16 +406,18 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     @Override
     public String calculateTimeOnlyPattern() {
-        boolean ampm = "12".equals(getHourFormat());
-        String pattern = ampm ? "KK" : "HH";
-        pattern += ":mm";
-        if (isShowSeconds()) {
-            pattern += ":ss";
+        if (timeOnlyPattern == null) {
+            boolean ampm = "12".equals(getHourFormat());
+            timeOnlyPattern = ampm ? "KK" : "HH";
+            timeOnlyPattern += ":mm";
+            if (isShowSeconds()) {
+                timeOnlyPattern += ":ss";
+            }
+            if (ampm) {
+                timeOnlyPattern += " a";
+            }
         }
-        if (ampm) {
-            pattern += " a";
-        }
-        return pattern;
+        return timeOnlyPattern;
     }
 
 }
