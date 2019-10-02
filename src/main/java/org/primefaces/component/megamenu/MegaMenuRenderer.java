@@ -35,6 +35,7 @@ import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.separator.UISeparator;
 import org.primefaces.model.menu.*;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -86,7 +87,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         }
 
         UIComponent optionsFacet = menu.getFacet("options");
-        if (optionsFacet != null) {
+        if (ComponentUtils.shouldRenderFacet(optionsFacet)) {
             writer.startElement("li", null);
             writer.writeAttribute("class", Menu.OPTIONS_CLASS, null);
             writer.writeAttribute("role", "menuitem", null);

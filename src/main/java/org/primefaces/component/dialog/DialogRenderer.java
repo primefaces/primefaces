@@ -142,7 +142,7 @@ public class DialogRenderer extends CoreRenderer {
         writer.writeAttribute("id", dialog.getClientId(context) + "_title", null);
         writer.writeAttribute("class", Dialog.TITLE_CLASS, null);
 
-        if (headerFacet != null) {
+        if (ComponentUtils.shouldRenderFacet(headerFacet)) {
             headerFacet.encodeAll(context);
         }
         else if (header != null) {
@@ -179,7 +179,7 @@ public class DialogRenderer extends CoreRenderer {
         writer.writeAttribute("class", Dialog.FOOTER_CLASS, null);
 
         writer.startElement("span", null);
-        if (footerFacet != null) {
+        if (ComponentUtils.shouldRenderFacet(footerFacet)) {
             footerFacet.encodeAll(context);
         }
         else if (footer != null) {

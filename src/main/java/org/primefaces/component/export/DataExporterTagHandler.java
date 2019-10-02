@@ -42,7 +42,7 @@ public class DataExporterTagHandler extends TagHandler {
     private final TagAttribute encoding;
     private final TagAttribute options;
     private final TagAttribute onTableRender;
-    private final TagAttribute customExporter;
+    private final TagAttribute exporter;
 
     public DataExporterTagHandler(TagConfig tagConfig) {
         super(tagConfig);
@@ -56,7 +56,7 @@ public class DataExporterTagHandler extends TagHandler {
         postProcessor = getAttribute("postProcessor");
         options = getAttribute("options");
         onTableRender = getAttribute("onTableRender");
-        customExporter = getAttribute("customExporter");
+        exporter = getAttribute("exporter");
     }
 
     @Override
@@ -73,10 +73,9 @@ public class DataExporterTagHandler extends TagHandler {
         ValueExpression encodingVE = null;
         MethodExpression preProcessorME = null;
         MethodExpression postProcessorME = null;
-        ValueExpression repeatVE = null;
         ValueExpression optionsVE = null;
         MethodExpression onTableRenderME = null;
-        ValueExpression customExporterVE = null;
+        ValueExpression exporterVE = null;
 
         if (encoding != null) {
             encodingVE = encoding.getValueExpression(faceletContext, Object.class);
@@ -99,13 +98,13 @@ public class DataExporterTagHandler extends TagHandler {
         if (onTableRender != null) {
             onTableRenderME = onTableRender.getMethodExpression(faceletContext, null, new Class[]{Object.class, Object.class});
         }
-        if (customExporter != null) {
-            customExporterVE = customExporter.getValueExpression(faceletContext, Object.class);
+        if (exporter != null) {
+            exporterVE = exporter.getValueExpression(faceletContext, Object.class);
         }
         ActionSource actionSource = (ActionSource) parent;
         DataExporter dataExporter = new DataExporter(targetVE, typeVE, fileNameVE, pageOnlyVE, selectionOnlyVE,
                 encodingVE, preProcessorME, postProcessorME, optionsVE, onTableRenderME);
-        dataExporter.setCustomExporter(customExporterVE);
+        dataExporter.setExporter(exporterVE);
         actionSource.addActionListener(dataExporter);
     }
 

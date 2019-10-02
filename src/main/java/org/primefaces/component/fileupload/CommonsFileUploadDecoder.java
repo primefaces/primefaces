@@ -25,8 +25,7 @@ package org.primefaces.component.fileupload;
 
 import org.apache.commons.fileupload.FileItem;
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.file.DefaultSingleUploadedFile;
-import org.primefaces.model.file.SingleUploadedFile;
+import org.primefaces.model.file.CommonsUploadedFile;
 import org.primefaces.model.file.UploadedFileWrapper;
 import org.primefaces.util.FileUploadUtils;
 import org.primefaces.webapp.MultipartRequest;
@@ -35,6 +34,11 @@ import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequestWrapper;
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.primefaces.model.file.UploadedFile;
+import org.primefaces.model.file.UploadedFiles;
+import org.primefaces.model.file.UploadedFilesWrapper;
 
 public class CommonsFileUploadDecoder {
 
@@ -71,15 +75,32 @@ public class CommonsFileUploadDecoder {
     }
 
     private static void decodeSimple(FacesContext context, FileUpload fileUpload, MultipartRequest request, String inputToDecodeId) throws IOException {
-        FileItem file = request.getFileItem(inputToDecodeId);
 
-        if (file != null && !file.getName().isEmpty()) {
-            SingleUploadedFile uploadedFile = new DefaultSingleUploadedFile(file, fileUpload.getSizeLimit());
-            if (FileUploadUtils.isValidFile(context, fileUpload, uploadedFile)) {
-                fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
+        if (fileUpload.isMultiple()) {
+            Long sizeLimit = fileUpload.getSizeLimit();
+            List<UploadedFile> files = request.getFileItems(inputToDecodeId).stream()
+                    .map(p -> new CommonsUploadedFile(p, sizeLimit))
+                    .collect(Collectors.toList());
+
+            if (!files.isEmpty() && FileUploadUtils.areValidFiles(context, fileUpload, files)) {
+                UploadedFiles uploadedFiles = new UploadedFiles(files);
+                fileUpload.setSubmittedValue(new UploadedFilesWrapper(uploadedFiles));
             }
             else {
                 fileUpload.setSubmittedValue("");
+            }
+        }
+        else {
+            FileItem file = request.getFileItem(inputToDecodeId);
+
+            if (file != null && !file.getName().isEmpty()) {
+                UploadedFile uploadedFile = new CommonsUploadedFile(file, fileUpload.getSizeLimit());
+                if (FileUploadUtils.isValidFile(context, fileUpload, uploadedFile)) {
+                    fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
+                }
+                else {
+                    fileUpload.setSubmittedValue("");
+                }
             }
         }
     }
@@ -89,7 +110,7 @@ public class CommonsFileUploadDecoder {
         FileItem file = request.getFileItem(clientId);
 
         if (file != null) {
-            SingleUploadedFile uploadedFile = new DefaultSingleUploadedFile(file, fileUpload.getSizeLimit());
+            UploadedFile uploadedFile = new CommonsUploadedFile(file, fileUpload.getSizeLimit());
             if (FileUploadUtils.isValidFile(context, fileUpload, uploadedFile)) {
                 fileUpload.queueEvent(new FileUploadEvent(fileUpload, uploadedFile));
             }

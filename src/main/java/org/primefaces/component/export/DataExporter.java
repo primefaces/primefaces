@@ -61,7 +61,7 @@ public class DataExporter implements ActionListener, StateHolder {
 
     private MethodExpression onTableRender;
 
-    private ValueExpression customExporter;
+    private ValueExpression exporter;
 
     public DataExporter() {
     }
@@ -115,8 +115,8 @@ public class DataExporter implements ActionListener, StateHolder {
         }
 
         Object customExporterInstance = null;
-        if (customExporter != null) {
-            customExporterInstance = customExporter.getValue(elContext);
+        if (exporter != null) {
+            customExporterInstance = exporter.getValue(elContext);
         }
 
         try {
@@ -149,7 +149,7 @@ public class DataExporter implements ActionListener, StateHolder {
         }
         else {
             throw new FacesException("Component " + this.getClass().getName() + " customExporterInstance="
-                   + customExporterInstance.getClass().getName() + " does not extend Exporter!");
+                   + customExporterInstance.getClass().getName() + " does not implement Exporter!");
         }
 
     }
@@ -164,12 +164,12 @@ public class DataExporter implements ActionListener, StateHolder {
         // NOOP
     }
 
-    public ValueExpression getCustomExporter() {
-        return customExporter;
+    public ValueExpression getExporter() {
+        return exporter;
     }
 
-    public void setCustomExporter(ValueExpression customExporter) {
-        this.customExporter = customExporter;
+    public void setExporter(ValueExpression exporter) {
+        this.exporter = exporter;
     }
 
     @Override
@@ -186,7 +186,7 @@ public class DataExporter implements ActionListener, StateHolder {
         encoding = (ValueExpression) values[7];
         options = (ValueExpression) values[8];
         onTableRender = (MethodExpression) values[9];
-        customExporter = (ValueExpression) values[10];
+        exporter = (ValueExpression) values[10];
     }
 
     @Override
@@ -203,7 +203,7 @@ public class DataExporter implements ActionListener, StateHolder {
         values[7] = encoding;
         values[8] = options;
         values[9] = onTableRender;
-        values[10] = customExporter;
+        values[10] = exporter;
 
         return (values);
     }

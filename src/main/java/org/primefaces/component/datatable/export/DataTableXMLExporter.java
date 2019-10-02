@@ -45,7 +45,7 @@ import java.util.List;
 public class DataTableXMLExporter extends DataTableExporter {
 
     @Override
-    public void doExport(FacesContext context, DataTable table, ExportConfiguration config) throws IOException {
+    public void doExport(FacesContext context, DataTable table, ExportConfiguration config, int index) throws IOException {
         ExternalContext externalContext = context.getExternalContext();
         configureResponse(externalContext, config.getOutputFileName());
         StringBuilder builder = new StringBuilder();
@@ -121,7 +121,7 @@ public class DataTableXMLExporter extends DataTableExporter {
         if (headerText != null) {
             columnTag = headerText.toLowerCase();
         }
-        else if (facet != null) {
+        else if (ComponentUtils.shouldRenderFacet(facet)) {
             columnTag = exportValue(FacesContext.getCurrentInstance(), facet).toLowerCase();
         }
         else {

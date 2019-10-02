@@ -33,6 +33,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class GalleriaRenderer extends CoreRenderer {
@@ -72,7 +73,7 @@ public class GalleriaRenderer extends CoreRenderer {
                     writer.writeAttribute("class", Galleria.PANEL_CLASS, null);
                     child.encodeAll(context);
 
-                    if (content != null) {
+                    if (ComponentUtils.shouldRenderFacet(content)) {
                         writer.startElement("div", null);
                         writer.writeAttribute("class", Galleria.PANEL_CONTENT_CLASS, null);
                         content.encodeAll(context);

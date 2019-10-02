@@ -3,8 +3,10 @@ if (!PrimeFaces.csp) {
     PrimeFaces.csp = {
 
         NONCE_INPUT : "primefaces.nonce",
+        NONCE_VALUE : "",
 
         init : function(nonce) {
+            PrimeFaces.csp.NONCE_VALUE = nonce;
 
             var forms = document.getElementsByTagName("form");
             for (var i = 0; i < forms.length; i++) {
@@ -22,18 +24,56 @@ if (!PrimeFaces.csp) {
 
         register: function(id, event, js){
             if (event) {
-                event = event.substring(2, event.length);
+                var shortenedEvent = event.substring(2, event.length);
+
+                var element = document.getElementById(id);
 
                 // if the eventhandler return false, we must use preventDefault
                 var jsWrapper = function(event) {
-                    var retVal = js();
+                    var retVal = js.call(element, event);
                     if (retVal === false && event.cancelable) {
                         event.preventDefault();
                     }
                 };
 
-                document.getElementById(id).addEventListener(event, jsWrapper);
+                $(element).on(shortenedEvent, jsWrapper);
             }
+        },
+
+        /**
+         * Perform a CSP safe eval().
+         *
+         * @param js the Javascript to evaluate
+         * @param nonceValue nonce value or null if not using CSP
+         */
+        eval: function (js, nonceValue) {
+            // assign the NONCE if necessary
+            var options = {};
+            if (nonceValue) {
+                options = {nonce: nonceValue};
+            }
+
+            // evaluate the script
+            $.globalEval(js, options);
+        },
+
+        /**
+         * CSP won't allow  string-to-JavaScript methods like eval() and new Function().
+         * This method uses JQuery globalEval to safely evaluate the function if CSP enabled.
+         *
+         * @param id the element executing the function (aka this)
+         * @param js the Javascript to evaluate
+         * @param e the event from the caller to pass through
+         */
+        executeEvent: function(id, js, e) {
+            // create the wrapper function
+            var scriptEval = 'var cspFunction = function(event){'+ js +'}';
+
+            // evaluate JS into a function
+            PrimeFaces.csp.eval(scriptEval, PrimeFaces.csp.NONCE_VALUE);
+
+            // call the function
+            cspFunction.call(id, e);
         }
 
     };

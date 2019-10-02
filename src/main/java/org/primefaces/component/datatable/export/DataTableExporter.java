@@ -307,18 +307,25 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
     public void export(FacesContext context, List<DataTable> tables, ExportConfiguration config) throws IOException {
         preExport(context,  config);
 
+        int index = 0;
         for (DataTable table : tables) {
-            ComponentUtils.invokeOnClosestIteratorParent(table, p -> {
-                VisitContext visitContext = VisitContext.createVisitContext(context);
-                VisitCallback visitCallback = new DataTableVisitCallBack(table, config);
-                p.visitTree(visitContext, visitCallback);
-            }, true);
+            DataTableVisitCallBack visitCallback = new DataTableVisitCallBack(table, config, index);
+            int nbTables = visitCallback.invoke(context);
+            index += nbTables;
         }
 
         postExport(context, config);
     }
 
-    protected abstract void doExport(FacesContext facesContext, DataTable table, ExportConfiguration config) throws IOException;
+    /**
+     * Export datatable
+     * @param facesContext faces context
+     * @param table datatable to export
+     * @param config export configuration
+     * @param index datatable current index during export process
+     * @throws IOException
+     */
+    protected abstract void doExport(FacesContext facesContext, DataTable table, ExportConfiguration config, int index) throws IOException;
 
     private class DataTableVisitCallBack implements VisitCallback {
 
@@ -326,22 +333,43 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
 
         private DataTable target;
 
-        public DataTableVisitCallBack(DataTable target, ExportConfiguration config) {
+        private int index = 0;
+
+        private int counter = 0;
+
+        public DataTableVisitCallBack(DataTable target, ExportConfiguration config, int index) {
             this.target = target;
             this.config = config;
+            this.index = index;
         }
 
         @Override
         public VisitResult visit(VisitContext context, UIComponent component) {
             if (target == component) {
                 try {
-                    doExport(context.getFacesContext(), target, config);
+                    doExport(context.getFacesContext(), target, config, index);
+                    index++;
+                    counter++;
                 }
                 catch (IOException e) {
                     throw new FacesException(e);
                 }
             }
             return VisitResult.ACCEPT;
+        }
+
+        /**
+         * Returns number of tables exported
+         * @param context faces context
+         * @return number of tables exported
+         */
+        public int invoke(FacesContext context) {
+            ComponentUtils.invokeOnClosestIteratorParent(target, p -> {
+                VisitContext visitContext = VisitContext.createVisitContext(context);
+                p.visitTree(visitContext, this);
+            }, true);
+
+            return counter;
         }
     }
 }

@@ -62,7 +62,7 @@ public class DataTableCSVExporter extends DataTableExporter {
     }
 
     @Override
-    public void doExport(FacesContext context, DataTable table, ExportConfiguration config) throws IOException {
+    public void doExport(FacesContext context, DataTable table, ExportConfiguration config, int index) throws IOException {
         ExternalContext externalContext = context.getExternalContext();
         configureResponse(externalContext, config.getOutputFileName(), config.getEncodingType());
         StringBuilder builder = new StringBuilder();
@@ -127,7 +127,7 @@ public class DataTableCSVExporter extends DataTableExporter {
                 if (textValue != null) {
                     addColumnValue(builder, textValue);
                 }
-                else if (facet != null) {
+                else if (ComponentUtils.shouldRenderFacet(facet)) {
                     addColumnValue(builder, facet);
                 }
                 else {

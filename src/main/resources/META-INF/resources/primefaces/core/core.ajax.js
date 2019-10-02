@@ -833,18 +833,11 @@ if (!PrimeFaces.ajax) {
             doEval : function(node, xhr) {
                 var textContent = node.textContent || node.innerText || node.text;
 
+                var nonce;
                 if (xhr && xhr.pfSettings && xhr.pfSettings.nonce) {
-                    // $.globalEval doesn't support nonce currently
-                    // and the internal used DOMEval can't be used from outside?
-                    var script = document.createElement('script');
-                    script.nonce = xhr.pfSettings.nonce;
-                    script.setAttribute('nonce', xhr.pfSettings.nonce);
-                    script.innerHTML = textContent;
-                    document.head.appendChild(script);
+                    nonce = xhr.pfSettings.nonce;
                 }
-                else {
-                    $.globalEval(textContent);
-                }
+                PrimeFaces.csp.eval(textContent, nonce);
             },
 
             doExtension : function(node, xhr) {

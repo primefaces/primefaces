@@ -21,53 +21,65 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.feedreader;
+package org.primefaces.model.file;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-
-import javax.faces.component.UIComponent;
+import javax.faces.FacesWrapper;
+import javax.faces.component.StateHolder;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
+/**
+ * Internal wrapper to avoid the file binaries to beeing saved in the ViewState.
+ */
+public class UploadedFilesWrapper extends UploadedFiles implements FacesWrapper<UploadedFiles>, StateHolder {
 
-public class FeedReaderRenderer extends CoreRenderer {
+    private UploadedFiles wrapped;
 
-    @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        FeedReader reader = (FeedReader) component;
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        String var = reader.getVar();
-        int size = reader.getSize();
+    public UploadedFilesWrapper() {
+        // NOOP
+    }
 
-        try {
-            List entries = new FeedInput().parse(reader.getValue(), size);
-
-            for (Object f : entries) {
-                requestMap.put(var, f);
-                renderChildren(context, reader);
-            }
-
-            requestMap.remove(var);
-
-        }
-        catch (Exception e) {
-            UIComponent errorFacet = reader.getFacet("error");
-            if (ComponentUtils.shouldRenderFacet(errorFacet)) {
-                errorFacet.encodeAll(context);
-            }
-        }
+    public UploadedFilesWrapper(UploadedFiles wrapped) {
+        this.wrapped = wrapped;
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //Do nothing
+    public UploadedFiles getWrapped() {
+        return wrapped;
     }
 
     @Override
-    public boolean getRendersChildren() {
+    public Object saveState(FacesContext fc) {
+        return null;
+    }
+
+    @Override
+    public void restoreState(FacesContext fc, Object o) {
+        // NOOP
+    }
+
+    @Override
+    public boolean isTransient() {
         return true;
+    }
+
+    @Override
+    public void setTransient(boolean value) {
+        // NOOP
+    }
+
+    @Override
+    public List<UploadedFile> getFiles() {
+        return getWrapped().getFiles();
+    }
+
+    @Override
+    public long getSize() {
+        return getWrapped().getSize();
+    }
+
+    @Override
+    public void write(String path) throws Exception {
+        getWrapped().write(path);
     }
 }

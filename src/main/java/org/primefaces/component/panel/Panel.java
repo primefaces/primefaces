@@ -40,6 +40,7 @@ import org.primefaces.component.menu.Menu;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.Visibility;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
 
@@ -87,7 +88,7 @@ public class Panel extends PanelBase {
     public Menu getOptionsMenu() {
         if (optionsMenu == null) {
             UIComponent optionsFacet = getFacet("options");
-            if (optionsFacet != null) {
+            if (ComponentUtils.shouldRenderFacet(optionsFacet)) {
                 if (optionsFacet instanceof Menu) {
                     optionsMenu = (Menu) optionsFacet;
                 }

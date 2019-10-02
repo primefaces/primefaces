@@ -650,9 +650,11 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
                 var el = $(this);
 
                 if(el.hasClass('ui-confirmdialog-yes') && PrimeFaces.confirmSource) {
-                    var fn = new Function('event',PrimeFaces.confirmSource.data('pfconfirmcommand'));
+                    var id = PrimeFaces.confirmSource.get(0);
+                    var js = PrimeFaces.confirmSource.data('pfconfirmcommand');
 
-                    fn.call(PrimeFaces.confirmSource.get(0),e);
+                    PrimeFaces.csp.executeEvent(id, js, e);
+
                     PrimeFaces.confirmDialog.hide();
                     PrimeFaces.confirmSource = null;
                 }
