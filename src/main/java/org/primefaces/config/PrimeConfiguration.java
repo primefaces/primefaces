@@ -51,6 +51,7 @@ public class PrimeConfiguration {
     private final boolean earlyPostParamEvaluation;
     private final boolean moveScriptsToBottom;
     private boolean csp;
+    private String cspPolicy;
 
     // internal config
     private final boolean stringConverterAvailable;
@@ -116,6 +117,9 @@ public class PrimeConfiguration {
 
         value = externalContext.getInitParameter(Constants.ContextParams.CSP);
         csp = (value == null) ? false : Boolean.valueOf(value);
+        if (csp) {
+            cspPolicy = externalContext.getInitParameter(Constants.ContextParams.CSP_POLICY);
+        }
     }
 
     protected boolean resolveValidateEmptyFields(FacesContext context, PrimeEnvironment environment) {
@@ -211,5 +215,9 @@ public class PrimeConfiguration {
 
     public boolean isCsp() {
         return csp;
+    }
+
+    public String getCspPolicy() {
+        return cspPolicy;
     }
 }
