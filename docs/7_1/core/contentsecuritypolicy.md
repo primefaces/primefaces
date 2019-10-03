@@ -27,7 +27,7 @@ and only matching nonces are allowed to execute.
 
 **HTTP Header**
 ```java
-response.addHeader("Content-Security-Policy", "script-src 'nonce-" + state.getNonce() + "'");
+response.addHeader("Content-Security-Policy", "script-src 'self' 'nonce-" + state.getNonce() + "'");
 
 ```
 
@@ -36,6 +36,13 @@ response.addHeader("Content-Security-Policy", "script-src 'nonce-" + state.getNo
 <script type="text/javascript"
         src="/showcase/javax.faces.resource/jquery/jquery.js.xhtml?ln=primefaces&amp;v=7.1"
         nonce="YTQyM2ZiNTktNjFhZS00ZjI1LWEzMWItZGYzOTE0ZWQ1NDU1" />
+```
+## Default Policy
+The default policy is extremely strict and will only allow scripts from 'self' to execute and no inline
+scripts or Javascript eval() statements are allowed.
+
+```
+script-src 'self' 'nonce-XYZ123456'
 ```
 
 ## Custom Policy
