@@ -46,6 +46,7 @@ public class Constants {
         public static final String EARLY_POST_PARAM_EVALUATION = "primefaces.EARLY_POST_PARAM_EVALUATION";
         public static final String MOVE_SCRIPTS_TO_BOTTOM = "primefaces.MOVE_SCRIPTS_TO_BOTTOM";
         public static final String CSP = "primefaces.CSP";
+        public static final String CSP_POLICY = "primefaces.CSP_POLICY";
     }
 
     public static class RequestParams {

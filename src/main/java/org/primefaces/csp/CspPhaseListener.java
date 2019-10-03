@@ -25,8 +25,10 @@ package org.primefaces.csp;
 
 import org.owasp.encoder.Encode;
 import org.primefaces.PrimeFaces;
+import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeFacesContext;
+import org.primefaces.util.LangUtils;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -40,9 +42,14 @@ public class CspPhaseListener implements PhaseListener {
     private static final long serialVersionUID = 1L;
 
     private boolean enabled;
+    private String customPolicy;
 
     public CspPhaseListener() {
-        enabled = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().isCsp();
+        PrimeConfiguration config = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig();
+        enabled = config.isCsp();
+        if (enabled) {
+            customPolicy = config.getCspPolicy();
+        }
     }
 
     @Override
@@ -60,10 +67,11 @@ public class CspPhaseListener implements PhaseListener {
         ExternalContext externalContext = context.getExternalContext();
         // TODO Support portlet environments?
         if (externalContext.getResponse() instanceof HttpServletResponse) {
+            HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
             CspState state = PrimeFacesContext.getCspState(context);
 
-            HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
-            response.addHeader("Content-Security-Policy", "script-src 'self' 'nonce-" + state.getNonce() + "'");
+            String policy = LangUtils.isValueBlank(customPolicy) ? "script-src 'self'" : customPolicy;
+            response.addHeader("Content-Security-Policy", policy + " 'nonce-" + state.getNonce() + "'");
 
             PrimeFaces.current().executeScript("PrimeFaces.csp.init('" + Encode.forJavaScript(state.getNonce()) + "');");
         }

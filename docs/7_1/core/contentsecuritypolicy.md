@@ -27,7 +27,7 @@ and only matching nonces are allowed to execute.
 
 **HTTP Header**
 ```java
-response.addHeader("Content-Security-Policy", "script-src 'nonce-" + state.getNonce() + "'");
+response.addHeader("Content-Security-Policy", "script-src 'self' 'nonce-" + state.getNonce() + "'");
 
 ```
 
@@ -37,12 +37,32 @@ response.addHeader("Content-Security-Policy", "script-src 'nonce-" + state.getNo
         src="/showcase/javax.faces.resource/jquery/jquery.js.xhtml?ln=primefaces&amp;v=7.1"
         nonce="YTQyM2ZiNTktNjFhZS00ZjI1LWEzMWItZGYzOTE0ZWQ1NDU1" />
 ```
+## Default Policy
+The default policy is extremely strict and will only allow scripts from 'self' to execute and no inline
+scripts or Javascript eval() statements are allowed.
+
+```
+script-src 'self' 'nonce-XYZ123456'
+```
+
+## Custom Policy
+We cannot know every Javascript usage on every PrimeFaces website. You may have custom code in your 
+application that you need to allow other CSP directives such as `unsafe-inline` or whitelist a website
+such as `https://www.google-analytics.com`.  By using the `primefaces.CSP_POLICY` context parameter you
+can override the default policy.
+
+```xml
+<context-param>
+    <param-name>primefaces.CSP_POLICY</param-name>
+    <param-value>script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google-analytics.com</param-value>
+</context-param>
+```
 
 ## Known Limitations
 Currently CSP in combination with `<f:ajax>` cannot be used with all Faces implementations / versions.
 
 MyFaces supports it since 3.0.0,
-Mojarra doesn't support it in generell: https://github.com/eclipse-ee4j/mojarra/issues/4542
+Mojarra doesn't support it in general: https://github.com/eclipse-ee4j/mojarra/issues/4542
 
 As workaround, you can always use `<p:ajax>` instead.
 
