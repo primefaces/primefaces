@@ -43,7 +43,8 @@ Contains custom PrimeFaces widgets like;
 
 Most of the components have a corresponding client side widget with same name.
 
+## PrimeFaces AJAX (PrimeFaces.ajax.*)
 
-
+See: [AJAX / JavaScript API](/ajax/javascriptApi.md)
 
 
