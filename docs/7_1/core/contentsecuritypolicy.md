@@ -67,7 +67,6 @@ before it is sent to the browser and converting inline event handlers to Jquery 
 For example:
 ```xml
 <button id="btnHello" onclick="sayHello();">Say Hello</button>
-
 ```
 
 Is automatically converted to:
