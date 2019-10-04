@@ -76,7 +76,7 @@ Use the abort API in case you'd like to cancel all the ongoing requests;
 PrimeFaces.ajax.Queue.abortAll()
 ```
 
-## Catching AJAX lifecycle events
+## Lifecycle events
 It's possible to catch the events of the AJAX lifecycle via jQuery, but only when ´global´ is set to ´false´.
 
 ```js
@@ -85,12 +85,13 @@ $(document).on('pfAjaxComplete', function() {
 });
 ```
 
-Events:
-| Name | Arguments |Description |
+### Events:
+
+| Name | Arguments | Description |
 | --- | --- | --- |
-pfAjaxStart | | Executed when entering the AJAX lifecycle, before preparing all settings for the XHR.
-pfAjaxSend | xhr, settings | Executed before sending the XHR.
-pfAjaxError | xhr, settings, error | Executed when sending the request or receiving the response failed.
-pfAjaxSuccess | xhr, settings | Executed after the response was received but before processing the response / replace DOM elements.
-pfAjaxComplete | xhr, settings| Executed after the AJAX lifecycle has been completed, independent of success or error.
+| pfAjaxStart | | Executed when entering the AJAX lifecycle, before preparing all settings for the XHR.
+| pfAjaxSend | xhr, settings | Executed before sending the XHR.
+| pfAjaxError | xhr, settings, error | Executed when sending the request or receiving the response failed.
+| pfAjaxSuccess | xhr, settings | Executed after the response was received but before processing the response / replace DOM elements.
+| pfAjaxComplete | xhr, settings | Executed after the AJAX lifecycle has been completed, independent of success or error.
 
