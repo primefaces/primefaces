@@ -77,7 +77,7 @@ PrimeFaces.ajax.Queue.abortAll()
 ```
 
 ## Lifecycle events
-It's possible to catch the events of the AJAX lifecycle via jQuery, but only when ´global´ is set to ´false´.
+It's possible to catch the events of the AJAX lifecycle via jQuery, but only when `global` is set to `false`.
 
 ```js
 $(document).on('pfAjaxComplete', function() {
