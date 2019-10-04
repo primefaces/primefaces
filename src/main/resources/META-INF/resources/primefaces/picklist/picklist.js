@@ -434,14 +434,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     bindEnterKeyFilter: function(filter) {
         var $this = this;
 
-        filter.bind('keydown', function(e) {
-            var key = e.which,
-            keyCode = $.ui.keyCode;
-
-            if((key === keyCode.ENTER)) {
-                e.preventDefault();
-            }
-        }).bind('keyup', function(e) {
+        filter.on('keydown', PrimeFaces.utils.blockEnterKey)
+        .on('keyup', function(e) {
             var key = e.which,
             keyCode = $.ui.keyCode;
 
@@ -480,16 +474,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             },
             $this.cfg.filterDelay);
         })
-        .on('keydown', this.blockEnterKey);
-    },
-
-    blockEnterKey: function(e) {
-        var key = e.which,
-        keyCode = $.ui.keyCode;
-
-        if((key === keyCode.ENTER)) {
-            e.preventDefault();
-        }
+        .on('keydown', PrimeFaces.utils.blockEnterKey);
     },
 
     setupFilterMatcher: function() {

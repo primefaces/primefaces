@@ -297,6 +297,19 @@ if (!PrimeFaces.utils) {
             result.top = offset.top - scrollTop;
             result.left = offset.left - scrollLeft;
             return result;
+        },
+
+        /**
+         * Blocks the enter key for an event like keyup or keydown.
+         * Useful in a lot of filter input events in many components.
+         */
+        blockEnterKey: function(e) {
+            var key = e.which,
+            keyCode = $.ui.keyCode;
+
+            if((key === keyCode.ENTER)) {
+                e.preventDefault();
+            }
         }
     };
 

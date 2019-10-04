@@ -398,14 +398,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindEnterKeyFilter: function(filter) {
         var $this = this;
 
-        filter.on('keydown', function(e) {
-            var key = e.which,
-            keyCode = $.ui.keyCode;
-
-            if((key === keyCode.ENTER)) {
-                e.preventDefault();
-            }
-        }).on('keyup', function(e) {
+        filter.on('keydown', PrimeFaces.utils.blockEnterKey)
+        .on('keyup', function(e) {
             var key = e.which,
             keyCode = $.ui.keyCode;
 
@@ -421,14 +415,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         //prevent form submit on enter key
-        filter.on('keydown.dataTable-blockenter', function(e) {
-            var key = e.which,
-            keyCode = $.ui.keyCode;
-
-            if((key === keyCode.ENTER)) {
-                e.preventDefault();
-            }
-        })
+        filter.on('keydown.dataTable-blockenter', PrimeFaces.utils.blockEnterKey)
         .on(this.cfg.filterEvent + '.dataTable', function(e) {
             var key = e.which,
             keyCode = $.ui.keyCode,
