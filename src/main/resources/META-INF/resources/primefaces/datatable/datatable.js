@@ -417,14 +417,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         //prevent form submit on enter key
         filter.on('keydown.dataTable-blockenter', PrimeFaces.utils.blockEnterKey)
         .on(this.cfg.filterEvent + '.dataTable', function(e) {
-            var key = e.which,
-            keyCode = $.ui.keyCode,
-            ignoredKeys = [keyCode.END, keyCode.HOME, keyCode.LEFT, keyCode.RIGHT, keyCode.UP, keyCode.DOWN,
-                keyCode.TAB, 16/*Shift*/, 17/*Ctrl*/, 18/*Alt*/, 91, 92, 93/*left/right Win/Cmd*/,
-                keyCode.ESCAPE, keyCode.PAGE_UP, keyCode.PAGE_DOWN,
-                19/*pause/break*/, 20/*caps lock*/, 44/*print screen*/, 144/*num lock*/, 145/*scroll lock*/];
-
-            if (ignoredKeys.indexOf(key) > -1) {
+            if (PrimeFaces.utils.ignoreFilterKey(e)) {
                 return;
             }
 
