@@ -75,7 +75,6 @@ Is automatically converted to:
 ```
 ```javascript
 $('#btnHello').on('click', sayHello());
-
 ```
 
 ## Known Limitations
