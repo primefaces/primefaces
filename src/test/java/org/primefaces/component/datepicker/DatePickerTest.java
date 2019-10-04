@@ -269,9 +269,44 @@ public class DatePickerTest {
     public void convertToJava8DateTimeAPI_LocalTime() {
         Class type = LocalTime.class;
         setupValues(type, Locale.ENGLISH);
+        when(datePicker.isTimeOnly()).thenReturn(Boolean.TRUE);
         Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "21:31");
         assertEquals(type, temporal.getClass());
         assertEquals(LocalTime.of(21, 31), temporal);
+    }
+
+    @Test
+    public void convertToJava8DateTimeAPI_LocalTimeWithSeconds() {
+        Class type = LocalTime.class;
+        setupValues(type, Locale.ENGLISH);
+        when(datePicker.isTimeOnly()).thenReturn(Boolean.TRUE);
+        when(datePicker.isShowSeconds()).thenReturn(Boolean.TRUE);
+        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "21:31:47");
+        assertEquals(type, temporal.getClass());
+        assertEquals(LocalTime.of(21, 31, 47), temporal);
+    }
+
+    @Test
+    public void convertToJava8DateTimeAPI_LocalTimeWithAmPm() {
+        Class type = LocalTime.class;
+        setupValues(type, Locale.ENGLISH);
+        when(datePicker.isTimeOnly()).thenReturn(Boolean.TRUE);
+        when(datePicker.getHourFormat()).thenReturn("12");
+        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "09:31 PM");
+        assertEquals(type, temporal.getClass());
+        assertEquals(LocalTime.of(21, 31), temporal);
+    }
+
+    @Test
+    public void convertToJava8DateTimeAPI_LocalTimeWithSecondsAndAmPm() {
+        Class type = LocalTime.class;
+        setupValues(type, Locale.ENGLISH);
+        when(datePicker.isTimeOnly()).thenReturn(Boolean.TRUE);
+        when(datePicker.isShowSeconds()).thenReturn(Boolean.TRUE);
+        when(datePicker.getHourFormat()).thenReturn("12");
+        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "09:31:47 PM");
+        assertEquals(type, temporal.getClass());
+        assertEquals(LocalTime.of(21, 31, 47), temporal);
     }
 
     @Test
@@ -518,4 +553,52 @@ public class DatePickerTest {
         datePicker.validateValueInternal(context, range);
         assertFalse(datePicker.isValid());
     }
+
+    @Test
+    public void calculatePatternDefault() {
+        setupValues(null, Locale.ENGLISH);
+        assertEquals(datePicker.calculatePattern(), "M/d/yy");
+    }
+
+    @Test
+    public void calculatePatternWithTime() {
+        setupValues(null, Locale.ENGLISH);
+        when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
+        assertEquals(datePicker.calculatePattern(), "M/d/yy HH:mm");
+    }
+
+    @Test
+    public void calculatePatternWithSeconds() {
+        setupValues(null, Locale.ENGLISH);
+        when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
+		when(datePicker.isShowSeconds()).thenReturn(Boolean.TRUE);
+        assertEquals(datePicker.calculatePattern(), "M/d/yy HH:mm:ss");
+    }
+
+    @Test
+    public void calculatePatternWithSecondsAndAmPm() {
+        setupValues(null, Locale.ENGLISH);
+        when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
+		when(datePicker.isShowSeconds()).thenReturn(Boolean.TRUE);
+		when(datePicker.getHourFormat()).thenReturn("12");
+        assertEquals(datePicker.calculatePattern(), "M/d/yy KK:mm:ss a");
+    }
+
+    @Test
+    public void calculatePatternWithAmPm() {
+        setupValues(null, Locale.ENGLISH);
+        when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
+		when(datePicker.getHourFormat()).thenReturn("12");
+        assertEquals(datePicker.calculatePattern(), "M/d/yy KK:mm a");
+    }
+
+
+    @Test
+    public void calculatePatternWithTimeRemove() {
+        setupValues(null, Locale.ENGLISH);
+        when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
+        when(datePicker.getPattern()).thenReturn("yyyy-MM-dd KK:mm:ss a");
+        assertEquals(datePicker.calculatePattern(), "yyyy-MM-dd HH:mm");
+    }
+
 }
