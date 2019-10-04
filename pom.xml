@@ -951,6 +951,7 @@
                                 <exclude>**/0-fullcalendar.min.js</exclude>
                                 <exclude>**/0-chartjs.js</exclude>
                                 <exclude>**/raphael.js</exclude>
+                                <exclude>**/theme.css</exclude>
                             </excludes>
                             <includes>
                                 <include>**/*.js</include>
