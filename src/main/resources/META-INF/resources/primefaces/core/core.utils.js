@@ -297,7 +297,55 @@ if (!PrimeFaces.utils) {
             result.top = offset.top - scrollTop;
             result.left = offset.left - scrollLeft;
             return result;
+        },
+
+        /**
+         * Blocks the enter key for an event like keyup or keydown.
+         * Useful in filter input events in many components.
+         */
+        blockEnterKey: function(e) {
+            var key = e.which,
+            keyCode = $.ui.keyCode;
+
+            if((key === keyCode.ENTER)) {
+                e.preventDefault();
+            }
+        },
+
+        /**
+         * Ignores certain keys on filter input textbox. 
+         * Useful in filter input events in many components.
+         */
+        ignoreFilterKey: function(e) {
+            var key = e.which,
+            keyCode = $.ui.keyCode,
+            ignoredKeys = [
+                keyCode.END, 
+                keyCode.HOME, 
+                keyCode.LEFT, 
+                keyCode.RIGHT, 
+                keyCode.UP, 
+                keyCode.DOWN,
+                keyCode.TAB, 
+                16/*Shift*/, 
+                17/*Ctrl*/, 
+                18/*Alt*/, 
+                91, 92, 93/*left/right Win/Cmd*/,
+                keyCode.ESCAPE, 
+                keyCode.PAGE_UP, 
+                keyCode.PAGE_DOWN,
+                19/*pause/break*/, 
+                20/*caps lock*/, 
+                44/*print screen*/, 
+                144/*num lock*/, 
+                145/*scroll lock*/];
+
+            if (ignoredKeys.indexOf(key) > -1) {
+                return true;
+            }
+            return false;
         }
+
     };
 
 }
