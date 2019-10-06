@@ -33,11 +33,8 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 public class CspState {
-
-    private static final Logger LOG = Logger.getLogger(CspState.class.getName());
 
     private FacesContext context;
     private Map<String, Map<String, String>> eventHandlers;
@@ -48,6 +45,11 @@ public class CspState {
         this.eventHandlers = new HashMap<>(10);
     }
 
+    /**
+     * For AJAX request validate the nonce, else generate a new nonce for non-AJAX requests.
+     *
+     * @return the nonce Base64 value
+     */
     public String getNonce() {
         if (nonce == null) {
             if (context.isPostback()) {
@@ -64,8 +66,9 @@ public class CspState {
 
     /**
      * Currently the script nonce is user-supplied input, so we have to validate it to prevent header/XSS injections.
-     * @param nonce
-     * @throws FacesException
+     *
+     * @param nonce the nonce to validate
+     * @throws FacesException if any errors validating the nonce
      */
     private void validate(String nonce) throws FacesException {
         if (LangUtils.isValueEmpty(nonce)) {

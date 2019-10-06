@@ -21,13 +21,13 @@ CSP is disabled by default and a global parameter is required to turn it on.
 ```
 ## Policy
 There are many ways to configure CSP for different levels of security. Currently, PrimeFaces has chosen to
-support the NONCE based checking for script evaluation only. Nonces attributes are added to script tags. Nonce
-attributes are composed of base64 values. This nonce is verified against the nonce sent in the CSP header,
-and only matching nonces are allowed to execute.
+support the NONCE (number used once) based checking for script evaluation only. Nonce attributes are automatically 
+added to all script tags discovered by PrimeFaces. Nonce attributes are composed of base64 values and are verified 
+against the nonce sent in the CSP header, and only matching nonces are allowed to execute.
 
 **HTTP Header**
 ```java
-response.addHeader("Content-Security-Policy", "script-src 'self' 'nonce-" + state.getNonce() + "'");
+response.addHeader("Content-Security-Policy", "script-src 'self' 'nonce-YTQyM2ZiNTktNjFhZS00ZjI1LWEzMWItZGYzOTE0ZWQ1NDU1'");
 
 ```
 
@@ -56,6 +56,25 @@ can override the default policy.
     <param-name>primefaces.CSP_POLICY</param-name>
     <param-value>script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google-analytics.com</param-value>
 </context-param>
+```
+
+## Event Handlers
+Inline code is considered harmful, especially inline event handlers. CSP solves this problem by banning inline 
+script entirely: it's the only way to be sure. This ban includes not only scripts embedded directly in `script` tags, 
+but also inline event handlers and `javascript:` URLs.  PrimeFaces handles inline events by preprocessing the HTML 
+before it is sent to the browser and converting inline event handlers to Jquery "on" event handlers. 
+
+For example:
+```xml
+<button id="btnHello" onclick="sayHello();">Say Hello</button>
+```
+
+Is automatically converted to:
+```xml
+<button id="btnHello">Say Hello</button>
+```
+```javascript
+$('#btnHello').on('click', sayHello());
 ```
 
 ## Known Limitations
