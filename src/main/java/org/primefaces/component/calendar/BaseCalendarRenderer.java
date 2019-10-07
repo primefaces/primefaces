@@ -24,7 +24,6 @@
 package org.primefaces.component.calendar;
 
 import org.primefaces.component.api.UICalendar;
-import org.primefaces.component.datepicker.DatePickerRenderer;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.CalendarUtils;
@@ -203,34 +202,26 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
                         : YearMonth.parse(submittedValue, formatter);
             }
             catch (DateTimeParseException e) {
-                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDate.now()));
+                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDateTime.now()));
             }
         }
         else if (type == LocalTime.class) {
+            String pattern = calendar instanceof Calendar ? calendar.calculatePattern() : calendar.calculateTimeOnlyPattern();
             DateTimeFormatter formatter = DateTimeFormatter
-                    .ofPattern(calendar.calculateTimeOnlyPattern(), calendar.calculateLocale(context))
+                    .ofPattern(pattern, calendar.calculateLocale(context))
                     .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()));
 
             try {
                 return LocalTime.parse(submittedValue, formatter);
             }
             catch (DateTimeParseException e) {
-                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDate.now()));
+                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDateTime.now()));
             }
         }
         else if (type == LocalDateTime.class) {
-            //known issue: https://github.com/primefaces/primefaces/issues/4625
-            //known issue: https://github.com/primefaces/primefaces/issues/4626
-
-            //TODO: remove temporary (ugly) work-around for adding fixed time-pattern
-            String pattern = calendar.calculatePattern();
-            if (this instanceof DatePickerRenderer) {
-                pattern += " HH:mm";
-            }
-
             DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                     .parseCaseInsensitive()
-                    .appendPattern(pattern)
+                    .appendPattern(calendar.calculatePattern())
                     .toFormatter(calendar.calculateLocale(context))
                     .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()));
 
@@ -238,12 +229,12 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
                 return LocalDateTime.parse(submittedValue, formatter);
             }
             catch (DateTimeParseException e) {
-                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDate.now()));
+                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDateTime.now()));
             }
         }
 
         //TODO: implement if necessary
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ZonedDateTime not supported", null);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, type.getName() + " not supported", null);
         throw new ConverterException(message);
     }
 
@@ -320,6 +311,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
                 && type != Object.class
                 && type != Date.class
                 && type != LocalDate.class
+                && type != YearMonth.class
                 && type != LocalDateTime.class
                 && type != LocalTime.class) {
 
