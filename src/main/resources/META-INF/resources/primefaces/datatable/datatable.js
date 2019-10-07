@@ -2337,6 +2337,21 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         .on('blur.datatable', rowEditorSelector, null, function(e) {
                             $(this).removeClass('ui-row-editor-outline');
                         });
+
+            // GitHub #433 Allow ENTER to submit ESC to cancel row editor
+            $(document).on("keydown", ".ui-cell-editor-input :input", function(e) {
+                var key = e.which,
+                keyCode = $.ui.keyCode;
+
+                if (key === keyCode.ENTER) { 
+                    $(this).closest("tr").find(".ui-row-editor-check").click();
+                    return false; // prevents executing other event handlers (adding new row to the table)
+                }
+                if (key === keyCode.ESCAPE) {
+                    $(this).closest("tr").find(".ui-row-editor-close").click();
+                    return false;
+                }
+            });
         }
         else if(this.cfg.editMode === 'cell') {
             var cellSelector = '> tr > td.ui-editable-column',
