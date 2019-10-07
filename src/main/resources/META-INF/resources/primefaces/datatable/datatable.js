@@ -2339,7 +2339,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         });
 
             // GitHub #433 Allow ENTER to submit ESC to cancel row editor
-            $(document).on("keydown", ".ui-cell-editor-input :input", function(e) {
+            $(document).on("keydown", "tr.ui-row-editing", function(e) {
                 var key = e.which,
                 keyCode = $.ui.keyCode;
 
