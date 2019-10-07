@@ -243,6 +243,11 @@ $.widget( "ui.sortable", $.ui.sortable, {
     }
 });
 
+// GitHub #5223 convenience method
+$.fn.offon = function(events, selector, data, handler) {
+    return this.off(events, selector).on(events, selector, data, handler);
+};
+
 (function() {
     $.extend(Object.getPrototypeOf($.timepicker), {
 

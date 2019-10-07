@@ -69,7 +69,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
         });
 
         var closeSelector = '> li.ui-chips-token > .ui-chips-token-icon';
-        this.itemContainer.off('click', closeSelector).on('click', closeSelector, null, function(event) {
+        this.itemContainer.offon('click', closeSelector, null, function(event) {
             $this.removeItem($(this).parent());
         });
     },
