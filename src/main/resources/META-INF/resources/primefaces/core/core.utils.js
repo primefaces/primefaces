@@ -344,6 +344,14 @@ if (!PrimeFaces.utils) {
                 return true;
             }
             return false;
+        },
+
+        /**
+         * Exclude elements such as buttons, links, inputs from being touch swiped. 
+         * Users can always add class="noSwipe" to any element to exclude it as well.
+         */
+        excludedSwipeElements: function() {
+            return ":button:enabled, :input:enabled, a, [role='combobox'], .noSwipe";
         }
 
     };
