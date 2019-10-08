@@ -131,7 +131,9 @@ public class DatePicker extends DatePickerBase {
             if (!isValid()) {
                 FacesMessage msg = null;
                 String validatorMessage = getValidatorMessage();
-                Object[] params = new Object[] {MessageFactory.getLabel(context, this)};
+                Object[] params = new Object[] {MessageFactory.getLabel(context, this),
+                        CalendarUtils.getValueAsString(context, this, getMindate()),
+                        CalendarUtils.getValueAsString(context, this, getMaxdate())};
                 if (validatorMessage != null) {
                     msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessage, validatorMessage);
                 }
@@ -146,15 +148,12 @@ public class DatePicker extends DatePickerBase {
                             msg = MessageFactory.getMessage(DATE_INVALID_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
                             break;
                         case INVALID_MIN_DATE:
-                            //TODO: add mindate to params
                             msg = MessageFactory.getMessage(DATE_MIN_DATE_ID, FacesMessage.SEVERITY_ERROR, params);
                             break;
                         case INVALID_MAX_DATE:
-                            //TODO: add maxdate to params
                             msg = MessageFactory.getMessage(DATE_MAX_DATE_ID, FacesMessage.SEVERITY_ERROR, params);
                             break;
                         case INVALID_OUT_OF_RANGE:
-                            //TODO: add mindate and maxdate to params
                             msg = MessageFactory.getMessage(DATE_OUT_OF_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
                             break;
                     }
@@ -246,7 +245,7 @@ public class DatePicker extends DatePickerBase {
                 if (minDate != null) {
                     return ValidationResult.INVALID_OUT_OF_RANGE;
                 }
-                else{
+                else {
                     return ValidationResult.INVALID_MAX_DATE;
                 }
             }
