@@ -28,16 +28,21 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.util.Locale;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.MessageFactory;
 
 public abstract class UICalendar extends HtmlInputText {
 
     public static final String CONTAINER_CLASS = "ui-calendar";
     public static final String INPUT_STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
     public static final String DATE_OUT_OF_RANGE_MESSAGE_ID = "primefaces.calendar.OUT_OF_RANGE";
+    public static final String DATE_MIN_DATE_ID = "primefaces.calendar.MIN_DATE";
+    public static final String DATE_MAX_DATE_ID = "primefaces.calendar.MAX_DATE";
     public static final String DATE_INVALID_MESSAGE_ID = "primefaces.calendar.INVALID";
     public static final String DATE_INVALID_RANGE_MESSAGE_ID = "primefaces.calendar.DATE_INVALID_RANGE_MESSAGE_ID";
 
@@ -225,6 +230,43 @@ public abstract class UICalendar extends HtmlInputText {
 
     public void setRangeSeparator(java.lang.String _rangeSeparator) {
         getStateHelper().put(PropertyKeys.rangeSeparator, _rangeSeparator);
+    }
+
+    public enum ValidationResult {
+        OK, INVALID_DISABLED_DATE, INVALID_RANGE_DATES_SEQUENTIAL, INVALID_MIN_DATE, INVALID_MAX_DATE, INVALID_OUT_OF_RANGE
+    }
+
+    protected void createFacesMessageFromValidationResult(FacesContext context, ValidationResult validationResult) {
+        FacesMessage msg = null;
+        String validatorMessage = getValidatorMessage();
+        Object[] params = new Object[] {MessageFactory.getLabel(context, this),
+                CalendarUtils.getValueAsString(context, this, getMindate()),
+                CalendarUtils.getValueAsString(context, this, getMaxdate())};
+        if (validatorMessage != null) {
+            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessage, validatorMessage);
+        }
+        else {
+            switch (validationResult) {
+                case OK:
+                    break;
+                case INVALID_DISABLED_DATE:
+                    msg = MessageFactory.getMessage(DATE_INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
+                    break;
+                case INVALID_RANGE_DATES_SEQUENTIAL:
+                    msg = MessageFactory.getMessage(DATE_INVALID_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
+                    break;
+                case INVALID_MIN_DATE:
+                    msg = MessageFactory.getMessage(DATE_MIN_DATE_ID, FacesMessage.SEVERITY_ERROR, params);
+                    break;
+                case INVALID_MAX_DATE:
+                    msg = MessageFactory.getMessage(DATE_MAX_DATE_ID, FacesMessage.SEVERITY_ERROR, params);
+                    break;
+                case INVALID_OUT_OF_RANGE:
+                    msg = MessageFactory.getMessage(DATE_OUT_OF_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
+                    break;
+            }
+        }
+        context.addMessage(getClientId(context), msg);
     }
 
     /*

@@ -390,38 +390,43 @@ public class DatePickerTest {
 
     @Test
     public void validateValueInternal_simple() {
-        datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
         assertTrue(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.OK, validationResult);
     }
 
     @Test
     public void validateValueInternal_minDate_LocalDate() {
         when(datePicker.getMindate()).thenReturn(LocalDate.of(2019, 1, 1));
-        datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
         assertTrue(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.OK, validationResult);
     }
 
     @Test
     public void validateValueInternal_minDate_LocalDate_wrong() {
         when(datePicker.getMindate()).thenReturn(LocalDate.of(2019, 1, 1));
-        datePicker.validateValueInternal(context, LocalDate.of(2018, 7, 23));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDate.of(2018, 7, 23));
         assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_MIN_DATE, validationResult);
     }
 
     @Test
     public void validateValueInternal_minDate_String() {
         setupValues(null, Locale.ENGLISH);
         when(datePicker.getMindate()).thenReturn("1/1/19");
-        datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
         assertTrue(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.OK, validationResult);
     }
 
     @Test
     public void validateValueInternal_minDate_String_wrong() {
         setupValues(null, Locale.ENGLISH);
         when(datePicker.getMindate()).thenReturn("1/1/19");
-        datePicker.validateValueInternal(context, LocalDate.of(2018, 7, 23));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDate.of(2018, 7, 23));
         assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_MIN_DATE, validationResult);
     }
 
     @Test
@@ -431,38 +436,43 @@ public class DatePickerTest {
         cal.set(2019, 0, 1);
 
         when(datePicker.getMindate()).thenReturn(cal.getTime());
-        datePicker.validateValueInternal(context, LocalDate.of(2018, 7, 23));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDate.of(2018, 7, 23));
         assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_MIN_DATE, validationResult);
     }
 
     @Test
     public void validateValueInternal_maxDate_LocalDate() {
         when(datePicker.getMaxdate()).thenReturn(LocalDate.of(2019, 12, 31));
-        datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
         assertTrue(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.OK, validationResult);
     }
 
     @Test
     public void validateValueInternal_maxDate_LocalDate_wrong() {
         when(datePicker.getMaxdate()).thenReturn(LocalDate.of(2019, 12, 31));
-        datePicker.validateValueInternal(context, LocalDate.of(2020, 7, 23));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDate.of(2020, 7, 23));
         assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_MAX_DATE, validationResult);
     }
 
     @Test
     public void validateValueInternal_maxDate_String() {
         setupValues(null, Locale.ENGLISH);
         when(datePicker.getMaxdate()).thenReturn("12/31/19");
-        datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
         assertTrue(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.OK, validationResult);
     }
 
     @Test
     public void validateValueInternal_maxDate_String_wrong() {
         setupValues(null, Locale.ENGLISH);
         when(datePicker.getMaxdate()).thenReturn("12/31/19");
-        datePicker.validateValueInternal(context, LocalDate.of(2020, 7, 23));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDate.of(2020, 7, 23));
         assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_MAX_DATE, validationResult);
     }
 
     @Test
@@ -472,29 +482,42 @@ public class DatePickerTest {
         cal.set(2019, 11, 31);
 
         when(datePicker.getMaxdate()).thenReturn(cal.getTime());
-        datePicker.validateValueInternal(context, LocalDate.of(2020, 7, 23));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDate.of(2020, 7, 23));
         assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_MAX_DATE, validationResult);
+    }
+
+    @Test
+    public void validateValueInternal_minAndMaxDate_LocalDate_wrong() {
+        when(datePicker.getMindate()).thenReturn(LocalDate.of(2019, 1, 1));
+        when(datePicker.getMaxdate()).thenReturn(LocalDate.of(2019, 12, 31));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDate.of(2018, 7, 23));
+        assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_OUT_OF_RANGE, validationResult);
     }
 
     @Test
     public void validateValueInternal_disabledDates_LocalDate() {
         when(datePicker.getDisabledDates()).thenReturn(Arrays.asList(LocalDate.of(2019, 7, 22), LocalDate.of(2019, 7, 24)));
-        datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
         assertTrue(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.OK, validationResult);
     }
 
     @Test
     public void validateValueInternal_disabledDates_LocalDate_wrong() {
         when(datePicker.getDisabledDates()).thenReturn(Arrays.asList(LocalDate.of(2019, 7, 22), LocalDate.of(2019, 7, 24)));
-        datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 22));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 22));
         assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_DISABLED_DATE, validationResult);
     }
 
     @Test
     public void validateValueInternal_disabledDays() {
         when(datePicker.getDisabledDays()).thenReturn(Arrays.asList(0, 1));
-        datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 23));
         assertTrue(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.OK, validationResult);
     }
 
     @Test
@@ -502,24 +525,27 @@ public class DatePickerTest {
         int weekDay = LocalDate.of(2019, 7, 22).getDayOfWeek().getValue();
 
         when(datePicker.getDisabledDays()).thenReturn(Arrays.asList(0, 1));
-        datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 22));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDate.of(2019, 7, 22));
         assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_DISABLED_DATE, validationResult);
     }
 
     @Test
     public void validateValueInternal_LocalDate_range() {
         when(datePicker.getSelectionMode()).thenReturn("range");
         List<LocalDate> range=Arrays.asList(LocalDate.of(2019, 7, 23), LocalDate.of(2019, 7, 30));
-        datePicker.validateValueInternal(context, range);
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, range);
         assertTrue(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.OK, validationResult);
     }
 
     @Test
     public void validateValueInternal_LocalDate_range_wrong() {
         when(datePicker.getSelectionMode()).thenReturn("range");
         List<LocalDate> range=Arrays.asList(LocalDate.of(2019, 7, 30), LocalDate.of(2019, 7, 23));
-        datePicker.validateValueInternal(context, range);
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, range);
         assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_RANGE_DATES_SEQUENTIAL, validationResult);
     }
 
     @Test
@@ -532,8 +558,9 @@ public class DatePickerTest {
 
         when(datePicker.getSelectionMode()).thenReturn("range");
         List<Date> range=Arrays.asList(calFrom.getTime(), calTo.getTime());
-        datePicker.validateValueInternal(context, range);
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, range);
         assertTrue(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.OK, validationResult);
     }
 
     @Test
@@ -546,8 +573,9 @@ public class DatePickerTest {
 
         when(datePicker.getSelectionMode()).thenReturn("range");
         List<Date> range=Arrays.asList(calFrom.getTime(), calTo.getTime());
-        datePicker.validateValueInternal(context, range);
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, range);
         assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_RANGE_DATES_SEQUENTIAL, validationResult);
     }
 
     @Test
