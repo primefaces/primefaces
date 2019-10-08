@@ -17661,7 +17661,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Inline style of the panel.]]>
+                <![CDATA[Inline style of the panel/table.]]>
             </description>
             <name>style</name>
             <required>false</required>
@@ -17671,13 +17671,13 @@
             <description>
                 <![CDATA[Inline style of the panel-content.]]>
             </description>
-            <name>styleContent</name>
+            <name>contentStyle</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Style class of the panel.]]>
+                <![CDATA[Style class of the panel/table.]]>
             </description>
             <name>styleClass</name>
             <required>false</required>
@@ -17687,7 +17687,7 @@
             <description>
                 <![CDATA[Style class of the panel-content.]]>
             </description>
-            <name>styleClassContent</name>
+            <name>contentStyleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

@@ -22,10 +22,10 @@ id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 columns | 0 | Integer | Number of columns in grid.
-style | null | String | Inline style of the panel.
-styleContent | null | String | Inline style of the panel-content.
-styleClass | null | String | Style class of the panel.
-styleClassContent | null | String | Style class of the panel-content.
+style | null | String | Inline style of the panel/table.
+contentStyle | null | String | Inline style of the panel-content.
+styleClass | null | String | Style class of the panel/table.
+contentStyleClass | null | String | Style class of the panel-content.
 columnClasses | null | String | Comma separated list of column style classes.<br/>For layout=grid: Grid CSS - classes<br/>For layout=flex: PrimeFlex (FlexGrid) - classes; primeflex.css must be included into the template.xhtml
 layout | tabular | String | Displays data in a 'tabular' layout, 'grid' layout or 'flex' layout. The grid and flex layout are responsive layouts. Default value is 'tabular'.
 role | grid | String | Role for aria.

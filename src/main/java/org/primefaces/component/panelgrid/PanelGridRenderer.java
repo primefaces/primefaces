@@ -251,7 +251,7 @@ public class PanelGridRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String columnClassesValue = grid.getColumnClasses();
         String[] columnClasses = columnClassesValue == null ? new String[0] : columnClassesValue.split(",");
-        String contentClass = grid.getStyleClassContent();
+        String contentClass = grid.getContentStyleClass();
         contentClass = contentClass == null ? PanelGrid.CONTENT_CLASS : PanelGrid.CONTENT_CLASS + " " + contentClass;
 
         if (LAYOUT_FLEX.equalsIgnoreCase(layout)) {
@@ -261,8 +261,8 @@ public class PanelGridRenderer extends CoreRenderer {
         writer.startElement("div", grid);
         writer.writeAttribute("id", clientId + "_content", null);
         writer.writeAttribute("class", contentClass, null);
-        if (grid.getStyleContent() != null) {
-            writer.writeAttribute("style", grid.getStyleContent(), null);
+        if (grid.getContentStyle() != null) {
+            writer.writeAttribute("style", grid.getContentStyle(), null);
         }
 
         int i = 0;
