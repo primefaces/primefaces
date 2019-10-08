@@ -143,6 +143,10 @@ public class CalendarUtils {
             return (LocalDate) value;
         }
 
+        if (value instanceof Date) {
+            return convertDate2LocalDate((Date) value);
+        }
+
         String pattern = calendar.calculatePattern();
         if (pattern != null) {
             Locale locale = calendar.calculateLocale(context);
