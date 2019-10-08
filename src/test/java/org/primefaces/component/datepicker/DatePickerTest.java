@@ -425,8 +425,6 @@ public class DatePickerTest {
     }
 
     @Test
-    @Ignore
-    //TODO: test breaks - fix root cause
     public void validateValueInternal_minDate_Date_wrong() {
         setupValues(null, Locale.ENGLISH);
         java.util.Calendar cal = GregorianCalendar.getInstance();
@@ -468,8 +466,6 @@ public class DatePickerTest {
     }
 
     @Test
-    @Ignore
-    //TODO: test breaks - fix root cause
     public void validateValueInternal_maxDate_Date_wrong() {
         setupValues(null, Locale.ENGLISH);
         java.util.Calendar cal = GregorianCalendar.getInstance();
