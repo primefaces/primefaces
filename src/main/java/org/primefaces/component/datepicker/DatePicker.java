@@ -129,36 +129,7 @@ public class DatePicker extends DatePickerBase {
             ValidationResult validationResult = validateValueInternal(context, value);
 
             if (!isValid()) {
-                FacesMessage msg = null;
-                String validatorMessage = getValidatorMessage();
-                Object[] params = new Object[] {MessageFactory.getLabel(context, this),
-                        CalendarUtils.getValueAsString(context, this, getMindate()),
-                        CalendarUtils.getValueAsString(context, this, getMaxdate())};
-                if (validatorMessage != null) {
-                    msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessage, validatorMessage);
-                }
-                else {
-                    switch (validationResult) {
-                        case OK:
-                            break;
-                        case INVALID_DISABLED_DATE:
-                            msg = MessageFactory.getMessage(DATE_INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
-                            break;
-                        case INVALID_RANGE_DATES_SEQUENTIAL:
-                            msg = MessageFactory.getMessage(DATE_INVALID_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
-                            break;
-                        case INVALID_MIN_DATE:
-                            msg = MessageFactory.getMessage(DATE_MIN_DATE_ID, FacesMessage.SEVERITY_ERROR, params);
-                            break;
-                        case INVALID_MAX_DATE:
-                            msg = MessageFactory.getMessage(DATE_MAX_DATE_ID, FacesMessage.SEVERITY_ERROR, params);
-                            break;
-                        case INVALID_OUT_OF_RANGE:
-                            msg = MessageFactory.getMessage(DATE_OUT_OF_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
-                            break;
-                    }
-                }
-                context.addMessage(getClientId(context), msg);
+                createFacesMessageFromValidationResult(context, validationResult);
             }
         }
     }
@@ -288,9 +259,5 @@ public class DatePicker extends DatePickerBase {
         }
 
         return ValidationResult.OK;
-    }
-
-    protected enum ValidationResult {
-        OK, INVALID_DISABLED_DATE, INVALID_RANGE_DATES_SEQUENTIAL, INVALID_MIN_DATE, INVALID_MAX_DATE, INVALID_OUT_OF_RANGE
     }
 }

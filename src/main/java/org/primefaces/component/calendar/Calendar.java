@@ -27,7 +27,6 @@ import org.primefaces.event.DateViewChangeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.util.*;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
@@ -129,6 +128,8 @@ public class Calendar extends CalendarBase {
     protected void validateValue(FacesContext context, Object value) {
         super.validateValue(context, value);
 
+        ValidationResult validationResult = ValidationResult.OK;
+
         if (isValid() && !isEmpty(value) && (value instanceof LocalDate || value instanceof LocalDateTime || value instanceof Date)) {
             LocalDate date = null;
 
@@ -147,29 +148,32 @@ public class Calendar extends CalendarBase {
 
             if (date != null) {
                 LocalDate minDate = CalendarUtils.getObjectAsLocalDate(context, this, getMindate());
+                LocalDate maxDate = CalendarUtils.getObjectAsLocalDate(context, this, getMaxdate());
                 if (minDate != null && date.isBefore(minDate)) {
                     setValid(false);
+                    if (maxDate != null) {
+                        validationResult = ValidationResult.INVALID_OUT_OF_RANGE;
+                    }
+                    else {
+                        validationResult = ValidationResult.INVALID_MIN_DATE;
+                    }
                 }
 
                 if (isValid()) {
-                    LocalDate maxDate = CalendarUtils.getObjectAsLocalDate(context, this, getMaxdate());
                     if (maxDate != null && date.isAfter(maxDate)) {
                         setValid(false);
+                        if (minDate != null) {
+                            validationResult = ValidationResult.INVALID_OUT_OF_RANGE;
+                        }
+                        else {
+                            validationResult = ValidationResult.INVALID_MAX_DATE;
+                        }
                     }
                 }
             }
 
             if (!isValid()) {
-                FacesMessage msg = null;
-                String validatorMessage = getValidatorMessage();
-                if (validatorMessage != null) {
-                    msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessage, validatorMessage);
-                }
-                else {
-                    Object[] params = new Object[] {MessageFactory.getLabel(context, this)};
-                    msg = MessageFactory.getMessage(DATE_OUT_OF_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
-                }
-                context.addMessage(getClientId(context), msg);
+                createFacesMessageFromValidationResult(context, validationResult);
             }
         }
     }
