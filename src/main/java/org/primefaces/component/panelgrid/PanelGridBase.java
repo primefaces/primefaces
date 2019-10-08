@@ -36,7 +36,9 @@ public abstract class PanelGridBase extends UIPanel {
 
         columns,
         style,
+        styleContent,
         styleClass,
+        styleClassContent,
         columnClasses,
         layout,
         role
@@ -67,12 +69,28 @@ public abstract class PanelGridBase extends UIPanel {
         getStateHelper().put(PropertyKeys.style, style);
     }
 
+    public String getStyleContent() {
+        return (String) getStateHelper().eval(PropertyKeys.styleContent, null);
+    }
+
+    public void setStyleContent(String styleContent) {
+        getStateHelper().put(PropertyKeys.styleContent, styleContent);
+    }
+
     public String getStyleClass() {
         return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+    public String getStyleClassContent() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClassContent, null);
+    }
+
+    public void setStyleClassContent(String styleClassContent) {
+        getStateHelper().put(PropertyKeys.styleClassContent, styleClassContent);
     }
 
     public String getColumnClasses() {
