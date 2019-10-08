@@ -135,14 +135,29 @@ public class DatePicker extends DatePickerBase {
                 if (validatorMessage != null) {
                     msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessage, validatorMessage);
                 }
-                else if (validationResult.isDisabledDate()) {
-                    msg = MessageFactory.getMessage(DATE_INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
-                }
-                else if (!validationResult.isRangeDatesSequential()) {
-                    msg = MessageFactory.getMessage(DATE_INVALID_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
-                }
                 else {
-                    msg = MessageFactory.getMessage(DATE_OUT_OF_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
+                    switch (validationResult) {
+                        case OK:
+                            break;
+                        case INVALID_DISABLED_DATE:
+                            msg = MessageFactory.getMessage(DATE_INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
+                            break;
+                        case INVALID_RANGE_DATES_SEQUENTIAL:
+                            msg = MessageFactory.getMessage(DATE_INVALID_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
+                            break;
+                        case INVALID_MIN_DATE:
+                            //TODO: add mindate to params
+                            msg = MessageFactory.getMessage(DATE_MIN_DATE_ID, FacesMessage.SEVERITY_ERROR, params);
+                            break;
+                        case INVALID_MAX_DATE:
+                            //TODO: add maxdate to params
+                            msg = MessageFactory.getMessage(DATE_MAX_DATE_ID, FacesMessage.SEVERITY_ERROR, params);
+                            break;
+                        case INVALID_OUT_OF_RANGE:
+                            //TODO: add mindate and maxdate to params
+                            msg = MessageFactory.getMessage(DATE_OUT_OF_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
+                            break;
+                    }
                 }
                 context.addMessage(getClientId(context), msg);
             }
@@ -150,52 +165,54 @@ public class DatePicker extends DatePickerBase {
     }
 
     protected ValidationResult validateValueInternal(FacesContext context, Object value) {
-        boolean disabledDate = false;
-        boolean rangeDatesSequential = true;
+        ValidationResult validationResult = ValidationResult.OK;
 
         if (value instanceof LocalDate) {
-            disabledDate = validateDateValue(context, (LocalDate) value);
+            validationResult = validateDateValue(context, (LocalDate) value);
         }
         else if (value instanceof LocalDateTime) {
-            disabledDate = validateDateValue(context, ((LocalDateTime) value).toLocalDate());
+            validationResult = validateDateValue(context, ((LocalDateTime) value).toLocalDate());
         }
         else if (value instanceof LocalTime) {
             //no check necessary
         }
         else if (value instanceof YearMonth) {
-            disabledDate = validateDateValue(context, ((YearMonth) value).atDay(1));
+            validationResult = validateDateValue(context, ((YearMonth) value).atDay(1));
         }
         else if (value instanceof Date) {
-            disabledDate = validateDateValue(context, CalendarUtils.convertDate2LocalDate((Date) value, CalendarUtils.calculateZoneId(getTimeZone())));
+            validationResult = validateDateValue(context, CalendarUtils.convertDate2LocalDate((Date) value, CalendarUtils.calculateZoneId(getTimeZone())));
+        }
+        else if (value instanceof List && getSelectionMode().equals("multiple")) {
+            //TODO: needs to be validated
         }
         else if (value instanceof List && getSelectionMode().equals("range")) {
             List rangeValues = (List) value;
 
             if (rangeValues.get(0) instanceof LocalDate) {
                 LocalDate startDate = (LocalDate) rangeValues.get(0);
-                disabledDate = validateDateValue(context, startDate);
+                validationResult = validateDateValue(context, startDate);
 
-                if (!disabledDate) {
+                if (isValid()) {
                     LocalDate endDate = (LocalDate) rangeValues.get(1);
-                    disabledDate = validateDateValue(context, endDate);
+                    validationResult = validateDateValue(context, endDate);
 
                     if (isValid() && startDate.isAfter(endDate)) {
                         setValid(false);
-                        rangeDatesSequential = false;
+                        validationResult = ValidationResult.INVALID_RANGE_DATES_SEQUENTIAL;
                     }
                 }
             }
             else if (rangeValues.get(0) instanceof Date) {
                 Date startDate = (Date) rangeValues.get(0);
-                disabledDate = validateDateValue(context, CalendarUtils.convertDate2LocalDate(startDate, CalendarUtils.calculateZoneId(getTimeZone())));
+                validationResult = validateDateValue(context, CalendarUtils.convertDate2LocalDate(startDate, CalendarUtils.calculateZoneId(getTimeZone())));
 
-                if (!disabledDate) {
+                if (isValid()) {
                     Date endDate = (Date) rangeValues.get(1);
-                    disabledDate = validateDateValue(context, CalendarUtils.convertDate2LocalDate(endDate, CalendarUtils.calculateZoneId(getTimeZone())));
+                    validationResult = validateDateValue(context, CalendarUtils.convertDate2LocalDate(endDate, CalendarUtils.calculateZoneId(getTimeZone())));
 
                     if (isValid() && startDate.after(endDate)) {
                         setValid(false);
-                        rangeDatesSequential = false;
+                        validationResult = ValidationResult.INVALID_RANGE_DATES_SEQUENTIAL;
                     }
                 }
             }
@@ -206,21 +223,32 @@ public class DatePicker extends DatePickerBase {
             }
         }
 
-        return new ValidationResult(disabledDate, rangeDatesSequential);
+        return validationResult;
     }
 
-    protected boolean validateDateValue(FacesContext context, LocalDate date) {
-        boolean isDisabledDate = false;
-
+    protected ValidationResult validateDateValue(FacesContext context, LocalDate date) {
         LocalDate minDate = CalendarUtils.getObjectAsLocalDate(context, this, getMindate());
+        LocalDate maxDate = CalendarUtils.getObjectAsLocalDate(context, this, getMaxdate());
+
         if (minDate != null && !date.equals(minDate) && date.isBefore(minDate)) {
             setValid(false);
+            if (maxDate != null) {
+                return ValidationResult.INVALID_OUT_OF_RANGE;
+            }
+            else {
+                return ValidationResult.INVALID_MIN_DATE;
+            }
         }
 
         if (isValid()) {
-            LocalDate maxDate = CalendarUtils.getObjectAsLocalDate(context, this, getMaxdate());
             if (maxDate != null && !date.equals(maxDate) && date.isAfter(maxDate)) {
                 setValid(false);
+                if (minDate != null) {
+                    return ValidationResult.INVALID_OUT_OF_RANGE;
+                }
+                else{
+                    return ValidationResult.INVALID_MAX_DATE;
+                }
             }
         }
 
@@ -232,8 +260,7 @@ public class DatePicker extends DatePickerBase {
                     if (disabledDate instanceof LocalDate) {
                         if (((LocalDate) disabledDate).isEqual(date)) {
                             setValid(false);
-                            isDisabledDate = true;
-                            break;
+                            return ValidationResult.INVALID_DISABLED_DATE;
                         }
                     }
                     else if (disabledDate instanceof Date) {
@@ -244,8 +271,7 @@ public class DatePicker extends DatePickerBase {
                                 date.getMonthValue() == c.get(Calendar.MONTH) &&
                                 date.getDayOfMonth() == c.get(Calendar.DAY_OF_MONTH)) {
                             setValid(false);
-                            isDisabledDate = true;
-                            break;
+                            return ValidationResult.INVALID_DISABLED_DATE;
                         }
                     }
                 }
@@ -257,37 +283,15 @@ public class DatePicker extends DatePickerBase {
             if (disabledDays != null) {
                 if (disabledDays.contains(date.getDayOfWeek().getValue())) {
                     setValid(false);
-                    isDisabledDate = true;
+                    return ValidationResult.INVALID_DISABLED_DATE;
                 }
             }
         }
 
-        return isDisabledDate;
+        return ValidationResult.OK;
     }
 
-    protected static class ValidationResult {
-        private boolean disabledDate;
-        private boolean rangeDatesSequential;
-
-        public ValidationResult(boolean disabledDate, boolean rangeDatesSequential) {
-            this.disabledDate = disabledDate;
-            this.rangeDatesSequential = rangeDatesSequential;
-        }
-
-        public boolean isDisabledDate() {
-            return disabledDate;
-        }
-
-        public void setDisabledDate(boolean disabledDate) {
-            this.disabledDate = disabledDate;
-        }
-
-        public boolean isRangeDatesSequential() {
-            return rangeDatesSequential;
-        }
-
-        public void setRangeDatesSequential(boolean rangeDatesSequential) {
-            this.rangeDatesSequential = rangeDatesSequential;
-        }
+    protected enum ValidationResult {
+        OK, INVALID_DISABLED_DATE, INVALID_RANGE_DATES_SEQUENTIAL, INVALID_MIN_DATE, INVALID_MAX_DATE, INVALID_OUT_OF_RANGE
     }
 }
