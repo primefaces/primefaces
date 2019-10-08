@@ -2339,17 +2339,18 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         });
 
             // GitHub #433 Allow ENTER to submit ESC to cancel row editor
-            $(document).on("keydown", "tr.ui-row-editing", function(e) {
-                keyCode = $.ui.keyCode;
-                switch (e.which) {
-                case keyCode.ENTER:
-                    $(this).closest("tr").find(".ui-row-editor-check").click();
-                    return false; // prevents executing other event handlers (adding new row to the table)
-                case keyCode.ESCAPE:
-                    $(this).closest("tr").find(".ui-row-editor-close").click();
-                    return false;
-                default:
-                    break;
+            $(document).off("keydown", "tr.ui-row-editing")
+                        .on("keydown", "tr.ui-row-editing", function(e) {
+                            var keyCode = $.ui.keyCode;
+                            switch (e.which) {
+                                case keyCode.ENTER:
+                                    $(this).closest("tr").find(".ui-row-editor-check").click();
+                                    return false; // prevents executing other event handlers (adding new row to the table)
+                                case keyCode.ESCAPE:
+                                    $(this).closest("tr").find(".ui-row-editor-close").click();
+                                    return false;
+                                default:
+                                    break;
                 }
             });
         }
