@@ -2399,11 +2399,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         else {
             this.showRowEditors(row);
 
-            let inputs=$(row).find(':input:enabled');
-            if (inputs.length > 0) {
-                inputs.first().focus();
-            }
-
             if(this.hasBehavior('rowEditInit')) {
                 var rowIndex = this.getRowMeta(row).index;
 
@@ -2423,6 +2418,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             column.find('.ui-cell-editor-output').hide();
             column.find('.ui-cell-editor-input').show();
         });
+
+        var inputs=row.find(':input:enabled');
+        if (inputs.length > 0) {
+            inputs.first().focus();
+        }
     },
 
     getCellMeta: function(cell) {
