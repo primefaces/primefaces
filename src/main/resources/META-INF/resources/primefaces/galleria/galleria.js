@@ -117,7 +117,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
                 $this.stopSlideshow();
                 $this.next();
             },
-            excludedElements: "button, input, select, textarea, a, .noSwipe"
+            excludedElements: PrimeFaces.utils.excludedSwipeElements()
         });
 
         // Keyboard accessibility
