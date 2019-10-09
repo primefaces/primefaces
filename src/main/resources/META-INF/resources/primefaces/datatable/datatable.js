@@ -2399,10 +2399,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         else {
             this.showRowEditors(row);
 
-            let inputs=$(row).find('input, select, textarea, button');
+            let inputs=$(row).find(':input:enabled');
             if (inputs.length > 0) {
-                let firstInput = inputs.first();
-                firstInput.focus();
+                inputs.first().focus();
             }
 
             if(this.hasBehavior('rowEditInit')) {
