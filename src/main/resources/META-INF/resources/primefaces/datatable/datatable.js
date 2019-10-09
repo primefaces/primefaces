@@ -2399,6 +2399,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         else {
             this.showRowEditors(row);
 
+            let inputs=$(row).find('input, select, textarea, button');
+            if (inputs.length > 0) {
+                let firstInput = inputs.first();
+                firstInput.focus();
+            }
+
             if(this.hasBehavior('rowEditInit')) {
                 var rowIndex = this.getRowMeta(row).index;
 
