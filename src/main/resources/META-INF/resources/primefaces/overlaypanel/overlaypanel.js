@@ -246,6 +246,9 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
     },
 
     postShow: function() {
+
+        this.callBehavior('show');
+
         if(this.cfg.onShow) {
             this.cfg.onShow.call(this);
         }
@@ -262,6 +265,8 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.jq.removeClass('ui-overlay-visible').addClass('ui-overlay-hidden').css({
             'display':'block'
         });
+
+        this.callBehavior('hide');
 
         if(this.cfg.onHide) {
             this.cfg.onHide.call(this);

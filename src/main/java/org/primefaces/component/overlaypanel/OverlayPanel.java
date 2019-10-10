@@ -23,11 +23,15 @@
  */
 package org.primefaces.component.overlaypanel;
 
+import java.util.Collection;
+import java.util.Map;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
+import javax.faces.event.BehaviorEvent;
 
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.MapBuilder;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -42,6 +46,29 @@ public class OverlayPanel extends OverlayPanelBase {
 
     public static final String STYLE_CLASS = "ui-overlaypanel ui-widget ui-widget-content ui-overlay-hidden ui-corner-all ui-shadow";
     public static final String CONTENT_CLASS = "ui-overlaypanel-content";
+
+    private static final String DEFAULT_EVENT = "show";
+
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("show", null)
+            .put("hide", null)
+            .build();
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+        return BEHAVIOR_EVENT_MAPPING;
+    }
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
+
+    @Override
+    public String getDefaultEventName() {
+        return DEFAULT_EVENT;
+    }
 
     @Override
     public void processDecodes(FacesContext context) {
