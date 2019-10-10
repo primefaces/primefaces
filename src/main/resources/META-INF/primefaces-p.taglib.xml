@@ -31,6 +31,12 @@
     </function>
 
     <function>
+        <function-name>escapeJavaScriptVarName</function-name>
+        <function-class>org.primefaces.util.EscapeUtils</function-class>
+        <function-signature>java.lang.String forJavaScriptVarName(java.lang.String)</function-signature>
+    </function>
+
+    <function>
         <function-name>ifGranted</function-name>
         <function-class>org.primefaces.util.SecurityUtils</function-class>
         <function-signature>java.lang.Boolean ifGranted(java.lang.String)</function-signature>
