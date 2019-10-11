@@ -167,6 +167,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         this.paginator = new PrimeFaces.widget.Paginator(this.cfg.paginator);
+        this.paginator.bindSwipeEvents(this.jq);
+        
 
         if(this.cfg.clientCache) {
             this.cacheRows = this.paginator.getRows();
@@ -177,7 +179,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             };
             this.clearCacheMap();
             this.fetchNextPage(newState);
-        }
+        } 
     },
 
     /**

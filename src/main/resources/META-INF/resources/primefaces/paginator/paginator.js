@@ -193,6 +193,27 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Binds swipe events to this paginator to the JQ element passed in.
+     * 
+     * @param owner the owner of the paginator
+     */
+    bindSwipeEvents: function(owner) {
+        if (!PrimeFaces.env.touch) {
+            return;
+        }
+        var $this = this;
+        owner.swipe({
+            swipeLeft:function(event) {
+                $this.prev();
+            },
+            swipeRight: function(event) {
+                $this.next();
+            },
+            excludedElements: PrimeFaces.utils.excludedSwipeElements()
+        });
+    },
+
     unbindEvents: function() {
         var buttons = this.jq.children('a.ui-state-default');
         if (buttons.length > 0) {
