@@ -21,13 +21,18 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
 
         //attach contextmenu
         if(documentTarget) {
-            $(document).off('contextmenu.ui-contextmenu').on('contextmenu.ui-contextmenu', function(e) {
+            var document =  $(document);
+            document.off('contextmenu.ui-contextmenu').on('contextmenu.ui-contextmenu', function(e) {
                 $this.show(e);
-            }).swipe({
-                longTap:function(event, target) {
-                    $this.show(e);
-                }
             });
+
+            if (PrimeFaces.env.touch) {
+                document.swipe({
+                    longTap:function(event, target) {
+                       $this.show(e);
+                    }
+                });
+            }
         }
         else {
             var binded = false;
@@ -48,14 +53,19 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
 
             if (binded === false) {
                 var event = this.cfg.event + '.ui-contextmenu';
+                var document =  $(document);
 
-                $(document).off(event, this.jqTargetId).on(event, this.jqTargetId, null, function(e) {
+                document.off(event, this.jqTargetId).on(event, this.jqTargetId, null, function(e) {
                     $this.show(e);
-                }).swipe({
-                    longTap:function(event, target) {
-                        $this.show(e);
-                    }
                 });
+                
+                if (PrimeFaces.env.touch) {
+                    document.swipe({
+                        longTap:function(event, target) {
+                           $this.show(e);
+                        }
+                    });
+                }
             }
         }
 
