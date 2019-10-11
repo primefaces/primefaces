@@ -23,6 +23,10 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         if(documentTarget) {
             $(document).off('contextmenu.ui-contextmenu').on('contextmenu.ui-contextmenu', function(e) {
                 $this.show(e);
+            }).swipe({
+                longTap:function(event, target) {
+                    $this.show(e);
+                }
             });
         }
         else {
@@ -47,6 +51,10 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
 
                 $(document).off(event, this.jqTargetId).on(event, this.jqTargetId, null, function(e) {
                     $this.show(e);
+                }).swipe({
+                    longTap:function(event, target) {
+                        $this.show(e);
+                    }
                 });
             }
         }
