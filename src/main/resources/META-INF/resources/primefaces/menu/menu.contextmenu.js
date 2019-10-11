@@ -28,7 +28,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
 
             if (PrimeFaces.env.touch) {
                 document.swipe({
-                    longTap:function(event, target) {
+                    longTap:function(e, target) {
                        $this.show(e);
                     }
                 });
@@ -61,7 +61,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
                 
                 if (PrimeFaces.env.touch) {
                     document.swipe({
-                        longTap:function(event, target) {
+                        longTap:function(e, target) {
                            $this.show(e);
                         }
                     });
