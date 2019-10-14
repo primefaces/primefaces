@@ -31,6 +31,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -133,8 +134,9 @@ public class FieldsetRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String legendText = fieldset.getLegend();
         UIComponent legend = fieldset.getFacet("legend");
+        boolean renderFacet = ComponentUtils.shouldRenderFacet(legend);
 
-        if (legendText != null || legend != null) {
+        if (renderFacet || legendText != null) {
             writer.startElement("legend", null);
             writer.writeAttribute("class", Fieldset.LEGEND_CLASS, null);
 
@@ -149,7 +151,7 @@ public class FieldsetRenderer extends CoreRenderer {
                 writer.endElement("span");
             }
 
-            if (legend != null) {
+            if (renderFacet) {
                 legend.encodeAll(context);
             }
             else {

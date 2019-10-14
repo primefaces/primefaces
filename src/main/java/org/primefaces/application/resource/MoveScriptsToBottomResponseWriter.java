@@ -243,7 +243,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
                     minimized = "var pf=window.PrimeFaces;"
                             + minimized
-                            + "$(PrimeFaces.escapeClientId(\"" + id + "\")).remove();";
+                            + "if(window.$){$(PrimeFaces.escapeClientId(\"" + id + "\")).remove();}";
                 }
             }
         }

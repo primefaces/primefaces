@@ -41,4 +41,8 @@ public class EscapeUtilsTest {
         assertEquals("Valid!!", "hello_world_.26._.gt.", EscapeUtils.forXmlTag(input));
     }
 
+    @Test
+    public void forJavascriptVarName() {
+        assertEquals("form_datatable_0_my_input_text", EscapeUtils.forJavaScriptVarName("form:datatable:0:my_input_text")); 
+    }
 }

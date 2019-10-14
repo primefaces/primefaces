@@ -52,7 +52,6 @@ public class DataTableExcelExporter extends DataTableExporter {
     private CellStyle cellStyle;
     private CellStyle facetStyle;
     private Workbook wb;
-    private int counter = 0;
 
     @Override
     protected void preExport(FacesContext context, ExportConfiguration config) throws IOException {
@@ -64,18 +63,16 @@ public class DataTableExcelExporter extends DataTableExporter {
     }
 
     @Override
-    public void doExport(FacesContext context, DataTable table, ExportConfiguration config) throws IOException {
+    public void doExport(FacesContext context, DataTable table, ExportConfiguration config, int index) throws IOException {
         String sheetName = getSheetName(context, table);
         if (sheetName == null) {
-            sheetName = table.getId() + (counter + 1);
+            sheetName = table.getId() + (index + 1);
         }
 
         sheetName = WorkbookUtil.createSafeSheetName(sheetName);
         if (sheetName.equals("empty") || sheetName.equals("null")) {
-            sheetName = "Sheet" + (counter + 1);
+            sheetName = "Sheet (" + (index + 1) + ")";
         }
-
-        ++counter;
 
         Sheet sheet = createSheet(wb, sheetName);
         applyOptions(wb, table, sheet, config.getOptions());
@@ -100,7 +97,6 @@ public class DataTableExcelExporter extends DataTableExporter {
     protected void reset() throws IOException {
         wb.close();
         wb = null;
-        counter = 0;
     }
 
     @Override
@@ -149,7 +145,7 @@ public class DataTableExcelExporter extends DataTableExporter {
                 if (textValue != null) {
                     addColumnValue(rowHeader, textValue);
                 }
-                else if (facet != null) {
+                else if (ComponentUtils.shouldRenderFacet(facet)) {
                     addColumnValue(rowHeader, facet);
                 }
                 else {

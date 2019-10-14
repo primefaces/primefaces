@@ -398,14 +398,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindEnterKeyFilter: function(filter) {
         var $this = this;
 
-        filter.on('keydown', function(e) {
-            var key = e.which,
-            keyCode = $.ui.keyCode;
-
-            if((key === keyCode.ENTER)) {
-                e.preventDefault();
-            }
-        }).on('keyup', function(e) {
+        filter.on('keydown', PrimeFaces.utils.blockEnterKey)
+        .on('keyup', function(e) {
             var key = e.which,
             keyCode = $.ui.keyCode;
 
@@ -421,23 +415,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         //prevent form submit on enter key
-        filter.on('keydown.dataTable-blockenter', function(e) {
-            var key = e.which,
-            keyCode = $.ui.keyCode;
-
-            if((key === keyCode.ENTER)) {
-                e.preventDefault();
-            }
-        })
+        filter.on('keydown.dataTable-blockenter', PrimeFaces.utils.blockEnterKey)
         .on(this.cfg.filterEvent + '.dataTable', function(e) {
-            var key = e.which,
-            keyCode = $.ui.keyCode,
-            ignoredKeys = [keyCode.END, keyCode.HOME, keyCode.LEFT, keyCode.RIGHT, keyCode.UP, keyCode.DOWN,
-                keyCode.TAB, 16/*Shift*/, 17/*Ctrl*/, 18/*Alt*/, 91, 92, 93/*left/right Win/Cmd*/,
-                keyCode.ESCAPE, keyCode.PAGE_UP, keyCode.PAGE_DOWN,
-                19/*pause/break*/, 20/*caps lock*/, 44/*print screen*/, 144/*num lock*/, 145/*scroll lock*/];
-
-            if (ignoredKeys.indexOf(key) > -1) {
+            if (PrimeFaces.utils.ignoreFilterKey(e)) {
                 return;
             }
 
@@ -2357,6 +2337,22 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         .on('blur.datatable', rowEditorSelector, null, function(e) {
                             $(this).removeClass('ui-row-editor-outline');
                         });
+
+            // GitHub #433 Allow ENTER to submit ESC to cancel row editor
+            $(document).off("keydown", "tr.ui-row-editing")
+                        .on("keydown", "tr.ui-row-editing", function(e) {
+                            var keyCode = $.ui.keyCode;
+                            switch (e.which) {
+                                case keyCode.ENTER:
+                                    $(this).closest("tr").find(".ui-row-editor-check").click();
+                                    return false; // prevents executing other event handlers (adding new row to the table)
+                                case keyCode.ESCAPE:
+                                    $(this).closest("tr").find(".ui-row-editor-close").click();
+                                    return false;
+                                default:
+                                    break;
+                }
+            });
         }
         else if(this.cfg.editMode === 'cell') {
             var cellSelector = '> tr > td.ui-editable-column',
@@ -2422,13 +2418,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             column.find('.ui-cell-editor-output').hide();
             column.find('.ui-cell-editor-input').show();
         });
+
+        var inputs=row.find(':input:enabled');
+        if (inputs.length > 0) {
+            inputs.first().focus();
+        }
     },
 
-    cellEditInit: function(cell) {
+    getCellMeta: function(cell) {
         var rowMeta = this.getRowMeta(cell.closest('tr')),
-        cellEditor = cell.children('.ui-cell-editor'),
-        cellIndex = cell.index(),
-        $this = this;
+            cellIndex = cell.index();
 
         if(this.cfg.scrollable && this.cfg.frozenColumns) {
             cellIndex = (this.scrollTbody.is(cell.closest('tbody'))) ? (cellIndex + $this.cfg.frozenColumns) : cellIndex;
@@ -2438,6 +2437,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(rowMeta.key) {
             cellInfo = cellInfo + ',' + rowMeta.key;
         }
+
+        return cellInfo;
+    },
+
+    cellEditInit: function(cell) {
+        var cellInfo = this.getCellMeta(cell),
+        cellEditor = cell.children('.ui-cell-editor'),
+        $this = this;
 
         var options = {
             source: this.id,
@@ -2495,6 +2502,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         else {
             this.showCurrentCell(cell);
+
+            if(this.hasBehavior('cellEditInit')) {
+                var cellInfo = this.getCellMeta(cell);
+                var ext = {
+                    params: [{name: this.id + '_cellInfo', value: cellInfo}]
+                };
+                this.callBehavior('cellEditInit', ext);
+            }
         }
     },
 

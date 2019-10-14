@@ -21,18 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model.file;
+package org.primefaces.event.diagram;
 
-import java.io.IOException;
-import java.io.InputStream;
+import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.Behavior;
 
-public interface SingleUploadedFile extends UploadedFile {
+import org.primefaces.event.AbstractAjaxBehaviorEvent;
+import org.primefaces.model.diagram.Element;
 
-    String getFileName();
+public class PositionChangeEvent extends AbstractAjaxBehaviorEvent {
 
-    InputStream getInputStream() throws IOException;
+    private static final long serialVersionUID = 1L;
 
-    byte[] getContent();
+    private Element element;
+    private String x;
+    private String y;
 
-    String getContentType();
+    public PositionChangeEvent(UIComponent component, Behavior behavior, Element element, String x, String y) {
+        super(component, behavior);
+        this.element = element;
+        this.x = x;
+        this.y = y;
+    }
+
+    public Element getElement() {
+        return element;
+    }
+
+    public String getX() {
+        return x;
+    }
+
+    public String getY() {
+        return y;
+    }
 }

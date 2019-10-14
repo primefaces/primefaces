@@ -30,6 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class LightBoxRenderer extends CoreRenderer {
@@ -59,7 +60,7 @@ public class LightBoxRenderer extends CoreRenderer {
 
         renderChildren(context, lb);
 
-        if (inline != null) {
+        if (ComponentUtils.shouldRenderFacet(inline)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", "ui-lightbox-inline ui-helper-hidden", null);
             inline.encodeAll(context);

@@ -435,6 +435,15 @@ if (!PrimeFaces.ajax) {
                     PrimeFaces.ajax.Request.addParams(postParams, cfg.ext.params, parameterPrefix);
                 }
 
+                // try to get partialSubmit from global config
+                if (cfg.partialSubmit === undefined) {
+                    cfg.partialSubmit = PrimeFaces.settings.partialSubmit;
+                }
+                // check for overwrite
+                if (cfg.ext && cfg.ext.partialSubmit) {
+                    cfg.partialSubmit = cfg.ext.partialSubmit;
+                }
+
                 /**
                  * Only add params of process components and their children
                  * if partial submit is enabled and there are components to process partially
@@ -833,18 +842,11 @@ if (!PrimeFaces.ajax) {
             doEval : function(node, xhr) {
                 var textContent = node.textContent || node.innerText || node.text;
 
+                var nonce;
                 if (xhr && xhr.pfSettings && xhr.pfSettings.nonce) {
-                    // $.globalEval doesn't support nonce currently
-                    // and the internal used DOMEval can't be used from outside?
-                    var script = document.createElement('script');
-                    script.nonce = xhr.pfSettings.nonce;
-                    script.setAttribute('nonce', xhr.pfSettings.nonce);
-                    script.innerHTML = textContent;
-                    document.head.appendChild(script);
+                    nonce = xhr.pfSettings.nonce;
                 }
-                else {
-                    $.globalEval(textContent);
-                }
+                PrimeFaces.csp.eval(textContent, nonce);
             },
 
             doExtension : function(node, xhr) {

@@ -34,20 +34,25 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.row.Row;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.GridLayoutUtils;
 
 public class PanelGridRenderer extends CoreRenderer {
 
+    public static final String LAYOUT_TABULAR = "tabular";
+    public static final String LAYOUT_GRID = "grid";
+    public static final String LAYOUT_FLEX = "flex";
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         PanelGrid grid = (PanelGrid) component;
 
-        if (grid.getLayout().equals("tabular")) {
+        if (LAYOUT_TABULAR.equalsIgnoreCase(grid.getLayout())) {
             encodeTableLayout(context, grid);
         }
-        else if (grid.getLayout().equals("grid")) {
-            encodeGridLayout(context, grid);
+        else if (LAYOUT_GRID.equalsIgnoreCase(grid.getLayout()) || LAYOUT_FLEX.equalsIgnoreCase(grid.getLayout())) {
+            encodeGridLayout(context, grid, grid.getLayout());
         }
         else {
             throw new FacesException("The value of 'layout' attribute must be 'grid' or 'tabular'. Default value is 'tabular'.");
@@ -77,7 +82,7 @@ public class PanelGridRenderer extends CoreRenderer {
         writer.endElement("table");
     }
 
-    public void encodeGridLayout(FacesContext context, PanelGrid grid) throws IOException {
+    public void encodeGridLayout(FacesContext context, PanelGrid grid, String layout) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = grid.getClientId(context);
         int columns = grid.getColumns();
@@ -97,7 +102,7 @@ public class PanelGridRenderer extends CoreRenderer {
         }
 
         encodeGridFacet(context, grid, columns, "header", PanelGrid.HEADER_CLASS);
-        encodeGridBody(context, grid, columns);
+        encodeGridBody(context, grid, columns, layout);
         encodeGridFacet(context, grid, columns, "footer", PanelGrid.FOOTER_CLASS);
 
         writer.endElement("div");
@@ -241,15 +246,24 @@ public class PanelGridRenderer extends CoreRenderer {
         writer.endElement("tr");
     }
 
-    public void encodeGridBody(FacesContext context, PanelGrid grid, int columns) throws IOException {
+    public void encodeGridBody(FacesContext context, PanelGrid grid, int columns, String layout) throws IOException {
         String clientId = grid.getClientId(context);
         ResponseWriter writer = context.getResponseWriter();
         String columnClassesValue = grid.getColumnClasses();
         String[] columnClasses = columnClassesValue == null ? new String[0] : columnClassesValue.split(",");
+        String contentClass = grid.getContentStyleClass();
+        contentClass = contentClass == null ? PanelGrid.CONTENT_CLASS : PanelGrid.CONTENT_CLASS + " " + contentClass;
+
+        if (LAYOUT_FLEX.equalsIgnoreCase(layout)) {
+            contentClass += " " + PanelGrid.FLEX_ROW_CLASS;
+        }
 
         writer.startElement("div", grid);
         writer.writeAttribute("id", clientId + "_content", null);
-        writer.writeAttribute("class", PanelGrid.CONTENT_CLASS, null);
+        writer.writeAttribute("class", contentClass, null);
+        if (grid.getContentStyle() != null) {
+            writer.writeAttribute("style", grid.getContentStyle(), null);
+        }
 
         int i = 0;
         for (UIComponent child : grid.getChildren()) {
@@ -258,15 +272,23 @@ public class PanelGridRenderer extends CoreRenderer {
             }
 
             int colMod = i % columns;
-            if (colMod == 0) {
+            if ((LAYOUT_GRID.equalsIgnoreCase(layout)) && (colMod == 0)) {
+                //GRID-Layout creates an additional div per row (maybe due to backward-compatibility to the old PrimeFaces < 6.0 Grid)
                 writer.startElement("div", null);
                 String rowClass = (columnClasses.length > 0 && columnClasses[0].contains("ui-grid-col-")) ? "ui-grid-row" : PanelGrid.GRID_ROW_CLASS;
                 writer.writeAttribute("class", rowClass, null);
             }
 
             String columnClass = (colMod < columnClasses.length) ? PanelGrid.CELL_CLASS + " " + columnClasses[colMod].trim() : PanelGrid.CELL_CLASS;
-            if (!columnClass.contains("ui-md-") && !columnClass.contains("ui-g-") && !columnClass.contains("ui-grid-col-")) {
-                columnClass = columnClass + " " + GridLayoutUtils.getColumnClass(columns);
+            if (LAYOUT_FLEX.equalsIgnoreCase(layout)) {
+                if (!columnClass.contains("p-")) {
+                    columnClass = columnClass + " " + GridLayoutUtils.getFlexColumnClass(columns);
+                }
+            }
+            else { //LAYOUT_GRID
+                if (!columnClass.contains("ui-md-") && !columnClass.contains("ui-g-") && !columnClass.contains("ui-grid-col-")) {
+                    columnClass = columnClass + " " + GridLayoutUtils.getColumnClass(columns);
+                }
             }
 
             writer.startElement("div", null);
@@ -277,7 +299,8 @@ public class PanelGridRenderer extends CoreRenderer {
             i++;
             colMod = i % columns;
 
-            if (colMod == 0) {
+            if ((LAYOUT_GRID.equalsIgnoreCase(layout)) && (colMod == 0)) {
+                //close the div per row
                 writer.endElement("div");
             }
         }
@@ -294,7 +317,7 @@ public class PanelGridRenderer extends CoreRenderer {
 
         UIComponent component = grid.getFacet(facet);
 
-        if (component != null && component.isRendered()) {
+        if (ComponentUtils.shouldRenderFacet(component)) {
             ResponseWriter writer = context.getResponseWriter();
             writer.startElement(tag, null);
             writer.writeAttribute("class", styleClass, null);
@@ -344,7 +367,7 @@ public class PanelGridRenderer extends CoreRenderer {
     public void encodeGridFacet(FacesContext context, PanelGrid grid, int columns, String facet, String styleClass) throws IOException {
         UIComponent component = grid.getFacet(facet);
 
-        if (component != null && component.isRendered()) {
+        if (ComponentUtils.shouldRenderFacet(component)) {
             ResponseWriter writer = context.getResponseWriter();
 
             writer.startElement("div", null);

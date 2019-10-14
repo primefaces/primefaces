@@ -37,7 +37,14 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
                 $this.initConnections();
 
                 $this.canvas.draggable($this.jq.children('.ui-diagram-draggable'), {
-                    containment: $this.cfg.containment
+                    containment: $this.cfg.containment,
+                    stop: function(p) {
+                    	$this.onUpdateElementPosition({
+                    		elementId: p.el.id,
+                    		x: parseInt(p.el.style.left),
+                    		y: parseInt(p.el.style.top)
+                    	});
+                    }
                 });
             });
 
@@ -148,6 +155,25 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
 
         if(this.hasBehavior('connectionChange')) {
             this.callBehavior('connectionChange', options);
+        }
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
+    },
+    
+    onUpdateElementPosition: function(info) {
+        var options = {
+            source: this.id,
+            process: this.id,
+            params: [
+                {name: this.id + '_positionChange', value: true},
+                {name: this.id + '_elementId', value: info.elementId.substring(this.id.length + 1)},
+                {name: this.id + '_position', value: info.x + ',' + info.y}
+            ]
+        };
+
+        if(this.hasBehavior('positionChange')) {
+            this.callBehavior('positionChange', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);

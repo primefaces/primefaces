@@ -34,7 +34,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -48,13 +47,10 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.model.file.MultipleUploadedFile;
-import org.primefaces.model.file.SingleUploadedFile;
-import org.primefaces.model.file.UploadedFile;
-import org.primefaces.model.file.UploadedFileWrapper;
 import org.primefaces.shaded.owasp.SafeFile;
 import org.primefaces.shaded.owasp.ValidationException;
 import org.primefaces.virusscan.VirusException;
+import org.primefaces.model.file.UploadedFile;
 
 /**
  * Utilities for FileUpload components.
@@ -141,10 +137,11 @@ public class FileUploadUtils {
      * @param uploadedFile the details of the uploaded file
      * @return <code>true</code>, if all validations regarding filename and content type passed, <code>false</code> else
      */
-    public static boolean isValidType(FileUpload fileUpload, SingleUploadedFile uploadedFile) {
+    public static boolean isValidType(PrimeApplicationContext context, FileUpload fileUpload, UploadedFile uploadedFile) {
         String fileName = uploadedFile.getFileName();
         try {
-            boolean validType = isValidFileName(fileUpload, uploadedFile) && isValidFileContent(fileUpload, fileName, uploadedFile.getInputStream());
+            boolean validType = isValidFileName(fileUpload, uploadedFile)
+                        && isValidFileContent(context, fileUpload, fileName, uploadedFile.getInputStream());
             if (validType) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine(String.format("The uploaded file %s meets the filename and content type specifications", fileName));
@@ -160,7 +157,7 @@ public class FileUploadUtils {
         }
     }
 
-    private static boolean isValidFileName(FileUpload fileUpload, SingleUploadedFile uploadedFile) throws ScriptException {
+    private static boolean isValidFileName(FileUpload fileUpload, UploadedFile uploadedFile) throws ScriptException {
         String allowTypesRegex = fileUpload.getAllowTypes();
         if (!LangUtils.isValueBlank(allowTypesRegex)) {
             //We use rhino or nashorn javascript engine bundled with java to re-evaluate javascript regex that cannot be easily translated to java regex
@@ -194,7 +191,7 @@ public class FileUploadUtils {
         return true;
     }
 
-    private static boolean isValidFileContent(FileUpload fileUpload, String fileName, InputStream inputStream) throws IOException {
+    private static boolean isValidFileContent(PrimeApplicationContext context, FileUpload fileUpload, String fileName, InputStream stream) throws IOException {
         if (!fileUpload.isValidateContentType()) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Content type checking is disabled");
@@ -206,7 +203,7 @@ public class FileUploadUtils {
             return true;
         }
 
-        boolean tika = LangUtils.tryToLoadClassForName("org.apache.tika.filetypedetector.TikaFileTypeDetector") != null;
+        boolean tika = context.getEnvironment().isTikaAvailable();
         if (!tika && LOGGER.isLoggable(Level.WARNING)) {
             LOGGER.warning("Could not find Apache Tika in classpath which is recommended for reliable content type checking");
         }
@@ -216,11 +213,19 @@ public class FileUploadUtils {
         String tempFilePrefix = UUID.randomUUID().toString();
         Path tempFile = Files.createTempFile(tempFilePrefix, tempFileSuffix);
         try {
-            InputStream in = new PushbackInputStream(new BufferedInputStream(inputStream));
+            InputStream in = new PushbackInputStream(new BufferedInputStream(stream));
             try (OutputStream out = new FileOutputStream(tempFile.toFile())) {
                 IOUtils.copyLarge(in, out);
             }
-            String contentType = Files.probeContentType(tempFile);
+            String contentType = null;
+            if (context.getFileTypeDetector() != null) {
+                contentType = context.getFileTypeDetector().probeContentType(tempFile);
+            }
+            else {
+                // use default Java fallback
+                contentType = Files.probeContentType(tempFile);
+            }
+
             if (contentType == null) {
                 if (LOGGER.isLoggable(Level.WARNING)) {
                     LOGGER.warning(String.format("Could not determine content type of uploaded file %s, consider plugging in an adequate " +
@@ -286,10 +291,11 @@ public class FileUploadUtils {
         }
     }
 
-    public static boolean isValidFile(FacesContext context, FileUpload fileUpload, SingleUploadedFile uploadedFile) throws IOException {
+    public static boolean isValidFile(FacesContext context, FileUpload fileUpload, UploadedFile uploadedFile) throws IOException {
         Long sizeLimit = fileUpload.getSizeLimit();
+        PrimeApplicationContext appContext = PrimeApplicationContext.getCurrentInstance(context);
         boolean valid = (sizeLimit == null || uploadedFile.getSize() <= sizeLimit)
-                && FileUploadUtils.isValidType(fileUpload, uploadedFile);
+                && FileUploadUtils.isValidType(appContext, fileUpload, uploadedFile);
         if (valid) {
             try {
                 FileUploadUtils.performVirusScan(context, fileUpload, uploadedFile.getInputStream());
@@ -301,10 +307,10 @@ public class FileUploadUtils {
         return valid;
     }
 
-    public static boolean areValidFiles(FacesContext context, FileUpload fileUpload, List<SingleUploadedFile> files) throws IOException {
+    public static boolean areValidFiles(FacesContext context, FileUpload fileUpload, List<UploadedFile> files) throws IOException {
         long totalPartSize = 0;
         Long sizeLimit = fileUpload.getSizeLimit();
-        for (SingleUploadedFile file : files) {
+        for (UploadedFile file : files) {
             totalPartSize += file.getSize();
             if (!isValidFile(context, fileUpload, file)) {
                 return false;
@@ -312,29 +318,6 @@ public class FileUploadUtils {
         }
 
         return sizeLimit == null || totalPartSize <= sizeLimit;
-    }
-
-    /**
-     * As FileUpload comes with different subtypes of {@link UploadedFile}
-     * {@link FileUploadUtils#consume(UploadedFile, Consumer)} makes completely
-     * these transparent by avoiding painful casting (e.g FileUploadUtils.consume(uploadedFile, f -> doSth(f));
-     *
-     * @param file uploaded file
-     * @param consumer operation to execute on every single file
-     */
-    public static void consume(UploadedFile file, Consumer<SingleUploadedFile> consumer) {
-        if (file instanceof SingleUploadedFile) {
-            consumer.accept((SingleUploadedFile) file);
-        }
-        else if (file instanceof MultipleUploadedFile) {
-            ((MultipleUploadedFile) file).getFiles().stream().forEach(consumer);
-        }
-        else if (file instanceof UploadedFileWrapper) {
-            consume(((UploadedFileWrapper) file).getWrapped(), consumer);
-        }
-        else {
-            throw new IllegalArgumentException("Unsupported UploadedFile type: " + file.getClass().getName());
-        }
     }
 
     /**

@@ -262,11 +262,13 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         .on('click', function(event) {
             var item = $(this),
             itemValue = item.attr('data-item-value'),
-            insertValue = itemValue.substring(_self.query.length);
+            selectionStart = _self.jq.getSelection().start,
+            queryLength = _self.query.length;
 
             _self.jq.focus();
 
-            _self.jq.insertText(insertValue, _self.jq.getSelection().start, true);
+            _self.jq.setSelection(selectionStart-queryLength, selectionStart);
+            _self.jq.replaceSelectedText(itemValue);
 
             _self.invokeItemSelectBehavior(event, itemValue);
 

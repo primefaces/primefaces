@@ -23,7 +23,18 @@
  */
 package org.primefaces.model.file;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 public interface UploadedFile {
+
+    String getFileName();
+
+    InputStream getInputStream() throws IOException;
+
+    byte[] getContent();
+
+    String getContentType();
 
     long getSize();
 

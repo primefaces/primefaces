@@ -72,8 +72,9 @@ public class CalendarUtilsTest {
     private void setupValues(Object value, Locale locale) {
         when(datePicker.getValue()).thenReturn(value);
         when(datePicker.calculatePattern()).thenCallRealMethod();
+        when(datePicker.calculateTimeOnlyPattern()).thenCallRealMethod();
+        when(datePicker.calculateWidgetPattern()).thenCallRealMethod();
         when(datePicker.calculateLocale(any())).thenReturn(locale);
-        when(datePicker.calculateTimeOnlyPattern()).thenReturn("HH:mm");
     }
 
     @Test
@@ -136,4 +137,24 @@ public class CalendarUtilsTest {
         ZoneId calculateZoneId = CalendarUtils.calculateZoneId(timeZone);
         assertEquals(ZoneId.of("GMT+2"), calculateZoneId);
     }
+
+    @Test
+    public void removeTime() {
+        String pattern = "dd/MM/yy";
+        String cleanedPattern = CalendarUtils.removeTime(pattern);
+        assertEquals(cleanedPattern, pattern);
+        pattern = "MM/dd/yy HH:mm";
+        cleanedPattern = CalendarUtils.removeTime(pattern);
+        assertEquals(cleanedPattern, "MM/dd/yy");
+        pattern = "dd.MM.yyyy KK:mm a";
+        cleanedPattern = CalendarUtils.removeTime(pattern);
+        assertEquals(cleanedPattern, "dd.MM.yyyy");
+        pattern = "HH:mm:ss";
+        cleanedPattern = CalendarUtils.removeTime(pattern);
+        assertEquals(cleanedPattern, "");
+        pattern = "HH:mm:ss dd/MM/yyyy";
+        cleanedPattern = CalendarUtils.removeTime(pattern);
+        assertEquals(cleanedPattern, "");
+    }
+
 }

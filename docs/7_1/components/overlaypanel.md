@@ -49,6 +49,7 @@ demonstrates an overlayPanel attached to a button to show a chart in a popup.
     <p:pieChart value="#{chartBean.pieModel}" legendPosition="w" title="Sample Pie Chart" style="width:400px;height:300px" />
 </p:overlayPanel>
 ```
+
 ## Events
 Default event on target to show and hide the panel is mousedown. These are customized using
 _showEvent_ and _hideEvent_ options.
@@ -59,6 +60,13 @@ _showEvent_ and _hideEvent_ options.
     //content
 </p:overlayPanel>
 ```
+
+## Ajax Behavior Events
+
+| Event | Listener Parameter | Fired |
+| --- | --- | --- |
+| show | javax.faces.event.AjaxBehaviorEvent | On show.
+| hide | javax.faces.event.AjaxBehaviorEvent | On hide.
 
 ## Effects
 blind, bounce, clip, drop, explode, fold, highlight, puff, pulsate, scale, shake, size, slide are

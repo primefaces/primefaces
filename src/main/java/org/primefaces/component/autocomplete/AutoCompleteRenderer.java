@@ -500,7 +500,7 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         for (int i = 0; i < ac.getColums().size(); i++) {
             Column column = ac.getColums().get(i);
-            if (column.isRendered() && (column.getHeaderText() != null || column.getFacet("header") != null)) {
+            if (column.isRendered() && (column.getHeaderText() != null || ComponentUtils.shouldRenderFacet(column.getFacet("header")))) {
                 hasHeader = true;
                 break;
             }
@@ -528,7 +528,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                     writer.writeAttribute("style", column.getStyle(), null);
                 }
 
-                if (headerFacet != null) {
+                if (ComponentUtils.shouldRenderFacet(headerFacet)) {
                     headerFacet.encodeAll(context);
                 }
                 else if (headerText != null) {
@@ -577,7 +577,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                     }
                 }
 
-                if (itemtip != null && itemtip.isRendered()) {
+                if (ComponentUtils.shouldRenderFacet(itemtip)) {
                     writer.startElement("td", null);
                     writer.writeAttribute("class", AutoComplete.ITEMTIP_CONTENT_CLASS, null);
                     itemtip.encodeAll(context);
@@ -692,7 +692,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         wb.attr("emptyMessage", ac.getEmptyMessage(), null)
                 .attr("resultsMessage", ac.getResultsMessage(), null);
 
-        if (ac.getFacet("itemtip") != null) {
+        if (ComponentUtils.shouldRenderFacet(ac.getFacet("itemtip"))) {
             wb.attr("itemtip", true, false)
                     .attr("itemtipMyPosition", ac.getItemtipMyPosition(), null)
                     .attr("itemtipAtPosition", ac.getItemtipAtPosition(), null);

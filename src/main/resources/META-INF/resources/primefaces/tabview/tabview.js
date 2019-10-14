@@ -83,7 +83,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                     $this.select(activeIndex - 1);
                 }
             },
-            excludedElements: "button, input, select, textarea, a, .noSwipe"
+            excludedElements: PrimeFaces.utils.excludedSwipeElements()
         });
 
         //Tab header events

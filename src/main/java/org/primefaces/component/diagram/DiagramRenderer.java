@@ -38,6 +38,7 @@ import org.primefaces.model.diagram.connector.Connector;
 import org.primefaces.model.diagram.endpoint.EndPoint;
 import org.primefaces.model.diagram.overlay.Overlay;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
 
@@ -57,6 +58,9 @@ public class DiagramRenderer extends CoreRenderer {
         }
         else if (diagram.isConnectionChangeRequest(context)) {
             decodeConnectionChange(context, diagram);
+        }
+        else if (diagram.isPositionChangeRequest(context)) {
+            decodePositionChange(context, diagram);
         }
 
         decodeBehaviors(context, component);
@@ -104,6 +108,20 @@ public class DiagramRenderer extends CoreRenderer {
 
             model.disconnect(findConnection(model, originalSourceEndPoint, originalTargetEndPoint));
             model.connect(new Connection(newSourceEndPoint, newTargetEndPoint));
+        }
+    }
+
+    private void decodePositionChange(FacesContext context, Diagram diagram) {
+        DiagramModel model = (DiagramModel) diagram.getValue();
+        if (model != null) {
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+            String clientId = diagram.getClientId(context);
+
+            Element element = model.findElement(params.get(clientId + "_elementId"));
+            String[] position = params.get(clientId + "_position").split(",");
+
+            element.setX(position[0] + "px");
+            element.setY(position[1] + "px");
         }
     }
 
@@ -398,7 +416,7 @@ public class DiagramRenderer extends CoreRenderer {
                     writer.writeAttribute("style", coords, null);
                     writer.writeAttribute("data-tooltip", title, null);
 
-                    if (elementFacet != null && var != null) {
+                    if (var != null && ComponentUtils.shouldRenderFacet(elementFacet)) {
                         requestMap.put(var, data);
                         elementFacet.encodeAll(context);
                     }

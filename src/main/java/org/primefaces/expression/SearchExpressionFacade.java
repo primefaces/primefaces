@@ -77,7 +77,7 @@ public class SearchExpressionFacade {
      */
     public static List<UIComponent> resolveComponents(FacesContext context, UIComponent source, String expressions, int hints) {
 
-        ArrayList<UIComponent> components = new ArrayList<>();
+        ArrayList<UIComponent> components = new ArrayList<>(5);
 
         if (!LangUtils.isValueBlank(expressions)) {
             String[] splittedExpressions = splitExpressions(context, source, expressions);
@@ -222,7 +222,7 @@ public class SearchExpressionFacade {
                                 }
                             }
                             else if (resolver instanceof MultiSearchExpressionResolver) {
-                                ArrayList<UIComponent> result = new ArrayList<>();
+                                ArrayList<UIComponent> result = new ArrayList<>(5);
                                 ((MultiSearchExpressionResolver) resolver).resolveComponents(context, source, source, expression, result, hints);
                                 for (int j = 0; j < result.size(); j++) {
                                     UIComponent component = result.get(j);
@@ -551,13 +551,13 @@ public class SearchExpressionFacade {
             expression = expression.substring(1);
         }
 
-        ArrayList<UIComponent> lastComponents = new ArrayList<>();
+        ArrayList<UIComponent> lastComponents = new ArrayList<>(5);
         lastComponents.add(source);
 
         String[] subExpressions = split(context, expression, separatorChar);
         if (subExpressions != null && subExpressions.length > 0) {
 
-            ArrayList<UIComponent> tempComponents = new ArrayList<>();
+            ArrayList<UIComponent> tempComponents = new ArrayList<>(5);
 
             for (int i = 0; i < subExpressions.length; i++) {
 
@@ -623,7 +623,7 @@ public class SearchExpressionFacade {
             expression = expression.substring(1);
         }
 
-        ArrayList<UIComponent> lastComponents = new ArrayList<>();
+        ArrayList<UIComponent> lastComponents = new ArrayList<>(5);
         lastComponents.add(source);
 
         StringBuilder clientIdsBuilder = null;
@@ -631,7 +631,7 @@ public class SearchExpressionFacade {
         String[] subExpressions = split(context, expression, separatorChar);
         if (subExpressions != null && subExpressions.length > 0) {
 
-            ArrayList<UIComponent> tempComponents = new ArrayList<>();
+            ArrayList<UIComponent> tempComponents = new ArrayList<>(5);
 
             for (int i = 0; i < subExpressions.length; i++) {
 

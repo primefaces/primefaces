@@ -132,6 +132,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleclass");
+        writer.writeAttribute(HTML.ARIA_OWNS, clientId + "_panel", null);
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
@@ -336,7 +337,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             List<Column> columns = menu.getColumns();
 
             writer.startElement("table", null);
+            writer.writeAttribute("id", menu.getClientId(context) + "_table", null);
             writer.writeAttribute("class", SelectOneMenu.TABLE_CLASS, null);
+            writer.writeAttribute("role", "listbox", null);
             encodeColumnsHeader(context, menu, columns);
             writer.startElement("tbody", null);
             encodeOptionsAsTable(context, menu, selectItems, columns);
@@ -436,6 +439,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.startElement("tr", null);
             writer.writeAttribute("class", itemStyleClass, null);
             writer.writeAttribute("data-label", itemLabel, null);
+            writer.writeAttribute("role", "option", null);
             if (selectItem.getDescription() != null) {
                 writer.writeAttribute("title", selectItem.getDescription(), null);
             }
@@ -639,6 +643,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute(HTML.ARIA_AUTOCOMPLETE, "list", null);
+        writer.writeAttribute(HTML.ARIA_CONTROLS, menu.getClientId(context) + "_table", null);
 
         if (menu.getFilterPlaceholder() != null) {
             writer.writeAttribute("placeholder", menu.getFilterPlaceholder(), null);

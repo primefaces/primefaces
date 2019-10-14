@@ -84,61 +84,20 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             this.filterInput = this.jq.find('.ui-tree-filter');
             PrimeFaces.skinInput(this.filterInput);
 
-            this.filterInput.on('keydown.tree-filter', function(e) {
-                var key = e.which,
-                keyCode = $.ui.keyCode;
-
-                if((key === keyCode.ENTER)) {
-                    e.preventDefault();
-                }
-            })
+            this.filterInput.on('keydown.tree-filter', PrimeFaces.utils.blockEnterKey)
             .on('keyup.tree-filter', function(e) {
-                var keyCode = $.ui.keyCode,
-                key = e.which;
-
-                switch(key) {
-                    case keyCode.UP:
-                    case keyCode.LEFT:
-                    case keyCode.DOWN:
-                    case keyCode.RIGHT:
-                    case keyCode.ENTER:
-                    case keyCode.TAB:
-                    case keyCode.ESCAPE:
-                    case keyCode.SPACE:
-                    case keyCode.HOME:
-                    case keyCode.PAGE_DOWN:
-                    case keyCode.PAGE_UP:
-                    case keyCode.END:
-                    case keyCode.DELETE:
-                    case 16: //shift
-                    case 17: //keyCode.CONTROL:
-                    case 18: //keyCode.ALT:
-                    case 91: //left window or cmd:
-                    case 92: //right window:
-                    case 93: //right cmd:
-                    case 20: //capslock:
-                    break;
-
-                    default:
-                        //function keys (F1,F2 etc.)
-                        if(key >= 112 && key <= 123) {
-                            break;
-                        }
-
-                        var metaKey = e.metaKey||e.ctrlKey;
-
-                        if(!metaKey) {
-                            if($this.filterTimeout) {
-                                clearTimeout($this.filterTimeout);
-                            }
-
-                            $this.filterTimeout = setTimeout(function() {
-                                $this.filter();
-                                $this.filterTimeout = null;
-                            }, 300);
-                        }
-                    break;
+                if (PrimeFaces.utils.ignoreFilterKey(e)) {
+                    return;
                 }
+                
+                if($this.filterTimeout) {
+                    clearTimeout($this.filterTimeout);
+                }
+
+                $this.filterTimeout = setTimeout(function() {
+                    $this.filter();
+                    $this.filterTimeout = null;
+                }, 300);
             });
         }
 

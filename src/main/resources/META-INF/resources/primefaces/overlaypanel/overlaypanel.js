@@ -96,13 +96,8 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
             });
         }
 
-        $this.target.off('keydown.ui-overlaypanel keyup.ui-overlaypanel').on('keydown.ui-overlaypanel', function(e) {
-            var keyCode = $.ui.keyCode, key = e.which;
-
-            if(key === keyCode.ENTER) {
-                e.preventDefault();
-            }
-        })
+        $this.target.off('keydown.ui-overlaypanel keyup.ui-overlaypanel')
+        .on('keydown.ui-overlaypanel', PrimeFaces.utils.blockEnterKey)
         .on('keyup.ui-overlaypanel', function(e) {
             var keyCode = $.ui.keyCode, key = e.which;
 
@@ -251,6 +246,9 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
     },
 
     postShow: function() {
+
+        this.callBehavior('show');
+
         if(this.cfg.onShow) {
             this.cfg.onShow.call(this);
         }
@@ -267,6 +265,8 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.jq.removeClass('ui-overlay-visible').addClass('ui-overlay-hidden').css({
             'display':'block'
         });
+
+        this.callBehavior('hide');
 
         if(this.cfg.onHide) {
             this.cfg.onHide.call(this);

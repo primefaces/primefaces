@@ -31,6 +31,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 
 public class FeedReaderRenderer extends CoreRenderer {
 
@@ -54,7 +55,7 @@ public class FeedReaderRenderer extends CoreRenderer {
         }
         catch (Exception e) {
             UIComponent errorFacet = reader.getFacet("error");
-            if (errorFacet != null) {
+            if (ComponentUtils.shouldRenderFacet(errorFacet)) {
                 errorFacet.encodeAll(context);
             }
         }

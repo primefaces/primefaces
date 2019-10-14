@@ -34,8 +34,8 @@ import org.primefaces.util.Constants;
 
 public interface DialogReturnAware {
 
-    public static final String EVENT_DIALOG_RETURN = "dialogReturn";
-    public static final String ATTRIBUTE_DIALOG_RETURN_SCRIPT = "data-dialogreturn";
+    String EVENT_DIALOG_RETURN = "dialogReturn";
+    String ATTRIBUTE_DIALOG_RETURN_SCRIPT = "data-dialogreturn";
 
     default boolean isDialogReturnEvent(FacesEvent event, FacesContext context) {
         if (event instanceof AjaxBehaviorEvent) {

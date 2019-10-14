@@ -105,7 +105,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         writer.writeAttribute("id", dialog.getClientId(context) + "_title", null);
         writer.writeAttribute("class", Dialog.TITLE_CLASS, null);
 
-        if (headerFacet != null) {
+        if (ComponentUtils.shouldRenderFacet(headerFacet)) {
             headerFacet.encodeAll(context);
         }
         else if (header != null) {
@@ -153,7 +153,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", ConfirmDialog.MESSAGE_CLASS, null);
 
-        if (messageFacet != null) {
+        if (ComponentUtils.shouldRenderFacet(messageFacet)) {
             messageFacet.encodeAll(context);
         }
         else if (messageText != null) {

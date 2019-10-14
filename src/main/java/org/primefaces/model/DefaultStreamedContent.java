@@ -24,30 +24,37 @@
 package org.primefaces.model;
 
 import java.io.InputStream;
+import java.util.function.Supplier;
 
 /**
  * Default implementation of a StreamedContent
  */
 public class DefaultStreamedContent implements StreamedContent {
 
-    private InputStream stream;
-
+    private Supplier<InputStream> stream;
     private String contentType;
-
     private String name;
-
     private String contentEncoding;
-
     private Integer contentLength;
 
     public DefaultStreamedContent() {
+
     }
 
     public DefaultStreamedContent(InputStream stream) {
+        this.stream = () -> stream;
+    }
+
+    public DefaultStreamedContent(Supplier<InputStream> stream) {
         this.stream = stream;
     }
 
     public DefaultStreamedContent(InputStream stream, String contentType) {
+        this(stream);
+        this.contentType = contentType;
+    }
+
+    public DefaultStreamedContent(Supplier<InputStream> stream, String contentType) {
         this(stream);
         this.contentType = contentType;
     }
@@ -57,12 +64,27 @@ public class DefaultStreamedContent implements StreamedContent {
         this.name = name;
     }
 
+    public DefaultStreamedContent(Supplier<InputStream> stream, String contentType, String name) {
+        this(stream, contentType);
+        this.name = name;
+    }
+
     public DefaultStreamedContent(InputStream stream, String contentType, String name, String contentEncoding) {
         this(stream, contentType, name);
         this.contentEncoding = contentEncoding;
     }
 
+    public DefaultStreamedContent(Supplier<InputStream> stream, String contentType, String name, String contentEncoding) {
+        this(stream, contentType, name);
+        this.contentEncoding = contentEncoding;
+    }
+
     public DefaultStreamedContent(InputStream stream, String contentType, String name, Integer contentLength) {
+        this(stream, contentType, name);
+        this.contentLength = contentLength;
+    }
+
+    public DefaultStreamedContent(Supplier<InputStream> stream, String contentType, String name, Integer contentLength) {
         this(stream, contentType, name);
         this.contentLength = contentLength;
     }
@@ -73,13 +95,23 @@ public class DefaultStreamedContent implements StreamedContent {
         this.contentLength = contentLength;
     }
 
+    public DefaultStreamedContent(Supplier<InputStream> stream, String contentType, String name, String contentEncoding, Integer contentLength) {
+        this(stream, contentType, name);
+        this.contentEncoding = contentEncoding;
+        this.contentLength = contentLength;
+    }
+
     @Override
     public InputStream getStream() {
-        return stream;
+        return stream.get();
+    }
+
+    public void setStream(Supplier<InputStream> stream) {
+        this.stream = stream;
     }
 
     public void setStream(InputStream stream) {
-        this.stream = stream;
+        this.stream = () -> stream;
     }
 
     @Override

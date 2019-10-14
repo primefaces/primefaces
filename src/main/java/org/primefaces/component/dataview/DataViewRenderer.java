@@ -31,6 +31,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.DataRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
@@ -120,7 +121,7 @@ public class DataViewRenderer extends DataRenderer {
         writer.startElement("div", dataview);
         writer.writeAttribute("class", DataView.HEADER_CLASS, null);
 
-        if (fHeader != null && fHeader.isRendered()) {
+        if (ComponentUtils.shouldRenderFacet(fHeader)) {
             fHeader.encodeAll(context);
         }
 

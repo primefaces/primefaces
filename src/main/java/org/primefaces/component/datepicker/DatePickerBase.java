@@ -28,6 +28,7 @@ import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.api.Widget;
+import org.primefaces.util.CalendarUtils;
 
 public abstract class DatePickerBase extends UICalendar implements Widget, InputHolder, MixedClientBehaviorHolder {
 
@@ -384,6 +385,39 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     @Override
     public boolean hasTime() {
-        return this.isShowTime() || this.isTimeOnly() || super.hasTime();
+        return this.isShowTime() || this.isTimeOnly();
     }
+
+    @Override
+    public String calculatePattern() {
+        if (isTimeOnly()) {
+            return calculateTimeOnlyPattern();
+        }
+        else if (isShowTime()) {
+            return calculateWidgetPattern() + " " + calculateTimeOnlyPattern();
+        }
+        return calculateWidgetPattern();
+    }
+
+    @Override
+    public String calculateWidgetPattern() {
+        return CalendarUtils.removeTime(super.calculatePattern());
+    }
+
+    @Override
+    public String calculateTimeOnlyPattern() {
+        if (timeOnlyPattern == null) {
+            boolean ampm = "12".equals(getHourFormat());
+            timeOnlyPattern = ampm ? "KK" : "HH";
+            timeOnlyPattern += ":mm";
+            if (isShowSeconds()) {
+                timeOnlyPattern += ":ss";
+            }
+            if (ampm) {
+                timeOnlyPattern += " a";
+            }
+        }
+        return timeOnlyPattern;
+    }
+
 }

@@ -90,7 +90,7 @@ public class DataScrollerRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, null);
         }
 
-        if (header != null && header.isRendered()) {
+        if (ComponentUtils.shouldRenderFacet(header)) {
             writer.startElement("div", ds);
             writer.writeAttribute("class", DataScroller.HEADER_CLASS, null);
             header.encodeAll(context);
@@ -131,7 +131,7 @@ public class DataScrollerRenderer extends CoreRenderer {
 
             writer.startElement("div", null);
             writer.writeAttribute("class", DataScroller.LOADER_CLASS, null);
-            if (loader != null && loader.isRendered()) {
+            if (ComponentUtils.shouldRenderFacet(loader)) {
                 loader.encodeAll(context);
             }
             writer.endElement("div");

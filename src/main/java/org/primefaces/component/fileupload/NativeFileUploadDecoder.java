@@ -64,14 +64,14 @@ public class NativeFileUploadDecoder {
         if (fileUpload.isMultiple()) {
             Long sizeLimit = fileUpload.getSizeLimit();
             Iterable<Part> parts = request.getParts();
-            List<SingleUploadedFile> files = StreamSupport.stream(parts.spliterator(), false)
+            List<UploadedFile> files = StreamSupport.stream(parts.spliterator(), false)
                     .filter(p -> p.getName().equals(inputToDecodeId))
                     .map(p -> new NativeUploadedFile(p, sizeLimit))
                     .collect(Collectors.toList());
 
             if (!files.isEmpty() && FileUploadUtils.areValidFiles(context, fileUpload, files)) {
-                UploadedFile wrapped = new MultipleUploadedFile(files);
-                fileUpload.setSubmittedValue(new UploadedFileWrapper(wrapped));
+                UploadedFiles uploadedFiles = new UploadedFiles(files);
+                fileUpload.setSubmittedValue(new UploadedFilesWrapper(uploadedFiles));
             }
             else {
                 fileUpload.setSubmittedValue("");

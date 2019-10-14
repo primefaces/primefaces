@@ -254,7 +254,7 @@ public class TabViewRenderer extends CoreRenderer {
         writer.startElement("a", null);
         writer.writeAttribute("href", "#" + tab.getClientId(context), null);
         writer.writeAttribute("tabindex", "-1", null);
-        if (titleFacet == null) {
+        if (!ComponentUtils.shouldRenderFacet(titleFacet)) {
             String tabTitle = tab.getTitle();
             if (tabTitle != null) {
                 writer.writeText(tabTitle, null);
@@ -273,7 +273,7 @@ public class TabViewRenderer extends CoreRenderer {
         }
 
         UIComponent actions = tab.getFacet("actions");
-        if (actions != null && actions.isRendered()) {
+        if (ComponentUtils.shouldRenderFacet(actions)) {
             writer.startElement("li", null);
             writer.writeAttribute("class", "ui-tabs-actions", null);
             writer.writeAttribute(HTML.ARIA_HIDDEN, String.valueOf(!active), null);
