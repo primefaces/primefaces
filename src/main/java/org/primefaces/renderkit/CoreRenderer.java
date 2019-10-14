@@ -155,7 +155,7 @@ public abstract class CoreRenderer extends Renderer {
                 if (hasEventBehaviors) {
                     String clientId = component.getClientId(context);
 
-                    List<ClientBehaviorContext.Parameter> params = new ArrayList<>();
+                    List<ClientBehaviorContext.Parameter> params = new ArrayList<>(1);
                     params.add(new ClientBehaviorContext.Parameter(
                             Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.OBSTRUSIVE));
 
@@ -510,7 +510,7 @@ public abstract class CoreRenderer extends Renderer {
             Collection<String> eventNames = (component instanceof MixedClientBehaviorHolder)
                     ? ((MixedClientBehaviorHolder) component).getUnobstrusiveEventNames() : clientBehaviors.keySet();
             String clientId = ((UIComponent) component).getClientId(context);
-            List<ClientBehaviorContext.Parameter> params = new ArrayList<>();
+            List<ClientBehaviorContext.Parameter> params = new ArrayList<>(1);
             params.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
 
             writer.write(",behaviors:{");
