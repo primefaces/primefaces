@@ -105,6 +105,7 @@ public class SplitButton extends SplitButtonBase {
         return isAjax();
     }
 
+    @Override
     public List getElements() {
         MenuModel model = getModel();
         if (model != null) {
@@ -123,6 +124,6 @@ public class SplitButton extends SplitButtonBase {
 
     @Override
     public void broadcast(FacesEvent event) throws AbortProcessingException {
-        doBroadcast(event, getFacesContext(), super::broadcast);
+        broadcastMenuActionEvent(event, getFacesContext(), super::broadcast);
     }
 }

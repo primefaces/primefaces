@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model.menu;
+package org.primefaces.component.api;
 
 import org.primefaces.event.MenuActionEvent;
 
@@ -36,12 +36,13 @@ import javax.faces.event.FacesEvent;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import org.primefaces.model.menu.MenuItem;
 
 public interface MenuItemAware {
 
     List getElements();
 
-    default void doBroadcast(FacesEvent event, FacesContext context, Consumer<FacesEvent> broadcast) throws AbortProcessingException {
+    default void broadcastMenuActionEvent(FacesEvent event, FacesContext context, Consumer<FacesEvent> broadcast) throws AbortProcessingException {
         if (event instanceof MenuActionEvent) {
             MenuActionEvent menuActionEvent = (MenuActionEvent) event;
             MenuItem menuItem = menuActionEvent.getMenuItem();

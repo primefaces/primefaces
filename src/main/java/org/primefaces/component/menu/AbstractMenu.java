@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.menu;
 
-import org.primefaces.model.menu.MenuItemAware;
+import org.primefaces.component.api.MenuItemAware;
 import org.primefaces.model.menu.MenuModel;
 
 import javax.faces.component.UIPanel;
@@ -58,6 +58,7 @@ public abstract class AbstractMenu extends UIPanel implements MenuItemAware {
         getStateHelper().put(PropertyKeys.tabindex, tabindex);
     }
 
+    @Override
     public List getElements() {
         MenuModel model = getModel();
         if (model != null) {
@@ -82,6 +83,6 @@ public abstract class AbstractMenu extends UIPanel implements MenuItemAware {
 
     @Override
     public void broadcast(FacesEvent event) throws AbortProcessingException {
-        doBroadcast(event, getFacesContext(), super::broadcast);
+        broadcastMenuActionEvent(event, getFacesContext(), super::broadcast);
     }
 }

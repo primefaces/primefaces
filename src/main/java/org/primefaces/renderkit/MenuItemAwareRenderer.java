@@ -23,6 +23,7 @@
  */
 package org.primefaces.renderkit;
 
+import org.primefaces.component.api.MenuItemAware;
 import org.primefaces.behavior.confirm.ConfirmBehavior;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
@@ -129,7 +130,7 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
         }
 
         if (menuitem instanceof DialogReturnAware) {
-            List<ClientBehaviorContext.Parameter> behaviorParams = new ArrayList<>();
+            List<ClientBehaviorContext.Parameter> behaviorParams = new ArrayList<>(1);
             behaviorParams.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
             String dialogReturnBehavior = getEventBehaviors(context, (ClientBehaviorHolder) menuitem, DialogReturnAware.EVENT_DIALOG_RETURN,
                     behaviorParams);
