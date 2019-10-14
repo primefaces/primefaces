@@ -1029,7 +1029,7 @@ public class UIData extends javax.faces.component.UIData {
 
         while (true) {
             if (visitRows) {
-                if ((rows > 0) && (++processed > rows)) {
+                if (rows <= 0 || ((rows > 0) && (++processed > rows))) {
                     break;
                 }
 
