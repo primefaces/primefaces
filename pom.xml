@@ -790,6 +790,15 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/datepicker/1-datepicker.js</include>
                             </includes>
                         </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/texteditor/texteditor.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/texteditor/0-quill.min.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/texteditor/1-texteditor.js</include>
+                            </includes>
+                        </aggregation>
                     </aggregations>
                 </configuration>
             </plugin>
@@ -946,7 +955,7 @@
                             <excludes>
                                 <exclude>**/*.something</exclude>
                                 <exclude>**/photocam.js</exclude>
-                                <exclude>**/texteditor.js</exclude>
+                                <exclude>**/0-quill.min.js</exclude>
                                 <exclude>**/jquery.js</exclude>
                                 <exclude>**/0-fullcalendar.min.js</exclude>
                                 <exclude>**/0-chartjs.js</exclude>
