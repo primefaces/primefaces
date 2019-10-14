@@ -713,7 +713,7 @@
                             <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/timeline.js</output>
                             <includes>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/0-timeline.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/0-timeline.min.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/1-timeline.js</include>
                             </includes>
                         </aggregation>
@@ -958,6 +958,7 @@
                                 <exclude>**/0-quill.min.js</exclude>
                                 <exclude>**/jquery.js</exclude>
                                 <exclude>**/0-fullcalendar.min.js</exclude>
+                                <exclude>**/0-timeline.min.js</exclude>
                                 <exclude>**/0-chartjs.js</exclude>
                                 <exclude>**/raphael.js</exclude>
                                 <exclude>**/theme.css</exclude>

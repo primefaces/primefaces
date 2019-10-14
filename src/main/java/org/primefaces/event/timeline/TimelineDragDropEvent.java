@@ -35,16 +35,16 @@ public class TimelineDragDropEvent<T> extends TimelineAddEvent {
     /**
      * client ID of the dragged component
      */
-    private String dragId;
+    private final String dragId;
 
     /**
      * dragged model object if draggable item is within a data iteration component or null
      */
-    private T data;
+    private final T data;
 
     public TimelineDragDropEvent(UIComponent component, Behavior behavior, Date startDate, Date endDate, String group,
             String dragId, T data) {
-        super(component, behavior, startDate, endDate, group);
+        super(component, behavior, null, startDate, endDate, group);
         this.dragId = dragId;
         this.data = data;
     }

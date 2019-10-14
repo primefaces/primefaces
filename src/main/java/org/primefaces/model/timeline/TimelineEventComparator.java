@@ -21,18 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.event.timeline;
+package org.primefaces.model.timeline;
 
 import java.io.Serializable;
 import java.util.Comparator;
-import org.primefaces.model.timeline.TimelineEvent;
 
-public class TimelineEventComparator implements Comparator<TimelineEvent>, Serializable {
+class TimelineEventComparator implements Comparator<TimelineEvent<?>>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Override
-    public int compare(TimelineEvent a, TimelineEvent b) {
+    public int compare(TimelineEvent<?> a, TimelineEvent<?> b) {
         if (a.getStartDate().equals(b.getStartDate())) {
             if (a.getEndDate() == null && b.getEndDate() == null) {
                 return 0;

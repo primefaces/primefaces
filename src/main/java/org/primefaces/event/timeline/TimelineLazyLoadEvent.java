@@ -37,22 +37,22 @@ public class TimelineLazyLoadEvent extends AbstractAjaxBehaviorEvent {
     /**
      * start time of the first time range for lazy loading
      */
-    private Date startDateFirst;
+    private final Date startDateFirst;
 
     /**
      * end time of the first time range for lazy loading
      */
-    private Date endDateFirst;
+    private final Date endDateFirst;
 
     /**
      * start time of the second time range for lazy loading (if any)
      */
-    private Date startDateSecond;
+    private final Date startDateSecond;
 
     /**
      * end time of the second time range for lazy loading (if any)
      */
-    private Date endDateSecond;
+    private final Date endDateSecond;
 
     public TimelineLazyLoadEvent(UIComponent component, Behavior behavior, Date startDateFirst, Date endDateFirst,
             Date startDateSecond, Date endDateSecond) {

@@ -25,6 +25,7 @@ package org.primefaces.component.timeline;
 
 import java.io.IOException;
 import java.util.*;
+import static java.util.stream.Collectors.toList;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -64,11 +65,34 @@ public class TimelineRenderer extends CoreRenderer {
             writer.writeAttribute("class", timeline.getStyleClass(), "styleClass");
         }
 
+        UIComponent menuFacet = timeline.getFacet("menu");
+        if (ComponentUtils.shouldRenderFacet(menuFacet)) {
+            writer.startElement("div", null);
+            StringBuilder cssMenu = new StringBuilder("timeline-menu");
+
+            if ("top".equals(timeline.getOrientationAxis())) {
+                cssMenu.append(" timeline-menu-axis-top");
+            }
+            else if ("both".equals(timeline.getOrientationAxis())) {
+                cssMenu.append(" timeline-menu-axis-both");
+            }
+
+            if (timeline.isRTL()) {
+                cssMenu.append(" timeline-menu-rtl");
+            }
+
+            writer.writeAttribute("class", cssMenu.toString(), null);
+            //It will be displayed when timeline is displayed
+            writer.writeAttribute("style", "display:none;", null);
+            menuFacet.encodeAll(context);
+            writer.endElement("div");
+        }
+
         writer.endElement("div");
     }
 
     protected void encodeScript(FacesContext context, Timeline timeline) throws IOException {
-        TimelineModel model = timeline.getValue();
+        TimelineModel<Object, Object> model = timeline.getValue();
         if (model == null) {
             return;
         }
@@ -85,42 +109,102 @@ public class TimelineRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Timeline", timeline.resolveWidgetVar(context), clientId);
 
-        writer.write(",data:[");
-
+        List<TimelineEvent<Object>> events = model.getEvents();
+        List<TimelineGroup<Object>> groups = calculateGroupsFromModel(model);
         Map<String, String> groupsContent = null;
-        List<TimelineGroup> groups = model.getGroups();
-        UIComponent groupFacet = timeline.getFacet("group");
-        if (groups != null && groupFacet != null) {
+        if (!groups.isEmpty()) {
             // buffer for groups' content
             groupsContent = new HashMap<>();
         }
 
-        List<TimelineEvent> events = model.getEvents();
+        UIComponent groupFacet = timeline.getFacet("group");
+        int groupsSize = groups.size();
+        if (groupsSize > 0) {
+            writer.write(",groups:[");
+            for (int i = 0; i < groupsSize; i++) {
+                //If groups was not set in model then order by content.
+                Integer order = model.getGroups() != null ? i : null;
+                //encode groups
+                writer.write(encodeGroup(context, fsw, fswHtml, timeline, groupFacet, groupsContent, groups.get(i), order));
+                if (i + 1 < groupsSize) {
+                    writer.write(",");
+                }
+            }
+            writer.write("]");
+        }
+
+        writer.write(",data:[");
+        UIComponent eventTitleFacet = timeline.getFacet("eventTitle");
         int size = events != null ? events.size() : 0;
         for (int i = 0; i < size; i++) {
             // encode events
-            writer.write(encodeEvent(context, fsw, fswHtml, timeline, browserTZ, targetTZ, groups, groupFacet, groupsContent,
-                    events.get(i)));
+            writer.write(encodeEvent(context, fsw, fswHtml, timeline, eventTitleFacet, browserTZ, targetTZ, groups, events.get(i)));
             if (i + 1 < size) {
                 writer.write(",");
             }
         }
 
-        writer.write("],opts:{");
+        writer.write("]");
+
+        if (timeline.isShowCurrentTime()) {
+            wb.nativeAttr("currentTime", encodeDate(browserTZ, targetTZ, Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTime()));
+        }
+
+        if (timeline.getPreloadFactor() < 0) {
+            wb.attr("preloadFactor", 0);
+        }
+        else {
+            wb.attr("preloadFactor", timeline.getPreloadFactor());
+        }
+
+        if (timeline.getDropHoverStyleClass() != null) {
+            wb.attr("hoverClass", timeline.getDropHoverStyleClass());
+        }
+
+        if (timeline.getDropActiveStyleClass() != null) {
+            wb.attr("activeClass", timeline.getDropActiveStyleClass());
+        }
+
+        if (timeline.getDropAccept() != null) {
+            wb.attr("accept", timeline.getDropAccept());
+        }
+
+        if (timeline.getDropScope() != null) {
+            wb.attr("scope", timeline.getDropScope());
+        }
+
+        if (timeline.getExtender() != null) {
+            wb.nativeAttr("extender", timeline.getExtender());
+        }
+        UIComponent menuFacet = timeline.getFacet("menu");
+        if (ComponentUtils.shouldRenderFacet(menuFacet)) {
+            wb.attr("isMenuPresent", Boolean.TRUE);
+        }
+
+        writer.write(",opts:{");
 
         // encode options
-        writer.write("height:'" + timeline.getHeight() + "'");
-        wb.attr("minHeight", timeline.getMinHeight());
+        writer.write("autoResize: " + timeline.isResponsive());
+        if (timeline.getHeight() != null) {
+            wb.attr("height", timeline.getHeight());
+        }
+        if (timeline.getMinHeight() != null) {
+            wb.attr("minHeight", timeline.getMinHeight());
+        }
+        if (timeline.getMaxHeight() != null) {
+            wb.attr("maxHeight", timeline.getMaxHeight());
+        }
         wb.attr("width", timeline.getWidth());
-        wb.attr("responsive", timeline.isResponsive());
-        wb.attr("axisOnTop", timeline.isAxisOnTop());
-        wb.attr("dragAreaWidth", timeline.getDragAreaWidth());
-        wb.attr("editable", timeline.isEditable());
+        wb.nativeAttr("orientation", "{axis:'" + timeline.getOrientationAxis() + "',"
+                + "item:'" + timeline.getOrientationItem() + "'}" );
+        wb.nativeAttr("editable", "{add:" + timeline.isEditableAdd() + ","
+                + "remove:" + timeline.isEditableRemove() + ","
+                + "updateTime:" + timeline.isEditableTime() + ","
+                + "updateGroup:" + timeline.isEditableGroup() + ","
+                + "overrideItems:" + timeline.isEditableOverrideItems() + "}" );
         wb.attr("selectable", timeline.isSelectable());
-        wb.attr("unselectable", timeline.isUnselectable());
         wb.attr("zoomable", timeline.isZoomable());
         wb.attr("moveable", timeline.isMoveable());
-        wb.attr("timeChangeable", timeline.isTimeChangeable());
 
         if (timeline.getStart() != null) {
             wb.nativeAttr("start", encodeDate(browserTZ, targetTZ, timeline.getStart()));
@@ -141,60 +225,53 @@ public class TimelineRenderer extends CoreRenderer {
         wb.attr("zoomMin", timeline.getZoomMin());
         wb.attr("zoomMax", timeline.getZoomMax());
 
-        if (timeline.getPreloadFactor() < 0) {
-            wb.attr("preloadFactor", 0);
-        }
-        else {
-            wb.attr("preloadFactor", timeline.getPreloadFactor());
-        }
+        wb.nativeAttr("margin", "{axis:" + timeline.getEventMarginAxis() + ","
+                + "item:{horizontal:" + timeline.getEventHorizontalMargin() + ","
+                + "vertical:" + timeline.getEventVerticalMargin() + "}}");
 
-        wb.attr("eventMargin", timeline.getEventMargin());
-        wb.attr("eventMarginAxis", timeline.getEventMarginAxis());
-        wb.attr("style", timeline.getEventStyle());
-        wb.attr("groupsChangeable", timeline.isGroupsChangeable());
-        wb.attr("groupsOnRight", timeline.isGroupsOnRight());
-        wb.attr("groupsOrder", timeline.isGroupsOrder());
-        wb.attr("groupMinHeight", timeline.getGroupMinHeight());
-
-        if (timeline.getGroupsWidth() != null) {
-            wb.attr("groupsWidth", timeline.getGroupsWidth());
+        if (timeline.getEventStyle() != null) {
+            wb.attr("type", timeline.getEventStyle());
         }
 
-        wb.attr("snapEvents", timeline.isSnapEvents());
-        wb.attr("stackEvents", timeline.isStackEvents());
+        if (timeline.isGroupsOrder()) {
+            //If groups was setted to model then order by order property, else order by content alphabetically
+            List<TimelineGroup<Object>> modelGroups = model.getGroups();
+            if (modelGroups != null && !modelGroups.isEmpty()) {
+                wb.attr("groupOrder", "order");
+            }
+            else {
+                wb.attr("groupOrder", "content");
+            }
+        }
+
+        if (timeline.getSnap() != null) {
+            wb.nativeAttr("snap", timeline.getSnap());
+        }
+        wb.attr("stack", timeline.isStackEvents());
 
         wb.attr("showCurrentTime", timeline.isShowCurrentTime());
-        if (timeline.isShowCurrentTime()) {
-            wb.nativeAttr("currentTime", encodeDate(browserTZ, targetTZ, Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTime()));
-        }
 
         wb.attr("showMajorLabels", timeline.isShowMajorLabels());
         wb.attr("showMinorLabels", timeline.isShowMinorLabels());
-        wb.attr("showButtonNew", timeline.isShowButtonNew());
-        wb.attr("showNavigation", timeline.isShowNavigation());
 
-        if (timeline.getLocale() != null) {
-            wb.attr("locale", timeline.getLocale().toString());
+        wb.attr("locale", timeline.calculateLocale(context).toString());
+        wb.attr("clickToUse", timeline.isClickToUse());
+        wb.attr("showTooltips", timeline.isShowTooltips());
+
+        wb.nativeAttr("tooltip", "{followMouse:" + timeline.isTooltipFollowMouse() + ","
+                + "overflowMethod:'" + timeline.getTooltipOverflowMethod() + "',"
+                + "delay:" + timeline.getTooltipDelay() + "}");
+
+        if (timeline.isRTL()) {
+            wb.attr("rtl", Boolean.TRUE);
         }
 
-        if (timeline.getDropHoverStyleClass() != null) {
-            wb.attr("hoverClass", timeline.getDropHoverStyleClass());
+        UIComponent loadingFacet = timeline.getFacet("loading");
+        if (ComponentUtils.shouldRenderFacet(loadingFacet)) {
+            String loading = encodeAllToString(context, writer, fswHtml, loadingFacet);
+            // writing facet content's
+            wb.nativeAttr("loadingScreenTemplate", "function() { return \"" + EscapeUtils.forJavaScript(loading) + "\";}");
         }
-
-        if (timeline.getDropActiveStyleClass() != null) {
-            wb.attr("activeClass", timeline.getDropActiveStyleClass());
-        }
-
-        if (timeline.getDropAccept() != null) {
-            wb.attr("accept", timeline.getDropAccept());
-        }
-
-        if (timeline.getDropScope() != null) {
-            wb.attr("scope", timeline.getDropScope());
-        }
-
-        wb.attr("animate", timeline.isAnimate());
-        wb.attr("animateZoom", timeline.isAnimateZoom());
 
         writer.write("}");
         encodeClientBehaviors(context, timeline);
@@ -202,119 +279,140 @@ public class TimelineRenderer extends CoreRenderer {
         wb.finish();
     }
 
-    public String encodeEvent(FacesContext context, FastStringWriter fsw, FastStringWriter fswHtml, Timeline timeline,
-                              TimeZone browserTZ, TimeZone targetTZ, List<TimelineGroup> groups, UIComponent groupFacet,
-                              Map<String, String> groupsContent, TimelineEvent event) throws IOException {
+    protected String encodeGroup(FacesContext context, FastStringWriter fsw, FastStringWriter fswHtml, Timeline timeline, UIComponent groupFacet,
+            Map<String, String> groupsContent, TimelineGroup<?> group, Integer order) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
+        fsw.write("{id: \"" + EscapeUtils.forJavaScriptBlock(group.getId()) + "\"");
+
+        Object data = group.getData();
+        if (!LangUtils.isValueBlank(timeline.getVarGroup()) && data != null) {
+            context.getExternalContext().getRequestMap().put(timeline.getVarGroup(), data);
+        }
+        if (ComponentUtils.shouldRenderFacet(groupFacet)) {
+            String groupRender = encodeAllToString(context, writer, fswHtml, groupFacet);
+            // extract the content of the group, first buffer and then render it
+            groupsContent.put(group.getId(), EscapeUtils.forJavaScript(groupRender));
+            fsw.write(", content:\"" + groupsContent.get(group.getId()) + "\"");
+        }
+        else if (data != null) {
+            groupsContent.put(group.getId(), EscapeUtils.forJavaScript(data.toString()));
+            fsw.write(", content:\"" + groupsContent.get(group.getId()) + "\"");
+        }
+
+        if (timeline.getGroupStyle() != null) {
+            fsw.write(", style: \"" + timeline.getGroupStyle() + "\"");
+        }
+
+        if (group.getStyleClass() != null) {
+            fsw.write(", className: \"" + group.getStyleClass() + "\"");
+        }
+
+        if (group.getTitle() != null) {
+            fsw.write(", title: \"" + EscapeUtils.forJavaScript(group.getTitle()) + "\"");
+        }
+
+        if (order != null) {
+            fsw.write(", order: " + order);
+        }
+        fsw.write("}");
+
+        String groupJson = fsw.toString();
+        fsw.reset();
+
+        return groupJson;
+    }
+
+    protected String encodeEvent(FacesContext context, FastStringWriter fsw, FastStringWriter fswHtml, Timeline timeline,
+                              UIComponent eventTitleFacet, TimeZone browserTZ, TimeZone targetTZ, List<TimelineGroup<Object>> groups,
+                              TimelineEvent<?> event) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        fsw.write("{id: \"" + EscapeUtils.forJavaScript(event.getId()) + "\"");
+
         if (event.getStartDate() != null) {
-            fsw.write("{\"start\":" + encodeDate(browserTZ, targetTZ, event.getStartDate()));
+            fsw.write(", start: " + encodeDate(browserTZ, targetTZ, event.getStartDate()));
         }
         else {
-            fsw.write("{\"start\":null");
+            fsw.write(", start: null");
         }
 
         if (event.getEndDate() != null) {
-            fsw.write(",\"end\":" + encodeDate(browserTZ, targetTZ, event.getEndDate()));
+            fsw.write(", end: " + encodeDate(browserTZ, targetTZ, event.getEndDate()));
         }
         else {
-            fsw.write(",\"end\":null");
+            fsw.write(", end: null");
         }
 
-        if (event.isEditable() != null) {
-            fsw.write(",\"editable\":" + event.isEditable());
-        }
-        else {
-            fsw.write(",\"editable\":null");
+        if (event.isEditableTime() != null || event.isEditableGroup() != null || event.isEditableRemove() != null) {
+            fsw.write(", editable: {");
+            boolean isSet = false;
+            if (event.isEditableTime() != null) {
+                fsw.write("updateTime: " + event.isEditableTime());
+                isSet = true;
+            }
+            if (event.isEditableGroup() != null) {
+                if (isSet) {
+                    fsw.write(",");
+                }
+                fsw.write("updateGroup: " + event.isEditableGroup());
+                isSet = true;
+            }
+            if (event.isEditableRemove() != null) {
+                if (isSet) {
+                    fsw.write(",");
+                }
+                fsw.write("remove: " + event.isEditableRemove());
+                isSet = true;
+            }
+            fsw.write("}");
         }
 
-        if (groups != null) {
-            // there is a list of groups ==> find the group to the event by the group id
-            TimelineGroup foundGroup = null;
-            int groupOrder = 0;
-            for (TimelineGroup group : groups) {
-                if (group.getId() != null && group.getId().equals(event.getGroup())) {
+        // there is a list of groups ==> find the group to the event by the group id
+        TimelineGroup<?> foundGroup = null;
+        if (event.getGroup() != null) {
+            for (TimelineGroup<?> group : groups) {
+                if (Objects.equals(group.getId(), event.getGroup())) {
                     foundGroup = group;
                     break;
                 }
-
-                groupOrder++;
-            }
-
-            if (foundGroup != null) {
-                String prefix;
-                if (timeline.isGroupsOrder()) {
-                    // generate hidden HTML for ordering. See:
-                    // https://groups.google.com/forum/?fromgroups=#!topic/chap-links-library/Bk2fb99LUh4
-                    // http://stackoverflow.com/questions/2236385/how-to-convert-java-longs-as-strings-while-keeping-natural-order
-                    // we must also pass the order of the group as workaround (extracted in queueEvent(), Timeline.java).
-                    prefix
-                            = "<span style='display:none;'>" + String.format("%016x", groupOrder - Long.MIN_VALUE) + "#"
-                            + groupOrder + "</span>";
-                }
-                else {
-                    prefix = "<span style='display:none;'>#" + groupOrder + "</span>";
-                }
-
-                if (groupFacet != null) {
-                    String groupContent = groupsContent.get(foundGroup.getId());
-                    if (groupContent != null) {
-                        // content of this group was already rendered ==> reuse it
-                        fsw.write(",\"group\":\"" + groupContent + "\"");
-                    }
-                    else {
-                        Object data = foundGroup.getData();
-                        if (!LangUtils.isValueBlank(timeline.getVarGroup()) && data != null) {
-                            context.getExternalContext().getRequestMap().put(timeline.getVarGroup(), data);
-                        }
-
-                        ResponseWriter clonedWriter = writer.cloneWithWriter(fswHtml);
-                        context.setResponseWriter(clonedWriter);
-
-                        groupFacet.encodeAll(context);
-
-                        // restore writer
-                        context.setResponseWriter(writer);
-                        // extract the content of the group, first buffer and then render it
-                        groupsContent.put(foundGroup.getId(), prefix + EscapeUtils.forJavaScript(fswHtml.toString()));
-                        fsw.write(",\"group\":\"" + groupsContent.get(foundGroup.getId()) + "\"");
-                        fswHtml.reset();
-                    }
-                }
-                else if (foundGroup.getData() != null) {
-                    fsw.write(",\"group\":\"" + prefix + foundGroup.getData().toString() + "\"");
-                }
-            }
-            else {
-                // no group for the event
-                fsw.write(",\"group\":null");
             }
         }
+
+        if (foundGroup != null) {
+            fsw.write(", group: \"" + EscapeUtils.forJavaScript(foundGroup.getId()) + "\"");
+        }
         else {
-            // group's content is coded in the event self
-            if (event.getGroup() != null) {
-                fsw.write(",\"group\":\"" + event.getGroup() + "\"");
-            }
-            else {
-                // no group for the event
-                fsw.write(",\"group\":null");
-            }
+            // no group for the event
+            fsw.write(", group: null");
         }
 
         if (!LangUtils.isValueBlank(event.getStyleClass())) {
-            fsw.write(",\"className\":\"" + event.getStyleClass() + "\"");
+            fsw.write(", className: \"" + event.getStyleClass() + "\"");
         }
         else {
-            fsw.write(",\"className\":null");
+            fsw.write(", className: null");
         }
 
-        fsw.write(",\"content\":\"");
-        if (timeline.getChildCount() > 0) {
-            Object data = event.getData();
-            if (!LangUtils.isValueBlank(timeline.getVar()) && data != null) {
-                context.getExternalContext().getRequestMap().put(timeline.getVar(), data);
-            }
+        Object data = event.getData();
+        if (!LangUtils.isValueBlank(timeline.getVar()) && data != null) {
+            context.getExternalContext().getRequestMap().put(timeline.getVar(), data);
+        }
 
+        if (event.getTitle() != null) {
+            fsw.write(", title:\"");
+            fsw.write(EscapeUtils.forJavaScript(event.getTitle()));
+            fsw.write("\"");
+        }
+        else if (ComponentUtils.shouldRenderFacet(eventTitleFacet)) {
+            String title = encodeAllToString(context, writer, fswHtml, eventTitleFacet);
+            fsw.write(", title:\"");
+            fsw.write(EscapeUtils.forJavaScript(title));
+            fsw.write("\"");
+        }
+
+        fsw.write(", content:\"");
+        if (timeline.getChildCount() > 0) {
             ResponseWriter clonedWriter = writer.cloneWithWriter(fswHtml);
             context.setResponseWriter(clonedWriter);
 
@@ -326,8 +424,8 @@ public class TimelineRenderer extends CoreRenderer {
             fsw.write(EscapeUtils.forJavaScript(fswHtml.toString()));
             fswHtml.reset();
         }
-        else if (event.getData() != null) {
-            fsw.write(event.getData().toString());
+        else if (data != null) {
+            fsw.write(data.toString());
         }
 
         fsw.write("\"");
@@ -352,5 +450,32 @@ public class TimelineRenderer extends CoreRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
+    }
+
+    private String encodeAllToString(FacesContext context, ResponseWriter writer, FastStringWriter fswHtml, UIComponent component) throws IOException {
+        ResponseWriter clonedWriter = writer.cloneWithWriter(fswHtml);
+        context.setResponseWriter(clonedWriter);
+
+        component.encodeAll(context);
+        // restore writer
+        context.setResponseWriter(writer);
+        String encoded = fswHtml.toString();
+        fswHtml.reset();
+        return encoded;
+    }
+
+    List<TimelineGroup<Object>> calculateGroupsFromModel(TimelineModel<Object, Object> model) {
+        List<TimelineGroup<Object>> groups = model.getGroups();
+        if (groups != null) {
+            return groups;
+        }
+
+        return model.getEvents()
+                .stream()
+                .map(TimelineEvent::getGroup)
+                .filter(Objects::nonNull)
+                .distinct()
+                .map(group -> new TimelineGroup<Object>(group, group))
+                .collect(toList());
     }
 }

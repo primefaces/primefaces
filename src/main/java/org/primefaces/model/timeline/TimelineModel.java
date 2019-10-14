@@ -30,37 +30,37 @@ import java.util.Date;
 import java.util.List;
 import java.util.TreeSet;
 import org.primefaces.component.timeline.TimelineUpdater;
-import org.primefaces.event.timeline.TimelineEventComparator;
 
-public class TimelineModel implements Serializable {
+public class TimelineModel<E, G> implements Serializable {
 
     private static final long serialVersionUID = 20130316L;
 
     /**
      * list of events
      */
-    private List<TimelineEvent> events;
+    private List<TimelineEvent<E>> events;
 
     /**
      * list of groups
      */
-    private List<TimelineGroup> groups;
+    private List<TimelineGroup<G>> groups;
 
     public TimelineModel() {
         events = new ArrayList<>();
     }
 
-    public TimelineModel(List<TimelineEvent> events) {
+    @SuppressWarnings("OverridableMethodCallInConstructor")
+    public TimelineModel(List<TimelineEvent<E>> events) {
         this.events = new ArrayList<>();
 
         if (events != null && !events.isEmpty()) {
-            for (TimelineEvent event : events) {
+            for (TimelineEvent<E> event : events) {
                 add(event);
             }
         }
     }
 
-    public TimelineModel(List<TimelineEvent> events, List<TimelineGroup> groups) {
+    public TimelineModel(List<TimelineEvent<E>> events, List<TimelineGroup<G>> groups) {
         this(events);
         this.groups = groups;
     }
@@ -70,7 +70,7 @@ public class TimelineModel implements Serializable {
      *
      * @param event event to be added
      */
-    public void add(TimelineEvent event) {
+    public void add(TimelineEvent<E> event) {
         events.add(event);
     }
 
@@ -79,7 +79,7 @@ public class TimelineModel implements Serializable {
      *
      * @param group group to be added
      */
-    public void addGroup(TimelineGroup group) {
+    public void addGroup(TimelineGroup<G> group) {
         if (groups == null) {
             groups = new ArrayList<>();
         }
@@ -93,7 +93,7 @@ public class TimelineModel implements Serializable {
      * @param event           event to be added
      * @param timelineUpdater TimelineUpdater instance to add the event in UI
      */
-    public void add(TimelineEvent event, TimelineUpdater timelineUpdater) {
+    public void add(TimelineEvent<E> event, TimelineUpdater timelineUpdater) {
         events.add(event);
 
         if (timelineUpdater != null) {
@@ -107,7 +107,7 @@ public class TimelineModel implements Serializable {
      *
      * @param events collection of events to be added
      */
-    public void addAll(Collection<TimelineEvent> events) {
+    public void addAll(Collection<TimelineEvent<E>> events) {
         addAll(events, null);
     }
 
@@ -116,7 +116,7 @@ public class TimelineModel implements Serializable {
      *
      * @param groups collection of groups to be added
      */
-    public void addAllGroups(Collection<TimelineGroup> groups) {
+    public void addAllGroups(Collection<TimelineGroup<G>> groups) {
         if (this.groups == null) {
             this.groups = new ArrayList<>();
         }
@@ -130,9 +130,9 @@ public class TimelineModel implements Serializable {
      * @param events          collection of events to be added
      * @param timelineUpdater TimelineUpdater instance to add the events in UI
      */
-    public void addAll(Collection<TimelineEvent> events, TimelineUpdater timelineUpdater) {
+    public void addAll(Collection<TimelineEvent<E>> events, TimelineUpdater timelineUpdater) {
         if (events != null && !events.isEmpty()) {
-            for (TimelineEvent event : events) {
+            for (TimelineEvent<E> event : events) {
                 add(event, timelineUpdater);
             }
         }
@@ -143,7 +143,7 @@ public class TimelineModel implements Serializable {
      *
      * @param event event to be updated
      */
-    public void update(TimelineEvent event) {
+    public void update(TimelineEvent<E> event) {
         update(event, null);
     }
 
@@ -153,14 +153,14 @@ public class TimelineModel implements Serializable {
      * @param event           event to be added
      * @param timelineUpdater TimelineUpdater instance to update the event in UI
      */
-    public void update(TimelineEvent event, TimelineUpdater timelineUpdater) {
+    public void update(TimelineEvent<E> event, TimelineUpdater timelineUpdater) {
         int index = getIndex(event);
         if (index >= 0) {
             events.set(index, event);
 
             if (timelineUpdater != null) {
                 // update UI
-                timelineUpdater.update(event, index);
+                timelineUpdater.update(event);
             }
         }
     }
@@ -170,7 +170,7 @@ public class TimelineModel implements Serializable {
      *
      * @param events collection of events to be updated
      */
-    public void updateAll(Collection<TimelineEvent> events) {
+    public void updateAll(Collection<TimelineEvent<E>> events) {
         updateAll(events, null);
     }
 
@@ -180,9 +180,9 @@ public class TimelineModel implements Serializable {
      * @param events          collection of events to be updated
      * @param timelineUpdater TimelineUpdater instance to update the events in UI
      */
-    public void updateAll(Collection<TimelineEvent> events, TimelineUpdater timelineUpdater) {
+    public void updateAll(Collection<TimelineEvent<E>> events, TimelineUpdater timelineUpdater) {
         if (events != null && !events.isEmpty()) {
-            for (TimelineEvent event : events) {
+            for (TimelineEvent<E> event : events) {
                 update(event, timelineUpdater);
             }
         }
@@ -193,7 +193,7 @@ public class TimelineModel implements Serializable {
      *
      * @param event event to be deleted
      */
-    public void delete(TimelineEvent event) {
+    public void delete(TimelineEvent<E> event) {
         delete(event, null);
     }
 
@@ -203,15 +203,12 @@ public class TimelineModel implements Serializable {
      * @param event           event to be deleted
      * @param timelineUpdater TimelineUpdater instance to delete the event in UI
      */
-    public void delete(TimelineEvent event, TimelineUpdater timelineUpdater) {
-        int index = getIndex(event);
-        if (index >= 0) {
-            events.remove(event);
+    public void delete(TimelineEvent<E> event, TimelineUpdater timelineUpdater) {
+        events.remove(event);
 
-            if (timelineUpdater != null) {
-                // update UI
-                timelineUpdater.delete(index);
-            }
+        if (timelineUpdater != null) {
+            // update UI
+            timelineUpdater.delete(event.getId());
         }
     }
 
@@ -220,7 +217,7 @@ public class TimelineModel implements Serializable {
      *
      * @param events collection of events to be deleted
      */
-    public void deleteAll(Collection<TimelineEvent> events) {
+    public void deleteAll(Collection<TimelineEvent<E>> events) {
         deleteAll(events, null);
     }
 
@@ -230,9 +227,9 @@ public class TimelineModel implements Serializable {
      * @param events          collection of events to be deleted
      * @param timelineUpdater TimelineUpdater instance to delete the events in UI
      */
-    public void deleteAll(Collection<TimelineEvent> events, TimelineUpdater timelineUpdater) {
+    public void deleteAll(Collection<TimelineEvent<E>> events, TimelineUpdater timelineUpdater) {
         if (events != null && !events.isEmpty()) {
-            for (TimelineEvent event : events) {
+            for (TimelineEvent<E> event : events) {
                 delete(event, timelineUpdater);
             }
         }
@@ -244,12 +241,10 @@ public class TimelineModel implements Serializable {
      * @param event           event to be selected
      * @param timelineUpdater TimelineUpdater instance to select the event in UI
      */
-    public void select(TimelineEvent event, TimelineUpdater timelineUpdater) {
-        int index = getIndex(event);
-
+    public void select(TimelineEvent<E> event, TimelineUpdater timelineUpdater) {
         if (timelineUpdater != null) {
             // update UI
-            timelineUpdater.select(index);
+            timelineUpdater.select(event != null ? event.getId() : null);
         }
     }
 
@@ -281,15 +276,15 @@ public class TimelineModel implements Serializable {
      * event with a not null end date.
      *
      * @param event given event
-     * @return TreeSet<TimelineEvent> ordered overlapped events or null if no overlapping exist
+     * @return TreeSet&lt;TimelineEvent&lt;E&gt;&gt; ordered overlapped events or null if no overlapping exist
      */
-    public TreeSet<TimelineEvent> getOverlappedEvents(TimelineEvent event) {
+    public TreeSet<TimelineEvent<E>> getOverlappedEvents(TimelineEvent<E> event) {
         if (event == null) {
             return null;
         }
 
-        List<TimelineEvent> overlappedEvents = null;
-        for (TimelineEvent e : events) {
+        List<TimelineEvent<E>> overlappedEvents = null;
+        for (TimelineEvent<E> e : events) {
             if (e.equals(event)) {
                 // given event should not be included
                 continue;
@@ -315,7 +310,7 @@ public class TimelineModel implements Serializable {
         }
 
         // order overlapped events according to their start / end dates
-        TreeSet<TimelineEvent> orderedOverlappedEvents = new TreeSet<>(new TimelineEventComparator());
+        TreeSet<TimelineEvent<E>> orderedOverlappedEvents = new TreeSet<>(new TimelineEventComparator());
         orderedOverlappedEvents.addAll(overlappedEvents);
 
         return orderedOverlappedEvents;
@@ -331,7 +326,7 @@ public class TimelineModel implements Serializable {
      * @return TimelineEvent result event after merging
      * @throws IllegalStateException thrown if not all events are within the same group
      */
-    public TimelineEvent merge(TimelineEvent event, Collection<TimelineEvent> events) {
+    public TimelineEvent<E> merge(TimelineEvent<E> event, Collection<TimelineEvent<E>> events) {
         return merge(event, events, null);
     }
 
@@ -345,7 +340,7 @@ public class TimelineModel implements Serializable {
      * @return TimelineEvent result event after merging
      * @throws IllegalStateException thrown if not all events are within the same group
      */
-    public TimelineEvent merge(TimelineEvent event, Collection<TimelineEvent> events, TimelineUpdater timelineUpdater) {
+    public TimelineEvent<E> merge(TimelineEvent<E> event, Collection<TimelineEvent<E>> events, TimelineUpdater timelineUpdater) {
         if (event == null) {
             // nothing to merge
             return null;
@@ -358,20 +353,20 @@ public class TimelineModel implements Serializable {
 
         // check whether all events within the same group
         String group = event.getGroup();
-        for (TimelineEvent e : events) {
+        for (TimelineEvent<E> e : events) {
             if ((group == null && e.getGroup() != null) || (group != null && !group.equals(e.getGroup()))) {
                 throw new IllegalStateException("Events to be merged may be only belong to one and the same group!");
             }
         }
 
         // order events according to their start / end dates
-        TreeSet<TimelineEvent> orderedEvents = new TreeSet<TimelineEvent>(new TimelineEventComparator());
+        TreeSet<TimelineEvent<E>> orderedEvents = new TreeSet<>(new TimelineEventComparator());
         orderedEvents.add(event);
         orderedEvents.addAll(events);
 
         // find the largest end date
         Date endDate = null;
-        for (TimelineEvent e : orderedEvents) {
+        for (TimelineEvent<E> e : orderedEvents) {
             if (endDate == null && e.getEndDate() != null) {
                 endDate = e.getEndDate();
             }
@@ -380,8 +375,7 @@ public class TimelineModel implements Serializable {
             }
         }
 
-        TimelineEvent mergedEvent
-                = new TimelineEvent(event.getData(), orderedEvents.first().getStartDate(), endDate, event.isEditable(),
+        TimelineEvent<E> mergedEvent = new TimelineEvent<>(event.getData(), orderedEvents.first().getStartDate(), endDate, event.isEditable(),
                         event.getGroup(), event.getStyleClass());
 
         // merge...
@@ -394,56 +388,73 @@ public class TimelineModel implements Serializable {
     /**
      * Gets all events in this model
      *
-     * @return List<TimelineEvent> list of events
+     * @return List&lt;TimelineEvent&lt;E&gt;&gt; list of events
      */
-    public List<TimelineEvent> getEvents() {
+    public List<TimelineEvent<E>> getEvents() {
         return events;
     }
 
     /**
      * Sets events into this model
      *
-     * @param events List<TimelineEvent> list of events
+     * @param events List&lt;TimelineEvent&lt;E&gt;&gt; list of events
      */
-    public void setEvents(List<TimelineEvent> events) {
+    public void setEvents(List<TimelineEvent<E>> events) {
         this.events = events;
     }
 
     /**
      * Gets all groups in this model
      *
-     * @return List<TimelineGroup> list of groups
+     * @return List&lt;TimelineGroup&lt;G&gt;&gt; list of groups
      */
-    public List<TimelineGroup> getGroups() {
+    public List<TimelineGroup<G>> getGroups() {
         return groups;
     }
 
     /**
      * Sets groups into this model
      *
-     * @param groups List<TimelineGroup> list of groups
+     * @param groups List&lt;TimelineGroup&lt;G&gt;&gt; list of groups
      */
-    public void setGroups(List<TimelineGroup> groups) {
+    public void setGroups(List<TimelineGroup<G>> groups) {
         this.groups = groups;
     }
 
     /**
-     * Gets event by its index as String
+     * Gets event by its id property.
      *
-     * @param index index
+     * @param id id property of the event
      * @return TimelineEvent found event or null
      */
-    public TimelineEvent getEvent(String index) {
-        return getEvent(index != null ? Integer.valueOf(index) : -1);
+    public TimelineEvent<E> getEvent(String id) {
+        if (id != null) {
+            return events.stream()
+                    .filter(event -> id.equals(event.getId()))
+                    .findAny()
+                    .orElse(null);
+        }
+        return null;
     }
 
     /**
-     * Gets event by its index as int
+     * Check if current model has the event passed as parameter.
+     * @param event
+     * @return
+     */
+    public boolean hasEvent(TimelineEvent<E> event) {
+        return events.contains(event);
+    }
+
+    /**
+     * Gets event by its positional index according to this instance.
      *
      * @param index index
      * @return TimelineEvent found event or null
+     * @deprecated get event by id using {@link #getEvent(java.lang.String)} instead.
      */
-    public TimelineEvent getEvent(int index) {
+    @Deprecated
+    public TimelineEvent<E> getEvent(int index) {
         if (index < 0) {
             return null;
         }
@@ -456,8 +467,12 @@ public class TimelineModel implements Serializable {
      *
      * @param event given event
      * @return int positive index or -1 if the given event is not available in the timeline
+     * @deprecated The index property is no longer necessary with the addition of {@link TimelineEvent#getId()} property.
+     * This method could be changed to private in next releases.
+     * See <a href='https://github.com/primefaces/primefaces/issues/5143'>issue 5143</a> for more information.
      */
-    public int getIndex(TimelineEvent event) {
+    @Deprecated
+    public int getIndex(TimelineEvent<E> event) {
         int index = -1;
 
         if (event != null) {
@@ -473,7 +488,7 @@ public class TimelineModel implements Serializable {
         return index;
     }
 
-    private boolean isOverlapping(TimelineEvent event1, TimelineEvent event2) {
+    private boolean isOverlapping(TimelineEvent<E> event1, TimelineEvent<E> event2) {
         if (event1.getEndDate() == null && event2.getEndDate() == null) {
             return event1.getStartDate().equals(event2.getStartDate());
         }
