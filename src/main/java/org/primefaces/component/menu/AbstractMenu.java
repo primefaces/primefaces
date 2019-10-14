@@ -23,24 +23,15 @@
  */
 package org.primefaces.component.menu;
 
+import org.primefaces.model.menu.MenuItemAware;
+import org.primefaces.model.menu.MenuModel;
+
+import javax.faces.component.UIPanel;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.FacesEvent;
 import java.util.List;
 
-import javax.el.ELContext;
-import javax.el.ExpressionFactory;
-import javax.el.MethodExpression;
-import javax.el.MethodNotFoundException;
-import javax.faces.component.UIPanel;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.FacesEvent;
-
-import org.primefaces.event.MenuActionEvent;
-import org.primefaces.model.menu.MenuItem;
-import org.primefaces.model.menu.MenuModel;
-import org.primefaces.util.SerializableFunction;
-
-public abstract class AbstractMenu extends UIPanel {
+public abstract class AbstractMenu extends UIPanel implements MenuItemAware {
 
     public static final String LIST_CLASS = "ui-menu-list ui-helper-reset";
     public static final String MENUITEM_CLASS = "ui-menuitem ui-widget ui-corner-all";
@@ -91,48 +82,6 @@ public abstract class AbstractMenu extends UIPanel {
 
     @Override
     public void broadcast(FacesEvent event) throws AbortProcessingException {
-        if (event instanceof MenuActionEvent) {
-            FacesContext facesContext = getFacesContext();
-            MenuActionEvent menuActionEvent = (MenuActionEvent) event;
-            MenuItem menuItem = menuActionEvent.getMenuItem();
-
-            SerializableFunction<MenuItem, String> function = menuItem.getFunction();
-            String command = menuItem.getCommand();
-            if (function != null) {
-                String outcome = function.apply(menuItem);
-                facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, null, outcome);
-            }
-            else if (command != null) {
-                ELContext elContext = facesContext.getELContext();
-                ExpressionFactory expressionFactory = facesContext.getApplication().getExpressionFactory();
-
-                Object invokeResult = null;
-                try {
-                    MethodExpression me = expressionFactory.createMethodExpression(elContext, command,
-                                    String.class, new Class[0]);
-                    invokeResult = me.invoke(elContext, null);
-                }
-                catch (MethodNotFoundException mnfe1) {
-                    try {
-                        MethodExpression me = expressionFactory.createMethodExpression(elContext, command,
-                                        String.class, new Class[]{ActionEvent.class});
-                        invokeResult = me.invoke(elContext, new Object[]{event});
-                    }
-                    catch (MethodNotFoundException mnfe2) {
-                        MethodExpression me = expressionFactory.createMethodExpression(elContext, command,
-                                        String.class, new Class[]{MenuActionEvent.class});
-                        invokeResult = me.invoke(elContext, new Object[]{event});
-                    }
-                }
-                finally {
-                    String outcome = (invokeResult != null) ? invokeResult.toString() : null;
-
-                    facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, command, outcome);
-                }
-            }
-        }
-        else {
-            super.broadcast(event);
-        }
+        doBroadcast(event, getFacesContext(), super::broadcast);
     }
 }
