@@ -58,9 +58,9 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
                 document.off(event, this.jqTargetId).on(event, this.jqTargetId, null, function(e) {
                     $this.show(e);
                 });
-                
+
                 if (PrimeFaces.env.touch) {
-                    document.swipe({
+                    $(this.jqTargetId).swipe({
                         longTap:function(e, target) {
                            $this.show(e);
                         }
