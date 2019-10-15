@@ -32,6 +32,8 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
+import org.primefaces.component.treetable.TreeTable;
+import org.primefaces.component.treetable.TreeTableRenderer;
 import org.primefaces.util.ComponentUtils;
 
 public class ColumnGroupHelperRenderer implements HelperColumnRenderer {
@@ -39,18 +41,15 @@ public class ColumnGroupHelperRenderer implements HelperColumnRenderer {
     @Override
     public void encode(FacesContext context, Column column) throws IOException {
         ColumnGroup group = findGroup(column);
-        DataTable table = (DataTable) group.getParent();
-        String type = group.getType();
-        DataTableRenderer renderer = ComponentUtils.getUnwrappedRenderer(
-                context,
-                DataTable.COMPONENT_FAMILY,
-                DataTable.DEFAULT_RENDERER);
-
-        if (type.equals("header") || type.equals("frozenHeader") || type.equals("scrollableHeader")) {
-            renderer.encodeColumnHeader(context, table, column);
+        
+        if(group.getParent() instanceof DataTable) {
+        	encodeDataTable(context, (DataTable) group.getParent(), column, group);
         }
-        else if (type.equals("footer") || type.equals("frozenFooter") || type.equals("scrollableFooter")) {
-            renderer.encodeColumnFooter(context, table, column);
+        else if(group.getParent() instanceof TreeTable) {
+        	encodeTreeTable(context, (TreeTable) group.getParent(), column, group);
+        }
+        else {
+        	throw new IllegalArgumentException("ColumnGroupHelperRenderer cannot be used for " + group.getParent().getClass());
         }
     }
 
@@ -64,4 +63,33 @@ public class ColumnGroupHelperRenderer implements HelperColumnRenderer {
         return (ColumnGroup) parent;
     }
 
+    private void encodeDataTable(FacesContext context, DataTable dataTable, Column column, ColumnGroup group) throws IOException {
+    	DataTableRenderer renderer = ComponentUtils.getUnwrappedRenderer(
+                context,
+                DataTable.COMPONENT_FAMILY,
+                DataTable.DEFAULT_RENDERER);
+
+        String type = group.getType();
+        if (type.equals("header") || type.equals("frozenHeader") || type.equals("scrollableHeader")) {
+            renderer.encodeColumnHeader(context, dataTable, column);
+        }
+        else if (type.equals("footer") || type.equals("frozenFooter") || type.equals("scrollableFooter")) {
+            renderer.encodeColumnFooter(context, dataTable, column);
+        }
+    }
+
+    private void encodeTreeTable(FacesContext context, TreeTable treeTable, Column column, ColumnGroup group) throws IOException {
+    	TreeTableRenderer renderer = ComponentUtils.getUnwrappedRenderer(
+                context,
+                TreeTable.COMPONENT_FAMILY,
+                TreeTable.DEFAULT_RENDERER);
+
+        String type = group.getType();
+        if (type.equals("header")) {
+            renderer.encodeColumnHeader(context, treeTable, column);
+        }
+        else if (type.equals("footer")) {
+            renderer.encodeColumnFooter(context, treeTable, column);
+        }
+    }
 }

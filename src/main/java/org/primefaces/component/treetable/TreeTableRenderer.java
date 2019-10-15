@@ -453,7 +453,7 @@ public class TreeTableRenderer extends DataRenderer {
         writer.writeAttribute("id", clientId + "_head", null);
 
         if (group != null && group.isRendered()) {
-            context.getAttributes().put(Constants.HELPER_RENDERER, "columnGroupForTreeTable");
+            context.getAttributes().put(Constants.HELPER_RENDERER, "columnGroup");
 
             for (UIComponent child : group.getChildren()) {
                 if (child.isRendered()) {
@@ -900,7 +900,7 @@ public class TreeTableRenderer extends DataRenderer {
         writer.startElement("tfoot", null);
 
         if (group != null && group.isRendered()) {
-            context.getAttributes().put(Constants.HELPER_RENDERER, "columnGroupForTreeTable");
+            context.getAttributes().put(Constants.HELPER_RENDERER, "columnGroup");
 
             for (UIComponent child : group.getChildren()) {
                 if (child.isRendered()) {
