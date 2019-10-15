@@ -41,15 +41,15 @@ public class ColumnGroupHelperRenderer implements HelperColumnRenderer {
     @Override
     public void encode(FacesContext context, Column column) throws IOException {
         ColumnGroup group = findGroup(column);
-        
-        if(group.getParent() instanceof DataTable) {
-        	encodeDataTable(context, (DataTable) group.getParent(), column, group);
+
+        if (group.getParent() instanceof DataTable) {
+            encodeDataTable(context, (DataTable) group.getParent(), column, group);
         }
-        else if(group.getParent() instanceof TreeTable) {
-        	encodeTreeTable(context, (TreeTable) group.getParent(), column, group);
+        else if (group.getParent() instanceof TreeTable) {
+            encodeTreeTable(context, (TreeTable) group.getParent(), column, group);
         }
         else {
-        	throw new IllegalArgumentException("ColumnGroupHelperRenderer cannot be used for " + group.getParent().getClass());
+            throw new IllegalArgumentException("ColumnGroupHelperRenderer cannot be used for " + group.getParent().getClass());
         }
     }
 
@@ -64,7 +64,7 @@ public class ColumnGroupHelperRenderer implements HelperColumnRenderer {
     }
 
     private void encodeDataTable(FacesContext context, DataTable dataTable, Column column, ColumnGroup group) throws IOException {
-    	DataTableRenderer renderer = ComponentUtils.getUnwrappedRenderer(
+        DataTableRenderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
                 DataTable.COMPONENT_FAMILY,
                 DataTable.DEFAULT_RENDERER);
@@ -79,7 +79,7 @@ public class ColumnGroupHelperRenderer implements HelperColumnRenderer {
     }
 
     private void encodeTreeTable(FacesContext context, TreeTable treeTable, Column column, ColumnGroup group) throws IOException {
-    	TreeTableRenderer renderer = ComponentUtils.getUnwrappedRenderer(
+        TreeTableRenderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
                 TreeTable.COMPONENT_FAMILY,
                 TreeTable.DEFAULT_RENDERER);
