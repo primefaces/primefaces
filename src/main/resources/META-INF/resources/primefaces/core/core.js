@@ -20,14 +20,6 @@
             }
         },
 
-        cleanWatermarks : function(){
-            $.watermark.hideAll();
-        },
-
-        showWatermarks : function(){
-            $.watermark.showAll();
-        },
-
         getWidgetById : function(id) {
 
             for (var widgetVar in PrimeFaces.widgets) {
@@ -116,20 +108,20 @@
 
         /**
          * Updates the Input to add style whether it contains data or not. Used particularly in Floating Labels.
-         * 
+         *
          * @param the text input to modify
          * @param the parent element of input
          */
         updateFilledState: function(input, parent) {
             var value = input.val();
-            
+
             if (typeof(value) == 'undefined') {
                 return;
             }
-            
+
             if (value.length) {
                 input.addClass('ui-state-filled');
-                
+
                 if(parent.is("span:not('.ui-float-label')")) {
                     parent.addClass('ui-inputwrapper-filled');
                 }
@@ -159,13 +151,13 @@
                 }
             ).focus(function() {
                 $(this).addClass('ui-state-focus');
-                
+
                 if(parent.is("span:not('.ui-float-label')")) {
                     parent.addClass('ui-inputwrapper-focus');
                 }
             }).blur(function() {
                 $(this).removeClass('ui-state-focus');
-                
+
                 if(input.hasClass('hasDatepicker')) {
                     setTimeout(function() {
                         updateFilledStateOnBlur();
@@ -637,14 +629,14 @@
             var ariaLocaleSettings = this.getLocaleSettings()['aria'];
             return (ariaLocaleSettings&&ariaLocaleSettings[key]) ? ariaLocaleSettings[key] : PrimeFaces.locales['en_US']['aria'][key];
         },
-        
+
         /**
          * Generate an RFC-4122 compliant UUID to be used to unique identifiers.
-         * 
+         *
          * https://www.ietf.org/rfc/rfc4122.txt
          */
         uuid: function() {
-            var lut = []; 
+            var lut = [];
             for (var i=0; i<256; i++) { lut[i] = (i<16?'0':'')+(i).toString(16); }
             var d0 = Math.random()*0xffffffff|0;
             var d1 = Math.random()*0xffffffff|0;
@@ -654,7 +646,7 @@
               lut[d1&0xff]+lut[d1>>8&0xff]+'-'+lut[d1>>16&0x0f|0x40]+lut[d1>>24&0xff]+'-'+
               lut[d2&0x3f|0x80]+lut[d2>>8&0xff]+'-'+lut[d2>>16&0xff]+lut[d2>>24&0xff]+
               lut[d3&0xff]+lut[d3>>8&0xff]+lut[d3>>16&0xff]+lut[d3>>24&0xff];
-        }, 
+        },
 
         zindex : 1000,
 

@@ -16,8 +16,6 @@ deleteCookie(name, cfg) | Deletes a cookie with given and and options.
 skinInput(input) | Progressively enhances an input element with theming.
 info(msg), debug(msg), warn(msg), error(msg) | Client side log API.
 changeTheme(theme) | Changes theme on the fly with no page refresh.
-cleanWatermarks() | Watermark component extension, cleans all watermarks on page before submitting the form.
-showWatermarks() | Shows watermarks on form.
 getWidgetById(clientid) | Returns the widget instance from the client id
 
 ## PrimeFaces Environment (PrimeFaces.env.*)

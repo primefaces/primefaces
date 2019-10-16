@@ -15,7 +15,7 @@ SplitButton displays a command by default and additional ones in an overlay.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -75,7 +75,7 @@ model | null | MenuModel | A menu model instance to create the items of splitBut
 filter | false | Boolean | Displays an input filter for the list. Default is false.
 filterMatchMode | null | String | Match mode for filtering, valid values are startsWith (default), contains, endsWith and custom.
 filterFunction | null | String | Client side function to use in custom filterMatchMode.
-filterPlaceholder | null | String | Watermark displayed in the filter input field before the user enters a value in an HTML5 browser.
+filterPlaceholder | null | String | Placeholder displayed in the filter input field before the user enters a value in an HTML5 browser.
 
 ## Getting started with SplitButton
 SplitButton usage is similar to a regular commandButton. Additional commands are placed inside
@@ -94,8 +94,8 @@ requests as well as regular navigation to an external url.
 ## Client Side API
 Widget: _PrimeFaces.widget.SplitButton_
 
-| Method | Params | Return Type | Description | 
-| --- | --- | --- | --- | 
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
 show() | - | void | Displays overlay.
 hide() | - | void | Hides overlay.
 
@@ -103,8 +103,8 @@ hide() | - | void | Hides overlay.
 SplitButton renders a container element which _style_ and _styleClass_ applies. Following is the list of
 structural style classes;
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 .ui-splitbutton | Container element.
 .ui-button | Button element
 .ui-splitbutton-menubutton | Dropdown button
