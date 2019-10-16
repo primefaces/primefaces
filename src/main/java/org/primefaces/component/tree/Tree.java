@@ -390,6 +390,7 @@ public class Tree extends TreeBase {
             newNode = new DefaultTreeNode(node.getData());
         }
 
+        newNode.setType(node.getType());
         newNode.setSelectable(node.isSelectable());
         newNode.setExpanded(node.isExpanded());
 
