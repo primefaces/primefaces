@@ -2,28 +2,28 @@
  * PrimeFaces Growl Widget
  */
 PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
-    
+
     init: function(cfg) {
         this.cfg = cfg;
-        this.id = this.cfg.id
+        this.id = this.cfg.id;
         this.jqId = PrimeFaces.escapeClientId(this.id);
 
         this.render();
-        
+
         this.removeScriptElement(this.id);
     },
-    
+
     //Override
     refresh: function(cfg) {
     	this.cfg = cfg;
         this.show(cfg.msgs);
-        
+
         this.removeScriptElement(this.id);
     },
-    
+
     show: function(msgs) {
-        var _self = this;
-        
+        var $this = this;
+
         this.jq.css('z-index', ++PrimeFaces.zindex);
 
         if(!this.cfg.keepAlive) {
@@ -32,14 +32,14 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
         }
 
         $.each(msgs, function(index, msg) {
-            _self.renderMessage(msg);
-        }); 
+            $this.renderMessage(msg);
+        });
     },
-    
+
     removeAll: function() {
         this.jq.children('div.ui-growl-item-container').remove();
     },
-    
+
     render: function() {
         //create container
         this.jq = $('<div id="' + this.id + '_container" class="ui-growl ui-widget" aria-live="polite"></div>');
@@ -48,7 +48,7 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
         //render messages
         this.show(this.cfg.msgs);
     },
-    
+
     renderMessage: function(msg) {
         var markup = '<div class="ui-growl-item-container ui-state-highlight ui-corner-all ui-helper-hidden ui-shadow ui-growl-' + msg.severity + '">';
         markup += '<div role="alert" class="ui-growl-item">';
@@ -66,7 +66,7 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
         var message = $(markup),
         summaryEL = message.find('span.ui-growl-title'),
         detailEL = summaryEL.next();
-        
+
         if(this.cfg.escape) {
             summaryEL.text(msg.summary);
             detailEL.text(msg.detail);
@@ -80,9 +80,9 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
 
         message.appendTo(this.jq).fadeIn();
     },
-    
+
     bindEvents: function(message) {
-        var _self = this,
+        var $this = this,
         sticky = this.cfg.sticky;
 
         message.mouseover(function() {
@@ -92,15 +92,25 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
             if(!msg.is(':animated')) {
                 msg.find('div.ui-growl-icon-close:first').show();
             }
+
+            // clear hide timeout on mouseover
+            if(!sticky) {
+                clearTimeout(msg.data('timeout'));
+            }
         })
-        .mouseout(function() {        
+        .mouseout(function() {
             //visuals
             $(this).find('div.ui-growl-icon-close:first').hide();
+
+            // setup hide timeout again after mouseout
+            if(!sticky) {
+                $this.setRemovalTimeout(message);
+            }
         });
 
         //remove message on click of close icon
         message.find('div.ui-growl-icon-close').click(function() {
-            _self.removeMessage(message);
+            $this.removeMessage(message);
 
             //clear timeout if removed manually
             if(!sticky) {
@@ -113,7 +123,7 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
             this.setRemovalTimeout(message);
         }
     },
-    
+
     removeMessage: function(message) {
         message.fadeTo('normal', 0, function() {
             message.slideUp('normal', 'easeInOutCirc', function() {
@@ -121,12 +131,12 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
             });
         });
     },
-    
+
     setRemovalTimeout: function(message) {
-        var _self = this;
+        var $this = this;
 
         var timeout = setTimeout(function() {
-            _self.removeMessage(message);
+            $this.removeMessage(message);
         }, this.cfg.life);
 
         message.data('timeout', timeout);
