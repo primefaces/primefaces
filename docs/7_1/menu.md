@@ -23,6 +23,7 @@
   - [Performance](/core/performance.md)
   - [Content Security Policy](/core/contentsecuritypolicy.md)
   - [Portlets](/core/portlets.md)
+  - [Third Party Libraries](/core/thirdpartylibs.md)
 
 - AJAX
 
