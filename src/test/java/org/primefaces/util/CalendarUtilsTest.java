@@ -23,21 +23,27 @@
  */
 package org.primefaces.util;
 
-import org.junit.*;
-import org.junit.rules.ExpectedException;
-import org.primefaces.component.datepicker.DatePicker;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import javax.el.ELContext;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.primefaces.component.datepicker.DatePicker;
 
 public class CalendarUtilsTest {
 
@@ -46,10 +52,8 @@ public class CalendarUtilsTest {
     private ExternalContext externalContext;
     private ELContext elContext;
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
 
-    @Before
+    @BeforeEach
     public void setup() {
         datePicker = mock(DatePicker.class);
         when(datePicker.getSelectionMode()).thenReturn("single");
@@ -61,7 +65,7 @@ public class CalendarUtilsTest {
         when(context.getELContext()).thenReturn(elContext);
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         datePicker = null;
         context = null;

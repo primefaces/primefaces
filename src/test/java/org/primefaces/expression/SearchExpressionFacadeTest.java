@@ -23,12 +23,13 @@
  */
 package org.primefaces.expression;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.ArrayList;
 import org.primefaces.mock.FacesContextMock;
 import org.primefaces.mock.TestVisitContextFactory;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,16 +46,16 @@ import javax.faces.component.UIPanel;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.primefaces.component.dialog.Dialog;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.expression.SearchExpressionFacade;
 
 public class SearchExpressionFacadeTest {
 
-    @Before
+    @BeforeEach
     public void setup() {
         Map<Object, Object> attributes = new HashMap<Object, Object>();
         attributes.put(UINamingContainer.SEPARATOR_CHAR_PARAM_NAME, ':');
@@ -126,7 +127,7 @@ public class SearchExpressionFacadeTest {
         UIComponent source = new UICommand();
         innerContainer.getChildren().add(source);
 
-        assertSame("Failed", innerContainer, resolveComponent(source, "@parent"));
+        assertSame(innerContainer, resolveComponent(source, "@parent"));
     }
 
     @Test
@@ -149,7 +150,7 @@ public class SearchExpressionFacadeTest {
         UIComponent source = new UICommand();
         innerContainer.getChildren().add(source);
 
-        assertSame("Failed", outerContainer, resolveComponent(source, "@parent:@parent"));
+        assertSame(outerContainer, resolveComponent(source, "@parent:@parent"), "Failed");
     }
 
     @Test
@@ -172,7 +173,7 @@ public class SearchExpressionFacadeTest {
         UIComponent source = new UICommand();
         innerContainer.getChildren().add(source);
 
-        assertSame("Failed", form, resolveComponent(source, "@form"));
+        assertSame(form, resolveComponent(source, "@form"));
     }
 
     @Test
@@ -195,7 +196,7 @@ public class SearchExpressionFacadeTest {
         UIComponent source = new UICommand();
         innerContainer.getChildren().add(source);
 
-        assertSame("Failed", root, resolveComponent(source, "@form:@parent"));
+        assertSame(root, resolveComponent(source, "@form:@parent"));
     }
 
     @Test
@@ -218,7 +219,7 @@ public class SearchExpressionFacadeTest {
         UIComponent source = new UICommand();
         innerContainer.getChildren().add(source);
 
-        assertSame("Failed", root, resolveComponent(source, "@all"));
+        assertSame(root, resolveComponent(source, "@all"));
     }
 
     @Test
@@ -241,7 +242,7 @@ public class SearchExpressionFacadeTest {
         UIComponent source = new UICommand();
         innerContainer.getChildren().add(source);
 
-        assertSame("Failed", source, resolveComponent(source, "@this"));
+        assertSame(source, resolveComponent(source, "@this"));
     }
 
     @Test
@@ -264,7 +265,7 @@ public class SearchExpressionFacadeTest {
         UIComponent source = new UICommand();
         innerContainer.getChildren().add(source);
 
-        assertSame("Failed", innerContainer, resolveComponent(source, "@this:@parent"));
+        assertSame(innerContainer, resolveComponent(source, "@this:@parent"));
     }
 
     @Test
@@ -287,7 +288,7 @@ public class SearchExpressionFacadeTest {
         UIComponent source = new UICommand();
         innerContainer.getChildren().add(source);
 
-        assertSame("Failed", innerContainer, resolveComponent(source, "@namingcontainer"));
+        assertSame(innerContainer, resolveComponent(source, "@namingcontainer"));
     }
 
     @Test
@@ -310,7 +311,7 @@ public class SearchExpressionFacadeTest {
         UIComponent source = new UICommand();
         innerContainer.getChildren().add(source);
 
-        assertSame("Failed", outerContainer, resolveComponent(source, "@namingcontainer:@namingcontainer"));
+        assertSame(outerContainer, resolveComponent(source, "@namingcontainer:@namingcontainer"));
     }
 
     @Test
@@ -333,7 +334,7 @@ public class SearchExpressionFacadeTest {
         UIComponent source = new UICommand();
         innerContainer.getChildren().add(source);
 
-        assertSame("Failed", outerContainer, resolveComponent(source, "@namingcontainer:@parent"));
+        assertSame(outerContainer, resolveComponent(source, "@namingcontainer:@parent"));
     }
 
     @Test
@@ -356,7 +357,7 @@ public class SearchExpressionFacadeTest {
         UIComponent source = new UICommand();
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", null, resolveComponent(source, "@none"));
+        assertEquals(null, resolveComponent(source, "@none"));
     }
 
     @Test
@@ -384,7 +385,7 @@ public class SearchExpressionFacadeTest {
         source.setId("source");
         innerContainer.getChildren().add(source);
 
-        assertSame("Failed", source, resolveComponent(source, " :form:outerContainer:innerContainer:source "));
+        assertSame(source, resolveComponent(source, " :form:outerContainer:innerContainer:source "));
     }
 
     @Test
@@ -412,7 +413,7 @@ public class SearchExpressionFacadeTest {
         source.setId("source");
         innerContainer.getChildren().add(source);
 
-        assertSame("Failed", component, resolveComponent(source, " other "));
+        assertSame(component, resolveComponent(source, " other "));
     }
 
     @Test
@@ -441,7 +442,7 @@ public class SearchExpressionFacadeTest {
         source.setId("source");
         innerContainer.getChildren().add(source);
 
-        assertSame("Failed", root, resolveComponent(source, " :form:@parent "));
+        assertSame(root, resolveComponent(source, " :form:@parent "));
     }
 
     @Test
@@ -470,8 +471,8 @@ public class SearchExpressionFacadeTest {
         source.setId("source");
         innerContainer.getChildren().add(source);
 
-        assertSame("Failed", component, resolveComponent(source, " @parent:@child(0) "));
-        assertSame("Failed", source, resolveComponent(source, " @parent:@child(1) "));
+        assertSame(component, resolveComponent(source, " @parent:@child(0) "));
+        assertSame(source, resolveComponent(source, " @parent:@child(1) "));
     }
 
     @Test
@@ -500,8 +501,8 @@ public class SearchExpressionFacadeTest {
         source.setId("source");
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", "form:outerContainer:innerContainer:other", resolveClientId(source, " @parent:@child(0) "));
-        assertEquals("Failed", "form:outerContainer:innerContainer:source", resolveClientId(source, " @parent:@child(1) "));
+        assertEquals("form:outerContainer:innerContainer:other", resolveClientId(source, " @parent:@child(0) "));
+        assertEquals("form:outerContainer:innerContainer:source", resolveClientId(source, " @parent:@child(1) "));
     }
 
     @Test
@@ -530,7 +531,7 @@ public class SearchExpressionFacadeTest {
         source.setId("source");
         innerContainer.getChildren().add(source);
 
-        assertSame("Failed", form, resolveComponent(source, " :form:outerContainer:@namingcontainer "));
+        assertSame(form, resolveComponent(source, " :form:outerContainer:@namingcontainer "));
     }
 
     @Test
@@ -559,7 +560,7 @@ public class SearchExpressionFacadeTest {
         source.setId("source");
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", root, resolveComponent(source, " :form:outerContainer:@namingcontainer:@parent "));
+        assertEquals(root, resolveComponent(source, " :form:outerContainer:@namingcontainer:@parent "));
     }
 
     @Test
@@ -582,7 +583,7 @@ public class SearchExpressionFacadeTest {
         UIComponent source = new UICommand();
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", "@none", resolveClientId(source, " @none", SearchExpressionHint.RESOLVE_CLIENT_SIDE));
+        assertEquals("@none", resolveClientId(source, " @none", SearchExpressionHint.RESOLVE_CLIENT_SIDE));
     }
 
     @Test
@@ -605,7 +606,7 @@ public class SearchExpressionFacadeTest {
         UIComponent source = new UICommand();
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", "@(.myClass, div)", resolveClientId(source, "@(.myClass, div) "));
+        assertEquals("@(.myClass, div)", resolveClientId(source, "@(.myClass, div) "));
     }
 
     @Test
@@ -628,7 +629,7 @@ public class SearchExpressionFacadeTest {
         UIComponent source = new UICommand();
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", "@all", resolveClientId(source, "@all", SearchExpressionHint.RESOLVE_CLIENT_SIDE));
+        assertEquals("@all", resolveClientId(source, "@all", SearchExpressionHint.RESOLVE_CLIENT_SIDE));
     }
 
     @Test
@@ -639,7 +640,7 @@ public class SearchExpressionFacadeTest {
 
         try {
             resolveComponent(source, " @widgetVar(myForm:myDiv):asd");
-            Assert.fail("This should actually raise an exception");
+            Assertions.fail("This should actually raise an exception");
         }
         catch (Exception e) {
             assertEquals(FacesException.class, e.getClass());
@@ -647,7 +648,7 @@ public class SearchExpressionFacadeTest {
 
         try {
             resolveComponent(source, " @none:@all:asd");
-            Assert.fail("This should actually raise an exception");
+            Assertions.fail("This should actually raise an exception");
         }
         catch (Exception e) {
             assertEquals(FacesException.class, e.getClass());
@@ -662,7 +663,7 @@ public class SearchExpressionFacadeTest {
 
         try {
             resolveClientId(source, " @none:@all:asd");
-            Assert.fail("This should actually raise an exception");
+            Assertions.fail("This should actually raise an exception");
         }
         catch (Exception e) {
             assertEquals(FacesException.class, e.getClass());
@@ -692,7 +693,7 @@ public class SearchExpressionFacadeTest {
         UIComponent source = new UICommand();
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", "form:outerContainer:innerContainer", resolveClientId(source, " @parent "));
+        assertEquals("form:outerContainer:innerContainer", resolveClientId(source, " @parent "));
     }
 
     @Test
@@ -719,7 +720,7 @@ public class SearchExpressionFacadeTest {
         source.setId("source");
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", "form:outerContainer:innerContainer:source", resolveClientId(source, " @this "));
+        assertEquals("form:outerContainer:innerContainer:source", resolveClientId(source, " @this "));
     }
 
     @Test
@@ -746,7 +747,7 @@ public class SearchExpressionFacadeTest {
         source.setId("source");
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", "form:outerContainer:innerContainer", resolveClientId(source, " @namingcontainer "));
+        assertEquals("form:outerContainer:innerContainer", resolveClientId(source, " @namingcontainer "));
     }
 
     @Test
@@ -773,7 +774,7 @@ public class SearchExpressionFacadeTest {
         source.setId("source");
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", "form", resolveClientId(source, " @form "));
+        assertEquals("form", resolveClientId(source, " @form "));
     }
 
     @Test
@@ -800,7 +801,7 @@ public class SearchExpressionFacadeTest {
         UIComponent source = new UICommand();
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", "form", resolveClientId(source, " :form "));
+        assertEquals("form", resolveClientId(source, " :form "));
     }
 
     @Test
@@ -828,7 +829,7 @@ public class SearchExpressionFacadeTest {
         source.setId("source");
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", "form:outerContainer:innerContainer:source", resolveClientId(source, " :form:outerContainer:innerContainer:source "));
+        assertEquals("form:outerContainer:innerContainer:source", resolveClientId(source, " :form:outerContainer:innerContainer:source "));
     }
 
     @Test
@@ -856,7 +857,7 @@ public class SearchExpressionFacadeTest {
         source.setId("source");
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", "form:outerContainer:innerContainer:other", resolveClientId(source, " other "));
+        assertEquals("form:outerContainer:innerContainer:other", resolveClientId(source, " other "));
     }
 
     @Test
@@ -885,7 +886,7 @@ public class SearchExpressionFacadeTest {
         source.setId("source");
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", "root", resolveClientId(source, " :form:@parent "));
+        assertEquals("root", resolveClientId(source, " :form:@parent "));
     }
 
     @Test
@@ -914,7 +915,7 @@ public class SearchExpressionFacadeTest {
         source.setId("source");
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", "form", resolveClientId(source, " :form:outerContainer:@namingcontainer "));
+        assertEquals("form", resolveClientId(source, " :form:outerContainer:@namingcontainer "));
     }
 
     @Test
@@ -943,7 +944,7 @@ public class SearchExpressionFacadeTest {
         source.setId("source");
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", "root", resolveClientId(source, " :form:outerContainer:@namingcontainer:@parent "));
+        assertEquals("root", resolveClientId(source, " :form:outerContainer:@namingcontainer:@parent "));
     }
 
     @Test
@@ -954,7 +955,7 @@ public class SearchExpressionFacadeTest {
 
         try {
             resolveComponent(source, " :@form:asd");
-            Assert.fail("This should actually raise an exception");
+            Assertions.fail("This should actually raise an exception");
         }
         catch (Exception e) {
             assertEquals(FacesException.class, e.getClass());
@@ -969,7 +970,7 @@ public class SearchExpressionFacadeTest {
 
         try {
             resolveClientId(source, " :@form:asd");
-            Assert.fail("This should actually raise an exception");
+            Assertions.fail("This should actually raise an exception");
         }
         catch (Exception e) {
             assertEquals(FacesException.class, e.getClass());
@@ -1001,7 +1002,7 @@ public class SearchExpressionFacadeTest {
         source.setId("source");
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", "form:outerContainer:innerContainer:other form:outerContainer:innerContainer", resolveClientIds(source, " other @parent"));
+        assertEquals("form:outerContainer:innerContainer:other form:outerContainer:innerContainer", resolveClientIds(source, " other @parent"));
     }
 
     @Test
@@ -1029,7 +1030,7 @@ public class SearchExpressionFacadeTest {
         source.setId("source");
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", "form:outerContainer:innerContainer:other form:outerContainer", resolveClientIds(source, " other @parent:@parent"));
+        assertEquals("form:outerContainer:innerContainer:other form:outerContainer", resolveClientIds(source, " other @parent:@parent"));
     }
 
     @Test
@@ -1057,7 +1058,7 @@ public class SearchExpressionFacadeTest {
         source.setId("source");
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", "form:outerContainer:innerContainer:other form:outerContainer:innerContainer", resolveClientIds(source, " other @this:@parent"));
+        assertEquals("form:outerContainer:innerContainer:other form:outerContainer:innerContainer", resolveClientIds(source, " other @this:@parent"));
     }
 
     @Test
@@ -1086,7 +1087,7 @@ public class SearchExpressionFacadeTest {
         source.setId("source");
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", "form:outerContainer:innerContainer:other @(.myClass, .myClass2) @widgetVar(test) root @(.myClass :not:(select))",
+        assertEquals("form:outerContainer:innerContainer:other @(.myClass, .myClass2) @widgetVar(test) root @(.myClass :not:(select))",
                 resolveClientIds(source, " other,@(.myClass, .myClass2) @widgetVar(test),@form:@parent @(.myClass :not:(select))"));
     }
 
@@ -1116,9 +1117,9 @@ public class SearchExpressionFacadeTest {
         innerContainer.getChildren().add(source);
 
         List<UIComponent> resolvedComponents = resolveComponents(source, " other @parent");
-        assertTrue("Failed", resolvedComponents.contains(component));
-        assertTrue("Failed", resolvedComponents.contains(innerContainer));
-        assertEquals("Failed", 2, resolvedComponents.size());
+        assertTrue(resolvedComponents.contains(component));
+        assertTrue(resolvedComponents.contains(innerContainer));
+        assertEquals(2, resolvedComponents.size());
     }
 
     @Test
@@ -1147,9 +1148,9 @@ public class SearchExpressionFacadeTest {
         innerContainer.getChildren().add(source);
 
         List<UIComponent> resolvedComponents = resolveComponents(source, " other @parent:@parent ");
-        assertTrue("Failed", resolvedComponents.contains(component));
-        assertTrue("Failed", resolvedComponents.contains(outerContainer));
-        assertEquals("Failed", 2, resolvedComponents.size());
+        assertTrue(resolvedComponents.contains(component));
+        assertTrue(resolvedComponents.contains(outerContainer));
+        assertEquals(2, resolvedComponents.size());
     }
 
     @Test
@@ -1178,9 +1179,9 @@ public class SearchExpressionFacadeTest {
         innerContainer.getChildren().add(source);
 
         List<UIComponent> resolvedComponents = resolveComponents(source, " other,@this:@parent ");
-        assertTrue("Failed", resolvedComponents.contains(component));
-        assertTrue("Failed", resolvedComponents.contains(innerContainer));
-        assertEquals("Failed", 2, resolvedComponents.size());
+        assertTrue(resolvedComponents.contains(component));
+        assertTrue(resolvedComponents.contains(innerContainer));
+        assertEquals(2, resolvedComponents.size());
     }
 
     @Test
@@ -1209,7 +1210,7 @@ public class SearchExpressionFacadeTest {
 
         try {
             resolveClientIds(source, " :@form:asd @none @all ");
-            Assert.fail("This should actually raise an exception");
+            Assertions.fail("This should actually raise an exception");
         }
         catch (Exception e) {
             assertEquals(FacesException.class, e.getClass());
@@ -1275,12 +1276,12 @@ public class SearchExpressionFacadeTest {
         command3.setId("command3");
         root.getChildren().add(command3);
 
-        assertSame("Failed", command2, resolveComponent(command1, " @next "));
-        assertSame("Failed", command3, resolveComponent(command2, " @next "));
+        assertSame(command2, resolveComponent(command1, " @next "));
+        assertSame(command3, resolveComponent(command2, " @next "));
 
         try {
             resolveComponent(command3, " @next");
-            Assert.fail("This should actually raise an exception");
+            Assertions.fail("This should actually raise an exception");
         }
         catch (Exception e) {
             assertEquals(ComponentNotFoundException.class, e.getClass());
@@ -1305,11 +1306,11 @@ public class SearchExpressionFacadeTest {
         command3.setId("command3");
         root.getChildren().add(command3);
 
-        assertSame("Failed", command3, resolveComponent(command1, " @next:@next "));
+        assertSame(command3, resolveComponent(command1, " @next:@next "));
 
         try {
             resolveComponent(command2, " @next:@next");
-            Assert.fail("This should actually raise an exception");
+            Assertions.fail("This should actually raise an exception");
         }
         catch (Exception e) {
             assertEquals(FacesException.class, e.getClass());
@@ -1317,7 +1318,7 @@ public class SearchExpressionFacadeTest {
 
         try {
             resolveComponent(command3, " @next:@next");
-            Assert.fail("This should actually raise an exception");
+            Assertions.fail("This should actually raise an exception");
         }
         catch (Exception e) {
             assertEquals(FacesException.class, e.getClass());
@@ -1342,12 +1343,12 @@ public class SearchExpressionFacadeTest {
         command3.setId("command3");
         root.getChildren().add(command3);
 
-        assertSame("Failed", command1, resolveComponent(command2, " @previous "));
-        assertSame("Failed", command2, resolveComponent(command3, " @previous "));
+        assertSame(command1, resolveComponent(command2, " @previous "));
+        assertSame(command2, resolveComponent(command3, " @previous "));
 
         try {
             resolveComponent(command1, " @previous");
-            Assert.fail("This should actually raise an exception");
+            Assertions.fail("This should actually raise an exception");
         }
         catch (Exception e) {
             assertEquals(ComponentNotFoundException.class, e.getClass());
@@ -1372,11 +1373,11 @@ public class SearchExpressionFacadeTest {
         command3.setId("command3");
         root.getChildren().add(command3);
 
-        assertSame("Failed", command1, resolveComponent(command3, " @previous:@previous "));
+        assertSame(command1, resolveComponent(command3, " @previous:@previous "));
 
         try {
             resolveComponent(command2, " @previous:@previous");
-            Assert.fail("This should actually raise an exception");
+            Assertions.fail("This should actually raise an exception");
         }
         catch (Exception e) {
             assertEquals(FacesException.class, e.getClass());
@@ -1384,7 +1385,7 @@ public class SearchExpressionFacadeTest {
 
         try {
             resolveComponent(command1, " @previous:@previous");
-            Assert.fail("This should actually raise an exception");
+            Assertions.fail("This should actually raise an exception");
         }
         catch (Exception e) {
             assertEquals(FacesException.class, e.getClass());
@@ -1409,7 +1410,7 @@ public class SearchExpressionFacadeTest {
         command3.setId("command3");
         root.getChildren().add(command3);
 
-        assertSame("Failed", command3, resolveComponent(command1, " @form:@child(0):@next:@next "));
+        assertSame(command3, resolveComponent(command1, " @form:@child(0):@next:@next "));
     }
 
     @Test
@@ -1426,8 +1427,8 @@ public class SearchExpressionFacadeTest {
         root.getChildren().add(command2);
 
         try {
-            assertSame("Failed", root, resolveComponent(command1, " command1:@parent:command3 "));
-            Assert.fail("This should actually raise an exception");
+            assertSame(root, resolveComponent(command1, " command1:@parent:command3 "));
+            Assertions.fail("This should actually raise an exception");
         }
         catch (Exception e) {
             assertEquals(FacesException.class, e.getClass());
@@ -1447,7 +1448,7 @@ public class SearchExpressionFacadeTest {
         command2.setId("command2");
         root.getChildren().add(command2);
 
-        assertSame("Failed", null,
+        assertSame(null,
                 resolveComponent(command1, " command3 ", SearchExpressionHint.IGNORE_NO_RESULT));
     }
 
@@ -1480,7 +1481,7 @@ public class SearchExpressionFacadeTest {
         input2.setWidgetVar("myInput_Widget2");
         outerContainer.getChildren().add(input2);
 
-        assertEquals("Failed", input2, resolveComponent(source, " @widgetVar(myInput_Widget):@next"));
+        assertEquals(input2, resolveComponent(source, " @widgetVar(myInput_Widget):@next"));
     }
 
     @Test
@@ -1513,7 +1514,7 @@ public class SearchExpressionFacadeTest {
         input2.setWidgetVar("myInput_Widget2");
         outerContainer.getChildren().add(input2);
 
-        assertEquals("Failed", input2.getClientId(), resolveClientId(source, " @widgetVar(myInput_Widget):@next"));
+        assertEquals(input2.getClientId(), resolveClientId(source, " @widgetVar(myInput_Widget):@next"));
     }
 
     @Test
@@ -1541,7 +1542,7 @@ public class SearchExpressionFacadeTest {
         input.setWidgetVar("myInput_Widget");
         outerContainer.getChildren().add(input);
 
-        assertEquals("Failed", input, resolveComponent(source, " @widgetVar(myInput_Widget)"));
+        assertEquals(input, resolveComponent(source, " @widgetVar(myInput_Widget)"));
     }
 
     @Test
@@ -1570,7 +1571,7 @@ public class SearchExpressionFacadeTest {
         source.setId("source");
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", "outerContainer:innerContainer:source", resolveClientId(source, " :form:outerContainer:innerContainer:source "));
+        assertEquals("outerContainer:innerContainer:source", resolveClientId(source, " :form:outerContainer:innerContainer:source "));
     }
 
     @Test
@@ -1599,7 +1600,7 @@ public class SearchExpressionFacadeTest {
         source.setId("source");
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", "outerContainer:innerContainer:source", resolveClientId(source, " outerContainer:innerContainer:source "));
+        assertEquals("outerContainer:innerContainer:source", resolveClientId(source, " outerContainer:innerContainer:source "));
     }
 
     @Test
@@ -1628,7 +1629,7 @@ public class SearchExpressionFacadeTest {
         source.setId("source");
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", "outerContainer:innerContainer:source",
+        assertEquals("outerContainer:innerContainer:source",
                 resolveClientId(source, " outerContainer:innerContainer:source "));
     }
 
@@ -1851,7 +1852,7 @@ public class SearchExpressionFacadeTest {
         form.setId("form");
         root.getChildren().add(form);
 
-        Assert.assertEquals(FacesContext.getCurrentInstance().getViewRoot(), resolveComponent(form, " @root "));
+        Assertions.assertEquals(FacesContext.getCurrentInstance().getViewRoot(), resolveComponent(form, " @root "));
     }
 
     @Test
@@ -1900,7 +1901,7 @@ public class SearchExpressionFacadeTest {
         UIComponent source = new UICommand();
         innerContainer.getChildren().add(source);
 
-        assertEquals("Failed", "@all", resolveClientId(source, "@root", SearchExpressionHint.RESOLVE_CLIENT_SIDE));
+        assertEquals("@all", resolveClientId(source, "@root", SearchExpressionHint.RESOLVE_CLIENT_SIDE));
     }
 
     @Test

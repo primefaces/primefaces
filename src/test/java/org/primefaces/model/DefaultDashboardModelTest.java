@@ -23,11 +23,11 @@
  */
 package org.primefaces.model;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class DefaultDashboardModelTest {
 
@@ -78,7 +78,7 @@ public class DefaultDashboardModelTest {
 		assertEquals(3, column3.getWidgetCount());
 	}
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		model = new DefaultDashboardModel();
 		DefaultDashboardColumn column1 = new DefaultDashboardColumn();
@@ -98,7 +98,7 @@ public class DefaultDashboardModelTest {
 		model.addColumn(column3);
 	}
 
-	@After
+	@AfterEach
 	public void teardown() {
 		model = null;
 	}

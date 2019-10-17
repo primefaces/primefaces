@@ -149,8 +149,8 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         UICalendar calendar = (UICalendar) component;
 
         //Delegate to user supplied converter if defined
-        Class type = resolveDateType(context, calendar);
-        Converter converter = resolveConverter(context, calendar, type);
+        Class<?> type = resolveDateType(context, calendar);
+        Converter<?> converter = resolveConverter(context, calendar, type);
         if (converter != null) {
             try {
                 return converter.getAsObject(context, calendar, submittedValue);
@@ -187,7 +187,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         }
     }
 
-    protected Temporal convertToJava8DateTimeAPI(FacesContext context, UICalendar calendar, Class type, String submittedValue) {
+    protected Temporal convertToJava8DateTimeAPI(FacesContext context, UICalendar calendar, Class<?> type, String submittedValue) {
         if (type == LocalDate.class || type == YearMonth.class) {
             DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                     .parseCaseInsensitive()
@@ -263,9 +263,9 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         return new ConverterException(message);
     }
 
-    protected Class resolveDateType(FacesContext context, UICalendar calendar) {
+    protected Class<?> resolveDateType(FacesContext context, UICalendar calendar) {
         ValueExpression ve = calendar.getValueExpression("value");
-        Class type = ve.getType(context.getELContext());
+        Class<?> type = ve.getType(context.getELContext());
 
         // If type could not be determined via value-expression try it this way. (Very unlikely, this happens in real world.)
         if (type == null) {
@@ -299,9 +299,9 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         return type;
     }
 
-    protected Converter resolveConverter(FacesContext context, UICalendar calendar, Class type) {
+    protected Converter<?> resolveConverter(FacesContext context, UICalendar calendar, Class<?> type) {
         //Delegate to user supplied converter if defined
-        Converter converter = calendar.getConverter();
+        Converter<?> converter = calendar.getConverter();
         if (converter != null) {
             return converter;
         }

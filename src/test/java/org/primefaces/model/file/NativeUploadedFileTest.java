@@ -23,17 +23,15 @@
  */
 package org.primefaces.model.file;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import javax.faces.FacesException;
 
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 
 public class NativeUploadedFileTest {
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     NativeUploadedFile file = new NativeUploadedFile();
 
@@ -46,7 +44,7 @@ public class NativeUploadedFileTest {
         final String output = file.getContentDispositionFileName(input);
 
         // Assert
-        Assert.assertEquals("hello.png", output);
+        Assertions.assertEquals("hello.png", output);
     }
 
     @Test
@@ -58,7 +56,7 @@ public class NativeUploadedFileTest {
         final String output = file.getContentDispositionFileName(input);
 
         // Assert
-        Assert.assertEquals("Test;123.txt", output);
+        Assertions.assertEquals("Test;123.txt", output);
     }
 
     @Test
@@ -70,7 +68,7 @@ public class NativeUploadedFileTest {
         final String output = file.getContentDispositionFileName(input);
 
         // Assert
-        Assert.assertEquals("Test; \"123.txt", output);
+        Assertions.assertEquals("Test; \"123.txt", output);
     }
 
     @Test
@@ -82,7 +80,7 @@ public class NativeUploadedFileTest {
         final String output = file.getContentDispositionFileName(input);
 
         // Assert
-        Assert.assertEquals("Test;123.txt", output);
+        Assertions.assertEquals("Test;123.txt", output);
     }
 
     @Test
@@ -94,7 +92,7 @@ public class NativeUploadedFileTest {
         final String output = file.getContentDispositionFileName(input);
 
         // Assert
-        Assert.assertEquals("test%.jpg", output);
+        Assertions.assertEquals("test%.jpg", output);
     }
 
     @Test
@@ -106,7 +104,7 @@ public class NativeUploadedFileTest {
         final String output = file.getContentDispositionFileName(input);
 
         // Assert
-        Assert.assertEquals("test+.jpg", output);
+        Assertions.assertEquals("test+.jpg", output);
     }
 
     @Test
@@ -118,7 +116,7 @@ public class NativeUploadedFileTest {
         final String output = file.getContentDispositionFileName(input);
 
         // Assert
-        Assert.assertEquals("hello\\\\.png", output);
+        Assertions.assertEquals("hello\\\\.png", output);
     }
 
     @Test
@@ -130,7 +128,7 @@ public class NativeUploadedFileTest {
         final String output = file.getContentDispositionFileName(input);
 
         // Assert
-        Assert.assertEquals("\\\\", output);
+        Assertions.assertEquals("\\\\", output);
     }
 
     @Test
@@ -142,7 +140,7 @@ public class NativeUploadedFileTest {
         final String output = file.getContentDispositionFileName(input);
 
         // Assert
-        Assert.assertEquals("\\", output);
+        Assertions.assertEquals("\\", output);
     }
 
     @Test
@@ -154,7 +152,7 @@ public class NativeUploadedFileTest {
         final String output = file.getContentDispositionFileName(input);
 
         // Assert
-        Assert.assertEquals("\"\"", output);
+        Assertions.assertEquals("\"\"", output);
     }
 
     @Test
@@ -166,7 +164,7 @@ public class NativeUploadedFileTest {
         final String output = file.getContentDispositionFileName(input);
 
         // Assert
-        Assert.assertEquals("hello\t\b\t\n.png", output);
+        Assertions.assertEquals("hello\t\b\t\n.png", output);
     }
 
     @Test
@@ -178,34 +176,36 @@ public class NativeUploadedFileTest {
         final String output = file.getContentDispositionFileName(input);
 
         // Assert
-        Assert.assertNull(output);
+        Assertions.assertNull(output);
     }
 
     @Test
     public void testNoEquals() {
         // Arrange
         final String input = "form-data; name=\"XXX:XXX\"; filename\"hello.png\"";
-
-        thrown.expect(FacesException.class);
-        thrown.expectMessage("Content-Disposition filename property did not have '='.");
-
+        
         // Act
-        file.getContentDispositionFileName(input);
+        FacesException thrown = Assertions.assertThrows(FacesException.class, () -> {
+            file.getContentDispositionFileName(input);
+        });
+        
 
         // Assert (expected exception)
+        assertEquals("Content-Disposition filename property did not have '='.", thrown.getMessage());
     }
 
     @Test
     public void testNoStartQuote() {
         // Arrange
         final String input = "form-data; name=\"XXX:XXX\"; filename=hello.png\"";
-        thrown.expect(FacesException.class);
-        thrown.expectMessage("Content-Disposition filename property was not quoted.");
 
         // Act
-        file.getContentDispositionFileName(input);
+        FacesException thrown = Assertions.assertThrows(FacesException.class, () -> {
+            file.getContentDispositionFileName(input);
+        });
 
         // Assert (expected exception)
+        assertEquals("Content-Disposition filename property was not quoted.", thrown.getMessage());
     }
 
 }

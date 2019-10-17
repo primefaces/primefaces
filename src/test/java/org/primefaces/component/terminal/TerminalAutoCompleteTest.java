@@ -23,14 +23,17 @@
  */
 package org.primefaces.component.terminal;
 
-import static org.junit.Assert.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+
 import org.primefaces.model.terminal.TerminalCommand;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.primefaces.model.terminal.TerminalAutoCompleteMatches;
 import org.primefaces.model.terminal.TerminalAutoCompleteModel;
 
@@ -39,7 +42,7 @@ public class TerminalAutoCompleteTest {
     private Terminal terminal;
     private TerminalAutoCompleteModel model;
 
-    @Before
+    @BeforeEach
     public void setup() {
         terminal = new Terminal();
 
@@ -56,7 +59,7 @@ public class TerminalAutoCompleteTest {
         git.addArgument("push").addArgument("origin").addArgument("master");
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         terminal = null;
         model = null;

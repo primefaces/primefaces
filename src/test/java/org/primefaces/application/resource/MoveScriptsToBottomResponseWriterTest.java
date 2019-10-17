@@ -23,9 +23,10 @@
  */
 package org.primefaces.application.resource;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
 
 import javax.faces.context.ResponseWriter;
@@ -46,7 +47,7 @@ public class MoveScriptsToBottomResponseWriterTest {
     private MoveScriptsToBottomState state;
     private ResponseWriter wrappedWriter;
 
-    @Before
+    @BeforeEach
     public void setup() {
         wrappedWriter = mock(ResponseWriter.class);
         state = new MoveScriptsToBottomState();
@@ -55,8 +56,8 @@ public class MoveScriptsToBottomResponseWriterTest {
 
     @Test
     public void testNoScripts() throws IOException {
-        Assert.assertTrue(state.getInlines().isEmpty());
-        Assert.assertTrue(state.getIncludes().isEmpty());
+        Assertions.assertTrue(state.getInlines().isEmpty());
+        Assertions.assertTrue(state.getIncludes().isEmpty());
 
         writer.startElement("style", null);
         verify(wrappedWriter).startElement("style", null);
@@ -67,8 +68,8 @@ public class MoveScriptsToBottomResponseWriterTest {
         writer.endElement("style");
         verify(wrappedWriter).endElement("style");
 
-        Assert.assertTrue(state.getInlines().isEmpty());
-        Assert.assertTrue(state.getIncludes().isEmpty());
+        Assertions.assertTrue(state.getInlines().isEmpty());
+        Assertions.assertTrue(state.getIncludes().isEmpty());
     }
 
     @Test
@@ -86,9 +87,9 @@ public class MoveScriptsToBottomResponseWriterTest {
         writer.endElement("script");
         verify(wrappedWriter, never()).endElement("script");
 
-        Assert.assertEquals(1, state.getInlines().get("text/javascript").size());
-        Assert.assertTrue(state.getIncludes().isEmpty());
-        Assert.assertEquals(0, state.getSavedInlineTags());
+        Assertions.assertEquals(1, state.getInlines().get("text/javascript").size());
+        Assertions.assertTrue(state.getIncludes().isEmpty());
+        Assertions.assertEquals(0, state.getSavedInlineTags());
 
         writer.endElement("body");
         verify(wrappedWriter).endElement("body");
@@ -114,9 +115,9 @@ public class MoveScriptsToBottomResponseWriterTest {
         writer.writeText("script2", null);
         writer.endElement("script");
 
-        Assert.assertEquals(2, state.getInlines().get("text/javascript").size());
-        Assert.assertTrue(state.getIncludes().isEmpty());
-        Assert.assertEquals(1, state.getSavedInlineTags());
+        Assertions.assertEquals(2, state.getInlines().get("text/javascript").size());
+        Assertions.assertTrue(state.getIncludes().isEmpty());
+        Assertions.assertEquals(1, state.getSavedInlineTags());
 
         writer.endElement("body");
 
@@ -215,8 +216,8 @@ public class MoveScriptsToBottomResponseWriterTest {
 
         writer.endElement("body");
 
-        Assert.assertEquals(3, state.getIncludes().get("text/javascript").size());
-        Assert.assertTrue(state.getInlines().isEmpty());
+        Assertions.assertEquals(3, state.getIncludes().get("text/javascript").size());
+        Assertions.assertTrue(state.getInlines().isEmpty());
 
         InOrder inOrder = inOrder(wrappedWriter);
         inOrder.verify(wrappedWriter).startElement("div", null);
@@ -238,8 +239,8 @@ public class MoveScriptsToBottomResponseWriterTest {
 
         writer.endElement("body");
 
-        Assert.assertEquals(1, state.getIncludes().get("text/javascript").size());
-        Assert.assertEquals(1, state.getInlines().get("text/javascript").size());
+        Assertions.assertEquals(1, state.getIncludes().get("text/javascript").size());
+        Assertions.assertEquals(1, state.getInlines().get("text/javascript").size());
         verify(wrappedWriter, times(2)).startElement("script", null);
         verify(wrappedWriter).writeAttribute("src", "include", null);
         verify(wrappedWriter).write(contains("inline"));

@@ -23,17 +23,22 @@
  */
 package org.primefaces.model;
 
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
-import java.util.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class LazyDataModelIteratorTest {
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void testIteratorPageSizeLessThanTotalItems() {
@@ -46,8 +51,8 @@ public class LazyDataModelIteratorTest {
             System.out.println(item);
             items.add(item);
         }
-        Assert.assertEquals(10, items.size());
-        Assert.assertEquals(4, dataModel.getLoadCount());
+        Assertions.assertEquals(10, items.size());
+        Assertions.assertEquals(4, dataModel.getLoadCount());
     }
 
     @Test
@@ -61,8 +66,8 @@ public class LazyDataModelIteratorTest {
             System.out.println(item);
             items.add(item);
         }
-        Assert.assertEquals(20, items.size());
-        Assert.assertEquals(2, dataModel.getLoadCount());
+        Assertions.assertEquals(20, items.size());
+        Assertions.assertEquals(2, dataModel.getLoadCount());
     }
 
     @Test
@@ -76,8 +81,8 @@ public class LazyDataModelIteratorTest {
             System.out.println(item);
             items.add(item);
         }
-        Assert.assertEquals(9, items.size());
-        Assert.assertEquals(1, dataModel.getLoadCount());
+        Assertions.assertEquals(9, items.size());
+        Assertions.assertEquals(1, dataModel.getLoadCount());
     }
 
     @Test
@@ -91,8 +96,8 @@ public class LazyDataModelIteratorTest {
             System.out.println(item);
             items.add(item);
         }
-        Assert.assertEquals(0, items.size());
-        Assert.assertEquals(1, dataModel.getLoadCount());
+        Assertions.assertEquals(0, items.size());
+        Assertions.assertEquals(1, dataModel.getLoadCount());
     }
 
     @Test
@@ -108,31 +113,43 @@ public class LazyDataModelIteratorTest {
             System.out.println(item);
             items.add(item);
         }
-        Assert.assertEquals(5, items.size());
-        Assert.assertEquals(1, dataModel.getLoadCount());
+        Assertions.assertEquals(5, items.size());
+        Assertions.assertEquals(1, dataModel.getLoadCount());
     }
 
     @Test
     public void testIteratorWhileNoSuchElementException() {
         System.out.println("\ntestIteratorWhileNoSuchElementException");
-        expectedException.expect(NoSuchElementException.class);
-        LazyDataModelImpl dataModel = new LazyDataModelImpl();
-        dataModel.setPageSize(2);
-        dataModel.totalItems = 2;
-        dataModel.iterator().next();
+        
+        // Act
+        NoSuchElementException thrown = Assertions.assertThrows(NoSuchElementException.class, () -> {
+            LazyDataModelImpl dataModel = new LazyDataModelImpl();
+            dataModel.setPageSize(2);
+            dataModel.totalItems = 2;
+            dataModel.iterator().next();
+        });
+        
+
+        // Assert (expected exception)
+        assertNull(thrown.getMessage());
     }
 
     @Test
     public void testIteratorWhileRemoveUnsupportedOperationException() {
         System.out.println("\ntestIteratorWhileRemoveUnsupportedOperationException");
-        expectedException.expect(UnsupportedOperationException.class);
-        LazyDataModelImpl dataModel = new LazyDataModelImpl();
-        dataModel.setPageSize(2);
-        dataModel.totalItems = 2;
-        Iterator<Integer> it = dataModel.iterator();
-        while (it.hasNext()) {
-            it.remove();
-        }
+        
+        UnsupportedOperationException thrown = Assertions.assertThrows(UnsupportedOperationException.class, () -> {
+            LazyDataModelImpl dataModel = new LazyDataModelImpl();
+            dataModel.setPageSize(2);
+            dataModel.totalItems = 2;
+            Iterator<Integer> it = dataModel.iterator();
+            while (it.hasNext()) {
+                it.remove();
+            }
+        });
+       
+        // Assert (expected exception)
+        assertNull(thrown.getMessage());
     }
 
     @Test
@@ -144,9 +161,9 @@ public class LazyDataModelIteratorTest {
         Iterator<Integer> it = dataModel.iterator("foo", SortOrder.ASCENDING, Collections.singletonMap("foo", (Object) "bar"));
         while (it.hasNext()) {
             Integer item = it.next();
-            Assert.assertNotNull(item);
+            Assertions.assertNotNull(item);
         }
-        Assert.assertEquals(1, dataModel.singleSortingLoadCounter);
+        Assertions.assertEquals(1, dataModel.singleSortingLoadCounter);
     }
 
     @Test
@@ -158,9 +175,9 @@ public class LazyDataModelIteratorTest {
         Iterator<Integer> it = dataModel.iterator(Arrays.asList(new SortMeta()), Collections.singletonMap("foo", (Object) "bar"));
         while (it.hasNext()) {
             Integer item = it.next();
-            Assert.assertNotNull(item);
+            Assertions.assertNotNull(item);
         }
-        Assert.assertEquals(1, dataModel.multiSortingLoadCounter);
+        Assertions.assertEquals(1, dataModel.multiSortingLoadCounter);
     }
 
     private static class LazyDataModelImpl extends LazyDataModel<Integer> {
