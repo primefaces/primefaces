@@ -24,7 +24,6 @@
 package org.primefaces.component.datalist;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -178,13 +177,13 @@ public class DataListRenderer extends DataRenderer {
         String listTag = list.getListTag();
         String listItemTag = isDefinition ? "dt" : "li";
 
+        Object varStatusBackup = list.backupVarStatus();
+        Object rowIndexVarBackup = list.backupRowIndexVar();
+
         int first = list.getFirst();
         int rows = list.getRows() == 0 ? list.getRowCount() : list.getRows();
         int pageSize = first + rows;
         int rowCount = list.getRowCount();
-
-        Object varStatusBackup = list.backupVarStatus();
-        Object rowIndexVarBackup = list.backupRowIndexVar();
 
         writer.startElement(listTag, null);
         writer.writeAttribute("id", clientId + "_list", null);
@@ -233,25 +232,19 @@ public class DataListRenderer extends DataRenderer {
      * @throws IOException
      */
     protected void encodeFreeList(FacesContext context, DataList list) throws IOException {
+        Object varStatusBackup = list.backupVarStatus();
+        Object rowIndexVarBackup = list.backupRowIndexVar();
+
         int first = list.getFirst();
         int rows = list.getRows() == 0 ? list.getRowCount() : list.getRows();
         int pageSize = first + rows;
         int rowCount = list.getRowCount();
 
-        String rowIndexVar = list.getRowIndexVar();
-        String varStatus = list.getVarStatus();
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-
         for (int i = first; i < pageSize; i++) {
-            if (varStatus != null) {
-                requestMap.put(varStatus, new DataList.VarStatus(first, (pageSize - 1), (i == 0), (i == (rowCount - 1)), i, (i % 2 == 0), (i % 2 == 1), 1));
-            }
+            list.pushVarStatus(first, pageSize, rowCount, i);
+            list.pushRowIndexVar(i);
 
             list.setRowIndex(i);
-
-            if (rowIndexVar != null) {
-                requestMap.put(rowIndexVar, i);
-            }
 
             if (list.isRowAvailable()) {
                 renderChildren(context, list);
@@ -261,13 +254,8 @@ public class DataListRenderer extends DataRenderer {
         //cleanup
         list.setRowIndex(-1);
 
-        if (rowIndexVar != null) {
-            requestMap.remove(rowIndexVar);
-        }
-
-        if (varStatus != null) {
-            requestMap.remove(varStatus);
-        }
+        list.popRowIndexVar(rowIndexVarBackup);
+        list.popVarStatus(varStatusBackup);
     }
 
     @Override

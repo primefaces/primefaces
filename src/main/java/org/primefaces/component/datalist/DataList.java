@@ -39,6 +39,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.model.DataModel;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.component.api.RepeatStatus;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.model.LazyDataModel;
@@ -232,7 +233,7 @@ public class DataList extends DataListBase {
             Map<String, Object> attrs = getFacesContext().getExternalContext().getRequestMap();
             attrs.put(
                     varStatus,
-                    new VarStatus(first, (pageSize - 1), (i == 0), (i == (rowCount - 1)), i, (i % 2 == 0), (i % 2 == 1), 1));
+                    new RepeatStatus((i == 0), (i == (rowCount - 1)), i, i, first, (pageSize - 1), 1));
         }
     }
 
@@ -295,96 +296,5 @@ public class DataList extends DataListBase {
         return PrimeFaces.current().multiViewState()
                 .get(viewId, getClientId(fc), create, DataListState::new);
 
-    }
-
-    public static class VarStatus {
-
-        private int begin;
-        private int end;
-        private boolean first;
-        private boolean last;
-        private int index;
-        private boolean even;
-        private boolean odd;
-        private int step;
-
-        public VarStatus() {
-
-        }
-
-        public VarStatus(int begin, int end, boolean first, boolean last, int index, boolean even, boolean odd, int step) {
-            this.begin = begin;
-            this.end = end;
-            this.first = first;
-            this.last = last;
-            this.index = index;
-            this.even = even;
-            this.odd = odd;
-            this.step = step;
-        }
-
-        public int getBegin() {
-            return begin;
-        }
-
-        public void setBegin(int begin) {
-            this.begin = begin;
-        }
-
-        public int getEnd() {
-            return end;
-        }
-
-        public void setEnd(int end) {
-            this.end = end;
-        }
-
-        public boolean isEven() {
-            return even;
-        }
-
-        public void setEven(boolean even) {
-            this.even = even;
-        }
-
-        public boolean isFirst() {
-            return first;
-        }
-
-        public void setFirst(boolean first) {
-            this.first = first;
-        }
-
-        public int getIndex() {
-            return index;
-        }
-
-        public void setIndex(int index) {
-            this.index = index;
-        }
-
-        public boolean isLast() {
-            return last;
-        }
-
-        public void setLast(boolean last) {
-            this.last = last;
-        }
-
-        public boolean isOdd() {
-            return odd;
-        }
-
-        public void setOdd(boolean odd) {
-            this.odd = odd;
-        }
-
-        public int getStep() {
-            return step;
-        }
-
-        public void setStep(int step) {
-            this.step = step;
-        }
     }
 }
