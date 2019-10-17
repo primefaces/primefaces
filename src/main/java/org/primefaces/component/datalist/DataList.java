@@ -179,12 +179,20 @@ public class DataList extends DataListBase {
 
     @Override
     protected void processChildren(FacesContext context, PhaseId phaseId) {
+        Object varStatusBackup = backupVarStatus();
+        Object rowIndexVarBackup = backupRowIndexVar();
+
         int first = getFirst();
         int rows = getRows();
-        int last = rows == 0 ? getRowCount() : (first + rows);
+        int pageSize = first + rows;
+        int rowCount = getRowCount();
+        int last = rows == 0 ? rowCount : (first + rows);
 
-        for (int rowIndex = first; rowIndex < last; rowIndex++) {
-            setRowIndex(rowIndex);
+        for (int i = first; i < last; i++) {
+            pushVarStatus(first, pageSize, rowCount, i);
+            pushRowIndexVar(i);
+
+            setRowIndex(i);
 
             if (!isRowAvailable()) {
                 break;
@@ -199,6 +207,74 @@ public class DataList extends DataListBase {
             UIComponent descriptionFacet = getFacet("description");
             if (isDefinition() && ComponentUtils.shouldRenderFacet(descriptionFacet)) {
                 process(context, descriptionFacet, phaseId);
+            }
+        }
+
+        //cleanup
+        setRowIndex(-1);
+
+        popRowIndexVar(rowIndexVarBackup);
+        popVarStatus(varStatusBackup);
+    }
+
+    public Object backupVarStatus() {
+        String varStatus = getVarStatus();
+        if (varStatus != null) {
+            Map<String, Object> attrs = getFacesContext().getExternalContext().getRequestMap();
+            return attrs.get(varStatus);
+        }
+        return null;
+    }
+
+    public void pushVarStatus(int first, int pageSize, int rowCount, int i) {
+        String varStatus = getVarStatus();
+        if (varStatus != null) {
+            Map<String, Object> attrs = getFacesContext().getExternalContext().getRequestMap();
+            attrs.put(
+                    varStatus,
+                    new VarStatus(first, (pageSize - 1), (i == 0), (i == (rowCount - 1)), i, (i % 2 == 0), (i % 2 == 1), 1));
+        }
+    }
+
+    public void popVarStatus(Object old) {
+        String varStatus = getVarStatus();
+        if (varStatus != null) {
+            Map<String, Object> attrs = getFacesContext().getExternalContext().getRequestMap();
+            if (old == null) {
+                attrs.remove(varStatus);
+            }
+            else {
+                attrs.put(varStatus, old);
+            }
+        }
+    }
+
+    public Object backupRowIndexVar() {
+        String rowIndexVar = getRowIndexVar();
+        if (rowIndexVar != null) {
+            Map<String, Object> attrs = getFacesContext().getExternalContext().getRequestMap();
+            return attrs.get(rowIndexVar);
+        }
+        return null;
+    }
+
+    public void pushRowIndexVar(int i) {
+        String rowIndexVar = getRowIndexVar();
+        if (rowIndexVar != null) {
+            Map<String, Object> attrs = getFacesContext().getExternalContext().getRequestMap();
+            attrs.put(rowIndexVar, i);
+        }
+    }
+
+    public void popRowIndexVar(Object old) {
+        String rowIndexVar = getRowIndexVar();
+        if (rowIndexVar != null) {
+            Map<String, Object> attrs = getFacesContext().getExternalContext().getRequestMap();
+            if (old == null) {
+                attrs.remove(rowIndexVar);
+            }
+            else {
+                attrs.put(rowIndexVar, old);
             }
         }
     }
@@ -221,4 +297,94 @@ public class DataList extends DataListBase {
 
     }
 
+    public static class VarStatus {
+
+        private int begin;
+        private int end;
+        private boolean first;
+        private boolean last;
+        private int index;
+        private boolean even;
+        private boolean odd;
+        private int step;
+
+        public VarStatus() {
+
+        }
+
+        public VarStatus(int begin, int end, boolean first, boolean last, int index, boolean even, boolean odd, int step) {
+            this.begin = begin;
+            this.end = end;
+            this.first = first;
+            this.last = last;
+            this.index = index;
+            this.even = even;
+            this.odd = odd;
+            this.step = step;
+        }
+
+        public int getBegin() {
+            return begin;
+        }
+
+        public void setBegin(int begin) {
+            this.begin = begin;
+        }
+
+        public int getEnd() {
+            return end;
+        }
+
+        public void setEnd(int end) {
+            this.end = end;
+        }
+
+        public boolean isEven() {
+            return even;
+        }
+
+        public void setEven(boolean even) {
+            this.even = even;
+        }
+
+        public boolean isFirst() {
+            return first;
+        }
+
+        public void setFirst(boolean first) {
+            this.first = first;
+        }
+
+        public int getIndex() {
+            return index;
+        }
+
+        public void setIndex(int index) {
+            this.index = index;
+        }
+
+        public boolean isLast() {
+            return last;
+        }
+
+        public void setLast(boolean last) {
+            this.last = last;
+        }
+
+        public boolean isOdd() {
+            return odd;
+        }
+
+        public void setOdd(boolean odd) {
+            this.odd = odd;
+        }
+
+        public int getStep() {
+            return step;
+        }
+
+        public void setStep(int step) {
+            this.step = step;
+        }
+    }
 }
