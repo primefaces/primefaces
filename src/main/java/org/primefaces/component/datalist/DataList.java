@@ -26,6 +26,7 @@ package org.primefaces.component.datalist;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import javax.faces.FacesException;
 import javax.faces.application.ResourceDependencies;
@@ -39,7 +40,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.model.DataModel;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.component.api.RepeatStatus;
+import org.primefaces.component.api.IterationStatus;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.model.LazyDataModel;
@@ -180,8 +181,34 @@ public class DataList extends DataListBase {
 
     @Override
     protected void processChildren(FacesContext context, PhaseId phaseId) {
-        Object varStatusBackup = backupVarStatus();
-        Object rowIndexVarBackup = backupRowIndexVar();
+        boolean definition = isDefinition();
+        UIComponent descriptionFacet = definition ? getFacet("description") : null;
+        int childCount = getChildCount();
+        List<UIComponent> children = childCount > 0 ? getIterableChildren() : null;
+
+        visitRows((status) -> {
+            for (int i = 0; i < childCount; i++) {
+                UIComponent child = children.get(i);
+                if (child.isRendered()) {
+                    process(context, child, phaseId);
+                }
+            }
+
+            if (definition && ComponentUtils.shouldRenderFacet(descriptionFacet)) {
+                process(context, descriptionFacet, phaseId);
+            }
+        });
+    }
+
+    public void visitRows(Consumer<IterationStatus> callback) {
+        FacesContext context = getFacesContext();
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+
+        String varStatus = getVarStatus();
+        String rowIndexVar = getRowIndexVar();
+
+        Object varStatusBackup = varStatus == null ? null : requestMap.get(varStatus);
+        Object rowIndexVarBackup = rowIndexVar == null ? null : requestMap.get(rowIndexVar);
 
         int first = getFirst();
         int rows = getRows();
@@ -190,92 +217,40 @@ public class DataList extends DataListBase {
         int last = rows == 0 ? rowCount : (first + rows);
 
         for (int i = first; i < last; i++) {
-            pushVarStatus(first, pageSize, rowCount, i);
-            pushRowIndexVar(i);
-
             setRowIndex(i);
 
             if (!isRowAvailable()) {
                 break;
             }
 
-            for (UIComponent child : getIterableChildren()) {
-                if (child.isRendered()) {
-                    process(context, child, phaseId);
-                }
+            IterationStatus status = new IterationStatus((i == 0), (i == (rowCount - 1)), i, i, first, (pageSize - 1), 1);
+            if (varStatus != null) {
+                requestMap.put(varStatus, status);
+            }
+            if (rowIndexVar != null) {
+                requestMap.put(rowIndexVar, i);
             }
 
-            UIComponent descriptionFacet = getFacet("description");
-            if (isDefinition() && ComponentUtils.shouldRenderFacet(descriptionFacet)) {
-                process(context, descriptionFacet, phaseId);
-            }
+            callback.accept(status);
         }
 
         //cleanup
         setRowIndex(-1);
 
-        popRowIndexVar(rowIndexVarBackup);
-        popVarStatus(varStatusBackup);
-    }
-
-    public Object backupVarStatus() {
-        String varStatus = getVarStatus();
         if (varStatus != null) {
-            Map<String, Object> attrs = getFacesContext().getExternalContext().getRequestMap();
-            return attrs.get(varStatus);
-        }
-        return null;
-    }
-
-    public void pushVarStatus(int first, int pageSize, int rowCount, int i) {
-        String varStatus = getVarStatus();
-        if (varStatus != null) {
-            Map<String, Object> attrs = getFacesContext().getExternalContext().getRequestMap();
-            attrs.put(
-                    varStatus,
-                    new RepeatStatus((i == 0), (i == (rowCount - 1)), i, i, first, (pageSize - 1), 1));
-        }
-    }
-
-    public void popVarStatus(Object old) {
-        String varStatus = getVarStatus();
-        if (varStatus != null) {
-            Map<String, Object> attrs = getFacesContext().getExternalContext().getRequestMap();
-            if (old == null) {
-                attrs.remove(varStatus);
+            if (varStatusBackup == null) {
+                requestMap.remove(varStatus);
             }
             else {
-                attrs.put(varStatus, old);
+                requestMap.put(varStatus, varStatusBackup);
             }
         }
-    }
-
-    public Object backupRowIndexVar() {
-        String rowIndexVar = getRowIndexVar();
         if (rowIndexVar != null) {
-            Map<String, Object> attrs = getFacesContext().getExternalContext().getRequestMap();
-            return attrs.get(rowIndexVar);
-        }
-        return null;
-    }
-
-    public void pushRowIndexVar(int i) {
-        String rowIndexVar = getRowIndexVar();
-        if (rowIndexVar != null) {
-            Map<String, Object> attrs = getFacesContext().getExternalContext().getRequestMap();
-            attrs.put(rowIndexVar, i);
-        }
-    }
-
-    public void popRowIndexVar(Object old) {
-        String rowIndexVar = getRowIndexVar();
-        if (rowIndexVar != null) {
-            Map<String, Object> attrs = getFacesContext().getExternalContext().getRequestMap();
-            if (old == null) {
-                attrs.remove(rowIndexVar);
+            if (rowIndexVarBackup == null) {
+                requestMap.remove(rowIndexVar);
             }
             else {
-                attrs.put(rowIndexVar, old);
+                requestMap.put(rowIndexVar, rowIndexVarBackup);
             }
         }
     }
@@ -295,6 +270,5 @@ public class DataList extends DataListBase {
 
         return PrimeFaces.current().multiViewState()
                 .get(viewId, getClientId(fc), create, DataListState::new);
-
     }
 }

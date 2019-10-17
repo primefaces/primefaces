@@ -24,6 +24,7 @@
 package org.primefaces.component.datalist;
 
 import java.io.IOException;
+import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -177,14 +178,6 @@ public class DataListRenderer extends DataRenderer {
         String listTag = list.getListTag();
         String listItemTag = isDefinition ? "dt" : "li";
 
-        Object varStatusBackup = list.backupVarStatus();
-        Object rowIndexVarBackup = list.backupRowIndexVar();
-
-        int first = list.getFirst();
-        int rows = list.getRows() == 0 ? list.getRowCount() : list.getRows();
-        int pageSize = first + rows;
-        int rowCount = list.getRowCount();
-
         writer.startElement(listTag, null);
         writer.writeAttribute("id", clientId + "_list", null);
         writer.writeAttribute("class", listClass, null);
@@ -192,13 +185,8 @@ public class DataListRenderer extends DataRenderer {
             writer.writeAttribute("type", list.getItemType(), null);
         }
 
-        for (int i = first; i < pageSize; i++) {
-            list.pushVarStatus(first, pageSize, rowCount, i);
-            list.pushRowIndexVar(i);
-
-            list.setRowIndex(i);
-
-            if (list.isRowAvailable()) {
+        list.visitRows((status) -> {
+            try {
                 String itemStyleClass = list.getItemStyleClass();
                 itemStyleClass = (itemStyleClass == null) ? DataList.LIST_ITEM_CLASS : DataList.LIST_ITEM_CLASS + " " + itemStyleClass;
 
@@ -213,13 +201,10 @@ public class DataListRenderer extends DataRenderer {
                     writer.endElement("dd");
                 }
             }
-        }
-
-        //cleanup
-        list.setRowIndex(-1);
-
-        list.popRowIndexVar(rowIndexVarBackup);
-        list.popVarStatus(varStatusBackup);
+            catch (IOException e) {
+                throw new FacesException(e);
+            }
+        });
 
         writer.endElement(listTag);
     }
@@ -232,30 +217,14 @@ public class DataListRenderer extends DataRenderer {
      * @throws IOException
      */
     protected void encodeFreeList(FacesContext context, DataList list) throws IOException {
-        Object varStatusBackup = list.backupVarStatus();
-        Object rowIndexVarBackup = list.backupRowIndexVar();
-
-        int first = list.getFirst();
-        int rows = list.getRows() == 0 ? list.getRowCount() : list.getRows();
-        int pageSize = first + rows;
-        int rowCount = list.getRowCount();
-
-        for (int i = first; i < pageSize; i++) {
-            list.pushVarStatus(first, pageSize, rowCount, i);
-            list.pushRowIndexVar(i);
-
-            list.setRowIndex(i);
-
-            if (list.isRowAvailable()) {
+        list.visitRows((status) -> {
+            try {
                 renderChildren(context, list);
             }
-        }
-
-        //cleanup
-        list.setRowIndex(-1);
-
-        list.popRowIndexVar(rowIndexVarBackup);
-        list.popVarStatus(varStatusBackup);
+            catch (IOException e) {
+                throw new FacesException(e);
+            }
+        });
     }
 
     @Override
@@ -267,4 +236,5 @@ public class DataListRenderer extends DataRenderer {
     public boolean getRendersChildren() {
         return true;
     }
+
 }

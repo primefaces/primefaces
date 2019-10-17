@@ -247,8 +247,8 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         }
     }
 
-    private RepeatStatus getRepeatStatus() {
-        return new RepeatStatus(_count == 0, _index + getStep() >= getDataModel().getRowCount(),
+    private IterationStatus getRepeatStatus() {
+        return new IterationStatus(_count == 0, _index + getStep() >= getDataModel().getRowCount(),
                 _count, _index, getOffset(), _end, getStep());
     }
 

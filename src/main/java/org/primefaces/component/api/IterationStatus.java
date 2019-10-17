@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.api;
 
-public class RepeatStatus {
+public class IterationStatus {
 
     private final int count;
     private final int index;
@@ -33,7 +33,7 @@ public class RepeatStatus {
     private final Integer end;
     private final Integer step;
 
-    public RepeatStatus(boolean first, boolean last, int count, int index, Integer begin, Integer end, Integer step) {
+    public IterationStatus(boolean first, boolean last, int count, int index, Integer begin, Integer end, Integer step) {
         this.count = count;
         this.index = index;
         this.begin = begin;
