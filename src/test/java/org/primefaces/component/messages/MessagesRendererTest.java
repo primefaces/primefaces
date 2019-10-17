@@ -25,8 +25,8 @@ package org.primefaces.component.messages;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.primefaces.mock.FacesContextMock;
 
@@ -47,7 +47,7 @@ public class MessagesRendererTest {
         
         MessagesRenderer renderer = new MessagesRenderer();
         
-        Assert.assertEquals(3, renderer.collectFacesMessages(messages, context).size());        
+        Assertions.assertEquals(3, renderer.collectFacesMessages(messages, context).size());        
     }
     
     @Test
@@ -65,7 +65,7 @@ public class MessagesRendererTest {
         
         MessagesRenderer renderer = new MessagesRenderer();
         
-        Assert.assertEquals(3, renderer.collectFacesMessages(messages, context).size());        
+        Assertions.assertEquals(3, renderer.collectFacesMessages(messages, context).size());        
     }
     
     @Test
@@ -84,7 +84,7 @@ public class MessagesRendererTest {
         
         MessagesRenderer renderer = new MessagesRenderer();
         
-        Assert.assertEquals(3, renderer.collectFacesMessages(messages, context).size());        
+        Assertions.assertEquals(3, renderer.collectFacesMessages(messages, context).size());        
     }
     
     @Test
@@ -104,6 +104,6 @@ public class MessagesRendererTest {
         
         MessagesRenderer renderer = new MessagesRenderer();
         
-        Assert.assertEquals(1, renderer.collectFacesMessages(messages, context).size());        
+        Assertions.assertEquals(1, renderer.collectFacesMessages(messages, context).size());        
     }
 }

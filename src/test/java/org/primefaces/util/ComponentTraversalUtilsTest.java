@@ -23,12 +23,15 @@
  */
 package org.primefaces.util;
 
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIOutput;
-import static org.junit.Assert.assertSame;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
+
 
 public class ComponentTraversalUtilsTest {
 
@@ -44,7 +47,7 @@ public class ComponentTraversalUtilsTest {
 		outerForm.getChildren().add(container);
 
 		UIComponent result = ComponentTraversalUtils.closestForm(null, cmp);
-		assertSame("Expected closest surrounding UIForm", innerForm, result);
+		assertSame(innerForm, result, "Expected closest surrounding UIForm");
 	}
 
 	@Test
@@ -59,7 +62,7 @@ public class ComponentTraversalUtilsTest {
 		outerContainer.getChildren().add(form);
 
 		UIComponent result = ComponentTraversalUtils.closestNamingContainer(cmp);
-		assertSame("Expected closest surrounding UIForm", innerContainer, result);
+		assertSame(innerContainer, result, "Expected closest surrounding UIForm");
 	}
 
 }

@@ -35,15 +35,15 @@ import javax.faces.component.UIPanel;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.primefaces.mock.FacesContextMock;
 import org.primefaces.mock.TestVisitContextFactory;
 
 public class PrimeFacesTest {
 
-    @Before
+    @BeforeEach
     public void setup() {
         Map<Object, Object> attributes = new HashMap<Object, Object>();
         attributes.put(UINamingContainer.SEPARATOR_CHAR_PARAM_NAME, ':');
@@ -69,7 +69,7 @@ public class PrimeFacesTest {
 
         Collection<String> renderIds = FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds();
 
-        Assert.assertEquals(2, renderIds.size());
+        Assertions.assertEquals(2, renderIds.size());
     }
 
     @Test
@@ -82,7 +82,7 @@ public class PrimeFacesTest {
             PrimeFaces.current().ajax().update("doesnTExist");
         }
         catch (Exception e) {
-            Assert.fail("This should actually NOT raise an exception");
+            Assertions.fail("This should actually NOT raise an exception");
         }
     }
 
@@ -100,7 +100,7 @@ public class PrimeFacesTest {
 
         Collection<String> renderIds = FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds();
 
-        Assert.assertEquals(2, renderIds.size());
+        Assertions.assertEquals(2, renderIds.size());
     }
 
     @Test
@@ -113,7 +113,7 @@ public class PrimeFacesTest {
             PrimeFaces.current().ajax().update(Arrays.asList("doesnTExist"));
         }
         catch (Exception e) {
-            Assert.fail("This should actually NOT raise an exception");
+            Assertions.fail("This should actually NOT raise an exception");
         }
     }
 }

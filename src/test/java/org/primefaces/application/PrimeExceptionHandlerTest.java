@@ -23,8 +23,8 @@
  */
 package org.primefaces.application;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.primefaces.application.exceptionhandler.PrimeExceptionHandler;
 
 import javax.el.ELException;
@@ -45,7 +45,7 @@ public class PrimeExceptionHandlerTest extends PrimeExceptionHandler {
         Map<String, String> errorPages = getErrorPages();
 
         String errorPage = evaluateErrorPage(errorPages, new FacesException());
-        Assert.assertEquals(FacesException.class.getName(), errorPage);
+        Assertions.assertEquals(FacesException.class.getName(), errorPage);
     }
 
     @Test
@@ -53,7 +53,7 @@ public class PrimeExceptionHandlerTest extends PrimeExceptionHandler {
         Map<String, String> errorPages = getErrorPages();
 
         String errorPage = evaluateErrorPage(errorPages, new ELException());
-        Assert.assertEquals(RuntimeException.class.getName(), errorPage);
+        Assertions.assertEquals(RuntimeException.class.getName(), errorPage);
     }
 
     @Test
@@ -61,7 +61,7 @@ public class PrimeExceptionHandlerTest extends PrimeExceptionHandler {
         Map<String, String> errorPages = getErrorPages();
 
         String errorPage = evaluateErrorPage(errorPages, new Exception());
-        Assert.assertEquals(Exception.class.getName(), errorPage);
+        Assertions.assertEquals(Exception.class.getName(), errorPage);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class PrimeExceptionHandlerTest extends PrimeExceptionHandler {
         Map<String, String> errorPages = getErrorPages();
 
         String errorPage = evaluateErrorPage(errorPages, new Throwable());
-        Assert.assertEquals("", errorPage);
+        Assertions.assertEquals("", errorPage);
     }
 
     private Map<String, String> getErrorPages()

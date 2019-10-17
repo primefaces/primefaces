@@ -23,8 +23,8 @@
  */
 package org.primefaces.component.datatable;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import javax.el.ValueExpression;
 
@@ -40,18 +40,18 @@ public class DataTableTest {
 
         when(exprVE.getExpressionString()).thenReturn("#{car.year}");
         String field = table.resolveStaticField(exprVE);
-        Assert.assertEquals("year", field);
+        Assertions.assertEquals("year", field);
 
         when(exprVE.getExpressionString()).thenReturn("#{car.wrapper.year}");
         field = table.resolveStaticField(exprVE);
-        Assert.assertEquals("wrapper.year", field);
+        Assertions.assertEquals("wrapper.year", field);
 
         when(exprVE.getExpressionString()).thenReturn("#{car}");
         field = table.resolveStaticField(exprVE);
-        Assert.assertEquals("car", field);
+        Assertions.assertEquals("car", field);
 
         when(exprVE.getExpressionString()).thenReturn("car.year");
         field = table.resolveStaticField(exprVE);
-        Assert.assertNull(field);
+        Assertions.assertNull(field);
     }
 }
