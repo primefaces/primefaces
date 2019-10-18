@@ -9,7 +9,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         //custom layout
         if(this.cfg.custom) {
             this.originalInputs = this.jq.find(':radio');
-            this.inputs = $('input:radio[name="' + $.escapeSelector(this.id) + '"].ui-radio-clone');
+            this.inputs = $('input:radio[name="' + this.id + '"].ui-radio-clone');
             this.outputs = this.inputs.parent().next('.ui-radiobutton-box');
             this.labels = $();
 

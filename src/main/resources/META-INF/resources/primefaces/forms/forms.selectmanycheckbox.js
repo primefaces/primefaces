@@ -8,7 +8,7 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
         if(this.cfg.custom) {
             this.originalInputs = this.jq.find(':checkbox');
-            this.inputs = $('input:checkbox[name="' + $.escapeSelector(this.id) + '"].ui-chkbox-clone');
+            this.inputs = $('input:checkbox[name="' + this.id + '"].ui-chkbox-clone');
             this.outputs = this.inputs.parent().next('.ui-chkbox-box');
 
             //update checkbox state

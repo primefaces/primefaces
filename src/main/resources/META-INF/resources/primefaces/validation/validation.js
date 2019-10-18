@@ -1023,14 +1023,14 @@ if (window.PrimeFaces) {
     PrimeFaces.validator.Highlighter = {
 
         highlightLabel: function(forElement) {
-            var label = $("label[for='" + $.escapeSelector(forElement.attr('id')) + "']");
+            var label = $("label[for='" + forElement.attr('id') + "']");
             if (label.hasClass('ui-outputlabel')) {
                 label.addClass('ui-state-error');
             }
         },
 
         unhighlightLabel: function(forElement) {
-            var label = $("label[for='" + $.escapeSelector(forElement.attr('id')) + "']");
+            var label = $("label[for='" + forElement.attr('id') + "']");
             if (label.hasClass('ui-outputlabel')) {
                 label.removeClass('ui-state-error');
             }
@@ -1090,7 +1090,7 @@ if (window.PrimeFaces) {
                     chkboxes;
                     
                     if(custom) {
-                        var groupedInputs = $('input[name="' + $.escapeSelector(element.attr('name')) + '"].ui-chkbox-clone');
+                        var groupedInputs = $('input[name="' + element.attr('name') + '"].ui-chkbox-clone');
                         chkboxes = groupedInputs.parent().next();
                     }
                     else {

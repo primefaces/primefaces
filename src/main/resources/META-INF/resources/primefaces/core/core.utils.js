@@ -19,10 +19,9 @@ if (!PrimeFaces.utils) {
          */
         cleanupDynamicOverlay: function(widget, overlay, overlayId, appendTo) {
             if (widget.cfg.appendTo) {
-                var escapedId = $.escapeSelector(overlayId);
-                var overlays = $("[id='" + escapedId + "']");
+                var overlays = $("[id='" + overlayId + "']");
                 if (overlays.length > 1) {
-                    appendTo.children("[id='" + escapedId + "']").remove();
+                    appendTo.children("[id='" + overlayId + "']").remove();
                 }
             }
         },
@@ -125,7 +124,7 @@ if (!PrimeFaces.utils) {
             $(PrimeFaces.escapeClientId(modalId)).remove();
 
             // if the id does NOT contain a ':'
-            $(document.body).children("[id='" + $.escapeSelector(modalId) + "']").remove();
+            $(document.body).children("[id='" + modalId + "']").remove();
 
             if (widget.cfg.blockScroll) {
                 PrimeFaces.utils.enableScrolling();
@@ -146,7 +145,7 @@ if (!PrimeFaces.utils) {
             var modalId = id + '_modal';
 
             return $(PrimeFaces.escapeClientId(modalId)).length === 1
-                || $(document.body).children("[id='" + $.escapeSelector(modalId) + "']").length === 1;
+                || $(document.body).children("[id='" + modalId + "']").length === 1;
         },
 
 
