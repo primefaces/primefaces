@@ -262,7 +262,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
 
         //rows per page dropdown
         if(this.cfg.prevRows !== this.cfg.rows) {
-            this.rppSelect.filter(':not(.ui-state-focus)').children('option').filter('option[value="' + this.cfg.rows + '"]').prop('selected', true);
+            this.rppSelect.filter(':not(.ui-state-focus)').children('option').filter('option[value="' + $.escapeSelector(this.cfg.rows) + '"]').prop('selected', true);
             this.cfg.prevRows = this.cfg.rows;
         }
 
@@ -276,7 +276,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
 
                 this.jtpSelect.html(jtpOptions);
             }
-            this.jtpSelect.children('option[value=' + (this.cfg.page) + ']').prop('selected','selected');
+            this.jtpSelect.children('option[value=' + $.escapeSelector(this.cfg.page) + ']').prop('selected','selected');
         }
 
         //jump to page input

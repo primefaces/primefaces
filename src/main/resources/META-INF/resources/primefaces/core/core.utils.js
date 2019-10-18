@@ -30,7 +30,7 @@ if (!PrimeFaces.utils) {
          * Removes the overlay from the appendTo overlay container.
          */
         removeDynamicOverlay: function(widget, overlay, overlayId, appendTo) {
-            appendTo.children("[id='" + overlayId + "']").not(overlay).remove();
+            appendTo.children("[id='" +  overlayId + "']").not(overlay).remove();
         },
 
         appendDynamicOverlay: function(widget, overlay, overlayId, appendTo) {
@@ -83,14 +83,14 @@ if (!PrimeFaces.utils) {
                         focusingRadioItem = null;
 
                         if(first.is(':radio')) {
-                            focusingRadioItem = tabbables.filter('[name="' + first.attr('name') + '"]').filter(':checked');
+                            focusingRadioItem = tabbables.filter('[name="' + $.escapeSelector(first.attr('name')) + '"]').filter(':checked');
                             if(focusingRadioItem.length > 0) {
                                 first = focusingRadioItem;
                             }
                         }
 
                         if(last.is(':radio')) {
-                            focusingRadioItem = tabbables.filter('[name="' + last.attr('name') + '"]').filter(':checked');
+                            focusingRadioItem = tabbables.filter('[name="' + $.escapeSelector(last.attr('name')) + '"]').filter(':checked');
                             if(focusingRadioItem.length > 0) {
                                 last = focusingRadioItem;
                             }

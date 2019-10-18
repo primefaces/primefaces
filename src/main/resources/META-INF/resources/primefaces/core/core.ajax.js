@@ -82,7 +82,7 @@ if (!PrimeFaces.ajax) {
                     var form = forms.eq(i);
 
                     if (form.attr('method') === 'post') {
-                        var input = form.children("input[name='" + parameterPrefix + name + "']");
+                        var input = form.children("input[name='" + $.escapeSelector(parameterPrefix + name) + "']");
 
                         if (input.length > 0) {
                             input.val(trimmedValue);
@@ -270,7 +270,7 @@ if (!PrimeFaces.ajax) {
                     earlyPostParams = [];
 
                     if (sourceElement.is(':checkbox')) {
-                        var checkboxPostParams = $("input[name='" + sourceElement.attr('name') + "']")
+                        var checkboxPostParams = $("input[name='" + $.escapeSelector(sourceElement.attr('name')) + "']")
                                 .filter(':checked').serializeArray();
                         $.merge(earlyPostParams, checkboxPostParams);
                     }
@@ -527,7 +527,7 @@ if (!PrimeFaces.ajax) {
                     }
                 };
 
-                var nonce = form.children("input[name='" + PrimeFaces.csp.NONCE_INPUT + "']");
+                var nonce = form.children("input[name='" + $.escapeSelector(PrimeFaces.csp.NONCE_INPUT) + "']");
                 if (nonce.length > 0) {
                     xhrOptions.nonce = nonce.val();
                 }
@@ -654,12 +654,13 @@ if (!PrimeFaces.ajax) {
             },
 
             addParamFromInput: function(params, name, form, parameterPrefix) {
-                var input = null;
+                var input = null,
+                    escapedName = $.escapeSelector(name);
                 if (parameterPrefix) {
-                    input = form.children("input[name*='" + name + "']");
+                    input = form.children("input[name*='" + escapedName + "']");
                 }
                 else {
-                    input = form.children("input[name='" + name + "']");
+                    input = form.children("input[name='" + escapedName + "']");
                 }
 
                 if (input && input.length > 0) {

@@ -443,7 +443,7 @@
                     el.parent().focus();
                 }
                 else {
-                    var checkedRadio = $(':radio[name="' + el.attr('name') + '"]').filter(':checked');
+                    var checkedRadio = $(':radio[name="' + $.escapeSelector(el.attr('name')) + '"]').filter(':checked');
                     if(checkedRadio.length)
                         checkedRadio.focus();
                     else

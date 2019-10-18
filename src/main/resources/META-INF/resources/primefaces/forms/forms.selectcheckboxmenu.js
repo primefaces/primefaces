@@ -487,7 +487,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
         var closeSelector = '> li.ui-selectcheckboxmenu-token > .ui-selectcheckboxmenu-token-icon';
         this.multiItemContainer.off('click', closeSelector).on('click', closeSelector, null, function(e) {
-            var item = $this.items.filter('[data-item-value="' + $(this).parent().data("item-value") +'"]');
+            var item = $this.items.filter('[data-item-value="' + $.escapeSelector($(this).parent().data("item-value")) +'"]');
             if(item && item.length) {
                 if($this.cfg.dynamic && !$this.isDynamicLoaded) {
                     $this._renderPanel();
@@ -877,7 +877,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
     createMultipleItem: function(item) {
         var items = this.multiItemContainer.children();
-        if(items.length && items.filter('[data-item-value="' + item.data('item-value') + '"]').length > 0) {
+        if(items.length && items.filter('[data-item-value="' + $.escapeSelector(item.data('item-value')) + '"]').length > 0) {
             return;
         }
 
@@ -897,7 +897,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     removeMultipleItem: function(item) {
         var items = this.multiItemContainer.children();
         if(items.length) {
-            items.filter('[data-item-value="' + item.data('item-value') + '"]').remove();
+            items.filter('[data-item-value="' + $.escapeSelector(item.data('item-value')) + '"]').remove();
         }
     },
 
