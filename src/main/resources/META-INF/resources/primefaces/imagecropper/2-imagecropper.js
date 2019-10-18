@@ -49,6 +49,16 @@ PrimeFaces.widget.ImageCropper = PrimeFaces.widget.DeferredWidget.extend({
         this.cropper = this.image.data('cropper');
     },
 
+    //@Override
+    destroy: function() {
+        this._super();
+
+        // clean up memory
+        if (this.cropper) {
+            this.cropper.destroy();
+        }
+    },
+
     onCrop : function (event) {
         var width = event.detail.width;
         var height = event.detail.height;
@@ -71,6 +81,41 @@ PrimeFaces.widget.ImageCropper = PrimeFaces.widget.DeferredWidget.extend({
         // set the new box coordinates
         var cropCoords = event.detail.x + "_" + event.detail.y + "_" + width + "_" + height;
         this.jqCoords.val(cropCoords);
-    }
+    },
 
+    /**
+     * Reset the image and crop box to their initial states.
+     */
+    reset: function() {
+        if (this.cropper) {
+            this.cropper.reset();
+        }
+    },
+
+    /**
+     * Clear the crop box.
+     */
+    clear: function() {
+        if (this.cropper) {
+            this.cropper.clear();
+        }
+    },
+
+    /**
+     * Enable (unfreeze) the cropper.
+     */
+    enable: function() {
+        if (this.cropper) {
+            this.cropper.enable();
+        }
+    },
+
+    /**
+     * Disable (freeze) the cropper.
+     */
+    disable: function() {
+        if (this.cropper) {
+            this.cropper.disable();
+        }
+    }
 });
