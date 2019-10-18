@@ -79,7 +79,10 @@ public class ImageCropperRenderer extends CoreRenderer {
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithComponentLoad("ImageCropper", widgetVar, clientId, clientId + "_image")
-                .attr("image", image);
+                .attr("image", image)
+                .attr("aspectRatio", cropper.getAspectRatio(), Double.MIN_VALUE)
+                .attr("responsive", cropper.isResponsive())
+                .attr("guides", cropper.isGuides());
 
         if (cropper.getMinSize() != null) {
             wb.append(",minSize:[").append(cropper.getMinSize()).append("]");
@@ -88,12 +91,6 @@ public class ImageCropperRenderer extends CoreRenderer {
         if (cropper.getMaxSize() != null) {
             wb.append(",maxSize:[").append(cropper.getMaxSize()).append("]");
         }
-
-        wb.attr("bgColor", cropper.getBackgroundColor(), null)
-                .attr("bgOpacity", cropper.getBackgroundOpacity(), 0.6)
-                .attr("aspectRatio", cropper.getAspectRatio(), Double.MIN_VALUE)
-                .attr("boxWidth", cropper.getBoxWidth(), 0)
-                .attr("boxHeight", cropper.getBoxHeight(), 0);
 
         Object value = cropper.getValue();
         if (value != null) {
@@ -110,7 +107,7 @@ public class ImageCropperRenderer extends CoreRenderer {
             select = "[" + cropper.getInitialCoords() + "]";
         }
 
-        wb.append(",setSelect:").append(select);
+        wb.append(",initialCoords:").append(select);
 
         wb.finish();
     }

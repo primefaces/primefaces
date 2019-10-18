@@ -41,12 +41,12 @@ public abstract class ImageCropperBase extends UIInput implements Widget {
         aspectRatio,
         minSize,
         maxSize,
-        backgroundColor,
-        backgroundOpacity,
         initialCoords,
         boxWidth,
         boxHeight,
-        sizeLimit
+        sizeLimit,
+        responsive,
+        guides
     }
 
     public ImageCropperBase() {
@@ -106,22 +106,6 @@ public abstract class ImageCropperBase extends UIInput implements Widget {
         getStateHelper().put(PropertyKeys.maxSize, maxSize);
     }
 
-    public String getBackgroundColor() {
-        return (String) getStateHelper().eval(PropertyKeys.backgroundColor, null);
-    }
-
-    public void setBackgroundColor(String backgroundColor) {
-        getStateHelper().put(PropertyKeys.backgroundColor, backgroundColor);
-    }
-
-    public double getBackgroundOpacity() {
-        return (Double) getStateHelper().eval(PropertyKeys.backgroundOpacity, 0.6);
-    }
-
-    public void setBackgroundOpacity(double backgroundOpacity) {
-        getStateHelper().put(PropertyKeys.backgroundOpacity, backgroundOpacity);
-    }
-
     public String getInitialCoords() {
         return (String) getStateHelper().eval(PropertyKeys.initialCoords, null);
     }
@@ -152,5 +136,21 @@ public abstract class ImageCropperBase extends UIInput implements Widget {
 
     public void setSizeLimit(Long sizeLimit) {
         getStateHelper().put(PropertyKeys.sizeLimit, sizeLimit);
+    }
+
+    public boolean isResponsive() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.responsive, true);
+    }
+
+    public void setResponsive(boolean responsive) {
+        getStateHelper().put(PropertyKeys.responsive, responsive);
+    }
+
+    public boolean isGuides() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.guides, true);
+    }
+
+    public void setGuides(boolean guides) {
+        getStateHelper().put(PropertyKeys.guides, guides);
     }
 }

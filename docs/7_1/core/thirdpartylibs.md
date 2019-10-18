@@ -5,11 +5,12 @@ are many other third party libraries and plugins used to support features.
 
 | Library | Version | URL |
 | --- | --- | --- |
-| autoNumeric.js | 1.9.45 | https://github.com/BobKnothe/autoNumeric |
+| AutoNumeric | 1.9.45 | https://github.com/BobKnothe/autoNumeric |
 | Chart.js | 2.8.0 | https://www.chartjs.org |
 | CLEditor WYSIWYG HTML Editor | v1.4.5 | https://github.com/cleditor/cleditor |
 | Color Picker | (2012) | www.eyecon.ro |
 | ContentFlow | 1.0.2 | http://www.jacksasylum.eu/ContentFlow |
+| Cropper.js | 1.5.6 | https://github.com/fengyuanchen/cropperjs |
 | FontAwesome | 4.7.0 | https://fontawesome.com/ |
 | FullCalendar | 3.10.0 | https://fullcalendar.io/ |
 | Idle Timer | 1.1.0 - 2016-03-21 | https://github.com/thorst/jquery-idletimer |
@@ -33,7 +34,6 @@ are many other third party libraries and plugins used to support features.
 | jQuery UI Touch Punch | 1.0.5 | https://github.com/RWAP/jquery-ui-touch-punch |
 | jQuery UI | 1.12.1 | https://github.com/jquery/jquery-ui |
 | jQuery | 3.4.1 | https://jquery.com/ |
-| jquery.Jcrop.js | 2.0.4 | http://jcrop.org/ |
 | jquery.layout | 1.5.12 | https://github.com/GedMarc/layout |
 | Jquery.print | 1.6.0 | https://github.com/DoersGuild/jQuery.print |
 | jScrollPane | 2.0.19 | http://jscrollpane.kelvinluck.com/ |
