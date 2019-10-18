@@ -365,7 +365,7 @@ public class PrimeFaces {
                     if (facesContext.isProjectStage(ProjectStage.Development)) {
                         LOGGER.log(Level.WARNING,
                                 "PrimeFaces.current().ajax().update() called but component can't be resolved!"
-                                + " Expression will just be added to the renderIds.", e);
+                                + " Expression will just be added to the renderIds: " + expression);
                     }
 
                     facesContext.getPartialViewContext().getRenderIds().add(expression);
