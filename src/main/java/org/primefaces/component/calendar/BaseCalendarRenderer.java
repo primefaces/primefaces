@@ -150,27 +150,31 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
 
         //Delegate to user supplied converter if defined
         Class<?> type = resolveDateType(context, calendar);
-        Converter<?> converter = resolveConverter(context, calendar, type);
-        if (converter != null) {
-            try {
-                return converter.getAsObject(context, calendar, submittedValue);
+        if (type != null) {
+            Converter<?> converter = resolveConverter(context, calendar, type);
+            if (converter != null) {
+                try {
+                    return converter.getAsObject(context, calendar, submittedValue);
+                }
+                catch (ConverterException e) {
+                    calendar.setConversionFailed(true);
+                    throw e;
+                }
             }
-            catch (ConverterException e) {
-                calendar.setConversionFailed(true);
-                throw e;
+
+            // Java 8 Date/Time API
+            if (Temporal.class.isAssignableFrom(type)) {
+                return convertToJava8DateTimeAPI(context, calendar, type, submittedValue);
             }
+            else if (Date.class.isAssignableFrom(type)) {
+                return convertToLegacyDateAPI(context, calendar, submittedValue);
+            }
+
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, type.getName() + " not supported", null);
+            throw new ConverterException(message);
         }
 
-        // Java 8 Date/Time API
-        if (Temporal.class.isAssignableFrom(type)) {
-            return convertToJava8DateTimeAPI(context, calendar, type, submittedValue);
-        }
-        else if (Date.class.isAssignableFrom(type)) {
-            return convertToLegacyDateAPI(context, calendar, submittedValue);
-        }
-
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, type.getName() + " not supported", null);
-        throw new ConverterException(message);
+        return null;
     }
 
     protected Date convertToLegacyDateAPI(FacesContext context, UICalendar calendar, String submittedValue) {
@@ -265,6 +269,11 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
 
     protected Class<?> resolveDateType(FacesContext context, UICalendar calendar) {
         ValueExpression ve = calendar.getValueExpression("value");
+
+        if (ve == null) {
+            return null;
+        }
+
         Class<?> type = ve.getType(context.getELContext());
 
         // If type could not be determined via value-expression try it this way. (Very unlikely, this happens in real world.)
