@@ -30,7 +30,7 @@ if (!PrimeFaces.utils) {
          * Removes the overlay from the appendTo overlay container.
          */
         removeDynamicOverlay: function(widget, overlay, overlayId, appendTo) {
-            appendTo.children("[id='" +  $.escapeSelector(overlayId) + "']").not(overlay).remove();
+            appendTo.children("[id='" +  overlayId + "']").not(overlay).remove();
         },
 
         appendDynamicOverlay: function(widget, overlay, overlayId, appendTo) {
