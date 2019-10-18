@@ -219,6 +219,10 @@ input[type=text]::-ms-clear {
 
 .ui-radiobutton.ui-radiobutton-native .ui-helper-hidden-accessible input {
     margin: 0;
+    -webkit-transform: none; 
+    -moz-transform: none; 
+    -ms-transform: none;
+    transform: none;
 }
 
 .ui-selectoneradio-native label {
