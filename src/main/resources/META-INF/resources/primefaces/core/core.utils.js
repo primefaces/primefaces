@@ -19,9 +19,10 @@ if (!PrimeFaces.utils) {
          */
         cleanupDynamicOverlay: function(widget, overlay, overlayId, appendTo) {
             if (widget.cfg.appendTo) {
-                var overlays = $("[id='" + overlayId + "']");
+                var escapedId = $.escapeSelector(overlayId);
+                var overlays = $("[id='" + escapedId + "']");
                 if (overlays.length > 1) {
-                    appendTo.children("[id='" + overlayId + "']").remove();
+                    appendTo.children("[id='" + escapedId + "']").remove();
                 }
             }
         },
@@ -30,7 +31,7 @@ if (!PrimeFaces.utils) {
          * Removes the overlay from the appendTo overlay container.
          */
         removeDynamicOverlay: function(widget, overlay, overlayId, appendTo) {
-            appendTo.children("[id='" + overlayId + "']").not(overlay).remove();
+            appendTo.children("[id='" +  $.escapeSelector(overlayId) + "']").not(overlay).remove();
         },
 
         appendDynamicOverlay: function(widget, overlay, overlayId, appendTo) {
@@ -83,14 +84,14 @@ if (!PrimeFaces.utils) {
                         focusingRadioItem = null;
 
                         if(first.is(':radio')) {
-                            focusingRadioItem = tabbables.filter('[name="' + first.attr('name') + '"]').filter(':checked');
+                            focusingRadioItem = tabbables.filter('[name="' + $.escapeSelector(first.attr('name')) + '"]').filter(':checked');
                             if(focusingRadioItem.length > 0) {
                                 first = focusingRadioItem;
                             }
                         }
 
                         if(last.is(':radio')) {
-                            focusingRadioItem = tabbables.filter('[name="' + last.attr('name') + '"]').filter(':checked');
+                            focusingRadioItem = tabbables.filter('[name="' + $.escapeSelector(last.attr('name')) + '"]').filter(':checked');
                             if(focusingRadioItem.length > 0) {
                                 last = focusingRadioItem;
                             }
@@ -124,7 +125,7 @@ if (!PrimeFaces.utils) {
             $(PrimeFaces.escapeClientId(modalId)).remove();
 
             // if the id does NOT contain a ':'
-            $(document.body).children("[id='" + modalId + "']").remove();
+            $(document.body).children("[id='" + $.escapeSelector(modalId) + "']").remove();
 
             if (widget.cfg.blockScroll) {
                 PrimeFaces.utils.enableScrolling();
@@ -145,7 +146,7 @@ if (!PrimeFaces.utils) {
             var modalId = id + '_modal';
 
             return $(PrimeFaces.escapeClientId(modalId)).length === 1
-                || $(document.body).children("[id='" + modalId + "']").length === 1;
+                || $(document.body).children("[id='" + $.escapeSelector(modalId) + "']").length === 1;
         },
 
 

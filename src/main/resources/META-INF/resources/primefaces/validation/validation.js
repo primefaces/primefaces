@@ -1007,10 +1007,10 @@ if (window.PrimeFaces) {
             var value;
 
             if(element.is(':radio')) {
-                value = $('input:radio[name="' + element.attr('name') + '"]:checked').val();
+                value = $('input:radio[name="' + $.escapeSelector(element.attr('name')) + '"]:checked').val();
             }
             else if(element.is(':checkbox')) {
-                value = element.data('p-grouped') ? $('input:checkbox[name="' + element.attr('name') + '"]:checked').val(): element.prop('checked').toString();
+                value = element.data('p-grouped') ? $('input:checkbox[name="' + $.escapeSelector(element.attr('name')) + '"]:checked').val(): element.prop('checked').toString();
             }
             else {
                 value = element.val();
@@ -1023,14 +1023,14 @@ if (window.PrimeFaces) {
     PrimeFaces.validator.Highlighter = {
 
         highlightLabel: function(forElement) {
-            var label = $("label[for='" + forElement.attr('id') + "']");
+            var label = $("label[for='" + $.escapeSelector(forElement.attr('id')) + "']");
             if (label.hasClass('ui-outputlabel')) {
                 label.addClass('ui-state-error');
             }
         },
 
         unhighlightLabel: function(forElement) {
-            var label = $("label[for='" + forElement.attr('id') + "']");
+            var label = $("label[for='" + $.escapeSelector(forElement.attr('id')) + "']");
             if (label.hasClass('ui-outputlabel')) {
                 label.removeClass('ui-state-error');
             }
@@ -1072,7 +1072,7 @@ if (window.PrimeFaces) {
                     chkboxes;
                     
                     if(custom) {
-                        var groupedInputs = $('input[name="' + element.attr('name') + '"].ui-chkbox-clone');
+                        var groupedInputs = $('input[name="' + $.escapeSelector(element.attr('name')) + '"].ui-chkbox-clone');
                         chkboxes = groupedInputs.parent().next();
                     }
                     else {
@@ -1090,7 +1090,7 @@ if (window.PrimeFaces) {
                     chkboxes;
                     
                     if(custom) {
-                        var groupedInputs = $('input[name="' + element.attr('name') + '"].ui-chkbox-clone');
+                        var groupedInputs = $('input[name="' + $.escapeSelector(element.attr('name')) + '"].ui-chkbox-clone');
                         chkboxes = groupedInputs.parent().next();
                     }
                     else {

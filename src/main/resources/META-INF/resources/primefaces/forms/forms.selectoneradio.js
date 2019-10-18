@@ -9,13 +9,13 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         //custom layout
         if(this.cfg.custom) {
             this.originalInputs = this.jq.find(':radio');
-            this.inputs = $('input:radio[name="' + this.id + '"].ui-radio-clone');
+            this.inputs = $('input:radio[name="' + $.escapeSelector(this.id) + '"].ui-radio-clone');
             this.outputs = this.inputs.parent().next('.ui-radiobutton-box');
             this.labels = $();
 
             //labels
             for(var i=0; i < this.outputs.length; i++) {
-                this.labels = this.labels.add('label[for="' + this.outputs.eq(i).parent().attr('id') + '"]');
+                this.labels = this.labels.add('label[for="' + $.escapeSelector(this.outputs.eq(i).parent().attr('id')) + '"]');
             }
 
             //update radio state
@@ -198,7 +198,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         if(input) {
             input.off();
             input.parent().nextAll('.ui-radiobutton-box').off();
-            this.labels.filter("label[for='" + input.attr('id') + "']").off();
+            this.labels.filter("label[for='" + $.escapeSelector(input.attr('id')) + "']").off();
         }
         else {
             this.inputs.off();
@@ -216,7 +216,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         }
         else {
             var input = this.inputs.eq(index),
-                label = this.labels.filter("label[for='" + input.attr('id') + "']");
+                label = this.labels.filter("label[for='" + $.escapeSelector(input.attr('id')) + "']");
             input.attr('disabled', 'disabled').parent().nextAll('.ui-radiobutton-box').addClass('ui-state-disabled');
             label.addClass('ui-state-disabled');
             this.unbindEvents(input);
@@ -232,7 +232,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         }
         else {
             var input = this.inputs.eq(index),
-                label = this.labels.filter("label[for='" + input.attr('id') + "']");
+                label = this.labels.filter("label[for='" + $.escapeSelector(input.attr('id')) + "']");
             input.removeAttr('disabled').parent().nextAll('.ui-radiobutton-box').removeClass('ui-state-disabled');
             label.removeClass('ui-state-disabled');
         }

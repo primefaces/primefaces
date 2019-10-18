@@ -117,7 +117,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
 
         var $this = this;
         if(this.cfg.delegate) {
-            var targetSelector = "*[id='" + this.target.attr('id') + "']";
+            var targetSelector = "*[id='" + $.escapeSelector(this.target.attr('id')) + "']";
 
             $(document).off(this.cfg.showEvent + ' ' + this.cfg.hideEvent, targetSelector)
                         .on(this.cfg.showEvent, targetSelector, function(e) {
