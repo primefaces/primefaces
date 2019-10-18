@@ -47,6 +47,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import javax.faces.application.ProjectStage;
 
 public class PrimeFaces {
 
@@ -361,9 +362,11 @@ public class PrimeFaces {
                     facesContext.getPartialViewContext().getRenderIds().add(clientId);
                 }
                 catch (ComponentNotFoundException e) {
-                    LOGGER.log(Level.WARNING,
-                            "PrimeFaces.current().ajax().update() called but component can't be resolved!"
-                            + " Expression will just be added to the renderIds.", e);
+                    if (facesContext.isProjectStage(ProjectStage.Development)) {
+                        LOGGER.log(Level.WARNING,
+                                "PrimeFaces.current().ajax().update() called but component can't be resolved!"
+                                + " Expression will just be added to the renderIds.", e);
+                    }
 
                     facesContext.getPartialViewContext().getRenderIds().add(expression);
                 }
