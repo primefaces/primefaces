@@ -46,7 +46,8 @@ public abstract class ImageCropperBase extends UIInput implements Widget {
         boxHeight,
         sizeLimit,
         responsive,
-        guides
+        guides,
+        viewMode
     }
 
     public ImageCropperBase() {
@@ -152,5 +153,13 @@ public abstract class ImageCropperBase extends UIInput implements Widget {
 
     public void setGuides(boolean guides) {
         getStateHelper().put(PropertyKeys.guides, guides);
+    }
+
+    public void setViewMode(int viewMode) {
+        getStateHelper().put(PropertyKeys.viewMode, viewMode);
+    }
+
+    public int getViewMode() {
+        return (Integer) getStateHelper().eval(PropertyKeys.viewMode, 1);
     }
 }

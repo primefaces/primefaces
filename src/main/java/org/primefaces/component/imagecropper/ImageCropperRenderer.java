@@ -46,6 +46,7 @@ import org.primefaces.model.CroppedImage;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
 import org.primefaces.util.FileUploadUtils;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class ImageCropperRenderer extends CoreRenderer {
@@ -80,9 +81,10 @@ public class ImageCropperRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithComponentLoad("ImageCropper", widgetVar, clientId, clientId + "_image")
                 .attr("image", image)
+                .attr("viewMode", cropper.getViewMode(), 0)
                 .attr("aspectRatio", cropper.getAspectRatio(), Double.MIN_VALUE)
-                .attr("responsive", cropper.isResponsive())
-                .attr("guides", cropper.isGuides());
+                .attr("responsive", cropper.isResponsive(), true)
+                .attr("guides", cropper.isGuides(), true);
 
         if (cropper.getMinSize() != null) {
             wb.append(",minSize:[").append(cropper.getMinSize()).append("]");
@@ -90,6 +92,14 @@ public class ImageCropperRenderer extends CoreRenderer {
 
         if (cropper.getMaxSize() != null) {
             wb.append(",maxSize:[").append(cropper.getMaxSize()).append("]");
+        }
+
+        if (cropper.getBoxHeight() > 0) {
+            wb.attr("canvasHeight", cropper.getBoxHeight());
+        }
+
+        if (cropper.getBoxWidth() > 0) {
+            wb.attr("canvasWidth", cropper.getBoxWidth());
         }
 
         Object value = cropper.getValue();
@@ -103,7 +113,7 @@ public class ImageCropperRenderer extends CoreRenderer {
 
             select = "[" + x + "," + y + "," + x2 + "," + y2 + "]";
         }
-        else if (cropper.getInitialCoords() != null) {
+        else if (!LangUtils.isValueBlank(cropper.getInitialCoords())) {
             select = "[" + cropper.getInitialCoords() + "]";
         }
 

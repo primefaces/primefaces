@@ -18,6 +18,10 @@ PrimeFaces.widget.ImageCropper = PrimeFaces.widget.DeferredWidget.extend({
             width : (this.cfg.minCropBoxWidth + this.cfg.maxCropBoxWidth) / 2,
             height : (this.cfg.minCropBoxHeight + this.cfg.maxCropBoxHeight) / 2,
         };
+        
+        // canvas dimensions
+        this.cfg.maxCanvasWidth = this.cfg.canvasWidth ? this.cfg.canvasWidth : this.image.width();
+        this.cfg.maxCanvasHeight = this.cfg.canvasHeight ? this.cfg.canvasHeight : this.image.height();
 
         this.renderDeferred();
     },
@@ -33,17 +37,23 @@ PrimeFaces.widget.ImageCropper = PrimeFaces.widget.DeferredWidget.extend({
             $this.onCrop(event)
         });
 
-        // set the initial coordinates
-        if (this.cfg.initialCoords) {
-            this.image.on('ready', function () {
+        
+        this.image.on('ready', function () {
+            // set the initial coordinates
+            if ($this.cfg.initialCoords) {
                 this.cropper.setCropBoxData({
                     left : $this.cfg.initialCoords[0],
                     top : $this.cfg.initialCoords[1],
                     width : $this.cfg.initialCoords[2],
                     height : $this.cfg.initialCoords[3]
                 });
+            }
+            
+            this.cropper.setCanvasData({
+                width : $this.cfg.maxCanvasWidth,
+                height : $this.cfg.maxCanvasHeight
             });
-        }
+        });
 
         // Get the Cropper.js instance after initialized
         this.cropper = this.image.data('cropper');
