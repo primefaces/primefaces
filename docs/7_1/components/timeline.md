@@ -28,7 +28,6 @@ value | null | TimelineModel | An instance of TimelineModel representing the bac
 varGroup | null | String | Name of the request-scoped variable for underlaying object in the TimelineGroup for each iteration.
 locale | view Locale | Object | User locale for i18n localization messages. The attribute can be either a String or java.util.Locale object.
 timeZone | null | Object | Target time zone to convert start / end dates for displaying. This time zone is the time zone the user would like to see dates in UI. The attribute can be either a String or TimeZone object or null. If null, timeZone defaults to the server's time zone the application is running in.
-browserTimeZone | null | Object | Time zone the user's browser / PC is running in. This time zone allows to correct the conversion of start / end dates to the target timeZone for displaying. The attribute can be either a String or TimeZone object or null. Note: browserTimeZone should be provided if the target timeZone is provided. If null, browserTimeZone defaults to the server's timeZone.
 height | null | String | The height of the timeline in pixels or as a percentage. When height is undefined or null, the height of the timeline is automatically adjusted to fit the contents. It is possible to set a maximum height using option maxHeight to prevent the timeline from getting too high in case of automatically calculated height.
 maxHeight | null | Integer | Specifies the maximum height for the Timeline in pixels.
 minHeight | 0 | Integer | Specifies a minimum height for the Timeline in pixels.
@@ -45,10 +44,10 @@ editableOverrideItems | false | Boolean | If true, TimelineEvent specific editab
 selectable | true | Boolean | If true, events on the timeline are selectable. Selectable events can fire AJAX "select" events.
 zoomable | true | Boolean | If true, the timeline is zoomable. When the timeline is zoomed, AJAX "rangechange" events are fired.
 moveable | true | Boolean | If true, the timeline is movable. When the timeline is moved, AJAX "rangechange" events are fired.
-start | null | Date | The initial start date for the axis of the timeline. If not provided, the earliest date present in the events is taken as start date.
-end | null | Date | The initial end date for the axis of the timeline. If not provided, the latest date present in the events is taken as end date.
-min | null | Date | Set a minimum Date for the visible range. It will not be possible to move beyond this minimum.
-max | null | Date | Set a maximum Date for the visible range. It will not be possible to move beyond this maximum.
+start | null | LocalDateTime  | The initial start date for the axis of the timeline. If not provided, the earliest date present in the events is taken as start date.
+end | null | LocalDateTime  | The initial end date for the axis of the timeline. If not provided, the latest date present in the events is taken as end date.
+min | null | LocalDateTime  | Set a minimum Date for the visible range. It will not be possible to move beyond this minimum.
+max | null | LocalDateTime  | Set a maximum Date for the visible range. It will not be possible to move beyond this maximum.
 zoomMin | 10L | Long | Set a minimum zoom interval for the visible range in milliseconds. It will not be possible to zoom in further than this minimum.
 zoomMax | 315360000000000L | Long | Set a maximum zoom interval for the visible range in milliseconds. It will not be possible to zoom out further than this maximum. Default value equals 315360000000000 ms (about 10000 years).
 preloadFactor | 0.0f | Float | Preload factor is a positive float value or 0 which can be used for lazy loading of events. When the lazy loading feature is active, the calculated time range for preloading will be multiplicated by the preload factor. The result of this multiplication specifies the additional time range which will be considered for the preloading during moving / zooming too. For example, if the calculated time range for preloading is 5 days and the preload factor is 0.2, the result is 5 * 0.2 = 1 day. That means, 1 day backwards and / or 1 day onwards will be added to the original calculated time range. The event's area to be preloaded is wider then. This helps to avoid frequently, time-consuming fetching of events. Default value is 0.
@@ -93,12 +92,8 @@ public class BasicTimelineView implements Serializable {
 
     @PostConstruct
     protected void initialize() {
-        model = new TimelineModel();
-        Calendar cal = Calendar.getInstance();
-        cal.set(2014, Calendar.JUNE, 12, 0, 0, 0);
-        model.add(new TimelineEvent("PrimeUI 1.1", cal.getTime()));
-        cal.set(2014, Calendar.OCTOBER, 11, 0, 0, 0);
-        model.add(new TimelineEvent("PrimeFaces 5.1.3", cal.getTime()));
+        model.add(new TimelineEvent("PrimeUI 1.1", LocalDate.of(2014, 6, 12)));
+        model.add(new TimelineEvent("PrimeFaces 5.1.3", LocalDate.of(2014, 10, 11)));
     }
 }
 ```
@@ -202,8 +197,6 @@ https://www.primefaces.org/showcase/ui/data/timeline/basic.xhtml
 
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
-page | org.primefaces.event.data.PageEvent | On pagination.
-sort | org.primefaces.event.data.SortEvent | When a column is sorted.
 add | org.primefaces.event.timeline.TimelineAddEvent | On event add.
 change | org.primefaces.event.timeline.TimelineModificationEvent | On event change.
 changed | org.primefaces.event.timeline.TimelineModificationEvent | On event change complete.

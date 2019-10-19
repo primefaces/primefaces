@@ -24,9 +24,9 @@
 package org.primefaces.model.timeline;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.TreeSet;
 import org.primefaces.component.timeline.TimelineUpdater;
@@ -365,12 +365,12 @@ public class TimelineModel<E, G> implements Serializable {
         orderedEvents.addAll(events);
 
         // find the largest end date
-        Date endDate = null;
+        LocalDateTime endDate = null;
         for (TimelineEvent<E> e : orderedEvents) {
             if (endDate == null && e.getEndDate() != null) {
                 endDate = e.getEndDate();
             }
-            else if (endDate != null && e.getEndDate() != null && endDate.before(e.getEndDate())) {
+            else if (endDate != null && e.getEndDate() != null && endDate.isBefore(e.getEndDate())) {
                 endDate = e.getEndDate();
             }
         }
@@ -494,11 +494,11 @@ public class TimelineModel<E, G> implements Serializable {
         }
         else if (event1.getEndDate() == null && event2.getEndDate() != null) {
             return (event1.getStartDate().equals(event2.getStartDate()) || event1.getStartDate().equals(event2.getEndDate())
-                    || (event1.getStartDate().after(event2.getStartDate()) && event1.getStartDate().before(event2.getEndDate())));
+                    || (event1.getStartDate().isAfter(event2.getStartDate()) && event1.getStartDate().isBefore(event2.getEndDate())));
         }
         else if (event1.getEndDate() != null && event2.getEndDate() == null) {
             return (event2.getStartDate().equals(event1.getStartDate()) || event2.getStartDate().equals(event1.getEndDate())
-                    || (event2.getStartDate().after(event1.getStartDate()) && event2.getStartDate().before(event1.getEndDate())));
+                    || (event2.getStartDate().isAfter(event1.getStartDate()) && event2.getStartDate().isBefore(event1.getEndDate())));
         }
         else {
             // check with ODER if
@@ -506,10 +506,10 @@ public class TimelineModel<E, G> implements Serializable {
             // 2. end date of the event 1 is within the event 2
             // 3. event 2 is completely strong within the event 1
             return (event1.getStartDate().equals(event2.getStartDate()) || event1.getStartDate().equals(event2.getEndDate())
-                    || (event1.getStartDate().after(event2.getStartDate()) && event1.getStartDate().before(event2.getEndDate())))
+                    || (event1.getStartDate().isAfter(event2.getStartDate()) && event1.getStartDate().isBefore(event2.getEndDate())))
                     || (event1.getEndDate().equals(event2.getStartDate()) || event1.getEndDate().equals(event2.getEndDate())
-                    || (event1.getEndDate().after(event2.getStartDate()) && event1.getEndDate().before(event2.getEndDate())))
-                    || (event1.getStartDate().before(event2.getStartDate()) && event1.getEndDate().after(event2.getEndDate()));
+                    || (event1.getEndDate().isAfter(event2.getStartDate()) && event1.getEndDate().isBefore(event2.getEndDate())))
+                    || (event1.getStartDate().isBefore(event2.getStartDate()) && event1.getEndDate().isAfter(event2.getEndDate()));
         }
     }
 }

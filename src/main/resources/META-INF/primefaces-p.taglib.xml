@@ -26312,15 +26312,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Time zone the user's browser / PC is running in. This time zone allows to correct the conversion of start / end dates to the target timeZone for displaying.
-                The attribute can be either a String or TimeZone object or null. Note: browserTimeZone should be provided if the target timeZone is provided. If null, browserTimeZone defaults to the server's timeZone.]]>
-            </description>
-            <name>browserTimeZone</name>
-            <required>false</required>
-            <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[The height of the timeline in pixels or as a percentage. When height is undefined or null, the height of the timeline is automatically 
                 adjusted to fit the contents. It is possible to set a maximum height using option maxHeight to prevent the timeline from getting too high in 
                 case of automatically calculated height.]]>
@@ -26487,7 +26478,7 @@
             </description>
             <name>start</name>
             <required>false</required>
-            <type>java.util.Date</type>
+            <type>java.time.LocalDateTime</type>
         </attribute>
         <attribute>
             <description>
@@ -26495,7 +26486,7 @@
             </description>
             <name>end</name>
             <required>false</required>
-            <type>java.util.Date</type>
+            <type>java.time.LocalDateTime</type>
         </attribute>
         <attribute>
             <description>
@@ -26503,7 +26494,7 @@
             </description>
             <name>min</name>
             <required>false</required>
-            <type>java.util.Date</type>
+            <type>java.time.LocalDateTime</type>
         </attribute>
         <attribute>
             <description>
@@ -26511,7 +26502,7 @@
             </description>
             <name>max</name>
             <required>false</required>
-            <type>java.util.Date</type>
+            <type>java.time.LocalDateTime</type>
         </attribute>
         <attribute>
             <description>

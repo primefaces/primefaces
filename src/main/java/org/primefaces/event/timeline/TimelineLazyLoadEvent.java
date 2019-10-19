@@ -23,12 +23,12 @@
  */
 package org.primefaces.event.timeline;
 
-import java.util.Date;
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 
 import org.primefaces.event.AbstractAjaxBehaviorEvent;
+
+import java.time.LocalDateTime;
 
 public class TimelineLazyLoadEvent extends AbstractAjaxBehaviorEvent {
 
@@ -37,25 +37,25 @@ public class TimelineLazyLoadEvent extends AbstractAjaxBehaviorEvent {
     /**
      * start time of the first time range for lazy loading
      */
-    private final Date startDateFirst;
+    private final LocalDateTime startDateFirst;
 
     /**
      * end time of the first time range for lazy loading
      */
-    private final Date endDateFirst;
+    private final LocalDateTime endDateFirst;
 
     /**
      * start time of the second time range for lazy loading (if any)
      */
-    private final Date startDateSecond;
+    private final LocalDateTime startDateSecond;
 
     /**
      * end time of the second time range for lazy loading (if any)
      */
-    private final Date endDateSecond;
+    private final LocalDateTime endDateSecond;
 
-    public TimelineLazyLoadEvent(UIComponent component, Behavior behavior, Date startDateFirst, Date endDateFirst,
-            Date startDateSecond, Date endDateSecond) {
+    public TimelineLazyLoadEvent(UIComponent component, Behavior behavior, LocalDateTime startDateFirst, LocalDateTime endDateFirst,
+                                 LocalDateTime startDateSecond, LocalDateTime endDateSecond) {
         super(component, behavior);
         this.startDateFirst = startDateFirst;
         this.endDateFirst = endDateFirst;
@@ -63,27 +63,27 @@ public class TimelineLazyLoadEvent extends AbstractAjaxBehaviorEvent {
         this.endDateSecond = endDateSecond;
     }
 
-    public Date getStartDate() { // alias for getStartDateFirst()
+    public LocalDateTime getStartDate() { // alias for getStartDateFirst()
         return startDateFirst;
     }
 
-    public Date getEndDate() { // alias for getEndDateFirst()
+    public LocalDateTime getEndDate() { // alias for getEndDateFirst()
         return endDateFirst;
     }
 
-    public Date getStartDateFirst() {
+    public LocalDateTime getStartDateFirst() {
         return startDateFirst;
     }
 
-    public Date getEndDateFirst() {
+    public LocalDateTime getEndDateFirst() {
         return endDateFirst;
     }
 
-    public Date getStartDateSecond() {
+    public LocalDateTime getStartDateSecond() {
         return startDateSecond;
     }
 
-    public Date getEndDateSecond() {
+    public LocalDateTime getEndDateSecond() {
         return endDateSecond;
     }
 
