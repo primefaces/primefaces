@@ -94,14 +94,6 @@ public class ImageCropperRenderer extends CoreRenderer {
             wb.append(",maxSize:[").append(cropper.getMaxSize()).append("]");
         }
 
-        if (cropper.getBoxHeight() > 0) {
-            wb.attr("canvasHeight", cropper.getBoxHeight());
-        }
-
-        if (cropper.getBoxWidth() > 0) {
-            wb.attr("canvasWidth", cropper.getBoxWidth());
-        }
-
         Object value = cropper.getValue();
         if (value != null) {
             CroppedImage croppedImage = (CroppedImage) value;
@@ -130,6 +122,18 @@ public class ImageCropperRenderer extends CoreRenderer {
         writer.startElement("div", cropper);
         writer.writeAttribute("id", clientId, null);
 
+        String style = Constants.EMPTY_STRING;
+        if (cropper.getBoxHeight() > 0) {
+            style = style + " max-height:" + cropper.getBoxHeight() + "px; ";
+        }
+
+        if (cropper.getBoxWidth() > 0) {
+            style = style + " max-width:" + cropper.getBoxHeight() + "px; ";
+        }
+        if (!LangUtils.isValueBlank(style)) {
+            writer.writeAttribute("style", style, null);
+        }
+
         renderImage(context, cropper, clientId);
 
         writer.startElement("input", null);
@@ -149,6 +153,9 @@ public class ImageCropperRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId + "_image", null);
         writer.writeAttribute("alt", alt, null);
         writer.writeAttribute("src", getResourceURL(context, cropper.getImage()), null);
+        writer.writeAttribute("height", "auto", null);
+        writer.writeAttribute("width", "100%", null);
+        writer.writeAttribute("style", "max-width: 100%;", null);
         writer.endElement("img");
     }
 
