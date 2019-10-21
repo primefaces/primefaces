@@ -45,5 +45,5 @@ are many other third party libraries and plugins used to support features.
 | Signature | 1.2.0 | http://keith-wood.name/signature.html |
 | Timeline | 6.0.0 | https://github.com/visjs/vis-timeline |
 | TouchSwipe | 1.6.18 | https://github.com/mattbryson/TouchSwipe-Jquery-Plugin |
-| WebcamJS | 1.0.25 | http://github.com/jhuckaby |
+| WebcamJS | 1.0.26 | http://github.com/jhuckaby |
 
