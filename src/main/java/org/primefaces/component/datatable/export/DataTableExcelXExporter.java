@@ -70,14 +70,14 @@ public class DataTableExcelXExporter extends DataTableExcelExporter {
 
             String facetBackground = options.getFacetBgColor();
             if (facetBackground != null) {
-                XSSFColor backgroundColor = new XSSFColor(Color.decode(facetBackground));
+                XSSFColor backgroundColor = new XSSFColor(Color.decode(facetBackground), new DefaultIndexedColorMap());
                 ((XSSFCellStyle) facetStyle).setFillForegroundColor(backgroundColor);
                 facetStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
             }
 
             String facetFontColor = options.getFacetFontColor();
             if (facetFontColor != null) {
-                XSSFColor facetColor = new XSSFColor(Color.decode(facetFontColor));
+                XSSFColor facetColor = new XSSFColor(Color.decode(facetFontColor), new DefaultIndexedColorMap());
                 ((XSSFFont) facetFont).setColor(facetColor);
             }
 
@@ -97,7 +97,7 @@ public class DataTableExcelXExporter extends DataTableExcelExporter {
         if (options != null) {
             String cellFontColor = options.getCellFontColor();
             if (cellFontColor != null) {
-                XSSFColor cellColor = new XSSFColor(Color.decode(cellFontColor));
+                XSSFColor cellColor = new XSSFColor(Color.decode(cellFontColor), new DefaultIndexedColorMap());
                 ((XSSFFont) cellFont).setColor(cellColor);
             }
 
