@@ -46,6 +46,7 @@ import org.primefaces.model.CroppedImage;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
 import org.primefaces.util.FileUploadUtils;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class ImageCropperRenderer extends CoreRenderer {
@@ -79,7 +80,11 @@ public class ImageCropperRenderer extends CoreRenderer {
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithComponentLoad("ImageCropper", widgetVar, clientId, clientId + "_image")
-                .attr("image", image);
+                .attr("image", image)
+                .attr("viewMode", cropper.getViewMode(), 0)
+                .attr("aspectRatio", cropper.getAspectRatio(), Double.MIN_VALUE)
+                .attr("responsive", cropper.isResponsive(), true)
+                .attr("guides", cropper.isGuides(), true);
 
         if (cropper.getMinSize() != null) {
             wb.append(",minSize:[").append(cropper.getMinSize()).append("]");
@@ -88,12 +93,6 @@ public class ImageCropperRenderer extends CoreRenderer {
         if (cropper.getMaxSize() != null) {
             wb.append(",maxSize:[").append(cropper.getMaxSize()).append("]");
         }
-
-        wb.attr("bgColor", cropper.getBackgroundColor(), null)
-                .attr("bgOpacity", cropper.getBackgroundOpacity(), 0.6)
-                .attr("aspectRatio", cropper.getAspectRatio(), Double.MIN_VALUE)
-                .attr("boxWidth", cropper.getBoxWidth(), 0)
-                .attr("boxHeight", cropper.getBoxHeight(), 0);
 
         Object value = cropper.getValue();
         if (value != null) {
@@ -106,11 +105,11 @@ public class ImageCropperRenderer extends CoreRenderer {
 
             select = "[" + x + "," + y + "," + x2 + "," + y2 + "]";
         }
-        else if (cropper.getInitialCoords() != null) {
+        else if (!LangUtils.isValueBlank(cropper.getInitialCoords())) {
             select = "[" + cropper.getInitialCoords() + "]";
         }
 
-        wb.append(",setSelect:").append(select);
+        wb.append(",initialCoords:").append(select);
 
         wb.finish();
     }
@@ -122,6 +121,18 @@ public class ImageCropperRenderer extends CoreRenderer {
 
         writer.startElement("div", cropper);
         writer.writeAttribute("id", clientId, null);
+
+        String style = Constants.EMPTY_STRING;
+        if (cropper.getBoxHeight() > 0) {
+            style = style + " max-height:" + cropper.getBoxHeight() + "px; ";
+        }
+
+        if (cropper.getBoxWidth() > 0) {
+            style = style + " max-width:" + cropper.getBoxHeight() + "px; ";
+        }
+        if (!LangUtils.isValueBlank(style)) {
+            writer.writeAttribute("style", style, null);
+        }
 
         renderImage(context, cropper, clientId);
 
@@ -142,6 +153,9 @@ public class ImageCropperRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId + "_image", null);
         writer.writeAttribute("alt", alt, null);
         writer.writeAttribute("src", getResourceURL(context, cropper.getImage()), null);
+        writer.writeAttribute("height", "auto", null);
+        writer.writeAttribute("width", "100%", null);
+        writer.writeAttribute("style", "max-width: 100%;", null);
         writer.endElement("img");
     }
 

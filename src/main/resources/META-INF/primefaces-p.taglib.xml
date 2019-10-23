@@ -11006,22 +11006,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Background color of the container.]]>
-            </description>
-            <name>backgroundColor</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Background opacity of the container. Default is 0.6]]>
-            </description>
-            <name>backgroundOpacity</name>
-            <required>false</required>
-            <type>java.lang.Double</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Initial coordinates of the cropper area.]]>
             </description>
             <name>initialCoords</name>
@@ -11051,6 +11035,30 @@
             <name>sizeLimit</name>
             <required>false</required>
             <type>java.lang.Long</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Re-render the cropper when resizing the window. Default is true.]]>
+            </description>
+            <name>responsive</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Show the dashed lines in the crop box. Default is true.]]>
+            </description>
+            <name>guides</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Define the view mode of the cropper. If you set viewMode to 0, the crop box can extend outside the canvas, while a value of 1, 2 or 3 will restrict the crop box to the size of the canvas. A viewMode of 2 or 3 will additionally restrict the canvas to the container. Note that if the proportions of the canvas and the container are the same, there is no difference between 2 and 3. Default is 1.]]>
+            </description>
+            <name>viewMode</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
         </attribute>
     </tag>
     <tag>

@@ -34,14 +34,15 @@ widgetVar | null | String | Name of the client side widget.
 image | null | String | Context relative path to the image.
 alt | null | String | Alternate text of the image.
 aspectRatio | null | Double | Aspect ratio of the cropper area.
-minSize | null | String | Minimum size of the cropper area.
-maxSize | null | String | Maximum size of the cropper area.
-backgroundColor | null | String | Background color of the container.
-backgroundOpacity | 0.6 | Double | Background opacity of the container
-initialCoords | null | String | Initial coordinates of the cropper area.
+minSize | null | String | Minimum size of the cropper area (width,height).
+maxSize | null | String | Maximum size of the cropper area (width,height).
+initialCoords | null | String | Initial coordinates of the cropper area (x, y, width,height).
 boxWidth | 0 | Integer | Maximum box width of the cropping area.
 boxHeight | 0 | Integer | Maximum box height of the cropping area.
 sizeLimit | 10485760 | Long | Maximum number of bytes the image.
+responsive | true | Boolean | Re-render the cropper when resizing the window.
+guides | true | Boolean | Show the dashed lines in the crop box.
+viewMode | 1 | Integer | Define the view mode of the cropper. If you set viewMode to 0, the crop box can extend outside the canvas, while a value of 1, 2 or 3 will restrict the crop box to the size of the canvas. A viewMode of 2 or 3 will additionally restrict the canvas to the container. Note that if the proportions of the canvas and the container are the same, there is no difference between 2 and 3.
 
 ## Getting started with the ImageCropper
 ImageCropper is an input component and image to be cropped is provided via the _image_ attribute.
