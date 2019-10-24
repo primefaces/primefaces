@@ -9,6 +9,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.theme = true;
         this.viewNameState = $(this.jqId + '_view');
         this.cfg.urlTarget = this.cfg.urlTarget || "_blank";
+        this.cfg.plugins = [ 'interaction', 'dayGrid', 'timeGrid'];
 
         if(this.cfg.defaultDate) {
             this.cfg.defaultDate = moment(this.cfg.defaultDate);
@@ -34,7 +35,10 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     _render: function() {
-        this.jq.fullCalendar(this.cfg);
+        var _self = this;
+        var calendarEl = document.getElementById(this.cfg.id);
+        _self.calendar = new FullCalendar.Calendar(calendarEl, this.cfg);
+        _self.calendar.render();
 
         this.bindViewChangeListener();
     },
@@ -162,22 +166,22 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     setupEventSource: function() {
         var $this = this;
 
-        this.cfg.events = function(start, end, timezone, callback) {
-            var offset = start.utcOffset()*60000; // <-- #2977: assume start,end in same zone
+        this.cfg.events = function(fetchInfo, successCallback) {
+            //var offset = start.utcOffset()*60000; // <-- #2977: assume start,end in same zone
             var options = {
                 source: $this.id,
                 process: $this.id,
                 update: $this.id,
                 formId: $this.cfg.formId,
                 params: [
-                    {name: $this.id + '_start', value: start.valueOf() + offset},
-                    {name: $this.id + '_end', value: end.valueOf() + offset}
+                    {name: $this.id + '_start', value: fetchInfo.start.valueOf() /*+ offset*/},
+                    {name: $this.id + '_end', value: fetchInfo.end.valueOf() /*+ offset*/}
                 ],
                 onsuccess: function(responseXML, status, xhr) {
                     PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            callback(JSON.parse(content).events);
+                            successCallback(JSON.parse(content).events);
                         }
                     });
 

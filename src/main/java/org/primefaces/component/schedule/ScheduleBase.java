@@ -118,7 +118,7 @@ public abstract class ScheduleBase extends UIComponentBase implements Widget, Cl
     }
 
     public String getView() {
-        return (String) getStateHelper().eval(PropertyKeys.view, "month");
+        return (String) getStateHelper().eval(PropertyKeys.view, "dayGridMonth");
     }
 
     public void setView(String view) {
