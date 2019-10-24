@@ -198,7 +198,7 @@ public abstract class ScheduleBase extends UIComponentBase implements Widget, Cl
     }
 
     public String getRightHeaderTemplate() {
-        return (String) getStateHelper().eval(PropertyKeys.rightHeaderTemplate, "month,agendaWeek,agendaDay");
+        return (String) getStateHelper().eval(PropertyKeys.rightHeaderTemplate, "dayGridMonth,timeGridWeek,timeGridDay");
     }
 
     public void setRightHeaderTemplate(String rightHeaderTemplate) {

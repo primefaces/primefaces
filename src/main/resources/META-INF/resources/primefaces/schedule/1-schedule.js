@@ -67,11 +67,11 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     setupEventHandlers: function() {
         var $this = this;
 
-        this.cfg.dayClick = function(dayDate, jsEvent, view) {
+        this.cfg.dateClick = function(dateClickInfo) {
             if($this.hasBehavior('dateSelect')) {
                 var ext = {
                     params: [
-                        {name: $this.id + '_selectedDate', value: dayDate.valueOf() - dayDate.utcOffset()*60000}
+                        {name: $this.id + '_selectedDate', value: dateClickInfo.date.toISOString()}
                     ]
                 };
 
@@ -79,20 +79,20 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
 
-        this.cfg.eventClick = function(calEvent, jsEvent, view) {
-            if (calEvent.url) {
+        this.cfg.eventClick = function(eventClickInfo) {
+            if (eventClickInfo.event.url) {
                 var targetWindow = window.open('', $this.cfg.urlTarget);
                 if ($this.cfg.noOpener) {
                     targetWindow.opener = null;    
                 }
-                targetWindow.location = calEvent.url;
+                targetWindow.location = targetWindow.event.url;
                 return false;
             }
 
             if($this.hasBehavior('eventSelect')) {
                 var ext = {
                     params: [
-                        {name: $this.id + '_selectedEventId', value: calEvent.id}
+                        {name: $this.id + '_selectedEventId', value: eventClickInfo.event.id}
                     ]
                 };
 

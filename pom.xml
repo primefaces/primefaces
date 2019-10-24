@@ -787,15 +787,15 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/0-fullcalendar.min.js</include>
                                 -->
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-core.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-locales-all.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-interaction.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-daygrid.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-timegrid.js</include>
 
                                 <!--
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-core.min.js</include>
-                                -->
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-locales-all.min.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-interaction.min.js</include>
-                                <!--
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-daygrid.min.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-timegrid.min.js</include>
                                 -->
@@ -988,7 +988,9 @@
                                 -->
                                 <exclude>**/fullcalendar-core.js</exclude>
                                 <exclude>**/fullcalendar-core.min.js</exclude>
+                                <exclude>**/fullcalendar-locales-all.js</exclude>
                                 <exclude>**/fullcalendar-locales-all.min.js</exclude>
+                                <exclude>**/fullcalendar-interaction.js</exclude>
                                 <exclude>**/fullcalendar-interaction.min.js</exclude>
                                 <exclude>**/fullcalendar-daygrid.js</exclude>
                                 <exclude>**/fullcalendar-daygrid.min.js</exclude>

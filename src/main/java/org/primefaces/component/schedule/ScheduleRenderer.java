@@ -163,7 +163,7 @@ public class ScheduleRenderer extends CoreRenderer {
             wb.append(",header:{left:'")
                     .append(schedule.getLeftHeaderTemplate()).append("'")
                     .attr("center", schedule.getCenterHeaderTemplate())
-                    .attr("right", schedule.getRightHeaderTemplate())
+                    .attr("right", schedule.getRightHeaderTemplate()) //TODO: alte View-Namen auf neue übersetzen
                     .append("}");
         }
         else {

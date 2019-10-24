@@ -23,7 +23,6 @@
  */
 package org.primefaces.component.schedule;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collection;
@@ -102,8 +101,8 @@ public class Schedule extends ScheduleBase {
             FacesEvent wrapperEvent = null;
 
             if (eventName.equals("dateSelect")) {
-                Long milliseconds = Long.valueOf(params.get(clientId + "_selectedDate"));
-                LocalDateTime selectedDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(milliseconds), zoneId);
+                String selectedDateStr = params.get(clientId + "_selectedDate");
+                LocalDateTime selectedDate =  CalendarUtils.toLocalDateTime(zoneId, selectedDateStr);
                 SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), selectedDate);
                 selectEvent.setPhaseId(behaviorEvent.getPhaseId());
 
