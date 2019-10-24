@@ -38,11 +38,7 @@ PrimeFaces.widget.TabMenu = PrimeFaces.widget.Menu.extend({
             if(key === keyCode.SPACE || key === keyCode.ENTER) {
                 var currentLink = $(this).children('a');
                 currentLink.trigger('click');
-                var href = currentLink.attr('href');
-                if(href && href !== '#') {
-                    window.location.href = href;
-                }
-                e.preventDefault();
+                PrimeFaces.utils.openLink(e, currentLink);
             }
         });
     }

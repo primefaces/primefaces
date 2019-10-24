@@ -106,12 +106,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
                     case keyCode.ENTER:
                         currentLink.trigger('click');
                         $this.jq.blur();
-                        var href = currentLink.attr('href');
-                        if(href && href !== '#') {
-                            window.location.href = href;
-                        }
-
-                        e.preventDefault();
+                        PrimeFaces.utils.openLink(e, currentLink);
                     break;
 
                     case keyCode.ESCAPE:

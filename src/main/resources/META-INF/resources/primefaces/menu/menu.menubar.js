@@ -133,12 +133,7 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
                         var currentLink = currentitem.children('.ui-menuitem-link');
                         currentLink.trigger('click');
                         $this.jq.blur();
-                        var href = currentLink.attr('href');
-                        if(href && href !== '#') {
-                            window.location.href = href;
-                        }
-
-                        e.preventDefault();
+                        PrimeFaces.utils.openLink(e, currentLink);
                     break;
 
             }

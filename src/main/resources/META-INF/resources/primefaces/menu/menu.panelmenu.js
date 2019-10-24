@@ -62,12 +62,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         }).click(function(e) {
             var currentLink = $(this);
             $this.focusItem(currentLink.closest('.ui-menuitem'));
-
-            var href = currentLink.attr('href');
-            if(href && href !== '#') {
-                window.location.href = href;
-            }
-            e.preventDefault();
+            PrimeFaces.utils.openLink(e, currentLink);
         });
 
         this.treeLinks.click(function(e) {
