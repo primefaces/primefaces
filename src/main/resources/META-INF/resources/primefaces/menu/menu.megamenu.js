@@ -60,10 +60,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
                     }
                 }
                 else {
-                    var href = link.attr('href');
-                    if(href && href !== '#') {
-                        window.location.href = href;
-                    }
+                    PrimeFaces.utils.openLink(e, link);
                 }
 
                 e.preventDefault();

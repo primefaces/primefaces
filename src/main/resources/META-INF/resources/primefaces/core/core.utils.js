@@ -352,6 +352,24 @@ if (!PrimeFaces.utils) {
          */
         excludedSwipeElements: function() {
             return ":button:enabled, :input:enabled, a, [role='combobox'], .noSwipe";
+        },
+
+        /**
+         * Helper to open a new URL and if CTRL is held down open in new browser tab.
+         * 
+         * @param {*} event the on click event
+         * @param {*} link the URL anchor link
+         */
+        openLink: function(event, link) {
+            var href = link.attr('href');
+            if(href && href !== '#') {
+                if (event.ctrlKey) {
+                    window.open(href, '_blank').focus();
+                } else {
+                    window.location.href = href;
+                }
+            }
+            event.preventDefault();
         }
 
     };
