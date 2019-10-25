@@ -48,10 +48,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
 
         if(lang) {
             this.cfg.firstDay = lang.firstDay;
-            this.cfg.monthNames = lang.monthNames;
-            this.cfg.monthNamesShort = lang.monthNamesShort;
-            this.cfg.dayNames = lang.dayNames;
-            this.cfg.dayNamesShort = lang.dayNamesShort;
+            /*
             this.cfg.buttonText = {today: lang.currentText
                                   ,month: lang.month
                                   ,week: lang.week
@@ -61,6 +58,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             if(lang.eventLimitText) {
                 this.cfg.eventLimitText = lang.eventLimitText;
             }
+             */
         }
     },
 
@@ -100,13 +98,14 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
 
-        this.cfg.eventDrop = function(calEvent, delta, revertFunc, jsEvent, ui, view) {
+        this.cfg.eventDrop = function(eventDropInfo) {
             if($this.hasBehavior('eventMove')) {
                 var ext = {
                     params: [
-                        {name: $this.id + '_movedEventId', value: calEvent.id},
-                        {name: $this.id + '_dayDelta', value: delta._days},
-                        {name: $this.id + '_minuteDelta', value: (delta._milliseconds/60000)}
+                        {name: $this.id + '_movedEventId', value: eventDropInfo.event.id},
+                        //TODO: years and months?
+                        {name: $this.id + '_dayDelta', value: eventDropInfo.delta.days},
+                        {name: $this.id + '_minuteDelta', value: (eventDropInfo.delta.milliseconds/60000)}
                     ]
                 };
 
@@ -114,13 +113,15 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
 
-        this.cfg.eventResize = function(calEvent, delta, revertFunc, jsEvent, ui, view) {
+        this.cfg.eventResize = function(eventResizeInfo) {
             if($this.hasBehavior('eventResize')) {
                 var ext = {
                     params: [
-                        {name: $this.id + '_resizedEventId', value: calEvent.id},
-                        {name: $this.id + '_dayDelta', value: delta._days},
-                        {name: $this.id + '_minuteDelta', value: (delta._milliseconds/60000)}
+                        {name: $this.id + '_resizedEventId', value: eventResizeInfo.event.id},
+                        //TODO: years and months?
+                        {name: $this.id + '_dayDelta', value: eventResizeInfo.endDelta.days},
+                        {name: $this.id + '_minuteDelta', value: (eventResizeInfo.endDelta.milliseconds/60000)}
+                        //TODO: startDelta???
                     ]
                 };
 
@@ -129,21 +130,21 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.cfg.tooltip) {
-            this.cfg.eventMouseover = function(event, jsEvent, view) {
-                if(event.description) {
+            this.cfg.eventMouseEnter = function(mouseEnterInfo) {
+                if(mouseEnterInfo.event.description) {
                     $this.tipTimeout = setTimeout(function() {
                         $this.tip.css({
-                            'left': jsEvent.pageX,
-                            'top': jsEvent.pageY + 15,
+                            'left': mouseEnterInfo.jsEvent.pageX,
+                            'top': mouseEnterInfo.jsEvent.pageY + 15,
                             'z-index': ++PrimeFaces.zindex
                         });
-                        $this.tip[0].innerHTML = event.description;
+                        $this.tip[0].innerHTML = mouseEnterInfo.event.description;
                         $this.tip.show();
                     }, 150);
                 }
             };
 
-            this.cfg.eventMouseout = function(event, jsEvent, view) {
+            this.cfg.eventMouseLeave = function(mouseLeaveInfo) {
                 if($this.tipTimeout) {
                     clearTimeout($this.tipTimeout);
                 }
@@ -155,9 +156,9 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             };
         } else {
             // PF #2795 default to regular tooltip
-            this.cfg.eventRender = function(event, element) {
-                if(event.description) {
-                    element.attr('title', event.description);
+            this.cfg.eventRender = function(info) {
+                if(info.event.description) {
+                    element.attr('title', info.event.description);
                 }
             };
         }
@@ -194,7 +195,8 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     update: function() {
-        this.jq.fullCalendar('refetchEvents');
+        var _self = this;
+        _self.calendar.refetchEvents();
     },
 
     bindViewChangeListener: function() {
