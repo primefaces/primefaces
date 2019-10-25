@@ -131,14 +131,14 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
 
         if(this.cfg.tooltip) {
             this.cfg.eventMouseEnter = function(mouseEnterInfo) {
-                if(mouseEnterInfo.event.description) {
+                if(mouseEnterInfo.event.extendedProps.description) {
                     $this.tipTimeout = setTimeout(function() {
                         $this.tip.css({
                             'left': mouseEnterInfo.jsEvent.pageX,
                             'top': mouseEnterInfo.jsEvent.pageY + 15,
                             'z-index': ++PrimeFaces.zindex
                         });
-                        $this.tip[0].innerHTML = mouseEnterInfo.event.description;
+                        $this.tip[0].innerHTML = mouseEnterInfo.event.extendedProps.description;
                         $this.tip.show();
                     }, 150);
                 }
@@ -175,8 +175,8 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 update: $this.id,
                 formId: $this.cfg.formId,
                 params: [
-                    {name: $this.id + '_start', value: fetchInfo.start.valueOf() /*+ offset*/},
-                    {name: $this.id + '_end', value: fetchInfo.end.valueOf() /*+ offset*/}
+                    {name: $this.id + '_start', value: fetchInfo.start.toISOString() /*+ offset*/},
+                    {name: $this.id + '_end', value: fetchInfo.end.toISOString() /*+ offset*/}
                 ],
                 onsuccess: function(responseXML, status, xhr) {
                     PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {

@@ -24,7 +24,6 @@
 package org.primefaces.component.schedule;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -85,12 +84,9 @@ public class ScheduleRenderer extends CoreRenderer {
             String startDateParam = params.get(clientId + "_start");
             String endDateParam = params.get(clientId + "_end");
 
-            Long startMillis = Long.valueOf(startDateParam);
-            Long endMillis = Long.valueOf(endDateParam);
-
             ZoneId zoneId = CalendarUtils.calculateZoneId(schedule.getTimeZone());
-            LocalDateTime startDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(startMillis), zoneId);
-            LocalDateTime endDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(endMillis), zoneId);
+            LocalDateTime startDate =  CalendarUtils.toLocalDateTime(zoneId, startDateParam);
+            LocalDateTime endDate =  CalendarUtils.toLocalDateTime(zoneId, endDateParam);
 
             LazyScheduleModel lazyModel = ((LazyScheduleModel) model);
             lazyModel.clear(); //Clear old events
@@ -103,7 +99,7 @@ public class ScheduleRenderer extends CoreRenderer {
     protected void encodeEventsAsJSON(FacesContext context, Schedule schedule, ScheduleModel model) throws IOException {
         ZoneId zoneId = CalendarUtils.calculateZoneId(schedule.getTimeZone());
 
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE_TIME.withZone(zoneId);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME.withZone(zoneId);
 
         JSONArray jsonEvents = new JSONArray();
 
@@ -113,8 +109,8 @@ public class ScheduleRenderer extends CoreRenderer {
 
                 jsonObject.put("id", event.getId());
                 jsonObject.put("title", event.getTitle());
-                jsonObject.put("start", dateTimeFormatter.format(event.getStartDate()));
-                jsonObject.put("end", dateTimeFormatter.format(event.getEndDate()));
+                jsonObject.put("start", dateTimeFormatter.format(event.getStartDate().atZone(zoneId)));
+                jsonObject.put("end", dateTimeFormatter.format(event.getEndDate().atZone(zoneId)));
                 jsonObject.put("allDay", event.isAllDay());
                 jsonObject.put("editable", event.isEditable());
                 jsonObject.put("className", event.getStyleClass());
