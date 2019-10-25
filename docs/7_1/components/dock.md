@@ -25,7 +25,8 @@ Dock component mimics the well known dock interface of Mac OS X.
 | itemWidth | 40 | Integer | Initial width of items.
 | maxWidth | 50 | Integer | Maximum width of items.
 | proximity | 90 | Integer | Distance to enlarge.
-| halign | center | String | Horizontal alignment,
+| halign | center | String | Horizontal alignment.
+| blockScroll | true | Boolean | Whether to block scrolling of the document.
 | widgetVar | null | String | Name of the client side widget.
 
 
