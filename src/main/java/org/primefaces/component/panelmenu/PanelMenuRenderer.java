@@ -65,7 +65,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        writer.writeAttribute("role", "menu", null);
+        writer.writeAttribute("role", "tablist", null);
 
         if (menu.getElementsCount() > 0) {
             List<MenuElement> elements = menu.getElements();
