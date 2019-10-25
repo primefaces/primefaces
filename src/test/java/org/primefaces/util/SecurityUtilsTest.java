@@ -8,6 +8,18 @@ import java.util.Collection;
 import org.junit.jupiter.api.Test;
 
 class SecurityUtilsTest {
+    
+    @Test
+    void testConvertRoles_Null() {
+        //Arrange
+        Integer roles = Integer.valueOf(5);
+
+        //Act
+        String[] actual = SecurityUtils.convertRoles(roles);
+
+        //Assert
+        assertNull(actual);
+    }
 
     @Test
     void testConvertRoles_String() {
@@ -15,11 +27,11 @@ class SecurityUtilsTest {
         String roles = "role1,role2";
 
         //Act
-        String[] result = SecurityUtils.convertRoles(roles);
+        String[] actual = SecurityUtils.convertRoles(roles);
 
         //Assert
-        assertEquals("role1", result[0]);
-        assertEquals("role2", result[1]);
+        assertEquals("role1", actual[0]);
+        assertEquals("role2", actual[1]);
     }
 
     @Test
@@ -28,11 +40,11 @@ class SecurityUtilsTest {
         String[] roles = {"role1","role2"};
 
         //Act
-        String[] result = SecurityUtils.convertRoles(roles);
+        String[] actual = SecurityUtils.convertRoles(roles);
 
         //Assert
-        assertEquals("role1", result[0]);
-        assertEquals("role2", result[1]);
+        assertEquals("role1", actual[0]);
+        assertEquals("role2", actual[1]);
     }
 
     @Test
@@ -41,11 +53,11 @@ class SecurityUtilsTest {
         Collection<String> roles = Arrays.asList("role1","role2");
 
         //Act
-        String[] result = SecurityUtils.convertRoles(roles);
+        String[] actual = SecurityUtils.convertRoles(roles);
 
         //Assert
-        assertEquals("role1", result[0]);
-        assertEquals("role2", result[1]);
+        assertEquals("role1", actual[0]);
+        assertEquals("role2", actual[1]);
     }
 
 }
