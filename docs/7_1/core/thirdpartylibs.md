@@ -11,7 +11,7 @@ are many other third party libraries and plugins used to support features.
 | Color Picker | (2012) | www.eyecon.ro |
 | ContentFlow | 1.0.2 | http://www.jacksasylum.eu/ContentFlow |
 | FontAwesome | 4.7.0 | https://fontawesome.com/ |
-| FullCalendar | 3.10.0 | https://fullcalendar.io/ |
+| FullCalendar | 4.3.1 | https://fullcalendar.io/ |
 | Idle Timer | 1.1.0 - 2016-03-21 | https://github.com/thorst/jquery-idletimer |
 | Interface elements | | http://interface.eyecon.ro (dock) |
 | jqPlot | 1.0.9 | http://www.jqplot.com/ |

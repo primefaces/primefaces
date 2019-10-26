@@ -1,6 +1,6 @@
 # Schedule
 
-Schedule provides an Outlook Calendar, iCal like JSF component to manage events.
+Schedule provides an Outlook Calendar, iCal like JSF component to manage events which is based on FullCalendar.
 
 ## Info
 
@@ -47,7 +47,7 @@ columnFormat | null | String | Deprecated, use columnHeaderFormat instead. Forma
 columnHeaderFormat | null | String | Format for column headers.
 timeZone | null | Object | String or a java.time.ZoneId instance to specify the timezone used for date conversion.
 tooltip | false | Boolean | Displays description of events on a tooltip.
-clientTimeZone | null | String | Timezone to define how to interpret the dates at browser. Valid values are "false", "local", "UTC" and ids like "America/Chicago".
+clientTimeZone | local | String | Defines how to interpret the dates at browser. Valid values are "local", "UTC" and ids like "America/Chicago". (see https://fullcalendar.io/docs/timeZone)
 showWeekNumbers | false | Boolean | Display week numbers in schedule.
 extender | null | String | Name of javascript function to extend the options of the underlying fullcalendar plugin.
 displayEventEnd | null | String | Whether or not to display an event's end time text when it is rendered on the calendar. Value can be a boolean to globally configure for all views or a comma separated list such as "month:false,basicWeek:true" to configure per view.
@@ -126,9 +126,10 @@ much more effective then updating with regular PPR. An example of this is demons
 schedule example, save button is calling PF(' _widgetvar').update()_ at oncomplete event handler.
 
 ## TimeZone
-By default, timezone offsets are ignored. Set ignoreTimezone to false so that schedule takes care of
-timezone differences by calculating the client browser timezone and the event date so that events
-are displayed at the clients local time.
+By default schedule takes care of timezone differences by calculating the client browser timezone
+and the event date so that events are displayed at the clients local time.
+
+see https://fullcalendar.io/docs/timeZone, setting 'locale' 
 
 ## Editable Schedule
 Let’s put it altogether to come up a fully editable and complex schedule.
@@ -243,47 +244,36 @@ These controls can be placed at three locations on header which are defined with
 _leftHeaderTemplate_ , _rightHeaderTemplate_ and _centerTemplate_ attributes.
 
 ```xhtml
-<p:schedule value="#{scheduleBean.model}" leftHeaderTemplate"today" rightHeaderTemplate="prev,next" centerTemplate="month, agendaWeek, agendaDay"
+<p:schedule value="#{scheduleBean.model}" leftHeaderTemplate"today" rightHeaderTemplate="prev,next" centerTemplate="dayGridMonth, timeGridWeek, timeGridDay">
 </p:schedule>
 ```
 
 ## Views
-5 different views are supported, these are "month", "agendaWeek", "agendaDay", "basicWeek" and
-"basicDay".
+9 different views are supported, these are "dayGridMonth", "dayGridWeek", "dayGridDay", "timeGridWeek", "timeGridDay", "listYear" , "listMonth", "listWeek" and "listDay".
 
-#### agendaWeek
+Some examples...
 
-```xhtml
-<p:schedule value="#{scheduleBean.model}" view="agendaWeek"/>
-```
-#### agendaDay
+#### timeGridWeek
 
 ```xhtml
-<p:schedule value="#{scheduleBean.model}" view="agendaDay"/>
+<p:schedule value="#{scheduleBean.model}" view="timeGridWeek"/>
 ```
-#### basicWeek
+#### timeGridDay
 
 ```xhtml
-<p:schedule value="#{scheduleBean.model}" view="basicWeek"/>
+<p:schedule value="#{scheduleBean.model}" view="timeGridDay"/>
 ```
-
-#### basicDay
+#### listMonth
 
 ```xhtml
-<p:schedule value="#{scheduleBean.model}" view="basicDay"/>
+<p:schedule value="#{scheduleBean.model}" view="listMonth"/>
 ```
+
 ## Locale Support
+
+FullCalendar comes with it´s own localization which is packed into the Schedule-component.
 By default locale information is retrieved from the view’s locale and can be overridden by the locale
-attribute. Locale attribute can take a locale key as a | String | or a java.util.Locale instance. Default
-language of labels are English and you need to add the necessary translations to your page manually
-as PrimeFaces does not include language translations. PrimeFaces Wiki Page for
-PrimeFacesLocales is a community driven page where you may find the translations you need.
-Please contribute to this wiki with your own translations.
-
-https://github.com/primefaces/primefaces/wiki/Locales
-
-Translation is a simple javascript object, we suggest adding the code to a javascript file and include
-in your application. Following is a Turkish calendar.
+attribute. Locale attribute can take a locale key as a | String | or a java.util.Locale instance. 
 
 ```xhtml
 <p:schedule value="#{scheduleBean.model}" locale="tr"/>
@@ -295,6 +285,8 @@ To display a link when there are too many events on a slot, use _setEventLimit(t
 If the schedule component lacking functions/options that are provided by the full calendar, 
 they can be used by the extender function. For more details about the configuration of full calender
 look at their documentation.
+
+TODO: update extender - example
 ```xhtml
 <h:form>
     <p:schedule value="#{scheduleBean.model}" extender="initSchedule"/>

@@ -294,7 +294,7 @@ public abstract class ScheduleBase extends UIComponentBase implements Widget, Cl
     }
 
     public String getClientTimeZone() {
-        return (String) getStateHelper().eval(PropertyKeys.clientTimeZone, null);
+        return (String) getStateHelper().eval(PropertyKeys.clientTimeZone, "local");
     }
 
     public void setClientTimeZone(String clientTimeZone) {
