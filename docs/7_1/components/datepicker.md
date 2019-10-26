@@ -71,7 +71,7 @@ ajax selection and more.
 | onMonthChange | null | Function | Javascript function to invoke when month changes.
 | onYearChange | null | Function | Javascript function to invoke when year changes.
 | locale | null | Object | Locale to be used for labels and conversion.
-| timeZone | null | Time Zone | String a java.time.ZoneId instance or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to TimeZone.getDefault()
+| timeZone | null | Time Zone | String a java.time.ZoneId instance or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to ZoneId.systemDefault().
 | pattern | MM/dd/yyyy | String | DateFormat pattern for localization (for the date part only)
 | mindate | null | java.time.LocalDate, java.util.Date (deprecated) or String | Sets DatePicker's minimum visible date; Also used for validation on the server-side.
 | maxdate | null | java.time.LocalDate, java.util.Date (deprecated) or String | Sets DatePicker's maximum visible date; Also used for validation on the server-side.

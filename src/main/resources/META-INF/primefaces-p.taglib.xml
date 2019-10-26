@@ -20521,7 +20521,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[String or a java.util.TimeZone instance to specify the timezone used for date conversion to ISO_8601 format, defaults to "UTC".]]>
+                <![CDATA[String or a java.util.TimeZone instance to specify the timezone used for date conversion to ISO_8601 format, defaults to ZoneId.systemDefault().]]>
             </description>
             <name>timeZone</name>
             <required>false</required>
@@ -20529,7 +20529,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Timezone to define how to interpret the dates at browser. Valid values are "false", "local", "UTC" and ids like "America/Chicago".]]>
+                <![CDATA[Timezone to define how to interpret the dates at browser. Valid values are "local", "UTC" and ids like "America/Chicago", defaults to "local".]]>
             </description>
             <name>clientTimeZone</name>
             <required>false</required>

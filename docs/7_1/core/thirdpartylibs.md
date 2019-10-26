@@ -40,6 +40,7 @@ are many other third party libraries and plugins used to support features.
 | JSPlumb Diagram | 2.1.0 | https://github.com/jsplumb/jsplumb |
 | Keypad | 2.1.0 | http://keith-wood.name/keypad.html |
 | moment.js | 2.22.2 | https://github.com/moment/moment |
+| moment-timezone.js | 0.5.25 | https://github.com/moment/moment-timezone |
 | Quill Editor | 1.3.7 | https://quilljs.com/ |
 | Raphaël | 2.2.0 | http://raphaeljs.com |
 | Signature | 1.2.0 | http://keith-wood.name/signature.html |

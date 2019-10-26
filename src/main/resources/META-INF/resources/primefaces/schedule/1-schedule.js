@@ -9,15 +9,13 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.theme = true;
         this.viewNameState = $(this.jqId + '_view');
         this.cfg.urlTarget = this.cfg.urlTarget || "_blank";
-        this.cfg.plugins = [ 'interaction', 'dayGrid', 'timeGrid', 'list'];
+        this.cfg.plugins = [ 'interaction', 'dayGrid', 'timeGrid', 'list', 'moment', 'momentTimezone'];
 
         if(this.cfg.defaultDate) {
             this.cfg.defaultDate = moment(this.cfg.defaultDate);
         }
 
         this.setupEventSource();
-
-        this.configureLocale();
 
         if(this.cfg.tooltip) {
             this.tip = $('<div class="ui-tooltip ui-widget ui-widget-content ui-shadow ui-corner-all"></div>').appendTo(this.jq);
@@ -41,25 +39,6 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         _self.calendar.render();
 
         this.bindViewChangeListener();
-    },
-
-    configureLocale: function() {
-        var lang = PrimeFaces.locales[this.cfg.locale];
-
-        if(lang) {
-            this.cfg.firstDay = lang.firstDay;
-            /*
-            this.cfg.buttonText = {today: lang.currentText
-                                  ,month: lang.month
-                                  ,week: lang.week
-                                  ,day: lang.day};
-            this.cfg.allDayText = lang.allDayText;
-            this.cfg.weekNumberTitle = lang.weekNumberTitle;
-            if(lang.eventLimitText) {
-                this.cfg.eventLimitText = lang.eventLimitText;
-            }
-             */
-        }
     },
 
     setupEventHandlers: function() {

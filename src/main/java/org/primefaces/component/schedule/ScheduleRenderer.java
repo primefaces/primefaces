@@ -174,7 +174,7 @@ public class ScheduleRenderer extends CoreRenderer {
         wb.attr("allDaySlot", schedule.isAllDaySlot(), true)
                 .attr("slotDuration", schedule.getSlotDuration(), "00:30:00")
                 .attr("scrollTime", schedule.getScrollTime(), "06:00:00")
-                .attr("timezone", schedule.getClientTimeZone(), null)
+                .attr("timeZone", schedule.getClientTimeZone(), "local")
                 .attr("minTime", schedule.getMinTime(), null)
                 .attr("maxTime", schedule.getMaxTime(), null)
                 .attr("aspectRatio", schedule.getAspectRatio(), Double.MIN_VALUE)

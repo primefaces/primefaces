@@ -45,7 +45,7 @@ maxTime | null | String | Maximum time to display in a day view.
 timeFormat | null | String | Determines the time-text that will be displayed on each event.
 columnFormat | null | String | Deprecated, use columnHeaderFormat instead. Format for column headers.
 columnHeaderFormat | null | String | Format for column headers.
-timeZone | null | Object | String or a java.time.ZoneId instance to specify the timezone used for date conversion.
+timeZone | null | Object | String or a java.time.ZoneId instance to specify the timezone used for date conversion, defaults to ZoneId.systemDefault().
 tooltip | false | Boolean | Displays description of events on a tooltip.
 clientTimeZone | local | String | Defines how to interpret the dates at browser. Valid values are "local", "UTC" and ids like "America/Chicago". (see https://fullcalendar.io/docs/timeZone)
 showWeekNumbers | false | Boolean | Display week numbers in schedule.
