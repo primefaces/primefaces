@@ -24,7 +24,7 @@ widgetVar | null | String | Name of the client side widget.
 value | null | Object | An org.primefaces.model.ScheduleModel instance representing the backed model
 locale | null | Object | Locale for localization, can be String or a java.util.Locale instance
 aspectRatio | null | Float | Ratio of calendar width to height, higher the value shorter the height is
-view | month | String | The view type to use, possible values are 'month', 'agendaDay', 'agendaWeek', 'basicWeek', 'basicDay'
+view | dayGridMonth | String | The view type to use, possible values are 'dayGridMonth', 'dayGridWeek', 'dayGridDay', 'timeGridWeek', 'timeGridDay', 'listYear' , 'listMonth', 'listWeek', 'listDay'.
 initialDate | null | java.time.LocalDate | The initial date that is used when schedule loads. If ommitted, the schedule starts on the current date
 showWeekends | true | Boolean | Specifies inclusion Saturday/Sunday columns in any of the views
 style | null | String | Style of the main container element of schedule
@@ -34,7 +34,7 @@ resizable | true | Boolean | When true, events are resizable.
 showHeader | true | Boolean | Specifies visibility of header content.
 leftHeaderTemplate | prev, next, today | String | Content of left side of header.
 centerHeaderTemplate | title | String | Content of center of header.
-rightHeaderTemplate | month, agendaWeek, agendaDay | String | Content of right side of header.
+rightHeaderTemplate | dayGridMonth,timeGridWeek,timeGridDay | String | Content of right side of header.
 allDaySlot | true | Boolean | Determines if all-day slot will be displayed in agendaWeek or agendaDay views
 slotDuration | 00:30:00 | String | The frequency for displaying time slots.
 slotLabelInterval | null | String | The frequency that the time slots should be labeled with text. If not specified, a reasonable value will be automatically computed based on slotDuration. When specifying this option, give a Duration-ish input, like "01:00" or {hours:1}. This will cause the header labels to appear on the hour marks, even if slotDuration was hypothetically 15 or 30 minutes long.

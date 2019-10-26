@@ -791,6 +791,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-interaction.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-daygrid.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-timegrid.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-list.js</include>
 
                                 <!--
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-core.min.js</include>
@@ -798,6 +799,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-interaction.min.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-daygrid.min.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-timegrid.min.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-list.min.js</include>
                                 -->
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/1-schedule.js</include>
                             </includes>
@@ -996,6 +998,8 @@
                                 <exclude>**/fullcalendar-daygrid.min.js</exclude>
                                 <exclude>**/fullcalendar-timegrid.js</exclude>
                                 <exclude>**/fullcalendar-timegrid.min.js</exclude>
+                                <exclude>**/fullcalendar-list.js</exclude>
+                                <exclude>**/fullcalendar-list.min.js</exclude>
                                 <exclude>**/0-timeline.min.js</exclude>
                                 <exclude>**/0-chartjs.js</exclude>
                                 <exclude>**/raphael.js</exclude>

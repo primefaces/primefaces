@@ -142,7 +142,7 @@ public class ScheduleRenderer extends CoreRenderer {
         String clientId = schedule.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Schedule", schedule.resolveWidgetVar(context), clientId)
-                .attr("defaultView", schedule.getView()) //TODO: alte View-Namen auf neue übersetzen (https://fullcalendar.io/docs/upgrading-from-v3)
+                .attr("defaultView", schedule.getView().trim()) //TODO: alte View-Namen auf neue übersetzen (https://fullcalendar.io/docs/upgrading-from-v3)
                 .attr("locale", schedule.calculateLocale(context).toString())
                 .attr("tooltip", schedule.isTooltip(), false)
                 .attr("eventLimit", schedule.getValue().isEventLimit(), false)

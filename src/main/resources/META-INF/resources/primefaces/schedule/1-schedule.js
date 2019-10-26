@@ -9,7 +9,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.theme = true;
         this.viewNameState = $(this.jqId + '_view');
         this.cfg.urlTarget = this.cfg.urlTarget || "_blank";
-        this.cfg.plugins = [ 'interaction', 'dayGrid', 'timeGrid'];
+        this.cfg.plugins = [ 'interaction', 'dayGrid', 'timeGrid', 'list'];
 
         if(this.cfg.defaultDate) {
             this.cfg.defaultDate = moment(this.cfg.defaultDate);

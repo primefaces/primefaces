@@ -20353,7 +20353,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[The view type to use, possible values are 'month', 'agendaDay', 'agendaWeek', 'basicWeek', 'basicDay'. Default is month.]]>
+                <![CDATA[The view type to use, possible values are 'dayGridMonth', 'dayGridWeek', 'dayGridDay', 'timeGridWeek', 'timeGridDay', 'listYear' , 'listMonth', 'listWeek', 'listDay'. Default is 'dayGridMonth'.]]>
             </description>
             <name>view</name>
             <required>false</required>
@@ -20433,7 +20433,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Content of right side of header. Default is "month, agendaWeek, agendaDay"]]>
+                <![CDATA[Content of right side of header. Default is "dayGridMonth,timeGridWeek,timeGridDay"]]>
             </description>
             <name>rightHeaderTemplate</name>
             <required>false</required>
