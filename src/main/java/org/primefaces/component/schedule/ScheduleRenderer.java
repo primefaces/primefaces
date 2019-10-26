@@ -28,8 +28,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -142,7 +145,7 @@ public class ScheduleRenderer extends CoreRenderer {
         String clientId = schedule.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Schedule", schedule.resolveWidgetVar(context), clientId)
-                .attr("defaultView", schedule.getView().trim()) //TODO: alte View-Namen auf neue übersetzen (https://fullcalendar.io/docs/upgrading-from-v3)
+                .attr("defaultView", translateViewName(schedule.getView().trim()))
                 .attr("locale", schedule.calculateLocale(context).toString())
                 .attr("tooltip", schedule.isTooltip(), false)
                 .attr("eventLimit", schedule.getValue().isEventLimit(), false)
@@ -159,7 +162,7 @@ public class ScheduleRenderer extends CoreRenderer {
             wb.append(",header:{left:'")
                     .append(schedule.getLeftHeaderTemplate()).append("'")
                     .attr("center", schedule.getCenterHeaderTemplate())
-                    .attr("right", schedule.getRightHeaderTemplate()) //TODO: alte View-Namen auf neue übersetzen
+                    .attr("right", translateViewNames(schedule.getRightHeaderTemplate()))
                     .append("}");
         }
         else {
@@ -270,5 +273,37 @@ public class ScheduleRenderer extends CoreRenderer {
             writer.writeAttribute("value", view, null);
         }
         writer.endElement("input");
+    }
+
+    /**
+     * Translates old FullCalendar-ViewName (<=V3) to new FullCalendar-ViewName (>=V4)
+     * @param viewNameOld
+     * @return
+     */
+    private String translateViewName(String viewNameOld) {
+        switch (viewNameOld) {
+            case "month":
+                return "dayGridMonth";
+            case "basicWeek":
+                return "dayGridWeek";
+            case "basicDay":
+                return "dayGridDay";
+            case "agendaWeek":
+                return "timeGridWeek";
+            case "agendaDay":
+                return "timeGridDay";
+            default:
+                return viewNameOld;
+        }
+    }
+
+    private String translateViewNames(String viewNamesOld) {
+        if (viewNamesOld != null) {
+            List<String> viewNames = Arrays.asList(viewNamesOld.split(","));
+            String viewNamesNew = viewNames.stream().map((viewName) -> translateViewName(viewName.trim())).collect(Collectors.joining(","));
+            return viewNamesNew;
+        }
+
+        return null;
     }
 }
