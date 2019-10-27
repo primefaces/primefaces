@@ -797,6 +797,17 @@
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar.css</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-core.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-daygrid.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-timegrid.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-list.css</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/datepicker/datepicker.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/datepicker/0-datepicker.js</include>

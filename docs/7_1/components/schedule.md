@@ -288,7 +288,6 @@ If the schedule component lacking functions/options that are provided by the ful
 they can be used by the extender function. For more details about the configuration of full calender
 look at their documentation.
 
-TODO: update extender - example
 ```xhtml
 <h:form>
     <p:schedule value="#{scheduleBean.model}" extender="initSchedule"/>
