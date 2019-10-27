@@ -35,7 +35,7 @@ showHeader | true | Boolean | Specifies visibility of header content.
 leftHeaderTemplate | prev, next, today | String | Content of left side of header.
 centerHeaderTemplate | title | String | Content of center of header.
 rightHeaderTemplate | dayGridMonth,timeGridWeek,timeGridDay | String | Content of right side of header.
-allDaySlot | true | Boolean | Determines if all-day slot will be displayed in agendaWeek or agendaDay views
+allDaySlot | true | Boolean | Determines if all-day slot will be displayed in timeGridWeek or timeGridDay views
 slotDuration | 00:30:00 | String | The frequency for displaying time slots.
 slotLabelInterval | null | String | The frequency that the time slots should be labeled with text. If not specified, a reasonable value will be automatically computed based on slotDuration. When specifying this option, give a Duration-ish input, like "01:00" or {hours:1}. This will cause the header labels to appear on the hour marks, even if slotDuration was hypothetically 15 or 30 minutes long.
 slotLabelFormat | null | String | Determines the text that will be displayed within a time slot. The default English value will produce times that look like 5pm and 5:30pm.
