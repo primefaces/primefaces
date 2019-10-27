@@ -342,7 +342,13 @@ public class CalendarUtils {
     public static ZoneId calculateZoneId(Object usertimeZone, ZoneId defaultZoneId) {
         if (usertimeZone != null) {
             if (usertimeZone instanceof String) {
-                return ZoneId.of((String) usertimeZone);
+                String usertimeZoneStr = (String) usertimeZone;
+                if (usertimeZoneStr.length() > 0) {
+                    return ZoneId.of(usertimeZoneStr);
+                }
+                else {
+                    return defaultZoneId;
+                }
             }
             else if (usertimeZone instanceof ZoneId) {
                 return (ZoneId) usertimeZone;
