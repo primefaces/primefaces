@@ -82,7 +82,8 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 var ext = {
                     params: [
                         {name: $this.id + '_movedEventId', value: eventDropInfo.event.id},
-                        //TODO: years and months?
+                        {name: $this.id + '_yearDelta', value: eventDropInfo.delta.years},
+                        {name: $this.id + '_monthDelta', value: eventDropInfo.delta.months},
                         {name: $this.id + '_dayDelta', value: eventDropInfo.delta.days},
                         {name: $this.id + '_minuteDelta', value: (eventDropInfo.delta.milliseconds/60000)}
                     ]
@@ -97,10 +98,14 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 var ext = {
                     params: [
                         {name: $this.id + '_resizedEventId', value: eventResizeInfo.event.id},
-                        //TODO: years and months?
-                        {name: $this.id + '_dayDelta', value: eventResizeInfo.endDelta.days},
-                        {name: $this.id + '_minuteDelta', value: (eventResizeInfo.endDelta.milliseconds/60000)}
-                        //TODO: startDelta???
+                        {name: $this.id + '_startDeltaYear', value: eventResizeInfo.startDelta.years},
+                        {name: $this.id + '_startDeltaMonth', value: eventResizeInfo.startDelta.months},
+                        {name: $this.id + '_startDeltaDay', value: eventResizeInfo.startDelta.days},
+                        {name: $this.id + '_startDeltaMinute', value: (eventResizeInfo.startDelta.milliseconds/60000)},
+                        {name: $this.id + '_endDeltaYear', value: eventResizeInfo.endDelta.years},
+                        {name: $this.id + '_endDeltaMonth', value: eventResizeInfo.endDelta.months},
+                        {name: $this.id + '_endDeltaDay', value: eventResizeInfo.endDelta.days},
+                        {name: $this.id + '_endDeltaMinute', value: (eventResizeInfo.endDelta.milliseconds/60000)}
                     ]
                 };
 

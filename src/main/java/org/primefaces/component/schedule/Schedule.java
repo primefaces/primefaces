@@ -120,29 +120,46 @@ public class Schedule extends ScheduleBase {
             else if (eventName.equals("eventMove")) {
                 String movedEventId = params.get(clientId + "_movedEventId");
                 ScheduleEvent movedEvent = getValue().getEvent(movedEventId);
+                int yearDelta = Double.valueOf(params.get(clientId + "_yearDelta")).intValue();
+                int monthDelta = Double.valueOf(params.get(clientId + "_monthDelta")).intValue();
                 int dayDelta = Double.valueOf(params.get(clientId + "_dayDelta")).intValue();
                 int minuteDelta = Double.valueOf(params.get(clientId + "_minuteDelta")).intValue();
 
                 LocalDateTime startDate = movedEvent.getStartDate();
                 LocalDateTime endDate = movedEvent.getEndDate();
-                startDate = startDate.plusDays(dayDelta).plusMinutes(minuteDelta);
-                endDate = endDate.plusDays(dayDelta).plusMinutes(minuteDelta);
+                startDate = startDate.plusYears(yearDelta).plusMonths(monthDelta).plusDays(dayDelta).plusMinutes(minuteDelta);
+                endDate = endDate.plusYears(yearDelta).plusMonths(monthDelta).plusDays(dayDelta).plusMinutes(minuteDelta);
                 movedEvent.setStartDate(startDate);
                 movedEvent.setEndDate(endDate);
 
-                wrapperEvent = new ScheduleEntryMoveEvent(this, behaviorEvent.getBehavior(), movedEvent, dayDelta, minuteDelta);
+                wrapperEvent = new ScheduleEntryMoveEvent(this, behaviorEvent.getBehavior(), movedEvent,
+                        yearDelta, monthDelta, dayDelta, minuteDelta);
             }
             else if (eventName.equals("eventResize")) {
                 String resizedEventId = params.get(clientId + "_resizedEventId");
                 ScheduleEvent resizedEvent = getValue().getEvent(resizedEventId);
-                int dayDelta = Double.valueOf(params.get(clientId + "_dayDelta")).intValue();
-                int minuteDelta = Double.valueOf(params.get(clientId + "_minuteDelta")).intValue();
+
+                int startDeltaYear = Double.valueOf(params.get(clientId + "_startDeltaYear")).intValue();
+                int startDeltaMonth = Double.valueOf(params.get(clientId + "_startDeltaMonth")).intValue();
+                int startDeltaDay = Double.valueOf(params.get(clientId + "_startDeltaDay")).intValue();
+                int startDeltaMinute = Double.valueOf(params.get(clientId + "_startDeltaMinute")).intValue();
+
+                LocalDateTime startDate = resizedEvent.getStartDate();
+                startDate = startDate.plusYears(startDeltaYear).plusMonths(startDeltaMonth).plusDays(startDeltaDay).plusMinutes(startDeltaMinute);
+                resizedEvent.setStartDate(startDate);
+
+                int endDeltaYear = Double.valueOf(params.get(clientId + "_endDeltaYear")).intValue();
+                int endDeltaMonth = Double.valueOf(params.get(clientId + "_endDeltaMonth")).intValue();
+                int endDeltaDay = Double.valueOf(params.get(clientId + "_endDeltaDay")).intValue();
+                int endDeltaMinute = Double.valueOf(params.get(clientId + "_endDeltaMinute")).intValue();
 
                 LocalDateTime endDate = resizedEvent.getEndDate();
-                endDate = endDate.plusDays(dayDelta).plusMinutes(minuteDelta);
+                endDate = endDate.plusYears(endDeltaYear).plusMonths(endDeltaMonth).plusDays(endDeltaDay).plusMinutes(endDeltaMinute);
                 resizedEvent.setEndDate(endDate);
 
-                wrapperEvent = new ScheduleEntryResizeEvent(this, behaviorEvent.getBehavior(), resizedEvent, dayDelta, minuteDelta);
+                wrapperEvent = new ScheduleEntryResizeEvent(this, behaviorEvent.getBehavior(), resizedEvent,
+                        startDeltaYear, startDeltaMonth, startDeltaDay, startDeltaMinute,
+                        endDeltaYear, endDeltaMonth, endDeltaDay, endDeltaMinute);
             }
             else if (eventName.equals("viewChange")) {
                 wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), getView());

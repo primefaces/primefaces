@@ -28,32 +28,90 @@ import javax.faces.component.behavior.Behavior;
 
 import org.primefaces.model.ScheduleEvent;
 
+import java.time.Duration;
+
 public class ScheduleEntryResizeEvent extends AbstractAjaxBehaviorEvent {
 
     private static final long serialVersionUID = 1L;
 
     private ScheduleEvent scheduleEvent;
 
-    private int dayDelta;
+    private int yearDeltaStart;
+    private int monthDeltaStart;
+    private int dayDeltaStart;
+    private int minuteDeltaStart;
 
-    private int minuteDelta;
+    private int yearDeltaEnd;
+    private int monthDeltaEnd;
+    private int dayDeltaEnd;
+    private int minuteDeltaEnd;
 
-    public ScheduleEntryResizeEvent(UIComponent component, Behavior behavior, ScheduleEvent scheduleEvent, int dayDelta, int minuteDelta) {
+    //CHECKSTYLE:OFF
+    public ScheduleEntryResizeEvent(UIComponent component, Behavior behavior, ScheduleEvent scheduleEvent,
+                                    int yearDeltaStart, int monthDeltaStart, int dayDeltaStart, int minuteDeltaStart,
+                                    int yearDeltaEnd, int monthDeltaEnd, int dayDeltaEnd, int minuteDeltaEnd) {
         super(component, behavior);
         this.scheduleEvent = scheduleEvent;
-        this.dayDelta = dayDelta;
-        this.minuteDelta = minuteDelta;
+
+        this.yearDeltaStart = yearDeltaStart;
+        this.monthDeltaStart = monthDeltaStart;
+        this.dayDeltaStart = dayDeltaStart;
+        this.minuteDeltaStart = minuteDeltaStart;
+
+        this.yearDeltaEnd = yearDeltaEnd;
+        this.monthDeltaEnd = monthDeltaEnd;
+        this.dayDeltaEnd = dayDeltaEnd;
+        this.minuteDeltaEnd = minuteDeltaEnd;
     }
+    //CHECKSTYLE:ON
 
     public ScheduleEvent getScheduleEvent() {
         return scheduleEvent;
     }
 
-    public int getDayDelta() {
-        return dayDelta;
+    public int getYearDeltaStart() {
+        return yearDeltaStart;
     }
 
-    public int getMinuteDelta() {
-        return minuteDelta;
+    public int getMonthDeltaStart() {
+        return monthDeltaStart;
+    }
+
+    public int getDayDeltaStart() {
+        return dayDeltaStart;
+    }
+
+    public int getMinuteDeltaStart() {
+        return minuteDeltaStart;
+    }
+
+    public int getYearDeltaEnd() {
+        return yearDeltaEnd;
+    }
+
+    public int getMonthDeltaEnd() {
+        return monthDeltaEnd;
+    }
+
+    public int getDayDeltaEnd() {
+        return dayDeltaEnd;
+    }
+
+    public int getMinuteDeltaEnd() {
+        return minuteDeltaEnd;
+    }
+
+    public Duration getDeltaStart() {
+        //TODO: What to do with year and month? Does FullCalendar really send year and month or is this a theoretical issue?
+        Duration duration = Duration.ofMinutes(minuteDeltaStart);
+        duration = duration.plusDays(dayDeltaStart);
+        return duration;
+    }
+
+    public Duration getDeltaEnd() {
+        //TODO: What to do with year and month? Does FullCalendar really send year and month or is this a theoretical issue?
+        Duration duration = Duration.ofMinutes(minuteDeltaEnd);
+        duration = duration.plusDays(dayDeltaEnd);
+        return duration;
     }
 }
