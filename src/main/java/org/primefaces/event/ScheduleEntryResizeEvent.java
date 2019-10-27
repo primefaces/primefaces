@@ -101,15 +101,23 @@ public class ScheduleEntryResizeEvent extends AbstractAjaxBehaviorEvent {
         return minuteDeltaEnd;
     }
 
-    public Duration getDeltaStart() {
-        //TODO: What to do with year and month? Does FullCalendar really send year and month or is this a theoretical issue?
+    /**
+     * Get the start-delta as duration.
+     * Attention: Contains only dayDelta and minuteDelta. Does not contain yearDelta and monthDelta.
+     * @return
+     */
+    public Duration getDeltaStartAsDuration() {
         Duration duration = Duration.ofMinutes(minuteDeltaStart);
         duration = duration.plusDays(dayDeltaStart);
         return duration;
     }
 
-    public Duration getDeltaEnd() {
-        //TODO: What to do with year and month? Does FullCalendar really send year and month or is this a theoretical issue?
+    /**
+     * Get the end-delta as duration.
+     * Attention: Contains only dayDelta and minuteDelta. Does not contain yearDelta and monthDelta.
+     * @return
+     */
+    public Duration getDeltaEndAsDuration() {
         Duration duration = Duration.ofMinutes(minuteDeltaEnd);
         duration = duration.plusDays(dayDeltaEnd);
         return duration;

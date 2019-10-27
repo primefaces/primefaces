@@ -71,8 +71,12 @@ public class ScheduleEntryMoveEvent extends AbstractAjaxBehaviorEvent {
         return minuteDelta;
     }
 
-    public Duration getDelta() {
-        //TODO: What to do with year and month? Does FullCalendar really send year and month or is this a theoretical issue?
+    /**
+     * Get the delta as duration.
+     * Attention: Contains only dayDelta and minuteDelta. Does not contain yearDelta and monthDelta.
+     * @return
+     */
+    public Duration getDeltaAsDuration() {
         Duration duration = Duration.ofMinutes(minuteDelta);
         duration = duration.plusDays(dayDelta);
         return duration;

@@ -20489,14 +20489,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Determines the time-text that will be displayed within a time slot. (Moment.js - format)]]>
-            </description>
-            <name>slotLabelFormat</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Determines the time-text that will be displayed on each event. (Moment.js - format)]]>
             </description>
             <name>timeFormat</name>
