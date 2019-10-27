@@ -149,6 +149,7 @@ public class ScheduleRenderer extends CoreRenderer {
                 .attr("locale", schedule.calculateLocale(context).toString())
                 .attr("tooltip", schedule.isTooltip(), false)
                 .attr("eventLimit", schedule.getValue().isEventLimit(), false)
+                //timeGrid offers an additional eventLimit - integer value; see https://fullcalendar.io/docs/eventLimit; not exposed yet by PF-schedule
                 .attr("lazyFetching", false);
 
         Object initialDate = schedule.getInitialDate();
@@ -182,8 +183,7 @@ public class ScheduleRenderer extends CoreRenderer {
                 .attr("eventStartEditable", schedule.isDraggable(), true)
                 .attr("eventDurationEditable", schedule.isResizable(), true)
                 .attr("slotLabelInterval", schedule.getSlotLabelInterval(), null)
-                .attr("slotLabelFormat", schedule.getSlotLabelFormat(), null)
-                .attr("timeFormat", schedule.getTimeFormat(), null)
+                .attr("eventTimeFormat", schedule.getTimeFormat(), null) //https://momentjs.com/docs/#/displaying/
                 .attr("weekNumbers", isShowWeekNumbers, false)
                 .attr("nextDayThreshold", schedule.getNextDayThreshold(), "09:00:00")
                 .attr("slotEventOverlap", schedule.isSlotEventOverlap(), true)

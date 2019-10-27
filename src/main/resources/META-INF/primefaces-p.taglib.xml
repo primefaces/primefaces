@@ -20489,7 +20489,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Determines the time-text that will be displayed within a time slot.]]>
+                <![CDATA[Determines the time-text that will be displayed within a time slot. (Moment.js - format)]]>
             </description>
             <name>slotLabelFormat</name>
             <required>false</required>
@@ -20497,7 +20497,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Determines the time-text that will be displayed on each event.]]>
+                <![CDATA[Determines the time-text that will be displayed on each event. (Moment.js - format)]]>
             </description>
             <name>timeFormat</name>
             <required>false</required>
