@@ -783,15 +783,6 @@
                             <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/schedule.js</output>
                             <includes>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-core.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-locales-all.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-interaction.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-daygrid.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-timegrid.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-list.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-moment.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-moment-timezone.js</include>
-                                <!--
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-core.min.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-locales-all.min.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-interaction.min.js</include>
@@ -800,7 +791,6 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-list.min.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-moment.min.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-moment-timezone.min.js</include>
-                                -->
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/1-schedule.js</include>
                             </includes>
                         </aggregation>
@@ -985,21 +975,13 @@
                                 <exclude>**/photocam.js</exclude>
                                 <exclude>**/0-quill.min.js</exclude>
                                 <exclude>**/jquery.js</exclude>
-                                <exclude>**/fullcalendar-core.js</exclude>
                                 <exclude>**/fullcalendar-core.min.js</exclude>
-                                <exclude>**/fullcalendar-locales-all.js</exclude>
                                 <exclude>**/fullcalendar-locales-all.min.js</exclude>
-                                <exclude>**/fullcalendar-interaction.js</exclude>
                                 <exclude>**/fullcalendar-interaction.min.js</exclude>
-                                <exclude>**/fullcalendar-daygrid.js</exclude>
                                 <exclude>**/fullcalendar-daygrid.min.js</exclude>
-                                <exclude>**/fullcalendar-timegrid.js</exclude>
                                 <exclude>**/fullcalendar-timegrid.min.js</exclude>
-                                <exclude>**/fullcalendar-list.js</exclude>
                                 <exclude>**/fullcalendar-list.min.js</exclude>
-                                <exclude>**/fullcalendar-moment.js</exclude>
                                 <exclude>**/fullcalendar-moment.min.js</exclude>
-                                <exclude>**/fullcalendar-moment-timezone.js</exclude>
                                 <exclude>**/fullcalendar-moment-timezone.min.js</exclude>
                                 <exclude>**/0-timeline.min.js</exclude>
                                 <exclude>**/0-chartjs.js</exclude>
