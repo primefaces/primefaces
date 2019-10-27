@@ -107,15 +107,19 @@ public class ScheduleRenderer extends CoreRenderer {
         JSONArray jsonEvents = new JSONArray();
 
         if (model != null) {
-            for (ScheduleEvent event : model.getEvents()) {
+            for (ScheduleEvent<?> event : model.getEvents()) {
                 JSONObject jsonObject = new JSONObject();
 
                 jsonObject.put("id", event.getId());
+                if (event.getGroupId() != null && event.getGroupId().length() > 0) {
+                    jsonObject.put("groupId", event.getGroupId());
+                }
                 jsonObject.put("title", event.getTitle());
                 jsonObject.put("start", dateTimeFormatter.format(event.getStartDate().atZone(zoneId)));
                 jsonObject.put("end", dateTimeFormatter.format(event.getEndDate().atZone(zoneId)));
                 jsonObject.put("allDay", event.isAllDay());
                 jsonObject.put("editable", event.isEditable());
+                jsonObject.put("overlap", event.isOverlapAllowed());
                 jsonObject.put("className", event.getStyleClass());
                 jsonObject.put("description", event.getDescription());
                 jsonObject.put("url", event.getUrl());

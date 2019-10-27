@@ -89,6 +89,7 @@ Table below describes each property in detail.
 | Property | Description | 
 | --- | --- |
 id | Used internally by PrimeFaces, auto generated.
+groupId | Events that share a groupId will be dragged and resized together automatically.
 title | Title of the event.
 startDate | Start date of type java.time.LocalDateTime.
 endDate | End date of type java.time.LocalDateTime.
@@ -96,6 +97,7 @@ allDay | Flag indicating event is all day.
 styleClass | Visual style class to enable multi resource display.
 data | Optional data you can set to be represented by Event.
 editable | Whether the event is editable or not.
+overlap | If false (default), prevents this event from being dragged/resized over other events. Also prevents other events from being dragged/resized over this event.
 description | Tooltip text to display on mouseover of an event.
 url | Events with url set, do not trigger the selectEvent but open the url instead.
 renderingMode | Which event rendering mode of the full calendar should be used? 
