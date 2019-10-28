@@ -30,12 +30,22 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.util.Lazy;
 import org.primefaces.util.ResourceUtils;
 
 public class DynamicResourcesPhaseListener implements PhaseListener {
 
     private static final long serialVersionUID = 1L;
     private static final String INITIAL_RESOURCES = DynamicResourcesPhaseListener.class.getName() + ".INITIAL_RESOURCES";
+
+    private Lazy<Boolean> enabled;
+
+    public DynamicResourcesPhaseListener() {
+        // JSF 2.3+ contains a own dynamic resource handling
+        // use lazy initialization -> #5276
+        enabled = new Lazy<>(() ->
+                !PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnvironment().isAtLeastJsf23());
+    }
 
     @Override
     public void beforePhase(PhaseEvent event) {
@@ -44,6 +54,10 @@ public class DynamicResourcesPhaseListener implements PhaseListener {
 
     @Override
     public void afterPhase(PhaseEvent event) {
+        if (Boolean.FALSE.equals(enabled.get())) {
+            return;
+        }
+
         FacesContext context = event.getFacesContext();
 
         // we only need to collect resources on ajax requests
@@ -59,11 +73,6 @@ public class DynamicResourcesPhaseListener implements PhaseListener {
 
         // skip update=@all as the head, with all resources, will already be rendered
         if (context.getPartialViewContext().isRenderAll()) {
-            return;
-        }
-
-        // JSF 2.3+ contains a own dynamic resource handling
-        if (PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnvironment().isAtLeastJsf23()) {
             return;
         }
 

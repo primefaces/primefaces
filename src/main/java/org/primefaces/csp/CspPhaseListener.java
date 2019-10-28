@@ -25,7 +25,6 @@ package org.primefaces.csp;
 
 import org.owasp.encoder.Encode;
 import org.primefaces.PrimeFaces;
-import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeFacesContext;
 import org.primefaces.util.LangUtils;
@@ -36,12 +35,21 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.servlet.http.HttpServletResponse;
+import org.primefaces.util.Lazy;
 
 public class CspPhaseListener implements PhaseListener {
 
     private static final long serialVersionUID = 1L;
 
-    private String customPolicy;
+    private Lazy<Boolean> enabled;
+    private Lazy<String> customPolicy;
+
+    public CspPhaseListener() {
+        enabled = new Lazy<>(() ->
+                PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().isCsp());
+        customPolicy = new Lazy<>(() ->
+                PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().getCspPolicy());
+    }
 
     @Override
     public void afterPhase(PhaseEvent event) {
@@ -50,11 +58,7 @@ public class CspPhaseListener implements PhaseListener {
 
     @Override
     public void beforePhase(PhaseEvent event) {
-        PrimeConfiguration config = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig();
-        if (config.isCsp()) {
-            customPolicy = config.getCspPolicy();
-        }
-        else {
+        if (Boolean.FALSE.equals(enabled.get())) {
             return;
         }
 
@@ -65,7 +69,7 @@ public class CspPhaseListener implements PhaseListener {
             HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
             CspState state = PrimeFacesContext.getCspState(context);
 
-            String policy = LangUtils.isValueBlank(customPolicy) ? "script-src 'self'" : customPolicy;
+            String policy = LangUtils.isValueBlank(customPolicy.get()) ? "script-src 'self'" : customPolicy.get();
             response.addHeader("Content-Security-Policy", policy + " 'nonce-" + state.getNonce() + "'");
 
             PrimeFaces.current().executeScript("PrimeFaces.csp.init('" + Encode.forJavaScript(state.getNonce()) + "');");
