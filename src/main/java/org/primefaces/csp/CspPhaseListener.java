@@ -41,16 +41,7 @@ public class CspPhaseListener implements PhaseListener {
 
     private static final long serialVersionUID = 1L;
 
-    private boolean enabled;
     private String customPolicy;
-
-    public CspPhaseListener() {
-        PrimeConfiguration config = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig();
-        enabled = config.isCsp();
-        if (enabled) {
-            customPolicy = config.getCspPolicy();
-        }
-    }
 
     @Override
     public void afterPhase(PhaseEvent event) {
@@ -59,7 +50,11 @@ public class CspPhaseListener implements PhaseListener {
 
     @Override
     public void beforePhase(PhaseEvent event) {
-        if (!enabled) {
+        PrimeConfiguration config = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig();
+        if (config.isCsp()) {
+            customPolicy = config.getCspPolicy();
+        }
+        else {
             return;
         }
 
