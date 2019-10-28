@@ -47,15 +47,16 @@ public class PanelGridRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         PanelGrid grid = (PanelGrid) component;
+        String layout = grid.getLayout();
 
-        if (LAYOUT_TABULAR.equalsIgnoreCase(grid.getLayout())) {
+        if (LAYOUT_TABULAR.equalsIgnoreCase(layout)) {
             encodeTableLayout(context, grid);
         }
-        else if (LAYOUT_GRID.equalsIgnoreCase(grid.getLayout()) || LAYOUT_FLEX.equalsIgnoreCase(grid.getLayout())) {
-            encodeGridLayout(context, grid, grid.getLayout());
+        else if (LAYOUT_GRID.equalsIgnoreCase(layout) || LAYOUT_FLEX.equalsIgnoreCase(layout)) {
+            encodeGridLayout(context, grid);
         }
         else {
-            throw new FacesException("The value of 'layout' attribute must be 'grid' or 'tabular'. Default value is 'tabular'.");
+            throw new FacesException("The value of 'layout' attribute must be 'grid', 'tabular' or 'flex'. Default value is 'tabular'.");
         }
     }
 
@@ -82,9 +83,10 @@ public class PanelGridRenderer extends CoreRenderer {
         writer.endElement("table");
     }
 
-    public void encodeGridLayout(FacesContext context, PanelGrid grid, String layout) throws IOException {
+    public void encodeGridLayout(FacesContext context, PanelGrid grid) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = grid.getClientId(context);
+        String layout = grid.getLayout();
         int columns = grid.getColumns();
         if (columns == 0) {
             throw new FacesException("Columns of PanelGrid \"" + grid.getClientId(context) + "\" must be greater than zero in grid layout.");
@@ -102,7 +104,14 @@ public class PanelGridRenderer extends CoreRenderer {
         }
 
         encodeGridFacet(context, grid, columns, "header", PanelGrid.HEADER_CLASS);
-        encodeGridBody(context, grid, columns, layout);
+
+        if (LAYOUT_FLEX.equalsIgnoreCase(layout)) {
+            encodeFlexGridBody(context, grid, columns);
+        }
+        else {
+            encodeGridBody(context, grid, columns);
+        }
+
         encodeGridFacet(context, grid, columns, "footer", PanelGrid.FOOTER_CLASS);
 
         writer.endElement("div");
@@ -246,7 +255,7 @@ public class PanelGridRenderer extends CoreRenderer {
         writer.endElement("tr");
     }
 
-    public void encodeGridBody(FacesContext context, PanelGrid grid, int columns, String layout) throws IOException {
+    public void encodeGridBody(FacesContext context, PanelGrid grid, int columns) throws IOException {
         String clientId = grid.getClientId(context);
         ResponseWriter writer = context.getResponseWriter();
         String columnClassesValue = grid.getColumnClasses();
@@ -254,13 +263,10 @@ public class PanelGridRenderer extends CoreRenderer {
         String contentClass = grid.getContentStyleClass();
         contentClass = contentClass == null ? PanelGrid.CONTENT_CLASS : PanelGrid.CONTENT_CLASS + " " + contentClass;
 
-        if (LAYOUT_FLEX.equalsIgnoreCase(layout)) {
-            contentClass += " " + PanelGrid.FLEX_ROW_CLASS;
-        }
-
         writer.startElement("div", grid);
         writer.writeAttribute("id", clientId + "_content", null);
         writer.writeAttribute("class", contentClass, null);
+
         if (grid.getContentStyle() != null) {
             writer.writeAttribute("style", grid.getContentStyle(), null);
         }
@@ -272,23 +278,15 @@ public class PanelGridRenderer extends CoreRenderer {
             }
 
             int colMod = i % columns;
-            if ((LAYOUT_GRID.equalsIgnoreCase(layout)) && (colMod == 0)) {
-                //GRID-Layout creates an additional div per row (maybe due to backward-compatibility to the old PrimeFaces < 6.0 Grid)
+            if (colMod == 0) {
                 writer.startElement("div", null);
                 String rowClass = (columnClasses.length > 0 && columnClasses[0].contains("ui-grid-col-")) ? "ui-grid-row" : PanelGrid.GRID_ROW_CLASS;
                 writer.writeAttribute("class", rowClass, null);
             }
 
             String columnClass = (colMod < columnClasses.length) ? PanelGrid.CELL_CLASS + " " + columnClasses[colMod].trim() : PanelGrid.CELL_CLASS;
-            if (LAYOUT_FLEX.equalsIgnoreCase(layout)) {
-                if (!columnClass.contains("p-")) {
-                    columnClass = columnClass + " " + GridLayoutUtils.getFlexColumnClass(columns);
-                }
-            }
-            else { //LAYOUT_GRID
-                if (!columnClass.contains("ui-md-") && !columnClass.contains("ui-g-") && !columnClass.contains("ui-grid-col-")) {
-                    columnClass = columnClass + " " + GridLayoutUtils.getColumnClass(columns);
-                }
+            if (!columnClass.contains("ui-md-") && !columnClass.contains("ui-g-") && !columnClass.contains("ui-grid-col-")) {
+                columnClass = columnClass + " " + GridLayoutUtils.getColumnClass(columns);
             }
 
             writer.startElement("div", null);
@@ -299,14 +297,52 @@ public class PanelGridRenderer extends CoreRenderer {
             i++;
             colMod = i % columns;
 
-            if ((LAYOUT_GRID.equalsIgnoreCase(layout)) && (colMod == 0)) {
-                //close the div per row
+            if (colMod == 0) {
                 writer.endElement("div");
             }
         }
 
         if (i != 0 && (i % columns) != 0) {
             writer.endElement("div");
+        }
+
+        writer.endElement("div");
+    }
+
+    public void encodeFlexGridBody(FacesContext context, PanelGrid grid, int columns) throws IOException {
+        String clientId = grid.getClientId(context);
+        ResponseWriter writer = context.getResponseWriter();
+        String columnClassesValue = grid.getColumnClasses();
+        String[] columnClasses = columnClassesValue == null ? new String[0] : columnClassesValue.split(",");
+        String contentClass = grid.getContentStyleClass();
+        contentClass = contentClass == null ? PanelGrid.FLEX_CONTENT_CLASS : PanelGrid.FLEX_CONTENT_CLASS + " " + contentClass;
+
+        writer.startElement("div", grid);
+        writer.writeAttribute("id", clientId + "_content", null);
+        writer.writeAttribute("class", contentClass, null);
+
+        if (grid.getContentStyle() != null) {
+            writer.writeAttribute("style", grid.getContentStyle(), null);
+        }
+
+        int i = 0;
+        for (UIComponent child : grid.getChildren()) {
+            if (!child.isRendered()) {
+                continue;
+            }
+
+            int colMod = i % columns;
+            String columnClass = (colMod < columnClasses.length) ? PanelGrid.CELL_CLASS + " " + columnClasses[colMod].trim() : PanelGrid.CELL_CLASS;
+            if (!columnClass.contains("p-md-") && !columnClass.contains("p-col-")) {
+                columnClass = columnClass + " " + GridLayoutUtils.getFlexColumnClass(columns);
+            }
+
+            writer.startElement("div", null);
+            writer.writeAttribute("class", columnClass, null);
+            child.encodeAll(context);
+            writer.endElement("div");
+
+            i++;
         }
 
         writer.endElement("div");
