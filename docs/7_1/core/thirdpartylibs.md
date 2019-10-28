@@ -17,7 +17,7 @@ are many other third party libraries and plugins used to support features.
 | Interface elements | | http://interface.eyecon.ro (dock) |
 | jqPlot | 1.0.9 | http://www.jqplot.com/ |
 | jQuery Autosize | 4.0.2 | http://www.jacklmoore.com/autosize |
-| jQuery Browser Plugin  | 0.0.6 | https://github.com/gabceb/jquery-browser-plugin |
+| jQuery Browser Plugin  | 0.1.0 | https://github.com/gabceb/jquery-browser-plugin |
 | jQuery Cookie Plugin | 1.4.1 | https://github.com/carhartl/jquery-cookie |
 | jQuery Cycle Plugin | 2.88 |  http://jquery.malsup.com/cycle/ |
 | jQuery File Upload Plugin | | https://github.com/blueimp/jQuery-File-Upload |
