@@ -449,7 +449,11 @@ PrimeFaces.widget.Dock = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.items = 'a';
         this.cfg.itemsText = 'span';
         this.cfg.container = '.ui-dock-container-' + this.cfg.position;
-        
+
+        if (widget.cfg.blockScroll) {
+            PrimeFaces.utils.preventScrolling();
+        }
+
         $(this.jqId).Fisheye(this.cfg);
     }
     

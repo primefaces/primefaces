@@ -49,7 +49,8 @@ public class DockRenderer extends BaseMenuRenderer {
                 .attr("maxWidth", dock.getMaxWidth())
                 .attr("itemWidth", dock.getItemWidth())
                 .attr("proximity", dock.getProximity())
-                .attr("halign", dock.getHalign());
+                .attr("halign", dock.getHalign())
+                .attr("blockScroll", dock.isBlockScroll());
 
         wb.finish();
     }

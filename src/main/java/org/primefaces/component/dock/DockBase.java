@@ -40,7 +40,8 @@ public abstract class DockBase extends AbstractMenu implements Widget {
         itemWidth,
         maxWidth,
         proximity,
-        halign
+        halign,
+        blockScroll
     }
 
     public DockBase() {
@@ -107,5 +108,13 @@ public abstract class DockBase extends AbstractMenu implements Widget {
 
     public void setHalign(String halign) {
         getStateHelper().put(PropertyKeys.halign, halign);
+    }
+
+    public boolean isBlockScroll() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.blockScroll, true);
+    }
+
+    public void setBlockScroll(boolean blockScroll) {
+        getStateHelper().put(PropertyKeys.blockScroll, blockScroll);
     }
 }
