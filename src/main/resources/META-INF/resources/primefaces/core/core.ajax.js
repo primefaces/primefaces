@@ -777,7 +777,7 @@ if (!PrimeFaces.ajax) {
                     var refocus = function() {
                         elementToFocus.focus();
 
-                        if (activeElementSelection && activeElementSelection.start) {
+                        if (activeElementSelection) {
                             elementToFocus.setSelection(activeElementSelection.start, activeElementSelection.end);
                         }
                     };
