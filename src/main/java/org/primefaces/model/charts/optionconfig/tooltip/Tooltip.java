@@ -67,6 +67,8 @@ public class Tooltip implements Serializable {
     private boolean displayColors;
     private String borderColor;
     private Number borderWidth;
+    private boolean rtl = false;
+    private String textDirection;
 
     /**
      * Gets the enabled
@@ -628,6 +630,42 @@ public class Tooltip implements Serializable {
     }
 
     /**
+     * For rendering the legends from right to left.
+     *
+     * @return the rtl
+     */
+    public boolean isRtl() {
+        return rtl;
+    }
+
+    /**
+     * For rendering the legends from right to left.
+     *
+     * @param rtl the rtl to set
+     */
+    public void setRtl(boolean rtl) {
+        this.rtl = rtl;
+    }
+
+    /**
+     * Text Direction 'ltr' or 'rtl' regardless of the css specified on the canvas.
+     *
+     * @return the textDirection
+     */
+    public String getTextDirection() {
+        return textDirection;
+    }
+
+    /**
+     * Text Direction 'ltr' or 'rtl' regardless of the css specified on the canvas.
+     *
+     * @param textDirection the textDirection to set
+     */
+    public void setTextDirection(String textDirection) {
+        this.textDirection = textDirection;
+    }
+
+    /**
      * Write the options of Tooltip
      *
      * @return options as JSON object
@@ -668,6 +706,8 @@ public class Tooltip implements Serializable {
             ChartUtils.writeDataValue(fsw, "displayColors", this.displayColors, true);
             ChartUtils.writeDataValue(fsw, "borderColor", this.borderColor, true);
             ChartUtils.writeDataValue(fsw, "borderWidth", this.borderWidth, true);
+            ChartUtils.writeDataValue(fsw, "rtl", this.rtl, true);
+            ChartUtils.writeDataValue(fsw, "textDirection", this.textDirection, true);
         }
         finally {
             fsw.close();

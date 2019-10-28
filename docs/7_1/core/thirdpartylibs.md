@@ -6,7 +6,7 @@ are many other third party libraries and plugins used to support features.
 | Library | Version | URL |
 | --- | --- | --- |
 | AutoNumeric | 1.9.45 | https://github.com/BobKnothe/autoNumeric |
-| Chart.js | 2.8.0 | https://www.chartjs.org |
+| Chart.js | 2.9.1 | https://www.chartjs.org |
 | CLEditor WYSIWYG HTML Editor | v1.4.5 | https://github.com/cleditor/cleditor |
 | Color Picker | (2012) | www.eyecon.ro |
 | ContentFlow | 1.0.2 | http://www.jacksasylum.eu/ContentFlow |
