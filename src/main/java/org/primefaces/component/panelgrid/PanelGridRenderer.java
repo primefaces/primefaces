@@ -305,10 +305,8 @@ public class PanelGridRenderer extends CoreRenderer {
             }
         }
 
-        if (LAYOUT_GRID.equalsIgnoreCase(layout)) {
-            if (i != 0 && (i % columns) != 0) {
-                writer.endElement("div");
-            }
+        if (i != 0 && (i % columns) != 0) {
+            writer.endElement("div");
         }
 
         writer.endElement("div");
