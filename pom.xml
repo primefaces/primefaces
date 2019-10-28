@@ -797,7 +797,7 @@
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>true</removeIncluded>
-                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar.css</output>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/schedule.css</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-core.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-daygrid.css</include>

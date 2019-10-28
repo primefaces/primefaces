@@ -47,7 +47,7 @@ import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.MapBuilder;
 
 @ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "schedule/fullcalendar.css"),
+        @ResourceDependency(library = "primefaces", name = "schedule/schedule.css"),
         @ResourceDependency(library = "primefaces", name = "components.css"),
         @ResourceDependency(library = "primefaces", name = "moment/moment.js"),
         @ResourceDependency(library = "primefaces", name = "moment/moment-timezone-with-data.js"),
