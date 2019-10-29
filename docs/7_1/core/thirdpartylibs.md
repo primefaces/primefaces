@@ -5,7 +5,7 @@ are many other third party libraries and plugins used to support features.
 
 | Library | Version | URL |
 | --- | --- | --- |
-| AutoNumeric | 4.5.9 | https://github.com/BobKnothe/autoNumeric |
+| AutoNumeric | 4.5.9 | https://github.com/autoNumeric/autoNumeric |
 | Chart.js | 2.9.1 | https://www.chartjs.org |
 | CLEditor WYSIWYG HTML Editor | v1.4.5 | https://github.com/cleditor/cleditor |
 | Color Picker | (2012) | www.eyecon.ro |
