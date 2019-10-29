@@ -766,35 +766,42 @@ if (!PrimeFaces.ajax) {
             },
 
             handleReFocus : function(activeElementId, activeElementSelection) {
+                // skip when customFocus is active
+                if (PrimeFaces.customFocus === true) {
+                    PrimeFaces.customFocus = false;
+                    return;
+                }
 
-                // re-focus element
-                if (PrimeFaces.customFocus === false
-                        && activeElementId
-                        // do we really need to refocus? we just check the current activeElement here
-                        && activeElementId !== $(document.activeElement).attr('id')) {
+                // no active element remembered
+                if (!activeElementId) {
+                    return;
+                }
 
-                    var elementToFocus = $(PrimeFaces.escapeClientId(activeElementId));
+                var elementToFocus = $(PrimeFaces.escapeClientId(activeElementId));
+                if (elementToFocus.length > 0) {
+
                     var refocus = function() {
-                        elementToFocus.focus();
+                        // already focussed?
+                        if (activeElementId !== $(document.activeElement).attr('id')) {
+                            // focus
+                            elementToFocus.focus();
 
-                        if (activeElementSelection) {
-                            elementToFocus.setSelection(activeElementSelection.start, activeElementSelection.end);
+                            // reapply cursor / selection
+                            if (activeElementSelection) {
+                                elementToFocus.setSelection(activeElementSelection.start, activeElementSelection.end);
+                            }
                         }
                     };
 
-                    if(elementToFocus.length) {
-                        refocus();
+                    refocus();
 
-                        // double check it - required for IE
+                    // double check it - required for IE
+                    if (PrimeFaces.env.isIE()) {
                         setTimeout(function() {
-                            if (!elementToFocus.is(":focus")) {
-                                refocus();
-                            }
+                            refocus();
                         }, 50);
                     }
                 }
-
-                PrimeFaces.customFocus = false;
             },
 
             destroyDetachedWidgets : function() {
