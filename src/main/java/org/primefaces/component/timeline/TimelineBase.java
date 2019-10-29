@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.timeline;
 
+import java.time.LocalDateTime;
 import java.util.Locale;
 import javax.faces.component.UIComponentBase;
 import javax.faces.component.behavior.ClientBehaviorHolder;
@@ -51,7 +52,6 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
         varGroup,
         locale,
         timeZone,
-        browserTimeZone,
         height,
         minHeight,
         maxHeight,
@@ -176,14 +176,6 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
 
     public void setTimeZone(Object timeZone) {
         getStateHelper().put(PropertyKeys.timeZone, timeZone);
-    }
-
-    public Object getBrowserTimeZone() {
-        return getStateHelper().eval(PropertyKeys.browserTimeZone, null);
-    }
-
-    public void setBrowserTimeZone(Object browserTimeZone) {
-        getStateHelper().put(PropertyKeys.browserTimeZone, browserTimeZone);
     }
 
     public String getHeight() {
@@ -325,35 +317,35 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
         getStateHelper().put(PropertyKeys.moveable, moveable);
     }
 
-    public java.util.Date getStart() {
-        return (java.util.Date) getStateHelper().eval(PropertyKeys.start, null);
+    public LocalDateTime getStart() {
+        return (LocalDateTime) getStateHelper().eval(PropertyKeys.start, null);
     }
 
-    public void setStart(java.util.Date start) {
+    public void setStart(LocalDateTime  start) {
         getStateHelper().put(PropertyKeys.start, start);
     }
 
-    public java.util.Date getEnd() {
-        return (java.util.Date) getStateHelper().eval(PropertyKeys.end, null);
+    public LocalDateTime getEnd() {
+        return (LocalDateTime) getStateHelper().eval(PropertyKeys.end, null);
     }
 
-    public void setEnd(java.util.Date end) {
+    public void setEnd(LocalDateTime end) {
         getStateHelper().put(PropertyKeys.end, end);
     }
 
-    public java.util.Date getMin() {
-        return (java.util.Date) getStateHelper().eval(PropertyKeys.min, null);
+    public LocalDateTime getMin() {
+        return (LocalDateTime) getStateHelper().eval(PropertyKeys.min, null);
     }
 
-    public void setMin(java.util.Date min) {
+    public void setMin(LocalDateTime min) {
         getStateHelper().put(PropertyKeys.min, min);
     }
 
-    public java.util.Date getMax() {
-        return (java.util.Date) getStateHelper().eval(PropertyKeys.max, null);
+    public LocalDateTime  getMax() {
+        return (LocalDateTime) getStateHelper().eval(PropertyKeys.max, null);
     }
 
-    public void setMax(java.util.Date max) {
+    public void setMax(LocalDateTime max) {
         getStateHelper().put(PropertyKeys.max, max);
     }
 

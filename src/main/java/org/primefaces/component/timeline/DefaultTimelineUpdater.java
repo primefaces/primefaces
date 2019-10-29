@@ -25,6 +25,7 @@ package org.primefaces.component.timeline;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -40,6 +41,7 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.model.timeline.TimelineEvent;
 import org.primefaces.model.timeline.TimelineGroup;
 import org.primefaces.model.timeline.TimelineModel;
+import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.FastStringWriter;
@@ -159,8 +161,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
         Map<String, String> groupsContent = new HashMap<>();
         UIComponent eventTitleFacet = timeline.getFacet("eventTitle");
 
-        TimeZone targetTZ = ComponentUtils.resolveTimeZone(timeline.getTimeZone());
-        TimeZone browserTZ = ComponentUtils.resolveTimeZone(timeline.getBrowserTimeZone());
+        ZoneId zoneId = CalendarUtils.calculateZoneId(timeline.getTimeZone());
 
         try (FastStringWriter fsw = new FastStringWriter();
              FastStringWriter fswHtml = new FastStringWriter()) {
@@ -202,7 +203,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
                         sb.append(";PF('");
                         sb.append(widgetVar);
                         sb.append("').addEvent(");
-                        sb.append(EscapeUtils.forCDATA(timelineRenderer.encodeEvent(context, fsw, fswHtml, timeline, eventTitleFacet, browserTZ, targetTZ,
+                        sb.append(EscapeUtils.forCDATA(timelineRenderer.encodeEvent(context, fsw, fswHtml, timeline, eventTitleFacet, zoneId,
                                 groups, crudOperationData.getEvent())));
                         sb.append(")");
                         renderComponent = true;
@@ -214,7 +215,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
                         sb.append(";PF('");
                         sb.append(widgetVar);
                         sb.append("').changeEvent(");
-                        sb.append(EscapeUtils.forCDATA(timelineRenderer.encodeEvent(context, fsw, fswHtml, timeline, eventTitleFacet, browserTZ, targetTZ,
+                        sb.append(EscapeUtils.forCDATA(timelineRenderer.encodeEvent(context, fsw, fswHtml, timeline, eventTitleFacet, zoneId,
                                 groups, crudOperationData.getEvent())));
                         sb.append(")");
                         renderComponent = true;

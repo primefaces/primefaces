@@ -457,24 +457,6 @@ public class ComponentUtils {
         return ComponentTraversalUtils.closestForm(context, component);
     }
 
-    /**
-     * Gets a {@link TimeZone} instance by the parameter "timeZone" which can be String or {@link TimeZone} or null.
-     *
-     * @param timeZone given time zone
-     * @return resolved TimeZone
-     */
-    public static TimeZone resolveTimeZone(Object timeZone) {
-        if (timeZone instanceof String) {
-            return TimeZone.getTimeZone((String) timeZone);
-        }
-        else if (timeZone instanceof TimeZone) {
-            return (TimeZone) timeZone;
-        }
-        else {
-            return TimeZone.getDefault();
-        }
-    }
-
     public static <T extends Renderer> T getUnwrappedRenderer(FacesContext context, String family, String rendererType) {
         Renderer renderer = context.getRenderKit().getRenderer(family, rendererType);
 
