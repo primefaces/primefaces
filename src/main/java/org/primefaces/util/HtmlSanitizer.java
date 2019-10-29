@@ -47,9 +47,9 @@ public class HtmlSanitizer {
 
     private static final PolicyFactory HTML_STYLES_SANITIZER = Sanitizers.STYLES
             .and(new HtmlPolicyBuilder()
-            .allowElements("span")
+            .allowElements("span", "li")
             .allowAttributes("class")
-            .onElements("span")
+            .onElements("span", "li")
             .toFactory());
 
     private static final PolicyFactory HTML_DENY_ALL_SANITIZER = new HtmlPolicyBuilder().toFactory();
