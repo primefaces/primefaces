@@ -105,7 +105,7 @@ public class TimelineRenderer extends CoreRenderer {
         String clientId = timeline.getClientId(context);
 
         ZoneId zoneId = CalendarUtils.calculateZoneId(timeline.getTimeZone());
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE_TIME.withZone(zoneId);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME.withZone(zoneId);
 
         FastStringWriter fsw = new FastStringWriter();
         FastStringWriter fswHtml = new FastStringWriter();
@@ -331,7 +331,7 @@ public class TimelineRenderer extends CoreRenderer {
                               UIComponent eventTitleFacet, ZoneId zoneId, List<TimelineGroup<Object>> groups,
                               TimelineEvent<?> event) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE_TIME.withZone(zoneId);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME.withZone(zoneId);
 
         fsw.write("{id: \"" + EscapeUtils.forJavaScript(event.getId()) + "\"");
 
@@ -444,7 +444,7 @@ public class TimelineRenderer extends CoreRenderer {
 
     // convert from UTC to locale date
     private String encodeDate(DateTimeFormatter dateTimeFormatter, LocalDateTime date) {
-        return "new Date('" + dateTimeFormatter.format(date) + "')";
+        return "new Date('" + dateTimeFormatter.format(date.atZone(dateTimeFormatter.getZone())) + "')";
     }
 
     @Override
