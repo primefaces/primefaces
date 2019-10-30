@@ -14,7 +14,6 @@ are many other third party libraries and plugins used to support features.
 | FontAwesome | 4.7.0 | https://fontawesome.com/ |
 | FullCalendar | 3.10.0 | https://fullcalendar.io/ |
 | Idle Timer | 1.1.0 - 2016-03-21 | https://github.com/thorst/jquery-idletimer |
-| Interface elements | | http://interface.eyecon.ro (dock) |
 | jqPlot | 1.0.9 | http://www.jqplot.com/ |
 | jQuery Autosize | 4.0.2 | http://www.jacklmoore.com/autosize |
 | jQuery Browser Plugin  | 0.1.0 | https://github.com/gabceb/jquery-browser-plugin |
