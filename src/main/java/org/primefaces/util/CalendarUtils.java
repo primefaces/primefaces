@@ -486,6 +486,7 @@ public class CalendarUtils {
     /**
      * Convert ISO-String (@see <a href="https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString">https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString</a>)
      * to LocalDateTime.
+     * @param zoneId Target-ZoneId of the LocalDateTime, the isoDateString is converted into.
      * @param isoDateString
      * @return
      */
@@ -498,5 +499,4 @@ public class CalendarUtils {
         LocalDateTime result = LocalDateTime.ofInstant(instant, zoneId);
         return result;
     }
-
 }
