@@ -81,8 +81,13 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
 
         // touch support - prevents keyboard popup
         if (PrimeFaces.env.touch && !this.input.attr("readonly") && this.cfg.showOn && this.cfg.showOn === 'button') {
+            var fireCloseEvent = this.cfg.onClose;
             this.cfg.onClose = function(dateText, inst) {
                 $(this).attr("readonly", false);
+                
+                if (fireCloseEvent) {
+                    fireCloseEvent();
+                }
             };
         }
 
