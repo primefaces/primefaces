@@ -81,7 +81,7 @@ public class TimelineRenderer extends CoreRenderer {
                 cssMenu.append(" timeline-menu-axis-both");
             }
 
-            if (timeline.isRTL()) {
+            if (ComponentUtils.isRTL(context, timeline)) {
                 cssMenu.append(" timeline-menu-rtl");
             }
 
@@ -266,7 +266,7 @@ public class TimelineRenderer extends CoreRenderer {
                 + "overflowMethod:'" + timeline.getTooltipOverflowMethod() + "',"
                 + "delay:" + timeline.getTooltipDelay() + "}");
 
-        if (timeline.isRTL()) {
+        if (ComponentUtils.isRTL(context, timeline)) {
             wb.attr("rtl", Boolean.TRUE);
         }
 

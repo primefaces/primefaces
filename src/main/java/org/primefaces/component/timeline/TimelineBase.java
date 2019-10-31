@@ -587,8 +587,4 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
         getStateHelper().put(PropertyKeys.extender, extender);
     }
 
-    @Override
-    public boolean isRTL() {
-        return "rtl".equalsIgnoreCase(getDir());
-    }
 }
