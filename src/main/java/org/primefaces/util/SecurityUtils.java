@@ -24,6 +24,7 @@
 package org.primefaces.util;
 
 import java.security.Principal;
+import java.util.Collection;
 
 import javax.faces.context.FacesContext;
 
@@ -36,8 +37,8 @@ public class SecurityUtils {
         return FacesContext.getCurrentInstance().getExternalContext().isUserInRole(role);
     }
 
-    public static boolean ifAllGranted(String value) {
-        String[] roles = value.split(",");
+    public static boolean ifAllGranted(Object value) {
+        String[] roles = convertRoles(value);
         boolean isAuthorized = false;
 
         for (String role : roles) {
@@ -53,8 +54,8 @@ public class SecurityUtils {
         return isAuthorized;
     }
 
-    public static boolean ifAnyGranted(String value) {
-        String[] roles = value.split(",");
+    public static boolean ifAnyGranted(Object value) {
+        String[] roles = convertRoles(value);
         boolean isAuthorized = false;
 
         for (String role : roles) {
@@ -67,8 +68,8 @@ public class SecurityUtils {
         return isAuthorized;
     }
 
-    public static boolean ifNoneGranted(String value) {
-        String[] roles = value.split(",");
+    public static boolean ifNoneGranted(Object value) {
+        String[] roles = convertRoles(value);
         boolean isAuthorized = false;
 
         for (String role : roles) {
@@ -90,5 +91,19 @@ public class SecurityUtils {
 
     public static Principal userPrincipal() {
         return FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal();
+    }
+
+    protected static String[] convertRoles(Object value) {
+        String[] results = null;
+        if (value instanceof String) {
+            results = String.valueOf(value).split(",");
+        }
+        else if (value.getClass().isArray()) {
+            results = (String[]) value;
+        }
+        else if (value instanceof Collection) {
+            results = (String[]) ((Collection<?>) value).toArray(new String[0]);
+        }
+        return results;
     }
 }
