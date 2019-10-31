@@ -20505,7 +20505,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Format for column headers.]]>
+                <![CDATA[Format for column headers. (eg "week:'dd DD MMM'" or "timeGridWeek: 'DD MM', timeGridDay: 'dd'")]]>
             </description>
             <name>columnHeaderFormat</name>
             <required>false</required>

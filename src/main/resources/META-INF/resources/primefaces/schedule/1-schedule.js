@@ -152,15 +152,14 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         this.cfg.events = function(fetchInfo, successCallback) {
-            //var offset = start.utcOffset()*60000; // <-- #2977: assume start,end in same zone
             var options = {
                 source: $this.id,
                 process: $this.id,
                 update: $this.id,
                 formId: $this.cfg.formId,
                 params: [
-                    {name: $this.id + '_start', value: fetchInfo.start.toISOString() /*+ offset*/},
-                    {name: $this.id + '_end', value: fetchInfo.end.toISOString() /*+ offset*/}
+                    {name: $this.id + '_start', value: fetchInfo.start.toISOString()},
+                    {name: $this.id + '_end', value: fetchInfo.end.toISOString()}
                 ],
                 onsuccess: function(responseXML, status, xhr) {
                     PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
@@ -211,23 +210,26 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
 
     setViewOptions: function() {
         var views = {
-            month: {},       // month view
-            week: {},        // basicWeek & agendaWeek views
-            day: {},         // basicDay & agendaDay views
-            agenda: {},      // agendaDay & agendaWeek views
-            agendaDay: {},   // agendaDay view
-            agendaWeek: {}   // agendaWeek view
+            month: {},
+            week: {},
+            day: {},
+            dayGrid: {},
+            timeGrid: {},
+            list: {},
+            dayGridMonth: {},
+            dayGridWeek: {},
+            dayGridDay: {},
+            timeGridWeek: {},
+            timeGridDay: {},
+            listYear: {},
+            listMonth: {},
+            listDay: {}
         };
 
         var columnFormat = this.cfg.columnFormatOptions;
         if(columnFormat) {
             for (var view in views) {
-                if(view == "agendaWeek") {  // Github #2421
-                    views[view] = {columnHeaderFormat: columnFormat['week']};
-                }
-                else {
-                    views[view] = {columnHeaderFormat: columnFormat[view]};
-                }
+                views[view] = {columnHeaderFormat: columnFormat[view]};
             }
         }
 
