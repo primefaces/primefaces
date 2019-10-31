@@ -20,9 +20,8 @@ are many other third party libraries and plugins used to support features.
 | jQuery Browser Plugin  | 0.1.0 | https://github.com/gabceb/jquery-browser-plugin |
 | jQuery Cookie Plugin | 1.4.1 | https://github.com/carhartl/jquery-cookie |
 | jQuery Cycle Plugin | 2.88 |  http://jquery.malsup.com/cycle/ |
-| jQuery File Upload Plugin | | https://github.com/blueimp/jQuery-File-Upload |
+| jQuery File Upload Plugin | 10.2.0 | https://github.com/blueimp/jQuery-File-Upload |
 | jQuery Hotkeys Plugin | 0.2.0 | https://github.com/tzuryby/jquery.hotkeys |
-| jQuery Iframe Transport Plugin | 1.8.3 | https://github.com/blueimp/jQuery-File-Upload |
 | jQuery Keyfilter | 1.8 | https://github.com/akzhan/jquery-keyfilter |
 | jQuery Knob | 1.2.13 | https://github.com/aterrien/jQuery-Knob |
 | jQuery Masked Input Plugin | 1.4.1 | http://digitalbush.com/projects/masked-input-plugin/ |
