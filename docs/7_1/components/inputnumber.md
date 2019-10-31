@@ -25,7 +25,7 @@ value | null | Object | Value of the component than can be either an EL expressi
 converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
 immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
 required | false | Boolean | Marks component as required
-validator | null | MethodExpr | A method binding expression that refers to a method validationg the input
+validator | null | MethodExpr | A method binding expression that refers to a method validating the input
 valueChangeListener | null | MethodExpr | A method binding expression that refers to a method for handling a valuchangeevent
 requiredMessage | null | String | Message to be displayed after failed validation.
 converterMessage | null | String | Message to be displayed when conversion fails.
@@ -59,17 +59,17 @@ size | null | Integer | Number of characters used to determine the width of the 
 style | null | String | Inline style of the input element.
 styleClass | null | String | Style class of the input element.
 tabindex | null | Integer | Position of the input element in the tabbing order.
-title | null | String | Advisory tooltip informaton.
+title | null | String | Advisory tooltip information.
 type | text | String | Input field type.
 decimalSeparator |. | String | Decimal separator char.
 thousandSeparator | , | String | Thousand separator char.
 symbol | none | String | Desired symbol or unit.
-symbolPosition | prefix | String | Position of the symbol.
-minValue | 0.00 | String | Minimum value allowed
-maxValue | 999999999.99 | String | Maximum values allowed.
+symbolPosition | p | String | Position of the symbol. 'p' for prefix 's' for suffix
+minValue | -10000000000000 | String | Minimum value allowed
+maxValue | 10000000000000 | String | Maximum values allowed.
 roundMethod | Round-Half-Up-Symmetric | String | Controls the rounding method.
-decimalPlaces | null | String | Number of decimal places. Default are taken from minValue and MaxValue.
-emptyValue | empty | String | Controls empty input display behavior, options are empty, zero, sign.
+decimalPlaces | 2 | String | Number of decimal places. Default are taken from minValue and MaxValue.
+emptyValue | empty | String | Defines what to display when the input value is empty (possible options are null, focus, press, always, min, max, zero, number, or a string representing a number)
 inputStyle | null | String | Inline style of the input element.
 inputStyleClass | null | String | Style class of the input element.
 padControl | true | Boolean | Controls padding of the decimal places. If true, always pads the decimal with zeros.
@@ -110,10 +110,10 @@ Here are some examples demonstrating various cases;
 ```xhtml
 <p:inputNumber id="input6" value="60.0" symbol="%" symbolPosition="s" emptyValue="zero" />
 ```
-#### Empty value (sign)
+#### Empty value (always show symbol)
 
 ```xhtml
-<p:inputNumber id="Input7" value="" symbol="%" symbolPosition="s" emptyValue="sign" />
+<p:inputNumber id="Input7" value="" symbol="%" symbolPosition="s" emptyValue="always" />
 ```
 #### 15 Decimals using BigDecimal
 

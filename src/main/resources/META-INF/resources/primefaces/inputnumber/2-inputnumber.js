@@ -25,11 +25,11 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
 
         this.wrapEvents();
 
-        this.input.autoNumeric('init', this.plugOptArray);
+        this.autonumeric = new AutoNumeric(this.jqId + '_input', this.cfg);
 
         if (this.valueToRender !== "") {
             //set the value to the input the plugin will format it.
-            this.input.autoNumeric('set', this.valueToRender);
+            this.autonumeric.set(this.valueToRender);
         }
 
         //pfs metadata
@@ -91,7 +91,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
     copyValueToHiddenInput: function() {
         var oldVal = this.hiddenInput.val();
 
-        var newVal = this.input.autoNumeric('get');
+        var newVal = this.autonumeric.getNumericString();
 
         if (oldVal !== newVal) {
             this.setValueToHiddenInput(newVal);
@@ -119,12 +119,12 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
     },
 
     setValue: function (value) {
-        this.input.autoNumeric('set', value);
-        var cleanVal = this.input.autoNumeric('get');
+        this.autonumeric.set(value);
+        var cleanVal = this.autonumeric.getNumericString();
         this.hiddenInput.attr('value', cleanVal);
     },
 
     getValue: function () {
-        return this.input.autoNumeric('get');
+        return this.autonumeric.getNumericString();
     }
 });

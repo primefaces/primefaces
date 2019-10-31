@@ -5,7 +5,7 @@ are many other third party libraries and plugins used to support features.
 
 | Library | Version | URL |
 | --- | --- | --- |
-| AutoNumeric | 1.9.45 | https://github.com/BobKnothe/autoNumeric |
+| AutoNumeric | 4.5.9 | https://github.com/autoNumeric/autoNumeric |
 | Chart.js | 2.9.1 | https://www.chartjs.org |
 | CLEditor WYSIWYG HTML Editor | v1.4.5 | https://github.com/cleditor/cleditor |
 | Color Picker | (2012) | www.eyecon.ro |
@@ -26,7 +26,6 @@ are many other third party libraries and plugins used to support features.
 | jQuery Keyfilter | 1.8 | https://github.com/akzhan/jquery-keyfilter |
 | jQuery Knob | 1.2.13 | https://github.com/aterrien/jQuery-Knob |
 | jQuery Masked Input Plugin | 1.4.1 | http://digitalbush.com/projects/masked-input-plugin/ |
-| jQuery Metadata | | https://github.com/jquery-archive/jquery-metadata |
 | jQuery MouseWheel | 3.1.13 | https://github.com/jquery/jquery-mousewheel |
 | jQuery Rangy | 0.1.205 | https://github.com/timdown/rangy |
 | jQuery Roundabout | 2.4.2 | http://fredhq.com/projects/roundabout |

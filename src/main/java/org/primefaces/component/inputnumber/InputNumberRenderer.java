@@ -222,59 +222,28 @@ public class InputNumberRenderer extends InputRenderer {
 
     protected void encodeScript(FacesContext context, InputNumber inputNumber, Object value, String valueToRender)
             throws IOException {
+        String emptyValue = isValueBlank(inputNumber.getEmptyValue()) || "empty".equalsIgnoreCase(inputNumber.getEmptyValue())
+                    ? "null" : inputNumber.getEmptyValue();
+        String digitGroupSeparator = isValueBlank(inputNumber.getThousandSeparator()) ? Constants.EMPTY_STRING : inputNumber.getThousandSeparator();
+
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init(InputNumber.class.getSimpleName(), inputNumber.resolveWidgetVar(context), inputNumber.getClientId());
         wb.attr("disabled", inputNumber.isDisabled())
-                .attr("valueToRender", formatForPlugin(valueToRender, inputNumber, value));
-
-        String metaOptions = getOptions(inputNumber);
-        if (!metaOptions.isEmpty()) {
-            wb.nativeAttr("pluginOptions", metaOptions);
-        }
+            .attr("valueToRender", formatForPlugin(valueToRender, inputNumber, value))
+            .attr("decimalCharacter", inputNumber.getDecimalSeparator(), ".")
+            .attr("digitGroupSeparator", digitGroupSeparator, ",")
+            .attr("currencySymbol", inputNumber.getSymbol())
+            .attr("currencySymbolPlacement", inputNumber.getSymbolPosition(), "p")
+            .attr("minimumValue", inputNumber.getMinValue())
+            .attr("maximumValue", inputNumber.getMaxValue())
+            .attr("decimalPlaces", inputNumber.getDecimalPlaces(), "2")
+            .attr("emptyInputBehavior", emptyValue, "focus")
+            .attr("leadingZero", inputNumber.getLeadingZero(), "deny")
+            .attr("allowDecimalPadding", inputNumber.isPadControl(), true)
+            .attr("roundingMethod", inputNumber.getRoundMethod(), "S")
+            .attr("selectOnFocus", false, true);
 
         wb.finish();
-    }
-
-    protected String getOptions(InputNumber inputNumber) {
-
-        String decimalSeparator = inputNumber.getDecimalSeparator();
-        String thousandSeparator = inputNumber.getThousandSeparator();
-        String symbol = inputNumber.getSymbol();
-        String symbolPosition = inputNumber.getSymbolPosition();
-        String minValue = inputNumber.getMinValue();
-        String maxValue = inputNumber.getMaxValue();
-        String roundMethod = inputNumber.getRoundMethod();
-        String decimalPlaces = inputNumber.getDecimalPlaces();
-        String emptyValue = inputNumber.getEmptyValue();
-        String lZero = inputNumber.getLeadingZero();
-        boolean padControl = inputNumber.isPadControl();
-
-        String options = "";
-        options += isValueBlank(decimalSeparator) ? "" : "aDec:\"" + EscapeUtils.forJavaScript(decimalSeparator) + "\",";
-        //empty thousandSeparator must be explicity defined.
-        options += isValueBlank(thousandSeparator) ? "aSep:''," : "aSep:\"" + EscapeUtils.forJavaScript(thousandSeparator) + "\",";
-        options += isValueBlank(symbol) ? "" : "aSign:\"" + EscapeUtils.forJavaScript(symbol) + "\",";
-        options += isValueBlank(symbolPosition) ? "" : "pSign:\"" + EscapeUtils.forJavaScript(symbolPosition) + "\",";
-        options += isValueBlank(minValue) ? "" : "vMin:\"" + EscapeUtils.forJavaScript(minValue) + "\",";
-        options += isValueBlank(maxValue) ? "" : "vMax:\"" + EscapeUtils.forJavaScript(maxValue) + "\",";
-        options += isValueBlank(roundMethod) ? "" : "mRound:\"" + EscapeUtils.forJavaScript(roundMethod) + "\",";
-        options += isValueBlank(decimalPlaces) ? "" : "mDec:\"" + EscapeUtils.forJavaScript(decimalPlaces) + "\",";
-        options += "wEmpty:\"" + EscapeUtils.forJavaScript(emptyValue) + "\",";
-        options += "lZero:\"" + EscapeUtils.forJavaScript(lZero) + "\",";
-        options += "aPad:" + padControl + ",";
-
-        //if all options are empty return empty
-        if (options.isEmpty()) {
-            return "";
-        }
-
-        //delete the last comma
-        int lastInd = options.length() - 1;
-        if (options.charAt(lastInd) == ',') {
-            options = options.substring(0, lastInd);
-        }
-        return "{" + options + "}";
-
     }
 
     private String formatForPlugin(String valueToRender, InputNumber inputNumber, Object value) {

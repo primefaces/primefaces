@@ -122,7 +122,7 @@ public abstract class InputNumberBase extends HtmlInputText implements Widget, I
     }
 
     public String getRoundMethod() {
-        return (String) getStateHelper().eval(PropertyKeys.roundMethod, null);
+        return (String) getStateHelper().eval(PropertyKeys.roundMethod, "S");
     }
 
     public void setRoundMethod(String roundMethod) {
