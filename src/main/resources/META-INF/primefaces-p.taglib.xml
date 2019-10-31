@@ -26399,14 +26399,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Deprecated, use css classes: 'vis-drag-left' and 'vis-drag-right' instead.]]>
-            </description>
-            <name>dragAreaWidth</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[If true, the items in the timeline can be manipulated. Only applicable when option selectable is true. Default is false.]]>
             </description>
             <name>editable</name>
@@ -26461,14 +26453,6 @@
                 <![CDATA[If true, events on the timeline are selectable. Selectable events can fire AJAX "select" events. Default is true.]]>
             </description>
             <name>selectable</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Deprecated with no replacement.]]>
-            </description>
-            <name>unselectable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -26595,14 +26579,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Deprecated with no direct replacement.]]>
-            </description>
-            <name>groupsOnRight</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Allows to customize the way groups are ordered. When true (default), groups will be ordered by content alphabetically 
                 (when the list of groups is missing) or by native ordering of TimelineGroup object in the list of groups (when the list of groups is available). 
                 When false, groups will not be ordered at all.]]>
@@ -26610,22 +26586,6 @@
             <name>groupsOrder</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Deprecated, use groupStyle property instead.]]>
-            </description>
-            <name>groupsWidth</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Deprecated, use groupStyle property instead.]]>
-            </description>
-            <name>groupMinHeight</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
         </attribute>
         <attribute>
             <description>
@@ -26698,22 +26658,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Deprecated with no replacement.]]>
-            </description>
-            <name>showButtonNew</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Deprecated with no replacement.]]>
-            </description>
-            <name>showNavigation</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Deprecated, use editableTime property instead. 
                 If false, items can not be moved or dragged horizontally (neither start time nor end time is changable).
                 This is useful when items should be editable but can only be changed regarding group or content (typical use case: scheduling events).
@@ -26754,23 +26698,6 @@
             <name>dropScope</name>
             <required>false</required>
             <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Deprecated with no direct replacement, you could use 'animation' property in options parameter in widget's 
-                javascript functions setVisibleRange, move and zoom.]]>
-            </description>
-            <name>animate</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Deprecated with no direct replacement, you could use 'animation' property in options parameter in widget's javascript function zoom.]]>
-            </description>
-            <name>animateZoom</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
