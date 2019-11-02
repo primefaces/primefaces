@@ -21,6 +21,14 @@
         <![CDATA[PrimeFaces is one of the most popular UI libraries in Java EE Ecosystem and widely used by software companies, world renowned brands, banks, financial institutions, insurance companies, universities and more.]]>
     </description>
 
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
     <scm>
         <connection>scm:git:https://github.com/primefaces/primefaces.git</connection>
         <developerConnection>scm:git:https://github.com/primefaces/primefaces.git</developerConnection>
@@ -55,6 +63,10 @@
         <developer>
             <id>Rapster</id>
             <name>Sébastien Lepage</name>
+        </developer>
+        <developer>
+            <id>melloware</id>
+            <name>Emil Lefkof</name>
         </developer>
     </developers>
 
