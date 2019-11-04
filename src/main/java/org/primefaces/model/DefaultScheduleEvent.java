@@ -23,24 +23,28 @@
  */
 package org.primefaces.model;
 
+import org.apache.poi.ss.formula.functions.T;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
+public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private String id;
+    private String groupId;
     private String title;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private boolean allDay = false;
     private String styleClass;
-    private Object data;
+    private T data;
     private boolean editable = true;
+    private boolean overlapAllowed = false;
     private String description;
     private String url;
     private ScheduleRenderingMode renderingMode;
@@ -69,7 +73,7 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
         this.styleClass = styleClass;
     }
 
-    public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end, Object data) {
+    public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end, T data) {
         this.title = title;
         this.startDate = start;
         this.endDate = end;
@@ -84,6 +88,15 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
     @Override
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
     @Override
@@ -134,17 +147,26 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
     }
 
     @Override
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 
     @Override
     public boolean isEditable() {
         return editable;
+    }
+
+    @Override
+    public boolean isOverlapAllowed() {
+        return overlapAllowed;
+    }
+
+    public void setOverlapAllowed(boolean overlapAllowed) {
+        this.overlapAllowed = overlapAllowed;
     }
 
     public void setEditable(boolean editable) {

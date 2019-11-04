@@ -26,13 +26,15 @@ package org.primefaces.model;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-public interface ScheduleEvent {
+public interface ScheduleEvent<T> {
 
     public String getId();
 
     public void setId(String id);
 
-    public Object getData();
+    public String getGroupId();
+
+    public T getData();
 
     public String getTitle();
 
@@ -49,6 +51,8 @@ public interface ScheduleEvent {
     public String getStyleClass();
 
     public boolean isEditable();
+
+    public boolean isOverlapAllowed();
 
     public String getDescription();
 

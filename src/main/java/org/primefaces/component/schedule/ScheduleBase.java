@@ -118,7 +118,7 @@ public abstract class ScheduleBase extends UIComponentBase implements Widget, Cl
     }
 
     public String getView() {
-        return (String) getStateHelper().eval(PropertyKeys.view, "month");
+        return (String) getStateHelper().eval(PropertyKeys.view, "dayGridMonth");
     }
 
     public void setView(String view) {
@@ -198,7 +198,7 @@ public abstract class ScheduleBase extends UIComponentBase implements Widget, Cl
     }
 
     public String getRightHeaderTemplate() {
-        return (String) getStateHelper().eval(PropertyKeys.rightHeaderTemplate, "month,agendaWeek,agendaDay");
+        return (String) getStateHelper().eval(PropertyKeys.rightHeaderTemplate, "dayGridMonth,timeGridWeek,timeGridDay");
     }
 
     public void setRightHeaderTemplate(String rightHeaderTemplate) {
@@ -294,7 +294,7 @@ public abstract class ScheduleBase extends UIComponentBase implements Widget, Cl
     }
 
     public String getClientTimeZone() {
-        return (String) getStateHelper().eval(PropertyKeys.clientTimeZone, null);
+        return (String) getStateHelper().eval(PropertyKeys.clientTimeZone, "local");
     }
 
     public void setClientTimeZone(String clientTimeZone) {

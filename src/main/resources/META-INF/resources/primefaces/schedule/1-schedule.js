@@ -9,14 +9,13 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.theme = true;
         this.viewNameState = $(this.jqId + '_view');
         this.cfg.urlTarget = this.cfg.urlTarget || "_blank";
+        this.cfg.plugins = [ 'interaction', 'dayGrid', 'timeGrid', 'list', 'moment', 'momentTimezone'];
 
         if(this.cfg.defaultDate) {
             this.cfg.defaultDate = moment(this.cfg.defaultDate);
         }
 
         this.setupEventSource();
-
-        this.configureLocale();
 
         if(this.cfg.tooltip) {
             this.tip = $('<div class="ui-tooltip ui-widget ui-widget-content ui-shadow ui-corner-all"></div>').appendTo(this.jq);
@@ -34,40 +33,22 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     _render: function() {
-        this.jq.fullCalendar(this.cfg);
+        var _self = this;
+        var calendarEl = document.getElementById(this.cfg.id);
+        _self.calendar = new FullCalendar.Calendar(calendarEl, this.cfg);
+        _self.calendar.render();
 
         this.bindViewChangeListener();
-    },
-
-    configureLocale: function() {
-        var lang = PrimeFaces.locales[this.cfg.locale];
-
-        if(lang) {
-            this.cfg.firstDay = lang.firstDay;
-            this.cfg.monthNames = lang.monthNames;
-            this.cfg.monthNamesShort = lang.monthNamesShort;
-            this.cfg.dayNames = lang.dayNames;
-            this.cfg.dayNamesShort = lang.dayNamesShort;
-            this.cfg.buttonText = {today: lang.currentText
-                                  ,month: lang.month
-                                  ,week: lang.week
-                                  ,day: lang.day};
-            this.cfg.allDayText = lang.allDayText;
-            this.cfg.weekNumberTitle = lang.weekNumberTitle;
-            if(lang.eventLimitText) {
-                this.cfg.eventLimitText = lang.eventLimitText;
-            }
-        }
     },
 
     setupEventHandlers: function() {
         var $this = this;
 
-        this.cfg.dayClick = function(dayDate, jsEvent, view) {
+        this.cfg.dateClick = function(dateClickInfo) {
             if($this.hasBehavior('dateSelect')) {
                 var ext = {
                     params: [
-                        {name: $this.id + '_selectedDate', value: dayDate.valueOf() - dayDate.utcOffset()*60000}
+                        {name: $this.id + '_selectedDate', value: dateClickInfo.date.toISOString()}
                     ]
                 };
 
@@ -75,20 +56,20 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
 
-        this.cfg.eventClick = function(calEvent, jsEvent, view) {
-            if (calEvent.url) {
+        this.cfg.eventClick = function(eventClickInfo) {
+            if (eventClickInfo.event.url) {
                 var targetWindow = window.open('', $this.cfg.urlTarget);
                 if ($this.cfg.noOpener) {
                     targetWindow.opener = null;    
                 }
-                targetWindow.location = calEvent.url;
+                targetWindow.location = targetWindow.event.url;
                 return false;
             }
 
             if($this.hasBehavior('eventSelect')) {
                 var ext = {
                     params: [
-                        {name: $this.id + '_selectedEventId', value: calEvent.id}
+                        {name: $this.id + '_selectedEventId', value: eventClickInfo.event.id}
                     ]
                 };
 
@@ -96,13 +77,15 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
 
-        this.cfg.eventDrop = function(calEvent, delta, revertFunc, jsEvent, ui, view) {
+        this.cfg.eventDrop = function(eventDropInfo) {
             if($this.hasBehavior('eventMove')) {
                 var ext = {
                     params: [
-                        {name: $this.id + '_movedEventId', value: calEvent.id},
-                        {name: $this.id + '_dayDelta', value: delta._days},
-                        {name: $this.id + '_minuteDelta', value: (delta._milliseconds/60000)}
+                        {name: $this.id + '_movedEventId', value: eventDropInfo.event.id},
+                        {name: $this.id + '_yearDelta', value: eventDropInfo.delta.years},
+                        {name: $this.id + '_monthDelta', value: eventDropInfo.delta.months},
+                        {name: $this.id + '_dayDelta', value: eventDropInfo.delta.days},
+                        {name: $this.id + '_minuteDelta', value: (eventDropInfo.delta.milliseconds/60000)}
                     ]
                 };
 
@@ -110,13 +93,19 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
 
-        this.cfg.eventResize = function(calEvent, delta, revertFunc, jsEvent, ui, view) {
+        this.cfg.eventResize = function(eventResizeInfo) {
             if($this.hasBehavior('eventResize')) {
                 var ext = {
                     params: [
-                        {name: $this.id + '_resizedEventId', value: calEvent.id},
-                        {name: $this.id + '_dayDelta', value: delta._days},
-                        {name: $this.id + '_minuteDelta', value: (delta._milliseconds/60000)}
+                        {name: $this.id + '_resizedEventId', value: eventResizeInfo.event.id},
+                        {name: $this.id + '_startDeltaYear', value: eventResizeInfo.startDelta.years},
+                        {name: $this.id + '_startDeltaMonth', value: eventResizeInfo.startDelta.months},
+                        {name: $this.id + '_startDeltaDay', value: eventResizeInfo.startDelta.days},
+                        {name: $this.id + '_startDeltaMinute', value: (eventResizeInfo.startDelta.milliseconds/60000)},
+                        {name: $this.id + '_endDeltaYear', value: eventResizeInfo.endDelta.years},
+                        {name: $this.id + '_endDeltaMonth', value: eventResizeInfo.endDelta.months},
+                        {name: $this.id + '_endDeltaDay', value: eventResizeInfo.endDelta.days},
+                        {name: $this.id + '_endDeltaMinute', value: (eventResizeInfo.endDelta.milliseconds/60000)}
                     ]
                 };
 
@@ -125,21 +114,21 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.cfg.tooltip) {
-            this.cfg.eventMouseover = function(event, jsEvent, view) {
-                if(event.description) {
+            this.cfg.eventMouseEnter = function(mouseEnterInfo) {
+                if(mouseEnterInfo.event.extendedProps.description) {
                     $this.tipTimeout = setTimeout(function() {
                         $this.tip.css({
-                            'left': jsEvent.pageX,
-                            'top': jsEvent.pageY + 15,
+                            'left': mouseEnterInfo.jsEvent.pageX,
+                            'top': mouseEnterInfo.jsEvent.pageY + 15,
                             'z-index': ++PrimeFaces.zindex
                         });
-                        $this.tip[0].innerHTML = event.description;
+                        $this.tip[0].innerHTML = mouseEnterInfo.event.extendedProps.description;
                         $this.tip.show();
                     }, 150);
                 }
             };
 
-            this.cfg.eventMouseout = function(event, jsEvent, view) {
+            this.cfg.eventMouseLeave = function(mouseLeaveInfo) {
                 if($this.tipTimeout) {
                     clearTimeout($this.tipTimeout);
                 }
@@ -151,9 +140,9 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             };
         } else {
             // PF #2795 default to regular tooltip
-            this.cfg.eventRender = function(event, element) {
-                if(event.description) {
-                    element.attr('title', event.description);
+            this.cfg.eventRender = function(info) {
+                if(info.event.description) {
+                    element.attr('title', info.event.description);
                 }
             };
         }
@@ -162,22 +151,21 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     setupEventSource: function() {
         var $this = this;
 
-        this.cfg.events = function(start, end, timezone, callback) {
-            var offset = start.utcOffset()*60000; // <-- #2977: assume start,end in same zone
+        this.cfg.events = function(fetchInfo, successCallback) {
             var options = {
                 source: $this.id,
                 process: $this.id,
                 update: $this.id,
                 formId: $this.cfg.formId,
                 params: [
-                    {name: $this.id + '_start', value: start.valueOf() + offset},
-                    {name: $this.id + '_end', value: end.valueOf() + offset}
+                    {name: $this.id + '_start', value: fetchInfo.start.toISOString()},
+                    {name: $this.id + '_end', value: fetchInfo.end.toISOString()}
                 ],
                 onsuccess: function(responseXML, status, xhr) {
                     PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            callback(JSON.parse(content).events);
+                            successCallback(JSON.parse(content).events);
                         }
                     });
 
@@ -190,7 +178,8 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     update: function() {
-        this.jq.fullCalendar('refetchEvents');
+        var _self = this;
+        _self.calendar.refetchEvents();
     },
 
     bindViewChangeListener: function() {
@@ -221,23 +210,26 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
 
     setViewOptions: function() {
         var views = {
-            month: {},       // month view
-            week: {},        // basicWeek & agendaWeek views
-            day: {},         // basicDay & agendaDay views
-            agenda: {},      // agendaDay & agendaWeek views
-            agendaDay: {},   // agendaDay view
-            agendaWeek: {}   // agendaWeek view
+            month: {},
+            week: {},
+            day: {},
+            dayGrid: {},
+            timeGrid: {},
+            list: {},
+            dayGridMonth: {},
+            dayGridWeek: {},
+            dayGridDay: {},
+            timeGridWeek: {},
+            timeGridDay: {},
+            listYear: {},
+            listMonth: {},
+            listDay: {}
         };
 
         var columnFormat = this.cfg.columnFormatOptions;
         if(columnFormat) {
             for (var view in views) {
-                if(view == "agendaWeek") {  // Github #2421
-                    views[view] = {columnHeaderFormat: columnFormat['week']};
-                }
-                else {
-                    views[view] = {columnHeaderFormat: columnFormat[view]};
-                }
+                views[view] = {columnHeaderFormat: columnFormat[view]};
             }
         }
 

@@ -12,7 +12,7 @@ are many other third party libraries and plugins used to support features.
 | ContentFlow | 1.0.2 | http://www.jacksasylum.eu/ContentFlow |
 | Cropper.js | 1.5.6 | https://github.com/fengyuanchen/cropperjs |
 | FontAwesome | 4.7.0 | https://fontawesome.com/ |
-| FullCalendar | 3.10.0 | https://fullcalendar.io/ |
+| FullCalendar | 4.3.1 | https://fullcalendar.io/ |
 | Idle Timer | 1.1.0 - 2016-03-21 | https://github.com/thorst/jquery-idletimer |
 | Interface elements | | http://interface.eyecon.ro (dock) |
 | jqPlot | 1.0.9 | http://www.jqplot.com/ |
@@ -38,6 +38,7 @@ are many other third party libraries and plugins used to support features.
 | JSPlumb Diagram | 2.1.0 | https://github.com/jsplumb/jsplumb |
 | Keypad | 2.1.0 | http://keith-wood.name/keypad.html |
 | moment.js | 2.22.2 | https://github.com/moment/moment |
+| moment-timezone.js | 0.5.25 | https://github.com/moment/moment-timezone |
 | Quill Editor | 1.3.7 | https://quilljs.com/ |
 | Raphaël | 2.2.0 | http://raphaeljs.com |
 | Signature | 1.2.0 | http://keith-wood.name/signature.html |

@@ -20369,7 +20369,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[The view type to use, possible values are 'month', 'agendaDay', 'agendaWeek', 'basicWeek', 'basicDay'. Default is month.]]>
+                <![CDATA[The view type to use, possible values are 'dayGridMonth', 'dayGridWeek', 'dayGridDay', 'timeGridWeek', 'timeGridDay', 'listYear' , 'listMonth', 'listWeek', 'listDay'. Default is 'dayGridMonth'.]]>
             </description>
             <name>view</name>
             <required>false</required>
@@ -20449,7 +20449,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Content of right side of header. Default is "month, agendaWeek, agendaDay"]]>
+                <![CDATA[Content of right side of header. Default is "dayGridMonth,timeGridWeek,timeGridDay"]]>
             </description>
             <name>rightHeaderTemplate</name>
             <required>false</required>
@@ -20505,15 +20505,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Determines the time-text that will be displayed within a time slot.]]>
-            </description>
-            <name>slotLabelFormat</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Determines the time-text that will be displayed on each event.]]>
+                <![CDATA[Determines the time-text that will be displayed on each event. (Moment.js - format)]]>
             </description>
             <name>timeFormat</name>
             <required>false</required>
@@ -20529,7 +20521,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Format for column headers.]]>
+                <![CDATA[Format for column headers. (eg "week:'dd DD MMM'" or "timeGridWeek: 'DD MM', timeGridDay: 'dd'")]]>
             </description>
             <name>columnHeaderFormat</name>
             <required>false</required>
@@ -20537,7 +20529,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[String or a java.util.TimeZone instance to specify the timezone used for date conversion to ISO_8601 format, defaults to "UTC".]]>
+                <![CDATA[String or a java.util.TimeZone instance to specify the timezone used for date conversion to ISO_8601 format, defaults to ZoneId.systemDefault().]]>
             </description>
             <name>timeZone</name>
             <required>false</required>
@@ -20545,7 +20537,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Timezone to define how to interpret the dates at browser. Valid values are "false", "local", "UTC" and ids like "America/Chicago".]]>
+                <![CDATA[Timezone to define how to interpret the dates at browser. Valid values are "local", "UTC" and ids like "America/Chicago", defaults to "local".]]>
             </description>
             <name>clientTimeZone</name>
             <required>false</required>

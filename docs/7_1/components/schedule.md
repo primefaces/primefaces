@@ -1,6 +1,6 @@
 # Schedule
 
-Schedule provides an Outlook Calendar, iCal like JSF component to manage events.
+Schedule provides an Outlook Calendar, iCal like JSF component to manage events which is based on FullCalendar.
 
 ## Info
 
@@ -24,7 +24,7 @@ widgetVar | null | String | Name of the client side widget.
 value | null | Object | An org.primefaces.model.ScheduleModel instance representing the backed model
 locale | null | Object | Locale for localization, can be String or a java.util.Locale instance
 aspectRatio | null | Float | Ratio of calendar width to height, higher the value shorter the height is
-view | month | String | The view type to use, possible values are 'month', 'agendaDay', 'agendaWeek', 'basicWeek', 'basicDay'
+view | dayGridMonth | String | The view type to use, possible values are 'dayGridMonth', 'dayGridWeek', 'dayGridDay', 'timeGridWeek', 'timeGridDay', 'listYear' , 'listMonth', 'listWeek', 'listDay'.
 initialDate | null | java.time.LocalDate | The initial date that is used when schedule loads. If ommitted, the schedule starts on the current date
 showWeekends | true | Boolean | Specifies inclusion Saturday/Sunday columns in any of the views
 style | null | String | Style of the main container element of schedule
@@ -34,20 +34,20 @@ resizable | true | Boolean | When true, events are resizable.
 showHeader | true | Boolean | Specifies visibility of header content.
 leftHeaderTemplate | prev, next, today | String | Content of left side of header.
 centerHeaderTemplate | title | String | Content of center of header.
-rightHeaderTemplate | month, agendaWeek, agendaDay | String | Content of right side of header.
-allDaySlot | true | Boolean | Determines if all-day slot will be displayed in agendaWeek or agendaDay views
+rightHeaderTemplate | dayGridMonth,timeGridWeek,timeGridDay | String | Content of right side of header.
+allDaySlot | true | Boolean | Determines if all-day slot will be displayed in timeGridWeek or timeGridDay views
 slotDuration | 00:30:00 | String | The frequency for displaying time slots.
 slotLabelInterval | null | String | The frequency that the time slots should be labeled with text. If not specified, a reasonable value will be automatically computed based on slotDuration. When specifying this option, give a Duration-ish input, like "01:00" or {hours:1}. This will cause the header labels to appear on the hour marks, even if slotDuration was hypothetically 15 or 30 minutes long.
-slotLabelFormat | null | String | Determines the text that will be displayed within a time slot. The default English value will produce times that look like 5pm and 5:30pm.
+slotLabelFormat | null | String | Determines the text that will be displayed within a time slot. The default English value will produce times that look like 5pm and 5:30pm. (see https://momentjs.com/docs/#/displaying/)
 scrollTime | 06:00:00 | String | Determines how far down the scroll pane is initially scrolled down.
 minTime | null | String | Minimum time to display in a day view.
 maxTime | null | String | Maximum time to display in a day view.
-timeFormat | null | String | Determines the time-text that will be displayed on each event.
+timeFormat | null | String | Determines the time-text that will be displayed on each event. (see https://momentjs.com/docs/#/displaying/)
 columnFormat | null | String | Deprecated, use columnHeaderFormat instead. Format for column headers.
-columnHeaderFormat | null | String | Format for column headers.
-timeZone | null | Object | String or a java.time.ZoneId instance to specify the timezone used for date conversion.
+columnHeaderFormat | null | String | Format for column headers. (eg `week:'dd DD MMM'` or `timeGridWeek: 'DD MM', timeGridDay: 'dd'`)
+timeZone | null | Object | String or a java.time.ZoneId instance to specify the timezone used for date conversion, defaults to ZoneId.systemDefault().
 tooltip | false | Boolean | Displays description of events on a tooltip.
-clientTimeZone | null | String | Timezone to define how to interpret the dates at browser. Valid values are "false", "local", "UTC" and ids like "America/Chicago".
+clientTimeZone | local | String | Defines how to interpret the dates at browser. Valid values are "local", "UTC" and ids like "America/Chicago". (see https://fullcalendar.io/docs/timeZone)
 showWeekNumbers | false | Boolean | Display week numbers in schedule.
 extender | null | String | Name of javascript function to extend the options of the underlying fullcalendar plugin.
 displayEventEnd | null | String | Whether or not to display an event's end time text when it is rendered on the calendar. Value can be a boolean to globally configure for all views or a comma separated list such as "month:false,basicWeek:true" to configure per view.
@@ -89,6 +89,7 @@ Table below describes each property in detail.
 | Property | Description | 
 | --- | --- |
 id | Used internally by PrimeFaces, auto generated.
+groupId | Events that share a groupId will be dragged and resized together automatically.
 title | Title of the event.
 startDate | Start date of type java.time.LocalDateTime.
 endDate | End date of type java.time.LocalDateTime.
@@ -96,6 +97,7 @@ allDay | Flag indicating event is all day.
 styleClass | Visual style class to enable multi resource display.
 data | Optional data you can set to be represented by Event.
 editable | Whether the event is editable or not.
+overlap | If false (default), prevents this event from being dragged/resized over other events. Also prevents other events from being dragged/resized over this event.
 description | Tooltip text to display on mouseover of an event.
 url | Events with url set, do not trigger the selectEvent but open the url instead.
 renderingMode | Which event rendering mode of the full calendar should be used? 
@@ -126,9 +128,10 @@ much more effective then updating with regular PPR. An example of this is demons
 schedule example, save button is calling PF(' _widgetvar').update()_ at oncomplete event handler.
 
 ## TimeZone
-By default, timezone offsets are ignored. Set ignoreTimezone to false so that schedule takes care of
-timezone differences by calculating the client browser timezone and the event date so that events
-are displayed at the clients local time.
+By default schedule takes care of timezone differences by calculating the client browser timezone
+and the event date so that events are displayed at the clients local time.
+
+see https://fullcalendar.io/docs/timeZone, setting 'locale' 
 
 ## Editable Schedule
 Let’s put it altogether to come up a fully editable and complex schedule.
@@ -243,47 +246,36 @@ These controls can be placed at three locations on header which are defined with
 _leftHeaderTemplate_ , _rightHeaderTemplate_ and _centerTemplate_ attributes.
 
 ```xhtml
-<p:schedule value="#{scheduleBean.model}" leftHeaderTemplate"today" rightHeaderTemplate="prev,next" centerTemplate="month, agendaWeek, agendaDay"
+<p:schedule value="#{scheduleBean.model}" leftHeaderTemplate"today" rightHeaderTemplate="prev,next" centerTemplate="dayGridMonth, timeGridWeek, timeGridDay">
 </p:schedule>
 ```
 
 ## Views
-5 different views are supported, these are "month", "agendaWeek", "agendaDay", "basicWeek" and
-"basicDay".
+9 different views are supported, these are "dayGridMonth", "dayGridWeek", "dayGridDay", "timeGridWeek", "timeGridDay", "listYear" , "listMonth", "listWeek" and "listDay".
 
-#### agendaWeek
+Some examples...
 
-```xhtml
-<p:schedule value="#{scheduleBean.model}" view="agendaWeek"/>
-```
-#### agendaDay
+#### timeGridWeek
 
 ```xhtml
-<p:schedule value="#{scheduleBean.model}" view="agendaDay"/>
+<p:schedule value="#{scheduleBean.model}" view="timeGridWeek"/>
 ```
-#### basicWeek
+#### timeGridDay
 
 ```xhtml
-<p:schedule value="#{scheduleBean.model}" view="basicWeek"/>
+<p:schedule value="#{scheduleBean.model}" view="timeGridDay"/>
 ```
-
-#### basicDay
+#### listMonth
 
 ```xhtml
-<p:schedule value="#{scheduleBean.model}" view="basicDay"/>
+<p:schedule value="#{scheduleBean.model}" view="listMonth"/>
 ```
+
 ## Locale Support
+
+FullCalendar comes with it´s own localization which is packed into the Schedule-component.
 By default locale information is retrieved from the view’s locale and can be overridden by the locale
-attribute. Locale attribute can take a locale key as a | String | or a java.util.Locale instance. Default
-language of labels are English and you need to add the necessary translations to your page manually
-as PrimeFaces does not include language translations. PrimeFaces Wiki Page for
-PrimeFacesLocales is a community driven page where you may find the translations you need.
-Please contribute to this wiki with your own translations.
-
-https://github.com/primefaces/primefaces/wiki/Locales
-
-Translation is a simple javascript object, we suggest adding the code to a javascript file and include
-in your application. Following is a Turkish calendar.
+attribute. Locale attribute can take a locale key as a | String | or a java.util.Locale instance. 
 
 ```xhtml
 <p:schedule value="#{scheduleBean.model}" locale="tr"/>
@@ -295,6 +287,7 @@ To display a link when there are too many events on a slot, use _setEventLimit(t
 If the schedule component lacking functions/options that are provided by the full calendar, 
 they can be used by the extender function. For more details about the configuration of full calender
 look at their documentation.
+
 ```xhtml
 <h:form>
     <p:schedule value="#{scheduleBean.model}" extender="initSchedule"/>

@@ -23,7 +23,6 @@
  */
 package org.primefaces.component.schedule;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collection;
@@ -51,8 +50,7 @@ import org.primefaces.util.MapBuilder;
         @ResourceDependency(library = "primefaces", name = "schedule/schedule.css"),
         @ResourceDependency(library = "primefaces", name = "components.css"),
         @ResourceDependency(library = "primefaces", name = "moment/moment.js"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
+        @ResourceDependency(library = "primefaces", name = "moment/moment-timezone-with-data.js"),
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js"),
         @ResourceDependency(library = "primefaces", name = "schedule/schedule.js")
@@ -103,8 +101,8 @@ public class Schedule extends ScheduleBase {
             FacesEvent wrapperEvent = null;
 
             if (eventName.equals("dateSelect")) {
-                Long milliseconds = Long.valueOf(params.get(clientId + "_selectedDate"));
-                LocalDateTime selectedDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(milliseconds), zoneId);
+                String selectedDateStr = params.get(clientId + "_selectedDate");
+                LocalDateTime selectedDate =  CalendarUtils.toLocalDateTime(zoneId, selectedDateStr);
                 SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), selectedDate);
                 selectEvent.setPhaseId(behaviorEvent.getPhaseId());
 
@@ -119,29 +117,46 @@ public class Schedule extends ScheduleBase {
             else if (eventName.equals("eventMove")) {
                 String movedEventId = params.get(clientId + "_movedEventId");
                 ScheduleEvent movedEvent = getValue().getEvent(movedEventId);
+                int yearDelta = Double.valueOf(params.get(clientId + "_yearDelta")).intValue();
+                int monthDelta = Double.valueOf(params.get(clientId + "_monthDelta")).intValue();
                 int dayDelta = Double.valueOf(params.get(clientId + "_dayDelta")).intValue();
                 int minuteDelta = Double.valueOf(params.get(clientId + "_minuteDelta")).intValue();
 
                 LocalDateTime startDate = movedEvent.getStartDate();
                 LocalDateTime endDate = movedEvent.getEndDate();
-                startDate = startDate.plusDays(dayDelta).plusMinutes(minuteDelta);
-                endDate = endDate.plusDays(dayDelta).plusMinutes(minuteDelta);
+                startDate = startDate.plusYears(yearDelta).plusMonths(monthDelta).plusDays(dayDelta).plusMinutes(minuteDelta);
+                endDate = endDate.plusYears(yearDelta).plusMonths(monthDelta).plusDays(dayDelta).plusMinutes(minuteDelta);
                 movedEvent.setStartDate(startDate);
                 movedEvent.setEndDate(endDate);
 
-                wrapperEvent = new ScheduleEntryMoveEvent(this, behaviorEvent.getBehavior(), movedEvent, dayDelta, minuteDelta);
+                wrapperEvent = new ScheduleEntryMoveEvent(this, behaviorEvent.getBehavior(), movedEvent,
+                        yearDelta, monthDelta, dayDelta, minuteDelta);
             }
             else if (eventName.equals("eventResize")) {
                 String resizedEventId = params.get(clientId + "_resizedEventId");
                 ScheduleEvent resizedEvent = getValue().getEvent(resizedEventId);
-                int dayDelta = Double.valueOf(params.get(clientId + "_dayDelta")).intValue();
-                int minuteDelta = Double.valueOf(params.get(clientId + "_minuteDelta")).intValue();
+
+                int startDeltaYear = Double.valueOf(params.get(clientId + "_startDeltaYear")).intValue();
+                int startDeltaMonth = Double.valueOf(params.get(clientId + "_startDeltaMonth")).intValue();
+                int startDeltaDay = Double.valueOf(params.get(clientId + "_startDeltaDay")).intValue();
+                int startDeltaMinute = Double.valueOf(params.get(clientId + "_startDeltaMinute")).intValue();
+
+                LocalDateTime startDate = resizedEvent.getStartDate();
+                startDate = startDate.plusYears(startDeltaYear).plusMonths(startDeltaMonth).plusDays(startDeltaDay).plusMinutes(startDeltaMinute);
+                resizedEvent.setStartDate(startDate);
+
+                int endDeltaYear = Double.valueOf(params.get(clientId + "_endDeltaYear")).intValue();
+                int endDeltaMonth = Double.valueOf(params.get(clientId + "_endDeltaMonth")).intValue();
+                int endDeltaDay = Double.valueOf(params.get(clientId + "_endDeltaDay")).intValue();
+                int endDeltaMinute = Double.valueOf(params.get(clientId + "_endDeltaMinute")).intValue();
 
                 LocalDateTime endDate = resizedEvent.getEndDate();
-                endDate = endDate.plusDays(dayDelta).plusMinutes(minuteDelta);
+                endDate = endDate.plusYears(endDeltaYear).plusMonths(endDeltaMonth).plusDays(endDeltaDay).plusMinutes(endDeltaMinute);
                 resizedEvent.setEndDate(endDate);
 
-                wrapperEvent = new ScheduleEntryResizeEvent(this, behaviorEvent.getBehavior(), resizedEvent, dayDelta, minuteDelta);
+                wrapperEvent = new ScheduleEntryResizeEvent(this, behaviorEvent.getBehavior(), resizedEvent,
+                        startDeltaYear, startDeltaMonth, startDeltaDay, startDeltaMinute,
+                        endDeltaYear, endDeltaMonth, endDeltaDay, endDeltaMinute);
             }
             else if (eventName.equals("viewChange")) {
                 wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), getView());
