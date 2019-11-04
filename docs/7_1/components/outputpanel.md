@@ -1,6 +1,12 @@
 # OutputPanel
 
-OutputPanel is a panel component with the ability to deferred loading.
+OutputPanel is a panel component with the ability to deferred loading, which is also the key feature of this component.
+
+**NOTE**
+If you use the OutputPanel just as simple placeholder, it's better to use another approach since JSF 2.2:
+```xhtml
+<div jsf:id="..." jsf:rendered="#{...}">...</div>
+```
 
 ## Info
 
@@ -32,7 +38,6 @@ OutputPanel has various uses cases such as placeholder, deferred loading and aut
 When a JSF component is not rendered, no markup is rendered so for components with conditional
 rendering, regular update mechanism may not work since the markup to update on page does not
 exist. OutputPanel is useful in this case to be used as a placeholder.
-
 
 Suppose the rendered condition on bean is false when page if loaded initially and search method on
 bean sets the condition to be true meaning datatable will be rendered after a page submit. The
@@ -72,10 +77,6 @@ OutputPanel has two layout modes;
 
 - block (default): Renders a div
 - inline: Renders a span
-
-## AutoUpdate (Deprecated)
-When auto update is enabled, outputPanel component is updated with each ajax request
-automatically. Note: Use p:autopUpdate instead.
 
 ## Skinning
 _style_ and _styleClass_ attributes are used to style the outputPanel, by default _.ui-outputpanel_ css class
