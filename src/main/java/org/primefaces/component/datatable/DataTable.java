@@ -179,7 +179,7 @@ public class DataTable extends DataTableBase {
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
     private int columnsCountWithSpan = -1;
-    private List filterMetadata;
+    private List<FilterMeta> filterMetadata;
     private boolean reset = false;
     private List<Object> selectedRowKeys = new ArrayList<>();
     private boolean isRowKeyRestored = false;
@@ -556,7 +556,7 @@ public class DataTable extends DataTableBase {
                 List<FilterState> filters = getFilterBy();
                 if (filters != null) {
                     String globalFilterParam = getClientId(context) + UINamingContainer.getSeparatorChar(context) + "globalFilter";
-                    List filterMetaDataList = getFilterMetadata();
+                    List<FilterMeta> filterMetaDataList = getFilterMetadata();
                     if (filterMetaDataList != null) {
                         FilterFeature filterFeature = (FilterFeature) getFeature(DataTableFeatureKey.FILTER);
                         Map<String, Object> filterParameterMap = filterFeature.populateFilterParameterMap(context, this, filterMetaDataList, globalFilterParam);
@@ -730,11 +730,11 @@ public class DataTable extends DataTableBase {
         getStateHelper().put("scrollOffset", scrollOffset);
     }
 
-    public List getFilterMetadata() {
+    public List<FilterMeta> getFilterMetadata() {
         return filterMetadata;
     }
 
-    public void setFilterMetadata(List filterMetadata) {
+    public void setFilterMetadata(List<FilterMeta> filterMetadata) {
         this.filterMetadata = filterMetadata;
     }
 
