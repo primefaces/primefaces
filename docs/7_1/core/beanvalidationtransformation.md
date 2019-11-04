@@ -5,7 +5,7 @@ reference (EL ValueExpression) and BeanValidation (e.g. @NotNull, @Size). The JS
 information for server side validation and PrimeFaces enhances this feature with client side
 validation framework.
 
-PrimeFaces makes use of these metadata by transforming them to component and html attributes.
+PrimeFaces makes use of these metadata by transforming them to component and HTML attributes.
 For example sometimes it’s required to manually maintain the required attribute or maxlength attribute for
 input components. The required attribute also controls the behavior of p:outputLabel to show or
 hide the required indicator (*) whereas the _maxlength_ attribute is used to limit the characters on
@@ -44,7 +44,7 @@ Component at view does not have any constraints;
 ```xhtml
 <p:inputText value="#{bean.firstname}" />
 ```
-Final output has html maxlength attribute generated from the @Max annotation, also the component
+Final output has HTML maxlength attribute generated from the @Max annotation, also the component
 instance has required enabled.
 
 ```xhtml

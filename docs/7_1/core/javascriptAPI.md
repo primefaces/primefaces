@@ -1,6 +1,6 @@
 # Javascript API
 
-PrimeFaces renders unobstrusive javascript which cleanly separates behavior from the html. Client side engine is powered by jQuery.
+PrimeFaces renders unobstrusive javascript which cleanly separates behavior from the HTML. Client side engine is powered by jQuery.
 
 ## PrimeFaces Core (PrimeFaces.core.*)
 

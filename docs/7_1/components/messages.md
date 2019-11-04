@@ -27,7 +27,7 @@ redisplay | true | Boolean | Defines if already rendered messages should be disp
 for | null | String | The clientId or name of associated key, takes precedence when used with globalOnly.
 forType | null | String | Type of the "for" attribute. Valid values are "key" and "expression".
 forIgnores | null | String | Defines a list of keys and clientIds, which should NOT be rendered by this component. Seperated by space or comma.
-escape | true | Boolean | Defines whether html would be escaped or not.
+escape | true | Boolean | Defines whether HTML would be escaped or not.
 severity | null | String | Comma separated list of severities to display only.
 closable | false | Boolean | Adds a close icon to hide the messages.
 style | null | String | Inline style of the component.
@@ -70,7 +70,7 @@ instance, you can configure messages to only display infos and warnings.
 ```
 
 ## Escaping
-Messages escapes html content in messages, disable escape option to display content as html.
+Messages escapes HTML content in messages, disable escape option to display content as HTML.
 
 ```xhtml
 <p:messages escape="false" />

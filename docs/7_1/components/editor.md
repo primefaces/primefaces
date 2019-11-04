@@ -15,7 +15,7 @@ Editor is an input component with rich text editing capabilities. (Deprecated: U
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 | id | null | String | Unique identifier of the component.
 | rendered | true | Boolean | Boolean value to specify the rendering of the component.
@@ -96,10 +96,10 @@ Here is the full list of all available controls;
 ## Client Side API
 Widget: _PrimeFaces.widget.Editor_
 
-| Method | Params | Return Type | Description | 
-| --- | --- | --- | --- | 
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
 | init() | - | void | Initializes a lazy editor, subsequent calls do not reinit the editor.
-| saveHTML() | - | void | Saves html text in iframe back to the textarea.
+| saveHTML() | - | void | Saves HTML text in iframe back to the textarea.
 | clear() | - | void | Clears the text in editor.
 | enable() | - | void | Enables editing.
 | disable() | - | void | Disables editing.
@@ -111,8 +111,8 @@ Widget: _PrimeFaces.widget.Editor_
 ## Skinning
 Following is the list of structural style classes.
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 | .ui-editor | Main container.
 | .ui-editor-toolbar | Toolbar of editor.
 | .ui-editor-group | Button groups.

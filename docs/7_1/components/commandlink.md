@@ -15,7 +15,7 @@ CommandLink extends standard JSF commandLink with Ajax capabilities.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 | id | null | String | Unique identifier of the component
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -86,4 +86,4 @@ public class BookBean {
 </p:commandLink>
 ```
 ## Skinning
-CommandLink renders an html anchor element that _style_ and _styleClass_ attributes apply.
+CommandLink renders an HTML anchor element that _style_ and _styleClass_ attributes apply.

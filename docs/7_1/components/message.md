@@ -25,7 +25,7 @@ showDetail | true | Boolean | Specifies if the detail of the FacesMessage should
 for | null | String | The clientId or name of associated key of whose messages to display.
 redisplay | true | Boolean | Defines if already rendered messages should be displayed
 display | both | String | Defines the display mode.
-escape | true | Boolean | Defines whether html would be escaped or not.
+escape | true | Boolean | Defines whether HTML would be escaped or not.
 severity | null | String | Comma separated list of severities to display only.
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the component.
@@ -53,7 +53,7 @@ instance, you can configure messages to only display infos and warnings.
 <p:message severity="info,warn" for="txt"/>
 ```
 ## Escaping
-Component escapes html content in messages by default, in case you need to display html, disable
+Component escapes HTML content in messages by default, in case you need to display HTML, disable
 escape option.
 
 ```xhtml

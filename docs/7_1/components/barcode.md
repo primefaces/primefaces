@@ -15,7 +15,7 @@ Barcode component is used to display various barcode formats.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 | id | null | String | Unique identifier of the component
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -38,16 +38,16 @@ Barcode component is used to display various barcode formats.
 | usemap | null | String | Name of the client side map
 | style | null | String | Style of the image
 | styleClass | null | String | Style class of the image
-| onclick | null | String | onclick dom event handler
-| ondblclick | null | String | ondblclick dom event handler
-| onkeydown | null | String | onkeydown dom event handler
-| onkeypress | null | String | onkeypress dom event handler
-| onkeyup | null | String | onkeyup dom event handler
-| onmousedown | null | String | onmousedown dom event handler
-| onmousemove | null | String | onmousemove dom event handler
-| onmouseout | null | String | onmouseout dom event handler
-| onmouseover | null | String | onmouseover dom event handler
-| onmouseup | null | String | onmouseup dom event handler
+| onclick | null | String | onclick DOM event handler
+| ondblclick | null | String | ondblclick DOM event handler
+| onkeydown | null | String | onkeydown DOM event handler
+| onkeypress | null | String | onkeypress DOM event handler
+| onkeyup | null | String | onkeyup DOM event handler
+| onmousedown | null | String | onmousedown DOM event handler
+| onmousemove | null | String | onmousemove DOM event handler
+| onmouseout | null | String | onmouseout DOM event handler
+| onmouseover | null | String | onmouseover DOM event handler
+| onmouseup | null | String | onmouseup DOM event handler
 
 ## Getting started with Barcode
 Barcode type should be provided along with the value to display. Supported formats are;

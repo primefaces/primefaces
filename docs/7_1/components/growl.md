@@ -28,7 +28,7 @@ globalOnly | false | Boolean | When true, only facesmessages without clientids a
 life | 6000 | Integer | Duration in milliseconds to display non-sticky messages.
 redisplay | true | Boolean | Defines if already rendered messaged should be displayed.
 for | null | String | The clientId or name of associated key, takes precedence when used with globalOnly.
-escape | true | Boolean | Defines whether html would be escaped or not.
+escape | true | Boolean | Defines whether HTML would be escaped or not.
 severity | null | String | Comma separated list of severities to display only.
 keepAlive | false | Boolean | Defines if previous messages should be kept on a new message is shown.
 skipDetailIfEqualsSummary | false | Boolean | Defines if rendering of the detail text should be skipped, if the detail and summaray are equals.
@@ -91,7 +91,7 @@ instance, you can configure growl to only display infos and warnings.
 <p:growl severity="info,warn" />
 ```
 ## Escaping
-Growl escapes html content in messages, in case you need to display html via growl set escape
+Growl escapes HTML content in messages, in case you need to display HTML via growl set escape
 option to false.
 
 ```xhtml

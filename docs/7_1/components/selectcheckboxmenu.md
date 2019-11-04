@@ -15,7 +15,7 @@ SelectCheckboxMenu is a multi select component that displays options in an overl
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -86,7 +86,7 @@ function customFilter(itemLabel, filterValue) {
 }
 ```
 ## Ajax Behavior Events
-In addition to common dom events like change, selectCheckboxMenu provides _toggleSelect_ event.
+In addition to common DOM events like change, selectCheckboxMenu provides _toggleSelect_ event.
 
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
@@ -98,8 +98,8 @@ skinning style classes are global, see the main theming section for more informa
 the list of structural style classes;
 
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 .ui-selectcheckboxmenu | Main container element.
 .ui-selectcheckboxmenu-label-container | Label container.
 .ui-selectcheckboxmenu-label | Label.

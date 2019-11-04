@@ -15,7 +15,7 @@ Timeline is an interactive graph to visualize events in time.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -123,8 +123,8 @@ A loading screen can be defined using loading facet.
 </p:timeline>
 ```
 ## Tooltip
-If you define title property in _TimelineEvent_ and/or _TimelineGroup_ java objects, then a tooltip is displayed when holding the mouse on the item and/or 
-group respectively. Title property can be plain text or html in case of TimelineEvent and only plain text in case of TimelineGroup.
+If you define title property in _TimelineEvent_ and/or _TimelineGroup_ java objects, then a tooltip is displayed when holding the mouse on the item and/or
+group respectively. Title property can be plain text or HTML in case of TimelineEvent and only plain text in case of TimelineGroup.
 
 A facet called "eventTitle" can be defined in <p:timeline> to provide custom content for event's title.
 ```xhtml
@@ -168,8 +168,8 @@ Extender property is a javascript function that allows access to the underlying 
 By default locale information is retrieved from the view’s locale and can be overridden by the _locale_
 attribute which can take a locale key as a | String | or a java.util.Locale instance. Default
 language of labels are English and you need to add the necessary translations to your page manually
-as PrimeFaces does not include language translations. Localization of Timeline component depends largely on 
-the localization of javascript library moment.js. To enable localization, your moment.js must be loaded with locales <strong>before</strong> 
+as PrimeFaces does not include language translations. Localization of Timeline component depends largely on
+the localization of javascript library moment.js. To enable localization, your moment.js must be loaded with locales <strong>before</strong>
 timeline javascript gets loaded. Following is an example of Spanish localization.
 
 ```xhtml

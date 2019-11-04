@@ -15,13 +15,13 @@ OutputPanel is a panel component with the ability to deferred loading.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-style | null | String | Style of the html container element
-styleClass | null | String | StyleClass of the html container element
+style | null | String | Style of the HTML container element
+styleClass | null | String | StyleClass of the HTML container element
 layout | block | String | Shortcut for the css display property, valid values are block(default) and inline.
 deferred | false | Boolean | Deferred mode loads the contents after page load to speed up page load.
 deferredMode | load | String | Defines deferred loading mode, valid values are "load" (after page load) and "visible" (once the panel is visible on scroll).

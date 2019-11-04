@@ -13,7 +13,7 @@ HtmlParsers, PhaseListeners and so on. PrimeFaces aims to keep it clean, fast an
 
 On client side rather than using client side API implementations of JSF implementations like
 Mojarra and MyFaces, PrimeFaces scripts are based on the most popular javascript library; jQuery
-which is far more tested, stable regarding ajax, dom handling, dom tree traversing than a JSF
+which is far more tested, stable regarding ajax, DOM handling, DOM tree traversing than a JSF
 implementations scripts.
 
 ## Using IDs

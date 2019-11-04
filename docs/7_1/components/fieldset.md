@@ -1,6 +1,6 @@
 # Fieldset
 
-Fieldset is a grouping component as an extension to html fieldset.
+Fieldset is a grouping component as an extension to HTML fieldset.
 
 ## Info
 
@@ -15,7 +15,7 @@ Fieldset is a grouping component as an extension to html fieldset.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 | id | null | String | Unique identifier of the component
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -44,7 +44,7 @@ Fieldset is used as a container component for its children.
 ```
 ## Legend
 Legend can be defined in two ways, with legend attribute as in example above or using legend
-facet. Use facet way if you need to place custom html other than simple text.
+facet. Use facet way if you need to place custom HTML other than simple text.
 
 ```xhtml
 <p:fieldset>
@@ -95,16 +95,16 @@ public void onToggle(ToggleEvent event) {
 ## Client Side API
 Widget: _PrimeFaces.widget.Fieldset_
 
-| Method | Params | Return Type | Description | 
-| --- | --- | --- | --- | 
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
 | toggle() | - | void | Toggles fieldset content.
 
 ## Skinning
 _style_ and _styleClass_ options apply to the fieldset. Following is the list of structural style classes;
 
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 | .ui-fieldset | Main container
 | .ui-fieldset-toggleable | Main container when fieldset is toggleable
 | .ui-fieldset .ui-fieldset-legend | Legend of fieldset

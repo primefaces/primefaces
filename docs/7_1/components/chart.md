@@ -17,7 +17,7 @@ charting API.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 | id | null | String | Unique identifier of the component
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -254,8 +254,8 @@ public class Bean {
         yAxis.setMin(0);
         yAxis.setMax(200);
     }
-    public BarChartModel getModel() { 
-        return model; 
+    public BarChartModel getModel() {
+        return model;
     }
 }
 ```
@@ -297,8 +297,8 @@ public class Bean {
         Axis yAxis = model.getAxis(AxisType.Y);
         yAxis.setLabel("Gender");
     }
-    public HorizontalBarChartModel getModel() { 
-        return model; 
+    public HorizontalBarChartModel getModel() {
+        return model;
     }
 }
 ```
@@ -315,7 +315,7 @@ DonutChart is generated using DonutChartModel.
 ```java
 public class Bean {
     private DonutChartModel model;
-    
+
     public Bean() {
         model = new DonutChartModel();
         Map<String, Number> circle1 = new LinkedHashMap<String, Number>();
@@ -339,7 +339,7 @@ public class Bean {
         model.setTitle("Donut Chart");
         model.setLegendPosition("w");
     }
-    public DonutChartModel getModel() { 
+    public DonutChartModel getModel() {
         return model;
     }
 }
@@ -418,8 +418,8 @@ public class Bean {
         yAxis.setMax(250);
         yAxis.setLabel("Labels");
     }
-    public BubbleChartModel getModel() { 
-        return model; 
+    public BubbleChartModel getModel() {
+        return model;
     }
 }
 ```
@@ -453,8 +453,8 @@ public class Bean {
         yAxis.setMax(250);
         yAxis.setTickAngle(50);
     }
-    public BubbleChartModel getModel() { 
-        return model; 
+    public BubbleChartModel getModel() {
+        return model;
     }
 }
 ```
@@ -485,8 +485,8 @@ public class Bean {
         ohlcModel.getAxis(AxisType.X).setLabel("Year");
         ohlcModel.getAxis(AxisType.Y).setLabel("Price Change $K/Unit");
     }
-    public OhlcChartModel getModel() { 
-        return model; 
+    public OhlcChartModel getModel() {
+        return model;
     }
 }
 ```
@@ -511,8 +511,8 @@ public class Bean {
         model.getAxis(AxisType.X).setLabel("Sector");
         model.getAxis(AxisType.Y).setLabel("Index Value");
     }
-    public OhlcChartModel getModel() { 
-        return model; 
+    public OhlcChartModel getModel() {
+        return model;
     }
 }
 ```
@@ -540,8 +540,8 @@ public class Bean {
         model.setTitle("MeterGauge Chart");
         model.setGaugeLabel("km/h");
     }
-    public MeterGaugeChartModel getModel() { 
-        return model; 
+    public MeterGaugeChartModel getModel() {
+        return model;
     }
 }
 ```
@@ -570,7 +570,7 @@ public class Bean {
         model.setLabelHeightAdjust(110);
         model.setIntervalOuterRadius(130);
     }
-    public MeterGaugeChartModel getModel() { 
+    public MeterGaugeChartModel getModel() {
         return model;
     }
 }
@@ -616,8 +616,8 @@ public class Bean {
         yAxis.setMin(0);
         yAxis.setMax(200);
     }
-    public BarChartModel getModel() { 
-        return model; 
+    public BarChartModel getModel() {
+        return model;
     }
 }
 ```
@@ -668,8 +668,8 @@ public class Bean {
         y2Axis.setMax(200);
         model.getAxes().put(AxisType.Y2, y2Axis);
     }
-    public LineChartModel getModel() { 
-        return model; 
+    public LineChartModel getModel() {
+        return model;
     }
 }
 ```
@@ -716,7 +716,7 @@ public class Bean {
         axis.setTickFormat("%b %#d, %y");
         dateModel.getAxes().put(AxisType.X, axis);
     }
-    public LineChartModel getModel() { 
+    public LineChartModel getModel() {
         return model;
     }
 }
@@ -746,8 +746,8 @@ public class Bean {
         model.setTitle("Simple Pie");
         model.setLegendPosition("w");
     }
-    public PieChartModel getModel() { 
-        return model; 
+    public PieChartModel getModel() {
+        return model;
     }
     public void itemSelect(ItemSelectEvent event) {
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
@@ -819,8 +819,8 @@ public class Bean {
 
 Charts can be styled using regular css. Following is the list of style classes;
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 | .jqplot-target | Plot target container.
 | .jqplot-axis | Axes.
 | .jqplot-xaxis | Primary x-axis.
@@ -992,7 +992,7 @@ _org.primefaces.model.chart.DonutChartModel_ extends _org.primefaces.model.chart
 | dataLabelThreshold | 3 | Integer | Threshhold in percentage (0-100) of pie area, below which no label will be displayed. This applies to all label types, not just to percentage labels.
 | showDatatip | true | Boolean | Displays tooltip when enabled.
 | datatipFormat | %s-%d | String | Format string for datatip.
-| datatipEditor | null | String | Name of client side function that returns html to provide custom content in datatip.
+| datatipEditor | null | String | Name of client side function that returns HTML to provide custom content in datatip.
 
 ### HorizontalBarChartModel
 _org.primefaces.model.chart.HorizontalBarChartModel_ extends _org.primefaces.model.chart.BarChartModel_
@@ -1076,4 +1076,4 @@ _org.primefaces.model.chart.PieChartModel_ extends _org.primefaces.model.chart.C
 | dataLabelThreshold | 3 | Integer | Threshhold in percentage (0-100) of pie area, below which no label will be displayed. This applies to all label types, not just to percentage labels.
 | showDatatip | true | Boolean | Displays tooltip when enabled.
 | datatipFormat | %s-%d | String | Format string for datatip.
-| datatipEditor | null | String | Name of client side function that returns html to provide custom content in datatip.
+| datatipEditor | null | String | Name of client side function that returns HTML to provide custom content in datatip.

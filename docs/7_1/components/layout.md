@@ -18,7 +18,7 @@ create complex layouts even if you’re not familiar with web design.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -68,7 +68,7 @@ possible units. Note that you can place any content in each layout unit.
 ```
 ## Forms in Full Page Layout
 When working with forms and full page layout, avoid using a form that contains layoutunits as
-generated dom may not be the same. So following is **invalid**.
+generated DOM may not be the same. So following is **invalid**.
 
 ```xhtml
 <p:layout fullPage="true">
@@ -123,8 +123,8 @@ collapsed attribute of the layout unit layout will be rendered as the user left 
 ## Client Side API
 Widget: _PrimeFaces.widget.Layout_
 
-| Method | Params | Return Type | Description | 
-| --- | --- | --- | --- | 
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
 toggle(position) | position | void | Toggles layout unit.
 show(position) | position | void | Shows layout unit.
 hide(unit) | position | void | Hides layout unit.
@@ -132,8 +132,8 @@ hide(unit) | position | void | Hides layout unit.
 ## Skinning
 Following is the list of structural style classes;
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 .ui-layout | Main wrapper container element
 .ui-layout-doc | Layout container
 .ui-layout-unit | Each layout unit container

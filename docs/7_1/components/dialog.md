@@ -182,7 +182,7 @@ As skinning style classes are global, see the main theming section for more info
 
 **Tips**:
 
-- Use appendTo with care as the page definition and html dom would be different, for example if
+- Use appendTo with care as the page definition and HTML DOM would be different, for example if
     dialog is inside an h:form component and appendTo is enabled, on the browser dialog would be
     outside of form and may cause unexpected results. In this case, nest a form inside a dialog.
 - Do not place dialog inside tables, containers likes divs with relative positioning or with non-

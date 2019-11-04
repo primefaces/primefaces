@@ -12,7 +12,7 @@ AjaxBehavior is an extension to standard f:ajax.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 | listener | null | Method Expr | Method to process in partial request. |
 | immediate | false | Boolean | Boolean value that determines the phaseId, when true actions are processed at apply_request_values, when false at invoke_application phase. |
@@ -60,7 +60,7 @@ In case you need to execute a method on a backing bean, define a listener;
 ```java
 public class CounterBean {
     private int count; //getter setter
-    
+
     public void increment() {
         count++;
     }
@@ -69,7 +69,7 @@ public class CounterBean {
 
 ## Events
 Default client side events are defined by components that support client behaviors, for input
-components it is _onchange_ and for command components it is _onclick_. In order to override the dom
+components it is _onchange_ and for command components it is _onclick_. In order to override the DOM
 event to trigger the ajax request use _event_ option. In following example, ajax request is triggered
 when key is up on input field.
 

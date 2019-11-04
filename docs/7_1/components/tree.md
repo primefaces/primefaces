@@ -15,7 +15,7 @@ Tree is used for displaying hierarchical data and creating site navigations.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -292,7 +292,7 @@ again.
 
 ## Handling Node Click
 If you need to execute custom javascript when a treenode is clicked, use the _onNodeClick_ attribute.
-Your javascript method will be invoked with passing the html element of the _node_ and the click
+Your javascript method will be invoked with passing the HTML element of the _node_ and the click
 _event_ as parameters. In case you have datakey defined, you can access datakey on client side by
 using node.attr(‘data-datakey’) that represents the data represented by the backing tree model.
 
@@ -353,8 +353,8 @@ that selection must be enabled in tree component for context menu integration.
 Tree resides in a container element which _style_ and _styleClass_ options apply. Following is the list of
 structural style classes;
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 .ui-tree | Main container
 .ui-tree-container | Root node container.
 .ui-treenode | Tree node
