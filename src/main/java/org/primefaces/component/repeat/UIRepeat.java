@@ -49,6 +49,10 @@ import org.primefaces.component.api.SavedState;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.model.IterableDataModel;
 
+/**
+ * Copied from Mojarra, to port bugfixes from newer Mojarra versions, to users of older Mojarra versions.
+ * Actually nosense as those bugs should be fixed in Mojarra and updated in the containers...
+ */
 public class UIRepeat extends UINamingContainer {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.UIRepeat";
