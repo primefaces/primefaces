@@ -33,6 +33,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.cache) {
             this.initCache();
         }
+        
+        if (this.cfg.queryMode !== 'server') {
+            this.fetchItems();
+        }
 
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
@@ -613,6 +617,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     },
 
     searchWithDropdown: function() {
+        this.isSearchWithDropdown = true;
+        
         if(this.cfg.dropdownMode === 'current')
             this.search(this.input.val());
         else
@@ -621,17 +627,39 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
     search: function(query) {
         //allow empty string but not undefined or null
-        if(!this.cfg.active || query === undefined || query === null) {
+        if (!this.cfg.active || query === undefined || query === null) {
             return;
         }
 
-        if(this.cfg.cache && this.cache[query]) {
-            this.panel.html(this.cache[query]);
-            this.showSuggestions(query);
-            return;
+        if (this.cfg.cache && !(this.cfg.dynamic && !this.isDynamicLoaded)) {
+            if (this.cache[query]) {
+                this.panel.html(this.cache[query]);
+                this.showSuggestions(query);
+                return;
+            }
+            else if (this.cfg.queryMode === 'client') {
+                if (this.isSearchWithDropdown) {
+                    var suggestions = this.wrapperStartTag,
+                        re = new RegExp(this.wrapperStartTag + '|' + this.wrapperEndTag, 'g');
+                    Object.entries(this.cache).map(function(item) {
+                        suggestions += item[1].replace(re, '');
+                    });
+                    suggestions += this.wrapperEndTag;
+                    
+                    this.panel.html(suggestions);
+                    
+                    this.isSearchWithDropdown = false;
+                }
+                else {
+                    this.panel.empty();
+                }
+                
+                this.showSuggestions(query);
+                return;
+            }
         }
 
-        if(!this.active) {
+        if (!this.active) {
             return;
         }
 
@@ -639,7 +667,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         var $this = this;
 
-        if(this.cfg.itemtip) {
+        if (this.cfg.itemtip) {
             this.itemtip.hide();
         }
 
@@ -661,8 +689,13 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                             this.panel.html(content);
                         }
 
-                        if(this.cfg.cache) {
-                            this.cache[query] = content;
+                        if (this.cfg.cache) {
+                            if (this.cfg.queryMode !== 'server' && !this.isDynamicLoaded && this.cache[query]) {
+                                this.panel.html(this.cache[query]);
+                            }
+                            else {
+                                this.cache[query] = content;
+                            }
                         }
 
                         this.showSuggestions(query);
@@ -680,12 +713,16 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         options.params = [
           {name: this.id + '_query', value: query}
         ];
+        
+        if (this.cfg.queryMode === 'hybrid') {
+            options.params.push({name: this.id + '_clientCache', value: true});
+        }
 
-        if(this.cfg.dynamic && !this.isDynamicLoaded) {
+        if (this.cfg.dynamic && !this.isDynamicLoaded) {
             options.params.push({name: this.id + '_dynamicload', value: true});
         }
 
-        if(this.hasBehavior('query')) {
+        if (this.hasBehavior('query')) {
             this.callBehavior('query', options);
         }
         else {
@@ -958,6 +995,68 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
 
         return valid;
-    }
+    },
+    
+    fetchItems: function() {
+        var $this = this;
+        
+        var options = {
+            source: this.id,
+            process: this.id,
+            update: this.id,
+            formId: this.cfg.formId,
+            global: false,
+            params: [{name: this.id + '_clientCache', value: true}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                    widget: $this,
+                    handle: function(content) {
+                        $this.setCache($(content));
+                    }
+                });
 
+                return true;
+            }
+        };
+
+        PrimeFaces.ajax.Request.handle(options);
+    },
+    
+    setCache: function(wrapper) {
+        var $this = this,
+        items = wrapper.find('.ui-autocomplete-item'),
+        prevKey = null;
+
+        if (!this.wrapperStartTag || !this.wrapperEndTag) {
+            this.findWrapperTag(wrapper);
+        }
+
+        for (var i = 0; i < items.length; i++) {
+            var item = items.eq(i),
+            key = item.data('item-key');
+
+            this.cache[key] = (this.cache[key] || this.wrapperStartTag) + item.get(0).outerHTML;
+            
+            if ((prevKey !== null && prevKey !== key) || (i === items.length - 1)) {
+                this.cache[prevKey] += $this.wrapperEndTag;
+            }
+            
+            prevKey = key;
+        }
+    },
+    
+    findWrapperTag: function(wrapper) {
+        if (wrapper.is('ul')) {
+            this.wrapperStartTag = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset">';
+            this.wrapperEndTag = '</ul>';
+        }
+        else {
+            var header = wrapper.find('> table > thead');
+            this.wrapperStartTag = '<table class="ui-autocomplete-items ui-autocomplete-table ui-widget-content ui-widget ui-corner-all ui-helper-reset">' +
+                    (header.length ? header.eq(0).outherHTML : '') +
+                    '<tbody>';
+            this.wrapperEndTag = '</tbody></table>';
+        }
+    }
+    
 });

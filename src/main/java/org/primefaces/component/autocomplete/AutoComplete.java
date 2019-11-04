@@ -25,6 +25,7 @@ package org.primefaces.component.autocomplete;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -80,7 +81,7 @@ public class AutoComplete extends AutoCompleteBase {
             "query", "moreText", "clear");
     private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "itemUnselect", "query",
             "moreText", "clear");
-    private List suggestions = null;
+    private Object suggestions = null;
 
     @Override
     public Collection<String> getEventNames() {
@@ -98,6 +99,10 @@ public class AutoComplete extends AutoCompleteBase {
 
     public boolean isDynamicLoadRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_dynamicload");
+    }
+
+    public boolean isClientCacheRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_clientCache");
     }
 
     @Override
@@ -144,10 +149,10 @@ public class AutoComplete extends AutoCompleteBase {
         MethodExpression me = getCompleteMethod();
 
         if (me != null && event instanceof org.primefaces.event.AutoCompleteEvent) {
-            suggestions = (List) me.invoke(facesContext.getELContext(), new Object[]{((org.primefaces.event.AutoCompleteEvent) event).getQuery()});
+            suggestions = me.invoke(facesContext.getELContext(), new Object[]{((org.primefaces.event.AutoCompleteEvent) event).getQuery()});
 
             if (suggestions == null) {
-                suggestions = new ArrayList();
+                suggestions = isServerQueryMode() ? new ArrayList() : new HashMap<String, List<String>>();
             }
 
             facesContext.renderResponse();
@@ -167,8 +172,20 @@ public class AutoComplete extends AutoCompleteBase {
         return columns;
     }
 
-    public List getSuggestions() {
+    public Object getSuggestions() {
         return suggestions;
+    }
+
+    public boolean isServerQueryMode() {
+        return "server".equals(getQueryMode());
+    }
+
+    public boolean isClientQueryMode() {
+        return "client".equals(getQueryMode());
+    }
+
+    public boolean isHybridQueryMode() {
+        return "hybrid".equals(getQueryMode());
     }
 
     private Object convertValue(FacesContext context, String submittedItemValue) {

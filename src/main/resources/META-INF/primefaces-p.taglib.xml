@@ -1560,6 +1560,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies query mode, valid values are "server" (default), "client" and "hybrid".]]>
+            </description>
+            <name>queryMode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>

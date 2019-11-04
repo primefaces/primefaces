@@ -23,8 +23,6 @@
  */
 package org.primefaces.component.autocomplete;
 
-import java.util.List;
-
 import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
 import javax.faces.view.facelets.MetaRule;
@@ -35,7 +33,7 @@ import org.primefaces.facelets.MethodRule;
 public class AutoCompleteHandler extends ComponentHandler {
 
     private static final MetaRule COMPLETE_METHOD
-            = new MethodRule("completeMethod", List.class, new Class[]{String.class});
+            = new MethodRule("completeMethod", Object.class, new Class[]{String.class});
 
     public AutoCompleteHandler(ComponentConfig config) {
         super(config);
