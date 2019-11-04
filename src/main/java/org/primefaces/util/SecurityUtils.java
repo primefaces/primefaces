@@ -102,7 +102,7 @@ public class SecurityUtils {
             results = (String[]) value;
         }
         else if (value instanceof Collection) {
-            results = (String[]) ((Collection<?>) value).toArray(new String[0]);
+            results = ((Collection<?>) value).toArray(new String[0]);
         }
         return results;
     }

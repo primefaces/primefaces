@@ -46,6 +46,7 @@ import org.primefaces.component.columns.Columns;
 import org.primefaces.event.*;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
+import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.filter.*;
@@ -147,7 +148,7 @@ public class TreeTable extends TreeTableBase {
     private List<UIColumn> columns;
     private Columns dynamicColumns;
     private List<String> filteredRowKeys = new ArrayList<>();
-    private List filterMetadata;
+    private List<FilterMeta> filterMetadata;
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
@@ -602,11 +603,11 @@ public class TreeTable extends TreeTableBase {
         this.filteredRowKeys = filteredRowKeys;
     }
 
-    public List getFilterMetadata() {
+    public List<FilterMeta> getFilterMetadata() {
         return filterMetadata;
     }
 
-    public void setFilterMetadata(List filterMetadata) {
+    public void setFilterMetadata(List<FilterMeta> filterMetadata) {
         this.filterMetadata = filterMetadata;
     }
 

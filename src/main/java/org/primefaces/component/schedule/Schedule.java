@@ -103,20 +103,20 @@ public class Schedule extends ScheduleBase {
             if (eventName.equals("dateSelect")) {
                 String selectedDateStr = params.get(clientId + "_selectedDate");
                 LocalDateTime selectedDate =  CalendarUtils.toLocalDateTime(zoneId, selectedDateStr);
-                SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), selectedDate);
+                SelectEvent<?> selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), selectedDate);
                 selectEvent.setPhaseId(behaviorEvent.getPhaseId());
 
                 wrapperEvent = selectEvent;
             }
             else if (eventName.equals("eventSelect")) {
                 String selectedEventId = params.get(clientId + "_selectedEventId");
-                ScheduleEvent selectedEvent = getValue().getEvent(selectedEventId);
+                ScheduleEvent<?> selectedEvent = getValue().getEvent(selectedEventId);
 
                 wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), selectedEvent);
             }
             else if (eventName.equals("eventMove")) {
                 String movedEventId = params.get(clientId + "_movedEventId");
-                ScheduleEvent movedEvent = getValue().getEvent(movedEventId);
+                ScheduleEvent<?> movedEvent = getValue().getEvent(movedEventId);
                 int yearDelta = Double.valueOf(params.get(clientId + "_yearDelta")).intValue();
                 int monthDelta = Double.valueOf(params.get(clientId + "_monthDelta")).intValue();
                 int dayDelta = Double.valueOf(params.get(clientId + "_dayDelta")).intValue();
@@ -134,7 +134,7 @@ public class Schedule extends ScheduleBase {
             }
             else if (eventName.equals("eventResize")) {
                 String resizedEventId = params.get(clientId + "_resizedEventId");
-                ScheduleEvent resizedEvent = getValue().getEvent(resizedEventId);
+                ScheduleEvent<?> resizedEvent = getValue().getEvent(resizedEventId);
 
                 int startDeltaYear = Double.valueOf(params.get(clientId + "_startDeltaYear")).intValue();
                 int startDeltaMonth = Double.valueOf(params.get(clientId + "_startDeltaMonth")).intValue();

@@ -42,7 +42,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.RandomAccess;
@@ -93,16 +92,14 @@ public abstract class SelectRenderer extends InputRenderer {
                         }
                     }
                     else if (value instanceof Map) {
-                        Map map = (Map) value;
+                        Map<?, ?> map = (Map) value;
 
-                        for (Iterator it = map.keySet().iterator(); it.hasNext();) {
-                            Object key = it.next();
-
-                            selectItems.add(createSelectItem(context, uiSelectItems, map.get(key), String.valueOf(key)));
+                        for (Map.Entry<?, ?> entry : map.entrySet()) {
+                            selectItems.add(createSelectItem(context, uiSelectItems, entry.getValue(), String.valueOf(entry.getKey())));
                         }
                     }
                     else if (value instanceof List && value instanceof RandomAccess) {
-                        List list = (List) value;
+                        List<?> list = (List) value;
 
                         for (int j = 0; j < list.size(); j++) {
                             Object item = list.get(j);
@@ -115,10 +112,9 @@ public abstract class SelectRenderer extends InputRenderer {
                         }
                     }
                     else if (value instanceof Collection) {
-                        Collection collection = (Collection) value;
+                        Collection<?> collection = (Collection) value;
 
-                        for (Iterator it = collection.iterator(); it.hasNext();) {
-                            Object item = it.next();
+                        for (Object item : collection) {
                             if (item instanceof SelectItem) {
                                 selectItems.add((SelectItem) item);
                             }
@@ -211,7 +207,7 @@ public abstract class SelectRenderer extends InputRenderer {
         return null;
     }
 
-    protected Object coerceToModelType(FacesContext ctx, Object value, Class itemValueType) {
+    protected Object coerceToModelType(FacesContext ctx, Object value, Class<?> itemValueType) {
         Object newValue;
         try {
             ExpressionFactory ef = ctx.getApplication().getExpressionFactory();

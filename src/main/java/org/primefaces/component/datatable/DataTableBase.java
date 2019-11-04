@@ -310,11 +310,11 @@ public abstract class DataTableBase extends UIData implements Widget, RTLAware, 
         getStateHelper().put(PropertyKeys.editable, editable);
     }
 
-    public java.util.List getFilteredValue() {
-        return (java.util.List) getStateHelper().eval(PropertyKeys.filteredValue, null);
+    public java.util.List<?> getFilteredValue() {
+        return (java.util.List<?>) getStateHelper().eval(PropertyKeys.filteredValue, null);
     }
 
-    public void setFilteredValue(java.util.List filteredValue) {
+    public void setFilteredValue(java.util.List<?> filteredValue) {
         getStateHelper().put(PropertyKeys.filteredValue, filteredValue);
     }
 
@@ -574,11 +574,11 @@ public abstract class DataTableBase extends UIData implements Widget, RTLAware, 
         getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
     }
 
-    public java.util.List getFilterBy() {
-        return (java.util.List) getStateHelper().eval(PropertyKeys.filterBy, null);
+    public java.util.List<FilterState> getFilterBy() {
+        return (java.util.List<FilterState>) getStateHelper().eval(PropertyKeys.filterBy, null);
     }
 
-    public void setFilterBy(java.util.List filterBy) {
+    public void setFilterBy(java.util.List<FilterState> filterBy) {
         getStateHelper().put(PropertyKeys.filterBy, filterBy);
     }
 

@@ -87,9 +87,9 @@ public class BodyRenderer extends CoreRenderer {
 
     protected void encodeResources(FacesContext context) throws IOException {
         UIViewRoot viewRoot = context.getViewRoot();
-        ListIterator iter = (viewRoot.getComponentResources(context, "body")).listIterator();
+        ListIterator<UIComponent> iter = (viewRoot.getComponentResources(context, "body")).listIterator();
         while (iter.hasNext()) {
-            UIComponent resource = (UIComponent) iter.next();
+            UIComponent resource = iter.next();
             resource.encodeAll(context);
         }
     }

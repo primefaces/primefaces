@@ -53,6 +53,7 @@ public class PrimeRequestContext {
 
     private static final String CALLBACK_PARAMS_KEY = "CALLBACK_PARAMS";
     private static final String EXECUTE_SCRIPT_KEY = "EXECUTE_SCRIPT";
+    private static final Class<?>[] EMPTY_PARAMS = new Class<?>[0];
 
     private WidgetBuilder widgetBuilder;
     private AjaxRequestBuilder ajaxRequestBuilder;
@@ -197,7 +198,7 @@ public class PrimeRequestContext {
         }
         else {
             try {
-                Method method = request.getClass().getDeclaredMethod("isSecure", new Class[0]);
+                Method method = request.getClass().getDeclaredMethod("isSecure", EMPTY_PARAMS);
                 return (Boolean) method.invoke(request, (Object[]) null);
             }
             catch (Exception e) {

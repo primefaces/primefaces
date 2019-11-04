@@ -33,7 +33,7 @@ import org.primefaces.facelets.MethodRule;
 public class SummaryRowHandler extends ComponentHandler {
 
     private static final MetaRule LISTENER
-            = new MethodRule("listener", null, new Class[]{Object.class});
+            = new MethodRule("listener", null, new Class<?>[]{Object.class});
 
     public SummaryRowHandler(ComponentConfig config) {
         super(config);

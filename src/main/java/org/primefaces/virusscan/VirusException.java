@@ -24,4 +24,7 @@
 package org.primefaces.virusscan;
 
 public class VirusException extends Exception {
+
+    private static final long serialVersionUID = 1L;
+
 }
