@@ -134,3 +134,18 @@ public void save() {
 ```
 When the save button is clicked, depending on the outcome, you can either configure the datatable
 or the panel to be updated with AJAX response.
+
+## Auto update
+
+Sometimes it's required to update a component on each AJAX request.
+This can be easily archived by attaching `p:autoUpdate` to the component:
+
+```xhtml
+<p:panel>
+    <p:autoUpdate />
+</p:panel>
+```
+
+### Skipping auto update
+
+You can also skip all auto-updates by setting _ignoreAutoUpdate_ to `true` on the trigger component (like `p:ajax`)
