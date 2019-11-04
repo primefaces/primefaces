@@ -28,6 +28,8 @@ import java.util.List;
 
 public class UploadedFiles implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private long size;
     private List<UploadedFile> files;
 

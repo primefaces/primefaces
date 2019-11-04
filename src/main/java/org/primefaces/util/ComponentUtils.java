@@ -109,7 +109,7 @@ public class ComponentUtils {
             if (value != null) {
                 Converter converter = valueHolder.getConverter();
                 if (converter == null) {
-                    Class valueType = value.getClass();
+                    Class<?> valueType = value.getClass();
                     if (valueType == String.class
                             && !PrimeApplicationContext.getCurrentInstance(context).getConfig().isStringConverterAvailable()) {
                         return (String) value;

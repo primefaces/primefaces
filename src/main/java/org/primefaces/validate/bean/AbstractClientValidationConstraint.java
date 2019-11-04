@@ -32,8 +32,8 @@ public abstract class AbstractClientValidationConstraint implements ClientValida
 
     public static final String CONSTRAINT_PACKAGE = "javax.validation.constraints";
 
-    private String messageId;
-    private String messageMetadata;
+    private final String messageId;
+    private final String messageMetadata;
 
     public AbstractClientValidationConstraint(String messageId, String messageMetadata) {
         this.messageId = messageId;
@@ -41,7 +41,7 @@ public abstract class AbstractClientValidationConstraint implements ClientValida
     }
 
     @Override
-    public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
+    public Map<String, Object> getMetadata(ConstraintDescriptor<?> constraintDescriptor) {
         Map<String, Object> metadata = new HashMap<>();
         Map<String, Object> attrs = constraintDescriptor.getAttributes();
         Object message = attrs.get(ATTR_MESSAGE);

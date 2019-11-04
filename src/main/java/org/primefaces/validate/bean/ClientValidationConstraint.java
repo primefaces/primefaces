@@ -30,7 +30,7 @@ public interface ClientValidationConstraint {
 
     String ATTR_MESSAGE = "message";
 
-    Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor);
+    Map<String, Object> getMetadata(ConstraintDescriptor<?> constraintDescriptor);
 
     String getValidatorId();
 }

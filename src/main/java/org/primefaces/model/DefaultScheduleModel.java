@@ -32,36 +32,36 @@ public class DefaultScheduleModel implements ScheduleModel, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private List<ScheduleEvent> events;
+    private List<ScheduleEvent<?>> events;
     private boolean eventLimit = false;
 
     public DefaultScheduleModel() {
         events = new ArrayList<>();
     }
 
-    public DefaultScheduleModel(List<ScheduleEvent> events) {
+    public DefaultScheduleModel(List<ScheduleEvent<?>> events) {
         this.events = events;
     }
 
     @Override
-    public void addEvent(ScheduleEvent event) {
+    public void addEvent(ScheduleEvent<?> event) {
         event.setId(UUID.randomUUID().toString());
 
         events.add(event);
     }
 
     @Override
-    public boolean deleteEvent(ScheduleEvent event) {
+    public boolean deleteEvent(ScheduleEvent<?> event) {
         return events.remove(event);
     }
 
     @Override
-    public List<ScheduleEvent> getEvents() {
+    public List<ScheduleEvent<?>> getEvents() {
         return events;
     }
 
     @Override
-    public ScheduleEvent getEvent(String id) {
+    public ScheduleEvent<?> getEvent(String id) {
         for (ScheduleEvent event : events) {
             if (event.getId().equals(id)) {
                 return event;

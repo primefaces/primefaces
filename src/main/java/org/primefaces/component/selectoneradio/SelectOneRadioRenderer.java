@@ -417,7 +417,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
     protected Class getValueType(FacesContext context, UIInput input) {
         ValueExpression ve = input.getValueExpression("value");
-        Class type = ve == null ? String.class : ve.getType(context.getELContext());
+        Class<?> type = ve == null ? String.class : ve.getType(context.getELContext());
 
         return type == null ? String.class : type;
     }
