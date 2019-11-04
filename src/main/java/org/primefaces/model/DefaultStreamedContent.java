@@ -134,11 +134,6 @@ public class DefaultStreamedContent implements StreamedContent {
             streamedContent = new DefaultStreamedContent();
         }
 
-        public Builder stream(InputStream is) {
-            streamedContent.setStream(is);
-            return this;
-        }
-
         public Builder stream(Supplier<InputStream> is) {
             streamedContent.setStream(is);
             return this;
