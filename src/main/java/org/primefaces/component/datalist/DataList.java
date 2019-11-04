@@ -142,7 +142,7 @@ public class DataList extends DataListBase {
                 String clientId = getClientId(context);
                 int rows = getRowsToRender();
                 int first = Integer.parseInt(params.get(clientId + "_first"));
-                int page = rows > 0 ? (int) (first / rows) : 0;
+                int page = rows > 0 ? first / rows : 0;
 
                 PageEvent pageEvent = new PageEvent(this, behaviorEvent.getBehavior(), page);
                 pageEvent.setPhaseId(behaviorEvent.getPhaseId());

@@ -109,7 +109,7 @@ public class CalendarUtils {
             }
         }
 
-        Converter converter = context.getApplication().createConverter(value.getClass());
+        Converter<?> converter = context.getApplication().createConverter(value.getClass());
         if (converter != null) {
             Object obj = converter.getAsObject(context, calendar, value.toString());
             if (obj instanceof LocalDate) {
@@ -148,7 +148,7 @@ public class CalendarUtils {
         if (value instanceof List) {
             StringBuilder valuesAsString = new StringBuilder();
             String separator = "multiple".equals(calendar.getSelectionMode()) ? "," : " " + calendar.getRangeSeparator() + " ";
-            List values = ((List) value);
+            List<?> values = ((List) value);
 
             for (int i = 0; i < values.size(); i++) {
                 if (i != 0) {
@@ -202,7 +202,7 @@ public class CalendarUtils {
             //Delegate to global defined converter (e.g. joda)
             ValueExpression ve = calendar.getValueExpression("value");
             if (ve != null) {
-                Class type = ve.getType(context.getELContext());
+                Class<?> type = ve.getType(context.getELContext());
                 if (type != null && type != Object.class && type != Date.class &&
                         type != LocalDate.class && type != LocalDateTime.class && type != LocalTime.class && type != YearMonth.class) {
                     Converter converter = context.getApplication().createConverter(type);

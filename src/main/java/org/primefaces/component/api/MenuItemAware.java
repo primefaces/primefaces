@@ -40,6 +40,10 @@ import org.primefaces.model.menu.MenuItem;
 
 public interface MenuItemAware {
 
+    static final Class<?>[] PARAMS_EMPTY = new Class<?>[0];
+    static final Class<?>[] PARAMS_ACTION_EVENT = new Class<?>[]{ActionEvent.class};
+    static final Class<?>[] PARAMS_MENU_ACTION_EVENT = new Class<?>[]{MenuActionEvent.class};
+
     List getElements();
 
     default void broadcastMenuActionEvent(FacesEvent event, FacesContext context, Consumer<FacesEvent> broadcast) throws AbortProcessingException {
@@ -60,18 +64,18 @@ public interface MenuItemAware {
                 Object invokeResult = null;
                 try {
                     MethodExpression me = expressionFactory.createMethodExpression(elContext, command,
-                            String.class, new Class[0]);
+                            String.class, PARAMS_EMPTY);
                     invokeResult = me.invoke(elContext, null);
                 }
                 catch (MethodNotFoundException mnfe1) {
                     try {
                         MethodExpression me = expressionFactory.createMethodExpression(elContext, command,
-                                String.class, new Class[]{ActionEvent.class});
+                                String.class, PARAMS_ACTION_EVENT);
                         invokeResult = me.invoke(elContext, new Object[]{event});
                     }
                     catch (MethodNotFoundException mnfe2) {
                         MethodExpression me = expressionFactory.createMethodExpression(elContext, command,
-                                String.class, new Class[]{MenuActionEvent.class});
+                                String.class, PARAMS_MENU_ACTION_EVENT);
                         invokeResult = me.invoke(elContext, new Object[]{event});
                     }
                 }

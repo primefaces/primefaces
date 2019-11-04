@@ -107,7 +107,7 @@ public class DatePicker extends DatePickerBase {
         if (isValid() && ComponentUtils.isRequestSource(this, context)) {
             for (Iterator<String> customEventIter = customEvents.keySet().iterator(); customEventIter.hasNext(); ) {
                 AjaxBehaviorEvent behaviorEvent = customEvents.get(customEventIter.next());
-                SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), getValue());
+                SelectEvent<?> selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), getValue());
 
                 if (behaviorEvent.getPhaseId().equals(PhaseId.APPLY_REQUEST_VALUES)) {
                     selectEvent.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
@@ -156,7 +156,7 @@ public class DatePicker extends DatePickerBase {
             //TODO: needs to be validated
         }
         else if (value instanceof List && getSelectionMode().equals("range")) {
-            List rangeValues = (List) value;
+            List<?> rangeValues = (List) value;
 
             if (rangeValues.get(0) instanceof LocalDate) {
                 LocalDate startDate = (LocalDate) rangeValues.get(0);
