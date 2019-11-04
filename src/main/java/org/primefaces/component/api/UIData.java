@@ -56,6 +56,11 @@ import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.SharedStringBuilder;
 
+/**
+ * Enhanced version of the JSF UIData.
+ * It also contains some methods of the Mojarra impl (e.g. setRowIndexRowStatePreserved), maybe can remove it in the future.
+ */
+@SuppressWarnings("unchecked")
 public class UIData extends javax.faces.component.UIData {
 
     public static final String PAGINATOR_TOP_CONTAINER_CLASS = "ui-paginator ui-paginator-top ui-widget-header";

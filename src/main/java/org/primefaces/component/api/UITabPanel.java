@@ -52,6 +52,7 @@ import org.primefaces.model.IterableDataModel;
  * UITabPanel is a specialized version of UIRepeat focusing on components that repeat tabs like tabView and accordionPanel.
  * Most of the code is copied from MyFaces.
  */
+@SuppressWarnings("unchecked")
 public class UITabPanel extends UIPanel implements NamingContainer {
 
     private static final DataModel<?> EMPTY_MODEL = new ListDataModel<>(Collections.emptyList());
@@ -148,7 +149,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         getStateHelper().put(PropertyKeys.prependId, _prependId);
     }
 
-    protected DataModel getDataModel() {
+    protected DataModel<?> getDataModel() {
         DataModel dataModel;
         String clientID = "";
 
