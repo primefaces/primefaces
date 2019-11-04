@@ -35,7 +35,7 @@
 - Components
 
   - [AccordionPanel](/components/accordionpanel.md)
-  - [AjaxBehavior](/components/ajaxbehavior.md)
+  - [Ajax (AjaxBehavior)](/components/ajaxbehavior.md)
   - [AjaxExceptionHandler](/components/ajaxexceptionhandler.md)
   - [AjaxStatus](/components/ajaxstatus.md)
   - [AutoComplete](/components/autocomplete.md)

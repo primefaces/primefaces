@@ -1,6 +1,6 @@
-# AjaxBehavior
+# Ajax (AjaxBehavior)
 
-AjaxBehavior is an extension to standard f:ajax.
+`p:ajax` is an extension to standard `f:ajax`.
 
 ## Info
 
