@@ -52,10 +52,10 @@ import org.primefaces.model.IterableDataModel;
 /**
  * Copied from Mojarra, to port bugfixes from newer Mojarra versions, to users of older Mojarra versions.
  * Actually nosense as those bugs should be fixed in Mojarra and updated in the containers...
- * 
+ *
  * Also see: https://code.google.com/archive/p/primefaces/issues/7190
  * Mojarra's implementation if ui:repeat needs to check if ui:repeat is nested in another repeat component, see: {@link #isNestedInIterator}.
- * This is not required in the MyFaces impl. 
+ * This is not required in the MyFaces impl.
  * Would be nice if Mojarra could enhance their implementation some day.
  */
 public class UIRepeat extends UINamingContainer {

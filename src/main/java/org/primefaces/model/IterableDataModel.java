@@ -34,7 +34,7 @@ import javax.faces.model.DataModelListener;
 /**
  * Backport of the new JSF2.3 IterableDataModel, to also make it work in older JSF versions.
  *
- * @param <E> 
+ * @param <E>
  */
 public class IterableDataModel<E> extends DataModel<E> {
 
