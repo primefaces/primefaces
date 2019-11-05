@@ -173,7 +173,7 @@ public class TabView extends TabViewBase {
         }
     }
 
-    public void visitTabs(ConsumerThree<Tab, Integer, Boolean> callback) {
+    public void forEachTab(ConsumerThree<Tab, Integer, Boolean> callback) {
         String var = getVar();
         int activeIndex = getActiveIndex();
 

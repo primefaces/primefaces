@@ -184,7 +184,7 @@ public class TabViewRenderer extends CoreRenderer {
         writer.writeAttribute("class", TabView.NAVIGATOR_CLASS, null);
         writer.writeAttribute("role", "tablist", null);
 
-        tabView.visitTabs((tab, i, active) -> {
+        tabView.forEachTab((tab, i, active) -> {
             try {
                 encodeTabHeader(context, tabView, tab, i, active);
             }
@@ -272,7 +272,7 @@ public class TabViewRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", TabView.PANELS_CLASS, null);
 
-        tabView.visitTabs((tab, i, active) -> {
+        tabView.forEachTab((tab, i, active) -> {
             try {
                 encodeTabContent(context, tab, i, active, dynamic);
             }

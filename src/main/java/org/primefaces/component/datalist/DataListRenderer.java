@@ -185,7 +185,7 @@ public class DataListRenderer extends DataRenderer {
             writer.writeAttribute("type", list.getItemType(), null);
         }
 
-        list.visitRows((status) -> {
+        list.forEachRow((status) -> {
             try {
                 String itemStyleClass = list.getItemStyleClass();
                 itemStyleClass = (itemStyleClass == null) ? DataList.LIST_ITEM_CLASS : DataList.LIST_ITEM_CLASS + " " + itemStyleClass;
@@ -217,7 +217,7 @@ public class DataListRenderer extends DataRenderer {
      * @throws IOException
      */
     protected void encodeFreeList(FacesContext context, DataList list) throws IOException {
-        list.visitRows((status) -> {
+        list.forEachRow((status) -> {
             try {
                 renderChildren(context, list);
             }

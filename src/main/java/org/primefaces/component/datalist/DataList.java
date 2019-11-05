@@ -186,7 +186,7 @@ public class DataList extends DataListBase {
         int childCount = getChildCount();
         List<UIComponent> children = childCount > 0 ? getIterableChildren() : null;
 
-        visitRows((status) -> {
+        forEachRow((status) -> {
             for (int i = 0; i < childCount; i++) {
                 UIComponent child = children.get(i);
                 if (child.isRendered()) {
@@ -200,7 +200,7 @@ public class DataList extends DataListBase {
         });
     }
 
-    public void visitRows(Consumer<IterationStatus> callback) {
+    public void forEachRow(Consumer<IterationStatus> callback) {
         FacesContext context = getFacesContext();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
