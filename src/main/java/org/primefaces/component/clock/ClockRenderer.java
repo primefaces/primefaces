@@ -25,6 +25,7 @@ package org.primefaces.component.clock;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
@@ -106,7 +107,7 @@ public class ClockRenderer extends CoreRenderer {
         if (locale != null) {
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss", locale)
                         .withZone(CalendarUtils.calculateZoneId(clock.getTimeZone()));
-            value = dateTimeFormatter.format(LocalDate.now());
+            value = dateTimeFormatter.format(LocalDateTime.now());
         }
 
         return value;
