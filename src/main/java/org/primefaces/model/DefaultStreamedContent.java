@@ -24,8 +24,8 @@
 package org.primefaces.model;
 
 import java.io.InputStream;
-import java.util.function.Supplier;
 import org.primefaces.util.Lazy;
+import org.primefaces.util.SerializableSupplier;
 
 /**
  * Default implementation of a StreamedContent
@@ -77,7 +77,7 @@ public class DefaultStreamedContent implements StreamedContent {
         return stream.get();
     }
 
-    public void setStream(Supplier<InputStream> stream) {
+    public void setStream(SerializableSupplier<InputStream> stream) {
         this.stream = new Lazy(stream);
     }
 
@@ -134,7 +134,7 @@ public class DefaultStreamedContent implements StreamedContent {
             streamedContent = new DefaultStreamedContent();
         }
 
-        public Builder stream(Supplier<InputStream> is) {
+        public Builder stream(SerializableSupplier<InputStream> is) {
             streamedContent.setStream(is);
             return this;
         }
