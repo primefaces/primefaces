@@ -202,7 +202,8 @@ public class TabView extends TabViewBase {
                 if (tab.isRendered()) {
                     boolean tabActive = i == activeIndex;
 
-                    // e.g. if the first tab is not rendered and the activeIndex=0, we should render the first rendered as active
+                    // e.g. if the first tab is not rendered and the activeIndex=0
+                    //- > we should render the first rendered tab as active
                     if (!activeTabRendered && i > activeIndex) {
                         tabActive = true;
                     }
