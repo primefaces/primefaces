@@ -337,7 +337,7 @@ public class TabViewRenderer extends CoreRenderer {
                     if (tabActive) {
                         activeTabRendered = true;
                     }
-                    encodeTabContent(context, tab, i, (i == activeIndex), dynamic);
+                    encodeTabContent(context, tab, i, tabActive, dynamic);
                 }
             }
 
