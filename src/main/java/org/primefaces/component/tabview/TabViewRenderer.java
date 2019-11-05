@@ -200,13 +200,25 @@ public class TabViewRenderer extends CoreRenderer {
 
             //boundary check
             activeIndex = activeIndex >= dataCount ? 0 : activeIndex;
+            boolean activeTabRendered = false;
 
             Tab tab = (Tab) tabView.getChildren().get(0);
 
             for (int i = 0; i < dataCount; i++) {
                 tabView.setIndex(i);
 
-                encodeTabHeader(context, tabView, tab, i, (i == activeIndex));
+                if (tab.isRendered()) {
+                    // e.g. if the first tab is not rendered and the activeIndex=0, we should render the first rendered as active
+                    if (!activeTabRendered && i > activeIndex) {
+                        activeIndex = i;
+                    }
+
+                    boolean tabActive = i == activeIndex;
+                    if (tabActive) {
+                        activeTabRendered = true;
+                    }
+                    encodeTabHeader(context, tabView, tab, i, tabActive);
+                }
             }
 
             tabView.setIndex(-1);
@@ -308,13 +320,25 @@ public class TabViewRenderer extends CoreRenderer {
 
             //boundary check
             activeIndex = activeIndex >= dataCount ? 0 : activeIndex;
+            boolean activeTabRendered = false;
 
             Tab tab = (Tab) tabView.getChildren().get(0);
 
             for (int i = 0; i < dataCount; i++) {
                 tabView.setIndex(i);
 
-                encodeTabContent(context, tab, i, (i == activeIndex), dynamic);
+                if (tab.isRendered()) {
+                    // e.g. if the first tab is not rendered and the activeIndex=0, we should render the first rendered as active
+                    if (!activeTabRendered && i > activeIndex) {
+                        activeIndex = i;
+                    }
+
+                    boolean tabActive = i == activeIndex;
+                    if (tabActive) {
+                        activeTabRendered = true;
+                    }
+                    encodeTabContent(context, tab, i, (i == activeIndex), dynamic);
+                }
             }
 
             tabView.setIndex(-1);
