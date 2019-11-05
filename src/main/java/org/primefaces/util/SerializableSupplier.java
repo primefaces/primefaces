@@ -24,50 +24,9 @@
 package org.primefaces.util;
 
 import java.io.Serializable;
+import java.util.function.Supplier;
 
-/**
- * Inspired by commons-lang LazyInitializer.
- *
- * @param <T> The type to be lazy initialized.
- */
-public class Lazy<T> implements Serializable {
+@FunctionalInterface
+public interface SerializableSupplier<T> extends Supplier<T>, Serializable {
 
-    private static final Object NOT_INITIALIZED = new Object();
-
-    @SuppressWarnings("unchecked")
-    private volatile T value = (T) NOT_INITIALIZED;
-    private volatile SerializableSupplier<T> init;
-
-    public Lazy(SerializableSupplier<T> init) {
-        this.init = init;
-    }
-
-    public synchronized void reset(SerializableSupplier<T> init) {
-        this.init = init;
-        this.value = (T) NOT_INITIALIZED;
-    }
-
-    public synchronized void reset(T value) {
-        this.value = value;
-    }
-
-    public T get() {
-        T result = value;
-
-        if (result == NOT_INITIALIZED) {
-            synchronized (this) {
-                result = value;
-                if (result == NOT_INITIALIZED) {
-                    value = init.get();
-                    result = value;
-                }
-            }
-        }
-
-        return result;
-    }
-
-    public boolean isInitialized() {
-        return value != NOT_INITIALIZED;
-    }
 }
