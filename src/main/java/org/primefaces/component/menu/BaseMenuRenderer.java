@@ -99,7 +99,7 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
             writer.writeAttribute("href", "#", null);
             writer.writeAttribute("onclick", "return false;", null);
         }
-        else if (!menuitem.shouldRenderChildren()) {
+        else {
             encodeOnClick(context, menu, menuitem);
         }
 

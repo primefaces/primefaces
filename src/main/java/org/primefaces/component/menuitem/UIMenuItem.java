@@ -95,11 +95,10 @@ public class UIMenuItem extends UIMenuItemBase implements DialogReturnAware {
 
     @Override
     public boolean shouldRenderChildren() {
-        if (getChildCount() == 0) {
-            return false;
-        }
-        else {
-            for (UIComponent child : getChildren()) {
+        int childCount = getChildCount();
+        if (childCount > 0) {
+            for (int i = 0; i < childCount; i++) {
+                UIComponent child = getChildren().get(i);
                 if (!(child instanceof UIParameter)) {
                     return true;
                 }
