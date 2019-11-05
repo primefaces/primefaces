@@ -24,9 +24,8 @@
 package org.primefaces.component.clock;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 import javax.faces.component.UIComponent;
@@ -36,6 +35,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.PrimeFaces;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.WidgetBuilder;
 
@@ -81,15 +81,16 @@ public class ClockRenderer extends CoreRenderer {
         String clientId = clock.getClientId(context);
         String mode = clock.getMode();
         WidgetBuilder wb = getWidgetBuilder(context);
+        Locale locale = LocaleUtils.getCurrentLocale(context);
 
         wb.init("Clock", clock.resolveWidgetVar(context), clientId);
         wb.attr("mode", mode)
                 .attr("pattern", clock.getPattern(), null)
                 .attr("displayMode", clock.getDisplayMode())
-                .attr("locale", LocaleUtils.getCurrentLocale(context).toString());
+                .attr("locale", locale.toString());
 
         if (mode.equals("server")) {
-            wb.attr("value", getValueWithTimeZone(context, clock));
+            wb.attr("value", getValueWithTimeZone(locale, clock));
 
             if (clock.isAutoSync()) {
                 wb.attr("autoSync", true).attr("syncInterval", clock.getSyncInterval());
@@ -99,15 +100,13 @@ public class ClockRenderer extends CoreRenderer {
         wb.finish();
     }
 
-    protected String getValueWithTimeZone(FacesContext context, Clock clock) {
-        Locale locale = LocaleUtils.getCurrentLocale(context);
-        String value = "";
+    protected String getValueWithTimeZone(Locale locale, Clock clock) {
+        String value = Constants.EMPTY_STRING;
 
         if (locale != null) {
-            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", locale);
-            dateFormat.setTimeZone(CalendarUtils.calculateTimeZone(clock.getTimeZone()));
-
-            value = dateFormat.format(new Date());
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss", locale)
+                        .withZone(CalendarUtils.calculateZoneId(clock.getTimeZone()));
+            value = dateTimeFormatter.format(LocalDateTime.now());
         }
 
         return value;
