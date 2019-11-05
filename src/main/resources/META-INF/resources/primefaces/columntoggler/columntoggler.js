@@ -16,7 +16,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             this.thead = $(clientId + '_frozenThead,' + clientId + '_scrollableThead');
             this.tbody = $(clientId + '_frozenTbody,' + clientId + '_scrollableTbody');
             this.tfoot = $(clientId + '_frozenTfoot,' + clientId + '_scrollableTfoot');
-            this.frozenColumnCount = this.thead.eq(0).children('tr').length;
+            this.frozenColumnCount = this.thead.eq(0).find('th').length;
         }
         else {
             this.thead = $(clientId + '_head');
