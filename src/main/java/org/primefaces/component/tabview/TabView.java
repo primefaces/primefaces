@@ -39,6 +39,7 @@ import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.TabCloseEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.ConsumerThree;
 import org.primefaces.util.MapBuilder;
 
 @ResourceDependencies({
@@ -169,6 +170,52 @@ public class TabView extends TabViewBase {
         if (expr != null) {
             expr.setValue(getFacesContext().getELContext(), getActiveIndex());
             resetActiveIndex();
+        }
+    }
+
+    public void visitTabs(ConsumerThree<Tab, Integer, Boolean> callback) {
+        String var = getVar();
+        int activeIndex = getActiveIndex();
+
+        if (var == null) {
+            int j = 0;
+            for (int i = 0; i < getChildCount(); i++) {
+                UIComponent child = getChildren().get(i);
+                if (child.isRendered() && child instanceof Tab) {
+                    callback.accept((Tab) child, j, (j == activeIndex));
+                    j++;
+                }
+            }
+        }
+        else {
+            int dataCount = getRowCount();
+
+            //boundary check
+            activeIndex = activeIndex >= dataCount ? 0 : activeIndex;
+            boolean activeTabRendered = false;
+
+            Tab tab = (Tab) getChildren().get(0);
+
+            for (int i = 0; i < dataCount; i++) {
+                setIndex(i);
+
+                if (tab.isRendered()) {
+                    boolean tabActive = i == activeIndex;
+
+                    // e.g. if the first tab is not rendered and the activeIndex=0, we should render the first rendered as active
+                    if (!activeTabRendered && i > activeIndex) {
+                        tabActive = true;
+                    }
+
+                    if (tabActive) {
+                        activeTabRendered = true;
+                    }
+
+                    callback.accept(tab, i, tabActive);
+                }
+            }
+
+            setIndex(-1);
         }
     }
 }

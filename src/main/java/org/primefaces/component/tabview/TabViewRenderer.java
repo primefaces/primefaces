@@ -25,6 +25,7 @@ package org.primefaces.component.tabview;
 
 import java.io.IOException;
 import java.util.Map;
+import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -169,8 +170,6 @@ public class TabViewRenderer extends CoreRenderer {
 
     protected void encodeHeaders(FacesContext context, TabView tabView) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String var = tabView.getVar();
-        int activeIndex = tabView.getActiveIndex();
         boolean scrollable = tabView.isScrollable();
 
         if (scrollable) {
@@ -185,44 +184,14 @@ public class TabViewRenderer extends CoreRenderer {
         writer.writeAttribute("class", TabView.NAVIGATOR_CLASS, null);
         writer.writeAttribute("role", "tablist", null);
 
-        if (var == null) {
-            int j = 0;
-            for (int i = 0; i < tabView.getChildCount(); i++) {
-                UIComponent child = tabView.getChildren().get(i);
-                if (child.isRendered() && child instanceof Tab) {
-                    encodeTabHeader(context, tabView, (Tab) child, j, (j == activeIndex));
-                    j++;
-                }
+        tabView.visitTabs((tab, i, active) -> {
+            try {
+                encodeTabHeader(context, tabView, tab, i, active);
             }
-        }
-        else {
-            int dataCount = tabView.getRowCount();
-
-            //boundary check
-            activeIndex = activeIndex >= dataCount ? 0 : activeIndex;
-            boolean activeTabRendered = false;
-
-            Tab tab = (Tab) tabView.getChildren().get(0);
-
-            for (int i = 0; i < dataCount; i++) {
-                tabView.setIndex(i);
-
-                if (tab.isRendered()) {
-                    // e.g. if the first tab is not rendered and the activeIndex=0, we should render the first rendered as active
-                    if (!activeTabRendered && i > activeIndex) {
-                        activeIndex = i;
-                    }
-
-                    boolean tabActive = i == activeIndex;
-                    if (tabActive) {
-                        activeTabRendered = true;
-                    }
-                    encodeTabHeader(context, tabView, tab, i, tabActive);
-                }
+            catch (IOException ex) {
+                throw new FacesException(ex);
             }
-
-            tabView.setIndex(-1);
-        }
+        });
 
         writer.endElement("ul");
 
@@ -298,51 +267,19 @@ public class TabViewRenderer extends CoreRenderer {
 
     protected void encodeContents(FacesContext context, TabView tabView) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String var = tabView.getVar();
-        int activeIndex = tabView.getActiveIndex();
         boolean dynamic = tabView.isDynamic();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", TabView.PANELS_CLASS, null);
 
-        if (var == null) {
-            int j = 0;
-            for (int i = 0; i < tabView.getChildCount(); i++) {
-                UIComponent child = tabView.getChildren().get(i);
-                if (child.isRendered() && child instanceof Tab) {
-                    encodeTabContent(context, (Tab) child, j, (j == activeIndex), dynamic);
-                    j++;
-                }
+        tabView.visitTabs((tab, i, active) -> {
+            try {
+                encodeTabContent(context, tab, i, active, dynamic);
             }
-        }
-        else {
-            int dataCount = tabView.getRowCount();
-
-            //boundary check
-            activeIndex = activeIndex >= dataCount ? 0 : activeIndex;
-            boolean activeTabRendered = false;
-
-            Tab tab = (Tab) tabView.getChildren().get(0);
-
-            for (int i = 0; i < dataCount; i++) {
-                tabView.setIndex(i);
-
-                if (tab.isRendered()) {
-                    // e.g. if the first tab is not rendered and the activeIndex=0, we should render the first rendered as active
-                    if (!activeTabRendered && i > activeIndex) {
-                        activeIndex = i;
-                    }
-
-                    boolean tabActive = i == activeIndex;
-                    if (tabActive) {
-                        activeTabRendered = true;
-                    }
-                    encodeTabContent(context, tab, i, tabActive, dynamic);
-                }
+            catch (IOException ex) {
+                throw new FacesException(ex);
             }
-
-            tabView.setIndex(-1);
-        }
+        });
 
         writer.endElement("div");
     }
