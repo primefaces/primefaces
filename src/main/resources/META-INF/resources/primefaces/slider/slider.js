@@ -150,7 +150,9 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
 
     setInputValue: function(input, inputValue) {
         if (input.parent().hasClass('ui-inputnumber')) {
-            input.autoNumeric('set', inputValue);
+            var inputNumberId = input.closest('.ui-inputnumber').attr('id');
+            var inputNumberWidget = PrimeFaces.getWidgetById(inputNumberId);
+            inputNumberWidget.autonumeric.set(inputValue);
         }
         else if (input.hasClass('ui-spinner-input')) {
             var spinnerId = input.closest('.ui-spinner').attr('id');
