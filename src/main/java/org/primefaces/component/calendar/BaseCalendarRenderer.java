@@ -191,7 +191,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         }
     }
 
-    protected Temporal convertToJava8DateTimeAPI(FacesContext context, UICalendar calendar, Class type, String submittedValue) {
+    protected Temporal convertToJava8DateTimeAPI(FacesContext context, UICalendar calendar, Class<?> type, String submittedValue) {
         if (type == LocalDate.class || type == YearMonth.class) {
             DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                     .parseCaseInsensitive()
@@ -267,7 +267,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         return new ConverterException(message);
     }
 
-    protected Class resolveDateType(FacesContext context, UICalendar calendar) {
+    protected Class<?> resolveDateType(FacesContext context, UICalendar calendar) {
         ValueExpression ve = calendar.getValueExpression("value");
 
         if (ve == null) {
