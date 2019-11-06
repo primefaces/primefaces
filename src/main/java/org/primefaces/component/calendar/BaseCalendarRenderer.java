@@ -151,7 +151,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         //Delegate to user supplied converter if defined
         Class<?> type = resolveDateType(context, calendar);
         if (type != null) {
-            Converter<?> converter = resolveConverter(context, calendar, type);
+            Converter converter = resolveConverter(context, calendar, type);
             if (converter != null) {
                 try {
                     return converter.getAsObject(context, calendar, submittedValue);
@@ -308,9 +308,9 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         return type;
     }
 
-    protected Converter<?> resolveConverter(FacesContext context, UICalendar calendar, Class<?> type) {
+    protected Converter resolveConverter(FacesContext context, UICalendar calendar, Class<?> type) {
         //Delegate to user supplied converter if defined
-        Converter<?> converter = calendar.getConverter();
+        Converter converter = calendar.getConverter();
         if (converter != null) {
             return converter;
         }
