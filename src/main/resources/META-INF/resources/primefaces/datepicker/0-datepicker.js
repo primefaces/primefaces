@@ -1645,7 +1645,7 @@
         },
 
         onTimePickerElementMouseDown: function (event, type, direction) {
-            if (!this.options.disabled) {
+            if (!this.options.disabled && event.which === 1) {
                 this.repeat(event, null, type, direction);
                 event.preventDefault();
             }
@@ -1658,10 +1658,6 @@
         },
 
         repeat: function (event, interval, type, direction) {
-            // GitHub #5038 only allow left click
-            if (event.which !== 1) {
-                return;
-            }
             var i = interval || 500,
                 $this = this;
 
