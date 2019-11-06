@@ -1424,6 +1424,9 @@
                 .on('mouseup.datePicker-time', timeSelector, null, function (event) {
                     $this.onTimePickerElementMouseUp(event);
                 })
+                .on('mouseleave.datePicker-time', timeSelector, null, function () {
+                    $this.clearTimePickerTimer();
+                })
                 .on('click.datePicker-ampm', ampmSelector, null, function (event) {
                     $this.toggleAmPm(event);
                 });
