@@ -127,12 +127,12 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
 
         List<Object> disabledDays = datepicker.getDisabledDays();
         if (disabledDays != null) {
-            CalendarUtils.encodeListValue(context, datepicker, "disabledDays", disabledDays);
+            CalendarUtils.encodeListValue(context, datepicker, "disabledDays", disabledDays, pattern);
         }
 
         List<Object> disabledDates = datepicker.getDisabledDates();
         if (disabledDates != null) {
-            CalendarUtils.encodeListValue(context, datepicker, "disabledDates", disabledDates);
+            CalendarUtils.encodeListValue(context, datepicker, "disabledDates", disabledDates, pattern);
         }
 
         String dateTemplate = datepicker.getDateTemplate();

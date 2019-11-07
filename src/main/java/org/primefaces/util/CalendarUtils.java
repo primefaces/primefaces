@@ -243,9 +243,10 @@ public class CalendarUtils {
      * @param uicalendar component
      * @param optionName the name of an option
      * @param values the List values of an option
+     * @param pattern the pattern for formatting
      * @throws IOException if writer is null
      */
-    public static void encodeListValue(FacesContext context, UICalendar uicalendar, String optionName, List<Object> values) throws IOException {
+    public static void encodeListValue(FacesContext context, UICalendar uicalendar, String optionName, List<Object> values, String pattern) throws IOException {
         if (values == null) {
             return;
         }
@@ -258,10 +259,10 @@ public class CalendarUtils {
             Object preText = (i == 0) ? "" : ",";
 
             if (item instanceof Date) {
-                writer.write(preText + "\"" + EscapeUtils.forJavaScript(getValueAsString(context, uicalendar, item)) + "\"");
+                writer.write(preText + "\"" + EscapeUtils.forJavaScript(getValueAsString(context, uicalendar, item, pattern)) + "\"");
             }
             else if (item instanceof LocalDate || item instanceof LocalDateTime || item instanceof LocalTime) {
-                writer.write(preText + "\"" + EscapeUtils.forJavaScript(getValueAsString(context, uicalendar, item)) + "\"");
+                writer.write(preText + "\"" + EscapeUtils.forJavaScript(getValueAsString(context, uicalendar, item, pattern)) + "\"");
             }
             else {
                 writer.write(preText + "" + item);
