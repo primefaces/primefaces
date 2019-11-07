@@ -132,7 +132,7 @@ public class StepsRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", style, null);
         }
 
-        if (steps.isReadonly() || menuitem.isDisabled() || (activeIndex <= index)) {
+        if (steps.isReadonly() || menuitem.isDisabled() || (activeIndex < index)) {
             writer.writeAttribute("href", "#", null);
             writer.writeAttribute("onclick", "return false;", null);
         }
