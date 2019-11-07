@@ -24,7 +24,9 @@
 package org.primefaces.component.datepicker;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -103,8 +105,8 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("focusOnSelect", datepicker.isFocusOnSelect(), false)
             .attr("disabled", datepicker.isDisabled(), false)
             .attr("yearRange", datepicker.getYearRange(), null)
-            .attr("minDate", CalendarUtils.getValueAsString(context, datepicker, datepicker.getMindate(), pattern), null)
-            .attr("maxDate", CalendarUtils.getValueAsString(context, datepicker, datepicker.getMaxdate(), pattern), null)
+            .attr("minDate", getMinMaxDate(context, datepicker, datepicker.getMindate(), false), null)
+            .attr("maxDate", getMinMaxDate(context, datepicker, datepicker.getMaxdate(), true), null)
             .attr("selectionMode", datepicker.getSelectionMode(), null)
             .attr("showOnFocus", datepicker.isShowOnFocus())
             .attr("shortYearCutoff", datepicker.getShortYearCutoff(), null)
@@ -207,6 +209,14 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             default:
                 return super.getConvertedValue(context, component, value);
         }
+    }
+
+    private String getMinMaxDate(FacesContext context, DatePicker datepicker, Object value, boolean max) {
+        if (value instanceof LocalDate && datepicker.isShowTime()) {
+            LocalDate date = (LocalDate) value;
+            value = date.atTime(max ? LocalTime.MAX : LocalTime.MIN);
+        }
+        return CalendarUtils.getValueAsString(context, datepicker, value);
     }
 }
 
