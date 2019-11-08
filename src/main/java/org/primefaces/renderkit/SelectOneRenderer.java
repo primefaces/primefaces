@@ -23,6 +23,7 @@
  */
 package org.primefaces.renderkit;
 
+import java.util.List;
 import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectOne;
@@ -41,9 +42,10 @@ public abstract class SelectOneRenderer extends SelectRenderer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         String submittedValue = params.containsKey(clientId) ? params.get(clientId) : "";
-        String[] submittedValues = validateSubmittedValues(context, selectOne, (Object[]) getValues(selectOne), submittedValue);
-        submittedValue = submittedValues.length == 0 ? submittedValue : submittedValues[0];
-        selectOne.setSubmittedValue(submittedValue);
+        List<String> validSubmittedValues = validateSubmittedValues(context, selectOne, (Object[]) getValues(selectOne), submittedValue);
+        selectOne.setSubmittedValue(validSubmittedValues.isEmpty() || validSubmittedValues.contains(submittedValue)
+                ? submittedValue
+                : validSubmittedValues.get(0));
 
         decodeBehaviors(context, selectOne);
     }

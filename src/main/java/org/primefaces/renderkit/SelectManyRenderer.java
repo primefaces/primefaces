@@ -24,6 +24,7 @@
 package org.primefaces.renderkit;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -43,8 +44,8 @@ public abstract class SelectManyRenderer extends SelectRenderer {
         Map<String, String[]> params = context.getExternalContext().getRequestParameterValuesMap();
 
         String[] submittedValues = params.containsKey(submitParam) ? params.get(submitParam) : new String[0];
-        submittedValues = validateSubmittedValues(context, selectMany, (Object[]) getValues(selectMany), submittedValues);
-        selectMany.setSubmittedValue(submittedValues);
+        List<String> validSubmittedValues = validateSubmittedValues(context, selectMany, (Object[]) getValues(selectMany), submittedValues);
+        selectMany.setSubmittedValue(validSubmittedValues.toArray(new String[validSubmittedValues.size()]));
 
         decodeBehaviors(context, selectMany);
     }

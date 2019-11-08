@@ -299,10 +299,16 @@ public abstract class SelectRenderer extends InputRenderer {
     /**
      * Restores checked, disabled select items (#3296) and checks if at least one disabled select item has been submitted -
      * this may occur with client side manipulation (#3264)
+     *
+     * @param context The FacesContext
+     * @param component The component
+     * @param oldValues The old value(s)
+     * @param submittedValues The submitted value(s)
+     *
      * @return <code>newSubmittedValues</code> merged with checked, disabled <code>oldValues</code>
      * @throws javax.faces.FacesException if client side manipulation has been detected, in order to reject the submission
      */
-    protected String[] validateSubmittedValues(FacesContext context, UIInput component, Object[] oldValues, String... submittedValues)
+    protected List<String> validateSubmittedValues(FacesContext context, UIInput component, Object[] oldValues, String... submittedValues)
             throws FacesException {
         List<String> validSubmittedValues = doValidateSubmittedValues(
                 context,
@@ -310,7 +316,7 @@ public abstract class SelectRenderer extends InputRenderer {
                 oldValues,
                 getSelectItems(context, component),
                 submittedValues);
-        return validSubmittedValues.toArray(new String[validSubmittedValues.size()]);
+        return validSubmittedValues;
     }
 
     private List<String> doValidateSubmittedValues(
@@ -332,7 +338,7 @@ public abstract class SelectRenderer extends InputRenderer {
                         doValidateSubmittedValues(context,
                                 component,
                                 oldValues,
-                                groupItemsArray == null ? Collections.emptyList() : Arrays.asList(groupItemsArray),
+                                groupItemsArray == null || groupItemsArray.length == 0 ? Collections.emptyList() : Arrays.asList(groupItemsArray),
                                 submittedValues));
             }
             else {
