@@ -91,7 +91,7 @@ if (!PrimeFaces.dialog) {
                                 $dialogWidget.jq.remove();
                             }
 
-                            rootWindow.PF[dialogWidgetVar] = undefined;
+                            rootWindow.PrimeFaces.widgets[dialogWidgetVar] = undefined;
                         },
                         modal: cfg.options.modal,
                         blockScroll: cfg.options.blockScroll,
