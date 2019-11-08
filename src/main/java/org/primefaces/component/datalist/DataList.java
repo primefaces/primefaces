@@ -200,6 +200,18 @@ public class DataList extends DataListBase {
         });
     }
 
+    @Override
+    protected boolean shouldSkipChildren(FacesContext context) {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String paramValue = params.get(Constants.RequestParams.SKIP_CHILDREN_PARAM);
+        if (paramValue != null && Boolean.parseBoolean(paramValue) == false) {
+            return false;
+        }
+        else {
+            return params.containsKey(getClientId(context) + "_skipChildren");
+        }
+    }
+
     public void forEachRow(Consumer<IterationStatus> callback) {
         FacesContext context = getFacesContext();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
