@@ -21,8 +21,8 @@ CSP is disabled by default and a global parameter is required to turn it on.
 ```
 ## Policy
 There are many ways to configure CSP for different levels of security. Currently, PrimeFaces has chosen to
-support the NONCE (number used once) based checking for script evaluation only. Nonce attributes are automatically 
-added to all script tags discovered by PrimeFaces. Nonce attributes are composed of base64 values and are verified 
+support the NONCE (number used once) based checking for script evaluation only. Nonce attributes are automatically
+added to all script tags discovered by PrimeFaces. Nonce attributes are composed of base64 values and are verified
 against the nonce sent in the CSP header, and only matching nonces are allowed to execute.
 
 **HTTP Header**
@@ -34,7 +34,7 @@ response.addHeader("Content-Security-Policy", "script-src 'self' 'nonce-YTQyM2Zi
 **Script Output**
 ```xml
 <script type="text/javascript"
-        src="/showcase/javax.faces.resource/jquery/jquery.js.xhtml?ln=primefaces&amp;v=7.1"
+        src="/showcase/javax.faces.resource/jquery/jquery.js.xhtml?ln=primefaces&amp;v=8.0"
         nonce="YTQyM2ZiNTktNjFhZS00ZjI1LWEzMWItZGYzOTE0ZWQ1NDU1" />
 ```
 ## Default Policy
@@ -46,7 +46,7 @@ script-src 'self' 'nonce-XYZ123456'
 ```
 
 ## Custom Policy
-We cannot know every Javascript usage on every PrimeFaces website. You may have custom code in your 
+We cannot know every Javascript usage on every PrimeFaces website. You may have custom code in your
 application that you need to allow other CSP directives such as `unsafe-inline` or whitelist a website
 such as `https://www.google-analytics.com`.  By using the `primefaces.CSP_POLICY` context parameter you
 can override the default policy.
@@ -59,10 +59,10 @@ can override the default policy.
 ```
 
 ## Event Handlers
-Inline code is considered harmful, especially inline event handlers. CSP solves this problem by banning inline 
-script entirely: it's the only way to be sure. This ban includes not only scripts embedded directly in `script` tags, 
-but also inline event handlers and `javascript:` URLs.  PrimeFaces handles inline events by preprocessing the HTML 
-before it is sent to the browser and converting inline event handlers to Jquery "on" event handlers. 
+Inline code is considered harmful, especially inline event handlers. CSP solves this problem by banning inline
+script entirely: it's the only way to be sure. This ban includes not only scripts embedded directly in `script` tags,
+but also inline event handlers and `javascript:` URLs.  PrimeFaces handles inline events by preprocessing the HTML
+before it is sent to the browser and converting inline event handlers to Jquery "on" event handlers.
 
 For example:
 ```xml
