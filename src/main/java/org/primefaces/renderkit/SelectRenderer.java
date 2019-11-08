@@ -41,7 +41,6 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.RandomAccess;
@@ -332,14 +331,16 @@ public abstract class SelectRenderer extends InputRenderer {
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
             if (selectItem instanceof SelectItemGroup) {
-                SelectItem[] groupItemsArray = ((SelectItemGroup) selectItem).getSelectItems();
                 // if it's a SelectItemGroup also include its children in the checked values
-                validSubmittedValues.addAll(
-                        doValidateSubmittedValues(context,
-                                component,
-                                oldValues,
-                                groupItemsArray == null || groupItemsArray.length == 0 ? Collections.emptyList() : Arrays.asList(groupItemsArray),
-                                submittedValues));
+                SelectItem[] groupItemsArray = ((SelectItemGroup) selectItem).getSelectItems();
+                if (groupItemsArray != null && groupItemsArray.length > 0) {
+                    validSubmittedValues.addAll(
+                            doValidateSubmittedValues(context,
+                                    component,
+                                    oldValues,
+                                    Arrays.asList(groupItemsArray),
+                                    submittedValues));
+                }
             }
             else {
                 String selectItemVal = getOptionAsString(context, component, component.getConverter(), selectItem.getValue());
