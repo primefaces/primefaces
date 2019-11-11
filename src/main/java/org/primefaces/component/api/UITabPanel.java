@@ -320,7 +320,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                     if (descendantStateIndex != -1 && descendantStateIndex < stateCollection.size()) {
                         Object[] object = stateCollection.get(descendantStateIndex);
                         if (object[0] != null && component instanceof EditableValueHolder) {
-                            ((SavedState) object[0]).restoreState((EditableValueHolder) component);
+                            ((SavedState) object[0]).apply((EditableValueHolder) component);
                         }
                         // If there is descendant state to restore, call it recursively, otherwise
                         // it is safe to skip iteration.
@@ -354,7 +354,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                     if (descendantStateIndex != -1 && descendantStateIndex < stateCollection.size()) {
                         Object[] object = stateCollection.get(descendantStateIndex);
                         if (object[0] != null && component instanceof EditableValueHolder) {
-                            ((SavedState) object[0]).restoreState((EditableValueHolder) component);
+                            ((SavedState) object[0]).apply((EditableValueHolder) component);
                         }
                         // If there is descendant state to restore, call it recursively, otherwise
                         // it is safe to skip iteration.

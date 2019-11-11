@@ -24,7 +24,6 @@
 package org.primefaces.component.repeat;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.sql.ResultSet;
 import java.util.Collection;
 import java.util.Collections;
@@ -60,6 +59,7 @@ import javax.faces.model.ResultSetDataModel;
 import javax.faces.model.ScalarDataModel;
 import javax.faces.render.Renderer;
 import org.primefaces.component.api.IterationStatus;
+import org.primefaces.component.api.SavedState;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.model.IterableDataModel;
 
@@ -438,7 +438,7 @@ public class UIRepeat extends UINamingContainer {
             if (ss != null) {
                 ss.apply(evh);
             } else {
-                NULL_STATE.apply(evh);
+                SavedState.NULL_STATE.apply(evh);
             }
         }
 
@@ -850,75 +850,6 @@ public class UIRepeat extends UINamingContainer {
         app.publishEvent(faces, PreValidateEvent.class, this);
         this.process(faces, PhaseId.PROCESS_VALIDATIONS);
         app.publishEvent(faces, PostValidateEvent.class, this);
-    }
-
-    private final static SavedState NULL_STATE = new SavedState();
-
-    // from RI
-    private final static class SavedState implements Serializable {
-
-        private Object submittedValue;
-
-        private static final long serialVersionUID = 2920252657338389849L;
-
-        Object getSubmittedValue() {
-            return (this.submittedValue);
-        }
-
-        void setSubmittedValue(Object submittedValue) {
-            this.submittedValue = submittedValue;
-        }
-
-        private boolean valid = true;
-
-        boolean isValid() {
-            return (this.valid);
-        }
-
-        void setValid(boolean valid) {
-            this.valid = valid;
-        }
-
-        private Object value;
-
-        Object getValue() {
-            return (this.value);
-        }
-
-        public void setValue(Object value) {
-            this.value = value;
-        }
-
-        private boolean localValueSet;
-
-        boolean isLocalValueSet() {
-            return (this.localValueSet);
-        }
-
-        public void setLocalValueSet(boolean localValueSet) {
-            this.localValueSet = localValueSet;
-        }
-
-        @Override
-        public String toString() {
-            return ("submittedValue: " + submittedValue + " value: " + value
-                    + " localValueSet: " + localValueSet);
-        }
-
-        public void populate(EditableValueHolder evh) {
-            this.value = evh.getLocalValue();
-            this.valid = evh.isValid();
-            this.submittedValue = evh.getSubmittedValue();
-            this.localValueSet = evh.isLocalValueSet();
-        }
-
-        public void apply(EditableValueHolder evh) {
-            evh.setValue(this.value);
-            evh.setValid(this.valid);
-            evh.setSubmittedValue(this.submittedValue);
-            evh.setLocalValueSet(this.localValueSet);
-        }
-
     }
 
     private static final class IndexedEvent extends FacesEvent {
