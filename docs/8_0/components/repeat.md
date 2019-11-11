@@ -1,4 +1,4 @@
 # Repeat
 
-Repeat is an extension to the standard ui:repeat component to provide compatibility between
-Mojarra and MyFaces. There are no additonal features and usage is same as ui:repeat.
+`p:repeat` is a fork of the Mojarra `ui:repeat` to provide/backport important bugfixes for users, which must stay on older Mojarra versions.
+If you don't have problems with `ui:repeat`, please dont use `p:repeat`.
