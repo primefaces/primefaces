@@ -43,6 +43,10 @@ public class IterationStatus {
         this.last = last;
     }
 
+    public IterationStatus(boolean first, boolean last, int index, Integer begin, Integer end, Integer step) {
+        this(first, last, -1, index, begin, end, step);
+    }
+
     public boolean isFirst() {
         return first;
     }
