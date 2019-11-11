@@ -144,12 +144,6 @@
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
-            <description>When enabled, dynamic datatables would be exported.</description>
-            <name>repeat</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
             <description>Exports the header and cell content according to the option.</description>
             <name>options</name>
             <required>false</required>
@@ -516,6 +510,20 @@
                 FacesException must be thrown.
             </description>
             <name>size</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>If value specified: Iteration begins at the item located at the specified index. First item of the collection has index 0. If value not specified: Iteration begins with index set at the specified value.
+            </description>
+            <name>begin</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>If value specified: Iteration ends at the item located at the specified index (inclusive). If value not specified: Iteration ends when index reaches the specified value (inclusive).
+            </description>
+            <name>end</name>
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
@@ -26328,8 +26336,8 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[The height of the timeline in pixels or as a percentage. When height is undefined or null, the height of the timeline is automatically 
-                adjusted to fit the contents. It is possible to set a maximum height using option maxHeight to prevent the timeline from getting too high in 
+                <![CDATA[The height of the timeline in pixels or as a percentage. When height is undefined or null, the height of the timeline is automatically
+                adjusted to fit the contents. It is possible to set a maximum height using option maxHeight to prevent the timeline from getting too high in
                 case of automatically calculated height.]]>
             </description>
             <name>height</name>
@@ -26371,7 +26379,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Deprecated, use orientationAxis instead of this. 
+                <![CDATA[Deprecated, use orientationAxis instead of this.
                 If false, the horizontal axis is drawn at the bottom. If true, the axis is drawn on top. Default is false.]]>
             </description>
             <name>axisOnTop</name>
@@ -26380,8 +26388,8 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Orientation of the timeline axis: 'top', 'bottom' (default), 'both', or 'none'. If orientation is 'bottom', the time axis is drawn 
-                at the bottom. When 'top', the axis is drawn on top. When 'both', two axes are drawn, both on top and at the bottom. In case of 'none', no axis 
+                <![CDATA[Orientation of the timeline axis: 'top', 'bottom' (default), 'both', or 'none'. If orientation is 'bottom', the time axis is drawn
+                at the bottom. When 'top', the axis is drawn on top. When 'both', two axes are drawn, both on top and at the bottom. In case of 'none', no axis
                 is drawn at all.]]>
             </description>
             <name>orientationAxis</name>
@@ -26390,7 +26398,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Orientation of the timeline items: 'top' or 'bottom' (default). Determines whether items are aligned to the top or bottom 
+                <![CDATA[Orientation of the timeline items: 'top' or 'bottom' (default). Determines whether items are aligned to the top or bottom
                 of the Timeline.]]>
             </description>
             <name>orientationItem</name>
@@ -26416,7 +26424,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If true, items can be deleted by first selecting them, and then clicking the delete button on the top right of the item. 
+                <![CDATA[If true, items can be deleted by first selecting them, and then clicking the delete button on the top right of the item.
                 Takes precedence over editable. Default is false.]]>
             </description>
             <name>editableRemove</name>
@@ -26425,7 +26433,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If true, items can be dragged from one group to another. Only applicable when the Timeline has groups. 
+                <![CDATA[If true, items can be dragged from one group to another. Only applicable when the Timeline has groups.
                 Takes precedence over editable. Default is false.]]>
             </description>
             <name>editableGroup</name>
@@ -26562,7 +26570,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Specifies the default type for the timeline items. Choose from 'box', 'point' and 'range'. If undefined, the Timeline will auto detect 
+                <![CDATA[Specifies the default type for the timeline items. Choose from 'box', 'point' and 'range'. If undefined, the Timeline will auto detect
                 the type from the items data: if a start and end date is available, a 'range' will be created, and else, a 'box' is created. Default null.]]>
             </description>
             <name>eventStyle</name>
@@ -26579,8 +26587,8 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Allows to customize the way groups are ordered. When true (default), groups will be ordered by content alphabetically 
-                (when the list of groups is missing) or by native ordering of TimelineGroup object in the list of groups (when the list of groups is available). 
+                <![CDATA[Allows to customize the way groups are ordered. When true (default), groups will be ordered by content alphabetically
+                (when the list of groups is missing) or by native ordering of TimelineGroup object in the list of groups (when the list of groups is available).
                 When false, groups will not be ordered at all.]]>
             </description>
             <name>groupsOrder</name>
@@ -26597,7 +26605,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Deprecated, use snap property instead. 
+                <![CDATA[Deprecated, use snap property instead.
                 If true, the start and end of an event will be snapped nice integer values when moving or resizing the event. Default is true.]]>
             </description>
             <name>snapEvents</name>
@@ -26606,13 +26614,13 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[When moving items on the Timeline, they will be snapped to nice dates like full hours or days, depending on the current scale. 
-                The snap function can be replaced with a custom javascript function, or can be set to null to disable snapping. 
+                <![CDATA[When moving items on the Timeline, they will be snapped to nice dates like full hours or days, depending on the current scale.
+                The snap function can be replaced with a custom javascript function, or can be set to null to disable snapping.
                 The signature of the snap function is:
-                
+
                 function snap(date: Date, scale: string, step: number) : Date or number
-                
-                The parameter scale can be can be 'millisecond', 'second', 'minute', 'hour', 'weekday, 'week', 'day, 'month, or 'year'. 
+
+                The parameter scale can be can be 'millisecond', 'second', 'minute', 'hour', 'weekday, 'week', 'day, 'month, or 'year'.
                 The parameter step is a number like 1, 2, 4, 5.
                 ]]>
             </description>
@@ -26658,7 +26666,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Deprecated, use editableTime property instead. 
+                <![CDATA[Deprecated, use editableTime property instead.
                 If false, items can not be moved or dragged horizontally (neither start time nor end time is changable).
                 This is useful when items should be editable but can only be changed regarding group or content (typical use case: scheduling events).
                 Default is true.]]>
@@ -26701,8 +26709,8 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[When a Timeline is configured to be clickToUse, it will react to mouse and touch events only when active. When active, a blue shadow 
-                border is displayed around the Timeline. The Timeline is set active by clicking on it, and is changed to inactive again by clicking outside 
+                <![CDATA[When a Timeline is configured to be clickToUse, it will react to mouse and touch events only when active. When active, a blue shadow
+                border is displayed around the Timeline. The Timeline is set active by clicking on it, and is changed to inactive again by clicking outside
                 the Timeline or by pressing the ESC key. Default is false.]]>
             </description>
             <name>clickToUse</name>
@@ -26731,7 +26739,7 @@
                     Choose from 'cap', 'flip' and 'none'.
                     If it is set to 'cap', the tooltip will just cap its position to inside to timeline.
                     If set to 'flip', the position of the tooltip will flip around the cursor so that a corner is at the cursor, and the rest of it is visible.
-                    If set to 'none', the tooltip will be positioned independently of the timeline, so parts of the tooltip could possibly be hidden or stick 
+                    If set to 'none', the tooltip will be positioned independently of the timeline, so parts of the tooltip could possibly be hidden or stick
                     ouf of the timeline, depending how CSS overflow is defined for the timeline (by default it's hidden). Default is 'flip'.]]>
             </description>
             <name>tooltipOverflowMethod</name>
