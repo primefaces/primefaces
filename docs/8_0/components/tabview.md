@@ -15,29 +15,30 @@ TabView is a container component to group content in tabs.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
-| --- | --- | --- | --- |
-id | null | String | Unique identifier of the component.
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
-widgetVar | null | String | Variable name of the client side widget.
-activeIndex | 0 | Integer | Index of the active tab.
-effect | null | String | Name of the transition effect.
-effectDuration | null | String | Duration of the transition effect.
-dynamic | false | Boolean | Enables lazy loading of inactive tabs.
-cache | true | Boolean | When tab contents are lazy loaded by ajax toggleMode, caching only retrieves the tab contents once and subsequent toggles of a cached tab does not communicate with server. If caching is turned off, tab contents are reloaded from server each time tab is clicked.
-onTabChange | null | String | Client side callback to execute when a tab is clicked.
-onTabShow | null | String | Client side callback to execute when a tab is shown.
-onTabClose | null | String | Client side callback to execute on tab close.
-style | null | String | Inline style of the main container.
-styleClass | null | String | Style class of the main container.
-var | null | String | Name of iterator to refer an item in collection.
-value | null | Object | Collection model to display dynamic tabs.
-orientation | top | String | Orientation of tab headers.
-dir | ltr | String | Defines text direction, valid values are ltr and rtl.
-scrollable | false | Boolean | When enabled, tab headers can be scrolled horizontally instead of wrapping.
-prependId | true | Boolean | TabView is a naming container thus prepends its id to its children by default, a false value turns this behavior off except for dynamic tabs.
-tabindex | 0 | String | Position of the element in the tabbing order.
+| Name           | Default | Type       | Description |
+| -------------- | ------- | ---------- | --- |
+| id             | null    | String     | Unique identifier of the component.
+| rendered       | true    | Boolean    | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
+| binding        | null    | Object     | An el expression that maps to a server side UIComponent instance in a backing bean.
+| widgetVar      | null    | String     | Variable name of the client side widget.
+| activeIndex    | 0       | Integer    | Index of the active tab.
+| effect         | null    | String     | Name of the transition effect.
+| effectDuration | null    | String     | Duration of the transition effect.
+| dynamic        | false   | Boolean    | Enables lazy loading of inactive tabs.
+| cache          | true    | Boolean    | When tab contents are lazy loaded by ajax toggleMode, caching only retrieves the tab contents once and subsequent toggles of a cached tab does not communicate with server. If caching is turned off, tab contents are reloaded from server each time tab is clicked.
+| onTabChange    | null    | String     | Client side callback to execute when a tab is clicked.
+| onTabShow      | null    | String     | Client side callback to execute when a tab is shown.
+| onTabClose     | null    | String     | Client side callback to execute on tab close.
+| style          | null    | String     | Inline style of the main container.
+| styleClass     | null    | String     | Style class of the main container.
+| var            | null    | String     | Name of iterator to refer an item in collection.
+| varStatus      | null    | String     | Name of the exported request scoped variable to represent state of the iteration same as in ui:repeat varStatus.
+| value          | null    | Object     | Collection model to display dynamic tabs.
+| orientation    | top     | String     | Orientation of tab headers.
+| dir            | ltr     | String     | Defines text direction, valid values are ltr and rtl.
+| scrollable     | false   | Boolean    | When enabled, tab headers can be scrolled horizontally instead of wrapping.
+| prependId      | true    | Boolean    | TabView is a naming container thus prepends its id to its children by default, a false value turns this behavior off except for dynamic tabs.
+| tabindex       | 0       | String     | Position of the element in the tabbing order.
 
 ## Getting started with the TabView
 TabView requires one more child tab components to display. Titles can also be defined by using
@@ -151,8 +152,8 @@ function handleTabChange(i) {
 ## Client Side API
 Widget: _PrimeFaces.widget.TabView_
 
-| Method | Params | Return Type | Description | 
-| --- | --- | --- | --- | 
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
 select(index) | index: Index of tab to display | void | Activates tab with given index
 selectTab(index) | index: Index of tab to display | void | (Deprecated, use select instead) Activates tab with given index
 disable(index) | index: Index of tab to disable | void | Disables tab with given index
@@ -165,8 +166,8 @@ getActiveIndex() | - | Number | Returns index of current tab
 As skinning style classes are global, see the main theming section for more information. Following
 is the list of structural style classes.
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 .ui-tabs | Main tabview container element
 .ui-tabs-{orientation} | Orientation specific (top, bottom, righ, left) container.
 .ui-tabs-nav | Main container of tab headers
