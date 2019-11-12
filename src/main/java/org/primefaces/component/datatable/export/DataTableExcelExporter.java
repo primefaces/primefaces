@@ -30,6 +30,7 @@ import org.apache.poi.ss.util.WorkbookUtil;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.ExcelOptions;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.util.ComponentUtils;
@@ -74,12 +75,15 @@ public class DataTableExcelExporter extends DataTableExporter {
             sheetName = "Sheet (" + (index + 1) + ")";
         }
 
-        Sheet sheet = createSheet(wb, sheetName);
+        ExcelOptions options = (ExcelOptions) config.getOptions();
+        Sheet sheet = createSheet(wb, sheetName, options);
         applyOptions(wb, table, sheet, config.getOptions());
         exportTable(context, table, sheet, config.isPageOnly(), config.isSelectionOnly());
 
-        for (int j = 0; j < table.getColumnsCount(); j++) {
-            sheet.autoSizeColumn((short) j);
+        if (options == null || options.isAutoSizeColumn()) {
+            for (int j = 0; j < table.getColumnsCount(); j++) {
+                sheet.autoSizeColumn((short) j);
+            }
         }
     }
 
@@ -207,7 +211,7 @@ public class DataTableExcelExporter extends DataTableExporter {
         return new HSSFWorkbook();
     }
 
-    protected Sheet createSheet(Workbook wb, String sheetName) {
+    protected Sheet createSheet(Workbook wb, String sheetName, ExcelOptions options) {
         return wb.createSheet(sheetName);
     }
 
