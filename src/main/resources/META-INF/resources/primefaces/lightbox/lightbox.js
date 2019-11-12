@@ -72,22 +72,17 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
             topOffset = ($this.panel.height() - image.height()) / 2;
 
             //resize content for new image
-            $this.content.removeClass('ui-lightbox-loading').animate({
-                width: image.width()
-                ,height: image.height()
-            },
-            500,
-            function() {
-                //show image
-                image.fadeIn();
-                $this.showNavigators();
-                $this.caption.slideDown();
-            });
+            $this.content.removeClass('ui-lightbox-loading');
+            $this.content.stop().animate({ width: image.width(), height: image.height() },
+                500,
+                function() {
+                    //show image
+                    image.fadeIn();
+                    $this.showNavigators();
+                    $this.caption.slideDown();
+                });
 
-            $this.panel.animate({
-                left: '+=' + leftOffset
-                ,top: '+=' + topOffset
-            }, 500);
+            $this.panel.stop().animate({ left: '+=' + leftOffset, top: '+=' + topOffset}, 500);
         });
 
         this.navigators.mouseover(function() {
@@ -123,7 +118,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
                 $this.show();
             }
             else {
-                $this.imageDisplay.fadeOut(function() {
+                $this.imageDisplay.stop().fadeOut(function() {
                     //clear for onload scaling
                     $(this).css({
                         'width': 'auto'
@@ -133,10 +128,11 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
                     $this.content.addClass('ui-lightbox-loading');
                 });
 
-                $this.caption.slideUp();
+                $this.caption.stop().slideUp();
             }
 
-            setTimeout(function() {
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(function() {
                 $this.imageDisplay.attr('src', link.attr('href'));
                 $this.current = link.index();
 
@@ -145,7 +141,6 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
                     $this.captionText.text(title);
                 }
             }, 1000);
-
 
             e.preventDefault();
         });
@@ -185,7 +180,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
             var title = $(this).attr('title');
             if(title) {
                 $this.captionText.text(title);
-                $this.caption.slideDown();
+                $this.caption.stop().slideDown();
             }
 
             e.preventDefault();
