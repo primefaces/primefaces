@@ -21,13 +21,12 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
 
         //attach contextmenu
         if(documentTarget) {
-            var document =  $(document);
-            document.off('contextmenu.ui-contextmenu').on('contextmenu.ui-contextmenu', function(e) {
+            $(document).off('contextmenu.ui-contextmenu').on('contextmenu.ui-contextmenu', function(e) {
                 $this.show(e);
             });
 
             if (PrimeFaces.env.touch) {
-                document.swipe({
+                $(document).swipe({
                     longTap:function(e, target) {
                        $this.show(e);
                     }
@@ -53,9 +52,8 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
 
             if (binded === false) {
                 var event = this.cfg.event + '.ui-contextmenu';
-                var document =  $(document);
 
-                document.off(event, this.jqTargetId).on(event, this.jqTargetId, null, function(e) {
+                $(document).off(event, this.jqTargetId).on(event, this.jqTargetId, null, function(e) {
                     $this.show(e);
                 });
 
