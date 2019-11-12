@@ -31,6 +31,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.primefaces.component.export.ExcelOptions;
 
 /**
  * Different implementation of ExcelXExporter using the POI streaming API:
@@ -55,10 +56,15 @@ public class DataTableExcelXStreamExporter extends DataTableExcelXExporter {
     }
 
     @Override
-    protected Sheet createSheet(Workbook wb, String sheetName) {
+    protected Sheet createSheet(Workbook wb, String sheetName, ExcelOptions options) {
         SXSSFWorkbook workbook = (SXSSFWorkbook) wb;
         SXSSFSheet sheet =  workbook.createSheet(sheetName);
-        sheet.trackAllColumnsForAutoSizing();
+        if (options.isAutoSizeColumn()) {
+            sheet.trackAllColumnsForAutoSizing();
+        }
+        else {
+            sheet.untrackAllColumnsForAutoSizing();
+        }
         return sheet;
     }
 }
