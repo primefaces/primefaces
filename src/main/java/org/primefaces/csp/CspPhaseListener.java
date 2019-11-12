@@ -40,6 +40,7 @@ import org.primefaces.util.Lazy;
 public class CspPhaseListener implements PhaseListener {
 
     private static final long serialVersionUID = 1L;
+    private static final String UNSAFE_DIRECTIVES = "unsafe-";
 
     private Lazy<Boolean> enabled;
     private Lazy<String> customPolicy;
@@ -70,7 +71,13 @@ public class CspPhaseListener implements PhaseListener {
             CspState state = PrimeFacesContext.getCspState(context);
 
             String policy = LangUtils.isValueBlank(customPolicy.get()) ? "script-src 'self'" : customPolicy.get();
-            response.addHeader("Content-Security-Policy", policy + " 'nonce-" + state.getNonce() + "'");
+
+            // only include nonce if unsafe directives are not used
+            if (!policy.contains(UNSAFE_DIRECTIVES)) {
+                policy = policy + " 'nonce-" + state.getNonce() + "'";
+            }
+
+            response.addHeader("Content-Security-Policy", policy);
 
             PrimeFaces.current().executeScript("PrimeFaces.csp.init('" + Encode.forJavaScript(state.getNonce()) + "');");
         }
