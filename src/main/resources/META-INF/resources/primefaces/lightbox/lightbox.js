@@ -56,7 +56,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
     },
 
     setupImaging: function() {
-        var _self = this;
+        var $this = this;
 
         this.content.append('<img class="ui-helper-hidden"></img>');
         this.imageDisplay = this.content.children('img');
@@ -65,14 +65,14 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         this.imageDisplay.on('load', function() {
             var image = $(this);
 
-            _self.scaleImage(image);
+            $this.scaleImage(image);
 
             //coordinates to center overlay
-            var leftOffset = (_self.panel.width() - image.width()) / 2,
-            topOffset = (_self.panel.height() - image.height()) / 2;
+            var leftOffset = ($this.panel.width() - image.width()) / 2,
+            topOffset = ($this.panel.height() - image.height()) / 2;
 
             //resize content for new image
-            _self.content.removeClass('ui-lightbox-loading').animate({
+            $this.content.removeClass('ui-lightbox-loading').animate({
                 width: image.width()
                 ,height: image.height()
             },
@@ -80,11 +80,11 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
             function() {
                 //show image
                 image.fadeIn();
-                _self.showNavigators();
-                _self.caption.slideDown();
+                $this.showNavigators();
+                $this.caption.slideDown();
             });
 
-            _self.panel.animate({
+            $this.panel.animate({
                 left: '+=' + leftOffset
                 ,top: '+=' + topOffset
             }, 500);
@@ -99,17 +99,17 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         .click(function(e) {
             var nav = $(this);
 
-            _self.hideNavigators();
+            $this.hideNavigators();
 
             if(nav.hasClass('ui-lightbox-nav-left')) {
-                var index = _self.current == 0 ? _self.links.length - 1 : _self.current - 1;
+                var index = $this.current == 0 ? $this.links.length - 1 : $this.current - 1;
 
-                _self.links.eq(index).trigger('click');
+                $this.links.eq(index).trigger('click');
             }
             else {
-                var index = _self.current == _self.links.length - 1 ? 0 : _self.current + 1;
+                var index = $this.current == $this.links.length - 1 ? 0 : $this.current + 1;
 
-                _self.links.eq(index).trigger('click');
+                $this.links.eq(index).trigger('click');
             }
 
             e.preventDefault();
@@ -118,31 +118,31 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         this.links.click(function(e) {
             var link = $(this);
 
-            if(_self.isHidden()) {
-                _self.content.addClass('ui-lightbox-loading').width(32).height(32);
-                _self.show();
+            if($this.isHidden()) {
+                $this.content.addClass('ui-lightbox-loading').width(32).height(32);
+                $this.show();
             }
             else {
-                _self.imageDisplay.fadeOut(function() {
+                $this.imageDisplay.fadeOut(function() {
                     //clear for onload scaling
                     $(this).css({
                         'width': 'auto'
                         ,'height': 'auto'
                     });
 
-                    _self.content.addClass('ui-lightbox-loading');
+                    $this.content.addClass('ui-lightbox-loading');
                 });
 
-                _self.caption.slideUp();
+                $this.caption.slideUp();
             }
 
             setTimeout(function() {
-                _self.imageDisplay.attr('src', link.attr('href'));
-                _self.current = link.index();
+                $this.imageDisplay.attr('src', link.attr('href'));
+                $this.current = link.index();
 
                 var title = link.attr('title');
                 if(title) {
-                    _self.captionText.text(title);
+                    $this.captionText.text(title);
                 }
             }, 1000);
 
@@ -177,15 +177,15 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
     setupInline: function() {
         this.inline = this.jq.children('.ui-lightbox-inline');
         this.inline.appendTo(this.content).show();
-        var _self = this;
+        var $this = this;
 
         this.links.click(function(e) {
-            _self.show();
+            $this.show();
 
             var title = $(this).attr('title');
             if(title) {
-                _self.captionText.text(title);
-                _self.caption.slideDown();
+                $this.captionText.text(title);
+                $this.caption.slideDown();
             }
 
             e.preventDefault();
