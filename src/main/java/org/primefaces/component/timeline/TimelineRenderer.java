@@ -190,8 +190,8 @@ public class TimelineRenderer extends CoreRenderer {
 
         // encode options
         writer.write("autoResize: " + timeline.isResponsive());
-        if (timeline.getTimeZone() != null) {
-            ZoneOffset zoneOffset = CalendarUtils.calculateZoneOffset(timeline.getTimeZone());
+        if (timeline.getClientTimeZone() != null) {
+            ZoneOffset zoneOffset = CalendarUtils.calculateZoneOffset(timeline.getClientTimeZone());
             if (ZoneOffset.UTC.equals(zoneOffset)) {
                 wb.callback("moment", "function(date)", "return vis.moment(date).utc();");
             }

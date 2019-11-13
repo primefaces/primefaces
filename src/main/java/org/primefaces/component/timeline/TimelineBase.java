@@ -52,6 +52,7 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
         varGroup,
         locale,
         timeZone,
+        clientTimeZone,
         height,
         minHeight,
         maxHeight,
@@ -177,6 +178,14 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
 
     public void setTimeZone(Object timeZone) {
         getStateHelper().put(PropertyKeys.timeZone, timeZone);
+    }
+
+    public Object getClientTimeZone() {
+        return getStateHelper().eval(PropertyKeys.clientTimeZone, null);
+    }
+
+    public void setClientTimeZone(Object clientTimeZone) {
+        getStateHelper().put(PropertyKeys.clientTimeZone, clientTimeZone);
     }
 
     public String getHeight() {
