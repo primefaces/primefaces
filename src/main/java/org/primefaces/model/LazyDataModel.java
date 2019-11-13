@@ -24,6 +24,8 @@
 package org.primefaces.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -130,7 +132,17 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
     }
 
     public List<T> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-        throw new UnsupportedOperationException("Lazy loading is not implemented.");
+
+        List<SortMeta> sortMeta = null;
+        if (sortField == null) {
+            sortMeta = Collections.emptyList();
+        }
+        else {
+            sortMeta = new ArrayList<>(1);
+            sortMeta.add(new SortMeta(null, sortField, sortOrder == null ? SortOrder.UNSORTED : sortOrder, null));
+        }
+
+        return load(first, pageSize, sortMeta, filters);
     }
 
     public List<T> load(int first, int pageSize, List<SortMeta> multiSortMeta, Map<String, Object> filters) {
@@ -159,15 +171,15 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
 
     @Override
     public Iterator<T> iterator() {
-        return new LazyDataModelIterator<T>(this);
+        return new LazyDataModelIterator<>(this);
     }
 
     public Iterator<T> iterator(String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-        return new LazyDataModelIterator<T>(this, sortField, sortOrder, filters);
+        return new LazyDataModelIterator<>(this, sortField, sortOrder, filters);
     }
 
     public Iterator<T> iterator(List<SortMeta> multiSortMeta, Map<String, Object> filters) {
-        return new LazyDataModelIterator<T>(this, multiSortMeta, filters);
+        return new LazyDataModelIterator<>(this, multiSortMeta, filters);
     }
 
 }
