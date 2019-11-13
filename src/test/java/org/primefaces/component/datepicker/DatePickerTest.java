@@ -623,7 +623,7 @@ public class DatePickerTest {
         cal.set(Calendar.HOUR_OF_DAY, 12);
         cal.set(Calendar.MINUTE, 00);
         cal.set(Calendar.SECOND, 00);
-		cal.set(Calendar.MILLISECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
 
         when(datePicker.isTimeOnly()).thenReturn(Boolean.TRUE);
         when(datePicker.getMindate()).thenReturn(cal.getTime());
@@ -677,7 +677,7 @@ public class DatePickerTest {
         cal.set(Calendar.HOUR_OF_DAY, 12);
         cal.set(Calendar.MINUTE, 00);
         cal.set(Calendar.SECOND, 00);
-		cal.set(Calendar.MILLISECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
 
         when(datePicker.isTimeOnly()).thenReturn(Boolean.TRUE);
         when(datePicker.getMaxdate()).thenReturn(cal.getTime());
@@ -758,11 +758,11 @@ public class DatePickerTest {
     public void validateValueInternal_minDateTime_Date_wrong() {
         setupValues(null, Locale.ENGLISH);
         java.util.Calendar cal = GregorianCalendar.getInstance();
-		cal.set(2019, 0, 1);
+        cal.set(2019, 0, 1);
         cal.set(Calendar.HOUR_OF_DAY, 12);
         cal.set(Calendar.MINUTE, 00);
         cal.set(Calendar.SECOND, 00);
-		cal.set(Calendar.MILLISECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
 
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
         when(datePicker.getMindate()).thenReturn(cal.getTime());
@@ -833,11 +833,11 @@ public class DatePickerTest {
     public void validateValueInternal_maxDateTime_Date_wrong() {
         setupValues(null, Locale.ENGLISH);
         java.util.Calendar cal = GregorianCalendar.getInstance();
-		cal.set(2019, 8, 17);
+        cal.set(2019, 8, 17);
         cal.set(Calendar.HOUR_OF_DAY, 12);
         cal.set(Calendar.MINUTE, 00);
         cal.set(Calendar.SECOND, 00);
-		cal.set(Calendar.MILLISECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
 
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
         when(datePicker.getMaxdate()).thenReturn(cal.getTime());
@@ -873,7 +873,7 @@ public class DatePickerTest {
     public void calculatePatternWithSeconds() {
         setupValues(null, Locale.ENGLISH);
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
-		when(datePicker.isShowSeconds()).thenReturn(Boolean.TRUE);
+        when(datePicker.isShowSeconds()).thenReturn(Boolean.TRUE);
         assertEquals(datePicker.calculatePattern(), "M/d/yy HH:mm:ss");
     }
 
@@ -881,8 +881,8 @@ public class DatePickerTest {
     public void calculatePatternWithSecondsAndAmPm() {
         setupValues(null, Locale.ENGLISH);
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
-		when(datePicker.isShowSeconds()).thenReturn(Boolean.TRUE);
-		when(datePicker.getHourFormat()).thenReturn("12");
+        when(datePicker.isShowSeconds()).thenReturn(Boolean.TRUE);
+        when(datePicker.getHourFormat()).thenReturn("12");
         assertEquals(datePicker.calculatePattern(), "M/d/yy KK:mm:ss a");
     }
 
@@ -890,7 +890,7 @@ public class DatePickerTest {
     public void calculatePatternWithAmPm() {
         setupValues(null, Locale.ENGLISH);
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
-		when(datePicker.getHourFormat()).thenReturn("12");
+        when(datePicker.getHourFormat()).thenReturn("12");
         assertEquals(datePicker.calculatePattern(), "M/d/yy KK:mm a");
     }
 
