@@ -70,7 +70,7 @@ public final class SecurityUtils {
             results = Stream.of(((String) value).split(",")).map(String::trim);
         }
         else if (value instanceof Object[]) {
-            results = Stream.of((Object[])value);
+            results = Stream.of((Object[]) value);
         }
         else if (value instanceof Collection) {
             results = ((Collection<?>) value).stream();
