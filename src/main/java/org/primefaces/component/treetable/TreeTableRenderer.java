@@ -1213,7 +1213,8 @@ public class TreeTableRenderer extends DataRenderer {
                     dynamicColumn.cleanModel();
                 }
 
-                filterMetadata.add(new FilterMeta(column,
+                filterMetadata.add(new FilterMeta(null,
+                        column,
                         filterByVE,
                         MatchMode.byName(filterMatchMode),
                         filterValue));

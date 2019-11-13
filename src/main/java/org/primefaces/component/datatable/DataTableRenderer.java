@@ -122,7 +122,7 @@ public class DataTableRenderer extends DataRenderer {
                 UIColumn column = table.findColumn(filterState.getColumnKey());
                 if (column != null) {
                     filterMetadata.add(
-                        new FilterMeta(
+                        new FilterMeta(((FilterFeature) DataTable.FEATURES.get(DataTableFeatureKey.FILTER)).getFilterField(table, column),
                             column,
                             column.getValueExpression(DataTable.PropertyKeys.filterBy.toString()),
                             MatchMode.byName(column.getFilterMatchMode()),
