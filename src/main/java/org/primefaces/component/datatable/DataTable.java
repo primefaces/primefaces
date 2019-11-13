@@ -566,10 +566,10 @@ public class DataTable extends DataTableBase {
             }
 
             if (isMultiSort()) {
-                data = lazyModel.load(first, getRows(), getMultiSortMeta(), getFilters());
+                data = lazyModel.load(first, getRows(), getMultiSortMeta(), getFilterMetadata());
             }
             else {
-                data = lazyModel.load(first, getRows(), resolveSortField(), convertSortOrder(), getFilters());
+                data = lazyModel.load(first, getRows(), resolveSortField(), convertSortOrder(), getFilterMetadata());
             }
 
             lazyModel.setPageSize(getRows());
@@ -591,10 +591,10 @@ public class DataTable extends DataTableBase {
             List<?> data = null;
 
             if (isMultiSort()) {
-                data = lazyModel.load(offset, rows, getMultiSortMeta(), getFilters());
+                data = lazyModel.load(offset, rows, getMultiSortMeta(), getFilterMetadata());
             }
             else {
-                data = lazyModel.load(offset, rows, resolveSortField(), convertSortOrder(), getFilters());
+                data = lazyModel.load(offset, rows, resolveSortField(), convertSortOrder(), getFilterMetadata());
             }
 
             lazyModel.setPageSize(rows);

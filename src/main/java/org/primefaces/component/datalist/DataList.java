@@ -24,6 +24,7 @@
 package org.primefaces.component.datalist;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -116,7 +117,7 @@ public class DataList extends DataListBase {
         if (model instanceof LazyDataModel) {
             LazyDataModel<?> lazyModel = (LazyDataModel) model;
 
-            List<?> data = lazyModel.load(getFirst(), getRows(), null, null, null);
+            List<?> data = lazyModel.load(getFirst(), getRows(), null, null, Collections.emptyList());
 
             lazyModel.setPageSize(getRows());
             lazyModel.setWrappedData(data);

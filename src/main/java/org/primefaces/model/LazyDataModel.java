@@ -26,6 +26,7 @@ package org.primefaces.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -133,7 +134,7 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
 
     public List<T> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 
-        List<SortMeta> sortMeta = null;
+        List<SortMeta> sortMeta;
         if (sortField == null) {
             sortMeta = Collections.emptyList();
         }
@@ -145,8 +146,38 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
         return load(first, pageSize, sortMeta, filters);
     }
 
-    public List<T> load(int first, int pageSize, List<SortMeta> multiSortMeta, Map<String, Object> filters) {
+    public List<T> load(int first, int pageSize, String sortField, SortOrder sortOrder, List<FilterMeta> filterMeta) {
+
+        List<SortMeta> sortMeta;
+        if (sortField == null) {
+            sortMeta = Collections.emptyList();
+        }
+        else {
+            sortMeta = new ArrayList<>(1);
+            sortMeta.add(new SortMeta(null, sortField, sortOrder == null ? SortOrder.UNSORTED : sortOrder, null));
+        }
+
+        return load(first, pageSize, sortMeta, filterMeta);
+    }
+
+    public List<T> load(int first, int pageSize, List<SortMeta> sortMeta, Map<String, Object> filters) {
         throw new UnsupportedOperationException("Lazy loading is not implemented.");
+    }
+
+    public List<T> load(int first, int pageSize, List<SortMeta> sortMeta, List<FilterMeta> filterMeta) {
+
+        Map<String, Object> filters;
+        if (filterMeta == null) {
+            filters = Collections.emptyMap();
+        }
+        else {
+            filters = new HashMap<>(filterMeta.size());
+            for (FilterMeta meta : filterMeta) {
+                filters.put(meta.getFilterField(), meta.getFilterValue());
+            }
+        }
+
+        return load(first, pageSize, sortMeta, filters);
     }
 
     @Override
