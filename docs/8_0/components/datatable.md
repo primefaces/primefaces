@@ -768,9 +768,8 @@ public class CarBean {
     public CarBean() {
         model = new LazyDataModel() {
             @Override
-            public void load(int first, int pageSize, | String | sortField,
-            SortOrder sortOrder, Map<String,Object> filters) {
-            //load physical data
+            public void load(int first, int pageSize, List<SortMeta> sortMeta, List<FilterMeta> filterMeta) {
+                //load physical data
             }
         };
         int totalRowCount = //logical row count based on a count query
