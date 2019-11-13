@@ -118,11 +118,13 @@ public class DataTableRenderer extends DataRenderer {
         List<FilterState> filters = table.getFilterBy();
         List<FilterMeta> filterMetadata = new ArrayList<>();
         if (filters != null) {
+            FilterFeature filterFeature = (FilterFeature) DataTable.FEATURES.get(DataTableFeatureKey.FILTER);
+
             for (FilterState filterState : filters) {
                 UIColumn column = table.findColumn(filterState.getColumnKey());
                 if (column != null) {
                     filterMetadata.add(
-                        new FilterMeta(((FilterFeature) DataTable.FEATURES.get(DataTableFeatureKey.FILTER)).getFilterField(table, column),
+                        new FilterMeta(filterFeature.getFilterField(table, column),
                             column,
                             column.getValueExpression(DataTable.PropertyKeys.filterBy.toString()),
                             MatchMode.byName(column.getFilterMatchMode()),
