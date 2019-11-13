@@ -262,9 +262,7 @@ public class FilterFeature implements DataTableFeature {
                 continue;
             }
 
-            UIColumn column = filterMeta.getColumn();
-            String filterField = getFilterField(table, column);
-            filterParameterMap.put(filterField, filterValue);
+            filterParameterMap.put(filterMeta.getFilterField(), filterValue);
         }
 
         if (params.containsKey(globalFilterParam)) {
