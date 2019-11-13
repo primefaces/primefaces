@@ -79,6 +79,10 @@ public class CalendarUtils {
             return (LocalDate) value;
         }
 
+        if (value instanceof LocalDateTime) {
+            return ((LocalDateTime) value).toLocalDate();
+        }
+
         if (value instanceof Date) {
             return convertDate2LocalDate((Date) value);
         }
@@ -87,7 +91,7 @@ public class CalendarUtils {
         if (pattern != null) {
             Locale locale = calendar.calculateLocale(context);
             if (locale != null) {
-                DateTimeFormatter formatter =  DateTimeFormatter.ofPattern(pattern, locale);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, locale);
                 try {
                     return LocalDate.parse(value.toString(), formatter);
                 }
@@ -114,6 +118,70 @@ public class CalendarUtils {
             Object obj = converter.getAsObject(context, calendar, value.toString());
             if (obj instanceof LocalDate) {
                 return (LocalDate) obj;
+            }
+        }
+
+        // TODO Currently we do not support conversion of jquery datepicker's special dates like 'today' or '+1m +7d'
+        // See http://api.jqueryui.com/datepicker/#option-maxDate, https://github.com/primefaces/primefaces/issues/4621
+
+        return null;
+    }
+
+    /**
+     * Try to convert the given value to {@link LocalTime} or return <code>null</code> if there is no appropriate converter for doing so.
+     * @param context the faces context
+     * @param calendar the calendar component
+     * @param value the value to convert
+     * @return the {@link LocalTime} object or <code>null</code>
+     */
+    public static LocalTime getObjectAsLocalTime(FacesContext context, UICalendar calendar, Object value) {
+        if (value == null || value instanceof LocalDate) {
+            return null;
+        }
+
+        if (value instanceof LocalTime) {
+            return (LocalTime) value;
+        }
+
+        if (value instanceof LocalDateTime) {
+            return ((LocalDateTime) value).toLocalTime();
+        }
+
+        if (value instanceof Date) {
+            return convertDate2LocalTime((Date) value);
+        }
+
+        String pattern = calendar.calculatePattern();
+        if (pattern != null) {
+            Locale locale = calendar.calculateLocale(context);
+            if (locale != null) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, locale);
+                try {
+                    return LocalTime.parse(value.toString(), formatter);
+                }
+                catch (DateTimeParseException ex) {
+                    // NO-OP
+                }
+            }
+        }
+
+        if (calendar.getConverter() != null) {
+            try {
+                Object obj = calendar.getConverter().getAsObject(context, calendar, value.toString());
+                if (obj instanceof LocalTime) {
+                    return (LocalTime) obj;
+                }
+            }
+            catch (ConverterException ex) {
+                // NO-OP
+            }
+        }
+
+        Converter converter = context.getApplication().createConverter(value.getClass());
+        if (converter != null) {
+            Object obj = converter.getAsObject(context, calendar, value.toString());
+            if (obj instanceof LocalTime) {
+                return (LocalTime) obj;
             }
         }
 
@@ -369,6 +437,10 @@ public class CalendarUtils {
         else {
             return convertDate2ZonedDateTime(date, zoneId).toLocalDateTime();
         }
+    }
+
+    public static LocalTime convertDate2LocalTime(Date date) {
+        return convertDate2LocalTime(date, ZoneId.systemDefault());
     }
 
     public static LocalTime convertDate2LocalTime(Date date, ZoneId zoneId) {

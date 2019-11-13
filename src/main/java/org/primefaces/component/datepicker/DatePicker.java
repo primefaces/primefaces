@@ -135,22 +135,36 @@ public class DatePicker extends DatePickerBase {
     }
 
     protected ValidationResult validateValueInternal(FacesContext context, Object value) {
+        if (isTimeOnly()) {
+            LocalTime timeValue = CalendarUtils.getObjectAsLocalTime(context, this, value);
+            return validateTimeOnlyValue(context, timeValue);
+        }
+
         ValidationResult validationResult = ValidationResult.OK;
 
         if (value instanceof LocalDate) {
             validationResult = validateDateValue(context, (LocalDate) value);
         }
         else if (value instanceof LocalDateTime) {
-            validationResult = validateDateValue(context, ((LocalDateTime) value).toLocalDate());
-        }
-        else if (value instanceof LocalTime) {
-            //no check necessary
+            if (isShowTime()) {
+                validationResult = validateDateValue(context, ((LocalDateTime) value).toLocalDate(), ((LocalDateTime) value).toLocalTime());
+            }
+            else {
+                validationResult = validateDateValue(context, ((LocalDateTime) value).toLocalDate());
+            }
         }
         else if (value instanceof YearMonth) {
             validationResult = validateDateValue(context, ((YearMonth) value).atDay(1));
         }
         else if (value instanceof Date) {
-            validationResult = validateDateValue(context, CalendarUtils.convertDate2LocalDate((Date) value, CalendarUtils.calculateZoneId(getTimeZone())));
+            if (isShowTime()) {
+                ZoneId zoneId = CalendarUtils.calculateZoneId(getTimeZone());
+                validationResult = validateDateValue(context, CalendarUtils.convertDate2LocalDate((Date) value, zoneId),
+                        CalendarUtils.convertDate2LocalTime((Date) value, zoneId));
+            }
+            else {
+                validationResult = validateDateValue(context, CalendarUtils.convertDate2LocalDate((Date) value, CalendarUtils.calculateZoneId(getTimeZone())));
+            }
         }
         else if (value instanceof List && getSelectionMode().equals("multiple")) {
             //TODO: needs to be validated
@@ -197,10 +211,20 @@ public class DatePicker extends DatePickerBase {
     }
 
     protected ValidationResult validateDateValue(FacesContext context, LocalDate date) {
+        return validateDateValue(context, date, null);
+    }
+
+    protected ValidationResult validateDateValue(FacesContext context, LocalDate date, LocalTime timePart) {
         LocalDate minDate = CalendarUtils.getObjectAsLocalDate(context, this, getMindate());
         LocalDate maxDate = CalendarUtils.getObjectAsLocalDate(context, this, getMaxdate());
+        LocalTime minTime = null;
+        LocalTime maxTime = null;
+        if (timePart != null) {
+            minTime = CalendarUtils.getObjectAsLocalTime(context, this, getMindate());
+            maxTime = CalendarUtils.getObjectAsLocalTime(context, this, getMaxdate());
+        }
 
-        if (minDate != null && !date.equals(minDate) && date.isBefore(minDate)) {
+        if (minDate != null && (date.isBefore(minDate) || (minTime != null && date.equals(minDate) && timePart.isBefore(minTime)))) {
             setValid(false);
             if (maxDate != null) {
                 return ValidationResult.INVALID_OUT_OF_RANGE;
@@ -211,7 +235,7 @@ public class DatePicker extends DatePickerBase {
         }
 
         if (isValid()) {
-            if (maxDate != null && !date.equals(maxDate) && date.isAfter(maxDate)) {
+            if (maxDate != null && (date.isAfter(maxDate) || maxTime != null && date.equals(maxDate) && timePart.isAfter(maxTime))) {
                 setValid(false);
                 if (minDate != null) {
                     return ValidationResult.INVALID_OUT_OF_RANGE;
@@ -254,6 +278,35 @@ public class DatePicker extends DatePickerBase {
                 if (disabledDays.contains(date.getDayOfWeek().getValue())) {
                     setValid(false);
                     return ValidationResult.INVALID_DISABLED_DATE;
+                }
+            }
+        }
+
+        return ValidationResult.OK;
+    }
+
+    protected ValidationResult validateTimeOnlyValue(FacesContext context, LocalTime time) {
+        LocalTime minTime = CalendarUtils.getObjectAsLocalTime(context, this, getMindate());
+        LocalTime maxTime = CalendarUtils.getObjectAsLocalTime(context, this, getMaxdate());
+
+        if (minTime != null && !time.equals(minTime) && time.isBefore(minTime)) {
+            setValid(false);
+            if (maxTime != null) {
+                return ValidationResult.INVALID_OUT_OF_RANGE;
+            }
+            else {
+                return ValidationResult.INVALID_MIN_DATE;
+            }
+        }
+
+        if (isValid()) {
+            if (maxTime != null && !time.equals(maxTime) && time.isAfter(maxTime)) {
+                setValid(false);
+                if (minTime != null) {
+                    return ValidationResult.INVALID_OUT_OF_RANGE;
+                }
+                else {
+                    return ValidationResult.INVALID_MAX_DATE;
                 }
             }
         }
