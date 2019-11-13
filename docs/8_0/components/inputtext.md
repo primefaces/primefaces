@@ -15,7 +15,7 @@ InputText is an extension to standard inputText with skinning capabilities.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -61,7 +61,7 @@ tabindex | null | Integer | Position of the input element in the tabbing order.
 title | null | String | Advisory tooltip informaton.
 type | text | String | Input field type.
 counter | null | String | Id of the label component to display remaining and entered characters.
-counterTemplate | {0} | String | Template text to display in counter, default value is "{0}".
+counterTemplate | {0} | String | Template text to display in counter. Placeholders: {0} = remaining chars, {1} = length, {2} = maxlength.
 
 ## Getting Started with InputText
 InputText usage is same as standard inputText;
@@ -78,17 +78,17 @@ public class Bean {
 ## Client Side API
 Widget: _PrimeFaces.widget.InputText_
 
-| Method | Params | Return Type | Description | 
-| --- | --- | --- | --- | 
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
 enable() | - | void | Enables the input field.
 disable() | - | void | Disables the input field.
 
 ## Ajax Behavior Events
 
-The following AJAX behavior events are available for this component. If no event is specific the default event is called.  
-  
-**Default Event:** valueChange  
-**Available Events:** blur, change, click, dblclick, focus, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, select, valueChange  
+The following AJAX behavior events are available for this component. If no event is specific the default event is called.
+
+**Default Event:** valueChange
+**Available Events:** blur, change, click, dblclick, focus, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, select, valueChange
 
 ```xhtml
 <p:ajax event="valueChange" listener="#{bean.handlevalueChange}" update="msgs" />

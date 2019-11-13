@@ -16,7 +16,7 @@ characters counter and theming features.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -61,7 +61,7 @@ title | null | String | Advisory tooltip informaton.
 autoResize | true | Boolean | Specifies auto growing when being typed.
 maxlength | null | Integer | Maximum number of characters that may be entered in this field.
 counter | null | String | Id of the output component to display remaining chars.
-counterTemplate | {0} | String | Template text to display in counter.
+counterTemplate | {0} | String | Template text to display in counter. Placeholders: {0} = remaining chars, {1} = length, {2} = maxlength.
 completeMethod | null | MethodExpr | Method to provide suggestions.
 minQueryLength |3 | Integer | Number of characters to be typed to run a query.
 queryDelay | 700 | Integer | Delay in ms before sending each query.
@@ -124,8 +124,8 @@ public class AutoCompleteBean {
 InputTextarea renders a textarea element which _style_ and _styleClass_ options apply. Following is the
 list of structural style classes;
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 .ui-inputtextarea | Textarea element.
 .ui-inputfield | Textarea element.
 .ui-autocomplete-panel | Overlay for suggestions.
@@ -136,10 +136,10 @@ As skinning style classes are global, see the main theming section for more info
 
 ## Ajax Behavior Events
 
-The following AJAX behavior events are available for this component. If no event is specific the default event is called.  
-  
-**Default Event:** valueChange  
-**Available Events:** blur, change, click, dblclick, focus, itemSelect, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, select, valueChange  
+The following AJAX behavior events are available for this component. If no event is specific the default event is called.
+
+**Default Event:** valueChange
+**Available Events:** blur, change, click, dblclick, focus, itemSelect, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, select, valueChange
 
 ```xhtml
 <p:ajax event="valueChange" listener="#{bean.handlevalueChange}" update="msgs" />

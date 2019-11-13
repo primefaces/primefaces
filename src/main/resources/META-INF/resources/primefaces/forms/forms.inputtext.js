@@ -7,7 +7,7 @@ PrimeFaces.widget.InputText = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
 
         PrimeFaces.skinInput(this.jq);
-        
+
         //Counter
         if(this.cfg.counter) {
             this.counter = this.cfg.counter ? $(PrimeFaces.escapeClientId(this.cfg.counter)) : null;
@@ -30,7 +30,7 @@ PrimeFaces.widget.InputText = PrimeFaces.widget.BaseWidget.extend({
     enable: function() {
         this.jq.prop('disabled', false).removeClass('ui-state-disabled');
     },
-    
+
     updateCounter: function() {
         var value = this.normalizeNewlines(this.jq.val()),
         length = value.length;
@@ -41,8 +41,10 @@ PrimeFaces.widget.InputText = PrimeFaces.widget.BaseWidget.extend({
                 remaining = 0;
             }
 
-            var counterText = this.cfg.counterTemplate.replace('{0}', remaining);
-            counterText = counterText.replace('{1}', length);
+            var counterText = this.cfg.counterTemplate
+                    .replace('{0}', remaining)
+                    .replace('{1}', length)
+                    .replace('{2}', this.cfg.maxlength);
 
             this.counter.text(counterText);
         }

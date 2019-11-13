@@ -83,8 +83,10 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                 remaining = 0;
             }
 
-            var counterText = this.cfg.counterTemplate.replace('{0}', remaining);
-            counterText = counterText.replace('{1}', length);
+            var counterText = this.cfg.counterTemplate
+                    .replace('{0}', remaining)
+                    .replace('{1}', length)
+                    .replace('{2}', this.cfg.maxlength);
 
             this.counter.text(counterText);
         }
@@ -371,9 +373,9 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
             'width': this.jq.innerWidth(),
             'visibility': 'hidden'
         }).show();
-        
+
         this.alignPanel();
-        
+
         this.panel.css('visibility', '');
     },
 
