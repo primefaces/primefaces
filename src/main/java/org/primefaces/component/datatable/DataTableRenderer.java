@@ -52,6 +52,7 @@ import org.primefaces.component.summaryrow.SummaryRow;
 import org.primefaces.event.data.PostRenderEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.FilterMeta;
+import org.primefaces.model.MatchMode;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.DataRenderer;
@@ -124,6 +125,7 @@ public class DataTableRenderer extends DataRenderer {
                         new FilterMeta(
                             column,
                             column.getValueExpression(DataTable.PropertyKeys.filterBy.toString()),
+                            MatchMode.byName(column.getFilterMatchMode()),
                             filterState.getFilterValue()));
                 }
             }

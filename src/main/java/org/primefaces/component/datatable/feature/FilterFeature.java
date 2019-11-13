@@ -47,39 +47,28 @@ import org.primefaces.component.datatable.TableState;
 import org.primefaces.component.row.Row;
 import org.primefaces.event.data.PostFilterEvent;
 import org.primefaces.model.FilterMeta;
+import org.primefaces.model.MatchMode;
 import org.primefaces.model.filter.*;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
 
 public class FilterFeature implements DataTableFeature {
 
-    private static final String STARTS_WITH_MATCH_MODE = "startsWith";
-    private static final String ENDS_WITH_MATCH_MODE = "endsWith";
-    private static final String CONTAINS_MATCH_MODE = "contains";
-    private static final String EXACT_MATCH_MODE = "exact";
-    private static final String LESS_THAN_MODE = "lt";
-    private static final String LESS_THAN_EQUALS_MODE = "lte";
-    private static final String GREATER_THAN_MODE = "gt";
-    private static final String GREATER_THAN_EQUALS_MODE = "gte";
-    private static final String EQUALS_MODE = "equals";
-    private static final String IN_MODE = "in";
-    private static final String GLOBAL_MODE = "global";
-
-    private static final Map<String, FilterConstraint> FILTER_CONSTRAINTS;
+    private static final Map<MatchMode, FilterConstraint> FILTER_CONSTRAINTS;
 
     static {
         FILTER_CONSTRAINTS = new HashMap<>();
-        FILTER_CONSTRAINTS.put(STARTS_WITH_MATCH_MODE, new StartsWithFilterConstraint());
-        FILTER_CONSTRAINTS.put(ENDS_WITH_MATCH_MODE, new EndsWithFilterConstraint());
-        FILTER_CONSTRAINTS.put(CONTAINS_MATCH_MODE, new ContainsFilterConstraint());
-        FILTER_CONSTRAINTS.put(EXACT_MATCH_MODE, new ExactFilterConstraint());
-        FILTER_CONSTRAINTS.put(LESS_THAN_MODE, new LessThanFilterConstraint());
-        FILTER_CONSTRAINTS.put(LESS_THAN_EQUALS_MODE, new LessThanEqualsFilterConstraint());
-        FILTER_CONSTRAINTS.put(GREATER_THAN_MODE, new GreaterThanFilterConstraint());
-        FILTER_CONSTRAINTS.put(GREATER_THAN_EQUALS_MODE, new GreaterThanEqualsFilterConstraint());
-        FILTER_CONSTRAINTS.put(EQUALS_MODE, new EqualsFilterConstraint());
-        FILTER_CONSTRAINTS.put(IN_MODE, new InFilterConstraint());
-        FILTER_CONSTRAINTS.put(GLOBAL_MODE, new GlobalFilterConstraint());
+        FILTER_CONSTRAINTS.put(MatchMode.STARTS_WITH, new StartsWithFilterConstraint());
+        FILTER_CONSTRAINTS.put(MatchMode.ENDS_WITH, new EndsWithFilterConstraint());
+        FILTER_CONSTRAINTS.put(MatchMode.CONTAINS, new ContainsFilterConstraint());
+        FILTER_CONSTRAINTS.put(MatchMode.EXACT, new ExactFilterConstraint());
+        FILTER_CONSTRAINTS.put(MatchMode.LESS_THAN, new LessThanFilterConstraint());
+        FILTER_CONSTRAINTS.put(MatchMode.LESS_THAN_EQUALS, new LessThanEqualsFilterConstraint());
+        FILTER_CONSTRAINTS.put(MatchMode.GREATER_THAN, new GreaterThanFilterConstraint());
+        FILTER_CONSTRAINTS.put(MatchMode.GREATER_THAN_EQUALS, new GreaterThanEqualsFilterConstraint());
+        FILTER_CONSTRAINTS.put(MatchMode.EQUALS, new EqualsFilterConstraint());
+        FILTER_CONSTRAINTS.put(MatchMode.IN, new InFilterConstraint());
+        FILTER_CONSTRAINTS.put(MatchMode.GLOBAL, new GlobalFilterConstraint());
     }
 
     private boolean isFilterRequest(FacesContext context, DataTable table) {
@@ -186,7 +175,7 @@ public class FilterFeature implements DataTableFeature {
         List filteredData = new ArrayList();
         Locale filterLocale = table.resolveDataLocale();
         boolean hasGlobalFilter = !LangUtils.isValueBlank(globalFilterValue);
-        GlobalFilterConstraint globalFilterConstraint = (GlobalFilterConstraint) FILTER_CONSTRAINTS.get(GLOBAL_MODE);
+        GlobalFilterConstraint globalFilterConstraint = (GlobalFilterConstraint) FILTER_CONSTRAINTS.get(MatchMode.GLOBAL);
         MethodExpression globalFilterFunction = table.getGlobalFilterFunction();
         ELContext elContext = context.getELContext();
 
@@ -362,7 +351,10 @@ public class FilterFeature implements DataTableFeature {
                                                      ? ((ValueHolder) filterFacet).getLocalValue()
                                                      : params.get(column.getClientId(context) + separator + "filter");
 
-                                filterMetadata.add(new FilterMeta(column, filterVE, filterValue));
+                                filterMetadata.add(new FilterMeta(column,
+                                        filterVE,
+                                        MatchMode.byName(column.getFilterMatchMode()),
+                                        filterValue));
                             }
                         }
                     }
@@ -381,7 +373,10 @@ public class FilterFeature implements DataTableFeature {
                                                           ? ((ValueHolder) filterFacet).getLocalValue()
                                                           : params.get(filterId);
 
-                                    filterMetadata.add(new FilterMeta(dynaColumn, filterVE, filterValue));
+                                    filterMetadata.add(new FilterMeta(dynaColumn,
+                                            filterVE,
+                                            MatchMode.byName(dynaColumn.getFilterMatchMode()),
+                                            filterValue));
                                 }
                             }
                         }
@@ -400,20 +395,26 @@ public class FilterFeature implements DataTableFeature {
                 UIComponent filterFacet = column.getFacet("filter");
                 Object filterValue = null;
                 String filterId;
+                String filterMatchMode = null;
 
                 if (column instanceof Column) {
                     filterId = column.getClientId(context) + separator + "filter";
                     filterValue = ComponentUtils.shouldRenderFacet(filterFacet) ? ((ValueHolder) filterFacet).getLocalValue() : params.get(filterId);
+                    filterMatchMode = column.getFilterMatchMode();
                 }
                 else if (column instanceof DynamicColumn) {
                     DynamicColumn dynamicColumn = (DynamicColumn) column;
                     dynamicColumn.applyModel();
                     filterId = dynamicColumn.getContainerClientId(context) + separator + "filter";
                     filterValue = ComponentUtils.shouldRenderFacet(filterFacet) ? ((ValueHolder) filterFacet).getLocalValue() : params.get(filterId);
+                    filterMatchMode = column.getFilterMatchMode();
                     dynamicColumn.cleanModel();
                 }
 
-                filterMetadata.add(new FilterMeta(column, filterVE, filterValue));
+                filterMetadata.add(new FilterMeta(column,
+                        filterVE,
+                        MatchMode.byName(filterMatchMode),
+                        filterValue));
             }
         }
     }
@@ -436,8 +437,13 @@ public class FilterFeature implements DataTableFeature {
 
     public FilterConstraint getFilterConstraint(UIColumn column) {
         String filterMatchMode = column.getFilterMatchMode();
-        FilterConstraint filterConstraint = FILTER_CONSTRAINTS.get(filterMatchMode);
 
+        MatchMode matchMode = MatchMode.byName(filterMatchMode);
+        if (matchMode == null) {
+            throw new FacesException("Illegal filter match mode:" + filterMatchMode);
+        }
+
+        FilterConstraint filterConstraint = FILTER_CONSTRAINTS.get(matchMode);
         if (filterConstraint == null) {
             throw new FacesException("Illegal filter match mode:" + filterMatchMode);
         }

@@ -30,9 +30,10 @@ public class FilterMeta {
 
     private UIColumn column;
     private ValueExpression filterByVE;
+    private MatchMode filterMatchMode;
     private Object filterValue;
 
-    public FilterMeta(UIColumn column, ValueExpression filterByVE, Object filterValue) {
+    public FilterMeta(UIColumn column, ValueExpression filterByVE, MatchMode filterMatchMode, Object filterValue) {
         this.column = column;
         this.filterByVE = filterByVE;
         this.filterValue = filterValue;
@@ -46,8 +47,13 @@ public class FilterMeta {
         return filterByVE;
     }
 
+    public MatchMode getFilterMatchMode() {
+        return filterMatchMode;
+    }
+
     public Object getFilterValue() {
         return filterValue;
     }
+
 
 }
