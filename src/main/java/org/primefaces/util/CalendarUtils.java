@@ -335,6 +335,16 @@ public class CalendarUtils {
         }
     }
 
+    public static ZoneOffset calculateZoneOffset(Object usertimeZone) {
+        return calculateZoneOffset(usertimeZone, ZoneId.systemDefault());
+    }
+
+    public static ZoneOffset calculateZoneOffset(Object usertimeZone, ZoneId defaultZoneId) {
+        ZoneId zoneId = calculateZoneId(usertimeZone, defaultZoneId);
+        LocalDateTime now = LocalDateTime.now();
+        return zoneId.getRules().getOffset(now);
+    }
+
     private static ZonedDateTime convertDate2ZonedDateTime(Date date, ZoneId zoneId) {
         if (date == null) {
             return null;

@@ -142,6 +142,7 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
         getStateHelper().put(PropertyKeys.var, var);
     }
 
+    @SuppressWarnings("unchecked")
     public TimelineModel<Object, Object> getValue() {
         return (TimelineModel<Object, Object>) getStateHelper().eval(PropertyKeys.value, null);
     }
@@ -571,6 +572,7 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
         getStateHelper().put(PropertyKeys.dropScope, dropScope);
     }
 
+    @Override
     public String getDir() {
         return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
     }
