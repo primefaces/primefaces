@@ -116,8 +116,8 @@
                 this.parseValue(this.options.viewDate) 
                 :
                 ((((this.isMultipleSelection() || this.isRangeSelection()) && parsedDefaultDate instanceof Array) ? parsedDefaultDate[0] : parsedDefaultDate) || this.parseValue(new Date()));
-            this.options.minDate = this.parseOptionValue(this.options.minDate);
-            this.options.maxDate = this.parseOptionValue(this.options.maxDate);
+            this.options.minDate = this.parseMinMaxValue(this.options.minDate);
+            this.options.maxDate = this.parseMinMaxValue(this.options.maxDate);
             this.ticksTo1970 = (((1970 - 1) * 365 + Math.floor(1970 / 4) - Math.floor(1970 / 100) + Math.floor(1970 / 400)) * 24 * 60 * 60 * 10000000);
             
             if (this.options.yearRange === null && this.options.yearNavigator) {
@@ -139,7 +139,15 @@
             
             return option;
         },
-        
+
+        parseMinMaxValue: function(option) {
+            if (option && typeof option === 'string') {
+                return this.parseDateTime(option);
+            }
+            
+            return option;
+        },
+
         parseValue: function(option) {
             if (option && typeof option === 'string') {
                 return this.parseValueFromString(option);

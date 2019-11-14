@@ -40,6 +40,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.Temporal;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -125,6 +126,8 @@ public class DatePickerTest {
         when(renderer.convertToJava8DateTimeAPI(eq(context), eq(datePicker), any(), any())).thenCallRealMethod();
         when(renderer.convertToLegacyDateAPI(eq(context), eq(datePicker), any())).thenCallRealMethod();
         when(datePicker.validateDateValue(eq(context), any())).thenCallRealMethod();
+        when(datePicker.validateDateValue(eq(context), any(), any())).thenCallRealMethod();
+        when(datePicker.validateTimeOnlyValue(eq(context), any())).thenCallRealMethod();
         when(datePicker.validateValueInternal(eq(context), any())).thenCallRealMethod();
 
         externalContext = mock(ExternalContext.class);
@@ -576,6 +579,284 @@ public class DatePickerTest {
     }
 
     @Test
+    public void validateValueInternal_minTime_LocalTime() {
+        when(datePicker.isTimeOnly()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMindate()).thenReturn(LocalTime.of(8, 35));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalTime.of(17, 24));
+        assertTrue(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.OK, validationResult);
+    }
+
+    @Test
+    public void validateValueInternal_minTime_LocalTime_wrong() {
+        when(datePicker.isTimeOnly()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMindate()).thenReturn(LocalTime.of(17, 24));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalTime.of(8, 35));
+        assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_MIN_DATE, validationResult);
+    }
+
+    @Test
+    public void validateValueInternal_minTime_String() {
+        setupValues(null, Locale.ENGLISH);
+        when(datePicker.isTimeOnly()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMindate()).thenReturn("08:35");
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalTime.of(17, 24));
+        assertTrue(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.OK, validationResult);
+    }
+
+    @Test
+    public void validateValueInternal_minTime_String_wrong() {
+        setupValues(null, Locale.ENGLISH);
+        when(datePicker.isTimeOnly()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMindate()).thenReturn("12:00");
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalTime.of(11, 59));
+        assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_MIN_DATE, validationResult);
+    }
+
+    @Test
+    public void validateValueInternal_minTime_Date_wrong() {
+        setupValues(null, Locale.ENGLISH);
+        java.util.Calendar cal = GregorianCalendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 12);
+        cal.set(Calendar.MINUTE, 00);
+        cal.set(Calendar.SECOND, 00);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        when(datePicker.isTimeOnly()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMindate()).thenReturn(cal.getTime());
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalTime.of(8, 0));
+        assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_MIN_DATE, validationResult);
+    }
+
+    @Test
+    public void validateValueInternal_maxTime_LocalTime() {
+        when(datePicker.isTimeOnly()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMaxdate()).thenReturn(LocalTime.of(18, 00));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalTime.of(15, 00));
+        assertTrue(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.OK, validationResult);
+    }
+
+    @Test
+    public void validateValueInternal_maxTime_LocalTime_wrong() {
+        when(datePicker.isTimeOnly()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMaxdate()).thenReturn(LocalTime.of(12, 00));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalTime.of(15, 00));
+        assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_MAX_DATE, validationResult);
+    }
+
+    @Test
+    public void validateValueInternal_maxTime_String() {
+        setupValues(null, Locale.ENGLISH);
+        when(datePicker.isTimeOnly()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMaxdate()).thenReturn("20:00");
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalTime.of(15, 00));
+        assertTrue(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.OK, validationResult);
+    }
+
+    @Test
+    public void validateValueInternal_maxTime_String_wrong() {
+        setupValues(null, Locale.ENGLISH);
+        when(datePicker.isTimeOnly()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMaxdate()).thenReturn("15:00");
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalTime.of(18, 00));
+        assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_MAX_DATE, validationResult);
+    }
+
+    @Test
+    public void validateValueInternal_maxTime_Date_wrong() {
+        setupValues(null, Locale.ENGLISH);
+        java.util.Calendar cal = GregorianCalendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 12);
+        cal.set(Calendar.MINUTE, 00);
+        cal.set(Calendar.SECOND, 00);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        when(datePicker.isTimeOnly()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMaxdate()).thenReturn(cal.getTime());
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalTime.of(14, 00));
+        assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_MAX_DATE, validationResult);
+    }
+
+    @Test
+    public void validateValueInternal_minAndMaxTime_LocalTime_wrong() {
+        when(datePicker.isTimeOnly()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMindate()).thenReturn(LocalTime.of(10, 0));
+        when(datePicker.getMaxdate()).thenReturn(LocalTime.of(11, 59));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalTime.of(8, 00));
+        assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_OUT_OF_RANGE, validationResult);
+    }
+
+    @Test
+    public void validateValueInternal_minDateTime_LocalDateTime() {
+        when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMindate()).thenReturn(LocalDateTime.of(2019, 12, 31, 23, 59));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDateTime.of(2020, 1, 1, 8, 35));
+        assertTrue(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.OK, validationResult);
+    }
+
+    @Test
+    public void validateValueInternal_minDate_LocalDateTime() {
+        setupValues(null, Locale.ENGLISH);
+        when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMindate()).thenReturn(LocalDate.of(2019, 12, 31));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDateTime.of(2020, 1, 1, 8, 35));
+        assertTrue(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.OK, validationResult);
+    }
+
+    @Test
+    public void validateValueInternal_minDateTime_LocalDateTime_wrong() {
+        when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMindate()).thenReturn(LocalDateTime.of(2019, 12, 31, 23, 59));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDateTime.of(2019, 11, 12, 17, 24));
+        assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_MIN_DATE, validationResult);
+    }
+
+    @Test
+    public void validateValueInternal_minDate_LocalDateTime_wrong() {
+        setupValues(null, Locale.ENGLISH);
+        when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMindate()).thenReturn(LocalDate.of(2019, 12, 31));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDateTime.of(2019, 11, 12, 17, 24));
+        assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_MIN_DATE, validationResult);
+    }
+
+    @Test
+    public void validateValueInternal_minDateTime_String() {
+        setupValues(null, Locale.ENGLISH);
+        when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMindate()).thenReturn("1/1/19 00:00");
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDateTime.of(2019, 1, 1, 02, 00));
+        assertTrue(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.OK, validationResult);
+    }
+
+    @Test
+    public void validateValueInternal_minDateTime_String_wrong() {
+        setupValues(null, Locale.ENGLISH);
+        when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMindate()).thenReturn("1/1/19 12:00");
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDateTime.of(2019, 1, 1, 11, 59));
+        assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_MIN_DATE, validationResult);
+    }
+
+    @Test
+    public void validateValueInternal_minDateTime_Date_wrong() {
+        setupValues(null, Locale.ENGLISH);
+        java.util.Calendar cal = GregorianCalendar.getInstance();
+        cal.set(2019, 0, 1);
+        cal.set(Calendar.HOUR_OF_DAY, 12);
+        cal.set(Calendar.MINUTE, 00);
+        cal.set(Calendar.SECOND, 00);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMindate()).thenReturn(cal.getTime());
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDateTime.of(2018, 1, 1, 12, 01));
+        assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_MIN_DATE, validationResult);
+    }
+
+    @Test
+    public void validateValueInternal_maxDateTime_LocalDateTime() {
+        when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMaxdate()).thenReturn(LocalDateTime.of(2019, 7, 1, 15, 00));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDateTime.of(2019, 7, 1, 11, 00));
+        assertTrue(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.OK, validationResult);
+    }
+
+    @Test
+    public void validateValueInternal_maxDate_LocalDateTime() {
+        setupValues(null, Locale.ENGLISH);
+        when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMaxdate()).thenReturn(LocalDate.of(2019, 7, 1));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDateTime.of(2019, 7, 1, 11, 00));
+        assertTrue(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.OK, validationResult);
+    }
+
+    @Test
+    public void validateValueInternal_maxDateTime_LocalDateTime_wrong() {
+        when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMaxdate()).thenReturn(LocalDateTime.of(2019, 7, 1, 15, 00));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDateTime.of(2019, 7, 2, 14, 59));
+        assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_MAX_DATE, validationResult);
+    }
+
+    @Test
+    public void validateValueInternal_maxDate_LocalDateTime_wrong() {
+        setupValues(null, Locale.ENGLISH);
+        when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMaxdate()).thenReturn(LocalDate.of(2019, 7, 1));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDateTime.of(2019, 7, 2, 14, 59));
+        assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_MAX_DATE, validationResult);
+    }
+
+    @Test
+    public void validateValueInternal_maxDateTime_String() {
+        setupValues(null, Locale.ENGLISH);
+        when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMaxdate()).thenReturn("12/1/19 20:00");
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDateTime.of(2019, 11, 30, 16, 00));
+        assertTrue(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.OK, validationResult);
+    }
+
+    @Test
+    public void validateValueInternal_maxDateTime_String_wrong() {
+        setupValues(null, Locale.ENGLISH);
+        when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMaxdate()).thenReturn("12/1/19 15:00");
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDateTime.of(2019, 12, 31, 18, 00));
+        assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_MAX_DATE, validationResult);
+    }
+
+    @Test
+    public void validateValueInternal_maxDateTime_Date_wrong() {
+        setupValues(null, Locale.ENGLISH);
+        java.util.Calendar cal = GregorianCalendar.getInstance();
+        cal.set(2019, 8, 17);
+        cal.set(Calendar.HOUR_OF_DAY, 12);
+        cal.set(Calendar.MINUTE, 00);
+        cal.set(Calendar.SECOND, 00);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMaxdate()).thenReturn(cal.getTime());
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDateTime.of(2019, 9, 17, 12, 05));
+        assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_MAX_DATE, validationResult);
+    }
+
+    @Test
+    public void validateValueInternal_minAndMaxDateTime_LocalDateTime_wrong() {
+        when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMindate()).thenReturn(LocalDateTime.of(2019, 11, 12, 10, 0));
+        when(datePicker.getMaxdate()).thenReturn(LocalDateTime.of(2019, 11, 12, 11, 59));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDateTime.of(2019, 11, 12, 8, 00));
+        assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_OUT_OF_RANGE, validationResult);
+    }
+
+    @Test
     public void calculatePatternDefault() {
         setupValues(null, Locale.ENGLISH);
         assertEquals(datePicker.calculatePattern(), "M/d/yy");
@@ -592,7 +873,7 @@ public class DatePickerTest {
     public void calculatePatternWithSeconds() {
         setupValues(null, Locale.ENGLISH);
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
-		when(datePicker.isShowSeconds()).thenReturn(Boolean.TRUE);
+        when(datePicker.isShowSeconds()).thenReturn(Boolean.TRUE);
         assertEquals(datePicker.calculatePattern(), "M/d/yy HH:mm:ss");
     }
 
@@ -600,8 +881,8 @@ public class DatePickerTest {
     public void calculatePatternWithSecondsAndAmPm() {
         setupValues(null, Locale.ENGLISH);
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
-		when(datePicker.isShowSeconds()).thenReturn(Boolean.TRUE);
-		when(datePicker.getHourFormat()).thenReturn("12");
+        when(datePicker.isShowSeconds()).thenReturn(Boolean.TRUE);
+        when(datePicker.getHourFormat()).thenReturn("12");
         assertEquals(datePicker.calculatePattern(), "M/d/yy KK:mm:ss a");
     }
 
@@ -609,7 +890,7 @@ public class DatePickerTest {
     public void calculatePatternWithAmPm() {
         setupValues(null, Locale.ENGLISH);
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
-		when(datePicker.getHourFormat()).thenReturn("12");
+        when(datePicker.getHourFormat()).thenReturn("12");
         assertEquals(datePicker.calculatePattern(), "M/d/yy KK:mm a");
     }
 
