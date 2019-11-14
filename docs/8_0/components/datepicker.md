@@ -64,7 +64,7 @@ ajax selection and more.
 | view | date | String | Defines the view mode, valid values are "date" for datepicker and "month" for month picker.
 | touchUI | false | Boolean | Activates touch friendly mode
 | dateTemplate | null | Function | Javascript function that takes a date object and returns the content for the date cell.
-| appendTo | null | String | Appends the dialog to the element defined by the given search expression.
+| appendTo | @(body) | String | Appends the dialog to the element defined by the given search expression.
 | triggerButtonIcon | null | String | Icon of the datepicker element that toggles the visibility in popup mode.
 | disabledDates | null | List<java.time.LocalDate>, List<java.util.Date> (deprecated) | List of dates that should be disabled.
 | disabledDays | null | List<int> | List of week day indexes that should be disabled.
