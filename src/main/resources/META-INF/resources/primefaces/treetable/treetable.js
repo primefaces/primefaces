@@ -323,20 +323,21 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 column.removeClass('ui-state-hover');
         })
         .on('click.treeTable', function(e) {
-            //Check if event target is not a clickable element in header content
-            if($(e.target).is('th,span:not(.ui-c)')) {
-                PrimeFaces.clearSelection();
-
-                var columnHeader = $(this),
-                sortOrder = columnHeader.data('sortorder')||'DESCENDING';
-
-                if(sortOrder === 'ASCENDING')
-                    sortOrder = 'DESCENDING';
-                else if(sortOrder === 'DESCENDING')
-                    sortOrder = 'ASCENDING';
-
-                $this.sort(columnHeader, sortOrder);
+            if(!$this.shouldSort(e, this)) {
+                return;
             }
+
+            PrimeFaces.clearSelection();
+
+            var columnHeader = $(this),
+            sortOrder = columnHeader.data('sortorder')||'DESCENDING';
+
+            if(sortOrder === 'ASCENDING')
+                sortOrder = 'DESCENDING';
+            else if(sortOrder === 'DESCENDING')
+                sortOrder = 'ASCENDING';
+
+            $this.sort(columnHeader, sortOrder);
         });
     },
 
@@ -1662,5 +1663,18 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 this.scrollFooterBox.css('margin-right', this.marginRight);
             }
         }
+    },
+
+    shouldSort: function(event, column) {
+        if(this.isEmpty()) {
+            return false;
+        }
+
+        var target = $(event.target);
+        if(target.closest('.ui-column-customfilter', column).length) {
+            return false;
+        }
+
+        return target.is('th,span');
     }
 });
