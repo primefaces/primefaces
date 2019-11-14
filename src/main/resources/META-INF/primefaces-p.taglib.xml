@@ -26327,12 +26327,21 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Target time zone to convert start / end dates for displaying. This time zone is the time zone the user would like to see dates in UI.
-                The attribute can be either a String or TimeZone object or null. If null, timeZone defaults to the server's time zone the application is running in.]]>
+                <![CDATA[Target time zone to convert start / end dates of TimelineEvent's in server side. The attribute can be either a String or TimeZone object or null.
+                If null, timeZone defaults to the server's time zone the application is running in.]]>
             </description>
             <name>timeZone</name>
             <required>false</required>
             <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Time zone the user would like to see dates in UI. The attribute can be either a String or TimeZone object or null.
+                If null, clientTimeZone defaults to browser's time zone.]]>
+            </description>
+            <name>clientTimeZone</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>

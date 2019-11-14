@@ -27,7 +27,8 @@ var | null | String | Name of the request-scoped variable for underlaying object
 value | null | TimelineModel | An instance of TimelineModel representing the backing model.
 varGroup | null | String | Name of the request-scoped variable for underlaying object in the TimelineGroup for each iteration.
 locale | view Locale | Object | User locale for i18n localization messages. The attribute can be either a String or java.util.Locale object.
-timeZone | null | Object | Target time zone to convert start / end dates for displaying. This time zone is the time zone the user would like to see dates in UI. The attribute can be either a String or TimeZone object or null. If null, timeZone defaults to the server's time zone the application is running in.
+timeZone | null | Object | Target time zone to convert start / end dates of TimelineEvent's in server side. The attribute can be either a String or TimeZone object or null. If null, timeZone defaults to the server's time zone the application is running in.
+clientTimeZone | null | Object | Time zone the user would like to see dates in UI. The attribute can be either a String or TimeZone object or null. If null, clientTimeZone defaults to browser's time zone.
 height | null | String | The height of the timeline in pixels or as a percentage. When height is undefined or null, the height of the timeline is automatically adjusted to fit the contents. It is possible to set a maximum height using option maxHeight to prevent the timeline from getting too high in case of automatically calculated height.
 maxHeight | null | Integer | Specifies the maximum height for the Timeline in pixels.
 minHeight | 0 | Integer | Specifies a minimum height for the Timeline in pixels.

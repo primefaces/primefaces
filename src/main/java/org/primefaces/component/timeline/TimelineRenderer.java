@@ -26,6 +26,7 @@ package org.primefaces.component.timeline;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -189,6 +190,15 @@ public class TimelineRenderer extends CoreRenderer {
 
         // encode options
         writer.write("autoResize: " + timeline.isResponsive());
+        if (timeline.getClientTimeZone() != null) {
+            ZoneOffset zoneOffset = CalendarUtils.calculateZoneOffset(timeline.getClientTimeZone());
+            if (ZoneOffset.UTC.equals(zoneOffset)) {
+                wb.callback("moment", "function(date)", "return vis.moment(date).utc();");
+            }
+            else {
+                wb.callback("moment", "function(date)", "return vis.moment(date).utcOffset('" + EscapeUtils.forJavaScript(zoneOffset.toString()) + "');");
+            }
+        }
         if (timeline.getHeight() != null) {
             wb.attr("height", timeline.getHeight());
         }
