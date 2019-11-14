@@ -24,6 +24,7 @@
 package org.primefaces.component.datascroller;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -220,7 +221,7 @@ public class DataScrollerRenderer extends CoreRenderer {
         LazyDataModel lazyModel = (LazyDataModel) ds.getValue();
 
         if (lazyModel != null) {
-            List<?> data = lazyModel.load(start, size, null, null, null);
+            List<?> data = lazyModel.load(start, size, null, null, Collections.emptyList());
             lazyModel.setPageSize(size);
             lazyModel.setWrappedData(data);
 

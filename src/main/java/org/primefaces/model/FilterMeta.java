@@ -28,14 +28,22 @@ import org.primefaces.component.api.UIColumn;
 
 public class FilterMeta {
 
+    private String filterField;
     private UIColumn column;
     private ValueExpression filterByVE;
+    private MatchMode filterMatchMode;
     private Object filterValue;
 
-    public FilterMeta(UIColumn column, ValueExpression filterByVE, Object filterValue) {
+    public FilterMeta(String filterField, UIColumn column, ValueExpression filterByVE, MatchMode filterMatchMode, Object filterValue) {
+        this.filterField = filterField;
         this.column = column;
         this.filterByVE = filterByVE;
+        this.filterMatchMode = filterMatchMode;
         this.filterValue = filterValue;
+    }
+
+    public String getFilterField() {
+        return filterField;
     }
 
     public UIColumn getColumn() {
@@ -46,8 +54,13 @@ public class FilterMeta {
         return filterByVE;
     }
 
+    public MatchMode getFilterMatchMode() {
+        return filterMatchMode;
+    }
+
     public Object getFilterValue() {
         return filterValue;
     }
+
 
 }

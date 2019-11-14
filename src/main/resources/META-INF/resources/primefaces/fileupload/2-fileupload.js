@@ -168,7 +168,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
     addFileToRow: function(file, data) {
         var $this = this,
             row = $('<div class="ui-fileupload-row"></div>').append('<div class="ui-fileupload-preview"></td>')
-                .append('<div>' + PrimeFaces.escapeHTML(file.name) + '</div>')
+                .append('<div class="ui-fileupload-filename">' + PrimeFaces.escapeHTML(file.name) + '</div>')
                 .append('<div>' + this.formatSize(file.size) + '</div>')
                 .append('<div class="ui-fileupload-progress"></div>')
                 .append('<div><button class="ui-fileupload-cancel ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-icon ui-icon ui-icon-close"></span><span class="ui-button-text">ui-button</span></button></div>')

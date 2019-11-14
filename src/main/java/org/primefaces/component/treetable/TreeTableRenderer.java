@@ -1197,20 +1197,27 @@ public class TreeTableRenderer extends DataRenderer {
                 ValueExpression filterByVE = columnFilterByVE;
                 Object filterValue = null;
                 String filterId = null;
+                String filterMatchMode = null;
 
                 if (column instanceof Column) {
                     filterId = column.getClientId(context) + separator + "filter";
                     filterValue = (filterFacet == null) ? params.get(filterId) : ((ValueHolder) filterFacet).getLocalValue();
+                    filterMatchMode = column.getFilterMatchMode();
                 }
                 else if (column instanceof DynamicColumn) {
                     DynamicColumn dynamicColumn = (DynamicColumn) column;
                     dynamicColumn.applyModel();
                     filterId = dynamicColumn.getContainerClientId(context) + separator + "filter";
                     filterValue = (filterFacet == null) ? params.get(filterId) : ((ValueHolder) filterFacet).getLocalValue();
+                    filterMatchMode = column.getFilterMatchMode();
                     dynamicColumn.cleanModel();
                 }
 
-                filterMetadata.add(new FilterMeta(column, filterByVE, filterValue));
+                filterMetadata.add(new FilterMeta(null,
+                        column,
+                        filterByVE,
+                        MatchMode.byName(filterMatchMode),
+                        filterValue));
             }
         }
 

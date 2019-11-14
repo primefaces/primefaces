@@ -24,6 +24,7 @@
 package org.primefaces.component.datalist;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -116,7 +117,7 @@ public class DataList extends DataListBase {
         if (model instanceof LazyDataModel) {
             LazyDataModel<?> lazyModel = (LazyDataModel) model;
 
-            List<?> data = lazyModel.load(getFirst(), getRows(), null, null, null);
+            List<?> data = lazyModel.load(getFirst(), getRows(), null, null, Collections.emptyList());
 
             lazyModel.setPageSize(getRows());
             lazyModel.setWrappedData(data);
@@ -198,6 +199,18 @@ public class DataList extends DataListBase {
                 process(context, descriptionFacet, phaseId);
             }
         });
+    }
+
+    @Override
+    protected boolean shouldSkipChildren(FacesContext context) {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String paramValue = params.get(Constants.RequestParams.SKIP_CHILDREN_PARAM);
+        if (paramValue != null && Boolean.parseBoolean(paramValue) == false) {
+            return false;
+        }
+        else {
+            return params.containsKey(getClientId(context) + "_skipChildren");
+        }
     }
 
     public void forEachRow(Consumer<IterationStatus> callback) {

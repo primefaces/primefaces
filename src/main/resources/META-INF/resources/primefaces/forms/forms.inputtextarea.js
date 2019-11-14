@@ -64,7 +64,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         var _self = this;
 
         this.jq.on('keyup.inputtextarea-maxlength', function(e) {
-            var value = _self.normalizeNewlines(_self.jq.val()),
+            var value = _self.jq.val(),
             length = value.length;
 
             if(length > _self.cfg.maxlength) {
@@ -74,7 +74,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     updateCounter: function() {
-        var value = this.normalizeNewlines(this.jq.val()),
+        var value = this.jq.val(),
         length = value.length;
 
         if(this.counter) {
@@ -83,15 +83,13 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                 remaining = 0;
             }
 
-            var counterText = this.cfg.counterTemplate.replace('{0}', remaining);
-            counterText = counterText.replace('{1}', length);
+            var counterText = this.cfg.counterTemplate
+                    .replace('{0}', remaining)
+                    .replace('{1}', length)
+                    .replace('{2}', this.cfg.maxlength);
 
             this.counter.text(counterText);
         }
-    },
-
-    normalizeNewlines: function(text) {
-        return text.replace(/(\r\n|\r|\n)/g, '\r\n');
     },
 
     setupAutoComplete: function() {
@@ -371,9 +369,9 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
             'width': this.jq.innerWidth(),
             'visibility': 'hidden'
         }).show();
-        
+
         this.alignPanel();
-        
+
         this.panel.css('visibility', '');
     },
 
