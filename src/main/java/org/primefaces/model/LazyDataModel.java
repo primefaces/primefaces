@@ -132,6 +132,7 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
         this.rowCount = rowCount;
     }
 
+    @Deprecated
     public List<T> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 
         List<SortMeta> sortMeta;
@@ -143,6 +144,7 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
             sortMeta.add(new SortMeta(null, sortField, sortOrder == null ? SortOrder.UNSORTED : sortOrder, null));
         }
 
+        // call the old methods for backward compatibility
         return load(first, pageSize, sortMeta, filters);
     }
 
@@ -160,10 +162,22 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
         return load(first, pageSize, sortMeta, filterMeta);
     }
 
+    @Deprecated
     public List<T> load(int first, int pageSize, List<SortMeta> sortMeta, Map<String, Object> filters) {
         throw new UnsupportedOperationException("Lazy loading is not implemented.");
     }
 
+    /**
+     * Loads the data for the given parameters.
+     *
+     * NOTE: Thats the only method that should be implemented by the user. Other #load methods are for backward compatibility.
+     *
+     * @param first the first entry
+     * @param pageSize the page size
+     * @param sortMeta a list with all sort informations
+     * @param filterMeta a list with all filter informations
+     * @return the data
+     */
     public List<T> load(int first, int pageSize, List<SortMeta> sortMeta, List<FilterMeta> filterMeta) {
 
         Map<String, Object> filters;
@@ -206,12 +220,50 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
         return new LazyDataModelIterator<>(this);
     }
 
+    @Deprecated
     public Iterator<T> iterator(String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-        return new LazyDataModelIterator<>(this, sortField, sortOrder, filters);
+        List<SortMeta> sortMeta;
+        if (sortField == null) {
+            sortMeta = Collections.emptyList();
+        }
+        else {
+            sortMeta = new ArrayList<>(1);
+            sortMeta.add(new SortMeta(null, sortField, sortOrder == null ? SortOrder.UNSORTED : sortOrder, null));
+        }
+
+        List<FilterMeta> filterMeta;
+        if (filters == null) {
+            filterMeta = Collections.emptyList();
+        }
+        else {
+            filterMeta = new ArrayList<>();
+            for (Map.Entry<String, Object> filter : filters.entrySet()) {
+                filterMeta.add(
+                    new FilterMeta(filter.getKey(), null, null, null, filter.getValue()));
+            }
+        }
+
+        return iterator(sortMeta, filterMeta);
     }
 
-    public Iterator<T> iterator(List<SortMeta> multiSortMeta, Map<String, Object> filters) {
-        return new LazyDataModelIterator<>(this, multiSortMeta, filters);
+    @Deprecated
+    public Iterator<T> iterator(List<SortMeta> sortMeta, Map<String, Object> filters) {
+        List<FilterMeta> filterMeta;
+        if (filters == null) {
+            filterMeta = Collections.emptyList();
+        }
+        else {
+            filterMeta = new ArrayList<>();
+            for (Map.Entry<String, Object> filter : filters.entrySet()) {
+                filterMeta.add(
+                    new FilterMeta(filter.getKey(), null, null, null, filter.getValue()));
+            }
+        }
+
+        return iterator(sortMeta, filterMeta);
     }
 
+    public Iterator<T> iterator(List<SortMeta> sortMeta, List<FilterMeta> filterMeta) {
+        return new LazyDataModelIterator<>(this, sortMeta, filterMeta);
+    }
 }

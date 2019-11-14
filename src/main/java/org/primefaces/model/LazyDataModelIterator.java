@@ -23,7 +23,6 @@
  */
 package org.primefaces.model;
 
-import javax.validation.constraints.Null;
 import java.util.*;
 
 public class LazyDataModelIterator<T> implements Iterator<T> {
@@ -32,34 +31,25 @@ public class LazyDataModelIterator<T> implements Iterator<T> {
     private int index;
     private Map<Integer, List<T>> pages;
 
-    @Null
-    private String sortField;
-    @Null
-    private SortOrder sortOrder;
-
-    @Null
-    private List<SortMeta> multiSortMeta;
-
-    @Null
-    private Map<String, Object> filters;
+    private List<SortMeta> sortMeta;
+    private List<FilterMeta> filterMeta;
 
     LazyDataModelIterator(LazyDataModel<T> model) {
         this.model = model;
         this.index = -1;
-        this.pages = new HashMap<Integer, List<T>>();
+        this.pages = new HashMap<>();
+        this.sortMeta = Collections.emptyList();
+        this.filterMeta = Collections.emptyList();
     }
 
-    LazyDataModelIterator(LazyDataModel<T> model, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+    LazyDataModelIterator(LazyDataModel<T> model, List<SortMeta> sortMeta, List<FilterMeta> filterMeta) {
         this(model);
-        this.sortField = sortField;
-        this.sortOrder = sortOrder;
-        this.filters = filters;
-    }
-
-    LazyDataModelIterator(LazyDataModel<T> model, List<SortMeta> multiSortMeta, Map<String, Object> filters) {
-        this(model);
-        this.multiSortMeta = multiSortMeta;
-        this.filters = filters;
+        if (sortMeta != null) {
+            this.sortMeta = sortMeta;
+        }
+        if (filterMeta != null) {
+            this.filterMeta = filterMeta;
+        }
     }
 
     @Override
@@ -68,14 +58,7 @@ public class LazyDataModelIterator<T> implements Iterator<T> {
         int pageNo = nextIndex / model.getPageSize();
 
         if (!pages.containsKey(pageNo)) {
-            List<T> page;
-
-            if (sortField != null || sortOrder != null) {
-                page = model.load(nextIndex, model.getPageSize(), sortField, sortOrder, filters);
-            }
-            else {
-                page = model.load(nextIndex, model.getPageSize(), multiSortMeta, filters);
-            }
+            List<T> page = model.load(nextIndex, model.getPageSize(), sortMeta, filterMeta);
 
             if (page == null || page.isEmpty()) {
                 return false;
