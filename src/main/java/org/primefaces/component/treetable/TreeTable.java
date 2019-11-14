@@ -32,6 +32,7 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
+import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
@@ -291,6 +292,56 @@ public class TreeTable extends TreeTableBase {
         else {
             super.processDecodes(context);
         }
+    }
+
+    @Override
+    public void processValidators(FacesContext context) {
+        super.processValidators(context);
+
+        if (isFilterRequest(context)) {
+            List<FilterMeta> filterMetadata = populateFilterMetaData(context, this);
+            setFilterMetadata(filterMetadata);
+        }
+    }
+
+    public List<FilterMeta> populateFilterMetaData(FacesContext context, TreeTable tt) {
+        List<FilterMeta> filterMetadata = new ArrayList<>();
+        String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+
+        for (UIColumn column : tt.getColumns()) {
+            ValueExpression columnFilterByVE = column.getValueExpression("filterBy");
+
+            if (columnFilterByVE != null) {
+                UIComponent filterFacet = column.getFacet("filter");
+                ValueExpression filterByVE = columnFilterByVE;
+                Object filterValue = null;
+                String filterId = null;
+                String filterMatchMode = null;
+
+                if (column instanceof Column) {
+                    filterId = column.getClientId(context) + separator + "filter";
+                    filterValue = (filterFacet == null) ? params.get(filterId) : ((ValueHolder) filterFacet).getLocalValue();
+                    filterMatchMode = column.getFilterMatchMode();
+                }
+                else if (column instanceof DynamicColumn) {
+                    DynamicColumn dynamicColumn = (DynamicColumn) column;
+                    dynamicColumn.applyModel();
+                    filterId = dynamicColumn.getContainerClientId(context) + separator + "filter";
+                    filterValue = (filterFacet == null) ? params.get(filterId) : ((ValueHolder) filterFacet).getLocalValue();
+                    filterMatchMode = column.getFilterMatchMode();
+                    dynamicColumn.cleanModel();
+                }
+
+                filterMetadata.add(new FilterMeta(null,
+                        column,
+                        filterByVE,
+                        MatchMode.byName(filterMatchMode),
+                        filterValue));
+            }
+        }
+
+        return filterMetadata;
     }
 
     public UIColumn findColumn(String clientId) {

@@ -36,7 +36,6 @@ import javax.faces.FacesException;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
-import javax.faces.component.ValueHolder;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -68,11 +67,6 @@ public class TreeTableRenderer extends DataRenderer {
     @Override
     public void decode(FacesContext context, UIComponent component) {
         TreeTable tt = (TreeTable) component;
-
-        if (tt.isFilterRequest(context)) {
-            List<FilterMeta> filterMetadata = populateFilterMetaData(context, tt);
-            tt.setFilterMetadata(filterMetadata);
-        }
 
         if (tt.getSelectionMode() != null) {
             decodeSelection(context, tt);
@@ -1180,46 +1174,6 @@ public class TreeTableRenderer extends DataRenderer {
         if (column.isDynamic()) {
             ((DynamicColumn) column).cleanStatelessModel();
         }
-    }
-
-    public List<FilterMeta> populateFilterMetaData(FacesContext context, TreeTable tt) {
-        List<FilterMeta> filterMetadata = new ArrayList<>();
-        String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-
-        for (UIColumn column : tt.getColumns()) {
-            ValueExpression columnFilterByVE = column.getValueExpression("filterBy");
-
-            if (columnFilterByVE != null) {
-                UIComponent filterFacet = column.getFacet("filter");
-                ValueExpression filterByVE = columnFilterByVE;
-                Object filterValue = null;
-                String filterId = null;
-                String filterMatchMode = null;
-
-                if (column instanceof Column) {
-                    filterId = column.getClientId(context) + separator + "filter";
-                    filterValue = (filterFacet == null) ? params.get(filterId) : ((ValueHolder) filterFacet).getLocalValue();
-                    filterMatchMode = column.getFilterMatchMode();
-                }
-                else if (column instanceof DynamicColumn) {
-                    DynamicColumn dynamicColumn = (DynamicColumn) column;
-                    dynamicColumn.applyModel();
-                    filterId = dynamicColumn.getContainerClientId(context) + separator + "filter";
-                    filterValue = (filterFacet == null) ? params.get(filterId) : ((ValueHolder) filterFacet).getLocalValue();
-                    filterMatchMode = column.getFilterMatchMode();
-                    dynamicColumn.cleanModel();
-                }
-
-                filterMetadata.add(new FilterMeta(null,
-                        column,
-                        filterByVE,
-                        MatchMode.byName(filterMatchMode),
-                        filterValue));
-            }
-        }
-
-        return filterMetadata;
     }
 
     public void filter(FacesContext context, TreeTable tt, List<FilterMeta> filterMetadata, String globalFilterValue) throws IOException {
