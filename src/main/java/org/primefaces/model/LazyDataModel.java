@@ -177,6 +177,7 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
             }
         }
 
+        // call the old methods for backward compatibility; actually only this method should be implemented by the user in future.
         return load(first, pageSize, sortMeta, filters);
     }
 
