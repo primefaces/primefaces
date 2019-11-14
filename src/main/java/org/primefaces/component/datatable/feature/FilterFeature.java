@@ -51,25 +51,23 @@ import org.primefaces.model.MatchMode;
 import org.primefaces.model.filter.*;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
+import org.primefaces.util.MapBuilder;
 
 public class FilterFeature implements DataTableFeature {
 
-    private static final Map<MatchMode, FilterConstraint> FILTER_CONSTRAINTS;
-
-    static {
-        FILTER_CONSTRAINTS = new HashMap<>();
-        FILTER_CONSTRAINTS.put(MatchMode.STARTS_WITH, new StartsWithFilterConstraint());
-        FILTER_CONSTRAINTS.put(MatchMode.ENDS_WITH, new EndsWithFilterConstraint());
-        FILTER_CONSTRAINTS.put(MatchMode.CONTAINS, new ContainsFilterConstraint());
-        FILTER_CONSTRAINTS.put(MatchMode.EXACT, new ExactFilterConstraint());
-        FILTER_CONSTRAINTS.put(MatchMode.LESS_THAN, new LessThanFilterConstraint());
-        FILTER_CONSTRAINTS.put(MatchMode.LESS_THAN_EQUALS, new LessThanEqualsFilterConstraint());
-        FILTER_CONSTRAINTS.put(MatchMode.GREATER_THAN, new GreaterThanFilterConstraint());
-        FILTER_CONSTRAINTS.put(MatchMode.GREATER_THAN_EQUALS, new GreaterThanEqualsFilterConstraint());
-        FILTER_CONSTRAINTS.put(MatchMode.EQUALS, new EqualsFilterConstraint());
-        FILTER_CONSTRAINTS.put(MatchMode.IN, new InFilterConstraint());
-        FILTER_CONSTRAINTS.put(MatchMode.GLOBAL, new GlobalFilterConstraint());
-    }
+    private static final Map<MatchMode, FilterConstraint> FILTER_CONSTRAINTS = MapBuilder.<MatchMode, FilterConstraint>builder()
+        .put(MatchMode.STARTS_WITH, new StartsWithFilterConstraint())
+        .put(MatchMode.ENDS_WITH, new EndsWithFilterConstraint())
+        .put(MatchMode.CONTAINS, new ContainsFilterConstraint())
+        .put(MatchMode.EXACT, new ExactFilterConstraint())
+        .put(MatchMode.LESS_THAN, new LessThanFilterConstraint())
+        .put(MatchMode.LESS_THAN_EQUALS, new LessThanEqualsFilterConstraint())
+        .put(MatchMode.GREATER_THAN, new GreaterThanFilterConstraint())
+        .put(MatchMode.GREATER_THAN_EQUALS, new GreaterThanEqualsFilterConstraint())
+        .put(MatchMode.EQUALS, new EqualsFilterConstraint())
+        .put(MatchMode.IN, new InFilterConstraint())
+        .put(MatchMode.GLOBAL, new GlobalFilterConstraint())
+        .build();
 
     private boolean isFilterRequest(FacesContext context, DataTable table) {
         return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_filtering");

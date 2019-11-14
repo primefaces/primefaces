@@ -42,6 +42,7 @@ import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.*;
 
 import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
+import org.primefaces.model.MatchMode;
 
 public class TreeRenderer extends CoreRenderer {
 
@@ -871,8 +872,13 @@ public class TreeRenderer extends CoreRenderer {
 
     public FilterConstraint getFilterConstraint(Tree tree) {
         String filterMatchMode = tree.getFilterMatchMode();
-        FilterConstraint filterConstraint = Tree.FILTER_CONSTRAINTS.get(filterMatchMode);
 
+        MatchMode matchMode = MatchMode.byName(filterMatchMode);
+        if (matchMode == null) {
+            throw new FacesException("Illegal filter match mode:" + filterMatchMode);
+        }
+
+        FilterConstraint filterConstraint = Tree.FILTER_CONSTRAINTS.get(matchMode);
         if (filterConstraint == null) {
             throw new FacesException("Illegal filter match mode:" + filterMatchMode);
         }

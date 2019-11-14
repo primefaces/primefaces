@@ -60,8 +60,6 @@ import org.primefaces.util.*;
 import org.primefaces.visit.ResetInputVisitCallback;
 
 import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
-import static org.primefaces.component.treetable.TreeTable.FILTER_CONSTRAINTS;
-import static org.primefaces.component.treetable.TreeTable.GLOBAL_MODE;
 
 public class TreeTableRenderer extends DataRenderer {
 
@@ -1255,7 +1253,7 @@ public class TreeTableRenderer extends DataRenderer {
                                        String globalFilterValue) throws IOException {
         int childCount = node.getChildCount();
         boolean hasGlobalFilter = !LangUtils.isValueBlank(globalFilterValue);
-        GlobalFilterConstraint globalFilterConstraint = (GlobalFilterConstraint) FILTER_CONSTRAINTS.get(GLOBAL_MODE);
+        GlobalFilterConstraint globalFilterConstraint = (GlobalFilterConstraint) TreeTable.FILTER_CONSTRAINTS.get(MatchMode.GLOBAL);
         ELContext elContext = context.getELContext();
 
         for (int i = 0; i < childCount; i++) {
@@ -1344,8 +1342,13 @@ public class TreeTableRenderer extends DataRenderer {
 
     public FilterConstraint getFilterConstraint(UIColumn column) {
         String filterMatchMode = column.getFilterMatchMode();
-        FilterConstraint filterConstraint = TreeTable.FILTER_CONSTRAINTS.get(filterMatchMode);
 
+        MatchMode matchMode = MatchMode.byName(filterMatchMode);
+        if (matchMode == null) {
+            throw new FacesException("Illegal filter match mode:" + filterMatchMode);
+        }
+
+        FilterConstraint filterConstraint = TreeTable.FILTER_CONSTRAINTS.get(matchMode);
         if (filterConstraint == null) {
             throw new FacesException("Illegal filter match mode:" + filterMatchMode);
         }

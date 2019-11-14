@@ -47,6 +47,7 @@ import org.primefaces.event.*;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
 import org.primefaces.model.FilterMeta;
+import org.primefaces.model.MatchMode;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.filter.*;
@@ -102,29 +103,18 @@ public class TreeTable extends TreeTableBase {
     public static final String EDITABLE_COLUMN_CLASS = "ui-editable-column";
     public static final String EDITING_ROW_CLASS = "ui-row-editing";
 
-    public static final String STARTS_WITH_MATCH_MODE = "startsWith";
-    public static final String ENDS_WITH_MATCH_MODE = "endsWith";
-    public static final String CONTAINS_MATCH_MODE = "contains";
-    public static final String EXACT_MATCH_MODE = "exact";
-    public static final String LESS_THAN_MODE = "lt";
-    public static final String LESS_THAN_EQUALS_MODE = "lte";
-    public static final String GREATER_THAN_MODE = "gt";
-    public static final String GREATER_THAN_EQUALS_MODE = "gte";
-    public static final String EQUALS_MODE = "equals";
-    public static final String IN_MODE = "in";
-    public static final String GLOBAL_MODE = "global";
-    static final Map<String, FilterConstraint> FILTER_CONSTRAINTS = MapBuilder.<String, FilterConstraint>builder()
-            .put(STARTS_WITH_MATCH_MODE, new StartsWithFilterConstraint())
-            .put(ENDS_WITH_MATCH_MODE, new EndsWithFilterConstraint())
-            .put(CONTAINS_MATCH_MODE, new ContainsFilterConstraint())
-            .put(EXACT_MATCH_MODE, new ExactFilterConstraint())
-            .put(LESS_THAN_MODE, new LessThanFilterConstraint())
-            .put(LESS_THAN_EQUALS_MODE, new LessThanEqualsFilterConstraint())
-            .put(GREATER_THAN_MODE, new GreaterThanFilterConstraint())
-            .put(GREATER_THAN_EQUALS_MODE, new GreaterThanEqualsFilterConstraint())
-            .put(EQUALS_MODE, new EqualsFilterConstraint())
-            .put(IN_MODE, new InFilterConstraint())
-            .put(GLOBAL_MODE, new GlobalFilterConstraint())
+    static final Map<MatchMode, FilterConstraint> FILTER_CONSTRAINTS = MapBuilder.<MatchMode, FilterConstraint>builder()
+            .put(MatchMode.STARTS_WITH, new StartsWithFilterConstraint())
+            .put(MatchMode.ENDS_WITH, new EndsWithFilterConstraint())
+            .put(MatchMode.CONTAINS, new ContainsFilterConstraint())
+            .put(MatchMode.EXACT, new ExactFilterConstraint())
+            .put(MatchMode.LESS_THAN, new LessThanFilterConstraint())
+            .put(MatchMode.LESS_THAN_EQUALS, new LessThanEqualsFilterConstraint())
+            .put(MatchMode.GREATER_THAN, new GreaterThanFilterConstraint())
+            .put(MatchMode.GREATER_THAN_EQUALS, new GreaterThanEqualsFilterConstraint())
+            .put(MatchMode.EQUALS, new EqualsFilterConstraint())
+            .put(MatchMode.IN, new InFilterConstraint())
+            .put(MatchMode.GLOBAL, new GlobalFilterConstraint())
             .build();
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
