@@ -163,7 +163,7 @@ public class LazyDataModelIteratorTest {
             Integer item = it.next();
             Assertions.assertNotNull(item);
         }
-        Assertions.assertEquals(1, dataModel.singleSortingLoadCounter);
+        Assertions.assertEquals(1, dataModel.loadCounter);
     }
 
     @Test
@@ -177,7 +177,7 @@ public class LazyDataModelIteratorTest {
             Integer item = it.next();
             Assertions.assertNotNull(item);
         }
-        Assertions.assertEquals(1, dataModel.multiSortingLoadCounter);
+        Assertions.assertEquals(1, dataModel.loadCounter);
     }
 
     private static class LazyDataModelImpl extends LazyDataModel<Integer> {
@@ -185,28 +185,16 @@ public class LazyDataModelIteratorTest {
         private static final long serialVersionUID = 1L;
 
         int totalItems;
-        int multiSortingLoadCounter;
-        int singleSortingLoadCounter;
+        int loadCounter;
 
         int getLoadCount() {
-            return multiSortingLoadCounter + singleSortingLoadCounter;
+            return loadCounter;
         }
 
         @Override
-        public List<Integer> load(int first, int pageSize, List<SortMeta> multiSortMeta, Map<String, Object> filters) {
+        public List<Integer> load(int first, int pageSize, List<SortMeta> sortMeta, List<FilterMeta> filterMeta) {
             System.out.println(String.format("Loading %d items from offset %d", pageSize, first));
-            multiSortingLoadCounter++;
-            List<Integer> page = new ArrayList<>();
-            for(int i = first; i < first + pageSize && i < totalItems; i++) {
-                page.add(i);
-            }
-            return page;
-        }
-
-        @Override
-        public List<Integer> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-            System.out.println(String.format("Loading %d items from offset %d", pageSize, first));
-            singleSortingLoadCounter++;
+            loadCounter++;
             List<Integer> page = new ArrayList<>();
             for(int i = first; i < first + pageSize && i < totalItems; i++) {
                 page.add(i);
