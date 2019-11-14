@@ -24,12 +24,14 @@
 package org.primefaces.expression.impl;
 
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import org.primefaces.expression.SearchExpressionHint;
 
 import org.primefaces.expression.SearchExpressionResolver;
 
@@ -41,7 +43,8 @@ public class ChildExpressionResolver implements SearchExpressionResolver {
     private static final Pattern PATTERN = Pattern.compile("@child\\((\\d+)\\)");
 
     @Override
-    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
+    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression,
+            Set<SearchExpressionHint> hints) {
 
         Matcher matcher = PATTERN.matcher(expression);
 

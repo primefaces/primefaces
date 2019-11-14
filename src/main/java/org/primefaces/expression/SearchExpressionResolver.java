@@ -23,6 +23,7 @@
  */
 package org.primefaces.expression;
 
+import java.util.Set;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
@@ -38,9 +39,10 @@ public interface SearchExpressionResolver {
      * @param source The source component. E.g. a button.
      * @param last The last resolved component in the chain. If it's not a nested expression, it's the same as the source component.
      * @param expression The search expression.
-     * @param options The options.
+     * @param hints The options.
      *
      * @return The resolved {@link UIComponent} or <code>null</code>.
      */
-    UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options);
+    UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression,
+            Set<SearchExpressionHint> hints);
 }

@@ -46,7 +46,7 @@ import javax.faces.event.ActionEvent;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import org.primefaces.expression.SearchExpressionHint;
+import org.primefaces.expression.SearchExpressionUtils;
 
 public class SplitButtonRenderer extends MenuItemAwareRenderer {
 
@@ -191,7 +191,8 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("SplitButton", button.resolveWidgetVar(context), clientId);
-        wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo(), SearchExpressionHint.RESOLVE_CLIENT_SIDE), null);
+        wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo(),
+                SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null);
 
         if (button.isFilter()) {
             wb.attr("filter", true)

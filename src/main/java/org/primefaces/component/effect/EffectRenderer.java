@@ -30,7 +30,7 @@ import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.expression.SearchExpressionHint;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -45,7 +45,7 @@ public class EffectRenderer extends CoreRenderer {
         int delay = effect.getDelay();
 
         UIComponent targetComponent = SearchExpressionFacade.resolveComponent(
-                context, effect, effect.getFor(), SearchExpressionHint.PARENT_FALLBACK);
+                context, effect, effect.getFor(), SearchExpressionUtils.SET_PARENT_FALLBACK);
         String target = targetComponent.getClientId(context);
 
         String animation = getEffectBuilder(effect, target).build();

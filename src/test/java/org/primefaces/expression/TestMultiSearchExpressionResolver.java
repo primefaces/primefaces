@@ -25,6 +25,7 @@ package org.primefaces.expression;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
@@ -37,12 +38,12 @@ public class TestMultiSearchExpressionResolver  implements SearchExpressionResol
     }
 
     @Override
-    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
+    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, Set<SearchExpressionHint> hints) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void resolveComponents(FacesContext context, UIComponent source, UIComponent last, String expression, List<UIComponent> components, int options) {
+    public void resolveComponents(FacesContext context, UIComponent source, UIComponent last, String expression, List<UIComponent> components, Set<SearchExpressionHint> hints) {
         components.addAll(this.components);
     }
 }

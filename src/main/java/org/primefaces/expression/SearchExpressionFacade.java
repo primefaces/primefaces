@@ -24,7 +24,9 @@
 package org.primefaces.expression;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.faces.FacesException;
@@ -63,7 +65,7 @@ public class SearchExpressionFacade {
      * @return A {@link List} with resolved {@link UIComponent}s.
      */
     public static List<UIComponent> resolveComponents(FacesContext context, UIComponent source, String expressions) {
-        return resolveComponents(context, source, expressions, SearchExpressionHint.NONE);
+        return resolveComponents(context, source, expressions, Collections.emptySet());
     }
 
     /**
@@ -75,7 +77,8 @@ public class SearchExpressionFacade {
      * @param hints The hints.
      * @return A {@link List} with resolved {@link UIComponent}s.
      */
-    public static List<UIComponent> resolveComponents(FacesContext context, UIComponent source, String expressions, int hints) {
+    public static List<UIComponent> resolveComponents(FacesContext context, UIComponent source, String expressions,
+            Set<SearchExpressionHint> hints) {
 
         ArrayList<UIComponent> components = new ArrayList<>(5);
 
@@ -109,7 +112,7 @@ public class SearchExpressionFacade {
                                 UIComponent component = resolver.resolveComponent(context, source, source, expression, hints);
 
                                 if (component == null) {
-                                    if (!SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.IGNORE_NO_RESULT)) {
+                                    if (!hints.contains(SearchExpressionHint.IGNORE_NO_RESULT)) {
                                         cannotFindComponent(context, source, expression);
                                     }
                                 }
@@ -125,7 +128,7 @@ public class SearchExpressionFacade {
                             UIComponent component = callback.getComponent();
 
                             if (component == null) {
-                                if (!SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.IGNORE_NO_RESULT)) {
+                                if (!hints.contains(SearchExpressionHint.IGNORE_NO_RESULT)) {
                                     cannotFindComponent(context, source, expression);
                                 }
                             }
@@ -151,7 +154,7 @@ public class SearchExpressionFacade {
      */
     public static String resolveClientIds(FacesContext context, UIComponent source, String expressions) {
 
-        return resolveClientIds(context, source, expressions, SearchExpressionHint.NONE);
+        return resolveClientIds(context, source, expressions, Collections.emptySet());
     }
 
     /**
@@ -163,10 +166,10 @@ public class SearchExpressionFacade {
      * @param hints The hints.
      * @return A {@link List} with resolved clientIds and/or passtrough expression (like PFS, widgetVar).
      */
-    public static String resolveClientIds(FacesContext context, UIComponent source, String expressions, int hints) {
+    public static String resolveClientIds(FacesContext context, UIComponent source, String expressions, Set<SearchExpressionHint> hints) {
 
         if (LangUtils.isValueBlank(expressions)) {
-            if (SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.PARENT_FALLBACK)) {
+            if (hints.contains(SearchExpressionHint.PARENT_FALLBACK)) {
                 return source.getParent().getClientId(context);
             }
 
@@ -237,7 +240,7 @@ public class SearchExpressionFacade {
                                 UIComponent component = resolver.resolveComponent(context, source, source, expression, hints);
 
                                 if (component == null) {
-                                    if (!SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.IGNORE_NO_RESULT)) {
+                                    if (!hints.contains(SearchExpressionHint.IGNORE_NO_RESULT)) {
                                         cannotFindComponent(context, source, expression);
                                     }
                                 }
@@ -255,7 +258,7 @@ public class SearchExpressionFacade {
                             ResolveClientIdCallback callback = new ResolveClientIdCallback(source, hints, expression);
                             resolveComponentById(source, expression, separatorChar, context, callback);
 
-                            if (callback.getClientId() == null && !SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.IGNORE_NO_RESULT)) {
+                            if (callback.getClientId() == null && !hints.contains(SearchExpressionHint.IGNORE_NO_RESULT)) {
                                 cannotFindComponent(context, source, expression);
                             }
 
@@ -279,8 +282,10 @@ public class SearchExpressionFacade {
         return null;
     }
 
-    protected static void validateRenderer(FacesContext context, UIComponent source, UIComponent component, String expression, int hints) {
-        if (SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.VALIDATE_RENDERER) && context.isProjectStage(ProjectStage.Development)) {
+    protected static void validateRenderer(FacesContext context, UIComponent source, UIComponent component, String expression,
+            Set<SearchExpressionHint> hints) {
+
+        if (hints.contains(SearchExpressionHint.VALIDATE_RENDERER) && context.isProjectStage(ProjectStage.Development)) {
             if (LangUtils.isValueBlank(component.getRendererType())) {
                 LOGGER.warning("Can not update component \"" + component.getClass().getName()
                         + "\" with id \"" + component.getClientId(context)
@@ -299,7 +304,7 @@ public class SearchExpressionFacade {
      * @return A resolved clientId and/or passtrough expression (like PFS, widgetVar).
      */
     public static String resolveClientId(FacesContext context, UIComponent source, String expression) {
-        return resolveClientId(context, source, expression, SearchExpressionHint.NONE);
+        return resolveClientId(context, source, expression, Collections.emptySet());
     }
 
     /**
@@ -311,7 +316,9 @@ public class SearchExpressionFacade {
      * @param hints The hints.
      * @return A resolved clientId and/or passtrough expression (like PFS, widgetVar).
      */
-    public static String resolveClientId(FacesContext context, UIComponent source, String expression, int hints) {
+    public static String resolveClientId(FacesContext context, UIComponent source, String expression,
+            Set<SearchExpressionHint> hints) {
+
         if (LangUtils.isValueBlank(expression)) {
             return null;
         }
@@ -336,7 +343,7 @@ public class SearchExpressionFacade {
         else if (expression.contains(SearchExpressionConstants.KEYWORD_PREFIX)) {
             SearchExpressionResolver resolver = SearchExpressionResolverFactory.findResolver(expression);
 
-            if (SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.RESOLVE_CLIENT_SIDE)
+            if (hints.contains(SearchExpressionHint.RESOLVE_CLIENT_SIDE)
                     && resolver instanceof ClientIdSearchExpressionResolver) {
                 return ((ClientIdSearchExpressionResolver) resolver).resolveClientIds(context, source, source, expression, hints);
             }
@@ -349,7 +356,7 @@ public class SearchExpressionFacade {
             ResolveClientIdCallback callback = new ResolveClientIdCallback(source, hints, expression);
             resolveComponentById(source, expression, separatorChar, context, callback);
 
-            if (callback.getClientId() == null && !SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.IGNORE_NO_RESULT)) {
+            if (callback.getClientId() == null && !hints.contains(SearchExpressionHint.IGNORE_NO_RESULT)) {
                 cannotFindComponent(context, source, expression);
             }
 
@@ -357,7 +364,7 @@ public class SearchExpressionFacade {
         }
 
         if (component == null) {
-            if (SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.IGNORE_NO_RESULT)) {
+            if (hints.contains(SearchExpressionHint.IGNORE_NO_RESULT)) {
                 return null;
             }
             else {
@@ -373,12 +380,12 @@ public class SearchExpressionFacade {
     static class ResolveClientIdCallback implements ContextCallback {
 
         private final UIComponent source;
-        private final int hints;
+        private final Set<SearchExpressionHint> hints;
         private final String expression;
 
         private String clientId;
 
-        ResolveClientIdCallback(UIComponent source, int hints, String expression) {
+        ResolveClientIdCallback(UIComponent source, Set<SearchExpressionHint> hints, String expression) {
             this.source = source;
             this.hints = hints;
             this.expression = expression;
@@ -419,7 +426,7 @@ public class SearchExpressionFacade {
      */
     public static UIComponent resolveComponent(FacesContext context, UIComponent source, String expression) {
 
-        return resolveComponent(context, source, expression, SearchExpressionHint.NONE);
+        return resolveComponent(context, source, expression, Collections.emptySet());
     }
 
     /**
@@ -431,10 +438,11 @@ public class SearchExpressionFacade {
      * @param hints The hints.
      * @return A resolved {@link UIComponent} or <code>null</code>.
      */
-    public static UIComponent resolveComponent(FacesContext context, UIComponent source, String expression, int hints) {
+    public static UIComponent resolveComponent(FacesContext context, UIComponent source, String expression,
+            Set<SearchExpressionHint> hints) {
 
         if (LangUtils.isValueBlank(expression)) {
-            if (SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.PARENT_FALLBACK)) {
+            if (hints.contains(SearchExpressionHint.PARENT_FALLBACK)) {
                 return source.getParent();
             }
 
@@ -473,7 +481,7 @@ public class SearchExpressionFacade {
             component = callback.getComponent();
         }
 
-        if (component == null && !SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.IGNORE_NO_RESULT)) {
+        if (component == null && !hints.contains(SearchExpressionHint.IGNORE_NO_RESULT)) {
             cannotFindComponent(context, source, expression);
         }
 
@@ -481,7 +489,7 @@ public class SearchExpressionFacade {
     }
 
     private static UIComponent resolveComponentByExpressionChain(FacesContext context, UIComponent source, String expression,
-            char separatorChar, int hints) {
+            char separatorChar, Set<SearchExpressionHint> hints) {
 
         boolean startsWithSeperator = expression.charAt(0) == separatorChar;
 
@@ -516,7 +524,7 @@ public class SearchExpressionFacade {
                 UIComponent temp = resolver.resolveComponent(context, source, last, subExpression, hints);
 
                 if (temp == null) {
-                    if (!SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.IGNORE_NO_RESULT)) {
+                    if (!hints.contains(SearchExpressionHint.IGNORE_NO_RESULT)) {
                         throw new FacesException("Cannot find component for subexpression \"" + subExpression
                                 + "\" from component with id \"" + last.getClientId(context)
                                 + "\" in full expression \"" + expression
@@ -539,8 +547,8 @@ public class SearchExpressionFacade {
         ComponentTraversalUtils.firstById(expression, source, seperatorChar, context, callback);
     }
 
-    private static ArrayList<UIComponent> resolveComponentsByExpressionChain(FacesContext context, UIComponent source, String expression, char separatorChar,
-            int hints) {
+    private static ArrayList<UIComponent> resolveComponentsByExpressionChain(FacesContext context, UIComponent source, String expression,
+            char separatorChar, Set<SearchExpressionHint> hints) {
 
         boolean startsWithSeperator = expression.charAt(0) == separatorChar;
 
@@ -589,7 +597,7 @@ public class SearchExpressionFacade {
                         UIComponent temp = resolver.resolveComponent(context, source, last, subExpression, hints);
 
                         if (temp == null) {
-                            if (!SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.IGNORE_NO_RESULT)) {
+                            if (!hints.contains(SearchExpressionHint.IGNORE_NO_RESULT)) {
                                 throw new FacesException("Cannot find component for subexpression \"" + subExpression
                                         + "\" from component with id \"" + last.getClientId(context)
                                         + "\" in full expression \"" + expression
@@ -612,7 +620,7 @@ public class SearchExpressionFacade {
     }
 
     private static String resolveClientIdsByExpressionChain(FacesContext context, UIComponent source, String expression, char separatorChar,
-            int hints) {
+            Set<SearchExpressionHint> hints) {
 
         boolean startsWithSeperator = expression.charAt(0) == separatorChar;
 
@@ -679,7 +687,7 @@ public class SearchExpressionFacade {
                         UIComponent temp = resolver.resolveComponent(context, source, last, subExpression, hints);
 
                         if (temp == null) {
-                            if (!SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.IGNORE_NO_RESULT)) {
+                            if (!hints.contains(SearchExpressionHint.IGNORE_NO_RESULT)) {
                                 throw new FacesException("Cannot find component for subexpression \"" + subExpression
                                         + "\" from component with id \"" + last.getClientId(context)
                                         + "\" in full expression \"" + expression

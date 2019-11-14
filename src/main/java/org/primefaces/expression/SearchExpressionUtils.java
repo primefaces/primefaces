@@ -23,6 +23,8 @@
  */
 package org.primefaces.expression;
 
+import java.util.EnumSet;
+import java.util.Set;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitContext;
@@ -32,19 +34,21 @@ import org.primefaces.util.ComponentUtils;
 
 public class SearchExpressionUtils {
 
+    public static final Set<SearchExpressionHint> SET_SKIP_UNRENDERED = EnumSet.of(SearchExpressionHint.SKIP_UNRENDERED);
+    public static final Set<SearchExpressionHint> SET_RESOLVE_CLIENT_SIDE = EnumSet.of(SearchExpressionHint.RESOLVE_CLIENT_SIDE);
+    public static final Set<SearchExpressionHint> SET_PARENT_FALLBACK = EnumSet.of(SearchExpressionHint.PARENT_FALLBACK);
+    public static final Set<SearchExpressionHint> SET_IGNORE_NO_RESULT = EnumSet.of(SearchExpressionHint.IGNORE_NO_RESULT);
+    public static final Set<SearchExpressionHint> SET_VALIDATE_RENDERER = EnumSet.of(SearchExpressionHint.VALIDATE_RENDERER);
+
     private SearchExpressionUtils() {
     }
 
-    public static VisitContext createVisitContext(FacesContext context, int hints) {
-        if (isHintSet(hints, SearchExpressionHint.SKIP_UNRENDERED)) {
+    public static VisitContext createVisitContext(FacesContext context, Set<SearchExpressionHint> hints) {
+        if (hints.contains(SearchExpressionHint.SKIP_UNRENDERED)) {
             return VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
         }
 
         return VisitContext.createVisitContext(context);
-    }
-
-    public static boolean isHintSet(int hints, int hint) {
-        return (hints & hint) != 0;
     }
 
      // used by p:resolveClientId

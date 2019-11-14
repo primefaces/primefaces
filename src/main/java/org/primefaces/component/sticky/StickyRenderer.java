@@ -30,7 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.expression.SearchExpressionHint;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -55,7 +55,8 @@ public class StickyRenderer extends CoreRenderer {
         String target = sticky.getTarget();
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Sticky", sticky.resolveWidgetVar(context), sticky.getClientId(context))
-                .attr("target", SearchExpressionFacade.resolveClientIds(context, sticky, target, SearchExpressionHint.RESOLVE_CLIENT_SIDE))
+                .attr("target", SearchExpressionFacade.resolveClientIds(context, sticky, target,
+                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE))
                 .attr("margin", sticky.getMargin(), 0)
                 .finish();
     }

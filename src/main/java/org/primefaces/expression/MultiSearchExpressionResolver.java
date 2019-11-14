@@ -24,6 +24,7 @@
 package org.primefaces.expression;
 
 import java.util.List;
+import java.util.Set;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
@@ -38,8 +39,9 @@ public interface MultiSearchExpressionResolver {
      *             If it's not a nested expression, it's the same as the source component.
      * @param expression The search expression.
      * @param components The component list to add the resolved {@link UIComponent}s.
-     * @param options The options.
+     * @param hints The hints.
      */
-    void resolveComponents(FacesContext context, UIComponent source, UIComponent last, String expression, List<UIComponent> components, int options);
+    void resolveComponents(FacesContext context, UIComponent source, UIComponent last, String expression, List<UIComponent> components,
+            Set<SearchExpressionHint> hints);
 
 }

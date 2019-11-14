@@ -30,7 +30,7 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.component.dashboard.Dashboard;
 import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.expression.SearchExpressionHint;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -44,7 +44,7 @@ public class DraggableRenderer extends CoreRenderer {
         renderDummyMarkup(context, component, clientId);
 
         UIComponent target = SearchExpressionFacade.resolveComponent(
-                context, draggable, draggable.getFor(), SearchExpressionHint.PARENT_FALLBACK);
+                context, draggable, draggable.getFor(), SearchExpressionUtils.SET_PARENT_FALLBACK);
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Draggable", draggable.resolveWidgetVar(context), clientId)
@@ -53,8 +53,8 @@ public class DraggableRenderer extends CoreRenderer {
                 .attr("disabled", draggable.isDisabled(), false)
                 .attr("axis", draggable.getAxis(), null)
                 .attr("containment", draggable.getContainment(), null)
-                .attr("appendTo",
-                        SearchExpressionFacade.resolveClientId(context, draggable, draggable.getAppendTo(), SearchExpressionHint.RESOLVE_CLIENT_SIDE), null)
+                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, draggable, draggable.getAppendTo(),
+                                SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
                 .attr("helper", draggable.getHelper(), null)
                 .attr("zIndex", draggable.getZindex(), -1)
                 .attr("handle", draggable.getHandle(), null)

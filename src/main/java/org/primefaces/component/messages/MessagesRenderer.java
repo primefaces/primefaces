@@ -33,7 +33,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.expression.SearchExpressionHint;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.UINotificationRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
@@ -228,7 +228,8 @@ public class MessagesRenderer extends UINotificationRenderer {
 
             // clientId / SearchExpression case
             if (forType == null || forType.equals("expression")) {
-                UIComponent forComponent = SearchExpressionFacade.resolveComponent(context, uiMessages, _for, SearchExpressionHint.IGNORE_NO_RESULT);
+                UIComponent forComponent = SearchExpressionFacade.resolveComponent(context, uiMessages, _for,
+                        SearchExpressionUtils.SET_IGNORE_NO_RESULT);
                 if (forComponent != null) {
 
                     String forComponentClientId = forComponent.getClientId(context);

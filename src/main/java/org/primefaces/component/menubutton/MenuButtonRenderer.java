@@ -35,7 +35,7 @@ import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.expression.SearchExpressionHint;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.Separator;
@@ -176,7 +176,8 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("MenuButton", button.resolveWidgetVar(context), clientId);
-        wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo(), SearchExpressionHint.RESOLVE_CLIENT_SIDE), null);
+        wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo(),
+                SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null);
         wb.attr("collision", button.getCollision());
         wb.finish();
     }

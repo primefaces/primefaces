@@ -34,7 +34,7 @@ import javax.xml.bind.DatatypeConverter;
 
 import org.primefaces.event.CaptureEvent;
 import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.expression.SearchExpressionHint;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -100,10 +100,12 @@ public class PhotoCamRenderer extends CoreRenderer {
                 .attr("autoStart", cam.isAutoStart(), true);
 
         if (cam.getUpdate() != null) {
-            wb.attr("update", SearchExpressionFacade.resolveClientIds(context, cam, cam.getUpdate(), SearchExpressionHint.RESOLVE_CLIENT_SIDE));
+            wb.attr("update", SearchExpressionFacade.resolveClientIds(context, cam, cam.getUpdate(),
+                    SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE));
         }
         if (cam.getProcess() != null) {
-            wb.attr("process", SearchExpressionFacade.resolveClientIds(context, cam, cam.getProcess(), SearchExpressionHint.RESOLVE_CLIENT_SIDE));
+            wb.attr("process", SearchExpressionFacade.resolveClientIds(context, cam, cam.getProcess(),
+                    SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE));
         }
 
         wb.finish();

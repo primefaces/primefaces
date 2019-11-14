@@ -28,12 +28,14 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import org.primefaces.mock.FacesContextMock;
 import org.primefaces.mock.TestVisitContextFactory;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
@@ -71,10 +73,10 @@ public class SearchExpressionFacadeTest {
         return SearchExpressionFacade.resolveComponent(context, source, expression);
     }
 
-    private UIComponent resolveComponent(UIComponent source, String expression, int options) {
+    private UIComponent resolveComponent(UIComponent source, String expression, Set<SearchExpressionHint> hints) {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        return SearchExpressionFacade.resolveComponent(context, source, expression, options);
+        return SearchExpressionFacade.resolveComponent(context, source, expression, hints);
     }
 
     private String resolveClientId(UIComponent source, String expression) {
@@ -83,7 +85,7 @@ public class SearchExpressionFacadeTest {
         return SearchExpressionFacade.resolveClientId(context, source, expression);
     }
     
-    private String resolveClientId(UIComponent source, String expression, int hints) {
+    private String resolveClientId(UIComponent source, String expression, Set<SearchExpressionHint> hints) {
         FacesContext context = FacesContext.getCurrentInstance();
 
         return SearchExpressionFacade.resolveClientId(context, source, expression, hints);
@@ -95,10 +97,10 @@ public class SearchExpressionFacadeTest {
         return SearchExpressionFacade.resolveComponents(context, source, expression);
     }
 
-    private List<UIComponent> resolveComponents(UIComponent source, String expression, int options) {
+    private List<UIComponent> resolveComponents(UIComponent source, String expression, Set<SearchExpressionHint> hints) {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        return SearchExpressionFacade.resolveComponents(context, source, expression, options);
+        return SearchExpressionFacade.resolveComponents(context, source, expression, hints);
     }
 
     private String resolveClientIds(UIComponent source, String expression) {
@@ -583,7 +585,7 @@ public class SearchExpressionFacadeTest {
         UIComponent source = new UICommand();
         innerContainer.getChildren().add(source);
 
-        assertEquals("@none", resolveClientId(source, " @none", SearchExpressionHint.RESOLVE_CLIENT_SIDE));
+        assertEquals("@none", resolveClientId(source, " @none", EnumSet.of(SearchExpressionHint.RESOLVE_CLIENT_SIDE)));
     }
 
     @Test
@@ -629,7 +631,7 @@ public class SearchExpressionFacadeTest {
         UIComponent source = new UICommand();
         innerContainer.getChildren().add(source);
 
-        assertEquals("@all", resolveClientId(source, "@all", SearchExpressionHint.RESOLVE_CLIENT_SIDE));
+        assertEquals("@all", resolveClientId(source, "@all", EnumSet.of(SearchExpressionHint.RESOLVE_CLIENT_SIDE)));
     }
 
     @Test
@@ -1229,12 +1231,12 @@ public class SearchExpressionFacadeTest {
         assertEquals(
                 root,
                 SearchExpressionFacade.resolveComponent(
-                        FacesContext.getCurrentInstance(), form, null, SearchExpressionHint.PARENT_FALLBACK));
+                        FacesContext.getCurrentInstance(), form, null, EnumSet.of(SearchExpressionHint.PARENT_FALLBACK)));
 
         assertEquals(
                 root,
                 SearchExpressionFacade.resolveComponent(
-                        FacesContext.getCurrentInstance(), form, " ", SearchExpressionHint.PARENT_FALLBACK));
+                        FacesContext.getCurrentInstance(), form, " ", EnumSet.of(SearchExpressionHint.PARENT_FALLBACK)));
     }
 
     @Test
@@ -1250,12 +1252,12 @@ public class SearchExpressionFacadeTest {
         assertEquals(
                 "test",
                 SearchExpressionFacade.resolveClientIds(
-                        FacesContext.getCurrentInstance(), form, null, SearchExpressionHint.PARENT_FALLBACK));
+                        FacesContext.getCurrentInstance(), form, null, EnumSet.of(SearchExpressionHint.PARENT_FALLBACK)));
 
         assertEquals(
                 "test",
                 SearchExpressionFacade.resolveClientIds(
-                        FacesContext.getCurrentInstance(), form, " ", SearchExpressionHint.PARENT_FALLBACK));
+                        FacesContext.getCurrentInstance(), form, " ", EnumSet.of(SearchExpressionHint.PARENT_FALLBACK)));
     }
 
     @Test
@@ -1449,7 +1451,7 @@ public class SearchExpressionFacadeTest {
         root.getChildren().add(command2);
 
         assertSame(null,
-                resolveComponent(command1, " command3 ", SearchExpressionHint.IGNORE_NO_RESULT));
+                resolveComponent(command1, " command3 ", EnumSet.of(SearchExpressionHint.IGNORE_NO_RESULT)));
     }
 
     @Test
@@ -1807,7 +1809,7 @@ public class SearchExpressionFacadeTest {
         components.add(root);
 
         SearchExpressionResolverFactory.registerResolver("@test", new TestMultiSearchExpressionResolver(components));
-        List<UIComponent> result = resolveComponents(root, " @test:@parent:@parent ", SearchExpressionHint.IGNORE_NO_RESULT);
+        List<UIComponent> result = resolveComponents(root, " @test:@parent:@parent ", EnumSet.of(SearchExpressionHint.IGNORE_NO_RESULT));
         assertTrue(result.size() == 1);
         assertTrue(result.contains(FacesContext.getCurrentInstance().getViewRoot()));
 
@@ -1901,7 +1903,7 @@ public class SearchExpressionFacadeTest {
         UIComponent source = new UICommand();
         innerContainer.getChildren().add(source);
 
-        assertEquals("@all", resolveClientId(source, "@root", SearchExpressionHint.RESOLVE_CLIENT_SIDE));
+        assertEquals("@all", resolveClientId(source, "@root", EnumSet.of(SearchExpressionHint.RESOLVE_CLIENT_SIDE)));
     }
 
     @Test
@@ -1992,7 +1994,7 @@ public class SearchExpressionFacadeTest {
         dialog.setWidgetVar("myDlg");
         root.getChildren().add(dialog);
 
-        String clientId = resolveClientId(root, " @widgetVar(myDlg) ", SearchExpressionHint.RESOLVE_CLIENT_SIDE);
+        String clientId = resolveClientId(root, " @widgetVar(myDlg) ", EnumSet.of(SearchExpressionHint.RESOLVE_CLIENT_SIDE));
         assertEquals(clientId, "@widgetVar(myDlg)");
     }
     

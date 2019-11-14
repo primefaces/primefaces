@@ -30,7 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.expression.SearchExpressionHint;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -50,8 +50,10 @@ public class BlockUIRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("BlockUI", blockUI.resolveWidgetVar(context), clientId);
 
-        wb.attr("block", SearchExpressionFacade.resolveClientIds(context, blockUI, blockUI.getBlock(), SearchExpressionHint.RESOLVE_CLIENT_SIDE));
-        wb.attr("triggers", SearchExpressionFacade.resolveClientIds(context, blockUI, blockUI.getTrigger(), SearchExpressionHint.RESOLVE_CLIENT_SIDE), null);
+        wb.attr("block", SearchExpressionFacade.resolveClientIds(context, blockUI, blockUI.getBlock(),
+                SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE));
+        wb.attr("triggers", SearchExpressionFacade.resolveClientIds(context, blockUI, blockUI.getTrigger(),
+                SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null);
         wb.attr("blocked", blockUI.isBlocked(), false);
         wb.attr("animate", blockUI.isAnimate(), true);
         wb.attr("styleClass", blockUI.getStyleClass(), null);

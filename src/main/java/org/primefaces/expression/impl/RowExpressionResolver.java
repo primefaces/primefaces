@@ -24,6 +24,7 @@
 package org.primefaces.expression.impl;
 
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.faces.FacesException;
@@ -35,6 +36,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.expression.ClientIdSearchExpressionResolver;
+import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.expression.SearchExpressionResolver;
 
 /**
@@ -45,13 +47,15 @@ public class RowExpressionResolver implements SearchExpressionResolver, ClientId
     private static final Pattern PATTERN = Pattern.compile("@row\\((\\d+)\\)");
 
     @Override
-    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
+    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression,
+            Set<SearchExpressionHint> hints) {
         throw new FacesException("@row likely returns multiple components, therefore it's not supported in #resolveComponent... expression \""
                 + expression + "\" referenced from \"" + source.getClientId(context) + "\".");
     }
 
     @Override
-    public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
+    public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression,
+            Set<SearchExpressionHint> hints) {
 
         int row = validate(context, source, last, expression);
         UIData data = (UIData) last;

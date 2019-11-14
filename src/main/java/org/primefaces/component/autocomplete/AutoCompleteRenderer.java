@@ -36,7 +36,7 @@ import javax.faces.event.PhaseId;
 import org.primefaces.component.column.Column;
 import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.expression.SearchExpressionHint;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -728,7 +728,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                 .attr("forceSelection", ac.isForceSelection(), false)
                 .attr("scrollHeight", ac.getScrollHeight(), Integer.MAX_VALUE)
                 .attr("multiple", ac.isMultiple(), false)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, ac, ac.getAppendTo(), SearchExpressionHint.RESOLVE_CLIENT_SIDE), null)
+                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, ac, ac.getAppendTo(),
+                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
                 .attr("grouping", ac.getValueExpression(AutoComplete.PropertyKeys.groupBy.toString()) != null, false)
                 .attr("queryEvent", ac.getQueryEvent(), null)
                 .attr("dropdownMode", ac.getDropdownMode(), null)

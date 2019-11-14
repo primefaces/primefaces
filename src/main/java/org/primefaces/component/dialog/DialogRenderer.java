@@ -30,7 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.expression.SearchExpressionHint;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -71,7 +71,8 @@ public class DialogRenderer extends CoreRenderer {
                 .attr("height", dialog.getHeight(), null)
                 .attr("minWidth", dialog.getMinWidth(), Integer.MIN_VALUE)
                 .attr("minHeight", dialog.getMinHeight(), Integer.MIN_VALUE)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, dialog, dialog.getAppendTo(), SearchExpressionHint.RESOLVE_CLIENT_SIDE), null)
+                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, dialog, dialog.getAppendTo(),
+                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
                 .attr("dynamic", dialog.isDynamic(), false)
                 .attr("showEffect", dialog.getShowEffect(), null)
                 .attr("hideEffect", dialog.getHideEffect(), null)
@@ -84,7 +85,7 @@ public class DialogRenderer extends CoreRenderer {
                 .callback("onShow", "function()", dialog.getOnShow());
 
         String focusExpressions = SearchExpressionFacade.resolveClientIds(
-                context, dialog, dialog.getFocus(), SearchExpressionHint.RESOLVE_CLIENT_SIDE);
+                context, dialog, dialog.getFocus(), SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE);
         if (focusExpressions != null) {
             wb.attr("focus", focusExpressions);
         }

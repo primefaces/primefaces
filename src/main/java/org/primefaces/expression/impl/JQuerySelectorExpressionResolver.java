@@ -23,10 +23,12 @@
  */
 package org.primefaces.expression.impl;
 
+import java.util.Set;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import org.primefaces.expression.ClientIdSearchExpressionResolver;
+import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.expression.SearchExpressionResolver;
 
 /**
@@ -35,13 +37,15 @@ import org.primefaces.expression.SearchExpressionResolver;
 public class JQuerySelectorExpressionResolver implements SearchExpressionResolver, ClientIdSearchExpressionResolver {
 
     @Override
-    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
+    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression,
+            Set<SearchExpressionHint> hints) {
         throw new FacesException("jQuery selectors aka PFS are not supported on the server side... expression \"" + expression
                 + "\" referenced from \"" + source.getClientId(context) + "\".");
     }
 
     @Override
-    public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
+    public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression,
+            Set<SearchExpressionHint> hints) {
         // just return the complete expression, the client side will take care of it
         // e.g. @(#myButton)
         return expression;

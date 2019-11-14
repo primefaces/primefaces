@@ -23,27 +23,23 @@
  */
 package org.primefaces.expression;
 
-public class SearchExpressionHint {
-
-    public static final int NONE = 0x0;
+public enum SearchExpressionHint {
 
     /**
      * Checks if the {@link UIComponent} has a renderer or not. This check is currently only useful for the update attributes, as a component without
      * renderer can't be updated.
      */
-    public static final int VALIDATE_RENDERER = 0x1;
+    VALIDATE_RENDERER,
 
-    public static final int IGNORE_NO_RESULT = 0x2;
+    IGNORE_NO_RESULT,
 
-    public static final int PARENT_FALLBACK = 0x4;
+    PARENT_FALLBACK,
 
-    public static final int SKIP_UNRENDERED = 0x8;
+    SKIP_UNRENDERED,
 
     /**
      * Indicate that some expressions can be resolved on the client side.
      */
-    public static final int RESOLVE_CLIENT_SIDE = 0x16;
+    RESOLVE_CLIENT_SIDE
 
-    private SearchExpressionHint() {
-    }
 }

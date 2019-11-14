@@ -23,15 +23,18 @@
  */
 package org.primefaces.expression.impl;
 
+import java.util.Set;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.expression.SearchExpressionResolver;
 import org.primefaces.util.ComponentTraversalUtils;
 
 public abstract class AbstractClosestExpressionResolver implements SearchExpressionResolver {
 
     @Override
-    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
+    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression,
+            Set<SearchExpressionHint> hints) {
         return (UIComponent) ComponentTraversalUtils.closest(getType(), last);
     }
 

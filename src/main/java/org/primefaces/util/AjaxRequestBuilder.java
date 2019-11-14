@@ -23,6 +23,7 @@
  */
 package org.primefaces.util;
 
+import java.util.EnumSet;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
@@ -37,9 +38,11 @@ import javax.faces.view.facelets.FaceletException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 import javax.faces.component.UIForm;
 import org.primefaces.component.api.AjaxSource;
+import org.primefaces.expression.SearchExpressionUtils;
 
 /**
  * Helper to generate javascript code of an ajax call
@@ -47,6 +50,10 @@ import org.primefaces.component.api.AjaxSource;
 public class AjaxRequestBuilder {
 
     private static final Logger LOG = Logger.getLogger(AjaxRequestBuilder.class.getName());
+
+    private static final Set<SearchExpressionHint> HINTS_UPDATE = EnumSet.of(SearchExpressionHint.VALIDATE_RENDERER,
+            SearchExpressionHint.SKIP_UNRENDERED,
+            SearchExpressionHint.RESOLVE_CLIENT_SIDE);
 
     protected StringBuilder buffer;
     protected FacesContext context;
@@ -120,21 +127,20 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder process(UIComponent component, String expressions) {
-        addExpressions(component, expressions, "p", SearchExpressionHint.RESOLVE_CLIENT_SIDE);
+        addExpressions(component, expressions, "p", SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE);
 
         return this;
     }
 
     public AjaxRequestBuilder update(UIComponent component, String expressions) {
-        addExpressions(component, expressions, "u",
-                SearchExpressionHint.VALIDATE_RENDERER | SearchExpressionHint.SKIP_UNRENDERED | SearchExpressionHint.RESOLVE_CLIENT_SIDE);
+        addExpressions(component, expressions, "u", HINTS_UPDATE);
 
         return this;
     }
 
-    private AjaxRequestBuilder addExpressions(UIComponent component, String expressions, String key, int options) {
+    private AjaxRequestBuilder addExpressions(UIComponent component, String expressions, String key, Set<SearchExpressionHint> hints) {
         if (!LangUtils.isValueBlank(expressions)) {
-            String resolvedExpressions = SearchExpressionFacade.resolveClientIds(context, component, expressions, options);
+            String resolvedExpressions = SearchExpressionFacade.resolveClientIds(context, component, expressions, hints);
             buffer.append(",").append(key).append(":\"").append(resolvedExpressions).append("\"");
         }
 

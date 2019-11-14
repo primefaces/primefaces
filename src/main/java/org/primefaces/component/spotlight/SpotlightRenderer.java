@@ -30,7 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.expression.SearchExpressionHint;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -57,7 +57,8 @@ public class SpotlightRenderer extends CoreRenderer {
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Spotlight", spotlight.resolveWidgetVar(context), clientId)
-                .attr("target", SearchExpressionFacade.resolveClientIds(context, spotlight, spotlight.getTarget(), SearchExpressionHint.RESOLVE_CLIENT_SIDE))
+                .attr("target", SearchExpressionFacade.resolveClientIds(context, spotlight, spotlight.getTarget(),
+                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE))
                 .attr("active", spotlight.isActive(), false)
                 .attr("blockScroll", spotlight.isBlockScroll(), false);
 
