@@ -245,7 +245,7 @@ public class PrimeFaces {
          * @param outcome the logical outcome used to resolve the navigation case.
          */
         public void openDynamic(String outcome) {
-            getFacesContext().getAttributes().put(Constants.DIALOG_FRAMEWORK.OUTCOME, outcome);
+            getFacesContext().getAttributes().put(Constants.DialogFramework.OUTCOME, outcome);
         }
 
         /**
@@ -257,14 +257,14 @@ public class PrimeFaces {
          */
         public void openDynamic(String outcome, Map<String, Object> options, Map<String, List<String>> params) {
             FacesContext facesContext = getFacesContext();
-            facesContext.getAttributes().put(Constants.DIALOG_FRAMEWORK.OUTCOME, outcome);
+            facesContext.getAttributes().put(Constants.DialogFramework.OUTCOME, outcome);
 
             if (options != null) {
-                facesContext.getAttributes().put(Constants.DIALOG_FRAMEWORK.OPTIONS, options);
+                facesContext.getAttributes().put(Constants.DialogFramework.OPTIONS, options);
             }
 
             if (params != null) {
-                facesContext.getAttributes().put(Constants.DIALOG_FRAMEWORK.PARAMS, params);
+                facesContext.getAttributes().put(Constants.DialogFramework.PARAMS, params);
             }
         }
 
@@ -276,7 +276,7 @@ public class PrimeFaces {
         public void closeDynamic(Object data) {
             FacesContext facesContext = getFacesContext();
             Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
-            String pfdlgcid = params.get(Constants.DIALOG_FRAMEWORK.CONVERSATION_PARAM);
+            String pfdlgcid = params.get(Constants.DialogFramework.CONVERSATION_PARAM);
 
             if (data != null) {
                 Map<String, Object> session = facesContext.getExternalContext().getSessionMap();

@@ -46,10 +46,10 @@ public class DialogActionListener implements ActionListener {
         // don't use event#getFacesContext() - it's only available in JSF 2.3
         Map<Object, Object> attrs = FacesContext.getCurrentInstance().getAttributes();
         if (source instanceof Widget) {
-            attrs.put(Constants.DIALOG_FRAMEWORK.SOURCE_WIDGET, ((Widget) source).resolveWidgetVar());
+            attrs.put(Constants.DialogFramework.SOURCE_WIDGET, ((Widget) source).resolveWidgetVar());
         }
 
-        attrs.put(Constants.DIALOG_FRAMEWORK.SOURCE_COMPONENT, source.getClientId());
+        attrs.put(Constants.DialogFramework.SOURCE_COMPONENT, source.getClientId());
 
         base.processAction(event);
     }

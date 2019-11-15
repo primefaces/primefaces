@@ -48,31 +48,31 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
     @Override
     public void handleNavigation(FacesContext context, String fromAction, String outcome) {
         Map<Object, Object> attrs = context.getAttributes();
-        String dialogOutcome = (String) attrs.get(Constants.DIALOG_FRAMEWORK.OUTCOME);
+        String dialogOutcome = (String) attrs.get(Constants.DialogFramework.OUTCOME);
 
         if (dialogOutcome != null) {
             Map<String, String> requestParams = context.getExternalContext().getRequestParameterMap();
             NavigationCase navCase = getNavigationCase(context, fromAction, dialogOutcome);
             String toViewId = navCase.getToViewId(context);
-            Map<String, Object> options = (Map<String, Object>) attrs.get(Constants.DIALOG_FRAMEWORK.OPTIONS);
-            Map<String, List<String>> params = (Map<String, List<String>>) attrs.get(Constants.DIALOG_FRAMEWORK.PARAMS);
+            Map<String, Object> options = (Map<String, Object>) attrs.get(Constants.DialogFramework.OPTIONS);
+            Map<String, List<String>> params = (Map<String, List<String>>) attrs.get(Constants.DialogFramework.PARAMS);
 
             if (params == null) {
                 params = Collections.emptyMap();
             }
 
             boolean includeViewParams = false;
-            if (options != null && options.containsKey(Constants.DIALOG_FRAMEWORK.INCLUDE_VIEW_PARAMS)) {
-                includeViewParams = (Boolean) options.get(Constants.DIALOG_FRAMEWORK.INCLUDE_VIEW_PARAMS);
+            if (options != null && options.containsKey(Constants.DialogFramework.INCLUDE_VIEW_PARAMS)) {
+                includeViewParams = (Boolean) options.get(Constants.DialogFramework.INCLUDE_VIEW_PARAMS);
             }
 
             String url = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, params, includeViewParams);
             url = EscapeUtils.forJavaScript(url);
 
             StringBuilder sb = new StringBuilder();
-            String sourceComponentId = (String) attrs.get(Constants.DIALOG_FRAMEWORK.SOURCE_COMPONENT);
-            String sourceWidget = (String) attrs.get(Constants.DIALOG_FRAMEWORK.SOURCE_WIDGET);
-            String pfdlgcid = requestParams.get(Constants.DIALOG_FRAMEWORK.CONVERSATION_PARAM);
+            String sourceComponentId = (String) attrs.get(Constants.DialogFramework.SOURCE_COMPONENT);
+            String sourceWidget = (String) attrs.get(Constants.DialogFramework.SOURCE_WIDGET);
+            String pfdlgcid = requestParams.get(Constants.DialogFramework.CONVERSATION_PARAM);
             if (pfdlgcid == null) {
                 pfdlgcid = UUID.randomUUID().toString();
             }
