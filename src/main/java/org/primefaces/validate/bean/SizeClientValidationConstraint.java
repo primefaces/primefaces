@@ -40,8 +40,8 @@ public class SizeClientValidationConstraint extends AbstractClientValidationCons
 
     @Override
     protected void processMetadata(Map<String, Object> metadata, Map<String, Object> attrs) {
-        metadata.put(HTML.VALIDATION_METADATA.MIN_LENGTH, attrs.get("min"));
-        metadata.put(HTML.VALIDATION_METADATA.MAX_LENGTH, attrs.get("max"));
+        metadata.put(HTML.ValidationMetadata.MIN_LENGTH, attrs.get("min"));
+        metadata.put(HTML.ValidationMetadata.MAX_LENGTH, attrs.get("max"));
     }
 
     @Override

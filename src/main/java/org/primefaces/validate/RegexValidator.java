@@ -37,7 +37,7 @@ public class RegexValidator extends javax.faces.validator.RegexValidator impleme
         String regex = this.getPattern();
 
         if (regex != null) {
-            metadata.put(HTML.VALIDATION_METADATA.REGEX, regex);
+            metadata.put(HTML.ValidationMetadata.REGEX, regex);
         }
 
         return metadata;

@@ -254,7 +254,7 @@ public class HTML {
 
     public static final String WIDGET_VAR = "data-widget";
 
-    public static class VALIDATION_METADATA {
+    public static class ValidationMetadata {
 
         public static final String LABEL = "data-p-label";
         public static final String REQUIRED = "data-p-required";
@@ -284,6 +284,10 @@ public class HTML {
         public static final String NUMBER_TYPE = "data-p-notype";
         public static final String HIGHLIGHTER = "data-p-hl";
         public static final String GROUPED = "data-p-grouped";
+
+        private ValidationMetadata() {
+
+        }
     }
 
     private HTML() {

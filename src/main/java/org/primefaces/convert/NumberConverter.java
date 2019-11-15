@@ -41,17 +41,17 @@ public class NumberConverter extends javax.faces.convert.NumberConverter impleme
 
             metadata = new HashMap<>();
 
-            metadata.put(HTML.VALIDATION_METADATA.NUMBER_TYPE, type);
+            metadata.put(HTML.ValidationMetadata.NUMBER_TYPE, type);
 
-            if (maxIntegerDigits != 0) metadata.put(HTML.VALIDATION_METADATA.MAX_INTEGER_DIGITS, maxIntegerDigits);
-            if (minFractionDigits != 0) metadata.put(HTML.VALIDATION_METADATA.MIN_FRACTION_DIGITS, minFractionDigits);
-            if (integerOnly) metadata.put(HTML.VALIDATION_METADATA.INTEGER_ONLY, "true");
+            if (maxIntegerDigits != 0) metadata.put(HTML.ValidationMetadata.MAX_INTEGER_DIGITS, maxIntegerDigits);
+            if (minFractionDigits != 0) metadata.put(HTML.ValidationMetadata.MIN_FRACTION_DIGITS, minFractionDigits);
+            if (integerOnly) metadata.put(HTML.ValidationMetadata.INTEGER_ONLY, "true");
 
             if (type.equals("currency")) {
                 String currencySymbol = this.getCurrencySymbol();
 
                 if (currencySymbol != null) {
-                    metadata.put(HTML.VALIDATION_METADATA.CURRENCY_SYMBOL, currencySymbol);
+                    metadata.put(HTML.ValidationMetadata.CURRENCY_SYMBOL, currencySymbol);
                 }
             }
         }

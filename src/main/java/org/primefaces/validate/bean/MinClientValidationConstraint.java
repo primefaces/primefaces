@@ -40,7 +40,7 @@ public class MinClientValidationConstraint extends AbstractClientValidationConst
 
     @Override
     protected void processMetadata(Map<String, Object> metadata, Map<String, Object> attrs) {
-        metadata.put(HTML.VALIDATION_METADATA.MIN_VALUE, attrs.get("value"));
+        metadata.put(HTML.ValidationMetadata.MIN_VALUE, attrs.get("value"));
     }
 
     @Override

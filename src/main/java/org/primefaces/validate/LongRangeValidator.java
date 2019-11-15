@@ -40,11 +40,11 @@ public class LongRangeValidator extends javax.faces.validator.LongRangeValidator
         long max = this.getMaximum();
 
         if (minimumSet) {
-            metadata.put(HTML.VALIDATION_METADATA.MIN_VALUE, min);
+            metadata.put(HTML.ValidationMetadata.MIN_VALUE, min);
         }
 
         if (maximumSet) {
-            metadata.put(HTML.VALIDATION_METADATA.MAX_VALUE, max);
+            metadata.put(HTML.ValidationMetadata.MAX_VALUE, max);
         }
 
         return metadata;

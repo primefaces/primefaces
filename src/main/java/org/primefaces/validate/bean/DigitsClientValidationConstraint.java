@@ -40,8 +40,8 @@ public class DigitsClientValidationConstraint extends AbstractClientValidationCo
 
     @Override
     protected void processMetadata(Map<String, Object> metadata, Map<String, Object> attrs) {
-        metadata.put(HTML.VALIDATION_METADATA.DIGITS_INTEGER, attrs.get("integer"));
-        metadata.put(HTML.VALIDATION_METADATA.DIGITS_FRACTION, attrs.get("fraction"));
+        metadata.put(HTML.ValidationMetadata.DIGITS_INTEGER, attrs.get("integer"));
+        metadata.put(HTML.ValidationMetadata.DIGITS_FRACTION, attrs.get("fraction"));
     }
 
     @Override

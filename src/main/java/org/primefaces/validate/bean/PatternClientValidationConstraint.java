@@ -40,7 +40,7 @@ public class PatternClientValidationConstraint extends AbstractClientValidationC
 
     @Override
     protected void processMetadata(Map<String, Object> metadata, Map<String, Object> attrs) {
-        metadata.put(HTML.VALIDATION_METADATA.PATTERN, attrs.get("regexp"));
+        metadata.put(HTML.ValidationMetadata.PATTERN, attrs.get("regexp"));
     }
 
     @Override

@@ -40,7 +40,7 @@ public class PositiveOrZeroClientValidationConstraint extends AbstractClientVali
 
     @Override
     protected void processMetadata(Map<String, Object> metadata, Map<String, Object> attrs) {
-        metadata.put(HTML.VALIDATION_METADATA.MIN_VALUE, 0);
+        metadata.put(HTML.ValidationMetadata.MIN_VALUE, 0);
     }
 
     @Override

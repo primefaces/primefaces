@@ -41,7 +41,7 @@ public class NegativeClientValidationConstraint extends AbstractClientValidation
     @Override
     protected void processMetadata(Map<String, Object> metadata, Map<String, Object> attrs) {
         // TODO not sure if this limit is correct
-        metadata.put(HTML.VALIDATION_METADATA.MAX_VALUE, -Double.MIN_VALUE);
+        metadata.put(HTML.ValidationMetadata.MAX_VALUE, -Double.MIN_VALUE);
     }
 
     @Override

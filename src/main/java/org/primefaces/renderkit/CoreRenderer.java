@@ -660,17 +660,17 @@ public abstract class CoreRenderer extends Renderer {
 
 
         //messages
-        if (label != null) writer.writeAttribute(HTML.VALIDATION_METADATA.LABEL, label, null);
-        if (requiredMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.REQUIRED_MESSAGE, requiredMessage, null);
-        if (validatorMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.VALIDATOR_MESSAGE, validatorMessage, null);
-        if (converterMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.CONVERTER_MESSAGE, converterMessage, null);
+        if (label != null) writer.writeAttribute(HTML.ValidationMetadata.LABEL, label, null);
+        if (requiredMessage != null) writer.writeAttribute(HTML.ValidationMetadata.REQUIRED_MESSAGE, requiredMessage, null);
+        if (validatorMessage != null) writer.writeAttribute(HTML.ValidationMetadata.VALIDATOR_MESSAGE, validatorMessage, null);
+        if (converterMessage != null) writer.writeAttribute(HTML.ValidationMetadata.CONVERTER_MESSAGE, converterMessage, null);
 
         //converter
         if (converter != null && converter instanceof ClientConverter) {
             ClientConverter clientConverter = (ClientConverter) converter;
             Map<String, Object> metadata = clientConverter.getMetadata();
 
-            writer.writeAttribute(HTML.VALIDATION_METADATA.CONVERTER, ((ClientConverter) converter).getConverterId(), null);
+            writer.writeAttribute(HTML.ValidationMetadata.CONVERTER, ((ClientConverter) converter).getConverterId(), null);
 
             if (metadata != null && !metadata.isEmpty()) {
                 renderValidationMetadataMap(context, metadata);
@@ -696,7 +696,7 @@ public abstract class CoreRenderer extends Renderer {
 
         //required validation
         if (component.isRequired()) {
-            writer.writeAttribute(HTML.VALIDATION_METADATA.REQUIRED, "true", null);
+            writer.writeAttribute(HTML.ValidationMetadata.REQUIRED, "true", null);
         }
 
         //validators
@@ -721,11 +721,11 @@ public abstract class CoreRenderer extends Renderer {
         renderValidatorIds(context, validatorIds);
 
         if (highlighter != null) {
-            writer.writeAttribute(HTML.VALIDATION_METADATA.HIGHLIGHTER, highlighter, null);
+            writer.writeAttribute(HTML.ValidationMetadata.HIGHLIGHTER, highlighter, null);
         }
 
         if (isGrouped()) {
-            writer.writeAttribute(HTML.VALIDATION_METADATA.GROUPED, "true", null);
+            writer.writeAttribute(HTML.ValidationMetadata.GROUPED, "true", null);
         }
     }
 
@@ -763,7 +763,7 @@ public abstract class CoreRenderer extends Renderer {
             builder.append(validatorId);
         }
 
-        writer.writeAttribute(HTML.VALIDATION_METADATA.VALIDATOR_IDS, builder.toString(), null);
+        writer.writeAttribute(HTML.ValidationMetadata.VALIDATOR_IDS, builder.toString(), null);
     }
 
     protected String getHighlighter() {

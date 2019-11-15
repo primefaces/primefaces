@@ -42,11 +42,11 @@ public class LengthValidator extends javax.faces.validator.LengthValidator imple
             metadata = new HashMap<>();
 
             if (minimumSet) {
-                metadata.put(HTML.VALIDATION_METADATA.MIN_LENGTH, min);
+                metadata.put(HTML.ValidationMetadata.MIN_LENGTH, min);
             }
 
             if (maximumSet) {
-                metadata.put(HTML.VALIDATION_METADATA.MAX_LENGTH, max);
+                metadata.put(HTML.ValidationMetadata.MAX_LENGTH, max);
             }
         }
 

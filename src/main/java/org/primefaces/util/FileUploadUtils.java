@@ -213,9 +213,10 @@ public class FileUploadUtils {
         String tempFilePrefix = UUID.randomUUID().toString();
         Path tempFile = Files.createTempFile(tempFilePrefix, tempFileSuffix);
         try {
-            InputStream in = new PushbackInputStream(new BufferedInputStream(stream));
-            try (OutputStream out = new FileOutputStream(tempFile.toFile())) {
-                IOUtils.copyLarge(in, out);
+            try (InputStream in = new PushbackInputStream(new BufferedInputStream(stream))) {
+                try (OutputStream out = new FileOutputStream(tempFile.toFile())) {
+                    IOUtils.copyLarge(in, out);
+                }
             }
             String contentType = null;
             if (context.getFileTypeDetector() != null) {

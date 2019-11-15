@@ -25,7 +25,7 @@ package org.primefaces.util;
 
 public class Constants {
 
-    public static final class ContextParams {
+    public static class ContextParams {
 
         // JSF context params
         public static final String INTERPRET_EMPTY_STRING_AS_NULL = "javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL";
@@ -53,7 +53,7 @@ public class Constants {
         }
     }
 
-    public static final class RequestParams {
+    public static class RequestParams {
 
         // JSF request params
         public static final String PARTIAL_REQUEST_PARAM = "javax.faces.partial.ajax";
@@ -86,7 +86,7 @@ public class Constants {
 
     public static final String FRAGMENT_ID = "primefaces.fragment";
 
-    public static final class DialogFramework {
+    public static class DialogFramework {
 
         public static final String OUTCOME = "dialog.outcome";
         public static final String OPTIONS = "dialog.options";

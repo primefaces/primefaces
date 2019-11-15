@@ -40,7 +40,7 @@ public class MaxClientValidationConstraint extends AbstractClientValidationConst
 
     @Override
     protected void processMetadata(Map<String, Object> metadata, Map<String, Object> attrs) {
-        metadata.put(HTML.VALIDATION_METADATA.MAX_VALUE, attrs.get("value"));
+        metadata.put(HTML.ValidationMetadata.MAX_VALUE, attrs.get("value"));
     }
 
     @Override
