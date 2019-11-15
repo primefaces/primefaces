@@ -365,15 +365,10 @@ public class TimelineModel<E, G> implements Serializable {
         orderedEvents.addAll(events);
 
         // find the largest end date
-        LocalDateTime endDate = null;
-        for (TimelineEvent<E> e : orderedEvents) {
-            if (endDate == null && e.getEndDate() != null) {
-                endDate = e.getEndDate();
-            }
-            else if (endDate != null && e.getEndDate() != null && endDate.isBefore(e.getEndDate())) {
-                endDate = e.getEndDate();
-            }
-        }
+        LocalDateTime endDate = orderedEvents.stream()
+                .map(TimelineEvent::getEndDate)
+                .max(LocalDateTime::compareTo)
+                .orElse(null);
 
         TimelineEvent<E> mergedEvent = new TimelineEvent<>(event.getData(), orderedEvents.first().getStartDate(), endDate, event.isEditable(),
                         event.getGroup(), event.getStyleClass());
