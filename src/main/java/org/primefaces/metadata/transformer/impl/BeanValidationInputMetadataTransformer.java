@@ -23,28 +23,6 @@
  */
 package org.primefaces.metadata.transformer.impl;
 
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.el.PropertyNotFoundException;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIInput;
-import javax.faces.context.FacesContext;
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.Future;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
-import javax.validation.metadata.ConstraintDescriptor;
-
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.inputnumber.InputNumber;
 import org.primefaces.component.spinner.Spinner;
@@ -55,16 +33,26 @@ import org.primefaces.util.LangUtils;
 import org.primefaces.validate.bean.FutureOrPresentClientValidationConstraint;
 import org.primefaces.validate.bean.PastOrPresentClientValidationConstraint;
 
+import javax.el.PropertyNotFoundException;
+import javax.faces.component.UIInput;
+import javax.faces.context.FacesContext;
+import javax.validation.constraints.*;
+import javax.validation.metadata.ConstraintDescriptor;
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class BeanValidationInputMetadataTransformer extends AbstractInputMetadataTransformer {
 
     private static final Logger LOGGER = Logger.getLogger(BeanValidationInputMetadataTransformer.class.getName());
 
     @Override
     public void transformInput(FacesContext context, PrimeApplicationContext applicationContext, UIInput input) throws IOException {
-
-        EditableValueHolder editableValueHolder = (EditableValueHolder) input;
-
-        if (editableValueHolder.isRequired() && isMaxlenghtSet(input)) {
+        if (input.isRequired() && isMaxlenghtSet(input)) {
             return;
         }
 
@@ -73,7 +61,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
                     context, applicationContext, input.getValueExpression("value"));
             if (constraints != null && !constraints.isEmpty()) {
                 for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
-                    applyConstraint(constraintDescriptor, input, editableValueHolder);
+                    applyConstraint(constraintDescriptor, input);
                 }
             }
         }
@@ -85,7 +73,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
         }
     }
 
-    protected void applyConstraint(ConstraintDescriptor constraintDescriptor, UIInput input, EditableValueHolder editableValueHolder) {
+    protected void applyConstraint(ConstraintDescriptor constraintDescriptor, UIInput input) {
 
         Annotation constraint = constraintDescriptor.getAnnotation();
         Class<? extends Annotation> annotationType = constraint.annotationType();
