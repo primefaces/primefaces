@@ -23,13 +23,11 @@
  */
 package org.primefaces.model.timeline;
 
+import org.primefaces.component.timeline.TimelineUpdater;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.TreeSet;
-import org.primefaces.component.timeline.TimelineUpdater;
+import java.util.*;
 
 public class TimelineModel<E, G> implements Serializable {
 
@@ -367,6 +365,7 @@ public class TimelineModel<E, G> implements Serializable {
         // find the largest end date
         LocalDateTime endDate = orderedEvents.stream()
                 .map(TimelineEvent::getEndDate)
+                .filter(Objects::nonNull)
                 .max(LocalDateTime::compareTo)
                 .orElse(null);
 
