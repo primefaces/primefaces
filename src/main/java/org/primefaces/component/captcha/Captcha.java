@@ -75,7 +75,6 @@ public class Captcha extends CaptchaBase {
                 try (OutputStream out = conn.getOutputStream()) {
                     out.write(postBody.getBytes());
                     out.flush();
-                    out.close();
                 }
 
                 try (BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
