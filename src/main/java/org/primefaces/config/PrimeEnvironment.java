@@ -23,15 +23,15 @@
  */
 package org.primefaces.config;
 
-import java.io.IOException;
+import org.primefaces.util.LangUtils;
+
+import javax.faces.context.FacesContext;
+import javax.validation.Validation;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.context.FacesContext;
-import javax.validation.Validation;
-import org.primefaces.util.LangUtils;
 
 public class PrimeEnvironment {
 
@@ -74,10 +74,10 @@ public class PrimeEnvironment {
         tikaAvailable = LangUtils.tryToLoadClassForName(TIKA_FILE_DETECTOR_CLASS) != null;
 
         if (context == null || context.getExternalContext() == null) {
-            this.mojarra = false;
+            mojarra = false;
         }
         else {
-            this.mojarra = context.getExternalContext().getApplicationMap().containsKey("com.sun.faces.ApplicationAssociate");
+            mojarra = context.getExternalContext().getApplicationMap().containsKey("com.sun.faces.ApplicationAssociate");
         }
     }
 
@@ -103,25 +103,13 @@ public class PrimeEnvironment {
     protected String resolveBuildVersion() {
         String buildVersion = null;
 
-        InputStream is = null;
-        try {
-            is = getClass().getResourceAsStream("/META-INF/maven/org.primefaces/primefaces/pom.properties");
-
+        try (InputStream is = getClass().getResourceAsStream("/META-INF/maven/org.primefaces/primefaces/pom.properties")) {
             Properties buildProperties = new Properties();
             buildProperties.load(is);
             buildVersion = buildProperties.getProperty("version");
         }
         catch (Exception e) {
             LOGGER.log(Level.SEVERE, "PrimeFaces version not resolvable - Could not load pom.properties.");
-        }
-        finally {
-            if (is != null) {
-                try {
-                    is.close();
-                }
-                catch (IOException e) {
-                }
-            }
         }
 
         // This should only happen if PF + the webapp is openend and started in the same netbeans instance
