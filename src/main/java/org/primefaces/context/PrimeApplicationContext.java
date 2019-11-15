@@ -113,7 +113,7 @@ public class PrimeApplicationContext {
         applicationClassLoader = classLoader;
 
         if (config.isBeanValidationEnabled()) {
-            validatorFactory = new Lazy<>(() -> Validation.buildDefaultValidatorFactory());
+            validatorFactory = new Lazy<>(Validation::buildDefaultValidatorFactory);
             validator = new Lazy<>(() -> validatorFactory.get().getValidator());
         }
         else {
@@ -173,7 +173,7 @@ public class PrimeApplicationContext {
         return (PrimeApplicationContext) context.getAttribute(INSTANCE_KEY);
     }
 
-    public static void setCurrentInstance(final PrimeApplicationContext context, final FacesContext facesContext) {
+    public static void setCurrentInstance(PrimeApplicationContext context, FacesContext facesContext) {
         facesContext.getExternalContext().getApplicationMap().put(INSTANCE_KEY, context);
 
         if (facesContext.getExternalContext().getContext() instanceof ServletContext) {
