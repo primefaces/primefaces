@@ -92,46 +92,90 @@ public class TimelineEvent<T> implements Serializable {
         this.id = UUID.randomUUID().toString();
     }
 
+    /**
+     * @deprecated Use {@link TimelineEvent.Builder} instead.
+     */
+    @Deprecated
     public TimelineEvent(T data, LocalDateTime startDate) {
         this(data, startDate, null, null, null, null);
     }
 
+    /**
+     * @deprecated Use {@link TimelineEvent.Builder} instead.
+     */
+    @Deprecated
     public TimelineEvent(T data, LocalDate startDate) {
         this(data, startDate.atStartOfDay(), null, null, null, null);
     }
 
+    /**
+     * @deprecated Use {@link TimelineEvent.Builder} instead.
+     */
+    @Deprecated
     public TimelineEvent(T data, LocalDateTime startDate, Boolean editable) {
         this(data, startDate, null, editable, null, null);
     }
 
+    /**
+     * @deprecated Use {@link TimelineEvent.Builder} instead.
+     */
+    @Deprecated
     public TimelineEvent(T data, LocalDateTime startDate, Boolean editable, String group) {
         this(data, startDate, null, editable, group, null);
     }
 
+    /**
+     * @deprecated Use {@link TimelineEvent.Builder} instead.
+     */
+    @Deprecated
     public TimelineEvent(T data, LocalDateTime startDate, Boolean editable, String group, String styleClass) {
         this(data, startDate, null, editable, group, styleClass);
     }
 
+    /**
+     * @deprecated Use {@link TimelineEvent.Builder} instead.
+     */
+    @Deprecated
     public TimelineEvent(T data, LocalDateTime startDate, LocalDateTime endDate) {
         this(data, startDate, endDate, null, null, null);
     }
 
+    /**
+     * @deprecated Use {@link TimelineEvent.Builder} instead.
+     */
+    @Deprecated
     public TimelineEvent(T data, LocalDate startDate, LocalDate endDate) {
         this(data, startDate.atStartOfDay(), endDate.atStartOfDay(), null, null, null);
     }
 
+    /**
+     * @deprecated Use {@link TimelineEvent.Builder} instead.
+     */
+    @Deprecated
     public TimelineEvent(T data, LocalDateTime startDate, LocalDateTime endDate, Boolean editable) {
         this(data, startDate, endDate, editable, null, null);
     }
 
+    /**
+     * @deprecated Use {@link TimelineEvent.Builder} instead.
+     */
+    @Deprecated
     public TimelineEvent(T data, LocalDateTime startDate, LocalDateTime endDate, Boolean editable, String group) {
         this(data, startDate, endDate, editable, group, null);
     }
 
+    /**
+     * @deprecated Use {@link TimelineEvent.Builder} instead.
+     */
+    @Deprecated
     public TimelineEvent(T data, LocalDateTime startDate, LocalDateTime endDate, Boolean editable, String group, String styleClass) {
         this(UUID.randomUUID().toString(), data, startDate, endDate, editable, group, styleClass);
     }
 
+    /**
+     * @deprecated Use {@link TimelineEvent.Builder} instead.
+     */
+    @Deprecated
     public TimelineEvent(String id, T data, LocalDateTime startDate, LocalDateTime endDate, Boolean editable, String group, String styleClass) {
         checkStartDate(startDate);
         this.id = id;
@@ -146,6 +190,10 @@ public class TimelineEvent<T> implements Serializable {
         this.styleClass = styleClass;
     }
 
+    /**
+     * @deprecated Use {@link TimelineEvent.Builder} instead.
+     */
+    @Deprecated
     public TimelineEvent(TimelineEvent<T> event) {
         this.id = event.id;
         this.data = event.data;
@@ -296,7 +344,7 @@ public class TimelineEvent<T> implements Serializable {
     public static final class Builder<T> {
         private final TimelineEvent<T> event;
 
-        public Builder() {
+        private Builder() {
             event = new TimelineEvent<>();
         }
 
