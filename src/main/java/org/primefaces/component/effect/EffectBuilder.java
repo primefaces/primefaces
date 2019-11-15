@@ -27,12 +27,12 @@ import org.primefaces.model.JSObjectBuilder;
 
 public class EffectBuilder implements JSObjectBuilder {
 
-    private StringBuffer buffer;
+    private StringBuilder buffer;
 
     private boolean hasOption = false;
 
     public EffectBuilder(String type, String id, boolean queue) {
-        buffer = new StringBuffer();
+        buffer = new StringBuilder();
         buffer.append("$(PrimeFaces.escapeClientId('");
         buffer.append(id);
         buffer.append("'))");
