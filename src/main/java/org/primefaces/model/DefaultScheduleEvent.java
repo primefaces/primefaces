@@ -100,8 +100,9 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
     }
 
     @Override
-    public void setId(String id) {
+    public DefaultScheduleEvent<T> setId(String id) {
         this.id = id;
+        return this;
     }
 
     @Override
@@ -109,8 +110,9 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
         return groupId;
     }
 
-    public void setGroupId(String groupId) {
+    public DefaultScheduleEvent<T> setGroupId(String groupId) {
         this.groupId = groupId;
+        return this;
     }
 
     @Override
@@ -118,8 +120,9 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
         return title;
     }
 
-    public void setTitle(String title) {
+    public DefaultScheduleEvent<T> setTitle(String title) {
         this.title = title;
+        return this;
     }
 
     @Override
@@ -128,8 +131,9 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
     }
 
     @Override
-    public void setStartDate(LocalDateTime startDate) {
+    public DefaultScheduleEvent<T> setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
+        return this;
     }
 
     @Override
@@ -138,8 +142,9 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
     }
 
     @Override
-    public void setEndDate(LocalDateTime endDate) {
+    public DefaultScheduleEvent<T> setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
+        return this;
     }
 
     @Override
@@ -147,12 +152,14 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
         return allDay;
     }
 
-    public void setAllDay(boolean allDay) {
+    public DefaultScheduleEvent<T> setAllDay(boolean allDay) {
         this.allDay = allDay;
+        return this;
     }
 
-    public void setStyleClass(String styleClass) {
+    public DefaultScheduleEvent<T> setStyleClass(String styleClass) {
         this.styleClass = styleClass;
+        return this;
     }
 
     @Override
@@ -165,8 +172,9 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
         return data;
     }
 
-    public void setData(T data) {
+    public DefaultScheduleEvent<T> setData(T data) {
         this.data = data;
+        return this;
     }
 
     @Override
@@ -179,12 +187,14 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
         return overlapAllowed;
     }
 
-    public void setOverlapAllowed(boolean overlapAllowed) {
+    public DefaultScheduleEvent<T> setOverlapAllowed(boolean overlapAllowed) {
         this.overlapAllowed = overlapAllowed;
+        return this;
     }
 
-    public void setEditable(boolean editable) {
+    public DefaultScheduleEvent<T> setEditable(boolean editable) {
         this.editable = editable;
+        return this;
     }
 
     @Override
@@ -192,8 +202,9 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
         return description;
     }
 
-    public void setDescription(String description) {
+    public DefaultScheduleEvent<T> setDescription(String description) {
         this.description = description;
+        return this;
     }
 
     @Override
@@ -201,8 +212,9 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
         return url;
     }
 
-    public void setUrl(String url) {
+    public DefaultScheduleEvent<T> setUrl(String url) {
         this.url = url;
+        return this;
     }
 
     @Override
@@ -210,8 +222,9 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
         return renderingMode;
     }
 
-    public void setRenderingMode(ScheduleRenderingMode renderingMode) {
+    public DefaultScheduleEvent<T> setRenderingMode(ScheduleRenderingMode renderingMode) {
         this.renderingMode = renderingMode;
+        return this;
     }
 
     @Override

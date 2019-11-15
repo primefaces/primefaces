@@ -208,6 +208,10 @@ public class TimelineEvent<T> implements Serializable {
         this.styleClass = event.styleClass;
     }
 
+    public TimelineEvent<T> clone() {
+        return new TimelineEvent<T>(this);
+    }
+
     public String getId() {
         return id;
     }
@@ -216,84 +220,94 @@ public class TimelineEvent<T> implements Serializable {
         return data;
     }
 
-    public void setData(T data) {
+    public TimelineEvent<T> setData(T data) {
         this.data = data;
+        return this;
     }
 
     public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
+    public TimelineEvent<T> setStartDate(LocalDateTime startDate) {
         checkStartDate(startDate);
         this.startDate = startDate;
+        return this;
     }
 
     public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDateTime endDate) {
+    public TimelineEvent<T> setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
+        return this;
     }
 
     public Boolean isEditable() {
         return editable;
     }
 
-    public void setEditable(Boolean editable) {
+    public TimelineEvent<T> setEditable(Boolean editable) {
         this.editable = editable;
         this.editableTime = editable;
         this.editableGroup = editable;
         this.editableRemove = editable;
+        return this;
     }
 
     public Boolean isEditableTime() {
         return editableTime;
     }
 
-    public void setEditableTime(Boolean editableTime) {
+    public TimelineEvent<T> setEditableTime(Boolean editableTime) {
         this.editableTime = editableTime;
+        return this;
     }
 
     public Boolean isEditableGroup() {
         return editableGroup;
     }
 
-    public void setEditableGroup(Boolean editableGroup) {
+    public TimelineEvent<T> setEditableGroup(Boolean editableGroup) {
         this.editableGroup = editableGroup;
+        return this;
     }
 
     public Boolean isEditableRemove() {
         return editableRemove;
     }
 
-    public void setEditableRemove(Boolean editableRemove) {
+    public TimelineEvent<T> setEditableRemove(Boolean editableRemove) {
         this.editableRemove = editableRemove;
+        return this;
     }
 
     public String getGroup() {
         return group;
     }
 
-    public void setGroup(String group) {
+    public TimelineEvent<T> setGroup(String group) {
         this.group = group;
+        return this;
     }
 
     public String getStyleClass() {
         return styleClass;
     }
 
-    public void setStyleClass(String styleClass) {
+    public TimelineEvent<T> setStyleClass(String styleClass) {
         this.styleClass = styleClass;
+        return this;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public TimelineEvent<T> setTitle(String title) {
         this.title = title;
+        return this;
     }
 
     public static <T> Builder<T> builder() {
