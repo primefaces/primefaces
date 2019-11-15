@@ -128,12 +128,7 @@ public class LangUtils {
             return Class.forName(name, false, LangUtils.class.getClassLoader());
         }
         catch (ClassNotFoundException e) {
-            try {
-                return Class.forName(name, false, getContextClassLoader());
-            }
-            catch (ClassNotFoundException e2) {
-                throw e2;
-            }
+            return Class.forName(name, false, getContextClassLoader());
         }
     }
 
