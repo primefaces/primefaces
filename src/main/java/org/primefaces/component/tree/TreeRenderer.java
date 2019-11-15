@@ -246,7 +246,7 @@ public class TreeRenderer extends CoreRenderer {
                 tree.initPreselection();
             }
 
-            if (root != null && (LangUtils.isValueBlank(filteredValue) || tree.getFilteredRowKeys().size() > 0)) {
+            if (root != null && (LangUtils.isValueBlank(filteredValue) || !tree.getFilteredRowKeys().isEmpty())) {
                 encodeTreeNodeChildren(context, tree, root, clientId, tree.isDynamic(), tree.isCheckboxSelection(), tree.isDroppable());
             }
         }
