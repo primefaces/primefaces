@@ -170,7 +170,7 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
                     ClientBehavior clientBehavior = clickBehaviors.get(i);
                     if (clientBehavior instanceof ConfirmBehavior) {
                         ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
-                                context, (UIComponent) item, "click", item.getClientId(), Collections.EMPTY_LIST);
+                                context, (UIComponent) item, "click", item.getClientId(), Collections.emptyList());
                         clientBehavior.getScript(cbc);
                         break;
                     }
