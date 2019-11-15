@@ -273,7 +273,7 @@ public class DatePicker extends DatePickerBase {
         }
 
         if (isValid()) {
-            List<Object> disabledDays = getDisabledDays();
+            List<Integer> disabledDays = getDisabledDays();
             if (disabledDays != null) {
                 if (disabledDays.contains(date.getDayOfWeek().getValue())) {
                     setValid(false);
