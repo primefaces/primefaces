@@ -130,7 +130,7 @@ public class DataGrid extends DataGridBase {
     protected boolean shouldSkipChildren(FacesContext context) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String paramValue = params.get(Constants.RequestParams.SKIP_CHILDREN_PARAM);
-        if (paramValue != null && Boolean.parseBoolean(paramValue) == false) {
+        if (paramValue != null && !Boolean.parseBoolean(paramValue)) {
             return false;
         }
         else {
