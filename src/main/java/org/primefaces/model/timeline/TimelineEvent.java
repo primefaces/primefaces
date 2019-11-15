@@ -93,7 +93,7 @@ public class TimelineEvent<T> implements Serializable {
     }
 
     /**
-     * @deprecated Use {@link TimelineEvent.Builder} instead.
+     * @deprecated Use {@link #builder()} instead.
      */
     @Deprecated
     public TimelineEvent(T data, LocalDateTime startDate) {
@@ -101,7 +101,7 @@ public class TimelineEvent<T> implements Serializable {
     }
 
     /**
-     * @deprecated Use {@link TimelineEvent.Builder} instead.
+     * @deprecated Use {@link #builder()} instead.
      */
     @Deprecated
     public TimelineEvent(T data, LocalDate startDate) {
@@ -109,7 +109,7 @@ public class TimelineEvent<T> implements Serializable {
     }
 
     /**
-     * @deprecated Use {@link TimelineEvent.Builder} instead.
+     * @deprecated Use {@link #builder()} instead.
      */
     @Deprecated
     public TimelineEvent(T data, LocalDateTime startDate, Boolean editable) {
@@ -117,7 +117,7 @@ public class TimelineEvent<T> implements Serializable {
     }
 
     /**
-     * @deprecated Use {@link TimelineEvent.Builder} instead.
+     * @deprecated Use {@link #builder()} instead.
      */
     @Deprecated
     public TimelineEvent(T data, LocalDateTime startDate, Boolean editable, String group) {
@@ -125,7 +125,7 @@ public class TimelineEvent<T> implements Serializable {
     }
 
     /**
-     * @deprecated Use {@link TimelineEvent.Builder} instead.
+     * @deprecated Use {@link #builder()} instead.
      */
     @Deprecated
     public TimelineEvent(T data, LocalDateTime startDate, Boolean editable, String group, String styleClass) {
