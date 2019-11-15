@@ -51,12 +51,20 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
     public DefaultScheduleEvent() {
     }
 
+    /**
+     * @deprecated Use {@link #builder()} instead.
+     */
+    @Deprecated
     public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end) {
         this.title = title;
         this.startDate = start;
         this.endDate = end;
     }
 
+    /**
+     * @deprecated Use {@link #builder()} instead.
+     */
+    @Deprecated
     public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end, boolean allDay) {
         this.title = title;
         this.startDate = start;
@@ -65,7 +73,7 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
     }
 
     /**
-     * @deprecated Use {@link DefaultScheduleEvent.Builder} instead.
+     * @deprecated Use {@link #builder()} instead.
      */
     @Deprecated
     public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end, String styleClass) {
@@ -76,7 +84,7 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
     }
 
     /**
-     * @deprecated Use {@link DefaultScheduleEvent.Builder} instead.
+     * @deprecated Use {@link #builder()} instead.
      */
     @Deprecated
     public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end, T data) {
