@@ -497,11 +497,8 @@ public class AutoCompleteRenderer extends InputRenderer {
     protected void encodeSuggestionsAsTable(FacesContext context, AutoComplete ac, Object items, Converter converter) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String var = ac.getVar();
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         boolean pojo = var != null;
-        UIComponent itemtip = ac.getFacet("itemtip");
         boolean hasHeader = false;
-        boolean hasGroupByTooltip = (ac.getValueExpression(AutoComplete.PropertyKeys.groupByTooltip.toString()) != null);
 
         for (int i = 0; i < ac.getColums().size(); i++) {
             Column column = ac.getColums().get(i);
