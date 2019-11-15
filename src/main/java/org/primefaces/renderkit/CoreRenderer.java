@@ -666,7 +666,7 @@ public abstract class CoreRenderer extends Renderer {
         if (converterMessage != null) writer.writeAttribute(HTML.ValidationMetadata.CONVERTER_MESSAGE, converterMessage, null);
 
         //converter
-        if (converter != null && converter instanceof ClientConverter) {
+        if (converter instanceof ClientConverter) {
             ClientConverter clientConverter = (ClientConverter) converter;
             Map<String, Object> metadata = clientConverter.getMetadata();
 

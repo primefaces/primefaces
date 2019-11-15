@@ -55,7 +55,7 @@ public abstract class TimelineUpdater {
         }
 
         UIComponent timeline = context.getViewRoot().findComponent(id);
-        if (timeline == null || !(timeline instanceof Timeline)) {
+        if (!(timeline instanceof Timeline)) {
             throw new FacesException("Timeline component with Id " + id + " was not found");
         }
 
