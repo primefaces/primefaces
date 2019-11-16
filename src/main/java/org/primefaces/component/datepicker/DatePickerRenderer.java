@@ -125,7 +125,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("icon", datepicker.getTriggerButtonIcon(), null)
             .attr("rangeSeparator", datepicker.getRangeSeparator(), null);
 
-        List<Object> disabledDays = datepicker.getDisabledDays();
+        List<Integer> disabledDays = datepicker.getDisabledDays();
         if (disabledDays != null) {
             CalendarUtils.encodeListValue(context, datepicker, "disabledDays", disabledDays, pattern);
         }

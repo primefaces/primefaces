@@ -359,11 +359,11 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         getStateHelper().put(PropertyKeys.disabledDates, disabledDates);
     }
 
-    public List getDisabledDays() {
-        return (List) getStateHelper().eval(PropertyKeys.disabledDays, null);
+    public List<Integer> getDisabledDays() {
+        return (List<Integer>) getStateHelper().eval(PropertyKeys.disabledDays, null);
     }
 
-    public void setDisabledDays(List disabledDays) {
+    public void setDisabledDays(List<Integer> disabledDays) {
         getStateHelper().put(PropertyKeys.disabledDays, disabledDays);
     }
 

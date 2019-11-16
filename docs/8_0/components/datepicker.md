@@ -67,7 +67,7 @@ ajax selection and more.
 | appendTo | null | String | Appends the dialog to the element defined by the given search expression.
 | triggerButtonIcon | null | String | Icon of the datepicker element that toggles the visibility in popup mode.
 | disabledDates | null | List<java.time.LocalDate>, List<java.util.Date> (deprecated) | List of dates that should be disabled.
-| disabledDays | null | List<int> | List of week day indexes that should be disabled.
+| disabledDays | null | List<Integer> | List of week day indexes that should be disabled.
 | onMonthChange | null | Function | Javascript function to invoke when month changes.
 | onYearChange | null | Function | Javascript function to invoke when year changes.
 | locale | null | Object | Locale to be used for labels and conversion.
