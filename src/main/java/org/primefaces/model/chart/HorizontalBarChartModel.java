@@ -23,7 +23,7 @@
  */
 package org.primefaces.model.chart;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 
 public class HorizontalBarChartModel extends BarChartModel {
 
@@ -31,7 +31,7 @@ public class HorizontalBarChartModel extends BarChartModel {
 
     @Override
     public void createAxes() {
-        axes = new HashMap<AxisType, Axis>();
+        axes = new EnumMap<>(AxisType.class);
         axes.put(AxisType.X, new LinearAxis());
         axes.put(AxisType.Y, new CategoryAxis());
     }
