@@ -150,19 +150,13 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     }
 
     protected DataModel<?> getDataModel() {
-        DataModel dataModel;
         String clientID = "";
 
         UIComponent parent = getParent();
         if (parent != null) {
             clientID = parent.getContainerClientId(getFacesContext());
         }
-        dataModel = _dataModelMap.get(clientID);
-        if (dataModel == null) {
-            dataModel = createDataModel();
-            _dataModelMap.put(clientID, dataModel);
-        }
-        return dataModel;
+        return _dataModelMap.computeIfAbsent(clientID, k -> createDataModel());
     }
 
     private DataModel createDataModel() {

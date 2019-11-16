@@ -105,13 +105,7 @@ public class MessagesRenderer extends UINotificationRenderer {
 
     protected void addMessage(Messages uiMessages, FacesMessage message, Map<String, List<FacesMessage>> messagesBySeverity, String severity) {
         if (shouldRender(uiMessages, message, severity)) {
-            List<FacesMessage> severityMessages = messagesBySeverity.get(severity);
-
-            if (severityMessages == null) {
-                severityMessages = new ArrayList<>();
-                messagesBySeverity.put(severity, severityMessages);
-            }
-
+            List<FacesMessage> severityMessages = messagesBySeverity.computeIfAbsent(severity, k -> new ArrayList<>());
             severityMessages.add(message);
         }
     }
