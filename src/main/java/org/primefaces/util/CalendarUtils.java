@@ -314,7 +314,7 @@ public class CalendarUtils {
      * @param pattern the pattern for formatting
      * @throws IOException if writer is null
      */
-    public static void encodeListValue(FacesContext context, UICalendar uicalendar, String optionName, List<Object> values, String pattern) throws IOException {
+    public static void encodeListValue(FacesContext context, UICalendar uicalendar, String optionName, List<?> values, String pattern) throws IOException {
         if (values == null) {
             return;
         }
