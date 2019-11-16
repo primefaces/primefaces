@@ -673,7 +673,7 @@ public class DataTable extends DataTableBase {
             String expressionString = expression.getExpressionString();
             if (expressionString.startsWith("#{")) {
                 expressionString = expressionString.substring(2, expressionString.indexOf('}')); //Remove #{}
-                return expressionString.substring(expressionString.indexOf(".") + 1); //Remove var
+                return expressionString.substring(expressionString.indexOf('.') + 1); //Remove var
             }
         }
 
