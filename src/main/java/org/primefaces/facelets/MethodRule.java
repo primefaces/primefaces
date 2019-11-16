@@ -96,7 +96,7 @@ public class MethodRule extends MetaRule {
             MethodExpression expr = this.attribute.getMethodExpression(ctx, this.returnType, this.paramList);
 
             try {
-                this.method.invoke(instance, new Object[]{expr});
+                this.method.invoke(instance, expr);
             }
             catch (InvocationTargetException e) {
                 throw new TagAttributeException(this.attribute, e.getCause());
