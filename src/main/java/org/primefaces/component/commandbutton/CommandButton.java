@@ -23,21 +23,19 @@
  */
 package org.primefaces.component.commandbutton;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.logging.Logger;
+import org.primefaces.component.api.DialogReturnAware;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.MapBuilder;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
-import org.primefaces.component.api.DialogReturnAware;
-
-import org.primefaces.event.SelectEvent;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
+import java.util.Collection;
+import java.util.Map;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -49,8 +47,6 @@ import org.primefaces.util.MapBuilder;
 public class CommandButton extends CommandButtonBase implements DialogReturnAware {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.CommandButton";
-
-    private static final Logger LOGGER = Logger.getLogger(CommandButton.class.getName());
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("click", null)

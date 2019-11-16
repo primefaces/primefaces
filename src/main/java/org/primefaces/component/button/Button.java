@@ -23,16 +23,14 @@
  */
 package org.primefaces.component.button;
 
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
+
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
+import java.util.List;
+import java.util.Map;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -43,8 +41,6 @@ import org.primefaces.util.LangUtils;
 public class Button extends ButtonBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Button";
-
-    private static final Logger LOGGER = Logger.getLogger(Button.class.getName());
 
     public String resolveStyleClass() {
         String icon = getIcon();

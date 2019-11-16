@@ -23,21 +23,6 @@
  */
 package org.primefaces.component.schedule;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.primefaces.model.LazyScheduleModel;
@@ -47,9 +32,20 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.WidgetBuilder;
 
-public class ScheduleRenderer extends CoreRenderer {
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-    private static final Logger LOGGER = Logger.getLogger(ScheduleRenderer.class.getName());
+public class ScheduleRenderer extends CoreRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
