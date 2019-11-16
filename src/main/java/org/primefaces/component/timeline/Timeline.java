@@ -107,10 +107,12 @@ public class Timeline extends TimelineBase {
                 TimelineEvent<Object> timelineEvent = getValue().getEvent(params.get(clientId + "_eventId"));
 
                 if (timelineEvent != null) {
-                    clonedEvent = timelineEvent.clone()
-                            .setStartDate(CalendarUtils.toLocalDateTime(zoneId, params.get(clientId + "_startDate")))
-                            .setEndDate(CalendarUtils.toLocalDateTime(zoneId, params.get(clientId + "_endDate")))
-                            .setGroup(params.get(clientId + "_group"));
+                    clonedEvent = new TimelineEvent<>(timelineEvent);
+
+                    // update start / end date and the group
+                    clonedEvent.setStartDate(CalendarUtils.toLocalDateTime(zoneId, params.get(clientId + "_startDate")));
+                    clonedEvent.setEndDate(CalendarUtils.toLocalDateTime(zoneId, params.get(clientId + "_endDate")));
+                    clonedEvent.setGroup(params.get(clientId + "_group"));
                 }
 
                 TimelineModificationEvent<Object> te = new TimelineModificationEvent<>(this, behaviorEvent.getBehavior(), clonedEvent);
@@ -124,7 +126,7 @@ public class Timeline extends TimelineBase {
                 TimelineEvent<Object> timelineEvent = getValue().getEvent(params.get(clientId + "_eventId"));
 
                 if (timelineEvent != null) {
-                    clonedEvent = timelineEvent.clone();
+                    clonedEvent = new TimelineEvent<>(timelineEvent);
                 }
 
                 TimelineModificationEvent<Object> te = new TimelineModificationEvent<>(this, behaviorEvent.getBehavior(), clonedEvent);

@@ -30,7 +30,7 @@ public interface ScheduleEvent<T> {
 
     public String getId();
 
-    public ScheduleEvent<T> setId(String id);
+    public void setId(String id);
 
     public String getGroupId();
 
@@ -40,11 +40,11 @@ public interface ScheduleEvent<T> {
 
     public LocalDateTime getStartDate();
 
-    public ScheduleEvent<T> setStartDate(LocalDateTime start);
+    public void setStartDate(LocalDateTime start);
 
     public LocalDateTime getEndDate();
 
-    public ScheduleEvent<T> setEndDate(LocalDateTime end);
+    public void setEndDate(LocalDateTime end);
 
     public boolean isAllDay();
 
