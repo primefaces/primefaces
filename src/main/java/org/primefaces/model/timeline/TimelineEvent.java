@@ -300,6 +300,24 @@ public class TimelineEvent<T> implements Serializable {
         return new Builder<T>();
     }
 
+    public static <T> Builder<T> builder(TimelineEvent<T> event) {
+        Builder<T> builder = builder();
+
+        builder.id(event.id);
+        builder.data(event.data);
+        builder.startDate(event.startDate);
+        builder.endDate(event.endDate);
+        builder.editable(event.editable);
+        builder.editableTime(event.editableTime);
+        builder.editableGroup(event.editableGroup);
+        builder.editableRemove(event.editableRemove);
+        builder.group(event.group);
+        builder.title(event.title);
+        builder.styleClass(event.styleClass);
+
+        return builder;
+    }
+
     @Override
     public int hashCode() {
         int hash = 5;
