@@ -381,8 +381,18 @@ public class TimelineEvent<T> implements Serializable {
             return this;
         }
 
+        public Builder<T> startDate(LocalDate startDate) {
+            event.setStartDate(startDate.atStartOfDay());
+            return this;
+        }
+
         public Builder<T> endDate(LocalDateTime endDate) {
             event.setEndDate(endDate);
+            return this;
+        }
+
+        public Builder<T> endDate(LocalDate endDate) {
+            event.setEndDate(endDate.atStartOfDay());
             return this;
         }
 
