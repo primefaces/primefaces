@@ -276,7 +276,7 @@ public class TimelineModel<E, G> implements Serializable {
      * @param event given event
      * @return TreeSet&lt;TimelineEvent&lt;E&gt;&gt; ordered overlapped events or null if no overlapping exist
      */
-    public TreeSet<TimelineEvent<E>> getOverlappedEvents(TimelineEvent<E> event) {
+    public Set<TimelineEvent<E>> getOverlappedEvents(TimelineEvent<E> event) {
         if (event == null) {
             return null;
         }
