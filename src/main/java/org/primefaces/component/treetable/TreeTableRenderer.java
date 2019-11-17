@@ -1157,6 +1157,10 @@ public class TreeTableRenderer extends DataRenderer {
             }
         }
 
+        if (column == null) {
+            throw new FacesException("No column found for cellIndex: " + cellIndex);
+        }
+
         tt.setRowKey(rowKey);
 
         if (column.isDynamic()) {
