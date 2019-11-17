@@ -101,11 +101,13 @@ public class MessageFactory {
 
         summary = getFormattedText(locale, summary, params);
 
-        try {
-            detail = getFormattedText(locale, bundle.getString(messageId + DEFAULT_DETAIL_SUFFIX), params);
-        }
-        catch (MissingResourceException e) {
-            // NoOp
+        if (bundle != null) {
+            try {
+                detail = getFormattedText(locale, bundle.getString(messageId + DEFAULT_DETAIL_SUFFIX), params);
+            }
+            catch (MissingResourceException e) {
+                // NoOp
+            }
         }
 
         return new FacesMessage(summary, detail);
