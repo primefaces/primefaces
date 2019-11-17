@@ -295,7 +295,7 @@ public class ComponentUtils {
         }
         else {
             Boolean skipIterationHint = (Boolean) visitContext.getFacesContext().getAttributes().get(SKIP_ITERATION_HINT);
-            return skipIterationHint != null && skipIterationHint.booleanValue() == true;
+            return skipIterationHint != null && skipIterationHint;
         }
     }
 

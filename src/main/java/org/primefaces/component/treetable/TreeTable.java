@@ -617,8 +617,7 @@ public class TreeTable extends TreeTableBase {
 
     public boolean isFilteringEnabled() {
         Object value = getStateHelper().get("filtering");
-
-        return value == null ? false : true;
+        return value != null;
     }
 
     public void enableFiltering() {

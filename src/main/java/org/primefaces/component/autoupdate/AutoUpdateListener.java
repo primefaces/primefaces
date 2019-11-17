@@ -60,7 +60,7 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
         String clientId = ((UIComponent) cse.getSource()).getClientId(context);
 
         List<String> clientIds = getOrCreateAutoUpdateComponentClientIds(context);
-        if (disabled == null || ((boolean) disabled.getValue(context.getELContext())) != true) {
+        if (disabled == null || !((boolean) disabled.getValue(context.getELContext()))) {
             if (!clientIds.contains(clientId)) {
                 clientIds.add(clientId);
             }

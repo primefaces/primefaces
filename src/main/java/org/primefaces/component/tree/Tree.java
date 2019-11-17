@@ -311,7 +311,7 @@ public class Tree extends TreeBase {
 
     @Override
     protected boolean shouldVisitNode(TreeNode node) {
-        return isDynamic() ? (node.isExpanded() || node.getParent() == null) : true;
+        return !isDynamic() || (node.isExpanded() || node.getParent() == null);
     }
 
     @Override

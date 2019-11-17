@@ -765,7 +765,7 @@ public class DataTable extends DataTableBase {
     public boolean isFilteringEnabled() {
         Object value = getStateHelper().get("filtering");
 
-        return value == null ? false : true;
+        return value != null;
     }
 
     public void enableFiltering() {

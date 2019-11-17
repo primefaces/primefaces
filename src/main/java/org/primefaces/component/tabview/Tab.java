@@ -29,8 +29,7 @@ public class Tab extends TabBase {
 
     public boolean isLoaded() {
         Object value = getStateHelper().get("loaded");
-
-        return (value == null) ? false : (Boolean) value;
+        return value != null && (Boolean) value;
     }
 
     public void setLoaded(boolean value) {

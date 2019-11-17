@@ -231,7 +231,7 @@ public class PrimeRequestContext {
                 ValueExpression expression = expressionFactory.createValueExpression(elContext, param, String.class);
                 String expressionValue = (String) expression.getValue(elContext);
 
-                rtl = (expressionValue == null) ? false : expressionValue.equalsIgnoreCase("rtl");
+                rtl = (expressionValue != null) && expressionValue.equalsIgnoreCase("rtl");
             }
         }
 

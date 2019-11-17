@@ -58,7 +58,7 @@ public class MethodRule extends MetaRule {
 
     @Override
     public Metadata applyRule(String name, TagAttribute attribute, MetadataTarget meta) {
-        if (false == name.equals(this.methodName)) {
+        if (!name.equals(this.methodName)) {
             return null;
         }
 
