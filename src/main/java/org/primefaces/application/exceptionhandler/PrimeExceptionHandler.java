@@ -152,26 +152,30 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         ExternalContext externalContext = context.getExternalContext();
         PartialResponseWriter writer = context.getPartialViewContext().getPartialResponseWriter();
 
+        // should not happen actually
+        if (writer == null) {
+            return;
+        }
+
         boolean responseResetted = false;
 
+        //mojarra workaround to avoid invalid partial output due to open tags
         if (context.getCurrentPhaseId().equals(PhaseId.RENDER_RESPONSE)) {
             if (!externalContext.isResponseCommitted()) {
-                //mojarra workaround to avoid invalid partial output due to open tags
-                if (writer != null) {
-                    // this doesn't flush, just clears the internal state in mojarra
-                    writer.flush();
+                // this doesn't flush, just clears the internal state in mojarra
+                writer.flush();
 
-                    writer.endCDATA();
+                writer.endCDATA();
 
-                    writer.endInsert();
-                    writer.endUpdate();
+                writer.endInsert();
+                writer.endUpdate();
 
-                    writer.startError("");
-                    writer.endError();
+                writer.startError("");
+                writer.endError();
 
-                    writer.getWrapped().endElement("changes");
-                    writer.getWrapped().endElement("partial-response");
-                }
+                writer.getWrapped().endElement("changes");
+                writer.getWrapped().endElement("partial-response");
+
 
                 String characterEncoding = externalContext.getResponseCharacterEncoding();
                 externalContext.responseReset();
