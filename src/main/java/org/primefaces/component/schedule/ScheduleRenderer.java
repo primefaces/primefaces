@@ -40,10 +40,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ScheduleRenderer extends CoreRenderer {
 
@@ -299,9 +298,9 @@ public class ScheduleRenderer extends CoreRenderer {
 
     private String translateViewNames(String viewNamesOld) {
         if (viewNamesOld != null) {
-            List<String> viewNames = Arrays.asList(viewNamesOld.split(","));
-            String viewNamesNew = viewNames.stream().map((viewName) -> translateViewName(viewName.trim())).collect(Collectors.joining(","));
-            return viewNamesNew;
+            return Stream.of(viewNamesOld.split(","))
+                    .map(v -> translateViewName(v.trim()))
+                    .collect(Collectors.joining(","));
         }
 
         return null;

@@ -37,7 +37,6 @@ public enum ScheduleRenderingMode {
         return rendering;
     }
 
-
     @Override
     public String toString() {
         return rendering;

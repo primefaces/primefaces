@@ -227,33 +227,18 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final DefaultScheduleEvent other = (DefaultScheduleEvent) obj;
-        if (!Objects.equals(this.title, other.title)) {
-            return false;
-        }
-        if (!Objects.equals(this.startDate, other.startDate)) {
-            return false;
-        }
-        if (!Objects.equals(this.endDate, other.endDate)) {
-            return false;
-        }
-        return true;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DefaultScheduleEvent<?> that = (DefaultScheduleEvent<?>) o;
+        return Objects.equals(title, that.title) &&
+                Objects.equals(startDate, that.startDate) &&
+                Objects.equals(endDate, that.endDate);
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 61 * hash + (this.title != null ? this.title.hashCode() : 0);
-        hash = 61 * hash + (this.startDate != null ? this.startDate.hashCode() : 0);
-        hash = 61 * hash + (this.endDate != null ? this.endDate.hashCode() : 0);
-        return hash;
+        return Objects.hash(title, startDate, endDate);
     }
 
     @Override
@@ -262,7 +247,7 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
     }
 
     public static <T> Builder<T> builder() {
-        return new Builder<T>();
+        return new Builder<>();
     }
 
     public static final class Builder<T> {

@@ -25,7 +25,7 @@ package org.primefaces.model;
 
 import java.time.LocalDateTime;
 
-public class LazyScheduleModel extends DefaultScheduleModel {
+public abstract class LazyScheduleModel extends DefaultScheduleModel {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,6 +35,5 @@ public class LazyScheduleModel extends DefaultScheduleModel {
      * @param start Start date of period
      * @param end   End date of period
      */
-    public void loadEvents(LocalDateTime start, LocalDateTime end) {
-    }
+    public abstract void loadEvents(LocalDateTime start, LocalDateTime end);
 }

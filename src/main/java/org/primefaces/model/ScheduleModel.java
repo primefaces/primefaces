@@ -27,19 +27,19 @@ import java.util.List;
 
 public interface ScheduleModel {
 
-    public void addEvent(ScheduleEvent<?> event);
+    void addEvent(ScheduleEvent<?> event);
 
-    public boolean deleteEvent(ScheduleEvent<?> event);
+    boolean deleteEvent(ScheduleEvent<?> event);
 
-    public List<ScheduleEvent<?>> getEvents();
+    List<ScheduleEvent<?>> getEvents();
 
-    public ScheduleEvent<?> getEvent(String id);
+    ScheduleEvent<?> getEvent(String id);
 
-    public void updateEvent(ScheduleEvent<?> event);
+    void updateEvent(ScheduleEvent<?> event);
 
-    public int getEventCount();
+    int getEventCount();
 
-    public void clear();
+    void clear();
 
-    public boolean isEventLimit();
+    boolean isEventLimit();
 }
