@@ -183,20 +183,20 @@ public abstract class UICalendar extends HtmlInputText {
     public abstract String calculateWidgetPattern();
 
     public String convertPattern(String patternTemplate) {
-        String pattern = patternTemplate.replaceAll("MMM", "###");
+        String pattern = patternTemplate.replace("MMM", "###");
         int patternLen = pattern.length();
-        int countM = patternLen - pattern.replaceAll("M", "").length();
-        int countD = patternLen - pattern.replaceAll("d", "").length();
+        int countM = patternLen - pattern.replace("M", "").length();
+        int countD = patternLen - pattern.replace("d", "").length();
         if (countM == 1) {
-            pattern = pattern.replaceAll("M", "mm");
+            pattern = pattern.replace("M", "mm");
         }
 
         if (countD == 1) {
-            pattern = pattern.replaceAll("d", "dd");
+            pattern = pattern.replace("d", "dd");
         }
 
         pattern = pattern.replaceAll("[a-zA-Z]", "9");
-        pattern = pattern.replaceAll("###", "aaa");
+        pattern = pattern.replace("###", "aaa");
         return pattern;
     }
 

@@ -201,7 +201,7 @@ public class ComponentUtils {
     }
 
     public static String escapeSelector(String selector) {
-        return selector.replaceAll(":", "\\\\\\\\:");
+        return selector.replace(":", "\\\\:");
     }
 
     public static boolean isRTL(FacesContext context, RTLAware component) {
