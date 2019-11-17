@@ -91,7 +91,9 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     /**
      * Creates a new menu item with the specified
      * @param value the value of the item used as label
+     * @deprecated Use {@link #builder()} instead.
      */
+    @Deprecated
     public DefaultMenuItem(Object value) {
         this.value = value;
     }
@@ -100,7 +102,9 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
      * Creates a new menu item with the specified
      * @param value the value of the item used as label
      * @param icon the icon to be displayed next to the label
+     * @deprecated Use {@link #builder()} instead.
      */
+    @Deprecated
     public DefaultMenuItem(Object value, String icon) {
         this.value = value;
         this.icon = icon;
@@ -114,6 +118,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
      * (specifying a {@code url} which is not {@code null} causes
      * {@code command} to be ignored) (another form of redirection is provided
      * by the {@code outcome} property)
+     * @deprecated Use {@link #builder()} instead.
      */
     public DefaultMenuItem(Object value, String icon, String url) {
         this.value = value;

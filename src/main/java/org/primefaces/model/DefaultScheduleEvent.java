@@ -23,8 +23,6 @@
  */
 package org.primefaces.model;
 
-import org.apache.poi.ss.formula.functions.T;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -53,12 +51,20 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
     public DefaultScheduleEvent() {
     }
 
+    /**
+     * @deprecated Use {@link #builder()} instead.
+     */
+    @Deprecated
     public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end) {
         this.title = title;
         this.startDate = start;
         this.endDate = end;
     }
 
+    /**
+     * @deprecated Use {@link #builder()} instead.
+     */
+    @Deprecated
     public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end, boolean allDay) {
         this.title = title;
         this.startDate = start;
@@ -66,6 +72,10 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
         this.allDay = allDay;
     }
 
+    /**
+     * @deprecated Use {@link #builder()} instead.
+     */
+    @Deprecated
     public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end, String styleClass) {
         this.title = title;
         this.startDate = start;
@@ -73,6 +83,10 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
         this.styleClass = styleClass;
     }
 
+    /**
+     * @deprecated Use {@link #builder()} instead.
+     */
+    @Deprecated
     public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end, T data) {
         this.title = title;
         this.startDate = start;
@@ -245,5 +259,92 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
     @Override
     public String toString() {
         return "DefaultScheduleEvent{title=" + title + ",startDate=" + startDate + ",endDate=" + endDate + "}";
+    }
+
+    public static <T> Builder<T> builder() {
+        return new Builder<T>();
+    }
+
+    public static final class Builder<T> {
+
+        private DefaultScheduleEvent<T> scheduleEvent;
+
+        private Builder() {
+            scheduleEvent = new DefaultScheduleEvent();
+        }
+
+        public DefaultScheduleEvent.Builder id(String id) {
+            scheduleEvent.setId(id);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder groupId(String groupId) {
+            scheduleEvent.setGroupId(groupId);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder title(String title) {
+            scheduleEvent.setTitle(title);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder startDate(LocalDateTime startDate) {
+            scheduleEvent.setStartDate(startDate);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder endDate(LocalDateTime endDate) {
+            scheduleEvent.setEndDate(endDate);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder allDay(boolean allDay) {
+            scheduleEvent.setAllDay(allDay);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder styleClass(String styleClass) {
+            scheduleEvent.setStyleClass(styleClass);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder data(T data) {
+            scheduleEvent.setData(data);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder editable(boolean editable) {
+            scheduleEvent.setEditable(editable);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder overlapAllowed(boolean overlapAllowed) {
+            scheduleEvent.setOverlapAllowed(overlapAllowed);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder description(String description) {
+            scheduleEvent.setDescription(description);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder url(String url) {
+            scheduleEvent.setUrl(url);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder renderingMode(ScheduleRenderingMode renderingMode) {
+            scheduleEvent.setRenderingMode(renderingMode);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder dynamicProperty(String key, Object value) {
+            scheduleEvent.setDynamicProperty(key, value);
+            return this;
+        }
+
+        public DefaultScheduleEvent build() {
+            return scheduleEvent;
+        }
     }
 }
