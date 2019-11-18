@@ -91,6 +91,7 @@ In addition to common DOM events like change, selectCheckboxMenu provides _toggl
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
 toggleSelect | org.primefaces.event.ToggleSelectEvent | When toggle all checkbox changes.
+itemUnselect | org.primefaces.event.UnselectEvent | When a item is removed via the close-icon.
 
 ## Skinning
 SelectCheckboxMenu resides in a main container which _style_ and _styleClass_ attributes apply. As
