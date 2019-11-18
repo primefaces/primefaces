@@ -20,8 +20,8 @@ if (window.PrimeFaces) {
             'javax.faces.converter.BigDecimalConverter.DECIMAL_detail': '{2}: \'{0}\' must be a signed decimal number consisting of zero or more digits, that may be followed by a decimal point and fraction.  Example: {1}',
             'javax.faces.converter.BigIntegerConverter.BIGINTEGER': '{2}: \'{0}\' must be a number consisting of one or more digits.',
             'javax.faces.converter.BigIntegerConverter.BIGINTEGER_detail': '{2}: \'{0}\' must be a number consisting of one or more digits. Example: {1}',
-            'javax.faces.converter.ByteConverter.BYTE': '{2}: \'{0}\' must be a number between 0 and 255.',
-            'javax.faces.converter.ByteConverter.BYTE_detail': '{2}: \'{0}\' must be a number between 0 and 255.  Example: {1}',
+            'javax.faces.converter.ByteConverter.BYTE': '{2}: \'{0}\' must be a number between -128 and 127.',
+            'javax.faces.converter.ByteConverter.BYTE_detail': '{2}: \'{0}\' must be a number between -128 and 127.  Example: {1}',
             'javax.faces.converter.CharacterConverter.CHARACTER': '{1}: \'{0}\' must be a valid character.',
             'javax.faces.converter.CharacterConverter.CHARACTER_detail': '{1}: \'{0}\' must be a valid ASCII character.',
             'javax.faces.converter.ShortConverter.SHORT': '{2}: \'{0}\' must be a number consisting of one or more digits.',
@@ -353,7 +353,7 @@ if (window.PrimeFaces) {
 
         'javax.faces.Byte': {
 
-            regex: /^\d+$/,
+            regex: /^-?\d+$/,
 
             MESSAGE_ID: 'javax.faces.converter.ByteConverter.BYTE',
 
@@ -369,13 +369,13 @@ if (window.PrimeFaces) {
                 var vc = PrimeFaces.util.ValidationContext;
 
                 if(!this.regex.test(submittedValue)) {
-                    throw vc.getMessage(this.MESSAGE_ID, submittedValue, 9346, vc.getLabel(element));
+                    throw vc.getMessage(this.MESSAGE_ID, submittedValue, -12, vc.getLabel(element));
                 }
                 else {
                     var byteValue = parseInt(submittedValue);
 
                     if(byteValue < -128 || byteValue > 127)
-                        throw vc.getMessage(this.MESSAGE_ID, submittedValue, 9346, vc.getLabel(element));
+                        throw vc.getMessage(this.MESSAGE_ID, submittedValue, -12, vc.getLabel(element));
                     else
                         return byteValue;
                 }
