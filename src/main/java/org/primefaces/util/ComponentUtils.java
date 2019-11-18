@@ -171,6 +171,15 @@ public class ComponentUtils {
         return context.getApplication().createConverter(converterType);
     }
 
+    public static Object getConvertedValue(FacesContext context, UIComponent component, String value) {
+        Converter converter = getConverter(context, component);
+        if (converter != null) {
+            return converter.getAsObject(context, component, value);
+        }
+
+        return value;
+    }
+
     public static void decodeBehaviors(FacesContext context, UIComponent component) {
         if (!(component instanceof ClientBehaviorHolder)) {
             return;

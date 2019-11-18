@@ -29,7 +29,6 @@ import java.util.Map;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
@@ -105,10 +104,13 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
                 super.queueEvent(toggleSelectEvent);
             }
             else if (eventName.equals("itemUnselect")) {
-                Object unselectedItemValue = convertValue(context, params.get(getClientId(context) + "_itemUnselect"));
+                Object unselectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemUnselect"));
                 UnselectEvent unselectEvent = new UnselectEvent(this, ajaxBehaviorEvent.getBehavior(), unselectedItemValue);
                 unselectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(unselectEvent);
+            }
+            else {
+                super.queueEvent(event);
             }
         }
         else {
@@ -116,14 +118,4 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
         }
     }
 
-    private Object convertValue(FacesContext context, String submittedItemValue) {
-        Converter converter = ComponentUtils.getConverter(context, this);
-
-        if (converter == null) {
-            return submittedItemValue;
-        }
-        else {
-            return converter.getAsObject(context, this, submittedItemValue);
-        }
-    }
 }

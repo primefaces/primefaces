@@ -32,7 +32,6 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import org.primefaces.context.PrimeApplicationContext;
 
@@ -165,15 +164,8 @@ public class TextEditorRenderer extends InputRenderer {
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-        TextEditor editor = (TextEditor) component;
         String value = (String) submittedValue;
-        Converter converter = ComponentUtils.getConverter(context, component);
-
-        if (converter != null) {
-            return converter.getAsObject(context, editor, value);
-        }
-
-        return value;
+        return ComponentUtils.getConvertedValue(context, component, value);
     }
 
     /**

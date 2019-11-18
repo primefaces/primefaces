@@ -34,7 +34,6 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
 import org.primefaces.component.inputtext.InputText;
@@ -48,17 +47,11 @@ public class InputNumberRenderer extends InputRenderer {
             throws ConverterException {
 
         String submittedValueString = (String) submittedValue;
-
         if (LangUtils.isValueBlank(submittedValueString)) {
             return null;
         }
 
-        Converter converter = ComponentUtils.getConverter(context, component);
-        if (converter != null) {
-            return converter.getAsObject(context, component, submittedValueString);
-        }
-
-        return submittedValue;
+        return ComponentUtils.getConvertedValue(context, component, submittedValueString);
     }
 
     @Override
