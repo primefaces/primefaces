@@ -38,7 +38,7 @@ public class CellEditFeature implements DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {
-        throw new RuntimeException("CellEditFeature should not decode.");
+        throw new FacesException("CellEditFeature should not decode.");
     }
 
     @Override

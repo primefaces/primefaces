@@ -24,6 +24,7 @@
 package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
+import javax.faces.FacesException;
 
 import javax.faces.context.FacesContext;
 
@@ -36,7 +37,7 @@ public class PageFeature implements DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {
-        throw new RuntimeException("PageFeature should not encode.");
+        throw new FacesException("PageFeature should not encode.");
     }
 
     @Override

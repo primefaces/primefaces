@@ -39,6 +39,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.FacesException;
 
 /**
  * This is the default {@link VirusScanner} provider bundled with PrimeFaces.
@@ -91,7 +92,7 @@ public class VirusTotalVirusScanner implements VirusScanner {
             if (LOGGER.isLoggable(Level.WARNING)) {
                 LOGGER.log(Level.WARNING, "Cannot perform virus scan", ex);
             }
-            throw new RuntimeException("Cannot perform virus scan");
+            throw new FacesException("Cannot perform virus scan", ex);
         }
     }
 

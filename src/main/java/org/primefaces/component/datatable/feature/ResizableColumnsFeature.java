@@ -25,6 +25,7 @@ package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
 import java.util.Map;
+import javax.faces.FacesException;
 
 import javax.faces.context.FacesContext;
 
@@ -46,7 +47,7 @@ public class ResizableColumnsFeature implements DataTableFeature {
 
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        throw new RuntimeException("ResizableColumnsFeature should not encode.");
+        throw new FacesException("ResizableColumnsFeature should not encode.");
     }
 
     @Override

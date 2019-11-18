@@ -131,7 +131,7 @@ public class SelectionFeature implements DataTableFeature {
 
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        throw new RuntimeException("SelectFeature should not encode.");
+        throw new FacesException("SelectFeature should not encode.");
     }
 
     @Override

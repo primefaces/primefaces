@@ -25,6 +25,7 @@ package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
 import java.util.Map;
+import javax.faces.FacesException;
 
 import javax.faces.context.FacesContext;
 
@@ -53,7 +54,7 @@ public class DraggableColumnsFeature implements DataTableFeature {
 
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        throw new RuntimeException("DraggableColumns Feature should not encode.");
+        throw new FacesException("DraggableColumns Feature should not encode.");
     }
 
     @Override
