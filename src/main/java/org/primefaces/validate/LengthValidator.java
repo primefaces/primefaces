@@ -23,31 +23,29 @@
  */
 package org.primefaces.validate;
 
+import org.primefaces.util.HTML;
+
 import java.util.HashMap;
 import java.util.Map;
-import org.primefaces.util.HTML;
+import java.util.Objects;
 
 public class LengthValidator extends javax.faces.validator.LengthValidator implements ClientValidator {
 
-    private Map<String, Object> metadata;
     private boolean minimumSet;
     private boolean maximumSet;
 
     @Override
     public Map<String, Object> getMetadata() {
+        Map<String, Object> metadata = new HashMap<>();
         int min = this.getMinimum();
         int max = this.getMaximum();
 
-        if (metadata == null) {
-            metadata = new HashMap<>();
+        if (minimumSet) {
+            metadata.put(HTML.ValidationMetadata.MIN_LENGTH, min);
+        }
 
-            if (minimumSet) {
-                metadata.put(HTML.ValidationMetadata.MIN_LENGTH, min);
-            }
-
-            if (maximumSet) {
-                metadata.put(HTML.ValidationMetadata.MAX_LENGTH, max);
-            }
+        if (maximumSet) {
+            metadata.put(HTML.ValidationMetadata.MAX_LENGTH, max);
         }
 
         return metadata;
@@ -68,5 +66,20 @@ public class LengthValidator extends javax.faces.validator.LengthValidator imple
     public void setMinimum(int minimum) {
         super.setMinimum(minimum);
         this.minimumSet = true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        LengthValidator that = (LengthValidator) o;
+        return minimumSet == that.minimumSet &&
+                maximumSet == that.maximumSet;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), minimumSet, maximumSet);
     }
 }

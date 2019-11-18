@@ -23,11 +23,14 @@
  */
 package org.primefaces.convert;
 
+import java.util.Collections;
 import java.util.Map;
 
 public interface ClientConverter {
 
-    public Map<String, Object> getMetadata();
+    default Map<String, Object> getMetadata() {
+        return Collections.emptyMap();
+    }
 
-    public String getConverterId();
+    String getConverterId();
 }

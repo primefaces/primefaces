@@ -23,14 +23,7 @@
  */
 package org.primefaces.convert;
 
-import java.util.Map;
-
 public class BooleanConverter extends javax.faces.convert.BooleanConverter implements ClientConverter {
-
-    @Override
-    public Map<String, Object> getMetadata() {
-        return null;
-    }
 
     @Override
     public String getConverterId() {

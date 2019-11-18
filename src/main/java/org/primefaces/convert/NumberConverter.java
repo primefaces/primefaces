@@ -25,34 +25,31 @@ package org.primefaces.convert;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import org.primefaces.util.HTML;
 
 public class NumberConverter extends javax.faces.convert.NumberConverter implements ClientConverter {
 
-    private Map<String, Object> metadata;
-
     @Override
     public Map<String, Object> getMetadata() {
-        if (metadata == null) {
-            String type = this.getType();
-            int maxIntegerDigits = this.getMaxIntegerDigits();
-            int minFractionDigits = this.getMinFractionDigits();
-            boolean integerOnly = this.isIntegerOnly();
+        String type = this.getType();
+        int maxIntegerDigits = this.getMaxIntegerDigits();
+        int minFractionDigits = this.getMinFractionDigits();
+        boolean integerOnly = this.isIntegerOnly();
 
-            metadata = new HashMap<>();
+        Map<String, Object> metadata = new HashMap<>();
 
-            metadata.put(HTML.ValidationMetadata.NUMBER_TYPE, type);
+        metadata.put(HTML.ValidationMetadata.NUMBER_TYPE, type);
 
-            if (maxIntegerDigits != 0) metadata.put(HTML.ValidationMetadata.MAX_INTEGER_DIGITS, maxIntegerDigits);
-            if (minFractionDigits != 0) metadata.put(HTML.ValidationMetadata.MIN_FRACTION_DIGITS, minFractionDigits);
-            if (integerOnly) metadata.put(HTML.ValidationMetadata.INTEGER_ONLY, "true");
+        if (maxIntegerDigits != 0) metadata.put(HTML.ValidationMetadata.MAX_INTEGER_DIGITS, maxIntegerDigits);
+        if (minFractionDigits != 0) metadata.put(HTML.ValidationMetadata.MIN_FRACTION_DIGITS, minFractionDigits);
+        if (integerOnly) metadata.put(HTML.ValidationMetadata.INTEGER_ONLY, "true");
 
-            if (type.equals("currency")) {
-                String currencySymbol = this.getCurrencySymbol();
+        if (type.equals("currency")) {
+            String currencySymbol = this.getCurrencySymbol();
 
-                if (currencySymbol != null) {
-                    metadata.put(HTML.ValidationMetadata.CURRENCY_SYMBOL, currencySymbol);
-                }
+            if (currencySymbol != null) {
+                metadata.put(HTML.ValidationMetadata.CURRENCY_SYMBOL, currencySymbol);
             }
         }
 
