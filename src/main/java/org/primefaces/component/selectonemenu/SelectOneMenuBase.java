@@ -240,10 +240,12 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
         getStateHelper().put(PropertyKeys.dynamic, dynamic);
     }
 
+    @Override
     public String getDir() {
         return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
     }
 
+    @Override
     public void setDir(String dir) {
         getStateHelper().put(PropertyKeys.dir, dir);
     }

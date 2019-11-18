@@ -151,6 +151,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         getStateHelper().put(PropertyKeys.yearRange, yearRange);
     }
 
+    @Override
     public String getSelectionMode() {
         return (String) getStateHelper().eval(PropertyKeys.selectionMode, "single");
     }
