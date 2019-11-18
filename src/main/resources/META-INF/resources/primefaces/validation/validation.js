@@ -374,7 +374,7 @@ if (window.PrimeFaces) {
                 else {
                     var byteValue = parseInt(submittedValue);
 
-                    if(byteValue < 0 || byteValue > 255)
+                    if(byteValue < -128 || byteValue > 127)
                         throw vc.getMessage(this.MESSAGE_ID, submittedValue, 9346, vc.getLabel(element));
                     else
                         return byteValue;
