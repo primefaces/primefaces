@@ -297,7 +297,7 @@ public class TimelineEvent<T> implements Serializable {
     }
 
     public static <T> Builder<T> builder() {
-        return new Builder<T>();
+        return new Builder<>();
     }
 
     public static <T> Builder<T> builder(TimelineEvent<T> event) {

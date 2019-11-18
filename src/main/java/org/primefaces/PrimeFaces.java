@@ -224,7 +224,7 @@ public class PrimeFaces {
         }
         else {
             LOGGER.log(Level.WARNING,
-                    "'{0}' does not follow format: '{1}'. Use PrimeFaces.multiViewState().clear(String viewId, String clientId) instead.",
+                    "\"{0}\" does not follow format: \"{1}\". Use PrimeFaces.multiViewState().clear(String viewId, String clientId) instead.",
                     new Object[]{key, p.pattern()});
         }
     }
@@ -442,7 +442,7 @@ public class PrimeFaces {
             Map<String, Object> multiViewStates = getMVSSessionMap();
             if (multiViewStates.remove(stateKey) == null) {
                 LOGGER.log(Level.WARNING,
-                        "Multiview state for viewId: '{0}' and clientId '{1}' not found",
+                        "Multiview state for viewId: \"{0}\" and clientId \"{1}\" not found",
                         new Object[]{viewId, clientId});
             }
         }

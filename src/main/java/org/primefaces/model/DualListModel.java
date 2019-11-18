@@ -31,8 +31,8 @@ public class DualListModel<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private List<T> source = new ArrayList<T>();
-    private List<T> target = new ArrayList<T>();
+    private List<T> source = new ArrayList<>();
+    private List<T> target = new ArrayList<>();
 
     public DualListModel() {
     }

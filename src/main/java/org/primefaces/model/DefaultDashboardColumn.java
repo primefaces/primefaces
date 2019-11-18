@@ -36,7 +36,7 @@ public class DefaultDashboardColumn implements DashboardColumn, Serializable {
     private String styleClass;
 
     public DefaultDashboardColumn() {
-        widgets = new LinkedList<String>();
+        widgets = new LinkedList<>();
     }
 
     @Override

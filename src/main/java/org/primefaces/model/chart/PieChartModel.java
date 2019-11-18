@@ -43,7 +43,7 @@ public class PieChartModel extends ChartModel {
     private String datatipEditor;
 
     public PieChartModel() {
-        data = new LinkedHashMap<String, Number>();
+        data = new LinkedHashMap<>();
     }
 
     public PieChartModel(Map<String, Number> data) {

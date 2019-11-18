@@ -52,7 +52,7 @@ import org.primefaces.util.WidgetBuilder;
 
 public class DataRenderer extends CoreRenderer {
 
-    private static final Map<String, PaginatorElementRenderer> PAGINATOR_ELEMENTS = new HashMap<String, PaginatorElementRenderer>();
+    private static final Map<String, PaginatorElementRenderer> PAGINATOR_ELEMENTS = new HashMap<>();
 
     static {
         PAGINATOR_ELEMENTS.put("{CurrentPageReport}", new CurrentPageReportRenderer());
