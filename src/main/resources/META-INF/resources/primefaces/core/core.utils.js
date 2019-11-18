@@ -362,11 +362,16 @@ if (!PrimeFaces.utils) {
          */
         openLink: function(event, link) {
             var href = link.attr('href');
+            var win;
             if(href && href !== '#') {
                 if (event.ctrlKey) {
-                    window.open(href, '_blank').focus();
+                    win = window.open(href, '_blank');
                 } else {
-                    window.location.href = href;
+                    var target = link.attr('target') || '_self';
+                    win = window.open(href, target);
+                }
+                if (win) {
+                    win.focus();
                 }
             }
             event.preventDefault();
