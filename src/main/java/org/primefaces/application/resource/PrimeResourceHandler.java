@@ -26,6 +26,7 @@ package org.primefaces.application.resource;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
@@ -98,7 +99,9 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
         else {
             DynamicContentHandler handler = handlers.get(handlerType);
             if (handler == null) {
-                LOGGER.warning("No dynamic resource handler registered for: " + handlerType + ". Do you miss a dependency?");
+                LOGGER.log(Level.WARNING,
+                        "No dynamic resource handler registered for: {0}. Do you miss a dependency?",
+                        new Object[]{handlerType});
                 super.handleResourceRequest(context);
             }
             else {
@@ -106,5 +109,4 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
             }
         }
     }
-
 }

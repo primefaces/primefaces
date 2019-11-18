@@ -223,8 +223,9 @@ public class PrimeFaces {
             multiViewState().clear(m.group(1), m.group(2));
         }
         else {
-            LOGGER.warning("'" + key + "' does not follow format: " + p.pattern() + "." +
-                    " Use PrimeFaces.multiViewState().clear(String viewId, String clientId) instead");
+            LOGGER.log(Level.WARNING,
+                    "'{0}' does not follow format: '{1}'. Use PrimeFaces.multiViewState().clear(String viewId, String clientId) instead.",
+                    new Object[]{key, p.pattern()});
         }
     }
 
@@ -440,7 +441,9 @@ public class PrimeFaces {
             String stateKey = createMVSKey(viewId, clientId);
             Map<String, Object> multiViewStates = getMVSSessionMap();
             if (multiViewStates.remove(stateKey) == null) {
-                LOGGER.warning("Multiview state for viewId: '" + viewId + "' and clientId '" + clientId + "' not found");
+                LOGGER.log(Level.WARNING,
+                        "Multiview state for viewId: '{0}' and clientId '{1}' not found",
+                        new Object[]{viewId, clientId});
             }
         }
 

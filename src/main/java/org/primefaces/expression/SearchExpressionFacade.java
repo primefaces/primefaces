@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.faces.FacesException;
@@ -287,10 +288,9 @@ public class SearchExpressionFacade {
 
         if (hints.contains(SearchExpressionHint.VALIDATE_RENDERER) && context.isProjectStage(ProjectStage.Development)) {
             if (LangUtils.isValueBlank(component.getRendererType())) {
-                LOGGER.warning("Can not update component \"" + component.getClass().getName()
-                        + "\" with id \"" + component.getClientId(context)
-                        + "\" without an attached renderer. Expression \"" + expression
-                        + "\" referenced from \"" + source.getClientId(context) + "\"");
+                LOGGER.log(Level.WARNING, "Can not update component \"{0}\" with id \"{1}\" without an attached renderer. "
+                        + "Expression \"{2}\" referenced from \"{3}\"",
+                        new Object[]{component.getClass().getName(), component.getClientId(context), expression, source.getClientId(context)});
             }
         }
     }
