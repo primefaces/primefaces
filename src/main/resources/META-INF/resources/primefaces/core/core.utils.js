@@ -363,10 +363,17 @@ if (!PrimeFaces.utils) {
         openLink: function(event, link) {
             var href = link.attr('href');
             if(href && href !== '#') {
-                if (event.ctrlKey) {
-                    window.open(href, '_blank').focus();
+                var target = link.attr('target');
+
+                // target _self check for CTRL key held down
+                if (!target || target === '_self') {
+                    if (event.ctrlKey) {
+                        window.open(href, '_blank').focus();
+                    } else {
+                        window.location.href = href;
+                    }
                 } else {
-                    window.location.href = href;
+                    window.open(href, target).focus();
                 }
             }
             event.preventDefault();
