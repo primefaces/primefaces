@@ -370,7 +370,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
                     e.preventDefault();
                 break;
-                
+
                 case keyCode.DOWN:
                     if (e.altKey) {
                         if ($this.panel.is(":hidden"))
@@ -487,15 +487,26 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
         var closeSelector = '> li.ui-selectcheckboxmenu-token > .ui-selectcheckboxmenu-token-icon';
         this.multiItemContainer.off('click', closeSelector).on('click', closeSelector, null, function(e) {
-            var item = $this.items.filter('[data-item-value="' + $.escapeSelector($(this).parent().data("item-value")) +'"]');
+            var itemValue = $(this).parent().data("item-value");
+            var item = $this.items.filter('[data-item-value="' + $.escapeSelector(itemValue) +'"]');
             if(item && item.length) {
                 if($this.cfg.dynamic && !$this.isDynamicLoaded) {
                     $this._renderPanel();
                 }
 
                 $this.uncheck(item.children('.ui-chkbox').children('.ui-chkbox-box'), true);
+
+                if($this.hasBehavior('itemUnselect')) {
+                    var ext = {
+                        params : [
+                            {name: $this.id + '_itemUnselect', value: itemValue}
+                        ]
+                    };
+
+                    $this.callBehavior('itemUnselect', ext);
+                }
             }
-            
+
             e.stopPropagation();
         });
     },
