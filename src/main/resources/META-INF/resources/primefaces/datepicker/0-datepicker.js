@@ -95,48 +95,48 @@
             onMonthChange: null,
             onYearChange: null
         },
-        
+
         _create: function () {
             this.container = this.element;
             this.inputfield = this.element.children('input');
-            
+
             this._setInitValues();
             this._render();
         },
-        
+
         _setInitValues: function () {
             if (this.options.userLocale && typeof this.options.userLocale === 'object') {
                 $.extend(this.options.locale, this.options.userLocale);
             }
-            
+
             var parsedDefaultDate = this.parseValue(this.options.defaultDate);
 
             this.value = parsedDefaultDate;
-            this.viewDate = this.options.viewDate ? 
-                this.parseValue(this.options.viewDate) 
+            this.viewDate = this.options.viewDate ?
+                this.parseValue(this.options.viewDate)
                 :
                 ((((this.isMultipleSelection() || this.isRangeSelection()) && parsedDefaultDate instanceof Array) ? parsedDefaultDate[0] : parsedDefaultDate) || this.parseValue(new Date()));
             this.options.minDate = this.parseMinMaxValue(this.options.minDate);
             this.options.maxDate = this.parseMinMaxValue(this.options.maxDate);
             this.ticksTo1970 = (((1970 - 1) * 365 + Math.floor(1970 / 4) - Math.floor(1970 / 100) + Math.floor(1970 / 400)) * 24 * 60 * 60 * 10000000);
-            
+
             if (this.options.yearRange === null && this.options.yearNavigator) {
                 var viewYear = this.viewDate.getFullYear();
                 this.options.yearRange = (viewYear - 10) + ':' + (viewYear + 10);
             }
-            
+
             if (this.options.disabledDates) {
                 for (var i = 0; i < this.options.disabledDates.length; i++) {
                     this.options.disabledDates[i] = this.parseOptionValue(this.options.disabledDates[i]);
                 }
             }
         },
-        
+
         parseOptionValue: function(option) {
             if (option && typeof option === 'string') {
                 return this.parseDate(option, this.options.dateFormat);
             }
-            
+
             return option;
         },
 
@@ -144,7 +144,7 @@
             if (option && typeof option === 'string') {
                 return this.parseDateTime(option);
             }
-            
+
             return option;
         },
 
@@ -152,18 +152,18 @@
             if (option && typeof option === 'string') {
                 return this.parseValueFromString(option);
             }
-            
+
             return option;
         },
-        
+
         setDate: function(date) {
             this.value = this.parseValue(date);
-                
+
             /* set changes */
             this.panel.get(0).innerHTML = this.renderPanelElements();
             this.inputfield.val(this.value);
         },
-        
+
         getDate: function() {
             return this.value;
         },
@@ -418,7 +418,7 @@
             if (this.value) {
                 if (this.isRangeSelection()) {
                     var dateMeta = { year: this.viewDate.getFullYear(), month: month, day: 1, selectable: true };
-                    
+
                     if (this.value[1])
                         return this.isDateEquals(this.value[0], dateMeta) || this.isDateEquals(this.value[1], dateMeta) || this.isDateBetween(this.value[0], this.value[1], dateMeta);
                     else
@@ -428,7 +428,7 @@
                     return (this.value.getMonth() === month && this.value.getFullYear() === this.viewDate.getFullYear());
                 }
             }
-            
+
             return false;
         },
 
@@ -909,11 +909,11 @@
         isInMinYear: function() {
             return this.options.minDate && this.options.minDate.getFullYear() === this.viewDate.getFullYear();
         },
-        
+
         isInMaxYear: function() {
             return this.options.maxDate && this.options.maxDate.getFullYear() === this.viewDate.getFullYear();
         },
-        
+
         _destroy: function () {
             this.restoreOverlayAppend();
             this.onOverlayHide();
@@ -944,19 +944,19 @@
                 }
                 this.renderTriggerButton();
                 this.container.append(this.triggerButton);
-                this.container.addClass('ui-trigger-calendar')
+                this.container.addClass('ui-trigger-calendar');
             }
 
             if (this.panel) {
                 this.panel.remove();
             }
             this.renderDatePickerPanel();
-            
+
             this.panel.css({
                 'display': this.options.inline ? 'block' : 'none',
                 'position': this.options.inline || this.options.touchUI ? '' : 'absolute'
             });
-            
+
             if (this.options.panelStyleClass) {
                 this.panel.addClass(this.options.panelStyleClass);
             }
@@ -1007,7 +1007,8 @@
                 'ui-datepicker-touch-ui': this.options.touchUI
             });
 
-            this.panel = $('<div class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all ' + _classes + '"></div>');
+            var panelId = this.container.attr('id') + '_panel';
+            this.panel = $('<div id="' + panelId + '" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all ' + _classes + '"></div>');
 
             //render inner elements
             this.panel.get(0).innerHTML = this.renderPanelElements();
@@ -1184,7 +1185,7 @@
             var _options = '',
                 minDate = this.options.minDate,
                 maxDate = this.options.maxDate;
-                
+
             for (var i = 0; i < options.length; i++) {
                 switch(name) {
                     case 'month':
@@ -1460,7 +1461,7 @@
             if (this.documentClickListener) {
                 this.datepickerClick = true;
             }
-            
+
             if (this.options.showOnFocus && !this.panel.is(':visible')) {
                 this.showOverlay();
             }
@@ -1494,7 +1495,7 @@
                 if (this.options.touchUI) {
                     this.disableModality();
                 }
-                
+
                 this.hideOverlay();
             }
         },
@@ -1543,7 +1544,7 @@
         onMonthDropdownChange: function (event) {
             var newViewDate = new Date(this.viewDate.getTime());
             newViewDate.setMonth(parseInt(event.target.value, 10));
-            
+
             if (this.options.onMonthChange) {
                 this.options.onMonthChange.call(this, newViewDate.getMonth() + 1, newViewDate.getFullYear());
             }
@@ -1581,7 +1582,7 @@
                 else {
                     newViewDate.setMonth(newViewDate.getMonth() - 1);
                 }
-                
+
                 if (this.options.onMonthChange) {
                     this.options.onMonthChange.call(this, newViewDate.getMonth() + 1, newViewDate.getFullYear());
                 }
@@ -1599,7 +1600,7 @@
                 }
 
                 newViewDate.setFullYear(newYear);
-                
+
                 if (this.options.onYearChange) {
                     this.options.onYearChange.call(this, newViewDate.getMonth(), newViewDate.getFullYear());
                 }
@@ -1626,7 +1627,7 @@
                 else {
                     newViewDate.setMonth(newViewDate.getMonth() + 1);
                 }
-                
+
                 if (this.options.onMonthChange) {
                     this.options.onMonthChange.call(this, newViewDate.getMonth() + 1, newViewDate.getFullYear());
                 }
@@ -1644,7 +1645,7 @@
                 }
 
                 newViewDate.setFullYear(newYear);
-                
+
                 if (this.options.onYearChange) {
                     this.options.onYearChange.call(this, newViewDate.getMonth(), newViewDate.getFullYear());
                 }
@@ -1711,7 +1712,7 @@
             if (this.options.onBeforeShow) {
                 this.options.onBeforeShow.call(this);
             }
-            
+
             this.panel.show();
             this.alignPanel();
             this.bindDocumentClickListener();
@@ -1722,17 +1723,17 @@
                 if (this.options.onBeforeHide) {
                     this.options.onBeforeHide.call(this);
                 }
-                
+
                 this.unbindDocumentClickListener();
                 this.datepickerClick = false;
 
                 this.panel.hide();
-                
-                var viewDate = this.options.viewDate && !this.value ? 
-                    this.parseValue(this.options.viewDate) 
+
+                var viewDate = this.options.viewDate && !this.value ?
+                    this.parseValue(this.options.viewDate)
                     :
                     ((((this.isMultipleSelection() || this.isRangeSelection()) && this.value instanceof Array) ? this.value[0] : this.value) || this.parseValue(new Date()));
-                
+
                 this.updateViewDate(null, viewDate);
             }
         },
@@ -2085,7 +2086,7 @@
                 this.options.onClearButtonClick.call(this, event);
             }
         },
-        
+
         escapeHTML: function(value) {
             var entityMap = {
                 '&': '&amp;',
@@ -2097,7 +2098,7 @@
                 '`': '&#x60;',
                 '=': '&#x3D;'
             };
-            
+
             return String(value).replace(/[&<>"'`=\/]/g, function (s) {
                 return entityMap[s];
             });
@@ -2107,9 +2108,9 @@
             if (this.options.onViewDateChange) {
                 this.options.onViewDateChange.call(this, event, value);
             }
-            
+
             this.viewDate = value;
-            
+
             if (this.options.monthNavigator && this.options.view !== 'month') {
                 var viewMonth = this.viewDate.getMonth();
                 viewMonth = (this.isInMaxYear() && Math.min(this.options.maxDate.getMonth(), viewMonth)) || (this.isInMinYear() && Math.max(this.options.minDate.getMonth(), viewMonth)) || viewMonth;
