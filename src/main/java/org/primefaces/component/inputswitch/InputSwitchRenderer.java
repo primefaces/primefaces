@@ -48,13 +48,8 @@ public class InputSwitchRenderer extends InputRenderer {
 
         String clientId = inputSwitch.getClientId(context);
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
-
-        if (submittedValue != null && isChecked(submittedValue)) {
-            inputSwitch.setSubmittedValue(true);
-        }
-        else {
-            inputSwitch.setSubmittedValue(false);
-        }
+        boolean checked = isChecked(submittedValue);
+        inputSwitch.setSubmittedValue(checked);
     }
 
     @Override
@@ -153,6 +148,7 @@ public class InputSwitchRenderer extends InputRenderer {
     }
 
     protected boolean isChecked(String value) {
-        return value.equalsIgnoreCase("on") || value.equalsIgnoreCase("yes") || value.equalsIgnoreCase("true");
+        return value != null
+                && (value.equalsIgnoreCase("on") || value.equalsIgnoreCase("yes") || value.equalsIgnoreCase("true"));
     }
 }

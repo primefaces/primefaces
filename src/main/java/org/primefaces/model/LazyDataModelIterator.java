@@ -36,10 +36,10 @@ public class LazyDataModelIterator<T> implements Iterator<T> {
 
     LazyDataModelIterator(LazyDataModel<T> model) {
         this.model = model;
-        this.index = -1;
-        this.pages = new HashMap<>();
-        this.sortMeta = Collections.emptyList();
-        this.filterMeta = Collections.emptyList();
+        index = -1;
+        pages = new HashMap<>();
+        sortMeta = Collections.emptyList();
+        filterMeta = Collections.emptyList();
     }
 
     LazyDataModelIterator(LazyDataModel<T> model, List<SortMeta> sortMeta, List<FilterMeta> filterMeta) {
@@ -68,11 +68,7 @@ public class LazyDataModelIterator<T> implements Iterator<T> {
         }
 
         int pageIndex = nextIndex % model.getPageSize();
-        if (pageIndex < pages.get(pageNo).size()) {
-            return true;
-        }
-
-        return false;
+        return pageIndex < pages.get(pageNo).size();
     }
 
     @Override

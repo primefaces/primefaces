@@ -26,6 +26,7 @@ package org.primefaces.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DualListModel<T> implements Serializable {
 
@@ -59,32 +60,16 @@ public class DualListModel<T> implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-
-        final DualListModel<T> other = (DualListModel<T>) obj;
-
-        if (this.source != other.source && (this.source == null || !this.source.equals(other.source))) {
-            return false;
-        }
-        if (this.target != other.target && (this.target == null || !this.target.equals(other.target))) {
-            return false;
-        }
-
-        return true;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DualListModel<?> that = (DualListModel<?>) o;
+        return Objects.equals(source, that.source) &&
+                Objects.equals(target, that.target);
     }
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 29 * hash + (this.source != null ? this.source.hashCode() : 0);
-        hash = 29 * hash + (this.target != null ? this.target.hashCode() : 0);
-        return hash;
+        return Objects.hash(source, target);
     }
 }

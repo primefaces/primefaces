@@ -26,6 +26,7 @@ package org.primefaces.util;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.Resource;
@@ -176,29 +177,17 @@ public class ResourceUtils {
         }
 
         @Override
-        public int hashCode() {
-            int hash = 7;
-            hash = 41 * hash + (this.library != null ? this.library.hashCode() : 0);
-            hash = 41 * hash + (this.name != null ? this.name.hashCode() : 0);
-            return hash;
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            ResourceInfo that = (ResourceInfo) o;
+            return Objects.equals(library, that.library) &&
+                    Objects.equals(name, that.name);
         }
 
         @Override
-        public boolean equals(Object obj) {
-            if (obj == null) {
-                return false;
-            }
-            if (getClass() != obj.getClass()) {
-                return false;
-            }
-            final ResourceInfo other = (ResourceInfo) obj;
-            if ((this.library == null) ? (other.library != null) : !this.library.equals(other.library)) {
-                return false;
-            }
-            if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
-                return false;
-            }
-            return true;
+        public int hashCode() {
+            return Objects.hash(library, name);
         }
     }
 }

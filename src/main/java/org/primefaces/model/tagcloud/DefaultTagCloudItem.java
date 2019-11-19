@@ -24,6 +24,7 @@
 package org.primefaces.model.tagcloud;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class DefaultTagCloudItem implements TagCloudItem, Serializable {
 
@@ -77,32 +78,17 @@ public class DefaultTagCloudItem implements TagCloudItem, Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final TagCloudItem other = (TagCloudItem) obj;
-        if ((this.label == null) ? (other.getLabel() != null) : !this.label.equals(other.getLabel())) {
-            return false;
-        }
-        if ((this.url == null) ? (other.getUrl() != null) : !this.url.equals(other.getUrl())) {
-            return false;
-        }
-        if (this.strength != other.getStrength()) {
-            return false;
-        }
-        return true;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DefaultTagCloudItem that = (DefaultTagCloudItem) o;
+        return strength == that.strength &&
+                Objects.equals(label, that.label) &&
+                Objects.equals(url, that.url);
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 73 * hash + (this.label != null ? this.label.hashCode() : 0);
-        hash = 73 * hash + (this.url != null ? this.url.hashCode() : 0);
-        hash = 73 * hash + this.strength;
-        return hash;
+        return Objects.hash(label, url, strength);
     }
 }

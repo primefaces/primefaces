@@ -23,10 +23,12 @@
  */
 package org.primefaces.model.diagram.endpoint;
 
+import org.primefaces.model.diagram.overlay.Overlay;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import org.primefaces.model.diagram.overlay.Overlay;
+import java.util.Objects;
 
 public abstract class EndPoint implements Serializable {
 
@@ -146,24 +148,15 @@ public abstract class EndPoint implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 37 * hash + (this.id != null ? this.id.hashCode() : 0);
-        return hash;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EndPoint endPoint = (EndPoint) o;
+        return Objects.equals(id, endPoint.id);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final EndPoint other = (EndPoint) obj;
-        if ((this.id == null) ? (other.id != null) : !this.id.equals(other.id)) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
