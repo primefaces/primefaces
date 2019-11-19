@@ -115,13 +115,26 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         String icon = button.getIcon();
         String onclick = buildOnclick(context, button);
 
+        // confirm dialog expects data-pfconfirmcommand attribute on div instead of button
+        if (onclick.length() > 0) {
+            if (button.requiresConfirmation()) {
+                writer.writeAttribute("data-pfconfirmcommand", onclick, null);
+            }
+        }
+
         writer.startElement("button", button);
         writer.writeAttribute("id", id, "id");
         writer.writeAttribute("name", id, "name");
         writer.writeAttribute("class", button.resolveStyleClass(), "styleClass");
 
         if (onclick.length() > 0) {
-            writer.writeAttribute("onclick", onclick, "onclick");
+            if (button.requiresConfirmation()) {
+                writer.writeAttribute("onclick", button.getConfirmationScript(), "onclick");
+                // data-pfconfirmcommand is added to the div
+            }
+            else {
+                writer.writeAttribute("onclick", onclick, "onclick");
+            }
         }
 
         renderPassThruAttributes(context, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);

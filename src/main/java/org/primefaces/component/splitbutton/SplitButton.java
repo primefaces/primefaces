@@ -54,6 +54,8 @@ public class SplitButton extends SplitButtonBase {
     public static final String SPLITBUTTON_CONTAINER_CLASS = "ui-menu ui-splitbuttonmenu ui-menu-dynamic ui-widget ui-widget-content ui-corner-all ui-helper-clearfix ui-shadow";
     public static final String LIST_WRAPPER_CLASS = "ui-splitbuttonmenu-list-wrapper";
 
+    private String confirmationScript;
+
     public String resolveStyleClass() {
         boolean iconBlank = LangUtils.isValueBlank(getIcon());
         boolean valueBlank = getValue() == null;
@@ -125,5 +127,25 @@ public class SplitButton extends SplitButtonBase {
     @Override
     public void broadcast(FacesEvent event) throws AbortProcessingException {
         broadcastMenuActionEvent(event, getFacesContext(), super::broadcast);
+    }
+
+    @Override
+    public boolean requiresConfirmation() {
+        return confirmationScript != null;
+    }
+
+    @Override
+    public String getConfirmationScript() {
+        return confirmationScript;
+    }
+
+    @Override
+    public void setConfirmationScript(String confirmationScript) {
+        this.confirmationScript = confirmationScript;
+    }
+
+    @Override
+    public String getDefaultEventName() {
+        return "click";
     }
 }
