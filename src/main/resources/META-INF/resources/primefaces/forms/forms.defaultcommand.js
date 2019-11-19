@@ -40,6 +40,11 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
             this.scope.off('keydown.' + this.id).on('keydown.' + this.id, function (e) {
                 var keyCode = $.ui.keyCode;
                 if (e.which == keyCode.ENTER) {
+                    //do not proceed if target is a textarea,button or link
+                    if ($(e.target).is('textarea,button,input[type="submit"],a')) {
+                        return true;
+                    }
+
                     closestForm.trigger('keydown.' + $this.id, {scopeEnter: true});
                     e.preventDefault();
                     e.stopPropagation();
