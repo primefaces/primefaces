@@ -389,16 +389,31 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    calculateColspan: function() {
+        return this.itemContainer.find('> .ui-columntoggler-item > .ui-chkbox > .ui-chkbox-box.ui-state-active').length;
+    },
+
+    updateRowColspan: function(row, colspanValue) {
+        colspanValue = (colspanValue == undefined ? this.calculateColspan() : colspanValue);
+        if(colspanValue) {
+            row.children('td').removeClass('ui-helper-hidden').attr('colspan', colspanValue);
+        }
+        else {
+            row.children('td').addClass('ui-helper-hidden');
+        }
+    },
+
     updateColspan: function() {
         var emptyRow = this.tbody.children('tr:first');
         if(emptyRow && emptyRow.hasClass('ui-datatable-empty-message')) {
-            var activeboxes = this.itemContainer.find('> .ui-columntoggler-item > .ui-chkbox > .ui-chkbox-box.ui-state-active');
-            if(activeboxes.length) {
-                emptyRow.children('td').removeClass('ui-helper-hidden').attr('colspan', activeboxes.length);
-            }
-            else {
-                emptyRow.children('td').addClass('ui-helper-hidden');
-            }
+            this.updateRowColspan(emptyRow);
+        }
+        else {
+            var colspanValue = this.calculateColspan(),
+                $this = this;
+            this.tbody.children('.ui-expanded-row-content').each(function() {
+                $this.updateRowColspan($(this), colspanValue);
+            });
         }
     },
 
