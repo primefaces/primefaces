@@ -43,6 +43,8 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
         var el = document.getElementById(this.id);
         var items = new vis.DataSet(this.cfg.data);
 
+        // bind items events
+        this._bindItemsEvents();
         if (this.cfg.groups) {
             this.instance = new vis.Timeline(el, items, new vis.DataSet(this.cfg.groups), this.cfg.opts);
         } else {
@@ -53,36 +55,18 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
             this.instance.setCurrentTime(this.cfg.currentTime);
         }
 
-        // bind events
-        this.bindEvents(el);
+        // bind timeline events
+        this._bindTimelineEvents(el);
     },
 
     /**
-     * Binds timeline's events.
+     * Bind items events.
      */
-    bindEvents: function (el) {
-        // "select" event
-        if (this.cfg.opts.selectable && this.getBehavior("select")) {
-            this.instance.on('select', $.proxy(function () {
-                var selectedId = this.getSelectedId();
-                if (!selectedId) {
-                    return;
-                }
-
-                var options = {
-                    params: [
-                        {name: this.id + '_eventId', value: selectedId}
-                    ]
-                };
-
-                this.getBehavior("select").call(this, options);
-            }, this));
-        }
-
+    _bindItemsEvents: function () {
         // "add" event
         if (this.cfg.opts.selectable && this.cfg.opts.editable && this.getBehavior("add")) {
-            this.instance.setOptions({
-               onAdd: $.proxy(function(item, callback) {
+            this.cfg.opts.onAdd =
+               $.proxy(function(item, callback) {
                     var params = [];
                     if (!item.id) {
                         //item.undefined until https://github.com/visjs/vis-timeline/issues/97 is fixed.
@@ -121,14 +105,13 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
                         this.addCallback(item);
                         this.addCallback = null;
                     }
-               }, this)
-            });
+               }, this);
         }
 
         // "change" event
         if (this.cfg.opts.selectable && (this.cfg.opts.editable.updateTime || this.cfg.opts.editable.updateGroup) && this.getBehavior("change")) {
-            this.instance.setOptions({
-                onMoving: $.proxy(function(item, callback) {
+            this.cfg.opts.onMoving =
+                $.proxy(function(item, callback) {
                     var params = [];
                     params.push({
                         name: this.id + '_eventId',
@@ -156,14 +139,13 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
 
                     this.getBehavior("change").call(this, {params: params, item: item, callback: callback});
                     callback(item);
-                }, this)
-            });
+                }, this);
         }
 
         // "changed" event
-        if (this.cfg.opts.selectable && (this.cfg.opts.editable.updateTime || this.cfg.opts.editable.updateGroup) && this.getBehavior("changed")) {
-            this.instance.setOptions({
-                onMove: $.proxy(function(item, callback) {
+        if (this.cfg.opts.selectable && (this.cfg.opts.editable.updateTime || this.cfg.groups && this.cfg.opts.editable.updateGroup) && this.getBehavior("changed")) {
+            this.cfg.opts.onMove =
+                $.proxy(function(item, callback) {
                     var params = [];
                     params.push({
                         name: this.id + '_eventId',
@@ -195,14 +177,13 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
                         this.changedCallback(item);
                         this.changedCallback = null;
                     }
-                }, this)
-            });
+                }, this);
         }
 
         // "edit" event
         if (this.cfg.opts.selectable && this.cfg.opts.editable && this.getBehavior("edit")) {
-            this.instance.setOptions({
-                onUpdate: $.proxy(function(item, callback) {
+            this.cfg.opts.onUpdate =
+                $.proxy(function(item, callback) {
                     var options = {
                         params: [
                             {name: this.id + '_eventId', value: item.id}
@@ -217,14 +198,13 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
                         this.changedCallback(item);
                         this.changedCallback = null;
                     }
-                }, this)
-            });
+                }, this);
         }
 
         // "delete" event
         if (this.cfg.opts.selectable && this.cfg.opts.editable && this.getBehavior("delete")) {
-            this.instance.setOptions({
-                onRemove: $.proxy(function(item, callback) {
+            this.cfg.opts.onRemove =
+                $.proxy(function(item, callback) {
                     var options = {
                         params: [
                             {name: this.id + '_eventId', value: item.id}
@@ -239,8 +219,30 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
                         this.deleteCallback(item);
                         this.deleteCallback = null;
                     }
-                }, this)
-            });
+                }, this);
+        }
+    },
+
+    /**
+     * Binds timeline's events.
+     */
+    _bindTimelineEvents: function () {
+        // "select" event
+        if (this.cfg.opts.selectable && this.getBehavior("select")) {
+            this.instance.on('select', $.proxy(function () {
+                var selectedId = this.getSelectedId();
+                if (!selectedId) {
+                    return;
+                }
+
+                var options = {
+                    params: [
+                        {name: this.id + '_eventId', value: selectedId}
+                    ]
+                };
+
+                this.getBehavior("select").call(this, options);
+            }, this));
         }
 
         // "rangechange" event
