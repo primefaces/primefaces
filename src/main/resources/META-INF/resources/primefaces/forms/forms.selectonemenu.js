@@ -275,7 +275,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         if(item.length > 0) {
             item.addClass('ui-state-highlight');
-            item.attr('aria-selected', true)
+            item.attr('aria-selected', true);
             this.setLabel(item.data('label'));
         }
     },
