@@ -43,13 +43,7 @@ public class GraphicImageRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         GraphicImage image = (GraphicImage) component;
         String clientId = image.getClientId(context);
-        String imageSrc;
-        try {
-            imageSrc = getImageSrc(context, image);
-        }
-        catch (Exception ex) {
-            throw new IOException(ex);
-        }
+        String imageSrc = getImageSrc(context, image);
 
         writer.startElement("img", image);
         writer.writeAttribute("id", clientId, "id");
@@ -67,7 +61,7 @@ public class GraphicImageRenderer extends CoreRenderer {
         writer.endElement("img");
     }
 
-    protected String getImageSrc(FacesContext context, GraphicImage image) throws Exception {
+    protected String getImageSrc(FacesContext context, GraphicImage image) {
         String name = image.getName();
 
         if (name != null) {

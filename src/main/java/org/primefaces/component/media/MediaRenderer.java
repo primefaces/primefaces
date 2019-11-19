@@ -157,7 +157,7 @@ public class MediaRenderer extends CoreRenderer {
                 + media.getClientId(context) + "', cannot play source:" + media.getValue());
     }
 
-    protected String getMediaSrc(FacesContext context, Media media) throws Exception {
+    protected String getMediaSrc(FacesContext context, Media media) {
         return DynamicContentSrcBuilder.build(context, media.getValue(), media, media.isCache(), DynamicContentType.STREAMED_CONTENT, true);
     }
 

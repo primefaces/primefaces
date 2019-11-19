@@ -148,7 +148,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         return throwable;
     }
 
-    protected void handleAjaxException(FacesContext context, Throwable rootCause, ExceptionInfo info) throws Exception {
+    protected void handleAjaxException(FacesContext context, Throwable rootCause, ExceptionInfo info) throws IOException {
         ExternalContext externalContext = context.getExternalContext();
         PartialResponseWriter writer = context.getPartialViewContext().getPartialResponseWriter();
 

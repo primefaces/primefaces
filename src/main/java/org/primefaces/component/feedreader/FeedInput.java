@@ -28,12 +28,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.rometools.rome.feed.synd.SyndFeed;
+import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
+import java.io.IOException;
 
 public class FeedInput {
 
-    public List parse(String url, int size) throws Exception {
+    public List parse(String url, int size) throws IOException, IllegalArgumentException, FeedException {
         List entries = new ArrayList();
         URL feedSource = new URL(url);
         SyndFeedInput input = new SyndFeedInput();
