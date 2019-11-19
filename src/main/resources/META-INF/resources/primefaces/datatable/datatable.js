@@ -549,7 +549,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var keyCode = $.ui.keyCode,
             key = e.which;
 
-            if($(e.target).is(':input') && $this.cfg.editable) {
+            if($(e.target).is(':input')) {
                 return;
             }
 
