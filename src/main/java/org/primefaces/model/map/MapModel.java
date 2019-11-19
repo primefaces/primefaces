@@ -27,17 +27,17 @@ import java.util.List;
 
 public interface MapModel {
 
-    public void addOverlay(Overlay overlay);
+    void addOverlay(Overlay overlay);
 
-    public List<Marker> getMarkers();
+    List<Marker> getMarkers();
 
-    public List<Polyline> getPolylines();
+    List<Polyline> getPolylines();
 
-    public List<Polygon> getPolygons();
+    List<Polygon> getPolygons();
 
-    public List<Circle> getCircles();
+    List<Circle> getCircles();
 
-    public List<Rectangle> getRectangles();
+    List<Rectangle> getRectangles();
 
-    public Overlay findOverlay(String id);
+    Overlay findOverlay(String id);
 }

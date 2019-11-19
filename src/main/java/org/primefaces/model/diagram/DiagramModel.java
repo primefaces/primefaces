@@ -30,31 +30,31 @@ import org.primefaces.model.diagram.overlay.Overlay;
 
 public interface DiagramModel {
 
-    public List<Element> getElements();
+    List<Element> getElements();
 
-    public List<Connection> getConnections();
+    List<Connection> getConnections();
 
-    public void addElement(Element element);
+    void addElement(Element element);
 
-    public void removeElement(Element element);
+    void removeElement(Element element);
 
-    public void clearElements();
+    void clearElements();
 
-    public void connect(Connection connection);
+    void connect(Connection connection);
 
-    public void disconnect(Connection connection);
+    void disconnect(Connection connection);
 
-    public Connector getDefaultConnector();
+    Connector getDefaultConnector();
 
-    public List<Overlay> getDefaultConnectionOverlays();
+    List<Overlay> getDefaultConnectionOverlays();
 
-    public boolean isConnectionsDetachable();
+    boolean isConnectionsDetachable();
 
-    public Element findElement(String id);
+    Element findElement(String id);
 
-    public EndPoint findEndPoint(Element element, String id);
+    EndPoint findEndPoint(Element element, String id);
 
-    public int getMaxConnections();
+    int getMaxConnections();
 
-    public boolean isContainment();
+    boolean isContainment();
 }

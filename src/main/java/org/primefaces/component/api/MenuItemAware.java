@@ -40,9 +40,9 @@ import org.primefaces.model.menu.MenuItem;
 
 public interface MenuItemAware {
 
-    static final Class<?>[] PARAMS_EMPTY = new Class<?>[0];
-    static final Class<?>[] PARAMS_ACTION_EVENT = new Class<?>[]{ActionEvent.class};
-    static final Class<?>[] PARAMS_MENU_ACTION_EVENT = new Class<?>[]{MenuActionEvent.class};
+    Class<?>[] PARAMS_EMPTY = new Class<?>[0];
+    Class<?>[] PARAMS_ACTION_EVENT = new Class<?>[]{ActionEvent.class};
+    Class<?>[] PARAMS_MENU_ACTION_EVENT = new Class<?>[]{MenuActionEvent.class};
 
     List getElements();
 
