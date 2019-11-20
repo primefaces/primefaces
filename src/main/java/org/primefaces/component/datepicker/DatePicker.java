@@ -54,7 +54,8 @@ public class DatePicker extends DatePickerBase {
             "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "dateSelect", "viewChange",
             "close");
     private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("dateSelect", "viewChange", "close");
-    private final Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>();
+
+    private Map<String, AjaxBehaviorEvent> customEvents;
 
     @Override
     public Collection<String> getEventNames() {
@@ -68,6 +69,8 @@ public class DatePicker extends DatePickerBase {
 
     @Override
     public void queueEvent(FacesEvent event) {
+        customEvents = new HashMap<>(3);
+
         FacesContext context = getFacesContext();
 
         if (ComponentUtils.isRequestSource(this, context) && (event instanceof AjaxBehaviorEvent)) {
@@ -104,12 +107,11 @@ public class DatePicker extends DatePickerBase {
     public void validate(FacesContext context) {
         super.validate(context);
 
-        if (isValid() && ComponentUtils.isRequestSource(this, context)) {
-            for (Iterator<String> customEventIter = customEvents.keySet().iterator(); customEventIter.hasNext(); ) {
-                AjaxBehaviorEvent behaviorEvent = customEvents.get(customEventIter.next());
-                SelectEvent<?> selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), getValue());
+        if (isValid() && ComponentUtils.isRequestSource(this, context) && customEvents != null) {
+            for (Map.Entry<String, AjaxBehaviorEvent> event : customEvents.entrySet()) {
+                SelectEvent<?> selectEvent = new SelectEvent(this, event.getValue().getBehavior(), getValue());
 
-                if (behaviorEvent.getPhaseId().equals(PhaseId.APPLY_REQUEST_VALUES)) {
+                if (event.getValue().getPhaseId().equals(PhaseId.APPLY_REQUEST_VALUES)) {
                     selectEvent.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
                 }
                 else {

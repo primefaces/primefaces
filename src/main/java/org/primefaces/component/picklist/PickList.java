@@ -98,7 +98,8 @@ public class PickList extends PickListBase {
             .put("reorder", null)
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-    private final Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>();
+
+    private Map<String, AjaxBehaviorEvent> customEvents;
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
@@ -180,9 +181,10 @@ public class PickList extends PickListBase {
     public void validate(FacesContext context) {
         super.validate(context);
         if (isValid() && customEvents != null) {
-            for (Iterator<String> customEventIter = customEvents.keySet().iterator(); customEventIter.hasNext(); ) {
-                String eventName = customEventIter.next();
-                AjaxBehaviorEvent behaviorEvent = customEvents.get(eventName);
+            for (Map.Entry<String, AjaxBehaviorEvent> event : customEvents.entrySet()) {
+                String eventName = event.getKey();
+                AjaxBehaviorEvent behaviorEvent = event.getValue();
+
                 Map<String, String> params = context.getExternalContext().getRequestParameterMap();
                 String clientId = getClientId(context);
                 DualListModel<?> list = (DualListModel<?>) getValue();
@@ -227,6 +229,8 @@ public class PickList extends PickListBase {
 
     @Override
     public void queueEvent(FacesEvent event) {
+        customEvents = new HashMap<>(3);
+
         FacesContext context = getFacesContext();
 
         if (ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
