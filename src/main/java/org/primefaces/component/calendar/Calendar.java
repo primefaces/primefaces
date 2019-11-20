@@ -54,7 +54,7 @@ public class Calendar extends CalendarBase {
             "close");
     private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("dateSelect", "viewChange", "close");
 
-    private Map<String, AjaxBehaviorEvent> customEvents;
+    private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);
 
     public boolean isPopup() {
         return getMode().equalsIgnoreCase("popup");
@@ -72,8 +72,6 @@ public class Calendar extends CalendarBase {
 
     @Override
     public void queueEvent(FacesEvent event) {
-        customEvents = new HashMap<>(3);
-
         FacesContext context = getFacesContext();
 
         if (ComponentUtils.isRequestSource(this, context) && (event instanceof AjaxBehaviorEvent)) {
@@ -83,11 +81,8 @@ public class Calendar extends CalendarBase {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if (eventName != null) {
-                if (eventName.equals("dateSelect")) {
-                    customEvents.put("dateSelect", (AjaxBehaviorEvent) event);
-                }
-                else if (eventName.equals("close")) {
-                    customEvents.put("close", (AjaxBehaviorEvent) event);
+                if (eventName.equals("dateSelect") || eventName.equals("close")) {
+                    customEvents.put(eventName, (AjaxBehaviorEvent) event);
                 }
                 else if (eventName.equals("viewChange")) {
                     int month = Integer.parseInt(params.get(clientId + "_month"));
@@ -178,5 +173,15 @@ public class Calendar extends CalendarBase {
                 createFacesMessageFromValidationResult(context, validationResult);
             }
         }
+    }
+
+    @Override
+    public Object saveState(FacesContext context) {
+        // reset component for MyFaces view pooling
+        if (customEvents != null) {
+            customEvents.clear();
+        }
+
+        return super.saveState(context);
     }
 }

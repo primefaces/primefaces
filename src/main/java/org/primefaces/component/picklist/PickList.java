@@ -99,7 +99,7 @@ public class PickList extends PickListBase {
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
-    private Map<String, AjaxBehaviorEvent> customEvents;
+    private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
@@ -229,8 +229,6 @@ public class PickList extends PickListBase {
 
     @Override
     public void queueEvent(FacesEvent event) {
-        customEvents = new HashMap<>(3);
-
         FacesContext context = getFacesContext();
 
         if (ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
@@ -252,13 +250,7 @@ public class PickList extends PickListBase {
 
                 super.queueEvent(transferEvent);
             }
-            else if (eventName.equals("select")) {
-                customEvents.put(eventName, (AjaxBehaviorEvent) event);
-            }
-            else if (eventName.equals("unselect")) {
-                customEvents.put(eventName, (AjaxBehaviorEvent) event);
-            }
-            else if (eventName.equals("reorder")) {
+            else if (eventName.equals("select") || eventName.equals("unselect") || eventName.equals("reorder")) {
                 customEvents.put(eventName, (AjaxBehaviorEvent) event);
             }
         }
@@ -284,5 +276,15 @@ public class PickList extends PickListBase {
                 }
             }
         }
+    }
+
+    @Override
+    public Object saveState(FacesContext context) {
+        // reset component for MyFaces view pooling
+        if (customEvents != null) {
+            customEvents.clear();
+        }
+
+        return super.saveState(context);
     }
 }

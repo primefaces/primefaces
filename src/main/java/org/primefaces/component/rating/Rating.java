@@ -60,7 +60,7 @@ public class Rating extends RatingBase {
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
-    private Map<String, AjaxBehaviorEvent> customEvents;
+    private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
@@ -79,8 +79,6 @@ public class Rating extends RatingBase {
 
     @Override
     public void queueEvent(FacesEvent event) {
-        customEvents = new HashMap<>(3);
-
         FacesContext context = getFacesContext();
 
         if (event instanceof AjaxBehaviorEvent) {
@@ -112,5 +110,15 @@ public class Rating extends RatingBase {
                 super.queueEvent(rateEvent);
             }
         }
+    }
+
+    @Override
+    public Object saveState(FacesContext context) {
+        // reset component for MyFaces view pooling
+        if (customEvents != null) {
+            customEvents.clear();
+        }
+
+        return super.saveState(context);
     }
 }

@@ -71,7 +71,7 @@ public class OrderList extends OrderListBase {
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
-    private Map<String, AjaxBehaviorEvent> customEvents;
+    private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
@@ -86,8 +86,6 @@ public class OrderList extends OrderListBase {
 
     @Override
     public void queueEvent(FacesEvent event) {
-        customEvents = new HashMap<>(3);
-
         FacesContext context = getFacesContext();
 
         if (ComponentUtils.isRequestSource(this, context) && (event instanceof AjaxBehaviorEvent)) {
@@ -138,4 +136,13 @@ public class OrderList extends OrderListBase {
         }
     }
 
+    @Override
+    public Object saveState(FacesContext context) {
+        // reset component for MyFaces view pooling
+        if (customEvents != null) {
+            customEvents.clear();
+        }
+
+        return super.saveState(context);
+    }
 }
