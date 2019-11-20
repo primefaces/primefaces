@@ -23,13 +23,10 @@
  */
 package org.primefaces.component.selectoneradio;
 
-import java.util.List;
-
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -47,19 +44,10 @@ public class SelectOneRadio extends SelectOneRadioBase {
     public static final String NATIVE_STYLE_CLASS = "ui-selectoneradio ui-selectoneradio-native ui-widget";
 
     private int index = -1;
-    private List<SelectItem> selectItems;
 
     public String getRadioButtonId(FacesContext context) {
         index++;
 
         return this.getClientId(context) + UINamingContainer.getSeparatorChar(context) + index;
-    }
-
-    public List<SelectItem> getSelectItems() {
-        return this.selectItems;
-    }
-
-    public void setSelectItems(List<SelectItem> selectItems) {
-        this.selectItems = selectItems;
     }
 }
