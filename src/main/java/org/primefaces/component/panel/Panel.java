@@ -73,7 +73,6 @@ public class Panel extends PanelBase {
             .build();
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-    private Menu optionsMenu;
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
@@ -86,20 +85,17 @@ public class Panel extends PanelBase {
     }
 
     public Menu getOptionsMenu() {
-        if (optionsMenu == null) {
-            UIComponent optionsFacet = getFacet("options");
-            if (ComponentUtils.shouldRenderFacet(optionsFacet)) {
-                if (optionsFacet instanceof Menu) {
-                    optionsMenu = (Menu) optionsFacet;
-                }
-                else {
-                    optionsMenu = (Menu) optionsFacet.getChildren().get(0);
-                }
+        UIComponent optionsFacet = getFacet("options");
+        if (ComponentUtils.shouldRenderFacet(optionsFacet)) {
+            if (optionsFacet instanceof Menu) {
+                return (Menu) optionsFacet;
             }
-
+            else {
+                return (Menu) optionsFacet.getChildren().get(0);
+            }
         }
 
-        return optionsMenu;
+        return null;
     }
 
     @Override

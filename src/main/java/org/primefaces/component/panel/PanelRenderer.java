@@ -63,12 +63,13 @@ public class PanelRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
         Panel panel = (Panel) component;
+        Menu optionsMenu = panel.getOptionsMenu();
 
-        encodeMarkup(facesContext, panel);
-        encodeScript(facesContext, panel);
+        encodeMarkup(facesContext, panel, optionsMenu);
+        encodeScript(facesContext, panel, optionsMenu);
     }
 
-    protected void encodeScript(FacesContext context, Panel panel) throws IOException {
+    protected void encodeScript(FacesContext context, Panel panel, Menu optionsMenu) throws IOException {
         String clientId = panel.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Panel", panel.resolveWidgetVar(context), clientId);
@@ -86,7 +87,7 @@ public class PanelRenderer extends CoreRenderer {
                     .attr("closeSpeed", panel.getCloseSpeed());
         }
 
-        if (panel.getOptionsMenu() != null) {
+        if (optionsMenu != null) {
             wb.attr("hasMenu", true);
         }
 
@@ -95,11 +96,10 @@ public class PanelRenderer extends CoreRenderer {
         wb.finish();
     }
 
-    protected void encodeMarkup(FacesContext context, Panel panel) throws IOException {
+    protected void encodeMarkup(FacesContext context, Panel panel, Menu optionsMenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = panel.getClientId(context);
         String widgetVar = panel.resolveWidgetVar(context);
-        Menu optionsMenu = panel.getOptionsMenu();
         boolean collapsed = panel.isCollapsed();
         boolean visible = panel.isVisible();
 
@@ -129,7 +129,7 @@ public class PanelRenderer extends CoreRenderer {
 
         renderDynamicPassThruAttributes(context, panel);
 
-        encodeHeader(context, panel);
+        encodeHeader(context, panel, optionsMenu);
         encodeContent(context, panel);
         encodeFooter(context, panel);
 
@@ -153,7 +153,7 @@ public class PanelRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeHeader(FacesContext context, Panel panel) throws IOException {
+    protected void encodeHeader(FacesContext context, Panel panel, Menu optionsMenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent header = panel.getFacet("header");
         String headerText = panel.getHeader();
@@ -190,7 +190,7 @@ public class PanelRenderer extends CoreRenderer {
             encodeIcon(context, panel, icon, clientId + "_toggler", panel.getToggleTitle(), MessageFactory.getMessage(Panel.ARIA_TOGGLE, null));
         }
 
-        if (panel.getOptionsMenu() != null) {
+        if (optionsMenu != null) {
             encodeIcon(context, panel, "ui-icon-gear", clientId + "_menu", panel.getMenuTitle(), MessageFactory.getMessage(Panel.ARIA_OPTIONS_MENU, null));
         }
 
