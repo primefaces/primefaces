@@ -191,14 +191,11 @@ public class DataScrollerRenderer extends CoreRenderer {
         String rowIndexVar = ds.getRowIndexVar();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
-        int firstIndex = isLazy ? 0 : start;
-        int lastIndex = (firstIndex + size);
-
-        for (int i = firstIndex; i < lastIndex; i++) {
+        for (int i = start; i < (start + size); i++) {
             ds.setRowIndex(i);
 
             if (rowIndexVar != null) {
-                requestMap.put(rowIndexVar, (isLazy ? (start + i) : i));
+                requestMap.put(rowIndexVar, i);
             }
 
             if (!ds.isRowAvailable()) {
