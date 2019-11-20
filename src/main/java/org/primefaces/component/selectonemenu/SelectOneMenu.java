@@ -94,11 +94,12 @@ public class SelectOneMenu extends SelectOneMenuBase {
     }
 
     public List<Column> getColumns() {
-        List<Column> columns = new ArrayList<>();
+        List<Column> columns = new ArrayList<>(5);
 
-        for (UIComponent kid : getChildren()) {
-            if (kid instanceof Column) {
-                columns.add((Column) kid);
+        for (int i = 0; i < getChildCount(); i++) {
+            UIComponent child = getChildren().get(i);
+            if (child instanceof Column) {
+                columns.add((Column) child);
             }
         }
 
