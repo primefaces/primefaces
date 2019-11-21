@@ -80,6 +80,7 @@ public class AutoComplete extends AutoCompleteBase {
             "query", "moreText", "clear");
     private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "itemUnselect", "query",
             "moreText", "clear");
+
     private Object suggestions = null;
 
     @Override
@@ -205,5 +206,13 @@ public class AutoComplete extends AutoCompleteBase {
     @Override
     public void setLabelledBy(String labelledBy) {
         getStateHelper().put("labelledby", labelledBy);
+    }
+
+    @Override
+    public Object saveState(FacesContext context) {
+        // reset component for MyFaces view pooling
+        suggestions = null;
+
+        return super.saveState(context);
     }
 }

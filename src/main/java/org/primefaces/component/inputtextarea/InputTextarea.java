@@ -54,6 +54,7 @@ public class InputTextarea extends InputTextareaBase {
     private static final Collection<String> EVENT_NAMES = LangUtils.unmodifiableList("blur", "change", "valueChange", "click", "dblclick",
             "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "itemSelect");
     private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("itemSelect");
+
     private List suggestions = null;
 
     @Override
@@ -126,5 +127,13 @@ public class InputTextarea extends InputTextareaBase {
 
     public List getSuggestions() {
         return suggestions;
+    }
+
+    @Override
+    public Object saveState(FacesContext context) {
+        // reset component for MyFaces view pooling
+        suggestions = null;
+
+        return super.saveState(context);
     }
 }
