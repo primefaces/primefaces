@@ -94,8 +94,8 @@ public class BasicTimelineView implements Serializable {
     @PostConstruct
     protected void initialize() {
         model = new TimelineModel();
-        model.add(new TimelineEvent("PrimeUI 1.1", LocalDate.of(2014, 6, 12)));
-        model.add(new TimelineEvent("PrimeFaces 5.1.3", LocalDate.of(2014, 10, 11)));
+        model.add(TimelineEvent.<String>builder().data("PrimeUI 1.1").startDate(LocalDate.of(2014, 6, 12)).build());
+        model.add(TimelineEvent.<String>builder().data("PrimeFaces 5.1.3").startDate(LocalDate.of(2014, 10, 11)).build());
     }
 }
 ```
