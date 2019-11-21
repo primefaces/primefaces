@@ -68,9 +68,13 @@ public class ScheduleBean {
 
     public ScheduleBean() {
         eventModel = new ScheduleModel<ScheduleEvent>();
-		LocalDateTime start = LocalDateTime.of(2019, 7, 27, 12, 00);
-		LocalDateTime end = LocalDateTime.of(2019, 7, 27, 12, 30);
-        eventModel.addEvent(new DefaultScheduleEvent("title", start, end));
+		DefaultScheduleEvent event = DefaultScheduleEvent.builder()
+				.title("title")
+				.startDate(LocalDateTime.of(2019, 7, 27, 12, 00))
+				.endDate(LocalDateTime.of(2019, 7, 27, 12, 30))
+				.build();
+
+        eventModel.addEvent(event);
     }
     public ScheduleModel getModel() {
         return model;
@@ -194,7 +198,7 @@ public class ScheduleBean {
   }
 	
   public void onDateSelect(SelectEvent<LocalDateTime> selectEvent) {
-    event = new DefaultScheduleEvent("", selectEvent.getObject(), selectEvent.getObject());
+    event = DefaultScheduleEvent.builder().startDate(selectEvent.getObject()).endDate(selectEvent.getObject().plusHours(1)).build(); 
   }
 }
 ```
