@@ -71,7 +71,7 @@ For a full list of the available downloads, please visit the [download page](htt
 
 ##### Namespaces
 
-PrimeFaces namespace is necessary to add PrimeFaces components to your pages.
+The PrimeFaces namespace is necessary to add PrimeFaces components to your pages.
 
 ```xml
 xmlns:p="http://primefaces.org/ui"
@@ -100,19 +100,19 @@ xmlns:p="http://primefaces.org/ui"
 
 ### Demo
 ***
-Please refer to the [showcase](https://www.primefaces.org/showcase) in order to see the full usage of the components. Sources of PrimeFaces showcase is available as separate [project]( https://github.com/primefaces/showcase-facelift).
+Please refer to the [showcase](https://www.primefaces.org/showcase) in order to see the full usage of the components. Sources of PrimeFaces showcase are available as a separate [project]( https://github.com/primefaces/showcase-facelift).
 
 ### Documentation
 ***
-User Guide is available here: [click](https://primefaces.github.io/primefaces/).
+A User Guide is available [here](https://primefaces.github.io/primefaces/).
 
 ### Contribution
 ***
-Visit [Contribution Wiki](https://github.com/primefaces/primefaces/wiki/Contributing-to-PrimeFaces) page for the detailed information.
+Visit the [Contribution Wiki](https://github.com/primefaces/primefaces/wiki/Contributing-to-PrimeFaces) page for detailed information.
 
 
 ### License
 ***
-Licensed under the MIT
+Licensed under the MIT License.
 
 
