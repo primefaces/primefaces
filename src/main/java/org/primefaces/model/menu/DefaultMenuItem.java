@@ -27,11 +27,9 @@ import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.util.SerializableFunction;
 
+import javax.faces.component.UIComponent;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, Serializable {
 
@@ -301,6 +299,11 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     @Override
     public boolean shouldRenderChildren() {
         return false;
+    }
+
+    @Override
+    public List<UIComponent> getChildren() {
+        return Collections.emptyList();
     }
 
     @Override
