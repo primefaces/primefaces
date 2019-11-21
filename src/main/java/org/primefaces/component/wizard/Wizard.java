@@ -62,8 +62,6 @@ public class Wizard extends WizardBase {
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
-    private Tab current;
-
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
         return BEHAVIOR_EVENT_MAPPING;
@@ -86,31 +84,27 @@ public class Wizard extends WizardBase {
     @Override
     public void processValidators(FacesContext context) {
         if (!isBackRequest(context) || (isUpdateModelOnPrev() && isBackRequest(context))) {
-            current.processValidators(context);
+            getStepToProcess().processValidators(context);
         }
     }
 
     @Override
     public void processUpdates(FacesContext context) {
         if (!isBackRequest(context) || (isUpdateModelOnPrev() && isBackRequest(context))) {
-            current.processUpdates(context);
+            getStepToProcess().processUpdates(context);
         }
     }
 
     public Tab getStepToProcess() {
-        if (current == null) {
-            String currentStepId = getStep();
-
-            for (UIComponent child : getChildren()) {
-                if (child.getId().equals(currentStepId)) {
-                    current = (Tab) child;
-
-                    break;
-                }
+        String currentStepId = getStep();
+        for (int i = 0; i < getChildCount(); i++) {
+            UIComponent child = getChildren().get(i);
+            if (child.getId().equals(currentStepId)) {
+                return (Tab) child;
             }
         }
 
-        return current;
+        return null;
     }
 
     public boolean isBackRequest(FacesContext context) {

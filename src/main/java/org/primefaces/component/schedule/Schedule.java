@@ -26,6 +26,7 @@ package org.primefaces.component.schedule;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.el.ValueExpression;
@@ -67,7 +68,6 @@ public class Schedule extends ScheduleBase {
             .put("viewChange", SelectEvent.class)
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-    private java.util.Locale appropriateLocale;
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
@@ -79,12 +79,8 @@ public class Schedule extends ScheduleBase {
         return EVENT_NAMES;
     }
 
-    java.util.Locale calculateLocale(FacesContext facesContext) {
-        if (appropriateLocale == null) {
-            appropriateLocale = LocaleUtils.resolveLocale(getLocale(), getClientId(facesContext));
-        }
-
-        return appropriateLocale;
+    Locale calculateLocale(FacesContext facesContext) {
+        return LocaleUtils.resolveLocale(getLocale(), getClientId(facesContext));
     }
 
     @Override
