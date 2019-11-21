@@ -33,6 +33,8 @@ public class CellEditor extends CellEditorBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.CellEditor";
 
+    private UIComponent parentTable = null;
+
     @Override
     public void processDecodes(FacesContext context) {
         if (isEditRequest(context)) {
@@ -59,17 +61,20 @@ public class CellEditor extends CellEditorBase {
     }
 
     public UIComponent getParentTable(FacesContext context) {
-        UIComponent parent = getParent();
+        if (parentTable == null) {
+            UIComponent parent = getParent();
 
-        while (parent != null) {
-            if (parent instanceof DataTable || parent instanceof TreeTable) {
-                return parent;
+            while (parent != null) {
+                if (parent instanceof DataTable || parent instanceof TreeTable) {
+                    parentTable = parent;
+                    break;
+                }
+
+                parent = parent.getParent();
             }
-
-            parent = parent.getParent();
         }
 
-        return null;
+        return parentTable;
     }
 
 }

@@ -50,4 +50,12 @@ public class SelectOneRadio extends SelectOneRadioBase {
 
         return this.getClientId(context) + UINamingContainer.getSeparatorChar(context) + index;
     }
+
+    @Override
+    public Object saveState(FacesContext context) {
+        // reset component for MyFaces view pooling
+        index = -1;
+
+        return super.saveState(context);
+    }
 }
