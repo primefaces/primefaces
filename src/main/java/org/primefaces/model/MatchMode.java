@@ -39,7 +39,7 @@ public enum MatchMode {
 
     private final String name;
 
-    private MatchMode(String name) {
+    MatchMode(String name) {
         this.name = name;
     }
 

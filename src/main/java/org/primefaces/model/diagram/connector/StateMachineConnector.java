@@ -120,7 +120,7 @@ public class StateMachineConnector extends Connector {
 
         private final String text;
 
-        private Orientation(final String text) {
+        Orientation(final String text) {
             this.text = text;
         }
 
