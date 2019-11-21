@@ -278,7 +278,7 @@ public class TimelineModel<E, G> implements Serializable {
      */
     public Set<TimelineEvent<E>> getOverlappedEvents(TimelineEvent<E> event) {
         if (event == null) {
-            return null;
+            return Collections.emptySet();
         }
 
         List<TimelineEvent<E>> overlappedEvents = null;
@@ -304,7 +304,7 @@ public class TimelineModel<E, G> implements Serializable {
         }
 
         if (overlappedEvents == null) {
-            return null;
+            return Collections.emptySet();
         }
 
         // order overlapped events according to their start / end dates

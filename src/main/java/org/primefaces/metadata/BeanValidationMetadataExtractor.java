@@ -23,6 +23,7 @@
  */
 package org.primefaces.metadata;
 
+import java.util.Collections;
 import java.util.Set;
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -50,7 +51,7 @@ public class BeanValidationMetadataExtractor {
             return propertyDescriptor.getConstraintDescriptors();
         }
 
-        return null;
+        return Collections.emptySet();
     }
 
     public static Set<ConstraintDescriptor<?>> extractDefaultConstraintDescriptors(FacesContext context, PrimeApplicationContext applicationContext,
@@ -68,7 +69,7 @@ public class BeanValidationMetadataExtractor {
             return propertyDescriptor.findConstraints().unorderedAndMatchingGroups(groups).getConstraintDescriptors();
         }
 
-        return null;
+        return Collections.emptySet();
     }
 
     public static PropertyDescriptor extractPropertyDescriptor(FacesContext context, PrimeApplicationContext applicationContext, ValueExpression ve) {
