@@ -68,11 +68,11 @@ public class ScheduleBean {
 
     public ScheduleBean() {
         eventModel = new ScheduleModel<ScheduleEvent>();
-		DefaultScheduleEvent event = DefaultScheduleEvent.builder()
-				.title("title")
-				.startDate(LocalDateTime.of(2019, 7, 27, 12, 00))
-				.endDate(LocalDateTime.of(2019, 7, 27, 12, 30))
-				.build();
+        DefaultScheduleEvent event = DefaultScheduleEvent.builder()
+                .title("title")
+                .startDate(LocalDateTime.of(2019, 7, 27, 12, 00))
+                .endDate(LocalDateTime.of(2019, 7, 27, 12, 30))
+                .build();
 
         eventModel.addEvent(event);
     }
