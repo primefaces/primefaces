@@ -36,7 +36,7 @@ import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.MessageFactory;
 
-public abstract class UICalendar extends HtmlInputText {
+public abstract class UICalendar extends HtmlInputText implements InputHolder {
 
     public static final String CONTAINER_CLASS = "ui-calendar";
     public static final String INPUT_STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
@@ -208,18 +208,22 @@ public abstract class UICalendar extends HtmlInputText {
         conversionFailed = value;
     }
 
+    @Override
     public String getInputClientId() {
         return getClientId(getFacesContext()) + "_input";
     }
 
+    @Override
     public String getValidatableInputClientId() {
         return getClientId(getFacesContext()) + "_input";
     }
 
+    @Override
     public String getLabelledBy() {
         return (String) getStateHelper().get("labelledby");
     }
 
+    @Override
     public void setLabelledBy(String labelledBy) {
         getStateHelper().put("labelledby", labelledBy);
     }
