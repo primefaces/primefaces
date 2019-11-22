@@ -337,8 +337,15 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
     }
 
     public String getAppendTo() {
-        String appendToDefault = isInline() ? null : "@(body)";
-        return (String) getStateHelper().eval(PropertyKeys.appendTo, appendToDefault);
+        return (String) getStateHelper().eval(PropertyKeys.appendTo, null);
+    }
+
+    public String getAppendToWithDefault() {
+        String appendTo = getAppendTo();
+        if (!isInline() && appendTo == null) {
+            appendTo = "@(body)";
+        }
+        return appendTo;
     }
 
     public void setAppendTo(String appendTo) {

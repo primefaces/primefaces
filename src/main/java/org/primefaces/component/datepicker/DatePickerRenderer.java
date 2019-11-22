@@ -120,7 +120,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("numberOfMonths", datepicker.getNumberOfMonths(), 1)
             .attr("view", datepicker.getView(), null)
             .attr("touchUI", datepicker.isTouchUI(), false)
-            .attr("appendTo", SearchExpressionFacade.resolveClientId(context, datepicker, datepicker.getAppendTo(),
+            .attr("appendTo", SearchExpressionFacade.resolveClientId(context, datepicker, datepicker.getAppendToWithDefault(),
                             SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
             .attr("icon", datepicker.getTriggerButtonIcon(), null)
             .attr("rangeSeparator", datepicker.getRangeSeparator(), null);
