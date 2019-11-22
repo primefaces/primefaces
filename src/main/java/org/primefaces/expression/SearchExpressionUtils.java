@@ -23,6 +23,7 @@
  */
 package org.primefaces.expression;
 
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 import javax.faces.FacesException;
@@ -34,11 +35,11 @@ import org.primefaces.util.ComponentUtils;
 
 public class SearchExpressionUtils {
 
-    public static final Set<SearchExpressionHint> SET_SKIP_UNRENDERED = EnumSet.of(SearchExpressionHint.SKIP_UNRENDERED);
-    public static final Set<SearchExpressionHint> SET_RESOLVE_CLIENT_SIDE = EnumSet.of(SearchExpressionHint.RESOLVE_CLIENT_SIDE);
-    public static final Set<SearchExpressionHint> SET_PARENT_FALLBACK = EnumSet.of(SearchExpressionHint.PARENT_FALLBACK);
-    public static final Set<SearchExpressionHint> SET_IGNORE_NO_RESULT = EnumSet.of(SearchExpressionHint.IGNORE_NO_RESULT);
-    public static final Set<SearchExpressionHint> SET_VALIDATE_RENDERER = EnumSet.of(SearchExpressionHint.VALIDATE_RENDERER);
+    public static final Set<SearchExpressionHint> SET_SKIP_UNRENDERED = Collections.unmodifiableSet(EnumSet.of(SearchExpressionHint.SKIP_UNRENDERED));
+    public static final Set<SearchExpressionHint> SET_RESOLVE_CLIENT_SIDE = Collections.unmodifiableSet(EnumSet.of(SearchExpressionHint.RESOLVE_CLIENT_SIDE));
+    public static final Set<SearchExpressionHint> SET_PARENT_FALLBACK = Collections.unmodifiableSet(EnumSet.of(SearchExpressionHint.PARENT_FALLBACK));
+    public static final Set<SearchExpressionHint> SET_IGNORE_NO_RESULT = Collections.unmodifiableSet(EnumSet.of(SearchExpressionHint.IGNORE_NO_RESULT));
+    public static final Set<SearchExpressionHint> SET_VALIDATE_RENDERER = Collections.unmodifiableSet(EnumSet.of(SearchExpressionHint.VALIDATE_RENDERER));
 
     private SearchExpressionUtils() {
     }
