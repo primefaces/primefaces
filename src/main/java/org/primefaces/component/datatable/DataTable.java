@@ -566,11 +566,16 @@ public class DataTable extends DataTableBase {
                 }
             }
 
+            List<FilterMeta> filterMeta = getFilterMetadata();
+            if (filterMeta == null) {
+                filterMeta = Collections.emptyList();
+            }
+
             if (isMultiSort()) {
-                data = lazyModel.load(first, getRows(), getMultiSortMeta(), getFilterMetadata());
+                data = lazyModel.load(first, getRows(), getMultiSortMeta(), filterMeta);
             }
             else {
-                data = lazyModel.load(first, getRows(), resolveSortField(), convertSortOrder(), getFilterMetadata());
+                data = lazyModel.load(first, getRows(), resolveSortField(), convertSortOrder(), filterMeta);
             }
 
             lazyModel.setPageSize(getRows());
@@ -589,13 +594,17 @@ public class DataTable extends DataTableBase {
         if (model instanceof LazyDataModel) {
             LazyDataModel lazyModel = (LazyDataModel) model;
 
-            List<?> data = null;
+            List<FilterMeta> filterMeta = getFilterMetadata();
+            if (filterMeta == null) {
+                filterMeta = Collections.emptyList();
+            }
 
+            List<?> data = null;
             if (isMultiSort()) {
-                data = lazyModel.load(offset, rows, getMultiSortMeta(), getFilterMetadata());
+                data = lazyModel.load(offset, rows, getMultiSortMeta(), filterMeta);
             }
             else {
-                data = lazyModel.load(offset, rows, resolveSortField(), convertSortOrder(), getFilterMetadata());
+                data = lazyModel.load(offset, rows, resolveSortField(), convertSortOrder(), filterMeta);
             }
 
             lazyModel.setPageSize(rows);
