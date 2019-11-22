@@ -394,7 +394,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     updateRowColspan: function(row, colspanValue) {
-        colspanValue = (colspanValue == undefined ? this.calculateColspan() : colspanValue);
+        colspanValue = colspanValue || this.calculateColspan();
         if(colspanValue) {
             row.children('td').removeClass('ui-helper-hidden').attr('colspan', colspanValue);
         }

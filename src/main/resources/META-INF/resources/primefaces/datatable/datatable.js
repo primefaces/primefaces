@@ -3879,7 +3879,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     updateColspan: function(row, colspanValue) {
-        row.children('td').attr('colspan', (colspanValue == undefined ? this.calculateColspan() : colspanValue));
+        row.children('td').attr('colspan', colspanValue || this.calculateColspan());
     },
     
     updateEmptyColspan: function() {
@@ -3952,9 +3952,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     updateColumnsView: function() {
-        var emptyRow = this.tbody.children('tr:first');
-        if(emptyRow && emptyRow.hasClass('ui-datatable-empty-message')) {
-            return; // do not hide the single column of the empty row if the first column is invisible
+        if(this.isEmpty()) {
+            return;
         }
 
         // update the visibility of columns but ignore expanded rows
@@ -3971,7 +3970,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         // update the colspan of the expanded rows
-        this.updateExpandedRowsColspan();
+        if(this.cfg.expansion) {
+            this.updateExpandedRowsColspan();
+        }
     },
 
     resetVirtualScrollBody: function() {
@@ -4328,10 +4329,11 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         var twinRow = this.getTwinRow(row);
         row.after(content);
         var expansionRow = row.next();
+        this.updateColspan(expansionRow);
         expansionRow.show();
 
         twinRow.after('<tr class="ui-expanded-row-content ui-widget-content"><td></td></tr>');
-        twinRow.next().children('td').attr('colspan', twinRow.children('td').length).height(expansionRow.children('td').height());
+        twinRow.next().children('td').attr('colspan', this.updateColspan(twinRow)).height(expansionRow.children('td').height());
     },
 
     //@Override
