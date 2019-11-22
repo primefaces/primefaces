@@ -25,7 +25,9 @@ package org.primefaces.util;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class LangUtils {
 
@@ -66,6 +68,20 @@ public class LangUtils {
         }
 
         return false;
+    }
+
+    @SafeVarargs
+    public static <T> Set<T> unmodifiableSet(T... array) {
+        return Collections.unmodifiableSet(new HashSet<>(Arrays.asList(array)));
+    }
+
+    @SafeVarargs
+    public static <T> Set<T> concat(Set<T>...  sets) {
+        HashSet<T> result = new HashSet<>();
+        for (Set<T> set : sets) {
+            result.addAll(set);
+        }
+        return Collections.unmodifiableSet(result);
     }
 
     public static String[] concat(String[] array1, String[] array2) {

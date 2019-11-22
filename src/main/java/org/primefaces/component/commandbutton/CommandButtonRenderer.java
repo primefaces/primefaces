@@ -95,7 +95,7 @@ public class CommandButtonRenderer extends CoreRenderer {
             }
         }
 
-        renderPassThruAttributes(context, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);
+        renderPassThruAttributes(context, button, HTML.BUTTON_WITH_CLICK_ATTRS);
 
         if (button.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", "disabled");
