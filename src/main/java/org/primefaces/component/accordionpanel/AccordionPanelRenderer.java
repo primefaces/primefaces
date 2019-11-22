@@ -218,6 +218,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
         //header container
         writer.startElement("div", null);
+        writer.writeAttribute("id", tab.getClientId(context) + "_header", null);
         writer.writeAttribute("class", headerClass, null);
         writer.writeAttribute("role", "tab", null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(active), null);
