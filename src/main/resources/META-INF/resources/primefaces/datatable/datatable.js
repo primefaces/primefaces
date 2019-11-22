@@ -37,6 +37,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.expansion) {
             this.expansionProcess = [];
             this.bindExpansionEvents();
+            this.updateExpandedRowsColspan();
         }
 
         if(this.cfg.editable) {
@@ -1704,6 +1705,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 $this.updateColumnsView();
+                $this.updateEmptyColspan();
 
                 // reset index of shift selection on multiple mode
                 $this.originRowIndex = null;
@@ -2249,6 +2251,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
     displayExpandedRow: function(row, content) {
         row.after(content);
+        this.updateColspan(row.next());
     },
 
     fireRowCollapseEvent: function(row) {
@@ -3858,24 +3861,40 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         });
     },
 
+    calculateColspan: function() {
+        var visibleHeaderColumns = this.thead.find('> tr:first th:not(.ui-helper-hidden)'),
+            colSpanValue = 0;
+
+        for(var i = 0; i < visibleHeaderColumns.length; i++) {
+            var column = visibleHeaderColumns.eq(i);
+            if(column.is('[colspan]')) {
+                colSpanValue += parseInt(column.attr('colspan'));
+            }
+            else {
+                colSpanValue++;
+            }
+        }
+
+        return colSpanValue;
+    },
+
+    updateColspan: function(row, colspanValue) {
+        row.children('td').attr('colspan', (colspanValue == undefined ? this.calculateColspan() : colspanValue));
+    },
+    
     updateEmptyColspan: function() {
         var emptyRow = this.tbody.children('tr:first');
         if(emptyRow && emptyRow.hasClass('ui-datatable-empty-message')) {
-            var visibleHeaderColumns = this.thead.find('> tr:first th:not(.ui-helper-hidden)'),
-            colSpanValue = 0;
-
-            for(var i = 0; i < visibleHeaderColumns.length; i++) {
-                var column = visibleHeaderColumns.eq(i);
-                if(column.is('[colspan]')) {
-                    colSpanValue += parseInt(column.attr('colspan'));
-                }
-                else {
-                    colSpanValue++;
-                }
-            }
-
-            emptyRow.children('td').attr('colspan', colSpanValue);
+            this.updateColspan(emptyRow);
         }
+    },
+
+    updateExpandedRowsColspan: function() {
+        var colspanValue = this.calculateColspan(),
+            $this = this;
+        this.getExpandedRows().each(function() {
+            $this.updateColspan($(this).next('.ui-expanded-row-content'), colspanValue);
+        });
     },
 
     updateResizableState: function(columnHeader, nextColumnHeader, table, newWidth, nextColumnWidth) {
@@ -3933,9 +3952,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     updateColumnsView: function() {
+        var emptyRow = this.tbody.children('tr:first');
+        if(emptyRow && emptyRow.hasClass('ui-datatable-empty-message')) {
+            return; // do not hide the single column of the empty row if the first column is invisible
+        }
+
+        // update the visibility of columns but ignore expanded rows
         for(var i = 0; i < this.headers.length; i++) {
             var header = this.headers.eq(i),
-            col = this.tbody.find('> tr > td:nth-child(' + (header.index() + 1) + ')');
+                col = this.tbody.find('> tr:not(.ui-expanded-row-content) > td:nth-child(' + (header.index() + 1) + ')');
 
             if(header.hasClass('ui-helper-hidden')) {
                 col.addClass('ui-helper-hidden');
@@ -3944,6 +3969,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 col.removeClass('ui-helper-hidden');
             }
         }
+
+        // update the colspan of the expanded rows
+        this.updateExpandedRowsColspan();
     },
 
     resetVirtualScrollBody: function() {
