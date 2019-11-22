@@ -43,8 +43,8 @@ import org.primefaces.util.LangUtils;
 public interface MenuItemAware {
 
     Set<Class<?>> PARAMS_EMPTY = LangUtils.unmodifiableSet(Class.class);
-    Set<Class<ActionEvent>> PARAMS_ACTION_EVENT = LangUtils.unmodifiableSet(ActionEvent.class);
-    Set<Class<MenuActionEvent>> PARAMS_MENU_ACTION_EVENT = LangUtils.unmodifiableSet(MenuActionEvent.class);
+    Set<Class<?>> PARAMS_ACTION_EVENT = LangUtils.unmodifiableSet(ActionEvent.class);
+    Set<Class<?>> PARAMS_MENU_ACTION_EVENT = LangUtils.unmodifiableSet(MenuActionEvent.class);
 
     List getElements();
 
