@@ -34,15 +34,17 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.FacesEvent;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import org.primefaces.model.menu.MenuItem;
+import org.primefaces.util.LangUtils;
 
 public interface MenuItemAware {
 
-    Class<?>[] PARAMS_EMPTY = new Class<?>[0];
-    Class<?>[] PARAMS_ACTION_EVENT = new Class<?>[]{ActionEvent.class};
-    Class<?>[] PARAMS_MENU_ACTION_EVENT = new Class<?>[]{MenuActionEvent.class};
+    Set<Class<?>> PARAMS_EMPTY = LangUtils.unmodifiableSet(Class.class);
+    Set<Class<ActionEvent>> PARAMS_ACTION_EVENT = LangUtils.unmodifiableSet(ActionEvent.class);
+    Set<Class<MenuActionEvent>> PARAMS_MENU_ACTION_EVENT = LangUtils.unmodifiableSet(MenuActionEvent.class);
 
     List getElements();
 
@@ -64,18 +66,18 @@ public interface MenuItemAware {
                 Object invokeResult = null;
                 try {
                     MethodExpression me = expressionFactory.createMethodExpression(elContext, command,
-                            String.class, PARAMS_EMPTY);
+                            String.class, PARAMS_EMPTY.toArray(new Class<?>[PARAMS_EMPTY.size()]));
                     invokeResult = me.invoke(elContext, null);
                 }
                 catch (MethodNotFoundException mnfe1) {
                     try {
                         MethodExpression me = expressionFactory.createMethodExpression(elContext, command,
-                                String.class, PARAMS_ACTION_EVENT);
+                                String.class, PARAMS_ACTION_EVENT.toArray(new Class<?>[PARAMS_ACTION_EVENT.size()]));
                         invokeResult = me.invoke(elContext, new Object[]{event});
                     }
                     catch (MethodNotFoundException mnfe2) {
                         MethodExpression me = expressionFactory.createMethodExpression(elContext, command,
-                                String.class, PARAMS_MENU_ACTION_EVENT);
+                                String.class, PARAMS_MENU_ACTION_EVENT.toArray(new Class<?>[PARAMS_MENU_ACTION_EVENT.size()]));
                         invokeResult = me.invoke(elContext, new Object[]{event});
                     }
                 }

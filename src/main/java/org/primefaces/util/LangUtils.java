@@ -70,10 +70,7 @@ public class LangUtils {
         return false;
     }
 
-    @SafeVarargs
-    public static <T> Set<T> unmodifiableSet(T... array) {
-        return Collections.unmodifiableSet(new HashSet<>(Arrays.asList(array)));
-    }
+
 
     @SafeVarargs
     public static <T> Set<T> concat(Set<T>...  sets) {
@@ -126,8 +123,14 @@ public class LangUtils {
         return false;
     }
 
+    @SafeVarargs
     public static final <T> List<T> unmodifiableList(T... args) {
         return Collections.unmodifiableList(Arrays.asList(args));
+    }
+
+    @SafeVarargs
+    public static <T> Set<T> unmodifiableSet(T... args) {
+        return Collections.unmodifiableSet(new HashSet<>(Arrays.asList(args)));
     }
 
     public static Class tryToLoadClassForName(String name) {
