@@ -248,19 +248,9 @@ public class FilterFeature implements DataTableFeature {
         for (FilterMeta filterMeta : filterMetadata) {
             Object filterValue = filterMeta.getFilterValue();
 
-            if (filterValue == null) {
-                continue;
+            if (!isFilterValueEmpty(filterValue)) {
+                filterParameterMap.put(filterMeta.getFilterField(), filterValue);
             }
-
-            if (filterValue.getClass().isArray() && Array.getLength(filterValue) == 0) {
-                continue;
-            }
-
-            if (LangUtils.isValueBlank(filterValue.toString())) {
-                continue;
-            }
-
-            filterParameterMap.put(filterMeta.getFilterField(), filterValue);
         }
 
         if (params.containsKey(globalFilterParam)) {
@@ -268,6 +258,22 @@ public class FilterFeature implements DataTableFeature {
         }
 
         return filterParameterMap;
+    }
+
+    public boolean isFilterValueEmpty(Object filterValue) {
+        if (filterValue == null) {
+            return true;
+        }
+
+        if (filterValue.getClass().isArray() && Array.getLength(filterValue) == 0) {
+            return true;
+        }
+
+        if (LangUtils.isValueBlank(filterValue.toString())) {
+            return true;
+        }
+
+        return false;
     }
 
     public String getFilterField(DataTable table, UIColumn column) {
@@ -351,6 +357,9 @@ public class FilterFeature implements DataTableFeature {
                                 Object filterValue = ComponentUtils.shouldRenderFacet(filterFacet)
                                                      ? ((ValueHolder) filterFacet).getLocalValue()
                                                      : params.get(column.getClientId(context) + separator + "filter");
+                                if (isFilterValueEmpty(filterValue)) {
+                                    filterValue = null;
+                                }
 
                                 filterMetadata.add(new FilterMeta(getFilterField(dataTable, column),
                                         column,
@@ -374,6 +383,9 @@ public class FilterFeature implements DataTableFeature {
                                     Object filterValue = ComponentUtils.shouldRenderFacet(filterFacet)
                                                           ? ((ValueHolder) filterFacet).getLocalValue()
                                                           : params.get(filterId);
+                                    if (isFilterValueEmpty(filterValue)) {
+                                        filterValue = null;
+                                    }
 
                                     filterMetadata.add(new FilterMeta(getFilterField(dataTable, dynaColumn),
                                             dynaColumn,
@@ -412,6 +424,10 @@ public class FilterFeature implements DataTableFeature {
                     filterValue = ComponentUtils.shouldRenderFacet(filterFacet) ? ((ValueHolder) filterFacet).getLocalValue() : params.get(filterId);
                     filterMatchMode = column.getFilterMatchMode();
                     dynamicColumn.cleanModel();
+                }
+
+                if (isFilterValueEmpty(filterValue)) {
+                    filterValue = null;
                 }
 
                 filterMetadata.add(new FilterMeta(getFilterField(table, column),
