@@ -271,7 +271,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         ValueExpression ve = calendar.getValueExpression("value");
 
         if (ve == null) {
-            return null;
+            return LocalDate.class;
         }
 
         Class<?> type = ve.getType(context.getELContext());
