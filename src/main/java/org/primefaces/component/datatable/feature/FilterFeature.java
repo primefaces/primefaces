@@ -334,7 +334,11 @@ public class FilterFeature implements DataTableFeature {
         }
 
         if (params.containsKey(globalFilterParam)) {
-            filterMetadata.add(new FilterMeta("globalFilter", params.get(globalFilterParam)));
+            Object filterValue = params.get(globalFilterParam);
+            if (isFilterValueEmpty(filterValue)) {
+                filterValue = null;
+            }
+            filterMetadata.add(new FilterMeta("globalFilter", filterValue));
         }
 
         return filterMetadata;
