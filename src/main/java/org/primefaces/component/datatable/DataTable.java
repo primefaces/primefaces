@@ -180,7 +180,6 @@ public class DataTable extends DataTableBase {
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
     private int columnsCountWithSpan = -1;
-    private List<FilterMeta> filterMetadata;
     private boolean reset = false;
     private List<Object> selectedRowKeys = new ArrayList<>();
     private boolean isRowKeyRestored = false;
@@ -563,16 +562,11 @@ public class DataTable extends DataTableBase {
                 }
             }
 
-            List<FilterMeta> filterMeta = getFilterMetadata();
-            if (filterMeta == null) {
-                filterMeta = Collections.emptyList();
-            }
-
             if (isMultiSort()) {
-                data = lazyModel.load(first, getRows(), getMultiSortMeta(), filterMeta);
+                data = lazyModel.load(first, getRows(), getMultiSortMeta(), getFilterMetadata());
             }
             else {
-                data = lazyModel.load(first, getRows(), resolveSortField(), convertSortOrder(), filterMeta);
+                data = lazyModel.load(first, getRows(), resolveSortField(), convertSortOrder(), getFilterMetadata());
             }
 
             lazyModel.setPageSize(getRows());
@@ -591,17 +585,12 @@ public class DataTable extends DataTableBase {
         if (model instanceof LazyDataModel) {
             LazyDataModel lazyModel = (LazyDataModel) model;
 
-            List<FilterMeta> filterMeta = getFilterMetadata();
-            if (filterMeta == null) {
-                filterMeta = Collections.emptyList();
-            }
-
             List<?> data = null;
             if (isMultiSort()) {
-                data = lazyModel.load(offset, rows, getMultiSortMeta(), filterMeta);
+                data = lazyModel.load(offset, rows, getMultiSortMeta(), getFilterMetadata());
             }
             else {
-                data = lazyModel.load(offset, rows, resolveSortField(), convertSortOrder(), filterMeta);
+                data = lazyModel.load(offset, rows, resolveSortField(), convertSortOrder(), getFilterMetadata());
             }
 
             lazyModel.setPageSize(rows);
@@ -738,11 +727,11 @@ public class DataTable extends DataTableBase {
     }
 
     public List<FilterMeta> getFilterMetadata() {
-        return filterMetadata;
+        return (List<FilterMeta>) getStateHelper().eval("filterMetadata", new ArrayList<FilterMeta>());
     }
 
     public void setFilterMetadata(List<FilterMeta> filterMetadata) {
-        this.filterMetadata = filterMetadata;
+        getStateHelper().put("filterMetadata", filterMetadata);
     }
 
     public boolean isReset() {
