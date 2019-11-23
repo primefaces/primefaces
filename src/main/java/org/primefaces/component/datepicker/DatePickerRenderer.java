@@ -64,13 +64,6 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             writer.writeAttribute("style", datepicker.getStyle(), null);
         }
 
-        //inline container
-        if (inline) {
-            writer.startElement("div", null);
-            writer.writeAttribute("id", clientId + "_inline", null);
-            writer.endElement("div");
-        }
-
         //input
         encodeInput(context, datepicker, inputId, value, !inline);
 

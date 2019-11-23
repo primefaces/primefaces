@@ -965,7 +965,7 @@
                 this.panel.attr('style', this.options.panelStyle);
             }
 
-            if (this.options.appendTo) {
+            if (!this.options.inline && this.options.appendTo) {
                 this.panel.appendTo(this.options.appendTo);
             }
             else {
