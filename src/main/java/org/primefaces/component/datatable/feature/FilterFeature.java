@@ -86,7 +86,7 @@ public class FilterFeature implements DataTableFeature {
     @Override
     public void decode(FacesContext context, DataTable table) {
         String globalFilterParam = table.getClientId(context) + UINamingContainer.getSeparatorChar(context) + "globalFilter";
-        List<FilterMeta> filterMetadata = populateFilterMetaData(context, table);
+        List<FilterMeta> filterMetadata = populateFilterMetaData(context, table, globalFilterParam);
         Map<String, Object> filterParameterMap = populateFilterParameterMap(context, table, filterMetadata, globalFilterParam);
         table.setFilters(filterParameterMap);
         table.setFilterMetadata(filterMetadata);
@@ -304,7 +304,7 @@ public class FilterFeature implements DataTableFeature {
         return filterField;
     }
 
-    public List<FilterMeta> populateFilterMetaData(FacesContext context, DataTable table) {
+    public List<FilterMeta> populateFilterMetaData(FacesContext context, DataTable table, String globalFilterParam) {
         List<FilterMeta> filterMetadata = new ArrayList<>();
         String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -331,6 +331,10 @@ public class FilterFeature implements DataTableFeature {
             else {
                 populateFilterMetaDataWithoutColumnGroups(context, table, filterMetadata, params, separator);
             }
+        }
+
+        if (params.containsKey(globalFilterParam)) {
+            filterMetadata.add(new FilterMeta("globalFilter", params.get(globalFilterParam)));
         }
 
         return filterMetadata;

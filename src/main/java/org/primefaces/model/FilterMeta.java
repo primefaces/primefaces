@@ -34,6 +34,11 @@ public class FilterMeta {
     private MatchMode filterMatchMode;
     private Object filterValue;
 
+    public FilterMeta(String filterField, Object filterValue) {
+        this.filterField = filterField;
+        this.filterValue = filterValue;
+    }
+
     public FilterMeta(String filterField, UIColumn column, ValueExpression filterByVE, MatchMode filterMatchMode, Object filterValue) {
         this.filterField = filterField;
         this.column = column;
