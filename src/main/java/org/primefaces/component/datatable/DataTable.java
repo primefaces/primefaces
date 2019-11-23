@@ -300,11 +300,11 @@ public class DataTable extends DataTableBase {
             setSelection(null);
         }
 
-        List<FilterMeta> filterMeta = getFilterMetadata();
+        List<FilterMeta> filterMeta = getFilterMeta();
         if (filterMeta != null && !filterMeta.isEmpty()) {
             ELContext eLContext = context.getELContext();
             for (FilterMeta fm : filterMeta) {
-                UIColumn column = fm.getColumn();
+                UIColumn column = findColumn(fm.getColumnKey());
                 if (column != null) {
                     ValueExpression columnFilterValueVE = column.getValueExpression(Column.PropertyKeys.filterValue.toString());
                     if (columnFilterValueVE != null) {
@@ -451,19 +451,19 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    public UIColumn findColumn(String clientId) {
+    public UIColumn findColumn(String columnKey) {
         //body columns
         for (UIColumn column : getColumns()) {
-            if (column.getColumnKey().equals(clientId)) {
+            if (column.getColumnKey().equals(columnKey)) {
                 return column;
             }
         }
 
         //header columns
         if (getFrozenColumns() > 0) {
-            UIColumn column = findColumnInGroup(clientId, getColumnGroup("frozenHeader"));
+            UIColumn column = findColumnInGroup(columnKey, getColumnGroup("frozenHeader"));
             if (column == null) {
-                column = findColumnInGroup(clientId, getColumnGroup("scrollableHeader"));
+                column = findColumnInGroup(columnKey, getColumnGroup("scrollableHeader"));
             }
 
             if (column != null) {
@@ -471,13 +471,13 @@ public class DataTable extends DataTableBase {
             }
         }
         else {
-            return findColumnInGroup(clientId, getColumnGroup("header"));
+            return findColumnInGroup(columnKey, getColumnGroup("header"));
         }
 
-        throw new FacesException("Cannot find column with key: " + clientId);
+        throw new FacesException("Cannot find column with key: " + columnKey);
     }
 
-    public UIColumn findColumnInGroup(String clientId, ColumnGroup group) {
+    public UIColumn findColumnInGroup(String columnKey, ColumnGroup group) {
         if (group == null) {
             return null;
         }
@@ -487,7 +487,7 @@ public class DataTable extends DataTableBase {
         for (UIComponent row : group.getChildren()) {
             for (UIComponent rowChild : row.getChildren()) {
                 if (rowChild instanceof Column) {
-                    if (rowChild.getClientId(context).equals(clientId)) {
+                    if (rowChild.getClientId(context).equals(columnKey)) {
                         return (UIColumn) rowChild;
                     }
                 }
@@ -495,7 +495,7 @@ public class DataTable extends DataTableBase {
                     Columns uiColumns = (Columns) rowChild;
                     List<DynamicColumn> dynaColumns = uiColumns.getDynamicColumns();
                     for (UIColumn column : dynaColumns) {
-                        if (column.getColumnKey().equals(clientId)) {
+                        if (column.getColumnKey().equals(columnKey)) {
                             return column;
                         }
                     }
@@ -563,10 +563,10 @@ public class DataTable extends DataTableBase {
             }
 
             if (isMultiSort()) {
-                data = lazyModel.load(first, getRows(), getMultiSortMeta(), getFilterMetadata());
+                data = lazyModel.load(first, getRows(), getMultiSortMeta(), getFilterMeta());
             }
             else {
-                data = lazyModel.load(first, getRows(), resolveSortField(), convertSortOrder(), getFilterMetadata());
+                data = lazyModel.load(first, getRows(), resolveSortField(), convertSortOrder(), getFilterMeta());
             }
 
             lazyModel.setPageSize(getRows());
@@ -587,10 +587,10 @@ public class DataTable extends DataTableBase {
 
             List<?> data = null;
             if (isMultiSort()) {
-                data = lazyModel.load(offset, rows, getMultiSortMeta(), getFilterMetadata());
+                data = lazyModel.load(offset, rows, getMultiSortMeta(), getFilterMeta());
             }
             else {
-                data = lazyModel.load(offset, rows, resolveSortField(), convertSortOrder(), getFilterMetadata());
+                data = lazyModel.load(offset, rows, resolveSortField(), convertSortOrder(), getFilterMeta());
             }
 
             lazyModel.setPageSize(rows);
@@ -710,14 +710,6 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    public Map<String, Object> getFilters() {
-        return (Map<String, Object>) getStateHelper().eval("filters", new HashMap<String, Object>());
-    }
-
-    public void setFilters(Map<String, Object> filters) {
-        getStateHelper().put("filters", filters);
-    }
-
     public int getScrollOffset() {
         return (java.lang.Integer) getStateHelper().eval("scrollOffset", 0);
     }
@@ -726,12 +718,12 @@ public class DataTable extends DataTableBase {
         getStateHelper().put("scrollOffset", scrollOffset);
     }
 
-    public List<FilterMeta> getFilterMetadata() {
-        return (List<FilterMeta>) getStateHelper().eval("filterMetadata", new ArrayList<FilterMeta>());
+    public List<FilterMeta> getFilterMeta() {
+        return (List<FilterMeta>) getStateHelper().eval("filterMeta", new ArrayList<FilterMeta>());
     }
 
-    public void setFilterMetadata(List<FilterMeta> filterMetadata) {
-        getStateHelper().put("filterMetadata", filterMetadata);
+    public void setFilterMeta(List<FilterMeta> filterMetadata) {
+        getStateHelper().put("filterMeta", filterMetadata);
     }
 
     public boolean isReset() {
@@ -741,7 +733,7 @@ public class DataTable extends DataTableBase {
     public void resetValue() {
         setValue(null);
         setFilteredValue(null);
-        setFilters(null);
+        setFilterMeta(null);
     }
 
     public void reset() {

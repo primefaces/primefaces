@@ -86,10 +86,8 @@ public class FilterFeature implements DataTableFeature {
     @Override
     public void decode(FacesContext context, DataTable table) {
         String globalFilterParam = table.getClientId(context) + UINamingContainer.getSeparatorChar(context) + "globalFilter";
-        List<FilterMeta> filterMetadata = populateFilterMetaData(context, table, globalFilterParam);
-        Map<String, Object> filterParameterMap = populateFilterParameterMap(context, table, filterMetadata, globalFilterParam);
-        table.setFilters(filterParameterMap);
-        table.setFilterMetadata(filterMetadata);
+        List<FilterMeta> filterMeta = populateFilterMeta(context, table, globalFilterParam);
+        table.setFilterMeta(filterMeta);
     }
 
     @Override
@@ -129,7 +127,7 @@ public class FilterFeature implements DataTableFeature {
         else {
             String globalFilterParam = clientId + UINamingContainer.getSeparatorChar(context) + "globalFilter";
             globalFilterValue = params.get(globalFilterParam);
-            filter(context, table, table.getFilterMetadata(), globalFilterValue);
+            filter(context, table, table.getFilterMeta(), globalFilterValue);
 
             //sort new filtered data to restore sort state
             boolean sorted = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null
@@ -151,11 +149,11 @@ public class FilterFeature implements DataTableFeature {
         renderer.encodeTbody(context, table, true);
 
         if (table.isMultiViewState()) {
-            List<FilterMeta> filterMetadata = table.getFilterMetadata();
+            List<FilterMeta> filterMetadata = table.getFilterMeta();
             List<FilterState> filters = new ArrayList<>();
 
             for (FilterMeta filterMeta : filterMetadata) {
-                filters.add(new FilterState(filterMeta.getColumn().getColumnKey(), filterMeta.getFilterValue()));
+                filters.add(new FilterState(filterMeta.getColumnKey(), filterMeta.getFilterValue()));
             }
 
             TableState ts = table.getTableState(true);
@@ -188,7 +186,7 @@ public class FilterFeature implements DataTableFeature {
 
             for (FilterMeta filterMeta : filterMetadata) {
                 Object filterValue = filterMeta.getFilterValue();
-                UIColumn column = filterMeta.getColumn();
+                UIColumn column = table.findColumn(filterMeta.getColumnKey());
                 MethodExpression filterFunction = column.getFilterFunction();
                 ValueExpression filterByVE = filterMeta.getFilterByVE();
 
@@ -239,27 +237,6 @@ public class FilterFeature implements DataTableFeature {
         table.setRowIndex(-1);  //reset datamodel
     }
 
-    public Map<String, Object> populateFilterParameterMap(FacesContext context, DataTable table, List<FilterMeta> filterMetadata,
-                                                          String globalFilterParam) {
-
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        Map<String, Object> filterParameterMap = new HashMap<>();
-
-        for (FilterMeta filterMeta : filterMetadata) {
-            Object filterValue = filterMeta.getFilterValue();
-
-            if (!isFilterValueEmpty(filterValue)) {
-                filterParameterMap.put(filterMeta.getFilterField(), filterValue);
-            }
-        }
-
-        if (params.containsKey(globalFilterParam)) {
-            filterParameterMap.put("globalFilter", params.get(globalFilterParam));
-        }
-
-        return filterParameterMap;
-    }
-
     public boolean isFilterValueEmpty(Object filterValue) {
         if (filterValue == null) {
             return true;
@@ -304,7 +281,7 @@ public class FilterFeature implements DataTableFeature {
         return filterField;
     }
 
-    public List<FilterMeta> populateFilterMetaData(FacesContext context, DataTable table, String globalFilterParam) {
+    public List<FilterMeta> populateFilterMeta(FacesContext context, DataTable table, String globalFilterParam) {
         List<FilterMeta> filterMetadata = new ArrayList<>();
         String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -370,7 +347,7 @@ public class FilterFeature implements DataTableFeature {
                                 }
 
                                 filterMetadata.add(new FilterMeta(getFilterField(dataTable, column),
-                                        column,
+                                        column.getColumnKey(),
                                         filterVE,
                                         MatchMode.byName(column.getFilterMatchMode()),
                                         filterValue));
@@ -396,7 +373,7 @@ public class FilterFeature implements DataTableFeature {
                                     }
 
                                     filterMetadata.add(new FilterMeta(getFilterField(dataTable, dynaColumn),
-                                            dynaColumn,
+                                            dynaColumn.getColumnKey(),
                                             filterVE,
                                             MatchMode.byName(dynaColumn.getFilterMatchMode()),
                                             filterValue));
@@ -439,7 +416,7 @@ public class FilterFeature implements DataTableFeature {
                 }
 
                 filterMetadata.add(new FilterMeta(getFilterField(table, column),
-                        column,
+                        column.getColumnKey(),
                         filterVE,
                         MatchMode.byName(filterMatchMode),
                         filterValue));

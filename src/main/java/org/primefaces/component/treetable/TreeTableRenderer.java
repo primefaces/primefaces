@@ -1223,7 +1223,7 @@ public class TreeTableRenderer extends DataRenderer {
 
             for (FilterMeta filterMeta : filterMetadata) {
                 Object filterValue = filterMeta.getFilterValue();
-                UIColumn column = filterMeta.getColumn();
+                UIColumn column = tt.findColumn(filterMeta.getColumnKey());
                 MethodExpression filterFunction = column.getFilterFunction();
                 ValueExpression filterByVE = filterMeta.getFilterByVE();
 

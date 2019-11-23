@@ -25,12 +25,11 @@ package org.primefaces.model;
 
 import java.io.Serializable;
 import javax.el.ValueExpression;
-import org.primefaces.component.api.UIColumn;
 
 public class FilterMeta implements Serializable {
 
     private String filterField;
-    private transient UIColumn column;
+    private String columnKey;
     private ValueExpression filterByVE;
     private MatchMode filterMatchMode;
     private Object filterValue;
@@ -44,9 +43,9 @@ public class FilterMeta implements Serializable {
         this.filterValue = filterValue;
     }
 
-    public FilterMeta(String filterField, UIColumn column, ValueExpression filterByVE, MatchMode filterMatchMode, Object filterValue) {
+    public FilterMeta(String filterField, String columnKey, ValueExpression filterByVE, MatchMode filterMatchMode, Object filterValue) {
         this.filterField = filterField;
-        this.column = column;
+        this.columnKey = columnKey;
         this.filterByVE = filterByVE;
         this.filterMatchMode = filterMatchMode;
         this.filterValue = filterValue;
@@ -56,8 +55,8 @@ public class FilterMeta implements Serializable {
         return filterField;
     }
 
-    public UIColumn getColumn() {
-        return column;
+    public String getColumnKey() {
+        return columnKey;
     }
 
     public ValueExpression getFilterByVE() {

@@ -334,7 +334,7 @@ public class TreeTable extends TreeTableBase {
                 }
 
                 filterMetadata.add(new FilterMeta(null,
-                        column,
+                        column.getColumnKey(),
                         filterByVE,
                         MatchMode.byName(filterMatchMode),
                         filterValue));
@@ -344,9 +344,9 @@ public class TreeTable extends TreeTableBase {
         return filterMetadata;
     }
 
-    public UIColumn findColumn(String clientId) {
+    public UIColumn findColumn(String columnKey) {
         for (UIColumn column : getColumns()) {
-            if (column.getColumnKey().equals(clientId)) {
+            if (column.getColumnKey().equals(columnKey)) {
                 return column;
             }
         }
@@ -355,13 +355,13 @@ public class TreeTable extends TreeTableBase {
         ColumnGroup headerGroup = getColumnGroup("header");
         for (UIComponent row : headerGroup.getChildren()) {
             for (UIComponent col : row.getChildren()) {
-                if (col.getClientId(context).equals(clientId)) {
+                if (col.getClientId(context).equals(columnKey)) {
                     return (UIColumn) col;
                 }
             }
         }
 
-        throw new FacesException("Cannot find column with key: " + clientId);
+        throw new FacesException("Cannot find column with key: " + columnKey);
     }
 
     public boolean hasFooterColumn() {

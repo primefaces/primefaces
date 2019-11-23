@@ -122,17 +122,18 @@ public class DataTableRenderer extends DataRenderer {
 
             for (FilterState filterState : filters) {
                 UIColumn column = table.findColumn(filterState.getColumnKey());
+
                 if (column != null) {
                     filterMetadata.add(
                         new FilterMeta(filterFeature.getFilterField(table, column),
-                            column,
+                            column.getColumnKey(),
                             column.getValueExpression(DataTable.PropertyKeys.filterBy.toString()),
                             MatchMode.byName(column.getFilterMatchMode()),
                             filterState.getFilterValue()));
                 }
             }
 
-            table.setFilterMetadata(filterMetadata);
+            table.setFilterMeta(filterMetadata);
         }
 
         if (table.isLazy()) {
