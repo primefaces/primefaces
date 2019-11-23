@@ -120,7 +120,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("numberOfMonths", datepicker.getNumberOfMonths(), 1)
             .attr("view", datepicker.getView(), null)
             .attr("touchUI", datepicker.isTouchUI(), false)
-            .attr("appendTo", SearchExpressionFacade.resolveClientId(context, datepicker, datepicker.getAppendToWithDefault(),
+            .attr("appendTo", SearchExpressionFacade.resolveClientId(context, datepicker, getAppendToConsideringInline(datepicker),
                             SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
             .attr("icon", datepicker.getTriggerButtonIcon(), null)
             .attr("rangeSeparator", datepicker.getRangeSeparator(), null);
@@ -217,6 +217,16 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             value = date.atTime(max ? LocalTime.MAX : LocalTime.MIN);
         }
         return CalendarUtils.getValueAsString(context, datepicker, value);
+    }
+
+
+    private String getAppendToConsideringInline(DatePicker datepicker) {
+        String appendTo = datepicker.getAppendTo();
+        if (datepicker.isInline() && "@(body)".equals(appendTo)) {
+            //inline-mode does not work with @(body)
+            appendTo = null;
+        }
+        return appendTo;
     }
 }
 
