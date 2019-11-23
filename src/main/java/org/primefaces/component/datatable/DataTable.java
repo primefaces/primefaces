@@ -306,16 +306,18 @@ public class DataTable extends DataTableBase {
             ELContext eLContext = context.getELContext();
             for (FilterMeta fm : filterMeta) {
                 UIColumn column = fm.getColumn();
-                ValueExpression columnFilterValueVE = column.getValueExpression(Column.PropertyKeys.filterValue.toString());
-                if (columnFilterValueVE != null) {
-                    if (column.isDynamic()) {
-                        DynamicColumn dynamicColumn = (DynamicColumn) column;
-                        dynamicColumn.applyStatelessModel();
-                        columnFilterValueVE.setValue(eLContext, fm.getFilterValue());
-                        dynamicColumn.cleanStatelessModel();
-                    }
-                    else {
-                        columnFilterValueVE.setValue(eLContext, fm.getFilterValue());
+                if (column != null) {
+                    ValueExpression columnFilterValueVE = column.getValueExpression(Column.PropertyKeys.filterValue.toString());
+                    if (columnFilterValueVE != null) {
+                        if (column.isDynamic()) {
+                            DynamicColumn dynamicColumn = (DynamicColumn) column;
+                            dynamicColumn.applyStatelessModel();
+                            columnFilterValueVE.setValue(eLContext, fm.getFilterValue());
+                            dynamicColumn.cleanStatelessModel();
+                        }
+                        else {
+                            columnFilterValueVE.setValue(eLContext, fm.getFilterValue());
+                        }
                     }
                 }
             }
@@ -556,13 +558,8 @@ public class DataTable extends DataTableBase {
             if (isMultiViewState()) {
                 List<FilterState> filters = getFilterBy();
                 if (filters != null) {
-                    String globalFilterParam = getClientId(context) + UINamingContainer.getSeparatorChar(context) + "globalFilter";
-                    List<FilterMeta> filterMetaDataList = getFilterMetadata();
-                    if (filterMetaDataList != null) {
-                        FilterFeature filterFeature = (FilterFeature) getFeature(DataTableFeatureKey.FILTER);
-                        Map<String, Object> filterParameterMap = filterFeature.populateFilterParameterMap(context, this, filterMetaDataList, globalFilterParam);
-                        setFilters(filterParameterMap);
-                    }
+                    FilterFeature filterFeature = (FilterFeature) getFeature(DataTableFeatureKey.FILTER);
+                    filterFeature.decode(context, this);
                 }
             }
 
