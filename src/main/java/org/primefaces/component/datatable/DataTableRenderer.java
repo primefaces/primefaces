@@ -785,7 +785,7 @@ public class DataTableRenderer extends DataRenderer {
         SortOrder sortOrder = sortMeta.getSortOrder();
         String sortIcon = null;
 
-        if (column.getColumnKey().equals(sortMeta.getColumn().getColumnKey())) {
+        if (column.getColumnKey().equals(sortMeta.getColumnKey())) {
             if (sortOrder.equals(SortOrder.ASCENDING)) {
                 sortIcon = DataTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
             }

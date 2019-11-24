@@ -1093,12 +1093,10 @@ public class DataTable extends DataTableBase {
                 MultiSortState multiSortState = multiSortStateList.get(i);
                 UIColumn column = findColumn(multiSortState.getSortKey());
                 if (column != null) {
-                    SortMeta sortMeta = new SortMeta();
-                    sortMeta.setSortBy(column);
-                    sortMeta.setSortField(multiSortState.getSortField());
-                    sortMeta.setSortOrder(multiSortState.getSortOrder());
-                    sortMeta.setSortFunction(multiSortState.getSortFunction());
-
+                    SortMeta sortMeta = new SortMeta(column.getColumnKey(),
+                            multiSortState.getSortField(),
+                            multiSortState.getSortOrder(),
+                            multiSortState.getSortFunction());
                     multiSortMeta.add(sortMeta);
                 }
             }
@@ -1585,7 +1583,8 @@ public class DataTable extends DataTableBase {
                     if (i > 0) {
                         sb.append("','");
                     }
-                    sb.append(sortMeta.getColumn().getClientId(context));
+                    UIColumn column = findColumn(sortMeta.getColumnKey());
+                    sb.append(column.getClientId(context));
                 }
                 sb.append("']");
 

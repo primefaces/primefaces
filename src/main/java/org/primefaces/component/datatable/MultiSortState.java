@@ -46,7 +46,7 @@ public class MultiSortState implements Serializable {
     }
 
     public MultiSortState(SortMeta sortMeta) {
-        sortKey = sortMeta.getColumn().getColumnKey();
+        sortKey = sortMeta.getColumnKey();
         sortField = sortMeta.getSortField();
         sortOrder = sortMeta.getSortOrder();
         sortFunction = sortMeta.getSortFunction();
