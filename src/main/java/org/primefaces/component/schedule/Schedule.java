@@ -42,10 +42,7 @@ import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.ScheduleEvent;
-import org.primefaces.util.CalendarUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LocaleUtils;
-import org.primefaces.util.MapBuilder;
+import org.primefaces.util.*;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "schedule/schedule.css"),
@@ -91,7 +88,7 @@ public class Schedule extends ScheduleBase {
         String clientId = getClientId(context);
         ZoneId zoneId = CalendarUtils.calculateZoneId(this.getTimeZone());
 
-        if (isSelfRequest(context)) {
+        if (ComponentUtils.isRequestSource(this, context)) {
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             FacesEvent wrapperEvent = null;
@@ -169,10 +166,6 @@ public class Schedule extends ScheduleBase {
         else {
             super.queueEvent(event);
         }
-    }
-
-    private boolean isSelfRequest(FacesContext context) {
-        return getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }
 
     @Override

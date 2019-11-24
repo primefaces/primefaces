@@ -81,7 +81,7 @@ public class Timeline extends TimelineBase {
     public void queueEvent(FacesEvent event) {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        if (isSelfRequest(context)) {
+        if (ComponentUtils.isRequestSource(this, context)) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = getClientId(context);
@@ -191,12 +191,4 @@ public class Timeline extends TimelineBase {
 
         super.queueEvent(event);
     }
-
-    private boolean isSelfRequest(FacesContext context) {
-        return getClientId(context)
-                .equals(context.getExternalContext().getRequestParameterMap().get(
-                        Constants.RequestParams.PARTIAL_SOURCE_PARAM));
-    }
-
-
 }

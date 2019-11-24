@@ -104,7 +104,7 @@ public class Panel extends PanelBase {
         String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
         String clientId = getClientId(context);
 
-        if (isSelfRequest(context)) {
+        if (ComponentUtils.isRequestSource(this, context)) {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if (eventName.equals("toggle")) {
@@ -129,7 +129,7 @@ public class Panel extends PanelBase {
 
     @Override
     public void processDecodes(FacesContext context) {
-        if (isSelfRequest(context)) {
+        if (ComponentUtils.isRequestSource(this, context)) {
             decode(context);
         }
         else {
@@ -139,14 +139,14 @@ public class Panel extends PanelBase {
 
     @Override
     public void processValidators(FacesContext context) {
-        if (!isSelfRequest(context)) {
+        if (!ComponentUtils.isRequestSource(this, context)) {
             super.processValidators(context);
         }
     }
 
     @Override
     public void processUpdates(FacesContext context) {
-        if (!isSelfRequest(context)) {
+        if (!ComponentUtils.isRequestSource(this, context)) {
             super.processUpdates(context);
         }
 
@@ -158,9 +158,5 @@ public class Panel extends PanelBase {
             collapsedVE.setValue(eLContext, isCollapsed());
             getStateHelper().put(Panel.PropertyKeys.collapsed, null);
         }
-    }
-
-    private boolean isSelfRequest(FacesContext context) {
-        return getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }
 }

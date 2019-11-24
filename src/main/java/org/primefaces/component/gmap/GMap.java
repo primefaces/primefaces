@@ -40,6 +40,7 @@ import org.primefaces.model.map.GeocodeResult;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.LatLngBounds;
 import org.primefaces.model.map.Marker;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
 
@@ -81,7 +82,7 @@ public class GMap extends GMapBase {
         String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
         String clientId = getClientId(context);
 
-        if (isSelfRequest(context)) {
+        if (ComponentUtils.isRequestSource(this, context)) {
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             FacesEvent wrapperEvent = null;
@@ -167,10 +168,4 @@ public class GMap extends GMapBase {
 
         return null;
     }
-
-    private boolean isSelfRequest(FacesContext context) {
-        return getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
-    }
-
-
 }
