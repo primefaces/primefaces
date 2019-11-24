@@ -45,6 +45,13 @@ public class SortMeta implements Serializable {
         this.sortFunction = sortFunction;
     }
 
+    public SortMeta(SortMeta sortMeta) {
+        this.columnKey = sortMeta.getColumnKey();
+        this.sortField = sortMeta.getSortField();
+        this.sortOrder = sortMeta.getSortOrder();
+        this.sortFunction = sortMeta.getSortFunction();
+    }
+
     public String getColumnKey() {
         return columnKey;
     }

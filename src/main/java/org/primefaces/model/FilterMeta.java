@@ -51,6 +51,14 @@ public class FilterMeta implements Serializable {
         this.filterValue = filterValue;
     }
 
+    public FilterMeta(FilterMeta filterMeta) {
+        this.filterField = filterMeta.getFilterField();
+        this.columnKey = filterMeta.getColumnKey();
+        this.filterByVE = filterMeta.getFilterByVE();
+        this.filterMatchMode = filterMeta.getFilterMatchMode();
+        this.filterValue = filterMeta.getFilterValue();
+    }
+
     public String getFilterField() {
         return filterField;
     }

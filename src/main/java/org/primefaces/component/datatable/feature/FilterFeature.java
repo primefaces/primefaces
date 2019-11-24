@@ -42,7 +42,6 @@ import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
-import org.primefaces.component.datatable.FilterState;
 import org.primefaces.component.datatable.TableState;
 import org.primefaces.component.row.Row;
 import org.primefaces.event.data.PostFilterEvent;
@@ -150,10 +149,10 @@ public class FilterFeature implements DataTableFeature {
 
         if (table.isMultiViewState()) {
             List<FilterMeta> filterMetadata = table.getFilterMeta();
-            List<FilterState> filters = new ArrayList<>();
+            List<FilterMeta> filters = new ArrayList<>();
 
             for (FilterMeta filterMeta : filterMetadata) {
-                filters.add(new FilterState(filterMeta.getColumnKey(), filterMeta.getFilterValue()));
+                filters.add(new FilterMeta(filterMeta));
             }
 
             TableState ts = table.getTableState(true);

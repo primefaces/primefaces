@@ -28,6 +28,8 @@ import java.util.List;
 
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.SortMeta;
 
 public class TableState implements Serializable {
 
@@ -37,7 +39,7 @@ public class TableState implements Serializable {
 
     private int rows;
 
-    private List<MultiSortState> multiSortState;
+    private List<SortMeta> multiSortState;
 
     private ValueExpression sortBy;
 
@@ -55,7 +57,7 @@ public class TableState implements Serializable {
 
     private List<Object> rowKeys;
 
-    private List<FilterState> filters;
+    private List<FilterMeta> filters;
 
     private String globalFilterValue;
 
@@ -81,11 +83,11 @@ public class TableState implements Serializable {
         this.rows = rows;
     }
 
-    public List<MultiSortState> getMultiSortState() {
+    public List<SortMeta> getMultiSortState() {
         return multiSortState;
     }
 
-    public void setMultiSortState(List<MultiSortState> multiSortState) {
+    public void setMultiSortState(List<SortMeta> multiSortState) {
         this.multiSortState = multiSortState;
     }
 
@@ -153,11 +155,11 @@ public class TableState implements Serializable {
         this.rowKeys = rowKeys;
     }
 
-    public List<FilterState> getFilters() {
+    public List<FilterMeta> getFilters() {
         return filters;
     }
 
-    public void setFilters(List<FilterState> filters) {
+    public void setFilters(List<FilterMeta> filters) {
         this.filters = filters;
     }
 

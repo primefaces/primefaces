@@ -38,7 +38,6 @@ import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
-import org.primefaces.component.datatable.MultiSortState;
 import org.primefaces.component.datatable.TableState;
 import org.primefaces.event.data.PostSortEvent;
 import org.primefaces.model.*;
@@ -74,7 +73,7 @@ public class SortFeature implements DataTableFeature {
                                 sortColumn.getSortFunction()));
             }
 
-            table.setMultiSortMeta(multiSortMeta);
+            table.setSortMeta(multiSortMeta);
         }
         else {
             UIColumn sortColumn = table.findColumn(sortKey);
@@ -130,7 +129,7 @@ public class SortFeature implements DataTableFeature {
 
         if (table.isMultiViewState()) {
             ValueExpression sortVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
-            List<MultiSortState> multiSortState = table.isMultiSort() ? table.getMultiSortState() : null;
+            List<SortMeta> multiSortState = table.isMultiSort() ? table.getMultiSortState() : null;
             if (sortVE != null || multiSortState != null) {
                 TableState ts = table.getTableState(true);
                 ts.setSortBy(sortVE);
@@ -175,7 +174,7 @@ public class SortFeature implements DataTableFeature {
             return;
         }
 
-        List<SortMeta> sortMeta = table.getMultiSortMeta();
+        List<SortMeta> sortMeta = table.getSortMeta();
         List list = resolveList(value);
         boolean caseSensitiveSort = table.isCaseSensitiveSort();
         Locale locale = table.resolveDataLocale();

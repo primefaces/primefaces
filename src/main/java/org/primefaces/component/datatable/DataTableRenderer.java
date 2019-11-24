@@ -107,7 +107,7 @@ public class DataTableRenderer extends DataRenderer {
 
         boolean defaultSorted = (table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null
                 || table.getSortBy() != null
-                || table.getMultiSortMeta() != null);
+                || table.getSortMeta() != null);
 
         if (defaultSorted && table.isDefaultSort()) {
             table.setDefaultSortByVE(table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()));
@@ -115,12 +115,12 @@ public class DataTableRenderer extends DataRenderer {
             table.setDefaultSortFunction(table.getSortFunction());
         }
 
-        List<FilterState> filters = table.getFilterBy();
+        List<FilterMeta> filters = table.getFilterBy();
         List<FilterMeta> filterMetadata = new ArrayList<>();
         if (filters != null) {
             FilterFeature filterFeature = (FilterFeature) DataTable.FEATURES.get(DataTableFeatureKey.FILTER);
 
-            for (FilterState filterState : filters) {
+            for (FilterMeta filterState : filters) {
                 UIColumn column = table.findColumn(filterState.getColumnKey());
 
                 if (column != null) {
@@ -184,7 +184,7 @@ public class DataTableRenderer extends DataRenderer {
 
         if (defaultSorted && table.isMultiViewState() && table.isDefaultSort()) {
             ValueExpression sortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
-            List<MultiSortState> multiSortState = table.isMultiSort() ? table.getMultiSortState() : null;
+            List<SortMeta> multiSortState = table.isMultiSort() ? table.getMultiSortState() : null;
             if (sortByVE != null || multiSortState != null) {
                 TableState ts = table.getTableState(true);
                 ts.setSortBy(sortByVE);
@@ -674,11 +674,11 @@ public class DataTableRenderer extends DataRenderer {
         if (sortable) {
             ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
             Object tableSortBy = table.getSortBy();
-            boolean defaultSorted = (tableSortByVE != null || tableSortBy != null || table.getMultiSortMeta() != null);
+            boolean defaultSorted = (tableSortByVE != null || tableSortBy != null || table.getSortMeta() != null);
 
             if (defaultSorted) {
                 if (table.isMultiSort()) {
-                    List<SortMeta> sortMeta = table.getMultiSortMeta();
+                    List<SortMeta> sortMeta = table.getSortMeta();
 
                     if (sortMeta != null) {
                         for (SortMeta meta : sortMeta) {
@@ -769,9 +769,9 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected Object findFilterValue(DataTable table, UIColumn column) {
-        List<FilterState> filters = table.getFilterBy();
+        List<FilterMeta> filters = table.getFilterBy();
         if (filters != null) {
-            for (FilterState filterState : filters) {
+            for (FilterMeta filterState : filters) {
                 if (filterState.getColumnKey().equals(column.getColumnKey())) {
                     return filterState.getFilterValue();
                 }

@@ -555,7 +555,7 @@ public class DataTable extends DataTableBase {
             }
 
             if (isMultiViewState()) {
-                List<FilterState> filters = getFilterBy();
+                List<FilterMeta> filters = getFilterBy();
                 if (filters != null) {
                     FilterFeature filterFeature = (FilterFeature) getFeature(DataTableFeatureKey.FILTER);
                     filterFeature.decode(context, this);
@@ -563,7 +563,7 @@ public class DataTable extends DataTableBase {
             }
 
             if (isMultiSort()) {
-                data = lazyModel.load(first, getRows(), getMultiSortMeta(), getFilterMeta());
+                data = lazyModel.load(first, getRows(), getSortMeta(), getFilterMeta());
             }
             else {
                 data = lazyModel.load(first, getRows(), resolveSortField(), convertSortOrder(), getFilterMeta());
@@ -587,7 +587,7 @@ public class DataTable extends DataTableBase {
 
             List<?> data = null;
             if (isMultiSort()) {
-                data = lazyModel.load(offset, rows, getMultiSortMeta(), getFilterMeta());
+                data = lazyModel.load(offset, rows, getSortMeta(), getFilterMeta());
             }
             else {
                 data = lazyModel.load(offset, rows, resolveSortField(), convertSortOrder(), getFilterMeta());
@@ -1073,25 +1073,25 @@ public class DataTable extends DataTableBase {
         return (sortMode != null && sortMode.equals("multiple"));
     }
 
-    public List<MultiSortState> getMultiSortState() {
-        return (List<MultiSortState>) getStateHelper().get("multiSortState");
+    public List<SortMeta> getMultiSortState() {
+        return (List<SortMeta>) getStateHelper().get("multiSortState");
     }
 
-    public void setMultiSortState(List<MultiSortState> _multiSortState) {
+    public void setMultiSortState(List<SortMeta> _multiSortState) {
         getStateHelper().put("multiSortState", _multiSortState);
     }
 
-    public List<SortMeta> getMultiSortMeta() {
+    public List<SortMeta> getSortMeta() {
         if (multiSortMeta != null) {
             return multiSortMeta;
         }
 
-        List<MultiSortState> multiSortStateList = getMultiSortState();
+        List<SortMeta> multiSortStateList = getMultiSortState();
         if (multiSortStateList != null && !multiSortStateList.isEmpty()) {
             multiSortMeta = new ArrayList<>();
             for (int i = 0; i < multiSortStateList.size(); i++) {
-                MultiSortState multiSortState = multiSortStateList.get(i);
-                UIColumn column = findColumn(multiSortState.getSortKey());
+                SortMeta multiSortState = multiSortStateList.get(i);
+                UIColumn column = findColumn(multiSortState.getColumnKey());
                 if (column != null) {
                     SortMeta sortMeta = new SortMeta(column.getColumnKey(),
                             multiSortState.getSortField(),
@@ -1111,13 +1111,13 @@ public class DataTable extends DataTableBase {
         return multiSortMeta;
     }
 
-    public void setMultiSortMeta(List<SortMeta> value) {
+    public void setSortMeta(List<SortMeta> value) {
         multiSortMeta = value;
 
         if (value != null && !value.isEmpty()) {
-            List<MultiSortState> multiSortStateList = new ArrayList<>();
+            List<SortMeta> multiSortStateList = new ArrayList<>();
             for (int i = 0; i < value.size(); i++) {
-                multiSortStateList.add(new MultiSortState(value.get(i)));
+                multiSortStateList.add(new SortMeta(value.get(i)));
             }
 
             setMultiSortState(multiSortStateList);
@@ -1572,7 +1572,7 @@ public class DataTable extends DataTableBase {
     }
 
     public String getSortMetaOrder(FacesContext context) {
-        List<SortMeta> multiSortMeta = getMultiSortMeta();
+        List<SortMeta> multiSortMeta = getSortMeta();
         if (multiSortMeta != null) {
             int size = multiSortMeta.size();
             if (size > 0) {
