@@ -148,15 +148,15 @@ public class FilterFeature implements DataTableFeature {
         renderer.encodeTbody(context, table, true);
 
         if (table.isMultiViewState()) {
-            List<FilterMeta> filterMetadata = table.getFilterMeta();
-            List<FilterMeta> filters = new ArrayList<>();
+            List<FilterMeta> filterMeta = table.getFilterMeta();
+            List<FilterMeta> filterMetaCopy = new ArrayList<>(filterMeta.size());
 
-            for (FilterMeta filterMeta : filterMetadata) {
-                filters.add(new FilterMeta(filterMeta));
+            for (FilterMeta filter : filterMeta) {
+                filterMetaCopy.add(new FilterMeta(filter));
             }
 
             TableState ts = table.getTableState(true);
-            ts.setFilters(filters);
+            ts.setFilters(filterMetaCopy);
             ts.setGlobalFilterValue(globalFilterValue);
 
             if (table.isPaginator()) {
@@ -166,7 +166,7 @@ public class FilterFeature implements DataTableFeature {
         }
     }
 
-    public void filter(FacesContext context, DataTable table, List<FilterMeta> filterMetadata, String globalFilterValue) {
+    public void filter(FacesContext context, DataTable table, List<FilterMeta> filterMeta, String globalFilterValue) {
         List filteredData = new ArrayList();
         Locale filterLocale = table.resolveDataLocale();
         boolean hasGlobalFilter = !LangUtils.isValueBlank(globalFilterValue);
@@ -174,8 +174,11 @@ public class FilterFeature implements DataTableFeature {
         MethodExpression globalFilterFunction = table.getGlobalFilterFunction();
         ELContext elContext = context.getELContext();
 
-        // TODO: trigger columns init to get a columnKey without rowIndex
-        table.getColumns();
+        for (FilterMeta filter : filterMeta) {
+            if (filter.getColumn() == null) {
+                filter.setColumn(table.findColumn(filter.getColumnKey()));
+            }
+        }
 
         for (int i = 0; i < table.getRowCount(); i++) {
             table.setRowIndex(i);
@@ -186,16 +189,16 @@ public class FilterFeature implements DataTableFeature {
                 globalMatch = (Boolean) globalFilterFunction.invoke(elContext, new Object[]{table.getRowData(), globalFilterValue, filterLocale});
             }
 
-            for (int j = 0; j < filterMetadata.size(); j++) {
-                FilterMeta filterMeta = filterMetadata.get(j);
-                UIColumn column = table.findColumn(filterMeta.getColumnKey());
+            for (int j = 0; j < filterMeta.size(); j++) {
+                FilterMeta filter = filterMeta.get(j);
+                UIColumn column = filter.getColumn();
                 if (column == null) {
                     continue;
                 }
 
                 MethodExpression filterFunction = column.getFilterFunction();
-                ValueExpression filterByVE = filterMeta.getFilterByVE();
-                Object filterValue = filterMeta.getFilterValue();
+                ValueExpression filterByVE = filter.getFilterByVE();
+                Object filterValue = filter.getFilterValue();
 
                 if (column instanceof DynamicColumn) {
                     ((DynamicColumn) column).applyStatelessModel();

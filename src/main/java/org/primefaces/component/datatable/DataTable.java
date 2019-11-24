@@ -296,26 +296,30 @@ public class DataTable extends DataTableBase {
 
         if (selectionVE != null) {
             selectionVE.setValue(context.getELContext(), getLocalSelection());
-
             setSelection(null);
         }
 
         List<FilterMeta> filterMeta = getFilterMeta();
         if (!filterMeta.isEmpty()) {
             ELContext elContext = context.getELContext();
-            for (FilterMeta fm : filterMeta) {
-                UIColumn column = findColumn(fm.getColumnKey());
+            for (FilterMeta filter : filterMeta) {
+                UIColumn column = filter.getColumn();
+                if (column == null) {
+                    column = findColumn(filter.getColumnKey());
+                    filter.setColumn(column);
+                }
+
                 if (column != null) {
                     ValueExpression columnFilterValueVE = column.getValueExpression(Column.PropertyKeys.filterValue.toString());
                     if (columnFilterValueVE != null) {
                         if (column.isDynamic()) {
                             DynamicColumn dynamicColumn = (DynamicColumn) column;
                             dynamicColumn.applyStatelessModel();
-                            columnFilterValueVE.setValue(elContext, fm.getFilterValue());
+                            columnFilterValueVE.setValue(elContext, filter.getFilterValue());
                             dynamicColumn.cleanStatelessModel();
                         }
                         else {
-                            columnFilterValueVE.setValue(elContext, fm.getFilterValue());
+                            columnFilterValueVE.setValue(elContext, filter.getFilterValue());
                         }
                     }
                 }
@@ -452,6 +456,10 @@ public class DataTable extends DataTableBase {
     }
 
     public UIColumn findColumn(String columnKey) {
+        if ("globalFilter".equals(columnKey)) {
+            return null;
+        }
+
         //body columns
         for (int i = 0; i < getColumns().size(); i++) {
             UIColumn column = getColumns().get(i);

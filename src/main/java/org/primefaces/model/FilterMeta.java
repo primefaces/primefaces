@@ -25,11 +25,13 @@ package org.primefaces.model;
 
 import java.io.Serializable;
 import javax.el.ValueExpression;
+import org.primefaces.component.api.UIColumn;
 
 public class FilterMeta implements Serializable {
 
     private String filterField;
     private String columnKey;
+    private transient UIColumn column;
     private ValueExpression filterByVE;
     private MatchMode filterMatchMode;
     private Object filterValue;
@@ -57,6 +59,7 @@ public class FilterMeta implements Serializable {
         this.filterByVE = filterMeta.getFilterByVE();
         this.filterMatchMode = filterMeta.getFilterMatchMode();
         this.filterValue = filterMeta.getFilterValue();
+        this.column = null; // this constructor is currently just a copy-constructor for the TableState, and we don't need the component in the state
     }
 
     public String getFilterField() {
@@ -79,4 +82,11 @@ public class FilterMeta implements Serializable {
         return filterValue;
     }
 
+    public UIColumn getColumn() {
+        return column;
+    }
+
+    public void setColumn(UIColumn column) {
+        this.column = column;
+    }
 }
