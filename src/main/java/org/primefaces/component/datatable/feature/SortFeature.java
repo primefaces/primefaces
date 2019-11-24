@@ -57,7 +57,9 @@ public class SortFeature implements DataTableFeature {
         String sortDir = params.get(clientId + "_sortDir");
 
         if (table.isMultiSort()) {
-            List<SortMeta> multiSortMeta = new ArrayList<>();
+            List<SortMeta> sortMeta = table.getSortMeta();
+            sortMeta.clear();
+
             String[] sortKeys = sortKey.split(",");
             String[] sortOrders = sortDir.split(",");
 
@@ -65,7 +67,7 @@ public class SortFeature implements DataTableFeature {
                 UIColumn sortColumn = table.findColumn(sortKeys[i]);
                 String sortField = table.resolveColumnField(sortColumn);
 
-                multiSortMeta.add(
+                sortMeta.add(
                         new SortMeta(
                                 sortColumn.getColumnKey(),
                                 sortField,
@@ -73,16 +75,18 @@ public class SortFeature implements DataTableFeature {
                                 sortColumn.getSortFunction()));
             }
 
-            table.setSortMeta(multiSortMeta);
+            table.setSortMeta(sortMeta);
         }
         else {
             UIColumn sortColumn = table.findColumn(sortKey);
-            ValueExpression sortByVE = sortColumn.getValueExpression(Column.PropertyKeys.sortBy.toString());
-            table.setValueExpression(DataTable.PropertyKeys.sortBy.toString(), sortByVE);
-            table.setSortColumn(sortColumn);
-            table.setSortFunction(sortColumn.getSortFunction());
-            table.setSortOrder(convertSortOrderParam(sortDir));
-            table.setSortField(table.resolveColumnField(sortColumn));
+            if (sortColumn != null) {
+                ValueExpression sortByVE = sortColumn.getValueExpression(Column.PropertyKeys.sortBy.toString());
+                table.setValueExpression(DataTable.PropertyKeys.sortBy.toString(), sortByVE);
+                table.setSortColumn(sortColumn);
+                table.setSortFunction(sortColumn.getSortFunction());
+                table.setSortOrder(convertSortOrderParam(sortDir));
+                table.setSortField(table.resolveColumnField(sortColumn));
+            }
         }
     }
 
@@ -129,8 +133,8 @@ public class SortFeature implements DataTableFeature {
 
         if (table.isMultiViewState()) {
             ValueExpression sortVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
-            List<SortMeta> multiSortState = table.isMultiSort() ? table.getMultiSortState() : null;
-            if (sortVE != null || multiSortState != null) {
+            List<SortMeta> multiSortState = table.isMultiSort() ? table.getSortMeta() : null;
+            if (sortVE != null || !multiSortState.isEmpty()) {
                 TableState ts = table.getTableState(true);
                 ts.setSortBy(sortVE);
                 ts.setMultiSortState(multiSortState);
@@ -174,13 +178,14 @@ public class SortFeature implements DataTableFeature {
             return;
         }
 
-        List<SortMeta> sortMeta = table.getSortMeta();
         List list = resolveList(value);
         boolean caseSensitiveSort = table.isCaseSensitiveSort();
         Locale locale = table.resolveDataLocale();
         int nullSortOrder = table.getNullSortOrder();
 
         ChainedBeanPropertyComparator chainedComparator = new ChainedBeanPropertyComparator();
+
+        List<SortMeta> sortMeta = table.getSortMeta();
         for (SortMeta meta : sortMeta) {
             BeanPropertyComparator comparator;
             UIColumn sortColumn = table.findColumn(meta.getColumnKey());

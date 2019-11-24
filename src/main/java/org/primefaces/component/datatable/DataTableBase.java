@@ -23,10 +23,12 @@
  */
 package org.primefaces.component.datatable;
 
+import java.util.ArrayList;
 import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import org.primefaces.component.api.*;
 import org.primefaces.model.FilterMeta;
+import org.primefaces.model.SortMeta;
 
 public abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable {
 
@@ -93,7 +95,8 @@ public abstract class DataTableBase extends UIData implements Widget, RTLAware, 
         saveOnCellBlur,
         clientCache,
         multiViewState,
-        filterBy,
+        filterMeta,
+        sortMeta,
         globalFilter,
         cellEditMode,
         expandableRowGroups,
@@ -575,12 +578,20 @@ public abstract class DataTableBase extends UIData implements Widget, RTLAware, 
         getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
     }
 
-    public java.util.List<FilterMeta> getFilterBy() {
-        return (java.util.List<FilterMeta>) getStateHelper().eval(PropertyKeys.filterBy, null);
+    public java.util.List<FilterMeta> getFilterMeta() {
+        return (java.util.List<FilterMeta>) getStateHelper().eval(PropertyKeys.filterMeta, new ArrayList<FilterMeta>());
     }
 
-    public void setFilterBy(java.util.List<FilterMeta> filterBy) {
-        getStateHelper().put(PropertyKeys.filterBy, filterBy);
+    public void setFilterMeta(java.util.List<FilterMeta> filterMeta) {
+        getStateHelper().put(PropertyKeys.filterMeta, filterMeta);
+    }
+
+    public java.util.List<SortMeta> getSortMeta() {
+        return (java.util.List<SortMeta>) getStateHelper().eval(PropertyKeys.sortMeta, new ArrayList<SortMeta>());
+    }
+
+    public void setSortMeta(java.util.List<SortMeta> sortMeta) {
+        getStateHelper().put(PropertyKeys.sortMeta, sortMeta);
     }
 
     public String getGlobalFilter() {

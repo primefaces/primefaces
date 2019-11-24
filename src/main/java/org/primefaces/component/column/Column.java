@@ -31,14 +31,14 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.component.celleditor.CellEditor;
 
-
 public class Column extends ColumnBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Column";
 
+    private String columnKey;
+
     @Override
     public CellEditor getCellEditor() {
-
         CellEditor cellEditor = null;
 
         for (UIComponent child : getChildren()) {
@@ -58,7 +58,11 @@ public class Column extends ColumnBase {
 
     @Override
     public String getColumnKey() {
-        return getClientId();
+        return columnKey;
+    }
+
+    public void setColumnKey(String columnKey) {
+        this.columnKey = columnKey;
     }
 
     @Override

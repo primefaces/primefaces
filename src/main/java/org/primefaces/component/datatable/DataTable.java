@@ -179,6 +179,7 @@ public class DataTable extends DataTableBase {
             .build();
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
     private int columnsCountWithSpan = -1;
     private boolean reset = false;
     private List<Object> selectedRowKeys = new ArrayList<>();
@@ -186,7 +187,6 @@ public class DataTable extends DataTableBase {
     private int columnsCount = -1;
     private List<UIColumn> columns;
     private UIColumn sortColumn;
-    private List<SortMeta> multiSortMeta = null;
     private Columns dynamicColumns;
     private ValueExpression sortByVE;
     private String togglableColumnsAsString;
@@ -301,8 +301,8 @@ public class DataTable extends DataTableBase {
         }
 
         List<FilterMeta> filterMeta = getFilterMeta();
-        if (filterMeta != null && !filterMeta.isEmpty()) {
-            ELContext eLContext = context.getELContext();
+        if (!filterMeta.isEmpty()) {
+            ELContext elContext = context.getELContext();
             for (FilterMeta fm : filterMeta) {
                 UIColumn column = findColumn(fm.getColumnKey());
                 if (column != null) {
@@ -311,11 +311,11 @@ public class DataTable extends DataTableBase {
                         if (column.isDynamic()) {
                             DynamicColumn dynamicColumn = (DynamicColumn) column;
                             dynamicColumn.applyStatelessModel();
-                            columnFilterValueVE.setValue(eLContext, fm.getFilterValue());
+                            columnFilterValueVE.setValue(elContext, fm.getFilterValue());
                             dynamicColumn.cleanStatelessModel();
                         }
                         else {
-                            columnFilterValueVE.setValue(eLContext, fm.getFilterValue());
+                            columnFilterValueVE.setValue(elContext, fm.getFilterValue());
                         }
                     }
                 }
@@ -453,8 +453,9 @@ public class DataTable extends DataTableBase {
 
     public UIColumn findColumn(String columnKey) {
         //body columns
-        for (UIColumn column : getColumns()) {
-            if (column.getColumnKey().equals(columnKey)) {
+        for (int i = 0; i < getColumns().size(); i++) {
+            UIColumn column = getColumns().get(i);
+            if (Objects.equals(column.getColumnKey(), columnKey)) {
                 return column;
             }
         }
@@ -482,20 +483,19 @@ public class DataTable extends DataTableBase {
             return null;
         }
 
-        FacesContext context = getFacesContext();
-
         for (UIComponent row : group.getChildren()) {
             for (UIComponent rowChild : row.getChildren()) {
                 if (rowChild instanceof Column) {
-                    if (rowChild.getClientId(context).equals(columnKey)) {
-                        return (UIColumn) rowChild;
+                    Column column = (Column) rowChild;
+                    if (Objects.equals(column.getColumnKey(), columnKey)) {
+                        return column;
                     }
                 }
                 else if (rowChild instanceof Columns) {
                     Columns uiColumns = (Columns) rowChild;
                     List<DynamicColumn> dynaColumns = uiColumns.getDynamicColumns();
                     for (UIColumn column : dynaColumns) {
-                        if (column.getColumnKey().equals(columnKey)) {
+                        if (Objects.equals(column.getColumnKey(), columnKey)) {
                             return column;
                         }
                     }
@@ -515,7 +515,6 @@ public class DataTable extends DataTableBase {
                 if (type != null && type.equals(target)) {
                     return colGroup;
                 }
-
             }
         }
 
@@ -531,7 +530,6 @@ public class DataTable extends DataTableBase {
                     return true;
                 }
             }
-
         }
 
         return false;
@@ -555,11 +553,8 @@ public class DataTable extends DataTableBase {
             }
 
             if (isMultiViewState()) {
-                List<FilterMeta> filters = getFilterBy();
-                if (filters != null) {
-                    FilterFeature filterFeature = (FilterFeature) getFeature(DataTableFeatureKey.FILTER);
-                    filterFeature.decode(context, this);
-                }
+                FilterFeature filterFeature = (FilterFeature) getFeature(DataTableFeatureKey.FILTER);
+                filterFeature.decode(context, this);
             }
 
             if (isMultiSort()) {
@@ -718,14 +713,6 @@ public class DataTable extends DataTableBase {
         getStateHelper().put("scrollOffset", scrollOffset);
     }
 
-    public List<FilterMeta> getFilterMeta() {
-        return (List<FilterMeta>) getStateHelper().eval("filterMeta", new ArrayList<FilterMeta>());
-    }
-
-    public void setFilterMeta(List<FilterMeta> filterMetadata) {
-        getStateHelper().put("filterMeta", filterMetadata);
-    }
-
     public boolean isReset() {
         return reset;
     }
@@ -747,7 +734,7 @@ public class DataTable extends DataTableBase {
         setSortColumn(null);
         setSortField(null);
         setDefaultSort(true);
-        clearMultiSortMeta();
+        setSortMeta(null);
     }
 
     public boolean isFilteringEnabled() {
@@ -1003,7 +990,9 @@ public class DataTable extends DataTableBase {
 
             for (UIComponent child : getChildren()) {
                 if (child instanceof Column) {
-                    columns.add((UIColumn) child);
+                    Column column = (Column) child;
+                    column.setColumnKey(column.getClientId(context));
+                    columns.add(column);
                 }
                 else if (child instanceof Columns) {
                     Columns uiColumns = (Columns) child;
@@ -1071,62 +1060,6 @@ public class DataTable extends DataTableBase {
         String sortMode = getSortMode();
 
         return (sortMode != null && sortMode.equals("multiple"));
-    }
-
-    public List<SortMeta> getMultiSortState() {
-        return (List<SortMeta>) getStateHelper().get("multiSortState");
-    }
-
-    public void setMultiSortState(List<SortMeta> _multiSortState) {
-        getStateHelper().put("multiSortState", _multiSortState);
-    }
-
-    public List<SortMeta> getSortMeta() {
-        if (multiSortMeta != null) {
-            return multiSortMeta;
-        }
-
-        List<SortMeta> multiSortStateList = getMultiSortState();
-        if (multiSortStateList != null && !multiSortStateList.isEmpty()) {
-            multiSortMeta = new ArrayList<>();
-            for (int i = 0; i < multiSortStateList.size(); i++) {
-                SortMeta multiSortState = multiSortStateList.get(i);
-                UIColumn column = findColumn(multiSortState.getColumnKey());
-                if (column != null) {
-                    SortMeta sortMeta = new SortMeta(column.getColumnKey(),
-                            multiSortState.getSortField(),
-                            multiSortState.getSortOrder(),
-                            multiSortState.getSortFunction());
-                    multiSortMeta.add(sortMeta);
-                }
-            }
-        }
-        else {
-            ValueExpression ve = getValueExpression(PropertyKeys.sortBy.toString());
-            if (ve != null) {
-                multiSortMeta = (List<SortMeta>) ve.getValue(getFacesContext().getELContext());
-            }
-        }
-
-        return multiSortMeta;
-    }
-
-    public void setSortMeta(List<SortMeta> value) {
-        multiSortMeta = value;
-
-        if (value != null && !value.isEmpty()) {
-            List<SortMeta> multiSortStateList = new ArrayList<>();
-            for (int i = 0; i < value.size(); i++) {
-                multiSortStateList.add(new SortMeta(value.get(i)));
-            }
-
-            setMultiSortState(multiSortStateList);
-        }
-    }
-
-    private void clearMultiSortMeta() {
-        multiSortMeta = null;
-        getStateHelper().remove("multiSortState");
     }
 
     public String resolveSelectionMode() {
@@ -1515,7 +1448,7 @@ public class DataTable extends DataTableBase {
                 setRows(rows);
             }
 
-            setMultiSortState(ts.getMultiSortState());
+            setSortMeta(ts.getMultiSortState());
             setValueExpression("sortBy", ts.getSortBy());
             setSortOrder(ts.getSortOrder());
             setSortFunction(ts.getSortFunction());
@@ -1530,7 +1463,7 @@ public class DataTable extends DataTableBase {
                 isRowKeyRestored = true;
             }
 
-            setFilterBy(ts.getFilters());
+            setFilterMeta(ts.getFilters());
             setGlobalFilter(ts.getGlobalFilterValue());
             setColumns(findOrderedColumns(ts.getOrderedColumnsAsString()));
             setTogglableColumnsAsString(ts.getTogglableColumnsAsString());
@@ -1571,25 +1504,22 @@ public class DataTable extends DataTableBase {
         return null;
     }
 
-    public String getSortMetaOrder(FacesContext context) {
+    public String getSortMetaAsString(FacesContext context) {
         List<SortMeta> multiSortMeta = getSortMeta();
-        if (multiSortMeta != null) {
-            int size = multiSortMeta.size();
-            if (size > 0) {
-                StringBuilder sb = new StringBuilder();
-                sb.append("['");
-                for (int i = 0; i < size; i++) {
-                    SortMeta sortMeta = multiSortMeta.get(i);
-                    if (i > 0) {
-                        sb.append("','");
-                    }
-                    UIColumn column = findColumn(sortMeta.getColumnKey());
-                    sb.append(column.getClientId(context));
+        if (multiSortMeta != null && !multiSortMeta.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("['");
+            for (int i = 0; i < multiSortMeta.size(); i++) {
+                SortMeta sortMeta = multiSortMeta.get(i);
+                if (i > 0) {
+                    sb.append("','");
                 }
-                sb.append("']");
-
-                return sb.toString();
+                UIColumn column = findColumn(sortMeta.getColumnKey());
+                sb.append(column.getClientId(context));
             }
+            sb.append("']");
+
+            return sb.toString();
         }
         return null;
     }

@@ -52,7 +52,6 @@ import org.primefaces.component.summaryrow.SummaryRow;
 import org.primefaces.event.data.PostRenderEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.FilterMeta;
-import org.primefaces.model.MatchMode;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.DataRenderer;
@@ -101,13 +100,9 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void preRender(FacesContext context, DataTable table) {
-        if (table.isMultiViewState()) {
-            table.restoreTableState();
-        }
-
         boolean defaultSorted = (table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null
                 || table.getSortBy() != null
-                || table.getSortMeta() != null);
+                || !table.getSortMeta().isEmpty());
 
         if (defaultSorted && table.isDefaultSort()) {
             table.setDefaultSortByVE(table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()));
@@ -115,25 +110,11 @@ public class DataTableRenderer extends DataRenderer {
             table.setDefaultSortFunction(table.getSortFunction());
         }
 
-        List<FilterMeta> filters = table.getFilterBy();
-        List<FilterMeta> filterMetadata = new ArrayList<>();
-        if (filters != null) {
-            FilterFeature filterFeature = (FilterFeature) DataTable.FEATURES.get(DataTableFeatureKey.FILTER);
+        FilterFeature filterFeature = (FilterFeature) DataTable.FEATURES.get(DataTableFeatureKey.FILTER);
+        filterFeature.decode(context, table);
 
-            for (FilterMeta filterState : filters) {
-                UIColumn column = table.findColumn(filterState.getColumnKey());
-
-                if (column != null) {
-                    filterMetadata.add(
-                        new FilterMeta(filterFeature.getFilterField(table, column),
-                            column.getColumnKey(),
-                            column.getValueExpression(DataTable.PropertyKeys.filterBy.toString()),
-                            MatchMode.byName(column.getFilterMatchMode()),
-                            filterState.getFilterValue()));
-                }
-            }
-
-            table.setFilterMeta(filterMetadata);
+        if (table.isMultiViewState()) {
+            table.restoreTableState();
         }
 
         if (table.isLazy()) {
@@ -166,9 +147,8 @@ public class DataTableRenderer extends DataRenderer {
                 table.setRowIndex(-1);
             }
 
-            if (filters != null) {
-                FilterFeature filterFeature = (FilterFeature) table.getFeature(DataTableFeatureKey.FILTER);
-
+            List<FilterMeta> filterMeta = table.getFilterMeta();
+            if (!filterMeta.isEmpty()) {
                 String globalFilter = table.getGlobalFilter();
                 if (globalFilter != null) {
                     UIComponent globalFilterComponent = SearchExpressionFacade.resolveComponent(context, table,
@@ -178,13 +158,13 @@ public class DataTableRenderer extends DataRenderer {
                     }
                 }
 
-                filterFeature.filter(context, table, filterMetadata, globalFilter);
+                filterFeature.filter(context, table, filterMeta, globalFilter);
             }
         }
 
         if (defaultSorted && table.isMultiViewState() && table.isDefaultSort()) {
             ValueExpression sortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
-            List<SortMeta> multiSortState = table.isMultiSort() ? table.getMultiSortState() : null;
+            List<SortMeta> multiSortState = table.isMultiSort() ? table.getSortMeta() : null;
             if (sortByVE != null || multiSortState != null) {
                 TableState ts = table.getTableState(true);
                 ts.setSortBy(sortByVE);
@@ -296,7 +276,7 @@ public class DataTableRenderer extends DataRenderer {
         //MultiColumn Sorting
         if (table.isMultiSort()) {
             wb.attr("multiSort", true)
-                    .nativeAttr("sortMetaOrder", table.getSortMetaOrder(context), null);
+                    .nativeAttr("sortMetaOrder", table.getSortMetaAsString(context), null);
         }
 
         if (table.isStickyHeader()) {
@@ -674,12 +654,11 @@ public class DataTableRenderer extends DataRenderer {
         if (sortable) {
             ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
             Object tableSortBy = table.getSortBy();
-            boolean defaultSorted = (tableSortByVE != null || tableSortBy != null || table.getSortMeta() != null);
+            List<SortMeta> sortMeta = table.getSortMeta();
+            boolean defaultSorted = (tableSortByVE != null || tableSortBy != null || !sortMeta.isEmpty());
 
             if (defaultSorted) {
                 if (table.isMultiSort()) {
-                    List<SortMeta> sortMeta = table.getSortMeta();
-
                     if (sortMeta != null) {
                         for (SortMeta meta : sortMeta) {
                             sortIcon = resolveDefaultSortIcon(column, meta);
@@ -769,10 +748,10 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected Object findFilterValue(DataTable table, UIColumn column) {
-        List<FilterMeta> filters = table.getFilterBy();
-        if (filters != null) {
+        List<FilterMeta> filters = table.getFilterMeta();
+        if (!filters.isEmpty()) {
             for (FilterMeta filterState : filters) {
-                if (filterState.getColumnKey().equals(column.getColumnKey())) {
+                if (Objects.equals(filterState.getColumnKey(), column.getColumnKey())) {
                     return filterState.getFilterValue();
                 }
             }
@@ -785,7 +764,7 @@ public class DataTableRenderer extends DataRenderer {
         SortOrder sortOrder = sortMeta.getSortOrder();
         String sortIcon = null;
 
-        if (column.getColumnKey().equals(sortMeta.getColumnKey())) {
+        if (Objects.equals(column.getColumnKey(), sortMeta.getColumnKey())) {
             if (sortOrder.equals(SortOrder.ASCENDING)) {
                 sortIcon = DataTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
             }

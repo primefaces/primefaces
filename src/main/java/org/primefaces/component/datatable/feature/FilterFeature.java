@@ -174,6 +174,9 @@ public class FilterFeature implements DataTableFeature {
         MethodExpression globalFilterFunction = table.getGlobalFilterFunction();
         ELContext elContext = context.getELContext();
 
+        // TODO: trigger columns init to get a columnKey without rowIndex
+        table.getColumns();
+
         for (int i = 0; i < table.getRowCount(); i++) {
             table.setRowIndex(i);
             boolean localMatch = true;
@@ -183,11 +186,16 @@ public class FilterFeature implements DataTableFeature {
                 globalMatch = (Boolean) globalFilterFunction.invoke(elContext, new Object[]{table.getRowData(), globalFilterValue, filterLocale});
             }
 
-            for (FilterMeta filterMeta : filterMetadata) {
-                Object filterValue = filterMeta.getFilterValue();
+            for (int j = 0; j < filterMetadata.size(); j++) {
+                FilterMeta filterMeta = filterMetadata.get(j);
                 UIColumn column = table.findColumn(filterMeta.getColumnKey());
+                if (column == null) {
+                    continue;
+                }
+
                 MethodExpression filterFunction = column.getFilterFunction();
                 ValueExpression filterByVE = filterMeta.getFilterByVE();
+                Object filterValue = filterMeta.getFilterValue();
 
                 if (column instanceof DynamicColumn) {
                     ((DynamicColumn) column).applyStatelessModel();
@@ -281,7 +289,9 @@ public class FilterFeature implements DataTableFeature {
     }
 
     public List<FilterMeta> populateFilterMeta(FacesContext context, DataTable table, String globalFilterParam) {
-        List<FilterMeta> filterMetadata = new ArrayList<>();
+        List<FilterMeta> filterMetadata = table.getFilterMeta();
+        filterMetadata.clear();
+
         String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         boolean hasFrozenColumns = table.getFrozenColumns() > 0;

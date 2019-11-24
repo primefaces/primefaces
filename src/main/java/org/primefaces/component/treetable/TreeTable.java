@@ -346,7 +346,7 @@ public class TreeTable extends TreeTableBase {
 
     public UIColumn findColumn(String columnKey) {
         for (UIColumn column : getColumns()) {
-            if (column.getColumnKey().equals(columnKey)) {
+            if (Objects.equals(column.getColumnKey(), columnKey)) {
                 return column;
             }
         }
@@ -355,7 +355,7 @@ public class TreeTable extends TreeTableBase {
         ColumnGroup headerGroup = getColumnGroup("header");
         for (UIComponent row : headerGroup.getChildren()) {
             for (UIComponent col : row.getChildren()) {
-                if (col.getClientId(context).equals(columnKey)) {
+                if (Objects.equals(col.getClientId(context), columnKey)) {
                     return (UIColumn) col;
                 }
             }
@@ -469,7 +469,9 @@ public class TreeTable extends TreeTableBase {
 
             for (UIComponent child : getChildren()) {
                 if (child instanceof Column) {
-                    columns.add((UIColumn) child);
+                    Column column = (Column) child;
+                    column.setColumnKey(column.getClientId(context));
+                    columns.add(column);
                 }
                 else if (child instanceof Columns) {
                     Columns uiColumns = (Columns) child;
