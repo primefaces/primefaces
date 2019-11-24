@@ -469,9 +469,7 @@ public class TreeTable extends TreeTableBase {
 
             for (UIComponent child : getChildren()) {
                 if (child instanceof Column) {
-                    Column column = (Column) child;
-                    column.setColumnKey(column.getClientId(context));
-                    columns.add(column);
+                    columns.add((Column) child);
                 }
                 else if (child instanceof Columns) {
                     Columns uiColumns = (Columns) child;

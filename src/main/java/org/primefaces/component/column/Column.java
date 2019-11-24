@@ -35,8 +35,6 @@ public class Column extends ColumnBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Column";
 
-    private String columnKey;
-
     @Override
     public CellEditor getCellEditor() {
         CellEditor cellEditor = null;
@@ -58,11 +56,7 @@ public class Column extends ColumnBase {
 
     @Override
     public String getColumnKey() {
-        return columnKey;
-    }
-
-    public void setColumnKey(String columnKey) {
-        this.columnKey = columnKey;
+        return getClientId();
     }
 
     @Override
