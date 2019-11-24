@@ -147,7 +147,7 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
     /**
      * Loads the data for the given parameters.
      *
-     * NOTE: Thats the only method that should be implemented by the user. Other #load methods are for backward compatibility.
+     * NOTE: Thats the only method that should be implemented by the user.
      *
      * @param first the first entry
      * @param pageSize the page size
