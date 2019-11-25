@@ -57,9 +57,7 @@ public class TableState implements Serializable {
 
     private List<Object> rowKeys;
 
-    private List<FilterMeta> filters;
-
-    private String globalFilterValue;
+    private List<FilterMeta> filterMeta;
 
     private String orderedColumnsAsString;
 
@@ -83,11 +81,11 @@ public class TableState implements Serializable {
         this.rows = rows;
     }
 
-    public List<SortMeta> getMultiSortState() {
+    public List<SortMeta> getSortMeta() {
         return multiSortState;
     }
 
-    public void setMultiSortState(List<SortMeta> multiSortState) {
+    public void setSortMeta(List<SortMeta> multiSortState) {
         this.multiSortState = multiSortState;
     }
 
@@ -155,20 +153,12 @@ public class TableState implements Serializable {
         this.rowKeys = rowKeys;
     }
 
-    public List<FilterMeta> getFilters() {
-        return filters;
+    public List<FilterMeta> getFilterMeta() {
+        return filterMeta;
     }
 
-    public void setFilters(List<FilterMeta> filters) {
-        this.filters = filters;
-    }
-
-    public String getGlobalFilterValue() {
-        return globalFilterValue;
-    }
-
-    public void setGlobalFilterValue(String globalFilterValue) {
-        this.globalFilterValue = globalFilterValue;
+    public void setFilterMeta(List<FilterMeta> filterMeta) {
+        this.filterMeta = filterMeta;
     }
 
     public String getOrderedColumnsAsString() {

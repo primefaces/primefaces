@@ -156,9 +156,10 @@ public class DataTableRenderer extends DataRenderer {
                     if (globalFilterComponent != null) {
                         ((ValueHolder) globalFilterComponent).setValue(globalFilter);
                     }
+                    filterMeta.add(new FilterMeta("globalFilter", globalFilter));
                 }
 
-                filterFeature.filter(context, table, filterMeta, globalFilter);
+                filterFeature.filter(context, table, filterMeta);
             }
         }
 
@@ -168,7 +169,7 @@ public class DataTableRenderer extends DataRenderer {
             if (sortByVE != null || multiSortState != null) {
                 TableState ts = table.getTableState(true);
                 ts.setSortBy(sortByVE);
-                ts.setMultiSortState(multiSortState);
+                ts.setSortMeta(multiSortState);
                 ts.setSortOrder(table.getSortOrder());
                 ts.setSortField(table.getSortField());
                 ts.setSortFunction(table.getSortFunction());

@@ -1454,7 +1454,7 @@ public class DataTable extends DataTableBase {
                 setRows(rows);
             }
 
-            setSortMeta(ts.getMultiSortState());
+            setSortMeta(ts.getSortMeta());
             setValueExpression("sortBy", ts.getSortBy());
             setSortOrder(ts.getSortOrder());
             setSortFunction(ts.getSortFunction());
@@ -1469,8 +1469,7 @@ public class DataTable extends DataTableBase {
                 isRowKeyRestored = true;
             }
 
-            setFilterMeta(ts.getFilters());
-            setGlobalFilter(ts.getGlobalFilterValue());
+            setFilterMeta(ts.getFilterMeta());
             setColumns(findOrderedColumns(ts.getOrderedColumnsAsString()));
             setTogglableColumnsAsString(ts.getTogglableColumnsAsString());
             setResizableColumnsAsString(ts.getResizableColumnsAsString());

@@ -92,7 +92,6 @@ public class FilterFeature implements DataTableFeature {
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String globalFilterValue = null;
 
         //reset state
         String clientId = table.getClientId(context);
@@ -124,9 +123,7 @@ public class FilterFeature implements DataTableFeature {
             }
         }
         else {
-            String globalFilterParam = clientId + UINamingContainer.getSeparatorChar(context) + "globalFilter";
-            globalFilterValue = params.get(globalFilterParam);
-            filter(context, table, table.getFilterMeta(), globalFilterValue);
+            filter(context, table, table.getFilterMeta());
 
             //sort new filtered data to restore sort state
             boolean sorted = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null
@@ -156,8 +153,7 @@ public class FilterFeature implements DataTableFeature {
             }
 
             TableState ts = table.getTableState(true);
-            ts.setFilters(filterMetaCopy);
-            ts.setGlobalFilterValue(globalFilterValue);
+            ts.setFilterMeta(filterMetaCopy);
 
             if (table.isPaginator()) {
                 ts.setFirst(table.getFirst());
@@ -166,10 +162,10 @@ public class FilterFeature implements DataTableFeature {
         }
     }
 
-    public void filter(FacesContext context, DataTable table, List<FilterMeta> filterMeta, String globalFilterValue) {
+    public void filter(FacesContext context, DataTable table, List<FilterMeta> filterMeta) {
         List filteredData = new ArrayList();
         Locale filterLocale = table.resolveDataLocale();
-        boolean hasGlobalFilter = !LangUtils.isValueBlank(globalFilterValue);
+        Optional<FilterMeta> globalFilter = filterMeta.stream().filter(f -> f.getFilterField().equals("globalFilter")).findFirst();
         GlobalFilterConstraint globalFilterConstraint = (GlobalFilterConstraint) FILTER_CONSTRAINTS.get(MatchMode.GLOBAL);
         MethodExpression globalFilterFunction = table.getGlobalFilterFunction();
         ELContext elContext = context.getELContext();
@@ -185,8 +181,9 @@ public class FilterFeature implements DataTableFeature {
             boolean localMatch = true;
             boolean globalMatch = false;
 
-            if (hasGlobalFilter && globalFilterFunction != null) {
-                globalMatch = (Boolean) globalFilterFunction.invoke(elContext, new Object[]{table.getRowData(), globalFilterValue, filterLocale});
+            if (globalFilter.isPresent() && globalFilterFunction != null) {
+                globalMatch = (Boolean) globalFilterFunction.invoke(elContext,
+                        new Object[]{table.getRowData(), globalFilter.get().getFilterValue(), filterLocale});
             }
 
             for (int j = 0; j < filterMeta.size(); j++) {
@@ -207,8 +204,8 @@ public class FilterFeature implements DataTableFeature {
                 Object columnValue = filterByVE.getValue(elContext);
                 FilterConstraint filterConstraint = getFilterConstraint(column);
 
-                if (hasGlobalFilter && !globalMatch && globalFilterFunction == null) {
-                    globalMatch = globalFilterConstraint.applies(columnValue, globalFilterValue, filterLocale);
+                if (globalFilter.isPresent() && !globalMatch && globalFilterFunction == null) {
+                    globalMatch = globalFilterConstraint.applies(columnValue, globalFilter.get().getFilterValue(), filterLocale);
                 }
 
                 if (filterFunction != null) {
@@ -224,7 +221,7 @@ public class FilterFeature implements DataTableFeature {
             }
 
             boolean matches = localMatch;
-            if (hasGlobalFilter) {
+            if (globalFilter.isPresent()) {
                 matches = localMatch && globalMatch;
             }
 

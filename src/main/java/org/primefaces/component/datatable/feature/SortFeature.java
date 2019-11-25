@@ -137,7 +137,7 @@ public class SortFeature implements DataTableFeature {
             if (sortVE != null || !multiSortState.isEmpty()) {
                 TableState ts = table.getTableState(true);
                 ts.setSortBy(sortVE);
-                ts.setMultiSortState(multiSortState);
+                ts.setSortMeta(multiSortState);
                 ts.setSortOrder(table.getSortOrder());
                 ts.setSortField(table.getSortField());
                 ts.setSortFunction(table.getSortFunction());
