@@ -91,7 +91,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
     copyValueToHiddenInput: function() {
         var oldVal = this.hiddenInput.val();
 
-        var newVal = this.autonumeric.getNumericString();
+        var newVal = this.getValue();
 
         if (oldVal !== newVal) {
             this.setValueToHiddenInput(newVal);
@@ -120,11 +120,11 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
 
     setValue: function (value) {
         this.autonumeric.set(value);
-        var cleanVal = this.autonumeric.getNumericString();
+        var cleanVal = this.getValue();
         this.hiddenInput.attr('value', cleanVal);
     },
 
     getValue: function () {
-        return this.autonumeric.getNumericString();
+        return this.cfg.formatted ? this.autonumeric.getFormatted() : this.autonumeric.getNumericString();
     }
 });

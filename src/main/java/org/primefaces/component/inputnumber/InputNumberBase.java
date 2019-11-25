@@ -53,7 +53,8 @@ public abstract class InputNumberBase extends HtmlInputText implements Widget, I
         inputStyle,
         inputStyleClass,
         padControl,
-        leadingZero
+        leadingZero,
+        formatted
     }
 
     public InputNumberBase() {
@@ -193,5 +194,13 @@ public abstract class InputNumberBase extends HtmlInputText implements Widget, I
 
     public void setLeadingZero(String leadingZero) {
         getStateHelper().put(PropertyKeys.leadingZero, leadingZero);
+    }
+
+    public boolean isFormatted() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.formatted, false);
+    }
+
+    public void setFormatted(boolean formatted) {
+        getStateHelper().put(PropertyKeys.formatted, formatted);
     }
 }
