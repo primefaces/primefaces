@@ -23,7 +23,9 @@
  */
 package org.primefaces.component.api;
 
-import org.primefaces.event.MenuActionEvent;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
@@ -33,18 +35,15 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.FacesEvent;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Consumer;
-import java.util.function.Function;
+
+import org.primefaces.event.MenuActionEvent;
 import org.primefaces.model.menu.MenuItem;
-import org.primefaces.util.LangUtils;
 
 public interface MenuItemAware {
 
-    Set<Class<?>> PARAMS_EMPTY = LangUtils.unmodifiableSet(Class.class);
-    Set<Class<?>> PARAMS_ACTION_EVENT = LangUtils.unmodifiableSet(ActionEvent.class);
-    Set<Class<?>> PARAMS_MENU_ACTION_EVENT = LangUtils.unmodifiableSet(MenuActionEvent.class);
+    Class<?>[] PARAMS_EMPTY = new Class<?>[0];
+    Class<?>[] PARAMS_ACTION_EVENT = new Class<?>[]{ActionEvent.class};
+    Class<?>[] PARAMS_MENU_ACTION_EVENT = new Class<?>[]{MenuActionEvent.class};
 
     List getElements();
 
@@ -66,18 +65,18 @@ public interface MenuItemAware {
                 Object invokeResult = null;
                 try {
                     MethodExpression me = expressionFactory.createMethodExpression(elContext, command,
-                            String.class, PARAMS_EMPTY.toArray(new Class<?>[PARAMS_EMPTY.size()]));
+                            String.class, PARAMS_EMPTY);
                     invokeResult = me.invoke(elContext, null);
                 }
                 catch (MethodNotFoundException mnfe1) {
                     try {
                         MethodExpression me = expressionFactory.createMethodExpression(elContext, command,
-                                String.class, PARAMS_ACTION_EVENT.toArray(new Class<?>[PARAMS_ACTION_EVENT.size()]));
+                                String.class, PARAMS_ACTION_EVENT);
                         invokeResult = me.invoke(elContext, new Object[]{event});
                     }
                     catch (MethodNotFoundException mnfe2) {
                         MethodExpression me = expressionFactory.createMethodExpression(elContext, command,
-                                String.class, PARAMS_MENU_ACTION_EVENT.toArray(new Class<?>[PARAMS_MENU_ACTION_EVENT.size()]));
+                                String.class, PARAMS_MENU_ACTION_EVENT);
                         invokeResult = me.invoke(elContext, new Object[]{event});
                     }
                 }
