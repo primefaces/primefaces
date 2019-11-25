@@ -132,11 +132,11 @@ public class SortFeature implements DataTableFeature {
         renderer.encodeTbody(context, table, true);
 
         if (table.isMultiViewState()) {
-            ValueExpression sortVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
+            ValueExpression sortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
             List<SortMeta> multiSortState = table.isMultiSort() ? table.getSortMeta() : null;
-            if (sortVE != null || !multiSortState.isEmpty()) {
+            if (sortByVE != null || (multiSortState != null && !multiSortState.isEmpty())) {
                 TableState ts = table.getTableState(true);
-                ts.setSortBy(sortVE);
+                ts.setSortBy(sortByVE);
                 ts.setSortMeta(multiSortState);
                 ts.setSortOrder(table.getSortOrder());
                 ts.setSortField(table.getSortField());

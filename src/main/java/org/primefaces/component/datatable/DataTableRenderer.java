@@ -166,7 +166,7 @@ public class DataTableRenderer extends DataRenderer {
         if (defaultSorted && table.isMultiViewState() && table.isDefaultSort()) {
             ValueExpression sortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
             List<SortMeta> multiSortState = table.isMultiSort() ? table.getSortMeta() : null;
-            if (sortByVE != null || multiSortState != null) {
+            if (sortByVE != null || (multiSortState != null && !multiSortState.isEmpty())) {
                 TableState ts = table.getTableState(true);
                 ts.setSortBy(sortByVE);
                 ts.setSortMeta(multiSortState);
