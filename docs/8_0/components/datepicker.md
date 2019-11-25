@@ -24,7 +24,7 @@ ajax selection and more.
 | rendered | true | Boolean | Boolean value to specify the rendering of the component.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 | value | null | java.time.LocalDate, java.time.LocalDateTime, java.time.LocalTime, java.time.YearMonth, java.util.Date (deprecated) | Value of the component
-| converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a | converter instance. In case it’s a static text, it must refer to a converter id
+| converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
 | immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
 | required | false | Boolean | Marks component as required
 | validator | null | Method Expr | A method expression that refers to a method validationg the input
@@ -72,9 +72,9 @@ ajax selection and more.
 | onYearChange | null | Function | Javascript function to invoke when year changes.
 | locale | null | Object | Locale to be used for labels and conversion.
 | timeZone | null | Time Zone | String a java.time.ZoneId instance or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to ZoneId.systemDefault().
-| pattern | MM/dd/yyyy | String | DateFormat pattern for localization (for the date part only)
-| mindate | null | java.time.LocalDate, java.util.Date (deprecated) or String | Sets DatePicker's minimum visible date; Also used for validation on the server-side.
-| maxdate | null | java.time.LocalDate, java.util.Date (deprecated) or String | Sets DatePicker's maximum visible date; Also used for validation on the server-side.
+| pattern | MM/dd/yy | String | DateFormat pattern for localization (for the date part only)
+| mindate | null | java.time.LocalDate, java.time.LocalDateTime, java.time.LocalTime, java.util.Date (deprecated) or String | Sets DatePicker's minimum selectable value; Also used for validation on the server-side.
+| maxdate | null | java.time.LocalDate, java.time.LocalDateTime, java.time.LocalTime, java.util.Date (deprecated) or String | Sets DatePicker's maximum selectable value; Also used for validation on the server-side.
 | readonlyInput | false | Boolean | Makes input text of a popup DatePicker readonly.
 | inputStyle | null | String | Inline style of the input element. Used when mode is popup.
 | inputStyleClass | null | String | Style class of the input element. Used when mode is popup.
@@ -199,8 +199,8 @@ public void handleDateSelect(SelectEvent<LocalDate> event) {
 In popup mode, DatePicker also supports regular ajax behavior events like blur, keyup and more.
 
 ## Date Restriction
-Using mindate and maxdate options, selectable dates can be restricted. Values for these attributes
-can either be a string or a java.util.Date.
+Using mindate and maxdate options, selectable values can be restricted. Values for these attributes
+can either be a String, a java.time.LocalDate, a java.time.LocalDateTime, a java.time.LocalTime or a java.util.Date (deprecated).
 
 In case you'd like to restrict certain dates or weekdays use _disabledDates_ and _disableDays_ options. Here is an example that demonstrates all restriction options.
 
@@ -242,7 +242,19 @@ Navigator is an easy way to jump between months/years quickly.
 TimePicker functionality is enabled by _showTime_ property.
 
 ```xhtml
-<p:datePicker value="#{dateBean.date}" showTime="true" />
+<p:datePicker value="#{dateBean.dateTime}" showTime="true" />
+```
+
+To show the TimePicker only, use the _timeOnly_ attribute.
+
+```xhtml
+<p:datePicker value="#{dateBean.time}" timeOnly="true" />
+```
+
+The TimePicker pattern can be modified with the properties _hourFormat_ and _showSeconds_.
+
+```xhtml
+<p:datePicker value="#{dateBean.time}" timeOnly="true" hourFormat="12" showSeconds="true" />
 ```
 
 ## Skinning
