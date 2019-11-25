@@ -73,6 +73,8 @@ emptyValue | empty | String | Defines what to display when the input value is em
 inputStyle | null | String | Inline style of the input element.
 inputStyleClass | null | String | Style class of the input element.
 padControl | true | Boolean | Controls padding of the decimal places. If true, always pads the decimal with zeros.
+formatted | false | Boolean | Defines whether the returned value is formatted or not.
+
 
 
 ## Getting Started with InputNumber
@@ -131,3 +133,13 @@ The following AJAX behavior events are available for this component. If no event
 ```xhtml
 <p:ajax event="valueChange" listener="#{bean.handlevalueChange}" update="msgs" />
 ```
+
+## Client Side API
+Widget: _PrimeFaces.widget.InputNumber_
+
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
+| enable() | none | void | Enables the component |
+| disabled() | none | void | Disables the component |
+| setValue(value) | value: the numeric value to set | void | Sets the value of the InputNumber|
+| getValue() | none | String | Gets the current value of the InputNumber as a String. Formatted if formatted=true attribute.|
