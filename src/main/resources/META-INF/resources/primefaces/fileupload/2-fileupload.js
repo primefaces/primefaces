@@ -163,6 +163,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         };
 
         this.jq.fileupload(this.ucfg);
+        this.input = $(this.jqId + '_input');
     },
 
     addFileToRow: function(file, data) {
@@ -489,6 +490,10 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
     enableButton: function(btn) {
         btn.prop('disabled', false).attr('aria-disabled', false).removeClass('ui-state-disabled');
+    },
+
+    show: function() {
+        this.input.click();
     }
 });
 
@@ -563,6 +568,15 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
             return $this.cfg.invalidSizeMessage;
         }
         return null;
+    },
+
+    show: function() {
+        if(this.cfg.skinSimple) {
+            this.input.click();
+        }
+        else {
+            this.jq.click();
+        }
     }
 
 });
