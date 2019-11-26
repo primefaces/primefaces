@@ -160,6 +160,13 @@
                 }, 0);
         }
     };
+
+    $.datepicker._base_disableDatepicker = $.datepicker._disableDatepicker;
+    $.datepicker._disableDatepicker = function(target) {
+        setTimeout( function() {
+        	$.datepicker._base_disableDatepicker(target);
+        }, 0);
+    }
 })();
 
 
