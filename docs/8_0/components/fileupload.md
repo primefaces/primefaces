@@ -301,9 +301,9 @@ Here are some measures that can be taken into account when using PrimeFaces's `f
    * **Built-in implementation**: You may either make use of PrimeFaces' basic built-in implementation, that just searches for the file's hash at VirusTotal. Therefore you have to configure accordingly the context param `primefaces.virusscan.VIRUSTOTAL_KEY` in `web.xml`; a key can be obtained for free at [VirusTotal](https://www.virustotal.com/#/join-us). 
    * **Custom implementation**: Or if more sophisticated virus scanning is required, you can just drop in your custom service provider implementation that will be picked up automatically once available in classpath. In your custom implementation you may leverage your system's virus scanner by using its appropriate API for example.
 
-      * _Implementation skeleton_
+      * Implementation skeleton
 
-        ```
+        ```java
         public class CustomVirusScanner implements org.primefaces.virusscan.VirusScanner {
             @Override
             public boolean isEnabled() {
@@ -320,7 +320,9 @@ Here are some measures that can be taken into account when using PrimeFaces's `f
             }
         }
 
-      * _Service provider registration_: To register the service provider just place a file named `org.primefaces.virusscan.VirusScanner` in the `META-INF/services` directory within your JAR file:
+      * Service provider registration: 
+      
+      To register the service provider just place a file named `org.primefaces.virusscan.VirusScanner` in the `META-INF/services` directory within your JAR file:
 
         ```
         com.example.CustomVirusScanner 
@@ -328,3 +330,15 @@ Here are some measures that can be taken into account when using PrimeFaces's `f
 
    * **Multiple implementations**: If more than one service provider is available in classpath, all of them will be consulted and must give the green light.
 
+## Client Side API
+Widget: _PrimeFaces.widget.SimpleFileUpload_
+
+| Method | Params | Return Type | Description | 
+| --- | --- | --- | --- | 
+show() | - | void | Shows file chooser dialog.
+
+Widget: _PrimeFaces.widget.FileUpload_
+
+| Method | Params | Return Type | Description | 
+| --- | --- | --- | --- | 
+show() | - | void | Shows file(s) chooser dialog.
