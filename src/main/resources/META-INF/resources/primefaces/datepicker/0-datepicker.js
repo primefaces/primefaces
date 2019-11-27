@@ -111,14 +111,40 @@
 
             var parsedDefaultDate = this.parseValue(this.options.defaultDate);
 
+            var viewDateDefaultsToNow=false;
+
             this.value = parsedDefaultDate;
-            this.viewDate = this.options.viewDate ?
-                this.parseValue(this.options.viewDate)
-                :
-                ((((this.isMultipleSelection() || this.isRangeSelection()) && parsedDefaultDate instanceof Array) ? parsedDefaultDate[0] : parsedDefaultDate) || this.parseValue(new Date()));
+            if (this.options.viewDate) {
+                this.viewDate = this.parseValue(this.options.viewDate);
+            }
+            else {
+                if ((this.isMultipleSelection() || this.isRangeSelection()) && parsedDefaultDate instanceof Array) {
+                    this.viewDate = parsedDefaultDate[0];
+                }
+                else {
+                    this.viewDate = parsedDefaultDate;
+                }
+                if (this.viewDate === null) {
+                    this.viewDate = this.parseValue(new Date());
+                    viewDateDefaultsToNow = true;
+                }
+            }
             this.options.minDate = this.parseMinMaxValue(this.options.minDate);
             this.options.maxDate = this.parseMinMaxValue(this.options.maxDate);
             this.ticksTo1970 = (((1970 - 1) * 365 + Math.floor(1970 / 4) - Math.floor(1970 / 100) + Math.floor(1970 / 400)) * 24 * 60 * 60 * 10000000);
+
+            if (this.options.timeOnly && viewDateDefaultsToNow) {
+                if (this.options.minDate) {
+                    if (this.viewDate < this.options.minDate) {
+                        this.viewDate = new Date(this.options.minDate.getTime());
+                    }
+                }
+                if (this.options.maxDate) {
+                    if (this.viewDate > this.options.maxDate) {
+                        this.viewDate = new Date(this.options.maxDate.getTime());
+                    }
+                }
+            }
 
             if (this.options.yearRange === null && this.options.yearNavigator) {
                 var viewYear = this.viewDate.getFullYear();
@@ -904,6 +930,7 @@
             value.setHours(time.hour);
             value.setMinutes(time.minute);
             value.setSeconds(time.second);
+            value.setMilliseconds(0);
         },
 
         isInMinYear: function() {
@@ -1907,7 +1934,7 @@
                 newHour = currentHour + this.options.stepHour;
             newHour = (newHour >= 24) ? (newHour - 24) : newHour;
 
-            if (this.validateHour(newHour, currentTime)) {
+            if (this.validateTime(newHour, currentTime.getMinutes(), currentTime.getSeconds(), currentTime)) {
                 this.updateTime(event, newHour, currentTime.getMinutes(), currentTime.getSeconds());
             }
 
@@ -1920,7 +1947,7 @@
                 newHour = currentHour - this.options.stepHour;
             newHour = (newHour < 0) ? (newHour + 24) : newHour;
 
-            if (this.validateHour(newHour, currentTime)) {
+            if (this.validateTime(newHour, currentTime.getMinutes(), currentTime.getSeconds(), currentTime)) {
                 this.updateTime(event, newHour, currentTime.getMinutes(), currentTime.getSeconds());
             }
 
@@ -1933,7 +1960,7 @@
                 newMinute = currentMinute + this.options.stepMinute;
             newMinute = (newMinute > 59) ? (newMinute - 60) : newMinute;
 
-            if (this.validateMinute(newMinute, currentTime)) {
+            if (this.validateTime(currentTime.getHours(), newMinute, currentTime.getSeconds(), currentTime)) {
                 this.updateTime(event, currentTime.getHours(), newMinute, currentTime.getSeconds());
             }
 
@@ -1946,7 +1973,7 @@
                 newMinute = currentMinute - this.options.stepMinute;
             newMinute = (newMinute < 0) ? (newMinute + 60) : newMinute;
 
-            if (this.validateMinute(newMinute, currentTime)) {
+            if (this.validateTime(currentTime.getHours(), newMinute, currentTime.getSeconds(), currentTime)) {
                 this.updateTime(event, currentTime.getHours(), newMinute, currentTime.getSeconds());
             }
 
@@ -1959,7 +1986,7 @@
                 newSecond = currentSecond + this.options.stepSecond;
             newSecond = (newSecond > 59) ? (newSecond - 60) : newSecond;
 
-            if (this.validateSecond(newSecond, currentTime)) {
+            if (this.validateTime(currentTime.getHours(), currentTime.getMinutes(), newSecond, currentTime)) {
                 this.updateTime(event, currentTime.getHours(), currentTime.getMinutes(), newSecond);
             }
 
@@ -1972,7 +1999,7 @@
                 newSecond = currentSecond - this.options.stepSecond;
             newSecond = (newSecond < 0) ? (newSecond + 60) : newSecond;
 
-            if (this.validateSecond(newSecond, currentTime)) {
+            if (this.validateTime(currentTime.getHours(), currentTime.getMinutes(), newSecond, currentTime)) {
                 this.updateTime(event, currentTime.getHours(), currentTime.getMinutes(), newSecond);
             }
 
@@ -1988,6 +2015,31 @@
             event.preventDefault();
         },
 
+        validateTime: function(hour, minute, second, value) {
+            var valid = true;
+                //,valueDateString = value ? value.toDateString() : null;
+
+            var dateNew = new Date(value.getFullYear(), value.getMonth(), value.getDate(), hour, minute, second, 0);
+            var timeNew = dateNew.getTime();
+
+            //if (this.options.minDate && valueDateString && this.options.minDate.toDateString() === valueDateString) {
+            if (this.options.minDate && value) {
+                if (this.options.minDate.getTime() > timeNew) {
+                    valid = false;
+                }
+            }
+
+            //if (this.options.maxDate && valueDateString && this.options.maxDate.toDateString() === valueDateString) {
+            if (this.options.maxDate && value) {
+                if (this.options.maxDate.getTime() < timeNew) {
+                    valid = false;
+                }
+            }
+
+            return valid;
+        },
+
+        /*
         validateHour: function (hour, value) {
             var valid = true,
                 valueDateString = value ? value.toDateString() : null;
@@ -2052,6 +2104,7 @@
 
             return valid;
         },
+         */
 
         updateTime: function (event, hour, minute, second) {
             var newDateTime = (this.value && this.value instanceof Date) ? new Date(this.value) : new Date();
