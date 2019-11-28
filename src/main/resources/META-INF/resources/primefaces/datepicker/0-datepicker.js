@@ -125,7 +125,11 @@
                     this.viewDate = parsedDefaultDate;
                 }
                 if (this.viewDate === null) {
-                    this.viewDate = this.parseValue(new Date());
+                    this.viewDate = new Date();
+                    if (!this.options.showSeconds) {
+                        this.viewDate.setSeconds(0);
+                    }
+                    this.viewDate.setMilliseconds(0);
                     viewDateDefaultsToNow = true;
                 }
             }
@@ -929,7 +933,12 @@
             var time = this.parseTime(timeString, ampm);
             value.setHours(time.hour);
             value.setMinutes(time.minute);
-            value.setSeconds(time.second);
+            if (this.options.showSeconds) {
+                value.setSeconds(time.second);
+            }
+            else {
+                value.setSeconds(0);
+            }
             value.setMilliseconds(0);
         },
 
@@ -1005,6 +1014,8 @@
         },
 
         _setInitOptionValues: function () {
+            //TODO: does not work together with numberOfMonths>1 - see https://github.com/primefaces/primefaces/issues/4751
+
             if (this.options.yearNavigator) {
                 this.panel.find('.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-year').val(this.viewDate.getFullYear());
             }
@@ -1887,6 +1898,7 @@
                 date.setHours(time.getHours());
                 date.setMinutes(time.getMinutes());
                 date.setSeconds(time.getSeconds());
+                date.setMilliseconds(0);
             }
 
             if (this.options.minDate && this.options.minDate > date) {
@@ -2017,26 +2029,26 @@
 
         validateTime: function(hour, minute, second, value, direction) {
             var valid = true;
-
             var dateNew = new Date(value.getFullYear(), value.getMonth(), value.getDate(), hour, minute, second, 0);
-            var timeNew = dateNew.getTime();
 
             if (this.options.minDate && value) {
-                if (this.options.minDate.getTime() > timeNew) {
-                    valid = false;
-                    if (direction === "INCREMENT") {
-                        //the new time is still outside the allowed range, but we come nearer to it
-                        valid = true;
+                if (this.options.minDate > dateNew) {
+                    if (direction === "INCREMENT" && this.options.minDate > value)  {
+                        ; //the new time is still outside the allowed range, but we come nearer to it
+                    }
+                    else {
+                        valid = false;
                     }
                 }
             }
 
             if (this.options.maxDate && value) {
-                if (this.options.maxDate.getTime() < timeNew) {
-                    valid = false;
-                    if (direction === "DECREMENT") {
-                        //the new time is still outside the allowed range, but we come nearer to it
-                        valid = true;
+                if (this.options.maxDate < dateNew) {
+                    if (direction === "DECREMENT" && this.options.maxDate < value) {
+                        ; //the new time is still outside the allowed range, but we come nearer to it
+                    }
+                    else {
+                        valid = false;
                     }
                 }
             }
@@ -2050,6 +2062,7 @@
             newDateTime.setHours(hour);
             newDateTime.setMinutes(minute);
             newDateTime.setSeconds(second);
+            newDateTime.setMilliseconds(0);
 
             this.updateModel(event, newDateTime);
 
