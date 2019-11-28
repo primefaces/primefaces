@@ -979,11 +979,31 @@
 
         _setInitOptionValues: function () {
             if (this.options.yearNavigator) {
-                this.panel.find('.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-year').val(this.viewDate.getFullYear());
+                var year = this.viewDate.getFullYear();
+                var month = this.viewDate.getMonth();
+                var yearElts = this.panel.find('.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-year');
+
+                yearElts.each(function( index, yearElt ) {
+                    $(yearElt).val(year);
+                    month = month + 1;
+                    if (month === 12) {
+                        month = 0;
+                        year = year + 1;
+                    }
+                });
             }
 
             if (this.options.monthNavigator && this.options.view !== 'month') {
-                this.panel.find('.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-month').val(this.viewDate.getMonth());
+                var month = this.viewDate.getMonth();
+                var monthElts = this.panel.find('.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-month');
+
+                monthElts.each(function( index, monthElt ) {
+                    $(monthElt).val(month);
+                    month = month + 1;
+                    if (month === 12) {
+                        month = 0;
+                    }
+                });
             }
         },
 
