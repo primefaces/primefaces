@@ -201,7 +201,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
     align: function(target) {
         var win = $(window),
         allowedNegativeValuesByParentOffset = this.jq.offsetParent().offset(),
-        _self = this;
+        $this = this;
 
         if (target) {
             if (typeof target === 'string') {
@@ -234,7 +234,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
                             pos.left = -allowedNegativeValuesByParentOffset.left;
                         }
                         
-                        _self.jq.css(pos);
+                        $this.jq.css(pos);
                     }
                 });
 
