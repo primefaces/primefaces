@@ -197,7 +197,7 @@ public abstract class InputNumberBase extends HtmlInputText implements Widget, I
     }
 
     public boolean isFormatted() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.formatted, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.formatted, true);
     }
 
     public void setFormatted(boolean formatted) {
