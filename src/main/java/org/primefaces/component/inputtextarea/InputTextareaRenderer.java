@@ -56,8 +56,12 @@ public class InputTextareaRenderer extends InputRenderer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String submittedValue = params.get(clientId);
 
-        if (submittedValue != null && submittedValue.length() > inputTextarea.getMaxlength()) {
-            return;
+        if (submittedValue != null) {
+            // #5381: normalize new lines to match JavaScript
+            submittedValue = submittedValue.replaceAll("\\r\\n?", "\n");
+            if (submittedValue.length() > inputTextarea.getMaxlength()) {
+                return;
+            }
         }
 
         inputTextarea.setSubmittedValue(submittedValue);
