@@ -993,6 +993,7 @@
                         <configuration>
                             <jswarn>false</jswarn>
                             <force>true</force>
+                            <useProcessedResources>true</useProcessedResources>
                             <excludes>
                                 <exclude>**/*.something</exclude>
                                 <exclude>**/photocam.js</exclude>
