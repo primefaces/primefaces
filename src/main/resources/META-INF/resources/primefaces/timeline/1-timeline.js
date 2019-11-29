@@ -226,7 +226,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Binds timeline's events.
      */
-    _bindTimelineEvents: function () {
+    _bindTimelineEvents: function (el) {
         // "select" event
         if (this.cfg.opts.selectable && this.getBehavior("select")) {
             this.instance.on('select', $.proxy(function () {
