@@ -50,6 +50,12 @@
     opacity: 0;
 }
 
+.p-datepicker-panel .ui-timepicker input {
+    text-align: center;
+    font-size: 1.2em;
+    width: 2em;
+}
+
 .ui-datepicker-multiple-month .ui-datepicker-group {
     display: table-cell;
     border-left-width: 0;

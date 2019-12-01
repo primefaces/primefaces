@@ -1453,12 +1453,18 @@
                 });
 
             if (this.options.timeInput) {
-                this.panel.on('change', '.ui-hour-picker input', null, function (event) {
-                    $this.handleHoursInput(this. value, event);
+                this.panel.on('focus', '.ui-hour-picker input', null, function (event) {
+                    $this.oldHours = this.value;
+                }).on('focus', '.ui-minute-picker input', null, function (event) {
+                    $this.oldMinutes = this.value;
+                }).on('focus', '.ui-second-picker input', null, function (event) {
+                    $this.oldSeconds = this.value;
+                }).on('change', '.ui-hour-picker input', null, function (event) {
+                    $this.handleHoursInput(this, event);
                 }).on('change', '.ui-minute-picker input', null, function (event) {
-                    $this.handleMinutesInput(this. value, event);
+                    $this.handleMinutesInput(this, event);
                 }).on('change', '.ui-second-picker input', null, function (event) {
-                    $this.handleSecondsInput(this. value, event);
+                    $this.handleSecondsInput(this, event);
                 });
             }
 
@@ -1738,6 +1744,10 @@
             this.panel.show();
             this.alignPanel();
             this.bindDocumentClickListener();
+
+            if ((this.options.showTime || this.options.timeOnly) && this.options.timeInput) {
+                this.panel.find('.ui-hour-picker input').focus();
+            }
         },
 
         hideOverlay: function () {
@@ -2010,30 +2020,32 @@
             event.preventDefault();
         },
 
-        handleHoursInput: function(value, event) {
+        handleHoursInput: function(input, event) {
+            var value = input.value,
+                valid = false,
+                newHours;
+
             var reg = new RegExp('^([0-9]){1,2}$');
-            if (!reg.test(value)) {
+            if (reg.test(value)) {
+                newHours = parseInt(value);
+                if (this.options.hourFormat === '12') {
+                    if (newHours >= 1 || newHours <= 12) {
+                        //TODO: validateTime; https://github.com/primefaces/primefaces/pull/5377
+                        valid = true;
+                    }
+                } else {
+                    if (newHours >= 0 || newHours <= 23) {
+                        //TODO: validateTime; https://github.com/primefaces/primefaces/pull/5377
+                        valid = true;
+                    }
+                }
+            }
+
+            if (!valid) {
                 event.preventDefault();
-                //TODO: reset value
+                input.value = this.oldHours;
                 return;
             }
-
-            var newHours = parseInt(value);
-            if (this.options.hourFormat === '12') {
-                if (newHours < 1 || newHours > 12) {
-                    event.preventDefault();
-                    //TODO: reset value
-                    return;
-                }
-            } else {
-                if (newHours < 0 || newHours > 23) {
-                    event.preventDefault();
-                    //TODO: reset value
-                    return;
-                }
-            }
-
-            //TODO: validateTime; https://github.com/primefaces/primefaces/pull/5377
 
             var newDateTime = (this.value && this.value instanceof Date) ? new Date(this.value) : new Date();
             newDateTime.setHours(newHours);
@@ -2041,22 +2053,25 @@
             this.updateTimeAfterInput(event, newDateTime);
         },
 
-        handleMinutesInput: function(value, event) {
+        handleMinutesInput: function(input, event) {
+            var value = input.value,
+                valid = false,
+                newMinutes;
+
             var reg = new RegExp('^([0-9]){1,2}$');
-            if (!reg.test(value)) {
-                event.preventDefault();
-                //TODO: reset value
-                return;
+            if (reg.test(value)) {
+                newMinutes = parseInt(value);
+                if (newMinutes >= 0 || newMinutes <= 59) {
+                    //TODO: validateTime; https://github.com/primefaces/primefaces/pull/5377
+                    valid = true;
+                }
             }
 
-            var newMinutes = parseInt(value);
-            if (newMinutes < 0 || newMinutes > 59) {
+            if (!valid) {
                 event.preventDefault();
-                //TODO: reset value
+                input.value = this.oldMinutes;
                 return;
             }
-
-            //TODO: validateTime; https://github.com/primefaces/primefaces/pull/5377
 
             var newDateTime = (this.value && this.value instanceof Date) ? new Date(this.value) : new Date();
             newDateTime.setMinutes(newMinutes);
@@ -2064,22 +2079,25 @@
             this.updateTimeAfterInput(event, newDateTime);
         },
 
-        handleSecondsInput: function(value, event) {
+        handleSecondsInput: function(input, event) {
+            var value = input.value,
+                valid = false,
+                newSeconds;
+
             var reg = new RegExp('^([0-9]){1,2}$');
-            if (!reg.test(value)) {
-                event.preventDefault();
-                //TODO: reset value
-                return;
+            if (reg.test(value)) {
+                newSeconds = parseInt(value);
+                if (newSeconds >= 0 || newSeconds <= 59) {
+                    //TODO: validateTime; https://github.com/primefaces/primefaces/pull/5377
+                    valid = true;
+                }
             }
 
-            var newSeconds = parseInt(value);
-            if (newSeconds < 0 || newSeconds > 59) {
+            if (!valid) {
                 event.preventDefault();
-                //TODO: reset value
+                input.value = this.oldSeconds;
                 return;
             }
-
-            //TODO: validateTime; https://github.com/primefaces/primefaces/pull/5377
 
             var newDateTime = (this.value && this.value instanceof Date) ? new Date(this.value) : new Date();
             newDateTime.setSeconds(newSeconds);
