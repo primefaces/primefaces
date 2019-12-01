@@ -1014,8 +1014,6 @@
         },
 
         _setInitOptionValues: function () {
-            //TODO: does not work together with numberOfMonths>1 - see https://github.com/primefaces/primefaces/issues/4751
-
             if (this.options.yearNavigator) {
                 this.panel.find('.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-year').val(this.viewDate.getFullYear());
             }
