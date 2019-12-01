@@ -1304,14 +1304,13 @@
         },
 
         renderHourPicker: function () {
-            var disabled = this.options.timeInput ? "" : " disabled";
             var hour = (this.value && this.value instanceof Date) ? this.value.getHours() : this.viewDate.getHours();
-            var minHour = 0;
-            var maxHour = 23;
+            //var minHour = 0;
+            //var maxHour = 23;
 
             if (this.options.hourFormat === '12') {
-                minHour = 1;
-                maxHour = 12;
+                //minHour = 1;
+                //maxHour = 12;
 
                 if (hour === 0)
                     hour = 12;
@@ -1321,27 +1320,28 @@
 
             var hourDisplay = hour < 10 ? '0' + hour : hour;
 
-            //TODO: type="number" does not work well on Firefox 70
-            return this.renderTimeElements("ui-hour-picker", '<input value="' + hourDisplay + '" type="number" min="' + minHour + '" max="' + maxHour + '" size="2" maxlength="2"' + disabled + '></input>', 0);
+            //type="number" min="' + minHour + '" max="' + maxHour + '" - does not work well on Firefox 70, so we don´t use it
+            var html = this.options.timeInput ? '<input value="' + hourDisplay + '" size="2" maxlength="2" tabindex="1"></input>' : '<span>' + hourDisplay + '</span>';
+            return this.renderTimeElements("ui-hour-picker", html, 0);
         },
 
         renderMinutePicker: function () {
-            var disabled = this.options.timeInput ? "" : " disabled";
             var minute = (this.value && this.value instanceof Date) ? this.value.getMinutes() : this.viewDate.getMinutes(),
                 minuteDisplay = minute < 10 ? '0' + minute : minute;
 
-            //TODO: type="number" does not work well on Firefox 70
-            return this.renderTimeElements("ui-minute-picker", '<input value="' + minuteDisplay + '" type="number" min="0" max="59" size="2" maxlength="2"' + disabled + '></input>', 1);
+            //type="number" min="0" max="59" does not work well on Firefox 70, so we don´t use it
+            var html = this.options.timeInput ? '<input value="' + minuteDisplay + '" size="2" maxlength="2" tabindex="2"></input>' : '<span>' + minuteDisplay + '</span>';
+            return this.renderTimeElements("ui-minute-picker", html, 1);
         },
 
         renderSecondPicker: function () {
             if (this.options.showSeconds) {
-                var disabled = this.options.timeInput ? "" : " disabled";
                 var second = (this.value && this.value instanceof Date) ? this.value.getSeconds() : this.viewDate.getSeconds(),
                     secondDisplay = second < 10 ? '0' + second : second;
 
-                //TODO: type="number" does not work well on Firefox 70
-                return this.renderTimeElements("ui-second-picker", '<input value="' + secondDisplay + '" type="input" min="0" max="59" size="2" maxlength="2"' + disabled + '></input>', 2);
+                //type="number" min="0" max="59" does not work well on Firefox 70, so we don´t use it
+                var html =  this.options.timeInput ? '<input value="' + secondDisplay + '" size="2" maxlength="2" tabindex="3"></input>' : '<span>' + secondDisplay + '</span>';
+                return this.renderTimeElements("ui-second-picker", html, 2);
             }
 
             return '';
@@ -1454,78 +1454,11 @@
 
             if (this.options.timeInput) {
                 this.panel.on('change', '.ui-hour-picker input', null, function (event) {
-                    //TODO: extract function
-                    //TODO: ??? event is raised after using the arrows ???
-
-                    var reg = new RegExp('^([0-9]){1,2}$');
-                    if (!reg.test(this.value)) {
-                        event.preventDefault();
-                        return;
-                    }
-
-                    var newHours = parseInt(this.value);
-                    if ($this.options.hourFormat === '12') {
-                        if (newHours < 1 || newHours > 12) {
-                            event.preventDefault();
-                            return;
-                        }
-                    } else {
-                        if (newHours < 0 || newHours > 23) {
-                            event.preventDefault();
-                            return;
-                        }
-                    }
-
-                    //TODO: validateTime; https://github.com/primefaces/primefaces/pull/5377
-
-                    var newDateTime = ($this.value && $this.value instanceof Date) ? new Date($this.value) : new Date();
-                    newDateTime.setHours(newHours);
-
-                    $this.updateTimeAfterInput(event, newDateTime);
+                    $this.handleHoursInput(this. value, event);
                 }).on('change', '.ui-minute-picker input', null, function (event) {
-                    //TODO: extract function
-                    //TODO: ??? event is raised after using the arrows ???
-
-                    var reg = new RegExp('^([0-9]){1,2}$');
-                    if (!reg.test(this.value)) {
-                        event.preventDefault();
-                        return;
-                    }
-
-                    var newMinutes = parseInt(this.value);
-                    if (newMinutes < 0 || newMinutes > 59) {
-                        event.preventDefault();
-                        return;
-                    }
-
-                    //TODO: validateTime; https://github.com/primefaces/primefaces/pull/5377
-
-                    var newDateTime = ($this.value && $this.value instanceof Date) ? new Date($this.value) : new Date();
-                    newDateTime.setMinutes(newMinutes);
-
-                    $this.updateTimeAfterInput(event, newDateTime);
+                    $this.handleMinutesInput(this. value, event);
                 }).on('change', '.ui-second-picker input', null, function (event) {
-                    //TODO: extract function
-                    //TODO: ??? event is raised after using the arrows ???
-
-                    var reg = new RegExp('^([0-9]){1,2}$');
-                    if (!reg.test(this.value)) {
-                        event.preventDefault();
-                        return;
-                    }
-
-                    var newSeconds = parseInt(this.value);
-                    if (newSeconds < 0 || newSeconds > 59) {
-                        event.preventDefault();
-                        return;
-                    }
-
-                    //TODO: validateTime; https://github.com/primefaces/primefaces/pull/5377
-
-                    var newDateTime = ($this.value && $this.value instanceof Date) ? new Date($this.value) : new Date();
-                    newDateTime.setSeconds(newSeconds);
-
-                    $this.updateTimeAfterInput(event, newDateTime);
+                    $this.handleSecondsInput(this. value, event);
                 });
             }
 
@@ -2075,6 +2008,83 @@
 
             this.updateTime(event, newHour, currentTime.getMinutes(), currentTime.getSeconds());
             event.preventDefault();
+        },
+
+        handleHoursInput: function(value, event) {
+            var reg = new RegExp('^([0-9]){1,2}$');
+            if (!reg.test(value)) {
+                event.preventDefault();
+                //TODO: reset value
+                return;
+            }
+
+            var newHours = parseInt(value);
+            if (this.options.hourFormat === '12') {
+                if (newHours < 1 || newHours > 12) {
+                    event.preventDefault();
+                    //TODO: reset value
+                    return;
+                }
+            } else {
+                if (newHours < 0 || newHours > 23) {
+                    event.preventDefault();
+                    //TODO: reset value
+                    return;
+                }
+            }
+
+            //TODO: validateTime; https://github.com/primefaces/primefaces/pull/5377
+
+            var newDateTime = (this.value && this.value instanceof Date) ? new Date(this.value) : new Date();
+            newDateTime.setHours(newHours);
+
+            this.updateTimeAfterInput(event, newDateTime);
+        },
+
+        handleMinutesInput: function(value, event) {
+            var reg = new RegExp('^([0-9]){1,2}$');
+            if (!reg.test(value)) {
+                event.preventDefault();
+                //TODO: reset value
+                return;
+            }
+
+            var newMinutes = parseInt(value);
+            if (newMinutes < 0 || newMinutes > 59) {
+                event.preventDefault();
+                //TODO: reset value
+                return;
+            }
+
+            //TODO: validateTime; https://github.com/primefaces/primefaces/pull/5377
+
+            var newDateTime = (this.value && this.value instanceof Date) ? new Date(this.value) : new Date();
+            newDateTime.setMinutes(newMinutes);
+
+            this.updateTimeAfterInput(event, newDateTime);
+        },
+
+        handleSecondsInput: function(value, event) {
+            var reg = new RegExp('^([0-9]){1,2}$');
+            if (!reg.test(value)) {
+                event.preventDefault();
+                //TODO: reset value
+                return;
+            }
+
+            var newSeconds = parseInt(value);
+            if (newSeconds < 0 || newSeconds > 59) {
+                event.preventDefault();
+                //TODO: reset value
+                return;
+            }
+
+            //TODO: validateTime; https://github.com/primefaces/primefaces/pull/5377
+
+            var newDateTime = (this.value && this.value instanceof Date) ? new Date(this.value) : new Date();
+            newDateTime.setSeconds(newSeconds);
+
+            this.updateTimeAfterInput(event, newDateTime);
         },
 
         validateHour: function (hour, value) {
