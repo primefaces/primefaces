@@ -116,7 +116,8 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("appendTo", SearchExpressionFacade.resolveClientId(context, datepicker, datepicker.getAppendTo(),
                             SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
             .attr("icon", datepicker.getTriggerButtonIcon(), null)
-            .attr("rangeSeparator", datepicker.getRangeSeparator(), null);
+            .attr("rangeSeparator", datepicker.getRangeSeparator(), null)
+            .attr("timeInput", datepicker.isTimeInput());
 
         List<Integer> disabledDays = datepicker.getDisabledDays();
         if (disabledDays != null) {

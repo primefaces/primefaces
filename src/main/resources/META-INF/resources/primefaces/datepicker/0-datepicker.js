@@ -82,6 +82,7 @@
             clearButtonStyleClass: 'ui-priority-secondary',
             appendTo: null,
             dateTemplate: null,
+            timeInput: false,
             onFocus: null,
             onBlur: null,
             onInput: null,
@@ -1303,9 +1304,15 @@
         },
 
         renderHourPicker: function () {
+            var disabled = this.options.timeInput ? "" : " disabled";
             var hour = (this.value && this.value instanceof Date) ? this.value.getHours() : this.viewDate.getHours();
+            var minHour = 0;
+            var maxHour = 23;
 
             if (this.options.hourFormat === '12') {
+                minHour = 1;
+                maxHour = 12;
+
                 if (hour === 0)
                     hour = 12;
                 else if (hour > 11 && hour !== 12)
@@ -1314,22 +1321,24 @@
 
             var hourDisplay = hour < 10 ? '0' + hour : hour;
 
-            return this.renderTimeElements("ui-hour-picker", '<span>' + hourDisplay + '</span>', 0);
+            return this.renderTimeElements("ui-hour-picker", '<input value="' + hourDisplay + '" type="number" min="' + minHour + '" max="' + maxHour + '" size="2" maxlength="2"' + disabled + '></input>', 0);
         },
 
         renderMinutePicker: function () {
+            var disabled = this.options.timeInput ? "" : " disabled";
             var minute = (this.value && this.value instanceof Date) ? this.value.getMinutes() : this.viewDate.getMinutes(),
                 minuteDisplay = minute < 10 ? '0' + minute : minute;
 
-            return this.renderTimeElements("ui-minute-picker", '<span>' + minuteDisplay + '</span>', 1);
+            return this.renderTimeElements("ui-minute-picker", '<input value="' + minuteDisplay + '" type="number" min="0" max="59" size="2" maxlength="2"' + disabled + '></input>', 1);
         },
 
         renderSecondPicker: function () {
             if (this.options.showSeconds) {
+                var disabled = this.options.timeInput ? "" : " disabled";
                 var second = (this.value && this.value instanceof Date) ? this.value.getSeconds() : this.viewDate.getSeconds(),
                     secondDisplay = second < 10 ? '0' + second : second;
 
-                return this.renderTimeElements("ui-second-picker", '<span>' + secondDisplay + '</span>', 2);
+                return this.renderTimeElements("ui-second-picker", '<input value="' + secondDisplay + '" type="input" min="0" max="59" size="2" maxlength="2"' + disabled + '></input>', 2);
             }
 
             return '';
@@ -1439,6 +1448,45 @@
                 .on('click.datePicker-ampm', ampmSelector, null, function (event) {
                     $this.toggleAmPm(event);
                 });
+
+            this.panel.on('change', '.ui-hour-picker input', null, function (event) {
+                //console.log('hour input - change: ' + this.value + "; eventValue:" + event.value);
+
+                if (!Number.isInteger(event.value)) {
+                    event.preventDefault();
+                }
+
+                var newHour = parseInt(this.value);
+                if ($this.options.hourFormat === '12') {
+                    if (newHour<1 || newHour>12) {
+                        event.preventDefault();
+                        return;
+                    }
+                }
+                else {
+                    if (newHour<0 || newHour>23) {
+                        event.preventDefault();
+                        return;
+                    }
+                }
+
+                //TODO: validateTime; https://github.com/primefaces/primefaces/pull/5377
+
+                var newDateTime = ($this.value && $this.value instanceof Date) ? new Date($this.value) : new Date();
+                newDateTime.setHours(newHour);
+
+                $this.value = newDateTime;
+                $this.inputfield.val($this.getValueToRender());
+
+                if ($this.options.onSelect) {
+                    $this.options.onSelect.call($this, event, newDateTime);
+                }
+            }).on('change', '.ui-minute-picker input', null, function (event) {
+                console.log('minute input - change:' + this.value + "; eventValue:" + event.value);
+            }).on('change', '.ui-second-picker input', null, function (event) {
+                console.log('minute second - change:' + this.value + "; eventValue:" + event.value);
+            });
+
 
             var todayButtonSelector = '.ui-datepicker-buttonbar .ui-today-button',
                 clearButtonSelector = '.ui-datepicker-buttonbar .ui-clear-button';

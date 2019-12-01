@@ -109,6 +109,7 @@ ajax selection and more.
 | tabindex | null | Integer | Position of the input element in the tabbing order.
 | title | null | String | Advisory tooltip informaton.
 | rangeSeparator | - | String | Separator for joining start and end dates on range selection mode.
+| timeInput | false | Boolean | Allows direct input in time field.
 
 ## Getting Started with DatePicker
 Value of the DatePicker should be a java.time.LocalDate in single selection mode which is the default.
