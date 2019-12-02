@@ -186,27 +186,27 @@ public class DefaultStreamedContent implements StreamedContent, Serializable {
         }
 
         public Builder stream(SerializableSupplier<InputStream> is) {
-            streamedContent.setStream(is);
+            streamedContent.stream = new Lazy(is);
             return this;
         }
 
         public Builder contentType(String contentType) {
-            streamedContent.setContentType(contentType);
+            streamedContent.contentType = contentType;
             return this;
         }
 
         public Builder name(String name) {
-            streamedContent.setName(name);
+            streamedContent.name = name;
             return this;
         }
 
         public Builder contentEncoding(String contentEncoding) {
-            streamedContent.setContentEncoding(contentEncoding);
+            streamedContent.contentEncoding = contentEncoding;
             return this;
         }
 
         public Builder contentLength(Integer contentLength) {
-            streamedContent.setContentLength(contentLength);
+            streamedContent.contentLength = contentLength;
             return this;
         }
 
