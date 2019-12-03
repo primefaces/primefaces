@@ -29,6 +29,7 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import org.primefaces.component.api.*;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
+import org.primefaces.util.ComponentUtils;
 
 public abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable {
 
@@ -579,7 +580,7 @@ public abstract class DataTableBase extends UIData implements Widget, RTLAware, 
     }
 
     public java.util.List<FilterMeta> getFilterMeta() {
-        return (java.util.List<FilterMeta>) getStateHelper().eval(PropertyKeys.filterMeta, new ArrayList<FilterMeta>());
+        return ComponentUtils.eval(getStateHelper(), PropertyKeys.filterMeta, () -> new ArrayList<>());
     }
 
     public void setFilterMeta(java.util.List<FilterMeta> filterMeta) {
@@ -587,7 +588,7 @@ public abstract class DataTableBase extends UIData implements Widget, RTLAware, 
     }
 
     public java.util.List<SortMeta> getSortMeta() {
-        return (java.util.List<SortMeta>) getStateHelper().eval(PropertyKeys.sortMeta, new ArrayList<SortMeta>());
+        return ComponentUtils.eval(getStateHelper(), PropertyKeys.sortMeta, () -> new ArrayList<>());
     }
 
     public void setSortMeta(java.util.List<SortMeta> sortMeta) {
