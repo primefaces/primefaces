@@ -626,4 +626,25 @@ public class ComponentUtils {
 
         return false;
     }
+
+    public static ViewPoolingResetMode isViewPooling(FacesContext context) {
+        if (context.getViewRoot() != null) {
+            Object mode = context.getViewRoot().getAttributes().get("oam.view.resetSaveStateMode");
+
+            if (Objects.equals(mode, 1)) {
+                return ViewPoolingResetMode.SOFT;
+            }
+            if (Objects.equals(mode, 2)) {
+                return ViewPoolingResetMode.HARD;
+            }
+        }
+        return ViewPoolingResetMode.OFF;
+    }
+
+    // See MyFaces ViewPoolProcessor
+    public static enum ViewPoolingResetMode {
+        OFF,
+        SOFT,
+        HARD;
+    }
 }
