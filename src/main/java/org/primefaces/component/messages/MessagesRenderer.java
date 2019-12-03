@@ -211,20 +211,23 @@ public class MessagesRenderer extends UINotificationRenderer {
 
             // key case
             if (forType == null || forType.equals("key")) {
-                Iterator<FacesMessage> messagesIterator = context.getMessages(_for);
-                while (messagesIterator.hasNext()) {
-                    if (messages == null) {
-                        messages = new ArrayList<>();
+                String[] keys = SearchExpressionFacade.split(context, _for, SearchExpressionFacade.EXPRESSION_SEPARATORS);
+                for (String key : keys) {
+                    Iterator<FacesMessage> messagesIterator = context.getMessages(key);
+                    while (messagesIterator.hasNext()) {
+                        if (messages == null) {
+                            messages = new ArrayList<>();
+                        }
+                        messages.add(messagesIterator.next());
                     }
-                    messages.add(messagesIterator.next());
                 }
             }
 
             // clientId / SearchExpression case
             if (forType == null || forType.equals("expression")) {
-                UIComponent forComponent = SearchExpressionFacade.resolveComponent(context, uiMessages, _for,
+                List<UIComponent> forComponents = SearchExpressionFacade.resolveComponents(context, uiMessages, _for,
                         SearchExpressionUtils.SET_IGNORE_NO_RESULT);
-                if (forComponent != null) {
+                for (UIComponent forComponent : forComponents) {
 
                     String forComponentClientId = forComponent.getClientId(context);
                     if (!_for.equals(forComponentClientId)) {
