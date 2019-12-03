@@ -26,7 +26,6 @@ package org.primefaces.component.datatable;
 import org.primefaces.component.api.*;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
-import org.primefaces.util.ComponentUtils;
 
 import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
