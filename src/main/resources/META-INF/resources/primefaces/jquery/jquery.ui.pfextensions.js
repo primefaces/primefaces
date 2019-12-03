@@ -160,6 +160,14 @@
                 }, 0);
         }
     };
+
+    $.datepicker._base_disableDatepicker = $.datepicker._disableDatepicker;
+    $.datepicker._disableDatepicker = function(target) {
+        // GitHub #5374 Calender inline=true not styled correctly
+        setTimeout( function() {
+        	$.datepicker._base_disableDatepicker(target);
+        }, 0);
+    }
 })();
 
 

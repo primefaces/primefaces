@@ -33,3 +33,4 @@ jquery.ui.pfextensions:
 - Timepicker Fix (https://github.com/primefaces/primefaces/issues/3765)
 - Datepicker Position Fix (https://github.com/primefaces/primefaces/issues/4295)
 - Datepicker Position Fix (https://github.com/primefaces/primefaces/issues/4719)
+- Datepicker style fix (https://github.com/primefaces/primefaces/issues/5374)

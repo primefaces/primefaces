@@ -874,6 +874,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     bindContextMenu : function(menuWidget, targetWidget, targetId, cfg) {
+        var $this = this;
         var targetSelector = targetId + ' tbody.ui-datatable-data > tr.ui-widget-content';
         var targetEvent = cfg.event + '.datatable';
         this.contextMenuWidget = menuWidget;
@@ -906,7 +907,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         });
 
         if(this.cfg.scrollable && this.scrollBody) {
-            var $this = this;
             this.scrollBody.off('scroll.dataTable-contextmenu').on('scroll.dataTable-contextmenu', function() {
                 if($this.contextMenuWidget.jq.is(':visible')) {
                     $this.contextMenuWidget.hide();

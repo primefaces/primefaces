@@ -234,8 +234,7 @@ public class InputNumberRenderer extends InputRenderer {
             .attr("leadingZero", inputNumber.getLeadingZero(), "deny")
             .attr("allowDecimalPadding", inputNumber.isPadControl(), true)
             .attr("roundingMethod", inputNumber.getRoundMethod(), "S")
-            .attr("selectOnFocus", false, true)
-            .attr("formatted", inputNumber.isFormatted(), false);
+            .attr("selectOnFocus", false, true);
 
         wb.finish();
     }

@@ -73,7 +73,6 @@ emptyValue | empty | String | Defines what to display when the input value is em
 inputStyle | null | String | Inline style of the input element.
 inputStyleClass | null | String | Style class of the input element.
 padControl | true | Boolean | Controls padding of the decimal places. If true, always pads the decimal with zeros.
-formatted | false | Boolean | Defines whether the returned value is formatted or not.
 
 
 
