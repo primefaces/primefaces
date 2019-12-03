@@ -289,8 +289,7 @@ public class FilterFeature implements DataTableFeature {
     }
 
     public List<FilterMeta> populateFilterMeta(FacesContext context, DataTable table, String globalFilterParam) {
-        List<FilterMeta> filterMetadata = table.getFilterMeta();
-        filterMetadata.clear();
+        List<FilterMeta> filterMetadata = new ArrayList<>();
 
         String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
