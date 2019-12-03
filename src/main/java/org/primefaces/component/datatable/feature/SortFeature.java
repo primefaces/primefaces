@@ -57,8 +57,7 @@ public class SortFeature implements DataTableFeature {
         String sortDir = params.get(clientId + "_sortDir");
 
         if (table.isMultiSort()) {
-            List<SortMeta> sortMeta = table.getSortMeta();
-            sortMeta.clear();
+            List<SortMeta> sortMeta = new ArrayList<>();
 
             String[] sortKeys = sortKey.split(",");
             String[] sortOrders = sortDir.split(",");
