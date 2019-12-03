@@ -134,6 +134,7 @@ public class TreeTable extends TreeTableBase {
             .put("page", PageEvent.class)
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
     private int columnsCount = -1;
     private UIColumn sortColumn;
     private List<UIColumn> columns;
@@ -504,6 +505,14 @@ public class TreeTable extends TreeTableBase {
         if (dynamicColumns != null) {
             dynamicColumns.setRowIndex(-1);
         }
+
+        // reset component for MyFaces view pooling
+        columnsCount = -1;
+        sortColumn = null;
+        columns = null;
+        dynamicColumns = null;
+        filteredRowKeys = new ArrayList<>();
+        filterMetadata = null;
 
         return super.saveState(context);
     }

@@ -431,4 +431,17 @@ public class Tree extends TreeBase {
         this.filteredRowKeys = filteredRowKeys;
     }
 
+    @Override
+    public Object saveState(FacesContext context) {
+        // reset component for MyFaces view pooling
+        nodes = null;
+        dragNode = null;
+        dragNodes = null;
+        dropNode = null;
+        retValOnDrop = true;
+        filteredRowKeys = new ArrayList<>();
+
+        return super.saveState(context);
+    }
+
 }

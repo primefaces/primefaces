@@ -1410,6 +1410,22 @@ public class DataTable extends DataTableBase {
             setValue(null);
         }
 
+        // reset component for MyFaces view pooling
+        columnsCountWithSpan = -1;
+        reset = false;
+        selectedRowKeys = new ArrayList<>();
+        isRowKeyRestored = false;
+        columnsCount = -1;
+        columns = null;
+        sortColumn = null;
+        dynamicColumns = null;
+        sortByVE = null;
+        togglableColumnsAsString = null;
+        togglableColsMap = null;
+        resizableColumnsAsString = null;
+        resizableColsMap = null;
+        iterableChildren = null;
+
         return super.saveState(context);
     }
 

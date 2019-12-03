@@ -73,6 +73,7 @@ public class DataView extends DataViewBase {
             .build();
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
     private DataViewGridItem gridItem = null;
     private DataViewListItem listItem = null;
 
@@ -157,5 +158,14 @@ public class DataView extends DataViewBase {
                 PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
             }
         }
+    }
+
+    @Override
+    public Object saveState(FacesContext context) {
+        // reset component for MyFaces view pooling
+        gridItem = null;
+        listItem = null;
+
+        return super.saveState(context);
     }
 }
