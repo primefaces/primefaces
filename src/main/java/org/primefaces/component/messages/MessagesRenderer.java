@@ -216,7 +216,7 @@ public class MessagesRenderer extends UINotificationRenderer {
                     Iterator<FacesMessage> messagesIterator = context.getMessages(key);
                     while (messagesIterator.hasNext()) {
                         if (messages == null) {
-                            messages = new ArrayList<>();
+                            messages = new ArrayList<>(5);
                         }
                         messages.add(messagesIterator.next());
                     }
@@ -236,7 +236,7 @@ public class MessagesRenderer extends UINotificationRenderer {
                         while (messagesIterator.hasNext()) {
                             FacesMessage next = messagesIterator.next();
                             if (messages == null) {
-                                messages = new ArrayList<>();
+                                messages = new ArrayList<>(5);
                             }
                             if (!messages.contains(next)) {
                                 messages.add(next);
@@ -250,7 +250,7 @@ public class MessagesRenderer extends UINotificationRenderer {
             Iterator<FacesMessage> messagesIterator = context.getMessages(null);
             while (messagesIterator.hasNext()) {
                 if (messages == null) {
-                    messages = new ArrayList<>();
+                    messages = new ArrayList<>(5);
                 }
                 messages.add(messagesIterator.next());
             }
@@ -266,7 +266,7 @@ public class MessagesRenderer extends UINotificationRenderer {
                     Iterator<FacesMessage> messagesIterator = context.getMessages(key);
                     while (messagesIterator.hasNext()) {
                         if (messages == null) {
-                            messages = new ArrayList<>();
+                            messages = new ArrayList<>(5);
                         }
                         messages.add(messagesIterator.next());
                     }
