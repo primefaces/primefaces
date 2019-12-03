@@ -227,8 +227,8 @@ public class MessagesRenderer extends UINotificationRenderer {
             if (forType == null || forType.equals("expression")) {
                 List<UIComponent> forComponents = SearchExpressionFacade.resolveComponents(context, uiMessages, _for,
                         SearchExpressionUtils.SET_IGNORE_NO_RESULT);
-                for (UIComponent forComponent : forComponents) {
-
+                for (int i = 0; i < forComponents.size(); i++) {
+                    UIComponent forComponent = forComponents.get(i);
                     String forComponentClientId = forComponent.getClientId(context);
                     if (!_for.equals(forComponentClientId)) {
 
