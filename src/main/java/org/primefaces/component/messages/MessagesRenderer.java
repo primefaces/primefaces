@@ -222,21 +222,22 @@ public class MessagesRenderer extends UINotificationRenderer {
 
             // clientId / SearchExpression case
             if (forType == null || forType.equals("expression")) {
-                UIComponent forComponent = SearchExpressionFacade.resolveComponent(context, uiMessages, _for,
-                        SearchExpressionUtils.SET_IGNORE_NO_RESULT);
-                if (forComponent != null) {
-
-                    String forComponentClientId = forComponent.getClientId(context);
-                    if (!_for.equals(forComponentClientId)) {
-
-                        Iterator<FacesMessage> messagesIterator = context.getMessages(forComponentClientId);
-                        while (messagesIterator.hasNext()) {
-                            FacesMessage next = messagesIterator.next();
-                            if (messages == null) {
-                                messages = new ArrayList<>();
-                            }
-                            if (!messages.contains(next)) {
-                                messages.add(next);
+                String[] fors = _for.split(" ");
+                for (String messageFor : fors) {
+                    List<UIComponent> forComponents = SearchExpressionFacade.resolveComponents(context, uiMessages, messageFor,
+                                SearchExpressionUtils.SET_IGNORE_NO_RESULT);
+                    for (UIComponent forComponent : forComponents) {
+                        String forComponentClientId = forComponent.getClientId(context);
+                        if (!messageFor.equals(forComponentClientId)) {
+                            Iterator<FacesMessage> messagesIterator = context.getMessages(forComponentClientId);
+                            while (messagesIterator.hasNext()) {
+                                FacesMessage next = messagesIterator.next();
+                                if (messages == null) {
+                                    messages = new ArrayList<>();
+                                }
+                                if (!messages.contains(next)) {
+                                    messages.add(next);
+                                }
                             }
                         }
                     }
