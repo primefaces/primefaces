@@ -125,6 +125,11 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
     },
 
     getValue: function () {
-        return this.autonumeric.getNumericString();
+        var val = this.autonumeric.getNumericString();
+        if (val && this.cfg.decimalPlaces) {
+            return parseFloat(val).toFixed(this.cfg.decimalPlaces);
+        }
+
+        return val;
     }
 });
