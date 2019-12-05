@@ -22,7 +22,8 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
             var keyCode = $.ui.keyCode;
 
             data = data || e.data;
-            if (($this.scope && data.scopeEnter) || (!$this.scope && (e.which == keyCode.ENTER))) {
+            if (($this.scope && data.scopeEnter && data.scopeDefaultCommandId === $this.id)
+                    || (!$this.scope && !data.scopeEnter && (e.which == keyCode.ENTER))) {
                 //do not proceed if target is a textarea,button or link
                 if ($(e.target).is('textarea,button,input[type="submit"],a')) {
                     return true;
@@ -40,7 +41,7 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
             this.scope.off('keydown.' + this.id).on('keydown.' + this.id, function (e) {
                 var keyCode = $.ui.keyCode;
                 if (e.which == keyCode.ENTER) {
-                    closestForm.trigger(e, {scopeEnter: true});
+                    closestForm.trigger(e, {scopeEnter: true, scopeDefaultCommandId: $this.id});
                     //e.preventDefault();
                     e.stopPropagation();
                 }
