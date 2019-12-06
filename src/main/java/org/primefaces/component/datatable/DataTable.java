@@ -25,6 +25,8 @@ package org.primefaces.component.datatable;
 
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
@@ -178,6 +180,7 @@ public class DataTable extends DataTableBase {
             .put("virtualScroll", PageEvent.class)
             .build();
 
+    private static final Pattern STATIC_FIELD_REGEX = Pattern.compile("^#\\{\\w+\\.(.*)\\}$");
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     private int columnsCountWithSpan = -1;
@@ -667,20 +670,23 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    public String resolveStaticField(ValueExpression expression) {
-        if (expression != null) {
-            String expressionString = expression.getExpressionString();
-            if (expressionString.startsWith("#{")) {
-                expressionString = expressionString.substring(2, expressionString.indexOf('}')); //Remove #{}
-                return expressionString.substring(expressionString.indexOf('.') + 1); //Remove var
+    /**
+     * Extract bean's property from a value expression (e.g "#{car.year}")
+     * @param exprVE value expression
+     * @return bean's property name (e.g "year")
+     */
+    public String resolveStaticField(ValueExpression exprVE) {
+        if (exprVE != null) {
+            String exprStr = exprVE.getExpressionString();
+            Matcher matcher = STATIC_FIELD_REGEX.matcher(exprStr);
+            if (matcher.find()) {
+                return matcher.group(1);
             }
         }
-
         return null;
     }
 
     public String resolveDynamicField(ValueExpression expression) {
-
         if (expression == null) {
             return null;
         }

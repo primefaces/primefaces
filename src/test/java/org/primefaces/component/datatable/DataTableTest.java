@@ -48,7 +48,7 @@ public class DataTableTest {
 
         when(exprVE.getExpressionString()).thenReturn("#{car}");
         field = table.resolveStaticField(exprVE);
-        Assertions.assertEquals("car", field);
+        Assertions.assertNull(field);
 
         when(exprVE.getExpressionString()).thenReturn("car.year");
         field = table.resolveStaticField(exprVE);
