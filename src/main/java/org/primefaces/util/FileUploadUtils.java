@@ -286,10 +286,8 @@ public class FileUploadUtils {
         return true;
     }
 
-    public static void performVirusScan(FacesContext facesContext, FileUpload fileUpload, InputStream inputStream) throws VirusException {
-        if (fileUpload.isPerformVirusScan()) {
-            PrimeApplicationContext.getCurrentInstance(facesContext).getVirusScannerService().performVirusScan(inputStream);
-        }
+    public static void performVirusScan(FacesContext facesContext, InputStream inputStream) throws VirusException {
+        PrimeApplicationContext.getCurrentInstance(facesContext).getVirusScannerService().performVirusScan(inputStream);
     }
 
     public static boolean isValidFile(FacesContext context, FileUpload fileUpload, UploadedFile uploadedFile) throws IOException {
@@ -297,9 +295,9 @@ public class FileUploadUtils {
         PrimeApplicationContext appContext = PrimeApplicationContext.getCurrentInstance(context);
         boolean valid = (sizeLimit == null || uploadedFile.getSize() <= sizeLimit)
                 && FileUploadUtils.isValidType(appContext, fileUpload, uploadedFile);
-        if (valid) {
+        if (valid && fileUpload.isPerformVirusScan()) {
             try (InputStream input = uploadedFile.getInputStream()) {
-                FileUploadUtils.performVirusScan(context, fileUpload, input);
+                FileUploadUtils.performVirusScan(context, input);
             }
             catch (VirusException ex) {
                 return false;
