@@ -294,10 +294,10 @@ public class FileUploadUtils {
         Long sizeLimit = fileUpload.getSizeLimit();
         PrimeApplicationContext appContext = PrimeApplicationContext.getCurrentInstance(context);
         boolean valid = (sizeLimit == null || uploadedFile.getSize() <= sizeLimit)
-                && FileUploadUtils.isValidType(appContext, fileUpload, uploadedFile);
+                && isValidType(appContext, fileUpload, uploadedFile);
         if (valid && fileUpload.isPerformVirusScan()) {
             try (InputStream input = uploadedFile.getInputStream()) {
-                FileUploadUtils.performVirusScan(context, input);
+                performVirusScan(context, input);
             }
             catch (VirusException ex) {
                 return false;
