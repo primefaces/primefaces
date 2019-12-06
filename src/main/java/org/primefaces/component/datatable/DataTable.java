@@ -620,7 +620,7 @@ public class DataTable extends DataTableBase {
 
         return resolveColumnField(column);
     }
-  
+
     public String resolveColumnField(UIColumn column) {
         ValueExpression columnSortByVE = column.getValueExpression(PropertyKeys.sortBy.toString());
         String columnField;
