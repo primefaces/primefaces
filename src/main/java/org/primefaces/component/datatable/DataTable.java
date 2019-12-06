@@ -607,27 +607,20 @@ public class DataTable extends DataTableBase {
     }
 
     protected String resolveSortField() {
-        String sortField = null;
         UIColumn column = getSortColumn();
-        ValueExpression tableSortByVE = getValueExpression(PropertyKeys.sortBy.toString());
-        Object tableSortByProperty = getSortBy();
-
         if (column == null) {
-            String field = getSortField();
-            if (field == null) {
-                sortField = (tableSortByVE == null) ? (String) tableSortByProperty : resolveStaticField(tableSortByVE);
+            String sortField = getSortField();
+            if (sortField == null) {
+                ValueExpression tableSortByVE = getValueExpression(PropertyKeys.sortBy.toString());
+                sortField = (tableSortByVE == null) ? (String) getSortBy() : resolveStaticField(tableSortByVE);
             }
-            else {
-                sortField = field;
-            }
-        }
-        else {
-            sortField = resolveColumnField(sortColumn);
+
+            return sortField;
         }
 
-        return sortField;
+        return resolveColumnField(column);
     }
-
+  
     public String resolveColumnField(UIColumn column) {
         ValueExpression columnSortByVE = column.getValueExpression(PropertyKeys.sortBy.toString());
         String columnField;
