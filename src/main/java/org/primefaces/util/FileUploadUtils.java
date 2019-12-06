@@ -139,9 +139,9 @@ public class FileUploadUtils {
      */
     public static boolean isValidType(PrimeApplicationContext context, FileUpload fileUpload, UploadedFile uploadedFile) {
         String fileName = uploadedFile.getFileName();
-        try {
+        try (InputStream input = uploadedFile.getInputStream()) {
             boolean validType = isValidFileName(fileUpload, uploadedFile)
-                        && isValidFileContent(context, fileUpload, fileName, uploadedFile.getInputStream());
+                        && isValidFileContent(context, fileUpload, fileName, input);
             if (validType) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine(String.format("The uploaded file %s meets the filename and content type specifications", fileName));
@@ -298,8 +298,8 @@ public class FileUploadUtils {
         boolean valid = (sizeLimit == null || uploadedFile.getSize() <= sizeLimit)
                 && FileUploadUtils.isValidType(appContext, fileUpload, uploadedFile);
         if (valid) {
-            try {
-                FileUploadUtils.performVirusScan(context, fileUpload, uploadedFile.getInputStream());
+            try (InputStream input = uploadedFile.getInputStream()) {
+                FileUploadUtils.performVirusScan(context, fileUpload, input);
             }
             catch (VirusException ex) {
                 return false;
