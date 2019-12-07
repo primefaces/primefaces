@@ -23,12 +23,15 @@
  */
 package org.primefaces.mock;
 
+import de.odysseus.el.util.SimpleContext;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.el.ELContext;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ProjectStage;
@@ -43,6 +46,7 @@ import javax.faces.render.RenderKit;
 
 public class FacesContextMock extends FacesContext {
 
+    private ELContext ELcontext = new SimpleContext();
     private ExternalContext externalContext = new ExternalContextMock();
     private Application application = new ApplicationMock();
     private PartialViewContext partialViewContext = new PartialViewContextMock();
@@ -203,5 +207,10 @@ public class FacesContextMock extends FacesContext {
     @Override
     public boolean isPostback() {
         return false;
+    }
+
+    @Override
+    public ELContext getELContext() {
+        return ELcontext;
     }
 }

@@ -25,6 +25,8 @@ package org.primefaces.component.datatable;
 
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
@@ -178,6 +180,7 @@ public class DataTable extends DataTableBase {
             .put("virtualScroll", PageEvent.class)
             .build();
 
+    private static final Pattern DYNAMIC_FIELD_REGEX = Pattern.compile("^#\\{\\w+\\[(\\w+\\..+)\\]\\}$");
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     private int columnsCountWithSpan = -1;
@@ -665,31 +668,29 @@ public class DataTable extends DataTableBase {
         return null;
     }
 
-    public String resolveDynamicField(ValueExpression expression) {
-
-        if (expression == null) {
+    /**
+     * Get bean's property value from a value expression.
+     * Support old syntax (e.g #{car[column.property]}) instead of #{column.property}
+     * @param exprVE
+     * @return
+     */
+    public String resolveDynamicField(ValueExpression exprVE) {
+        if (exprVE == null) {
             return null;
         }
 
         FacesContext context = getFacesContext();
         ELContext elContext = context.getELContext();
+        String exprStr = exprVE.getExpressionString();
 
-        String expressionString = expression.getExpressionString();
-
-        // old syntax compatibility
-        // #{car[column.property]}
-        // new syntax is:
-        // #{column.property} or even a method call
-        if (expressionString.startsWith("#{" + getVar() + "[")) {
-            expressionString = expressionString.substring(expressionString.indexOf('[') + 1, expressionString.indexOf(']'));
-            expressionString = "#{" + expressionString + "}";
-
-            ValueExpression dynaVE = context.getApplication()
-                    .getExpressionFactory().createValueExpression(elContext, expressionString, String.class);
-            return (String) dynaVE.getValue(elContext);
+        Matcher matcher = DYNAMIC_FIELD_REGEX.matcher(exprStr );
+        if (matcher.find()) {
+            exprStr = matcher.group(1);
+            exprVE = context.getApplication().getExpressionFactory()
+                    .createValueExpression(elContext, "#{" + exprStr  + "}", String.class);
         }
 
-        return (String) expression.getValue(elContext);
+        return (String) exprVE.getValue(elContext);
     }
 
     public void clearLazyCache() {

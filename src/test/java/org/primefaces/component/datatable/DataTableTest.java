@@ -23,13 +23,22 @@
  */
 package org.primefaces.component.datatable;
 
+import de.odysseus.el.util.SimpleContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.primefaces.el.MyBean;
+import org.primefaces.el.MyContainer;
+import org.primefaces.mock.FacesContextMock;
 
+import javax.el.ELContext;
+import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import java.io.Serializable;
+
+import static org.mockito.Mockito.*;
 
 public class DataTableTest {
 
@@ -53,5 +62,31 @@ public class DataTableTest {
         when(exprVE.getExpressionString()).thenReturn("car.year");
         field = table.resolveStaticField(exprVE);
         Assertions.assertNull(field);
+    }
+
+    @Test
+    public void testResolveDynamicField() {
+        DataTable table = new DataTable();
+        FacesContext context = new FacesContextMock();
+        ExpressionFactory expFactory = context.getApplication().getExpressionFactory();
+
+        MyBean bean = new MyBean();
+        MyContainer container = new MyContainer();
+        container.setValue("MyValue");
+        bean.setContainer(container);
+
+        ((SimpleContext)context.getELContext()).setVariable("column",
+                expFactory.createValueExpression(bean, MyBean.class));
+
+        // old syntax
+        ValueExpression exprVE = expFactory.createValueExpression(
+                context.getELContext(), "#{car[column.container.value]}", String.class);
+        String field = table.resolveDynamicField(exprVE);
+        Assertions.assertEquals("MyValue", field);
+
+        // new syntax
+        exprVE = expFactory.createValueExpression(context.getELContext(), "#{column.container.value}", String.class);
+        field = table.resolveDynamicField(exprVE);
+        Assertions.assertEquals("MyValue", field);
     }
 }
