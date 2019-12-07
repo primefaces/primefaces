@@ -261,31 +261,24 @@ public class FilterFeature implements DataTableFeature {
     }
 
     public String getFilterField(DataTable table, UIColumn column) {
-        String filterField = null;
         ValueExpression filterByVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
 
         if (column.isDynamic()) {
             ((DynamicColumn) column).applyStatelessModel();
-            Object filterByProperty = column.getFilterBy();
             String field = column.getField();
             if (field == null) {
-                filterField = (filterByProperty == null) ? table.resolveDynamicField(filterByVE) : filterByProperty.toString();
+                Object filterByProperty = column.getFilterBy();
+                field = (filterByProperty == null) ? table.resolveDynamicField(filterByVE) : filterByProperty.toString();
             }
-            else {
-                filterField = field;
-            }
+            return field;
         }
         else {
             String field = column.getField();
             if (field == null) {
-                filterField = (filterByVE == null) ? (String) column.getFilterBy() : table.resolveStaticField(filterByVE);
+                field = (filterByVE == null) ? (String) column.getFilterBy() : table.resolveStaticField(filterByVE);
             }
-            else {
-                filterField = field;
-            }
+            return field;
         }
-
-        return filterField;
     }
 
     public List<FilterMeta> populateFilterMeta(FacesContext context, DataTable table, String globalFilterParam) {
