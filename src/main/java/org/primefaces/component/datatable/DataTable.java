@@ -180,7 +180,11 @@ public class DataTable extends DataTableBase {
             .put("virtualScroll", PageEvent.class)
             .build();
 
-    private static final Pattern DYNAMIC_FIELD_REGEX = Pattern.compile("^#\\{\\w+\\[(\\w+\\..+)\\]\\}$");
+    /**
+     * Backward compatibility for column properties (e.g sortBy, filterBy)
+     * using old syntax #{car[column.property]}) instead of #{column.property}
+     */
+    private static final Pattern OLD_SYNTAX_COLUMN_PROPERTY_REGEX = Pattern.compile("^#\\{\\w+\\[(.+)]}$");
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     private int columnsCountWithSpan = -1;
@@ -683,7 +687,7 @@ public class DataTable extends DataTableBase {
         ELContext elContext = context.getELContext();
         String exprStr = exprVE.getExpressionString();
 
-        Matcher matcher = DYNAMIC_FIELD_REGEX.matcher(exprStr );
+        Matcher matcher = OLD_SYNTAX_COLUMN_PROPERTY_REGEX.matcher(exprStr );
         if (matcher.find()) {
             exprStr = matcher.group(1);
             exprVE = context.getApplication().getExpressionFactory()
