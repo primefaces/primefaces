@@ -623,30 +623,23 @@ public class DataTable extends DataTableBase {
 
     public String resolveColumnField(UIColumn column) {
         ValueExpression columnSortByVE = column.getValueExpression(PropertyKeys.sortBy.toString());
-        String columnField;
 
         if (column.isDynamic()) {
             ((DynamicColumn) column).applyStatelessModel();
-            Object sortByProperty = column.getSortBy();
             String field = column.getField();
             if (field == null) {
-                columnField = (sortByProperty == null) ? resolveDynamicField(columnSortByVE) : sortByProperty.toString();
+                Object sortByProperty = column.getSortBy();
+                field = (sortByProperty == null) ? resolveDynamicField(columnSortByVE) : sortByProperty.toString();
             }
-            else {
-                columnField = field;
-            }
+            return field;
         }
         else {
             String field = column.getField();
             if (field == null) {
-                columnField = (columnSortByVE == null) ? (String) column.getSortBy() : resolveStaticField(columnSortByVE);
+                field = (columnSortByVE == null) ? (String) column.getSortBy() : resolveStaticField(columnSortByVE);
             }
-            else {
-                columnField = field;
-            }
+            return field;
         }
-
-        return columnField;
     }
 
     public SortOrder convertSortOrder() {
