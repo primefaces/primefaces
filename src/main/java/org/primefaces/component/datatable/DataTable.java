@@ -180,7 +180,10 @@ public class DataTable extends DataTableBase {
             .put("virtualScroll", PageEvent.class)
             .build();
 
-    private static final Pattern STATIC_FIELD_REGEX = Pattern.compile("^#\\{\\w+\\.(.*)\\}$");
+    /**
+     * Used to extract bean's property from a value expression (e.g "#{car.year}" = year)
+     */
+    private static final Pattern STATIC_FIELD_REGEX = Pattern.compile("^#\\{\\w+\\.(.*)}$");
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     private int columnsCountWithSpan = -1;
