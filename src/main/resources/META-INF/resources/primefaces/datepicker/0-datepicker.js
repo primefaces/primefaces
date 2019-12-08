@@ -1491,7 +1491,11 @@
 
         onInputKeyDown: function (event) {
             this.isKeydown = true;
-            if (event.keyCode === 9) {
+            if (event.keyCode === 27) {
+                //put the focus back to the inputfield
+                this.inputfield.focus();
+            }
+            if (event.keyCode === 9 || event.keyCode === 27) {
                 if (this.options.touchUI) {
                     this.disableModality();
                 }
@@ -1840,6 +1844,9 @@
             }
 
             if (!this.options.inline && this.isSingleSelection() && (!this.options.showTime || this.options.hideOnDateTimeSelect)) {
+                //put the focus back to the inputfield
+                this.inputfield.focus();
+
                 setTimeout(function () {
                     $this.hideOverlay();
                 }, 100);
