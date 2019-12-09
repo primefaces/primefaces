@@ -323,11 +323,12 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //Labels
-        this.labels.on('click.selectCheckboxMenu', function() {
+        this.labels.on('click.selectCheckboxMenu', function(e) {
             var checkbox = $(this).prev().children('.ui-chkbox-box');
             $this.toggleItem(checkbox);
             checkbox.removeClass('ui-state-hover');
             PrimeFaces.clearSelection();
+            e.preventDefault();
         });
 
         PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.panel,
