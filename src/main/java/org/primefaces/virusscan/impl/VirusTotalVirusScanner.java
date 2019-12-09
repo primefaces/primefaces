@@ -87,7 +87,7 @@ public class VirusTotalVirusScanner implements VirusScanner {
                 case 403:
                     throw new FacesException("Forbidden. You don't have enough privileges to make the request.");
                 default:
-                    throw new FacesException("Unexpected HTTP code calling Virus Total web service.");
+                    throw new FacesException("Unexpected HTTP code " + code + " calling Virus Total web service.");
             }
 
             try (InputStream response = connection.getInputStream()) {
