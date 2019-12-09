@@ -24,6 +24,7 @@
 package org.primefaces.virusscan.impl;
 
 import org.apache.commons.io.IOUtils;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.virusscan.VirusException;
@@ -88,7 +89,7 @@ public class VirusTotalVirusScanner implements VirusScanner {
                 }
             }
         }
-        catch (IOException | NoSuchAlgorithmException ex) {
+        catch (JSONException | IOException | NoSuchAlgorithmException ex) {
             if (LOGGER.isLoggable(Level.WARNING)) {
                 LOGGER.log(Level.WARNING, "Cannot perform virus scan", ex);
             }
