@@ -75,20 +75,7 @@ public class VirusTotalVirusScanner implements VirusScanner {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.connect();
-            int code = connection.getResponseCode();
-            switch (code) {
-                case 200:
-                    // OK
-                    break;
-                case 204:
-                    throw new FacesException("Request rate limit exceeded. You are making more requests than allowed.");
-                case 400:
-                    throw new FacesException("Bad request. Your request was somehow incorrect.");
-                case 403:
-                    throw new FacesException("Forbidden. You don't have enough privileges to make the request.");
-                default:
-                    throw new FacesException("Unexpected HTTP code " + code + " calling Virus Total web service.");
-            }
+            checkResponseCode(connection.getResponseCode());
 
             try (InputStream response = connection.getInputStream()) {
                 JSONObject json = new JSONObject(IOUtils.toString(response, "UTF-8"));
@@ -113,6 +100,26 @@ public class VirusTotalVirusScanner implements VirusScanner {
                 LOGGER.log(Level.WARNING, "Cannot perform virus scan", ex);
             }
             throw new FacesException("Cannot perform virus scan", ex);
+        }
+    }
+
+    protected void checkResponseCode(int code) {
+        switch (code) {
+            case 200:
+                // OK
+                break;
+            case 204:
+                throw new FacesException("Request rate limit exceeded. You are making more requests than allowed. "
+                            + "You have exceeded one of your quotas (minute, daily or monthly). Daily quotas are reset every day at 00:00 UTC.");
+            case 400:
+                throw new FacesException("Bad request. Your request was somehow incorrect. "
+                            + "This can be caused by missing arguments or arguments with wrong values.");
+            case 403:
+                throw new FacesException("Forbidden. You don't have enough privileges to make the request. "
+                            + "You may be doing a request without providing an API key or you may be making a request "
+                            + "to a Private API without having the appropriate privileges.");
+            default:
+                throw new FacesException("Unexpected HTTP code " + code + " calling Virus Total web service.");
         }
     }
 
