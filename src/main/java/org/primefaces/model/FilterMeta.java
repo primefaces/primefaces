@@ -89,4 +89,10 @@ public class FilterMeta implements Serializable {
     public void setColumn(UIColumn column) {
         this.column = column;
     }
+
+    @Override
+    public String toString() {
+        return "FilterMeta [filterField=" + filterField + ", columnKey=" + columnKey + ", filterByVE=" + filterByVE + ", filterMatchMode=" + filterMatchMode
+                    + ", filterValue=" + filterValue + "]";
+    }
 }
