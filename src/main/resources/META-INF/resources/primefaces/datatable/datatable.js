@@ -2312,7 +2312,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     bindEditEvents: function() {
         var $this = this;
-        this.cfg.cellSeparator = this.cfg.cellSeparator||' ';
         this.cfg.saveOnCellBlur = (this.cfg.saveOnCellBlur === false) ? false : true;
 
         if(this.cfg.editMode === 'row') {
@@ -2360,16 +2359,30 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             });
         }
         else if(this.cfg.editMode === 'cell') {
-            var cellSelector = '> tr > td.ui-editable-column',
+            var originalCellSelector = '> tr > td.ui-editable-column'
+            cellSelector = this.cfg.cellSeparator || originalCellSelector,
             editEvent = (this.cfg.editInitEvent !== 'click') ? this.cfg.editInitEvent + '.datatable-cell click.datatable-cell' : 'click.datatable-cell';
+
+            if (this.cfg.cellSeparator) {
+                this.tbody.off(editEvent, originalCellSelector)
+                    .on(editEvent, originalCellSelector, null, function (e) {
+                        $this.incellClick = true;
+
+                        if (!$(this).hasClass('ui-cell-editing') && e.type === $this.cfg.editInitEvent && $this.cfg.editInitEvent === "dblclick") {
+                            $this.incellClick = false;
+                        }
+                    });
+            }
 
             this.tbody.off(editEvent, cellSelector)
                         .on(editEvent, cellSelector, null, function(e) {
                             $this.incellClick = true;
 
-                            var cell = $(this);
+                            var item = $(this),
+                            cell = item.hasClass('ui-editable-column') ? item : item.closest('.ui-editable-column');
+
                             if(!cell.hasClass('ui-cell-editing') && e.type === $this.cfg.editInitEvent) {
-                                $this.showCellEditor($(this));
+                                $this.showCellEditor(cell);
 
                                 if($this.cfg.editInitEvent === "dblclick") {
                                     $this.incellClick = false;
