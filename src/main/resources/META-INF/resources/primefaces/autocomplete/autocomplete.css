@@ -1,6 +1,7 @@
 .ui-autocomplete {
     width: auto;
-    zoom: 1;
+    transform: scale(1);
+    transform-origin: 0 0; 
     cursor: pointer;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
