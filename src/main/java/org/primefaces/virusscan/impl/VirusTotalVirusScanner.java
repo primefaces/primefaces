@@ -24,6 +24,7 @@
 package org.primefaces.virusscan.impl;
 
 import org.apache.commons.io.IOUtils;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.virusscan.VirusException;
@@ -34,6 +35,7 @@ import javax.faces.context.FacesContext;
 import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -70,7 +72,12 @@ public class VirusTotalVirusScanner implements VirusScanner {
             md.update(content);
             String hash = DatatypeConverter.printHexBinary(md.digest());
             URL url = new URL(String.format(API_ENDPOINT, EscapeUtils.forUriComponent(key), EscapeUtils.forUriComponent(hash)));
-            try (InputStream response = url.openStream()) {
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
+            checkResponseCode(connection.getResponseCode());
+
+            try (InputStream response = connection.getInputStream()) {
                 JSONObject json = new JSONObject(IOUtils.toString(response, "UTF-8"));
                 int responseCode = json.getInt("response_code");
                 if (LOGGER.isLoggable(Level.FINE)) {
@@ -88,11 +95,31 @@ public class VirusTotalVirusScanner implements VirusScanner {
                 }
             }
         }
-        catch (IOException | NoSuchAlgorithmException ex) {
+        catch (JSONException | IOException | NoSuchAlgorithmException ex) {
             if (LOGGER.isLoggable(Level.WARNING)) {
                 LOGGER.log(Level.WARNING, "Cannot perform virus scan", ex);
             }
             throw new FacesException("Cannot perform virus scan", ex);
+        }
+    }
+
+    protected void checkResponseCode(int code) {
+        switch (code) {
+            case 200:
+                // OK
+                break;
+            case 204:
+                throw new FacesException("Request rate limit exceeded. You are making more requests than allowed. "
+                            + "You have exceeded one of your quotas (minute, daily or monthly). Daily quotas are reset every day at 00:00 UTC.");
+            case 400:
+                throw new FacesException("Bad request. Your request was somehow incorrect. "
+                            + "This can be caused by missing arguments or arguments with wrong values.");
+            case 403:
+                throw new FacesException("Forbidden. You don't have enough privileges to make the request. "
+                            + "You may be doing a request without providing an API key or you may be making a request "
+                            + "to a Private API without having the appropriate privileges.");
+            default:
+                throw new FacesException("Unexpected HTTP code " + code + " calling Virus Total web service.");
         }
     }
 
