@@ -1168,11 +1168,6 @@ public class DataTableRenderer extends DataRenderer {
         int rowCount = table.getRowCount();
         int rowCountToRender = rows == 0 ? (table.isLiveScroll() ? (table.getScrollRows() + table.getScrollOffset()) : rowCount) : rows;
 
-        if (table.isVirtualScroll()) {
-            int virtualScrollRowCount = (table.getScrollRows() * 2);
-            rowCountToRender = virtualScrollRowCount > rowCount ? rowCount : virtualScrollRowCount;
-        }
-
         int frozenRows = table.getFrozenRows();
         boolean hasData = rowCount > 0;
 
