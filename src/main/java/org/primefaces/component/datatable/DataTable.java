@@ -622,7 +622,7 @@ public class DataTable extends DataTableBase {
     }
 
     public String resolveColumnField(UIColumn column) {
-        ValueExpression columnSortByVE = column.getValueExpression(PropertyKeys.sortBy.toString());
+        ValueExpression columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.toString());
 
         if (column.isDynamic()) {
             ((DynamicColumn) column).applyStatelessModel();
