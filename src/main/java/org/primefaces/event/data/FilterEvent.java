@@ -48,6 +48,6 @@ public class FilterEvent extends AbstractAjaxBehaviorEvent {
     }
 
     public Map<String, FilterMeta> getFilterBy() {
-        return ((DataTable) this.source).getFilterMeta();
+        return ((DataTable) this.source).getFilterBy();
     }
 }

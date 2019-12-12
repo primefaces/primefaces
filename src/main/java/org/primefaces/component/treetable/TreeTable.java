@@ -300,13 +300,13 @@ public class TreeTable extends TreeTableBase {
         super.processValidators(context);
 
         if (isFilterRequest(context)) {
-            List<FilterMeta> filterMetadata = populateFilterMetaData(context, this);
-            setFilterMetadata(filterMetadata);
+            List<FilterMeta> filterBy = populateFilterBy(context, this);
+            setFilterMetadata(filterBy);
         }
     }
 
-    public List<FilterMeta> populateFilterMetaData(FacesContext context, TreeTable tt) {
-        List<FilterMeta> filterMetadata = new ArrayList<>();
+    public List<FilterMeta> populateFilterBy(FacesContext context, TreeTable tt) {
+        List<FilterMeta> filterBy = new ArrayList<>();
         String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
@@ -334,7 +334,7 @@ public class TreeTable extends TreeTableBase {
                     dynamicColumn.cleanModel();
                 }
 
-                filterMetadata.add(new FilterMeta(null,
+                filterBy.add(new FilterMeta(null,
                         column.getColumnKey(),
                         filterByVE,
                         MatchMode.byName(filterMatchMode),
@@ -342,7 +342,7 @@ public class TreeTable extends TreeTableBase {
             }
         }
 
-        return filterMetadata;
+        return filterBy;
     }
 
     public UIColumn findColumn(String columnKey) {

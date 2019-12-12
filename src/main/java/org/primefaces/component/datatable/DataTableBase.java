@@ -98,7 +98,7 @@ public abstract class DataTableBase extends UIData implements Widget, RTLAware, 
         saveOnCellBlur,
         clientCache,
         multiViewState,
-        filterMeta,
+        filterBy,
         sortMeta,
         globalFilter,
         cellEditMode,
@@ -582,12 +582,12 @@ public abstract class DataTableBase extends UIData implements Widget, RTLAware, 
         getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
     }
 
-    public Map<String, FilterMeta> getFilterMeta() {
-        return (Map<String, FilterMeta>) getStateHelper().eval(PropertyKeys.filterMeta, Collections.emptyMap());
+    public Map<String, FilterMeta> getFilterBy() {
+        return (Map<String, FilterMeta>) getStateHelper().eval(PropertyKeys.filterBy, Collections.emptyMap());
     }
 
-    public void setFilterMeta(Map<String, FilterMeta> filterMeta) {
-        getStateHelper().put(PropertyKeys.filterMeta, filterMeta);
+    public void setFilterBy(Map<String, FilterMeta> filterBy) {
+        getStateHelper().put(PropertyKeys.filterBy, filterBy);
     }
 
     public Map<String, SortMeta> getSortMeta() {

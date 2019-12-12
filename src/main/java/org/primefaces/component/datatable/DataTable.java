@@ -299,10 +299,10 @@ public class DataTable extends DataTableBase {
             setSelection(null);
         }
 
-        Map<String, FilterMeta> filterMeta = getFilterMeta();
-        if (!filterMeta.isEmpty()) {
+        Map<String, FilterMeta> filterBy = getFilterBy();
+        if (!filterBy.isEmpty()) {
             ELContext elContext = context.getELContext();
-            for (FilterMeta filter : filterMeta.values()) {
+            for (FilterMeta filter : filterBy.values()) {
                 UIColumn column = filter.getColumn();
                 if (column == null) {
                     column = findColumn(filter.getColumnKey());
@@ -566,10 +566,10 @@ public class DataTable extends DataTableBase {
             }
 
             if (isMultiSort()) {
-                data = lazyModel.load(first, getRows(), getSortMeta(), getFilterMeta());
+                data = lazyModel.load(first, getRows(), getSortMeta(), getFilterBy());
             }
             else {
-                data = lazyModel.load(first, getRows(), resolveSortField(), convertSortOrder(), getFilterMeta());
+                data = lazyModel.load(first, getRows(), resolveSortField(), convertSortOrder(), getFilterBy());
             }
 
             lazyModel.setPageSize(getRows());
@@ -590,10 +590,10 @@ public class DataTable extends DataTableBase {
 
             List<?> data = null;
             if (isMultiSort()) {
-                data = lazyModel.load(offset, rows, getSortMeta(), getFilterMeta());
+                data = lazyModel.load(offset, rows, getSortMeta(), getFilterBy());
             }
             else {
-                data = lazyModel.load(offset, rows, resolveSortField(), convertSortOrder(), getFilterMeta());
+                data = lazyModel.load(offset, rows, resolveSortField(), convertSortOrder(), getFilterBy());
             }
 
             lazyModel.setPageSize(rows);
@@ -714,7 +714,7 @@ public class DataTable extends DataTableBase {
     public void resetValue() {
         setValue(null);
         setFilteredValue(null);
-        setFilterMeta(null);
+        setFilterBy(null);
     }
 
     public void reset() {
@@ -1471,7 +1471,7 @@ public class DataTable extends DataTableBase {
                 isRowKeyRestored = true;
             }
 
-            setFilterMeta(ts.getFilterMeta());
+            setFilterBy(ts.getFilterBy());
             setColumns(findOrderedColumns(ts.getOrderedColumnsAsString()));
             setTogglableColumnsAsString(ts.getTogglableColumnsAsString());
             setResizableColumnsAsString(ts.getResizableColumnsAsString());

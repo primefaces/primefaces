@@ -147,8 +147,8 @@ public class DataTableRenderer extends DataRenderer {
                 table.setRowIndex(-1);
             }
 
-            Map<String, FilterMeta> filterMeta = table.getFilterMeta();
-            if (!filterMeta.isEmpty()) {
+            Map<String, FilterMeta> filterBy = table.getFilterBy();
+            if (!filterBy.isEmpty()) {
                 String globalFilter = table.getGlobalFilter();
                 if (globalFilter != null) {
                     UIComponent globalFilterComponent = SearchExpressionFacade.resolveComponent(context, table,
@@ -156,10 +156,10 @@ public class DataTableRenderer extends DataRenderer {
                     if (globalFilterComponent != null) {
                         ((ValueHolder) globalFilterComponent).setValue(globalFilter);
                     }
-                    filterMeta.put("globalFilter", new FilterMeta("globalFilter", globalFilter));
+                    filterBy.put("globalFilter", new FilterMeta("globalFilter", globalFilter));
                 }
 
-                filterFeature.filter(context, table, filterMeta);
+                filterFeature.filter(context, table, filterBy);
             }
         }
 
@@ -749,9 +749,9 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected Object findFilterValue(DataTable table, UIColumn column) {
-        Map<String, FilterMeta> filters = table.getFilterMeta();
-        if (!filters.isEmpty()) {
-            for (FilterMeta filter : filters.values()) {
+        Map<String, FilterMeta> filterBy = table.getFilterBy();
+        if (!filterBy.isEmpty()) {
+            for (FilterMeta filter : filterBy.values()) {
                 if (Objects.equals(filter.getColumnKey(), column.getColumnKey())) {
                     return filter.getFilterValue();
                 }

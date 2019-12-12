@@ -7562,11 +7562,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[List of FilterState objects to filter table by default.]]>
+                <![CDATA[Map of filters; This also allows to filter the table by default.]]>
             </description>
             <name>filterBy</name>
             <required>false</required>
-            <type>java.util.List</type>
+            <type>java.util.Map</type>
         </attribute>
         <attribute>
             <description>

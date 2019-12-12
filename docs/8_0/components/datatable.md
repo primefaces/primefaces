@@ -40,8 +40,8 @@ DataTable displays data in tabular format.
 | escapeText                | true               | Boolean          | Defines if headerText and footerText values on columns are escaped or not. Default is true.
 | expandableRowGroups       | false              | Boolean          | Makes row groups toggleable, default is false.
 | expandedRow               | false              | Boolean          | Defines if row should be rendered as expanded by default.
-| filterMeta                | null               | List             | List of FilterMeta objects to filter the table by default.
-| sortMeta                  | null               | List             | List of SortMeta objects to filter the table by default.
+| filterBy                  | null               | Map              | Map of filters; This also allows to filter the table by default.
+| sortMeta                  | null               | Map              | Map of sort infrmations; This also allows to sort the table by default.
 | filterDelay               | 300                | Integer          | Delay in milliseconds before sending an ajax filter query.
 | filterEvent               | keyup              | String           | Event to invoke filtering for input filters.
 | filteredValue             | null               | List             | List to keep filtered data.
@@ -769,7 +769,7 @@ public class CarBean {
     public CarBean() {
         model = new LazyDataModel() {
             @Override
-            public void load(int first, int pageSize, List<SortMeta> sortMeta, List<FilterMeta> filterMeta) {
+            public void load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
                 //load physical data
             }
         };
