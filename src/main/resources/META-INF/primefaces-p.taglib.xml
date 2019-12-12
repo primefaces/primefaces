@@ -31,6 +31,12 @@
     </function>
 
     <function>
+        <function-name>resolveFirstComponentWithId</function-name>
+        <function-class>org.primefaces.util.ComponentTraversalUtils</function-class>
+        <function-signature>java.lang.String firstWithId(java.lang.String, javax.faces.component.UIComponent)</function-signature>
+    </function>
+
+    <function>
         <function-name>escapeJavaScriptVarName</function-name>
         <function-class>org.primefaces.util.EscapeUtils</function-class>
         <function-signature>java.lang.String forJavaScriptVarName(java.lang.String)</function-signature>

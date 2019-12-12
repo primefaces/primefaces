@@ -7,8 +7,10 @@ PrimeFaces provides built-in EL extensions that are helpers to common use cases.
 | Function | Description |
 | --- | --- |
 resolveClientId(String expression, UIComponent source) | Returns the clientId of the resolved component for the given expression.
+resolveClientIds(String expression, UIComponent source) | Returns the clientIds of the resolved components for the given expression.
 resolveWidgetVar(String expression, UIComponent source) | Returns the widgetVar of the resolvee component for the given expression.
 resolveComponent(String expression, UIComponent source) | Returns the resolved UIComponent for the given expression.
+resolveFirstComponentWithId(String id, UIComponent source) | Returns the first UIComponent with the same id (not clientId!) as the requested id.. This method ignores any algorithm or NamingContainers.
 escapeJavaScriptVarName(String str) | Escapes a string for a JS var name (e.g. ':' in a clientId). This is useful if you need to use a clientId in the `name` of a `p:remoteCommand`.
 
 ### resolveClientId
