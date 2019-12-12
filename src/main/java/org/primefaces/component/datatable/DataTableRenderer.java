@@ -100,6 +100,10 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void preRender(FacesContext context, DataTable table) {
+        if (table.isMultiViewState()) {
+            table.restoreTableState();
+        }
+
         boolean defaultSorted = (table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null
                 || table.getSortBy() != null
                 || !table.getSortMeta().isEmpty());
@@ -108,13 +112,6 @@ public class DataTableRenderer extends DataRenderer {
             table.setDefaultSortByVE(table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()));
             table.setDefaultSortOrder(table.getSortOrder());
             table.setDefaultSortFunction(table.getSortFunction());
-        }
-
-        FilterFeature filterFeature = (FilterFeature) DataTable.FEATURES.get(DataTableFeatureKey.FILTER);
-        filterFeature.decode(context, table);
-
-        if (table.isMultiViewState()) {
-            table.restoreTableState();
         }
 
         if (table.isLazy()) {
@@ -159,6 +156,7 @@ public class DataTableRenderer extends DataRenderer {
                     filterBy.put("globalFilter", new FilterMeta("globalFilter", globalFilter));
                 }
 
+                FilterFeature filterFeature = (FilterFeature) DataTable.FEATURES.get(DataTableFeatureKey.FILTER);
                 filterFeature.filter(context, table, filterBy);
             }
         }
