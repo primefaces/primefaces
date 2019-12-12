@@ -25,6 +25,7 @@ package org.primefaces.component.datatable;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -39,7 +40,7 @@ public class TableState implements Serializable {
 
     private int rows;
 
-    private List<SortMeta> multiSortState;
+    private Map<String, SortMeta> multiSortState;
 
     private ValueExpression sortBy;
 
@@ -57,7 +58,7 @@ public class TableState implements Serializable {
 
     private List<Object> rowKeys;
 
-    private List<FilterMeta> filterMeta;
+    private Map<String, FilterMeta> filterMeta;
 
     private String orderedColumnsAsString;
 
@@ -81,11 +82,11 @@ public class TableState implements Serializable {
         this.rows = rows;
     }
 
-    public List<SortMeta> getSortMeta() {
+    public Map<String, SortMeta> getSortMeta() {
         return multiSortState;
     }
 
-    public void setSortMeta(List<SortMeta> multiSortState) {
+    public void setSortMeta(Map<String, SortMeta> multiSortState) {
         this.multiSortState = multiSortState;
     }
 
@@ -153,11 +154,11 @@ public class TableState implements Serializable {
         this.rowKeys = rowKeys;
     }
 
-    public List<FilterMeta> getFilterMeta() {
+    public Map<String, FilterMeta> getFilterMeta() {
         return filterMeta;
     }
 
-    public void setFilterMeta(List<FilterMeta> filterMeta) {
+    public void setFilterMeta(Map<String, FilterMeta> filterMeta) {
         this.filterMeta = filterMeta;
     }
 

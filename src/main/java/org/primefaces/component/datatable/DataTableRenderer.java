@@ -147,7 +147,7 @@ public class DataTableRenderer extends DataRenderer {
                 table.setRowIndex(-1);
             }
 
-            List<FilterMeta> filterMeta = table.getFilterMeta();
+            Map<String, FilterMeta> filterMeta = table.getFilterMeta();
             if (!filterMeta.isEmpty()) {
                 String globalFilter = table.getGlobalFilter();
                 if (globalFilter != null) {
@@ -156,7 +156,7 @@ public class DataTableRenderer extends DataRenderer {
                     if (globalFilterComponent != null) {
                         ((ValueHolder) globalFilterComponent).setValue(globalFilter);
                     }
-                    filterMeta.add(new FilterMeta("globalFilter", globalFilter));
+                    filterMeta.put("globalFilter", new FilterMeta("globalFilter", globalFilter));
                 }
 
                 filterFeature.filter(context, table, filterMeta);
@@ -165,7 +165,7 @@ public class DataTableRenderer extends DataRenderer {
 
         if (defaultSorted && table.isMultiViewState() && table.isDefaultSort()) {
             ValueExpression sortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
-            List<SortMeta> multiSortState = table.isMultiSort() ? table.getSortMeta() : null;
+            Map<String, SortMeta> multiSortState = table.isMultiSort() ? table.getSortMeta() : null;
             if (sortByVE != null || (multiSortState != null && !multiSortState.isEmpty())) {
                 TableState ts = table.getTableState(true);
                 ts.setSortBy(sortByVE);
@@ -655,13 +655,13 @@ public class DataTableRenderer extends DataRenderer {
         if (sortable) {
             ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
             Object tableSortBy = table.getSortBy();
-            List<SortMeta> sortMeta = table.getSortMeta();
+            Map<String, SortMeta> sortMeta = table.getSortMeta();
             boolean defaultSorted = (tableSortByVE != null || tableSortBy != null || !sortMeta.isEmpty());
 
             if (defaultSorted) {
                 if (table.isMultiSort()) {
                     if (sortMeta != null) {
-                        for (SortMeta meta : sortMeta) {
+                        for (SortMeta meta : sortMeta.values()) {
                             sortIcon = resolveDefaultSortIcon(column, meta);
 
                             if (sortIcon != null) {
@@ -749,11 +749,11 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected Object findFilterValue(DataTable table, UIColumn column) {
-        List<FilterMeta> filters = table.getFilterMeta();
+        Map<String, FilterMeta> filters = table.getFilterMeta();
         if (!filters.isEmpty()) {
-            for (FilterMeta filterState : filters) {
-                if (Objects.equals(filterState.getColumnKey(), column.getColumnKey())) {
-                    return filterState.getFilterValue();
+            for (FilterMeta filter : filters.values()) {
+                if (Objects.equals(filter.getColumnKey(), column.getColumnKey())) {
+                    return filter.getFilterValue();
                 }
             }
         }

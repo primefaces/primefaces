@@ -31,6 +31,7 @@ import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable {
 
@@ -581,19 +582,19 @@ public abstract class DataTableBase extends UIData implements Widget, RTLAware, 
         getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
     }
 
-    public List<FilterMeta> getFilterMeta() {
-        return (List<FilterMeta>) getStateHelper().eval(PropertyKeys.filterMeta, Collections.emptyList());
+    public Map<String, FilterMeta> getFilterMeta() {
+        return (Map<String, FilterMeta>) getStateHelper().eval(PropertyKeys.filterMeta, Collections.emptyMap());
     }
 
-    public void setFilterMeta(java.util.List<FilterMeta> filterMeta) {
+    public void setFilterMeta(Map<String, FilterMeta> filterMeta) {
         getStateHelper().put(PropertyKeys.filterMeta, filterMeta);
     }
 
-    public List<SortMeta> getSortMeta() {
-        return (List<SortMeta>) getStateHelper().eval(PropertyKeys.sortMeta, Collections.emptyList());
+    public Map<String, SortMeta> getSortMeta() {
+        return (Map<String, SortMeta>) getStateHelper().eval(PropertyKeys.sortMeta, Collections.emptyMap());
     }
 
-    public void setSortMeta(java.util.List<SortMeta> sortMeta) {
+    public void setSortMeta(Map<String, SortMeta> sortMeta) {
         getStateHelper().put(PropertyKeys.sortMeta, sortMeta);
     }
 

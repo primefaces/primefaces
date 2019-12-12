@@ -59,13 +59,13 @@ public class SortFeature implements DataTableFeature {
         if (table.isMultiSort()) {
             String[] sortKeys = sortKey.split(",");
             String[] sortOrders = sortDir.split(",");
-            List<SortMeta> sortMeta = new ArrayList<>(sortKeys.length);
+            Map<String, SortMeta> sortMeta = new HashMap<>(sortKeys.length);
 
             for (int i = 0; i < sortKeys.length; i++) {
                 UIColumn sortColumn = table.findColumn(sortKeys[i]);
                 String sortField = table.resolveColumnField(sortColumn);
 
-                sortMeta.add(
+                sortMeta.put(sortColumn.getColumnKey(),
                         new SortMeta(
                                 sortColumn.getColumnKey(),
                                 sortField,
@@ -131,7 +131,7 @@ public class SortFeature implements DataTableFeature {
 
         if (table.isMultiViewState()) {
             ValueExpression sortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
-            List<SortMeta> multiSortState = table.isMultiSort() ? table.getSortMeta() : null;
+            Map<String, SortMeta> multiSortState = table.isMultiSort() ? table.getSortMeta() : null;
             if (sortByVE != null || (multiSortState != null && !multiSortState.isEmpty())) {
                 TableState ts = table.getTableState(true);
                 ts.setSortBy(sortByVE);
@@ -183,8 +183,8 @@ public class SortFeature implements DataTableFeature {
 
         ChainedBeanPropertyComparator chainedComparator = new ChainedBeanPropertyComparator();
 
-        List<SortMeta> sortMeta = table.getSortMeta();
-        for (SortMeta meta : sortMeta) {
+        Map<String, SortMeta> sortMeta = table.getSortMeta();
+        for (SortMeta meta : sortMeta.values()) {
             BeanPropertyComparator comparator;
             UIColumn sortColumn = table.findColumn(meta.getColumnKey());
             ValueExpression sortByVE = sortColumn.getValueExpression(Column.PropertyKeys.sortBy.toString());

@@ -24,8 +24,8 @@
 package org.primefaces.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -130,18 +130,18 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
         this.rowCount = rowCount;
     }
 
-    public List<T> load(int first, int pageSize, String sortField, SortOrder sortOrder, List<FilterMeta> filterMeta) {
+    public List<T> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, FilterMeta> filterBy) {
 
-        List<SortMeta> sortMeta;
+        Map<String, SortMeta> sortBy;
         if (sortField == null) {
-            sortMeta = Collections.emptyList();
+            sortBy = Collections.emptyMap();
         }
         else {
-            sortMeta = new ArrayList<>(1);
-            sortMeta.add(new SortMeta(null, sortField, sortOrder == null ? SortOrder.UNSORTED : sortOrder, null));
+            sortBy = new HashMap<>(1);
+            sortBy.put(sortField, new SortMeta(null, sortField, sortOrder == null ? SortOrder.UNSORTED : sortOrder, null));
         }
 
-        return load(first, pageSize, sortMeta, filterMeta);
+        return load(first, pageSize, sortBy, filterBy);
     }
 
     /**
@@ -149,11 +149,11 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
      *
      * @param first the first entry
      * @param pageSize the page size
-     * @param sortMeta a list with all sort informations
-     * @param filterMeta a list with all filter informations
+     * @param sortBy a list with all sort informations
+     * @param filterBy a map with all filter informations
      * @return the data
      */
-    public List<T> load(int first, int pageSize, List<SortMeta> sortMeta, List<FilterMeta> filterMeta) {
+    public List<T> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
         throw new UnsupportedOperationException(
                 getMessage("Either the LazyDataModel#load for single or multi-sort must be implemented [component=%s,view=%s]."));
     }
@@ -184,49 +184,20 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
     }
 
     @Deprecated
-    public Iterator<T> iterator(String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-        List<SortMeta> sortMeta;
+    public Iterator<T> iterator(String sortField, SortOrder sortOrder, Map<String, FilterMeta> filterBy) {
+        Map<String, SortMeta> sortBy;
         if (sortField == null) {
-            sortMeta = Collections.emptyList();
+            sortBy = Collections.emptyMap();
         }
         else {
-            sortMeta = new ArrayList<>(1);
-            sortMeta.add(new SortMeta(null, sortField, sortOrder == null ? SortOrder.UNSORTED : sortOrder, null));
+            sortBy = new HashMap<>(1);
+            sortBy.put(sortField, new SortMeta(null, sortField, sortOrder == null ? SortOrder.UNSORTED : sortOrder, null));
         }
 
-        List<FilterMeta> filterMeta;
-        if (filters == null) {
-            filterMeta = Collections.emptyList();
-        }
-        else {
-            filterMeta = new ArrayList<>();
-            for (Map.Entry<String, Object> filter : filters.entrySet()) {
-                filterMeta.add(
-                    new FilterMeta(filter.getKey(), null, null, null, filter.getValue()));
-            }
-        }
-
-        return iterator(sortMeta, filterMeta);
+        return iterator(sortBy, filterBy);
     }
 
-    @Deprecated
-    public Iterator<T> iterator(List<SortMeta> sortMeta, Map<String, Object> filters) {
-        List<FilterMeta> filterMeta;
-        if (filters == null) {
-            filterMeta = Collections.emptyList();
-        }
-        else {
-            filterMeta = new ArrayList<>();
-            for (Map.Entry<String, Object> filter : filters.entrySet()) {
-                filterMeta.add(
-                    new FilterMeta(filter.getKey(), null, null, null, filter.getValue()));
-            }
-        }
-
-        return iterator(sortMeta, filterMeta);
-    }
-
-    public Iterator<T> iterator(List<SortMeta> sortMeta, List<FilterMeta> filterMeta) {
-        return new LazyDataModelIterator<>(this, sortMeta, filterMeta);
+    public Iterator<T> iterator(Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
+        return new LazyDataModelIterator<>(this, sortBy, filterBy);
     }
 }

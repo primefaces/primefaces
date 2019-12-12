@@ -218,7 +218,7 @@ public class DataScrollerRenderer extends CoreRenderer {
         LazyDataModel lazyModel = (LazyDataModel) ds.getValue();
 
         if (lazyModel != null) {
-            List<?> data = lazyModel.load(start, size, null, null, Collections.emptyList());
+            List<?> data = lazyModel.load(start, size, null, null, Collections.emptyMap());
             lazyModel.setPageSize(size);
             lazyModel.setWrappedData(data);
 

@@ -299,10 +299,10 @@ public class DataTable extends DataTableBase {
             setSelection(null);
         }
 
-        List<FilterMeta> filterMeta = getFilterMeta();
+        Map<String, FilterMeta> filterMeta = getFilterMeta();
         if (!filterMeta.isEmpty()) {
             ELContext elContext = context.getELContext();
-            for (FilterMeta filter : filterMeta) {
+            for (FilterMeta filter : filterMeta.values()) {
                 UIColumn column = filter.getColumn();
                 if (column == null) {
                     column = findColumn(filter.getColumnKey());
@@ -1512,17 +1512,18 @@ public class DataTable extends DataTableBase {
     }
 
     public String getSortMetaAsString(FacesContext context) {
-        List<SortMeta> multiSortMeta = getSortMeta();
+        Map<String, SortMeta> multiSortMeta = getSortMeta();
         if (multiSortMeta != null && !multiSortMeta.isEmpty()) {
             StringBuilder sb = new StringBuilder();
             sb.append("['");
-            for (int i = 0; i < multiSortMeta.size(); i++) {
-                SortMeta sortMeta = multiSortMeta.get(i);
+            int i = 0;
+            for (SortMeta sortMeta : multiSortMeta.values()) {
                 if (i > 0) {
                     sb.append("','");
                 }
                 UIColumn column = findColumn(sortMeta.getColumnKey());
                 sb.append(column.getClientId(context));
+                i++;
             }
             sb.append("']");
 
