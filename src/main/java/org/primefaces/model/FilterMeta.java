@@ -29,6 +29,8 @@ import org.primefaces.component.api.UIColumn;
 
 public class FilterMeta implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private String filterField;
     private String columnKey;
     private transient UIColumn column;

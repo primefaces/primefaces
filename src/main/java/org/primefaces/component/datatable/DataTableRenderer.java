@@ -156,7 +156,7 @@ public class DataTableRenderer extends DataRenderer {
                     filterBy.put("globalFilter", new FilterMeta("globalFilter", globalFilter));
                 }
 
-                FilterFeature filterFeature = (FilterFeature) DataTable.FEATURES.get(DataTableFeatureKey.FILTER);
+                FilterFeature filterFeature = (FilterFeature) table.getFeature(DataTableFeatureKey.FILTER);
                 filterFeature.filter(context, table, filterBy);
             }
         }
