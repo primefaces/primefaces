@@ -147,15 +147,16 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
     /**
      * Loads the data for the given parameters.
      *
-     * NOTE: Thats the only method that should be implemented by the user.
-     *
      * @param first the first entry
      * @param pageSize the page size
      * @param sortMeta a list with all sort informations
      * @param filterMeta a list with all filter informations
      * @return the data
      */
-    public abstract List<T> load(int first, int pageSize, List<SortMeta> sortMeta, List<FilterMeta> filterMeta);
+    public List<T> load(int first, int pageSize, List<SortMeta> sortMeta, List<FilterMeta> filterMeta) {
+        throw new UnsupportedOperationException(
+                getMessage("Either the LazyDataModel#load for single or multi-sort must be implemented [component=%s,view=%s]."));
+    }
 
     @Override
     public T getRowData(String rowKey) {
