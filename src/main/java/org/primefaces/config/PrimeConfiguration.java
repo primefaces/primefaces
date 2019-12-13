@@ -76,7 +76,7 @@ public class PrimeConfiguration {
         interpretEmptyStringAsNull = Boolean.parseBoolean(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.SUBMIT);
-        partialSubmitEnabled = (value != null) && value.equalsIgnoreCase("partial");
+        partialSubmitEnabled = "partial".equalsIgnoreCase(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.RESET_VALUES);
         resetValuesEnabled = Boolean.parseBoolean(value);
@@ -98,13 +98,8 @@ public class PrimeConfiguration {
         value = externalContext.getInitParameter(Constants.ContextParams.LEGACY_WIDGET_NAMESPACE);
         legacyWidgetNamespace = Boolean.parseBoolean(value);
 
-        if (environment.isBeanValidationAvailable()) {
-            value = externalContext.getInitParameter(Constants.ContextParams.BEAN_VALIDATION_DISABLED);
-            beanValidationEnabled = Boolean.parseBoolean(value);
-        }
-        else {
-            beanValidationEnabled = false;
-        }
+        beanValidationEnabled = environment.isBeanValidationAvailable()
+                && !Boolean.parseBoolean(externalContext.getInitParameter(Constants.ContextParams.BEAN_VALIDATION_DISABLED));
 
         value = externalContext.getInitParameter(Constants.ContextParams.INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES);
         interpolateClientSideValidationMessages = Boolean.parseBoolean(value);
