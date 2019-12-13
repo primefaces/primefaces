@@ -78,7 +78,7 @@
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.faces</artifactId>
-            <version>2.3.2</version>
+            <version>2.3.9</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -281,7 +281,7 @@
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>3.5.0</version>
+                <version>4.2.1</version>
                 <extensions>true</extensions>
                 <configuration>
                     <supportedProjectTypes>
@@ -339,7 +339,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.7.0</version>
+                <version>3.8.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -394,7 +394,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.0.2</version>
+                <version>3.2.0</version>
                 <configuration>
                     <archive>
                         <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
@@ -842,7 +842,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.2.1</version>
                 <configuration>
                     <shadedArtifactAttached>false</shadedArtifactAttached>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
@@ -933,7 +933,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>2.1</version>
+                        <version>3.2.0</version>
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
@@ -948,10 +948,11 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>2.10.4</version>
+                        <version>3.1.1</version>
                         <configuration>
                             <sourcepath>${basedir}/src/main/java</sourcepath>
-                            <additionalparam>-Xdoclint:none</additionalparam>
+                            <failOnError>false</failOnError>
+                            <doclint>none</doclint>
                         </configuration>
                         <executions>
                             <execution>
@@ -965,23 +966,7 @@
                     </plugin>
 
 
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.4</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                                <configuration>
-                                    <executable>gpg2</executable>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
+
 
                     <!--
                         don't skip *.js and *.css, we need to minify
