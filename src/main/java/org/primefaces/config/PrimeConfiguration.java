@@ -98,8 +98,8 @@ public class PrimeConfiguration {
         value = externalContext.getInitParameter(Constants.ContextParams.LEGACY_WIDGET_NAMESPACE);
         legacyWidgetNamespace = Boolean.parseBoolean(value);
 
-        beanValidationEnabled = environment.isBeanValidationAvailable()
-                && !Boolean.parseBoolean(externalContext.getInitParameter(Constants.ContextParams.BEAN_VALIDATION_DISABLED));
+        value = externalContext.getInitParameter(Constants.ContextParams.BEAN_VALIDATION_DISABLED);
+        beanValidationEnabled = environment.isBeanValidationAvailable() && !Boolean.parseBoolean(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES);
         interpolateClientSideValidationMessages = Boolean.parseBoolean(value);
