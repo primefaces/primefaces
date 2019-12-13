@@ -32,6 +32,8 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
             this.autonumeric.set(this.valueToRender);
         }
 
+        this.copyValueToHiddenInput();
+
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
         this.hiddenInput.data(PrimeFaces.CLIENT_ID_DATA, this.id);
