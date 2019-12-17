@@ -99,7 +99,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                             $this.cfg.onAdd.call($this, file, function(processedFile) {
                                 file = processedFile;
                                 data.files[0] = processedFile;
-                                this.addFileToRow(file, data);
+                                $this.addFileToRow(file, data);
                             });
                         }
                         else {
