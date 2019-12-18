@@ -157,11 +157,12 @@
         },
 
         setDate: function(date) {
-            this.value = this.parseValue(date);
+            var newDate = this.parseValue(date);
+            var newDateMeta = { day: newDate.getDate(), month: newDate.getMonth(), year: newDate.getFullYear(), selectable: true /*, today: true*/ };
 
             /* set changes */
-            this.panel.get(0).innerHTML = this.renderPanelElements();
-            this.inputfield.val(this.value);
+            this.updateViewDate(event, newDate);
+            this.onDateSelect(event, newDateMeta);
         },
 
         getDate: function() {
