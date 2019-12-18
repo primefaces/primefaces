@@ -271,7 +271,10 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
                     properties: properties
                 };
 
-                this.getBehavior("rangechanged").call(this, options);
+                // #5455 only fire if initiated by user
+                if (properties.byUser) {
+                    this.getBehavior("rangechanged").call(this, options); 
+                }
             }, this));
         }
 
