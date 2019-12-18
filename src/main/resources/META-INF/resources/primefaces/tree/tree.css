@@ -69,7 +69,10 @@
 
 .ui-tree .ui-chkbox {
     display: inline-block;
-    zoom: 1;
+    -moz-transform: scale(1);
+    -o-transform: scale(1);
+    -webkit-transform: scale(1);
+    transform: scale(1);
 }
 
 /** Horizontal Tree **/

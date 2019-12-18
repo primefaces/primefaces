@@ -231,13 +231,16 @@ input[type=text]::-ms-clear {
 
 /** SelectOneMenu **/
 .ui-selectonemenu {
-    display: inline-block;
-    position: relative;
-    width: auto;
-    zoom: 1;
-    cursor: pointer;
-    padding-right: 22px;
-    vertical-align: top;
+	display: inline-block;
+	position: relative;
+	width: auto;
+	-moz-transform: scaleX(1);
+	-o-transform: scaleX(1);
+	-webkit-transform: scaleX(1);
+	transform: scaleX(1);
+	cursor: pointer;
+	padding-right: 22px;
+	vertical-align: top;
 }
 
 .ui-selectonemenu .ui-selectonemenu-trigger {
@@ -389,7 +392,10 @@ input[type=text]::-ms-clear {
     text-decoration: none !important;
     cursor: pointer;
     text-align: center;
-    zoom: 1;
+    -moz-transform: scale(1);
+    -o-transform: scale(1);
+    -webkit-transform: scale(1);
+    transform: scale(1);
     overflow: visible; /* the overflow property removes extra width in IE */
 }
 
@@ -485,7 +491,10 @@ button.ui-button::-moz-focus-inner {
     display: inline-block;
     position: relative;
     width: auto;
-    zoom: 1;
+    -moz-transform: scale(1);
+    -o-transform: scale(1);
+    -webkit-transform: scale(1);
+    transform: scale(1);
     cursor: pointer;
 }
 
@@ -731,7 +740,10 @@ button.ui-button::-moz-focus-inner {
 /** IE Hacks **/
 div.ui-button, .ui-splitbutton {
     display: inline-block;
-    zoom: 1;
+    -moz-transform: scale(1);
+    -o-transform: scale(1);
+    -webkit-transform: scale(1);
+    transform: scale(1);
 }
 
 /** Password **/
