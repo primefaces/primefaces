@@ -1496,6 +1496,7 @@
                 //put the focus back to the inputfield
                 this.inputfield.focus();
             }
+            
             if (event.keyCode === 9 || event.keyCode === 27) {
                 if (this.options.touchUI) {
                     this.disableModality();
