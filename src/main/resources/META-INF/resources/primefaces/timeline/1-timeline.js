@@ -61,12 +61,12 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
 
      //@Override
     refresh: function(cfg) { 
-        this._super(cfg);
-
         // clean up memory
         if (this.instance) {
             this.instance.destroy();
         }
+
+        this._super(cfg);
     },
 
     //@Override
