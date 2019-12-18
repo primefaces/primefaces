@@ -3,7 +3,7 @@
 .ui-dialog.ui-overlay-hidden {display:block;}
 .ui-dialog .ui-dialog-titlebar { padding: .4em .4em .4em 1em; position: relative; border:0px; }
 .ui-dialog .ui-dialog-title { float: left; margin: .3em 16px .1em 0; } 
-.ui-dialog .ui-dialog-content {position: relative; border: 0; padding: .5em 1em; background: none; overflow: auto; transform: scale(1); transform-origin: 0 0;  }
+.ui-dialog .ui-dialog-content {position: relative; border: 0; padding: .5em 1em; background: none; overflow: auto; zoom: 1; }
 .ui-dialog .ui-dialog-content.ui-df-content {overflow: hidden; padding: 0;}
 .ui-dialog .ui-dialog-footer {padding: .4em 1em; border-width: 1px 0 0 0; text-align:left;}
 .ui-dialog .ui-dialog-buttonpane { text-align: left; background-image: none; margin: .5em 0 0 0; padding: .3em 1em .5em .4em; }

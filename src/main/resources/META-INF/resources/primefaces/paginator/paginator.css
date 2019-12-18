@@ -37,8 +37,7 @@
 .ui-paginator .ui-paginator-current {
 	display: inline-block;
 	padding: 2px 6px;
-	transform: scale(1); 
-	transform-origin: 0 0; 
+	zoom: 1;
 	margin-left: 1px;
 	margin-right: 1px;
 	text-decoration: none;
