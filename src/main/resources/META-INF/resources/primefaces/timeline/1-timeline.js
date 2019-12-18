@@ -59,6 +59,26 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
         this._bindTimelineEvents(el);
     },
 
+     //@Override
+    refresh: function(cfg) { 
+        this._super(cfg);
+
+        // clean up memory
+        if (this.instance) {
+            this.instance.destroy();
+        }
+    },
+
+    //@Override
+    destroy: function() {
+        this._super();
+
+        // clean up memory
+        if (this.instance) {
+            this.instance.destroy();
+        }
+    },
+    
     /**
      * Bind items events.
      */
