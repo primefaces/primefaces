@@ -111,14 +111,44 @@
 
             var parsedDefaultDate = this.parseValue(this.options.defaultDate);
 
+            var viewDateDefaultsToNow=false;
+
             this.value = parsedDefaultDate;
-            this.viewDate = this.options.viewDate ?
-                this.parseValue(this.options.viewDate)
-                :
-                ((((this.isMultipleSelection() || this.isRangeSelection()) && parsedDefaultDate instanceof Array) ? parsedDefaultDate[0] : parsedDefaultDate) || this.parseValue(new Date()));
+            if (this.options.viewDate) {
+                this.viewDate = this.parseValue(this.options.viewDate);
+            }
+            else {
+                if ((this.isMultipleSelection() || this.isRangeSelection()) && parsedDefaultDate instanceof Array) {
+                    this.viewDate = parsedDefaultDate[0];
+                }
+                else {
+                    this.viewDate = parsedDefaultDate;
+                }
+                if (this.viewDate === null) {
+                    this.viewDate = new Date();
+                    if (!this.options.showSeconds) {
+                        this.viewDate.setSeconds(0);
+                    }
+                    this.viewDate.setMilliseconds(0);
+                    viewDateDefaultsToNow = true;
+                }
+            }
             this.options.minDate = this.parseMinMaxValue(this.options.minDate);
             this.options.maxDate = this.parseMinMaxValue(this.options.maxDate);
             this.ticksTo1970 = (((1970 - 1) * 365 + Math.floor(1970 / 4) - Math.floor(1970 / 100) + Math.floor(1970 / 400)) * 24 * 60 * 60 * 10000000);
+
+            if (this.options.timeOnly && viewDateDefaultsToNow) {
+                if (this.options.minDate) {
+                    if (this.viewDate < this.options.minDate) {
+                        this.viewDate = new Date(this.options.minDate.getTime());
+                    }
+                }
+                if (this.options.maxDate) {
+                    if (this.viewDate > this.options.maxDate) {
+                        this.viewDate = new Date(this.options.maxDate.getTime());
+                    }
+                }
+            }
 
             if (this.options.yearRange === null && this.options.yearNavigator) {
                 var viewYear = this.viewDate.getFullYear();
@@ -904,7 +934,13 @@
             var time = this.parseTime(timeString, ampm);
             value.setHours(time.hour);
             value.setMinutes(time.minute);
-            value.setSeconds(time.second);
+            if (this.options.showSeconds) {
+                value.setSeconds(time.second);
+            }
+            else {
+                value.setSeconds(0);
+            }
+            value.setMilliseconds(0);
         },
 
         isInMinYear: function() {
@@ -1889,6 +1925,7 @@
                 date.setHours(time.getHours());
                 date.setMinutes(time.getMinutes());
                 date.setSeconds(time.getSeconds());
+                date.setMilliseconds(0);
             }
 
             if (this.options.minDate && this.options.minDate > date) {
@@ -1936,7 +1973,7 @@
                 newHour = currentHour + this.options.stepHour;
             newHour = (newHour >= 24) ? (newHour - 24) : newHour;
 
-            if (this.validateHour(newHour, currentTime)) {
+            if (this.validateTime(newHour, currentTime.getMinutes(), currentTime.getSeconds(), currentTime, "INCREMENT")) {
                 this.updateTime(event, newHour, currentTime.getMinutes(), currentTime.getSeconds());
             }
 
@@ -1949,7 +1986,7 @@
                 newHour = currentHour - this.options.stepHour;
             newHour = (newHour < 0) ? (newHour + 24) : newHour;
 
-            if (this.validateHour(newHour, currentTime)) {
+            if (this.validateTime(newHour, currentTime.getMinutes(), currentTime.getSeconds(), currentTime, "DECREMENT")) {
                 this.updateTime(event, newHour, currentTime.getMinutes(), currentTime.getSeconds());
             }
 
@@ -1962,7 +1999,7 @@
                 newMinute = currentMinute + this.options.stepMinute;
             newMinute = (newMinute > 59) ? (newMinute - 60) : newMinute;
 
-            if (this.validateMinute(newMinute, currentTime)) {
+            if (this.validateTime(currentTime.getHours(), newMinute, currentTime.getSeconds(), currentTime, "INCREMENT")) {
                 this.updateTime(event, currentTime.getHours(), newMinute, currentTime.getSeconds());
             }
 
@@ -1975,7 +2012,7 @@
                 newMinute = currentMinute - this.options.stepMinute;
             newMinute = (newMinute < 0) ? (newMinute + 60) : newMinute;
 
-            if (this.validateMinute(newMinute, currentTime)) {
+            if (this.validateTime(currentTime.getHours(), newMinute, currentTime.getSeconds(), currentTime, "DECREMENT")) {
                 this.updateTime(event, currentTime.getHours(), newMinute, currentTime.getSeconds());
             }
 
@@ -1988,7 +2025,7 @@
                 newSecond = currentSecond + this.options.stepSecond;
             newSecond = (newSecond > 59) ? (newSecond - 60) : newSecond;
 
-            if (this.validateSecond(newSecond, currentTime)) {
+            if (this.validateTime(currentTime.getHours(), currentTime.getMinutes(), newSecond, currentTime, "INCREMENT")) {
                 this.updateTime(event, currentTime.getHours(), currentTime.getMinutes(), newSecond);
             }
 
@@ -2001,7 +2038,7 @@
                 newSecond = currentSecond - this.options.stepSecond;
             newSecond = (newSecond < 0) ? (newSecond + 60) : newSecond;
 
-            if (this.validateSecond(newSecond, currentTime)) {
+            if (this.validateTime(currentTime.getHours(), currentTime.getMinutes(), newSecond, currentTime, "DECREMENT")) {
                 this.updateTime(event, currentTime.getHours(), currentTime.getMinutes(), newSecond);
             }
 
@@ -2017,63 +2054,27 @@
             event.preventDefault();
         },
 
-        validateHour: function (hour, value) {
-            var valid = true,
-                valueDateString = value ? value.toDateString() : null;
+        validateTime: function(hour, minute, second, value, direction) {
+            var valid = true;
+            var dateNew = new Date(value.getFullYear(), value.getMonth(), value.getDate(), hour, minute, second, 0);
 
-            if (this.options.minDate && valueDateString && this.options.minDate.toDateString() === valueDateString) {
-                if (this.options.minDate.getHours() > hour) {
-                    valid = false;
-                }
-            }
-
-            if (this.options.maxDate && valueDateString && this.options.maxDate.toDateString() === valueDateString) {
-                if (this.options.maxDate.getHours() < hour) {
-                    valid = false;
-                }
-            }
-
-            return valid;
-        },
-
-        validateMinute: function (minute, value) {
-            var valid = true,
-                valueDateString = value ? value.toDateString() : null;
-
-            if (this.options.minDate && valueDateString && this.options.minDate.toDateString() === valueDateString) {
-                if (value.getHours() === this.options.minDate.getHours()) {
-                    if (this.options.minDate.getMinutes() > minute) {
+            if (this.options.minDate && value) {
+                if (this.options.minDate > dateNew) {
+                    if (direction === "INCREMENT" && this.options.minDate > value)  {
+                        ; //the new time is still outside the allowed range, but we come nearer to it
+                    }
+                    else {
                         valid = false;
                     }
                 }
             }
 
-            if (this.options.maxDate && valueDateString && this.options.maxDate.toDateString() === valueDateString) {
-                if (value.getHours() === this.options.maxDate.getHours()) {
-                    if (this.options.maxDate.getMinutes() < minute) {
-                        valid = false;
+            if (this.options.maxDate && value) {
+                if (this.options.maxDate < dateNew) {
+                    if (direction === "DECREMENT" && this.options.maxDate < value) {
+                        ; //the new time is still outside the allowed range, but we come nearer to it
                     }
-                }
-            }
-
-            return valid;
-        },
-
-        validateSecond: function (second, value) {
-            var valid = true,
-                valueDateString = value ? value.toDateString() : null;
-
-            if (this.options.minDate && valueDateString && this.options.minDate.toDateString() === valueDateString) {
-                if (value.getHours() === this.options.minDate.getHours() && value.getMinutes() === this.options.minDate.getMinutes()) {
-                    if (this.options.minDate.getMinutes() > second) {
-                        valid = false;
-                    }
-                }
-            }
-
-            if (this.options.maxDate && valueDateString && this.options.maxDate.toDateString() === valueDateString) {
-                if (value.getHours() === this.options.maxDate.getHours() && value.getMinutes() === this.options.maxDate.getMinutes()) {
-                    if (this.options.maxDate.getMinutes() < second) {
+                    else {
                         valid = false;
                     }
                 }
@@ -2088,6 +2089,7 @@
             newDateTime.setHours(hour);
             newDateTime.setMinutes(minute);
             newDateTime.setSeconds(second);
+            newDateTime.setMilliseconds(0);
 
             this.updateModel(event, newDateTime);
 
