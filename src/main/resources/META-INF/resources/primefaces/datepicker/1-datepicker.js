@@ -106,7 +106,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             PrimeFaces.utils.removeDynamicOverlay(this, null, this.id + '_panel', this.cfg.appendTo);
         }
 
-        this._super(cfg);
+        this._super();
     },
 
     configureLocale: function() {
