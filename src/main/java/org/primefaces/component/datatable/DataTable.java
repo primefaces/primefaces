@@ -560,11 +560,6 @@ public class DataTable extends DataTableBase {
                 first = Integer.parseInt(params.get(getClientId(context) + "_first")) + getRows();
             }
 
-            if (isMultiViewState()) {
-                FilterFeature filterFeature = (FilterFeature) getFeature(DataTableFeatureKey.FILTER);
-                filterFeature.decode(context, this);
-            }
-
             if (isMultiSort()) {
                 data = lazyModel.load(first, getRows(), getSortMeta(), getFilterBy());
             }
