@@ -51,7 +51,7 @@ public class DataTableXMLExporter extends DataTableExporter {
         StringBuilder builder = new StringBuilder();
 
         if (config.getPreProcessor() != null) {
-            config.getPostProcessor().invoke(context.getELContext(), new Object[]{builder});
+            config.getPreProcessor().invoke(context.getELContext(), new Object[]{builder});
         }
 
         builder.append("<?xml version=\"1.0\"?>\n");

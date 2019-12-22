@@ -127,7 +127,10 @@ public class DataExporter implements ActionListener, StateHolder {
                     .setEncodingType(encodingType)
                     .setPageOnly(isPageOnly)
                     .setSelectionOnly(isSelectionOnly)
-                    .setOptions(exporterOptions);
+                    .setOptions(exporterOptions)
+                    .setPreProcessor(preProcessor)
+                    .setPostProcessor(postProcessor)
+                    .setOnTableRender(onTableRender);
 
             exporter.export(context, components, config);
 
@@ -148,7 +151,7 @@ public class DataExporter implements ActionListener, StateHolder {
             return (Exporter) customExporterInstance;
         }
         else {
-            throw new FacesException("Component " + this.getClass().getName() + " customExporterInstance="
+            throw new FacesException("Component " + getClass().getName() + " customExporterInstance="
                    + customExporterInstance.getClass().getName() + " does not implement Exporter!");
         }
 

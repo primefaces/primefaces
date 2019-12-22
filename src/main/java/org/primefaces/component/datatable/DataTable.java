@@ -299,10 +299,10 @@ public class DataTable extends DataTableBase {
             setSelection(null);
         }
 
-        List<FilterMeta> filterMeta = getFilterMeta();
-        if (!filterMeta.isEmpty()) {
+        Map<String, FilterMeta> filterBy = getFilterBy();
+        if (!filterBy.isEmpty()) {
             ELContext elContext = context.getELContext();
-            for (FilterMeta filter : filterMeta) {
+            for (FilterMeta filter : filterBy.values()) {
                 UIColumn column = filter.getColumn();
                 if (column == null) {
                     column = findColumn(filter.getColumnKey());
@@ -560,16 +560,11 @@ public class DataTable extends DataTableBase {
                 first = Integer.parseInt(params.get(getClientId(context) + "_first")) + getRows();
             }
 
-            if (isMultiViewState()) {
-                FilterFeature filterFeature = (FilterFeature) getFeature(DataTableFeatureKey.FILTER);
-                filterFeature.decode(context, this);
-            }
-
             if (isMultiSort()) {
-                data = lazyModel.load(first, getRows(), getSortMeta(), getFilterMeta());
+                data = lazyModel.load(first, getRows(), getSortMeta(), getFilterBy());
             }
             else {
-                data = lazyModel.load(first, getRows(), resolveSortField(), convertSortOrder(), getFilterMeta());
+                data = lazyModel.load(first, getRows(), resolveSortField(), convertSortOrder(), getFilterBy());
             }
 
             lazyModel.setPageSize(getRows());
@@ -590,10 +585,10 @@ public class DataTable extends DataTableBase {
 
             List<?> data = null;
             if (isMultiSort()) {
-                data = lazyModel.load(offset, rows, getSortMeta(), getFilterMeta());
+                data = lazyModel.load(offset, rows, getSortMeta(), getFilterBy());
             }
             else {
-                data = lazyModel.load(offset, rows, resolveSortField(), convertSortOrder(), getFilterMeta());
+                data = lazyModel.load(offset, rows, resolveSortField(), convertSortOrder(), getFilterBy());
             }
 
             lazyModel.setPageSize(rows);
@@ -607,53 +602,39 @@ public class DataTable extends DataTableBase {
     }
 
     protected String resolveSortField() {
-        String sortField = null;
         UIColumn column = getSortColumn();
-        ValueExpression tableSortByVE = getValueExpression(PropertyKeys.sortBy.toString());
-        Object tableSortByProperty = getSortBy();
-
         if (column == null) {
-            String field = getSortField();
-            if (field == null) {
-                sortField = (tableSortByVE == null) ? (String) tableSortByProperty : resolveStaticField(tableSortByVE);
+            String sortField = getSortField();
+            if (sortField == null) {
+                ValueExpression tableSortByVE = getValueExpression(PropertyKeys.sortBy.toString());
+                sortField = (tableSortByVE == null) ? (String) getSortBy() : resolveStaticField(tableSortByVE);
             }
-            else {
-                sortField = field;
-            }
-        }
-        else {
-            sortField = resolveColumnField(sortColumn);
+
+            return sortField;
         }
 
-        return sortField;
+        return resolveColumnField(column);
     }
 
     public String resolveColumnField(UIColumn column) {
-        ValueExpression columnSortByVE = column.getValueExpression(PropertyKeys.sortBy.toString());
-        String columnField;
+        ValueExpression columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.toString());
 
         if (column.isDynamic()) {
             ((DynamicColumn) column).applyStatelessModel();
-            Object sortByProperty = column.getSortBy();
             String field = column.getField();
             if (field == null) {
-                columnField = (sortByProperty == null) ? resolveDynamicField(columnSortByVE) : sortByProperty.toString();
+                Object sortByProperty = column.getSortBy();
+                field = (sortByProperty == null) ? resolveDynamicField(columnSortByVE) : sortByProperty.toString();
             }
-            else {
-                columnField = field;
-            }
+            return field;
         }
         else {
             String field = column.getField();
             if (field == null) {
-                columnField = (columnSortByVE == null) ? (String) column.getSortBy() : resolveStaticField(columnSortByVE);
+                field = (columnSortByVE == null) ? (String) column.getSortBy() : resolveStaticField(columnSortByVE);
             }
-            else {
-                columnField = field;
-            }
+            return field;
         }
-
-        return columnField;
     }
 
     public SortOrder convertSortOrder() {
@@ -728,7 +709,7 @@ public class DataTable extends DataTableBase {
     public void resetValue() {
         setValue(null);
         setFilteredValue(null);
-        setFilterMeta(null);
+        setFilterBy(null);
     }
 
     public void reset() {
@@ -1410,6 +1391,22 @@ public class DataTable extends DataTableBase {
             setValue(null);
         }
 
+        // reset component for MyFaces view pooling
+        columnsCountWithSpan = -1;
+        reset = false;
+        selectedRowKeys = new ArrayList<>();
+        isRowKeyRestored = false;
+        columnsCount = -1;
+        columns = null;
+        sortColumn = null;
+        dynamicColumns = null;
+        sortByVE = null;
+        togglableColumnsAsString = null;
+        togglableColsMap = null;
+        resizableColumnsAsString = null;
+        resizableColsMap = null;
+        iterableChildren = null;
+
         return super.saveState(context);
     }
 
@@ -1469,7 +1466,7 @@ public class DataTable extends DataTableBase {
                 isRowKeyRestored = true;
             }
 
-            setFilterMeta(ts.getFilterMeta());
+            setFilterBy(ts.getFilterBy());
             setColumns(findOrderedColumns(ts.getOrderedColumnsAsString()));
             setTogglableColumnsAsString(ts.getTogglableColumnsAsString());
             setResizableColumnsAsString(ts.getResizableColumnsAsString());
@@ -1510,17 +1507,18 @@ public class DataTable extends DataTableBase {
     }
 
     public String getSortMetaAsString(FacesContext context) {
-        List<SortMeta> multiSortMeta = getSortMeta();
+        Map<String, SortMeta> multiSortMeta = getSortMeta();
         if (multiSortMeta != null && !multiSortMeta.isEmpty()) {
             StringBuilder sb = new StringBuilder();
             sb.append("['");
-            for (int i = 0; i < multiSortMeta.size(); i++) {
-                SortMeta sortMeta = multiSortMeta.get(i);
+            int i = 0;
+            for (SortMeta sortMeta : multiSortMeta.values()) {
                 if (i > 0) {
                     sb.append("','");
                 }
                 UIColumn column = findColumn(sortMeta.getColumnKey());
                 sb.append(column.getClientId(context));
+                i++;
             }
             sb.append("']");
 

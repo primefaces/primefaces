@@ -23,12 +23,15 @@
  */
 package org.primefaces.component.datatable;
 
-import java.util.ArrayList;
-import javax.el.MethodExpression;
-import javax.faces.component.behavior.ClientBehaviorHolder;
 import org.primefaces.component.api.*;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
+
+import javax.el.MethodExpression;
+import javax.faces.component.behavior.ClientBehaviorHolder;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 public abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable {
 
@@ -95,7 +98,7 @@ public abstract class DataTableBase extends UIData implements Widget, RTLAware, 
         saveOnCellBlur,
         clientCache,
         multiViewState,
-        filterMeta,
+        filterBy,
         sortMeta,
         globalFilter,
         cellEditMode,
@@ -370,6 +373,7 @@ public abstract class DataTableBase extends UIData implements Widget, RTLAware, 
         getStateHelper().put(PropertyKeys.frozenRows, frozenRows);
     }
 
+    @Override
     public String getDir() {
         return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
     }
@@ -578,19 +582,19 @@ public abstract class DataTableBase extends UIData implements Widget, RTLAware, 
         getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
     }
 
-    public java.util.List<FilterMeta> getFilterMeta() {
-        return (java.util.List<FilterMeta>) getStateHelper().eval(PropertyKeys.filterMeta, new ArrayList<FilterMeta>());
+    public Map<String, FilterMeta> getFilterBy() {
+        return (Map<String, FilterMeta>) getStateHelper().eval(PropertyKeys.filterBy, Collections.emptyMap());
     }
 
-    public void setFilterMeta(java.util.List<FilterMeta> filterMeta) {
-        getStateHelper().put(PropertyKeys.filterMeta, filterMeta);
+    public void setFilterBy(Map<String, FilterMeta> filterBy) {
+        getStateHelper().put(PropertyKeys.filterBy, filterBy);
     }
 
-    public java.util.List<SortMeta> getSortMeta() {
-        return (java.util.List<SortMeta>) getStateHelper().eval(PropertyKeys.sortMeta, new ArrayList<SortMeta>());
+    public Map<String, SortMeta> getSortMeta() {
+        return (Map<String, SortMeta>) getStateHelper().eval(PropertyKeys.sortMeta, Collections.emptyMap());
     }
 
-    public void setSortMeta(java.util.List<SortMeta> sortMeta) {
+    public void setSortMeta(Map<String, SortMeta> sortMeta) {
         getStateHelper().put(PropertyKeys.sortMeta, sortMeta);
     }
 

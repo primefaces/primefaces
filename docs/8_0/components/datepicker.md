@@ -258,6 +258,14 @@ The TimePicker pattern can be modified with the properties _hourFormat_ and _sho
 <p:datePicker value="#{dateBean.time}" timeOnly="true" hourFormat="12" showSeconds="true" />
 ```
 
+## Client Side API
+Widget: _PrimeFaces.widget.Calendar_
+
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
+| getDate() | - | Date | Return selected date
+| setDate(date) | date: Date to display | void | Sets display date
+
 ## Skinning
 DatePicker resides in a container element which _style_ and _styleClass_ options apply.
 

@@ -1180,13 +1180,13 @@ public class TreeTableRenderer extends DataRenderer {
         }
     }
 
-    public void filter(FacesContext context, TreeTable tt, List<FilterMeta> filterMetadata, String globalFilterValue) throws IOException {
+    public void filter(FacesContext context, TreeTable tt, List<FilterMeta> filterBy, String globalFilterValue) throws IOException {
         Locale filterLocale = LocaleUtils.getCurrentLocale(context);
         TreeNode root = tt.getValue();
         TreeNode filteredNode = null;
 
         tt.getFilteredRowKeys().clear();
-        findFilteredRowKeys(context, tt, root, filterMetadata, filterLocale, globalFilterValue);
+        findFilteredRowKeys(context, tt, root, filterBy, filterLocale, globalFilterValue);
 
         filteredNode = createNewNode(root, root.getParent());
 
@@ -1207,14 +1207,14 @@ public class TreeTableRenderer extends DataRenderer {
         }
     }
 
-    protected void findFilteredRowKeys(FacesContext context, TreeTable tt, TreeNode node, List<FilterMeta> filterMeta, Locale filterLocale,
+    protected void findFilteredRowKeys(FacesContext context, TreeTable tt, TreeNode node, List<FilterMeta> filterBy, Locale filterLocale,
                                        String globalFilterValue) throws IOException {
         int childCount = node.getChildCount();
         boolean hasGlobalFilter = !LangUtils.isValueBlank(globalFilterValue);
         GlobalFilterConstraint globalFilterConstraint = (GlobalFilterConstraint) TreeTable.FILTER_CONSTRAINTS.get(MatchMode.GLOBAL);
         ELContext elContext = context.getELContext();
 
-        for (FilterMeta filter : filterMeta) {
+        for (FilterMeta filter : filterBy) {
             if (filter.getColumn() == null) {
                 filter.setColumn(tt.findColumn(filter.getColumnKey()));
             }
@@ -1227,8 +1227,8 @@ public class TreeTableRenderer extends DataRenderer {
             String rowKey = childNode.getRowKey();
             tt.setRowKey(rowKey);
 
-            for (int j = 0; j < filterMeta.size(); j++) {
-                FilterMeta filter = filterMeta.get(j);
+            for (int j = 0; j < filterBy.size(); j++) {
+                FilterMeta filter = filterBy.get(j);
                 UIColumn column = filter.getColumn();
                 if (column == null) {
                     continue;
@@ -1269,7 +1269,7 @@ public class TreeTableRenderer extends DataRenderer {
                 tt.getFilteredRowKeys().add(rowKey);
             }
 
-            findFilteredRowKeys(context, tt, childNode, filterMeta, filterLocale, globalFilterValue);
+            findFilteredRowKeys(context, tt, childNode, filterBy, filterLocale, globalFilterValue);
         }
     }
 

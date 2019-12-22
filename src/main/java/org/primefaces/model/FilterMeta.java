@@ -29,6 +29,8 @@ import org.primefaces.component.api.UIColumn;
 
 public class FilterMeta implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private String filterField;
     private String columnKey;
     private transient UIColumn column;
@@ -88,5 +90,11 @@ public class FilterMeta implements Serializable {
 
     public void setColumn(UIColumn column) {
         this.column = column;
+    }
+
+    @Override
+    public String toString() {
+        return "FilterMeta [filterField=" + filterField + ", columnKey=" + columnKey + ", filterByVE=" + filterByVE + ", filterMatchMode=" + filterMatchMode
+                    + ", filterValue=" + filterValue + "]";
     }
 }

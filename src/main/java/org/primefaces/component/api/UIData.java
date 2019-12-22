@@ -93,12 +93,13 @@ public class UIData extends javax.faces.component.UIData {
     public static final String ROWS_PER_PAGE_LABEL = "primefaces.paginator.aria.ROWS_PER_PAGE";
 
     private static final String SB_ID = UIData.class.getName() + "#id";
+
     private final Map<String, Object> _rowTransientStates = new HashMap<>();
-    private String clientId = null;
-    private DataModel model = null;
-    private Object oldVar = null;
     private Map<String, Object> _rowDeltaStates = new HashMap<>();
     private Object _initialDescendantFullComponentState = null;
+
+    private String clientId = null;
+    private DataModel model = null;
     private Boolean isNested = null;
 
     public enum PropertyKeys {
@@ -565,6 +566,8 @@ public class UIData extends javax.faces.component.UIData {
         // Clear or expose the current row data as a request scope attribute
         String var = getVar();
         if (var != null) {
+            Object oldVar = null;
+
             Map<String, Object> requestMap
                     = getFacesContext().getExternalContext().getRequestMap();
             if (rowIndex == -1) {
@@ -626,6 +629,8 @@ public class UIData extends javax.faces.component.UIData {
         //update var
         String var = getVar();
         if (var != null) {
+            Object oldVar = null;
+
             String rowIndexVar = getRowIndexVar();
             Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
 
@@ -1360,6 +1365,26 @@ public class UIData extends javax.faces.component.UIData {
 
     @Override
     public Object saveState(FacesContext context) {
+        // See MyFaces UIData
+        ComponentUtils.ViewPoolingResetMode viewPoolingResetMode = ComponentUtils.isViewPooling(context);
+        if (viewPoolingResetMode == ComponentUtils.ViewPoolingResetMode.SOFT) {
+            _rowTransientStates.clear();
+            _initialDescendantFullComponentState = null;
+
+            clientId = null;
+            model = null;
+            isNested = null;
+        }
+        else if (viewPoolingResetMode == ComponentUtils.ViewPoolingResetMode.HARD) {
+            _rowTransientStates.clear();
+            _rowDeltaStates.clear();
+            _initialDescendantFullComponentState = null;
+
+            clientId = null;
+            model = null;
+            isNested = null;
+        }
+
         if (initialStateMarked()) {
             Object superState = super.saveState(context);
 

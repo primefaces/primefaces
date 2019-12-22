@@ -139,9 +139,9 @@ public class FileUploadUtils {
      */
     public static boolean isValidType(PrimeApplicationContext context, FileUpload fileUpload, UploadedFile uploadedFile) {
         String fileName = uploadedFile.getFileName();
-        try {
+        try (InputStream input = uploadedFile.getInputStream()) {
             boolean validType = isValidFileName(fileUpload, uploadedFile)
-                        && isValidFileContent(context, fileUpload, fileName, uploadedFile.getInputStream());
+                        && isValidFileContent(context, fileUpload, fileName, input);
             if (validType) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine(String.format("The uploaded file %s meets the filename and content type specifications", fileName));
@@ -286,20 +286,18 @@ public class FileUploadUtils {
         return true;
     }
 
-    public static void performVirusScan(FacesContext facesContext, FileUpload fileUpload, InputStream inputStream) throws VirusException {
-        if (fileUpload.isPerformVirusScan()) {
-            PrimeApplicationContext.getCurrentInstance(facesContext).getVirusScannerService().performVirusScan(inputStream);
-        }
+    public static void performVirusScan(FacesContext facesContext, InputStream inputStream) throws VirusException {
+        PrimeApplicationContext.getCurrentInstance(facesContext).getVirusScannerService().performVirusScan(inputStream);
     }
 
     public static boolean isValidFile(FacesContext context, FileUpload fileUpload, UploadedFile uploadedFile) throws IOException {
         Long sizeLimit = fileUpload.getSizeLimit();
         PrimeApplicationContext appContext = PrimeApplicationContext.getCurrentInstance(context);
         boolean valid = (sizeLimit == null || uploadedFile.getSize() <= sizeLimit)
-                && FileUploadUtils.isValidType(appContext, fileUpload, uploadedFile);
-        if (valid) {
-            try {
-                FileUploadUtils.performVirusScan(context, fileUpload, uploadedFile.getInputStream());
+                && isValidType(appContext, fileUpload, uploadedFile);
+        if (valid && fileUpload.isPerformVirusScan()) {
+            try (InputStream input = uploadedFile.getInputStream()) {
+                performVirusScan(context, input);
             }
             catch (VirusException ex) {
                 return false;

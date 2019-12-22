@@ -134,6 +134,7 @@ public class TreeTable extends TreeTableBase {
             .put("page", PageEvent.class)
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
     private int columnsCount = -1;
     private UIColumn sortColumn;
     private List<UIColumn> columns;
@@ -299,13 +300,13 @@ public class TreeTable extends TreeTableBase {
         super.processValidators(context);
 
         if (isFilterRequest(context)) {
-            List<FilterMeta> filterMetadata = populateFilterMetaData(context, this);
-            setFilterMetadata(filterMetadata);
+            List<FilterMeta> filterBy = populateFilterBy(context, this);
+            setFilterMetadata(filterBy);
         }
     }
 
-    public List<FilterMeta> populateFilterMetaData(FacesContext context, TreeTable tt) {
-        List<FilterMeta> filterMetadata = new ArrayList<>();
+    public List<FilterMeta> populateFilterBy(FacesContext context, TreeTable tt) {
+        List<FilterMeta> filterBy = new ArrayList<>();
         String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
@@ -333,7 +334,7 @@ public class TreeTable extends TreeTableBase {
                     dynamicColumn.cleanModel();
                 }
 
-                filterMetadata.add(new FilterMeta(null,
+                filterBy.add(new FilterMeta(null,
                         column.getColumnKey(),
                         filterByVE,
                         MatchMode.byName(filterMatchMode),
@@ -341,7 +342,7 @@ public class TreeTable extends TreeTableBase {
             }
         }
 
-        return filterMetadata;
+        return filterBy;
     }
 
     public UIColumn findColumn(String columnKey) {
@@ -504,6 +505,14 @@ public class TreeTable extends TreeTableBase {
         if (dynamicColumns != null) {
             dynamicColumns.setRowIndex(-1);
         }
+
+        // reset component for MyFaces view pooling
+        columnsCount = -1;
+        sortColumn = null;
+        columns = null;
+        dynamicColumns = null;
+        filteredRowKeys = new ArrayList<>();
+        filterMetadata = null;
 
         return super.saveState(context);
     }

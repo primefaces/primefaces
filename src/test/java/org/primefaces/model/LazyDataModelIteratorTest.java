@@ -158,7 +158,7 @@ public class LazyDataModelIteratorTest {
         LazyDataModelImpl dataModel = new LazyDataModelImpl();
         dataModel.setPageSize(2);
         dataModel.totalItems = 1;
-        Iterator<Integer> it = dataModel.iterator("foo", SortOrder.ASCENDING, Collections.singletonMap("foo", (Object) "bar"));
+        Iterator<Integer> it = dataModel.iterator("foo", SortOrder.ASCENDING, Collections.singletonMap("foo", new FilterMeta("foo", "bar")));
         while (it.hasNext()) {
             Integer item = it.next();
             Assertions.assertNotNull(item);
@@ -172,7 +172,9 @@ public class LazyDataModelIteratorTest {
         LazyDataModelImpl dataModel = new LazyDataModelImpl();
         dataModel.setPageSize(2);
         dataModel.totalItems = 1;
-        Iterator<Integer> it = dataModel.iterator(Arrays.asList(new SortMeta()), Collections.singletonMap("foo", (Object) "bar"));
+        Iterator<Integer> it = dataModel.iterator(
+                Collections.emptyMap(), 
+                Collections.singletonMap("foo", new FilterMeta("foo", "bar")));
         while (it.hasNext()) {
             Integer item = it.next();
             Assertions.assertNotNull(item);
@@ -192,7 +194,7 @@ public class LazyDataModelIteratorTest {
         }
 
         @Override
-        public List<Integer> load(int first, int pageSize, List<SortMeta> sortMeta, List<FilterMeta> filterMeta) {
+        public List<Integer> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
             System.out.println(String.format("Loading %d items from offset %d", pageSize, first));
             loadCounter++;
             List<Integer> page = new ArrayList<>();

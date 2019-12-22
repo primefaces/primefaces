@@ -100,6 +100,10 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void preRender(FacesContext context, DataTable table) {
+        if (table.isMultiViewState()) {
+            table.restoreTableState();
+        }
+
         boolean defaultSorted = (table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null
                 || table.getSortBy() != null
                 || !table.getSortMeta().isEmpty());
@@ -108,13 +112,6 @@ public class DataTableRenderer extends DataRenderer {
             table.setDefaultSortByVE(table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()));
             table.setDefaultSortOrder(table.getSortOrder());
             table.setDefaultSortFunction(table.getSortFunction());
-        }
-
-        FilterFeature filterFeature = (FilterFeature) DataTable.FEATURES.get(DataTableFeatureKey.FILTER);
-        filterFeature.decode(context, table);
-
-        if (table.isMultiViewState()) {
-            table.restoreTableState();
         }
 
         if (table.isLazy()) {
@@ -147,8 +144,8 @@ public class DataTableRenderer extends DataRenderer {
                 table.setRowIndex(-1);
             }
 
-            List<FilterMeta> filterMeta = table.getFilterMeta();
-            if (!filterMeta.isEmpty()) {
+            Map<String, FilterMeta> filterBy = table.getFilterBy();
+            if (!filterBy.isEmpty()) {
                 String globalFilter = table.getGlobalFilter();
                 if (globalFilter != null) {
                     UIComponent globalFilterComponent = SearchExpressionFacade.resolveComponent(context, table,
@@ -156,16 +153,17 @@ public class DataTableRenderer extends DataRenderer {
                     if (globalFilterComponent != null) {
                         ((ValueHolder) globalFilterComponent).setValue(globalFilter);
                     }
-                    filterMeta.add(new FilterMeta("globalFilter", globalFilter));
+                    filterBy.put("globalFilter", new FilterMeta("globalFilter", globalFilter));
                 }
 
-                filterFeature.filter(context, table, filterMeta);
+                FilterFeature filterFeature = (FilterFeature) table.getFeature(DataTableFeatureKey.FILTER);
+                filterFeature.filter(context, table, filterBy);
             }
         }
 
         if (defaultSorted && table.isMultiViewState() && table.isDefaultSort()) {
             ValueExpression sortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
-            List<SortMeta> multiSortState = table.isMultiSort() ? table.getSortMeta() : null;
+            Map<String, SortMeta> multiSortState = table.isMultiSort() ? table.getSortMeta() : null;
             if (sortByVE != null || (multiSortState != null && !multiSortState.isEmpty())) {
                 TableState ts = table.getTableState(true);
                 ts.setSortBy(sortByVE);
@@ -655,13 +653,13 @@ public class DataTableRenderer extends DataRenderer {
         if (sortable) {
             ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
             Object tableSortBy = table.getSortBy();
-            List<SortMeta> sortMeta = table.getSortMeta();
+            Map<String, SortMeta> sortMeta = table.getSortMeta();
             boolean defaultSorted = (tableSortByVE != null || tableSortBy != null || !sortMeta.isEmpty());
 
             if (defaultSorted) {
                 if (table.isMultiSort()) {
                     if (sortMeta != null) {
-                        for (SortMeta meta : sortMeta) {
+                        for (SortMeta meta : sortMeta.values()) {
                             sortIcon = resolveDefaultSortIcon(column, meta);
 
                             if (sortIcon != null) {
@@ -749,11 +747,11 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected Object findFilterValue(DataTable table, UIColumn column) {
-        List<FilterMeta> filters = table.getFilterMeta();
-        if (!filters.isEmpty()) {
-            for (FilterMeta filterState : filters) {
-                if (Objects.equals(filterState.getColumnKey(), column.getColumnKey())) {
-                    return filterState.getFilterValue();
+        Map<String, FilterMeta> filterBy = table.getFilterBy();
+        if (!filterBy.isEmpty()) {
+            for (FilterMeta filter : filterBy.values()) {
+                if (Objects.equals(filter.getColumnKey(), column.getColumnKey())) {
+                    return filter.getFilterValue();
                 }
             }
         }

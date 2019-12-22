@@ -124,7 +124,9 @@ public class ScheduleRenderer extends CoreRenderer {
                     for (Map.Entry<String, Object> dynaProperty : event.getDynamicProperties().entrySet()) {
                         String key = dynaProperty.getKey();
                         Object value = dynaProperty.getValue();
-                        value = ((LocalDateTime) value).format(dateTimeFormatter);
+                        if (value instanceof LocalDateTime) {
+                            value = ((LocalDateTime) value).format(dateTimeFormatter);
+                        }
                         jsonObject.put(key, value);
                     }
                 }

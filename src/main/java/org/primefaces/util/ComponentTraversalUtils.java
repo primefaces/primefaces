@@ -104,6 +104,7 @@ public class ComponentTraversalUtils {
 
     /**
      * Finds the first component with the given id (NOT clientId!).
+     * Also used by p:resolveFirstComponentWithId.
      *
      * @param id The id.
      * @param base The base component to start the traversal.

@@ -31,24 +31,24 @@ public class LazyDataModelIterator<T> implements Iterator<T> {
     private int index;
     private Map<Integer, List<T>> pages;
 
-    private List<SortMeta> sortMeta;
-    private List<FilterMeta> filterMeta;
+    private Map<String, SortMeta> sortBy;
+    private Map<String, FilterMeta> filterBy;
 
     LazyDataModelIterator(LazyDataModel<T> model) {
         this.model = model;
         index = -1;
         pages = new HashMap<>();
-        sortMeta = Collections.emptyList();
-        filterMeta = Collections.emptyList();
+        sortBy = Collections.emptyMap();
+        filterBy = Collections.emptyMap();
     }
 
-    LazyDataModelIterator(LazyDataModel<T> model, List<SortMeta> sortMeta, List<FilterMeta> filterMeta) {
+    LazyDataModelIterator(LazyDataModel<T> model, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
         this(model);
-        if (sortMeta != null) {
-            this.sortMeta = sortMeta;
+        if (sortBy != null) {
+            this.sortBy = sortBy;
         }
-        if (filterMeta != null) {
-            this.filterMeta = filterMeta;
+        if (filterBy != null) {
+            this.filterBy = filterBy;
         }
     }
 
@@ -58,7 +58,7 @@ public class LazyDataModelIterator<T> implements Iterator<T> {
         int pageNo = nextIndex / model.getPageSize();
 
         if (!pages.containsKey(pageNo)) {
-            List<T> page = model.load(nextIndex, model.getPageSize(), sortMeta, filterMeta);
+            List<T> page = model.load(nextIndex, model.getPageSize(), sortBy, filterBy);
 
             if (page == null || page.isEmpty()) {
                 return false;

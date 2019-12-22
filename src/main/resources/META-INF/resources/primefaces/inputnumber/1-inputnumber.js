@@ -32,6 +32,8 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
             this.autonumeric.set(this.valueToRender);
         }
 
+        this.copyValueToHiddenInput();
+
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
         this.hiddenInput.data(PrimeFaces.CLIENT_ID_DATA, this.id);
@@ -125,6 +127,11 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
     },
 
     getValue: function () {
-        return this.autonumeric.getNumericString();
+        var val = this.autonumeric.getNumericString();
+        if (val && this.cfg.decimalPlaces) {
+            return parseFloat(val).toFixed(this.cfg.decimalPlaces);
+        }
+
+        return val;
     }
 });
