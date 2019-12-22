@@ -2082,7 +2082,8 @@
         },
 
         handleHoursInput: function(input, event) {
-            var value = input.value,
+            var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
+                value = input.value,
                 valid = false,
                 newHours;
 
@@ -2091,13 +2092,11 @@
                 newHours = parseInt(value);
                 if (this.options.hourFormat === '12') {
                     if (newHours >= 1 || newHours <= 12) {
-                        //TODO: validateTime; https://github.com/primefaces/primefaces/pull/5377
-                        valid = true;
+                        valid = this.validateTime(newHours, currentTime.getMinutes(), currentTime.getSeconds(), currentTime);
                     }
                 } else {
                     if (newHours >= 0 || newHours <= 23) {
-                        //TODO: validateTime; https://github.com/primefaces/primefaces/pull/5377
-                        valid = true;
+                        valid = this.validateTime(newHours, currentTime.getMinutes(), currentTime.getSeconds(), currentTime);
                     }
                 }
             }
@@ -2115,7 +2114,8 @@
         },
 
         handleMinutesInput: function(input, event) {
-            var value = input.value,
+            var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
+                value = input.value,
                 valid = false,
                 newMinutes;
 
@@ -2123,8 +2123,7 @@
             if (reg.test(value)) {
                 newMinutes = parseInt(value);
                 if (newMinutes >= 0 || newMinutes <= 59) {
-                    //TODO: validateTime; https://github.com/primefaces/primefaces/pull/5377
-                    valid = true;
+                    valid = this.validateTime(currentTime.getHours(), newMinutes, currentTime.getSeconds(), currentTime);
                 }
             }
 
@@ -2141,7 +2140,8 @@
         },
 
         handleSecondsInput: function(input, event) {
-            var value = input.value,
+            var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
+                value = input.value,
                 valid = false,
                 newSeconds;
 
@@ -2149,8 +2149,7 @@
             if (reg.test(value)) {
                 newSeconds = parseInt(value);
                 if (newSeconds >= 0 || newSeconds <= 59) {
-                    //TODO: validateTime; https://github.com/primefaces/primefaces/pull/5377
-                    valid = true;
+                    valid = this.validateTime(currentTime.getHours(), currentTime.getMinutes(), newSeconds, currentTime);
                 }
             }
 
