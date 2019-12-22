@@ -52,16 +52,16 @@
 
 .p-datepicker-panel .ui-timepicker.ui-timepicker-timeinput input {
     text-align: center;
-    font-size: 1.2em;
+    font-size: 1.1em;
     width: 2em;
 }
 
 .p-datepicker-panel .ui-timepicker.ui-timepicker-timeinput .ui-ampm-picker .ui-picker-up {
-    padding-bottom: .2em;
+    padding-bottom: .1em;
 }
 
 .p-datepicker-panel .ui-timepicker.ui-timepicker-timeinput .ui-ampm-picker .ui-picker-down {
-    padding-top: .2em;
+    padding-top: .1em;
 }
 
 .ui-datepicker-multiple-month .ui-datepicker-group {
