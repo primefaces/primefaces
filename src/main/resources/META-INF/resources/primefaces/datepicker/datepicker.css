@@ -50,10 +50,18 @@
     opacity: 0;
 }
 
-.p-datepicker-panel .ui-timepicker input {
+.p-datepicker-panel .ui-timepicker.ui-timepicker-timeinput input {
     text-align: center;
     font-size: 1.2em;
     width: 2em;
+}
+
+.p-datepicker-panel .ui-timepicker.ui-timepicker-timeinput .ui-ampm-picker .ui-picker-up {
+    padding-bottom: .2em;
+}
+
+.p-datepicker-panel .ui-timepicker.ui-timepicker-timeinput .ui-ampm-picker .ui-picker-down {
+    padding-top: .2em;
 }
 
 .ui-datepicker-multiple-month .ui-datepicker-group {
