@@ -310,6 +310,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
             source: this.id,
             update: this.id,
             process: this.id,
+            global: false,
             params: [
                 {name: this.id + '_query', value: query}
             ],
