@@ -38,6 +38,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LocaleUtils;
 
@@ -50,6 +51,7 @@ import org.primefaces.util.LocaleUtils;
  * - Registered Resources
  * - Client Validation Scripts
  * - PF Client Side Settings
+ * - PF Initialization Scripts
  * - Head Content
  * - Last Facet
  */
@@ -141,6 +143,9 @@ public class HeadRenderer extends Renderer {
 
         writer.write("}");
         writer.endElement("script");
+
+        // encode initialization scripts
+        encodeInitScripts(writer);
     }
 
     @Override
@@ -192,6 +197,32 @@ public class HeadRenderer extends Renderer {
                 writer.writeAttribute("src", resource.getRequestPath(), null);
                 writer.endElement("script");
             }
+        }
+    }
+
+    protected void encodeInitScripts(ResponseWriter writer) throws IOException {
+        List<String> scripts = PrimeRequestContext.getCurrentInstance().getInitializationScriptsToExecute();
+
+        if (!scripts.isEmpty()) {
+            writer.startElement("script", null);
+            writer.writeAttribute("type", "text/javascript", null);
+
+            boolean moveScriptsToBottom = PrimeRequestContext.getCurrentInstance().getApplicationContext().getConfig().isMoveScriptsToBottom();
+
+            if (!moveScriptsToBottom) {
+                writer.write("$(function(){");
+            }
+
+            for (int i = 0; i < scripts.size(); i++) {
+                writer.write(scripts.get(i));
+                writer.write(';');
+            }
+
+            if (!moveScriptsToBottom) {
+                writer.write("});");
+            }
+
+            writer.endElement("script");
         }
     }
 }

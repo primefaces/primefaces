@@ -208,9 +208,15 @@ public class PrimePartialResponseWriter extends PartialResponseWriterWrapper {
     }
 
     protected void encodeScripts(PrimeRequestContext requestContext) throws IOException {
-        List<String> scripts = requestContext.getScriptsToExecute();
-        if (!scripts.isEmpty()) {
+        List<String> initScripts = requestContext.getInitializationScriptsToExecute();
+        List<String> execScripts = requestContext.getScriptsToExecute();
+
+        if (!initScripts.isEmpty() || !execScripts.isEmpty()) {
             startEval();
+
+            List<String> scripts = new ArrayList<>();
+            scripts.addAll(initScripts);
+            scripts.addAll(execScripts);
 
             for (int i = 0; i < scripts.size(); i++) {
                 getWrapped().write(scripts.get(i));
