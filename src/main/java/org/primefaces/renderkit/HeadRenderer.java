@@ -207,9 +207,19 @@ public class HeadRenderer extends Renderer {
             writer.startElement("script", null);
             writer.writeAttribute("type", "text/javascript", null);
 
+            boolean moveScriptsToBottom = PrimeRequestContext.getCurrentInstance().getApplicationContext().getConfig().isMoveScriptsToBottom();
+
+            if (!moveScriptsToBottom) {
+                writer.write("$(function(){");
+            }
+
             for (int i = 0; i < scripts.size(); i++) {
                 writer.write(scripts.get(i));
                 writer.write(';');
+            }
+
+            if (!moveScriptsToBottom) {
+                writer.write("});");
             }
 
             writer.endElement("script");
