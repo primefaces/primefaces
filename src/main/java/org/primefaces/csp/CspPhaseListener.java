@@ -34,7 +34,7 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.servlet.http.HttpServletResponse;
-import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.PrimeFaces;
 import org.primefaces.util.Lazy;
 
 public class CspPhaseListener implements PhaseListener {
@@ -73,7 +73,7 @@ public class CspPhaseListener implements PhaseListener {
             response.addHeader("Content-Security-Policy", policy + " 'nonce-" + state.getNonce() + "'");
 
             String init = "PrimeFaces.csp.init('" + Encode.forJavaScript(state.getNonce()) + "');";
-            PrimeFaces.current().initializeScript(init);
+            PrimeFaces.current().executeInitScript(init);
         }
     }
 

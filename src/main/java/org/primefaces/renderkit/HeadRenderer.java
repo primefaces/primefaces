@@ -201,7 +201,7 @@ public class HeadRenderer extends Renderer {
     }
 
     protected void encodeInitScripts(ResponseWriter writer) throws IOException {
-        List<String> scripts = PrimeRequestContext.getCurrentInstance().getInitializationScriptsToExecute();
+        List<String> scripts = PrimeRequestContext.getCurrentInstance().getInitScriptsToExecute();
 
         if (!scripts.isEmpty()) {
             writer.startElement("script", null);

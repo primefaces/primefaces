@@ -97,22 +97,22 @@ public class PrimeFaces {
     }
 
     /**
+     * Executes a JavaScript statement before all other PrimeFaces scripts are executed.
+     * Useful when you need to do some initialization.
+     *
+     * @param statement the JavaScript statement.
+     */
+    public void executeInitScript(String statement) {
+        getRequestContext().getInitScriptsToExecute().add(statement);
+    }
+
+    /**
      * Executes a JavaScript statement.
      *
      * @param statement the JavaScript statement.
      */
     public void executeScript(String statement) {
         getRequestContext().getScriptsToExecute().add(statement);
-    }
-
-    /**
-     * Executes a JavaScript statement before all other PrimeFaces scripts are executed.
-     * Useful when you need to do some initialization.
-     *
-     * @param statement the JavaScript statement.
-     */
-    public void initializeScript(String statement) {
-        getRequestContext().getInitializationScriptsToExecute().add(statement);
     }
 
     /**
