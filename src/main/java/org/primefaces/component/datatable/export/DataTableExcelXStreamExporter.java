@@ -59,7 +59,7 @@ public class DataTableExcelXStreamExporter extends DataTableExcelXExporter {
     protected Sheet createSheet(Workbook wb, String sheetName, ExcelOptions options) {
         SXSSFWorkbook workbook = (SXSSFWorkbook) wb;
         SXSSFSheet sheet =  workbook.createSheet(sheetName);
-        if (options.isAutoSizeColumn()) {
+        if (options == null || options.isAutoSizeColumn()) {
             sheet.trackAllColumnsForAutoSizing();
         }
         else {
