@@ -106,6 +106,16 @@ public class PrimeFaces {
     }
 
     /**
+     * Executes a JavaScript statement before all other PrimeFaces scripts are executed.
+     * Useful when you need to do some initialization.
+     *
+     * @param statement the JavaScript statement.
+     */
+    public void initializeScript(String statement) {
+        getRequestContext().getInitializationScriptsToExecute().add(statement);
+    }
+
+    /**
      * Scrolls to a component with the given clientId.
      *
      * @param clientId clientId of the target component.

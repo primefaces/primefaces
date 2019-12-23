@@ -52,6 +52,7 @@ public class PrimeRequestContext {
     public static final String INSTANCE_KEY = PrimeRequestContext.class.getName();
 
     private static final String CALLBACK_PARAMS_KEY = "CALLBACK_PARAMS";
+    private static final String INIT_SCRIPT_KEY = "INITIALIZE_SCRIPT";
     private static final String EXECUTE_SCRIPT_KEY = "EXECUTE_SCRIPT";
     private static final Class<?>[] EMPTY_PARAMS = new Class<?>[0];
 
@@ -111,6 +112,22 @@ public class PrimeRequestContext {
         }
 
         return callbackParams;
+    }
+
+    /**
+     * @return all scripts added in the current request and called first before other scripts are executed.
+     */
+    @SuppressWarnings("unchecked")
+    public List<String> getInitializationScriptsToExecute() {
+        List<String> initToExecute =
+            (List<String>) context.getAttributes().get(INIT_SCRIPT_KEY);
+
+        if (initToExecute == null) {
+            initToExecute = new ArrayList<>();
+            context.getAttributes().put(INIT_SCRIPT_KEY, initToExecute);
+        }
+
+        return initToExecute;
     }
 
     /**
