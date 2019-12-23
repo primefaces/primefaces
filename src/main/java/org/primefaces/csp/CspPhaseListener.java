@@ -24,7 +24,6 @@
 package org.primefaces.csp;
 
 import org.owasp.encoder.Encode;
-import org.primefaces.PrimeFaces;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeFacesContext;
 import org.primefaces.util.LangUtils;
@@ -35,6 +34,7 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.servlet.http.HttpServletResponse;
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.util.Lazy;
 
 public class CspPhaseListener implements PhaseListener {
@@ -72,7 +72,8 @@ public class CspPhaseListener implements PhaseListener {
             String policy = LangUtils.isValueBlank(customPolicy.get()) ? "script-src 'self'" : customPolicy.get();
             response.addHeader("Content-Security-Policy", policy + " 'nonce-" + state.getNonce() + "'");
 
-            PrimeFaces.current().executeScript("PrimeFaces.csp.init('" + Encode.forJavaScript(state.getNonce()) + "');");
+            String init = "PrimeFaces.csp.init('" + Encode.forJavaScript(state.getNonce()) + "');";
+            PrimeRequestContext.getCurrentInstance(context).getScriptsToExecute().add(0, init);
         }
     }
 
