@@ -229,7 +229,7 @@ public class InputNumberRenderer extends InputRenderer {
             .attr("currencySymbolPlacement", inputNumber.getSymbolPosition(), "p")
             .attr("minimumValue", inputNumber.getMinValue())
             .attr("maximumValue", inputNumber.getMaxValue())
-            .attr("decimalPlaces", inputNumber.getDecimalPlaces(), "2")
+            .attr("decimalPlaces", inputNumber.getDecimalPlaces())
             .attr("emptyInputBehavior", emptyValue, "focus")
             .attr("leadingZero", inputNumber.getLeadingZero(), "deny")
             .attr("allowDecimalPadding", inputNumber.isPadControl(), true)

@@ -130,7 +130,7 @@ public abstract class InputNumberBase extends HtmlInputText implements Widget, I
     }
 
     public String getDecimalPlaces() {
-        return (String) getStateHelper().eval(PropertyKeys.decimalPlaces, null);
+        return (String) getStateHelper().eval(PropertyKeys.decimalPlaces, "2");
     }
 
     public void setDecimalPlaces(String decimalPlaces) {
