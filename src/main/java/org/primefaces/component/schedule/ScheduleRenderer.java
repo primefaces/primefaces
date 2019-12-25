@@ -147,7 +147,7 @@ public class ScheduleRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Schedule", schedule.resolveWidgetVar(context), clientId)
                 .attr("defaultView", translateViewName(schedule.getView().trim()))
-                .attr("locale", schedule.calculateLocale(context).toString())
+                .attr("locale", schedule.calculateLocale(context).toString().toLowerCase().replace("_", "-")) //adjust locale to FullCalendar-locale
                 .attr("tooltip", schedule.isTooltip(), false)
                 .attr("eventLimit", schedule.getValue().isEventLimit(), false)
                 //timeGrid offers an additional eventLimit - integer value; see https://fullcalendar.io/docs/eventLimit; not exposed yet by PF-schedule
