@@ -269,7 +269,7 @@ public class TreeTableRenderer extends DataRenderer {
         boolean hasPaginator = tt.isPaginator();
 
         if (root == null) {
-            throw new FacesException("treeTable's value must be null. ClientId: " + clientId);
+            throw new FacesException("treeTable's value must not be null. ClientId: " + clientId);
         }
         if (!(root instanceof TreeNode)) {
             throw new FacesException("treeTable's value must be an instance of " + TreeNode.class.getName() + ". ClientId: " + clientId);
