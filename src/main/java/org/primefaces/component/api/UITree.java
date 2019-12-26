@@ -858,17 +858,19 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return false;
     }
 
-    private boolean visitColumns(VisitContext context, VisitCallback callback, String rowKey) {
-        setRowKey(rowKey);
-
-        if (rowKey == null) {
-            return false;
-        }
-
-        TreeNode rowNode = getRowNode();
+    private boolean visitColumns(VisitContext context, VisitCallback callback, String rowKey, boolean visitNodes) {
         String treeNodeType = null;
-        if (rowNode != null) {
-            treeNodeType = rowNode.getType();
+        if (visitNodes) {
+            setRowKey(rowKey);
+
+            if (rowKey == null) {
+                return false;
+            }
+
+            TreeNode rowNode = getRowNode();
+            if (rowNode != null) {
+                treeNodeType = rowNode.getType();
+            }
         }
 
         if (getChildCount() > 0) {
@@ -890,7 +892,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
                 else if (child instanceof UIColumn) {
                     if (child instanceof UITreeNode) {
                         UITreeNode uiTreeNode = (UITreeNode) child;
-                        if (treeNodeType != null && !treeNodeType.equals(uiTreeNode.getType())) {
+                        if (visitNodes && treeNodeType != null && !treeNodeType.equals(uiTreeNode.getType())) {
                             continue;
                         }
                     }
@@ -927,12 +929,18 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
             setRowKey(null);
         }
+        else {
+            // visit without iterating over the tree model
+            if (visitColumns(context, callback, null, false)) {
+                return true;
+            }
+        }
 
         return false;
     }
 
     protected boolean visitNode(VisitContext context, VisitCallback callback, TreeNode treeNode, String rowKey) {
-        if (visitColumns(context, callback, rowKey)) {
+        if (visitColumns(context, callback, rowKey, true)) {
             return true;
         }
 
