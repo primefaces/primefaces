@@ -43,7 +43,8 @@ public abstract class DataViewBase extends UIData implements Widget, ClientBehav
         styleClass,
         layout,
         gridIcon,
-        listIcon
+        listIcon,
+        multiViewState
     }
 
     public DataViewBase() {
@@ -101,5 +102,13 @@ public abstract class DataViewBase extends UIData implements Widget, ClientBehav
 
     public void setListIcon(String listIcon) {
         getStateHelper().put(PropertyKeys.listIcon, listIcon);
+    }
+
+    public boolean isMultiViewState() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.multiViewState, false);
+    }
+
+    public void setMultiViewState(boolean multiViewState) {
+        getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
     }
 }

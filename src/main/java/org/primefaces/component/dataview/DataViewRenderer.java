@@ -59,14 +59,33 @@ public class DataViewRenderer extends DataRenderer {
             }
 
             encodeLayout(context, dataview);
+
+            if (dataview.isMultiViewState()) {
+                saveViewState(dataview);
+            }
         }
         else if (dataview.isLayoutRequest(context)) {
             String layout = params.get(clientId + "_layout");
             dataview.setLayout(layout);
 
             encodeLayout(context, dataview);
+
+            if (dataview.isMultiViewState()) {
+                saveViewState(dataview);
+            }
         }
         else {
+            if (dataview.isMultiViewState() && dataview.isPaginator()) {
+                int firstOld = dataview.getFirst();
+                int rowsOld = dataview.getRows();
+
+                dataview.restoreDataViewState();
+
+                if (dataview.isLazy() && (firstOld != dataview.getFirst() || rowsOld != dataview.getRows())) {
+                    dataview.loadLazyData();
+                }
+            }
+
             encodeMarkup(context, dataview);
             encodeScript(context, dataview);
         }
@@ -323,5 +342,14 @@ public class DataViewRenderer extends DataRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
+    }
+
+    private void saveViewState(DataView dataview) {
+        if (dataview.isMultiViewState()) {
+            DataViewState viewState = dataview.getDataViewState(true);
+            viewState.setFirst(dataview.getFirst());
+            viewState.setRows(dataview.getRows());
+            viewState.setLayout(dataview.getLayout());
+        }
     }
 }
