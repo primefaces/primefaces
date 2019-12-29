@@ -462,17 +462,8 @@ public class PrimeFaces {
          * @param reset indicates whether or not the component should be reset
          */
         public void clear(String viewId, String clientId, boolean reset) {
-            if (reset) {
-                reset(clientId);
-            }
-
-            String stateKey = createMVSKey(viewId, clientId);
-            Map<String, Object> multiViewStates = getMVSSessionMap();
-            if (multiViewStates.remove(stateKey) == null) {
-                LOGGER.log(Level.WARNING,
-                        "Multiview state for viewId: \"{0}\" and clientId \"{1}\" not found",
-                        new Object[]{viewId, clientId});
-            }
+            MVSKey key = createMVSKey(viewId, clientId);
+            clearMVSKeys(Collections.singleton(key), reset, null);
         }
 
         /**
@@ -490,7 +481,7 @@ public class PrimeFaces {
             FacesContext fc = getFacesContext();
             Map<String, Object> sessionMap = fc.getExternalContext().getSessionMap();
             Map<String, Object> states =  getMVSSessionMap();
-            String mvsKey = createMVSKey(viewId, clientId);
+            String mvsKey = createMVSKey(viewId, clientId).toString();
 
             if (states == null) {
                 states = new HashMap<>();
@@ -506,8 +497,8 @@ public class PrimeFaces {
             return state;
         }
 
-        private String createMVSKey(String viewId, String clientId) {
-            return new MVSKey(viewId, clientId).value();
+        private MVSKey createMVSKey(String viewId, String clientId) {
+            return new MVSKey(viewId, clientId);
         }
 
         private Map<String, Object> getMVSSessionMap() {
@@ -529,7 +520,13 @@ public class PrimeFaces {
         private void clearMVSKeys(Set<MVSKey> keys, boolean reset, Consumer<String> clientIdConsumer) {
             Set<String> keySet = getMVSSessionMap().keySet();
             for (MVSKey key : keys) {
-                keySet.remove(key.value());
+                if (!keySet.remove(key.toString())) {
+                    LOGGER.log(Level.WARNING,
+                            "Multiview state for viewId: \"{0}\" and clientId \"{1}\" not found",
+                            new Object[]{key.viewId, key.clientId});
+                    continue;
+                }
+
                 if (reset) {
                     reset(key.clientId);
                 }
@@ -559,10 +556,6 @@ public class PrimeFaces {
             }
 
             throw new IllegalArgumentException("Argument does not follow pattern: " + MVS_KEY_FORMAT.pattern());
-        }
-
-        public String value() {
-            return toString();
         }
 
         @Override
