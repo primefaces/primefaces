@@ -75,15 +75,8 @@ public class DataViewRenderer extends DataRenderer {
             }
         }
         else {
-            if (dataview.isMultiViewState() && dataview.isPaginator()) {
-                int firstOld = dataview.getFirst();
-                int rowsOld = dataview.getRows();
-
+            if (dataview.isMultiViewState()) {
                 dataview.restoreDataViewState();
-
-                if (dataview.isLazy() && (firstOld != dataview.getFirst() || rowsOld != dataview.getRows())) {
-                    dataview.loadLazyData();
-                }
             }
 
             encodeMarkup(context, dataview);
