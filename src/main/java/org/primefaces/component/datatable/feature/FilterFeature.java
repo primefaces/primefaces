@@ -152,7 +152,7 @@ public class FilterFeature implements DataTableFeature {
                 filterByCopy.put(filter.getKey(), new FilterMeta(filter.getValue()));
             }
 
-            TableState ts = table.getTableState(true);
+            TableState ts = table.getMultiViewState(true);
             ts.setFilterBy(filterByCopy);
 
             if (table.isPaginator()) {

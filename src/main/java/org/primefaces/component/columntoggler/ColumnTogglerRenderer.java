@@ -50,7 +50,7 @@ public class ColumnTogglerRenderer extends CoreRenderer {
             if (isMultiViewState) {
                 Map<String, String> params = context.getExternalContext().getRequestParameterMap();
                 String columnTogglerParam = params.get(table.getClientId(context) + "_columnTogglerState");
-                TableState ts = table.getTableState(true);
+                TableState ts = table.getMultiViewState(true);
                 ts.setTogglableColumnsAsString(columnTogglerParam);
             }
         }

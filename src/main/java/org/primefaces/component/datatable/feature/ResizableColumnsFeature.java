@@ -40,7 +40,7 @@ public class ResizableColumnsFeature implements DataTableFeature {
         if (table.isMultiViewState()) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String resizableColumnParam = params.get(table.getClientId(context) + "_resizableColumnState");
-            TableState ts = table.getTableState(true);
+            TableState ts = table.getMultiViewState(true);
             ts.setResizableColumnsAsString(resizableColumnParam);
         }
     }
