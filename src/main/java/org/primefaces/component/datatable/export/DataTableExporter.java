@@ -42,10 +42,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import java.io.IOException;
 import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class DataTableExporter implements Exporter<DataTable> {
@@ -212,23 +209,38 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
         boolean lazy = table.isLazy();
 
         if (lazy) {
-            if (rowCount > 0) {
-                table.setFirst(0);
-                table.setRows(rowCount);
-                table.clearLazyCache();
-                table.loadLazyData();
-            }
+            //create a clone of the DataTable
+            DataTable tmpTable = new DataTable();
+            tmpTable.setValue(table.getValue());
+            tmpTable.setVar(table.getVar());
+            tmpTable.setColumns(new ArrayList(table.getColumns()));
+
+            tmpTable.setFilterBy(new HashMap(table.getFilterBy()));
+
+            tmpTable.setSortMode(table.getSortMode());
+            tmpTable.setSortMeta(new HashMap(table.getSortMeta()));
+            tmpTable.setSortBy(table.getSortBy());
+            tmpTable.setSortByVE(table.getSortByVE());
+            tmpTable.setSortColumn(table.getSortColumn());
+            tmpTable.setSortField(table.getSortField());
+            tmpTable.setSortFunction(table.getSortFunction());
+            tmpTable.setSortOrder(table.getSortOrder());
+
+            tmpTable.setDefaultSort(table.isDefaultSort());
+            tmpTable.setDefaultSortByVE(table.getDefaultSortByVE());
+            tmpTable.setDefaultSortFunction(table.getDefaultSortFunction());
+            tmpTable.setDefaultSortOrder(table.getDefaultSortOrder());
+
+            tmpTable.setFirst(0);
+            tmpTable.setRows(rowCount);
+
+            //it would be ideal to also clone LazyDataModel, but that´s more complicated
+
+            tmpTable.loadLazyData();
 
             for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
-                exportRow(table, document, rowIndex);
+                exportRow(tmpTable, document, rowIndex);
             }
-
-            //restore
-            table.setFirst(first);
-            table.setRows(rows);
-            table.setRowIndex(-1);
-            table.clearLazyCache();
-            table.loadLazyData();
         }
         else {
             for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
