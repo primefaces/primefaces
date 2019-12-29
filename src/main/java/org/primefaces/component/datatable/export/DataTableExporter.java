@@ -234,7 +234,7 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
             tmpTable.setFirst(0);
             tmpTable.setRows(rowCount);
 
-            //it would be ideal to also clone LazyDataModel, but that´s more complicated
+            //it would be ideal to also clone LazyDataModel, but that´s more complicated - see #763
 
             tmpTable.loadLazyData();
 
