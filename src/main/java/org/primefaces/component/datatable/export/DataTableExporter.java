@@ -28,6 +28,7 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.Exporter;
 import org.primefaces.component.overlaypanel.OverlayPanel;
+import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentUtils;
 
 import javax.el.MethodExpression;
@@ -212,6 +213,16 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
         boolean lazy = table.isLazy();
 
         if (lazy) {
+            LazyDataModel<?> lazyDataModel = null;
+            List<?> wrappedData = null;
+            int pageSize = -1;
+
+            if (table.getValue() instanceof LazyDataModel) {
+                lazyDataModel = (LazyDataModel<?>) table.getValue();
+                wrappedData = lazyDataModel.getWrappedData();
+                pageSize = lazyDataModel.getPageSize();
+            }
+
             if (rowCount > 0) {
                 table.setFirst(0);
                 table.setRows(rowCount);
@@ -228,7 +239,13 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
             table.setRows(rows);
             table.setRowIndex(-1);
             table.clearLazyCache();
-            table.loadLazyData();
+
+            if (table.getValue() instanceof LazyDataModel) {
+                lazyDataModel.setWrappedData(wrappedData);
+                lazyDataModel.setPageSize(pageSize);
+                lazyDataModel.setRowIndex(-1);
+                lazyDataModel.setRowCount(rowCount);
+            }
         }
         else {
             for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
