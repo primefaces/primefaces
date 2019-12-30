@@ -101,6 +101,7 @@ public class UIData extends javax.faces.component.UIData {
     private String clientId = null;
     private DataModel model = null;
     private Boolean isNested = null;
+    private Object oldVar = null;
 
     public enum PropertyKeys {
         paginator,
@@ -566,8 +567,6 @@ public class UIData extends javax.faces.component.UIData {
         // Clear or expose the current row data as a request scope attribute
         String var = getVar();
         if (var != null) {
-            Object oldVar = null;
-
             Map<String, Object> requestMap
                     = getFacesContext().getExternalContext().getRequestMap();
             if (rowIndex == -1) {
@@ -629,8 +628,6 @@ public class UIData extends javax.faces.component.UIData {
         //update var
         String var = getVar();
         if (var != null) {
-            Object oldVar = null;
-
             String rowIndexVar = getRowIndexVar();
             Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
 
@@ -1374,6 +1371,7 @@ public class UIData extends javax.faces.component.UIData {
             clientId = null;
             model = null;
             isNested = null;
+            oldVar = null;
         }
         else if (viewPoolingResetMode == ComponentUtils.ViewPoolingResetMode.HARD) {
             _rowTransientStates.clear();
@@ -1383,6 +1381,7 @@ public class UIData extends javax.faces.component.UIData {
             clientId = null;
             model = null;
             isNested = null;
+            oldVar = null;
         }
 
         if (initialStateMarked()) {
