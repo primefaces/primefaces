@@ -213,15 +213,8 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
         boolean lazy = table.isLazy();
 
         if (lazy) {
-            LazyDataModel<?> lazyDataModel = null;
-            List<?> wrappedData = null;
-            int pageSize = -1;
-
-            if (table.getValue() instanceof LazyDataModel) {
-                lazyDataModel = (LazyDataModel<?>) table.getValue();
-                wrappedData = lazyDataModel.getWrappedData();
-                pageSize = lazyDataModel.getPageSize();
-            }
+            LazyDataModel<?> lazyDataModel = (LazyDataModel<?>) table.getValue();
+            List<?> wrappedData = lazyDataModel.getWrappedData();
 
             if (rowCount > 0) {
                 table.setFirst(0);
@@ -239,13 +232,9 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
             table.setRows(rows);
             table.setRowIndex(-1);
             table.clearLazyCache();
-
-            if (table.getValue() instanceof LazyDataModel) {
-                lazyDataModel.setWrappedData(wrappedData);
-                lazyDataModel.setPageSize(pageSize);
-                lazyDataModel.setRowIndex(-1);
-                lazyDataModel.setRowCount(rowCount);
-            }
+            lazyDataModel.setWrappedData(wrappedData);
+            lazyDataModel.setPageSize(rows);
+            lazyDataModel.setRowIndex(-1);
         }
         else {
             for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
