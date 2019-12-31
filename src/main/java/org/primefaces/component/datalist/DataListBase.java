@@ -25,12 +25,10 @@ package org.primefaces.component.datalist;
 
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
-import org.primefaces.component.api.Pageable;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
-import org.primefaces.component.api.UIData;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.*;
 
-public abstract class DataListBase extends UIData implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable {
+public abstract class DataListBase extends UIData
+        implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable, MultiViewStateAware<DataListState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -122,6 +120,7 @@ public abstract class DataListBase extends UIData implements Widget, ClientBehav
         getStateHelper().put(PropertyKeys.itemStyleClass, itemStyleClass);
     }
 
+    @Override
     public boolean isMultiViewState() {
         return (Boolean) getStateHelper().eval(PropertyKeys.multiViewState, false);
     }

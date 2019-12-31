@@ -60,14 +60,14 @@ public class DataListRenderer extends DataRenderer {
             }
 
             if (list.isMultiViewState()) {
-                DataListState ls = list.getDataListState(true);
+                DataListState ls = list.getMultiViewState(true);
                 ls.setFirst(list.getFirst());
                 ls.setRows(list.getRows());
             }
         }
         else {
             if (list.isMultiViewState()) {
-                list.restoreDataListState();
+                list.restoreMultiViewState();
             }
 
             encodeMarkup(context, list);

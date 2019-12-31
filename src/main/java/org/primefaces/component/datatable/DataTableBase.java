@@ -574,6 +574,7 @@ public abstract class DataTableBase extends UIData
         getStateHelper().put(PropertyKeys.clientCache, clientCache);
     }
 
+    @Override
     public boolean isMultiViewState() {
         return (Boolean) getStateHelper().eval(PropertyKeys.multiViewState, false);
     }

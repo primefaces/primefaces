@@ -223,7 +223,7 @@ public class PrimeFaces {
 
     /**
      * Removes the multiViewState for one specific DataList within the current session.
-     * @param key Key of the DataList. See {@link org.primefaces.component.datalist.DataList#getDataListState(boolean)}} for the namebuild of this key.
+     * @param key Key of the DataList. See {@link org.primefaces.component.datalist.DataList#getMultiViewState(boolean)}} for the namebuild of this key.
      *
      * @deprecated Use {@link MultiViewState#clear(String, String)} instead
      */

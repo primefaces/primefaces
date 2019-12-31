@@ -712,6 +712,7 @@ public class DataTable extends DataTableBase {
         setFilterBy(null);
     }
 
+    @Override
     public void reset() {
         resetValue();
         setFirst(0);
