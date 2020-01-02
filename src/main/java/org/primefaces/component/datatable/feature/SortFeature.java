@@ -59,7 +59,7 @@ public class SortFeature implements DataTableFeature {
         if (table.isMultiSort()) {
             String[] sortKeys = sortKey.split(",");
             String[] sortOrders = sortDir.split(",");
-            Map<String, SortMeta> sortMeta = new HashMap<>(sortKeys.length);
+            Map<String, SortMeta> sortMeta = new LinkedHashMap<>(sortKeys.length);
 
             for (int i = 0; i < sortKeys.length; i++) {
                 UIColumn sortColumn = table.findColumn(sortKeys[i]);
