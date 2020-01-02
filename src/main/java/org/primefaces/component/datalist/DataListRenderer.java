@@ -66,15 +66,8 @@ public class DataListRenderer extends DataRenderer {
             }
         }
         else {
-            if (list.isMultiViewState() && list.isPaginator()) {
-                int firstOld = list.getFirst();
-                int rowsOld = list.getRows();
-
+            if (list.isMultiViewState()) {
                 list.restoreDataListState();
-
-                if (list.isLazy() && (firstOld != list.getFirst() || rowsOld != list.getRows())) {
-                    list.loadLazyData();
-                }
             }
 
             encodeMarkup(context, list);
