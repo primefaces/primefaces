@@ -56,9 +56,16 @@ public class DataTablePDFExporter extends DataTableExporter {
     private Document document;
     private ByteArrayOutputStream baos;
 
+    protected Document getDocument() {
+        if (document == null) {
+            document = new Document();
+        }
+        return document;
+    }
+
     @Override
     protected void preExport(FacesContext context, ExportConfiguration config) throws IOException {
-        document = new Document();
+        Document document = getDocument();
         baos = new ByteArrayOutputStream();
 
         try {
@@ -84,10 +91,10 @@ public class DataTablePDFExporter extends DataTableExporter {
             if (index > 0) {
                 Paragraph preface = new Paragraph();
                 addEmptyLine(preface, 3);
-                document.add(preface);
+                getDocument().add(preface);
             }
 
-            document.add(exportTable(context, table, config));
+            getDocument().add(exportTable(context, table, config));
         }
         catch (DocumentException e) {
             throw new IOException(e.getMessage());
@@ -281,7 +288,7 @@ public class DataTablePDFExporter extends DataTableExporter {
     }
 
     protected void writePDFToResponse(ExternalContext externalContext, ByteArrayOutputStream baos, String fileName) throws IOException {
-        document.close();
+        getDocument().close();
 
         OutputStream out = externalContext.getResponseOutputStream();
         baos.writeTo(out);
