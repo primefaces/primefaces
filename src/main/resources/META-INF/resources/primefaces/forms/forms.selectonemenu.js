@@ -17,6 +17,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.itemsWrapper = this.panel.children('.ui-selectonemenu-items-wrapper');
         this.options = this.input.children('option');
         this.cfg.effect = this.cfg.effect||'fade';
+        if  ($.browser.msie) { //no effecs for IE - see  #5490, #4723
+            this.cfg.effect = 'none';
+        }
         this.cfg.effectSpeed = this.cfg.effectSpeed||'normal';
         this.cfg.autoWidth = this.cfg.autoWidth === false ? false : true;
         this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
@@ -131,6 +134,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             var jqWidth = this.jq.outerWidth();
             if(this.panel.outerWidth() < jqWidth) {
                 this.panel.width(jqWidth);
+            }
+            else {
+                this.panel.width(this.panel.width() + 10); //add 10 extra-pixels to avoid horizontal scrollbar for IE and FF with long item labels
             }
 
             this.panelWidthAdjusted = true;
@@ -682,10 +688,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         this.panel.css({'display':'none', 'opacity':'', 'pointer-events': '', 'z-index': ++PrimeFaces.zindex});
 
-        if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
-            this.panel.parent().css('z-index', PrimeFaces.zindex - 1);
-        }
-
         if(this.cfg.effect !== 'none') {
             this.panel.show(this.cfg.effect, {}, this.cfg.effectSpeed, function() {
                 PrimeFaces.scrollInView($this.itemsWrapper, $this.getActiveItem());
@@ -709,10 +711,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     hide: function() {
-        if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
-            this.panel.parent().css('z-index', '');
-        }
-
         this.panel.css('z-index', '').hide();
         this.focusInput.attr('aria-expanded', false);
         this.jq.attr('aria-expanded', false);
