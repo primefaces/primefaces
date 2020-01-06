@@ -56,16 +56,17 @@ public class DataTablePDFExporter extends DataTableExporter {
     private Document document;
     private ByteArrayOutputStream baos;
 
+    protected Document createDocument() {
+        return new Document();
+    }
+
     protected Document getDocument() {
-        if (document == null) {
-            document = new Document();
-        }
         return document;
     }
 
     @Override
     protected void preExport(FacesContext context, ExportConfiguration config) throws IOException {
-        Document document = getDocument();
+        document = createDocument();
         baos = new ByteArrayOutputStream();
 
         try {
