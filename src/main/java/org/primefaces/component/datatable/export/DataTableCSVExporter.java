@@ -241,4 +241,10 @@ public class DataTableCSVExporter extends DataTableExporter {
     protected void postRowExport(DataTable table, Object document) {
         ((StringBuilder) document).append(csvOptions.getEndOfLineSymbols());
     }
+
+    @Override
+    protected void postExport(FacesContext context, ExportConfiguration config) throws IOException {
+        super.postExport(context, config);
+        sb = null;
+    }
 }
