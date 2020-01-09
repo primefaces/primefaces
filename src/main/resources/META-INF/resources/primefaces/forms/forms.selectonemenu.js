@@ -17,9 +17,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.itemsWrapper = this.panel.children('.ui-selectonemenu-items-wrapper');
         this.options = this.input.children('option');
         this.cfg.effect = this.cfg.effect||'fade';
-        if  ($.browser.msie) { //no effecs for IE - see  #5490, #4723
-            this.cfg.effect = 'none';
-        }
+
         this.cfg.effectSpeed = this.cfg.effectSpeed||'normal';
         this.cfg.autoWidth = this.cfg.autoWidth === false ? false : true;
         this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
@@ -136,7 +134,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 this.panel.width(jqWidth);
             }
             else {
-                this.panel.width(this.panel.width() + 10); //add 10 extra-pixels to avoid horizontal scrollbar for IE and FF with long item labels
+                this.panel.width(this.panel.width());
             }
 
             this.panelWidthAdjusted = true;

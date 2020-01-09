@@ -316,10 +316,6 @@ input[type=text]::-ms-clear {
     white-space: nowrap;
 }
 
-.ui-selectonemenu-panel .ui-selectonemenu-list-item {
-    text-overflow: ellipsis;
-}
-
 .ui-selectonemenu-footer {
     border:0px none;
     margin:1px 0;
