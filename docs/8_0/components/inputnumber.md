@@ -62,6 +62,7 @@ tabindex | null | Integer | Position of the input element in the tabbing order.
 title | null | String | Advisory tooltip information.
 type | text | String | Input field type.
 decimalSeparator |. | String | Decimal separator char.
+decimalSeparatorAlternative | null | String | Allow to declare an alternative decimal separator which is automatically replaced by `decimalCharacter` when typed.
 thousandSeparator | , | String | Thousand separator char.
 symbol | none | String | Desired symbol or unit.
 symbolPosition | p | String | Position of the symbol. 'p' for prefix 's' for suffix
