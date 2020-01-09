@@ -681,10 +681,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         this.panel.css({'display':'block', 'opacity':0, 'pointer-events': 'none'});
+        this.itemsWrapper.css({'overflow': 'scroll'});
 
         this.alignPanel();
 
         this.panel.css({'display':'none', 'opacity':'', 'pointer-events': '', 'z-index': ++PrimeFaces.zindex});
+        this.itemsWrapper.css({'overflow': ''});
 
         if(this.cfg.effect !== 'none') {
             this.panel.show(this.cfg.effect, {}, this.cfg.effectSpeed, function() {
