@@ -137,6 +137,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.columnWidthsFixed = false;
 
         this.unbindEvents();
+        this.destroyClones();
 
         this._super(cfg);
     },
@@ -150,6 +151,21 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         if (this.paginator) {
             this.paginator.unbindEvents();
+        }
+    },
+
+    /**
+     * Removes any cloned values in DOM before creating new ones.
+     */
+    destroyClones: function() {
+        if (this.theadClone) {
+            this.theadClone.remove();
+        }
+        if (this.frozenTheadClone) {
+            this.frozenTheadClone.remove();
+        }
+        if (this.scrollTheadClone) {
+            this.scrollTheadClone.remove();
         }
     },
 
