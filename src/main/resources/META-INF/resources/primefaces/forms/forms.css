@@ -1007,3 +1007,8 @@ div.ui-button, .ui-splitbutton {
     top: -.75em;
     font-size: 12px;
 }
+
+/** Firefox: https://github.com/primefaces/primefaces/issues/5508 **/
+.ui-float-label > input.ui-state-focus ~ label {
+    top: -.75em;
+}
