@@ -155,7 +155,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Removes any cloned values in DOM before creating new ones.
+     * Removes any cloned values in DOM before creating new ones. 
+     * Clones are cleaned up properly during AJAX updates, however this is necessary when calling 
+     * client widget.refresh() method which would create duplicate clones in the DOM. 
      */
     destroyClones: function() {
         if (this.theadClone) {
