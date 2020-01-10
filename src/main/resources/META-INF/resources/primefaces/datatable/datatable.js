@@ -137,7 +137,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.columnWidthsFixed = false;
 
         this.unbindEvents();
-        this.destroyClones();
 
         this._super(cfg);
     },
@@ -151,23 +150,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         if (this.paginator) {
             this.paginator.unbindEvents();
-        }
-    },
-
-    /**
-     * Removes any cloned values in DOM before creating new ones. 
-     * Clones are cleaned up properly during AJAX updates, however this is necessary when calling 
-     * client widget.refresh() method which would create duplicate clones in the DOM. 
-     */
-    destroyClones: function() {
-        if (this.theadClone) {
-            this.theadClone.remove();
-        }
-        if (this.frozenTheadClone) {
-            this.frozenTheadClone.remove();
-        }
-        if (this.scrollTheadClone) {
-            this.scrollTheadClone.remove();
         }
     },
 
@@ -1116,6 +1098,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     cloneHead: function() {
         var $this = this;
 
+        if (this.theadClone) {
+            this.theadClone.remove();
+        }
         this.theadClone = this.cloneTableHeader(this.thead, this.bodyTable);
 
         //reflect events from clone to original
@@ -4169,7 +4154,14 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
     },
 
     cloneHead: function() {
+        if (this.frozenTheadClone) {
+            this.frozenTheadClone.remove();
+        }
         this.frozenTheadClone = this.cloneTableHeader(this.frozenThead, this.frozenBodyTable);
+
+        if (this.scrollTheadClone) {
+            this.scrollTheadClone.remove();
+        }
         this.scrollTheadClone = this.cloneTableHeader(this.scrollThead, this.scrollBodyTable);
     },
 
