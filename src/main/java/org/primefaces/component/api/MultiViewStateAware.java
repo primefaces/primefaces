@@ -31,5 +31,5 @@ public interface MultiViewStateAware<T> {
 
     T getMultiViewState(boolean create);
 
-    void reset();
+    void resetMultiViewState();
 }

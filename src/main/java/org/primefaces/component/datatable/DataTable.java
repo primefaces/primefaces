@@ -712,7 +712,6 @@ public class DataTable extends DataTableBase {
         setFilterBy(null);
     }
 
-    @Override
     public void reset() {
         resetValue();
         setFirst(0);
@@ -1482,6 +1481,11 @@ public class DataTable extends DataTableBase {
 
         return PrimeFaces.current().multiViewState()
                 .get(viewId, getClientId(fc), create, TableState::new);
+    }
+
+    @Override
+    public void resetMultiViewState() {
+        reset();
     }
 
     public String getGroupedColumnIndexes() {

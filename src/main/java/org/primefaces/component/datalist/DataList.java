@@ -288,7 +288,7 @@ public class DataList extends DataListBase {
     }
 
     @Override
-    public void reset() {
+    public void resetMultiViewState() {
         setFirst(0);
     }
 }

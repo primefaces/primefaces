@@ -462,7 +462,7 @@ public class PrimeFaces {
          * @param reset indicates whether or not the component should be reset
          */
         public void clear(String viewId, String clientId, boolean reset) {
-            MVSKey key = createMVSKey(viewId, clientId);
+            MVSKey key = MVSKey.of(viewId, clientId);
             clearMVSKeys(Collections.singleton(key), reset, null);
         }
 
@@ -481,7 +481,7 @@ public class PrimeFaces {
             FacesContext fc = getFacesContext();
             Map<String, Object> sessionMap = fc.getExternalContext().getSessionMap();
             Map<String, Object> states =  getMVSSessionMap();
-            String mvsKey = createMVSKey(viewId, clientId).toString();
+            String mvsKey = MVSKey.of(viewId, clientId).toString();
 
             if (states == null) {
                 states = new HashMap<>();
@@ -497,10 +497,6 @@ public class PrimeFaces {
             return state;
         }
 
-        private MVSKey createMVSKey(String viewId, String clientId) {
-            return new MVSKey(viewId, clientId);
-        }
-
         private Map<String, Object> getMVSSessionMap() {
             FacesContext fc = getFacesContext();
             Map<String, Object> sessionMap = fc.getExternalContext().getSessionMap();
@@ -513,7 +509,7 @@ public class PrimeFaces {
                 if (!(component instanceof MultiViewStateAware)) {
                     throw new FacesException("Multi view state not supported for: " + component.getClass().getSimpleName());
                 }
-                ((MultiViewStateAware) component).reset();
+                ((MultiViewStateAware) component).resetMultiViewState();
             });
         }
 
@@ -544,9 +540,13 @@ public class PrimeFaces {
         private String viewId;
         private String clientId;
 
-        public MVSKey(String viewId, String clientId) {
+        private MVSKey(String viewId, String clientId) {
             this.viewId = viewId;
             this.clientId = clientId;
+        }
+
+        public static MVSKey of(String viewId, String clientId) {
+            return new MVSKey(viewId, clientId);
         }
 
         public static MVSKey of(String value) {
