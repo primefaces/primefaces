@@ -1098,6 +1098,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     cloneHead: function() {
         var $this = this;
 
+        if (this.theadClone) {
+            this.theadClone.remove();
+        }
         this.theadClone = this.cloneTableHeader(this.thead, this.bodyTable);
 
         //reflect events from clone to original
@@ -4151,7 +4154,14 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
     },
 
     cloneHead: function() {
+        if (this.frozenTheadClone) {
+            this.frozenTheadClone.remove();
+        }
         this.frozenTheadClone = this.cloneTableHeader(this.frozenThead, this.frozenBodyTable);
+
+        if (this.scrollTheadClone) {
+            this.scrollTheadClone.remove();
+        }
         this.scrollTheadClone = this.cloneTableHeader(this.scrollThead, this.scrollBodyTable);
     },
 
