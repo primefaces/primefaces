@@ -76,7 +76,7 @@ public class DataViewRenderer extends DataRenderer {
         }
         else {
             if (dataview.isMultiViewState()) {
-                dataview.restoreDataViewState();
+                dataview.restoreMultiViewState();
             }
 
             encodeMarkup(context, dataview);
@@ -339,7 +339,7 @@ public class DataViewRenderer extends DataRenderer {
 
     private void saveViewState(DataView dataview) {
         if (dataview.isMultiViewState()) {
-            DataViewState viewState = dataview.getDataViewState(true);
+            DataViewState viewState = dataview.getMultiViewState(true);
             viewState.setFirst(dataview.getFirst());
             viewState.setRows(dataview.getRows());
             viewState.setLayout(dataview.getLayout());
