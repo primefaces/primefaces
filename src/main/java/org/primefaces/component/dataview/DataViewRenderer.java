@@ -61,7 +61,7 @@ public class DataViewRenderer extends DataRenderer {
             encodeLayout(context, dataview);
 
             if (dataview.isMultiViewState()) {
-                saveViewState(dataview);
+                saveMultiViewState(dataview);
             }
         }
         else if (dataview.isLayoutRequest(context)) {
@@ -71,7 +71,7 @@ public class DataViewRenderer extends DataRenderer {
             encodeLayout(context, dataview);
 
             if (dataview.isMultiViewState()) {
-                saveViewState(dataview);
+                saveMultiViewState(dataview);
             }
         }
         else {
@@ -337,7 +337,7 @@ public class DataViewRenderer extends DataRenderer {
         return true;
     }
 
-    private void saveViewState(DataView dataview) {
+    private void saveMultiViewState(DataView dataview) {
         if (dataview.isMultiViewState()) {
             DataViewState viewState = dataview.getMultiViewState(true);
             viewState.setFirst(dataview.getFirst());

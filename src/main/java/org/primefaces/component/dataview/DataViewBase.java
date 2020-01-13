@@ -102,6 +102,7 @@ public abstract class DataViewBase extends UIData
         getStateHelper().put(PropertyKeys.listIcon, listIcon);
     }
 
+    @Override
     public boolean isMultiViewState() {
         return (Boolean) getStateHelper().eval(PropertyKeys.multiViewState, false);
     }
