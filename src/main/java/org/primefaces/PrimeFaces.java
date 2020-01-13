@@ -23,7 +23,6 @@
  */
 package org.primefaces;
 
-import java.io.Serializable;
 import org.primefaces.component.api.MultiViewStateAware;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.expression.ComponentNotFoundException;
@@ -43,6 +42,7 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialViewContext;
+import java.io.Serializable;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -427,7 +427,7 @@ public class PrimeFaces {
          */
         public void clearAll(boolean reset, Consumer<String> clientIdConsumer) {
             if (reset || clientIdConsumer != null) {
-                Set<MVSKey> keys = getMVSSessionMap().keySet();
+                Set<MVSKey> keys = Collections.unmodifiableSet(getMVSKeys());
                 clearMVSKeys(keys, reset, clientIdConsumer);
             }
 
@@ -452,8 +452,7 @@ public class PrimeFaces {
          * @param clientIdConsumer operation to execute for every clientId after multiview state has been cleared
          */
         public void clearAll(String viewId, boolean reset, Consumer<String> clientIdConsumer) {
-            Map<MVSKey, Object> multiViewStates = getMVSSessionMap();
-            Set<MVSKey> keys = multiViewStates.keySet().stream()
+            Set<MVSKey> keys = getMVSKeys().stream()
                     .filter(k -> Objects.equals(k.viewId, viewId))
                     .collect(Collectors.toSet());
             if (!keys.isEmpty()) {
@@ -507,8 +506,8 @@ public class PrimeFaces {
             return state;
         }
 
-        private Map<MVSKey, Object> getMVSSessionMap() {
-            return getMVSSessionMap(false);
+        private Set<MVSKey> getMVSKeys() {
+            return getMVSSessionMap(false).keySet();
         }
 
         private Map<MVSKey, Object> getMVSSessionMap(boolean create) {
@@ -525,7 +524,6 @@ public class PrimeFaces {
                     mvsMap = Collections.emptyMap();
                 }
             }
-
             return mvsMap;
         }
 
@@ -540,21 +538,21 @@ public class PrimeFaces {
         }
 
         private void clearMVSKeys(Set<MVSKey> keysToRemove, boolean reset, Consumer<String> clientIdConsumer) {
-            Set<MVSKey> allKeys = getMVSSessionMap().keySet();
-            for (MVSKey keyToRemove : keysToRemove) {
-                if (!allKeys.remove(keyToRemove)) {
+            Set<MVSKey> mvsKeys = getMVSKeys();
+            for (MVSKey mvsKey : keysToRemove) {
+                if (!mvsKeys.remove(mvsKey)) {
                     LOGGER.log(Level.WARNING,
                             "Multiview state for viewId: \"{0}\" and clientId \"{1}\" not found",
-                            new Object[]{keyToRemove.viewId, keyToRemove.clientId});
+                            new Object[]{mvsKey.viewId, mvsKey.clientId});
                     continue;
                 }
 
                 if (reset) {
-                    reset(keyToRemove.clientId);
+                    reset(mvsKey.clientId);
                 }
 
                 if (clientIdConsumer != null) {
-                    clientIdConsumer.accept(keyToRemove.clientId);
+                    clientIdConsumer.accept(mvsKey.clientId);
                 }
             }
         }
@@ -569,7 +567,7 @@ public class PrimeFaces {
 
         // serialization
         private MVSKey() {
-
+            // NOOP
         }
 
         private MVSKey(String viewId, String clientId) {
@@ -584,8 +582,8 @@ public class PrimeFaces {
         @Override
         public int hashCode() {
             int hash = 7;
-            hash = 23 * hash + Objects.hashCode(this.viewId);
-            hash = 23 * hash + Objects.hashCode(this.clientId);
+            hash = 23 * hash + Objects.hashCode(viewId);
+            hash = 23 * hash + Objects.hashCode(clientId);
             return hash;
         }
 
