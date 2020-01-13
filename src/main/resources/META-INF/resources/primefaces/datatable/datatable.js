@@ -393,7 +393,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindChangeFilter: function(filter) {
         var $this = this;
 
-        filter.change(function() {
+        filter.off('change')
+        .on('change', function() {
             $this.filter();
         });
     },
@@ -401,7 +402,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindEnterKeyFilter: function(filter) {
         var $this = this;
 
-        filter.on('keydown', PrimeFaces.utils.blockEnterKey)
+        filter.off('keydown keyup')
+        .on('keydown', PrimeFaces.utils.blockEnterKey)
         .on('keyup', function(e) {
             var key = e.which,
             keyCode = $.ui.keyCode;
@@ -416,10 +418,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
     bindFilterEvent: function(filter) {
         var $this = this;
-
+        var filterEventName = this.cfg.filterEvent + '.dataTable';
+        
         //prevent form submit on enter key
-        filter.on('keydown.dataTable-blockenter', PrimeFaces.utils.blockEnterKey)
-        .on(this.cfg.filterEvent + '.dataTable', function(e) {
+        filter.off('keydown.dataTable-blockenter ' + filterEventName)
+        .on('keydown.dataTable-blockenter', PrimeFaces.utils.blockEnterKey)
+        .on(filterEventName, function(e) {
             if (PrimeFaces.utils.ignoreFilterKey(e)) {
                 return;
             }
@@ -437,7 +441,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         // #89 IE clear "x" button
         if (PrimeFaces.env.isIE()) {
-            filter.on('mouseup.dataTable', function(e) {
+            filter.off('mouseup.dataTable').on('mouseup.dataTable', function(e) {
                 var input = $(this),
                 oldValue = input.val();
 
