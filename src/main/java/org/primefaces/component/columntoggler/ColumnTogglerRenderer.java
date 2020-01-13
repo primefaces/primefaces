@@ -31,7 +31,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.datatable.TableState;
+import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
@@ -50,7 +50,7 @@ public class ColumnTogglerRenderer extends CoreRenderer {
             if (isMultiViewState) {
                 Map<String, String> params = context.getExternalContext().getRequestParameterMap();
                 String columnTogglerParam = params.get(table.getClientId(context) + "_columnTogglerState");
-                TableState ts = table.getMultiViewState(true);
+                DataTableState ts = table.getMultiViewState(true);
                 ts.setTogglableColumnsAsString(columnTogglerParam);
             }
         }

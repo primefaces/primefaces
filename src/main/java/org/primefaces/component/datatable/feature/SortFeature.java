@@ -38,7 +38,7 @@ import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
-import org.primefaces.component.datatable.TableState;
+import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.event.data.PostSortEvent;
 import org.primefaces.model.*;
 
@@ -133,7 +133,7 @@ public class SortFeature implements DataTableFeature {
             ValueExpression sortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
             Map<String, SortMeta> multiSortState = table.isMultiSort() ? table.getSortMeta() : null;
             if (sortByVE != null || (multiSortState != null && !multiSortState.isEmpty())) {
-                TableState ts = table.getMultiViewState(true);
+                DataTableState ts = table.getMultiViewState(true);
                 ts.setSortBy(sortByVE);
                 ts.setSortMeta(multiSortState);
                 ts.setSortOrder(table.getSortOrder());

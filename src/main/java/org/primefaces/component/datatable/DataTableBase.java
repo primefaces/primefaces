@@ -33,7 +33,7 @@ import java.util.Collections;
 import java.util.Map;
 
 public abstract class DataTableBase extends UIData
-        implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable, MultiViewStateAware<TableState> {
+        implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable, MultiViewStateAware<DataTableState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

@@ -1444,7 +1444,7 @@ public class DataTable extends DataTableBase {
 
     @Override
     public void restoreMultiViewState() {
-        TableState ts = getMultiViewState(false);
+        DataTableState ts = getMultiViewState(false);
         if (ts != null) {
             if (isPaginator()) {
                 setFirst(ts.getFirst());
@@ -1475,12 +1475,12 @@ public class DataTable extends DataTableBase {
     }
 
     @Override
-    public TableState getMultiViewState(boolean create) {
+    public DataTableState getMultiViewState(boolean create) {
         FacesContext fc = getFacesContext();
         String viewId = fc.getViewRoot().getViewId();
 
         return PrimeFaces.current().multiViewState()
-                .get(viewId, getClientId(fc), create, TableState::new);
+                .get(viewId, getClientId(fc), create, DataTableState::new);
     }
 
     @Override

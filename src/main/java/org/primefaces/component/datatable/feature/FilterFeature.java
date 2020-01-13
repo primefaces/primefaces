@@ -42,7 +42,7 @@ import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
-import org.primefaces.component.datatable.TableState;
+import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.component.row.Row;
 import org.primefaces.event.data.PostFilterEvent;
 import org.primefaces.model.FilterMeta;
@@ -152,7 +152,7 @@ public class FilterFeature implements DataTableFeature {
                 filterByCopy.put(filter.getKey(), new FilterMeta(filter.getValue()));
             }
 
-            TableState ts = table.getMultiViewState(true);
+            DataTableState ts = table.getMultiViewState(true);
             ts.setFilterBy(filterByCopy);
 
             if (table.isPaginator()) {

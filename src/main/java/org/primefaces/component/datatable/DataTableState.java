@@ -32,7 +32,7 @@ import javax.el.ValueExpression;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
 
-public class TableState implements Serializable {
+public class DataTableState implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
