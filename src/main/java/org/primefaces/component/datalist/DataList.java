@@ -268,8 +268,9 @@ public class DataList extends DataListBase {
         }
     }
 
-    public void restoreDataListState() {
-        DataListState ls = getDataListState(false);
+    @Override
+    public void restoreMultiViewState() {
+        DataListState ls = getMultiViewState(false);
         if (ls != null && isPaginator()) {
             setFirst(ls.getFirst());
             int rows = (ls.getRows() == 0) ? getRows() : ls.getRows();
@@ -277,11 +278,17 @@ public class DataList extends DataListBase {
         }
     }
 
-    public DataListState getDataListState(boolean create) {
+    @Override
+    public DataListState getMultiViewState(boolean create) {
         FacesContext fc = getFacesContext();
         String viewId = fc.getViewRoot().getViewId();
 
         return PrimeFaces.current().multiViewState()
                 .get(viewId, getClientId(fc), create, DataListState::new);
+    }
+
+    @Override
+    public void resetMultiViewState() {
+        setFirst(0);
     }
 }

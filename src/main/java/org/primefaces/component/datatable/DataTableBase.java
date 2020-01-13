@@ -32,7 +32,8 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import java.util.Collections;
 import java.util.Map;
 
-public abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable {
+public abstract class DataTableBase extends UIData
+        implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable, MultiViewStateAware<TableState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -573,6 +574,7 @@ public abstract class DataTableBase extends UIData implements Widget, RTLAware, 
         getStateHelper().put(PropertyKeys.clientCache, clientCache);
     }
 
+    @Override
     public boolean isMultiViewState() {
         return (Boolean) getStateHelper().eval(PropertyKeys.multiViewState, false);
     }
