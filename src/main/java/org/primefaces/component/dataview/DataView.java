@@ -168,4 +168,40 @@ public class DataView extends DataViewBase {
 
         return super.saveState(context);
     }
+
+    public void reset() {
+        setFirst(0);
+        //resetRows(); //TODO: do resetRows the "right" way
+        setLayout(null);
+    }
+
+    @Override
+    public void resetMultiViewState() {
+        reset();
+    }
+
+    @Override
+    public void restoreMultiViewState() {
+        DataViewState viewState = getMultiViewState(false);
+        if (viewState != null) {
+            if (viewState.getLayout() != null && viewState.getLayout().length() > 0) {
+                setLayout(viewState.getLayout());
+            }
+
+            if (isPaginator()) {
+                setFirst(viewState.getFirst());
+                int rows = (viewState.getRows() == 0) ? getRows() : viewState.getRows();
+                setRows(rows);
+            }
+        }
+    }
+
+    @Override
+    public DataViewState getMultiViewState(boolean create) {
+        FacesContext fc = getFacesContext();
+        String viewId = fc.getViewRoot().getViewId();
+
+        return PrimeFaces.current().multiViewState()
+                .get(viewId, getClientId(fc), create, DataViewState::new);
+    }
 }
