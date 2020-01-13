@@ -224,6 +224,7 @@ public class InputNumberRenderer extends InputRenderer {
         wb.attr("disabled", inputNumber.isDisabled())
             .attr("valueToRender", formatForPlugin(valueToRender, inputNumber, value))
             .attr("decimalCharacter", inputNumber.getDecimalSeparator(), ".")
+            .attr("decimalCharacterAlternative", inputNumber.getDecimalSeparatorAlternative(), null)
             .attr("digitGroupSeparator", digitGroupSeparator, ",")
             .attr("currencySymbol", inputNumber.getSymbol())
             .attr("currencySymbolPlacement", inputNumber.getSymbolPosition(), "p")

@@ -12182,6 +12182,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Allow to declare an alternative decimal separator which is automatically replaced by `decimalCharacter` when typed.]]>
+            </description>
+            <name>decimalSeparatorAlternative</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>

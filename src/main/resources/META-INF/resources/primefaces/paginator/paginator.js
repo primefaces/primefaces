@@ -351,9 +351,8 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
     },
 
     setRowsPerPage: function(rpp) {
-        this.cfg.rows = rpp;
-
         if (rpp === '*') {
+            this.cfg.rows = this.cfg.rowCount;
             this.cfg.pageCount = 1;
             this.cfg.page = 0;
 
@@ -366,9 +365,8 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.paginate.call(this, newState);
         }
         else {
-            rpp = parseInt(rpp);
-            var first = this.cfg.rows * this.cfg.page,
-            page = parseInt(first / rpp);
+            this.cfg.rows = parseInt(rpp);
+            var page = parseInt(this.cfg.page);
 
             this.cfg.pageCount = Math.ceil(this.cfg.rowCount / this.cfg.rows);
             this.cfg.page = -1;

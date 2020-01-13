@@ -101,6 +101,7 @@ public class UIData extends javax.faces.component.UIData {
     private String clientId = null;
     private DataModel model = null;
     private Boolean isNested = null;
+    private Object oldVar = null;
 
     public enum PropertyKeys {
         paginator,
@@ -566,22 +567,20 @@ public class UIData extends javax.faces.component.UIData {
         // Clear or expose the current row data as a request scope attribute
         String var = getVar();
         if (var != null) {
-            //Object oldVar = null;
-
             Map<String, Object> requestMap
                     = getFacesContext().getExternalContext().getRequestMap();
             if (rowIndex == -1) {
-                requestMap.remove(var);
+                oldVar = requestMap.remove(var);
             }
             else if (isRowAvailable()) {
                 requestMap.put(var, getRowData());
             }
             else {
                 requestMap.remove(var);
-                /*if (null != oldVar) {
+                if (null != oldVar) {
                     requestMap.put(var, oldVar);
                     oldVar = null;
-                }*/
+                }
             }
         }
 
@@ -629,13 +628,11 @@ public class UIData extends javax.faces.component.UIData {
         //update var
         String var = getVar();
         if (var != null) {
-            //Object oldVar = null;
-
             String rowIndexVar = getRowIndexVar();
             Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
 
             if (rowIndex == -1) {
-                requestMap.remove(var);
+                oldVar = requestMap.remove(var);
 
                 if (rowIndexVar != null) {
                     requestMap.remove(rowIndexVar);
@@ -655,10 +652,10 @@ public class UIData extends javax.faces.component.UIData {
                     requestMap.put(rowIndexVar, rowIndex);
                 }
 
-                /*if (oldVar != null) {
+                if (oldVar != null) {
                     requestMap.put(var, oldVar);
                     oldVar = null;
-                }*/
+                }
             }
         }
     }
@@ -1374,6 +1371,7 @@ public class UIData extends javax.faces.component.UIData {
             clientId = null;
             model = null;
             isNested = null;
+            oldVar = null;
         }
         else if (viewPoolingResetMode == ComponentUtils.ViewPoolingResetMode.HARD) {
             _rowTransientStates.clear();
@@ -1383,6 +1381,7 @@ public class UIData extends javax.faces.component.UIData {
             clientId = null;
             model = null;
             isNested = null;
+            oldVar = null;
         }
 
         if (initialStateMarked()) {

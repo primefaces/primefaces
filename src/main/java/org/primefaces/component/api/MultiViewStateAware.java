@@ -21,26 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model.menu;
+package org.primefaces.component.api;
 
-import java.util.List;
+public interface MultiViewStateAware<T> {
 
-/**
- * Interface to create programmatic Menus
- */
-public interface MenuModel {
+    boolean isMultiViewState();
 
-    List<MenuElement> getElements();
+    void restoreMultiViewState();
 
-    /**
-     *
-     * @param element
-     * @deprecated Please use getElements().add(element);
-     */
-    @Deprecated
-    default void addElement(MenuElement element) {
-        getElements().add(element);
-    }
+    T getMultiViewState(boolean create);
 
-    void generateUniqueIds();
+    void resetMultiViewState();
 }

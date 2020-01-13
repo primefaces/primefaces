@@ -211,6 +211,10 @@ public class DataTableExcelExporter extends DataTableExporter {
         return new HSSFWorkbook();
     }
 
+    protected Workbook getWorkBook() {
+        return wb;
+    }
+
     protected Sheet createSheet(Workbook wb, String sheetName, ExcelOptions options) {
         return wb.createSheet(sheetName);
     }
