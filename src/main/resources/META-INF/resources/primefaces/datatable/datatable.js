@@ -37,7 +37,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.expansion) {
             this.expansionProcess = [];
             this.bindExpansionEvents();
-            this.updateExpandedRowsColspan();
         }
 
         if(this.cfg.editable) {
@@ -91,6 +90,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         if(this.cfg.onRowClick) {
             this.bindRowClick();
+        }
+
+        if(this.cfg.expansion) {
+            this.updateExpandedRowsColspan();
         }
     },
 
