@@ -43,13 +43,15 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             this._render();
         }
         else {
-            var container = this.jq.parent().closest('.ui-hidden-container'),
-            $this = this;
-
-            if(container.length) {
-                this.addDeferredRender(this.id, container, function() {
-                    return $this.render();
-                });
+            var container = this.jq.parent()[0].closest('.ui-hidden-container');
+            if (container) {
+                var $container = $(container);
+                if ($container.length) {
+                    var $this = this;
+                    this.addDeferredRender(this.id, container, function() {
+                        return $this.render();
+                    });
+                }
             }
         }
     },

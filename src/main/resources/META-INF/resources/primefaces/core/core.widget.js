@@ -243,9 +243,8 @@ if (!PrimeFaces.widget) {
                 var container = this.jq[0].closest('.ui-hidden-container');
                 if (container) {
                     var $container = $(container);
-                    var $this = this;
-
                     if($container.length) {
+                        var $this = this;
                         this.addDeferredRender(this.id, $container, function() {
                             return $this.render();
                         });
