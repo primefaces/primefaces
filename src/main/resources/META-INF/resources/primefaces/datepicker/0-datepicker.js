@@ -1778,13 +1778,7 @@
             this.panel.show();
             this.alignPanel();
 
-            if (this.options.touchUI) {
-                //Bind click-listener for TouchUI delayed - see #5513
-                setTimeout(function () {
-                    this.bindDocumentClickListener();
-                }, 100);
-            }
-            else {
+            if (!this.options.touchUI) {
                 this.bindDocumentClickListener();
             }
         },
