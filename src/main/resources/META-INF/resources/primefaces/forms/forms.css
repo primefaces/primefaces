@@ -1010,12 +1010,17 @@ div.ui-button, .ui-splitbutton {
 
 .ui-float-label > input:focus ~ label,
 .ui-float-label > input.ui-state-filled ~ label,
-.ui-float-label > input:-webkit-autofill ~ label,
 .ui-float-label > textarea:focus ~ label,
 .ui-float-label > textarea.ui-state-filled ~ label,
-.ui-float-label > textarea:-webkit-autofill ~ label,
 .ui-float-label > .ui-inputwrapper-focus ~ label,
 .ui-float-label > .ui-inputwrapper-filled ~ label {
+    top: -.75em;
+    font-size: 12px;
+}
+
+/** Firefox: https://github.com/primefaces/primefaces/issues/5508 **/
+.ui-float-label > input:-webkit-autofill ~ label,
+.ui-float-label > textarea:-webkit-autofill ~ label {
     top: -.75em;
     font-size: 12px;
 }
