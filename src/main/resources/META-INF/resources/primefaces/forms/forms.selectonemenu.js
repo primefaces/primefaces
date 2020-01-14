@@ -1016,10 +1016,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
     getAppendTo: function() {
         if (this.cfg.appendTo !== '@(body)') {
-            var dialog = this.jq.closest('.ui-dialog');
-            if(dialog.length === 1) {
+            var dialog = this.jq[0].closest('.ui-dialog');
+            if (dialog) {
+                var $dialog = $(dialog);
                 //set position as fixed to scroll with dialog
-                if(dialog.css('position') === 'fixed') {
+                if ($dialog.css('position') === 'fixed') {
                     this.panel.css('position', 'fixed');
                 }
 
