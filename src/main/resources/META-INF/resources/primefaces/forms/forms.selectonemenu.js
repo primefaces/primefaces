@@ -1015,17 +1015,18 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     getAppendTo: function() {
-        var dialog = this.jq.closest('.ui-dialog');
+        if (this.cfg.appendTo !== '@(body)') {
+            var dialog = this.jq.closest('.ui-dialog');
+            if(dialog.length === 1) {
+                //set position as fixed to scroll with dialog
+                if(dialog.css('position') === 'fixed') {
+                    this.panel.css('position', 'fixed');
+                }
 
-        if(dialog.length == 1) {
-            //set position as fixed to scroll with dialog
-            if(dialog.css('position') === 'fixed') {
-                this.panel.css('position', 'fixed');
-            }
-
-            //append to body if not already appended by user choice
-            if(!this.panel.parent().is(document.body)) {
-                return "@(body)";
+                //append to body if not already appended by user choice
+                if(!this.panel.parent().is(document.body)) {
+                    return "@(body)";
+                }
             }
         }
 
