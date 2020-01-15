@@ -1777,7 +1777,10 @@
 
             this.panel.show();
             this.alignPanel();
-            this.bindDocumentClickListener();
+
+            if (!this.options.touchUI) {
+                this.bindDocumentClickListener();
+            }
         },
 
         hideOverlay: function () {
