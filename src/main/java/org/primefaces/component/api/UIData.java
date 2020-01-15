@@ -320,21 +320,18 @@ public class UIData extends javax.faces.component.UIData {
         }
 
         ValueExpression firstVe = data.getValueExpression("first");
+        int firstValue = Integer.valueOf(firstParam);
         if (isWriteable(elContext, firstVe)) {
-            firstVe.setValue(elContext, Integer.valueOf(firstParam));
+            firstVe.setValue(elContext, firstValue);
         }
-        else {
-            data.setFirst(Integer.valueOf(firstParam));
-        }
+        data.setFirst(firstValue);
 
         ValueExpression rowsVe = data.getValueExpression("rows");
         int newRowsValue = "*".equals(rowsParam) ? getRowCount() : Integer.valueOf(rowsParam);
         if (isWriteable(elContext, rowsVe)) {
             rowsVe.setValue(elContext, newRowsValue);
         }
-        else {
-            data.setRows(newRowsValue);
-        }
+        data.setRows(newRowsValue);
     }
 
     private boolean isWriteable(ELContext elContext, ValueExpression ve) {
