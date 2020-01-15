@@ -109,6 +109,7 @@ public class UIData extends javax.faces.component.UIData {
         rows,
         rowsPerPageTemplate,
         rowsPerPageLabel,
+        first,
         currentPageReportTemplate,
         pageLinks,
         paginatorPosition,
@@ -154,7 +155,7 @@ public class UIData extends javax.faces.component.UIData {
             rowsVe.setValue(elContext, rows);
         }
         else {
-            super.setRows(rows);
+            getStateHelper().put(UIData.PropertyKeys.rows, rows);
         }
     }
 
@@ -166,7 +167,7 @@ public class UIData extends javax.faces.component.UIData {
             firstVe.setValue(elContext, first);
         }
         else {
-            super.setFirst(first);
+            getStateHelper().put(UIData.PropertyKeys.first, first);
         }
     }
 
