@@ -147,7 +147,27 @@ public class UIData extends javax.faces.component.UIData {
         if (rows < 0) {
             throw new IllegalArgumentException(String.valueOf(rows));
         }
-        getStateHelper().put(PropertyKeys.rows, rows);
+
+        ELContext elContext = getFacesContext().getELContext();
+        ValueExpression rowsVe = getValueExpression("rows");
+        if (isWriteable(elContext, rowsVe)) {
+            rowsVe.setValue(elContext, rows);
+        }
+        else {
+            super.setRows(rows);
+        }
+    }
+
+    @Override
+    public void setFirst(int first) {
+        ELContext elContext = getFacesContext().getELContext();
+        ValueExpression firstVe = getValueExpression("first");
+        if (isWriteable(elContext, firstVe)) {
+            firstVe.setValue(elContext, first);
+        }
+        else {
+            super.setFirst(first);
+        }
     }
 
     public java.lang.String getRowsPerPageTemplate() {
@@ -319,22 +339,9 @@ public class UIData extends javax.faces.component.UIData {
             throw new IllegalArgumentException("Unsupported rows per page value: " + rowsParam);
         }
 
-        ValueExpression firstVe = data.getValueExpression("first");
-        if (isWriteable(elContext, firstVe)) {
-            firstVe.setValue(elContext, Integer.valueOf(firstParam));
-        }
-        else {
-            data.setFirst(Integer.valueOf(firstParam));
-        }
-
-        ValueExpression rowsVe = data.getValueExpression("rows");
-        int newRowsValue = "*".equals(rowsParam) ? getRowCount() : Integer.valueOf(rowsParam);
-        if (isWriteable(elContext, rowsVe)) {
-            rowsVe.setValue(elContext, newRowsValue);
-        }
-        else {
-            data.setRows(newRowsValue);
-        }
+        data.setFirst(Integer.parseInt(firstParam));
+        int newRowsValue = "*".equals(rowsParam) ? getRowCount() : Integer.parseInt(rowsParam);
+        data.setRows(newRowsValue);
     }
 
     private boolean isWriteable(ELContext elContext, ValueExpression ve) {
