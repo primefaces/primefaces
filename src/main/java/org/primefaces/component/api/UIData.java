@@ -107,7 +107,6 @@ public class UIData extends javax.faces.component.UIData {
         paginator,
         paginatorTemplate,
         rows,
-        first,
         rowsPerPageTemplate,
         rowsPerPageLabel,
         currentPageReportTemplate,
