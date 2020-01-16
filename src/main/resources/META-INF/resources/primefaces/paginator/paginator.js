@@ -365,8 +365,9 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.paginate.call(this, newState);
         }
         else {
+            var first = this.cfg.rows * this.cfg.page;
             this.cfg.rows = parseInt(rpp);
-            var page = parseInt(this.cfg.page);
+            var page = parseInt(first / this.cfg.rows);
 
             this.cfg.pageCount = Math.ceil(this.cfg.rowCount / this.cfg.rows);
             this.cfg.page = -1;
