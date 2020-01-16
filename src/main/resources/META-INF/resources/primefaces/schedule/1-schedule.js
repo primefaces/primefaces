@@ -11,10 +11,6 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.urlTarget = this.cfg.urlTarget || "_blank";
         this.cfg.plugins = [ 'interaction', 'dayGrid', 'timeGrid', 'list', 'moment', 'momentTimezone'];
 
-        if(this.cfg.defaultDate) {
-            this.cfg.defaultDate = moment(this.cfg.defaultDate);
-        }
-
         this.setupEventSource();
 
         if(this.cfg.tooltip) {
