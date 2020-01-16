@@ -1676,5 +1676,12 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         return target.is('th,span');
+    },
+
+    /**
+     * Returns if there is any data displayed
+     */
+    isEmpty: function() {
+        return this.tbody.children('tr.ui-treetable-empty-message').length === 1;
     }
 });
