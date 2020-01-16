@@ -152,7 +152,7 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
         var empty = (clear === undefined) ? true: clear;
 
         if(empty)
-            this.list.html(data);
+            this.list[0].innerHTML = data;
         else if (pre)
             this.list.prepend(data);
         else

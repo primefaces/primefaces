@@ -183,7 +183,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            this.tbody.html(content);
+                            this.tbody[0].innerHTML = content;
                         }
                     });
 
@@ -222,7 +222,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            this.tbody.html(content);
+                            this.tbody[0].innerHTML = content;
                         }
                     });
 
@@ -485,7 +485,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            this.tbody.html(content);
+                            this.tbody[0].innerHTML = content;
 
                             columnHeader.siblings().filter('.ui-state-active').removeData('sortorder').removeClass('ui-state-active')
                                             .find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');

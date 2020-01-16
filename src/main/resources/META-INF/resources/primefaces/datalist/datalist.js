@@ -40,7 +40,7 @@ PrimeFaces.widget.DataList = PrimeFaces.widget.BaseWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            this.content.html(content);
+                            this.content[0].innerHTML = content;
                         }
                     });
 

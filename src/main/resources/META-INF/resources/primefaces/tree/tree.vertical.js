@@ -1130,7 +1130,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                     widget: $this,
                     handle: function(content) {
-                        $this.container.html(content);
+                        $this.container[0].innerHTML = content;
                     }
                 });
 

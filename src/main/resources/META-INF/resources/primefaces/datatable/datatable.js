@@ -113,7 +113,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var empty = (clear === undefined) ? true: clear;
 
         if(empty)
-            this.tbody.html(data);
+            this.tbody[0].innerHTML = data;
         else
             this.tbody.append(data);
 

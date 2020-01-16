@@ -93,7 +93,7 @@ PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            this.content.html(content);
+                            this.content[0].innerHTML = content;
                         }
                     });
 
@@ -123,7 +123,7 @@ PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            this.content.html(content);
+                            this.content[0].innerHTML = content;
                         }
                     });
 
