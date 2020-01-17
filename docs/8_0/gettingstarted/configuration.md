@@ -24,3 +24,4 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 | FONT_AWESOME | false | Auto includes Font-Awesome 4.7. |
 | INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES | false | Whether to load messages for the client side validation (CSV) from server via the MessageInterpolator. |
 | MOVE_SCRIPTS_TO_BOTTOM | false | Moves all inline scripts to end of body tag for better performance and smaller HTML output. |
+| CSP | false | Enable Content Security Policy to prevent cross-site scripting (XSS), clickjacking and other code injection attacks |
