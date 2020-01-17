@@ -1779,7 +1779,10 @@
             this.alignPanel();
 
             if (!this.options.touchUI) {
-                this.bindDocumentClickListener();
+                var $this = this;
+                setTimeout(function () {
+                    $this.bindDocumentClickListener();
+                }, 10);
             }
         },
 
