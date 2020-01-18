@@ -387,7 +387,6 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     protected void processPhase(FacesContext context, PhaseId phaseId) {
-        setRowIndex(-1);
         processFacets(context, phaseId);
         if (requiresColumns()) {
             processColumnFacets(context, phaseId);
@@ -397,6 +396,7 @@ public class UIData extends javax.faces.component.UIData {
             return;
         }
 
+        setRowIndex(-1);
         processChildren(context, phaseId);
         setRowIndex(-1);
     }
