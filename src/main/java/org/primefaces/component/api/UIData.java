@@ -387,15 +387,16 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     protected void processPhase(FacesContext context, PhaseId phaseId) {
+        processFacets(context, phaseId);
+        if (requiresColumns()) {
+            processColumnFacets(context, phaseId);
+        }
+
         if (shouldSkipChildren(context)) {
             return;
         }
 
         setRowIndex(-1);
-        processFacets(context, phaseId);
-        if (requiresColumns()) {
-            processColumnFacets(context, phaseId);
-        }
         processChildren(context, phaseId);
         setRowIndex(-1);
     }
