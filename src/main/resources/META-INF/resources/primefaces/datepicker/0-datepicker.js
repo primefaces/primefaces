@@ -1800,7 +1800,13 @@
 
             this.panel.show();
             this.alignPanel();
-            this.bindDocumentClickListener();
+
+            if (!this.options.touchUI) {
+                var $this = this;
+                setTimeout(function () {
+                    $this.bindDocumentClickListener();
+                }, 10);
+            }
 
             if ((this.options.showTime || this.options.timeOnly) && this.options.timeInput) {
                 this.panel.find('.ui-hour-picker input').focus();
