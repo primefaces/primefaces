@@ -348,7 +348,12 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
 
-        PrimeFaces.ajax.Request.handle(options);
+        if (this.hasBehavior('query')) {
+            this.callBehavior('query', options);
+        }
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
     },
 
     alignPanel: function() {
