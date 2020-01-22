@@ -18,6 +18,7 @@
   - [Javascript API](/core/javascriptAPI.md)
   - [EL Functions](/core/elFunctions.md)
   - [Localization](/core/localization.md)
+  - [Font Icons](/core/fonticons.md)
   - [Accessibility](/core/accessibility.md)
   - [Responsive Design](/core/responsive.md)
   - [Performance](/core/performance.md)

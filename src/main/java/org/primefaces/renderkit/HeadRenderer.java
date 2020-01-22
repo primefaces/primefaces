@@ -38,6 +38,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LocaleUtils;
 
@@ -50,6 +51,7 @@ import org.primefaces.util.LocaleUtils;
  * - Registered Resources
  * - Client Validation Scripts
  * - PF Client Side Settings
+ * - PF Initialization Scripts
  * - Head Content
  * - Last Facet
  */
@@ -59,7 +61,6 @@ public class HeadRenderer extends Renderer {
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
-        ProjectStage projectStage = context.getApplication().getProjectStage();
         boolean csvEnabled = applicationContext.getConfig().isClientSideValidationEnabled();
 
         writer.startElement("head", component);
@@ -112,35 +113,10 @@ public class HeadRenderer extends Renderer {
             encodeValidationResources(context, applicationContext.getConfig().isBeanValidationEnabled());
         }
 
-        writer.startElement("script", null);
-        writer.writeAttribute("type", "text/javascript", null);
-        writer.write("if(window.PrimeFaces){");
+        encodeSettingScripts(context, applicationContext, writer, csvEnabled);
 
-        writer.write("PrimeFaces.settings.locale='" + LocaleUtils.getCurrentLocale(context) + "';");
-
-        if (csvEnabled) {
-            writer.write("PrimeFaces.settings.validateEmptyFields=" + applicationContext.getConfig().isValidateEmptyFields() + ";");
-            writer.write("PrimeFaces.settings.considerEmptyStringNull=" + applicationContext.getConfig().isInterpretEmptyStringAsNull() + ";");
-        }
-
-        if (applicationContext.getConfig().isLegacyWidgetNamespace()) {
-            writer.write("PrimeFaces.settings.legacyWidgetNamespace=true;");
-        }
-
-        if (applicationContext.getConfig().isEarlyPostParamEvaluation()) {
-            writer.write("PrimeFaces.settings.earlyPostParamEvaluation=true;");
-        }
-
-        if (applicationContext.getConfig().isPartialSubmitEnabled()) {
-            writer.write("PrimeFaces.settings.partialSubmit=true;");
-        }
-
-        if (!projectStage.equals(ProjectStage.Production)) {
-            writer.write("PrimeFaces.settings.projectStage='" + projectStage.toString() + "';");
-        }
-
-        writer.write("}");
-        writer.endElement("script");
+        // encode initialization scripts
+        encodeInitScripts(writer);
     }
 
     @Override
@@ -192,6 +168,68 @@ public class HeadRenderer extends Renderer {
                 writer.writeAttribute("src", resource.getRequestPath(), null);
                 writer.endElement("script");
             }
+        }
+    }
+
+    protected void encodeSettingScripts(FacesContext context, PrimeApplicationContext applicationContext,
+            ResponseWriter writer, boolean csvEnabled) throws IOException {
+
+        ProjectStage projectStage = context.getApplication().getProjectStage();
+
+        writer.startElement("script", null);
+        writer.writeAttribute("type", "text/javascript", null);
+        writer.write("if(window.PrimeFaces){");
+
+        writer.write("PrimeFaces.settings.locale='" + LocaleUtils.getCurrentLocale(context) + "';");
+
+        if (csvEnabled) {
+            writer.write("PrimeFaces.settings.validateEmptyFields=" + applicationContext.getConfig().isValidateEmptyFields() + ";");
+            writer.write("PrimeFaces.settings.considerEmptyStringNull=" + applicationContext.getConfig().isInterpretEmptyStringAsNull() + ";");
+        }
+
+        if (applicationContext.getConfig().isLegacyWidgetNamespace()) {
+            writer.write("PrimeFaces.settings.legacyWidgetNamespace=true;");
+        }
+
+        if (applicationContext.getConfig().isEarlyPostParamEvaluation()) {
+            writer.write("PrimeFaces.settings.earlyPostParamEvaluation=true;");
+        }
+
+        if (applicationContext.getConfig().isPartialSubmitEnabled()) {
+            writer.write("PrimeFaces.settings.partialSubmit=true;");
+        }
+
+        if (!projectStage.equals(ProjectStage.Production)) {
+            writer.write("PrimeFaces.settings.projectStage='" + projectStage.toString() + "';");
+        }
+
+        writer.write("}");
+        writer.endElement("script");
+    }
+
+    protected void encodeInitScripts(ResponseWriter writer) throws IOException {
+        List<String> scripts = PrimeRequestContext.getCurrentInstance().getInitScriptsToExecute();
+
+        if (!scripts.isEmpty()) {
+            writer.startElement("script", null);
+            writer.writeAttribute("type", "text/javascript", null);
+
+            boolean moveScriptsToBottom = PrimeRequestContext.getCurrentInstance().getApplicationContext().getConfig().isMoveScriptsToBottom();
+
+            if (!moveScriptsToBottom) {
+                writer.write("$(function(){");
+            }
+
+            for (int i = 0; i < scripts.size(); i++) {
+                writer.write(scripts.get(i));
+                writer.write(';');
+            }
+
+            if (!moveScriptsToBottom) {
+                writer.write("});");
+            }
+
+            writer.endElement("script");
         }
     }
 }

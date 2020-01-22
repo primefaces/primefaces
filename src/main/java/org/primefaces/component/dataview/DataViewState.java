@@ -21,26 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model.menu;
+package org.primefaces.component.dataview;
 
-import java.util.List;
+import java.io.Serializable;
 
-/**
- * Interface to create programmatic Menus
- */
-public interface MenuModel {
+public class DataViewState implements Serializable {
 
-    List<MenuElement> getElements();
+    private static final long serialVersionUID = 1L;
 
-    /**
-     *
-     * @param element
-     * @deprecated Please use getElements().add(element);
-     */
-    @Deprecated
-    default void addElement(MenuElement element) {
-        getElements().add(element);
+    private int first;
+
+    private int rows;
+
+    private String layout;
+
+    public int getFirst() {
+        return first;
     }
 
-    void generateUniqueIds();
+    public void setFirst(int first) {
+        this.first = first;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public void setRows(int rows) {
+        this.rows = rows;
+    }
+
+    public String getLayout() {
+        return layout;
+    }
+
+    public void setLayout(String layout) {
+        this.layout = layout;
+    }
 }

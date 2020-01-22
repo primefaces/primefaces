@@ -1,7 +1,7 @@
 # Performance
 
-In generell both the JSF implementations and PrimeFaces has good performance per default.
-Most of the performance bottlenecks are in the backend and probably database queries.
+In general both the JSF implementations and PrimeFaces has good performance per default.
+Most of the performance bottlenecks are in the back-end and probably database queries.
 However, there are some settings and patterns that can improve the performance.
 
 
@@ -127,7 +127,7 @@ and Whitespace compression: http://lu4242.blogspot.com/2012/12/html-white-space-
 ### Other
 
 - Only required for non-JSF managed resources: Use a custom ServletFilter to set the correct expires/cache headers of your resources (images, stylesheets, javascripts).
-- Compress and optimize your Javascripts in your build process. If you use maven, try primefaces-extensions' closure compiler maven plugin.
+- Compress and optimize your Javascripts in your build process. If you use Maven, try primefaces-extensions' closure compiler Maven plugin.
 - Enable GZIP in your webserver. If it's not supported by your webserver/container, you can still add the GzipResponseFilter from OmniFaces: http://showcase.omnifaces.org/filters/GzipResponseFilter
 
 ## Patterns
@@ -140,7 +140,7 @@ and Whitespace compression: http://lu4242.blogspot.com/2012/12/html-white-space-
 - Try to avoid logic in getters because they can be called multiple times - especially for the rendered attribute!
 - Avoid logic (like inline if-statements) in EL expression! It's better to move those logic into the bean. It's faster and often easier to read and maintain.
 - Prefer AJAX over a full postback
-- If you have many p:outputLabel's on the page and you know that the input field is required or not, it's a good performance improvemet to set the input to required=true or the outputLabel to indicateRequired=true|false. The default value for indicateRequired since 6.2 is auto, which tries to lookup BeanValidation constrains to check if @NotNull|@NotEmpty|@NotBlank are defined.
+- If you have many p:outputLabel's on the page and you know that the input field is required or not, it's a good performance improvement to set the input to required=true or the outputLabel to indicateRequired=true|false. The default value for indicateRequired since 6.2 is auto, which tries to lookup BeanValidation constrains to check if @NotNull|@NotEmpty|@NotBlank are defined.
 - Cache data, which is required multiple times in the same view, in @RequestScoped beans.
-- Avoid missusing @SessionScoped, @ViewScoped and other long living scopes if not really required.
+- Avoid abusing @SessionScoped, @ViewScoped and other long living scopes if not really required.
 - Try to put only small amount of data in such long living beans. Sometimes a small flag or id of an entity is enough information. Often people put many entities in such long living beans.

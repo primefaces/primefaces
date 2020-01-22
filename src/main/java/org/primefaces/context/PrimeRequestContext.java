@@ -52,7 +52,8 @@ public class PrimeRequestContext {
     public static final String INSTANCE_KEY = PrimeRequestContext.class.getName();
 
     private static final String CALLBACK_PARAMS_KEY = "CALLBACK_PARAMS";
-    private static final String EXECUTE_SCRIPT_KEY = "EXECUTE_SCRIPT";
+    private static final String EXECUTE_INIT_SCRIPTS_KEY = "EXECUTE_INIT_SCRIPTS";
+    private static final String EXECUTE_SCRIPTS_KEY = "EXECUTE_SCRIPTS";
     private static final Class<?>[] EMPTY_PARAMS = new Class<?>[0];
 
     private WidgetBuilder widgetBuilder;
@@ -114,16 +115,32 @@ public class PrimeRequestContext {
     }
 
     /**
+     * @return all scripts added in the current request and called first before other scripts are executed.
+     */
+    @SuppressWarnings("unchecked")
+    public List<String> getInitScriptsToExecute() {
+        List<String> initScriptsToExecute =
+            (List<String>) context.getAttributes().get(EXECUTE_INIT_SCRIPTS_KEY);
+
+        if (initScriptsToExecute == null) {
+            initScriptsToExecute = new ArrayList<>(5);
+            context.getAttributes().put(EXECUTE_INIT_SCRIPTS_KEY, initScriptsToExecute);
+        }
+
+        return initScriptsToExecute;
+    }
+
+    /**
      * @return all scripts added in the current request.
      */
     @SuppressWarnings("unchecked")
     public List<String> getScriptsToExecute() {
         List<String> scriptsToExecute =
-            (List<String>) context.getAttributes().get(EXECUTE_SCRIPT_KEY);
+            (List<String>) context.getAttributes().get(EXECUTE_SCRIPTS_KEY);
 
         if (scriptsToExecute == null) {
             scriptsToExecute = new ArrayList<>();
-            context.getAttributes().put(EXECUTE_SCRIPT_KEY, scriptsToExecute);
+            context.getAttributes().put(EXECUTE_SCRIPTS_KEY, scriptsToExecute);
         }
 
         return scriptsToExecute;

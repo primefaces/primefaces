@@ -31,7 +31,7 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
-import org.primefaces.component.datatable.TableState;
+import org.primefaces.component.datatable.DataTableState;
 
 public class ResizableColumnsFeature implements DataTableFeature {
 
@@ -40,7 +40,7 @@ public class ResizableColumnsFeature implements DataTableFeature {
         if (table.isMultiViewState()) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String resizableColumnParam = params.get(table.getClientId(context) + "_resizableColumnState");
-            TableState ts = table.getTableState(true);
+            DataTableState ts = table.getMultiViewState(true);
             ts.setResizableColumnsAsString(resizableColumnParam);
         }
     }

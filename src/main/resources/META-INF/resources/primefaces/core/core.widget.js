@@ -92,7 +92,7 @@ if (!PrimeFaces.widget) {
         },
 
         //used in ajax updates, reloads the widget configuration
-        refresh: function(cfg) {            
+        refresh: function(cfg) {
             this.destroyListeners = [];
 
             if (this.refreshListeners) {
@@ -107,7 +107,7 @@ if (!PrimeFaces.widget) {
         },
 
         //will be called when the widget after a ajax request if the widget is detached
-        destroy: function() {            
+        destroy: function() {
             PrimeFaces.debug("Destroyed detached widget: " + this.widgetVar);
 
             if (this.destroyListeners) {
@@ -197,7 +197,7 @@ if (!PrimeFaces.widget) {
 
             this.appendTo = null;
             this.modalOverlay = null;
-            
+
             this._super(cfg);
         },
 
@@ -240,13 +240,15 @@ if (!PrimeFaces.widget) {
                 this.postRender();
             }
             else {
-                var container = this.jq.closest('.ui-hidden-container'),
-                $this = this;
-
-                if(container.length) {
-                    this.addDeferredRender(this.id, container, function() {
-                        return $this.render();
-                    });
+                var container = this.jq[0].closest('.ui-hidden-container');
+                if (container) {
+                    var $container = $(container);
+                    if($container.length) {
+                        var $this = this;
+                        this.addDeferredRender(this.id, $container, function() {
+                            return $this.render();
+                        });
+                    }
                 }
             }
         },

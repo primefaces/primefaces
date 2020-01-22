@@ -6571,6 +6571,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to keep DataGrid state across views, defaults to false.]]>
+            </description>
+            <name>multiViewState</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -7871,6 +7879,14 @@
             <name>listIcon</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to keep DataView state across views, defaults to false.]]>
+            </description>
+            <name>multiViewState</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -12171,6 +12187,14 @@
                 <![CDATA[Controls leading zero behavior. Valid values are "allow"(default), "deny" and "keep".]]>
             </description>
             <name>leadingZero</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Allow to declare an alternative decimal separator which is automatically replaced by `decimalCharacter` when typed.]]>
+            </description>
+            <name>decimalSeparatorAlternative</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

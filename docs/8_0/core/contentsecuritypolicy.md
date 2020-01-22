@@ -54,7 +54,7 @@ can override the default policy.
 ```xml
 <context-param>
     <param-name>primefaces.CSP_POLICY</param-name>
-    <param-value>script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google-analytics.com</param-value>
+    <param-value>script-src 'self' https://www.google-analytics.com</param-value>
 </context-param>
 ```
 

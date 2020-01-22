@@ -56,7 +56,6 @@ DataTable displays data in tabular format.
 | liveResize                | false              | Boolean          | Columns are resized live in this mode without using a resize helper.
 | liveScroll                | false              | Boolean          | Enables live scrolling.
 | liveScrollBuffer          | 0                  | Integer          | Percentage height of the buffer between the bottom of the page and the scroll position to initiate the load for the new chunk. Value is defined in integer and default is 0.
-| meaning                   | null               | String           | Values are placed at the end in ascending mode and at beginning in descending mode. Set to "-1" for the opposite behavior.
 | multiViewState            | false              | Boolean          | Whether to keep table state across views, defaults to false.
 | nativeElements            | false              | Boolean          | Uses native radio-checkbox elements for row selection.
 | nullSortOrder             | 1                  | Integer          | Defines where the null values are placed in ascending sort order. Default value is "1"

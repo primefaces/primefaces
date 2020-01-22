@@ -17,6 +17,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.itemsWrapper = this.panel.children('.ui-selectonemenu-items-wrapper');
         this.options = this.input.children('option');
         this.cfg.effect = this.cfg.effect||'fade';
+
         this.cfg.effectSpeed = this.cfg.effectSpeed||'normal';
         this.cfg.autoWidth = this.cfg.autoWidth === false ? false : true;
         this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
@@ -131,6 +132,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             var jqWidth = this.jq.outerWidth();
             if(this.panel.outerWidth() < jqWidth) {
                 this.panel.width(jqWidth);
+            }
+            else {
+                this.panel.width(this.panel.width());
             }
 
             this.panelWidthAdjusted = true;
@@ -677,14 +681,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         this.panel.css({'display':'block', 'opacity':0, 'pointer-events': 'none'});
+        this.itemsWrapper.css({'overflow': 'scroll'});
 
         this.alignPanel();
 
         this.panel.css({'display':'none', 'opacity':'', 'pointer-events': '', 'z-index': ++PrimeFaces.zindex});
-
-        if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
-            this.panel.parent().css('z-index', PrimeFaces.zindex - 1);
-        }
+        this.itemsWrapper.css({'overflow': ''});
 
         if(this.cfg.effect !== 'none') {
             this.panel.show(this.cfg.effect, {}, this.cfg.effectSpeed, function() {
@@ -709,10 +711,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     hide: function() {
-        if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
-            this.panel.parent().css('z-index', '');
-        }
-
         this.panel.css('z-index', '').hide();
         this.focusInput.attr('aria-expanded', false);
         this.jq.attr('aria-expanded', false);
@@ -1017,11 +1015,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     getAppendTo: function() {
-        var dialog = this.jq.closest('.ui-dialog');
-
-        if(dialog.length == 1) {
+        var dialog = this.jq[0].closest('.ui-dialog');
+        if (dialog) {
+            var $dialog = $(dialog);
             //set position as fixed to scroll with dialog
-            if(dialog.css('position') === 'fixed') {
+            if ($dialog.css('position') === 'fixed') {
                 this.panel.css('position', 'fixed');
             }
 

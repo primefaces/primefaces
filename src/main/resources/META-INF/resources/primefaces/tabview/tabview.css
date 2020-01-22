@@ -1,7 +1,10 @@
 .ui-tabs {
     position: relative;
     padding: .2em;
-    zoom: 1;
+    -moz-transform: scale(1);
+    -o-transform: scale(1);
+    -webkit-transform: scale(1);
+    transform: scale(1);
 } /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
 
 .ui-tabs .ui-tabs-nav {
