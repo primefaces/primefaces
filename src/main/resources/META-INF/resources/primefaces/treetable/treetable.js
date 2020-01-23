@@ -1570,6 +1570,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('cellEdit')) {
+            delete options.process;
             this.callBehavior('cellEdit', options);
         }
         else {
