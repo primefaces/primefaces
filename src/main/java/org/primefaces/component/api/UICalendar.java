@@ -237,7 +237,7 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
     public void setRangeSeparator(java.lang.String _rangeSeparator) {
         getStateHelper().put(PropertyKeys.rangeSeparator, _rangeSeparator);
     }
-    
+
     public String getResolverStyle() {
         return (String) getStateHelper().eval(PropertyKeys.resolverStyle, ResolverStyle.SMART.name());
     }
