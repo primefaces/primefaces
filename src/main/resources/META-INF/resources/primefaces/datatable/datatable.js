@@ -3540,6 +3540,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 if($this.hasBehavior('rowReorder')) {
+                    delete options.process;
                     $this.callBehavior('rowReorder', options);
                 }
                 else {
