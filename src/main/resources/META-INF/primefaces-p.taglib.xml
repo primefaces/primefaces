@@ -3141,6 +3141,14 @@
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[ResolverStyle for java.time.format.DateTimeFormatter, lenient, smart or strict, Default is smart.]]>
+            </description>
+            <name>resolverStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -29772,6 +29780,14 @@
                 <![CDATA[Separator for joining start and end dates on range selection mode. Default value is "-".]]>
             </description>
             <name>rangeSeparator</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[ResolverStyle for java.time.format.DateTimeFormatter, lenient, smart or strict, Default is smart.]]>
+            </description>
+            <name>resolverStyle</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

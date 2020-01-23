@@ -26,6 +26,7 @@ package org.primefaces.component.api;
 import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
+import java.time.format.ResolverStyle;
 import java.util.Locale;
 
 import javax.faces.application.FacesMessage;
@@ -61,7 +62,8 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
         inputStyle,
         inputStyleClass,
         type,
-        rangeSeparator
+        rangeSeparator,
+        resolverStyle
     }
 
     public Object getLocale() {
@@ -234,6 +236,14 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
 
     public void setRangeSeparator(java.lang.String _rangeSeparator) {
         getStateHelper().put(PropertyKeys.rangeSeparator, _rangeSeparator);
+    }
+
+    public String getResolverStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.resolverStyle, ResolverStyle.SMART.name());
+    }
+
+    public void setResolverStyle(String resolverStyle) {
+        getStateHelper().put(PropertyKeys.resolverStyle, resolverStyle);
     }
 
     public enum ValidationResult {

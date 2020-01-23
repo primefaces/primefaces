@@ -52,6 +52,7 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.time.temporal.ChronoField;
 import java.time.temporal.Temporal;
 import java.util.Collection;
@@ -198,7 +199,8 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
                     .appendPattern(calendar.calculatePattern())
                     .parseDefaulting(ChronoField.DAY_OF_MONTH, 1) //because of Month Picker which does not contain day of month
                     .toFormatter(calendar.calculateLocale(context))
-                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()));
+                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()))
+                    .withResolverStyle(resolveResolverStyle(calendar.getResolverStyle()));
 
             try {
                 return type == LocalDate.class
@@ -213,7 +215,8 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             String pattern = calendar instanceof Calendar ? calendar.calculatePattern() : calendar.calculateTimeOnlyPattern();
             DateTimeFormatter formatter = DateTimeFormatter
                     .ofPattern(pattern, calendar.calculateLocale(context))
-                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()));
+                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()))
+                    .withResolverStyle(resolveResolverStyle(calendar.getResolverStyle()));
 
             try {
                 return LocalTime.parse(submittedValue, formatter);
@@ -227,7 +230,8 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
                     .parseCaseInsensitive()
                     .appendPattern(calendar.calculatePattern())
                     .toFormatter(calendar.calculateLocale(context))
-                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()));
+                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()))
+                    .withResolverStyle(resolveResolverStyle(calendar.getResolverStyle()));
 
             try {
                 return LocalDateTime.parse(submittedValue, formatter);
@@ -240,6 +244,15 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         //TODO: implement if necessary
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, type.getName() + " not supported", null);
         throw new ConverterException(message);
+    }
+
+    private ResolverStyle resolveResolverStyle(String passedResolverStyle) {
+        for (ResolverStyle resolverStyle : ResolverStyle.values()) {
+            if (resolverStyle.name().equalsIgnoreCase(passedResolverStyle)) {
+                return resolverStyle;
+            }
+        }
+        return ResolverStyle.SMART;
     }
 
     protected ConverterException createConverterException(FacesContext context,

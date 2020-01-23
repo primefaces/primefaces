@@ -112,6 +112,7 @@ ajax selection and more.
 | defaultMinute | 0 | Integer | Default for minute selection, if no date is given. Default is 0.
 | defaultSecond | 0 | Integer | Default for second selection, if no date is given. Default is 0.
 | defaultMillisec | 0 | Integer | Default for millisecond selection, if no date is given. Default is 0.
+| resolverStyle | smart | String | Relevant when parsing to a Java 8 Date/Time object. lenient, smart or strict. See [ResolverStyle](https://docs.oracle.com/javase/8/docs/api/java/time/format/ResolverStyle.html).
 
 ## Getting Started with Calendar
 Value of the calendar should be a java.time.LocalDate.
