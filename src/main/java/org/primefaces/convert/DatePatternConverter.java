@@ -28,6 +28,9 @@ public class DatePatternConverter implements PatternConverter {
     @Override
     public String convert(String pattern) {
 
+        //year; java.time.format.DateTimeFormatter
+        pattern = pattern.replaceAll("uu", "yy");
+
         //year
         if (pattern.contains("yyyy")) {
             pattern = pattern.replaceAll("yyyy*", "yy");
