@@ -29,7 +29,7 @@ public class DatePatternConverter implements PatternConverter {
     public String convert(String pattern) {
 
         //year; java.time.format.DateTimeFormatter
-        pattern = pattern.replaceAll("u", "y");
+        pattern = pattern.replaceAll("uu", "yy");
 
         //year
         if (pattern.contains("yyyy")) {
