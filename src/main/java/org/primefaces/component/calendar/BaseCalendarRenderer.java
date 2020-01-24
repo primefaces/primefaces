@@ -198,6 +198,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
                     .parseCaseInsensitive()
                     .appendPattern(calendar.calculatePattern())
                     .parseDefaulting(ChronoField.DAY_OF_MONTH, 1) //because of Month Picker which does not contain day of month
+                    .parseDefaulting(ChronoField.ERA, 1)
                     .toFormatter(calendar.calculateLocale(context))
                     .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()))
                     .withResolverStyle(resolveResolverStyle(calendar.getResolverStyle()));
@@ -229,6 +230,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                     .parseCaseInsensitive()
                     .appendPattern(calendar.calculatePattern())
+                    .parseDefaulting(ChronoField.ERA, 1)
                     .toFormatter(calendar.calculateLocale(context))
                     .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()))
                     .withResolverStyle(resolveResolverStyle(calendar.getResolverStyle()));

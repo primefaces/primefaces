@@ -412,6 +412,48 @@ public class DatePickerTest {
     }
     
     /**
+     * {@link ResolverStyle} == STRICT. The valid date 02/20/19 should be correctly parsed. 
+     */
+    @Test
+    public void convertToJava8DateTimeAPI_ResolveStyle_Strict_ValidDate() {
+        Class<?> type = LocalDate.class;
+        setupValues(type, Locale.ENGLISH);
+        when(datePicker.getResolverStyle()).thenReturn("STRICT");
+        
+        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "2/20/19");
+        assertEquals(type, temporal.getClass());
+        assertEquals(LocalDate.of(2019, 02, 20), temporal);
+    }
+    
+    /**
+     * {@link ResolverStyle} == STRICT. The valid time 10:11 should be correctly parsed. 
+     */
+    @Test
+    public void convertToJava8DateTimeAPI_ResolveStyle_Strict_ValidTime() {
+        Class<?> type = LocalTime.class;
+        setupValues(type, Locale.ENGLISH);
+        when(datePicker.getResolverStyle()).thenReturn("STRICT");
+        
+        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "10:11");
+        assertEquals(type, temporal.getClass());
+        assertEquals(LocalTime.of(10, 11), temporal);
+    }
+    
+    /**
+     * {@link ResolverStyle} == LENIENT. The time 10:65 should leniently parsed. 
+     */
+    @Test
+    public void convertToJava8DateTimeAPI_ResolveStyle_Lenient_Time() {
+        Class<?> type = LocalTime.class;
+        setupValues(type, Locale.ENGLISH);
+        when(datePicker.getResolverStyle()).thenReturn("LENIENT");
+        
+        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "10:65");
+        assertEquals(type, temporal.getClass());
+        assertEquals(LocalTime.of(11, 05), temporal);
+    }
+    
+    /**
      * {@link ResolverStyle} == LENIENT. The date 02/30/19 is silently parsed to 03/02/19.
      */
     @Test
