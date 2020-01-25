@@ -38,6 +38,7 @@ import static org.mockito.Mockito.when;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.ResolverStyle;
 import java.time.temporal.Temporal;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -125,6 +126,7 @@ public class DatePickerTest {
         when(renderer.resolveDateType(context, datePicker)).thenCallRealMethod();
         when(renderer.convertToJava8DateTimeAPI(eq(context), eq(datePicker), any(), any())).thenCallRealMethod();
         when(renderer.convertToLegacyDateAPI(eq(context), eq(datePicker), any())).thenCallRealMethod();
+        when(renderer.createConverterException(eq(context), any(), anyString(), any())).thenAnswer(invocation -> new ConverterException());
         when(datePicker.validateDateValue(eq(context), any())).thenCallRealMethod();
         when(datePicker.validateDateValue(eq(context), any(), any())).thenCallRealMethod();
         when(datePicker.validateTimeOnlyValue(eq(context), any())).thenCallRealMethod();
@@ -358,6 +360,125 @@ public class DatePickerTest {
         });
 
         assertEquals("Unknown pattern letter: b", thrown.getMessage());
+    }
+    
+    /**
+     * {@link ResolverStyle} == SMART (default value). The date 02/30/19 is silently parsed to 02/28/19. 
+     */
+    @Test
+    public void convertToJava8DateTimeAPI_ResolveStyle_Smart_implicit() {
+        Class<?> type = LocalDate.class;
+        setupValues(type, Locale.ENGLISH);
+        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "2/30/19");
+        assertEquals(type, temporal.getClass());
+        assertEquals(LocalDate.of(2019, 02, 28), temporal);
+    }
+    
+    /**
+     * {@link ResolverStyle} == SMART (explicitly set). The date 02/30/19 is silently parsed to 02/28/19.
+     */
+    @Test
+    public void convertToJava8DateTimeAPI_ResolveStyle_Smart_explicit() {
+        Class<?> type = LocalDate.class;
+        setupValues(type, Locale.ENGLISH);
+        when(datePicker.getResolverStyle()).thenReturn("SMART");
+        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "2/30/19");
+        assertEquals(type, temporal.getClass());
+        assertEquals(LocalDate.of(2019, 02, 28), temporal);
+    }
+    
+    /**
+     * {@link ResolverStyle} == STRICT. The date 02/30/19 should lead to a thrown ConverterException. 
+     */
+    @Test
+    public void convertToJava8DateTimeAPI_ResolveStyle_Strict() {
+        Class<?> type = LocalDate.class;
+        setupValues(type, Locale.ENGLISH);
+        when(datePicker.getResolverStyle()).thenReturn("STRICT");
+        
+        Assertions.assertThrows(ConverterException.class, () -> renderer.convertToJava8DateTimeAPI(context, datePicker, type, "2/30/19"));
+    }
+    
+    /**
+     * {@link ResolverStyle} == STRICT. The date 02/30/19 should lead to a thrown ConverterException. 
+     */
+    @Test
+    public void convertToJava8DateTimeAPI_ResolveStyle_Strict_differentCase() {
+        Class<?> type = LocalDate.class;
+        setupValues(type, Locale.ENGLISH);
+        when(datePicker.getResolverStyle()).thenReturn("strict");
+        
+        Assertions.assertThrows(ConverterException.class, () -> renderer.convertToJava8DateTimeAPI(context, datePicker, type, "2/30/19"));
+    }
+    
+    /**
+     * {@link ResolverStyle} == STRICT. The valid date 02/20/19 should be correctly parsed. 
+     */
+    @Test
+    public void convertToJava8DateTimeAPI_ResolveStyle_Strict_ValidDate() {
+        Class<?> type = LocalDate.class;
+        setupValues(type, Locale.ENGLISH);
+        when(datePicker.getResolverStyle()).thenReturn("STRICT");
+        
+        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "2/20/19");
+        assertEquals(type, temporal.getClass());
+        assertEquals(LocalDate.of(2019, 02, 20), temporal);
+    }
+    
+    /**
+     * {@link ResolverStyle} == STRICT. The valid time 10:11 should be correctly parsed. 
+     */
+    @Test
+    public void convertToJava8DateTimeAPI_ResolveStyle_Strict_ValidTime() {
+        Class<?> type = LocalTime.class;
+        setupValues(type, Locale.ENGLISH);
+        when(datePicker.getResolverStyle()).thenReturn("STRICT");
+        
+        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "10:11");
+        assertEquals(type, temporal.getClass());
+        assertEquals(LocalTime.of(10, 11), temporal);
+    }
+    
+    /**
+     * {@link ResolverStyle} == LENIENT. The time 10:65 should leniently parsed. 
+     */
+    @Test
+    public void convertToJava8DateTimeAPI_ResolveStyle_Lenient_Time() {
+        Class<?> type = LocalTime.class;
+        setupValues(type, Locale.ENGLISH);
+        when(datePicker.getResolverStyle()).thenReturn("LENIENT");
+        
+        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "10:65");
+        assertEquals(type, temporal.getClass());
+        assertEquals(LocalTime.of(11, 05), temporal);
+    }
+    
+    /**
+     * {@link ResolverStyle} == LENIENT. The date 02/30/19 is silently parsed to 03/02/19.
+     */
+    @Test
+    public void convertToJava8DateTimeAPI_ResolveStyle_Lenient() {
+        Class<?> type = LocalDate.class;
+        setupValues(type, Locale.ENGLISH);
+        when(datePicker.getResolverStyle()).thenReturn("LENIENT");
+        
+        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "2/30/19");
+        assertEquals(type, temporal.getClass());
+        assertEquals(LocalDate.of(2019, 03, 02), temporal);
+    }
+    
+    /**
+     * Invalid {@link ResolverStyle}. The date 02/30/19 is silently parsed to 02/28/19 as default value 'SMART' is used.
+     */
+    @Test
+    public void convertToJava8DateTimeAPI_ResolveStyle_Invalid() {
+        Class<?> type = LocalDate.class;
+        setupValues(type, Locale.ENGLISH);
+        when(datePicker.getResolverStyle()).thenReturn("what?");
+        
+        Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "2/30/19");
+        assertEquals(type, temporal.getClass());
+        assertEquals(LocalDate.of(2019, 02, 28), temporal);
     }
 
     @Test

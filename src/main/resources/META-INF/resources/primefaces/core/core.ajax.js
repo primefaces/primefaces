@@ -400,7 +400,7 @@ if (!PrimeFaces.ajax) {
                         processIds = '@all';
                     }
                 }
-                if (processIds !== '@none') {
+                if (!processIds.includes('@none')) {
                     PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.PARTIAL_PROCESS_PARAM, processIds, parameterPrefix);
                 }
 

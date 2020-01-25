@@ -227,6 +227,8 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
             };
 
             this.callBehavior('contextMenu', ext);
+        } else {
+            fnShowMenu();
         }
     },
 
