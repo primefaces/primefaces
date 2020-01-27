@@ -799,6 +799,9 @@ public class TreeRenderer extends CoreRenderer {
                 encodeTreeNode(context, tree, node.getChildren().get(i), clientId, dynamic, checkbox, droppable);
             }
         }
+        else if (droppable && ROOT_ROW_KEY.equals(node.getRowKey())) {
+            encodeDropTarget(context, tree);
+        }
     }
 
     protected void encodeDropTarget(FacesContext context, Tree tree) throws IOException {
