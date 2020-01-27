@@ -12128,7 +12128,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Number of decimal places. Default are taken from minValue and MaxValue.]]>
+                <![CDATA[Number of decimal places. Default is 2.]]>
             </description>
             <name>decimalPlaces</name>
             <required>false</required>
