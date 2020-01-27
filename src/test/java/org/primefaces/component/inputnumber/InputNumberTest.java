@@ -141,6 +141,20 @@ public class InputNumberTest {
     }
 
     @Test
+    public void testDecodeNegativeBelowDefaultRange() {
+        setupValues("-90000000000000", false, null, null, false);
+        renderer.decode(context, inputNumber);
+        Assertions.assertEquals("-10000000000000", inputNumber.getSubmittedValue());
+    }
+
+    @Test
+    public void testDecodePositiveAboveDefaultRange() {
+        setupValues("90000000000000", false, null, null, false);
+        renderer.decode(context, inputNumber);
+        Assertions.assertEquals("10000000000000", inputNumber.getSubmittedValue());
+    }
+
+    @Test
     public void testDecodeInvalidNumber() {
         setupValues("crash", false, null, null, false);
         
