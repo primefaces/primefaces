@@ -633,7 +633,7 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
         cfg.resizable = false;
         cfg.modal = true;
 
-        if (!cfg.appendTo && cfg.global) {
+        if (!cfg.appendTo || cfg.global) {
         	cfg.appendTo = '@(body)';
         }
 
