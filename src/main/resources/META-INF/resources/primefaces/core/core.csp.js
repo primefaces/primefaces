@@ -51,6 +51,8 @@ if (!PrimeFaces.csp) {
             var options = {};
             if (nonceValue) {
                 options = {nonce: nonceValue};
+            } else if (PrimeFaces.csp.NONCE_VALUE) {
+                options = {nonce: PrimeFaces.csp.NONCE_VALUE};
             }
 
             // evaluate the script

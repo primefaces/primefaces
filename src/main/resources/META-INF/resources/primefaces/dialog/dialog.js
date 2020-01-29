@@ -674,7 +674,7 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
 
     showMessage: function(msg) {
         if(msg.beforeShow) {
-            eval(msg.beforeShow);
+            PrimeFaces.csp.eval(msg.beforeShow);
         }
 
         var icon = (msg.icon === 'null') ? 'ui-icon-alert' : msg.icon;
