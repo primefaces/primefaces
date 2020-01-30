@@ -48,7 +48,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                 var $container = $(container);
                 if ($container.length) {
                     var $this = this;
-                    this.addDeferredRender(this.id, container, function() {
+                    this.addDeferredRender(this.id, $container, function() {
                         return $this.render();
                     });
                 }

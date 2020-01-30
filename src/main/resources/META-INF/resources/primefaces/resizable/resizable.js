@@ -23,7 +23,7 @@ PrimeFaces.widget.Resizable = PrimeFaces.widget.BaseWidget.extend({
                 var $container = $(container);
                 if ($container.length) {
                     var $this = this;
-                    PrimeFaces.addDeferredRender(this.id, container.attr('id'), function() {
+                    PrimeFaces.addDeferredRender(this.id, $container.attr('id'), function() {
                         return $this.render();
                     });
                 }
