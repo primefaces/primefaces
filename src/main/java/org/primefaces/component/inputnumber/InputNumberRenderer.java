@@ -219,8 +219,14 @@ public class InputNumberRenderer extends InputRenderer {
     protected void encodeScript(FacesContext context, InputNumber inputNumber, Object value, String valueToRender)
             throws IOException {
         String emptyValue = isValueBlank(inputNumber.getEmptyValue()) || "empty".equalsIgnoreCase(inputNumber.getEmptyValue())
-                    ? "null" : inputNumber.getEmptyValue();
-        String digitGroupSeparator = isValueBlank(inputNumber.getThousandSeparator()) ? Constants.EMPTY_STRING : inputNumber.getThousandSeparator();
+                ? "null"
+                : inputNumber.getEmptyValue();
+        String digitGroupSeparator = isValueBlank(inputNumber.getThousandSeparator())
+                ? Constants.EMPTY_STRING
+                : inputNumber.getThousandSeparator();
+        String decimalPlaces = isValueBlank(inputNumber.getDecimalPlaces())
+                ? "2"
+                : inputNumber.getDecimalPlaces();
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init(InputNumber.class.getSimpleName(), inputNumber.resolveWidgetVar(context), inputNumber.getClientId());
@@ -233,7 +239,7 @@ public class InputNumberRenderer extends InputRenderer {
             .attr("currencySymbolPlacement", inputNumber.getSymbolPosition(), "p")
             .attr("minimumValue", formatForPlugin(inputNumber.getMinValue()))
             .attr("maximumValue", formatForPlugin(inputNumber.getMaxValue()))
-            .attr("decimalPlaces", inputNumber.getDecimalPlaces())
+            .attr("decimalPlaces", decimalPlaces)
             .attr("emptyInputBehavior", emptyValue, "focus")
             .attr("leadingZero", inputNumber.getLeadingZero(), "deny")
             .attr("allowDecimalPadding", inputNumber.isPadControl(), true)
