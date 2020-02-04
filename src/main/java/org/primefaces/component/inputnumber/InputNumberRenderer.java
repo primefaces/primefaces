@@ -226,7 +226,7 @@ public class InputNumberRenderer extends InputRenderer {
                 : inputNumber.getThousandSeparator();
 
         String defaultDecimalPlaces = "2";
-        if (value instanceof Long || value instanceof Integer) {
+        if (value instanceof Long || value instanceof Integer || value instanceof Short) {
             defaultDecimalPlaces = "0";
         }
         String decimalPlaces = isValueBlank(inputNumber.getDecimalPlaces())
