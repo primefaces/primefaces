@@ -60,7 +60,7 @@ public class MediaRenderer extends CoreRenderer {
         String sourceParam = player.getSourceParam();
 
         Object value = media.getValue();
-        if (value instanceof StreamedContent && player.getType().equals("application/pdf")) {
+        if (value instanceof StreamedContent && "application/pdf".equals(player.getType())) {
             StreamedContent streamedContent = (StreamedContent) value;
             if (streamedContent.getName() != null) {
                 int index = src.indexOf('?');
@@ -70,7 +70,7 @@ public class MediaRenderer extends CoreRenderer {
         }
 
         String type = player.getType();
-        if (type != null && type.equals("application/pdf")) {
+        if (type != null && "application/pdf".equals(type)) {
             String view = media.getView();
             String zoom = media.getZoom();
 
