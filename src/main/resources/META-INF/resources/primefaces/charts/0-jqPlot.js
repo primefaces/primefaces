@@ -16802,8 +16802,9 @@
         var shadow = (opts.shadow != undefined) ? opts.shadow : this.shadow;
         var showLine = (opts.showLine != undefined) ? opts.showLine : this.showLine;
         var fill = (opts.fill != undefined) ? opts.fill : this.fill;
-        var cw = ctx.canvas.width;
-        var ch = ctx.canvas.height;
+        // PrimeFaces Github Issue; #4655
+        var cw = parseInt(ctx.canvas.style.width);
+        var ch = parseInt(ctx.canvas.style.height);
         if (this.padding == null) {
             this.padding = Math.round(Math.min(cw, ch)/30);
         }
