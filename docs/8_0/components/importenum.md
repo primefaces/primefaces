@@ -38,3 +38,12 @@ ALL:
     <h:outputText value="#{current}" />
 </ui:repeat>>
 ```
+
+## Includes
+!> ImportEnum can not be used in ui:include and should be included on the top-level page preferably in f:metadata. 
+
+```xhtml
+<f:metadata>
+    <p:importEnum type="javax.faces.application.ProjectStage" var="JsfProjectStages" allSuffix="ALL_ENUM_VALUES" />
+</f:metadata>
+```
