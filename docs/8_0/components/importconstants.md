@@ -39,11 +39,3 @@ public class Constants {
 <h:outputText value="#{PFConstants.DOWNLOAD_COOKIE}" />
 ```
 
-## Includes
-!> ImportConstants can not be used in ui:include and should be included on the top-level page preferably in f:metadata. 
-
-```xhtml
-<f:metadata>
-    <p:importConstants type="org.primefaces.util.Constants" var="PFConstants" />
-</f:metadata>
-```
