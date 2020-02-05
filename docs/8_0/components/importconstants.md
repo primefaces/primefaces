@@ -30,11 +30,20 @@ package org.primefaces.util;
 public class Constants {
     public static final String DOWNLOAD_COOKIE = "primefaces.download";
     public final static String LIBRARY = "primefaces";
-    public final static String PUSH_PATH = "/primepush";
+    public final static String SERVLET_PATH = "/primeservlet";
 }
 ```
 ```xhtml
 <p:importConstants type="org.primefaces.util.Constants" var="PFConstants" />
 <h:outputText value="#{PFConstants.LIBRARY}" />
 <h:outputText value="#{PFConstants.DOWNLOAD_COOKIE}" />
+```
+
+## Includes
+!> ImportConstants can not be used in ui:include and should be included on the top-level page preferably in f:metadata. 
+
+```xhtml
+<f:metadata>
+    <p:importConstants type="org.primefaces.util.Constants" var="PFConstants" />
+</f:metadata>
 ```
