@@ -312,7 +312,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
 
     restoreState: function() {
         var carouselStateAsString = PrimeFaces.getCookie(this.stateKey) || "first: null, collapsed: null";
-        this.carouselState = PrimeFaces.csp.eval('({' + carouselStateAsString + '})');
+        this.carouselState = PrimeFaces.csp.evalResult('({' + carouselStateAsString + '})');
 
         this.first = this.carouselState.first||this.first;
         this.page = parseInt(this.first/this.columns);
