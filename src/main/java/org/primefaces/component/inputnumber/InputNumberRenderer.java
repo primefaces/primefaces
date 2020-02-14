@@ -25,6 +25,7 @@ package org.primefaces.component.inputnumber;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -224,8 +225,13 @@ public class InputNumberRenderer extends InputRenderer {
         String digitGroupSeparator = isValueBlank(inputNumber.getThousandSeparator())
                 ? Constants.EMPTY_STRING
                 : inputNumber.getThousandSeparator();
+
+        String defaultDecimalPlaces = "2";
+        if (value instanceof Long || value instanceof Integer || value instanceof Short || value instanceof BigInteger) {
+            defaultDecimalPlaces = "0";
+        }
         String decimalPlaces = isValueBlank(inputNumber.getDecimalPlaces())
-                ? "2"
+                ? defaultDecimalPlaces
                 : inputNumber.getDecimalPlaces();
 
         WidgetBuilder wb = getWidgetBuilder(context);
