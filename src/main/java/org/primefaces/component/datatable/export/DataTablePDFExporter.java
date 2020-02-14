@@ -291,9 +291,6 @@ public class DataTablePDFExporter extends DataTableExporter {
     protected void writePDFToResponse(ExternalContext externalContext, ByteArrayOutputStream baos, String fileName) throws IOException {
         getDocument().close();
 
-        OutputStream out = externalContext.getResponseOutputStream();
-        baos.writeTo(out);
-
         externalContext.setResponseContentType("application/pdf");
         externalContext.setResponseHeader("Expires", "0");
         externalContext.setResponseHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
@@ -301,7 +298,8 @@ public class DataTablePDFExporter extends DataTableExporter {
         externalContext.setResponseHeader("Content-disposition", ComponentUtils.createContentDisposition("attachment", fileName + ".pdf"));
         externalContext.setResponseContentLength(baos.size());
         externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
-
+        OutputStream out = externalContext.getResponseOutputStream();
+        baos.writeTo(out);
         externalContext.responseFlushBuffer();
     }
 
