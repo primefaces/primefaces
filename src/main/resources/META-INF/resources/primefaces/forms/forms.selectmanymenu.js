@@ -114,7 +114,7 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
             itemNative.classList.remove('ui-state-hover');
 
             if(this.cfg.showCheckbox) {
-                var checkbox = item.children('div.ui-chkbox').children('div.ui-chkbox-box');
+                var checkbox = item.children('td').children('div.ui-chkbox').children('div.ui-chkbox-box');
 
                 var checkboxNative = checkbox[0];
                 checkboxNative.classList.remove('ui-state-hover');
@@ -145,7 +145,7 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
             itemNative.classList.remove('ui-state-highlight');
 
             if(this.cfg.showCheckbox) {
-                var checkbox = item.children('div.ui-chkbox').children('div.ui-chkbox-box');
+                var checkbox = item.children('td').children('div.ui-chkbox').children('div.ui-chkbox-box');
 
                 var checkboxNative = checkbox[0];
                 checkboxNative.classList.remove('ui-state-active');
