@@ -35,9 +35,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 import org.primefaces.component.api.DialogReturnAware;
-import org.primefaces.component.api.MenuItemAware;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.model.menu.MenuElement;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.MapBuilder;
 
@@ -75,15 +73,6 @@ public class UIMenuItem extends UIMenuItemBase implements DialogReturnAware {
     public void decode(FacesContext facesContext) {
         if (isDisabled()) {
             return;
-        }
-
-        // check for any parent Menu that is disabled/rendered
-        UIComponent ancestor = getParent();
-        while (ancestor != null && ancestor instanceof MenuElement || ancestor instanceof MenuItemAware) {
-            if (!ancestor.isRendered() || Boolean.valueOf(String.valueOf(ancestor.getAttributes().get("disabled")))) {
-                return;
-            }
-            ancestor = ancestor.getParent();
         }
 
         Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
