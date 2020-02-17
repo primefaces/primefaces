@@ -29,6 +29,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
 import javax.faces.component.ValueHolder;
 import javax.faces.component.behavior.Behavior;
+import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UIData;
 import org.primefaces.component.api.UITree;
@@ -100,6 +101,11 @@ public class CellEditEvent<T> extends AbstractAjaxBehaviorEvent {
         else if (source instanceof UITree) {
             TreeTable data = (TreeTable) source;
             data.setRowKey(rowKey);
+        }
+
+        if (column.isDynamic()) {
+            DynamicColumn dynamicColumn = (DynamicColumn) column;
+            dynamicColumn.applyStatelessModel();
         }
 
         T value = null;
