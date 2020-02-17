@@ -37,6 +37,9 @@ public class CellEditor extends CellEditorBase {
 
     @Override
     public void processDecodes(FacesContext context) {
+        if (!isRendered() || isDisabled()) {
+            return;
+        }
         if (isEditRequest(context)) {
             super.processDecodes(context);
         }
