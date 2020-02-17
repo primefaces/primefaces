@@ -69,7 +69,8 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         cancelIcon,
         onAdd,
         validateContentType,
-        performVirusScan
+        performVirusScan,
+        maxChunkSize
     }
 
     public FileUploadBase() {
@@ -359,5 +360,13 @@ public abstract class FileUploadBase extends UIInput implements Widget {
 
     public void setPerformVirusScan(boolean performVirusScan) {
         getStateHelper().put(PropertyKeys.performVirusScan, performVirusScan);
+    }
+
+    public Long getMaxChunkSize() {
+        return (Long) getStateHelper().eval(PropertyKeys.maxChunkSize, 0);
+    }
+
+    public void setMaxChunkSize(Long maxChunkSize) {
+        getStateHelper().put(PropertyKeys.maxChunkSize, maxChunkSize);
     }
 }

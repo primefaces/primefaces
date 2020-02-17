@@ -9527,6 +9527,14 @@
             <required>false</required>
             <type>java.lang.Long</type>
         </attribute>
+		<attribute>
+			<description>
+				<![CDATA[To upload large files in smaller chunks, set this option to a preferred maximum chunk size. If set to 0 (default), null or undefined, or the browser does not support the required Blob API, files will be uploaded as a whole. Only works in "advanced" mode.]]>
+			</description>
+			<name>maxChunkSize</name>
+			<required>false</required>
+			<type>java.lang.Long</type>
+		</attribute>
         <attribute>
             <description>
                 <![CDATA[Mode of the uploader, valid values are "simple" and "advanced".]]>
