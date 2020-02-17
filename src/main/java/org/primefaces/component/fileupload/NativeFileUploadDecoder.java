@@ -34,6 +34,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -97,9 +99,29 @@ public class NativeFileUploadDecoder {
         Part part = request.getPart(clientId);
 
         if (part != null) {
+            String contentRange = request.getHeader("Content-Range");
+
+            Pattern pattern = Pattern.compile("bytes ([0-9]+?)-([0-9]+?)/([0-9]+?)");
+            Matcher matcher = pattern.matcher(contentRange);
+
             NativeUploadedFile uploadedFile = new NativeUploadedFile(part, fileUpload.getSizeLimit());
             if (FileUploadUtils.isValidFile(context, fileUpload, uploadedFile)) {
                 fileUpload.queueEvent(new FileUploadEvent(fileUpload, uploadedFile));
+            }
+
+            if (fileUpload.getMaxChunkSize() > 0) {
+                if (matcher.matches()) {
+                    //chunking is active
+                    uploadedFile.setChunkRangeBegin(Long.parseLong(matcher.group(1)));
+                    uploadedFile.setChunkRangeEnd(Long.parseLong(matcher.group(2)));
+                    uploadedFile.setChunkTotalFileSize(Long.parseLong(matcher.group(3)));
+                    if ((uploadedFile.getChunkRangeEnd() + 1) == uploadedFile.getChunkTotalFileSize()) {
+                        uploadedFile.setLastChunk(true);
+                    }
+                }
+                else {
+                    //TODO: throw exception?
+                }
             }
         }
     }

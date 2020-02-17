@@ -52,6 +52,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             dataType: 'xml',
             dropZone: (this.cfg.dnd === false) ? null : this.jq,
             sequentialUploads: this.cfg.sequentialUploads,
+            maxChunkSize: this.cfg.maxChunkSize,
             formData: function() {
                 return $this.createPostData();
             },
