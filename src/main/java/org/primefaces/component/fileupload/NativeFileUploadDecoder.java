@@ -41,6 +41,8 @@ import java.util.stream.StreamSupport;
 
 public class NativeFileUploadDecoder {
 
+    private static final Pattern CONTENT_RANGE_PATTERN = Pattern.compile("^bytes (\\d+)-(\\d+)\\/(\\d+|\\*)$");
+
     private NativeFileUploadDecoder() {
     }
 
@@ -100,9 +102,7 @@ public class NativeFileUploadDecoder {
 
         if (part != null) {
             String contentRange = request.getHeader("Content-Range");
-
-            Pattern pattern = Pattern.compile("bytes ([0-9]+?)-([0-9]+?)/([0-9]+?)");
-            Matcher matcher = pattern.matcher(contentRange);
+            Matcher matcher = CONTENT_RANGE_PATTERN.matcher(contentRange);
 
             NativeUploadedFile uploadedFile = new NativeUploadedFile(part, fileUpload.getSizeLimit());
             if (FileUploadUtils.isValidFile(context, fileUpload, uploadedFile)) {
@@ -120,7 +120,7 @@ public class NativeFileUploadDecoder {
                     }
                 }
                 else {
-                    //TODO: throw exception?
+                    throw new IOException("Content-Range-Header does not match pattern '" + CONTENT_RANGE_PATTERN.pattern() + "'");
                 }
             }
         }
