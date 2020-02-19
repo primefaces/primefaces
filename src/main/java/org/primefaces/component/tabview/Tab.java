@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.tabview;
 
+import javax.faces.context.FacesContext;
+
 public class Tab extends TabBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Tab";
@@ -34,5 +36,13 @@ public class Tab extends TabBase {
 
     public void setLoaded(boolean value) {
         getStateHelper().put("loaded", value);
+    }
+
+    @Override
+    public void processDecodes(FacesContext context) {
+        if (!isRendered() || isDisabled()) {
+            return;
+        }
+        super.processDecodes(context);
     }
 }

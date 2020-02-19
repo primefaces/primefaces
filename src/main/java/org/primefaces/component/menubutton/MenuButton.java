@@ -25,6 +25,7 @@ package org.primefaces.component.menubutton;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
+import javax.faces.context.FacesContext;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -39,4 +40,12 @@ public class MenuButton extends MenuButtonBase {
 
     public static final String CONTAINER_CLASS = "ui-menubutton ui-widget";
     public static final String ICON_CLASS = "ui-icon-triangle-1-s";
+
+    @Override
+    public void processDecodes(FacesContext context) {
+        if (!isRendered() || isDisabled()) {
+            return;
+        }
+        super.processDecodes(context);
+    }
 }

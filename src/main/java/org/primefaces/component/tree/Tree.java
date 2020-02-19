@@ -254,6 +254,9 @@ public class Tree extends TreeBase {
 
     @Override
     public void processDecodes(FacesContext context) {
+        if (!isRendered() || isDisabled()) {
+            return;
+        }
         if (shouldSkipNodes(context)) {
             decode(context);
         }
