@@ -41,6 +41,7 @@ onfocus | null | String | Client side callback to execute when checkbox receives
 onblur | null | String | Client side callback to execute when checkbox loses focus.
 title | null | String | Advisory tooltip information.
 escape | false | Boolean | Defines if label of the component is escaped or not.
+ariaLable | null | String | The aria-label attribute is used to define a string that labels the current element for accessibility.
 
 ## Getting started with SelectBooleanCheckbox
 SelectBooleanCheckbox usage is same as the standard one.
