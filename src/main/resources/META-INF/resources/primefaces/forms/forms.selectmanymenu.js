@@ -23,8 +23,7 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
 
                 var item = $(this),
                 selectedItems = $this.items.filter('.ui-state-highlight'),
-                metaKey = (e.metaKey||e.ctrlKey),
-                unchanged = (!metaKey && selectedItems.length === 1 && selectedItems.index() === item.index());
+                metaKey = (e.metaKey||e.ctrlKey);
 
                 if(!e.shiftKey) {
                     if(!metaKey && !$this.cfg.showCheckbox) {
@@ -63,10 +62,7 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
                     }
                 }
 
-                if(!unchanged) {
-                    $this.input.trigger('change');
-                }
-
+                $this.input.trigger('change');
                 $this.input.trigger('click');
                 PrimeFaces.clearSelection();
                 e.preventDefault();
