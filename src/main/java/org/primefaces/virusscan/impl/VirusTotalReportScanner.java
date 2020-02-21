@@ -115,7 +115,8 @@ public class VirusTotalReportScanner implements VirusScanner {
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.connect();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new FacesException(e);
         }
 

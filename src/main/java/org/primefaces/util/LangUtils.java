@@ -191,7 +191,8 @@ public class LangUtils {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(bytes);
             return DatatypeConverter.printHexBinary(md.digest());
-        } catch (NoSuchAlgorithmException e) {
+        }
+        catch (NoSuchAlgorithmException e) {
             throw new FacesException(e);
         }
     }
