@@ -62,7 +62,7 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
             }
             else if (this.cfg.startAtBottom) {                
                 this.content.scrollTop(this.content[0].scrollHeight);
-                this.cfg.offset = this.cfg.totalSize;
+                this.cfg.offset = this.cfg.totalSize > this.cfg.chunkSize ? this.cfg.totalSize - this.cfg.chunkSize : this.cfg.totalSize;
                 
                 var paddingTop = '';
                 if (this.content.height() > this.list.height()) {
@@ -97,10 +97,9 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
                     scrollHeight = this.scrollHeight,
                     viewportHeight = this.clientHeight,
                     shouldLoad = $this.shouldLoad() && ($this.cfg.startAtBottom ?
-                                (scrollTop <= (scrollHeight - (scrollHeight * $this.cfg.buffer)))
+                                (scrollTop <= (scrollHeight - (scrollHeight * $this.cfg.buffer))) && ($this.cfg.totalSize > $this.cfg.chunkSize)
                                 :
                                 (scrollTop >= ((scrollHeight * $this.cfg.buffer) - viewportHeight)));
-                        
                     if (shouldLoad) {
                         $this.load();
                     }
@@ -171,10 +170,6 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
     load: function() {
         this.loading = true;
         this.cfg.offset += (this.cfg.chunkSize * (this.cfg.startAtBottom ? -1 : 1));
-        
-        if (this.cfg.offset < 0) {
-            this.cfg.offset = 0;
-        }
 
         this.loadStatus.appendTo(this.loaderContainer);
         if(this.loadTrigger) {
@@ -199,8 +194,12 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
                 return true;
             },
             oncomplete: function() {
+                if ($this.cfg.offset < 0) {
+                    $this.cfg.offset = 0;
+                }
+
                 $this.loading = false;
-                $this.allLoaded = ($this.cfg.startAtBottom) ? $this.cfg.offset <= 0 : ($this.cfg.offset + $this.cfg.chunkSize) >= $this.cfg.totalSize;
+                $this.allLoaded = ($this.cfg.startAtBottom) ? $this.cfg.offset == 0 : ($this.cfg.offset + $this.cfg.chunkSize) >= $this.cfg.totalSize;
 
                 $this.loadStatus.remove();
 
