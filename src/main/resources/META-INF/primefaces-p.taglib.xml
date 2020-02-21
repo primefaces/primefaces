@@ -9707,7 +9707,7 @@
             <description>
                 <![CDATA[Whether virus scan should be performed. Default is false.]]>
             </description>
-            <name>performVirusScan</name>
+            <name>virusScan</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>

@@ -23,8 +23,8 @@
  */
 package org.primefaces.virusscan;
 
-import java.io.InputStream;
-import java.io.PushbackInputStream;
+import org.primefaces.model.file.UploadedFile;
+
 import java.util.Iterator;
 import java.util.ServiceLoader;
 import java.util.logging.Level;
@@ -45,10 +45,10 @@ public class VirusScannerService {
 
     /**
      * Perform virus scan and throw exception if at least one registered {@link VirusScanner} provider has detected a virus.
-     * @param inputStream input stream to perform virus scan on
+     * @param file input stream to perform virus scan on
      * @throws VirusException if at least one {@link VirusScanner} provider has detected a virus
      */
-    public void performVirusScan(InputStream inputStream) throws VirusException {
+    public void performVirusScan(UploadedFile file) throws VirusException {
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("Performing virus scan...");
         }
@@ -69,7 +69,7 @@ public class VirusScannerService {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine(String.format("Performing virus scan with %s provider", clazz));
                 }
-                scanner.performVirusScan(new PushbackInputStream(inputStream));
+                scanner.scan(file);
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine(String.format("No virus detected with %s provider", clazz));
                 }
