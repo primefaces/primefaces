@@ -62,12 +62,12 @@ PrimeFaces.widget.ImageCropper = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     onCrop : function (event) {
-        var width = event.detail.width;
-        var height = event.detail.height;
-
         if (this.cropping) {
             return;
         }
+        
+        var width = event.detail.width;
+        var height = event.detail.height;
 
         // constrain the box if necessary
         if (width < this.cfg.minCropBoxWidth
