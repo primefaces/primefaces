@@ -1638,11 +1638,11 @@
 
             if (this.options.view === 'date') {
                 if (newViewDate.getMonth() === 0) {
-                    newViewDate.setMonth(11);
+                    newViewDate.setMonth(11, 1);
                     newViewDate.setFullYear(newViewDate.getFullYear() - 1);
                 }
                 else {
-                    newViewDate.setMonth(newViewDate.getMonth() - 1);
+                    newViewDate.setMonth(newViewDate.getMonth() - 1, 1);
                 }
 
                 if (this.options.onMonthChange) {
@@ -1683,11 +1683,11 @@
 
             if (this.options.view === 'date') {
                 if (newViewDate.getMonth() === 11) {
-                    newViewDate.setMonth(0);
+                    newViewDate.setMonth(0, 1);
                     newViewDate.setFullYear(newViewDate.getFullYear() + 1);
                 }
                 else {
-                    newViewDate.setMonth(newViewDate.getMonth() + 1);
+                    newViewDate.setMonth(newViewDate.getMonth() + 1, 1);
                 }
 
                 if (this.options.onMonthChange) {
