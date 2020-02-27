@@ -443,7 +443,7 @@ public class TreeTable extends TreeTableBase {
 
     public Locale resolveDataLocale() {
         FacesContext context = getFacesContext();
-        return LocaleUtils.resolveLocale(getDataLocale(), getClientId(context));
+        return LocaleUtils.resolveLocale(context, getDataLocale(), getClientId(context));
     }
 
     public ColumnGroup getColumnGroup(String target) {

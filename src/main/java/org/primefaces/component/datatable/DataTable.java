@@ -1332,7 +1332,7 @@ public class DataTable extends DataTableBase {
 
     public Locale resolveDataLocale() {
         FacesContext context = getFacesContext();
-        return LocaleUtils.resolveLocale(getDataLocale(), getClientId(context));
+        return LocaleUtils.resolveLocale(context, getDataLocale(), getClientId(context));
     }
 
     private boolean isFilterRequest(FacesContext context) {

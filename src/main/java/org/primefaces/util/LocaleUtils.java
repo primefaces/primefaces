@@ -80,10 +80,12 @@ public class LocaleUtils {
      * <p>
      * If NULL is passed the view root default locale is used.
      *
+     * @param context the {@link FacesContext}
      * @param locale given locale
+     * @param clientId the component clientId
      * @return resolved Locale
      */
-    public static Locale resolveLocale(Object locale, String clientId) {
+    public static Locale resolveLocale(FacesContext context, Object locale, String clientId) {
         Locale result = null;
 
         if (locale != null) {
@@ -99,7 +101,7 @@ public class LocaleUtils {
         }
         else {
             // default to the view local
-            result = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+            result = context.getViewRoot().getLocale();
         }
 
         return result;
