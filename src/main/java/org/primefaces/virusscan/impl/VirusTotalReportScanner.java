@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -63,10 +64,14 @@ public class VirusTotalReportScanner implements VirusScanner {
         return ctx.getInitParameter(CONTEXT_PARAM_KEY) != null;
     }
 
+    /**
+     * Scan file using "/file/report" endpoint
+     * @throws VirusException if a virus has been detected by the scanner
+     */
     @Override
-    public void scan(UploadedFile file) throws VirusException {
+    public void scan(UploadedFile file) {
         try {
-            HttpURLConnection connection = openConnection(file);
+            URLConnection connection = openConnection(file);
             try (InputStream response = connection.getInputStream()) {
                 JSONObject json = new JSONObject(IOUtils.toString(response, StandardCharsets.UTF_8));
                 handleBodyResponse(file, json);
@@ -103,7 +108,7 @@ public class VirusTotalReportScanner implements VirusScanner {
         return MessageFactory.getMessage("primefaces.fileupload.VIRUS_TOTAL_FILE", new Object[]{file.getFileName()});
     }
 
-    protected HttpURLConnection openConnection(UploadedFile file) throws IOException {
+    protected URLConnection openConnection(UploadedFile file) throws IOException {
         HttpURLConnection connection;
 
         try {

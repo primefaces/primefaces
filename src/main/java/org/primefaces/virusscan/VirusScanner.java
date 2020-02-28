@@ -39,9 +39,8 @@ public interface VirusScanner {
 
     /**
      * Perform virus scan and throw exception if a virus has been detected.
-     * @param file input stream to perform virus scan on
-     * @throws VirusException if a virus has been detected by the scanner
+     * @param file file to perform virus scan on
      */
-    void scan(UploadedFile file) throws VirusException;
+    void scan(UploadedFile file);
 
 }

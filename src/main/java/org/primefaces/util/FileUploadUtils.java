@@ -208,6 +208,7 @@ public class FileUploadUtils {
         String tempFileSuffix = tika ? null : "." + FilenameUtils.getExtension(fileName);
         String tempFilePrefix = UUID.randomUUID().toString();
         Path tempFile = Files.createTempFile(tempFilePrefix, tempFileSuffix);
+
         try {
             try (InputStream in = new PushbackInputStream(new BufferedInputStream(stream))) {
                 try (OutputStream out = new FileOutputStream(tempFile.toFile())) {
@@ -230,6 +231,7 @@ public class FileUploadUtils {
                 }
                 return false;
             }
+
             //Comma-separated values: file_extension|audio/*|video/*|image/*|media_type (see https://www.w3schools.com/tags/att_input_accept.asp)
             String[] accepts = fileUpload.getAccept().split(",");
             boolean accepted = false;
@@ -291,11 +293,11 @@ public class FileUploadUtils {
         PrimeApplicationContext appContext = PrimeApplicationContext.getCurrentInstance(context);
 
         if (sizeLimit != null && uploadedFile.getSize() > sizeLimit) {
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "", ""));
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidSizeMessage(), ""));
         }
 
         if (!isValidType(appContext, fileUpload, uploadedFile)) {
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "", ""));
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidFileMessage(), ""));
         }
 
         if (fileUpload.isVirusScan()) {
@@ -312,7 +314,7 @@ public class FileUploadUtils {
         }
 
         if (sizeLimit != null && totalPartSize > sizeLimit) {
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "", ""));
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidFileMessage(), ""));
         }
     }
 
