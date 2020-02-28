@@ -33,13 +33,15 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
     calculatePositions: function() {
         var doc = $(document),
         documentBody = $(document.body),
-        offset = PrimeFaces.utils.calculateRelativeOffset(this.target);
+        offset = PrimeFaces.utils.calculateRelativeOffset(this.target),
+        zindex = ++PrimeFaces.zindex;
 
         documentBody.children('div.ui-spotlight-top').css({
             'left': 0,
             'top': 0,
             'width': documentBody.width(),
-            'height': offset.top
+            'height': offset.top,
+            'z-index': zindex
         });
 
         var bottomTop = offset.top + this.target.outerHeight();
@@ -47,14 +49,16 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
             'left': 0,
             'top': bottomTop,
             'width': documentBody.width(),
-            'height': doc.height() - bottomTop
+            'height': doc.height() - bottomTop,
+            'z-index': zindex
         });
 
         documentBody.children('div.ui-spotlight-left').css({
             'left': 0,
             'top': offset.top,
             'width': offset.left,
-            'height': this.target.outerHeight()
+            'height': this.target.outerHeight(),
+            'z-index': zindex
         });
 
         var rightLeft = offset.left + this.target.outerWidth();
@@ -62,7 +66,8 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
             'left': rightLeft,
             'top': offset.top,
             'width': documentBody.width() - rightLeft,
-            'height': this.target.outerHeight()
+            'height': this.target.outerHeight(),
+            'z-index': zindex
         });
     },
 
