@@ -41,3 +41,11 @@ body section.cover.show .cover-main > p:last-child a:last-child {
 body section.cover.show .cover-main > p:last-child a:last-child:hover {
     background-color: rgba(255,255,255,0.16);
 }
+
+/* Show PrimeFaces-version and provide toggle-switch */
+div.PF-version {
+    top: -4rem;
+    position: relative;
+    font-weight: bold;
+    left: 7rem;
+}
