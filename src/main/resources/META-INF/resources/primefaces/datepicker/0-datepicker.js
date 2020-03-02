@@ -1515,6 +1515,9 @@
         },
 
         onInputClick: function (event) {
+            // Do not bubble event: https://github.com/primefaces/primefaces/issues/5630
+            event.stopPropagation();
+
             if (this.documentClickListener) {
                 this.datepickerClick = true;
             }
