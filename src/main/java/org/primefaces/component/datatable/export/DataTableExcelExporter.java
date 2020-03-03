@@ -81,8 +81,16 @@ public class DataTableExcelExporter extends DataTableExporter {
         exportTable(context, table, sheet, config.isPageOnly(), config.isSelectionOnly());
 
         if (options == null || options.isAutoSizeColumn()) {
-            for (int j = 0; j < table.getColumnsCount(); j++) {
-                sheet.autoSizeColumn((short) j);
+            short colIndex = 0;
+            for (UIColumn col : table.getColumns()) {
+                if (col instanceof DynamicColumn) {
+                    ((DynamicColumn) col).applyStatelessModel();
+                }
+
+                if (col.isRendered() && col.isExportable()) {
+                    sheet.autoSizeColumn(colIndex);
+                    colIndex++;
+                }
             }
         }
     }

@@ -29,6 +29,7 @@ import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.Exporter;
 import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
@@ -88,7 +89,7 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
             return (String) exportFunction.invoke(context.getELContext(), new Object[]{column});
         }
 
-        return "";
+        return Constants.EMPTY_STRING;
     }
 
     public String exportValue(FacesContext context, UIComponent component) {
@@ -108,7 +109,7 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
                     }
                 }
 
-                return "";
+                return Constants.EMPTY_STRING;
             }
         }
         else if (component instanceof ValueHolder) {
@@ -122,7 +123,7 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
             ValueHolder valueHolder = (ValueHolder) component;
             Object value = valueHolder.getValue();
             if (value == null) {
-                return "";
+                return Constants.EMPTY_STRING;
             }
 
             Converter converter = valueHolder.getConverter();
@@ -176,7 +177,7 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
             return (String) component.getAttributes().get("alt");
         }
         else if (component instanceof OverlayPanel) {
-            return "";
+            return Constants.EMPTY_STRING;
         }
         else {
             //This would get the plain texts on UIInstructions when using Facelets
@@ -186,7 +187,7 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
                 return value.trim();
             }
             else {
-                return "";
+                return Constants.EMPTY_STRING;
             }
         }
     }
