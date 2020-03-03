@@ -44,8 +44,7 @@ public class StaticMessageRenderer extends UINotificationRenderer {
         severity = severity == null ? "info" : severity.toLowerCase();
 
         String styleClass = "ui-message ui-staticmessage ui-message-" + severity + " ui-widget ui-corner-all";
-        if (staticMessage.getStyleClass() != null)
-        {
+        if (staticMessage.getStyleClass() != null) {
             styleClass += " " + staticMessage.getStyleClass();
         }
         String style = staticMessage.getStyle();
@@ -54,8 +53,7 @@ public class StaticMessageRenderer extends UINotificationRenderer {
         writer.writeAttribute("id", staticMessage.getClientId(context), null);
         writer.writeAttribute("aria-live", "polite", null);
         writer.writeAttribute("class", styleClass, null);
-        if (style != null)
-        {
+        if (style != null) {
             writer.writeAttribute("style", style, null);
         }
 
