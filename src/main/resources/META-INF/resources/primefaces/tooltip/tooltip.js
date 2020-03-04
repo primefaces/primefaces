@@ -14,6 +14,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.hideDelay = this.cfg.hideDelay||0;
         this.cfg.hideEffectDuration = this.cfg.target ? 250 : 1;
         this.cfg.position = this.cfg.position||'right';
+        this.cfg.escape = (this.cfg.escape === undefined) ? true : this.cfg.escape;
 
         if(this.cfg.target)
             this.bindTarget();
@@ -45,7 +46,6 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.jq.addClass(this.cfg.styleClass);
         
         this.cfg.globalSelector = this.cfg.globalSelector||'a,:input,:button';
-        this.cfg.escape = (this.cfg.escape === undefined) ? true : this.cfg.escape;
         var $this = this;
 
         $(document).off(this.cfg.showEvent + ' ' + this.cfg.hideEvent, this.cfg.globalSelector)
