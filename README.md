@@ -48,7 +48,7 @@ For a full list of the available downloads, please visit the [download page](htt
 	<dependency>
 	    <groupId>org.primefaces</groupId>
 	    <artifactId>primefaces</artifactId>
-	    <version>7.0</version>
+	    <version>8.0</version>
 	</dependency>
 	```
 
