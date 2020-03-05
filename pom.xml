@@ -12,7 +12,7 @@
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
     <packaging>jar</packaging>
-    <version>8.0</version>
+    <version>9.0-SNAPSHOT</version>
 
     <name>PrimeFaces</name>
     <url>https://www.primefaces.org</url>
@@ -276,6 +276,14 @@
                 <directory>src/test/resources</directory>
             </testResource>
         </testResources>
+
+        <extensions>
+            <extension>
+            <groupId>org.apache.maven.wagon</groupId>
+            <artifactId>wagon-ssh</artifactId>
+            <version>3.0.0</version>
+            </extension>
+        </extensions>
 
         <plugins>
             <plugin>
@@ -901,6 +909,14 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+        <id>prime-repo</id>
+        <name>PrimeFaces Maven Repository</name>
+        <url>sftp://primefaces.org/var/www/repository</url>
+        </repository>
+        </distributionManagement>
 
     <profiles>
         <profile>
