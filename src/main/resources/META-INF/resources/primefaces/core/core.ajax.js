@@ -538,6 +538,12 @@ if (!PrimeFaces.ajax) {
 
                 var jqXhr = $.ajax(xhrOptions)
                     .fail(function(xhr, status, errorThrown) {
+                        var location = xhr.getResponseHeader("Location");
+                        if (xhr.status == 401 && location) {
+                            PrimeFaces.debug('Unauthorized status received. Redirecting to ' + location);
+                            window.location = location;
+                            return;
+                        }
                         if(cfg.onerror) {
                             cfg.onerror.call(this, xhr, status, errorThrown);
                         }
