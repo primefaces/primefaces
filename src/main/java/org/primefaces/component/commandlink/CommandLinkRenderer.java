@@ -133,7 +133,7 @@ public class CommandLinkRenderer extends CoreRenderer {
                 writer.writeAttribute(DialogReturnAware.ATTRIBUTE_DIALOG_RETURN_SCRIPT, dialogReturnBehavior, null);
             }
 
-            renderPassThruAttributes(context, link, HTML.LINK_ATTRS, HTML.CLICK_EVENT);
+            renderPassThruAttributes(context, link, LangUtils.concat(HTML.LINK_ATTRS, HTML.CLICK_EVENT));
 
             if (label != null) {
                 writer.writeText(label, "value");
