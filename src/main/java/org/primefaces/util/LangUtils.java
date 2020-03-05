@@ -23,6 +23,10 @@
  */
 package org.primefaces.util;
 
+import javax.faces.FacesException;
+import javax.xml.bind.DatatypeConverter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -180,5 +184,16 @@ public class LangUtils {
 
         return currentClass.getName().startsWith(currentClass.getSuperclass().getName())
                 && currentClass.getName().contains("$$");
+    }
+
+    public static String md5Hex(byte[] bytes) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(bytes);
+            return DatatypeConverter.printHexBinary(md.digest());
+        }
+        catch (NoSuchAlgorithmException e) {
+            throw new FacesException(e);
+        }
     }
 }

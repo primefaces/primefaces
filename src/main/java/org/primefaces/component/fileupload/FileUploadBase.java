@@ -69,7 +69,7 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         cancelIcon,
         onAdd,
         validateContentType,
-        performVirusScan
+        virusScan
     }
 
     public FileUploadBase() {
@@ -353,11 +353,11 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         getStateHelper().put(PropertyKeys.validateContentType, validateContentType);
     }
 
-    public boolean isPerformVirusScan() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.performVirusScan, false);
+    public boolean isVirusScan() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.virusScan, false);
     }
 
-    public void setPerformVirusScan(boolean performVirusScan) {
-        getStateHelper().put(PropertyKeys.performVirusScan, performVirusScan);
+    public void setVirusScan(boolean virusScan) {
+        getStateHelper().put(PropertyKeys.virusScan, virusScan);
     }
 }
