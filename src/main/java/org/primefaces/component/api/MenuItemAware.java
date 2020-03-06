@@ -23,7 +23,9 @@
  */
 package org.primefaces.component.api;
 
-import org.primefaces.event.MenuActionEvent;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
@@ -33,9 +35,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.FacesEvent;
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Function;
+
+import org.primefaces.event.MenuActionEvent;
 import org.primefaces.model.menu.MenuItem;
 
 public interface MenuItemAware {

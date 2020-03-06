@@ -23,9 +23,15 @@
  */
 package org.primefaces.util;
 
+import javax.faces.FacesException;
+import javax.xml.bind.DatatypeConverter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class LangUtils {
 
@@ -66,6 +72,17 @@ public class LangUtils {
         }
 
         return false;
+    }
+
+
+
+    @SafeVarargs
+    public static <T> Set<T> concat(Set<T>...  sets) {
+        HashSet<T> result = new HashSet<>();
+        for (Set<T> set : sets) {
+            result.addAll(set);
+        }
+        return Collections.unmodifiableSet(result);
     }
 
     public static String[] concat(String[] array1, String[] array2) {
@@ -110,8 +127,14 @@ public class LangUtils {
         return false;
     }
 
+    @SafeVarargs
     public static final <T> List<T> unmodifiableList(T... args) {
         return Collections.unmodifiableList(Arrays.asList(args));
+    }
+
+    @SafeVarargs
+    public static <T> Set<T> unmodifiableSet(T... args) {
+        return Collections.unmodifiableSet(new HashSet<>(Arrays.asList(args)));
     }
 
     public static Class tryToLoadClassForName(String name) {
@@ -180,5 +203,16 @@ public class LangUtils {
 
         return currentClass.getName().startsWith(currentClass.getSuperclass().getName())
                 && currentClass.getName().contains("$$");
+    }
+
+    public static String md5Hex(byte[] bytes) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(bytes);
+            return DatatypeConverter.printHexBinary(md.digest());
+        }
+        catch (NoSuchAlgorithmException e) {
+            throw new FacesException(e);
+        }
     }
 }
