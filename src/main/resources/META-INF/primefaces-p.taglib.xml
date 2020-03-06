@@ -9473,12 +9473,20 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Method expression to listen file upload events.]]>
-            </description>
+                <![CDATA[Method expression to invoke when a file is uploaded. (For chunked file upload after the last chunk was uploaded.).]]>
+            </description>listen file upload events.
             <name>listener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
         </attribute>
+		<attribute>
+			<description>
+				<![CDATA[Method expression to invoke when a chunk of a file is uploaded. (For chunked file upload activated via maxChunkSize.)]]>
+			</description>
+			<name>chunkListener</name>
+			<required>false</required>
+			<type>javax.el.MethodExpression</type>
+		</attribute>
         <attribute>
             <description>
                 <![CDATA[Allows choosing of multi file uploads from native file browse dialog, turned off by default.]]>

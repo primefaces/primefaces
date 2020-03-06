@@ -24,7 +24,9 @@
 package org.primefaces.component.fileupload;
 
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.file.NativeUploadedFile;
 import org.primefaces.model.file.UploadedFile;
+import org.primefaces.model.file.UploadedFileWrapper;
 import org.primefaces.model.file.UploadedFiles;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FileUploadUtils;
@@ -67,9 +69,28 @@ public class FileUpload extends FileUploadBase {
 
         FacesContext facesContext = getFacesContext();
         MethodExpression me = getListener();
+        MethodExpression meChunk = getChunkListener();
 
-        if (me != null && event instanceof org.primefaces.event.FileUploadEvent) {
-            me.invoke(facesContext.getELContext(), new Object[]{event});
+        if (event instanceof org.primefaces.event.FileUploadEvent) {
+            FileUploadEvent fileUploadEvent = (FileUploadEvent) event;
+
+            if (isChunkedUpload() && fileUploadEvent.getFile() instanceof UploadedFileWrapper &&
+                    ((UploadedFileWrapper) fileUploadEvent.getFile()).getWrapped() instanceof NativeUploadedFile) {
+                NativeUploadedFile nativeUploadedFile = (NativeUploadedFile) ((UploadedFileWrapper) fileUploadEvent.getFile()).getWrapped();
+
+                if (meChunk != null) {
+                    meChunk.invoke(facesContext.getELContext(), new Object[]{event});
+                }
+
+                if (nativeUploadedFile.isLastChunk() && (me != null)) {
+                    me.invoke(facesContext.getELContext(), new Object[]{event});
+                }
+            }
+            else {
+                if (me != null) {
+                    me.invoke(facesContext.getELContext(), new Object[]{event});
+                }
+            }
         }
     }
 

@@ -33,7 +33,8 @@ powered rich solution with graceful degradation for legacy browsers.
 | widgetVar | null | String | Name of the client side widget.
 | update | @none | String | Component(s) to update after fileupload completes.
 | process | @all | String | Component(s) to process in fileupload request.
-| listener | null | MethodExpr | Method to invoke when a file is uploaded.
+| listener | null | MethodExpr | Method to invoke when a file is uploaded. (For chunked file upload after the last chunk was uploaded.)
+| chunkListener | null | MethodExpr | Method to invoke when a chunk of a file is uploaded. (For chunked file upload activated via maxChunkSize.)
 | multiple | false | Boolean | Allows choosing of multi file uploads from native file browse dialog
 | auto | false | Boolean | When set to true, selecting a file starts the upload process implicitly.
 | label | Choose | String | Label of the browse button.
