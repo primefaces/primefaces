@@ -23,12 +23,10 @@
  */
 package org.primefaces.component.fileupload;
 
-import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.file.UploadedFile;
 import org.primefaces.model.file.UploadedFileWrapper;
 import org.primefaces.model.file.UploadedFiles;
 import org.primefaces.model.file.UploadedFilesWrapper;
-import org.primefaces.util.FileUploadUtils;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -46,10 +44,10 @@ public abstract class AbstractFileUploadDecoder<T extends ServletRequest> implem
         try {
             String inputToDecodeId = resolveInputToDecodeId(context, fileUpload);
             if (fileUpload.getMode().equals("simple")) {
-                decodeSimple(context, fileUpload, request, inputToDecodeId);
+                decodeSimple(fileUpload, request, inputToDecodeId);
             }
             else {
-                decodeAdvanced(context, fileUpload, request, inputToDecodeId);
+                decodeAdvanced(fileUpload, request, inputToDecodeId);
             }
         }
         catch (IOException | ServletException e) {
@@ -57,11 +55,11 @@ public abstract class AbstractFileUploadDecoder<T extends ServletRequest> implem
         }
     }
 
-    protected void decodeSimple(FacesContext context, FileUpload fileUpload, T request, String inputToDecodeId) throws IOException, ServletException {
+    protected void decodeSimple(FileUpload fileUpload, T request, String inputToDecodeId) throws IOException, ServletException {
         if (fileUpload.isMultiple()) {
             List<UploadedFile> files = createUploadedFiles(request, fileUpload, inputToDecodeId);
 
-            if (!files.isEmpty() && FileUploadUtils.areValidFiles(context, fileUpload, files)) {
+            if (!files.isEmpty()) {
                 UploadedFiles uploadedFiles = new UploadedFiles(files);
                 fileUpload.setSubmittedValue(new UploadedFilesWrapper(uploadedFiles));
             }
@@ -71,11 +69,8 @@ public abstract class AbstractFileUploadDecoder<T extends ServletRequest> implem
         }
         else {
             UploadedFile uploadedFile = createUploadedFile(request, fileUpload, inputToDecodeId);
-
             if (uploadedFile != null) {
-                if (FileUploadUtils.isValidFile(context, fileUpload, uploadedFile)) {
-                    fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
-                }
+                fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
             }
             else {
                 fileUpload.setSubmittedValue("");
@@ -83,12 +78,10 @@ public abstract class AbstractFileUploadDecoder<T extends ServletRequest> implem
         }
     }
 
-    protected void decodeAdvanced(FacesContext context, FileUpload fileUpload, T request, String inputToDecodeId) throws IOException, ServletException {
+    protected void decodeAdvanced(FileUpload fileUpload, T request, String inputToDecodeId) throws IOException, ServletException {
         UploadedFile uploadedFile = createUploadedFile(request, fileUpload, inputToDecodeId);
         if (uploadedFile != null) {
-            if (FileUploadUtils.isValidFile(context, fileUpload, uploadedFile)) {
-                fileUpload.queueEvent(new FileUploadEvent(fileUpload, uploadedFile));
-            }
+            fileUpload.setSubmittedValue(uploadedFile);
         }
     }
 
