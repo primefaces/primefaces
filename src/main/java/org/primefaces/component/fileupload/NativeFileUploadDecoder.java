@@ -96,9 +96,6 @@ public class NativeFileUploadDecoder {
         Part part = request.getPart(clientId);
 
         if (part != null) {
-            String contentRange = request.getHeader("Content-Range");
-            Matcher matcher = CONTENT_RANGE_PATTERN.matcher(contentRange);
-
             NativeUploadedFile uploadedFile = new NativeUploadedFile(part, fileUpload.getSizeLimit());
             fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
 
@@ -106,21 +103,6 @@ public class NativeFileUploadDecoder {
                 String contentRange = request.getHeader("Content-Range");
                 Matcher matcher = CONTENT_RANGE_PATTERN.matcher(contentRange);
 
-                if (matcher.matches()) {
-                    //chunking is active
-                    uploadedFile.setChunkRangeBegin(Long.parseLong(matcher.group(1)));
-                    uploadedFile.setChunkRangeEnd(Long.parseLong(matcher.group(2)));
-                    uploadedFile.setChunkTotalFileSize(Long.parseLong(matcher.group(3)));
-                    if ((uploadedFile.getChunkRangeEnd() + 1) == uploadedFile.getChunkTotalFileSize()) {
-                        uploadedFile.setLastChunk(true);
-                    }
-                }
-                else {
-                    throw new IOException("Content-Range-Header does not match pattern '" + CONTENT_RANGE_PATTERN.pattern() + "'");
-                }
-            }
-
-            if (fileUpload.getMaxChunkSize() > 0) {
                 if (matcher.matches()) {
                     //chunking is active
                     uploadedFile.setChunkRangeBegin(Long.parseLong(matcher.group(1)));
