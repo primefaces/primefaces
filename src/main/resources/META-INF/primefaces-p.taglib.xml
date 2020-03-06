@@ -8487,30 +8487,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Initial width of items. Default is 40.]]>
-            </description>
-            <name>itemWidth</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Maximum width of items. Default is 50.]]>
-            </description>
-            <name>maxWidth</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Distance to enlarge. Default is 90.]]>
-            </description>
-            <name>proximity</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Horizontal alignment. Default is center.]]>
             </description>
             <name>halign</name>
@@ -8524,6 +8500,30 @@
             <name>blockScroll</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to animate the OSX bounce effect when clicking an item. Default is true.]]>
+            </description>
+            <name>animate</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[How long in milliseconds to animate the bounce effect. Default is 1600ms.]]>
+            </description>
+            <name>animationDuration</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines direction of dock. Valid values are "ltr" (default) and "rtl".]]>
+            </description>
+            <name>dir</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
