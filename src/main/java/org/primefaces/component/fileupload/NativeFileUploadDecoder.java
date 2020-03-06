@@ -23,9 +23,7 @@
  */
 package org.primefaces.component.fileupload;
 
-import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.file.*;
-import org.primefaces.util.FileUploadUtils;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -100,6 +98,24 @@ public class NativeFileUploadDecoder {
         if (part != null) {
             NativeUploadedFile uploadedFile = new NativeUploadedFile(part, fileUpload.getSizeLimit());
             fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
+
+            if (fileUpload.isChunkedUpload()) {
+                String contentRange = request.getHeader("Content-Range");
+                Matcher matcher = CONTENT_RANGE_PATTERN.matcher(contentRange);
+
+                if (matcher.matches()) {
+                    //chunking is active
+                    uploadedFile.setChunkRangeBegin(Long.parseLong(matcher.group(1)));
+                    uploadedFile.setChunkRangeEnd(Long.parseLong(matcher.group(2)));
+                    uploadedFile.setChunkTotalFileSize(Long.parseLong(matcher.group(3)));
+                    if ((uploadedFile.getChunkRangeEnd() + 1) == uploadedFile.getChunkTotalFileSize()) {
+                        uploadedFile.setLastChunk(true);
+                    }
+                }
+                else {
+                    throw new IOException("Content-Range-Header does not match pattern '" + CONTENT_RANGE_PATTERN.pattern() + "'");
+                }
+            }
         }
     }
 }

@@ -26,6 +26,7 @@ package org.primefaces.util;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.component.fileupload.FileUpload;
+import org.primefaces.component.fileupload.FileUploadBase;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.file.UploadedFile;
 import org.primefaces.shaded.owasp.SafeFile;
@@ -199,6 +200,14 @@ public class FileUploadUtils {
             return true;
         }
 
+        if (fileUpload.isChunkedUpload()) {
+            if (LOGGER.isLoggable(Level.WARNING)) {
+                LOGGER.warning("ValidateContentType is not supported for chunked file upload indicated via " +
+                        FileUploadBase.PropertyKeys.maxChunkSize + "-attribute");
+            }
+            return false;
+        }
+
         boolean tika = context.getEnvironment().isTikaAvailable();
         if (!tika && LOGGER.isLoggable(Level.WARNING)) {
             LOGGER.warning("Could not find Apache Tika in classpath which is recommended for reliable content type checking");
@@ -301,7 +310,13 @@ public class FileUploadUtils {
         }
 
         if (fileUpload.isVirusScan()) {
-            performVirusScan(context, uploadedFile);
+            if (fileUpload.isChunkedUpload()) {
+                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        "VirusScan is not supported for chunked file upload indicated via " + FileUploadBase.PropertyKeys.maxChunkSize + "-attribute", ""));
+            }
+            else {
+                performVirusScan(context, uploadedFile);
+            }
         }
     }
 
@@ -321,7 +336,7 @@ public class FileUploadUtils {
     /**
      * OWASP prevent directory path traversal of "../../image.png".
      *
-     * @see https://www.owasp.org/index.php/Path_Traversal
+     * @see <a href="https://owasp.org/www-community/attacks/Path_Traversal">https://owasp.org/www-community/attacks/Path_Traversal</a>
      * @param relativePath the relative path to check for path traversal
      * @return the relative path
      * @throws FacesException if any error is detected
