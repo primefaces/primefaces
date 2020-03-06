@@ -69,7 +69,6 @@ public class FileUpload extends FileUploadBase {
 
         FacesContext facesContext = getFacesContext();
         MethodExpression me = getListener();
-        MethodExpression meChunk = getChunkListener();
 
         if (event instanceof org.primefaces.event.FileUploadEvent) {
             FileUploadEvent fileUploadEvent = (FileUploadEvent) event;
@@ -77,6 +76,7 @@ public class FileUpload extends FileUploadBase {
             if (isChunkedUpload() && fileUploadEvent.getFile() instanceof UploadedFileWrapper &&
                     ((UploadedFileWrapper) fileUploadEvent.getFile()).getWrapped() instanceof NativeUploadedFile) {
                 NativeUploadedFile nativeUploadedFile = (NativeUploadedFile) ((UploadedFileWrapper) fileUploadEvent.getFile()).getWrapped();
+                MethodExpression meChunk = getChunkListener();
 
                 if (meChunk != null) {
                     meChunk.invoke(facesContext.getELContext(), new Object[]{event});

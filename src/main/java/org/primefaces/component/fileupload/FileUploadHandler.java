@@ -36,6 +36,10 @@ public class FileUploadHandler extends ComponentHandler {
     private static final MetaRule FILE_UPLOAD_LISTENER
             = new MethodRule("listener", null, new Class<?>[]{FileUploadEvent.class});
 
+    private static final MetaRule FILE_UPLOAD_CHUNK_LISTENER
+            = new MethodRule("chunkListener", null, new Class<?>[]{FileUploadEvent.class});
+
+
     public FileUploadHandler(ComponentConfig config) {
         super(config);
     }
@@ -46,6 +50,7 @@ public class FileUploadHandler extends ComponentHandler {
         MetaRuleset metaRuleset = super.createMetaRuleset(type);
 
         metaRuleset.addRule(FILE_UPLOAD_LISTENER);
+        metaRuleset.addRule(FILE_UPLOAD_CHUNK_LISTENER);
 
         return metaRuleset;
     }
