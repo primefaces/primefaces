@@ -44,11 +44,6 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
     private byte[] cachedContent;
     private Long sizeLimit;
 
-    private Long chunkRangeBegin;
-    private Long chunkRangeEnd;
-    private Long chunkTotalFileSize;
-    private boolean lastChunk = false;
-
     public NativeUploadedFile() {
     }
 
@@ -189,37 +184,5 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
         catch (UnsupportedEncodingException ex) {
             throw new FacesException(ex);
         }
-    }
-
-    public Long getChunkRangeBegin() {
-        return chunkRangeBegin;
-    }
-
-    public void setChunkRangeBegin(Long chunkRangeBegin) {
-        this.chunkRangeBegin = chunkRangeBegin;
-    }
-
-    public Long getChunkRangeEnd() {
-        return chunkRangeEnd;
-    }
-
-    public void setChunkRangeEnd(Long chunkRangeEnd) {
-        this.chunkRangeEnd = chunkRangeEnd;
-    }
-
-    public Long getChunkTotalFileSize() {
-        return chunkTotalFileSize;
-    }
-
-    public void setChunkTotalFileSize(Long chunkTotalFileSize) {
-        this.chunkTotalFileSize = chunkTotalFileSize;
-    }
-
-    public boolean isLastChunk() {
-        return lastChunk;
-    }
-
-    public void setLastChunk(boolean lastChunk) {
-        this.lastChunk = lastChunk;
     }
 }
