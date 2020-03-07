@@ -40,20 +40,18 @@ import org.primefaces.virusscan.VirusScanner;
 
 /**
  * ClamAV Daemon custom {@link VirusScanner} provider bundled with PrimeFaces.
- * 
  * Streams the file over TCP to a ClamAV service running on host:port.
- * 
- * It requires {@link #CONTEXT_PARAM_HOST} and {@link #CONTEXT_PARAM_PORT} to be specified.
- *
+ * It requires
+ * {@link #CONTEXT_PARAM_HOST} and {@link #CONTEXT_PARAM_PORT} to be specified.
  */
 public class ClamDaemonScanner implements VirusScanner {
 
     private static final Logger LOGGER = Logger.getLogger(ClamDaemonScanner.class.getName());
 
-    private static final String CONTEXT_PARAM_HOST    = "primefaces.virusscan.CLAMAV_HOST";
-    private static final String CONTEXT_PARAM_PORT    = "primefaces.virusscan.CLAMAV_PORT";
+    private static final String CONTEXT_PARAM_HOST = "primefaces.virusscan.CLAMAV_HOST";
+    private static final String CONTEXT_PARAM_PORT = "primefaces.virusscan.CLAMAV_PORT";
     private static final String CONTEXT_PARAM_TIMEOUT = "primefaces.virusscan.CLAMAV_TIMEOUT";
-    private static final String CONTEXT_PARAM_BUFFER  = "primefaces.virusscan.CLAMAV_BUFFER";
+    private static final String CONTEXT_PARAM_BUFFER = "primefaces.virusscan.CLAMAV_BUFFER";
 
     @Override
     public boolean isEnabled() {
@@ -63,7 +61,7 @@ public class ClamDaemonScanner implements VirusScanner {
 
     /**
      * Scan file using send to ClamAV service running at host and port over TCP.
-     * 
+     *
      * @throws VirusException if a virus has been detected by the scanner
      */
     @Override
@@ -78,26 +76,28 @@ public class ClamDaemonScanner implements VirusScanner {
             }
             if (!ClamDaemonClient.isCleanReply(reply)) {
                 String error = createErrorMessage(file, message);
-               if (LOGGER.isLoggable(Level.WARNING)) {
-                   LOGGER.log(Level.WARNING, "ClamAV Error:" + error);
-               }
-               throw new VirusException(error);
+                if (LOGGER.isLoggable(Level.WARNING)) {
+                    LOGGER.log(Level.WARNING, "ClamAV Error:" + error);
+                }
+                throw new VirusException(error);
             }
-         } catch (final VirusException ex) {
+        }
+        catch (final VirusException ex) {
             throw ex;
-         } catch (final RuntimeException | IOException ex) {
+        }
+        catch (final RuntimeException | IOException ex) {
             final String error = String.format("Unexpected error scanning file - %s", ex.getMessage());
             throw new VirusException(error);
-         } 
+        }
     }
 
     protected String createErrorMessage(UploadedFile file, String response) {
-        return MessageFactory.getMessage("primefaces.fileupload.CLAM_AV_FILE", new Object[]{file.getFileName(), response});
+        return MessageFactory.getMessage("primefaces.fileupload.CLAM_AV_FILE", new Object[] {file.getFileName(), response});
     }
 
     /**
      * Returns a new ClamAvClient which can be overridden in unit tests.
-     * 
+     *
      * @return the {@link ClamAVClient}
      */
     ClamDaemonClient getClamAvClient() {
@@ -114,7 +114,7 @@ public class ClamDaemonScanner implements VirusScanner {
         if (ctx.getInitParameter(CONTEXT_PARAM_BUFFER) != null) {
             chunkSize = Integer.parseInt(ctx.getInitParameter(CONTEXT_PARAM_BUFFER));
         }
-       return new ClamDaemonClient(host, port, timeout, chunkSize);
+        return new ClamDaemonClient(host, port, timeout, chunkSize);
     }
 
 }
