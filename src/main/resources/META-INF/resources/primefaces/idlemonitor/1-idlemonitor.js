@@ -18,7 +18,7 @@ PrimeFaces.widget.IdleMonitor = PrimeFaces.widget.BaseWidget.extend({
         })
         .on("active.idleTimer" + this.cfg.id, function(){
             if($this.cfg.onactive) {
-                $this.cfg.onactive.call(this);
+                $this.cfg.onactive.call($this);
             }
 
             $this.callBehavior('active');
