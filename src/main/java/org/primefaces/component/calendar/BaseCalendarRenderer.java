@@ -40,9 +40,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -309,19 +306,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             Object base = valueReference.getBase();
             Object property = valueReference.getProperty();
 
-            Class<?> unproxiedClass = LangUtils.getUnproxiedClass(base.getClass());
-            while (unproxiedClass != null) {
-                try {
-                    Field field = unproxiedClass.getDeclaredField((String) property);
-                    ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
-                    Type listType = parameterizedType.getActualTypeArguments()[0];
-                    type = Class.forName(listType.getTypeName());
-                    unproxiedClass = null;
-                }
-                catch (ReflectiveOperationException ex) {
-                    unproxiedClass = unproxiedClass.getSuperclass();
-                }
-            }
+            type = LangUtils.getTypeFromCollectionProperty(base, (String) property);
         }
 
         return type;
