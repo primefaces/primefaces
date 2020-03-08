@@ -312,7 +312,7 @@ Here are some measures that can be taken into account when using PrimeFaces's `f
             }
 
             @Override
-            public void scan(InputStream inputStream) throws VirusException {
+            public void scan(UploadedFile file) throws VirusException {
                 // call the virus scanner's API here
                 if (virusDetected) {
                     throw new VirusException();
