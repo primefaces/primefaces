@@ -25,6 +25,9 @@ package org.primefaces.util;
 
 import javax.faces.FacesException;
 import javax.xml.bind.DatatypeConverter;
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -203,6 +206,31 @@ public class LangUtils {
 
         return currentClass.getName().startsWith(currentClass.getSuperclass().getName())
                 && currentClass.getName().contains("$$");
+    }
+
+    /**
+     * Determines the type of the generic collection.
+     * @param base Object which contains the collection-property as member.
+     * @param property Name of the collection-property.
+     * @return Type of the objects within the collection-property. (eg List&lt;String&gt; -> String)
+     */
+    public static Class<?> getTypeFromCollectionProperty(Object base, String property) {
+        Class<?> type = null;
+
+        Class<?> unproxiedClass = LangUtils.getUnproxiedClass(base.getClass());
+        while (unproxiedClass != null) {
+            try {
+                Field field = unproxiedClass.getDeclaredField(property);
+                ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
+                Type listType = parameterizedType.getActualTypeArguments()[0];
+                type = Class.forName(listType.getTypeName());
+                unproxiedClass = null;
+            }
+            catch (ReflectiveOperationException ex) {
+                unproxiedClass = unproxiedClass.getSuperclass();
+            }
+        }
+        return type;
     }
 
     public static String md5Hex(byte[] bytes) {
