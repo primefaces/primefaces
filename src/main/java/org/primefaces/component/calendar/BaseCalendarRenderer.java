@@ -309,14 +309,18 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             Object base = valueReference.getBase();
             Object property = valueReference.getProperty();
 
-            try {
-                Field field = LangUtils.getUnproxiedClass(base.getClass()).getDeclaredField((String) property);
-                ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
-                Type listType = parameterizedType.getActualTypeArguments()[0];
-                type = Class.forName(listType.getTypeName());
-            }
-            catch (ReflectiveOperationException ex) {
-                //NOOP
+            Class<?> unproxiedClass = LangUtils.getUnproxiedClass(base.getClass());
+            while (unproxiedClass != null) {
+                try {
+                    Field field = unproxiedClass.getDeclaredField((String) property);
+                    ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
+                    Type listType = parameterizedType.getActualTypeArguments()[0];
+                    type = Class.forName(listType.getTypeName());
+                    unproxiedClass = null;
+                }
+                catch (ReflectiveOperationException ex) {
+                    unproxiedClass = unproxiedClass.getSuperclass();
+                }
             }
         }
 
