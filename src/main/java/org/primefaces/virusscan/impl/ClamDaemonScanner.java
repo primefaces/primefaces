@@ -52,7 +52,7 @@ public class ClamDaemonScanner implements VirusScanner {
     private static final String CONTEXT_PARAM_PORT = "primefaces.virusscan.CLAMAV_PORT";
     private static final String CONTEXT_PARAM_TIMEOUT = "primefaces.virusscan.CLAMAV_TIMEOUT";
     private static final String CONTEXT_PARAM_BUFFER = "primefaces.virusscan.CLAMAV_BUFFER";
-    
+
     private ClamDaemonClient client;
 
     @Override
