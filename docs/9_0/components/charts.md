@@ -1025,32 +1025,34 @@ Extender function allows access to the underlying chart.js api using the setExte
            var options = $.extend(true, {}, this.cfg.config);
         
            options = {
-              //remove the legend
-              legend: {
-                 display: false
-              },
-              scales: {
-                 xAxes: [{
-                    display: true,
-                    type: "time",
-                    time: {
-                       parser: 'h:mm:ss a',
-                       tooltipFormat: 'h:mm:ss a',
-                       unit: 'hour',
-                       displayFormats: {
-                          'hour': 'h:mm:ss a'
-                       }
-                    }
-                 }],
-                 yAxes: [{
-                    display: true,
-                    scaleLabel: {
-                       display: true,
-                       labelString: 'Your Y Axis',
-                       fontSize: 13,
-                    }
-                 }]
-              }
+              options: {
+                  //remove the legend
+                  legend: {
+                     display: false
+                  },
+                  scales: {
+                     xAxes: [{
+                        display: true,
+                        type: "time",
+                        time: {
+                           parser: 'h:mm:ss a',
+                           tooltipFormat: 'h:mm:ss a',
+                           unit: 'hour',
+                           displayFormats: {
+                              'hour': 'h:mm:ss a'
+                           }
+                        }
+                     }],
+                     yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                           display: true,
+                           labelString: 'Your Y Axis',
+                           fontSize: 13,
+                        }
+                     }]
+                  }
+                }
            };
         
            //merge all options into the main chart options
