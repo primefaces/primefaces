@@ -52,6 +52,8 @@ public class ClamDaemonScanner implements VirusScanner {
     private static final String CONTEXT_PARAM_PORT = "primefaces.virusscan.CLAMAV_PORT";
     private static final String CONTEXT_PARAM_TIMEOUT = "primefaces.virusscan.CLAMAV_TIMEOUT";
     private static final String CONTEXT_PARAM_BUFFER = "primefaces.virusscan.CLAMAV_BUFFER";
+    
+    private ClamDaemonClient client;
 
     @Override
     public boolean isEnabled() {
@@ -101,6 +103,9 @@ public class ClamDaemonScanner implements VirusScanner {
      * @return the {@link ClamAVClient}
      */
     ClamDaemonClient getClamAvClient() {
+        if (client != null) {
+            return client;
+        }
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         String host = ctx.getInitParameter(CONTEXT_PARAM_HOST);
         int port = Integer.parseInt(ctx.getInitParameter(CONTEXT_PARAM_PORT));
@@ -114,7 +119,8 @@ public class ClamDaemonScanner implements VirusScanner {
         if (ctx.getInitParameter(CONTEXT_PARAM_BUFFER) != null) {
             chunkSize = Integer.parseInt(ctx.getInitParameter(CONTEXT_PARAM_BUFFER));
         }
-        return new ClamDaemonClient(host, port, timeout, chunkSize);
+        client = new ClamDaemonClient(host, port, timeout, chunkSize);
+        return client;
     }
 
 }
