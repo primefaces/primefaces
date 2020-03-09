@@ -31,29 +31,45 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LangUtilsTest {
 
-	@Test
-	public void getTypeFromCollectionProperty_Simple() {
-		Class type = LangUtils.getTypeFromCollectionProperty(new SimpleClass(), "strings");
+    @Test
+    public void getTypeFromCollectionProperty_Simple() {
+        Class type = LangUtils.getTypeFromCollectionProperty(new SimpleClass(), "strings");
 
-		assertEquals(String.class, type);
-	}
+        assertEquals(String.class, type);
+    }
 
-	@Test
-	public void getTypeFromCollectionProperty_Inheritance() {
-		Class type = LangUtils.getTypeFromCollectionProperty(new ConcreteClass(), "ints");
+    @Test
+    public void getTypeFromCollectionProperty_Inheritance() {
+        Class type = LangUtils.getTypeFromCollectionProperty(new ConcreteClass(), "ints");
 
-		assertEquals(Integer.class, type);
-	}
+        assertEquals(Integer.class, type);
+    }
 
-	class SimpleClass {
-		private List<String> strings;
-	}
+    class SimpleClass {
+        private List<String> strings;
 
-	abstract class AbstractClass {
-		private List<Integer> ints;
-	}
+        public List<String> getStrings() {
+            return strings;
+        }
 
-	class ConcreteClass extends AbstractClass {
+        public void setStrings(List<String> strings) {
+            this.strings = strings;
+        }
+    }
 
-	}
+    abstract class AbstractClass {
+        private List<Integer> ints;
+
+        public List<Integer> getInts() {
+            return ints;
+        }
+
+        public void setInts(List<Integer> ints) {
+            this.ints = ints;
+        }
+    }
+
+    class ConcreteClass extends AbstractClass {
+
+    }
 }
