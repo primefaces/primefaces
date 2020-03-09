@@ -1014,11 +1014,9 @@ Charts are canvas based and can be exported as static images with client side ap
 ```
 
 ## Extender
-Extender function allows access to the underlying chart.js api using the setExtender method of the model.
+Extender function allows access to the underlying chart.js api using the setExtender method of the model. The exstender function needs to be defined before the chart component, otherwise it could happen that on the first model load, the script isn't found.
 
 ```xhtml
-<p:radarChart model="#{bean.radarModel2}" />
-
 <h:outputScript>
         function chartExtender() {
            //copy the config options into a variable
@@ -1059,6 +1057,8 @@ Extender function allows access to the underlying chart.js api using the setExte
            $.extend(true, this.cfg.config, options);
         };
 </h:outputScript>
+
+<p:radarChart model="#{bean.radarModel2}" />
 ```
 
 ```java
