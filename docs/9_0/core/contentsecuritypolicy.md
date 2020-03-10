@@ -58,6 +58,16 @@ can override the default policy.
 </context-param>
 ```
 
+## Google reCaptcha
+If you use the PrimeFaces Captcha component you must use a custom policy as follows:
+
+```xml
+<context-param>
+    <param-name>primefaces.CSP_POLICY</param-name>
+    <param-value>script-src 'self' https: *.googleapis.com</param-value>
+</context-param>
+```
+
 ## Event Handlers
 Inline code is considered harmful, especially inline event handlers. CSP solves this problem by banning inline
 script entirely: it's the only way to be sure. This ban includes not only scripts embedded directly in `script` tags,
