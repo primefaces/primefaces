@@ -79,6 +79,16 @@ message bundle mechanism. Corresponding keys are;
 | Summary | primefaces.captcha.INVALID |
 | Detail | primefaces.captcha.INVALID_detail |
 
+## Content Security Policy
+If you use the PrimeFaces Content Security Policy protection you must whitelist Google to allow Captcha to work properly:
+
+```xml
+<context-param>
+    <param-name>primefaces.CSP_POLICY</param-name>
+    <param-value>script-src 'self' https: *.googleapis.com</param-value>
+</context-param>
+```
+
 ## Tips
 
 - Use label option to provide readable error messages in case validation fails.
