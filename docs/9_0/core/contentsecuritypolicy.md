@@ -95,6 +95,11 @@ Mojarra doesn't support it in general: https://github.com/eclipse-ee4j/mojarra/i
 
 As workaround, you can always use `<p:ajax>` instead.
 
+Currently CSP in combination with `<h:commandLink onclick="">` cannot be used with all Faces implementations / versions.
+This is due to the native jsf.js being used for the onClick which uses Javascript `new Function()` which is not allowed by CSP.
+
+As workaround, you can always use `<p:commandLink>` instead.
+
 ## Troubleshooting
 
 If you have enabled CSP on your PrimeFaces application and you find issues with your application,
