@@ -41,6 +41,7 @@ resetValues | false | Boolean | If true, local values of input components to be 
 ignoreAutoUpdate | false | Boolean | If true, components which autoUpdate="true" will not be updated for this request. If not specified, or the value is false, no such indication is made.
 timeout | 0 | Integer | Timeout for the ajax request in milliseconds.
 form | null | String | Form to serialize for an ajax request. Default is the enclosing form.
+disabled | false | Boolean | Whether the hotkey functionality is enabled.
 
 ## Getting Started with HotKey
 HotKey is used in two ways, either on client side with the event handler or with ajax support.
