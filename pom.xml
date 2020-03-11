@@ -899,7 +899,7 @@
                                 <exclude>META-INF/*.DSA</exclude>
                                 <exclude>META-INF/*.RSA</exclude>
                             </excludes>
-                </filter>
+                        </filter>
                     </filters>
                 </configuration>
                <executions>
