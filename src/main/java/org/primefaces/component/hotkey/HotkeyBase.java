@@ -52,7 +52,8 @@ public abstract class HotkeyBase extends UICommand implements AjaxSource {
         resetValues,
         ignoreAutoUpdate,
         partialSubmitFilter,
-        form
+        form,
+        disabled
     }
 
     public HotkeyBase() {
@@ -215,4 +216,21 @@ public abstract class HotkeyBase extends UICommand implements AjaxSource {
         getStateHelper().put(PropertyKeys.form, form);
     }
 
+    /**
+     * <p>Return the value of the <code>disabled</code> property.</p>
+     * @return the property value
+     * <p>Contents: Flag indicating that this element must not react to the specified key binding.</p>
+     */
+    public boolean isDisabled() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+
+    }
+
+    /**
+     * <p>Set the value of the <code>disabled</code> property.</p>
+     * @param disabled the new property value
+     */
+    public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
+    }
 }
