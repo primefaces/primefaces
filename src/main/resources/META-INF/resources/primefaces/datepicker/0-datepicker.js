@@ -191,8 +191,8 @@
             var newDateMeta = { day: newDate.getDate(), month: newDate.getMonth(), year: newDate.getFullYear(), selectable: true /*, today: true*/ };
 
             /* set changes */
-            this.updateViewDate(event, newDate);
-            this.onDateSelect(event, newDateMeta);
+            this.updateViewDate(null, newDate);
+            this.onDateSelect(null, newDateMeta);
         },
 
         getDate: function() {
@@ -1886,7 +1886,9 @@
 
         onDateSelect: function (event, dateMeta) {
             if (this.options.disabled || !dateMeta.selectable) {
-                event.preventDefault();
+                if(event) {
+                    event.preventDefault();
+                }
                 return;
             }
 
@@ -1920,7 +1922,9 @@
                 }
             }
 
-            event.preventDefault();
+            if(event) {
+                event.preventDefault();
+            }
         },
 
         selectDate: function (event, dateMeta) {
