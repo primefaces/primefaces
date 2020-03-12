@@ -222,7 +222,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
      * Sets the displayed visible calendar date.
      */
     setViewDate: function(date) {
-    	var viewDate = this.jq.data().primeDatePicker.parseValue(date);
+        var viewDate = this.jq.data().primeDatePicker.parseValue(date);
         this.jq.datePicker('updateViewDate', null, viewDate);
     },
 
