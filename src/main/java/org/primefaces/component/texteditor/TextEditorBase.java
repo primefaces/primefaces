@@ -177,7 +177,6 @@ public abstract class TextEditorBase extends UIInput implements Widget, ClientBe
 
     public boolean isDisabled() {
         return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-
     }
 
     public void setDisabled(boolean disabled) {
