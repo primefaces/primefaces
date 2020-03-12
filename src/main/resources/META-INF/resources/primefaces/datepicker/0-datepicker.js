@@ -2160,7 +2160,7 @@
         },
 
         updateModel: function (event, value) {
-            this.value = value;
+            this.value = (value === '' ? null : value);
             this.inputfield.val(this.getValueToRender());
 
             this.panel.get(0).innerHTML = this.renderPanelElements();
