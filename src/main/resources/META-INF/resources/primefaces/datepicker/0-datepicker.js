@@ -1802,7 +1802,9 @@
                     :
                     ((((this.isMultipleSelection() || this.isRangeSelection()) && this.value instanceof Array) ? this.value[0] : this.value) || this.parseValue(new Date()));
 
-                this.updateViewDate(null, viewDate);
+                if(viewDate instanceof Date) {
+                    this.updateViewDate(null, viewDate);
+                }
             }
         },
 
