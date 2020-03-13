@@ -187,6 +187,11 @@
         },
 
         setDate: function(date) {
+            if(date == null || date == '') {
+                this.update(null, null);
+                return;
+            }
+
             var newDate = this.parseValue(date);
             var newDateMeta = { day: newDate.getDate(), month: newDate.getMonth(), year: newDate.getFullYear(), selectable: true /*, today: true*/ };
 
