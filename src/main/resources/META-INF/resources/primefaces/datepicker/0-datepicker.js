@@ -188,7 +188,7 @@
 
         setDate: function(date) {
             if(date == null || date == '') {
-                this.update(null, null);
+                this.updateModel(null, null);
                 return;
             }
 
