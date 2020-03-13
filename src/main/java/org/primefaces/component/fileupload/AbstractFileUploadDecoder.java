@@ -81,7 +81,7 @@ public abstract class AbstractFileUploadDecoder<T extends ServletRequest> implem
     protected void decodeAdvanced(FileUpload fileUpload, T request, String inputToDecodeId) throws IOException, ServletException {
         UploadedFile uploadedFile = createUploadedFile(request, fileUpload, inputToDecodeId);
         if (uploadedFile != null) {
-            fileUpload.setSubmittedValue(uploadedFile);
+            fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
         }
     }
 

@@ -76,7 +76,7 @@ public class PrimeApplicationContext {
     private final Lazy<CacheProvider> cacheProvider;
     private final Lazy<VirusScannerService> virusScannerService;
     private FileTypeDetector fileTypeDetector;
-    private Map<String, FileUploadDecoder> fileDecoders;
+    private Map<String, FileUploadDecoder> fileUploadDecoders;
 
     public PrimeApplicationContext(FacesContext facesContext) {
         environment = new PrimeEnvironment(facesContext);
@@ -153,7 +153,7 @@ public class PrimeApplicationContext {
             }
         });
 
-        fileDecoders = StreamSupport.stream(ServiceLoader.load(FileUploadDecoder.class, classLoader).spliterator(), false)
+        fileUploadDecoders = StreamSupport.stream(ServiceLoader.load(FileUploadDecoder.class, classLoader).spliterator(), false)
                 .collect(Collectors.toMap(FileUploadDecoder::getName, Function.identity()));
     }
 
@@ -234,6 +234,6 @@ public class PrimeApplicationContext {
     }
 
     public FileUploadDecoder getFileUploadDecoder(String uploader) {
-        return fileDecoders.get(uploader);
+        return fileUploadDecoders.get(uploader);
     }
 }
