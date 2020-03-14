@@ -25868,6 +25868,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Disables the editor, default is false.]]>
+            </description>
+            <name>disabled</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Inline style of the editor container.]]>
             </description>
             <name>style</name>
