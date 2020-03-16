@@ -70,7 +70,7 @@ To navigate without outcome based approach, use href attribute.
 ```
 
 ## Client Side API
-Widget: _PrimeFaces.widget.LinkButton
+Widget: _PrimeFaces.widget.LinkButton_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 
