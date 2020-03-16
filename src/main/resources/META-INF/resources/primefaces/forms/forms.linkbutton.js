@@ -17,9 +17,9 @@ PrimeFaces.widget.LinkButton = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         if (this.link) {
-            this.link.off().on("focus.linkbutton keydown.linkbutton", function () {
+            this.link.off().on('focus.linkbutton keydown.linkbutton', function () {
                 $this.button.addClass('ui-state-focus ui-state-active');
-            }).on("blur.linkbutton", function () {
+            }).on('blur.linkbutton', function () {
                 $this.button.removeClass('ui-state-focus ui-state-active');
             });
         }
