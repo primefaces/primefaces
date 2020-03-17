@@ -16,7 +16,7 @@ PrimeFaces.widget.LinkButton = PrimeFaces.widget.BaseWidget.extend({
     bindEvents : function () {
         var $this = this;
 
-        if (this.link) {
+        if (this.link.length > 0) {
             this.link.off('focus.linkbutton keydown.linkbutton blur.linkbutton')
                 .on('focus.linkbutton keydown.linkbutton', function () {
                     $this.button.addClass('ui-state-focus ui-state-active');
