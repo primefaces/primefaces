@@ -87,6 +87,22 @@ should be defined manually.
 To remove borders add ui-noborder style class to the component using styleClass attribute and to
 remove borders plus background color, apply ui-panelgrid-blank style.
 
+## Responsive
+PanelGrid offers responsive support using `layout="flex"` for PrimeFlex or `layout="grid"` for Grid CSS. 
+However, you may find your labels not lining up in horizontal forms.  You can use the following CSS to address this:
+```xml
+<style type="text/css">
+   .customPanelGrid .ui-panelgrid-content {
+            align-items: center;
+    }
+</style>
+
+<p:panelGrid columns="4" 
+             layout="flex" 
+             columnClasses="p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4, p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4" 
+             styleClass="customPanelGrid">
+```
+
 ## Skinning
 PanelGrid resides in a main container which _style_ and _styleClass_ attributes apply. Following is the
 list of structural style classes;
