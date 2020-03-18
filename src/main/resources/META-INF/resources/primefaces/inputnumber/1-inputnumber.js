@@ -88,6 +88,10 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
                 return false;
             }
         });
+
+        this.input.off('input').on('input', function (e) {
+            $this.copyValueToHiddenInput();
+        });
     },
 
     copyValueToHiddenInput: function() {
