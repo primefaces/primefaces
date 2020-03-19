@@ -110,7 +110,6 @@ ajax selection and more.
 | title | null | String | Advisory tooltip informaton.
 | rangeSeparator | - | String | Separator for joining start and end dates on range selection mode.
 | resolverStyle | smart | String | Relevant when parsing to a Java 8 Date/Time object. lenient, smart or strict. See [ResolverStyle](https://docs.oracle.com/javase/8/docs/api/java/time/format/ResolverStyle.html).
-| timeInput | false | Boolean | Allows direct input in time field.
 
 ## Getting Started with DatePicker
 Value of the DatePicker should be a java.time.LocalDate in single selection mode which is the default.
@@ -162,7 +161,7 @@ Translation is a simple javascript object, we suggest adding the code to a javas
 in your application. Following is a Turkish DatePicker.
 
 ```xhtml
-<h:outputScript name=â€path_to_your_translations.jsâ€ />
+<h:outputScript name=â€?path_to_your_translations.jsâ€? />
 <p:datePicker value="#{dateController.date}" locale="tr" />
 ```
 
@@ -188,7 +187,7 @@ _org.primefaces.event.SelectEvent_ instance.
 
 ```xhtml
 <p:datePicker value="#{DatePickerBean.date}">
-    <p:ajax event=â€dateSelectâ€ listener=â€#{bean.handleDateSelect}â€ update=â€msgâ€ />
+    <p:ajax event=â€?dateSelectâ€? listener=â€?#{bean.handleDateSelect}â€? update=â€?msgâ€? />
 </p:datePicker>
 <p:messages id="msg" />
 ```
