@@ -27,6 +27,8 @@ import javax.faces.FacesException;
 
 public class VirusException extends FacesException {
 
+    private static final long serialVersionUID = 1L;
+
     public VirusException() {
         // NOOP
     }
