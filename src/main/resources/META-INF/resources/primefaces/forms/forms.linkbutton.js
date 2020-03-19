@@ -3,7 +3,7 @@
  */
 PrimeFaces.widget.LinkButton = PrimeFaces.widget.BaseWidget.extend({
 
-    init : function (cfg) {
+    init: function (cfg) {
         this._super(cfg);
         this.button = this.jq;
         this.link = this.jq.children('a');
@@ -13,7 +13,7 @@ PrimeFaces.widget.LinkButton = PrimeFaces.widget.BaseWidget.extend({
         this.bindEvents();
     },
 
-    bindEvents : function () {
+    bindEvents: function () {
         var $this = this;
 
         if (this.link.length > 0) {
@@ -26,12 +26,12 @@ PrimeFaces.widget.LinkButton = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
-    disable : function () {
+    disable: function () {
         this.button.removeClass('ui-state-hover ui-state-focus ui-state-active')
                 .addClass('ui-state-disabled').attr('disabled', 'disabled');
     },
 
-    enable : function () {
+    enable: function () {
         this.button.removeClass('ui-state-disabled').removeAttr('disabled');
     }
 
