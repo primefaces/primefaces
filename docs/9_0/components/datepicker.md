@@ -55,6 +55,8 @@ ajax selection and more.
 | stepMinute | 1 | Integer | Minute steps.
 | stepSecond | 1 | Integer | Second steps.
 | showButtonBar | false | Boolean | Whether to display buttons at the footer.
+| showWeek | false | Boolean | Displays the week number next to each week.
+| weekCalculator | false | Boolean | A javascript function that is used to calculate the week number. Uses internal implementation on default when start of week is monday, sunday or saturday.
 | panelStyleClass | null | String | Style class of the container element.
 | panelStyle | null | String | Inline style of the container element.
 | keepInvalid | false | Boolean | Whether to keep the invalid inputs in the field or not.
