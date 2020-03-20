@@ -17,6 +17,12 @@
     }
 }(function ($) {
 
+    function calculateWeekNumber(d) {
+        var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+        var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+        return weekNo;
+    }
+
     $.widget("prime.datePicker", {
 
         options: {
@@ -116,7 +122,7 @@
                 var sundayIndex = this.getSundayIndex();
                 if(sundayIndex == 0) {
                     this.options.weekCalculator = this.calculateWeekNumber_sundayFirst;
-            	}
+                }
                 else if(sundayIndex == 1) {
                     this.options.weekCalculator = this.calculateWeekNumber_saturdayFirst;
                 }
@@ -1321,27 +1327,21 @@
         },
 
         calculateWeekNumber_iso8601: function(d) {
-        	d = new Date(Date.UTC(d.year, d.month, d.day));
+            d = new Date(Date.UTC(d.year, d.month, d.day));
             d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
-            var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-            var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
-            return weekNo;
+            return calculateWeekNumber(d);
         },
 
         calculateWeekNumber_sundayFirst: function (d) {
             d = new Date(Date.UTC(d.year, d.month, d.day));
             d.setUTCDate(d.getUTCDate() + 3 - d.getUTCDay());
-            var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-            var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
-            return weekNo;
+            return calculateWeekNumber(d);
         },
 
         calculateWeekNumber_saturdayFirst: function (d) {
-        	d = new Date(Date.UTC(d.year, d.month, d.day));
+            d = new Date(Date.UTC(d.year, d.month, d.day));
             d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7));
-            var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-            var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
-            return weekNo;
+            return calculateWeekNumber(d);
         },
 
         renderWeek: function (weekDates) {
