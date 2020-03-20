@@ -44,6 +44,8 @@
             numberOfMonths: 1,
             view: 'date',
             touchUI: false,
+            showWeek: false,
+            weekCalculator: null,
             showTime: false,
             timeOnly: false,
             showSeconds: false,
@@ -108,6 +110,22 @@
         _setInitValues: function () {
             if (this.options.userLocale && typeof this.options.userLocale === 'object') {
                 $.extend(this.options.locale, this.options.userLocale);
+            }
+
+            if(this.options.showWeek && !this.options.weekCalculator) {
+                var sundayIndex = this.getSundayIndex();
+                if(sundayIndex == 0) {
+                    this.options.weekCalculator = this.calculateWeekNumber_sundayFirst;
+            	}
+                else if(sundayIndex == 1) {
+                    this.options.weekCalculator = this.calculateWeekNumber_saturdayFirst;
+                }
+                else if(sundayIndex == 6) {
+                    this.options.weekCalculator = this.calculateWeekNumber_iso8601;
+                }
+                else {
+                    this.options.showWeek = false;
+                }
             }
 
             var parsedDefaultDate = this.parseValue(this.options.defaultDate);
@@ -1282,6 +1300,15 @@
 
         renderDayNames: function (weekDaysMin, weekDays) {
             var dayNamesHtml = '';
+
+            if(this.options.showWeek) {
+                dayNamesHtml += '<th scope="col">' +
+	                '<span>' +
+	                this.options.locale.weekHeader +
+	                '</span>' +
+	                '</th>';
+            }
+
             for (var i = 0; i < weekDaysMin.length; i++) {
                 dayNamesHtml += '<th scope="col">' +
                     '<span title="' + this.escapeHTML(weekDays[i]) + '">' +
@@ -1293,8 +1320,41 @@
             return dayNamesHtml;
         },
 
+        calculateWeekNumber_iso8601: function(d) {
+        	d = new Date(Date.UTC(d.year, d.month, d.day));
+            d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+            var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+            var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+            return weekNo;
+        },
+
+        calculateWeekNumber_sundayFirst: function (d) {
+            d = new Date(Date.UTC(d.year, d.month, d.day));
+            d.setUTCDate(d.getUTCDate() + 3 - d.getUTCDay());
+            var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+            var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+            return weekNo;
+        },
+
+        calculateWeekNumber_saturdayFirst: function (d) {
+        	d = new Date(Date.UTC(d.year, d.month, d.day));
+            d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7));
+            var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+            var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+            return weekNo;
+        },
+
         renderWeek: function (weekDates) {
             var weekHtml = '';
+
+            if(this.options.showWeek) {
+                var date = weekDates[0],
+                    cellClass = date.otherMonth && !this.options.showOtherMonths ? ' ui-datepicker-other-month-hidden' : '';
+
+                weekHtml += '<td class="ui-datepicker-week-col' + cellClass + '">' + 
+                    this.options.weekCalculator(date) + 
+                    '</td>';
+            }
 
             for (var i = 0; i < weekDates.length; i++) {
                 var date = weekDates[i],
@@ -1536,7 +1596,7 @@
                     var dayEl = $(this),
                         calendarIndex = dayEl.closest('.ui-datepicker-group').index(),
                         weekIndex = dayEl.closest('tr').index(),
-                        dayIndex = dayEl.closest('td').index();
+                        dayIndex = dayEl.closest('td').index() - ($this.options.showWeek ? 1 : 0);
                     $this.onDateSelect(event, $this.monthsMetaData[calendarIndex].dates[weekIndex][dayIndex]);
                 }
             });

@@ -76,7 +76,9 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         disabledDays,
         onMonthChange,
         onYearChange,
-        timeInput
+        timeInput,
+        showWeek,
+        weekCalculator
     }
 
     public DatePickerBase() {
@@ -391,6 +393,22 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     public void setTimeInput(boolean timeInput) {
         getStateHelper().put(PropertyKeys.timeInput, timeInput);
+    }
+
+    public boolean isShowWeek() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showWeek, false);
+    }
+
+    public void setShowWeek(boolean showWeek) {
+        getStateHelper().put(PropertyKeys.showWeek, showWeek);
+    }
+
+    public String getWeekCalculator() {
+        return (String) getStateHelper().eval(PropertyKeys.weekCalculator, null);
+    }
+
+    public void setWeekCalculator(String weekCalculator) {
+        getStateHelper().put(PropertyKeys.weekCalculator, weekCalculator);
     }
 
     @Override
