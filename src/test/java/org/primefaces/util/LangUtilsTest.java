@@ -26,6 +26,7 @@ package org.primefaces.util;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import org.junit.Ignore;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -43,6 +44,14 @@ public class LangUtilsTest {
         Class type = LangUtils.getTypeFromCollectionProperty(new ConcreteClass(), "ints");
 
         assertEquals(Integer.class, type);
+    }
+    
+    @Test
+    @Ignore
+    public void getTypeFromCollectionProperty_GenericInheritance() {
+        Class type = LangUtils.getTypeFromCollectionProperty(new ConcreteGenericClass(), "ints");
+
+        assertEquals(String.class, type);
     }
 
     class SimpleClass {
@@ -70,6 +79,22 @@ public class LangUtilsTest {
     }
 
     class ConcreteClass extends AbstractClass {
+
+    }
+    
+    abstract class AbstractGenericClass<T> {
+        private List<T> ints;
+
+        public List<T> getInts() {
+            return ints;
+        }
+
+        public void setInts(List<T> ints) {
+            this.ints = ints;
+        }
+    }
+    
+    class ConcreteGenericClass extends AbstractGenericClass<String> {
 
     }
 }
