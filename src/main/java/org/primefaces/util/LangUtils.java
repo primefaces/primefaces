@@ -221,7 +221,7 @@ public class LangUtils {
      */
     public static Class<?> getTypeFromCollectionProperty(Object base, String property) {
         try {
-            BeanInfo beanInfo = Introspector.getBeanInfo(base.getClass());
+            BeanInfo beanInfo = Introspector.getBeanInfo(getUnproxiedClass(base.getClass()));
             for (PropertyDescriptor pd : beanInfo.getPropertyDescriptors()) {
                 if (pd.getName().equals(property)) {
                     Method getter = pd.getReadMethod();
