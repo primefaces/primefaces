@@ -23,12 +23,16 @@
  */
 package org.primefaces.component.datepicker;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.CalendarUtils;
+
+import javax.el.ValueExpression;
+import javax.faces.context.FacesContext;
 
 public abstract class DatePickerBase extends UICalendar implements Widget, InputHolder, MixedClientBehaviorHolder {
 
@@ -213,6 +217,23 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         return (Boolean) getStateHelper().eval(PropertyKeys.showTime, false);
     }
 
+    public Boolean isShowTimeSmart(FacesContext context) {
+        Boolean showTime = (Boolean) getStateHelper().eval(PropertyKeys.showTime);
+
+        if (showTime == null && context != null) {
+            ValueExpression ve = getValueExpression("value");
+            Class<?> type = ve.getType(context.getELContext());
+
+            if (type != null) {
+                if (LocalDateTime.class.isAssignableFrom(type)) {
+                    showTime = true;
+                }
+            }
+        }
+
+        return showTime  == null ? false : showTime;
+    }
+
     public void setShowTime(boolean showTime) {
         getStateHelper().put(PropertyKeys.showTime, showTime);
     }
@@ -394,28 +415,28 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
     }
 
     @Override
-    public boolean hasTime() {
-        return this.isShowTime() || this.isTimeOnly();
+    public boolean hasTime(FacesContext context) {
+        return this.isShowTimeSmart(context) || this.isTimeOnlySmart(context);
     }
 
     @Override
-    public String calculatePattern() {
-        if (isTimeOnly()) {
-            return calculateTimeOnlyPattern();
+    public String calculatePattern(FacesContext context) {
+        if (isTimeOnlySmart(context)) {
+            return calculateTimeOnlyPattern(context);
         }
-        else if (isShowTime()) {
-            return calculateWidgetPattern() + " " + calculateTimeOnlyPattern();
+        else if (isShowTimeSmart(context)) {
+            return calculateWidgetPattern(context) + " " + calculateTimeOnlyPattern(context);
         }
-        return calculateWidgetPattern();
+        return calculateWidgetPattern(context);
     }
 
     @Override
-    public String calculateWidgetPattern() {
-        return CalendarUtils.removeTime(super.calculatePattern());
+    public String calculateWidgetPattern(FacesContext context) {
+        return CalendarUtils.removeTime(super.calculatePattern(context));
     }
 
     @Override
-    public String calculateTimeOnlyPattern() {
+    public String calculateTimeOnlyPattern(FacesContext context) {
         if (timeOnlyPattern == null) {
             boolean ampm = "12".equals(getHourFormat());
             timeOnlyPattern = ampm ? "KK" : "HH";

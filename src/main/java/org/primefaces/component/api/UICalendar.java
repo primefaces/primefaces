@@ -23,16 +23,19 @@
  */
 package org.primefaces.component.api;
 
+import java.time.LocalTime;
 import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.time.format.ResolverStyle;
 import java.util.Locale;
 
+import javax.el.ValueExpression;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.component.datepicker.DatePickerBase;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.MessageFactory;
@@ -110,6 +113,23 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
         return (Boolean) getStateHelper().eval(PropertyKeys.timeOnly, false);
     }
 
+    public Boolean isTimeOnlySmart(FacesContext context) {
+        Boolean timeOnly = (Boolean) getStateHelper().eval(DatePickerBase.PropertyKeys.timeOnly);
+
+        if (timeOnly == null && context != null) {
+            ValueExpression ve = getValueExpression("value");
+            Class<?> type = ve.getType(context.getELContext());
+
+            if (type != null) {
+                if (LocalTime.class.isAssignableFrom(type)) {
+                    timeOnly = true;
+                }
+            }
+        }
+
+        return timeOnly == null ? false : timeOnly;
+    }
+
     public void setTimeOnly(boolean timeOnly) {
         getStateHelper().put(PropertyKeys.timeOnly, timeOnly);
     }
@@ -154,13 +174,13 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
         return LocaleUtils.resolveLocale(facesContext, getLocale(), getClientId(facesContext));
     }
 
-    public boolean hasTime() {
+    public boolean hasTime(FacesContext facesContext) {
         String pattern = getPattern();
 
         return (pattern != null && (pattern.contains("HH") || pattern.contains("mm") || pattern.contains("ss")));
     }
 
-    public String calculatePattern() {
+    public String calculatePattern(FacesContext context) {
         String pattern = getPattern();
 
         if (pattern == null) {
@@ -170,7 +190,7 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
         else return pattern;
     }
 
-    public String calculateTimeOnlyPattern() {
+    public String calculateTimeOnlyPattern(FacesContext context) {
         if (timeOnlyPattern == null) {
             Locale locale = calculateLocale(getFacesContext());
             String localePattern = DateTimeFormatterBuilder.getLocalizedDateTimePattern(FormatStyle.SHORT, null, IsoChronology.INSTANCE, locale);
@@ -182,7 +202,7 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
         return timeOnlyPattern;
     }
 
-    public abstract String calculateWidgetPattern();
+    public abstract String calculateWidgetPattern(FacesContext context);
 
     public String convertPattern(String patternTemplate) {
         String pattern = patternTemplate.replace("MMM", "###");

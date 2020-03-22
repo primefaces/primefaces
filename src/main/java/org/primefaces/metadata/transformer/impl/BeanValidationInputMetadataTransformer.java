@@ -65,7 +65,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
                     context, applicationContext, input.getValueExpression("value"));
             if (constraints != null && !constraints.isEmpty()) {
                 for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
-                    applyConstraint(constraintDescriptor, input);
+                    applyConstraint(constraintDescriptor, input, context);
                 }
             }
         }
@@ -77,7 +77,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
         }
     }
 
-    protected void applyConstraint(ConstraintDescriptor constraintDescriptor, UIInput input) {
+    protected void applyConstraint(ConstraintDescriptor constraintDescriptor, UIInput input, FacesContext context) {
 
         Annotation constraint = constraintDescriptor.getAnnotation();
         Class<? extends Annotation> annotationType = constraint.annotationType();
@@ -169,7 +169,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
 
         if (input instanceof UICalendar) {
             UICalendar uicalendar = (UICalendar) input;
-            boolean hasTime = uicalendar.hasTime();
+            boolean hasTime = uicalendar.hasTime(context);
 
             if (annotationType.equals(Past.class) && uicalendar.getMaxdate() == null) {
                 uicalendar.setMaxdate(hasTime ? LocalDateTime.now() : LocalDate.now().minusDays(1));

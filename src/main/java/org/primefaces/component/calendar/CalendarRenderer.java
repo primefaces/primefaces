@@ -73,7 +73,7 @@ public class CalendarRenderer extends BaseCalendarRenderer {
         Calendar calendar = (Calendar) uicalendar;
         String clientId = calendar.getClientId(context);
         Locale locale = calendar.calculateLocale(context);
-        String pattern = calendar.calculateWidgetPattern();
+        String pattern = calendar.calculateWidgetPattern(context);
         String mask = calendar.getMask();
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Calendar", calendar.resolveWidgetVar(context), clientId);
@@ -135,10 +135,10 @@ public class CalendarRenderer extends BaseCalendarRenderer {
             wb.attr("showOtherMonths", true).attr("selectOtherMonths", calendar.isSelectOtherMonths());
         }
 
-        if (calendar.hasTime()) {
+        if (calendar.hasTime(context)) {
             String timeControlType = calendar.getTimeControlType();
 
-            wb.attr("timeOnly", calendar.isTimeOnly())
+            wb.attr("timeOnly", calendar.isTimeOnlySmart(context))
                     .attr("stepHour", calendar.getStepHour())
                     .attr("stepMinute", calendar.getStepMinute())
                     .attr("stepSecond", calendar.getStepSecond())

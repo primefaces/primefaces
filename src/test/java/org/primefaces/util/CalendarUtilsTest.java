@@ -75,9 +75,9 @@ public class CalendarUtilsTest {
 
     private void setupValues(Object value, Locale locale) {
         when(datePicker.getValue()).thenReturn(value);
-        when(datePicker.calculatePattern()).thenCallRealMethod();
-        when(datePicker.calculateTimeOnlyPattern()).thenCallRealMethod();
-        when(datePicker.calculateWidgetPattern()).thenCallRealMethod();
+        when(datePicker.calculatePattern(context)).thenCallRealMethod();
+        when(datePicker.calculateTimeOnlyPattern(context)).thenCallRealMethod();
+        when(datePicker.calculateWidgetPattern(context)).thenCallRealMethod();
         when(datePicker.calculateLocale(any())).thenReturn(locale);
     }
 

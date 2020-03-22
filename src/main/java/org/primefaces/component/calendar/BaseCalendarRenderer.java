@@ -80,7 +80,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         UICalendar uicalendar = (UICalendar) component;
         String markupValue = CalendarUtils.getValueAsString(context, uicalendar);
-        String widgetValue = uicalendar.isTimeOnly() ? CalendarUtils.getTimeOnlyValueAsString(context, uicalendar) : markupValue;
+        String widgetValue = uicalendar.isTimeOnlySmart(context) ? CalendarUtils.getTimeOnlyValueAsString(context, uicalendar) : markupValue;
 
         encodeMarkup(context, uicalendar, markupValue);
         encodeScript(context, uicalendar, widgetValue);
@@ -177,7 +177,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
 
     protected Date convertToLegacyDateAPI(FacesContext context, UICalendar calendar, String submittedValue) {
         //Code for backward-compatibility with java.util.Date - may be removed at some point in the future
-        SimpleDateFormat format = new SimpleDateFormat(calendar.calculatePattern(), calendar.calculateLocale(context));
+        SimpleDateFormat format = new SimpleDateFormat(calendar.calculatePattern(context), calendar.calculateLocale(context));
         format.setLenient(false);
         format.setTimeZone(TimeZone.getTimeZone(CalendarUtils.calculateZoneId(calendar.getTimeZone())));
 
@@ -193,7 +193,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         if (type == LocalDate.class || type == YearMonth.class) {
             DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                     .parseCaseInsensitive()
-                    .appendPattern(calendar.calculatePattern())
+                    .appendPattern(calendar.calculatePattern(context))
                     .parseDefaulting(ChronoField.DAY_OF_MONTH, 1) //because of Month Picker which does not contain day of month
                     .parseDefaulting(ChronoField.ERA, 1)
                     .toFormatter(calendar.calculateLocale(context))
@@ -210,7 +210,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             }
         }
         else if (type == LocalTime.class) {
-            String pattern = calendar instanceof Calendar ? calendar.calculatePattern() : calendar.calculateTimeOnlyPattern();
+            String pattern = calendar instanceof Calendar ? calendar.calculatePattern(context) : calendar.calculateTimeOnlyPattern(context);
             DateTimeFormatter formatter = DateTimeFormatter
                     .ofPattern(pattern, calendar.calculateLocale(context))
                     .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()))
@@ -226,7 +226,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         else if (type == LocalDateTime.class) {
             DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                     .parseCaseInsensitive()
-                    .appendPattern(calendar.calculatePattern())
+                    .appendPattern(calendar.calculatePattern(context))
                     .parseDefaulting(ChronoField.ERA, 1)
                     .toFormatter(calendar.calculateLocale(context))
                     .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()))
@@ -266,10 +266,10 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         params[1] = param1;
         params[2] = MessageFactory.getLabel(context, calendar);
 
-        if (calendar.isTimeOnly()) {
+        if (calendar.isTimeOnlySmart(context)) {
             message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.TIME", FacesMessage.SEVERITY_ERROR, params);
         }
-        else if (calendar.hasTime()) {
+        else if (calendar.hasTime(context)) {
             message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.DATETIME", FacesMessage.SEVERITY_ERROR, params);
         }
         else {
@@ -290,10 +290,10 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
 
         // If type could not be determined via value-expression try it this way. (Very unlikely, this happens in real world.)
         if (type == null) {
-            if (calendar.isTimeOnly()) {
+            if (calendar.isTimeOnlySmart(context)) {
                 type = LocalTime.class;
             }
-            else if (calendar.hasTime()) {
+            else if (calendar.hasTime(context)) {
                 type = LocalDateTime.class;
             }
             else {

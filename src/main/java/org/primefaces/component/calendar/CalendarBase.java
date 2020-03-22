@@ -28,6 +28,8 @@ import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.api.Widget;
 
+import javax.faces.context.FacesContext;
+
 public abstract class CalendarBase extends UICalendar implements Widget, InputHolder, MixedClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
@@ -444,8 +446,8 @@ public abstract class CalendarBase extends UICalendar implements Widget, InputHo
     }
 
     @Override
-    public String calculateWidgetPattern() {
-        return isTimeOnly() ? calculateTimeOnlyPattern() : calculatePattern();
+    public String calculateWidgetPattern(FacesContext context) {
+        return isTimeOnlySmart(context) ? calculateTimeOnlyPattern(context) : calculatePattern(context);
     }
 
 }

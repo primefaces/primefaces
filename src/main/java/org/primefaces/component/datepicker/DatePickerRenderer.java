@@ -76,7 +76,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         DatePicker datepicker = (DatePicker) uicalendar;
         String clientId = datepicker.getClientId(context);
         Locale locale = datepicker.calculateLocale(context);
-        String pattern = datepicker.calculateWidgetPattern();
+        String pattern = datepicker.calculateWidgetPattern(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("DatePicker", datepicker.resolveWidgetVar(context), clientId);
 
@@ -153,10 +153,10 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             wb.attr("showOtherMonths", true).attr("selectOtherMonths", datepicker.isSelectOtherMonths());
         }
 
-        if (datepicker.hasTime()) {
-            wb.attr("showTime", datepicker.isShowTime(), false)
+        if (datepicker.hasTime(context)) {
+            wb.attr("showTime", datepicker.isShowTimeSmart(context), false)
                 .attr("hourFormat", datepicker.getHourFormat(), null)
-                .attr("timeOnly", datepicker.isTimeOnly(), false)
+                .attr("timeOnly", datepicker.isTimeOnlySmart(context), false)
                 .attr("showSeconds", datepicker.isShowSeconds(), false)
                 .attr("stepHour", datepicker.getStepHour(), 1)
                 .attr("stepMinute", datepicker.getStepMinute(), 1)
@@ -206,7 +206,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
     }
 
     private String getMinMaxDate(FacesContext context, DatePicker datepicker, Object value, boolean max) {
-        if (value instanceof LocalDate && datepicker.isShowTime()) {
+        if (value instanceof LocalDate && datepicker.isShowTimeSmart(context)) {
             LocalDate date = (LocalDate) value;
             value = date.atTime(max ? LocalTime.MAX : LocalTime.MIN);
         }

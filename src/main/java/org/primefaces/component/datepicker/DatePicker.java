@@ -132,7 +132,7 @@ public class DatePicker extends DatePickerBase {
     }
 
     protected ValidationResult validateValueInternal(FacesContext context, Object value) {
-        if (isTimeOnly()) {
+        if (isTimeOnlySmart(context)) {
             LocalTime timeValue = CalendarUtils.getObjectAsLocalTime(context, this, value);
             return validateTimeOnlyValue(context, timeValue);
         }
@@ -143,7 +143,7 @@ public class DatePicker extends DatePickerBase {
             validationResult = validateDateValue(context, (LocalDate) value);
         }
         else if (value instanceof LocalDateTime) {
-            if (isShowTime()) {
+            if (isShowTimeSmart(context)) {
                 validationResult = validateDateValue(context, ((LocalDateTime) value).toLocalDate(), ((LocalDateTime) value).toLocalTime());
             }
             else {
@@ -154,7 +154,7 @@ public class DatePicker extends DatePickerBase {
             validationResult = validateDateValue(context, ((YearMonth) value).atDay(1));
         }
         else if (value instanceof Date) {
-            if (isShowTime()) {
+            if (isShowTimeSmart(context)) {
                 ZoneId zoneId = CalendarUtils.calculateZoneId(getTimeZone());
                 validationResult = validateDateValue(context, CalendarUtils.convertDate2LocalDate((Date) value, zoneId),
                         CalendarUtils.convertDate2LocalTime((Date) value, zoneId));

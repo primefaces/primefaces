@@ -87,7 +87,7 @@ public class CalendarUtils {
             return convertDate2LocalDate((Date) value);
         }
 
-        String pattern = calendar.calculatePattern();
+        String pattern = calendar.calculatePattern(context);
         if (pattern != null) {
             Locale locale = calendar.calculateLocale(context);
             if (locale != null) {
@@ -151,7 +151,7 @@ public class CalendarUtils {
             return convertDate2LocalTime((Date) value);
         }
 
-        String pattern = calendar.calculatePattern();
+        String pattern = calendar.calculatePattern(context);
         if (pattern != null) {
             Locale locale = calendar.calculateLocale(context);
             if (locale != null) {
@@ -196,7 +196,7 @@ public class CalendarUtils {
             return null;
         }
 
-        return getValueAsString(context, calendar, value, calendar.calculatePattern());
+        return getValueAsString(context, calendar, value, calendar.calculatePattern(context));
     }
 
     public static final String getTimeOnlyValueAsString(FacesContext context, UICalendar calendar) {
@@ -205,7 +205,7 @@ public class CalendarUtils {
             return null;
         }
 
-        return getValueAsString(context, calendar, value, calendar.calculateTimeOnlyPattern());
+        return getValueAsString(context, calendar, value, calendar.calculateTimeOnlyPattern(context));
     }
 
     public static final String getValueAsString(FacesContext context, UICalendar calendar, Object value, String pattern) {
