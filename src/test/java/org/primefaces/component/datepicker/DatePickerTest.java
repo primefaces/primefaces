@@ -1076,21 +1076,21 @@ public class DatePickerTest {
     public void isShowTimeSmart_Basic() {
         setupValues(null, Locale.ENGLISH);
         when(datePicker.isShowTimeSmart(context)).thenCallRealMethod();
-        assertEquals(false, datePicker.isShowTimeSmart(context));
+        assertFalse(datePicker.isShowTimeSmart(context));
     }
 
     @Test
     public void isShowTimeSmart_LocalDate() {
         setupValues(LocalDate.class, Locale.ENGLISH);
         when(datePicker.isShowTimeSmart(context)).thenCallRealMethod();
-        assertEquals(false, datePicker.isShowTimeSmart(context));
+        assertFalse(datePicker.isShowTimeSmart(context));
     }
 
     @Test
     public void isShowTimeSmart_LocalDateTime() {
         setupValues(LocalDateTime.class, Locale.ENGLISH);
         when(datePicker.isShowTimeSmart(context)).thenCallRealMethod();
-        assertEquals(true, datePicker.isShowTimeSmart(context));
+        assertTrue(datePicker.isShowTimeSmart(context));
     }
 
     @Test
@@ -1098,42 +1098,42 @@ public class DatePickerTest {
         setupValues(LocalDateTime.class, Locale.ENGLISH);
         when(datePicker.isShowTimeSmart(context)).thenCallRealMethod();
         when(stateHelper.eval(DatePickerBase.PropertyKeys.showTime)).thenReturn(false);
-        assertEquals(false, datePicker.isShowTimeSmart(context));
+        assertFalse(datePicker.isShowTimeSmart(context));
     }
 
     @Test
     public void isShowTimeSmart_LocalTime() {
         setupValues(LocalTime.class, Locale.ENGLISH);
         when(datePicker.isShowTimeSmart(context)).thenCallRealMethod();
-        assertEquals(false, datePicker.isShowTimeSmart(context));
+        assertFalse(datePicker.isShowTimeSmart(context));
     }
 
     @Test
     public void isTimeOnlySmart_Basic() {
         setupValues(null, Locale.ENGLISH);
         when(datePicker.isTimeOnlySmart(context)).thenCallRealMethod();
-        assertEquals(false, datePicker.isTimeOnlySmart(context));
+        assertFalse(datePicker.isTimeOnlySmart(context));
     }
 
     @Test
     public void isTimeOnlySmart_LocalDate() {
         setupValues(LocalDate.class, Locale.ENGLISH);
         when(datePicker.isTimeOnlySmart(context)).thenCallRealMethod();
-        assertEquals(false, datePicker.isTimeOnlySmart(context));
+        assertFalse(datePicker.isTimeOnlySmart(context));
     }
 
     @Test
     public void isTimeOnlySmart_LocalDateTime() {
         setupValues(LocalDateTime.class, Locale.ENGLISH);
         when(datePicker.isTimeOnlySmart(context)).thenCallRealMethod();
-        assertEquals(false, datePicker.isTimeOnlySmart(context));
+        assertFalse(datePicker.isTimeOnlySmart(context));
     }
 
     @Test
     public void isTimeOnlySmart_LocalTime() {
         setupValues(LocalTime.class, Locale.ENGLISH);
         when(datePicker.isTimeOnlySmart(context)).thenCallRealMethod();
-        assertEquals(true, datePicker.isTimeOnlySmart(context));
+        assertTrue(datePicker.isTimeOnlySmart(context));
     }
 
     @Test
@@ -1141,6 +1141,6 @@ public class DatePickerTest {
         setupValues(LocalDateTime.class, Locale.ENGLISH);
         when(datePicker.isTimeOnlySmart(context)).thenCallRealMethod();
         when(stateHelper.eval(DatePickerBase.PropertyKeys.showTime)).thenReturn(false);
-        assertEquals(false, datePicker.isTimeOnlySmart(context));
+        assertFalse(datePicker.isTimeOnlySmart(context));
     }
 }
