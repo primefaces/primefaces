@@ -1108,4 +1108,39 @@ public class DatePickerTest {
         assertEquals(false, datePicker.isShowTimeSmart(context));
     }
 
+    @Test
+    public void isTimeOnlySmart_Basic() {
+        setupValues(null, Locale.ENGLISH);
+        when(datePicker.isTimeOnlySmart(context)).thenCallRealMethod();
+        assertEquals(false, datePicker.isTimeOnlySmart(context));
+    }
+
+    @Test
+    public void isTimeOnlySmart_LocalDate() {
+        setupValues(LocalDate.class, Locale.ENGLISH);
+        when(datePicker.isTimeOnlySmart(context)).thenCallRealMethod();
+        assertEquals(false, datePicker.isTimeOnlySmart(context));
+    }
+
+    @Test
+    public void isTimeOnlySmart_LocalDateTime() {
+        setupValues(LocalDateTime.class, Locale.ENGLISH);
+        when(datePicker.isTimeOnlySmart(context)).thenCallRealMethod();
+        assertEquals(false, datePicker.isTimeOnlySmart(context));
+    }
+
+    @Test
+    public void isTimeOnlySmart_LocalTime() {
+        setupValues(LocalTime.class, Locale.ENGLISH);
+        when(datePicker.isTimeOnlySmart(context)).thenCallRealMethod();
+        assertEquals(true, datePicker.isTimeOnlySmart(context));
+    }
+
+    @Test
+    public void isTimeOnlySmart_LocalTime_Override() {
+        setupValues(LocalDateTime.class, Locale.ENGLISH);
+        when(datePicker.isTimeOnlySmart(context)).thenCallRealMethod();
+        when(stateHelper.eval(DatePickerBase.PropertyKeys.showTime)).thenReturn(false);
+        assertEquals(false, datePicker.isTimeOnlySmart(context));
+    }
 }
