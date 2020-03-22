@@ -35,7 +35,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.component.datepicker.DatePickerBase;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.MessageFactory;
@@ -114,7 +113,7 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
     }
 
     public Boolean isTimeOnlySmart(FacesContext context) {
-        Boolean timeOnly = (Boolean) getStateHelper().eval(DatePickerBase.PropertyKeys.timeOnly);
+        Boolean timeOnly = (Boolean) getStateHelper().eval(PropertyKeys.timeOnly);
 
         if (timeOnly == null && context != null) {
             ValueExpression ve = getValueExpression("value");

@@ -1138,9 +1138,9 @@ public class DatePickerTest {
 
     @Test
     public void isTimeOnlySmart_LocalTime_Override() {
-        setupValues(LocalDateTime.class, Locale.ENGLISH);
+        setupValues(LocalTime.class, Locale.ENGLISH);
         when(datePicker.isTimeOnlySmart(context)).thenCallRealMethod();
-        when(stateHelper.eval(DatePickerBase.PropertyKeys.showTime)).thenReturn(false);
+        when(stateHelper.eval(UICalendar.PropertyKeys.timeOnly)).thenReturn(false);
         assertFalse(datePicker.isTimeOnlySmart(context));
     }
 }
