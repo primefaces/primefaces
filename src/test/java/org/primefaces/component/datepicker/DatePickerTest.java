@@ -50,6 +50,7 @@ import java.util.Locale;
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.StateHelper;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.ConverterException;
@@ -77,6 +78,11 @@ public class DatePickerTest {
         @Override
         public void setValid(boolean valid) {
             this.valid = valid;
+        }
+
+        @Override
+        public StateHelper getStateHelper() {
+            return super.getStateHelper(true);
         }
     }
 
@@ -108,6 +114,7 @@ public class DatePickerTest {
     private ExternalContext externalContext;
     private ELContext elContext;
     private ValueExpression valueExpression;
+    private StateHelper stateHelper;
 
 
     @BeforeEach
@@ -139,6 +146,10 @@ public class DatePickerTest {
 
         valueExpression = mock(ValueExpression.class);
         when(datePicker.getValueExpression(anyString())).thenReturn(valueExpression);
+
+        stateHelper = mock(StateHelper.class);
+        when(stateHelper.eval(DatePickerBase.PropertyKeys.showTime)).thenReturn(null);
+        when(datePicker.getStateHelper()).thenReturn(stateHelper);
     }
 
     @AfterEach
@@ -1012,7 +1023,7 @@ public class DatePickerTest {
     @Test
     public void calculatePatternDefault() {
         setupValues(null, Locale.ENGLISH);
-        assertEquals(datePicker.calculatePattern(context), "M/d/yy");
+        assertEquals("M/d/yy", datePicker.calculatePattern(context));
     }
 
     @Test
@@ -1020,7 +1031,7 @@ public class DatePickerTest {
         setupValues(null, Locale.ENGLISH);
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
         when(datePicker.isShowTimeSmart(context)).thenReturn(Boolean.TRUE);
-        assertEquals(datePicker.calculatePattern(context), "M/d/yy HH:mm");
+        assertEquals("M/d/yy HH:mm", datePicker.calculatePattern(context));
     }
 
     @Test
@@ -1029,7 +1040,7 @@ public class DatePickerTest {
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
         when(datePicker.isShowTimeSmart(context)).thenReturn(Boolean.TRUE);
         when(datePicker.isShowSeconds()).thenReturn(Boolean.TRUE);
-        assertEquals(datePicker.calculatePattern(context), "M/d/yy HH:mm:ss");
+        assertEquals("M/d/yy HH:mm:ss", datePicker.calculatePattern(context));
     }
 
     @Test
@@ -1039,7 +1050,7 @@ public class DatePickerTest {
         when(datePicker.isShowTimeSmart(context)).thenReturn(Boolean.TRUE);
         when(datePicker.isShowSeconds()).thenReturn(Boolean.TRUE);
         when(datePicker.getHourFormat()).thenReturn("12");
-        assertEquals(datePicker.calculatePattern(context), "M/d/yy KK:mm:ss a");
+        assertEquals("M/d/yy KK:mm:ss a", datePicker.calculatePattern(context));
     }
 
     @Test
@@ -1048,7 +1059,7 @@ public class DatePickerTest {
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
         when(datePicker.isShowTimeSmart(context)).thenReturn(Boolean.TRUE);
         when(datePicker.getHourFormat()).thenReturn("12");
-        assertEquals(datePicker.calculatePattern(context), "M/d/yy KK:mm a");
+        assertEquals("M/d/yy KK:mm a", datePicker.calculatePattern(context));
     }
 
 
@@ -1058,7 +1069,43 @@ public class DatePickerTest {
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
         when(datePicker.isShowTimeSmart(context)).thenReturn(Boolean.TRUE);
         when(datePicker.getPattern()).thenReturn("yyyy-MM-dd KK:mm:ss a");
-        assertEquals(datePicker.calculatePattern(context), "yyyy-MM-dd HH:mm");
+        assertEquals("yyyy-MM-dd HH:mm", datePicker.calculatePattern(context));
+    }
+
+    @Test
+    public void isShowTimeSmart_Basic() {
+        setupValues(null, Locale.ENGLISH);
+        when(datePicker.isShowTimeSmart(context)).thenCallRealMethod();
+        assertEquals(false, datePicker.isShowTimeSmart(context));
+    }
+
+    @Test
+    public void isShowTimeSmart_LocalDate() {
+        setupValues(LocalDate.class, Locale.ENGLISH);
+        when(datePicker.isShowTimeSmart(context)).thenCallRealMethod();
+        assertEquals(false, datePicker.isShowTimeSmart(context));
+    }
+
+    @Test
+    public void isShowTimeSmart_LocalDateTime() {
+        setupValues(LocalDateTime.class, Locale.ENGLISH);
+        when(datePicker.isShowTimeSmart(context)).thenCallRealMethod();
+        assertEquals(true, datePicker.isShowTimeSmart(context));
+    }
+
+    @Test
+    public void isShowTimeSmart_LocalDateTime_Override() {
+        setupValues(LocalDateTime.class, Locale.ENGLISH);
+        when(datePicker.isShowTimeSmart(context)).thenCallRealMethod();
+        when(stateHelper.eval(DatePickerBase.PropertyKeys.showTime)).thenReturn(false);
+        assertEquals(false, datePicker.isShowTimeSmart(context));
+    }
+
+    @Test
+    public void isShowTimeSmart_LocalTime() {
+        setupValues(LocalTime.class, Locale.ENGLISH);
+        when(datePicker.isShowTimeSmart(context)).thenCallRealMethod();
+        assertEquals(false, datePicker.isShowTimeSmart(context));
     }
 
 }
