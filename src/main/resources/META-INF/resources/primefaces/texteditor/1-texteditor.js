@@ -50,9 +50,16 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
 
     init: function(cfg) {
         this._super(cfg);
+        this.disabled = (cfg.disabled === undefined) ? false : cfg.disabled;
 
         this.editorContainer = $(this.jqId + '_editor');
         this.input = this.jq.children('input');
+
+        if (this.disabled) {
+            this.input.attr("disabled", "disabled");
+            this.jq.addClass("ui-state-disabled");
+        }
+
         this.renderDeferred();
     },
 
@@ -127,6 +134,20 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
                 $this.callBehavior(event);
             });
         }
+    },
+
+    enable: function () {
+        this.editor.enable();
+        this.input.removeAttr("disabled");
+        this.jq.removeClass("ui-state-disabled");
+        this.disabled = false;
+    },
+
+    disable: function () {
+        this.editor.disable();
+        this.input.attr("disabled", "disabled");
+        this.jq.addClass("ui-state-disabled");
+        this.disabled = true;
     }
 
 });

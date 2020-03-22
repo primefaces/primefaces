@@ -59,19 +59,31 @@ self.addEventListener('fetch', event => {
     // similar to HTTP's stale-while-revalidate: https://www.mnot.net/blog/2007/12/12/stale
     // Upgrade from Jake's to Surma's: https://gist.github.com/surma/eb441223daaedf880801ad80006389f1
     const cached = caches.match(event.request)
+    const cachedDelayed = new Promise(function(resolve, reject) {
+      setTimeout(resolve, 500, cached);
+    });
     const fixedUrl = getFixedUrl(event.request)
     const fetched = fetch(fixedUrl, { cache: 'no-store' })
     const fetchedCopy = fetched.then(resp => resp.clone())
 
-    // Call respondWith() with whatever we get first.
-    // If the fetch fails (e.g disconnected), wait for the cache.
-    // If there’s nothing in cache, wait for the fetch.
-    // If neither yields a response, return offline pages.
-    event.respondWith(
-      Promise.race([fetched.catch(_ => cached), cached])
-        .then(resp => resp || fetched)
-        .catch(_ => { /* eat any errors */ })
-    )
+    if (navigator.onLine) {
+      // Call respondWith() with whatever we get first.
+      // If the fetch fails (e.g disconnected), wait for the cache.
+      // If there’s nothing in cache, wait for the fetch.
+      // If neither yields a response, return offline pages.
+      event.respondWith(
+          Promise.race([fetched.catch(_ => cached), cachedDelayed])
+              .then(resp => resp || fetched)
+              .catch(_ => { /* eat any errors */ })
+      )
+    }
+    else { // offline
+      event.respondWith(
+          Promise.resolve(cached)
+              .then(resp => resp)
+              .catch(_ => { /* eat any errors */ })
+      )
+    }
 
     // Update the cache with the version we fetched (only for ok status)
     event.waitUntil(

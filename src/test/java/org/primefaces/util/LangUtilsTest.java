@@ -1,4 +1,4 @@
-/**
+/* 
  * The MIT License
  *
  * Copyright (c) 2009-2019 PrimeTek
@@ -21,27 +21,55 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.virusscan;
+package org.primefaces.util;
 
-import javax.faces.FacesException;
+import org.junit.jupiter.api.Test;
 
-public class VirusException extends FacesException {
+import java.util.List;
 
-    private static final long serialVersionUID = 1L;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-    public VirusException() {
-        // NOOP
+public class LangUtilsTest {
+
+    @Test
+    public void getTypeFromCollectionProperty_Simple() {
+        Class type = LangUtils.getTypeFromCollectionProperty(new SimpleClass(), "strings");
+
+        assertEquals(String.class, type);
     }
 
-    public VirusException(String message) {
-        super(message);
+    @Test
+    public void getTypeFromCollectionProperty_Inheritance() {
+        Class type = LangUtils.getTypeFromCollectionProperty(new ConcreteClass(), "ints");
+
+        assertEquals(Integer.class, type);
     }
 
-    public VirusException(Throwable cause) {
-        super(cause);
+    class SimpleClass {
+        private List<String> strings;
+
+        public List<String> getStrings() {
+            return strings;
+        }
+
+        public void setStrings(List<String> strings) {
+            this.strings = strings;
+        }
     }
 
-    public VirusException(String message, Throwable cause) {
-        super(message, cause);
+    abstract class AbstractClass {
+        private List<Integer> ints;
+
+        public List<Integer> getInts() {
+            return ints;
+        }
+
+        public void setInts(List<Integer> ints) {
+            this.ints = ints;
+        }
+    }
+
+    class ConcreteClass extends AbstractClass {
+
     }
 }

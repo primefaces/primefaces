@@ -18,20 +18,23 @@ Dock component mimics the well known dock interface of Mac OS X.
 | Name | Default | Type | Description | 
 | --- |---| --- | --- |
 | id | null | String | Unique identifier of the component
+| widgetVar | null | String | Name of the client side widget.
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 | model | null | MenuModel | MenuModel instance to create menus programmatically
 | position | bottom | String | Position of the dock, bottom or top.
-| itemWidth | 40 | Integer | Initial width of items.
-| maxWidth | 50 | Integer | Maximum width of items.
-| proximity | 90 | Integer | Distance to enlarge.
-| halign | center | String | Horizontal alignment.
+| halign | center | String | Horizontal alignment. left, center, or right
 | blockScroll | true | Boolean | Whether to block scrolling of the document.
-| widgetVar | null | String | Name of the client side widget.
+| animate | true | Boolean | Whether to animate the OSX bounce effect when clicking an item.
+| animationDuration | 1600 | Integer | How long in milliseconds to animate the bounce effect.
+| dir | ltr | String | Defines direction of dock. Valid values are "ltr" (default) and "rtl".
+| ~itemWidth~ | 40 | Integer | (DEPRECATED, use CSS below instead) Initial width of items.
+| ~maxWidth~ | 50 | Integer | (DEPRECATED, use CSS below instead) Maximum width of items.
+| ~proximity~ | 90 | Integer | (DEPRECATED, use CSS below instead) Distance to enlarge.
 
 
 ## Getting started with the Dock
-A dock is composed of menuitems.
+A dock is composed of menu items.
 
 ```xhtml
 <p:dock>
@@ -50,19 +53,30 @@ position to top.
 
 ## Dock Effect
 When mouse is over the dock items, icons are zoomed in. The configuration of this effect is done
-via the maxWidth and proximity attributes.
+via CSS sizing of the default and hover styles.
+
+```css
+/* Default size */
+.ui-dock img {
+    width: 48px;
+}
+/* Zoomed size */
+.ui-dock-item.active:hover img {
+    width: 128px;
+}
+```
 
 ## Dynamic Menus
 Menus can be created programmatically as well, see the dynamic menus part in menu component
 section for more information and an example.
 
 ## Skinning
-Following is the list of structural style classes, {positon} can be _top_ or _bottom_.
+Following is the list of structural style classes.
 
 | Class | Applies | 
 | --- | --- | 
-| .ui-dock-{position} | Main container.
-| .ui-dock-container-{position} | Menu item container.
-| .ui-dock-item-{position} | Each menu item.
+| .ui-dock | Main container.
+| .ui-dock-container | Menu item container.
+| .ui-dock-item | Each menu item.
 
 As skinning style classes are global, see the main theming section for more information.

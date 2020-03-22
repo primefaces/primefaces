@@ -68,3 +68,11 @@ To navigate without outcome based approach, use href attribute.
 ```xhtml
 <p:linkButton href="http://www.primefaces.org" value="Navigate"/>
 ```
+
+## Client Side API
+Widget: _PrimeFaces.widget.LinkButton_
+
+| Method | Params | Return Type | Description | 
+| --- | --- | --- | --- | 
+| disable() | - | void | Disables button
+| enable() | - | void | Enables button

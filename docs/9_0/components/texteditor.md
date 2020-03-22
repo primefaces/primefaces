@@ -32,6 +32,7 @@ validatorMessage | null | String | Message to be displayed when validation fails
 widgetVar | null | String | Name of the client side widget.
 height | null | Integer | Height of the editor.
 readonly | false | Boolean | Whether to instantiate the editor to read-only mode.
+disabled | false | Boolean | Disables the editor.
 style | null | String | Inline style of the editor container.
 styleClass | null | String | Style class of the editor container.
 placeholder | null | String | Placeholder text to show when editor is empty
@@ -84,7 +85,9 @@ Refer to QuillJS documentation for avialable list of formats.
 Widget: _PrimeFaces.widget.Editor_
 
 | Method | Params | Return Type | Description | 
-| --- | --- | --- | --- | 
+| --- | --- | --- | --- |
+enable() | - | void | Enables the component |
+disable() | - | void | Disables the component |
 getEditorValue() | - | void | Initializes a lazy editor, subsequent calls do not reinit the editor.
 clear() | - | void | Clears the text in editor.
 

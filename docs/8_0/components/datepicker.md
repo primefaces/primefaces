@@ -161,7 +161,7 @@ Translation is a simple javascript object, we suggest adding the code to a javas
 in your application. Following is a Turkish DatePicker.
 
 ```xhtml
-<h:outputScript name=â€path_to_your_translations.jsâ€ />
+<h:outputScript name=â€?path_to_your_translations.jsâ€? />
 <p:datePicker value="#{dateController.date}" locale="tr" />
 ```
 
@@ -187,7 +187,7 @@ _org.primefaces.event.SelectEvent_ instance.
 
 ```xhtml
 <p:datePicker value="#{DatePickerBean.date}">
-    <p:ajax event=â€dateSelectâ€ listener=â€#{bean.handleDateSelect}â€ update=â€msgâ€ />
+    <p:ajax event=â€?dateSelectâ€? listener=â€?#{bean.handleDateSelect}â€? update=â€?msgâ€? />
 </p:datePicker>
 <p:messages id="msg" />
 ```
