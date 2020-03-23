@@ -16,13 +16,6 @@
         factory(jQuery);
     }
 }(function ($) {
-
-    function calculateWeekNumber(d) {
-        var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-        var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
-        return weekNo;
-    }
-
     $.widget("prime.datePicker", {
 
         options: {
@@ -118,19 +111,31 @@
                 $.extend(this.options.locale, this.options.userLocale);
             }
 
-            if(this.options.showWeek && !this.options.weekCalculator) {
+            if (this.options.showWeek && !this.options.weekCalculator) {
+                this.options.weekCalculator = this.calculateWeekNumber.bind(this);
+
+                // initialize the potentially missing firstDayWeekOffset option
+                // based on the firstDay(OfWeek) option:
+                //  - firstDay = saturday => firstDayWeekOffset = 12
+                //  - firstDay = sunday => firstDayWeekOffset = 6
+                //  - firstDay = monday (ISO8601) => firstDayWeekOffset = 4
+                //
+                // those defaults are based on the locales on the library
+                // moment.js and won't be correct for _all_ locales.
                 var sundayIndex = this.getSundayIndex();
-                if(sundayIndex == 0) {
-                    this.options.weekCalculator = this.calculateWeekNumber_sundayFirst;
-                }
-                else if(sundayIndex == 1) {
-                    this.options.weekCalculator = this.calculateWeekNumber_saturdayFirst;
-                }
-                else if(sundayIndex == 6) {
-                    this.options.weekCalculator = this.calculateWeekNumber_iso8601;
-                }
-                else {
-                    this.options.showWeek = false;
+                if (this.options.locale.firstDayWeekOffset === undefined) {
+                    if (sundayIndex == 0) {
+                        this.options.locale.firstDayWeekOffset = 6;
+                    }
+                    else if (sundayIndex == 1) {
+                        this.options.locale.firstDayWeekOffset = 12;
+                    }
+                    else if (sundayIndex == 6) {
+                        this.options.locale.firstDayWeekOffset = 4;
+                    }
+                    else {
+                        this.options.showWeek = false;
+                    }
                 }
             }
 
@@ -1309,10 +1314,10 @@
 
             if(this.options.showWeek) {
                 dayNamesHtml += '<th scope="col">' +
-	                '<span>' +
-	                this.options.locale.weekHeader +
-	                '</span>' +
-	                '</th>';
+                    '<span>' +
+                    this.options.locale.weekHeader +
+                    '</span>' +
+                    '</th>';
             }
 
             for (var i = 0; i < weekDaysMin.length; i++) {
@@ -1326,34 +1331,63 @@
             return dayNamesHtml;
         },
 
-        calculateWeekNumber_iso8601: function(d) {
-            d = new Date(Date.UTC(d.year, d.month, d.day));
-            d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
-            return calculateWeekNumber(d);
+        // utility methods for calculateWeekNumber. Based on the implementation from moment.js
+        // start-of-first-week - start-of-year
+        firstWeekOffset: function(year, dow, doy) {
+                // first-week day -- which january is always in the first week (4 for iso, 1 for other)
+            var fwd = 7 + dow - doy,
+                // first-week day local weekday -- which local weekday is fwd
+                fwdlw = (7 + new Date(Date.UTC(year, 0, fwd)).getUTCDay() - dow) % 7;
+
+            return -fwdlw + fwd - 1;
         },
 
-        calculateWeekNumber_sundayFirst: function (d) {
-            d = new Date(Date.UTC(d.year, d.month, d.day));
-            d.setUTCDate(d.getUTCDate() + 3 - d.getUTCDay());
-            return calculateWeekNumber(d);
+        dayOfYear: function(d) {
+            return Math.round( ( new Date( d.year, d.month, d.day ).getTime() - new Date( d.year, 0, 0 ).getTime() ) / 86400000 );
         },
 
-        calculateWeekNumber_saturdayFirst: function (d) {
-            d = new Date(Date.UTC(d.year, d.month, d.day));
-            d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7));
-            return calculateWeekNumber(d);
+        daysInYear: function(year) {
+            if((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) {
+                return 366;
+            }
+            return 365;
+        },
+
+        weeksInYear: function(year, dow, doy) {
+            var weekOffset = this.firstWeekOffset(year, dow, doy),
+                weekOffsetNext = this.firstWeekOffset(year + 1, dow, doy);
+                
+            return (this.daysInYear(year) - weekOffset + weekOffsetNext) / 7;
+        },
+
+        calculateWeekNumber: function(d) {
+            var dow = this.options.locale.firstDay !== undefined ? this.options.locale.firstDay : this.options.locale.firstDayOfWeek,
+                doy = this.options.locale.firstDayWeekOffset,
+                weekOffset = this.firstWeekOffset(d.year, dow, doy),
+                week = Math.floor((this.dayOfYear(d) - weekOffset - 1) / 7) + 1;
+
+            if(week < 1) {
+                return week + this.weeksInYear(resYear, dow, doy);
+            }
+            else if(week > this.weeksInYear(d.year, dow, doy)) {
+                return  week - this.weeksInYear(d.year, dow, doy);
+            }
+            else {
+                return  week;
+            }
         },
 
         renderWeek: function (weekDates) {
             var weekHtml = '';
 
             if(this.options.showWeek) {
-                var date = weekDates[0],
-                    cellClass = date.otherMonth && !this.options.showOtherMonths ? ' ui-datepicker-other-month-hidden' : '';
+                var firstDate = weekDates[0],
+                    lastDate = weekDates[6],
+                    cellClass = firstDate.otherMonth && lastDate.otherMonth && !this.options.showOtherMonths ? ' ui-datepicker-other-month-hidden' : '';
 
-                weekHtml += '<td class="ui-datepicker-week-col' + cellClass + '">' + 
-                    this.options.weekCalculator(date) + 
-                    '</td>';
+                weekHtml += '<td class="ui-datepicker-weeknumber' + cellClass + '"><span class="ui-state-disabled">' + 
+                    this.options.weekCalculator(firstDate) + 
+                    '</span></td>';
             }
 
             for (var i = 0; i < weekDates.length; i++) {
