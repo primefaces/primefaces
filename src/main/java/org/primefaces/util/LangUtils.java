@@ -29,16 +29,10 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import javax.faces.FacesException;
 import javax.xml.bind.DatatypeConverter;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class LangUtils {
 
@@ -221,14 +215,43 @@ public class LangUtils {
      */
     public static Class<?> getTypeFromCollectionProperty(Object base, String property) {
         try {
+            Map<Type, Type> genericTypeArgs2ActualTypeArgs = new HashMap<>();
+
+            if (base.getClass().getGenericSuperclass() != null && base.getClass().getGenericSuperclass() instanceof ParameterizedType) {
+                //TODO: recursion
+                ParameterizedType genericSuperclass = (ParameterizedType)base.getClass().getGenericSuperclass();
+                List<Type> actualTypeArgs = Arrays.asList(genericSuperclass.getActualTypeArguments());
+                List<Type> genericTypeArgs;
+
+                if (genericSuperclass.getRawType() instanceof Class) {
+                    Class<?> clazz = (Class) genericSuperclass.getRawType();
+                    genericTypeArgs = Arrays.asList(clazz.getTypeParameters());
+
+                    for (int i = 0; i < genericTypeArgs.size(); i++) {
+                        genericTypeArgs2ActualTypeArgs.put(genericTypeArgs.get(i), actualTypeArgs.get(i));
+                    }
+                }
+            }
+
             BeanInfo beanInfo = Introspector.getBeanInfo(getUnproxiedClass(base.getClass()));
             for (PropertyDescriptor pd : beanInfo.getPropertyDescriptors()) {
                 if (pd.getName().equals(property)) {
                     Method getter = pd.getReadMethod();
+                    Class<?> retType = getter.getReturnType();
+                    Type retType2 = getter.getGenericReturnType();
+
                     if (getter.getGenericReturnType() instanceof ParameterizedType) {
                         ParameterizedType pt = (ParameterizedType) getter.getGenericReturnType();
+
                         Type listType = pt.getActualTypeArguments()[0];
-                        return loadClassForName(listType.getTypeName());
+                        if (listType  instanceof TypeVariable) {
+                            TypeVariable typeVar = (TypeVariable) listType;
+                            Type typeVarResolved = genericTypeArgs2ActualTypeArgs.get(typeVar);
+                            return loadClassForName(typeVarResolved.getTypeName());
+                        }
+                        else {
+                            return loadClassForName(listType.getTypeName());
+                        }
                     }
                     break;
                 }

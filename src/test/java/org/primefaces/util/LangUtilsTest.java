@@ -26,7 +26,6 @@ package org.primefaces.util;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import org.junit.Ignore;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -47,7 +46,6 @@ public class LangUtilsTest {
     }
     
     @Test
-    @Ignore
     public void getTypeFromCollectionProperty_GenericInheritance() {
         Class type = LangUtils.getTypeFromCollectionProperty(new ConcreteGenericClass(), "ints");
 
