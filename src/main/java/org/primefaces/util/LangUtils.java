@@ -219,7 +219,7 @@ public class LangUtils {
 
             if (base.getClass().getGenericSuperclass() != null && base.getClass().getGenericSuperclass() instanceof ParameterizedType) {
                 //TODO: recursion
-                ParameterizedType genericSuperclass = (ParameterizedType)base.getClass().getGenericSuperclass();
+                ParameterizedType genericSuperclass = (ParameterizedType) base.getClass().getGenericSuperclass();
                 List<Type> actualTypeArgs = Arrays.asList(genericSuperclass.getActualTypeArguments());
                 List<Type> genericTypeArgs;
 
