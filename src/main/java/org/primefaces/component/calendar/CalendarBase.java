@@ -447,7 +447,7 @@ public abstract class CalendarBase extends UICalendar implements Widget, InputHo
 
     @Override
     public String calculateWidgetPattern(FacesContext context) {
-        return isTimeOnlySmart(context) ? calculateTimeOnlyPattern(context) : calculatePattern(context);
+        return isTimeOnlyDetect(context) ? calculateTimeOnlyPattern(context) : calculatePattern(context);
     }
 
 }

@@ -112,7 +112,7 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
         return (Boolean) getStateHelper().eval(PropertyKeys.timeOnly, false);
     }
 
-    public Boolean isTimeOnlySmart(FacesContext context) {
+    public Boolean isTimeOnlyDetect(FacesContext context) {
         Boolean timeOnly = (Boolean) getStateHelper().eval(PropertyKeys.timeOnly);
 
         if (timeOnly == null && context != null) {

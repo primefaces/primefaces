@@ -138,7 +138,7 @@ public class CalendarRenderer extends BaseCalendarRenderer {
         if (calendar.hasTime(context)) {
             String timeControlType = calendar.getTimeControlType();
 
-            wb.attr("timeOnly", calendar.isTimeOnlySmart(context))
+            wb.attr("timeOnly", calendar.isTimeOnlyDetect(context))
                     .attr("stepHour", calendar.getStepHour())
                     .attr("stepMinute", calendar.getStepMinute())
                     .attr("stepSecond", calendar.getStepSecond())

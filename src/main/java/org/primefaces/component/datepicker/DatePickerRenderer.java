@@ -154,9 +154,9 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         }
 
         if (datepicker.hasTime(context)) {
-            wb.attr("showTime", datepicker.isShowTimeSmart(context), false)
+            wb.attr("showTime", datepicker.isShowTimeDetect(context), false)
                 .attr("hourFormat", datepicker.getHourFormat(), null)
-                .attr("timeOnly", datepicker.isTimeOnlySmart(context), false)
+                .attr("timeOnly", datepicker.isTimeOnlyDetect(context), false)
                 .attr("showSeconds", datepicker.isShowSeconds(), false)
                 .attr("stepHour", datepicker.getStepHour(), 1)
                 .attr("stepMinute", datepicker.getStepMinute(), 1)
@@ -206,7 +206,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
     }
 
     private String getMinMaxDate(FacesContext context, DatePicker datepicker, Object value, boolean max) {
-        if (value instanceof LocalDate && datepicker.isShowTimeSmart(context)) {
+        if (value instanceof LocalDate && datepicker.isShowTimeDetect(context)) {
             LocalDate date = (LocalDate) value;
             value = date.atTime(max ? LocalTime.MAX : LocalTime.MIN);
         }

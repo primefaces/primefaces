@@ -80,7 +80,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         UICalendar uicalendar = (UICalendar) component;
         String markupValue = CalendarUtils.getValueAsString(context, uicalendar);
-        String widgetValue = uicalendar.isTimeOnlySmart(context) ? CalendarUtils.getTimeOnlyValueAsString(context, uicalendar) : markupValue;
+        String widgetValue = uicalendar.isTimeOnlyDetect(context) ? CalendarUtils.getTimeOnlyValueAsString(context, uicalendar) : markupValue;
 
         encodeMarkup(context, uicalendar, markupValue);
         encodeScript(context, uicalendar, widgetValue);
@@ -266,7 +266,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         params[1] = param1;
         params[2] = MessageFactory.getLabel(context, calendar);
 
-        if (calendar.isTimeOnlySmart(context)) {
+        if (calendar.isTimeOnlyDetect(context)) {
             message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.TIME", FacesMessage.SEVERITY_ERROR, params);
         }
         else if (calendar.hasTime(context)) {
@@ -290,7 +290,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
 
         // If type could not be determined via value-expression try it this way. (Very unlikely, this happens in real world.)
         if (type == null) {
-            if (calendar.isTimeOnlySmart(context)) {
+            if (calendar.isTimeOnlyDetect(context)) {
                 type = LocalTime.class;
             }
             else if (calendar.hasTime(context)) {

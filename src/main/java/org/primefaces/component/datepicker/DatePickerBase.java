@@ -217,7 +217,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         return (Boolean) getStateHelper().eval(PropertyKeys.showTime, false);
     }
 
-    public Boolean isShowTimeSmart(FacesContext context) {
+    public Boolean isShowTimeDetect(FacesContext context) {
         Boolean showTime = (Boolean) getStateHelper().eval(PropertyKeys.showTime);
 
         if (showTime == null && context != null) {
@@ -416,15 +416,15 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     @Override
     public boolean hasTime(FacesContext context) {
-        return this.isShowTimeSmart(context) || this.isTimeOnlySmart(context);
+        return this.isShowTimeDetect(context) || this.isTimeOnlyDetect(context);
     }
 
     @Override
     public String calculatePattern(FacesContext context) {
-        if (isTimeOnlySmart(context)) {
+        if (isTimeOnlyDetect(context)) {
             return calculateTimeOnlyPattern(context);
         }
-        else if (isShowTimeSmart(context)) {
+        else if (isShowTimeDetect(context)) {
             return calculateWidgetPattern(context) + " " + calculateTimeOnlyPattern(context);
         }
         return calculateWidgetPattern(context);
