@@ -34,6 +34,8 @@ import java.util.UUID;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseWriterWrapper;
+
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.LangUtils;
 
@@ -222,6 +224,12 @@ public class CspResponseWriter extends ResponseWriterWrapper {
         startElement("script", null);
         StringBuilder javascriptBuilder = new StringBuilder(cspState.getEventHandlers().size() * 25);
 
+        boolean moveScriptsToBottom = PrimeRequestContext.getCurrentInstance().getApplicationContext().getConfig().isMoveScriptsToBottom();
+
+        if (!moveScriptsToBottom) {
+            javascriptBuilder.append("$(function(){");
+        }
+
         for (Map.Entry<String, Map<String, String>> elements : cspState.getEventHandlers().entrySet()) {
             String id = elements.getKey();
 
@@ -237,6 +245,10 @@ public class CspResponseWriter extends ResponseWriterWrapper {
                 javascriptBuilder.append(javascript);
                 javascriptBuilder.append("});");
             }
+        }
+
+        if (!moveScriptsToBottom) {
+            javascriptBuilder.append("});");
         }
 
         String javascript = javascriptBuilder.toString();
