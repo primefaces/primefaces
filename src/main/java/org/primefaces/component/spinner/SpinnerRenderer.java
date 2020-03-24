@@ -24,6 +24,8 @@
 package org.primefaces.component.spinner;
 
 import java.io.IOException;
+import java.math.BigInteger;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -77,6 +79,16 @@ public class SpinnerRenderer extends InputRenderer {
     protected void encodeScript(FacesContext context, Spinner spinner) throws IOException {
         String clientId = spinner.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
+
+        Object value = spinner.getValue();
+        String defaultDecimalPlaces = null;
+        if (value instanceof Long || value instanceof Integer || value instanceof Short || value instanceof BigInteger) {
+            defaultDecimalPlaces = "0";
+        }
+        String decimalPlaces = isValueBlank(spinner.getDecimalPlaces())
+                ? defaultDecimalPlaces
+                : spinner.getDecimalPlaces();
+
         wb.init("Spinner", spinner.resolveWidgetVar(context), clientId)
                 .attr("step", spinner.getStepFactor(), 1.0)
                 .attr("min", spinner.getMin(), Double.MIN_VALUE)
@@ -85,7 +97,7 @@ public class SpinnerRenderer extends InputRenderer {
                 .attr("suffix", spinner.getSuffix(), null)
                 .attr("required", spinner.isRequired(), false)
                 .attr("rotate", spinner.isRotate(), false)
-                .attr("decimalPlaces", spinner.getDecimalPlaces(), null)
+                .attr("decimalPlaces", decimalPlaces, null)
                 .attr(SpinnerBase.PropertyKeys.thousandSeparator.name(), spinner.getThousandSeparator())
                 .attr(SpinnerBase.PropertyKeys.decimalSeparator.name(), spinner.getDecimalSeparator());
 
