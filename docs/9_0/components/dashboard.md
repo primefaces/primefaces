@@ -22,7 +22,8 @@ Dashboard provides a portal like layout with drag&drop based reorder capabilitie
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 | widgetVar | null | String | Name of the client side widget
 | model | null | DashboardModel | Dashboard model instance representing the layout of the UI.
-| disabled | false | Boolean | Disables reordering feature.
+| disabled | false | Boolean | Disables the component.
+| reordering | true | Boolean | Allow reordering of panels.
 | style | null | String | Inline style of the dashboard container
 | styleClass | null | String | Style class of the dashboard container
 
@@ -171,3 +172,11 @@ the default implementation)
 | void addWidget(String widgetId) | Adds a new widget with the given id
 | void addWidget(int index, String widgetId) | Adds a new widget at given index
 | void reorderWidget(int index, String widgetId) | Updates the index of widget in column
+
+## Client Side API
+Widget: _PrimeFaces.widget.Dashboard_
+
+| Method | Params | Return Type | Description | 
+| --- | --- | --- | --- | 
+| disable() | - | void | Disables dashboard
+| enable() | - | void | Enables dashboard

@@ -6355,9 +6355,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Disables reordering.]]>
+                <![CDATA[Disables the component.]]>
             </description>
             <name>disabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Allow reordering of panels. Default is true.]]>
+            </description>
+            <name>reordering</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
