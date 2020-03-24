@@ -74,8 +74,8 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
         return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
-    public void setReordering(boolean disabled) {
-        getStateHelper().put(PropertyKeys.reordering, disabled);
+    public void setReordering(boolean reordering) {
+        getStateHelper().put(PropertyKeys.reordering, reordering);
     }
 
     public boolean isReordering() {
