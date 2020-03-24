@@ -52,6 +52,13 @@ public class LangUtilsTest {
         assertEquals(String.class, type);
     }
 
+    @Test
+    public void getTypeFromCollectionProperty_GenericInheritance_Multilevel() {
+        Class type = LangUtils.getTypeFromCollectionProperty(new DetailedConcreteGenericClass(), "ints");
+
+        assertEquals(String.class, type);
+    }
+
     class SimpleClass {
         private List<String> strings;
 
@@ -93,6 +100,10 @@ public class LangUtilsTest {
     }
     
     class ConcreteGenericClass extends AbstractGenericClass<String> {
+
+    }
+
+    class DetailedConcreteGenericClass extends ConcreteGenericClass {
 
     }
 }

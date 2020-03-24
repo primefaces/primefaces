@@ -209,6 +209,10 @@ public class LangUtils {
     /**
      * Determines the type of the generic collection via the getter.
      *
+     * ATTENTION: This method is not designed to cover all possible (edge-)cases. For all full implementation look into something like
+     * <a href="https://github.com/spring-projects/spring-framework/blob/master/spring-core/src/main/java/org/springframework/core/GenericTypeResolver.java.">
+     * https://github.com/spring-projects/spring-framework/blob/master/spring-core/src/main/java/org/springframework/core/GenericTypeResolver.java</a>
+     *
      * @param base Object which contains the collection-property as getter.
      * @param property Name of the collection-property.
      * @return Type of the objects within the collection-property. (eg List&lt;String&gt; -> String)
@@ -217,28 +221,41 @@ public class LangUtils {
         try {
             Map<Type, Type> genericTypeArgs2ActualTypeArgs = new HashMap<>();
 
-            if (base.getClass().getGenericSuperclass() != null && base.getClass().getGenericSuperclass() instanceof ParameterizedType) {
-                //TODO: recursion
-                ParameterizedType genericSuperclass = (ParameterizedType) base.getClass().getGenericSuperclass();
-                List<Type> actualTypeArgs = Arrays.asList(genericSuperclass.getActualTypeArguments());
-                List<Type> genericTypeArgs;
+            Class baseClass = getUnproxiedClass(base.getClass());
+            Class superClass = baseClass.getSuperclass();
+            Type genericSuperclass = baseClass.getGenericSuperclass();
 
-                if (genericSuperclass.getRawType() instanceof Class) {
-                    Class<?> clazz = (Class) genericSuperclass.getRawType();
-                    genericTypeArgs = Arrays.asList(clazz.getTypeParameters());
+            /*
+            Attention: The code for resolving generic superclasses may have some limitations. Or it may assume some
+            simplifications that are note applicable.
+            For all full implementation look into something like
+            https://github.com/spring-projects/spring-framework/blob/master/spring-core/src/main/java/org/springframework/core/GenericTypeResolver.java
+             */
+            while (superClass != null && genericSuperclass != null) {
+                if (genericSuperclass instanceof ParameterizedType) {
+                    ParameterizedType parameterizedType = (ParameterizedType) genericSuperclass;
+                    List<Type> actualTypeArgs = Arrays.asList(parameterizedType.getActualTypeArguments());
+                    List<Type> genericTypeArgs;
 
-                    for (int i = 0; i < genericTypeArgs.size(); i++) {
-                        genericTypeArgs2ActualTypeArgs.put(genericTypeArgs.get(i), actualTypeArgs.get(i));
+                    if (parameterizedType.getRawType() instanceof Class) {
+                        Class<?> rawSuperClass = (Class) parameterizedType.getRawType();
+                        genericTypeArgs = Arrays.asList(rawSuperClass.getTypeParameters());
+
+                        for (int i = 0; i < genericTypeArgs.size(); i++) {
+                            genericTypeArgs2ActualTypeArgs.put(genericTypeArgs.get(i), actualTypeArgs.get(i));
+                        }
                     }
                 }
+
+                genericSuperclass = superClass.getGenericSuperclass();
+                superClass = superClass.getSuperclass();
             }
 
-            BeanInfo beanInfo = Introspector.getBeanInfo(getUnproxiedClass(base.getClass()));
+            //  After resolving eventual generic superclasses look for the getter.
+            BeanInfo beanInfo = Introspector.getBeanInfo(baseClass);
             for (PropertyDescriptor pd : beanInfo.getPropertyDescriptors()) {
                 if (pd.getName().equals(property)) {
                     Method getter = pd.getReadMethod();
-                    Class<?> retType = getter.getReturnType();
-                    Type retType2 = getter.getGenericReturnType();
 
                     if (getter.getGenericReturnType() instanceof ParameterizedType) {
                         ParameterizedType pt = (ParameterizedType) getter.getGenericReturnType();
