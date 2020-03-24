@@ -57,6 +57,9 @@ public class DashboardRenderer extends CoreRenderer {
         writer.startElement("div", dashboard);
         writer.writeAttribute("id", clientId, "id");
         String styleClass = dashboard.getStyleClass() != null ? Dashboard.CONTAINER_CLASS + " " + dashboard.getStyleClass() : Dashboard.CONTAINER_CLASS;
+        if (dashboard.isDisabled()) {
+            styleClass = styleClass + " ui-state-disabled";
+        }
         writer.writeAttribute("class", styleClass, "styleClass");
         if (dashboard.getStyle() != null) {
             writer.writeAttribute("style", dashboard.getStyle(), "style");
@@ -94,7 +97,7 @@ public class DashboardRenderer extends CoreRenderer {
         String clientId = dashboard.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Dashboard", dashboard.resolveWidgetVar(context), clientId)
-                .attr("disabled", dashboard.isDisabled(), false);
+                .attr("disabled", !dashboard.isReordering(), false);
 
         encodeClientBehaviors(context, dashboard);
 
