@@ -1163,14 +1163,17 @@
 
         renderMonthViewMonth: function (index) {
             var monthName = this.options.locale.monthNamesShort[index],
-                content = this.options.dateTemplate ? this.options.dateTemplate.call(this, monthName) : this.escapeHTML(monthName)
+                content = this.options.dateTemplate ? this.options.dateTemplate.call(this, monthName) : this.escapeHTML(monthName),
+                compareDate = new Date(this.viewDate.getFullYear(), index, 1),
+                minDate = this.options.minDate,
+                maxDate = this.options.maxDate,
                 disabled = false;
 
-            if (this.options.minDate && this.options.minDate.getMonth() > index) {
+            if (minDate && minDate > compareDate) {
                 disabled = true;
             }
 
-            if (this.options.maxDate && this.options.maxDate.getMonth() < index) {
+            if (maxDate && maxDate < compareDate) {
                 disabled = true;
             }
 
