@@ -749,6 +749,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     },
 
     invokeItemSelectBehavior: function(event, itemValue) {
+        if (this.clearingTimeout) {
+            this.deleteClearTimeout();
+        }
+ 
         if(this.hasBehavior('itemSelect')) {
             var ext = {
                 params : [
@@ -963,8 +967,17 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.timeout = null;
     },
 
+    deleteClearTimeout: function() {
+        clearTimeout(this.clearingTimeout);
+        this.clearingTimeout = null;
+    },
+
     fireClearEvent: function() {
-        this.callBehavior('clear');
+        var $this = this;
+        $this.clearingTimeout = setTimeout(function() {
+            $this.clearingTimeout = null;
+            $this.callBehavior('clear');
+        }, 100);
     },
 
     isValid: function(value) {
