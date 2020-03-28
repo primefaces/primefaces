@@ -1,8 +1,24 @@
 /**
- * PrimeFaes Stack Widget
+ * __PrimeFaces Stack Widget__
+ * 
+ * Stack is a navigation component that mimics the stacks feature in Mac OS X.
+ * 
+ * @interface {PrimeFaces.widget.StackCfg} cfg The configuration for the {@link  Stack| Stack widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {number} cfg.closeSpeed Duration in milliseconds it takes the stack to close.
+ * @prop {boolean} cfg.expanded Whether the stack is currently closed or opened.
+ * @prop {number} cfg.openSpeed Duration in milliseconds it takes the stack to open.
  */
 PrimeFaces.widget.Stack = PrimeFaces.widget.BaseWidget.extend({
-    
+
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
         this.cfg.expanded = this.cfg.expanded||false;
@@ -28,6 +44,11 @@ PrimeFaces.widget.Stack = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
+    /**
+     * Expands the given menu item of this stack.
+     * @param {JQuery} item A menu item to expand, usually the root IMG element that is an immediate child of
+     * `.ui-stack`.
+     */
     open: function(item) {
         var vertical = 0,
         horizontal = 0,
@@ -46,6 +67,11 @@ PrimeFaces.widget.Stack = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.expanded = true;
     },
             
+    /**
+     * Collapses the given menu item of this stack.
+     * @param {JQuery} item A menu item to collapse, usually the root IMG element that is an immediate child of
+     * `.ui-stack`.
+     */
     collapse: function(item) {
         item.next().removeClass('openStack').children('li').animate({top: '55px', left: '-10px'}, this.cfg.closeSpeed);
         item.next().find('li a>img').animate({width: '79px', marginLeft: '0'}, this.cfg.closeSpeed);

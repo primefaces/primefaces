@@ -1,14 +1,68 @@
 /**
- * PrimeFaces Google Maps Widget
+ * __PrimeFaces Google Maps Widget__
+ * 
+ * GMap is a map component integrated with Google Maps API V3.
+ * 
+ * @typedef {(google.maps.Marker | google.maps.Circle | google.maps.Polyline | google.maps.Polygon | google.maps.Rectangle) & PrimeFaces.widget.GMap.IdProviding} PrimeFaces.widget.GMap.Overlay
+ * An overlay shape that extends the shapes and markers as defined by the maps API. Adds an ID property for identifying
+ * the shape or marker.
+ * 
+ * @typedef PrimeFaces.widget.GMap.OnPointClickCallback Javascript callback to execute when a point on map is clicked.
+ * See also {@link GMapCfg.onPointClick}.
+ * @param {google.maps.MouseEvent | google.maps.IconMouseEvent} PrimeFaces.widget.GMap.OnPointClickCallback.event The
+ * mouse or click event that occurred.
+ * 
+ * @interface {PrimeFaces.widget.GMap.IdProviding} IdProviding Interface for objects that provide an ID that uniquely
+ * identifies the object.
+ * @prop {string} IdProviding.id The ID that uniquely identifies this object.
+ * 
+ * @prop {google.maps.Map} map The current google maps instance.
+ * @prop {PrimeFaces.widget.GMap.Overlay} selectedOverlay The currently selected and active overlay shape.
+ * @prop {google.maps.LatLngBounds} viewport The spherical portion of the earth's surface that is currently shown in the map
+ * viewport.
+ * 
+ * @interface {PrimeFaces.widget.GMapCfg} cfg The configuration for the {@link  GMap| GMap widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
+ * @extends {google.maps.MapOptions} cfg
+ * 
+ * @prop {(google.maps.Circle & PrimeFaces.widget.GMap.IdProviding)[]} cfg.circles List of overlay circular shapes added
+ * to this map.
+ * @prop {boolean} cfg.fitBounds Defines if center and zoom should be calculated automatically to contain all markers on
+ * the map.
+ * @prop {google.maps.InfoWindow} cfg.infoWindow The current info window instance, if any info window was created yet.
+ * @prop {string} cfg.infoWindowContent HTML string with the contents of the info window, as fetched from the server.
+ * @prop {string} cfg.formId Client ID of the form to use for AJAX requests. Usually the enclosing form.
+ * @prop {(google.maps.Marker & PrimeFaces.widget.GMap.IdProviding)[]} cfg.markers A list of markers to display on the
+ * map.
+ * @prop {PrimeFaces.widget.GMap.OnPointClickCallback} cfg.onPointClick Javascript callback to execute when a point on
+ * map is clicked.
+ * @prop {(google.maps.Polygon & PrimeFaces.widget.GMap.IdProviding)[]} cfg.polygons List of overlay polygonal shapes
+ * added to this map.
+ * @prop {(google.maps.Polyline & PrimeFaces.widget.GMap.IdProviding)[]} cfg.polylines List of overlay polyline shapes
+ * added to this map.
+ * @prop {(google.maps.Rectangle & PrimeFaces.widget.GMap.IdProviding)[]} cfg.rectangles List of overlay rectangular
+ * shapes added to this map.
  */
 PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
         this.renderDeferred();
     },
 
+    /**
+     * @override
+     * @protected
+     * @inheritdoc
+     */
     _render: function() {
         this.map = new google.maps.Map(document.getElementById(this.id), this.cfg);
         this.cfg.fitBounds = !(this.cfg.fitBounds === false);
@@ -55,18 +109,38 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Returns the current google maps instance.
+     * @return {google.maps.Map} The current map instance.
+     */
     getMap: function() {
         return this.map;
     },
 
+    /**
+     * The info window that can be displayed to provide detailed information when a marker is selected.
+     * @return {google.maps.InfoWindow | undefined} The current info window instance, if any exists.
+     */
     getInfoWindow: function() {
         return this.cfg.infoWindow;
     },
 
+    /**
+     * Writes the given HTML content into the info window.
+     * @private
+     * @param {string} content HTML content for the info window. 
+     */
     loadWindow: function(content){
         this.jq.find(PrimeFaces.escapeClientId(this.getInfoWindow().id + '_content')).html(content||'');
     },
 
+    /**
+     * Loads the contents of the info window from the server and open the info window.
+     * @private
+     * @param {XMLDocument} responseXML The XML that was returned by the AJAX request made to fetch the contents of the
+     * info window. 
+     * @return {boolean} `true` if the info window load was initiated successfully, or `false` otherwise.
+     */
     openWindow: function(responseXML) {
         var infoWindow = this.getInfoWindow();
         var $this = this;
@@ -84,6 +158,10 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
         return true;
     },
 
+    /**
+     * Adds and sets up all configured markers for the gmap.
+     * @private
+     */
     configureMarkers: function() {
         var _self = this;
 
@@ -107,6 +185,12 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Calls the behavior for when a marker was dragged.
+     * @private
+     * @param {google.maps.MouseEvent | google.maps.IconMouseEvent} event Event that occurred.
+     * @param {google.maps.MarkerOptions} marker The marker that was dragged.
+     */
     fireMarkerDragEvent: function(event, marker) {
         if(this.hasBehavior('markerDrag')) {
             var ext = {
@@ -121,6 +205,12 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Finds the geocode for the given address and calls the server-side `geocode` behavior, if such a behavior exists.
+     * Use `<p:ajax event="geocode" listener="#{geocodeView.onGeocode}" update="@this" />` on the component to define a
+     * behavior.
+     * @param {string} address Address for which to find a geocode.
+     */
     geocode: function(address) {
         var $this = this;
 
@@ -161,6 +251,13 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Attempts to find an address for the given lattitude and longitude, and calls the `reverseGeocode` behavior with
+     * the result. Use `<p:ajax event="reverseGeocode" listener="#{geocodeView.onReverseGeocode}" update="@this" />` on
+     * the component to define a behavior.
+     * @param {number} lat Latitude to look up, specified in degrees within the range `[-90, 90]`.
+     * @param {number} lng Longitude to look up, specified in degrees within the range `[-180, 180]`.
+     */
     reverseGeocode: function(lat, lng) {
         var $this = this;
 
@@ -201,22 +298,44 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Adds the overlay for a polyline shape.
+     * @private
+     */
     configurePolylines: function() {
         this.addOverlays(this.cfg.polylines);
     },
 
+    /**
+     * Adds the overlay for a circle shape.
+     * @private
+     */
     configureCircles: function() {
         this.addOverlays(this.cfg.circles);
     },
 
+    /**
+     * Adds the overlay for a rectangular shape.
+     * @private
+     */
     configureRectangles: function() {
         this.addOverlays(this.cfg.rectangles);
     },
 
+    /**
+     * Adds the overlay for a polygonal shape.
+     * @private
+     */
     configurePolygons: function() {
         this.addOverlays(this.cfg.polygons);
     },
 
+    /**
+     * Triggers the behavior for when an overlay shape was selected.
+     * @private
+     * @param {google.maps.MouseEvent | google.maps.IconMouseEvent} event The event that occurred.
+     * @param {PrimeFaces.widget.GMap.Overlay} overlay The shape that was selected.
+     */
     fireOverlaySelectEvent: function(event, overlay) {
         this.selectedOverlay = overlay;
 
@@ -231,6 +350,10 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Adds some event listeners for click events and sets up some behaviors.
+     * @private
+     */
     configureEventListeners: function() {
         var _self = this;
 
@@ -248,6 +371,10 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
         this.configurePointSelectListener();
     },
 
+    /**
+     * Sets up the event listeners for when the state of this map has changed.
+     * @private
+     */
     configureStateChangeListener: function() {
         var _self = this,
         onStateChange = function(event) {
@@ -258,6 +385,11 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
         google.maps.event.addListener(this.map, 'dragend', onStateChange);
     },
 
+    /**
+     * Triggers the behavior for when the state of this map has changed.
+     * @private
+     * @param {never} event The event that triggered the state change.
+     */
     fireStateChangeEvent: function(event) {
         if(this.hasBehavior('stateChange')) {
             var bounds = this.map.getBounds();
@@ -275,6 +407,10 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Sets up the event listeners for when a point on the map was selected.
+     * @private
+     */
     configurePointSelectListener: function() {
         var _self = this;
 
@@ -283,6 +419,11 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
         });
     },
 
+    /**
+     * Triggers the behavior for when a point on the map was selected.
+     * @private
+     * @param {google.maps.MouseEvent | google.maps.IconMouseEvent} event The event that triggered the point selection.
+     */
     firePointSelectEvent: function(event) {
         if(this.hasBehavior('pointSelect')) {
             var ext = {
@@ -295,10 +436,19 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Adds an overlay shape (circle, polyline, or polygon) to this map.
+     * @private
+     * @param {PrimeFaces.widget.GMap.Overlay} overlay Overlay shape to add to this map.
+     */
     addOverlay: function(overlay) {
         overlay.setMap(this.map);
     },
 
+    /**
+     * Adds all overlay shapes (circle, polyline, or polygon) to this map.
+     * @param {PrimeFaces.widget.GMap.Overlay[]} overlays A list of overlay shapes to add to this map.
+     */
     addOverlays: function(overlays) {
         var _self = this;
 
@@ -314,6 +464,11 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
         })
     },
 
+    /**
+     * Adjusts (zooms out) the viewport of this map so that it fully shows the given shape.
+     * @private
+     * @param {PrimeFaces.widget.GMap.Overlay} overlay A shape for which to adjust the viewport.
+     */
     extendView: function(overlay){
         if( this.cfg.fitBounds && overlay){
             var _self = this;
@@ -331,6 +486,10 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Triggers a resize event and reapplies the current zoom level, redrawing the map. Useful when the browser viewport
+     * was resized etc.
+     */
     checkResize: function() {
         google.maps.event.trigger(this.map, 'resize');
         this.map.setZoom(this.map.getZoom());

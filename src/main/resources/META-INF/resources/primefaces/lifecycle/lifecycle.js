@@ -1,5 +1,26 @@
+/**
+ * __PrimeFaces Lifecycle Widget__
+ * 
+ * Lifecycle is a utility component which displays the execution time of each JSF phase. It also synchronizes
+ * automatically after each AJAX request.
+ * 
+ * @prop {boolean} initialized Whether this widget was initialized.
+ * @prop {boolean} updating Whether the lifecycle display is currently being updated.
+ * 
+ * @interface {PrimeFaces.widget.LifecycleCfg} cfg The configuration for the {@link  Lifecycle| Lifecycle widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {string} cfg.formId ID of the form to use for AJAX requests.
+ */
 PrimeFaces.widget.Lifecycle = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     */
     init : function(cfg) {
         this._super(cfg);
 
@@ -36,6 +57,10 @@ PrimeFaces.widget.Lifecycle = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Updates this lifecycle widget after an AJAX request.
+     * @private
+     */
     update: function() {
         this.updating = true;
 

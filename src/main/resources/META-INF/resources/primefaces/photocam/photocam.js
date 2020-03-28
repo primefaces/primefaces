@@ -1052,11 +1052,39 @@ else {
 }(window));
 
 /**
- * PrimeFaces PhotoCam Widget
+ * __PrimeFaces PhotoCam Widget__
+ * 
+ * PhotoCam is used to take photos with webcam and send them to the JSF backend model.
+ * 
+ * @interface {PrimeFaces.widget.PhotoCamCfg} cfg The configuration for the {@link  PhotoCam| PhotoCam widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {boolean} cfg.autoStart Whether access to the camera should be requested automatically upon page load.
+ * @prop {string} cfg.camera URL to the `swf` flash fallback.
+ * @prop {boolean} cfg.forceFlash Enables always using flash fallback even in an HTML5 environment.
+ * @prop {Webcam.ImageFormat} cfg.format Format of the image file.
+ * @prop {number} cfg.height Height of the camera viewport in pixels.
+ * @prop {number} cfg.jpegQuality Quality of the image between `0` and `100` when the format is `jpeg`, default value is `90`.
+ * @prop {number} cfg.photoHeight Height of the captured photo in pixels, defaults to height.
+ * @prop {number} cfg.photoWidth Width of the captured photo in pixels, defaults to width.
+ * @prop {string} cfg.process Identifiers of components to process during capture.
+ * @prop {string} cfg.update Identifiers of components to update during capture.
+ * @prop {number} cfg.width Width of the camera viewport in pixels.
  */
 PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
+    /**
+     * Whether the camera is currently attached and can take photos.
+     * @type {boolean} 
+     */
     attached: false,
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
         this.cfg.width = this.cfg.width||320;
@@ -1075,13 +1103,19 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
-    //@Override
+    /**
+     * @override
+     * @inheritdoc
+     */
     destroy: function() {
         this._super();
 
         this.dettach();
     },
 
+    /**
+     * Attaches the web camera, requesting access to the camera of the user.
+     */
     attach: function() {
         if (!this.attached) {
             Webcam.reset();
@@ -1111,6 +1145,10 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
             this.attached = true;
         }
     },
+
+    /**
+     * Detaches the web camera so that no more photos can be taken.
+     */
     dettach: function() {
         if (this.attached) {
             Webcam.reset();
@@ -1118,6 +1156,10 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Takes a photo with the web cam. Logs an error if no photo can be takes, such as when the user does not have
+     * a camera or did not allow access to the camera.
+     */
     capture: function() {
         if (this.attached) {
             Webcam.snap();

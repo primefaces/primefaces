@@ -1,8 +1,31 @@
 /**
- * PrimeFaces Dashboard Widget
+ * __PrimeFaces Dashboard Widget__
+ * 
+ * Dashboard provides a portal like layout with drag & drop based reorder capabilities.
+ * 
+ * Currently this uses the JQueryUI sortable widget. You can use `$.fn.sortable` to interact with the dashboard
+ * programatically.
+ * 
+ * ```javascript
+ * const widget = PF("MyDashboardWidget");
+ * 
+ * // When dragged outside the dashboard: Have the items revert to their new positions using a smooth animation
+ * widget.jq.find(".ui-dashboard-column").sortable("option", "revert", true);
+ * ```
+ * 
+ * @interface {PrimeFaces.widget.DashboardCfg} cfg The configuration for the {@link  Dashboard| Dashboard widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * @extends {JQueryUI.SortableOptions} cfg
  */
 PrimeFaces.widget.Dashboard = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 

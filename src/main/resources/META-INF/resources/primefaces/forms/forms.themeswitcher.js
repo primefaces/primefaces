@@ -1,8 +1,20 @@
-/*
- * PrimeFaces ThemeSwitcher Widget
+/**
+ * __PrimeFaces ThemeSwitcher Widget__
+ * 
+ * ThemeSwitcher enables switching PrimeFaces themes on the fly with no page refresh.
+ * 
+ * @interface {PrimeFaces.widget.ThemeSwitcherCfg} cfg The configuration for the {@link  ThemeSwitcher| ThemeSwitcher widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.SelectOneMenuCfg} cfg
  */
 PrimeFaces.widget.ThemeSwitcher = PrimeFaces.widget.SelectOneMenu.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 

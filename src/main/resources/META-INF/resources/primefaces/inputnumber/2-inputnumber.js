@@ -1,9 +1,30 @@
+/**
+ * __PrimeFaces InputNumber Widget__
+ * 
+ * InputNumber formats input fields with numeric strings. It supports currency symbols, minimum and maximum value,
+ * negative numbers, and a lot of round methods.
+ * 
+ * @prop {boolean} disabled Whether this widget is currently disabled, i.e. whether the user can enter a number.
+ * @prop {JQuery} hiddenInput The DOM element for the hidden input field with the current value of this widget.
+ * @prop {JQuery} input The DOM element for the visibled input field with autoNumeric.
+ * @prop {Partial<JQueryAutoNumeric.InitOptions>} plugOptArray The initial options for autoNumeric.
+ * @prop {string} valueToRender The initial, numerical value that is displayed, such as `0.0` or `5.3`.
+ * 
+ * @interface {PrimeFaces.widget.InputNumberCfg} cfg The configuration for the {@link  InputNumber| InputNumber widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {boolean} cfg.disabled Whether this widget is initially disabled.
+ * @prop {Partial<JQueryAutoNumeric.InitOptions>} cfg.pluginOptions The initial options for autoNumeric.
+ * @prop {string} cfg.valueToRender The initial, numerical value that is displayed, such as `0.0` or `5.3`.
+ */
 PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
 
     /**
-     * Initializes the widget.
-     *
-     * @param {object} cfg The widget configuration.
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
      */
     init: function (cfg) {
         this._super(cfg);
@@ -38,8 +59,9 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Wraps the events on the external (visible) input to copy the value to the hidden input,
-     * before calling the callback.
+     * Wraps the events on the external (visible) input to copy the value to the hidden input, before calling the
+     * callback.
+     * @private
      */
     wrapEvents: function() {
         var $this = this;
@@ -88,6 +110,11 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Wraps the events on the external (visible) input to copy the value to the hidden input.
+     * @return {number} The original value of the hidden input.
+     * @private
+     */
     copyValueToHiddenInput: function() {
         var oldVal = this.hiddenInput.val();
 
@@ -100,10 +127,18 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         return oldVal;
     },
 
+    /**
+     * Writes the given value to the hidden input field that stores the actual value of this widget.
+     * @private
+     * @param {string} value A value to set on the hidden input.
+     */
     setValueToHiddenInput: function(value) {
         this.hiddenInput.val(value);
     },
 
+    /**
+     * Enables this input field, so that the user can enter data.
+     */
     enable: function () {
         this.input.removeAttr("disabled");
         this.input.removeClass("ui-state-disabled");
@@ -111,6 +146,9 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         this.disabled = false;
     },
 
+    /**
+     * Enables this input field, so that the user cannot enter data.
+     */
     disable: function () {
         this.input.attr("disabled", "disabled");
         this.input.addClass("ui-state-disabled");
@@ -118,12 +156,20 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         this.disabled = true;
     },
 
+    /**
+     * Sets the value of this input number widget to the given value. Makes sure that the number is formatted correctly.
+     * @param {number} value The new numeric value to set. It will be formatted appropriately.
+     */
     setValue: function (value) {
         this.input.autoNumeric('set', value);
         var cleanVal = this.input.autoNumeric('get');
         this.hiddenInput.attr('value', cleanVal);
     },
 
+    /**
+     * Finds the current value, which is the raw numerical value without any formatting applied.
+     * @return {number} The current numerical value of this input number widget.
+     */
     getValue: function () {
         return this.input.autoNumeric('get');
     }

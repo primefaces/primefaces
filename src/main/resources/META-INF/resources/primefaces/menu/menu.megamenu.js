@@ -1,5 +1,33 @@
+/**
+ * __PrimeFaces MegaMenu Widget__
+ * 
+ * MegaMenu is a horizontal navigation component that displays submenus together.
+ * 
+ * @prop {boolean} active Whether the current menu is active and displayed.
+ * @prop {JQuery} activeitem The currently active (highlighted) menu item.
+ * @prop {JQuery} keyboardTarget The DOM element for the input element accessible via keyboard keys.
+ * @prop {JQuery} rootLinks The DOM elements for the root level menu links with the class `.ui-menuitem-link`. 
+ * @prop {JQuery} rootList The DOM elements for the root level menu items with the class `.ui-menu-list`.
+ * @prop {JQuery} subLinks The DOM elements for all menu links not a the root leve, with the class `.ui-menuitem-link`.
+ * 
+ * @interface {PrimeFaces.widget.MegaMenuCfg} cfg The configuration for the {@link  MegaMenu| MegaMenu widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {number} cfg.activeIndex Index of the menu item initially active.
+ * @prop {boolean} cfg.autoDisplay Defines whether submenus will be displayed on mouseover or not. When set to false,
+ * click event is required to display.
+ * @prop {boolean} cfg.vertical `true` if the mega menu is displayed with a vertical layout, `false` if displayed with a
+ * horizontal layout.
+ */
 PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
@@ -17,6 +45,11 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
         this.bindKeyEvents();
     },
 
+
+    /**
+     * Sets up all event listeners that are required by this widget.
+     * @private
+     */
     bindEvents: function() {
         var $this = this;
 
@@ -110,6 +143,10 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Sets up all keyboard-related event listeners.
+     * @private
+     */
     bindKeyEvents: function() {
         var $this = this;
 
@@ -246,6 +283,11 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Finds the menu items that preceeded the given item.
+     * @param {JQuery} menuitem One of the menu items of this mega menu, with the class `.ui-menuitem`.
+     * @return {JQuery} The menu item before the given item. Empty JQuery instance if the given item is the first.
+     */
     findPrevItem: function(menuitem) {
         var previtem = menuitem.prev('.ui-menuitem');
 
@@ -263,6 +305,11 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
         return previtem;
     },
 
+    /**
+     * Finds the menu items that succeeds the given item.
+     * @param {JQuery} menuitem One of the menu items of this mega menu, with the class `.ui-menuitem`.
+     * @return {JQuery} The menu item after the given item. Empty JQuery instance if the given item is the last.
+     */
     findNextItem: function(menuitem) {
         var nextitem = menuitem.next('.ui-menuitem');
 
@@ -279,15 +326,28 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
         return nextitem;
     },
 
+    /**
+     * Finds the the menu group of the given submenu, i.e. the children of the given item.
+     * @param {JQuery} submenu A submenu with children.
+     * @return {JQuery} The first sub menu list, an item with the class `.ui-menu-list`.
+     */
     getFirstMenuList: function(submenu) {
         return submenu.find('.ui-menu-list:not(.ui-state-disabled):first');
     },
 
+    /**
+     * Checks whether the given menu item is the root menu item element.
+     * @param {JQuery} menuitem One of the menu items of this mega menu.
+     * @return {boolean} `true` if the given menu item is the root, or `false` otherwise.
+     */
     isRootLink: function(menuitem) {
         var submenu = menuitem.closest('ul');
         return submenu.parent().hasClass('ui-menu');
     },
 
+    /**
+     * Resets the entire mega menu, i.e. closes all opened sub menus.
+     */
     reset: function() {
         var $this = this;
         this.active = false;
@@ -297,6 +357,11 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Deactivates the menu item, i.e. closes the sub menu.
+     * @param {JQuery} menuitem A menu item to close.
+     * @param {boolean} [animate] If `true`, closes the sub menu with an animation, or `false` otherwise. 
+     */
     deactivate: function(menuitem, animate) {
         var link = menuitem.children('a.ui-menuitem-link'),
         submenu = link.next();
@@ -313,6 +378,10 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Highlight the given menu entry, as if the user were to hover it.
+     * @param {JQuery} menuitem A menu entry to highlight.
+     */
     highlight: function(menuitem) {
         var link = menuitem.children('a.ui-menuitem-link');
 
@@ -321,6 +390,10 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
         this.activeitem = menuitem;
     },
 
+    /**
+     * Activates the menu item, i.e. opens the sub menu.
+     * @param {JQuery} menuitem A menu item to open.
+     */
     activate: function(menuitem) {
         var submenu = menuitem.children('.ui-menu-child'),
         $this = this;
@@ -332,6 +405,12 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Opens and shows the sub menu of the given menu item.
+     * @param {JQuery} menuitem A menu item with a submenu. 
+     * @param {JQuery} submenu One of the submenus of the given menu item to show. 
+     * @private
+     */
     showSubmenu: function(menuitem, submenu) {
         var pos = null;
 

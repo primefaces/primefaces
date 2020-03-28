@@ -334,6 +334,15 @@ if (window.PrimeFaces) {
         }
     };
 
+    /**
+     * Used when bean validation is enabled. Creates a faces message with the given key and for the given element. The
+     * element is used to find the label that is added to the message.
+     * @function
+     * @param {JQuery} element Element for which to create the message.
+     * @param {string} [defaultKey] Key of the message.
+     * @param {string} [msg] Default message to show. May be used to find the key of the message.
+     * @return {PrimeFaces.FacesMessageBase}
+     */
     PrimeFaces.util.ValidationContext.getMessageBV = function(element, defaultKey, msg) {
         if (msg && msg.charAt(0) !== '{') {
             return { summary : msg, detail : msg };
@@ -370,6 +379,19 @@ if (window.PrimeFaces) {
         }
     };
 
+    /**
+     * Given a message with placeholders, replaces the placeholders with the given parameters. The format of the
+     * message is similar to, but not quite the same as, the format used by `java.text.MessageFormat`.
+     * ```javascript
+     * formatBV("Value required for element {0}", ["", "", "", "email"]) // => "Value required for element email"
+     * formatBV("Use {0} braces like this: '{0}'", ["", "", "", "simple"]) // => "Use simple braces like this: 'simple'"
+     * ```
+     * @function
+     * @param {string} str A message with placeholders.
+     * @param {string[]} params A list of parameters for the placeholders. The first three items are ignored. The item
+     * at index `i` corresponds to the placeholder `{i-3}`.
+     * @return {string} The string, with the placeholders replaced by the given params.
+     */
     PrimeFaces.util.ValidationContext.formatBV = function(str, params) {
         var s = str;
         for(var i = 3; i < params.length; i++) {       

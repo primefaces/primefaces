@@ -60,6 +60,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <current.documentation.directory>7_1</current.documentation.directory>
     </properties>
 
     <dependencies>
@@ -254,6 +255,18 @@
         </testResources>
 
         <plugins>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>src/main/type-definitions/node_modules</directory>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
@@ -678,6 +691,15 @@
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/dock/dock.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/dock/0-interfaceelements.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/dock/1-dock.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/keyboard/keyboard.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/keyboard/0-jquery.keypad.js</include>
@@ -718,6 +740,15 @@
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/chartjs/0-chartjs.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/chartjs/1-widgets.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/signature/signature.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/signature/0-signature.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/signature/1-widget.js</include>
                             </includes>
                         </aggregation>
                         <aggregation>
@@ -860,6 +891,68 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.8.0</version>
+                <configuration>
+                    <installDirectory>${project.build.directory}</installDirectory>
+                    <nodeVersion>v12.7.0</nodeVersion>
+                    <npmVersion>6.10.0</npmVersion>
+                    <workingDirectory>${basedir}/src/main/type-definitions</workingDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>install node and npm</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                    </execution>
+                    <execution>
+                        <id>npm install</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                        <configuration>
+                            <arguments>install</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>validate tool</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <phase>test</phase>
+                        <configuration>
+                            <arguments>run validate</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>test tool</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <phase>test</phase>
+                        <configuration>
+                            <arguments>run test</arguments>
+                        </configuration>
+                    </execution>
+                    <!-- Check if JS doc comments are valid, but don't generate documentation. -->
+                    <!-- Documentation is generated only for the release profile -->
+                    <execution>
+                        <id>generate type declaration</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <phase>prepare-package</phase>
+                        <configuration>
+                            <arguments>run generate-d-ts -- --outputDir target/type-declaration/${current.documentation.directory} --skiptypedocgenerate</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -945,6 +1038,24 @@
                                 <include>**/*.css</include>
                             </includes>
                         </configuration>
+                    </plugin>
+
+                    <!-- Write typedocs and type declarations file to the current documentation directory -->
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>generate type declaration</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <phase>prepare-package</phase>
+                                <configuration>
+                                    <arguments>run generate-d-ts -- --outputDir docs/${current.documentation.directory} --includemodules jquery,jqueryui,jquery.fileupload,googlemaps,chart.js,moment,@fullcalendar,quill,vis-timeline,vis-data</arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>

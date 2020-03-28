@@ -1,8 +1,24 @@
 /**
- * PrimeFaces SelecyManyButton Widget
+ * __PrimeFaces SelecyManyButton Widget__
+ * 
+ * SelectManyButton is a multi select component using button UI.
+ * 
+ * @prop {JQuery} buttons The DOM elements for the selectable buttons.
+ * @prop {JQuery} inputs The DOM elements for the hidden input fields of type checkbox storing which buttons are
+ * selected.
+ * 
+ * @interface {PrimeFaces.widget.SelectManyButtonCfg} cfg The configuration for the {@link  SelectManyButton| SelectManyButton widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  */
 PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
@@ -14,6 +30,10 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
         this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
 
+    /**
+     * Sets up all event listenters required by this widget.
+     * @private
+     */
     bindEvents: function() {
         var $this = this;
 
@@ -65,10 +85,18 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Selects the given button option.
+     * @param {JQuery} button A button of this widget to select.
+     */
     select: function(button) {
         button.children(':checkbox').prop('checked', true).change();
     },
 
+    /**
+     * Unselects the given button option.
+     * @param {JQuery} button A button of this widget to unselect.
+     */
     unselect: function(button) {
         button.children(':checkbox').prop('checked', false).change();
     }

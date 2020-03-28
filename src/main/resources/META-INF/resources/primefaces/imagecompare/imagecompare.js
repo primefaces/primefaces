@@ -5,10 +5,35 @@
 
 
 /**
- * PrimeFaces ImageCompare Widget 
+ * __PrimeFaces ImageCompare Widget__
+ * 
+ * ImageCompare provides a user interface to compare two images. Uses the `ImageCompare` library. To access an instance
+ * of the image slider programatically, you can use the list of instantiated sliders:
+ * 
+ * ```javascript
+ * const widget = PF("myImageCompareWidget");
+ * const slider = juxtapose.sliders.filter(slider => slider.wrapper === a.getJQ().get(0))[0];
+ * 
+ * // Smoothly move the slider to the right.
+ * slider.updateSlider("80%", true);
+ * ```
+ * 
+ * @interface {PrimeFaces.widget.ImageCompareCfg} cfg The configuration for the {@link  ImageCompare| ImageCompare widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {boolean} cfg.showFullLinks Whether image links are shown completely or abbreviated.
+ * @prop {string} cfg.leftImage URL of the image to the left
+ * @prop {string} cfg.rightImage URL of the image to the right
  */
  PrimeFaces.widget.ImageCompare = PrimeFaces.widget.BaseWidget.extend({
-    
+
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
         this.cfg.showFullLinks = false;

@@ -8,16 +8,66 @@ b.style.position="absolute",b.className=this._jsPlumb.instance.overlayClass+" "+
 var a=this,b=a.jsPlumb,c=a.jsPlumbUtil,d=a.Katavorio,e=a.Biltong,f=function(a,b){b=b||"main";var c="_katavorio_"+b,f=a[c],g=a.getEventManager();return f||(f=new d({bind:g.on,unbind:g.off,getSize:jsPlumb.getSize,getPosition:function(b,c){var d=a.getOffset(b,c,b._katavorioDrag?b.offsetParent:null);return[d.left,d.top]},setPosition:function(a,b){a.style.left=b[0]+"px",a.style.top=b[1]+"px"},addClass:jsPlumb.addClass,removeClass:jsPlumb.removeClass,intersects:e.intersects,indexOf:function(a,b){return a.indexOf(b)},css:{noSelect:a.dragSelectClass,droppable:"jsplumb-droppable",draggable:"jsplumb-draggable",drag:"jsplumb-drag",selected:"jsplumb-drag-selected",active:"jsplumb-drag-active",hover:"jsplumb-drag-hover",ghostProxy:"jsplumb-ghost-proxy"}}),a[c]=f,a.bind("zoom",f.setZoom)),f},g=function(a,b){var d=function(d){if(null!=b[d]){if(c.isString(b[d])){var e=b[d].match(/-=/)?-1:1,f=b[d].substring(2);return a[d]+e*f}return b[d]}return a[d]};return[d("left"),d("top")]};b.extend(a.jsPlumbInstance.prototype,{animationSupported:!0,getElement:function(a){return null==a?null:(a="string"==typeof a?a:null!=a.length&&null==a.enctype?a[0]:a,"string"==typeof a?document.getElementById(a):a)},removeElement:function(a){f(this).elementRemoved(a),this.getEventManager().remove(a)},doAnimate:function(a,b,c){c=c||{};var d=this.getOffset(a),e=g(d,b),f=e[0]-d.left,h=e[1]-d.top,i=c.duration||250,j=15,k=i/j,l=j/i*f,m=j/i*h,n=0,o=setInterval(function(){jsPlumb.setPosition(a,{left:d.left+l*(n+1),top:d.top+m*(n+1)}),null!=c.step&&c.step(n,Math.ceil(k)),n++,n>=k&&(window.clearInterval(o),null!=c.complete&&c.complete())},j)},destroyDraggable:function(a,b){f(this,b).destroyDraggable(a)},destroyDroppable:function(a,b){f(this,b).destroyDroppable(a)},initDraggable:function(a,b,c){f(this,c).draggable(a,b)},initDroppable:function(a,b,c){f(this,c).droppable(a,b)},isAlreadyDraggable:function(a){return null!=a._katavorioDrag},isDragSupported:function(){return!0},isDropSupported:function(){return!0},isElementDraggable:function(a){return a=jsPlumb.getElement(a),a._katavorioDrag&&a._katavorioDrag.isEnabled()},getDragObject:function(a){return a[0].drag.getDragElement()},getDragScope:function(a){return a._katavorioDrag&&a._katavorioDrag.scopes.join(" ")||""},getDropEvent:function(a){return a[0].e},getUIPosition:function(a){var b=a[0].el;if(null==b.offsetParent)return null;var c=a[0].finalPos||a[0].pos,d={left:c[0],top:c[1]};if(b._katavorioDrag&&b.offsetParent!==this.getContainer()){var e=this.getOffset(b.offsetParent);d.left+=e.left,d.top+=e.top}return d},setDragFilter:function(a,b,c){a._katavorioDrag&&a._katavorioDrag.setFilter(b,c)},setElementDraggable:function(a,b){a=jsPlumb.getElement(a),a._katavorioDrag&&a._katavorioDrag.setEnabled(b)},setDragScope:function(a,b){a._katavorioDrag&&a._katavorioDrag.k.setDragScope(a,b)},setDropScope:function(a,b){a._katavorioDrop&&a._katavorioDrop.length>0&&a._katavorioDrop[0].k.setDropScope(a,b)},addToPosse:function(a){var b=Array.prototype.slice.call(arguments,1),c=f(this);jsPlumb.each(a,function(a){a=[jsPlumb.getElement(a)],a.push.apply(a,b),c.addToPosse.apply(c,a)})},setPosse:function(a){var b=Array.prototype.slice.call(arguments,1),c=f(this);jsPlumb.each(a,function(a){a=[jsPlumb.getElement(a)],a.push.apply(a,b),c.setPosse.apply(c,a)})},removeFromPosse:function(a){var b=Array.prototype.slice.call(arguments,1),c=f(this);jsPlumb.each(a,function(a){a=[jsPlumb.getElement(a)],a.push.apply(a,b),c.removeFromPosse.apply(c,a)})},removeFromAllPosses:function(a){var b=f(this);jsPlumb.each(a,function(a){b.removeFromAllPosses(jsPlumb.getElement(a))})},setPosseState:function(a,b,c){var d=f(this);jsPlumb.each(a,function(a){d.setPosseState(jsPlumb.getElement(a),b,c)})},dragEvents:{start:"start",stop:"stop",drag:"drag",step:"step",over:"over",out:"out",drop:"drop",complete:"complete",beforeStart:"beforeStart"},animEvents:{step:"step",complete:"complete"},stopDrag:function(a){a._katavorioDrag&&a._katavorioDrag.abort()},addToDragSelection:function(a){f(this).select(a)},removeFromDragSelection:function(a){f(this).deselect(a)},clearDragSelection:function(){f(this).deselectAll()},trigger:function(a,b,c,d){this.getEventManager().trigger(a,b,c,d)},doReset:function(){for(var a in this)0===a.indexOf("_katavorio_")&&this[a].reset()}});var h=function(a){var b=function(){/complete|loaded|interactive/.test(document.readyState)&&"undefined"!=typeof document.body&&null!=document.body?a():setTimeout(b,9)};b()};h(b.init)}.call("undefined"!=typeof window?window:this);
 
 /**
- * PrimeFaces Diagram Widget
+ * __PrimeFaces Diagram Widget__
+ * 
+ * @interface {PrimeFaces.widget.Diagram.ConnectionInfo} ConnectionInfo Details about a connection between two nodes that
+ * was either established or dissolved.
+ * @prop {string} ConnectionInfo.sourceId ID of the source node where the connection starts.
+ * @prop {string} ConnectionInfo.targetId ID of the target node where the connection end.
+ * @prop {string} ConnectionInfo.sourceEndpoint UUID of the point (port) where the connections
+ * starts.
+ * @prop {string} ConnectionInfo.targetEndpoint UUID of the point (port) where the connections
+ * ends.
+ * 
+ * @interface {PrimeFaces.widget.Diagram.UpdateConnectionInfo} UpdateConnectionInfo Details about a connection between
+ * two nodes that was changed.
+ * @extends {PrimeFaces.widget.Diagram.ConnectionInfo} UpdateConnectionInfo
+ * @prop {string} UpdateConnectionInfo.originalSourceId Previous ID of the source node where
+ * the connection started.
+ * @prop {string} UpdateConnectionInfo.originalTargetId Previous ID of the target node where
+ * the connection ended.
+ * @prop {string} UpdateConnectionInfo.originalSourceEndpoint Previous UUID of the point
+ * (port) where the connections started.
+ * @prop {string} UpdateConnectionInfo.originalTargetEndpoint Previous UUID of the point
+ * (port) where the connections ended.
+ * 
+ * @prop {JsPlumb.jsPlumbInstance} canvas The JSPlumb instance for this diagram.
+ * @prop {boolean} connectionChanged Internal state whether the connection was changed before a connect event.
+ * 
+ * @interface {PrimeFaces.widget.DiagramCfg} cfg The configuration for the {@link Diagram|diagram widget}. You can
+ * access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
+ * 
+ * @prop {{uuids: string[]}[]} cfg.connections List of initial connections to be established between nodes.
+ * @prop {boolean} cfg.connectionsDetachable Whether connections can be severed by the user.
+ * @prop {JsPlumb.OverlaySpec[]} cfg.connectionOverlays Overlays for the connections (arrows, labels, etc.)
+ * @prop {string} cfg.containment Constrains dragging to within the bounds of the specified element or region.
+ * @prop {JsPlumb.ConnectorSpec} cfg.defaultConnector Connector (straight lines, bezier curves, etc.) to use by default.
+ * @prop {(JsPlumb.EndpointOptions & {element: JsPlumb.ElementGroupRef})[]} cfg.endPoints A list of endpoints (ports) of
+ * all diagram nodes.
+ * @prop {JsPlumb.PaintStyle} cfg.hoverPaintStyle Paint style to use when hovering.
+ * @prop {number} cfg.maxConnections Maximum number of allowed connections (per node).
+ * @prop {JsPlumb.PaintStyle} cfg.paintStyle Paint style to use when not hovering.
  */
 PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
         this.renderDeferred();
     },
 
+    /**
+     * @override
+     * @protected
+     * @inheritdoc
+     */
     _render: function() {
         var $this = this;
 
@@ -45,6 +95,10 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
         });
     },
 
+    /**
+     * Initializes the end points of the lines connection diagram nodes.
+     * @private
+     */
     initEndPoints: function() {
         for(var i = 0; i < this.cfg.endPoints.length; i++) {
             var endPoint = this.cfg.endPoints[i];
@@ -53,6 +107,10 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Initializes the lines connecting the diagram nodes.
+     * @private
+     */
     initConnections: function() {
         if(this.cfg.connections) {
             for(var i = 0; i < this.cfg.connections.length; i++) {
@@ -61,6 +119,10 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Sets up all event listeners for this widget.
+     * @private
+     */
     bindEvents: function() {
         var $this = this;
 
@@ -79,6 +141,11 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
         });
     },
 
+    /**
+     * Callback for the event when two nodes are connected with each other.
+     * @private
+     * @param {PrimeFaces.widget.Diagram.ConnectionInfo} info Details about the connection that was made.
+     */
     onConnect: function(info) {
         var options = {
             source: this.id,
@@ -106,6 +173,11 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Callback for the event when two nodes are disconnected from each other.
+     * @private
+     * @param {PrimeFaces.widget.Diagram.ConnectionInfo} info Details about the connection that was severed.
+     */
     onDisconnect: function(info) {
         var options = {
             source: this.id,
@@ -127,6 +199,11 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Callback for the event when the connection between two nodes was changed.
+     * @private
+     * @param {PrimeFaces.widget.Diagram.UpdateConnectionInfo} info Details about the connection that was changed.
+     */
     onConnectionChange: function(info) {
         this.connectionChanged = true;
 

@@ -1,8 +1,20 @@
 /**
- * PrimeFaces TagCloud Widget
+ * __PrimeFaces TagCloud Widget__
+ * 
+ * TagCloud displays a collection of tag with different strengths.
+ * 
+ * @interface {PrimeFaces.widget.TagCloudCfg} cfg The configuration for the {@link  TagCloud| TagCloud widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  */
 PrimeFaces.widget.TagCloud = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
         var _self = this;
@@ -23,6 +35,11 @@ PrimeFaces.widget.TagCloud = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Callback for when a tag was clicked. Invokes the appropriate behavior.
+     * @private
+     * @param {JQuery} link The link element that was clicked. 
+     */
     fireSelectEvent: function(link) {
         if(this.hasBehavior('select')) {
             var ext = {

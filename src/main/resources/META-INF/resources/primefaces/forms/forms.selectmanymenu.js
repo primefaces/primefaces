@@ -1,14 +1,34 @@
 /**
- * PrimeFaces SelectManyMenu Widget
+ * __PrimeFaces SelectManyMenu Widget__
+ * 
+ * SelectManyMenu is an extended version of the standard SelectManyMenu.
+ * 
+ * @interface {PrimeFaces.widget.SelectManyMenuCfg} cfg The configuration for the {@link  SelectManyMenu| SelectManyMenu widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.SelectListboxCfg} cfg
+ * 
+ * @prop {boolean} cfg.disabled Whether the select many menu is initially disabled.
+ * @prop {boolean} cfg.showCheckbox When set to `true`, a checkbox is displayed next to each item.
  */
 PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
         this.allItems.filter('.ui-state-highlight').find('> .ui-chkbox > .ui-chkbox-box').addClass('ui-state-active');
     },
 
+    /**
+     * @override
+     * @protected
+     * @inheritdoc
+     */
     bindEvents: function() {
         this._super();
         var $this = this;
@@ -99,6 +119,9 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
         }
     },
 
+    /**
+     * Selects all available items of this select many menu.
+     */
     selectAll: function() {
         // ~~~ PERF ~~~
         // See https://github.com/primefaces/primefaces/issues/2089
@@ -131,6 +154,10 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
         }
     },
 
+    /**
+     * @override
+     * @inheritdoc
+     */
     unselectAll: function() {
         // ~~~ PERF ~~~
         // See https://github.com/primefaces/primefaces/issues/2089
@@ -161,6 +188,11 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
         }
     },
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {JQuery} item
+     */
     selectItem: function(item) {
         this._super(item);
 
@@ -169,6 +201,11 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
         }
     },
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {JQuery} item
+     */
     unselectItem: function(item) {
         this._super(item);
 
@@ -177,10 +214,18 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
         }
     },
 
+    /**
+     * Select the given checkbox. Does not unselect any other checkboxes that are currently selected.
+     * @param {JQuery} chkbox A CHECKBOX element to select.
+     */
     selectCheckbox: function(chkbox) {
         chkbox.removeClass('ui-state-hover').addClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
     },
 
+    /**
+     * Unselects the given checkbox. Does not modify any other checkboxes.
+     * @param {JQuery} chkbox A CHECKBOX element to unselect.
+     */
     unselectCheckbox: function(chkbox) {
         chkbox.removeClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
     }

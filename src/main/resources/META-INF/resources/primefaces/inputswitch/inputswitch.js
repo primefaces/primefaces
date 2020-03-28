@@ -1,8 +1,29 @@
 /**
- * PrimeFaces InputSwitch Widget
+ * __PrimeFaces InputSwitch Widget__
+ * 
+ * InputSwitch is used to select a boolean value.
+ * 
+ * @prop {JQuery} handle The DOM element for the handle that lets the user change the state of this input switch by 
+ * dragging it.
+ * @prop {JQuery} input The DOM element for the hidden input field storing the current value of this widget.
+ * @prop {number} offset Offset to the left of all switch parts, depends on the handler width. 
+ * @prop {JQuery} offContainer The DOM element for the container with the elements for displaying the off state.
+ * @prop {JQuery} offLabel The DOM element for the label with the text for when this input switch is turned off.
+ * @prop {JQuery} onContainer The DOM element for the container with the elements for displaying the on state.
+ * @prop {JQuery} onLabel The DOM element for the label with the text for when this input switch is turned on.
+ * 
+ * @interface {PrimeFaces.widget.InputSwitchCfg} cfg The configuration for the {@link  InputSwitch| InputSwitch widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
  */
 PrimeFaces.widget.InputSwitch = PrimeFaces.widget.DeferredWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
@@ -16,6 +37,11 @@ PrimeFaces.widget.InputSwitch = PrimeFaces.widget.DeferredWidget.extend({
         this.renderDeferred();
     },
 
+    /**
+     * @override
+     * @protected
+     * @inheritdoc
+     */
     _render: function() {
         var onContainerWidth = this.onContainer.width(),
         offContainerWidth = this.offContainer.width(),
@@ -55,6 +81,10 @@ PrimeFaces.widget.InputSwitch = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Sets up all event listenters required by this widget.
+     * @private
+     */
     _bindEvents: function() {
         var $this = this;
 
@@ -102,6 +132,9 @@ PrimeFaces.widget.InputSwitch = PrimeFaces.widget.DeferredWidget.extend({
         });
     },
 
+    /**
+     * Toggles this input switch, i.e. switch it from on to off or from off to on.
+     */
     toggle: function() {
         if(this.input.prop('checked'))
             this.uncheck();
@@ -109,16 +142,26 @@ PrimeFaces.widget.InputSwitch = PrimeFaces.widget.DeferredWidget.extend({
             this.check();
     },
 
+    /**
+     * Turns this input switch on, if not already switched on.
+     */
     check: function() {
         this.input.prop('checked', true).trigger('change');
         this.jq.addClass('ui-inputswitch-checked');
     },
 
+    /**
+     * Turns this input switch off, if not already switched off.
+     */
     uncheck: function() {
         this.input.prop('checked', false).trigger('change');
         this.jq.removeClass('ui-inputswitch-checked');
     },
 
+    /**
+     * Performs the UI updates for when this input switch is turned on, such as animating the transition.
+     * @private
+     */
     _checkUI: function() {
         this.onContainer.animate({width:this.offset}, 200);
         this.onLabel.animate({marginLeft:0}, 200);
@@ -126,6 +169,10 @@ PrimeFaces.widget.InputSwitch = PrimeFaces.widget.DeferredWidget.extend({
         this.handle.animate({left:this.offset}, 200);
     },
 
+    /**
+     * Performs the UI updates for when this input switch is turned off, such as animating the transition.
+     * @private
+     */
     _uncheckUI: function() {
         this.onContainer.animate({width:0}, 200);
         this.onLabel.animate({marginLeft:-this.offset}, 200);

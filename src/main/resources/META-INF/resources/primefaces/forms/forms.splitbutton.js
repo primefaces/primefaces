@@ -1,8 +1,50 @@
-/*
- * PrimeFaces SplitButton Widget
+/**
+ * __PrimeFaces SplitButton Widget__
+ * 
+ * SplitButton displays a command by default and additional ones in an overlay.
+ * 
+ * @typedef PrimeFaces.widget.SplitButton.FilterFunction A filter function that takes a term and returns whether the
+ * search term matches the value.
+ * @param {string} PrimeFaces.widget.SplitButton.FilterFunction.value A value to check.
+ * @param {string} PrimeFaces.widget.SplitButton.FilterFunction.query A search term against which the value is checked.
+ * @return {string} PrimeFaces.widget.SplitButton.FilterFunction `true` if the search term matches the value, or `false`
+ * otherwise.
+ * 
+ * @typedef {"startsWith" |  "contains" |  "endsWith" | "custom"} PrimeFaces.widget.SplitButton.FilterMatchMode
+ * Available modes for filtering the options of the available buttons actions of a split button. When `custom` is set, a
+ * `filterFunction` must be specified.
+
+ * @prop {JQuery} button The DOM element for the main button.
+ * @prop {PrimeFaces.widget.SplitButton.FilterFunction} filterMatcher The current filter function.
+ * @prop {Record<string, PrimeFaces.widget.SplitButton.FilterFunction>} filterMatchers A map of all flter functions. The
+ * key is the name of the filter function.
+ * @prop {JQuery} filterInput The DOM element for the filter input field
+ * @prop {JQuery} menu The DOM element for the additional buttons actions. 
+ * @prop {JQuery} menuitemContainer The DOM element for the container of the additional buttons actions.
+ * @prop {JQuery} menuitems The DOM elements for the individual additional button actions.
+ * @prop {JQuery} menuButton The DOM element for the button that triggers the overlay panel with the additional buttons
+ * actions.
+ * @prop {string} menuId The prefix shared ny the different IDs of the components of this widget.
+ * 
+ * @interface {PrimeFaces.widget.SplitButtonCfg} cfg The configuration for the {@link  SplitButton| SplitButton widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {PrimeFaces.widget.SplitButton.FilterMatchMode} cfg.filterMatchMode Match mode for filtering, how the search
+ * term is matched against the items.
+ * @prop {boolean} cfg.disabled Whether this input is currently disabled.
+ * @prop {boolean} cfg.filter Whether client side filtering feature is enabled.
+ * @prop {PrimeFaces.widget.SplitButton.FilterFunction} cfg.filterFunction Custom JavaScript function for filtering the
+ * available split button actions.
  */
 PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
 
+     /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
         this.button = $(this.jqId + '_button');
@@ -24,11 +66,19 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         this.menuButton.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
 
-    //@override
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     */
     refresh: function(cfg) {
         this._super(cfg);
     },
 
+    /**
+     * Sets up all event listenters required by this widget.
+     * @private
+     */
     bindEvents: function() {
         var $this = this;
 
@@ -106,6 +156,10 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
+    /**
+     * Sets up the event listeners for filtering the available buttons actions via a search field.
+     * @private
+     */
     bindFilterEvents: function() {
         var $this = this;
 
@@ -191,6 +245,11 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
 	});
     },
     
+    /**
+     * Highlights the next button action, usually when the user navigates via the keyboard arrows.
+     * @private
+     * @param {JQuery.Event} event Keyboard arrow event that caused the next item to be highlighted.
+     */
     highlightNext: function(event) {
         var highlightedItem = this.menuitems.filter('.ui-state-hover'),
         nextItems = highlightedItem.length ? highlightedItem.nextAll(':not(.ui-separator, .ui-widget-header):visible') : this.menuitems.filter(':visible').eq(0);
@@ -203,6 +262,11 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         event.preventDefault();
     },
     
+    /**
+     * Highlights the previous button action, usually when the user navigates via the keyboard arrows.
+     * @private
+     * @param {JQuery.Event} event Keyboard arrow event that caused the previous item to be highlighted.
+     */
     highlightPrev: function(event) {
         var highlightedItem = this.menuitems.filter('.ui-state-hover'),
         prevItems = highlightedItem.length ? highlightedItem.prevAll(':not(.ui-separator, .ui-widget-header):visible') : null;
@@ -215,6 +279,12 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         event.preventDefault();
     },
     
+    /**
+     * Callback that is invoked when the enter key is pressed. When overlay panel with the additional buttons actions is
+     * shown, activates the selected buttons action. Otherwise, opens the overlay panel. 
+     * @private
+     * @param {JQuery.Event} event Keyboard event of the enter press.
+     */
     handleEnterKey: function(event) {
         if(this.menu.is(':visible')) {
             var link = this.menuitems.filter('.ui-state-hover').children('a');
@@ -232,10 +302,19 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         event.preventDefault();
     },
     
+    /**
+     * Callback that is invoked when the escape key is pressed while the overlay panel with the additional buttons
+     * actions is shown. Hides that overlay panel.
+     * @private
+     */
     handleEscapeKey: function() {
         this.hide();
     },
-    
+
+    /**
+     * Creates the filter functions for filtering the button actions.
+     * @private
+     */
     setupFilterMatcher: function() {
         this.cfg.filterMatchMode = this.cfg.filterMatchMode||'startsWith';
         this.filterMatchers = {
@@ -248,18 +327,41 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         this.filterMatcher = this.filterMatchers[this.cfg.filterMatchMode];
     },
 
+    /**
+     * A filter function that takes a value and a search and returns true if the value starts with the search term.
+     * @param {string} value Value to be filtered 
+     * @param {string} filter Filter or search term to apply.
+     * @return {boolean} `true` if the given value starts with the search term, or `false` otherwise. 
+     */
     startsWithFilter: function(value, filter) {
         return value.indexOf(filter) === 0;
     },
 
+    /**
+     * A filter function that takes a value and a search and returns true if the value contains the search term.
+     * @param {string} value Value to be filtered 
+     * @param {string} filter Filter or search term to apply.
+     * @return {boolean} `true` if the given value contains the search term, or `false` otherwise. 
+     */
     containsFilter: function(value, filter) {
         return value.indexOf(filter) !== -1;
     },
 
+    /**
+     * A filter function that takes a value and a search and returns true if the value ends with the search term.
+     * @param {string} value Value to be filtered 
+     * @param {string} filter Filter or search term to apply.
+     * @return {boolean} `true` if the given value ends with the search term, or `false` otherwise. 
+     */
     endsWithFilter: function(value, filter) {
         return value.indexOf(filter, value.length - filter.length) !== -1;
     },
 
+    /**
+     * Filters the overlay panel with the additional buttons actions, leaving only the buttons that match the given
+     * search term.
+     * @param {string} value Search term for filtering. 
+     */
     filter: function(value) {
         var filterValue = $.trim(value).toLowerCase();
 
@@ -317,6 +419,10 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         this.alignPanel();
     },
 
+    /**
+     * Shows the overlay panel with the additional buttons actions.
+     * @private
+     */
     show: function() {
         this.alignPanel();
 
@@ -330,6 +436,10 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Hides the overlay panel with the additional buttons actions.
+     * @private
+     */
     hide: function() {
         this.menuitems.filter('.ui-state-hover').removeClass('ui-state-hover');
         this.menuButton.removeClass('ui-state-focus');
@@ -337,6 +447,9 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         this.menu.fadeOut('fast');
     },
 
+    /**
+     * Align the overlay panel with the additional buttons actions.
+     */
     alignPanel: function() {
         this.menu.css({left:'', top:'','z-index': ++PrimeFaces.zindex});
 

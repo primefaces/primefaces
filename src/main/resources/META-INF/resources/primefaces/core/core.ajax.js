@@ -1,7 +1,8 @@
 if (!PrimeFaces.ajax) {
 
     /**
-     * AJAX parameter shortcut mapping for PrimeFaces.ab
+     * AJAX parameter shortcut mapping for the method `PrimeFaces.ab` that sends an AJAX request.
+     * @type {Record<string, string>}
      */
     PrimeFaces.AB_MAPPING = {
         's': 'source',
@@ -27,7 +28,14 @@ if (!PrimeFaces.ajax) {
     };
 
     /**
-     * Ajax shortcut
+     * A shortcut for `PrimeFaces.ajax.Request.handle(cfg, ext)`, with shorter option names. Sends an AJAX request to
+     * the server and processes the response. You can use this method if you need more fine-grained control over which
+     * components you want to update or process, or if you need to change some other AJAX options.
+     * @function 
+     * @param {Partial<PrimeFaces.ajax.ShorthandConfiguration>} cfg Configuration for the AJAX request, with shorthand
+     * options. The individual options are documented in `PrimeFaces.ajax.Configuration`. 
+     * @param {Partial<PrimeFaces.ajax.ConfigurationExtender>} [ext] Optional extender with additional options that
+     * overwrite the options given in `cfg`.
      */
     PrimeFaces.ab = function(cfg, ext) {
         for (var option in cfg) {
@@ -45,13 +53,60 @@ if (!PrimeFaces.ajax) {
         PrimeFaces.ajax.Request.handle(cfg, ext);
     };
 
+    /**
+     * The object with functionality related to sending and receiving AJAX requests that are made by PrimeFaces. Each
+     * request receives an XML response, which consists of one or multiple actions that are to be performed. This
+     * includes creating new DOM elements, deleting or updating existing elements, or executing some JavaScript.
+     * 
+     * @typedef PrimeFaces.ajax.AjaxBehavior A callback function for an AJAX behavior of a widget. You can
+     * add a behavior via `<p:ajax event="behaviorName" actionListener="..." onstart=".." />`. This behavior callback
+     * is invoked when the behavior (event) is triggered. The default behavior callback calls the configured client-side
+     * and server-side callbacks.
+     * @template [PrimeFaces.ajax.AjaxBehavior.TWidget = any]
+     * Type of the widget to which this behavior belongs.
+     * @this {TWidget} PrimeFaces.ajax.AjaxBehavior
+     * @param {Partial<PrimeFaces.ajax.ConfigurationExtender>} [PrimeFaces.ajax.AjaxBehavior.ext]
+     * Additional data to be sent with the AJAX request that is made to the server.
+     * 
+     * @namespace
+     */
     PrimeFaces.ajax = {
 
+        /**
+         * Name for the ID of the HEAD element, used in AJAX requests.
+         * @type {string}
+         * @readonly
+         */
         VIEW_HEAD : "javax.faces.ViewHead",
+        /**
+         * Name for the ID of the BODY element, used in AJAX requests.
+         * @type {string}
+         * @readonly
+         */
         VIEW_BODY : "javax.faces.ViewBody",
+        /**
+         * Name for the ID of a resource entry, used in AJAX requests.
+         * @type {string}
+         * @readonly
+         */
         RESOURCE : "javax.faces.Resource",
 
+        /**
+         * This object contains utility methods for AJAX requests, primarily used internally.
+         * @interface {PrimeFaces.ajax.Utils} . The class for the object with the AJAX utility methods, used for
+         * handling and working with AJAX requests and updates.
+         * @type {PrimeFaces.ajax.Utils}
+         * @readonly
+         */
         Utils: {
+            /**
+             * Iterates over all immediate children of the given node and returns the concatenated content (
+             * `node value`) of each such child node. For the document itself, the node value is `null`. For text,
+             * comment, and CDATA nodes, the `node value` is the (text) content of the node. For attribute nodes, the
+             * value of the attribute is used.
+             * @param {HTMLElement} node An HTML node for which to retrieve the content.
+             * @return {string} The content of all immediate child nodes, concatenated together.
+             */
             getContent: function(node) {
                 var content = '';
 
@@ -62,6 +117,13 @@ if (!PrimeFaces.ajax) {
                 return content;
             },
 
+            /**
+             * Updates the main hidden input element for each form.
+             * @param {string} name Name of the hidden form input element, usually the same as the form.
+             * @param {string} value Value to set on the hidden input element. 
+             * @param {PrimeFaces.ajax.pfXHR} [xhr] Optional XHR request with `pfSettings` or `pfArgs` with further
+             * data, such as which forms should be updated. 
+             */
             updateFormStateInput: function(name, value, xhr) {
                 var trimmedValue = $.trim(value);
 
@@ -93,6 +155,10 @@ if (!PrimeFaces.ajax) {
                 }
             },
 
+            /**
+             * Updates the HTML `head` element of the current document with the content received from an AJAX request.
+             * @param {string} content The content of the changeset that was returned by an AJAX request.  
+             */
             updateHead: function(content) {
                 var cache = $.ajaxSetup()['cache'];
                 $.ajaxSetup()['cache'] = true;
@@ -104,12 +170,24 @@ if (!PrimeFaces.ajax) {
                 $.ajaxSetup()['cache'] = cache;
             },
 
+            /**
+             * Updates the HTML `body` element of the current document with the content received from an AJAX request.
+             * @param {string} content The content of the changeset that was returned by an AJAX request.  
+             */
             updateBody: function(content) {
                 var bodyStartTag = new RegExp("<body[^>]*>", "gi").exec(content)[0];
                 var bodyStartIndex = content.indexOf(bodyStartTag) + bodyStartTag.length;
                 $('body').html(content.substring(bodyStartIndex, content.lastIndexOf("</body>")));
             },
 
+            /**
+             * Updates an element with the given ID by applying a change set that was returned by an AJAX request. This
+             * involves replacing the HTML content of the element with the new content.
+             * @param {string} id ID of the element that is to be updated.
+             * @param {string} content The new content of the changeset as returned by an AJAX request.
+             * @param {PrimeFaces.ajax.pfXHR} [xhr] Optional XHR request with `pfSettings` or `pfArgs` with further
+             * data, such as which forms should be updated. 
+             */
             updateElement: function(id, content, xhr) {
 
                 if (id.indexOf(PrimeFaces.VIEW_STATE) !== -1) {
@@ -148,14 +226,44 @@ if (!PrimeFaces.ajax) {
             }
         },
 
+        /**
+         * This object contains functionality related to queuing AJAX requests to ensure that they are (a) sent in the
+         * proper order and (b) that each response is processed in the same order as the requests were sent. 
+         * @interface {PrimeFaces.ajax.Queue} . The interface for the object containing functionality related to queuing
+         * AJAX requests. The queue ensures that requests are (a) sent in the order as they were issued, and (b) that
+         * each response is processed in the same order as the requests were sent.
+         * @type {PrimeFaces.ajax.Queue}
+         * @readonly
+         */
         Queue: {
 
+            /**
+             * A map between the source ID and  the timeout IDs (as returned by `setTimeout`). Used for AJAX requests
+             * with a specified delay (such as remote commands that have a delay set).
+             * @type {Record<string, number>}
+             */
             delays: {},
 
+            /**
+             * A list of requests that are waiting to be sent.
+             * @type {Partial<PrimeFaces.ajax.Configuration>[]}
+             */
             requests: new Array(),
 
+            /**
+             * A list of sent AJAX requests, i.e. HTTP requests that were already started. This is used, for example, to
+             * abort requests that were sent already when that becomes necessary.
+             * 
+             * @type {PrimeFaces.ajax.pfXHR}
+             */
             xhrs: new Array(),
 
+            /**
+             * Offers an AJAX request to this queue. The request is sent once all other requests in this queue have
+             * been sent. If a delay is set on the request configuration, the request is not sent before the specified
+             * delay has elapsed. 
+             * @param {Partial<PrimeFaces.ajax.Configuration>} request The request to send.
+             */
             offer: function(request) {
                 if(request.delay) {
                     var sourceId = null,
@@ -190,6 +298,12 @@ if (!PrimeFaces.ajax) {
                 }
             },
 
+            /**
+             * Removes the topmost request (the requests that was just sent) from this queue; and starts the second
+             * topmost request.
+             * @return {Partial<PrimeFaces.ajax.Configuration> | null} The topmost request in this queue, or `null` if this queue
+             * is empty.
+             */
             poll: function() {
                 if(this.isEmpty()) {
                     return null;
@@ -205,6 +319,11 @@ if (!PrimeFaces.ajax) {
                 return processed;
             },
 
+            /**
+             * Returns the request that is scheduled to be sent next, but does not modify the queue in any way.
+             * @return {Partial<PrimeFaces.ajax.Configuration> | null} The topmost request in this queue that is to be sent next,
+             * or `null` when this queue is empty.
+             */
             peek: function() {
                 if(this.isEmpty()) {
                     return null;
@@ -213,14 +332,27 @@ if (!PrimeFaces.ajax) {
                 return this.requests[0];
             },
 
+            /**
+             * Checks whether this queue containts any scheduled AJAX requests.
+             * @return {boolean} `true` if this queue contains no scheduled requests, `false` otherwise.
+             */
             isEmpty: function() {
                 return this.requests.length === 0;
             },
 
+            /**
+             * Adds a newly sent XHR request to the list of sent requests (`PrimeFaces.ajax.xhrs`).
+             * @param {PrimeFaces.ajax.pfXHR} xhr XHR request to add.
+             */
             addXHR: function(xhr) {
                 this.xhrs.push(xhr);
             },
 
+            /**
+             * Removes an XHR request from the list of sent requests (`PrimeFaces.ajax.xhrs`). Usually called once the
+             * AJAX request is done, having resulted in either a success or an error.
+             * @param {PrimeFaces.ajax.pfXHR} xhr XHR request to remove.
+             */
             removeXHR: function(xhr) {
                 var index = $.inArray(xhr, this.xhrs);
                 if(index > -1) {
@@ -228,6 +360,10 @@ if (!PrimeFaces.ajax) {
                 }
             },
 
+            /**
+             * Aborts all requests that were already sent, but have not yet received an answer from the server. Also
+             * removes all requests that are waiting in the queue and have not been sent yet.
+             */
             abortAll: function() {
                 for(var i = 0; i < this.xhrs.length; i++) {
                     this.xhrs[i].abort();
@@ -238,8 +374,24 @@ if (!PrimeFaces.ajax) {
             }
         },
 
+        /**
+         * The interface for the object containing low-level functionality related to sending AJAX requests. 
+         * @interface {PrimeFaces.ajax.Request}. The interface for the object containing functionality related to
+         * sending AJAX requests. 
+         * @type {PrimeFaces.ajax.Request}
+         * @readonly
+         */
         Request: {
 
+            /**
+             * Handles the given AJAX request, either by sending it immediately (if `async` is set to `true`), or by
+             * adding it to the AJAX queue otherwise. The AJAX queue ensures that requests are sent and handled in the
+             * order they were started.
+             * @param {Partial<PrimeFaces.ajax.Configuration>} cfg Configuration for the AJAX request to send, such as
+             * the HTTP method, the URL, and the content of the request. 
+             * @param {Partial<PrimeFaces.ajax.ConfigurationExtender>} [ext] Optional extender with additional options
+             * that overwrite the options given in `cfg`.
+             */
             handle: function(cfg, ext) {
                 cfg.ext = ext;
 
@@ -255,6 +407,13 @@ if (!PrimeFaces.ajax) {
                 }
             },
 
+            /**
+             * Performs the early collection of post parameters (form element values) if the request is configured that
+             * way.
+             * @param {Partial<PrimeFaces.ajax.Configuration>} cfg Configuration for the AJAX request to send, such as
+             * the HTTP method, the URL, and the content of the request.
+             * @return {PrimeFaces.ajax.ServerCallbackParameter[]} The collected form element values to be sent with the request.
+             */
             collectEarlyPostParams: function(cfg) {
 
                 var earlyPostParams;
@@ -288,6 +447,14 @@ if (!PrimeFaces.ajax) {
                 return earlyPostParams;
             },
 
+            /**
+             * Starts the given AJAX request immediately by sending the data to the server. Contrast with
+             * {@link handle}, which may queue AJAX requests, depending on how they are configured.
+             * @param {Partial<PrimeFaces.ajax.Configuration>} cfg Configuration for the AJAX request to send, such as
+             * the HTTP method, the URL, and the content of the request.
+             * @return {boolean|undefined} `false` if the AJAX request is to be canceled, `true` or `undefined`
+             * otherwise. 
+             */
             send: function(cfg) {
                 PrimeFaces.debug('Initiating ajax request.');
 
@@ -601,6 +768,13 @@ if (!PrimeFaces.ajax) {
                 PrimeFaces.ajax.Queue.addXHR(jqXhr);
             },
 
+            /**
+             * Collects all `process` or `update` search expressions from the given AJAX call configuration and returns
+             * them as one search expression.
+             * @param {Partial<PrimeFaces.ajax.Configuration>} cfg An AJAX call configuration.
+             * @param {"process" | "update"} type Whether to resolve the `process` or `update` expressions.
+             * @return {string} All process or update search expression from the given configuration.
+             */
             resolveExpressionsForAjaxCall: function(cfg, type) {
                 var expressions = '';
 
@@ -615,11 +789,29 @@ if (!PrimeFaces.ajax) {
                 return expressions;
             },
 
+            /**
+             * Given an AJAX call configuration, resolves the components for the `process` or `update` search
+             * expressions given by the configurations. Resolves the search expressions to the actual components and
+             * returns a list of their IDs.
+             * @param {Partial<PrimeFaces.ajax.Configuration>} cfg An AJAX call configuration.
+             * @param {"process" | "update"} type Whether to resolve the `process` or `update` expressions.
+             * @return {string[]} A list of IDs with the components to which the process or update expressions refer.
+             */
             resolveComponentsForAjaxCall: function(cfg, type) {
                 var expressions = PrimeFaces.ajax.Request.resolveExpressionsForAjaxCall(cfg, type);
                 return PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(expressions);
             },
 
+            /**
+             * Adds a new server callback parameter to the given list of parameters. Optionally add a prefix to the
+             * name.
+             * @template [TValue=any] Type of the parameter value.
+             * @param {PrimeFaces.ajax.ServerCallbackParameter<TValue>[]} params List of parameters to which a new
+             * parameter is added.
+             * @param {string} name Name of the new parameter to add.
+             * @param {TValue} value Value of the parameter to add.
+             * @param {string} [parameterPrefix] Optional prefix that is added in front of the name. 
+             */
             addParam: function(params, name, value, parameterPrefix) {
                 // add namespace if not available
                 if (parameterPrefix || !name.indexOf(parameterPrefix) === 0) {
@@ -631,6 +823,17 @@ if (!PrimeFaces.ajax) {
 
             },
 
+            /**
+             * Adds a list of callback parameters to the given list. Optionally prepends a prefix to the name of each
+             * added parameter.
+             * @template [TValue=any] Type of the parameter values.
+             * @param {PrimeFaces.ajax.ServerCallbackParameter<TValue>[]} params List of callback parameters to which
+             * parameters are added.
+             * @param {PrimeFaces.ajax.ServerCallbackParameter<TValue>[]} paramsToAdd List of callback parameters to
+             * add.
+             * @param {string} [parameterPrefix] Optional prefix that is added in front of the name of the added
+             * callback parameters. 
+             */
             addParams: function(params, paramsToAdd, parameterPrefix) {
 
                 for (var i = 0; i < paramsToAdd.length; i++) {
@@ -644,6 +847,16 @@ if (!PrimeFaces.ajax) {
                 }
             },
 
+            /**
+             * Adds a new callback parameter to the given list. The value of the parameter is taken from the input
+             * element of the given form. The input element must have the same name as the name of the parameter to add.
+             * Optionally add a prefix to the name.
+             * @param {PrimeFaces.ajax.ServerCallbackParameter[]} params List of callback parameters to the new
+             * parameter is added.
+             * @param {string} name Name of the new parameter to add
+             * @param {JQuery} form An HTML FORM element that contains an INPUT element with the given name.
+             * @param {string} [parameterPrefix] Optional prefix that is added in front of the name. 
+             */
             addParamFromInput: function(params, name, form, parameterPrefix) {
                 var input = null;
                 if (parameterPrefix) {
@@ -659,6 +872,13 @@ if (!PrimeFaces.ajax) {
                 }
             },
 
+            /**
+             * Finds the namespace (prefix) for the parameters of the given form. This namespace is, for example,
+             * prefixed to the name of the submitted input fields.
+             * @param {JQuery} form An HTML FORM element.
+             * @return {string | null} The namespace for the parameters of the given form, or `null` when the form does
+             * not specifiy a namespace.
+             */
             extractParameterNamespace: function(form) {
                 var input = form.children("input[name*='" + PrimeFaces.VIEW_STATE + "']");
                 if (input && input.length > 0) {
@@ -671,6 +891,16 @@ if (!PrimeFaces.ajax) {
                 return null;
             },
 
+            /**
+             * Creates a new array with all parameters from the second array that are not in the first array. That is,
+             * removes all parameters from the second array whose name is equal to one of the parameters in the first
+             * array. The given input array are not modified.
+             * @template [TValue=any] Type of the parameter values.
+             * @param {PrimeFaces.ajax.ServerCallbackParameter<TValue>[]} arr1 A list of parameters for comparison.
+             * @param {PrimeFaces.ajax.ServerCallbackParameter<TValue>[]} arr2 A list of additional parameters.
+             * @return {PrimeFaces.ajax.ServerCallbackParameter<TValue>[]} An list of parameters that are in the second
+             * array, but not in the first. 
+             */
             arrayCompare: function(arr1, arr2) {
                 // loop arr1 params
                 $.each(arr1, function(index1, param1) {
@@ -687,8 +917,26 @@ if (!PrimeFaces.ajax) {
             }
         },
 
+        /**
+         * The interface for the object containing low-level functionality related to handling AJAX responses. Note that
+         * the different types of AJAX actions are handles by the `PrimeFaces.ResponseProcessor`.
+         * @interface {PrimeFaces.ajax.Response} . The interface for the object containing functionality related to
+         * handling AJAX responses
+         * @type {PrimeFaces.ajax.Response}
+         * @readonly
+         */
         Response: {
 
+            /**
+             * Handles the reponse of an AJAX request. The response consists of one or more actions such as executing a
+             * script or updating a DOM element. 
+             * @template {PrimeFaces.widget.BaseWidget} [TWidget=PrimeFaces.widget.BaseWidget] Type of the widget which
+             * triggered the AJAX request.
+             * @param {XMLDocument} xml The XML that was returned by the AJAX request.
+             * @param {JQuery.Ajax.SuccessTextStatus} status Text status of the request.
+             * @param {PrimeFaces.ajax.pfXHR} xhr The XHR request to which a response was received.
+             * @param {PrimeFaces.ajax.UpdateHandler<TWidget>} [updateHandler] Optional handler for `update` actions.
+             */
             handle: function(xml, status, xhr, updateHandler) {
                 if (xml === undefined || xml === null) {
                     return;
@@ -755,6 +1003,12 @@ if (!PrimeFaces.ajax) {
                 }
             },
 
+            /**
+             * Puts focus on the given element if necessary.
+             * @param {string} activeElementId ID of the active to refocus.
+             * @param {PrimeFaces.ajax.ActiveElementSelection} [activeElementSelection] The range to select, for INPUT
+             * and TEXTAREA elements.
+             */
             handleReFocus : function(activeElementId, activeElementSelection) {
 
                 // re-focus element
@@ -787,6 +1041,10 @@ if (!PrimeFaces.ajax) {
                 PrimeFaces.customFocus = false;
             },
 
+            /**
+             * Destroys all widgets that are not part of the DOM anymore, usually because they were removed by an AJAX
+             * update. Calls the `destroy` method on the widget and removes the widget from the global widget registry.
+             */
             destroyDetachedWidgets : function() {
                 // destroy detached widgets
                 for (var i = 0; i < PrimeFaces.detachedWidgets.length; i++) {
@@ -809,8 +1067,20 @@ if (!PrimeFaces.ajax) {
             }
         },
 
+        /**
+         * The interface for the object containing low-level functionality related to processing the different types
+         * of actions from AJAX responses.
+         * @interface {PrimeFaces.ajax.ResponseProcessor} . The interface for the object containing functionality related to
+         * processing the different types of actions from AJAX responses.
+         * @type {PrimeFaces.ajax.ResponseProcessor}
+         * @readonly
+         */
         ResponseProcessor: {
 
+            /**
+             * Handles a `redirect` AJAX action by performing a redirect to the target URL.
+             * @param {Node} node The XML node of the `redirect` action.
+             */
             doRedirect : function(node) {
                 try {
                     window.location.assign(node.getAttribute('url'));
@@ -819,6 +1089,15 @@ if (!PrimeFaces.ajax) {
                 }
             },
 
+            /**
+             * Handles an `update` AJAX action by calling the given update handler. When no update handler is given,
+             * replaces the HTML content of the element with the new content. 
+             * @template {PrimeFaces.widget.BaseWidget} [TWidget=PrimeFaces.widget.BaseWidget] Type of the widget which
+             * triggered the AJAX request.
+             * @param {Node} node The XML node of the `update` action.
+             * @param {PrimeFaces.ajax.pfXHR} xhr The XHR request to which a response was received.
+             * @param {PrimeFaces.ajax.UpdateHandler<TWidget>} [updateHandler] Optional handler for the update.
+             */
             doUpdate : function(node, xhr, updateHandler) {
                 var id = node.getAttribute('id'),
                 content = PrimeFaces.ajax.Utils.getContent(node);
@@ -830,6 +1109,11 @@ if (!PrimeFaces.ajax) {
                 }
             },
 
+            /**
+             * Handles an `eval` AJAX action by evaluating the returned JavaScript. 
+             * @param {Node} node The XML node of the `eval` action.
+             * @param {PrimeFaces.ajax.pfXHR} xhr The XHR request to which a response was received.
+             */
             doEval : function(node, xhr) {
                 var textContent = node.textContent || node.innerText || node.text;
 
@@ -847,6 +1131,11 @@ if (!PrimeFaces.ajax) {
                 }
             },
 
+            /**
+             * Handles an `extension` AJAX action by extending the `pfArgs` property on the jQuery XHR object.
+             * @param {Node} node The XML node of the `extension` action.
+             * @param {PrimeFaces.ajax.pfXHR} xhr The XHR request to which a response was received.
+             */
             doExtension : function(node, xhr) {
                 if (xhr) {
                     if (node.getAttribute("ln") === "primefaces" && node.getAttribute("type") === "args") {
@@ -868,15 +1157,30 @@ if (!PrimeFaces.ajax) {
                 }
             },
 
+            /**
+             * Handles an `error` AJAX action by doing nothing currently.
+             * @param {Node} node The XML node of the `error` action.
+             * @param {PrimeFaces.ajax.pfXHR} xhr The XHR request to which a response was received.
+             */
             doError : function(node, xhr) {
                 // currently nothing...
             },
 
+            /**
+             * Handles a `delete` AJAX action by remove the DOM element.
+             * @param {Node} node The XML node of the `delete` action.
+             */
             doDelete : function(node) {
                 var id = node.getAttribute('id');
                 $(PrimeFaces.escapeClientId(id)).remove();
             },
 
+            /**
+             * Handles an `insert` AJAX action by inserting a newly creating DOM element.
+             * @param {Node} node The XML node of the `insert` action.
+             * @return {boolean | undefined} `false` if the AJAX action could not be performed, `true` or `undefined`
+             * otherwise.
+             */
             doInsert : function(node) {
                 if (!node.childNodes) {
                     return false;
@@ -897,6 +1201,12 @@ if (!PrimeFaces.ajax) {
                 }
             },
 
+            /**
+             * Handles an `attributes` AJAX action by setting the attributes on the DOM element.
+             * @param {Node} node The XML node of the `attributes` action.
+             * @return {boolean | undefined} `false` if the AJAX action could not be performed, `true` or `undefined`
+             * otherwise.
+             */
             doAttributes : function(node) {
                 if (!node.childNodes) {
                     return false;
@@ -923,7 +1233,15 @@ if (!PrimeFaces.ajax) {
             }
         },
 
-        //Backward compatibility
+        /**
+         * Only available for backward compatibility, do not use in new code.
+         * @deprecated Use `PrimeFaces.ajax.Request.handle` instead. 
+         * @param {Partial<PrimeFaces.ajax.Configuration>} cfg Configuration for the AJAX request to send, such as
+         * the HTTP method, the URL, and the content of the request. 
+         * @param {Partial<PrimeFaces.ajax.ConfigurationExtender>} [ext] Optional extender with additional options
+         * that overwrite the options given in `cfg`.
+         * @return {undefined} Always returns `undefined`.
+         */
         AjaxRequest: function(cfg, ext) {
             return PrimeFaces.ajax.Request.handle(cfg, ext);
         }

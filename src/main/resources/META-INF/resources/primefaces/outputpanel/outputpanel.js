@@ -1,8 +1,31 @@
 /**
- * PrimeFaces OutputPanel Widget
+ * __PrimeFaces OutputPanel Widget__
+ * 
+ * OutputPanel is a panel component with the ability for deferred loading.
+ * 
+ * @typedef {"load" | "visible"} PrimeFaces.widget.OutputPanel.DeferredMode Mode that indicates how the content of an
+ * output panel is loaded:
+ * - `load`: Loads the content directly after the page was loaded.
+ * - `visible`: Loads the panel once it is visible, e.g. once the user scrolled down.
+ * 
+ * @interface {PrimeFaces.widget.OutputPanelCfg} cfg The configuration for the {@link  OutputPanel| OutputPanel widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {boolean} cfg.deferred Deferred mode loads the contents after page load to speed up page load.
+ * @prop {PrimeFaces.widget.OutputPanel.DeferredMode} cfg.deferredMode Defines deferred loading mode, whether the
+ * content is loaded directly after the page is done loading, or only once the user scrolled to the panel.
+ * @prop {boolean} cfg.global When the content is loaded via AJAX, whether AJAX request triggers the global
+ * `ajaxStatus`.
  */
 PrimeFaces.widget.OutputPanel = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
         this.cfg.global = this.cfg.global||false;
@@ -20,6 +43,10 @@ PrimeFaces.widget.OutputPanel = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Loads the content of this panel via AJAX, if dynamic loading is enabled.
+     * @private
+     */
     loadContent: function() {
         var $this = this,
         options = {
@@ -55,6 +82,10 @@ PrimeFaces.widget.OutputPanel = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Sets up the event listeners for handling scrolling.
+     * @private
+     */
     bindScrollMonitor: function() {
         var $this = this;
 
@@ -66,6 +97,10 @@ PrimeFaces.widget.OutputPanel = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Checks whether this panel is currently visible.
+     * @return {boolean} `true` if this panel is currently visible, or `false` otherwise.
+     */
     visible: function() {
         var win = $(window),
         scrollTop = win.scrollTop(),

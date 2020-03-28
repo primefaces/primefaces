@@ -1,8 +1,82 @@
+/**
+ * __PrimeFaces Timeline Widget__
+ * 
+ * Timeline is an interactive graph to visualize events in time. Currently uses
+ * [vis-timeline](https://github.com/visjs/vis-timeline).
+ * 
+ * @typedef PrimeFaces.widget.Timeline.AddCallbackCallback Callback that is invoked when an event was added to this
+ * timeline. See also {@link Timeline.addCallback}.
+ * @param {import("vis-timeline").TimelineItem} PrimeFaces.widget.Timeline.AddCallbackCallback.item The timeline item
+ * that was added.
+ * 
+ * @typedef PrimeFaces.widget.Timeline.ChangedCallbackCallback Callback for when an item of the timeline has changed or
+ * was moved. See also {@link Timeline.changedCallback}.
+ * @param {import("vis-timeline").TimelineItem} PrimeFaces.widget.Timeline.ChangedCallbackCallback.item  The timeline
+ * item that was changed.
+ * 
+ * @typedef PrimeFaces.widget.Timeline.DeleteCallbackCallback Callback for when an item of the timeline was deleted. See
+ * also {@link Timeline.deleteCallback}.
+ * @param {import("vis-timeline").TimelineItem} PrimeFaces.widget.Timeline.DeleteCallbackCallback.item The timeline item
+ * that was deleted.
+ * 
+ * @typedef PrimeFaces.widget.Timeline.TimelineExtender An extender function that may be used modify the settings of the
+ * configuration object. The {@link TimelineCfg.opts} are passed directly to vis-timeline. See also
+ * {@link TimelineCfg.extender}.
+ * @this {PrimeFaces.widget.Timeline} PrimeFaces.widget.Timeline.TimelineExtender 
+ * 
+ * @interface {PrimeFaces.widget.Timeline.TimeRange} TimeRange Represents a time range between two points in time.
+ * @prop {number | null} TimeRange.start Lower bound of the time range.
+ * @prop {number | null} TimeRange.end Upper bound of the time range.
+ * 
+ * @interface {PrimeFaces.widget.Timeline.TimelineBiRange} TimelineBiRange Represents one or two time ranges.
+ * @prop {number} TimelineBiRange.startFirst Start of the first time range.
+ * @prop {number} TimelineBiRange.endFirst End of the first time range.
+ * @prop {number | null} TimelineBiRange.startSecond Start of the second time range.
+ * @prop {number | null} TimelineBiRange.endSecond End of the second time range.
+ * 
+ * @prop {PrimeFaces.widget.Timeline.AddCallbackCallback} addCallback Callback that is invoked when an event was added
+ * to this timeline.
+ * @prop {PrimeFaces.widget.Timeline.ChangedCallbackCallback} changedCallback Callback for when an item of the timeline
+ * has changed or was moved.
+ * @prop {PrimeFaces.widget.Timeline.DeleteCallbackCallback} deleteCallback Callback for when an item of the timeline
+ * was deleted.
+ * @prop {import("vis-timeline").Timeline} instance The current vis-timeline instance.
+ * @prop {boolean} lazy Whether the lazy loading feature is enabled, which loads events dynamically via AJAX.
+ * @prop {number | null} max If restricting the timeline to a certain range, the upper bound.
+ * @prop {number | null} min If restricting the timeline to a certain range, the lower bound.
+ * @prop {number} pFactor The current preload factor, see {@link TimelineCfg.preloadFactor}.
+ * @prop {PrimeFaces.widget.Timeline.TimeRange} rangeLoadedEvents Time range of the events that were loaded.
+ * 
+ * @interface {PrimeFaces.widget.TimelineCfg} cfg The configuration for the {@link  Timeline| Timeline widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
+ * 
+ * @prop {string} cfg.accept `accept` option for the jQueryUI droppable overlay when using drag&drop.
+ * @prop {string} cfg.activeClass Active style class for the droppable overlay when using drag&drop.
+ * @prop {Date} cfg.currentTime The currently shown time. 
+ * @prop {import("vis-data/declarations/data-set").DataSetInitialOptions<"id">} cfg.data The data for the vis-timeline
+ * data set.
+ * @prop {PrimeFaces.widget.Timeline.TimelineExtender} cfg.extender An extender function that may be used modify the
+ * settings of this configuration object. The {@link opts} are passed directly to vis-timeline.
+ * @prop {import("vis-timeline").DataGroupCollectionType} cfg.groups Optional groups for the events.
+ * @prop {string} cfg.hoverClass Hover style class for the droppable overlay when using drag&drop.
+ * @prop {boolean} cfg.isMenuPresent Whether a menu should be present for the timeline.
+ * @prop {import("vis-timeline").TimelineOptions} cfg.opts The options for the vis timeline.
+ * @prop {number} cfg.preloadFactor Preload factor is a positive float value or 0 which can be used for lazy loading of
+ * events. When the lazy loading feature is active, the calculated time range for preloading will be multiplied by the
+ * preload factor. The result of this multiplication specifies the additional time range which will be considered for
+ * the preloading during moving / zooming too. For example, if the calculated time range for preloading is 5 days and
+ * the preload factor is `0.2`, the result is `5 * 0.2 = 1` day. That means, 1 day backwards and 1 day onwards will be
+ * added to the original calculated time range. The event's area to be preloaded is wider then. This helps to avoid
+ * frequently, time-consuming fetching of events. Default value is `0`.
+ * @prop {string} cfg.scope `scope` option for the jQuery UI droppable overlay when using drag&drop.
+ */
 PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
     /**
-     * Initializes the widget.
-     *
-     * @param {Object} cfg widget configuration's object.
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
      */
     init: function (cfg) {
         this._super(cfg);
@@ -26,6 +100,8 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Creates timeline widget with all initialization steps.
+     * @override
+     * @protected
      */
     _render: function () {
         // configure localized text
@@ -53,7 +129,9 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Binds timeline's events.
+     * Sets up all event listeners that are required by this widget.
+     * @private
+     * @param {HTMLElement} el The main element of this timeline.
      */
     bindEvents: function (el) {
         if (this.cfg.opts.responsive) {
@@ -385,9 +463,10 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Retrieves the array of current data (events) as an JSON string. This method is useful when you done some changes
-     * in timeline and want to send them to server to update the backing model (with pe:remoteCommand and pe:convertTimelineEvents).
+     * in timeline and want to send them to server to update the backing model (with
+     * `pe:remoteCommand` and `pe:convertTimelineEvents`).
      *
-     * @return {Object}
+     * @return {string} A JSON string with the current data.
      */
     getData: function () {
         var newData = $.map(this.instance.getData(), $.proxy(function(item) {
@@ -461,7 +540,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * Gets time range(s) for events to be lazy loaded.
      * The internal time range for already loaded events will be updated.
      *
-     * @return {Object}
+     * @return {PrimeFaces.widget.Timeline.TimelineBiRange | null} The time range(s) for events to be lazy loaded.
      */
     getLazyLoadRange: function() {
         var visibleRange = this.instance.getVisibleChartRange();
@@ -557,30 +636,29 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Force render the timeline component.
      *
-     * @param animate flag to animate the render action (optional)
+     * @param {boolean} [animate] Flag indicating whether to animate the render action.
      */
     renderTimeline: function (animate) {
         this.instance.render({'animate': animate});
     },
 
     /**
-     * Adds an event to the timeline. The provided parameter properties is an object, containing parameters
-     * "start" (Date), "end" (Date), "content" (String), "group" (String). Parameters "end" and "group" are optional.
+     * Adds an event to the timeline.
      *
-     * @param properties event's properties
-     * @param preventRender flag indicating whether to preventRendering or not (optional)
+     * @param {import("vis-timeline").DataItem} properties Properties for the event.
+     * @param {boolean} [preventRender] Flag indicating whether to preventRendering or not.
      */
     addEvent: function (properties, preventRender) {
         this.instance.addItem(properties, preventRender);
     },
 
     /**
-     * Changes properties of an existing item in the timeline. The provided parameter properties is an object,
-     * and can contain parameters "start" (Date), "end" (Date), "content" (String), "group" (String).
-     *
-     * @param index index of the event.
-     * @param properties event's properties
-     * @param preventRender flag indicating whether to preventRendering or not (optional)
+     * Changes properties of an existing event in the timeline.
+     * 
+     * @param {number} index Index of the event.
+     * @param {import("vis-data/declarations/data-interface").DeepPartial<import("vis-timeline").DataItem>} properties
+     * Properties for the event.
+     * @param {boolean} [preventRender] Flag indicating whether to prevent rendering or not.
      */
     changeEvent: function (index, properties, preventRender) {
         this.instance.changeItem(index, properties, preventRender);
@@ -589,10 +667,9 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Deletes an existing event.
      *
-     * @param index index of the event.
-     * @param preventRender optional boolean parameter to prevent re-render timeline immediately after delete
-     * @param preventRender flag indicating whether to preventRendering or not (optional)
-     *        (for multiple deletions). Default is false.
+     * @param {number} index Index of the event.
+     * @param {boolean} [preventRender] flag indicating whether to prevent re-rendering the timeline immediately after
+     * delete (for multiple deletions). Default is false.
      */
     deleteEvent: function (index, preventRender) {
         this.instance.deleteItem(index, preventRender);
@@ -627,68 +704,66 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Retrieves the properties of a single event. The returned object can contain parameters
-     * "start" (Date), "end" (Date), "content" (String), "group" (String).
-     *
-     * @return {Object}
+     * Retrieves the properties of a single event.
+     * @param {number} index 0-based index of the item to retrieve.
+     * @return {import("vis-data/declarations/data-interface").FullItem<import("vis-timeline").DataItem, "id"> | null}
+     * The event at the given index, or `null` when no such events exists at the index.
      */
     getEvent: function (index) {
         return this.instance.getItem(index);
     },
 
     /**
-     * Is the event by given index editable?
+     * Checks whether the event at the given index is editable.
      *
-     * @param index index of the event
-     * @return {boolean} true - editable, false - not
+     * @param {number} index Index of the event
+     * @return {boolean} `true` if the event is editable, or `false` otherwise.
      */
     isEditable: function(index) {
         return this.instance.isEditable(this.getEvent(index));
     },
 
     /**
-     * Returns an object with start and end properties, which each one of them is a Date object,
-     * representing the currently visible time range.
+     * The currently visible time range of the timeline.
      *
-     * @return {Object}
+     * @return {import("vis-timeline").TimelineWindow} The time range that is currently visible.
      */
     getVisibleRange: function () {
         return this.instance.getVisibleChartRange();
     },
 
     /**
-     * Sets the visible range (zoom) to the specified range. Accepts two parameters of type Date
-     * that represent the first and last times of the wanted selected visible range.
-     * Set start to null to include everything from the earliest date to end;
-     * set end to null to include everything from start to the last date.
+     * Sets the visible range to the specified time range by zooming.
      *
-     * @param start start Date
-     * @param end end Date
+     * @param {Date | null} start Start of the time range. Pass `null` to include everything from the earliest date to
+     * the given end date.
+     * @param {Date | null } end End of the time range. Pass `null` to include everything from the given start date to
+     * the last date.
+     * @return {undefined} Always returns `undefined`.
      */
     setVisibleRange: function (start, end) {
         return this.instance.setVisibleChartRange(start, end);
     },
 
     /**
-     * Moves the timeline the given movefactor to the left or right. Start and end date will be adjusted,
-     * and the timeline will be redrawn. For example, try moveFactor = 0.1 or -0.1. moveFactor is a Number
-     * that determines the moving amount. A positive value will move right, a negative value will move left.
-     *
-     * @param moveFactor Number
+     * Moves the timeline the given move factor to the left or right. Start and end date will be adjusted, and the
+     * timeline will be redrawn. For example, try a `moveFactor` of `0.1` or `-0.1`.
+     * 
+     * @param {number} moveFactor The amount to move by. A positive value will move right, a negative value will move
+     * left.
+     * @return {undefined} Always returns `undefined`.
      */
     move: function (moveFactor) {
         return this.instance.move(moveFactor);
     },
 
     /**
-     * Zooms the timeline the given zoomfactor in or out. Start and end date will be adjusted,
-     * and the timeline will be redrawn. You can optionally give a date around which to zoom.
-     * For example, try zoomfactor = 0.1 or -0.1. zoomFactor is a Number that determines the zooming amount.
-     * Positive value will zoom in, negative value will zoom out.
-     * zoomAroundDate is a Date around which to zoom and it is optional.
+     * Zooms the timeline by the given zoom factor. Start and end date will be adjusted, and the timeline will be
+     * redrawn. You can optionally give a date around which to zoom. For example, try a `zoomfactor` of `0.1` or `-0.1`.
      *
-     * @param zoomFactor Number
-     * @param zoomAroundDate Date
+     * @param {number} zoomFactor Amount by which to zoom. Positive value will zoom in, negative value will zoom out.
+     * @param {Date} [zoomAroundDate] Date Date around which to zoom
+     * @return {undefined} Always returns `undefined`.
      */
     zoom: function (zoomFactor, zoomAroundDate) {
         return this.instance.zoom(zoomFactor, zoomAroundDate);
@@ -704,16 +779,16 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Gets number of events (items in the timeline).
      *
-     * @return {Integer}
+     * @return {number} The number of event in the timeline.
      */
     getNumberOfEvents: function () {
         return this.instance.getData().length;
     },
 
     /**
-     * Gets index of the currently selected event or -1.
+     * Gets the index of the currently selected event.
      *
-     * @return {Number}
+     * @return {number} The index of the currently select event, or `-1` if no event is currently selected.
      */
     getSelectedIndex: function () {
         var selection = this.instance.getSelection();
@@ -727,10 +802,10 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Gets currently selected event with properties or null. Properties are
-     * "start" (Date), "end" (Date), "content" (String), "group" (String), "editable" (boolean).
+     * Finds the currently selected event.
      *
-     * @return {Object} JSON object
+     * @return {import("vis-data/declarations/data-interface").FullItem<import("vis-timeline").DataItem, "id"> | null}
+     * The currently selected event, or `null` when no event is selected.
      */
     getSelectedEvent: function () {
         var index = this.getSelectedIndex();
@@ -742,11 +817,10 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Selects an event by index. The visible range will be moved,
-     * so that the selected event is placed in the middle.
-     * To unselect all events, use a negative index, e.g. index = -1.
+     * Selects an event by given index. The visible range will be moved, so that the selected event is placed in the
+     * middle. To unselect all events, use a negative index, e.g. `-1`.
      *
-     * @param index
+     * @param {number} index Index of the event to select. When negative, unselects all events.
      */
     setSelection: function(index) {
         if (index >= 0) {
@@ -760,9 +834,9 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Gets instance of the Timeline object.
+     * Gets instance of the timeline object.
      *
-     * @return {Object}
+     * @return {import("vis-timeline").Timeline} The current timeline instance.
      */
     getInstance: function () {
         return this.instance;

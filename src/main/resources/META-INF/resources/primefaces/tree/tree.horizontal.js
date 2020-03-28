@@ -1,8 +1,21 @@
 /**
- * PrimeFaces Horizontal Tree Widget
+ * __PrimeFaces Horizontal Tree Widget__
+ * 
+ * Tree is used for displaying hierarchical data and creating a site navigation. This implements a horizontal tree.
+ * 
+ * @interface {PrimeFaces.widget.HorizontalTreeCfg} cfg The configuration for the
+ * {@link  HorizontalTree| HorizontalTree widget}. You can access this configuration via
+ * {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this configuration is usually meant to be
+ * read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseTreeCfg} cfg
  */
 PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
@@ -11,7 +24,11 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
         }
     },
 
-    //@Override
+    /**
+     * @override
+     * @protected
+     * @inheritdoc
+     */
     bindEvents: function() {
         var $this = this,
         selectionMode = this.cfg.selectionMode,
@@ -60,7 +77,12 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
 
     },
 
-    //@Override
+    /**
+     * @override
+     * @protected
+     * @inheritdoc
+     * @param {JQuery} node
+     */
     showNodeChildren: function(node) {
         node.attr('aria-expanded', true);
 
@@ -82,6 +104,11 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
         }
     },
 
+    /**
+     * Collapses the given node, as if the user had clicked on the `-` icon of the node. The children of the node will
+     * now be visible. 
+     * @param {JQuery} node Node to collapse. 
+     */
     collapseNode: function(node) {
         var childrenContainer = node.next(),
         toggleIcon = node.find('> .ui-treenode-content > .ui-tree-toggler'),
@@ -109,11 +136,23 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
         }
     },
 
-    //@Override
+    /**
+     * @override
+     * @protected
+     * @inheritdoc
+     * @param {JQuery} node
+     * @return {JQuery}
+     */
     getNodeChildrenContainer: function(node) {
         return node.next('.ui-treenode-children-container').children('.ui-treenode-children');
     },
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {JQuery} node
+     * @param {boolean} [silent]
+     */
     selectNode: function(node, silent) {
         node.removeClass('ui-treenode-unselected').addClass('ui-treenode-selected').children('.ui-treenode-content').removeClass('ui-state-hover').addClass('ui-state-highlight');
 
@@ -124,6 +163,12 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
             this.fireNodeSelectEvent(node);
     },
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {JQuery} node
+     * @param {boolean} [silent]
+     */
     unselectNode: function(node, silent) {
         var rowKey = this.getRowKey(node);
 
@@ -136,6 +181,10 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
             this.fireNodeUnselectEvent(node);
     },
 
+    /**
+     * @override
+     * @inheritdoc
+     */
     unselectAllNodes: function() {
         this.selections = [];
         this.jq.find('.ui-treenode-content.ui-state-highlight').each(function() {
@@ -143,6 +192,11 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
         });
     },
 
+    /**
+     * @override
+     * @protected
+     * @inheritdoc
+     */
     preselectCheckbox: function() {
         var _self = this;
 
@@ -157,6 +211,12 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
         });
     },
 
+    /**
+     * @override
+     * @protected
+     * @inheritdoc
+     * @param {JQuery} node
+     */
     toggleCheckboxNode: function(node) {
         var $this = this,
         checkbox = node.find('> .ui-treenode-content > .ui-chkbox'),
@@ -204,16 +264,32 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
             this.fireNodeSelectEvent(node);
     },
 
+    /**
+     * @override
+     * @protected
+     * @inheritdoc
+     * @param {JQuery} checkbox
+     */
     check: function(checkbox) {
         this._super(checkbox);
         checkbox.parent('.ui-treenode-content').addClass('ui-state-highlight').removeClass('ui-state-hover');
     },
 
+    /**
+     * @override
+     * @protected
+     * @inheritdoc
+     * @param {JQuery} checkbox
+     */
     uncheck: function(checkbox) {
         this._super(checkbox);
         checkbox.parent('.ui-treenode-content').removeClass('ui-state-highlight');
     },
 
+    /**
+     * Draws the lines connection the tree nodes.
+     * @private
+     */
     drawConnectors: function() {
         this.jq.find('table.ui-treenode-connector-table').each(function() {
             var table = $(this),
@@ -223,15 +299,32 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
         });
     },
 
+    /**
+     * @override
+     * @inheritdoc
+     * @return {boolean}
+     */
     isEmpty: function() {
         return this.jq.children('table').length === 0;
     },
 
+    /**
+     * This implementation does nothing, focus is not supported in horizontal mode.
+     * @override
+     * @inheritdoc
+     * @protected
+     * @param {JQuery} node
+     */
     focusNode: function(node) {
         //focus not supported in horizontal mode
     },
 
-    //@Override
+    /**
+     * @override
+     * @protected
+     * @inheritdoc
+     * @param {JQuery} checkbox
+     */
     partialCheck: function(checkbox) {
         var box = checkbox.children('.ui-chkbox-box'),
         icon = box.children('.ui-chkbox-icon'),

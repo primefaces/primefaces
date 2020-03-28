@@ -1,8 +1,27 @@
 /**
- * PrimeFaces InputText Widget
+ * __PrimeFaces InputText Widget__
+ * 
+ * InputText is an extension to standard inputText with skinning capabilities.
+ * 
+ * @prop {JQuery} counter The DOM element for the counter that informs the user about the number of characters they can
+ * still enter before they reach the limit.
+ * 
+ * @interface {PrimeFaces.widget.InputTextCfg} cfg The configuration for the {@link  InputText| InputText widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {string} cfg.counter ID of the label component to display remaining and entered characters.
+ * @prop {string} cfg.counterTemplate Template text to display in counter, default value is `{0}`.
+ * @prop {number} cfg.maxlength Maximum number of characters that may be entered in this field.
  */
 PrimeFaces.widget.InputText = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
@@ -23,14 +42,25 @@ PrimeFaces.widget.InputText = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Disabled this input field so that the user cannot enter text anymore.
+     */
     disable: function() {
         this.jq.prop('disabled', true).addClass('ui-state-disabled');
     },
 
+    /**
+     * Enables this input field so that the user can enter text.
+     */
     enable: function() {
         this.jq.prop('disabled', false).removeClass('ui-state-disabled');
     },
     
+    /**
+     * Updates the counter value that keeps count of how many more characters the user can enter before they reach the
+     * limit.
+     * @private
+     */
     updateCounter: function() {
         var value = this.normalizeNewlines(this.jq.val()),
         length = value.length;
@@ -48,6 +78,12 @@ PrimeFaces.widget.InputText = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Replaces all line breaks with a Window-style line break (carriage return + line feed).
+     * @private
+     * @param {string} text Text to normalize.
+     * @return {string} The given text, with all line breaks replaced with carriage return + line feed. 
+     */
     normalizeNewlines: function(text) {
         return text.replace(/(\r\n|\r|\n)/g, '\r\n');
     }

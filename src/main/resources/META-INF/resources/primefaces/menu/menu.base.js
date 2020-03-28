@@ -1,5 +1,34 @@
+/**
+ * __PrimeFaces Menu Widget__
+ * 
+ * Base class for the different menu widets, such as the `PlainMenu` or the `TieredMenu`.
+ * 
+ * @prop {JQuery} keyboardTarget The DOM element for the form element that can be targeted via arrow or tab keys. 
+ * @prop {boolean} itemMouseDown `true` if a menu item was clicked and the mouse button is still pressed.
+ * @prop {JQuery} trigger DOM element which triggers this menu.
+ * 
+ * @interface {PrimeFaces.widget.MenuCfg} cfg The configuration for the {@link  Menu| Menu widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg 
+ * 
+ * @prop {string} cfg.appendTo Search expression for the element to which the menu overlay is appended.
+ * @prop {string} cfg.at Defines which position on the target element to align the positioned element against
+ * @prop {string} cfg.collision When the positioned element overflows the window in some direction, move it to an
+ * alternative position.
+ * @prop {string} cfg.my Defines which position on the element being positioned to align with the target element.
+ * @prop {boolean} cfg.overlay `true` if this menu is displayed as an overlay, or `false` otherwise.
+ * @prop {JQueryUI.JQueryPositionOptions} cfg.pos Describes how to align this menu.
+ * @prop {string} cfg.trigger ID of the event which triggers this menu.
+ * @prop {string} cfg.triggerEvent Event which triggers this menu.
+ */
 PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
@@ -10,6 +39,10 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         this.keyboardTarget = this.jq.children('.ui-helper-hidden-accessible');
     },
 
+    /**
+     * Initializes the overlay. Finds the element to which to append this menu and appends it to that element.
+     * @protected
+     */
     initOverlay: function() {
         var $this = this;
 
@@ -82,6 +115,10 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         this.setupDialogSupport();
     },
 
+    /**
+     * Performs some setup required to make this overlay menu work with dialogs.
+     * @protected
+     */
     setupDialogSupport: function() {
         var dialog = this.trigger.parents('.ui-dialog:first');
 
@@ -90,6 +127,9 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Shows (displays) this menu so that it becomes visible and can be interacted with.
+     */
     show: function() {
         this.jq.css({
             'z-index': ++PrimeFaces.zindex,
@@ -100,6 +140,9 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         this.jq.css('visibility', '');
     },
 
+    /**
+     * Hides this menu so that it becomes invisible and cannot be interacted with any longer.
+     */
     hide: function() {
         this.jq.fadeOut('fast');
 
@@ -108,6 +151,9 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Aligns this menu as specified in its widget configuration (property `pos`).
+     */
     align: function() {
         this.jq.css({left:'', top:''}).position(this.cfg.pos);
     }

@@ -1,8 +1,25 @@
- /**
- * PrimeFaces ToggleSwitch Widget
+/**
+ * __PrimeFaces ToggleSwitch Widget__
+ * 
+ * ToggleSwitch is used to select a boolean value.
+ * 
+ * > ToggleSwitch is designed to replace the old {@link InputSwitch|InputSwitch component}.
+ * 
+ * @prop {JQuery} input The DOM element for the hidden input field storing the value of this switch.
+ * @prop {JQuery} slider The DOM element for the slider.
+ * 
+ * @interface {PrimeFaces.widget.ToggleSwitchCfg} cfg The configuration for the {@link  ToggleSwitch| ToggleSwitch widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  */
 PrimeFaces.widget.ToggleSwitch = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
         
@@ -14,6 +31,10 @@ PrimeFaces.widget.ToggleSwitch = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Sets up all event listeners that are required by this widget.
+     * @private
+     */
     _bindEvents: function() {
         var $this = this;
 
@@ -44,6 +65,9 @@ PrimeFaces.widget.ToggleSwitch = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Turns this switch in case it is off, or turns of off in case it is on.
+     */
     toggle: function() {
         if(this.input.prop('checked'))
             this.uncheck();
@@ -51,11 +75,17 @@ PrimeFaces.widget.ToggleSwitch = PrimeFaces.widget.BaseWidget.extend({
             this.check();
     },
 
+    /**
+     * Turns this switch on if it is not already turned on.
+     */
     check: function() {
         this.input.prop('checked', true).trigger('change');
         this.jq.attr('aria-checked', true).addClass('ui-toggleswitch-checked');
     },
 
+    /**
+     * Turns this switch off if it is not already turned of.
+     */
     uncheck: function() {
         this.input.prop('checked', false).trigger('change');
         this.jq.attr('aria-checked', false).removeClass('ui-toggleswitch-checked');
