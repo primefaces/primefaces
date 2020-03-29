@@ -27,8 +27,6 @@ import javax.faces.component.html.HtmlSelectManyMenu;
 
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements Widget, InputHolder {
 
@@ -119,10 +117,5 @@ public abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements W
 
     public void setScrollHeight(int scrollHeight) {
         getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

@@ -25,8 +25,6 @@ package org.primefaces.component.megamenu;
 
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class MegaMenuBase extends AbstractMenu implements Widget {
 
@@ -41,6 +39,7 @@ public abstract class MegaMenuBase extends AbstractMenu implements Widget {
         style,
         styleClass,
         autoDisplay,
+        delay,
         activeIndex,
         orientation
     }
@@ -111,8 +110,11 @@ public abstract class MegaMenuBase extends AbstractMenu implements Widget {
         getStateHelper().put(PropertyKeys.orientation, orientation);
     }
 
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    public int getDelay() {
+        return (Integer) getStateHelper().eval(PropertyKeys.delay, 0);
+    }
+
+    public void setDelay(int delay) {
+        getStateHelper().put(PropertyKeys.delay, delay);
     }
 }

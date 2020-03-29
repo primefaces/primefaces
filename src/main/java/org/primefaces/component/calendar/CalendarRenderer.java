@@ -23,15 +23,15 @@
  */
 package org.primefaces.component.calendar;
 
-import org.primefaces.util.CalendarUtils;
 import java.io.IOException;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Locale;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.component.api.UICalendar;
 
+import org.primefaces.component.api.UICalendar;
+import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class CalendarRenderer extends BaseCalendarRenderer {
@@ -73,10 +73,10 @@ public class CalendarRenderer extends BaseCalendarRenderer {
         Calendar calendar = (Calendar) uicalendar;
         String clientId = calendar.getClientId(context);
         Locale locale = calendar.calculateLocale(context);
-        String pattern = calendar.isTimeOnly() ? calendar.calculateTimeOnlyPattern() : calendar.calculatePattern();
+        String pattern = calendar.calculateWidgetPattern();
         String mask = calendar.getMask();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Calendar", calendar.resolveWidgetVar(), clientId);
+        wb.init("Calendar", calendar.resolveWidgetVar(context), clientId);
 
         wb.attr("popup", calendar.isPopup())
                 .attr("locale", locale.toString())
@@ -87,7 +87,7 @@ public class CalendarRenderer extends BaseCalendarRenderer {
         String defaultDate = null;
 
         if (calendar.isConversionFailed()) {
-            defaultDate = CalendarUtils.getValueAsString(context, calendar, new Date());
+            defaultDate = CalendarUtils.getValueAsString(context, calendar, LocalDateTime.now());
         }
         else if (!isValueBlank(value)) {
             defaultDate = value;
@@ -98,8 +98,8 @@ public class CalendarRenderer extends BaseCalendarRenderer {
 
         wb.attr("defaultDate", defaultDate, null)
                 .attr("numberOfMonths", calendar.getPages(), 1)
-                .attr("minDate", CalendarUtils.getValueAsString(context, calendar, calendar.getMindate()), null)
-                .attr("maxDate", CalendarUtils.getValueAsString(context, calendar, calendar.getMaxdate()), null)
+                .attr("minDate", CalendarUtils.getValueAsString(context, calendar, calendar.getMindate(), pattern), null)
+                .attr("maxDate", CalendarUtils.getValueAsString(context, calendar, calendar.getMaxdate(), pattern), null)
                 .attr("showButtonPanel", calendar.isShowButtonPanel(), false)
                 .attr("showTodayButton", calendar.isShowTodayButton(), true)
                 .attr("showWeek", calendar.isShowWeek(), false)

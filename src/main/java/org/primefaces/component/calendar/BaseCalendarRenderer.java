@@ -24,7 +24,6 @@
 package org.primefaces.component.calendar;
 
 import org.primefaces.component.api.UICalendar;
-import org.primefaces.component.datepicker.DatePickerRenderer;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.CalendarUtils;
@@ -41,9 +40,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -53,6 +49,7 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.time.temporal.ChronoField;
 import java.time.temporal.Temporal;
 import java.util.Collection;
@@ -150,31 +147,35 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         UICalendar calendar = (UICalendar) component;
 
         //Delegate to user supplied converter if defined
-        Class type = resolveDateType(context, calendar);
-        Converter converter = resolveConverter(context, calendar, type);
-        if (converter != null) {
-            try {
-                return converter.getAsObject(context, calendar, submittedValue);
+        Class<?> type = resolveDateType(context, calendar);
+        if (type != null) {
+            Converter converter = resolveConverter(context, calendar, type);
+            if (converter != null) {
+                try {
+                    return converter.getAsObject(context, calendar, submittedValue);
+                }
+                catch (ConverterException e) {
+                    calendar.setConversionFailed(true);
+                    throw e;
+                }
             }
-            catch (ConverterException e) {
-                calendar.setConversionFailed(true);
-                throw e;
+
+            // Java 8 Date/Time API
+            if (Temporal.class.isAssignableFrom(type)) {
+                return convertToJava8DateTimeAPI(context, calendar, type, submittedValue);
             }
+            else if (Date.class.isAssignableFrom(type)) {
+                return convertToLegacyDateAPI(context, calendar, submittedValue);
+            }
+
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, type.getName() + " not supported", null);
+            throw new ConverterException(message);
         }
 
-        // Java 8 Date/Time API
-        if (Temporal.class.isAssignableFrom(type)) {
-            return convertToJava8DateTimeAPI(context, calendar, type, submittedValue);
-        }
-        else if (Date.class.isAssignableFrom(type)) {
-            return convertToLegacyDateAPI(context, submittedValue, calendar);
-        }
-
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, type.getName() + " not supported", null);
-        throw new ConverterException(message);
+        return null;
     }
 
-    protected Date convertToLegacyDateAPI(FacesContext context, String submittedValue, UICalendar calendar) {
+    protected Date convertToLegacyDateAPI(FacesContext context, UICalendar calendar, String submittedValue) {
         //Code for backward-compatibility with java.util.Date - may be removed at some point in the future
         SimpleDateFormat format = new SimpleDateFormat(calendar.calculatePattern(), calendar.calculateLocale(context));
         format.setLenient(false);
@@ -188,14 +189,16 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         }
     }
 
-    protected Temporal convertToJava8DateTimeAPI(FacesContext context, UICalendar calendar, Class type, String submittedValue) {
+    protected Temporal convertToJava8DateTimeAPI(FacesContext context, UICalendar calendar, Class<?> type, String submittedValue) {
         if (type == LocalDate.class || type == YearMonth.class) {
             DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                     .parseCaseInsensitive()
                     .appendPattern(calendar.calculatePattern())
                     .parseDefaulting(ChronoField.DAY_OF_MONTH, 1) //because of Month Picker which does not contain day of month
+                    .parseDefaulting(ChronoField.ERA, 1)
                     .toFormatter(calendar.calculateLocale(context))
-                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()));
+                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()))
+                    .withResolverStyle(resolveResolverStyle(calendar.getResolverStyle()));
 
             try {
                 return type == LocalDate.class
@@ -203,48 +206,52 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
                         : YearMonth.parse(submittedValue, formatter);
             }
             catch (DateTimeParseException e) {
-                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDate.now()));
+                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDateTime.now()));
             }
         }
         else if (type == LocalTime.class) {
+            String pattern = calendar instanceof Calendar ? calendar.calculatePattern() : calendar.calculateTimeOnlyPattern();
             DateTimeFormatter formatter = DateTimeFormatter
-                    .ofPattern(calendar.calculateTimeOnlyPattern(), calendar.calculateLocale(context))
-                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()));
+                    .ofPattern(pattern, calendar.calculateLocale(context))
+                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()))
+                    .withResolverStyle(resolveResolverStyle(calendar.getResolverStyle()));
 
             try {
                 return LocalTime.parse(submittedValue, formatter);
             }
             catch (DateTimeParseException e) {
-                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDate.now()));
+                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDateTime.now()));
             }
         }
         else if (type == LocalDateTime.class) {
-            //known issue: https://github.com/primefaces/primefaces/issues/4625
-            //known issue: https://github.com/primefaces/primefaces/issues/4626
-
-            //TODO: remove temporary (ugly) work-around for adding fixed time-pattern
-            String pattern = calendar.calculatePattern();
-            if (this instanceof DatePickerRenderer) {
-                pattern += " HH:mm";
-            }
-
             DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                     .parseCaseInsensitive()
-                    .appendPattern(pattern)
+                    .appendPattern(calendar.calculatePattern())
+                    .parseDefaulting(ChronoField.ERA, 1)
                     .toFormatter(calendar.calculateLocale(context))
-                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()));
+                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()))
+                    .withResolverStyle(resolveResolverStyle(calendar.getResolverStyle()));
 
             try {
                 return LocalDateTime.parse(submittedValue, formatter);
             }
             catch (DateTimeParseException e) {
-                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDate.now()));
+                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDateTime.now()));
             }
         }
 
         //TODO: implement if necessary
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ZonedDateTime not supported", null);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, type.getName() + " not supported", null);
         throw new ConverterException(message);
+    }
+
+    private ResolverStyle resolveResolverStyle(String passedResolverStyle) {
+        for (ResolverStyle resolverStyle : ResolverStyle.values()) {
+            if (resolverStyle.name().equalsIgnoreCase(passedResolverStyle)) {
+                return resolverStyle;
+            }
+        }
+        return ResolverStyle.SMART;
     }
 
     protected ConverterException createConverterException(FacesContext context,
@@ -272,9 +279,14 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         return new ConverterException(message);
     }
 
-    protected Class resolveDateType(FacesContext context, UICalendar calendar) {
+    protected Class<?> resolveDateType(FacesContext context, UICalendar calendar) {
         ValueExpression ve = calendar.getValueExpression("value");
-        Class type = ve.getType(context.getELContext());
+
+        if (ve == null) {
+            return LocalDate.class;
+        }
+
+        Class<?> type = ve.getType(context.getELContext());
 
         // If type could not be determined via value-expression try it this way. (Very unlikely, this happens in real world.)
         if (type == null) {
@@ -294,21 +306,13 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             Object base = valueReference.getBase();
             Object property = valueReference.getProperty();
 
-            try {
-                Field field = LangUtils.getUnproxiedClass(base.getClass()).getDeclaredField((String) property);
-                ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
-                Type listType = parameterizedType.getActualTypeArguments()[0];
-                type = Class.forName(listType.getTypeName());
-            }
-            catch (ReflectiveOperationException ex) {
-                //NOOP
-            }
+            type = LangUtils.getTypeFromCollectionProperty(base, (String) property);
         }
 
         return type;
     }
 
-    protected Converter resolveConverter(FacesContext context, UICalendar calendar, Class type) {
+    protected Converter resolveConverter(FacesContext context, UICalendar calendar, Class<?> type) {
         //Delegate to user supplied converter if defined
         Converter converter = calendar.getConverter();
         if (converter != null) {
@@ -320,6 +324,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
                 && type != Object.class
                 && type != Date.class
                 && type != LocalDate.class
+                && type != YearMonth.class
                 && type != LocalDateTime.class
                 && type != LocalTime.class) {
 

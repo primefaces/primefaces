@@ -95,7 +95,7 @@ public class CommandButtonRenderer extends CoreRenderer {
             }
         }
 
-        renderPassThruAttributes(context, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);
+        renderPassThruAttributes(context, button, HTML.BUTTON_WITH_CLICK_ATTRS);
 
         if (button.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", "disabled");
@@ -164,7 +164,7 @@ public class CommandButtonRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, CommandButton button) throws IOException {
         String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("CommandButton", button.resolveWidgetVar(), clientId);
+        wb.init("CommandButton", button.resolveWidgetVar(context), clientId);
 
         encodeClientBehaviors(context, button);
 

@@ -23,65 +23,35 @@
  */
 package org.primefaces.util;
 
-import java.security.Principal;
-
 import javax.faces.context.FacesContext;
+import java.security.Principal;
+import java.util.Collection;
+import java.util.Objects;
+import java.util.stream.Stream;
 
-public class SecurityUtils {
+public final class SecurityUtils {
 
     private SecurityUtils() {
+        // NOOP
     }
 
     public static boolean ifGranted(String role) {
         return FacesContext.getCurrentInstance().getExternalContext().isUserInRole(role);
     }
 
-    public static boolean ifAllGranted(String value) {
-        String[] roles = value.split(",");
-        boolean isAuthorized = false;
-
-        for (String role : roles) {
-            if (ifGranted(role.trim())) {
-                isAuthorized = true;
-            }
-            else {
-                isAuthorized = false;
-                break;
-            }
-        }
-
-        return isAuthorized;
+    public static boolean ifAllGranted(Object value) {
+        return convertRoles(value)
+                .allMatch(SecurityUtils::ifGranted);
     }
 
-    public static boolean ifAnyGranted(String value) {
-        String[] roles = value.split(",");
-        boolean isAuthorized = false;
-
-        for (String role : roles) {
-            if (ifGranted(role.trim())) {
-                isAuthorized = true;
-                break;
-            }
-        }
-
-        return isAuthorized;
+    public static boolean ifAnyGranted(Object value) {
+        return convertRoles(value)
+                .anyMatch(SecurityUtils::ifGranted);
     }
 
-    public static boolean ifNoneGranted(String value) {
-        String[] roles = value.split(",");
-        boolean isAuthorized = false;
-
-        for (String role : roles) {
-            if (ifGranted(role.trim())) {
-                isAuthorized = false;
-                break;
-            }
-            else {
-                isAuthorized = true;
-            }
-        }
-
-        return isAuthorized;
+    public static boolean ifNoneGranted(Object value) {
+        return convertRoles(value)
+                .noneMatch(SecurityUtils::ifGranted);
     }
 
     public static String remoteUser() {
@@ -90,5 +60,24 @@ public class SecurityUtils {
 
     public static Principal userPrincipal() {
         return FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal();
+    }
+
+    static Stream<String> convertRoles(Object value) {
+        Objects.requireNonNull(value, "Roles value can't be null");
+
+        Stream<?> results = null;
+        if (value instanceof String) {
+            results = Stream.of(((String) value).split(",")).map(String::trim);
+        }
+        else if (value instanceof Object[]) {
+            results = Stream.of((Object[]) value);
+        }
+        else if (value instanceof Collection) {
+            results = ((Collection<?>) value).stream();
+        }
+        else {
+            results = Stream.of(value);
+        }
+        return results.map(Object::toString);
     }
 }

@@ -8,7 +8,7 @@
  * @prop {JQuery} keyboardTarget The DOM element for the input element accessible via keyboard keys.
  * @prop {JQuery} rootLinks The DOM elements for the root level menu links with the class `.ui-menuitem-link`. 
  * @prop {JQuery} rootList The DOM elements for the root level menu items with the class `.ui-menu-list`.
- * @prop {JQuery} subLinks The DOM elements for all menu links not a the root leve, with the class `.ui-menuitem-link`.
+ * @prop {JQuery} subLinks The DOM elements for all menu links not a the root level, with the class `.ui-menuitem-link`.
  * 
  * @interface {PrimeFaces.widget.MegaMenuCfg} cfg The configuration for the {@link  MegaMenu| MegaMenu widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -18,6 +18,7 @@
  * @prop {number} cfg.activeIndex Index of the menu item initially active.
  * @prop {boolean} cfg.autoDisplay Defines whether submenus will be displayed on mouseover or not. When set to false,
  * click event is required to display.
+ * @prop {number} cfg.delay Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.
  * @prop {boolean} cfg.vertical `true` if the mega menu is displayed with a vertical layout, `false` if displayed with a
  * horizontal layout.
  */
@@ -93,10 +94,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
                     }
                 }
                 else {
-                    var href = link.attr('href');
-                    if(href && href !== '#') {
-                        window.location.href = href;
-                    }
+                    PrimeFaces.utils.openLink(e, link);
                 }
 
                 e.preventDefault();
@@ -431,9 +429,16 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
             };
         }
 
-        submenu.css('z-index', ++PrimeFaces.zindex)
-                .show()
-                .position(pos);
+        //avoid queuing multiple runs
+        if(this.timeoutId) {
+            clearTimeout(this.timeoutId);
+        }
+
+        this.timeoutId = setTimeout(function () {
+           submenu.css('z-index', ++PrimeFaces.zindex)
+                  .show()
+                  .position(pos)
+        }, this.cfg.delay);
     }
 
 });

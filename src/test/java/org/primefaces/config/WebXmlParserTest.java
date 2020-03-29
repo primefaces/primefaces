@@ -1,76 +1,75 @@
 package org.primefaces.config;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.xml.xpath.XPathFactory;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(Parameterized.class)
+import java.net.MalformedURLException;
+import java.util.Map;
+import java.util.stream.Stream;
+
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.xml.xpath.XPathFactory;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
 public class WebXmlParserTest {
     private static String XPATH_FACTORY_SYSTEM_PROPERTY = XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI;
 
-    @Parameterized.Parameter
-    public String pathToWebXml;
-
     private FacesContext context;
+    private ExternalContext extContext;
 
-    @Parameterized.Parameters(name = "{index}: {0}")
-    public static Collection<Object[]> data() {
-        return Arrays.asList(new Object[][]{
-                {"web-namespaces.xml"},
-                {"web-empty-error-code.xml"},
-                {"web-no-namespace.xml"},
-        });
+    private static Stream<Arguments> data() {
+        return Stream.of(
+                    Arguments.of("web-namespaces.xml"),
+                    Arguments.of("web-empty-error-code.xml"),
+                    Arguments.of("web-no-namespace.xml"));
     }
 
     private void configureXpathFactory(Class<? extends XPathFactory> factoryClass) {
         System.setProperty(XPATH_FACTORY_SYSTEM_PROPERTY, factoryClass.getName());
-        assertEquals("The XpathFactory implementations must match: " + factoryClass.getName(), factoryClass, XPathFactory.newInstance().getClass());
+        assertEquals(factoryClass, XPathFactory.newInstance().getClass(), "The XpathFactory implementations must match: " + factoryClass.getName());
     }
 
-    @Before
+    @BeforeEach
     public void mockContext() throws Exception {
         context = mock(FacesContext.class);
-        ExternalContext extContext = mock(ExternalContext.class);
+        extContext = mock(ExternalContext.class);
         when(context.getExternalContext()).thenReturn(extContext);
-        when(extContext.getResource(anyString())).thenReturn(this.getClass().getResource(pathToWebXml));
+
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         System.clearProperty(XPATH_FACTORY_SYSTEM_PROPERTY);
     }
 
-
     private void assertErrorPages(Map<String, String> errorPages) {
         String viewExpiredClassName = "javax.faces.application.ViewExpiredException";
-        assertEquals("Parsing the web.xml should return 2 errors pages", 2, errorPages.size());
-        assertEquals("The key null should return the default location", "/default", errorPages.get(null));
-        assertEquals("The key " + viewExpiredClassName + "  should return the viewExpired location", "/viewExpired", errorPages.get(viewExpiredClassName));
+        assertEquals(2, errorPages.size(), "Parsing the web.xml should return 2 errors pages");
+        assertEquals("/default", errorPages.get(null), "The key null should return the default location");
+        assertEquals("/viewExpired", errorPages.get(viewExpiredClassName), "The key " + viewExpiredClassName + "  should return the viewExpired location");
     }
 
-    @Test
-    public void testSaxon() {
+    @ParameterizedTest
+    @MethodSource("data")
+    public void testSaxon(String pathToWebXml) throws MalformedURLException {
+        when(extContext.getResource(anyString())).thenReturn(this.getClass().getResource(pathToWebXml));
         configureXpathFactory(net.sf.saxon.xpath.XPathFactoryImpl.class);
         Map<String, String> errorPages = WebXmlParser.getErrorPages(context);
         assertErrorPages(errorPages);
     }
 
-    @Test
-    public void testInternalJaxp() {
+    @ParameterizedTest
+    @MethodSource("data")
+    public void testInternalJaxp(String pathToWebXml) throws MalformedURLException {
+        when(extContext.getResource(anyString())).thenReturn(this.getClass().getResource(pathToWebXml));
         configureXpathFactory(com.sun.org.apache.xpath.internal.jaxp.XPathFactoryImpl.class);
         Map<String, String> errorPages = WebXmlParser.getErrorPages(context);
         assertErrorPages(errorPages);

@@ -26,8 +26,6 @@ package org.primefaces.component.signature;
 import javax.faces.component.UIInput;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class SignatureBase extends UIInput implements Widget {
 
@@ -163,10 +161,5 @@ public abstract class SignatureBase extends UIInput implements Widget {
 
     public void setBase64Value(String base64Value) {
         getStateHelper().put(PropertyKeys.base64Value, base64Value);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

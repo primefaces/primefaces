@@ -423,7 +423,7 @@ declare namespace JQuery {
          * Usually receives the following additional arguments:
          * - `isScrollable` (boolean)
          */
-        "jsp-initialised": JQuery.EventBase<TDelegateTarget, TData, TCurrentTarget, TTarget>;
+        "jsp-initialised": JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
 
         /**
          * Triggered by the {@link JQuery.jScrollPane|jQuery JScrollPane plugin}.
@@ -435,7 +435,7 @@ declare namespace JQuery {
          * - `isAtTop` (boolean)
          * - `isAtBottom` (boolean)
          */
-        "jsp-scroll-y": JQuery.EventBase<TDelegateTarget, TData, TCurrentTarget, TTarget>;
+        "jsp-scroll-y": JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
 
         /**
          * Triggered by the {@link JQuery.jScrollPane|jQuery JScrollPane plugin}.
@@ -447,7 +447,7 @@ declare namespace JQuery {
          * - `isAtLeft` (boolean)
          * - `isAtRight` (boolean)
          */
-        "jsp-scroll-x": JQuery.EventBase<TDelegateTarget, TData, TCurrentTarget, TTarget>;
+        "jsp-scroll-x": JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
 
         /**
          * Triggered by the {@link JQuery.jScrollPane|jQuery JScrollPane plugin}.
@@ -463,7 +463,7 @@ declare namespace JQuery {
          * - `isAtRight` (boolean)
          * 
          */
-        "jsp-arrow-change": JQuery.EventBase<TDelegateTarget, TData, TCurrentTarget, TTarget>;
+        "jsp-arrow-change": JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
 
         /**
          * Triggered by the {@link JQuery.jScrollPane|jQuery JScrollPane plugin}.
@@ -475,7 +475,7 @@ declare namespace JQuery {
          * - `isAtTop` (boolean)
          * - `isAtBottom` (boolean)
          */
-        "jsp-user-scroll-y": JQuery.EventBase<TDelegateTarget, TData, TCurrentTarget, TTarget>;
+        "jsp-user-scroll-y": JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
 
         /**
          * Triggered by the {@link JQuery.jScrollPane|jQuery JScrollPane plugin}.
@@ -487,7 +487,7 @@ declare namespace JQuery {
          * - `isAtLeft` (boolean)
          * - `isAtRight` (boolean)
          */
-        "jsp-user-scroll-x": JQuery.EventBase<TDelegateTarget, TData, TCurrentTarget, TTarget>;
+        "jsp-user-scroll-x": JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
 
         /**
          * Triggered by the {@link JQuery.jScrollPane|jQuery JScrollPane plugin}.
@@ -498,7 +498,7 @@ declare namespace JQuery {
          * Usually receives the following additional arguments:
          * - `destY` (number)
          */
-        "jsp-will-scroll-y": JQuery.EventBase<TDelegateTarget, TData, TCurrentTarget, TTarget>;
+        "jsp-will-scroll-y": JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
 
         /**
          * Triggered by the {@link JQuery.jScrollPane|jQuery JScrollPane plugin}.
@@ -509,6 +509,6 @@ declare namespace JQuery {
          * Usually receives the following additional arguments:
          * - `destX` (number)
          */
-        "jsp-will-scroll-x": JQuery.EventBase<TDelegateTarget, TData, TCurrentTarget, TTarget>;
+        "jsp-will-scroll-x": JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
     }
 }

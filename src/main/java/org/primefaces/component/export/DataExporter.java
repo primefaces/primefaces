@@ -24,7 +24,6 @@
 package org.primefaces.component.export;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.el.ELContext;
@@ -37,7 +36,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
-import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.datatable.export.DataTableExporterFactory;
 import org.primefaces.expression.SearchExpressionFacade;
 
 public class DataExporter implements ActionListener, StateHolder {
@@ -58,13 +57,11 @@ public class DataExporter implements ActionListener, StateHolder {
 
     private MethodExpression postProcessor;
 
-    private ValueExpression repeat;
-
     private ValueExpression options;
 
     private MethodExpression onTableRender;
 
-    private ValueExpression customExporter;
+    private ValueExpression exporter;
 
     public DataExporter() {
     }
@@ -98,13 +95,6 @@ public class DataExporter implements ActionListener, StateHolder {
             encodingType = (String) encoding.getValue(elContext);
         }
 
-        boolean repeating = false;
-        if (repeat != null) {
-            repeating = repeat.isLiteralText()
-                        ? Boolean.parseBoolean(repeat.getValue(context.getELContext()).toString())
-                        : (Boolean) repeat.getValue(context.getELContext());
-        }
-
         boolean isPageOnly = false;
         if (pageOnly != null) {
             isPageOnly = pageOnly.isLiteralText()
@@ -125,37 +115,24 @@ public class DataExporter implements ActionListener, StateHolder {
         }
 
         Object customExporterInstance = null;
-        if (customExporter != null) {
-            customExporterInstance = (Object) customExporter.getValue(elContext);
+        if (exporter != null) {
+            customExporterInstance = exporter.getValue(elContext);
         }
 
         try {
-            Exporter exporter = getExporter(exportAs, exporterOptions , customExporterInstance);
+            Exporter exporter = getExporter(exportAs, exporterOptions, customExporterInstance);
+            List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, event.getComponent(), tables);
+            ExportConfiguration config = new ExportConfiguration()
+                    .setOutputFileName(outputFileName)
+                    .setEncodingType(encodingType)
+                    .setPageOnly(isPageOnly)
+                    .setSelectionOnly(isSelectionOnly)
+                    .setOptions(exporterOptions)
+                    .setPreProcessor(preProcessor)
+                    .setPostProcessor(postProcessor)
+                    .setOnTableRender(onTableRender);
 
-            if (!repeating) {
-                List components = SearchExpressionFacade.resolveComponents(context, event.getComponent(), tables);
-
-                if (components.size() > 1) {
-                    exporter.export(context, outputFileName, components, isPageOnly, isSelectionOnly,
-                            encodingType, preProcessor, postProcessor, exporterOptions, onTableRender);
-                }
-                else {
-                    UIComponent component = (UIComponent) components.get(0);
-                    if (!(component instanceof DataTable)) {
-                        throw new FacesException("Unsupported datasource target:\"" + component.getClass().getName()
-                                + "\", exporter must target a PrimeFaces DataTable.");
-                    }
-
-                    DataTable table = (DataTable) component;
-                    exporter.export(context, table, outputFileName, isPageOnly, isSelectionOnly, encodingType,
-                            preProcessor, postProcessor, exporterOptions, onTableRender);
-                }
-            }
-            else {
-                String[] clientIds = tables.split("\\s+|,");
-                exporter.export(context, Arrays.asList(clientIds), outputFileName, isPageOnly, isSelectionOnly, encodingType,
-                        preProcessor, postProcessor, exporterOptions, onTableRender);
-            }
+            exporter.export(context, components, config);
 
             context.responseComplete();
         }
@@ -167,15 +144,15 @@ public class DataExporter implements ActionListener, StateHolder {
     protected Exporter getExporter(String exportAs, ExporterOptions exporterOptions, Object customExporterInstance) {
 
         if (customExporterInstance == null) {
-            return ExporterFactory.getExporterForType(exportAs, exporterOptions);
+            return DataTableExporterFactory.getExporter(exportAs, exporterOptions);
         }
 
         if (customExporterInstance instanceof Exporter) {
             return (Exporter) customExporterInstance;
         }
         else {
-            throw new FacesException("Component " + this.getClass().getName() + " customExporterInstance="
-                   + customExporterInstance.getClass().getName() + " does not extend Exporter!");
+            throw new FacesException("Component " + getClass().getName() + " customExporterInstance="
+                   + customExporterInstance.getClass().getName() + " does not implement Exporter!");
         }
 
     }
@@ -187,19 +164,15 @@ public class DataExporter implements ActionListener, StateHolder {
 
     @Override
     public void setTransient(boolean value) {
-        //NoOp
+        // NOOP
     }
 
-    public void setRepeat(ValueExpression ve) {
-        repeat = ve;
+    public ValueExpression getExporter() {
+        return exporter;
     }
 
-    public ValueExpression getCustomExporter() {
-        return customExporter;
-    }
-
-    public void setCustomExporter(ValueExpression customExporter) {
-        this.customExporter = customExporter;
+    public void setExporter(ValueExpression exporter) {
+        this.exporter = exporter;
     }
 
     @Override
@@ -214,10 +187,9 @@ public class DataExporter implements ActionListener, StateHolder {
         preProcessor = (MethodExpression) values[5];
         postProcessor = (MethodExpression) values[6];
         encoding = (ValueExpression) values[7];
-        repeat = (ValueExpression) values[8];
-        options = (ValueExpression) values[9];
-        onTableRender = (MethodExpression) values[10];
-        customExporter = (ValueExpression) values[11];
+        options = (ValueExpression) values[8];
+        onTableRender = (MethodExpression) values[9];
+        exporter = (ValueExpression) values[10];
     }
 
     @Override
@@ -232,10 +204,9 @@ public class DataExporter implements ActionListener, StateHolder {
         values[5] = preProcessor;
         values[6] = postProcessor;
         values[7] = encoding;
-        values[8] = repeat;
-        values[9] = options;
-        values[10] = onTableRender;
-        values[11] = customExporter;
+        values[8] = options;
+        values[9] = onTableRender;
+        values[10] = exporter;
 
         return (values);
     }

@@ -26,8 +26,6 @@ package org.primefaces.component.terminal;
 import javax.faces.component.UIPanel;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class TerminalBase extends UIPanel implements Widget {
 
@@ -118,10 +116,5 @@ public abstract class TerminalBase extends UIPanel implements Widget {
 
     public void setEscape(boolean escape) {
         getStateHelper().put(PropertyKeys.escape, escape);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

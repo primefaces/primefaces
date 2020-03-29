@@ -46,10 +46,10 @@ public class DialogViewHandler extends ViewHandlerWrapper {
     @Override
     public String getActionURL(FacesContext context, String viewId) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String pfdlgcid = params.get(Constants.DIALOG_FRAMEWORK.CONVERSATION_PARAM);
+        String pfdlgcid = params.get(Constants.DialogFramework.CONVERSATION_PARAM);
         String url = super.getActionURL(context, viewId);
 
-        if (url.contains(Constants.DIALOG_FRAMEWORK.CONVERSATION_PARAM)) {
+        if (url.contains(Constants.DialogFramework.CONVERSATION_PARAM)) {
             return url;
         }
         else {

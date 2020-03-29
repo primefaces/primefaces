@@ -101,7 +101,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         boolean custom = layout != null && layout.equals("custom");
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectOneRadio", radio.resolveWidgetVar(), clientId)
+        wb.init("SelectOneRadio", radio.resolveWidgetVar(context), clientId)
                 .attr("custom", custom, false)
                 .attr("unselectable", radio.isUnselectable()).finish();
     }
@@ -274,8 +274,9 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         if (columns > 0) {
             int idx = 0;
             int colMod;
+            int totalItems = selectItems.size();
 
-            for (int i = 0; i < selectItems.size(); i++) {
+            for (int i = 0; i < totalItems; i++) {
                 SelectItem selectItem = selectItems.get(i);
                 boolean disabled = selectItem.isDisabled() || radio.isDisabled();
                 String id = name + UINamingContainer.getSeparatorChar(context) + idx;
@@ -292,7 +293,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
                 idx++;
                 colMod = idx % columns;
 
-                if (colMod == 0) {
+                if (colMod == 0 || idx == totalItems) {
                     writer.endElement("tr");
                 }
             }
@@ -338,7 +339,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         writer.writeAttribute("type", "radio", null);
         writer.writeAttribute("value", value, null);
 
-        renderDomEvents(context, radio, SelectOneRadio.SUPPORTED_EVENTS);
+        renderDomEvents(context, radio, SelectOneRadio.DOM_EVENTS);
 
         if (radio.getTabindex() != null) {
             writer.writeAttribute("tabindex", radio.getTabindex(), null);
@@ -416,7 +417,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
     protected Class getValueType(FacesContext context, UIInput input) {
         ValueExpression ve = input.getValueExpression("value");
-        Class type = ve == null ? String.class : ve.getType(context.getELContext());
+        Class<?> type = ve == null ? String.class : ve.getType(context.getELContext());
 
         return type == null ? String.class : type;
     }

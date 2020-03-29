@@ -56,8 +56,12 @@ public class InputTextareaRenderer extends InputRenderer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String submittedValue = params.get(clientId);
 
-        if (submittedValue != null && submittedValue.length() > inputTextarea.getMaxlength()) {
-            return;
+        if (submittedValue != null) {
+            // #5381: normalize new lines to match JavaScript
+            submittedValue = submittedValue.replaceAll("\\r\\n?", "\n");
+            if (submittedValue.length() > inputTextarea.getMaxlength()) {
+                return;
+            }
         }
 
         inputTextarea.setSubmittedValue(submittedValue);
@@ -112,7 +116,7 @@ public class InputTextareaRenderer extends InputRenderer {
         String counter = inputTextarea.getCounter();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("InputTextarea", inputTextarea.resolveWidgetVar(), clientId)
+        wb.init("InputTextarea", inputTextarea.resolveWidgetVar(context), clientId)
                 .attr("autoResize", autoResize)
                 .attr("maxlength", inputTextarea.getMaxlength(), Integer.MAX_VALUE);
 
@@ -129,6 +133,8 @@ public class InputTextareaRenderer extends InputRenderer {
                     .attr("queryDelay", inputTextarea.getQueryDelay())
                     .attr("scrollHeight", inputTextarea.getScrollHeight(), Integer.MAX_VALUE);
         }
+
+        encodeClientBehaviors(context, inputTextarea);
 
         wb.finish();
     }
@@ -148,6 +154,7 @@ public class InputTextareaRenderer extends InputRenderer {
         writer.writeAttribute("class", createStyleClass(inputTextarea), "styleClass");
 
         renderAccessibilityAttributes(context, inputTextarea);
+        renderRTLDirection(context, inputTextarea);
         renderPassThruAttributes(context, inputTextarea, HTML.TEXTAREA_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, inputTextarea, HTML.INPUT_TEXT_EVENTS);
         renderValidationMetadata(context, inputTextarea);

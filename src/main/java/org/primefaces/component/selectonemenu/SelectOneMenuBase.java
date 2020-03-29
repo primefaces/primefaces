@@ -26,11 +26,10 @@ package org.primefaces.component.selectonemenu;
 import javax.faces.component.html.HtmlSelectOneMenu;
 
 import org.primefaces.component.api.InputHolder;
+import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
 
-
-public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, InputHolder {
+public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, InputHolder, RTLAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -55,11 +54,11 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
         appendTo,
         title,
         syncTooltip,
-        label,
         labelTemplate,
         placeholder,
         autoWidth,
-        dynamic
+        dynamic,
+        dir
     }
 
     public SelectOneMenuBase() {
@@ -209,14 +208,6 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
         getStateHelper().put(PropertyKeys.syncTooltip, syncTooltip);
     }
 
-    public String getLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.label, null);
-    }
-
-    public void setLabel(String label) {
-        getStateHelper().put(PropertyKeys.label, label);
-    }
-
     public String getLabelTemplate() {
         return (String) getStateHelper().eval(PropertyKeys.labelTemplate, null);
     }
@@ -250,7 +241,12 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
     }
 
     @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    public String getDir() {
+        return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
+    }
+
+    @Override
+    public void setDir(String dir) {
+        getStateHelper().put(PropertyKeys.dir, dir);
     }
 }

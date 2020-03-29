@@ -31,8 +31,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.datatable.TableState;
+import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -49,7 +50,7 @@ public class ColumnTogglerRenderer extends CoreRenderer {
             if (isMultiViewState) {
                 Map<String, String> params = context.getExternalContext().getRequestParameterMap();
                 String columnTogglerParam = params.get(table.getClientId(context) + "_columnTogglerState");
-                TableState ts = table.getTableState(true);
+                DataTableState ts = table.getMultiViewState(true);
                 ts.setTogglableColumnsAsString(columnTogglerParam);
             }
         }
@@ -77,9 +78,11 @@ public class ColumnTogglerRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, ColumnToggler columnToggler) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        wb.init("ColumnToggler", columnToggler.resolveWidgetVar(), columnToggler.getClientId(context));
-        wb.attr("trigger", SearchExpressionFacade.resolveClientIds(context, columnToggler, columnToggler.getTrigger()))
-                .attr("datasource", SearchExpressionFacade.resolveClientIds(context, columnToggler, columnToggler.getDatasource()));
+        wb.init("ColumnToggler", columnToggler.resolveWidgetVar(context), columnToggler.getClientId(context));
+        wb.attr("trigger", SearchExpressionFacade.resolveClientIds(context, columnToggler, columnToggler.getTrigger(),
+                SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE));
+        wb.attr("datasource", SearchExpressionFacade.resolveClientIds(context, columnToggler, columnToggler.getDatasource(),
+                SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE));
 
         encodeClientBehaviors(context, columnToggler);
 

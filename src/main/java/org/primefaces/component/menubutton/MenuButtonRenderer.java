@@ -35,6 +35,7 @@ import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.Separator;
@@ -129,7 +130,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
             menuStyleClass = menuStyleClass + " " + Menu.CONTAINER_MAXHEIGHT_CLASS;
             // If maxHeight is a number, add the unit "px", otherwise use it as is
             char lastChar = button.getMaxHeight().charAt(button.getMaxHeight().length() - 1);
-            String style = lastChar >= '0' && lastChar <= '9' ? button.getMaxHeight() + "px" : button.getMaxHeight();
+            String style = Character.isDigit(lastChar) ? button.getMaxHeight() + "px" : button.getMaxHeight();
             writer.writeAttribute("style", "max-height:" + style, null);
         }
         writer.writeAttribute("id", menuId, null);
@@ -174,8 +175,9 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         }
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("MenuButton", button.resolveWidgetVar(), clientId);
-        wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo()), null);
+        wb.init("MenuButton", button.resolveWidgetVar(context), clientId);
+        wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo(),
+                SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null);
         wb.attr("collision", button.getCollision());
         wb.finish();
     }

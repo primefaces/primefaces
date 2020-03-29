@@ -28,8 +28,6 @@ import javax.faces.component.UIInput;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class TextEditorBase extends UIInput implements Widget, ClientBehaviorHolder {
 
@@ -42,6 +40,7 @@ public abstract class TextEditorBase extends UIInput implements Widget, ClientBe
         widgetVar,
         height,
         readonly,
+        disabled,
         style,
         styleClass,
         placeholder,
@@ -51,7 +50,8 @@ public abstract class TextEditorBase extends UIInput implements Widget, ClientBe
         allowLinks,
         allowStyles,
         allowImages,
-        formats
+        formats,
+        secure
     }
 
     public TextEditorBase() {
@@ -167,8 +167,19 @@ public abstract class TextEditorBase extends UIInput implements Widget, ClientBe
         getStateHelper().put(PropertyKeys.formats, formats);
     }
 
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    public boolean isSecure() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.secure, true);
+    }
+
+    public void setSecure(boolean secure) {
+        getStateHelper().put(PropertyKeys.secure, secure);
+    }
+
+    public boolean isDisabled() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+    }
+
+    public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 }

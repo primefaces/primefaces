@@ -25,6 +25,7 @@
  * @prop {number} cfg.precision The number of digits to appear after the decimal point. 
  * @prop {string} cfg.prefix Prefix added to the displayed value.
  * @prop {boolean} cfg.required Whether this spinner is a required field.
+ * @prop {boolean} cfg.rotate Rotate to the minimum value when maximum value is reached and vice versa.
  * @prop {number} cfg.step Stepping factor for each increment and decrement
  * @prop {string} cfg.suffix Suffix added to the displayed value.
  * @prop {string} cfg.thousandSeparator Character for the integral part of the number that separates each group of three
@@ -54,7 +55,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
 
         var inputValue = this.input.val();
 
-        if(inputValue.indexOf('.') > 0 && this.cfg.decimalPlaces) {
+        if(this.cfg.decimalPlaces > 0) {
             this.cfg.precision = this.cfg.decimalPlaces;
         }
         else if(!(typeof this.cfg.step === 'number' && this.cfg.step % 1 === 0)) {
@@ -142,6 +143,17 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                 default:
                     //do nothing
                 break;
+            }
+
+            /* Github #1964 do not allow minus */
+            if ($this.cfg.min >= 0 && event.key === "-") {
+                e.preventDefault();
+            }
+
+            /* GitHub #5579 prevent multiple '-' '.' */
+            var value = $(this).val();
+            if ((event.key === '-' && value.indexOf('-') != -1) || (event.key === '.' && value.indexOf('.')!= -1)) {
+                e.preventDefault();
             }
         })
         .on('keyup.spinner', function (e) {
@@ -255,11 +267,23 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                 parsedValue = null;
             }
         } else {
-            if(this.cfg.max !== undefined && parsedValue > this.cfg.max) {
-              parsedValue = this.cfg.max;
-            }
-            if(this.cfg.min !== undefined && parsedValue < this.cfg.min) {
-              parsedValue = this.cfg.min;
+            var minimum = this.cfg.min;
+            var maximum = this.cfg.max;
+
+            if (this.cfg.rotate) {
+                if(parsedValue < minimum) {
+                    parsedValue = maximum;
+                }
+                if(parsedValue > maximum) {
+                    parsedValue = minimum;
+                }
+            } else {
+                if(parsedValue > maximum) {
+                    parsedValue = maximum;
+                }
+                if(parsedValue < minimum) {
+                    parsedValue = minimum;
+                }
             }
         }
         return parsedValue;

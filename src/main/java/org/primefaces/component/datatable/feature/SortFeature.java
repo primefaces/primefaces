@@ -38,8 +38,7 @@ import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
-import org.primefaces.component.datatable.MultiSortState;
-import org.primefaces.component.datatable.TableState;
+import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.event.data.PostSortEvent;
 import org.primefaces.model.*;
 
@@ -58,32 +57,34 @@ public class SortFeature implements DataTableFeature {
         String sortDir = params.get(clientId + "_sortDir");
 
         if (table.isMultiSort()) {
-            List<SortMeta> multiSortMeta = new ArrayList<>();
             String[] sortKeys = sortKey.split(",");
             String[] sortOrders = sortDir.split(",");
+            Map<String, SortMeta> sortMeta = new LinkedHashMap<>(sortKeys.length);
 
             for (int i = 0; i < sortKeys.length; i++) {
                 UIColumn sortColumn = table.findColumn(sortKeys[i]);
                 String sortField = table.resolveColumnField(sortColumn);
 
-                multiSortMeta.add(
+                sortMeta.put(sortColumn.getColumnKey(),
                         new SortMeta(
-                                sortColumn,
+                                sortColumn.getColumnKey(),
                                 sortField,
                                 SortOrder.valueOf(convertSortOrderParam(sortOrders[i])),
                                 sortColumn.getSortFunction()));
             }
 
-            table.setMultiSortMeta(multiSortMeta);
+            table.setSortMeta(sortMeta);
         }
         else {
             UIColumn sortColumn = table.findColumn(sortKey);
-            ValueExpression sortByVE = sortColumn.getValueExpression(Column.PropertyKeys.sortBy.toString());
-            table.setValueExpression(DataTable.PropertyKeys.sortBy.toString(), sortByVE);
-            table.setSortColumn(sortColumn);
-            table.setSortFunction(sortColumn.getSortFunction());
-            table.setSortOrder(convertSortOrderParam(sortDir));
-            table.setSortField(table.resolveColumnField(sortColumn));
+            if (sortColumn != null) {
+                ValueExpression sortByVE = sortColumn.getValueExpression(Column.PropertyKeys.sortBy.toString());
+                table.setValueExpression(DataTable.PropertyKeys.sortBy.toString(), sortByVE);
+                table.setSortColumn(sortColumn);
+                table.setSortFunction(sortColumn.getSortFunction());
+                table.setSortOrder(convertSortOrderParam(sortDir));
+                table.setSortField(table.resolveColumnField(sortColumn));
+            }
         }
     }
 
@@ -129,12 +130,12 @@ public class SortFeature implements DataTableFeature {
         renderer.encodeTbody(context, table, true);
 
         if (table.isMultiViewState()) {
-            ValueExpression sortVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
-            List<MultiSortState> multiSortState = table.isMultiSort() ? table.getMultiSortState() : null;
-            if (sortVE != null || multiSortState != null) {
-                TableState ts = table.getTableState(true);
-                ts.setSortBy(sortVE);
-                ts.setMultiSortState(multiSortState);
+            ValueExpression sortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
+            Map<String, SortMeta> multiSortState = table.isMultiSort() ? table.getSortMeta() : null;
+            if (sortByVE != null || (multiSortState != null && !multiSortState.isEmpty())) {
+                DataTableState ts = table.getMultiViewState(true);
+                ts.setSortBy(sortByVE);
+                ts.setSortMeta(multiSortState);
                 ts.setSortOrder(table.getSortOrder());
                 ts.setSortField(table.getSortField());
                 ts.setSortFunction(table.getSortFunction());
@@ -175,16 +176,17 @@ public class SortFeature implements DataTableFeature {
             return;
         }
 
-        List<SortMeta> sortMeta = table.getMultiSortMeta();
         List list = resolveList(value);
         boolean caseSensitiveSort = table.isCaseSensitiveSort();
         Locale locale = table.resolveDataLocale();
         int nullSortOrder = table.getNullSortOrder();
 
         ChainedBeanPropertyComparator chainedComparator = new ChainedBeanPropertyComparator();
-        for (SortMeta meta : sortMeta) {
+
+        Map<String, SortMeta> sortMeta = table.getSortMeta();
+        for (SortMeta meta : sortMeta.values()) {
             BeanPropertyComparator comparator;
-            UIColumn sortColumn = meta.getColumn();
+            UIColumn sortColumn = table.findColumn(meta.getColumnKey());
             ValueExpression sortByVE = sortColumn.getValueExpression(Column.PropertyKeys.sortBy.toString());
 
             if (sortColumn.isDynamic()) {

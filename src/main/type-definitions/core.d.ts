@@ -2,11 +2,13 @@
 // Project: PrimeFaces https://github.com/primefaces
 // Definitions by: Andre Wachsmuth https://github.com/blutorange/
 
+/// <reference types="chart.js" />
+/// <reference types="cropperjs" />
+/// <reference types="googlemaps" />
 /// <reference types="jquery" />
 /// <reference types="jqueryui" />
 /// <reference types="jquery.fileupload" />
-/// <reference types="chart.js" />
-/// <reference types="googlemaps" />
+/// <reference types="moment-timezone" />
 
 // Additional required type declarations for PrimeFaces that are not picked up from the source code
 
@@ -209,7 +211,7 @@ declare namespace PrimeFaces {
      *   active: boolean;
      * }
      * 
-     * type UserStringKeys = MatchingProperties<User, string>;
+     * type UserStringKeys = MatchingKeys<User, string>;
      * // type UserStringKeys = "name" | "mail";
      * ```
      * @typeparam Base Type from which to pick some properties.
@@ -441,6 +443,11 @@ declare namespace PrimeFaces {
          * message.
          */
         severity: FacesMessageSeverity;
+
+        /**
+         * The severity in I18N human readable text for ARIA screen readers.
+         */
+        severityText?: string;
     }
 
     /**

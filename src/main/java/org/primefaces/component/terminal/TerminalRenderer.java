@@ -113,7 +113,7 @@ public class TerminalRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Terminal terminal) throws IOException {
         String clientId = terminal.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Terminal", terminal.resolveWidgetVar(), clientId);
+        wb.init("Terminal", terminal.resolveWidgetVar(context), clientId);
         wb.finish();
     }
 

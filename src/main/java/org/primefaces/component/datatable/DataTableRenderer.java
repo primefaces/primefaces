@@ -101,34 +101,17 @@ public class DataTableRenderer extends DataRenderer {
 
     protected void preRender(FacesContext context, DataTable table) {
         if (table.isMultiViewState()) {
-            table.restoreTableState();
+            table.restoreMultiViewState();
         }
 
         boolean defaultSorted = (table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null
                 || table.getSortBy() != null
-                || table.getMultiSortMeta() != null);
+                || !table.getSortMeta().isEmpty());
 
         if (defaultSorted && table.isDefaultSort()) {
             table.setDefaultSortByVE(table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()));
             table.setDefaultSortOrder(table.getSortOrder());
             table.setDefaultSortFunction(table.getSortFunction());
-        }
-
-        List<FilterState> filters = table.getFilterBy();
-        List<FilterMeta> filterMetadata = new ArrayList<>();
-        if (filters != null) {
-            for (FilterState filterState : filters) {
-                UIColumn column = table.findColumn(filterState.getColumnKey());
-                if (column != null) {
-                    filterMetadata.add(
-                        new FilterMeta(
-                            column,
-                            column.getValueExpression(DataTable.PropertyKeys.filterBy.toString()),
-                            filterState.getFilterValue()));
-                }
-            }
-
-            table.setFilterMetadata(filterMetadata);
         }
 
         if (table.isLazy()) {
@@ -161,9 +144,8 @@ public class DataTableRenderer extends DataRenderer {
                 table.setRowIndex(-1);
             }
 
-            if (filters != null) {
-                FilterFeature filterFeature = (FilterFeature) table.getFeature(DataTableFeatureKey.FILTER);
-
+            Map<String, FilterMeta> filterBy = table.getFilterBy();
+            if (!filterBy.isEmpty()) {
                 String globalFilter = table.getGlobalFilter();
                 if (globalFilter != null) {
                     UIComponent globalFilterComponent = SearchExpressionFacade.resolveComponent(context, table,
@@ -171,19 +153,21 @@ public class DataTableRenderer extends DataRenderer {
                     if (globalFilterComponent != null) {
                         ((ValueHolder) globalFilterComponent).setValue(globalFilter);
                     }
+                    filterBy.put("globalFilter", new FilterMeta("globalFilter", globalFilter));
                 }
 
-                filterFeature.filter(context, table, filterMetadata, globalFilter);
+                FilterFeature filterFeature = (FilterFeature) table.getFeature(DataTableFeatureKey.FILTER);
+                filterFeature.filter(context, table, filterBy);
             }
         }
 
         if (defaultSorted && table.isMultiViewState() && table.isDefaultSort()) {
             ValueExpression sortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
-            List<MultiSortState> multiSortState = table.isMultiSort() ? table.getMultiSortState() : null;
-            if (sortByVE != null || multiSortState != null) {
-                TableState ts = table.getTableState(true);
+            Map<String, SortMeta> multiSortState = table.isMultiSort() ? table.getSortMeta() : null;
+            if (sortByVE != null || (multiSortState != null && !multiSortState.isEmpty())) {
+                DataTableState ts = table.getMultiViewState(true);
                 ts.setSortBy(sortByVE);
-                ts.setMultiSortState(multiSortState);
+                ts.setSortMeta(multiSortState);
                 ts.setSortOrder(table.getSortOrder());
                 ts.setSortField(table.getSortField());
                 ts.setSortFunction(table.getSortFunction());
@@ -221,10 +205,10 @@ public class DataTableRenderer extends DataRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
 
         if (initMode.equals("load")) {
-            wb.init(widgetClass, table.resolveWidgetVar(), clientId);
+            wb.init(widgetClass, table.resolveWidgetVar(context), clientId);
         }
         else if (initMode.equals("immediate")) {
-            wb.init(widgetClass, table.resolveWidgetVar(), clientId);
+            wb.init(widgetClass, table.resolveWidgetVar(context), clientId);
         }
         else {
             throw new FacesException(initMode + " is not a valid value for initMode, possible values are \"load\" and \"immediate.");
@@ -291,7 +275,7 @@ public class DataTableRenderer extends DataRenderer {
         //MultiColumn Sorting
         if (table.isMultiSort()) {
             wb.attr("multiSort", true)
-                    .nativeAttr("sortMetaOrder", table.getSortMetaOrder(context), null);
+                    .nativeAttr("sortMetaOrder", table.getSortMetaAsString(context), null);
         }
 
         if (table.isStickyHeader()) {
@@ -669,14 +653,13 @@ public class DataTableRenderer extends DataRenderer {
         if (sortable) {
             ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
             Object tableSortBy = table.getSortBy();
-            boolean defaultSorted = (tableSortByVE != null || tableSortBy != null || table.getMultiSortMeta() != null);
+            Map<String, SortMeta> sortMeta = table.getSortMeta();
+            boolean defaultSorted = (tableSortByVE != null || tableSortBy != null || !sortMeta.isEmpty());
 
             if (defaultSorted) {
                 if (table.isMultiSort()) {
-                    List<SortMeta> sortMeta = table.getMultiSortMeta();
-
                     if (sortMeta != null) {
-                        for (SortMeta meta : sortMeta) {
+                        for (SortMeta meta : sortMeta.values()) {
                             sortIcon = resolveDefaultSortIcon(column, meta);
 
                             if (sortIcon != null) {
@@ -764,11 +747,11 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected Object findFilterValue(DataTable table, UIColumn column) {
-        List<FilterState> filters = table.getFilterBy();
-        if (filters != null) {
-            for (FilterState filterState : filters) {
-                if (filterState.getColumnKey().equals(column.getColumnKey())) {
-                    return filterState.getFilterValue();
+        Map<String, FilterMeta> filterBy = table.getFilterBy();
+        if (!filterBy.isEmpty()) {
+            for (FilterMeta filter : filterBy.values()) {
+                if (Objects.equals(filter.getColumnKey(), column.getColumnKey())) {
+                    return filter.getFilterValue();
                 }
             }
         }
@@ -780,7 +763,7 @@ public class DataTableRenderer extends DataRenderer {
         SortOrder sortOrder = sortMeta.getSortOrder();
         String sortIcon = null;
 
-        if (column.getColumnKey().equals(sortMeta.getColumn().getColumnKey())) {
+        if (Objects.equals(column.getColumnKey(), sortMeta.getColumnKey())) {
             if (sortOrder.equals(SortOrder.ASCENDING)) {
                 sortIcon = DataTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
             }
@@ -820,7 +803,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", DataTable.COLUMN_TITLE_CLASS, null);
 
-        if (header != null) {
+        if (ComponentUtils.shouldRenderFacet(header)) {
             header.encodeAll(context);
         }
         else if (headerText != null) {
@@ -845,7 +828,7 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent filterFacet = column.getFacet("filter");
 
-        if (filterFacet == null) {
+        if (!ComponentUtils.shouldRenderFacet(filterFacet)) {
             encodeDefaultFilter(context, table, column, writer);
         }
         else {
@@ -1056,7 +1039,7 @@ public class DataTableRenderer extends DataRenderer {
         //Footer content
         UIComponent facet = column.getFacet("footer");
         String text = column.getFooterText();
-        if (facet != null) {
+        if (ComponentUtils.shouldRenderFacet(facet)) {
             facet.encodeAll(context);
         }
         else if (text != null) {
@@ -1221,7 +1204,7 @@ public class DataTableRenderer extends DataRenderer {
             writer.startElement("td", null);
             writer.writeAttribute("colspan", table.getColumnsCountWithSpan(), null);
 
-            if (emptyFacet != null) {
+            if (ComponentUtils.shouldRenderFacet(emptyFacet)) {
                 emptyFacet.encodeAll(context);
             }
             else {

@@ -32,5 +32,15 @@ public interface MenuModel {
 
     List<MenuElement> getElements();
 
+    /**
+     *
+     * @param element
+     * @deprecated Please use getElements().add(element);
+     */
+    @Deprecated
+    default void addElement(MenuElement element) {
+        getElements().add(element);
+    }
+
     void generateUniqueIds();
 }

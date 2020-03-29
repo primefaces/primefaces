@@ -23,74 +23,20 @@
  */
 package org.primefaces.component.menu;
 
-import org.primefaces.event.MenuActionEvent;
 import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.model.menu.*;
-import org.primefaces.renderkit.OutcomeTargetRenderer;
+import org.primefaces.model.menu.MenuElement;
+import org.primefaces.model.menu.MenuItem;
+import org.primefaces.model.menu.MenuModel;
+import org.primefaces.renderkit.MenuItemAwareRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.PhaseId;
 import java.io.IOException;
-import java.util.*;
 
-public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
-
-    public static final String SEPARATOR = "_";
-
-    @Override
-    public void decode(FacesContext context, UIComponent component) {
-        AbstractMenu menu = (AbstractMenu) component;
-        String clientId = menu.getClientId(context);
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-
-        String menuid = params.get(clientId + "_menuid");
-        if (menuid != null) {
-            MenuItem menuitem = findMenuitem(menu.getElements(), menuid);
-            MenuActionEvent event = new MenuActionEvent(menu, menuitem);
-
-            if (menuitem.isImmediate()) {
-                event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
-            }
-            else {
-                event.setPhaseId(PhaseId.INVOKE_APPLICATION);
-            }
-
-            menu.queueEvent(event);
-        }
-    }
-
-    protected MenuItem findMenuitem(List<MenuElement> elements, String id) {
-        if (elements == null || elements.isEmpty()) {
-            return null;
-        }
-        else {
-            String[] paths = id.split(SEPARATOR);
-
-            if (paths.length == 0) {
-                return null;
-            }
-
-            int childIndex = Integer.parseInt(paths[0]);
-            if (childIndex >= elements.size()) {
-                return null;
-            }
-
-            MenuElement childElement = elements.get(childIndex);
-
-            if (paths.length == 1) {
-                return (MenuItem) childElement;
-            }
-            else {
-                String relativeIndex = id.substring(id.indexOf(SEPARATOR) + 1);
-
-                return findMenuitem(((MenuGroup) childElement).getElements(), relativeIndex);
-            }
-        }
-    }
+public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -153,7 +99,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
             writer.writeAttribute("href", "#", null);
             writer.writeAttribute("onclick", "return false;", null);
         }
-        else if (!menuitem.shouldRenderChildren()) {
+        else {
             encodeOnClick(context, menu, menuitem);
         }
 
@@ -199,22 +145,6 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         }
 
         writer.endElement("span");
-    }
-
-    protected void encodeSeparator(FacesContext context, Separator separator) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String style = separator.getStyle();
-        String styleClass = separator.getStyleClass();
-        styleClass = styleClass == null ? Menu.SEPARATOR_CLASS : Menu.SEPARATOR_CLASS + " " + styleClass;
-
-        //title
-        writer.startElement("li", null);
-        writer.writeAttribute("class", styleClass, null);
-        if (style != null) {
-            writer.writeAttribute("style", style, null);
-        }
-
-        writer.endElement("li");
     }
 
     protected void encodeOverlayConfig(FacesContext context, OverlayMenu menu, WidgetBuilder wb) throws IOException {

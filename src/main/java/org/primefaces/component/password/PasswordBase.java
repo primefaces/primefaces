@@ -26,8 +26,6 @@ package org.primefaces.component.password;
 import javax.faces.component.html.HtmlInputText;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class PasswordBase extends HtmlInputText implements Widget {
 
@@ -136,10 +134,5 @@ public abstract class PasswordBase extends HtmlInputText implements Widget {
 
     public void setMatch(String match) {
         getStateHelper().put(PropertyKeys.match, match);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

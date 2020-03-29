@@ -28,7 +28,7 @@ import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.CalendarUtils;
 
 public abstract class DatePickerBase extends UICalendar implements Widget, InputHolder, MixedClientBehaviorHolder {
 
@@ -76,7 +76,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         disabledDays,
         onMonthChange,
         onYearChange,
-        rangeSeparator
+        timeInput
     }
 
     public DatePickerBase() {
@@ -152,6 +152,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         getStateHelper().put(PropertyKeys.yearRange, yearRange);
     }
 
+    @Override
     public String getSelectionMode() {
         return (String) getStateHelper().eval(PropertyKeys.selectionMode, "single");
     }
@@ -337,7 +338,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
     }
 
     public String getAppendTo() {
-        return (String) getStateHelper().eval(PropertyKeys.appendTo, null);
+        return (String) getStateHelper().eval(PropertyKeys.appendTo, "@(body)");
     }
 
     public void setAppendTo(String appendTo) {
@@ -360,11 +361,11 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         getStateHelper().put(PropertyKeys.disabledDates, disabledDates);
     }
 
-    public List getDisabledDays() {
-        return (List) getStateHelper().eval(PropertyKeys.disabledDays, null);
+    public List<Integer> getDisabledDays() {
+        return (List<Integer>) getStateHelper().eval(PropertyKeys.disabledDays, null);
     }
 
-    public void setDisabledDays(List disabledDays) {
+    public void setDisabledDays(List<Integer> disabledDays) {
         getStateHelper().put(PropertyKeys.disabledDays, disabledDays);
     }
 
@@ -384,21 +385,49 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         getStateHelper().put(PropertyKeys.onYearChange, onYearChange);
     }
 
-    public String getRangeSeparator() {
-        return (String) getStateHelper().eval(PropertyKeys.rangeSeparator, "-");
+    public boolean isTimeInput() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.timeInput, false);
     }
 
-    public void setRangeSeparator(java.lang.String _rangeSeparator) {
-        getStateHelper().put(PropertyKeys.rangeSeparator, _rangeSeparator);
+    public void setTimeInput(boolean timeInput) {
+        getStateHelper().put(PropertyKeys.timeInput, timeInput);
     }
 
     @Override
     public boolean hasTime() {
-        return this.isShowTime() || this.isTimeOnly() || super.hasTime();
+        return this.isShowTime() || this.isTimeOnly();
     }
 
     @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    public String calculatePattern() {
+        if (isTimeOnly()) {
+            return calculateTimeOnlyPattern();
+        }
+        else if (isShowTime()) {
+            return calculateWidgetPattern() + " " + calculateTimeOnlyPattern();
+        }
+        return calculateWidgetPattern();
     }
+
+    @Override
+    public String calculateWidgetPattern() {
+        return CalendarUtils.removeTime(super.calculatePattern());
+    }
+
+    @Override
+    public String calculateTimeOnlyPattern() {
+        if (timeOnlyPattern == null) {
+            boolean ampm = "12".equals(getHourFormat());
+            timeOnlyPattern = ampm ? "KK" : "HH";
+            timeOnlyPattern += ":mm";
+            if (isShowSeconds()) {
+                timeOnlyPattern += ":ss";
+            }
+            if (ampm) {
+                timeOnlyPattern += " a";
+            }
+        }
+        return timeOnlyPattern;
+    }
+
 }

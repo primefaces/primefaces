@@ -65,39 +65,17 @@ public class MultipartRequest extends HttpServletRequestWrapper {
 
             for (FileItem item : fileItems) {
                 if (item.isFormField()) {
-                    addFormParam(item);
+                    List<String> items = formParams.computeIfAbsent(item.getFieldName(), k -> new ArrayList<>());
+                    items.add(getItemString(item));
                 }
                 else {
-                    addFileParam(item);
+                    List<FileItem> items = fileParams.computeIfAbsent(item.getFieldName(), k -> new ArrayList<>());
+                    items.add(item);
                 }
             }
         }
         catch (FileUploadException e) {
-            LOGGER.log(Level.SEVERE, "Error in parsing fileupload request", e);
-
-            throw new IOException(e.getMessage(), e);
-        }
-    }
-
-    private void addFileParam(FileItem item) {
-        if (fileParams.containsKey(item.getFieldName())) {
-            fileParams.get(item.getFieldName()).add(item);
-        }
-        else {
-            List<FileItem> items = new ArrayList<>();
-            items.add(item);
-            fileParams.put(item.getFieldName(), items);
-        }
-    }
-
-    private void addFormParam(FileItem item) {
-        if (formParams.containsKey(item.getFieldName())) {
-            formParams.get(item.getFieldName()).add(getItemString(item));
-        }
-        else {
-            List<String> items = new ArrayList<>();
-            items.add(getItemString(item));
-            formParams.put(item.getFieldName(), items);
+            throw new IOException("Error in parsing fileupload request", e);
         }
     }
 
@@ -183,5 +161,13 @@ public class MultipartRequest extends HttpServletRequestWrapper {
         else {
             return null;
         }
+    }
+
+    public List<FileItem> getFileItems(String name) {
+        if (fileParams.containsKey(name)) {
+            return fileParams.get(name);
+        }
+
+        return Collections.emptyList();
     }
 }

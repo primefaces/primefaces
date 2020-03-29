@@ -23,10 +23,12 @@
  */
 package org.primefaces.expression.impl;
 
+import java.util.Set;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import org.primefaces.expression.ClientIdSearchExpressionResolver;
 import org.primefaces.expression.SearchExpressionConstants;
+import org.primefaces.expression.SearchExpressionHint;
 
 import org.primefaces.expression.SearchExpressionResolver;
 
@@ -36,7 +38,9 @@ import org.primefaces.expression.SearchExpressionResolver;
 public class AllExpressionResolver implements SearchExpressionResolver, ClientIdSearchExpressionResolver {
 
     @Override
-    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
+    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression,
+            Set<SearchExpressionHint> hints) {
+
         UIComponent parent = last.getParent();
 
         while (parent.getParent() != null) {
@@ -47,7 +51,9 @@ public class AllExpressionResolver implements SearchExpressionResolver, ClientId
     }
 
     @Override
-    public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
+    public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression,
+            Set<SearchExpressionHint> hints) {
+
         return SearchExpressionConstants.ALL_KEYWORD;
     }
 }

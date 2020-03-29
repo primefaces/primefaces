@@ -3,6 +3,9 @@
  * 
  * AjaxStatus is a global notifier for AJAX requests.
  * 
+ * @prop {number | null} timeout The set-timeout timer ID for the timer of the delay before the AJAX status is
+ * triggered.
+ * 
  * @typedef {"default" | "start" | "success" | "error" | "complete"} PrimeFaces.widget.AjaxStatus.AjaxStatusEventType Available types of AJAX related
  * events to which you can listen.
  * 
@@ -10,6 +13,8 @@
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {number} delay Delay in milliseconds before displaying the AJAX status. Default is `0`, meaning immediate.
  */
 PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
 
@@ -34,7 +39,14 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
         $this = this;
 
         doc.on('pfAjaxStart', function() {
-            $this.trigger('start', arguments);
+            var delay = $this.cfg.delay;
+            if (delay > 0 ) {
+                $this.timeout = setTimeout(function () {
+                    $this.trigger('start', arguments);
+                }, delay);
+            } else {
+                $this.trigger('start', arguments);
+            }
         })
         .on('pfAjaxError', function() {
             $this.trigger('error', arguments);
@@ -43,10 +55,46 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
             $this.trigger('success', arguments);
         })
         .on('pfAjaxComplete', function() {
+            if($this.timeout) {
+                $this.deleteTimeout();
+            }
             $this.trigger('complete', arguments);
         });
 
-        this.bindToStandard();
+        // also bind to JSF (f:ajax) events
+        // NOTE: PF always fires "complete" as last event, whereas JSF last events are either "success" or "error"
+        if (window.jsf && jsf.ajax) {
+            jsf.ajax.addOnEvent(function(data) {
+                if(data.status === 'begin') {
+                    var delay = $this.cfg.delay;
+                    if (delay > 0 ) {
+                        $this.timeout = setTimeout(function () {
+                            $this.trigger('start', arguments);
+                        }, delay);
+                    } else {
+                        $this.trigger('start', arguments);
+                    }
+                }
+                else if(data.status === 'complete') {
+
+                }
+                else if(data.status === 'success') {
+                    if($this.timeout) {
+                        $this.deleteTimeout();
+                    }
+                    $this.trigger('success', arguments);
+                    $this.trigger('complete', arguments);
+                }
+            });
+
+            jsf.ajax.addOnError(function(data) {
+                if($this.timeout) {
+                    $this.deleteTimeout();
+                }
+                $this.trigger('error', arguments);
+                $this.trigger('complete', arguments);
+            });
+        }
     },
 
     /**
@@ -76,29 +124,12 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * If the global `jsf` object is available, forwards the standard AJAX events to the PrimeFaces AJAX status.
+     * Clears the ste-timeout timer for the delay.
      * @private
      */
-    bindToStandard: function() {
-        if (window.jsf && window.jsf.ajax) {
-            var doc = $(document);
-
-            jsf.ajax.addOnEvent(function(data) {
-                if(data.status === 'begin') {
-                    doc.trigger('pfAjaxStart', arguments);
-                }
-                else if(data.status === 'complete') {
-                    doc.trigger('pfAjaxSuccess', arguments);
-                }
-                else if(data.status === 'success') {
-                    doc.trigger('pfAjaxComplete', arguments);
-                }
-            });
-
-            jsf.ajax.addOnError(function(data) {
-                doc.trigger('pfAjaxError', arguments);
-            });
-        }
+    deleteTimeout: function() {
+        clearTimeout(this.timeout);
+        this.timeout = null;
     }
 
 });

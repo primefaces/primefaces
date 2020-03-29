@@ -23,12 +23,14 @@
  */
 package org.primefaces.expression.impl;
 
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import org.primefaces.expression.ClientIdSearchExpressionResolver;
+import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.expression.SearchExpressionResolver;
 import org.primefaces.expression.SearchExpressionUtils;
 
@@ -40,7 +42,8 @@ public class WidgetVarExpressionResolver implements SearchExpressionResolver, Cl
     private static final Pattern PATTERN = Pattern.compile("@widgetVar\\((\\w+)\\)");
 
     @Override
-    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
+    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression,
+            Set<SearchExpressionHint> hints) {
 
         try {
             Matcher matcher = PATTERN.matcher(expression);
@@ -49,7 +52,7 @@ public class WidgetVarExpressionResolver implements SearchExpressionResolver, Cl
 
                 WidgetVarVisitCallback visitCallback = new WidgetVarVisitCallback(matcher.group(1));
                 context.getViewRoot().visitTree(
-                        SearchExpressionUtils.createVisitContext(context, options),
+                        SearchExpressionUtils.createVisitContext(context, hints),
                         visitCallback);
 
                 return visitCallback.getComponent();
@@ -66,7 +69,8 @@ public class WidgetVarExpressionResolver implements SearchExpressionResolver, Cl
     }
 
     @Override
-    public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
+    public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression,
+            Set<SearchExpressionHint> hints) {
         // just return the complete expression, the client side will take care of it
         // e.g. @widgetVar(myWidget)
         return expression;

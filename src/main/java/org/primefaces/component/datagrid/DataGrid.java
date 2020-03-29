@@ -24,6 +24,7 @@
 package org.primefaces.component.datagrid;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -86,7 +87,7 @@ public class DataGrid extends DataGridBase {
         if (model instanceof LazyDataModel) {
             LazyDataModel lazyModel = (LazyDataModel) model;
 
-            List<?> data = lazyModel.load(getFirst(), getRows(), null, null, null);
+            List<?> data = lazyModel.load(getFirst(), getRows(), null, null, Collections.emptyMap());
 
             lazyModel.setPageSize(getRows());
             lazyModel.setWrappedData(data);
@@ -123,5 +124,41 @@ public class DataGrid extends DataGridBase {
         else {
             super.queueEvent(event);
         }
+    }
+
+    @Override
+    protected boolean shouldSkipChildren(FacesContext context) {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String paramValue = params.get(Constants.RequestParams.SKIP_CHILDREN_PARAM);
+        if (paramValue != null && !Boolean.parseBoolean(paramValue)) {
+            return false;
+        }
+        else {
+            return params.containsKey(getClientId(context) + "_skipChildren");
+        }
+    }
+
+    @Override
+    public void restoreMultiViewState() {
+        DataGridState ls = getMultiViewState(false);
+        if (ls != null && isPaginator()) {
+            setFirst(ls.getFirst());
+            int rows = (ls.getRows() == 0) ? getRows() : ls.getRows();
+            setRows(rows);
+        }
+    }
+
+    @Override
+    public DataGridState getMultiViewState(boolean create) {
+        FacesContext fc = getFacesContext();
+        String viewId = fc.getViewRoot().getViewId();
+
+        return PrimeFaces.current().multiViewState()
+                .get(viewId, getClientId(fc), create, DataGridState::new);
+    }
+
+    @Override
+    public void resetMultiViewState() {
+        setFirst(0);
     }
 }

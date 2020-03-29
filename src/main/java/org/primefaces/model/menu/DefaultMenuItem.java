@@ -23,15 +23,13 @@
  */
 package org.primefaces.model.menu;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import javax.faces.component.UIComponent;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.util.SerializableFunction;
+
+import javax.faces.component.UIComponent;
+import java.io.Serializable;
+import java.util.*;
 
 public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, Serializable {
 
@@ -91,7 +89,9 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     /**
      * Creates a new menu item with the specified
      * @param value the value of the item used as label
+     * @deprecated Use {@link #builder()} instead.
      */
+    @Deprecated
     public DefaultMenuItem(Object value) {
         this.value = value;
     }
@@ -100,7 +100,9 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
      * Creates a new menu item with the specified
      * @param value the value of the item used as label
      * @param icon the icon to be displayed next to the label
+     * @deprecated Use {@link #builder()} instead.
      */
+    @Deprecated
     public DefaultMenuItem(Object value, String icon) {
         this.value = value;
         this.icon = icon;
@@ -114,6 +116,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
      * (specifying a {@code url} which is not {@code null} causes
      * {@code command} to be ignored) (another form of redirection is provided
      * by the {@code outcome} property)
+     * @deprecated Use {@link #builder()} instead.
      */
     public DefaultMenuItem(Object value, String icon, String url) {
         this.value = value;
@@ -300,7 +303,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
 
     @Override
     public List<UIComponent> getChildren() {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override

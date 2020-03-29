@@ -25,8 +25,6 @@ package org.primefaces.component.datascroller;
 
 import org.primefaces.component.api.UIData;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class DataScrollerBase extends UIData implements Widget {
 
@@ -126,10 +124,5 @@ public abstract class DataScrollerBase extends UIData implements Widget {
 
     public void setStartAtBottom(boolean startAtBottom) {
         getStateHelper().put(PropertyKeys.startAtBottom, startAtBottom);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

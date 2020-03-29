@@ -60,9 +60,12 @@ public class SelectOneMenu extends SelectOneMenuBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectOneMenu";
 
     public static final String STYLE_CLASS = "ui-selectonemenu ui-widget ui-state-default ui-corner-all";
+    public static final String RTL_CLASS = "ui-selectonemenu-rtl";
     public static final String LABEL_CLASS = "ui-selectonemenu-label ui-inputfield ui-corner-all";
     public static final String TRIGGER_CLASS = "ui-selectonemenu-trigger ui-state-default ui-corner-right";
     public static final String PANEL_CLASS = "ui-selectonemenu-panel ui-widget ui-widget-content ui-corner-all ui-helper-hidden ui-shadow ui-input-overlay";
+    public static final String FOOTER_CLASS = "ui-selectonemenu-footer";
+    public static final String RTL_PANEL_CLASS = "ui-selectonemenu-panel-rtl";
     public static final String ITEMS_WRAPPER_CLASS = "ui-selectonemenu-items-wrapper";
     public static final String LIST_CLASS = "ui-selectonemenu-items ui-selectonemenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset";
     public static final String TABLE_CLASS = "ui-selectonemenu-items ui-selectonemenu-table ui-widget-content ui-widget ui-corner-all ui-helper-reset";
@@ -91,11 +94,12 @@ public class SelectOneMenu extends SelectOneMenuBase {
     }
 
     public List<Column> getColumns() {
-        List<Column> columns = new ArrayList<>();
+        List<Column> columns = new ArrayList<>(5);
 
-        for (UIComponent kid : getChildren()) {
-            if (kid instanceof Column) {
-                columns.add((Column) kid);
+        for (int i = 0; i < getChildCount(); i++) {
+            UIComponent child = getChildren().get(i);
+            if (child instanceof Column) {
+                columns.add((Column) child);
             }
         }
 

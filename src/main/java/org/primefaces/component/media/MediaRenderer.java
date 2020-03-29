@@ -24,6 +24,8 @@
 package org.primefaces.component.media;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
@@ -34,6 +36,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.application.resource.DynamicContentType;
 import org.primefaces.component.media.player.MediaPlayer;
 import org.primefaces.component.media.player.MediaPlayerFactory;
+import org.primefaces.component.media.player.PDFPlayer;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AgentUtils;
@@ -58,16 +61,17 @@ public class MediaRenderer extends CoreRenderer {
         String sourceParam = player.getSourceParam();
 
         Object value = media.getValue();
-        if (value instanceof StreamedContent && player.getType().equals("application/pdf")) {
+        if (value instanceof StreamedContent && PDFPlayer.MIME_TYPE.equals(player.getType())) {
             StreamedContent streamedContent = (StreamedContent) value;
             if (streamedContent.getName() != null) {
                 int index = src.indexOf('?');
-                src = src.substring(0, index) + ";/" + streamedContent.getName() + "" + src.substring(index, src.length());
+                src = src.substring(0, index) + ";/" + URLEncoder.encode(streamedContent.getName(), StandardCharsets.UTF_8.name())
+                      + "" + src.substring(index, src.length());
             }
         }
 
         String type = player.getType();
-        if (type != null && type.equals("application/pdf")) {
+        if (type != null && PDFPlayer.MIME_TYPE.equals(type)) {
             String view = media.getView();
             String zoom = media.getZoom();
 
@@ -157,7 +161,7 @@ public class MediaRenderer extends CoreRenderer {
                 + media.getClientId(context) + "', cannot play source:" + media.getValue());
     }
 
-    protected String getMediaSrc(FacesContext context, Media media) throws Exception {
+    protected String getMediaSrc(FacesContext context, Media media) {
         return DynamicContentSrcBuilder.build(context, media.getValue(), media, media.isCache(), DynamicContentType.STREAMED_CONTENT, true);
     }
 

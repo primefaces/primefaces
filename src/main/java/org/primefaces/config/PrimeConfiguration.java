@@ -51,6 +51,7 @@ public class PrimeConfiguration {
     private final boolean earlyPostParamEvaluation;
     private final boolean moveScriptsToBottom;
     private boolean csp;
+    private String cspPolicy;
 
     // internal config
     private final boolean stringConverterAvailable;
@@ -72,16 +73,16 @@ public class PrimeConfiguration {
 
         // parse context params
         String value = externalContext.getInitParameter(Constants.ContextParams.INTERPRET_EMPTY_STRING_AS_NULL);
-        interpretEmptyStringAsNull = (value == null) ? false : Boolean.valueOf(value);
+        interpretEmptyStringAsNull = Boolean.parseBoolean(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.SUBMIT);
-        partialSubmitEnabled = (value == null) ? false : value.equalsIgnoreCase("partial");
+        partialSubmitEnabled = "partial".equalsIgnoreCase(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.RESET_VALUES);
-        resetValuesEnabled = (value == null) ? false : Boolean.valueOf(value);
+        resetValuesEnabled = Boolean.parseBoolean(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.PFV_KEY);
-        clientSideValidationEnabled = (value == null) ? false : Boolean.valueOf(value);
+        clientSideValidationEnabled = Boolean.parseBoolean(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.UPLOADER);
         uploader = (value == null) ? "auto" : value;
@@ -89,33 +90,31 @@ public class PrimeConfiguration {
         theme = externalContext.getInitParameter(Constants.ContextParams.THEME);
 
         value = externalContext.getInitParameter(Constants.ContextParams.FONT_AWESOME);
-        fontAwesomeEnabled = (value == null) ? false : Boolean.valueOf(value);
+        fontAwesomeEnabled = Boolean.parseBoolean(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.TRANSFORM_METADATA);
-        transformMetadataEnabled = (value == null) ? false : Boolean.valueOf(value);
+        transformMetadataEnabled = Boolean.parseBoolean(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.LEGACY_WIDGET_NAMESPACE);
-        legacyWidgetNamespace = (value == null) ? false : Boolean.valueOf(value);
+        legacyWidgetNamespace = Boolean.parseBoolean(value);
 
-        if (environment.isBeanValidationAvailable()) {
-            value = externalContext.getInitParameter(Constants.ContextParams.BEAN_VALIDATION_DISABLED);
-            beanValidationEnabled = (value == null) ? true : !Boolean.valueOf(value);
-        }
-        else {
-            beanValidationEnabled = false;
-        }
+        value = externalContext.getInitParameter(Constants.ContextParams.BEAN_VALIDATION_DISABLED);
+        beanValidationEnabled = environment.isBeanValidationAvailable() && !Boolean.parseBoolean(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES);
-        interpolateClientSideValidationMessages = (value == null) ? false : Boolean.valueOf(value);
+        interpolateClientSideValidationMessages = Boolean.parseBoolean(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.EARLY_POST_PARAM_EVALUATION);
-        earlyPostParamEvaluation = (value == null) ? false : Boolean.valueOf(value);
+        earlyPostParamEvaluation = Boolean.parseBoolean(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.MOVE_SCRIPTS_TO_BOTTOM);
-        moveScriptsToBottom = (value == null) ? false : Boolean.valueOf(value);
+        moveScriptsToBottom = Boolean.parseBoolean(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.CSP);
-        csp = (value == null) ? false : Boolean.valueOf(value);
+        csp = Boolean.parseBoolean(value);
+        if (csp) {
+            cspPolicy = externalContext.getInitParameter(Constants.ContextParams.CSP_POLICY);
+        }
     }
 
     protected boolean resolveValidateEmptyFields(FacesContext context, PrimeEnvironment environment) {
@@ -211,5 +210,9 @@ public class PrimeConfiguration {
 
     public boolean isCsp() {
         return csp;
+    }
+
+    public String getCspPolicy() {
+        return cspPolicy;
     }
 }

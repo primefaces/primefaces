@@ -23,31 +23,78 @@
  */
 package org.primefaces.model;
 
+import java.io.Serializable;
 import javax.el.ValueExpression;
 import org.primefaces.component.api.UIColumn;
 
-public class FilterMeta {
+public class FilterMeta implements Serializable {
 
-    private UIColumn column;
+    private static final long serialVersionUID = 1L;
+
+    private String filterField;
+    private String columnKey;
+    private transient UIColumn column;
     private ValueExpression filterByVE;
+    private MatchMode filterMatchMode;
     private Object filterValue;
 
-    public FilterMeta(UIColumn column, ValueExpression filterByVE, Object filterValue) {
-        this.column = column;
-        this.filterByVE = filterByVE;
+    public FilterMeta() {
+
+    }
+
+    public FilterMeta(String filterField, Object filterValue) {
+        this.filterField = filterField;
         this.filterValue = filterValue;
     }
 
-    public UIColumn getColumn() {
-        return column;
+    public FilterMeta(String filterField, String columnKey, ValueExpression filterByVE, MatchMode filterMatchMode, Object filterValue) {
+        this.filterField = filterField;
+        this.columnKey = columnKey;
+        this.filterByVE = filterByVE;
+        this.filterMatchMode = filterMatchMode;
+        this.filterValue = filterValue;
+    }
+
+    public FilterMeta(FilterMeta filterMeta) {
+        this.filterField = filterMeta.getFilterField();
+        this.columnKey = filterMeta.getColumnKey();
+        this.filterByVE = filterMeta.getFilterByVE();
+        this.filterMatchMode = filterMeta.getFilterMatchMode();
+        this.filterValue = filterMeta.getFilterValue();
+        this.column = null; // this constructor is currently just a copy-constructor for the TableState, and we don't need the component in the state
+    }
+
+    public String getFilterField() {
+        return filterField;
+    }
+
+    public String getColumnKey() {
+        return columnKey;
     }
 
     public ValueExpression getFilterByVE() {
         return filterByVE;
     }
 
+    public MatchMode getFilterMatchMode() {
+        return filterMatchMode;
+    }
+
     public Object getFilterValue() {
         return filterValue;
     }
 
+    public UIColumn getColumn() {
+        return column;
+    }
+
+    public void setColumn(UIColumn column) {
+        this.column = column;
+    }
+
+    @Override
+    public String toString() {
+        return "FilterMeta [filterField=" + filterField + ", columnKey=" + columnKey + ", filterByVE=" + filterByVE + ", filterMatchMode=" + filterMatchMode
+                    + ", filterValue=" + filterValue + "]";
+    }
 }

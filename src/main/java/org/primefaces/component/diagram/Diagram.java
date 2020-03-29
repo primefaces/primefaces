@@ -36,6 +36,7 @@ import javax.faces.event.FacesEvent;
 
 import org.primefaces.event.diagram.ConnectEvent;
 import org.primefaces.event.diagram.ConnectionChangeEvent;
+import org.primefaces.event.diagram.PositionChangeEvent;
 import org.primefaces.event.diagram.DisconnectEvent;
 import org.primefaces.model.diagram.DiagramModel;
 import org.primefaces.model.diagram.Element;
@@ -64,6 +65,7 @@ public class Diagram extends DiagramBase {
             .put("connect", ConnectEvent.class)
             .put("disconnect", DisconnectEvent.class)
             .put("connectionChange", ConnectionChangeEvent.class)
+            .put("positionChange", PositionChangeEvent.class)
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
@@ -87,6 +89,10 @@ public class Diagram extends DiagramBase {
 
     public boolean isConnectionChangeRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_connectionChange");
+    }
+
+    public boolean isPositionChangeRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_positionChange");
     }
 
     @Override
@@ -138,6 +144,16 @@ public class Diagram extends DiagramBase {
 
                     connectionChangeEvent.setPhaseId(behaviorEvent.getPhaseId());
                     super.queueEvent(connectionChangeEvent);
+                }
+                else if (eventName.equals("positionChange")) {
+                    Element element = model.findElement(params.get(clientId + "_elementId"));
+                    String[] position = params.get(clientId + "_position").split(",");
+
+                    PositionChangeEvent positionChangeEvent = new PositionChangeEvent(this, behaviorEvent.getBehavior(),
+                            element, position[0] + "px", position[1] + "px");
+
+                    positionChangeEvent.setPhaseId(behaviorEvent.getPhaseId());
+                    super.queueEvent(positionChangeEvent);
                 }
             }
         }

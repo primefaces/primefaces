@@ -42,6 +42,7 @@ import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.*;
 
 import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
+import org.primefaces.model.MatchMode;
 
 public class TreeRenderer extends CoreRenderer {
 
@@ -245,7 +246,7 @@ public class TreeRenderer extends CoreRenderer {
                 tree.initPreselection();
             }
 
-            if (root != null && (LangUtils.isValueBlank(filteredValue) || tree.getFilteredRowKeys().size() > 0)) {
+            if (root != null && (LangUtils.isValueBlank(filteredValue) || !tree.getFilteredRowKeys().isEmpty())) {
                 encodeTreeNodeChildren(context, tree, root, clientId, tree.isDynamic(), tree.isCheckboxSelection(), tree.isDroppable());
             }
         }
@@ -286,7 +287,7 @@ public class TreeRenderer extends CoreRenderer {
         String widget = tree.getOrientation().equals("vertical") ? "VerticalTree" : "HorizontalTree";
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init(widget, tree.resolveWidgetVar(), clientId);
+        wb.init(widget, tree.resolveWidgetVar(context), clientId);
 
         wb.attr("dynamic", dynamic)
                 .attr("highlight", tree.isHighlight(), true)
@@ -663,12 +664,16 @@ public class TreeRenderer extends CoreRenderer {
             for (String filteredRowKey : filteredRowKeys) {
                 String rowKeyExt = rowKey + "_";
                 String filteredRowKeyExt = filteredRowKey + "_";
-                if (filteredRowKey.startsWith(rowKeyExt) || (!isStrictMode && rowKey.startsWith(filteredRowKeyExt))
+                boolean isNodeAncestorOfMatch = filteredRowKey.startsWith(rowKeyExt);
+                boolean isNodeDescendantOfMatch = rowKey.startsWith(filteredRowKeyExt);
+                if (isNodeAncestorOfMatch || (!isStrictMode && isNodeDescendantOfMatch)
                         || filteredRowKey.equals(rowKey)) {
                     match = true;
-                    if (!node.isLeaf() && !rowKey.startsWith(filteredRowKey)) {
+                    if (!node.isLeaf() && isNodeAncestorOfMatch) {
                         node.setExpanded(true);
                     }
+                }
+                else if (match) {
                     break;
                 }
             }
@@ -794,6 +799,9 @@ public class TreeRenderer extends CoreRenderer {
                 encodeTreeNode(context, tree, node.getChildren().get(i), clientId, dynamic, checkbox, droppable);
             }
         }
+        else if (droppable && ROOT_ROW_KEY.equals(node.getRowKey())) {
+            encodeDropTarget(context, tree);
+        }
     }
 
     protected void encodeDropTarget(FacesContext context, Tree tree) throws IOException {
@@ -867,8 +875,13 @@ public class TreeRenderer extends CoreRenderer {
 
     public FilterConstraint getFilterConstraint(Tree tree) {
         String filterMatchMode = tree.getFilterMatchMode();
-        FilterConstraint filterConstraint = Tree.FILTER_CONSTRAINTS.get(filterMatchMode);
 
+        MatchMode matchMode = MatchMode.byName(filterMatchMode);
+        if (matchMode == null) {
+            throw new FacesException("Illegal filter match mode:" + filterMatchMode);
+        }
+
+        FilterConstraint filterConstraint = Tree.FILTER_CONSTRAINTS.get(matchMode);
         if (filterConstraint == null) {
             throw new FacesException("Illegal filter match mode:" + filterMatchMode);
         }

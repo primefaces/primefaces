@@ -82,6 +82,7 @@
             clearButtonStyleClass: 'ui-priority-secondary',
             appendTo: null,
             dateTemplate: null,
+            timeInput: false,
             onFocus: null,
             onBlur: null,
             onInput: null,
@@ -95,67 +96,111 @@
             onMonthChange: null,
             onYearChange: null
         },
-        
+
         _create: function () {
             this.container = this.element;
             this.inputfield = this.element.children('input');
-            
+
             this._setInitValues();
             this._render();
         },
-        
+
         _setInitValues: function () {
+            if (this.options.userLocale && typeof this.options.userLocale === 'object') {
+                $.extend(this.options.locale, this.options.userLocale);
+            }
+
             var parsedDefaultDate = this.parseValue(this.options.defaultDate);
 
+            var viewDateDefaultsToNow=false;
+
             this.value = parsedDefaultDate;
-            this.viewDate = this.options.viewDate ? 
-                this.parseValue(this.options.viewDate) 
-                :
-                ((((this.isMultipleSelection() || this.isRangeSelection()) && parsedDefaultDate instanceof Array) ? parsedDefaultDate[0] : parsedDefaultDate) || this.parseValue(new Date()));
-            this.options.minDate = this.parseOptionValue(this.options.minDate);
-            this.options.maxDate = this.parseOptionValue(this.options.maxDate);
+            if (this.options.viewDate) {
+                this.viewDate = this.parseValue(this.options.viewDate);
+            }
+            else {
+                if ((this.isMultipleSelection() || this.isRangeSelection()) && parsedDefaultDate instanceof Array) {
+                    this.viewDate = parsedDefaultDate[0];
+                }
+                else {
+                    this.viewDate = parsedDefaultDate;
+                }
+                if (this.viewDate === null) {
+                    this.viewDate = new Date();
+                    if (!this.options.showSeconds) {
+                        this.viewDate.setSeconds(0);
+                    }
+                    this.viewDate.setMilliseconds(0);
+                    viewDateDefaultsToNow = true;
+                }
+            }
+            this.options.minDate = this.parseMinMaxValue(this.options.minDate);
+            this.options.maxDate = this.parseMinMaxValue(this.options.maxDate);
             this.ticksTo1970 = (((1970 - 1) * 365 + Math.floor(1970 / 4) - Math.floor(1970 / 100) + Math.floor(1970 / 400)) * 24 * 60 * 60 * 10000000);
-            
+
+            if (this.options.timeOnly && viewDateDefaultsToNow) {
+                if (this.options.minDate) {
+                    if (this.viewDate < this.options.minDate) {
+                        this.viewDate = new Date(this.options.minDate.getTime());
+                    }
+                }
+                if (this.options.maxDate) {
+                    if (this.viewDate > this.options.maxDate) {
+                        this.viewDate = new Date(this.options.maxDate.getTime());
+                    }
+                }
+            }
+
             if (this.options.yearRange === null && this.options.yearNavigator) {
                 var viewYear = this.viewDate.getFullYear();
                 this.options.yearRange = (viewYear - 10) + ':' + (viewYear + 10);
             }
-            
-            if (this.options.userLocale && typeof this.options.userLocale === 'object') {
-                $.extend(this.options.locale, this.options.userLocale);
-            }
-            
+
             if (this.options.disabledDates) {
                 for (var i = 0; i < this.options.disabledDates.length; i++) {
                     this.options.disabledDates[i] = this.parseOptionValue(this.options.disabledDates[i]);
                 }
             }
         },
-        
+
         parseOptionValue: function(option) {
             if (option && typeof option === 'string') {
                 return this.parseDate(option, this.options.dateFormat);
             }
-            
+
             return option;
         },
-        
+
+        parseMinMaxValue: function(option) {
+            if (option && typeof option === 'string') {
+                return this.parseDateTime(option);
+            }
+
+            return option;
+        },
+
         parseValue: function(option) {
             if (option && typeof option === 'string') {
                 return this.parseValueFromString(option);
             }
-            
+
             return option;
         },
-        
+
         setDate: function(date) {
-            this.value = this.parseValue(date);
-                
+            if (!date) {
+                this.updateModel(null, null);
+                return;
+            }
+
+            var newDate = this.parseValue(date);
+            var newDateMeta = { day: newDate.getDate(), month: newDate.getMonth(), year: newDate.getFullYear(), selectable: true /*, today: true*/ };
+
             /* set changes */
-            this.panel.get(0).innerHTML = this.renderPanelElements();
-            this.inputfield.val(this.value);
+            this.updateViewDate(null, newDate);
+            this.onDateSelect(null, newDateMeta);
         },
-        
+
         getDate: function() {
             return this.value;
         },
@@ -224,15 +269,27 @@
             return { 'month': m, 'year': y };
         },
 
-        createWeekDays: function () {
+        createWeekDaysInternal: function (dayNames) {
             var weekDays = [],
                 dayIndex = this.options.locale.firstDay !== undefined ? this.options.locale.firstDay : this.options.locale.firstDayOfWeek;
             for (var i = 0; i < 7; i++) {
-                weekDays.push(this.options.locale.dayNamesMin[dayIndex]);
+                weekDays.push(dayNames[dayIndex]);
                 dayIndex = (dayIndex === 6) ? 0 : ++dayIndex;
             }
 
             return weekDays;
+        },
+
+        createWeekDaysMin: function () {
+            return this.createWeekDaysInternal(this.options.locale.dayNamesMin);
+        },
+
+        createWeekDaysShort: function () {
+            return this.createWeekDaysInternal(this.options.locale.dayNamesShort);
+        },
+
+        createWeekDays: function () {
+            return this.createWeekDaysInternal(this.options.locale.dayNames);
         },
 
         createMonths: function (month, year) {
@@ -398,7 +455,7 @@
             if (this.value) {
                 if (this.isRangeSelection()) {
                     var dateMeta = { year: this.viewDate.getFullYear(), month: month, day: 1, selectable: true };
-                    
+
                     if (this.value[1])
                         return this.isDateEquals(this.value[0], dateMeta) || this.isDateEquals(this.value[1], dateMeta) || this.isDateBetween(this.value[0], this.value[1], dateMeta);
                     else
@@ -408,7 +465,7 @@
                     return (this.value.getMonth() === month && this.value.getFullYear() === this.viewDate.getFullYear());
                 }
             }
-            
+
             return false;
         },
 
@@ -883,17 +940,23 @@
             var time = this.parseTime(timeString, ampm);
             value.setHours(time.hour);
             value.setMinutes(time.minute);
-            value.setSeconds(time.second);
+            if (this.options.showSeconds) {
+                value.setSeconds(time.second);
+            }
+            else {
+                value.setSeconds(0);
+            }
+            value.setMilliseconds(0);
         },
 
         isInMinYear: function() {
             return this.options.minDate && this.options.minDate.getFullYear() === this.viewDate.getFullYear();
         },
-        
+
         isInMaxYear: function() {
             return this.options.maxDate && this.options.maxDate.getFullYear() === this.viewDate.getFullYear();
         },
-        
+
         _destroy: function () {
             this.restoreOverlayAppend();
             this.onOverlayHide();
@@ -928,19 +991,19 @@
                 }
                 this.renderTriggerButton();
                 this.container.append(this.triggerButton);
-                this.container.addClass('ui-trigger-calendar')
+                this.container.addClass('ui-trigger-calendar');
             }
 
             if (this.panel) {
                 this.panel.remove();
             }
             this.renderDatePickerPanel();
-            
+
             this.panel.css({
                 'display': this.options.inline ? 'block' : 'none',
                 'position': this.options.inline || this.options.touchUI ? '' : 'absolute'
             });
-            
+
             if (this.options.panelStyleClass) {
                 this.panel.addClass(this.options.panelStyleClass);
             }
@@ -949,7 +1012,7 @@
                 this.panel.attr('style', this.options.panelStyle);
             }
 
-            if (this.options.appendTo) {
+            if (!this.options.inline && this.options.appendTo) {
                 this.panel.appendTo(this.options.appendTo);
             }
             else {
@@ -963,11 +1026,31 @@
 
         _setInitOptionValues: function () {
             if (this.options.yearNavigator) {
-                this.panel.find('.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-year').val(this.viewDate.getFullYear());
+                var year = this.viewDate.getFullYear();
+                var month = this.viewDate.getMonth();
+                var yearElts = this.panel.find('.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-year');
+
+                yearElts.each(function( index, yearElt ) {
+                    $(yearElt).val(year);
+                    month = month + 1;
+                    if (month === 12) {
+                        month = 0;
+                        year = year + 1;
+                    }
+                });
             }
 
             if (this.options.monthNavigator && this.options.view !== 'month') {
-                this.panel.find('.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-month').val(this.viewDate.getMonth());
+                var month = this.viewDate.getMonth();
+                var monthElts = this.panel.find('.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-month');
+
+                monthElts.each(function( index, monthElt ) {
+                    $(monthElt).val(month);
+                    month = month + 1;
+                    if (month === 12) {
+                        month = 0;
+                    }
+                });
             }
         },
 
@@ -991,7 +1074,8 @@
                 'ui-datepicker-touch-ui': this.options.touchUI
             });
 
-            this.panel = $('<div class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all ' + _classes + '"></div>');
+            var panelId = this.container.attr('id') + '_panel';
+            this.panel = $('<div id="' + panelId + '" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all ' + _classes + '"></div>');
 
             //render inner elements
             this.panel.get(0).innerHTML = this.renderPanelElements();
@@ -1047,7 +1131,7 @@
         },
 
         renderTimePicker: function () {
-            var timepicker = '<div class="ui-timepicker ui-widget-header ui-corner-all">';
+            var timepicker = '<div class="ui-timepicker ui-widget-header ui-corner-all' + (this.options.timeInput ? ' ui-timepicker-timeinput' : '') + '">';
 
             //hour
             timepicker += this.renderHourPicker();
@@ -1108,11 +1192,12 @@
         },
 
         renderMonth: function (monthMetaData, index) {
-            var weekDays = this.createWeekDays(),
+            var weekDaysMin = this.createWeekDaysMin(),
+                weekDays = this.createWeekDays(),
                 backwardNavigator = (index === 0) ? this.renderBackwardNavigator() : '',
                 forwardNavigator = (this.options.numberOfMonths === 1) || (index === this.options.numberOfMonths - 1) ? this.renderForwardNavigator() : '',
                 title = this.renderTitle(monthMetaData),
-                dateViewGrid = this.renderDateViewGrid(monthMetaData, weekDays);
+                dateViewGrid = this.renderDateViewGrid(monthMetaData, weekDaysMin, weekDays);
 
             return ('<div class="ui-datepicker-group ui-widget-content">' +
                 '<div class="ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all">' +
@@ -1167,7 +1252,7 @@
             var _options = '',
                 minDate = this.options.minDate,
                 maxDate = this.options.maxDate;
-                
+
             for (var i = 0; i < options.length; i++) {
                 switch(name) {
                     case 'month':
@@ -1199,12 +1284,12 @@
             );
         },
 
-        renderDayNames: function (weekDays) {
+        renderDayNames: function (weekDaysMin, weekDays) {
             var dayNamesHtml = '';
-            for (var i = 0; i < weekDays.length; i++) {
+            for (var i = 0; i < weekDaysMin.length; i++) {
                 dayNamesHtml += '<th scope="col">' +
-                    '<span title="' + this.escapeHTML(this.options.locale.dayNames[i]) + '">' +
-                    weekDays[i] +
+                    '<span title="' + this.escapeHTML(weekDays[i]) + '">' +
+                    weekDaysMin[i] +
                     '</span>' +
                     '</th>';
             }
@@ -1264,8 +1349,8 @@
             return datesHtml;
         },
 
-        renderDateViewGrid: function (monthMetaData, weekDays) {
-            var dayNames = this.renderDayNames(weekDays),
+        renderDateViewGrid: function (monthMetaData, weekDaysMin, weekDays) {
+            var dayNames = this.renderDayNames(weekDaysMin, weekDays),
                 dates = this.renderDates(monthMetaData);
 
             return (
@@ -1296,14 +1381,18 @@
 
             var hourDisplay = hour < 10 ? '0' + hour : hour;
 
-            return this.renderTimeElements("ui-hour-picker", '<span>' + hourDisplay + '</span>', 0);
+            //type="number" min="' + minHour + '" max="' + maxHour + '" - does not work well on Firefox 70, so we don´t use it
+            var html = this.options.timeInput ? '<input value="' + hourDisplay + '" size="2" maxlength="2" tabindex="1"></input>' : '<span>' + hourDisplay + '</span>';
+            return this.renderTimeElements("ui-hour-picker", html, 0);
         },
 
         renderMinutePicker: function () {
             var minute = (this.value && this.value instanceof Date) ? this.value.getMinutes() : this.viewDate.getMinutes(),
                 minuteDisplay = minute < 10 ? '0' + minute : minute;
 
-            return this.renderTimeElements("ui-minute-picker", '<span>' + minuteDisplay + '</span>', 1);
+            //type="number" min="0" max="59" does not work well on Firefox 70, so we don´t use it
+            var html = this.options.timeInput ? '<input value="' + minuteDisplay + '" size="2" maxlength="2" tabindex="2"></input>' : '<span>' + minuteDisplay + '</span>';
+            return this.renderTimeElements("ui-minute-picker", html, 1);
         },
 
         renderSecondPicker: function () {
@@ -1311,7 +1400,9 @@
                 var second = (this.value && this.value instanceof Date) ? this.value.getSeconds() : this.viewDate.getSeconds(),
                     secondDisplay = second < 10 ? '0' + second : second;
 
-                return this.renderTimeElements("ui-second-picker", '<span>' + secondDisplay + '</span>', 2);
+                //type="number" min="0" max="59" does not work well on Firefox 70, so we don´t use it
+                var html =  this.options.timeInput ? '<input value="' + secondDisplay + '" size="2" maxlength="2" tabindex="3"></input>' : '<span>' + secondDisplay + '</span>';
+                return this.renderTimeElements("ui-second-picker", html, 2);
             }
 
             return '';
@@ -1415,9 +1506,28 @@
                 .on('mouseup.datePicker-time', timeSelector, null, function (event) {
                     $this.onTimePickerElementMouseUp(event);
                 })
+                .on('mouseleave.datePicker-time', timeSelector, null, function () {
+                    $this.clearTimePickerTimer();
+                })
                 .on('click.datePicker-ampm', ampmSelector, null, function (event) {
                     $this.toggleAmPm(event);
                 });
+
+            if (this.options.timeInput) {
+                this.panel.on('focus', '.ui-hour-picker input', null, function (event) {
+                    $this.oldHours = this.value;
+                }).on('focus', '.ui-minute-picker input', null, function (event) {
+                    $this.oldMinutes = this.value;
+                }).on('focus', '.ui-second-picker input', null, function (event) {
+                    $this.oldSeconds = this.value;
+                }).on('change', '.ui-hour-picker input', null, function (event) {
+                    $this.handleHoursInput(this, event);
+                }).on('change', '.ui-minute-picker input', null, function (event) {
+                    $this.handleMinutesInput(this, event);
+                }).on('change', '.ui-second-picker input', null, function (event) {
+                    $this.handleSecondsInput(this, event);
+                });
+            }
 
             var todayButtonSelector = '.ui-datepicker-buttonbar .ui-today-button',
                 clearButtonSelector = '.ui-datepicker-buttonbar .ui-clear-button';
@@ -1440,7 +1550,7 @@
             if (this.documentClickListener) {
                 this.datepickerClick = true;
             }
-            
+
             if (this.options.showOnFocus && !this.panel.is(':visible')) {
                 this.showOverlay();
             }
@@ -1470,11 +1580,16 @@
 
         onInputKeyDown: function (event) {
             this.isKeydown = true;
-            if (event.keyCode === 9) {
+            if (event.keyCode === 27) {
+                //put the focus back to the inputfield
+                this.inputfield.focus();
+            }
+
+            if (event.keyCode === 9 || event.keyCode === 27) {
                 if (this.options.touchUI) {
                     this.disableModality();
                 }
-                
+
                 this.hideOverlay();
             }
         },
@@ -1523,7 +1638,7 @@
         onMonthDropdownChange: function (event) {
             var newViewDate = new Date(this.viewDate.getTime());
             newViewDate.setMonth(parseInt(event.target.value, 10));
-            
+
             if (this.options.onMonthChange) {
                 this.options.onMonthChange.call(this, newViewDate.getMonth() + 1, newViewDate.getFullYear());
             }
@@ -1555,13 +1670,13 @@
 
             if (this.options.view === 'date') {
                 if (newViewDate.getMonth() === 0) {
-                    newViewDate.setMonth(11);
+                    newViewDate.setMonth(11, 1);
                     newViewDate.setFullYear(newViewDate.getFullYear() - 1);
                 }
                 else {
-                    newViewDate.setMonth(newViewDate.getMonth() - 1);
+                    newViewDate.setMonth(newViewDate.getMonth() - 1, 1);
                 }
-                
+
                 if (this.options.onMonthChange) {
                     this.options.onMonthChange.call(this, newViewDate.getMonth() + 1, newViewDate.getFullYear());
                 }
@@ -1579,7 +1694,7 @@
                 }
 
                 newViewDate.setFullYear(newYear);
-                
+
                 if (this.options.onYearChange) {
                     this.options.onYearChange.call(this, newViewDate.getMonth(), newViewDate.getFullYear());
                 }
@@ -1600,13 +1715,13 @@
 
             if (this.options.view === 'date') {
                 if (newViewDate.getMonth() === 11) {
-                    newViewDate.setMonth(0);
+                    newViewDate.setMonth(0, 1);
                     newViewDate.setFullYear(newViewDate.getFullYear() + 1);
                 }
                 else {
-                    newViewDate.setMonth(newViewDate.getMonth() + 1);
+                    newViewDate.setMonth(newViewDate.getMonth() + 1, 1);
                 }
-                
+
                 if (this.options.onMonthChange) {
                     this.options.onMonthChange.call(this, newViewDate.getMonth() + 1, newViewDate.getFullYear());
                 }
@@ -1624,7 +1739,7 @@
                 }
 
                 newViewDate.setFullYear(newYear);
-                
+
                 if (this.options.onYearChange) {
                     this.options.onYearChange.call(this, newViewDate.getMonth(), newViewDate.getFullYear());
                 }
@@ -1636,7 +1751,7 @@
         },
 
         onTimePickerElementMouseDown: function (event, type, direction) {
-            if (!this.options.disabled) {
+            if (!this.options.disabled && event.which === 1) {
                 this.repeat(event, null, type, direction);
                 event.preventDefault();
             }
@@ -1691,10 +1806,20 @@
             if (this.options.onBeforeShow) {
                 this.options.onBeforeShow.call(this);
             }
-            
+
             this.panel.show();
             this.alignPanel();
-            this.bindDocumentClickListener();
+
+            if (!this.options.touchUI) {
+                var $this = this;
+                setTimeout(function () {
+                    $this.bindDocumentClickListener();
+                }, 10);
+            }
+
+            if ((this.options.showTime || this.options.timeOnly) && this.options.timeInput) {
+                this.panel.find('.ui-hour-picker input').focus();
+            }
         },
 
         hideOverlay: function () {
@@ -1702,11 +1827,20 @@
                 if (this.options.onBeforeHide) {
                     this.options.onBeforeHide.call(this);
                 }
-                
+
                 this.unbindDocumentClickListener();
                 this.datepickerClick = false;
 
                 this.panel.hide();
+
+                var viewDate = this.options.viewDate && !this.value ?
+                    this.parseValue(this.options.viewDate)
+                    :
+                    ((((this.isMultipleSelection() || this.isRangeSelection()) && this.value instanceof Array) ? this.value[0] : this.value) || this.parseValue(new Date()));
+
+                if(viewDate instanceof Date) {
+                    this.updateViewDate(null, viewDate);
+                }
             }
         },
 
@@ -1790,7 +1924,9 @@
 
         onDateSelect: function (event, dateMeta) {
             if (this.options.disabled || !dateMeta.selectable) {
-                event.preventDefault();
+                if(event) {
+                    event.preventDefault();
+                }
                 return;
             }
 
@@ -1812,6 +1948,9 @@
             }
 
             if (!this.options.inline && this.isSingleSelection() && (!this.options.showTime || this.options.hideOnDateTimeSelect)) {
+                //put the focus back to the inputfield
+                this.inputfield.focus();
+
                 setTimeout(function () {
                     $this.hideOverlay();
                 }, 100);
@@ -1821,7 +1960,9 @@
                 }
             }
 
-            event.preventDefault();
+            if(event) {
+                event.preventDefault();
+            }
         },
 
         selectDate: function (event, dateMeta) {
@@ -1832,6 +1973,7 @@
                 date.setHours(time.getHours());
                 date.setMinutes(time.getMinutes());
                 date.setSeconds(time.getSeconds());
+                date.setMilliseconds(0);
             }
 
             if (this.options.minDate && this.options.minDate > date) {
@@ -1879,7 +2021,7 @@
                 newHour = currentHour + this.options.stepHour;
             newHour = (newHour >= 24) ? (newHour - 24) : newHour;
 
-            if (this.validateHour(newHour, currentTime)) {
+            if (this.validateTime(newHour, currentTime.getMinutes(), currentTime.getSeconds(), currentTime, "INCREMENT")) {
                 this.updateTime(event, newHour, currentTime.getMinutes(), currentTime.getSeconds());
             }
 
@@ -1892,7 +2034,7 @@
                 newHour = currentHour - this.options.stepHour;
             newHour = (newHour < 0) ? (newHour + 24) : newHour;
 
-            if (this.validateHour(newHour, currentTime)) {
+            if (this.validateTime(newHour, currentTime.getMinutes(), currentTime.getSeconds(), currentTime, "DECREMENT")) {
                 this.updateTime(event, newHour, currentTime.getMinutes(), currentTime.getSeconds());
             }
 
@@ -1905,7 +2047,7 @@
                 newMinute = currentMinute + this.options.stepMinute;
             newMinute = (newMinute > 59) ? (newMinute - 60) : newMinute;
 
-            if (this.validateMinute(newMinute, currentTime)) {
+            if (this.validateTime(currentTime.getHours(), newMinute, currentTime.getSeconds(), currentTime, "INCREMENT")) {
                 this.updateTime(event, currentTime.getHours(), newMinute, currentTime.getSeconds());
             }
 
@@ -1918,7 +2060,7 @@
                 newMinute = currentMinute - this.options.stepMinute;
             newMinute = (newMinute < 0) ? (newMinute + 60) : newMinute;
 
-            if (this.validateMinute(newMinute, currentTime)) {
+            if (this.validateTime(currentTime.getHours(), newMinute, currentTime.getSeconds(), currentTime, "DECREMENT")) {
                 this.updateTime(event, currentTime.getHours(), newMinute, currentTime.getSeconds());
             }
 
@@ -1931,7 +2073,7 @@
                 newSecond = currentSecond + this.options.stepSecond;
             newSecond = (newSecond > 59) ? (newSecond - 60) : newSecond;
 
-            if (this.validateSecond(newSecond, currentTime)) {
+            if (this.validateTime(currentTime.getHours(), currentTime.getMinutes(), newSecond, currentTime, "INCREMENT")) {
                 this.updateTime(event, currentTime.getHours(), currentTime.getMinutes(), newSecond);
             }
 
@@ -1944,7 +2086,7 @@
                 newSecond = currentSecond - this.options.stepSecond;
             newSecond = (newSecond < 0) ? (newSecond + 60) : newSecond;
 
-            if (this.validateSecond(newSecond, currentTime)) {
+            if (this.validateTime(currentTime.getHours(), currentTime.getMinutes(), newSecond, currentTime, "DECREMENT")) {
                 this.updateTime(event, currentTime.getHours(), currentTime.getMinutes(), newSecond);
             }
 
@@ -1960,63 +2102,111 @@
             event.preventDefault();
         },
 
-        validateHour: function (hour, value) {
-            var valid = true,
-                valueDateString = value ? value.toDateString() : null;
+        handleHoursInput: function(input, event) {
+            var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
+                value = input.value,
+                valid = false,
+                newHours;
 
-            if (this.options.minDate && valueDateString && this.options.minDate.toDateString() === valueDateString) {
-                if (this.options.minDate.getHours() > hour) {
-                    valid = false;
+            var reg = new RegExp('^([0-9]){1,2}$');
+            if (reg.test(value)) {
+                newHours = parseInt(value);
+                if (this.options.hourFormat === '12') {
+                    if (newHours >= 1 || newHours <= 12) {
+                        valid = this.validateTime(newHours, currentTime.getMinutes(), currentTime.getSeconds(), currentTime);
+                    }
+                } else {
+                    if (newHours >= 0 || newHours <= 23) {
+                        valid = this.validateTime(newHours, currentTime.getMinutes(), currentTime.getSeconds(), currentTime);
+                    }
                 }
             }
 
-            if (this.options.maxDate && valueDateString && this.options.maxDate.toDateString() === valueDateString) {
-                if (this.options.maxDate.getHours() < hour) {
-                    valid = false;
-                }
+            if (!valid) {
+                event.preventDefault();
+                input.value = this.oldHours;
+                return;
             }
 
-            return valid;
+            var newDateTime = (this.value && this.value instanceof Date) ? new Date(this.value) : new Date();
+            newDateTime.setHours(newHours);
+
+            this.updateTimeAfterInput(event, newDateTime);
         },
 
-        validateMinute: function (minute, value) {
-            var valid = true,
-                valueDateString = value ? value.toDateString() : null;
+        handleMinutesInput: function(input, event) {
+            var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
+                value = input.value,
+                valid = false,
+                newMinutes;
 
-            if (this.options.minDate && valueDateString && this.options.minDate.toDateString() === valueDateString) {
-                if (value.getHours() === this.options.minDate.getHours()) {
-                    if (this.options.minDate.getMinutes() > minute) {
-                        valid = false;
-                    }
+            var reg = new RegExp('^([0-9]){1,2}$');
+            if (reg.test(value)) {
+                newMinutes = parseInt(value);
+                if (newMinutes >= 0 || newMinutes <= 59) {
+                    valid = this.validateTime(currentTime.getHours(), newMinutes, currentTime.getSeconds(), currentTime);
                 }
             }
 
-            if (this.options.maxDate && valueDateString && this.options.maxDate.toDateString() === valueDateString) {
-                if (value.getHours() === this.options.maxDate.getHours()) {
-                    if (this.options.maxDate.getMinutes() < minute) {
-                        valid = false;
-                    }
-                }
+            if (!valid) {
+                event.preventDefault();
+                input.value = this.oldMinutes;
+                return;
             }
 
-            return valid;
+            var newDateTime = (this.value && this.value instanceof Date) ? new Date(this.value) : new Date();
+            newDateTime.setMinutes(newMinutes);
+
+            this.updateTimeAfterInput(event, newDateTime);
         },
 
-        validateSecond: function (second, value) {
-            var valid = true,
-                valueDateString = value ? value.toDateString() : null;
+        handleSecondsInput: function(input, event) {
+            var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
+                value = input.value,
+                valid = false,
+                newSeconds;
 
-            if (this.options.minDate && valueDateString && this.options.minDate.toDateString() === valueDateString) {
-                if (value.getHours() === this.options.minDate.getHours() && value.getMinutes() === this.options.minDate.getMinutes()) {
-                    if (this.options.minDate.getMinutes() > second) {
+            var reg = new RegExp('^([0-9]){1,2}$');
+            if (reg.test(value)) {
+                newSeconds = parseInt(value);
+                if (newSeconds >= 0 || newSeconds <= 59) {
+                    valid = this.validateTime(currentTime.getHours(), currentTime.getMinutes(), newSeconds, currentTime);
+                }
+            }
+
+            if (!valid) {
+                event.preventDefault();
+                input.value = this.oldSeconds;
+                return;
+            }
+
+            var newDateTime = (this.value && this.value instanceof Date) ? new Date(this.value) : new Date();
+            newDateTime.setSeconds(newSeconds);
+
+            this.updateTimeAfterInput(event, newDateTime);
+        },
+
+        validateTime: function(hour, minute, second, value, direction) {
+            var valid = true;
+            var dateNew = new Date(value.getFullYear(), value.getMonth(), value.getDate(), hour, minute, second, 0);
+
+            if (this.options.minDate && value) {
+                if (this.options.minDate > dateNew) {
+                    if (direction === "INCREMENT" && this.options.minDate > value)  {
+                        ; //the new time is still outside the allowed range, but we come nearer to it
+                    }
+                    else {
                         valid = false;
                     }
                 }
             }
 
-            if (this.options.maxDate && valueDateString && this.options.maxDate.toDateString() === valueDateString) {
-                if (value.getHours() === this.options.maxDate.getHours() && value.getMinutes() === this.options.maxDate.getMinutes()) {
-                    if (this.options.maxDate.getMinutes() < second) {
+            if (this.options.maxDate && value) {
+                if (this.options.maxDate < dateNew) {
+                    if (direction === "DECREMENT" && this.options.maxDate < value) {
+                        ; //the new time is still outside the allowed range, but we come nearer to it
+                    }
+                    else {
                         valid = false;
                     }
                 }
@@ -2031,8 +2221,18 @@
             newDateTime.setHours(hour);
             newDateTime.setMinutes(minute);
             newDateTime.setSeconds(second);
+            newDateTime.setMilliseconds(0);
 
             this.updateModel(event, newDateTime);
+
+            if (this.options.onSelect) {
+                this.options.onSelect.call(this, event, newDateTime);
+            }
+        },
+
+        updateTimeAfterInput: function (event, newDateTime) {
+            this.value = newDateTime;
+            this.inputfield.val(this.getValueToRender());
 
             if (this.options.onSelect) {
                 this.options.onSelect.call(this, event, newDateTime);
@@ -2058,7 +2258,7 @@
                 this.options.onClearButtonClick.call(this, event);
             }
         },
-        
+
         escapeHTML: function(value) {
             var entityMap = {
                 '&': '&amp;',
@@ -2070,7 +2270,7 @@
                 '`': '&#x60;',
                 '=': '&#x3D;'
             };
-            
+
             return String(value).replace(/[&<>"'`=\/]/g, function (s) {
                 return entityMap[s];
             });
@@ -2080,9 +2280,9 @@
             if (this.options.onViewDateChange) {
                 this.options.onViewDateChange.call(this, event, value);
             }
-            
+
             this.viewDate = value;
-            
+
             if (this.options.monthNavigator && this.options.view !== 'month') {
                 var viewMonth = this.viewDate.getMonth();
                 viewMonth = (this.isInMaxYear() && Math.min(this.options.maxDate.getMonth(), viewMonth)) || (this.isInMinYear() && Math.max(this.options.minDate.getMonth(), viewMonth)) || viewMonth;
@@ -2095,7 +2295,7 @@
         },
 
         updateModel: function (event, value) {
-            this.value = value;
+            this.value = (value === '' ? null : value);
             this.inputfield.val(this.getValueToRender());
 
             this.panel.get(0).innerHTML = this.renderPanelElements();

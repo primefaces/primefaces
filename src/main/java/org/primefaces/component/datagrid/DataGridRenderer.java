@@ -31,6 +31,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.DataRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.WidgetBuilder;
 
@@ -53,8 +54,18 @@ public class DataGridRenderer extends DataRenderer {
             }
 
             encodeContent(context, grid);
+
+            if (grid.isMultiViewState()) {
+                DataGridState gs = grid.getMultiViewState(true);
+                gs.setFirst(grid.getFirst());
+                gs.setRows(grid.getRows());
+            }
         }
         else {
+            if (grid.isMultiViewState()) {
+                grid.restoreMultiViewState();
+            }
+
             encodeMarkup(context, grid);
             encodeScript(context, grid);
         }
@@ -63,7 +74,7 @@ public class DataGridRenderer extends DataRenderer {
     protected void encodeScript(FacesContext context, DataGrid grid) throws IOException {
         String clientId = grid.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DataGrid", grid.resolveWidgetVar(), clientId);
+        wb.init("DataGrid", grid.resolveWidgetVar(context), clientId);
 
         if (grid.isPaginator()) {
             encodePaginatorConfig(context, grid, wb);
@@ -114,7 +125,7 @@ public class DataGridRenderer extends DataRenderer {
 
         if (empty) {
             UIComponent emptyFacet = grid.getFacet("emptyMessage");
-            if (emptyFacet != null) {
+            if (ComponentUtils.shouldRenderFacet(emptyFacet)) {
                 emptyFacet.encodeAll(context);
             }
             else {
@@ -158,6 +169,7 @@ public class DataGridRenderer extends DataRenderer {
         int rows = grid.getRows();
         int itemsToRender = rows != 0 ? rows : grid.getRowCount();
         int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
+        int displayedItemsToRender = rowIndex + itemsToRender;
         String columnClass = DataGrid.COLUMN_CLASS + " " + GridLayoutUtils.getColumnClass(columns);
 
         for (int i = 0; i < numberOfRowsToRender; i++) {
@@ -180,6 +192,10 @@ public class DataGridRenderer extends DataRenderer {
                 rowIndex++;
 
                 writer.endElement("div");
+
+                if (rowIndex >= displayedItemsToRender) {
+                    break;
+                }
             }
 
             writer.endElement("div");

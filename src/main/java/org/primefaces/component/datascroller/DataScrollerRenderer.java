@@ -24,6 +24,7 @@
 package org.primefaces.component.datascroller;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -90,7 +91,7 @@ public class DataScrollerRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, null);
         }
 
-        if (header != null && header.isRendered()) {
+        if (ComponentUtils.shouldRenderFacet(header)) {
             writer.startElement("div", ds);
             writer.writeAttribute("class", DataScroller.HEADER_CLASS, null);
             header.encodeAll(context);
@@ -108,11 +109,12 @@ public class DataScrollerRenderer extends CoreRenderer {
             writer.writeAttribute("style", "height:" + ds.getScrollHeight() + "px", null);
         }
 
+        int rowCount = ds.getRowCount();
+        int start = 0;
+
         if (inline && ds.isVirtualScroll()) {
-            int rowCount = ds.getRowCount();
             int virtualScrollRowCount = (chunkSize * 2);
             int rowCountToRender = (isLazy && rowCount == 0) ? virtualScrollRowCount : ((virtualScrollRowCount > rowCount) ? rowCount : virtualScrollRowCount);
-            int start = 0;
 
             if (ds.isStartAtBottom()) {
                 int totalPage = (int) Math.ceil(rowCount * 1d / chunkSize);
@@ -122,11 +124,15 @@ public class DataScrollerRenderer extends CoreRenderer {
             encodeVirtualScrollList(context, ds, start, rowCountToRender);
         }
         else {
-            encodeList(context, ds, 0, chunkSize);
+            if (ds.isStartAtBottom()) {
+                start = rowCount > chunkSize ? rowCount - chunkSize : 0;
+            }
+
+            encodeList(context, ds, start, chunkSize);
 
             writer.startElement("div", null);
             writer.writeAttribute("class", DataScroller.LOADER_CLASS, null);
-            if (loader != null && loader.isRendered()) {
+            if (ComponentUtils.shouldRenderFacet(loader)) {
                 loader.encodeAll(context);
             }
             writer.endElement("div");
@@ -163,7 +169,7 @@ public class DataScrollerRenderer extends CoreRenderer {
         String loadEvent = ds.getFacet("loader") == null ? "scroll" : "manual";
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DataScroller", ds.resolveWidgetVar(), clientId)
+        wb.init("DataScroller", ds.resolveWidgetVar(context), clientId)
                 .attr("chunkSize", chunkSize)
                 .attr("totalSize", ds.getRowCount())
                 .attr("loadEvent", loadEvent)
@@ -177,23 +183,24 @@ public class DataScrollerRenderer extends CoreRenderer {
     protected void loadChunk(FacesContext context, DataScroller ds, int start, int size) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean isLazy = ds.isLazy();
-        boolean isVirtualScroll = ds.isVirtualScroll();
+        int _start = start < 0 ? 0 : start;
 
         if (isLazy) {
-            loadLazyData(context, ds, start, size);
+            loadLazyData(context, ds, _start, size);
         }
 
         String rowIndexVar = ds.getRowIndexVar();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
-        int firstIndex = (isLazy && isVirtualScroll) ? 0 : start;
-        int lastIndex = (firstIndex + size);
+        int lastIndex = (_start + size);
 
-        for (int i = firstIndex; i < lastIndex; i++) {
+        lastIndex = start < 0 ? lastIndex + start : lastIndex;
+
+        for (int i = _start; i < lastIndex; i++) {
             ds.setRowIndex(i);
 
             if (rowIndexVar != null) {
-                requestMap.put(rowIndexVar, (isLazy ? (start + i) : i));
+                requestMap.put(rowIndexVar, i);
             }
 
             if (!ds.isRowAvailable()) {
@@ -216,7 +223,7 @@ public class DataScrollerRenderer extends CoreRenderer {
         LazyDataModel lazyModel = (LazyDataModel) ds.getValue();
 
         if (lazyModel != null) {
-            List<?> data = lazyModel.load(start, size, null, null, null);
+            List<?> data = lazyModel.load(start, size, null, null, Collections.emptyMap());
             lazyModel.setPageSize(size);
             lazyModel.setWrappedData(data);
 

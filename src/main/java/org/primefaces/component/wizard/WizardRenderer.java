@@ -106,7 +106,7 @@ public class WizardRenderer extends CoreRenderer {
         }
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Wizard", wizard.resolveWidgetVar(), clientId)
+        wb.init("Wizard", wizard.resolveWidgetVar(context), clientId)
                 .attr("showStepStatus", wizard.isShowStepStatus())
                 .attr("showNavBar", wizard.isShowNavBar());
 
@@ -251,7 +251,7 @@ public class WizardRenderer extends CoreRenderer {
                     writer.writeAttribute("title", tab.getTitletip(), null);
                 }
 
-                if (titleFacet != null) {
+                if (ComponentUtils.shouldRenderFacet(titleFacet)) {
                     titleFacet.encodeAll(context);
                 }
                 else if (title != null) {

@@ -52,8 +52,10 @@ public class InputTextarea extends InputTextareaBase {
     public static final String STYLE_CLASS = "ui-inputfield ui-inputtextarea ui-widget ui-state-default ui-corner-all";
 
     private static final Collection<String> EVENT_NAMES = LangUtils.unmodifiableList("blur", "change", "valueChange", "click", "dblclick",
-            "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "itemSelect");
-    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("itemSelect");
+            "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "itemSelect",
+            "query");
+    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "query");
+
     private List suggestions = null;
 
     @Override
@@ -126,5 +128,13 @@ public class InputTextarea extends InputTextareaBase {
 
     public List getSuggestions() {
         return suggestions;
+    }
+
+    @Override
+    public Object saveState(FacesContext context) {
+        // reset component for MyFaces view pooling
+        suggestions = null;
+
+        return super.saveState(context);
     }
 }

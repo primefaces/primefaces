@@ -575,14 +575,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     bindEnterKeyFilter: function(filter) {
         var $this = this;
 
-        filter.bind('keydown', function(e) {
-            var key = e.which,
-            keyCode = $.ui.keyCode;
-
-            if((key === keyCode.ENTER)) {
-                e.preventDefault();
-            }
-        }).bind('keyup', function(e) {
+        filter.on('keydown', PrimeFaces.utils.blockEnterKey)
+        .on('keyup', function(e) {
             var key = e.which,
             keyCode = $.ui.keyCode;
 
@@ -604,17 +598,11 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
         //prevent form submit on enter key
         filter.on(this.cfg.filterEvent, function(e) {
-            var input = $(this),
-            key = e.which,
-            keyCode = $.ui.keyCode,
-            ignoredKeys = [keyCode.END, keyCode.HOME, keyCode.LEFT, keyCode.RIGHT, keyCode.UP, keyCode.DOWN,
-                keyCode.TAB, 16/*Shift*/, 17/*Ctrl*/, 18/*Alt*/, 91, 92, 93/*left/right Win/Cmd*/,
-                keyCode.ESCAPE, keyCode.PAGE_UP, keyCode.PAGE_DOWN,
-                19/*pause/break*/, 20/*caps lock*/, 44/*print screen*/, 144/*num lock*/, 145/*scroll lock*/];
-
-            if (ignoredKeys.indexOf(key) > -1) {
+            if (PrimeFaces.utils.ignoreFilterKey(e)) {
                 return;
             }
+
+            var input = $(this);
 
             if($this.filterTimeout) {
                 clearTimeout($this.filterTimeout);
@@ -626,21 +614,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             },
             $this.cfg.filterDelay);
         })
-        .on('keydown', this.blockEnterKey);
-    },
-
-    /**
-     * Callback that is invoked on a keyboard event. It prevents any default action when the enter button was pressed.
-     * @private
-     * @param {JQuery.Event} e A keyboard event for which to block the enter button.
-     */
-    blockEnterKey: function(e) {
-        var key = e.which,
-        keyCode = $.ui.keyCode;
-
-        if((key === keyCode.ENTER)) {
-            e.preventDefault();
-        }
+        .on('keydown', PrimeFaces.utils.blockEnterKey);
     },
 
     /**

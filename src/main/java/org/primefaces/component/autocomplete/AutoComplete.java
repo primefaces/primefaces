@@ -25,6 +25,7 @@ package org.primefaces.component.autocomplete;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +34,6 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 
@@ -80,7 +80,8 @@ public class AutoComplete extends AutoCompleteBase {
             "query", "moreText", "clear");
     private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "itemUnselect", "query",
             "moreText", "clear");
-    private List suggestions = null;
+
+    private Object suggestions = null;
 
     @Override
     public Collection<String> getEventNames() {
@@ -100,6 +101,10 @@ public class AutoComplete extends AutoCompleteBase {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_dynamicload");
     }
 
+    public boolean isClientCacheRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_clientCache");
+    }
+
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
@@ -110,13 +115,13 @@ public class AutoComplete extends AutoCompleteBase {
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
 
             if (eventName.equals("itemSelect")) {
-                Object selectedItemValue = convertValue(context, params.get(getClientId(context) + "_itemSelect"));
+                Object selectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemSelect"));
                 SelectEvent selectEvent = new SelectEvent(this, ajaxBehaviorEvent.getBehavior(), selectedItemValue);
                 selectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(selectEvent);
             }
             else if (eventName.equals("itemUnselect")) {
-                Object unselectedItemValue = convertValue(context, params.get(getClientId(context) + "_itemUnselect"));
+                Object unselectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemUnselect"));
                 UnselectEvent unselectEvent = new UnselectEvent(this, ajaxBehaviorEvent.getBehavior(), unselectedItemValue);
                 unselectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(unselectEvent);
@@ -144,10 +149,10 @@ public class AutoComplete extends AutoCompleteBase {
         MethodExpression me = getCompleteMethod();
 
         if (me != null && event instanceof org.primefaces.event.AutoCompleteEvent) {
-            suggestions = (List) me.invoke(facesContext.getELContext(), new Object[]{((org.primefaces.event.AutoCompleteEvent) event).getQuery()});
+            suggestions = me.invoke(facesContext.getELContext(), new Object[]{((org.primefaces.event.AutoCompleteEvent) event).getQuery()});
 
             if (suggestions == null) {
-                suggestions = new ArrayList();
+                suggestions = isServerQueryMode() ? new ArrayList() : new HashMap<String, List<String>>();
             }
 
             facesContext.renderResponse();
@@ -167,19 +172,20 @@ public class AutoComplete extends AutoCompleteBase {
         return columns;
     }
 
-    public List getSuggestions() {
+    public Object getSuggestions() {
         return suggestions;
     }
 
-    private Object convertValue(FacesContext context, String submittedItemValue) {
-        Converter converter = ComponentUtils.getConverter(context, this);
+    public boolean isServerQueryMode() {
+        return "server".equals(getQueryMode());
+    }
 
-        if (converter == null) {
-            return submittedItemValue;
-        }
-        else {
-            return converter.getAsObject(context, this, submittedItemValue);
-        }
+    public boolean isClientQueryMode() {
+        return "client".equals(getQueryMode());
+    }
+
+    public boolean isHybridQueryMode() {
+        return "hybrid".equals(getQueryMode());
     }
 
     @Override
@@ -200,5 +206,13 @@ public class AutoComplete extends AutoCompleteBase {
     @Override
     public void setLabelledBy(String labelledBy) {
         getStateHelper().put("labelledby", labelledBy);
+    }
+
+    @Override
+    public Object saveState(FacesContext context) {
+        // reset component for MyFaces view pooling
+        suggestions = null;
+
+        return super.saveState(context);
     }
 }

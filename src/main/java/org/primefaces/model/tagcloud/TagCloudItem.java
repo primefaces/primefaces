@@ -25,9 +25,9 @@ package org.primefaces.model.tagcloud;
 
 public interface TagCloudItem {
 
-    public String getLabel();
+    String getLabel();
 
-    public String getUrl();
+    String getUrl();
 
-    public int getStrength();
+    int getStrength();
 }

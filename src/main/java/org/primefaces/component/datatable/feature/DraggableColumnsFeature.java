@@ -25,12 +25,13 @@ package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
 import java.util.Map;
+import javax.faces.FacesException;
 
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
-import org.primefaces.component.datatable.TableState;
+import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.util.LangUtils;
 
 public class DraggableColumnsFeature implements DataTableFeature {
@@ -46,14 +47,14 @@ public class DraggableColumnsFeature implements DataTableFeature {
         table.setColumns(table.findOrderedColumns(columnOrderParam));
 
         if (table.isMultiViewState()) {
-            TableState ts = table.getTableState(true);
+            DataTableState ts = table.getMultiViewState(true);
             ts.setOrderedColumnsAsString(columnOrderParam);
         }
     }
 
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        throw new RuntimeException("DraggableColumns Feature should not encode.");
+        throw new FacesException("DraggableColumns Feature should not encode.");
     }
 
     @Override

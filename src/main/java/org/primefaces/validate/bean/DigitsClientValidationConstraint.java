@@ -23,34 +23,29 @@
  */
 package org.primefaces.validate.bean;
 
-import java.util.HashMap;
-import java.util.Map;
-import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.util.HTML;
 
-public class DigitsClientValidationConstraint implements ClientValidationConstraint {
+import java.util.Map;
 
-    private static final String MESSAGE_METADATA = "data-p-digits-msg";
-    private static final String MESSAGE_ID = "{javax.validation.constraints.Digits.message}";
+public class DigitsClientValidationConstraint extends AbstractClientValidationConstraint {
+
+    public static final String CONSTRAINT_ID = "Digits";
+    public static final String MESSAGE_METADATA = "data-p-digits-msg";
+    public static final String CONSTRAINT_CLASS_NAME = CONSTRAINT_PACKAGE  + "." + CONSTRAINT_ID;
+    public static final String MESSAGE_ID = "{" + CONSTRAINT_CLASS_NAME + ".message}";
+
+    public DigitsClientValidationConstraint() {
+        super(MESSAGE_ID, MESSAGE_METADATA);
+    }
 
     @Override
-    public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
-        Map<String, Object> metadata = new HashMap<>();
-        Map attrs = constraintDescriptor.getAttributes();
-        Object message = attrs.get(ATTR_MESSAGE);
-
-        metadata.put(HTML.VALIDATION_METADATA.DIGITS_INTEGER, attrs.get("integer"));
-        metadata.put(HTML.VALIDATION_METADATA.DIGITS_FRACTION, attrs.get("fraction"));
-
-        if (!message.equals(MESSAGE_ID)) {
-            metadata.put(MESSAGE_METADATA, message);
-        }
-
-        return metadata;
+    protected void processMetadata(Map<String, Object> metadata, Map<String, Object> attrs) {
+        metadata.put(HTML.ValidationMetadata.DIGITS_INTEGER, attrs.get("integer"));
+        metadata.put(HTML.ValidationMetadata.DIGITS_FRACTION, attrs.get("fraction"));
     }
 
     @Override
     public String getValidatorId() {
-        return "Digits";
+        return CONSTRAINT_ID ;
     }
 }

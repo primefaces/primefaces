@@ -29,6 +29,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.AbstractAjaxBehaviorEvent;
+import org.primefaces.model.FilterMeta;
 
 public class FilterEvent extends AbstractAjaxBehaviorEvent {
 
@@ -46,7 +47,7 @@ public class FilterEvent extends AbstractAjaxBehaviorEvent {
         return this.data;
     }
 
-    public Map<String, Object> getFilters() {
-        return ((DataTable) this.source).getFilters();
+    public Map<String, FilterMeta> getFilterBy() {
+        return ((DataTable) this.source).getFilterBy();
     }
 }

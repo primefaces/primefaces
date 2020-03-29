@@ -57,6 +57,9 @@ public class DashboardRenderer extends CoreRenderer {
         writer.startElement("div", dashboard);
         writer.writeAttribute("id", clientId, "id");
         String styleClass = dashboard.getStyleClass() != null ? Dashboard.CONTAINER_CLASS + " " + dashboard.getStyleClass() : Dashboard.CONTAINER_CLASS;
+        if (dashboard.isDisabled()) {
+            styleClass = styleClass + " ui-state-disabled";
+        }
         writer.writeAttribute("class", styleClass, "styleClass");
         if (dashboard.getStyle() != null) {
             writer.writeAttribute("style", dashboard.getStyle(), "style");
@@ -93,8 +96,8 @@ public class DashboardRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Dashboard dashboard) throws IOException {
         String clientId = dashboard.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Dashboard", dashboard.resolveWidgetVar(), clientId)
-                .attr("disabled", dashboard.isDisabled(), false);
+        wb.init("Dashboard", dashboard.resolveWidgetVar(context), clientId)
+                .attr("disabled", !dashboard.isReordering(), false);
 
         encodeClientBehaviors(context, dashboard);
 

@@ -106,7 +106,7 @@ public class ProgressBarRenderer extends CoreRenderer {
         boolean isAjax = progressBar.isAjax();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("ProgressBar", progressBar.resolveWidgetVar(), clientId)
+        wb.init("ProgressBar", progressBar.resolveWidgetVar(context), clientId)
                 .attr("initialValue", progressBar.getValue())
                 .attr("ajax", isAjax)
                 .attr("labelTemplate", progressBar.getLabelTemplate(), null)

@@ -25,8 +25,12 @@ package org.primefaces.component.repeat;
 
 import java.io.IOException;
 import java.sql.ResultSet;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -36,47 +40,67 @@ import javax.faces.component.ContextCallback;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
+import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
-import javax.faces.event.*;
-import javax.faces.model.*;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.FacesListener;
+import javax.faces.event.PhaseId;
+import javax.faces.event.PostValidateEvent;
+import javax.faces.event.PreValidateEvent;
+import javax.faces.model.ArrayDataModel;
+import javax.faces.model.DataModel;
+import javax.faces.model.ListDataModel;
+import javax.faces.model.ResultSetDataModel;
+import javax.faces.model.ScalarDataModel;
 import javax.faces.render.Renderer;
-
+import org.primefaces.component.api.IterationStatus;
 import org.primefaces.component.api.SavedState;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.model.IterableDataModel;
 
+/**
+ * Copied from Mojarra, to port bugfixes from newer Mojarra versions, to users of older Mojarra versions.
+ * Actually nosense as those bugs should be fixed in Mojarra and updated in the containers...
+ *
+ * Also see: https://code.google.com/archive/p/primefaces/issues/7190
+ * Mojarra's implementation if ui:repeat needs to check if ui:repeat is nested in another repeat component, see: {@link #isNestedInIterator}.
+ * This is not required in the MyFaces impl.
+ * Would be nice if Mojarra could enhance their implementation some day.
+ */
+//CHECKSTYLE:OFF
 public class UIRepeat extends UINamingContainer {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.UIRepeat";
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-    private static final DataModel EMPTY_MODEL = new ListDataModel<>(Collections.emptyList());
+    private final static DataModel EMPTY_MODEL =
+          new ListDataModel<>(Collections.emptyList());
+
     // our data
     private Object value;
+
     private transient DataModel model;
+
     // variables
     private String var;
+
     private String varStatus;
+
     private int index = -1;
+
     private Integer begin;
     private Integer end;
     private Integer step;
     private Integer size;
-    private Boolean isNested = null;
-    private Map<String, SavedState> initialChildState;
-    private String initialClientId;
-    private transient StringBuffer buffer;
-    private transient Object origValueOfVar;
-    private transient Object origValueOfVarStatus;
-    private Map<String, SavedState> childState;
 
     public UIRepeat() {
-        setRendererType(null);
+        this.setRendererType(null);
     }
 
     @Override
@@ -84,29 +108,16 @@ public class UIRepeat extends UINamingContainer {
         return COMPONENT_FAMILY;
     }
 
-    public Integer getEnd() {
-
-        if (end != null) {
-            return end;
-        }
-        ValueExpression ve = getValueExpression("end");
-        if (ve != null) {
-            return (Integer) ve.getValue(getFacesContext().getELContext());
-        }
-        return null;
-
-    }
-
     public void setEnd(Integer end) {
         this.end = end;
     }
 
-    public Integer getSize() {
+    public Integer getEnd() {
 
-        if (size != null) {
-            return size;
+        if (this.end != null) {
+            return end;
         }
-        ValueExpression ve = getValueExpression("size");
+        ValueExpression ve = this.getValueExpression("end");
         if (ve != null) {
             return (Integer) ve.getValue(getFacesContext().getELContext());
         }
@@ -118,12 +129,12 @@ public class UIRepeat extends UINamingContainer {
         this.size = size;
     }
 
-    public Integer getOffset() {
+    public Integer getSize() {
 
-        if (begin != null) {
-            return begin;
+        if (this.size != null) {
+            return size;
         }
-        ValueExpression ve = getValueExpression("offset");
+        ValueExpression ve = this.getValueExpression("size");
         if (ve != null) {
             return (Integer) ve.getValue(getFacesContext().getELContext());
         }
@@ -132,15 +143,15 @@ public class UIRepeat extends UINamingContainer {
     }
 
     public void setOffset(Integer offset) {
-        begin = offset;
+        this.begin = offset;
     }
 
-    public Integer getBegin() {
+    public Integer getOffset() {
 
-        if (begin != null) {
-            return begin;
+        if (this.begin != null) {
+            return this.begin;
         }
-        ValueExpression ve = getValueExpression("begin");
+        ValueExpression ve = this.getValueExpression("offset");
         if (ve != null) {
             return (Integer) ve.getValue(getFacesContext().getELContext());
         }
@@ -148,16 +159,17 @@ public class UIRepeat extends UINamingContainer {
 
     }
 
+
     public void setBegin(Integer begin) {
         this.begin = begin;
     }
 
-    public Integer getStep() {
+    public Integer getBegin() {
 
-        if (step != null) {
-            return step;
+        if (this.begin != null) {
+            return this.begin;
         }
-        ValueExpression ve = getValueExpression("step");
+        ValueExpression ve = this.getValueExpression("begin");
         if (ve != null) {
             return (Integer) ve.getValue(getFacesContext().getELContext());
         }
@@ -169,8 +181,22 @@ public class UIRepeat extends UINamingContainer {
         this.step = step;
     }
 
+    public Integer getStep() {
+
+        if (this.step != null) {
+            return this.step;
+        }
+        ValueExpression ve = this.getValueExpression("step");
+        if (ve != null) {
+            return (Integer) ve.getValue(getFacesContext().getELContext());
+        }
+        return null;
+
+    }
+
+
     public String getVar() {
-        return var;
+        return this.var;
     }
 
     public void setVar(String var) {
@@ -186,42 +212,9 @@ public class UIRepeat extends UINamingContainer {
     }
 
     private void resetDataModel() {
-        if (isNestedInIterator()) {
-            setDataModel(null);
+        if (this.isNestedInIterator()) {
+            this.setDataModel(null);
         }
-    }
-
-    private DataModel getDataModel() {
-        if (model == null) {
-            Object val = getValue();
-            if (val == null) {
-                model = EMPTY_MODEL;
-            }
-            else if (val instanceof DataModel) {
-                //noinspection unchecked
-                model = (DataModel<Object>) val;
-            }
-            else if (val instanceof List) {
-                //noinspection unchecked
-                model = new ListDataModel<>((List<Object>) val);
-            }
-            else if (Object[].class.isAssignableFrom(val.getClass())) {
-                model = new ArrayDataModel<>((Object[]) val);
-            }
-            else if (val instanceof ResultSet) {
-                model = new ResultSetDataModel((ResultSet) val);
-            }
-            else if (val instanceof Iterable) {
-                model = new IterableDataModel((Iterable<?>) val);
-            }
-            else if (val instanceof Map) {
-                model = new IterableDataModel(((Map<?, ?>) val).entrySet());
-            }
-            else {
-                model = new ScalarDataModel<>(val);
-            }
-        }
-        return model;
     }
 
     private void setDataModel(DataModel model) {
@@ -229,127 +222,189 @@ public class UIRepeat extends UINamingContainer {
         this.model = model;
     }
 
+    private DataModel getDataModel() {
+        if (this.model == null) {
+            Object val = this.getValue();
+            if (val == null) {
+                Integer begin = getBegin();
+                Integer end = getEnd();
+
+                if (end == null) {
+                    if (begin == null) {
+                        this.model = EMPTY_MODEL;
+                    } else {
+                        throw new IllegalArgumentException("end");
+                    }
+                } else {
+                    int b = (begin == null) ? 0 : begin;
+                    int e = end;
+                    int d = (b < e) ? 1 : (b > e) ? -1 : 0;
+                    int s = Math.abs(e - b) + 1;
+                    Integer[] array = new Integer[s];
+
+                    for (int i = 0; i < s; i++) {
+                        array[i] = b + (i * d);
+                    }
+
+                    this.model = new ArrayDataModel<>(array);
+                    setBegin(0);
+                    setEnd(s);
+                }
+            } else if (val instanceof DataModel) {
+                //noinspection unchecked
+                this.model = (DataModel<Object>) val;
+            } else if (val instanceof List) {
+                //noinspection unchecked
+                this.model = new ListDataModel<>((List<Object>) val);
+            } else if (Object[].class.isAssignableFrom(val.getClass())) {
+                this.model = new ArrayDataModel<>((Object[]) val);
+            } else if (val instanceof ResultSet) {
+                this.model = new ResultSetDataModel((ResultSet) val);
+            } else if (val instanceof Iterable) {
+                this.model = new IterableDataModel<>((Iterable<?>) val);
+            } else if (val instanceof Map) {
+                this.model = new IterableDataModel<>(((Map<?, ?>) val).entrySet());
+            } else {
+                /* Don't support JSF2.3 CDI @FacesDataModel for now
+                DataModel<?> dataModel = createDataModel(val.getClass());
+                if (dataModel != null) {
+                    dataModel.setWrappedData(val);
+                    model = dataModel;
+                } else {
+                    model = new ScalarDataModel<>(val);
+                } */
+                 model = new ScalarDataModel<>(val);
+            }
+        }
+        return this.model;
+    }
+
     public Object getValue() {
-        if (value == null) {
-            ValueExpression ve = getValueExpression("value");
+        if (this.value == null) {
+            ValueExpression ve = this.getValueExpression("value");
             if (ve != null) {
                 return ve.getValue(getFacesContext().getELContext());
             }
         }
-        return value;
+        return this.value;
     }
 
     public void setValue(Object value) {
         this.value = value;
     }
 
+    private transient StringBuffer buffer;
+
     private StringBuffer getBuffer() {
-        if (buffer == null) {
-            buffer = new StringBuffer();
+        if (this.buffer == null) {
+            this.buffer = new StringBuffer();
         }
-        buffer.setLength(0);
-        return buffer;
+        this.buffer.setLength(0);
+        return this.buffer;
     }
 
     @Override
     public String getClientId(FacesContext faces) {
         String id = super.getClientId(faces);
-        if (index >= 0) {
-            id = getBuffer().append(id).append(
-                    getSeparatorChar(faces)).append(index)
+        if (this.index >= 0) {
+            id = this.getBuffer().append(id).append(
+                    getSeparatorChar(faces)).append(this.index)
                     .toString();
         }
         return id;
     }
 
+    private transient Object origValueOfVar;
+    private transient Object origValueOfVarStatus;
+
     private void captureOrigValue(FacesContext ctx) {
-        if (var != null || varStatus != null) {
-            Map<String, Object> attrs = ctx.getExternalContext().getRequestMap();
-            if (var != null) {
-                origValueOfVar = attrs.get(var);
+        if (this.var != null || this.varStatus != null) {
+            Map<String,Object> attrs = ctx.getExternalContext().getRequestMap();
+            if (this.var != null) {
+                this.origValueOfVar = attrs.get(this.var);
             }
-            if (varStatus != null) {
-                origValueOfVarStatus = attrs.get(varStatus);
+            if (this.varStatus != null) {
+                this.origValueOfVarStatus = attrs.get(this.varStatus);
             }
         }
     }
 
     private void restoreOrigValue(FacesContext ctx) {
-        if (var != null || varStatus != null) {
-            Map<String, Object> attrs = ctx.getExternalContext().getRequestMap();
-            if (var != null) {
-                if (origValueOfVar != null) {
-                    attrs.put(var, origValueOfVar);
-                }
-                else {
-                    attrs.remove(var);
+        if (this.var != null || this.varStatus != null) {
+            Map<String,Object> attrs = ctx.getExternalContext().getRequestMap();
+            if (this.var != null) {
+                if (this.origValueOfVar != null) {
+                    attrs.put(this.var, this.origValueOfVar);
+                } else {
+                    attrs.remove(this.var);
                 }
             }
-            if (varStatus != null) {
-                if (origValueOfVarStatus != null) {
-                    attrs.put(varStatus, origValueOfVarStatus);
-                }
-                else {
-                    attrs.remove(varStatus);
+            if (this.varStatus != null) {
+                if (this.origValueOfVarStatus != null) {
+                    attrs.put(this.varStatus, this.origValueOfVarStatus);
+                } else {
+                    attrs.remove(this.varStatus);
                 }
             }
         }
     }
 
-    private Map<String, SavedState> getChildState() {
-        if (childState == null) {
-            childState = new HashMap<>();
-        }
-        return childState;
-    }
+    private Map<String,SavedState> childState;
 
+    private Map<String,SavedState> getChildState() {
+        if (this.childState == null) {
+            this.childState = new HashMap<>();
+        }
+        return this.childState;
+    }
+    
     private void clearChildState() {
-        childState = null;
+        this.childState = null;
     }
 
     private void saveChildState(FacesContext ctx) {
-        if (getChildCount() > 0) {
+        if (this.getChildCount() > 0) {
 
-            for (UIComponent uiComponent : getChildren()) {
-                saveChildState(ctx, uiComponent);
+            for (UIComponent uiComponent : this.getChildren()) {
+                this.saveChildState(ctx, uiComponent);
             }
         }
     }
 
     private void removeChildState(FacesContext ctx) {
-        if (getChildCount() > 0) {
+        if (this.getChildCount() > 0) {
 
-            for (UIComponent uiComponent : getChildren()) {
-                removeChildState(ctx, uiComponent);
+            for (UIComponent uiComponent : this.getChildren()) {
+                this.removeChildState(ctx, uiComponent);
             }
-
-            if (childState != null) {
-                childState.remove(getClientId(ctx));
+            
+            if (this.childState != null) {
+                this.childState.remove(this.getClientId(ctx));
             }
         }
     }
 
     private void removeChildState(FacesContext faces, UIComponent c) {
         String id = c.getId();
-        c.setId(id);
-
+        c.setId(id);        
+        
         Iterator itr = c.getFacetsAndChildren();
         while (itr.hasNext()) {
             removeChildState(faces, (UIComponent) itr.next());
         }
-        if (childState != null) {
-            childState.remove(c.getClientId(faces));
+        if (this.childState != null) {
+            this.childState.remove(c.getClientId(faces));
         }
     }
-
+    
     private void saveChildState(FacesContext faces, UIComponent c) {
 
         if (c instanceof EditableValueHolder && !c.isTransient()) {
             String clientId = c.getClientId(faces);
-            SavedState ss = getChildState().get(clientId);
+            SavedState ss = this.getChildState().get(clientId);
             if (ss == null) {
                 ss = new SavedState();
-                getChildState().put(clientId, ss);
+                this.getChildState().put(clientId, ss);
             }
             ss.populate((EditableValueHolder) c);
         }
@@ -362,10 +417,10 @@ public class UIRepeat extends UINamingContainer {
     }
 
     private void restoreChildState(FacesContext ctx) {
-        if (getChildCount() > 0) {
+        if (this.getChildCount() > 0) {
 
-            for (UIComponent uiComponent : getChildren()) {
-                restoreChildState(ctx, uiComponent);
+            for (UIComponent uiComponent : this.getChildren()) {
+                this.restoreChildState(ctx, uiComponent);
             }
         }
     }
@@ -379,21 +434,11 @@ public class UIRepeat extends UINamingContainer {
         if (c instanceof EditableValueHolder) {
             EditableValueHolder evh = (EditableValueHolder) c;
             String clientId = c.getClientId(faces);
-            SavedState ss = getChildState().get(clientId);
+            SavedState ss = this.getChildState().get(clientId);
             if (ss != null) {
-                ss.restoreState(evh);
-            }
-            else {
-                String childId = clientId.substring(initialClientId.length() + 1);
-                childId = childId.substring(childId.indexOf(getSeparatorChar(faces)) + 1);
-                childId = initialClientId + getSeparatorChar(faces) + childId;
-                if (initialChildState.containsKey(childId)) {
-                    SavedState initialState = initialChildState.get(childId);
-                    initialState.restoreState(evh);
-                }
-                else {
-                    SavedState.NULL_STATE.restoreState(evh);
-                }
+                ss.apply(evh);
+            } else {
+                SavedState.NULL_STATE.apply(evh);
             }
         }
 
@@ -414,149 +459,91 @@ public class UIRepeat extends UINamingContainer {
 
         FacesMessage.Severity sev = context.getMaximumSeverity();
         return (sev != null && (FacesMessage.SEVERITY_ERROR.compareTo(sev) <= 0));
-
+        
     }
 
+    
     private boolean isNestedInIterator() {
-        if (isNested == null) {
-            UIComponent parent = this;
-            while (null != (parent = parent.getParent())) {
-                if (parent instanceof javax.faces.component.UIData || parent.getClass().getName().endsWith("UIRepeat")
-                        || (parent instanceof UITabPanel && ((UITabPanel) parent).isRepeating())) {
-                    isNested = Boolean.TRUE;
-                    break;
-                }
-            }
-            if (isNested == null) {
-                isNested = Boolean.FALSE;
-            }
-            return isNested;
-        }
-        else {
-            return isNested;
-        }
-    }
-
-    /**
-     * Save the initial child state.
-     *
-     * <p>
-     * In order to be able to restore each row to a pristine condition if NO
-     * state was necessary to be saved for a given row we need to store the
-     * initial state (a.k.a the state of the skeleton) so we can restore the
-     * skeleton as if it was just created by the page markup.
-     * </p>
-     *
-     * @param facesContext the Faces context.
-     */
-    private void saveInitialChildState(FacesContext facesContext) {
-        index = -1;
-        initialChildState = new ConcurrentHashMap<>();
-        initialClientId = getClientId(facesContext);
-        if (getChildCount() > 0) {
-            for (UIComponent child : getChildren()) {
-                saveInitialChildState(facesContext, child);
+        UIComponent parent = this;
+        while (null != (parent = parent.getParent())) {
+            if (parent instanceof javax.faces.component.UIData || parent.getClass().getName().endsWith("UIRepeat")
+                    || (parent instanceof UITabPanel && ((UITabPanel) parent).isRepeating())) {
+                return true;
             }
         }
-    }
-
-    /**
-     * Recursively create the initial state for the given component.
-     *
-     * @param facesContext the Faces context.
-     * @param component    the UI component to save the state for.
-     * @see #saveInitialChildState(javax.faces.context.FacesContext)
-     */
-    private void saveInitialChildState(FacesContext facesContext, UIComponent component) {
-        if (component instanceof EditableValueHolder && !component.isTransient()) {
-            String clientId = component.getClientId(facesContext);
-            SavedState state = new SavedState();
-            initialChildState.put(clientId, state);
-            state.populate((EditableValueHolder) component);
-        }
-
-        Iterator<UIComponent> iterator = component.getFacetsAndChildren();
-        while (iterator.hasNext()) {
-            saveChildState(facesContext, iterator.next());
-        }
+        return false;
     }
 
     private void setIndex(FacesContext ctx, int index) {
 
         DataModel localModel = getDataModel();
-
-        if (index == -1 && initialChildState == null) {
-            saveInitialChildState(ctx);
-        }
-
+        
         // save child state
         if (this.index != -1 && localModel.isRowAvailable()) {
-            saveChildState(ctx);
-        }
-        else if (this.index >= 0 && childState != null) {
-            removeChildState(ctx);
+            this.saveChildState(ctx);
+        } else if (this.index >= 0 && this.childState != null) {
+            this.removeChildState(ctx);
         }
 
         this.index = index;
         localModel.setRowIndex(index);
 
-        if (this.index != -1 && var != null && localModel.isRowAvailable()) {
-            Map<String, Object> attrs = ctx.getExternalContext().getRequestMap();
+        if (this.index != -1 && this.var != null && localModel.isRowAvailable()) {
+            Map<String,Object> attrs = ctx.getExternalContext().getRequestMap();
             attrs.put(var, localModel.getRowData());
         }
 
         // restore child state
         if (this.index != -1 && localModel.isRowAvailable()) {
-            restoreChildState(ctx);
+            this.restoreChildState(ctx);
         }
     }
 
     private void updateIterationStatus(FacesContext ctx, IterationStatus status) {
-        if (varStatus != null) {
-            Map<String, Object> attrs = ctx.getExternalContext().getRequestMap();
+        if (this.varStatus != null) {
+            Map<String,Object> attrs = ctx.getExternalContext().getRequestMap();
             attrs.put(varStatus, status);
         }
     }
 
     private boolean isIndexAvailable() {
-        return getDataModel().isRowAvailable();
+        return this.getDataModel().isRowAvailable();
     }
 
     public void process(FacesContext faces, PhaseId phase) {
 
         // stop if not rendered
-        if (!isRendered()) {
+        if (!this.isRendered())
             return;
-        }
 
         // clear datamodel
-        resetDataModel();
+        this.resetDataModel();
 
         // We must clear the child state if we just entered the Render Phase, and there are no error messages
         if (PhaseId.RENDER_RESPONSE.equals(phase) && !hasErrorMessages(faces)) {
-            clearChildState();
+            this.clearChildState();
         }
 
         // reset index
-        captureOrigValue(faces);
-        setIndex(faces, -1);
+        this.captureOrigValue(faces);        
+        this.setIndex(faces, -1);
 
         try {
             // has children
-            if (getChildCount() > 0) {
+            if (this.getChildCount() > 0) {
                 Iterator itr;
                 UIComponent c;
 
-                Integer begin = getBegin();
-                Integer step = getStep();
-                Integer end = getEnd();
-                Integer offset = getOffset();
+                Integer begin = this.getBegin();
+                Integer step = this.getStep();
+                Integer end = this.getEnd();
+                Integer offset = this.getOffset();
 
                 if (null != offset && offset > 0) {
                     begin = offset;
                 }
 
-                Integer size = getSize();
+                Integer size = this.getSize();
                 if (null != size) {
                     end = size;
                 }
@@ -577,46 +564,40 @@ public class UIRepeat extends UINamingContainer {
                     e = size - 1;
                 }
 
-                setIndex(faces, i);
-                updateIterationStatus(faces, new IterationStatus(true, (i + s > e || rowCount == 1), i, begin, end, step));
-                while (i <= e && isIndexAvailable()) {
+                this.setIndex(faces, i);
+                this.updateIterationStatus(faces, new IterationStatus(true, (i + s > e || rowCount == 1), i, begin, end, step));
+                while (i <= e && this.isIndexAvailable()) {
 
                     if (PhaseId.RENDER_RESPONSE.equals(phase)
                             && renderer != null) {
                         renderer.encodeChildren(faces, this);
-                    }
-                    else {
-                        itr = getChildren().iterator();
+                    } else {
+                        itr = this.getChildren().iterator();
                         while (itr.hasNext()) {
                             c = (UIComponent) itr.next();
                             if (PhaseId.APPLY_REQUEST_VALUES.equals(phase)) {
                                 c.processDecodes(faces);
-                            }
-                            else if (PhaseId.PROCESS_VALIDATIONS
+                            } else if (PhaseId.PROCESS_VALIDATIONS
                                     .equals(phase)) {
                                 c.processValidators(faces);
-                            }
-                            else if (PhaseId.UPDATE_MODEL_VALUES
+                            } else if (PhaseId.UPDATE_MODEL_VALUES
                                     .equals(phase)) {
                                 c.processUpdates(faces);
-                            }
-                            else if (PhaseId.RENDER_RESPONSE.equals(phase)) {
+                            } else if (PhaseId.RENDER_RESPONSE.equals(phase)) {
                                 c.encodeAll(faces);
                             }
                         }
                     }
                     i += s;
-                    setIndex(faces, i);
-                    updateIterationStatus(faces, new IterationStatus(false, i + s >= e, i, begin, end, step));
+                    this.setIndex(faces, i);
+                    this.updateIterationStatus(faces, new IterationStatus(false, i + s >= e, i, begin, end, step));
                 }
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new FacesException(e);
-        }
-        finally {
-            setIndex(faces, -1);
-            restoreOrigValue(faces);
+        } finally {
+            this.setIndex(faces, -1);
+            this.restoreOrigValue(faces);
         }
 
         /*
@@ -627,10 +608,10 @@ public class UIRepeat extends UINamingContainer {
             resetClientIds(this);
         }
     }
-
+    
     private void resetClientIds(UIComponent component) {
         Iterator<UIComponent> iterator = component.getFacetsAndChildren();
-        while (iterator.hasNext()) {
+        while(iterator.hasNext()) {
             UIComponent child = iterator.next();
             resetClientIds(child);
             child.setId(child.getId());
@@ -638,47 +619,44 @@ public class UIRepeat extends UINamingContainer {
     }
 
     @Override
-    public boolean invokeOnComponent(FacesContext faces, String clientId,
-                                     ContextCallback callback) throws FacesException {
+     public boolean invokeOnComponent(FacesContext faces, String clientId,
+            ContextCallback callback) throws FacesException {
         String id = super.getClientId(faces);
         if (clientId.equals(id)) {
-            pushComponentToEL(faces, this);
+            this.pushComponentToEL(faces, this);
             try {
                 callback.invokeContextCallback(faces, this);
             }
             finally {
-                popComponentFromEL(faces);
+                this.popComponentFromEL(faces);
             }
             return true;
-        }
-        else if (clientId.startsWith(id)) {
-            int prevIndex = index;
+        } else if (clientId.startsWith(id)) {
+            int prevIndex = this.index;
             int idxStart = clientId.indexOf(getSeparatorChar(faces), id
                     .length());
             if (idxStart != -1
                     && Character.isDigit(clientId.charAt(idxStart + 1))) {
                 int idxEnd = clientId.indexOf(getSeparatorChar(faces),
-                        idxStart + 1);
+                        idxStart+1);
                 if (idxEnd != -1) {
                     int newIndex = Integer.parseInt(clientId.substring(
-                            idxStart + 1, idxEnd));
+                            idxStart+1, idxEnd));
                     boolean found = false;
                     try {
-                        captureOrigValue(faces);
-                        setIndex(faces, newIndex);
-                        if (isIndexAvailable()) {
+                        this.captureOrigValue(faces);
+                        this.setIndex(faces,newIndex);
+                        if (this.isIndexAvailable()) {
                             found = super.invokeOnComponent(faces, clientId,
                                     callback);
                         }
-                    }
-                    finally {
-                        setIndex(faces, prevIndex);
-                        restoreOrigValue(faces);
+                    } finally {
+                        this.setIndex(faces, prevIndex);
+                        this.restoreOrigValue(faces);
                     }
                     return found;
                 }
-            }
-            else {
+            } else {
                 return super.invokeOnComponent(faces, clientId, callback);
             }
         }
@@ -693,7 +671,7 @@ public class UIRepeat extends UINamingContainer {
         if (!isVisitable(context)) {
             return false;
         }
-
+        
         FacesContext facesContext = context.getFacesContext();
         boolean visitRows = requiresRowIteration(context);
 
@@ -703,7 +681,7 @@ public class UIRepeat extends UINamingContainer {
             setIndex(facesContext, -1);
         }
 
-        setDataModel(null);
+        this.setDataModel(null);
 
         // Push ourselves to EL
         pushComponentToEL(facesContext, null);
@@ -730,8 +708,7 @@ public class UIRepeat extends UINamingContainer {
                             return true;
                         }
                     }
-                }
-                else {
+                } else {
                     if (visitChildren(context, callback)) {
                         return true;
                     }
@@ -751,17 +728,16 @@ public class UIRepeat extends UINamingContainer {
     }
 
     private boolean requiresRowIteration(VisitContext ctx) {
-        try {
-            //JSF 2.1
-            VisitHint skipHint = VisitHint.valueOf("SKIP_ITERATION");
-            return !ctx.getHints().contains(skipHint);
+        boolean shouldIterate = !ctx.getHints().contains(VisitHint.SKIP_ITERATION); 
+        if (!shouldIterate) {
+            FacesContext faces = ctx.getFacesContext();  
+            String sourceId = faces.getExternalContext().getRequestParameterMap().get(
+                    ClientBehaviorContext.BEHAVIOR_SOURCE_PARAM_NAME);  
+            boolean containsSource = sourceId != null ? sourceId.startsWith(super.getClientId(faces) + getSeparatorChar(faces)): false;  
+            return containsSource;
+        } else {
+            return shouldIterate;
         }
-        catch (IllegalArgumentException e) {
-            //JSF 2.0
-            Object skipHint = ctx.getFacesContext().getAttributes().get("javax.faces.visit.SKIP_ITERATION");
-            return !Boolean.TRUE.equals(skipHint);
-        }
-
     }
 
     // Tests whether we need to visit our children as part of
@@ -778,12 +754,13 @@ public class UIRepeat extends UINamingContainer {
             setIndex(context.getFacesContext(), -1);
         }
         Collection<String> idsToVisit = context.getSubtreeIdsToVisit(this);
-        assert (idsToVisit != null);
+        assert(idsToVisit != null);
 
         // All ids or non-empty collection means we need to visit our children.
         return (!idsToVisit.isEmpty());
 
     }
+
 
     private void validateIterationControlValues(int rowCount,
                                                 int begin,
@@ -804,11 +781,12 @@ public class UIRepeat extends UINamingContainer {
         }
     }
 
+
     private boolean visitChildren(VisitContext context, VisitCallback callback) {
 
-        Integer begin = getBegin();
-        Integer end = getEnd();
-        Integer step = getStep();
+        Integer begin = this.getBegin();
+        Integer end = this.getEnd();
+        Integer step = this.getStep();
 
         int rowCount = getDataModel().getRowCount();
         int i = ((begin != null) ? begin : 0);
@@ -816,24 +794,24 @@ public class UIRepeat extends UINamingContainer {
         int s = ((step != null) ? step : 1);
         validateIterationControlValues(rowCount, i, e);
         FacesContext faces = context.getFacesContext();
-        setIndex(faces, i);
-        updateIterationStatus(faces,
-                new IterationStatus(true,
-                        (i + s > e || rowCount == 1),
-                        i,
-                        begin,
-                        end,
-                        step));
-        while (i < e && isIndexAvailable()) {
+        this.setIndex(faces, i);
+        this.updateIterationStatus(faces,
+                                   new IterationStatus(true,
+                                                       (i + s > e || rowCount == 1),
+                                                       i,
+                                                       begin,
+                                                       end,
+                                                       step));
+        while (i < e && this.isIndexAvailable()) {
 
-            setIndex(faces, i);
-            updateIterationStatus(faces,
-                    new IterationStatus(false,
-                            i + s >= e,
-                            i,
-                            begin,
-                            end,
-                            step));
+            this.setIndex(faces, i);
+            this.updateIterationStatus(faces,
+                                       new IterationStatus(false,
+                                                           i + s >= e,
+                                                           i,
+                                                           begin,
+                                                           end,
+                                                           step));
             for (UIComponent kid : getChildren()) {
                 if (kid.visitTree(context, callback)) {
                     return true;
@@ -842,74 +820,123 @@ public class UIRepeat extends UINamingContainer {
             i += s;
         }
 
+
         return false;
     }
 
+
     @Override
     public void processDecodes(FacesContext faces) {
-        if (!isRendered()) {
+        if (!this.isRendered())
             return;
-        }
-        setDataModel(null);
-        if (!keepSaved(faces)) {
-            childState = null;
-        }
-        process(faces, PhaseId.APPLY_REQUEST_VALUES);
-        decode(faces);
+        this.setDataModel(null);
+        if (!this.keepSaved(faces)) this.childState = null;
+        this.process(faces, PhaseId.APPLY_REQUEST_VALUES);
+        this.decode(faces);
     }
 
     @Override
     public void processUpdates(FacesContext faces) {
-        if (!isRendered()) {
-            return;
-        }
-        resetDataModel();
-        process(faces, PhaseId.UPDATE_MODEL_VALUES);
+        if (!this.isRendered()) return;
+        this.resetDataModel();
+        this.process(faces, PhaseId.UPDATE_MODEL_VALUES);
     }
 
     @Override
     public void processValidators(FacesContext faces) {
-        if (!isRendered()) {
-            return;
-        }
-        resetDataModel();
+        if (!this.isRendered()) return;
+        this.resetDataModel();
         Application app = faces.getApplication();
         app.publishEvent(faces, PreValidateEvent.class, this);
-        process(faces, PhaseId.PROCESS_VALIDATIONS);
+        this.process(faces, PhaseId.PROCESS_VALIDATIONS);
         app.publishEvent(faces, PostValidateEvent.class, this);
+    }
+
+    private static final class IndexedEvent extends FacesEvent {
+
+        private static final long serialVersionUID = 1L;
+        
+        private final FacesEvent target;
+
+        private final int index;
+
+        public IndexedEvent(UIRepeat owner, FacesEvent target, int index) {
+            super(owner);
+            this.target = target;
+            this.index = index;
+        }
+
+        @Override
+        public PhaseId getPhaseId() {
+            return (this.target.getPhaseId());
+        }
+
+        @Override
+        public void setPhaseId(PhaseId phaseId) {
+            this.target.setPhaseId(phaseId);
+        }
+
+        @Override
+        public boolean isAppropriateListener(FacesListener listener) {
+            return this.target.isAppropriateListener(listener);
+        }
+
+        @Override
+        public void processListener(FacesListener listener) {
+            UIRepeat owner = (UIRepeat) this.getComponent();
+            int prevIndex = owner.index;
+            FacesContext ctx = FacesContext.getCurrentInstance();
+            try {
+                owner.setIndex(ctx,this.index);
+                if (owner.isIndexAvailable()) {
+                    this.target.processListener(listener);
+                }
+            } finally {
+                owner.setIndex(ctx,prevIndex);
+            }
+        }
+
+        public int getIndex() {
+            return index;
+        }
+
+        public FacesEvent getTarget() {
+            return target;
+        }
+
     }
 
     @Override
     public void broadcast(FacesEvent event) throws AbortProcessingException {
         if (event instanceof IndexedEvent) {
             IndexedEvent idxEvent = (IndexedEvent) event;
-            resetDataModel();
-            int prevIndex = index;
-            FacesContext ctx = FacesContext.getCurrentInstance();
+            this.resetDataModel();
+            int prevIndex = this.index;
             FacesEvent target = idxEvent.getTarget();
+            FacesContext ctx = getFacesContext();
             UIComponent source = target.getComponent();
             UIComponent compositeParent = null;
             try {
                 int rowCount = getDataModel().getRowCount();
                 int idx = idxEvent.getIndex();
-                setIndex(ctx, idx);
-                Integer begin = getBegin();
-                Integer end = getEnd();
-                Integer step = getStep();
+                this.setIndex(ctx, idx);
+                Integer begin = this.getBegin();
+                Integer end = this.getEnd();
+                Integer step = this.getStep();
                 int b = ((begin != null) ? begin : 0);
                 int e = ((end != null) ? end : rowCount);
                 int s = ((step != null) ? step : 1);
-                updateIterationStatus(ctx,
-                        new IterationStatus(idx == b,
-                                (idx + s >= e || rowCount == 1),
-                                idx,
-                                begin,
-                                end,
-                                step));
-                if (isIndexAvailable()) {
+                this.updateIterationStatus(ctx,
+                                           new IterationStatus(idx == b,
+                                                               (idx + s >= e || rowCount == 1),
+                                                               idx,
+                                                               begin,
+                                                               end,
+                                                               step));
+                if (this.isIndexAvailable()) {
                     if (!UIComponent.isCompositeComponent(source)) {
                         compositeParent = UIComponent
-                                .getCompositeComponentParent(source);
+                              .getCompositeComponentParent(source);
                     }
                     if (compositeParent != null) {
                         compositeParent.pushComponentToEL(ctx, null);
@@ -918,24 +945,22 @@ public class UIRepeat extends UINamingContainer {
                     source.broadcast(target);
 
                 }
-            }
-            finally {
+            } finally {
                 source.popComponentFromEL(ctx);
                 if (compositeParent != null) {
                     compositeParent.popComponentFromEL(ctx);
                 }
-                updateIterationStatus(ctx, null);
-                setIndex(ctx, prevIndex);
+                this.updateIterationStatus(ctx, null);
+                this.setIndex(ctx, prevIndex);
             }
-        }
-        else {
+        } else {
             super.broadcast(event);
         }
     }
 
     @Override
     public void queueEvent(FacesEvent event) {
-        super.queueEvent(new IndexedEvent(this, event, index));
+        super.queueEvent(new IndexedEvent(this, event, this.index));
     }
 
     @Override
@@ -949,31 +974,31 @@ public class UIRepeat extends UINamingContainer {
         Object[] state = (Object[]) object;
         super.restoreState(faces, state[0]);
         //noinspection unchecked
-        childState = (Map<String, SavedState>) state[1];
-        begin = (Integer) state[2];
-        end = (Integer) state[3];
-        step = (Integer) state[4];
-        var = (String) state[5];
-        varStatus = (String) state[6];
-        value = state[7];
+        this.childState = (Map<String,SavedState>) state[1];
+        this.begin = (Integer) state[2];
+        this.end = (Integer) state[3];
+        this.step = (Integer) state[4];
+        this.var = (String) state[5];
+        this.varStatus = (String) state[6];
+        this.value = state[7];
     }
 
     @Override
     public Object saveState(FacesContext faces) {
         resetClientIds(this);
-
+        
         if (faces == null) {
             throw new NullPointerException();
         }
         Object[] state = new Object[8];
         state[0] = super.saveState(faces);
-        state[1] = childState;
-        state[2] = begin;
-        state[3] = end;
-        state[4] = step;
-        state[5] = var;
-        state[6] = varStatus;
-        state[7] = value;
+        state[1] = this.childState;
+        state[2] = this.begin;
+        state[3] = this.end;
+        state[4] = this.step;
+        state[5] = this.var;
+        state[6] = this.varStatus;
+        state[7] = this.value;
         return state;
     }
 
@@ -982,11 +1007,11 @@ public class UIRepeat extends UINamingContainer {
         if (!isRendered()) {
             return;
         }
-        setDataModel(null);
-        if (!keepSaved(faces)) {
-            childState = null;
+        this.setDataModel(null);
+        if (!this.keepSaved(faces)) {
+            this.childState = null;
         }
-        process(faces, PhaseId.RENDER_RESPONSE);
+        this.process(faces, PhaseId.RENDER_RESPONSE);
     }
 
     @Override
@@ -998,60 +1023,5 @@ public class UIRepeat extends UINamingContainer {
             }
         }
         return true;
-    }
-
-    private static final class IndexedEvent extends FacesEvent {
-
-        private static final long serialVersionUID = 1L;
-
-        private final FacesEvent target;
-
-        private final int index;
-
-        public IndexedEvent(UIRepeat owner, FacesEvent target, int index) {
-            super(owner);
-            this.target = target;
-            this.index = index;
-        }
-
-        @Override
-        public PhaseId getPhaseId() {
-            return (target.getPhaseId());
-        }
-
-        @Override
-        public void setPhaseId(PhaseId phaseId) {
-            target.setPhaseId(phaseId);
-        }
-
-        @Override
-        public boolean isAppropriateListener(FacesListener listener) {
-            return target.isAppropriateListener(listener);
-        }
-
-        @Override
-        public void processListener(FacesListener listener) {
-            UIRepeat owner = (UIRepeat) getComponent();
-            int prevIndex = owner.index;
-            FacesContext ctx = FacesContext.getCurrentInstance();
-            try {
-                owner.setIndex(ctx, index);
-                if (owner.isIndexAvailable()) {
-                    target.processListener(listener);
-                }
-            }
-            finally {
-                owner.setIndex(ctx, prevIndex);
-            }
-        }
-
-        public int getIndex() {
-            return index;
-        }
-
-        public FacesEvent getTarget() {
-            return target;
-        }
-
     }
 }

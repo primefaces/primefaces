@@ -24,9 +24,9 @@
 package org.primefaces.csp;
 
 import org.owasp.encoder.Encode;
-import org.primefaces.PrimeFaces;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeFacesContext;
+import org.primefaces.util.LangUtils;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -34,15 +34,21 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.servlet.http.HttpServletResponse;
+import org.primefaces.PrimeFaces;
+import org.primefaces.util.Lazy;
 
 public class CspPhaseListener implements PhaseListener {
 
     private static final long serialVersionUID = 1L;
 
-    private boolean enabled;
+    private Lazy<Boolean> enabled;
+    private Lazy<String> customPolicy;
 
     public CspPhaseListener() {
-        enabled = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().isCsp();
+        enabled = new Lazy<>(() ->
+                PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().isCsp());
+        customPolicy = new Lazy<>(() ->
+                PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().getCspPolicy());
     }
 
     @Override
@@ -52,7 +58,7 @@ public class CspPhaseListener implements PhaseListener {
 
     @Override
     public void beforePhase(PhaseEvent event) {
-        if (!enabled) {
+        if (Boolean.FALSE.equals(enabled.get())) {
             return;
         }
 
@@ -60,12 +66,14 @@ public class CspPhaseListener implements PhaseListener {
         ExternalContext externalContext = context.getExternalContext();
         // TODO Support portlet environments?
         if (externalContext.getResponse() instanceof HttpServletResponse) {
+            HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
             CspState state = PrimeFacesContext.getCspState(context);
 
-            HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
-            response.addHeader("Content-Security-Policy", "script-src 'nonce-" + state.getNonce() + "'");
+            String policy = LangUtils.isValueBlank(customPolicy.get()) ? "script-src 'self'" : customPolicy.get();
+            response.addHeader("Content-Security-Policy", policy + " 'nonce-" + state.getNonce() + "'");
 
-            PrimeFaces.current().executeScript("PrimeFaces.csp.init('" + Encode.forJavaScript(state.getNonce()) + "');");
+            String init = "PrimeFaces.csp.init('" + Encode.forJavaScript(state.getNonce()) + "');";
+            PrimeFaces.current().executeInitScript(init);
         }
     }
 

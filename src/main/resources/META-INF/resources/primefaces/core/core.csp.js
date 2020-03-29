@@ -16,10 +16,18 @@ if (!PrimeFaces.csp) {
         NONCE_INPUT : "primefaces.nonce",
 
         /**
+         * The value of the nonce to be used.
+         * @type {string}
+         */
+        NONCE_VALUE : "",
+
+        /**
          * Sets the given nonce to all forms on the current page.
          * @param {string} nonce Nonce to set. This value is usually supplied by the server.
          */
         init : function(nonce) {
+            PrimeFaces.csp.NONCE_VALUE = nonce;
+
             var forms = document.getElementsByTagName("form");
             for (var i = 0; i < forms.length; i++) {
                 var form = forms[i];
@@ -42,18 +50,72 @@ if (!PrimeFaces.csp) {
          */
         register: function(id, event, js){
             if (event) {
-                event = event.substring(2, event.length);
+                var shortenedEvent = event.substring(2, event.length);
+
+                var element = document.getElementById(id);
 
                 // if the eventhandler return false, we must use preventDefault
                 var jsWrapper = function(event) {
-                    var retVal = js();
+                    var retVal = js.call(element, event);
                     if (retVal === false && event.cancelable) {
                         event.preventDefault();
                     }
                 };
 
-                document.getElementById(id).addEventListener(event, jsWrapper);
+                $(element).on(shortenedEvent, jsWrapper);
             }
+        },
+
+        /**
+         * Perform a CSP safe `eval()`.
+         *
+         * @param {string} js The JavaScript code to evaluate.
+         * @param {string} [nonceValue] Nonce value. Leave out if not using CSP.
+         */
+        eval: function (js, nonceValue) {
+            // assign the NONCE if necessary
+            var options = {};
+            if (nonceValue) {
+                options = {nonce: nonceValue};
+            } else if (PrimeFaces.csp.NONCE_VALUE) {
+                options = {nonce: PrimeFaces.csp.NONCE_VALUE};
+            }
+
+            // evaluate the script
+            $.globalEval(js, options);
+        },
+        
+        /**
+         * Perform a CSP safe `eval()` with a return result value.
+         *
+         * @param {string} js The JavaScript code to evaluate.
+         * @return {unknown} The result of the evaluated JavaScript code.
+         * @see https://stackoverflow.com/a/33945236/502366
+         */
+        evalResult: function (js) {
+            var executeJs = "var cspResult = " + js;
+            PrimeFaces.csp.eval(executeJs);
+            return cspResult;
+        },
+
+        /**
+         * CSP won't allow string-to-JavaScript methods like eval() and new Function().
+         * This method uses JQuery globalEval to safely evaluate the function if CSP enabled.
+         *
+         * @param {any} id The element executing the function (aka `this`).
+         * @param {string} js The JavaScript code to evaluate. Two variables will be in scope for the code: (a) the
+         * `this` context, which is set to the given `id`, and (b) the `event` variable, which is set to the given `e`.
+         * @param {JQuery.Event} e The event from the caller to pass through.
+         */
+        executeEvent: function(id, js, e) {
+            // create the wrapper function
+            var scriptEval = 'var cspFunction = function(event){'+ js +'}';
+
+            // evaluate JS into a function
+            PrimeFaces.csp.eval(scriptEval, PrimeFaces.csp.NONCE_VALUE);
+
+            // call the function
+            cspFunction.call(id, e);
         }
 
     };

@@ -24,10 +24,11 @@
 package org.primefaces.model;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -129,12 +130,32 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
         this.rowCount = rowCount;
     }
 
-    public List<T> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-        throw new UnsupportedOperationException("Lazy loading is not implemented.");
+    public List<T> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, FilterMeta> filterBy) {
+
+        Map<String, SortMeta> sortBy;
+        if (sortField == null) {
+            sortBy = Collections.emptyMap();
+        }
+        else {
+            sortBy = new HashMap<>(1);
+            sortBy.put(sortField, new SortMeta(null, sortField, sortOrder == null ? SortOrder.UNSORTED : sortOrder, null));
+        }
+
+        return load(first, pageSize, sortBy, filterBy);
     }
 
-    public List<T> load(int first, int pageSize, List<SortMeta> multiSortMeta, Map<String, Object> filters) {
-        throw new UnsupportedOperationException("Lazy loading is not implemented.");
+    /**
+     * Loads the data for the given parameters.
+     *
+     * @param first the first entry
+     * @param pageSize the page size
+     * @param sortBy a list with all sort informations
+     * @param filterBy a map with all filter informations
+     * @return the data
+     */
+    public List<T> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
+        throw new UnsupportedOperationException(
+                getMessage("Either the LazyDataModel#load for single or multi-sort must be implemented [component=%s,view=%s]."));
     }
 
     @Override
@@ -159,15 +180,24 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
 
     @Override
     public Iterator<T> iterator() {
-        return new LazyDataModelIterator<T>(this);
+        return new LazyDataModelIterator<>(this);
     }
 
-    public Iterator<T> iterator(String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-        return new LazyDataModelIterator<T>(this, sortField, sortOrder, filters);
+    @Deprecated
+    public Iterator<T> iterator(String sortField, SortOrder sortOrder, Map<String, FilterMeta> filterBy) {
+        Map<String, SortMeta> sortBy;
+        if (sortField == null) {
+            sortBy = Collections.emptyMap();
+        }
+        else {
+            sortBy = new HashMap<>(1);
+            sortBy.put(sortField, new SortMeta(null, sortField, sortOrder == null ? SortOrder.UNSORTED : sortOrder, null));
+        }
+
+        return iterator(sortBy, filterBy);
     }
 
-    public Iterator<T> iterator(List<SortMeta> multiSortMeta, Map<String, Object> filters) {
-        return new LazyDataModelIterator<T>(this, multiSortMeta, filters);
+    public Iterator<T> iterator(Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
+        return new LazyDataModelIterator<>(this, sortBy, filterBy);
     }
-
 }

@@ -89,7 +89,7 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
                 int rows;
                 String optionText;
                 if (option.trim().startsWith("{ShowAll|")) {
-                    optionText = option.substring(option.indexOf("'") + 1, option.lastIndexOf("'"));
+                    optionText = option.substring(option.indexOf('\'') + 1, option.lastIndexOf('\''));
                     rows = pageable.getRowCount();
 
                     writer.writeAttribute("value", "*", null);

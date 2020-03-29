@@ -33,14 +33,14 @@ public class TimePatternConverter implements PatternConverter {
             pattern = pattern.replaceAll("hh*", "hh");
         }
         else {
-            pattern = pattern.replaceAll("h", "h");
+            pattern = pattern.replace("h", "h");
         }
 
         if (pattern.contains("HH")) {
             pattern = pattern.replaceAll("HH*", "HH");
         }
         else {
-            pattern = pattern.replaceAll("H", "H");
+            pattern = pattern.replace("H", "H");
         }
 
         // Minute
@@ -48,7 +48,7 @@ public class TimePatternConverter implements PatternConverter {
             pattern = pattern.replaceAll("mm*", "mm");
         }
         else {
-            pattern = pattern.replaceAll("m", "m");
+            pattern = pattern.replace("m", "m");
         }
 
         // Second
@@ -56,7 +56,7 @@ public class TimePatternConverter implements PatternConverter {
             pattern = pattern.replaceAll("ss*", "ss");
         }
         else {
-            pattern = pattern.replaceAll("s", "s");
+            pattern = pattern.replace("s", "s");
         }
 
         // Millisecond
@@ -77,7 +77,7 @@ public class TimePatternConverter implements PatternConverter {
             pattern = pattern.replaceAll("XXX*", "Z");
         }
         else if (pattern.contains("XX")) {
-            pattern = pattern.replaceAll("XX", "z");
+            pattern = pattern.replace("XX", "z");
         }
 
         return pattern;

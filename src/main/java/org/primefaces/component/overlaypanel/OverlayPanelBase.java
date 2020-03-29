@@ -24,12 +24,12 @@
 package org.primefaces.component.overlaypanel;
 
 import javax.faces.component.UIPanel;
+import javax.faces.component.behavior.ClientBehaviorHolder;
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
 
-
-public abstract class OverlayPanelBase extends UIPanel implements Widget {
+public abstract class OverlayPanelBase extends UIPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -240,10 +240,5 @@ public abstract class OverlayPanelBase extends UIPanel implements Widget {
 
     public void setShowDelay(int showDelay) {
         getStateHelper().put(PropertyKeys.showDelay, showDelay);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

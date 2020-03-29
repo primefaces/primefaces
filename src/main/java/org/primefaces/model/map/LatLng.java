@@ -24,6 +24,7 @@
 package org.primefaces.model.map;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class LatLng implements Serializable {
 
@@ -52,36 +53,16 @@ public class LatLng implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        long temp;
-        temp = Double.doubleToLongBits(lat);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(lng);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
-        return result;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LatLng latLng = (LatLng) o;
+        return Double.compare(latLng.lat, lat) == 0 &&
+                Double.compare(latLng.lng, lng) == 0;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-
-        LatLng other = (LatLng) obj;
-        if (Double.doubleToLongBits(lat) != Double.doubleToLongBits(other.lat)) {
-            return false;
-        }
-        if (Double.doubleToLongBits(lng) != Double.doubleToLongBits(other.lng)) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return Objects.hash(lat, lng);
     }
 }

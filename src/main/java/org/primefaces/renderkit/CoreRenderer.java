@@ -96,9 +96,9 @@ public abstract class CoreRenderer extends Renderer {
         return ResourceUtils.getResourceRequestPath(context, resourceName);
     }
 
-    protected void renderPassThruAttributes(FacesContext context, UIComponent component, String[] attrs) throws IOException {
+    protected void renderPassThruAttributes(FacesContext context, UIComponent component, Set<String> attrs) throws IOException {
         //pre-defined attributes
-        if (attrs != null && attrs.length > 0) {
+        if (attrs != null && attrs.size() > 0) {
             ResponseWriter writer = context.getResponseWriter();
 
             for (String attribute : attrs) {
@@ -118,7 +118,7 @@ public abstract class CoreRenderer extends Renderer {
         }
     }
 
-    protected void renderDomEvents(FacesContext context, UIComponent component, String[] eventAttrs) throws IOException {
+    protected void renderDomEvents(FacesContext context, UIComponent component, Set<String> eventAttrs) throws IOException {
         if (component instanceof ClientBehaviorHolder) {
             renderDomEvents(context, component, eventAttrs, ((ClientBehaviorHolder) component).getClientBehaviors());
         }
@@ -127,7 +127,7 @@ public abstract class CoreRenderer extends Renderer {
         }
     }
 
-    private void renderDomEvents(FacesContext context, UIComponent component, String[] eventAttrs, Map<String, List<ClientBehavior>> behaviors)
+    private void renderDomEvents(FacesContext context, UIComponent component, Set<String> eventAttrs, Map<String, List<ClientBehavior>> behaviors)
             throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         StringBuilder builder = null;
@@ -155,7 +155,7 @@ public abstract class CoreRenderer extends Renderer {
                 if (hasEventBehaviors) {
                     String clientId = component.getClientId(context);
 
-                    List<ClientBehaviorContext.Parameter> params = new ArrayList<>();
+                    List<ClientBehaviorContext.Parameter> params = new ArrayList<>(1);
                     params.add(new ClientBehaviorContext.Parameter(
                             Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.OBSTRUSIVE));
 
@@ -510,7 +510,7 @@ public abstract class CoreRenderer extends Renderer {
             Collection<String> eventNames = (component instanceof MixedClientBehaviorHolder)
                     ? ((MixedClientBehaviorHolder) component).getUnobstrusiveEventNames() : clientBehaviors.keySet();
             String clientId = ((UIComponent) component).getClientId(context);
-            List<ClientBehaviorContext.Parameter> params = new ArrayList<>();
+            List<ClientBehaviorContext.Parameter> params = new ArrayList<>(1);
             params.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
 
             writer.write(",behaviors:{");
@@ -575,32 +575,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected void decodeBehaviors(FacesContext context, UIComponent component) {
-        if (!(component instanceof ClientBehaviorHolder)) {
-            return;
-        }
-
-        Map<String, List<ClientBehavior>> behaviors = ((ClientBehaviorHolder) component).getClientBehaviors();
-        if (behaviors.isEmpty()) {
-            return;
-        }
-
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String behaviorEvent = params.get("javax.faces.behavior.event");
-
-        if (null != behaviorEvent) {
-            List<ClientBehavior> behaviorsForEvent = behaviors.get(behaviorEvent);
-
-            if (behaviorsForEvent != null && !behaviorsForEvent.isEmpty()) {
-                String behaviorSource = params.get("javax.faces.source");
-                String clientId = component.getClientId(context);
-
-                if (behaviorSource != null && clientId.equals(behaviorSource)) {
-                    for (ClientBehavior behavior : behaviorsForEvent) {
-                        behavior.decode(context, component);
-                    }
-                }
-            }
-        }
+        ComponentUtils.decodeBehaviors(context, component);
     }
 
     /**
@@ -685,17 +660,17 @@ public abstract class CoreRenderer extends Renderer {
 
 
         //messages
-        if (label != null) writer.writeAttribute(HTML.VALIDATION_METADATA.LABEL, label, null);
-        if (requiredMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.REQUIRED_MESSAGE, requiredMessage, null);
-        if (validatorMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.VALIDATOR_MESSAGE, validatorMessage, null);
-        if (converterMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.CONVERTER_MESSAGE, converterMessage, null);
+        if (label != null) writer.writeAttribute(HTML.ValidationMetadata.LABEL, label, null);
+        if (requiredMessage != null) writer.writeAttribute(HTML.ValidationMetadata.REQUIRED_MESSAGE, requiredMessage, null);
+        if (validatorMessage != null) writer.writeAttribute(HTML.ValidationMetadata.VALIDATOR_MESSAGE, validatorMessage, null);
+        if (converterMessage != null) writer.writeAttribute(HTML.ValidationMetadata.CONVERTER_MESSAGE, converterMessage, null);
 
         //converter
-        if (converter != null && converter instanceof ClientConverter) {
+        if (converter instanceof ClientConverter) {
             ClientConverter clientConverter = (ClientConverter) converter;
             Map<String, Object> metadata = clientConverter.getMetadata();
 
-            writer.writeAttribute(HTML.VALIDATION_METADATA.CONVERTER, ((ClientConverter) converter).getConverterId(), null);
+            writer.writeAttribute(HTML.ValidationMetadata.CONVERTER, ((ClientConverter) converter).getConverterId(), null);
 
             if (metadata != null && !metadata.isEmpty()) {
                 renderValidationMetadataMap(context, metadata);
@@ -721,7 +696,7 @@ public abstract class CoreRenderer extends Renderer {
 
         //required validation
         if (component.isRequired()) {
-            writer.writeAttribute(HTML.VALIDATION_METADATA.REQUIRED, "true", null);
+            writer.writeAttribute(HTML.ValidationMetadata.REQUIRED, "true", null);
         }
 
         //validators
@@ -746,11 +721,11 @@ public abstract class CoreRenderer extends Renderer {
         renderValidatorIds(context, validatorIds);
 
         if (highlighter != null) {
-            writer.writeAttribute(HTML.VALIDATION_METADATA.HIGHLIGHTER, highlighter, null);
+            writer.writeAttribute(HTML.ValidationMetadata.HIGHLIGHTER, highlighter, null);
         }
 
         if (isGrouped()) {
-            writer.writeAttribute(HTML.VALIDATION_METADATA.GROUPED, "true", null);
+            writer.writeAttribute(HTML.ValidationMetadata.GROUPED, "true", null);
         }
     }
 
@@ -788,7 +763,7 @@ public abstract class CoreRenderer extends Renderer {
             builder.append(validatorId);
         }
 
-        writer.writeAttribute(HTML.VALIDATION_METADATA.VALIDATOR_IDS, builder.toString(), null);
+        writer.writeAttribute(HTML.ValidationMetadata.VALIDATOR_IDS, builder.toString(), null);
     }
 
     protected String getHighlighter() {

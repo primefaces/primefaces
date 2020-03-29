@@ -23,33 +23,37 @@
  */
 package org.primefaces.util;
 
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.*;
+import org.primefaces.component.api.RTLAware;
+import org.primefaces.component.api.UITabPanel;
+import org.primefaces.component.api.Widget;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
 
-import java.util.function.Supplier;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.FacesWrapper;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
 import javax.faces.component.*;
+import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
-
-import org.primefaces.component.api.RTLAware;
-import org.primefaces.component.api.Widget;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeRequestContext;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class ComponentUtils {
 
-    public static final EnumSet<VisitHint> VISIT_HINTS_SKIP_UNRENDERED = EnumSet.of(VisitHint.SKIP_UNRENDERED);
+    public static final Set<VisitHint> VISIT_HINTS_SKIP_UNRENDERED = EnumSet.of(VisitHint.SKIP_UNRENDERED);
 
     public static final String SKIP_ITERATION_HINT = "javax.faces.visit.SKIP_ITERATION";
 
@@ -105,7 +109,7 @@ public class ComponentUtils {
             if (value != null) {
                 Converter converter = valueHolder.getConverter();
                 if (converter == null) {
-                    Class valueType = value.getClass();
+                    Class<?> valueType = value.getClass();
                     if (valueType == String.class
                             && !PrimeApplicationContext.getCurrentInstance(context).getConfig().isStringConverterAvailable()) {
                         return (String) value;
@@ -167,8 +171,46 @@ public class ComponentUtils {
         return context.getApplication().createConverter(converterType);
     }
 
+    public static Object getConvertedValue(FacesContext context, UIComponent component, String value) {
+        Converter converter = getConverter(context, component);
+        if (converter != null) {
+            return converter.getAsObject(context, component, value);
+        }
+
+        return value;
+    }
+
+    public static void decodeBehaviors(FacesContext context, UIComponent component) {
+        if (!(component instanceof ClientBehaviorHolder)) {
+            return;
+        }
+
+        Map<String, List<ClientBehavior>> behaviors = ((ClientBehaviorHolder) component).getClientBehaviors();
+        if (behaviors.isEmpty()) {
+            return;
+        }
+
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String behaviorEvent = params.get("javax.faces.behavior.event");
+
+        if (null != behaviorEvent) {
+            List<ClientBehavior> behaviorsForEvent = behaviors.get(behaviorEvent);
+
+            if (behaviorsForEvent != null && !behaviorsForEvent.isEmpty()) {
+                String behaviorSource = params.get("javax.faces.source");
+                String clientId = component.getClientId(context);
+
+                if (behaviorSource != null && clientId.equals(behaviorSource)) {
+                    for (ClientBehavior behavior : behaviorsForEvent) {
+                        behavior.decode(context, component);
+                    }
+                }
+            }
+        }
+    }
+
     public static String escapeSelector(String selector) {
-        return selector.replaceAll(":", "\\\\\\\\:");
+        return selector.replace(":", "\\\\:");
     }
 
     public static boolean isRTL(FacesContext context, RTLAware component) {
@@ -239,12 +281,12 @@ public class ComponentUtils {
 
                 if (!uiParam.isDisable()) {
                     if (params == null) {
-                        params = new LinkedHashMap<>();
+                        params = new LinkedHashMap<>(5);
                     }
 
                     List<String> paramValues = params.get(uiParam.getName());
                     if (paramValues == null) {
-                        paramValues = new ArrayList<>();
+                        paramValues = new ArrayList<>(2);
                         params.put(uiParam.getName(), paramValues);
                     }
 
@@ -262,10 +304,11 @@ public class ComponentUtils {
         }
         else {
             Boolean skipIterationHint = (Boolean) visitContext.getFacesContext().getAttributes().get(SKIP_ITERATION_HINT);
-            return skipIterationHint != null && skipIterationHint.booleanValue() == true;
+            return skipIterationHint != null && skipIterationHint;
         }
     }
 
+    @Deprecated // Widget itselfs implements it now
     public static String resolveWidgetVar(FacesContext context, Widget widget) {
         UIComponent component = (UIComponent) widget;
         String userWidgetVar = (String) component.getAttributes().get("widgetVar");
@@ -423,24 +466,6 @@ public class ComponentUtils {
         return ComponentTraversalUtils.closestForm(context, component);
     }
 
-    /**
-     * Gets a {@link TimeZone} instance by the parameter "timeZone" which can be String or {@link TimeZone} or null.
-     *
-     * @param timeZone given time zone
-     * @return resolved TimeZone
-     */
-    public static TimeZone resolveTimeZone(Object timeZone) {
-        if (timeZone instanceof String) {
-            return TimeZone.getTimeZone((String) timeZone);
-        }
-        else if (timeZone instanceof TimeZone) {
-            return (TimeZone) timeZone;
-        }
-        else {
-            return TimeZone.getDefault();
-        }
-    }
-
     public static <T extends Renderer> T getUnwrappedRenderer(FacesContext context, String family, String rendererType) {
         Renderer renderer = context.getRenderKit().getRenderer(family, rendererType);
 
@@ -577,4 +602,49 @@ public class ComponentUtils {
         return value;
     }
 
+    public static boolean isNestedWithinIterator(UIComponent component) {
+        return invokeOnClosestIteratorParent(component, p -> { }, false);
+    }
+
+    public static boolean invokeOnClosestIteratorParent(UIComponent component, Consumer<UIComponent> function, boolean includeSelf) {
+        Predicate<UIComponent> isIteratorComponent = p -> p instanceof javax.faces.component.UIData
+                || p.getClass().getName().endsWith("UIRepeat")
+                || (p instanceof UITabPanel && ((UITabPanel) p).isRepeating());
+
+        UIComponent parent = component;
+        while (null != (parent = parent.getParent())) {
+            if (isIteratorComponent.test(parent)) {
+                function.accept(parent);
+                return true;
+            }
+        }
+
+        if (includeSelf && isIteratorComponent.test(component)) {
+            function.accept(component);
+            return true;
+        }
+
+        return false;
+    }
+
+    public static ViewPoolingResetMode isViewPooling(FacesContext context) {
+        if (context.getViewRoot() != null) {
+            Object mode = context.getViewRoot().getAttributes().get("oam.view.resetSaveStateMode");
+
+            if (Objects.equals(mode, 1)) {
+                return ViewPoolingResetMode.SOFT;
+            }
+            if (Objects.equals(mode, 2)) {
+                return ViewPoolingResetMode.HARD;
+            }
+        }
+        return ViewPoolingResetMode.OFF;
+    }
+
+    // See MyFaces ViewPoolProcessor
+    public enum ViewPoolingResetMode {
+        OFF,
+        SOFT,
+        HARD;
+    }
 }

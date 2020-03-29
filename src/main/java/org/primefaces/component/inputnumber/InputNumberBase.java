@@ -53,7 +53,8 @@ public abstract class InputNumberBase extends HtmlInputText implements Widget, I
         inputStyle,
         inputStyleClass,
         padControl,
-        leadingZero
+        leadingZero,
+        decimalSeparatorAlternative
     }
 
     public InputNumberBase() {
@@ -122,7 +123,7 @@ public abstract class InputNumberBase extends HtmlInputText implements Widget, I
     }
 
     public String getRoundMethod() {
-        return (String) getStateHelper().eval(PropertyKeys.roundMethod, null);
+        return (String) getStateHelper().eval(PropertyKeys.roundMethod, "S");
     }
 
     public void setRoundMethod(String roundMethod) {
@@ -195,8 +196,11 @@ public abstract class InputNumberBase extends HtmlInputText implements Widget, I
         getStateHelper().put(PropertyKeys.leadingZero, leadingZero);
     }
 
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    public String getDecimalSeparatorAlternative() {
+        return (String) getStateHelper().eval(PropertyKeys.decimalSeparatorAlternative, null);
+    }
+
+    public void setDecimalSeparatorAlternative(String decimalSeparatorAlternative) {
+        getStateHelper().put(PropertyKeys.decimalSeparatorAlternative, decimalSeparatorAlternative);
     }
 }

@@ -109,13 +109,15 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             this._render();
         }
         else {
-            var container = this.jq.parent().closest('.ui-hidden-container'),
-            $this = this;
-
-            if(container.length) {
-                this.addDeferredRender(this.id, container, function() {
-                    return $this.render();
-                });
+            var container = this.jq.parent()[0].closest('.ui-hidden-container');
+            if (container) {
+                var $container = $(container);
+                if ($container.length) {
+                    var $this = this;
+                    this.addDeferredRender(this.id, $container, function() {
+                        return $this.render();
+                    });
+                }
             }
         }
     },
@@ -233,14 +235,41 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                             });
         }
 
+        this.bindSwipeEvents();
         this.bindKeyEvents();
     },
 
     /**
-     * Sets up all keyboard related event listeners that are required by this widget.
+     * Binds swipe events to this tabview.
      * @private
      */
-    bindKeyEvents: function() {
+    bindSwipeEvents: function() {
+        if (!PrimeFaces.env.touch) {
+            return;
+        }
+        var $this = this;
+        this.jq.swipe({
+            swipeLeft:function(event) {
+                var activeIndex = $this.getActiveIndex();
+                if (activeIndex < $this.getLength() - 1) {
+                    $this.select(activeIndex + 1);
+                }
+            },
+            swipeRight: function(event) {
+                var activeIndex = $this.getActiveIndex();
+                if (activeIndex > 0) {
+                    $this.select(activeIndex - 1);
+                }
+            },
+            excludedElements: PrimeFaces.utils.excludedSwipeElements()
+        });
+    },
+
+   /**
+    * Sets up all keyboard related event listeners that are required by this widget.
+    * @private
+    */
+   bindKeyEvents: function() {
         var $this = this,
             tabs = this.headerContainer;
 

@@ -31,6 +31,12 @@ var a=this,b=a.jsPlumb,c=a.jsPlumbUtil,d=a.Katavorio,e=a.Biltong,f=function(a,b)
  * @prop {string} UpdateConnectionInfo.originalTargetEndpoint Previous UUID of the point
  * (port) where the connections ended.
  * 
+ * @interface {PrimeFaces.widget.Diagram.UpdateElementInfo} UpdateElementInfo Details about an element when its location
+ * was changed.
+ * @prop {string} UpdateElementInfo.elementId ID of the element that was changed.
+ * @prop {number} UpdateElementInfo.x New horizontal position of the element.
+ * @prop {number} UpdateElementInfo.y New vertical position of the element.
+ * 
  * @prop {JsPlumb.jsPlumbInstance} canvas The JSPlumb instance for this diagram.
  * @prop {boolean} connectionChanged Internal state whether the connection was changed before a connect event.
  * 
@@ -87,7 +93,14 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
                 $this.initConnections();
 
                 $this.canvas.draggable($this.jq.children('.ui-diagram-draggable'), {
-                    containment: $this.cfg.containment
+                    containment: $this.cfg.containment,
+                    stop: function(p) {
+                    	$this.onUpdateElementPosition({
+                    		elementId: p.el.id,
+                    		x: parseInt(p.el.style.left),
+                    		y: parseInt(p.el.style.top)
+                    	});
+                    }
                 });
             });
 
@@ -225,6 +238,30 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
 
         if(this.hasBehavior('connectionChange')) {
             this.callBehavior('connectionChange', options);
+        }
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
+    },
+    
+    /**
+     * Callback for when the location of a diagram element has changed.
+     * @private
+     * @param {PrimeFaces.widget.Diagram.UpdateElementInfo} info Details about the element that was changed.
+     */
+    onUpdateElementPosition: function(info) {
+        var options = {
+            source: this.id,
+            process: this.id,
+            params: [
+                {name: this.id + '_positionChange', value: true},
+                {name: this.id + '_elementId', value: info.elementId.substring(this.id.length + 1)},
+                {name: this.id + '_position', value: info.x + ',' + info.y}
+            ]
+        };
+
+        if(this.hasBehavior('positionChange')) {
+            this.callBehavior('positionChange', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);

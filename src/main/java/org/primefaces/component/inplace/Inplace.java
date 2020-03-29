@@ -76,6 +76,9 @@ public class Inplace extends InplaceBase {
 
     @Override
     public void processDecodes(FacesContext context) {
+        if (!isRendered() || isDisabled()) {
+            return;
+        }
         if (shouldSkipChildren(context)) {
             decode(context);
         }

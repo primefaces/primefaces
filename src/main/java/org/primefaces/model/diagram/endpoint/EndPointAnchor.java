@@ -44,7 +44,7 @@ public enum EndPointAnchor {
 
     private final String text;
 
-    private EndPointAnchor(final String text) {
+    EndPointAnchor(final String text) {
         this.text = text;
     }
 

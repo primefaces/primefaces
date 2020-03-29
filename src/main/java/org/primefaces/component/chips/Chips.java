@@ -29,7 +29,6 @@ import java.util.Map;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 
@@ -99,13 +98,13 @@ public class Chips extends ChipsBase {
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
 
             if (eventName.equals("itemSelect")) {
-                Object selectedItemValue = convertValue(context, params.get(getClientId(context) + "_itemSelect"));
+                Object selectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemSelect"));
                 SelectEvent selectEvent = new SelectEvent(this, ajaxBehaviorEvent.getBehavior(), selectedItemValue);
                 selectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(selectEvent);
             }
             else if (eventName.equals("itemUnselect")) {
-                Object unselectedItemValue = convertValue(context, params.get(getClientId(context) + "_itemUnselect"));
+                Object unselectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemUnselect"));
                 UnselectEvent unselectEvent = new UnselectEvent(this, ajaxBehaviorEvent.getBehavior(), unselectedItemValue);
                 unselectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(unselectEvent);
@@ -118,17 +117,6 @@ public class Chips extends ChipsBase {
         else {
             //e.g. valueChange
             super.queueEvent(event);
-        }
-    }
-
-    private Object convertValue(FacesContext context, String submittedItemValue) {
-        Converter converter = ComponentUtils.getConverter(context, this);
-
-        if (converter == null) {
-            return submittedItemValue;
-        }
-        else {
-            return converter.getAsObject(context, this, submittedItemValue);
         }
     }
 }

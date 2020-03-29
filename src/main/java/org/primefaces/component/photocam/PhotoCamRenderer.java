@@ -34,6 +34,7 @@ import javax.xml.bind.DatatypeConverter;
 
 import org.primefaces.event.CaptureEvent;
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -87,7 +88,7 @@ public class PhotoCamRenderer extends CoreRenderer {
         String camera = getResourceRequestPath(context, "photocam/webcam.swf");
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("PhotoCam", cam.resolveWidgetVar(), clientId)
+        wb.init("PhotoCam", cam.resolveWidgetVar(context), clientId)
                 .attr("camera", camera)
                 .attr("width", cam.getWidth(), 320)
                 .attr("height", cam.getHeight(), 240)
@@ -99,10 +100,12 @@ public class PhotoCamRenderer extends CoreRenderer {
                 .attr("autoStart", cam.isAutoStart(), true);
 
         if (cam.getUpdate() != null) {
-            wb.attr("update", SearchExpressionFacade.resolveClientIds(context, cam, cam.getUpdate()));
+            wb.attr("update", SearchExpressionFacade.resolveClientIds(context, cam, cam.getUpdate(),
+                    SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE));
         }
         if (cam.getProcess() != null) {
-            wb.attr("process", SearchExpressionFacade.resolveClientIds(context, cam, cam.getProcess()));
+            wb.attr("process", SearchExpressionFacade.resolveClientIds(context, cam, cam.getProcess(),
+                    SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE));
         }
 
         wb.finish();

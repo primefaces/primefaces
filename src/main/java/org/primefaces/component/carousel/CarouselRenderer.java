@@ -31,6 +31,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class CarouselRenderer extends CoreRenderer {
@@ -63,7 +64,7 @@ public class CarouselRenderer extends CoreRenderer {
     private void encodeScript(FacesContext context, Carousel carousel) throws IOException {
         String clientId = carousel.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Carousel", carousel.resolveWidgetVar(), clientId);
+        wb.init("Carousel", carousel.resolveWidgetVar(context), clientId);
 
         wb.attr("firstVisible", carousel.getFirstVisible(), 0)
                 .attr("circular", carousel.isCircular(), false)
@@ -189,7 +190,7 @@ public class CarouselRenderer extends CoreRenderer {
 
         UIComponent facet = carousel.getFacet("header");
         String text = carousel.getHeaderText();
-        if (facet != null) {
+        if (ComponentUtils.shouldRenderFacet(facet)) {
             facet.encodeAll(context);
         }
         else if (text != null) {
@@ -266,8 +267,9 @@ public class CarouselRenderer extends CoreRenderer {
     protected void encodeFooter(FacesContext context, Carousel carousel) throws IOException {
         UIComponent facet = carousel.getFacet("footer");
         String text = carousel.getFooterText();
+        boolean renderFacet = ComponentUtils.shouldRenderFacet(facet);
 
-        if (facet == null && text == null) {
+        if (!renderFacet && text == null) {
             return;
         }
 
@@ -279,7 +281,7 @@ public class CarouselRenderer extends CoreRenderer {
             writer.writeAttribute("style", "display:none", null);
         }
 
-        if (facet != null) {
+        if (renderFacet) {
             facet.encodeAll(context);
         }
         else if (text != null) {

@@ -43,21 +43,12 @@ public class LifecyclePhaseListener implements PhaseListener {
     public static PhaseInfo getPhaseInfo(PhaseId id, FacesContext facesContext) {
 
         Map<String, Object> session = facesContext.getExternalContext().getSessionMap();
-        Map<String, LinkedHashMap<Integer, PhaseInfo>> storePerView =
-                (Map<String, LinkedHashMap<Integer, PhaseInfo>>) session.get(LifecyclePhaseListener.class.getName());
-
-        if (storePerView == null) {
-            storePerView = new HashMap<>();
-            session.put(LifecyclePhaseListener.class.getName(), storePerView);
-        }
+        Map<String, LinkedHashMap<Integer, PhaseInfo>> storePerView = (Map<String, LinkedHashMap<Integer, PhaseInfo>>)
+                session.computeIfAbsent(LifecyclePhaseListener.class.getName(), k -> new HashMap<>());
 
         String viewId = ComponentUtils.calculateViewId(facesContext);
 
-        LinkedHashMap<Integer, PhaseInfo> store = storePerView.get(viewId);
-        if (store == null) {
-            store = new LinkedHashMap<>();
-            storePerView.put(viewId, store);
-        }
+        LinkedHashMap<Integer, PhaseInfo> store = storePerView.computeIfAbsent(viewId, k -> new LinkedHashMap<>());
 
         PhaseInfo phaseInfo = store.get(id.getOrdinal());
         if (phaseInfo == null) {

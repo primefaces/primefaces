@@ -40,8 +40,11 @@ public class Legend implements Serializable {
 
     private boolean display = true;
     private String position;
+    private String align;
     private boolean fullWidth = true;
     private boolean reverse;
+    private boolean rtl = false;
+    private String textDirection;
     private LegendLabel labels;
 
     /**
@@ -78,6 +81,24 @@ public class Legend implements Serializable {
      */
     public void setPosition(String position) {
         this.position = position;
+    }
+
+    /**
+     * Alignment of the legend. Options are:'start','center','end'. Defaults to 'center' for unrecognized values.
+     *
+     * @return the align
+     */
+    public String getAlign() {
+        return align;
+    }
+
+    /**
+     * Alignment of the legend. Options are:'start','center','end'. Defaults to 'center' for unrecognized values.
+     *
+     * @param align the align to set
+     */
+    public void setAlign(String align) {
+        this.align = align;
     }
 
     /**
@@ -119,6 +140,42 @@ public class Legend implements Serializable {
     }
 
     /**
+     * For rendering the legends from right to left.
+     *
+     * @return the rtl
+     */
+    public boolean isRtl() {
+        return rtl;
+    }
+
+    /**
+     * For rendering the legends from right to left.
+     *
+     * @param rtl the rtl to set
+     */
+    public void setRtl(boolean rtl) {
+        this.rtl = rtl;
+    }
+
+    /**
+     * Text Direction 'ltr' or 'rtl' regardless of the css specified on the canvas.
+     *
+     * @return the textDirection
+     */
+    public String getTextDirection() {
+        return textDirection;
+    }
+
+    /**
+     * Text Direction 'ltr' or 'rtl' regardless of the css specified on the canvas.
+     *
+     * @param textDirection the textDirection to set
+     */
+    public void setTextDirection(String textDirection) {
+        this.textDirection = textDirection;
+    }
+
+    /**
      * The legend label configuration is nested below the legend configuration using the labels key.
      *
      * @return the labels
@@ -137,7 +194,7 @@ public class Legend implements Serializable {
     }
 
     /**
-     * Write the common options of cartesian axes
+     * Write the common options of the legend.
      *
      * @return options as JSON object
      * @throws java.io.IOException If an I/O error occurs
@@ -148,8 +205,11 @@ public class Legend implements Serializable {
         try {
             ChartUtils.writeDataValue(fsw, "display", this.display, false);
             ChartUtils.writeDataValue(fsw, "position", this.position, true);
+            ChartUtils.writeDataValue(fsw, "align", this.align, true);
             ChartUtils.writeDataValue(fsw, "fullWidth", this.fullWidth, true);
             ChartUtils.writeDataValue(fsw, "reverse", this.reverse, true);
+            ChartUtils.writeDataValue(fsw, "rtl", this.rtl, true);
+            ChartUtils.writeDataValue(fsw, "textDirection", this.textDirection, true);
 
             if (this.labels != null) {
                 fsw.write(",\"labels\":" + this.labels.encode());

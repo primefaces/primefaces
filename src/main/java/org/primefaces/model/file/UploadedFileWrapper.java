@@ -23,12 +23,14 @@
  */
 package org.primefaces.model.file;
 
+import java.io.IOException;
+import java.io.InputStream;
 import javax.faces.FacesWrapper;
 import javax.faces.component.StateHolder;
 import javax.faces.context.FacesContext;
 
 /**
- * Wrapper to avoid a UploadedFile to beeing saved in the ViewState.
+ * Internal wrapper to avoid the file binaries to beeing saved in the ViewState.
  */
 public class UploadedFileWrapper implements UploadedFile, FacesWrapper<UploadedFile>, StateHolder {
 
@@ -40,16 +42,6 @@ public class UploadedFileWrapper implements UploadedFile, FacesWrapper<UploadedF
 
     public UploadedFileWrapper(UploadedFile wrapped) {
         this.wrapped = wrapped;
-    }
-
-    @Override
-    public long getSize() {
-        return getWrapped().getSize();
-    }
-
-    @Override
-    public void write(String filePath) throws Exception {
-        getWrapped().write(filePath);
     }
 
     @Override
@@ -75,6 +67,36 @@ public class UploadedFileWrapper implements UploadedFile, FacesWrapper<UploadedF
     @Override
     public void setTransient(boolean value) {
         // NOOP
+    }
+
+    @Override
+    public long getSize() {
+        return getWrapped().getSize();
+    }
+
+    @Override
+    public void write(String filePath) throws Exception {
+        getWrapped().write(filePath);
+    }
+
+    @Override
+    public String getFileName() {
+        return getWrapped().getFileName();
+    }
+
+    @Override
+    public InputStream getInputStream() throws IOException {
+        return getWrapped().getInputStream();
+    }
+
+    @Override
+    public byte[] getContent() {
+        return getWrapped().getContent();
+    }
+
+    @Override
+    public String getContentType() {
+        return getWrapped().getContentType();
     }
 
 }

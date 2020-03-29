@@ -66,7 +66,7 @@ public class KeyboardRenderer extends InputRenderer {
         String clientId = keyboard.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Keyboard", keyboard.resolveWidgetVar(), clientId)
+        wb.init("Keyboard", keyboard.resolveWidgetVar(context), clientId)
                 .attr("useThemeRoller", true)
                 .attr("showOn", keyboard.getShowMode())
                 .attr("showAnim", keyboard.getEffect())

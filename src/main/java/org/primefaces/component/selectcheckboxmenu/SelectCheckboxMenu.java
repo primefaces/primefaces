@@ -34,6 +34,8 @@ import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 
 import org.primefaces.event.ToggleSelectEvent;
+import org.primefaces.event.UnselectEvent;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
 
@@ -65,6 +67,7 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("change", null)
             .put("toggleSelect", ToggleSelectEvent.class)
+            .put("itemUnselect", UnselectEvent.class)
             .build();
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
@@ -87,19 +90,32 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
-        String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-        if (event instanceof AjaxBehaviorEvent && eventName.equals("toggleSelect")) {
-            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String clientId = getClientId(context);
-            boolean checked = Boolean.parseBoolean(params.get(clientId + "_checked"));
-            ToggleSelectEvent toggleSelectEvent = new ToggleSelectEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), checked);
-            toggleSelectEvent.setPhaseId(event.getPhaseId());
+        if (eventName != null && event instanceof AjaxBehaviorEvent) {
+            AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
+            if (eventName.equals("toggleSelect")) {
+                String clientId = getClientId(context);
+                boolean checked = Boolean.parseBoolean(params.get(clientId + "_checked"));
+                ToggleSelectEvent toggleSelectEvent = new ToggleSelectEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), checked);
+                toggleSelectEvent.setPhaseId(event.getPhaseId());
 
-            super.queueEvent(toggleSelectEvent);
+                super.queueEvent(toggleSelectEvent);
+            }
+            else if (eventName.equals("itemUnselect")) {
+                Object unselectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemUnselect"));
+                UnselectEvent unselectEvent = new UnselectEvent(this, ajaxBehaviorEvent.getBehavior(), unselectedItemValue);
+                unselectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
+                super.queueEvent(unselectEvent);
+            }
+            else {
+                super.queueEvent(event);
+            }
         }
         else {
             super.queueEvent(event);
         }
     }
+
 }

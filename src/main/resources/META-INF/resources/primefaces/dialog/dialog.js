@@ -194,8 +194,12 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * Displays this dialog. In case the `dynamic` option is enabled and the content was not yet loaded, this may result
      * in an AJAX request to the sever to retrieve the content. Also triggers the show behaviors registered for this
      * dialog.
+     * 
+     * @param {number | string} [duration] Durations are given in milliseconds; higher values indicate slower
+     * animations, not faster ones. The strings `fast` and `slow` can be supplied to indicate durations of 200 and 600
+     * milliseconds, respectively.
      */
-    show: function() {
+    show: function(duration) {
         if(this.isVisible()) {
             return;
         }
@@ -212,16 +216,21 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 this.jqEl.style.visibility = "visible";
             }
 
-            this._show();
+            this._show(duration);
         }
     },
 
     /**
      * Performs the client-side actions needed to actually show this dialog. Compare to `show`, which loads the dialog
      * content from the server if required, then call this method.
+     * 
      * @protected
+     * 
+     * @param {number | string} [duration] Durations are given in milliseconds; higher values indicate slower
+     * animations, not faster ones. The strings `fast` and `slow` can be supplied to indicate durations of 200 and 600
+     * milliseconds, respectively.
      */
-    _show: function() {
+    _show: function(duration) {
         this.moveToTop();
 
         //offset
@@ -231,16 +240,17 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             this.lastScrollTop = winScrollTop;
         }
 
-        if(this.cfg.showEffect) {
+        var animated = this.cfg.showEffect;
+        if(animated) {
             var $this = this;
 
-            this.jq.show(this.cfg.showEffect, null, 'normal', function() {
+            this.jq.show(this.cfg.showEffect, duration, 'normal', function() {
                 $this.postShow();
             });
         }
         else {
             //display dialog
-            this.jq.show();
+            this.jq.show(duration);
 
             this.postShow();
         }
@@ -277,17 +287,22 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
     },
 
     /**
-     * Hides this dialog. Also invokes the hide behaviors registered for this dialog.
+     * Hide the dialog with an optional animation lasting for the given duration.
+     * 
+     * @param {number | string} [duration] Durations are given in milliseconds; higher values indicate slower
+     * animations, not faster ones. The strings `fast` and `slow` can be supplied to indicate durations of 200 and 600
+     * milliseconds, respectively.
      */
-    hide: function() {
+    hide: function(duration) {
         if(!this.isVisible()) {
             return;
         }
 
-        if(this.cfg.hideEffect) {
+        var animated = this.cfg.hideEffect;
+        if(animated) {
             var $this = this;
 
-            this.jq.hide(this.cfg.hideEffect, null, 'normal', function() {
+            this.jq.hide(this.cfg.hideEffect, duration, 'normal', function() {
                 if($this.cfg.modal) {
                     $this.disableModality();
                 }
@@ -299,7 +314,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             if(this.cfg.modal) {
                 this.disableModality();
             }
-            this.onHide();
+            this.onHide(duration);
         }
     },
 
@@ -831,9 +846,11 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
                 var el = $(this);
 
                 if(el.hasClass('ui-confirmdialog-yes') && PrimeFaces.confirmSource) {
-                    var fn = new Function('event',PrimeFaces.confirmSource.data('pfconfirmcommand'));
+                    var id = PrimeFaces.confirmSource.get(0);
+                    var js = PrimeFaces.confirmSource.data('pfconfirmcommand');
 
-                    fn.call(PrimeFaces.confirmSource.get(0),e);
+                    PrimeFaces.csp.executeEvent(id, js, e);
+
                     PrimeFaces.confirmDialog.hide();
                     PrimeFaces.confirmSource = null;
                 }
@@ -862,7 +879,7 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
      */
     showMessage: function(msg) {
         if(msg.beforeShow) {
-            eval(msg.beforeShow);
+            PrimeFaces.csp.eval(msg.beforeShow);
         }
 
         var icon = (msg.icon === 'null') ? 'ui-icon-alert' : msg.icon;

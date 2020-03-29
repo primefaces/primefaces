@@ -40,6 +40,7 @@ import org.primefaces.component.menu.Menu;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.Visibility;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
 
@@ -72,7 +73,6 @@ public class Panel extends PanelBase {
             .build();
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-    private Menu optionsMenu;
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
@@ -85,20 +85,16 @@ public class Panel extends PanelBase {
     }
 
     public Menu getOptionsMenu() {
-        if (optionsMenu == null) {
-            UIComponent optionsFacet = getFacet("options");
-            if (optionsFacet != null) {
-                if (optionsFacet instanceof Menu) {
-                    optionsMenu = (Menu) optionsFacet;
-                }
-                else {
-                    optionsMenu = (Menu) optionsFacet.getChildren().get(0);
-                }
+        UIComponent optionsFacet = getFacet("options");
+        if (ComponentUtils.shouldRenderFacet(optionsFacet)) {
+            if (optionsFacet instanceof Menu) {
+                return (Menu) optionsFacet;
             }
-
+            else {
+                return (Menu) optionsFacet.getChildren().get(0);
+            }
         }
-
-        return optionsMenu;
+        return null;
     }
 
     @Override
@@ -108,7 +104,7 @@ public class Panel extends PanelBase {
         String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
         String clientId = getClientId(context);
 
-        if (isSelfRequest(context)) {
+        if (ComponentUtils.isRequestSource(this, context)) {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if (eventName.equals("toggle")) {
@@ -133,7 +129,7 @@ public class Panel extends PanelBase {
 
     @Override
     public void processDecodes(FacesContext context) {
-        if (isSelfRequest(context)) {
+        if (ComponentUtils.isRequestSource(this, context)) {
             decode(context);
         }
         else {
@@ -143,14 +139,14 @@ public class Panel extends PanelBase {
 
     @Override
     public void processValidators(FacesContext context) {
-        if (!isSelfRequest(context)) {
+        if (!ComponentUtils.isRequestSource(this, context)) {
             super.processValidators(context);
         }
     }
 
     @Override
     public void processUpdates(FacesContext context) {
-        if (!isSelfRequest(context)) {
+        if (!ComponentUtils.isRequestSource(this, context)) {
             super.processUpdates(context);
         }
 
@@ -162,9 +158,5 @@ public class Panel extends PanelBase {
             collapsedVE.setValue(eLContext, isCollapsed());
             getStateHelper().put(Panel.PropertyKeys.collapsed, null);
         }
-    }
-
-    private boolean isSelfRequest(FacesContext context) {
-        return getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }
 }

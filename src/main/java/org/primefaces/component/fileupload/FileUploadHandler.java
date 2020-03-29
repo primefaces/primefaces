@@ -34,7 +34,7 @@ import org.primefaces.facelets.MethodRule;
 public class FileUploadHandler extends ComponentHandler {
 
     private static final MetaRule FILE_UPLOAD_LISTENER
-            = new MethodRule("listener", null, new Class[]{FileUploadEvent.class});
+            = new MethodRule("listener", null, new Class<?>[]{FileUploadEvent.class});
 
     public FileUploadHandler(ComponentConfig config) {
         super(config);

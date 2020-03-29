@@ -34,6 +34,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.UINotificationRenderer;
+import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
@@ -45,7 +46,7 @@ public class GrowlRenderer extends UINotificationRenderer {
         ResponseWriter writer = context.getResponseWriter();
         Growl growl = (Growl) component;
         String clientId = growl.getClientId(context);
-        String widgetVar = growl.resolveWidgetVar();
+        String widgetVar = growl.resolveWidgetVar(context);
 
         writer.startElement("span", growl);
         writer.writeAttribute("id", clientId, "id");
@@ -63,7 +64,7 @@ public class GrowlRenderer extends UINotificationRenderer {
         writer.endElement("span");
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Growl", growl.resolveWidgetVar(), clientId)
+        wb.init("Growl", growl.resolveWidgetVar(context), clientId)
                 .attr("sticky", growl.isSticky())
                 .attr("life", growl.getLife())
                 .attr("escape", growl.isEscape())
@@ -108,7 +109,7 @@ public class GrowlRenderer extends UINotificationRenderer {
 
                 if (growl.isShowSummary() && growl.isShowDetail()) {
                     if (growl.isSkipDetailIfEqualsSummary() && Objects.equals(summary, detail)) {
-                        detail = "";
+                        detail = Constants.EMPTY_STRING;
                     }
                     writer.writeText("summary:\"" + summary + "\",detail:\"" + detail + "\"", null);
                 }
@@ -120,6 +121,7 @@ public class GrowlRenderer extends UINotificationRenderer {
                 }
 
                 writer.write(",severity:'" + severityName + "'");
+                writer.write(",severityText:'" + getSeverityText(message) + "'");
 
                 writer.write("}");
 

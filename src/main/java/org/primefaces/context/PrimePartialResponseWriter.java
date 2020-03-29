@@ -45,7 +45,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class PrimePartialResponseWriter extends PartialResponseWriter {
+public class PrimePartialResponseWriter extends PartialResponseWriterWrapper {
 
     private static final Map<String, String> CALLBACK_EXTENSION_PARAMS;
 
@@ -57,37 +57,10 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
         CALLBACK_EXTENSION_PARAMS = Collections.unmodifiableMap(callbackExtensionParams);
     }
 
-    private final PartialResponseWriter wrapped;
     private boolean metadataRendered = false;
 
     public PrimePartialResponseWriter(PartialResponseWriter wrapped) {
         super(wrapped);
-        this.wrapped = wrapped;
-    }
-
-    @Override
-    public void endError() throws IOException {
-        wrapped.endError();
-    }
-
-    @Override
-    public void endEval() throws IOException {
-        wrapped.endEval();
-    }
-
-    @Override
-    public void endExtension() throws IOException {
-        wrapped.endExtension();
-    }
-
-    @Override
-    public void endInsert() throws IOException {
-        wrapped.endInsert();
-    }
-
-    @Override
-    public void endUpdate() throws IOException {
-        wrapped.endUpdate();
     }
 
     @Override
@@ -109,73 +82,63 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
             }
         }
 
-        wrapped.endDocument();
-    }
-
-    @Override
-    public void startDocument() throws IOException {
-        wrapped.startDocument();
+        super.endDocument();
     }
 
     @Override
     public void startError(String errorName) throws IOException {
         startMetadataIfNecessary();
 
-        wrapped.startError(errorName);
+        super.startError(errorName);
     }
 
     @Override
     public void startEval() throws IOException {
         startMetadataIfNecessary();
 
-        wrapped.startEval();
+        super.startEval();
     }
 
     @Override
     public void startExtension(Map<String, String> attributes) throws IOException {
         startMetadataIfNecessary();
 
-        wrapped.startExtension(attributes);
+        super.startExtension(attributes);
     }
 
     @Override
     public void startInsertAfter(String targetId) throws IOException {
         startMetadataIfNecessary();
 
-        wrapped.startInsertAfter(targetId);
+        super.startInsertAfter(targetId);
     }
 
     @Override
     public void startInsertBefore(String targetId) throws IOException {
         startMetadataIfNecessary();
 
-        wrapped.startInsertBefore(targetId);
+        super.startInsertBefore(targetId);
     }
 
     @Override
     public void startUpdate(String targetId) throws IOException {
         startMetadataIfNecessary();
 
-        wrapped.startUpdate(targetId);
+        super.startUpdate(targetId);
     }
 
     @Override
     public void updateAttributes(String targetId, Map<String, String> attributes) throws IOException {
         startMetadataIfNecessary();
 
-        wrapped.updateAttributes(targetId, attributes);
-    }
-
-    @Override
-    public void redirect(String url) throws IOException {
-        wrapped.redirect(url);
+        super.updateAttributes(targetId, attributes);
     }
 
     @Override
     public void delete(String targetId) throws IOException {
         startMetadataIfNecessary();
 
-        wrapped.delete(targetId);
+        super.delete(targetId);
     }
 
     public void encodeJSONObject(String paramName, JSONObject jsonObject) throws IOException, JSONException {
@@ -245,9 +208,16 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
     }
 
     protected void encodeScripts(PrimeRequestContext requestContext) throws IOException {
+        List<String> initScripts = requestContext.getInitScriptsToExecute();
         List<String> scripts = requestContext.getScriptsToExecute();
-        if (!scripts.isEmpty()) {
+
+        if (!initScripts.isEmpty() || !scripts.isEmpty()) {
             startEval();
+
+            for (int i = 0; i < initScripts.size(); i++) {
+                getWrapped().write(initScripts.get(i));
+                getWrapped().write(';');
+            }
 
             for (int i = 0; i < scripts.size(); i++) {
                 getWrapped().write(scripts.get(i));

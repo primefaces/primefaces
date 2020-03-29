@@ -23,8 +23,6 @@
  */
 package org.primefaces.component.timeline;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
@@ -39,24 +37,12 @@ public class TimelineListener implements SystemEventListener {
 
         FacesContext context = FacesContext.getCurrentInstance();
         Timeline timeline = (Timeline) cse.getSource();
-        String widgetVar = timeline.resolveWidgetVar();
-
-        Map<String, TimelineUpdater> map
-                = (Map<String, TimelineUpdater>) context.getAttributes().get(TimelineUpdater.class.getName());
-        if (map == null) {
-            map = new HashMap<>();
-            context.getAttributes().put(TimelineUpdater.class.getName(), map);
-        }
+        String widgetVar = timeline.resolveWidgetVar(context);
 
         boolean alreadyRegistred = false;
         for (PhaseListener listener : context.getViewRoot().getPhaseListeners()) {
             if (listener instanceof DefaultTimelineUpdater
                     && ((DefaultTimelineUpdater) listener).getWidgetVar().equals(widgetVar)) {
-
-                if (!map.containsKey(widgetVar)) {
-                    map.put(widgetVar, (DefaultTimelineUpdater) listener);
-                }
-
                 alreadyRegistred = true;
             }
         }
@@ -64,8 +50,6 @@ public class TimelineListener implements SystemEventListener {
         if (!alreadyRegistred) {
             DefaultTimelineUpdater timelineUpdater = new DefaultTimelineUpdater();
             timelineUpdater.setWidgetVar(widgetVar);
-            map.put(widgetVar, timelineUpdater);
-
             context.getViewRoot().addPhaseListener(timelineUpdater);
         }
     }

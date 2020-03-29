@@ -36,6 +36,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 import java.io.IOException;
+import org.primefaces.expression.SearchExpressionUtils;
 
 public class FileUploadRenderer extends CoreRenderer {
 
@@ -89,12 +90,14 @@ public class FileUploadRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
 
         if (fileUpload.getMode().equals("advanced")) {
-            wb.init("FileUpload", fileUpload.resolveWidgetVar(), clientId);
+            wb.init("FileUpload", fileUpload.resolveWidgetVar(context), clientId);
 
             wb.attr("auto", fileUpload.isAuto(), false)
                     .attr("dnd", fileUpload.isDragDropSupport(), true)
-                    .attr("update", SearchExpressionFacade.resolveClientIds(context, fileUpload, update), null)
-                    .attr("process", SearchExpressionFacade.resolveClientIds(context, fileUpload, process), null)
+                    .attr("update", SearchExpressionFacade.resolveClientIds(context, fileUpload, update,
+                            SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
+                    .attr("process", SearchExpressionFacade.resolveClientIds(context, fileUpload, process,
+                            SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
                     .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
                     .attr("fileLimit", fileUpload.getFileLimit(), Integer.MAX_VALUE)
                     .attr("invalidFileMessage", fileUpload.getInvalidFileMessage(), null)
@@ -117,7 +120,7 @@ public class FileUploadRenderer extends CoreRenderer {
             }
         }
         else {
-            wb.init("SimpleFileUpload", fileUpload.resolveWidgetVar(), clientId)
+            wb.init("SimpleFileUpload", fileUpload.resolveWidgetVar(context), clientId)
                     .attr("skinSimple", fileUpload.isSkinSimple(), false)
                     .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
                     .attr("invalidSizeMessage", EscapeUtils.forJavaScript(fileUpload.getInvalidSizeMessage()), null);

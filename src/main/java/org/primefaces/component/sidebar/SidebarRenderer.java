@@ -30,6 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -82,11 +83,12 @@ public class SidebarRenderer extends CoreRenderer {
     private void encodeScript(FacesContext context, Sidebar bar) throws IOException {
         String clientId = bar.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Sidebar", bar.resolveWidgetVar(), clientId)
+        wb.init("Sidebar", bar.resolveWidgetVar(context), clientId)
                 .attr("visible", bar.isVisible(), false)
                 .attr("blockScroll", bar.isBlockScroll(), false)
                 .attr("baseZIndex", bar.getBaseZIndex(), 0)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, bar, bar.getAppendTo()), null)
+                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, bar, bar.getAppendTo(),
+                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
                 .callback("onHide", "function()", bar.getOnHide())
                 .callback("onShow", "function()", bar.getOnShow());
 

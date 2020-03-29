@@ -28,8 +28,6 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class MultiSelectListboxBase extends UISelectOne implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
@@ -111,10 +109,5 @@ public abstract class MultiSelectListboxBase extends UISelectOne implements Widg
 
     public void setHeader(String header) {
         getStateHelper().put(PropertyKeys.header, header);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

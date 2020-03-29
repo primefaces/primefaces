@@ -57,6 +57,7 @@ public class TooltipRenderer extends CoreRenderer {
             writer.startElement("div", tooltip);
             writer.writeAttribute("id", tooltip.getClientId(context), null);
             writer.writeAttribute("class", styleClass, "styleClass");
+            writer.writeAttribute("role", "tooltip", null);
 
             if (tooltip.getStyle() != null) {
                 writer.writeAttribute("style", tooltip.getStyle(), "style");
@@ -93,7 +94,7 @@ public class TooltipRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Tooltip tooltip, String target) throws IOException {
         String clientId = tooltip.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Tooltip", tooltip.resolveWidgetVar(), clientId)
+        wb.init("Tooltip", tooltip.resolveWidgetVar(context), clientId)
                 .attr("showEvent", tooltip.getShowEvent(), null)
                 .attr("hideEvent", tooltip.getHideEvent(), null)
                 .attr("showEffect", tooltip.getShowEffect(), null)

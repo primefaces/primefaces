@@ -30,7 +30,7 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 
-public class TreeNodeComparator implements Comparator {
+public class TreeNodeComparator implements Comparator<Object> {
 
     private ValueExpression sortBy;
     private boolean asc;

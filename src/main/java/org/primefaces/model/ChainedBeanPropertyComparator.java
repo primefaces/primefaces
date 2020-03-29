@@ -32,22 +32,18 @@ public class ChainedBeanPropertyComparator implements Comparator {
     private List<BeanPropertyComparator> comparators;
 
     public ChainedBeanPropertyComparator() {
-        comparators = new ArrayList<BeanPropertyComparator>();
+        comparators = new ArrayList<>();
     }
 
     public void addComparator(BeanPropertyComparator comparator) {
-        this.comparators.add(comparator);
+        comparators.add(comparator);
     }
 
     @Override
     public int compare(Object obj1, Object obj2) {
         for (BeanPropertyComparator comparator : comparators) {
             int result = comparator.compare(obj1, obj2);
-
-            if (result == 0) {
-                continue;
-            }
-            else {
+            if (result != 0) {
                 return result;
             }
         }

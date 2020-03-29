@@ -23,15 +23,20 @@
  */
 package org.primefaces.component.timeline;
 
+import java.time.LocalDateTime;
+import java.util.Locale;
 import javax.faces.component.UIComponentBase;
 import javax.faces.component.behavior.ClientBehaviorHolder;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.model.timeline.TimelineModel;
+import org.primefaces.util.LocaleUtils;
 
 
-public abstract class TimelineBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+public abstract class TimelineBase extends UIComponentBase implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -47,16 +52,21 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, Cl
         varGroup,
         locale,
         timeZone,
-        browserTimeZone,
+        clientTimeZone,
         height,
         minHeight,
+        maxHeight,
         width,
         responsive,
-        axisOnTop,
-        dragAreaWidth,
+        orientationAxis,
+        orientationItem,
         editable,
+        editableAdd,
+        editableRemove,
+        editableGroup,
+        editableTime,
+        editableOverrideItems,
         selectable,
-        unselectable,
         zoomable,
         moveable,
         start,
@@ -67,29 +77,31 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, Cl
         zoomMax,
         preloadFactor,
         eventMargin,
+        eventHorizontalMargin,
+        eventVerticalMargin,
         eventMarginAxis,
         eventStyle,
-        groupsChangeable,
-        groupsOnRight,
         groupsOrder,
-        groupsWidth,
-        groupMinHeight,
-        snapEvents,
+        groupStyle,
+        snap,
         stackEvents,
         showCurrentTime,
         showMajorLabels,
         showMinorLabels,
-        showButtonNew,
-        showNavigation,
-        timeChangeable,
+        clickToUse,
+        showTooltips,
+        tooltipFollowMouse,
+        tooltipOverflowMethod,
+        tooltipDelay,
         dropHoverStyleClass,
         dropActiveStyleClass,
         dropAccept,
         dropScope,
-        animate,
-        animateZoom
+        dir,
+        extender
     }
 
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public TimelineBase() {
         setRendererType(DEFAULT_RENDERER);
     }
@@ -131,11 +143,12 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, Cl
         getStateHelper().put(PropertyKeys.var, var);
     }
 
-    public org.primefaces.model.timeline.TimelineModel getValue() {
-        return (org.primefaces.model.timeline.TimelineModel) getStateHelper().eval(PropertyKeys.value, null);
+    @SuppressWarnings("unchecked")
+    public TimelineModel<Object, Object> getValue() {
+        return (TimelineModel<Object, Object>) getStateHelper().eval(PropertyKeys.value, null);
     }
 
-    public void setValue(org.primefaces.model.timeline.TimelineModel value) {
+    public void setValue(TimelineModel<Object, Object> value) {
         getStateHelper().put(PropertyKeys.value, value);
     }
 
@@ -155,6 +168,10 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, Cl
         getStateHelper().put(PropertyKeys.locale, locale);
     }
 
+    public Locale calculateLocale(FacesContext facesContext) {
+        return LocaleUtils.resolveLocale(facesContext, getLocale(), getClientId(facesContext));
+    }
+
     public Object getTimeZone() {
         return getStateHelper().eval(PropertyKeys.timeZone, null);
     }
@@ -163,28 +180,36 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, Cl
         getStateHelper().put(PropertyKeys.timeZone, timeZone);
     }
 
-    public Object getBrowserTimeZone() {
-        return getStateHelper().eval(PropertyKeys.browserTimeZone, null);
+    public Object getClientTimeZone() {
+        return getStateHelper().eval(PropertyKeys.clientTimeZone, null);
     }
 
-    public void setBrowserTimeZone(Object browserTimeZone) {
-        getStateHelper().put(PropertyKeys.browserTimeZone, browserTimeZone);
+    public void setClientTimeZone(Object clientTimeZone) {
+        getStateHelper().put(PropertyKeys.clientTimeZone, clientTimeZone);
     }
 
     public String getHeight() {
-        return (String) getStateHelper().eval(PropertyKeys.height, "auto");
+        return (String) getStateHelper().eval(PropertyKeys.height, null);
     }
 
     public void setHeight(String height) {
         getStateHelper().put(PropertyKeys.height, height);
     }
 
-    public int getMinHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.minHeight, 0);
+    public Integer getMinHeight() {
+        return (Integer) getStateHelper().eval(PropertyKeys.minHeight, null);
     }
 
-    public void setMinHeight(int minHeight) {
+    public void setMinHeight(Integer minHeight) {
         getStateHelper().put(PropertyKeys.minHeight, minHeight);
+    }
+
+    public Integer getMaxHeight() {
+        return (Integer) getStateHelper().eval(PropertyKeys.maxHeight, null);
+    }
+
+    public void setMaxHeight(Integer maxHeight) {
+        getStateHelper().put(PropertyKeys.maxHeight, maxHeight);
     }
 
     public String getWidth() {
@@ -203,20 +228,31 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, Cl
         getStateHelper().put(PropertyKeys.responsive, responsive);
     }
 
+    @Deprecated
     public boolean isAxisOnTop() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.axisOnTop, false);
+        String orientationAxis = getOrientationAxis();
+        return "top".equals(orientationAxis);
     }
 
+    @Deprecated
     public void setAxisOnTop(boolean axisOnTop) {
-        getStateHelper().put(PropertyKeys.axisOnTop, axisOnTop);
+        setOrientationAxis(axisOnTop ? "top" : "bottom");
     }
 
-    public int getDragAreaWidth() {
-        return (Integer) getStateHelper().eval(PropertyKeys.dragAreaWidth, 10);
+    public String getOrientationAxis() {
+        return (String) getStateHelper().eval(PropertyKeys.orientationAxis, "bottom");
     }
 
-    public void setDragAreaWidth(int dragAreaWidth) {
-        getStateHelper().put(PropertyKeys.dragAreaWidth, dragAreaWidth);
+    public void setOrientationAxis(String orientationAxis) {
+        getStateHelper().put(PropertyKeys.orientationAxis, orientationAxis);
+    }
+
+    public String getOrientationItem() {
+        return (String) getStateHelper().eval(PropertyKeys.orientationItem, "bottom");
+    }
+
+    public void setOrientationItem(String orientationItem) {
+        getStateHelper().put(PropertyKeys.orientationItem, orientationItem);
     }
 
     public boolean isEditable() {
@@ -227,20 +263,52 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, Cl
         getStateHelper().put(PropertyKeys.editable, editable);
     }
 
+    public boolean isEditableAdd() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.editableAdd, isEditable());
+    }
+
+    public void setEditableAdd(boolean editableAdd) {
+        getStateHelper().put(PropertyKeys.editable, editableAdd);
+    }
+
+    public boolean isEditableRemove() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.editableRemove, isEditable());
+    }
+
+    public void setEditableRemove(boolean editableRemove) {
+        getStateHelper().put(PropertyKeys.editableRemove, editableRemove);
+    }
+
+    public boolean isEditableGroup() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.editableGroup, isEditable());
+    }
+
+    public void setEditableGroup(boolean editableUpdateGroup) {
+        getStateHelper().put(PropertyKeys.editableGroup, editableUpdateGroup);
+    }
+
+    public boolean isEditableTime() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.editableTime, isEditable());
+    }
+
+    public void setEditableTime(boolean editableTime) {
+        getStateHelper().put(PropertyKeys.editableTime, editableTime);
+    }
+
+    public boolean isEditableOverrideItems() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.editableOverrideItems, false);
+    }
+
+    public void setEditableOverrideItems(boolean editableOverrideItems) {
+        getStateHelper().put(PropertyKeys.editableOverrideItems, editableOverrideItems);
+    }
+
     public boolean isSelectable() {
         return (Boolean) getStateHelper().eval(PropertyKeys.selectable, true);
     }
 
     public void setSelectable(boolean selectable) {
         getStateHelper().put(PropertyKeys.selectable, selectable);
-    }
-
-    public boolean isUnselectable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.unselectable, true);
-    }
-
-    public void setUnselectable(boolean unselectable) {
-        getStateHelper().put(PropertyKeys.unselectable, unselectable);
     }
 
     public boolean isZoomable() {
@@ -259,35 +327,35 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, Cl
         getStateHelper().put(PropertyKeys.moveable, moveable);
     }
 
-    public java.util.Date getStart() {
-        return (java.util.Date) getStateHelper().eval(PropertyKeys.start, null);
+    public LocalDateTime getStart() {
+        return (LocalDateTime) getStateHelper().eval(PropertyKeys.start, null);
     }
 
-    public void setStart(java.util.Date start) {
+    public void setStart(LocalDateTime  start) {
         getStateHelper().put(PropertyKeys.start, start);
     }
 
-    public java.util.Date getEnd() {
-        return (java.util.Date) getStateHelper().eval(PropertyKeys.end, null);
+    public LocalDateTime getEnd() {
+        return (LocalDateTime) getStateHelper().eval(PropertyKeys.end, null);
     }
 
-    public void setEnd(java.util.Date end) {
+    public void setEnd(LocalDateTime end) {
         getStateHelper().put(PropertyKeys.end, end);
     }
 
-    public java.util.Date getMin() {
-        return (java.util.Date) getStateHelper().eval(PropertyKeys.min, null);
+    public LocalDateTime getMin() {
+        return (LocalDateTime) getStateHelper().eval(PropertyKeys.min, null);
     }
 
-    public void setMin(java.util.Date min) {
+    public void setMin(LocalDateTime min) {
         getStateHelper().put(PropertyKeys.min, min);
     }
 
-    public java.util.Date getMax() {
-        return (java.util.Date) getStateHelper().eval(PropertyKeys.max, null);
+    public LocalDateTime  getMax() {
+        return (LocalDateTime) getStateHelper().eval(PropertyKeys.max, null);
     }
 
-    public void setMax(java.util.Date max) {
+    public void setMax(LocalDateTime max) {
         getStateHelper().put(PropertyKeys.max, max);
     }
 
@@ -323,6 +391,22 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, Cl
         getStateHelper().put(PropertyKeys.eventMargin, eventMargin);
     }
 
+    public int getEventHorizontalMargin() {
+        return (Integer) getStateHelper().eval(PropertyKeys.eventHorizontalMargin, getEventMargin());
+    }
+
+    public void setEventHorizontalMargin(int eventHorizontalMargin) {
+        getStateHelper().put(PropertyKeys.eventHorizontalMargin, eventHorizontalMargin);
+    }
+
+    public int getEventVerticalMargin() {
+        return (Integer) getStateHelper().eval(PropertyKeys.eventVerticalMargin, getEventMargin());
+    }
+
+    public void setEventVerticalMargin(int eventVerticalMargin) {
+        getStateHelper().put(PropertyKeys.eventVerticalMargin, eventVerticalMargin);
+    }
+
     public int getEventMarginAxis() {
         return (Integer) getStateHelper().eval(PropertyKeys.eventMarginAxis, 10);
     }
@@ -332,27 +416,21 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, Cl
     }
 
     public String getEventStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.eventStyle, "box");
+        return (String) getStateHelper().eval(PropertyKeys.eventStyle, null);
     }
 
     public void setEventStyle(String eventStyle) {
         getStateHelper().put(PropertyKeys.eventStyle, eventStyle);
     }
 
+    @Deprecated
     public boolean isGroupsChangeable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.groupsChangeable, true);
+        return isEditableGroup();
     }
 
+    @Deprecated
     public void setGroupsChangeable(boolean groupsChangeable) {
-        getStateHelper().put(PropertyKeys.groupsChangeable, groupsChangeable);
-    }
-
-    public boolean isGroupsOnRight() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.groupsOnRight, false);
-    }
-
-    public void setGroupsOnRight(boolean groupsOnRight) {
-        getStateHelper().put(PropertyKeys.groupsOnRight, groupsOnRight);
+        setEditableGroup(groupsChangeable);
     }
 
     public boolean isGroupsOrder() {
@@ -363,28 +441,30 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, Cl
         getStateHelper().put(PropertyKeys.groupsOrder, groupsOrder);
     }
 
-    public String getGroupsWidth() {
-        return (String) getStateHelper().eval(PropertyKeys.groupsWidth, null);
+    public String getGroupStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.groupStyle, null);
     }
 
-    public void setGroupsWidth(String groupsWidth) {
-        getStateHelper().put(PropertyKeys.groupsWidth, groupsWidth);
+    public void setGroupStyle(String groupStyle) {
+        getStateHelper().put(PropertyKeys.groupStyle, groupStyle);
     }
 
-    public int getGroupMinHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.groupMinHeight, 0);
+    public String getSnap() {
+        return (String) getStateHelper().eval(PropertyKeys.snap, null);
     }
 
-    public void setGroupMinHeight(int groupMinHeight) {
-        getStateHelper().put(PropertyKeys.groupMinHeight, groupMinHeight);
+    public String setSnap(String snap) {
+        return (String) getStateHelper().put(PropertyKeys.snap, snap);
     }
 
+    @Deprecated
     public boolean isSnapEvents() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.snapEvents, true);
+        return getSnap() == null;
     }
 
+    @Deprecated
     public void setSnapEvents(boolean snapEvents) {
-        getStateHelper().put(PropertyKeys.snapEvents, snapEvents);
+        setSnap(snapEvents ? null : "null");
     }
 
     public boolean isStackEvents() {
@@ -419,28 +499,54 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, Cl
         getStateHelper().put(PropertyKeys.showMinorLabels, showMinorLabels);
     }
 
-    public boolean isShowButtonNew() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showButtonNew, false);
-    }
-
-    public void setShowButtonNew(boolean showButtonNew) {
-        getStateHelper().put(PropertyKeys.showButtonNew, showButtonNew);
-    }
-
-    public boolean isShowNavigation() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showNavigation, false);
-    }
-
-    public void setShowNavigation(boolean showNavigation) {
-        getStateHelper().put(PropertyKeys.showNavigation, showNavigation);
-    }
-
+    @Deprecated
     public boolean isTimeChangeable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.timeChangeable, true);
+        return isEditableTime();
     }
 
+    @Deprecated
     public void setTimeChangeable(boolean timeChangeable) {
-        getStateHelper().put(PropertyKeys.timeChangeable, timeChangeable);
+        setEditableTime(timeChangeable);
+    }
+
+    public boolean isClickToUse() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.clickToUse, Boolean.FALSE);
+    }
+
+    public void setClickToUse(boolean clickToUse) {
+        getStateHelper().put(PropertyKeys.clickToUse, clickToUse);
+    }
+
+    public boolean isShowTooltips() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showTooltips, Boolean.TRUE);
+    }
+
+    public void setShowTooltips(boolean showTooltips) {
+        getStateHelper().put(PropertyKeys.showTooltips, showTooltips);
+    }
+
+    public boolean isTooltipFollowMouse() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.tooltipFollowMouse, Boolean.FALSE);
+    }
+
+    public void setTooltipFollowMouse(boolean tooltipFollowMouse) {
+        getStateHelper().put(PropertyKeys.tooltipFollowMouse, tooltipFollowMouse);
+    }
+
+    public String getTooltipOverflowMethod() {
+        return (String) getStateHelper().eval(PropertyKeys.tooltipOverflowMethod, "flip");
+    }
+
+    public void setTooltipOverflowMethod(String tooltipOverflowMethod) {
+        getStateHelper().put(PropertyKeys.tooltipOverflowMethod, tooltipOverflowMethod);
+    }
+
+    public int getTooltipDelay() {
+        return (Integer) getStateHelper().eval(PropertyKeys.tooltipDelay, 500);
+    }
+
+    public void setTooltipDelay(int tooltipDelay) {
+        getStateHelper().put(PropertyKeys.tooltipDelay, tooltipDelay);
     }
 
     public String getDropHoverStyleClass() {
@@ -475,24 +581,21 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, Cl
         getStateHelper().put(PropertyKeys.dropScope, dropScope);
     }
 
-    public boolean isAnimate() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.animate, true);
-    }
-
-    public void setAnimate(boolean animate) {
-        getStateHelper().put(PropertyKeys.animate, animate);
-    }
-
-    public boolean isAnimateZoom() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.animateZoom, true);
-    }
-
-    public void setAnimateZoom(boolean animateZoom) {
-        getStateHelper().put(PropertyKeys.animateZoom, animateZoom);
-    }
-
     @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    public String getDir() {
+        return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
     }
+
+    public void setDir(String dir) {
+        getStateHelper().put(PropertyKeys.dir, dir);
+    }
+
+    public String getExtender() {
+        return (String) getStateHelper().eval(PropertyKeys.extender, null);
+    }
+
+    public void setExtender(String extender) {
+        getStateHelper().put(PropertyKeys.extender, extender);
+    }
+
 }

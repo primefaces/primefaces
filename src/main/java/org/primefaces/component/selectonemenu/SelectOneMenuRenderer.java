@@ -41,6 +41,7 @@ import javax.faces.render.Renderer;
 
 import org.primefaces.component.column.Column;
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -124,9 +125,14 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         styleClass = !valid ? styleClass + " ui-state-error" : styleClass;
         styleClass = menu.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
 
+        if (ComponentUtils.isRTL(context, menu)) {
+            styleClass = styleClass + " " + SelectOneMenu.RTL_CLASS;
+        }
+
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleclass");
+        writer.writeAttribute(HTML.ARIA_OWNS, clientId + "_panel", null);
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
@@ -261,10 +267,6 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             if (menu.getPlaceholder() != null) {
                 writer.writeAttribute("data-placeholder", menu.getPlaceholder(), null);
             }
-            String label = menu.getLabel();
-            if (label != null) {
-                writer.writeText(label, null);
-            }
             writer.write("&nbsp;");
             writer.endElement("label");
         }
@@ -289,6 +291,10 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         String panelStyle = menu.getPanelStyle();
         String panelStyleClass = menu.getPanelStyleClass();
         panelStyleClass = panelStyleClass == null ? SelectOneMenu.PANEL_CLASS : SelectOneMenu.PANEL_CLASS + " " + panelStyleClass;
+
+        if (ComponentUtils.isRTL(context, menu)) {
+            panelStyleClass = panelStyleClass + " " + SelectOneMenu.RTL_PANEL_CLASS;
+        }
 
         String height = null;
         try {
@@ -318,6 +324,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         }
 
         writer.endElement("div");
+
+        encodePanelFooter(context, menu);
         writer.endElement("div");
     }
 
@@ -329,7 +337,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             List<Column> columns = menu.getColumns();
 
             writer.startElement("table", null);
+            writer.writeAttribute("id", menu.getClientId(context) + "_table", null);
             writer.writeAttribute("class", SelectOneMenu.TABLE_CLASS, null);
+            writer.writeAttribute("role", "listbox", null);
             encodeColumnsHeader(context, menu, columns);
             writer.startElement("tbody", null);
             encodeOptionsAsTable(context, menu, selectItems, columns);
@@ -344,6 +354,19 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             encodeOptionsAsList(context, menu, selectItems);
             writer.endElement("ul");
         }
+    }
+
+    protected void encodePanelFooter(FacesContext context, SelectOneMenu menu) throws IOException {
+        UIComponent facet = menu.getFacet("footer");
+        if (!ComponentUtils.shouldRenderFacet(facet)) {
+            return;
+        }
+
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", null);
+        writer.writeAttribute("class", SelectOneMenu.FOOTER_CLASS, null);
+        facet.encodeAll(context);
+        writer.endElement("div");
     }
 
     protected void encodeColumnsHeader(FacesContext context, SelectOneMenu menu, List<Column> columns)
@@ -369,7 +392,6 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 }
 
                 String headerText = column.getHeaderText();
-                UIComponent headerFacet = column.getFacet("header");
                 String styleClass = column.getStyleClass() == null ? "ui-state-default" : "ui-state-default " + column.getStyleClass();
 
                 writer.startElement("th", null);
@@ -379,7 +401,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                     writer.writeAttribute("style", column.getStyle(), null);
                 }
 
-                if (headerFacet != null) {
+                UIComponent headerFacet = column.getFacet("header");
+                if (ComponentUtils.shouldRenderFacet(headerFacet)) {
                     headerFacet.encodeAll(context);
                 }
                 else if (headerText != null) {
@@ -416,6 +439,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.startElement("tr", null);
             writer.writeAttribute("class", itemStyleClass, null);
             writer.writeAttribute("data-label", itemLabel, null);
+            writer.writeAttribute("role", "option", null);
             if (selectItem.getDescription() != null) {
                 writer.writeAttribute("title", selectItem.getDescription(), null);
             }
@@ -429,6 +453,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             else {
                 for (int j = 0; j < columns.size(); j++) {
                     Column column = columns.get(j);
+                    if (!column.isRendered()) {
+                        continue;
+                    }
                     String style = column.getStyle();
                     String styleClass = column.getStyleClass();
 
@@ -503,13 +530,13 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
     protected void encodeScript(FacesContext context, SelectOneMenu menu) throws IOException {
         String clientId = menu.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectOneMenu", menu.resolveWidgetVar(), clientId)
+        wb.init("SelectOneMenu", menu.resolveWidgetVar(context), clientId)
                 .attr("effect", menu.getEffect(), null)
                 .attr("effectSpeed", menu.getEffectSpeed(), null)
                 .attr("editable", menu.isEditable(), false)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo()), null)
+                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo(),
+                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
                 .attr("syncTooltip", menu.isSyncTooltip(), false)
-                .attr("label", menu.getLabel(), null)
                 .attr("labelTemplate", menu.getLabelTemplate(), null)
                 .attr("autoWidth", menu.isAutoWidth(), true)
                 .attr("dynamic", menu.isDynamic(), false);
@@ -617,6 +644,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute(HTML.ARIA_AUTOCOMPLETE, "list", null);
+        writer.writeAttribute(HTML.ARIA_CONTROLS, menu.getClientId(context) + "_table", null);
 
         if (menu.getFilterPlaceholder() != null) {
             writer.writeAttribute("placeholder", menu.getFilterPlaceholder(), null);

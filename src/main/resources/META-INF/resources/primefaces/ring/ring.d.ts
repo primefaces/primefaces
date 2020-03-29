@@ -611,21 +611,21 @@ declare namespace JQuery {
          * 
          * This event fires on the Roundabout element when its child elements have been repositioned and are in place.
          */
-        childrenUpdated: JQuery.EventBase<TDelegateTarget, TData, TCurrentTarget, TTarget>;
+        childrenUpdated: JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
 
         /**
          * Triggered by the jQuery Roundabout plugin
          * 
          * This event fires on child elements that have been repositioned and are in place.
          */
-        reposition: JQuery.EventBase<TDelegateTarget, TData, TCurrentTarget, TTarget>;
+        reposition: JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
 
         /**
          * Triggered by the {@link JQuery.roundabout|jQuery Roundabout plugin}.
          * 
          * This event fires on the Roundabout element when its `bearing` has been set.
          */
-        bearingSet: JQuery.EventBase<TDelegateTarget, TData, TCurrentTarget, TTarget>;
+        bearingSet: JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
 
         /**
          * Triggered by the {@link JQuery.roundabout|jQuery Roundabout plugin}.
@@ -641,34 +641,34 @@ declare namespace JQuery {
          * This event fires on moving child elements when an animation causes them to pass through the point that is
          * opposite (or 180°) from the focusBearing in a counterclockwise motion.
          */
-        moveCounterclockwiseThroughBack: JQuery.EventBase<TDelegateTarget, TData, TCurrentTarget, TTarget>;
+        moveCounterclockwiseThroughBack: JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
 
         /**
          * Triggered by the {@link JQuery.roundabout|jQuery Roundabout plugin}.
          * 
          * This event fires on the Roundabout element at the start of any animation.
          */
-        animationStart: JQuery.EventBase<TDelegateTarget, TData, TCurrentTarget, TTarget>;
+        animationStart: JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
 
         /**
          * Triggered by the {@link JQuery.roundabout|jQuery Roundabout plugin}.
          * 
          * This event fires on the Roundabout element at the end of any animation.
          */
-        animationEnd: JQuery.EventBase<TDelegateTarget, TData, TCurrentTarget, TTarget>;
+        animationEnd: JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
 
         /**
          * Triggered by the {@link JQuery.roundabout|jQuery Roundabout plugin}.
          * 
          * This event fires on the Roundabout element when the `autoplay` feature starts.
          */
-        autoplayStart: JQuery.EventBase<TDelegateTarget, TData, TCurrentTarget, TTarget>;
+        autoplayStart: JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
 
         /**
          * Triggered by the {@link JQuery.roundabout|jQuery Roundabout plugin}.
          * 
          * This event fires on the Roundabout element when the `autoplay` feature stops.
          */
-        autoplayStop: JQuery.EventBase<TDelegateTarget, TData, TCurrentTarget, TTarget>;
+        autoplayStop: JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
     }
 }

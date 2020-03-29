@@ -40,6 +40,7 @@ import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
 
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -183,7 +184,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         if (menu.getOnchange() != null) {
             writer.writeAttribute("onchange", menu.getOnchange(), null);
         }
-        renderAccessibilityAttributes(context, menu);
+        renderAccessibilityAttributes(context, menu, option.isDisabled(), false);
 
         writer.endElement("input");
 
@@ -238,6 +239,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         listClass = valid ? listClass : listClass + " ui-state-error";
 
         writer.startElement("ul", null);
+        writer.writeAttribute("label", menu.getLabel(), null);
         writer.writeAttribute("class", listClass, null);
         if (valuesArray != null) {
             int length = Array.getLength(valuesArray);
@@ -311,7 +313,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         String clientId = menu.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectCheckboxMenu", menu.resolveWidgetVar(), clientId)
+        wb.init("SelectCheckboxMenu", menu.resolveWidgetVar(context), clientId)
                 .callback("onShow", "function()", menu.getOnShow())
                 .callback("onHide", "function()", menu.getOnHide())
                 .callback("onChange", "function()", menu.getOnchange())
@@ -322,7 +324,8 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 .attr("emptyLabel", menu.getEmptyLabel())
                 .attr("multiple", menu.isMultiple(), false)
                 .attr("dynamic", menu.isDynamic(), false)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo()), null);
+                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo(),
+                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null);
 
         if (menu.isFilter()) {
             wb.attr("filter", true)

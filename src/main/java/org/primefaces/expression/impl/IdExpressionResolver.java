@@ -24,12 +24,14 @@
 package org.primefaces.expression.impl;
 
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import org.primefaces.expression.MultiSearchExpressionResolver;
+import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.expression.SearchExpressionResolver;
 import org.primefaces.util.ComponentTraversalUtils;
 
@@ -38,12 +40,14 @@ public class IdExpressionResolver implements SearchExpressionResolver, MultiSear
     private static final Pattern PATTERN = Pattern.compile("@id\\(([\\w-]+)\\)");
 
     @Override
-    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
+    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression,
+            Set<SearchExpressionHint> hints) {
         return ComponentTraversalUtils.firstWithId(extractId(expression), last);
     }
 
     @Override
-    public void resolveComponents(FacesContext context, UIComponent source, UIComponent last, String expression, List<UIComponent> components, int options) {
+    public void resolveComponents(FacesContext context, UIComponent source, UIComponent last, String expression, List<UIComponent> components,
+            Set<SearchExpressionHint> hints) {
         ComponentTraversalUtils.withId(
                 extractId(expression),
                 last,

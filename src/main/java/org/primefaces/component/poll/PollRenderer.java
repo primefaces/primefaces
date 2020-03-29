@@ -72,12 +72,20 @@ public class PollRenderer extends CoreRenderer {
         else if (interval instanceof Duration) {
             convertedInterval = (int) ((Duration) interval).getSeconds();
         }
+        else if (interval instanceof String) {
+            try {
+                convertedInterval = Integer.parseInt((String) interval);
+            }
+            catch (NumberFormatException e) {
+                throw new FacesException(interval + " is not a valid integer for \"interval\" for p:poll", e);
+            }
+        }
         else {
             throw new FacesException(interval.getClass() + " is not supported as \"interval\" for p:poll");
         }
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Poll", poll.resolveWidgetVar(), clientId)
+        wb.init("Poll", poll.resolveWidgetVar(context), clientId)
                 .attr("frequency", convertedInterval)
                 .attr("autoStart", poll.isAutoStart())
                 .attr("intervalType", poll.getIntervalType(), "second")

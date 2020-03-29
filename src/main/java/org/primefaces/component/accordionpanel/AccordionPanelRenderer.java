@@ -94,7 +94,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, AccordionPanel acco) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = acco.getClientId(context);
-        String widgetVar = acco.resolveWidgetVar();
+        String widgetVar = acco.resolveWidgetVar(context);
         String styleClass = acco.getStyleClass();
         styleClass = styleClass == null ? AccordionPanel.CONTAINER_CLASS : AccordionPanel.CONTAINER_CLASS + " " + styleClass;
 
@@ -125,7 +125,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
         boolean multiple = acco.isMultiple();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("AccordionPanel", acco.resolveWidgetVar(), clientId);
+        wb.init("AccordionPanel", acco.resolveWidgetVar(context), clientId);
 
         if (acco.isDynamic()) {
             wb.attr("dynamic", true).attr("cache", acco.isCache());
@@ -218,6 +218,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
         //header container
         writer.startElement("div", null);
+        writer.writeAttribute("id", tab.getClientId(context) + "_header", null);
         writer.writeAttribute("class", headerClass, null);
         writer.writeAttribute("role", "tab", null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(active), null);
@@ -236,7 +237,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
         writer.writeAttribute("class", iconClass, null);
         writer.endElement("span");
 
-        if (titleFacet != null) {
+        if (ComponentUtils.shouldRenderFacet(titleFacet)) {
             titleFacet.encodeAll(context);
         }
         else if (title != null) {

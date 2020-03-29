@@ -42,8 +42,116 @@ if (!PrimeFaces.dialog) {
                 return;
             }
 
-            var dialogWidgetVar = cfg.sourceComponentId.replace(/:/g, '_') + '_dlgwidget',
-            styleClass = cfg.options.styleClass||'',
+            // The widget that opens a dialog can be nested inside of a frame which might be nested again.
+            // The dialog is put in the outermost frame to be able to fill the whole browser tab,
+            // so we traverse upwards to find the root window and put the dialog DOM in there.
+            // When a dialog is closed, we need to clean up the global variables and notify the source widget for the dialog return feature.
+            // Accessing a component nested within frames requires recursive resolving of frames.
+            // Every frame has it's own contentWindow and thus also it's own document object.
+            // To be able to access a DOM element from an outer frame, one needs to first resolve the containing frame,
+            // and then resolve the element from the contentWindow. With nested frames, nested frame resolving has to be done.
+            // In order to do this, we traverse up the window frameElement until we reach the top window.
+            // While traversing up, we construct a selector for finding the frameElement from within the parent window.
+            // We build up the selectors backwards as we traverse up. Imagine the example
+            //
+            // --------------------------------------------------
+            // | Frame 1                                        |
+            // |           -------------------------------      |
+            // |           | Frame 1_1                   |      |
+            // |           |                             |      |
+            // |           |  ------------               |      |
+            // |           |  | Button 1 |               |      |
+            // |           |  ------------               |      |
+            // |           |                             |      |
+            // |           -------------------------------      |
+            // |------------------------------------------------|
+            // | Frame 2                                        |
+            // |                                                |
+            // |                                                |
+            // |                                                |
+            // --------------------------------------------------
+            //
+            // Here "Button 1" is our source widget that opened the dialog.
+            // The root window contains two frames "Frame 1" and "Frame 2".
+            // The "Frame 1" contains another frame "Frame 1_1" within which the widget lives.
+            // Since we have to install the dialog in the root window, we need to be able to get access
+            // to the source widget when closing the dialog.
+            // The only way to find the DOM node, is by traversing into "Frame 1" then into "Frame 1_1" and look it up there.
+            // So from the root window we do e.g. `$(rootWindow.document).find("#frame1").contentWindow` to get into "Frame 1".
+            // We do the same to get into "Frame 1_1" e.g. `$(frame1Window.document).find("#frame1_1").contentWindow`.
+            // Finally, we can look up the source widget `$(frame1_1Window.document).find("#sourceWidgetId")`.
+
+            var sourceFrames = function() {
+                var w = window;
+                var sourceFrames = [];
+                // Traverse up frameElement i.e. while we are in frames
+                while(w.frameElement) {
+                    var parent = w.parent;
+                    if (parent.PF === undefined) {
+                        break;
+                    }
+
+                    // Since we traverse DOM elements upwards, we build the selector backwards i.e. from target to source.
+                    // This is why we use `unshift` which is like an `addAtIndex(0, object)`.
+                    // If an element has an id, we can use that to uniquely identify the DOM element and can jump to the next parent window.
+                    // If we can't find an id, we collect class names and the tag name of an element.
+                    // If that doesn't uniquely identify an element within it's parent, we also append the node index via the `:eq(index)` selector.
+                    // We connect selectors for each DOM element with the `>` operator.
+                    var e = w.frameElement;
+                    var pieces = [];
+
+                    // Traverse up tags from the frameElement to generate an identifying selector
+                    for (; e && e.tagName !== undefined; e = e.parentNode) {
+                        if (e.id && !/\s/.test(e.id)) {
+                            // If we find a parent with an id, we can use that as basis and stop there
+                            pieces.unshift(e.id);
+                            pieces.unshift('#');
+                            pieces.unshift(' > ');
+                            break;
+                        } else if (e.className) {
+                            // Without an id, we try to use a combination of :eq, class names and tag name and hope a parent has an id
+                            var classes = e.className.split(' ');
+                            var classSelectorPieces = [];
+                            for (var i in classes) {
+                                if (classes.hasOwnProperty(i) && classes[i]) {
+                                    classSelectorPieces.unshift(classes[i]);
+                                    classSelectorPieces.unshift('.');
+                                }
+                            }
+                            classSelectorPieces.unshift(e.tagName);
+
+                            var classSelector = classSelectorPieces.join('');
+                            var elems = $(e.parentNode).find(classSelector);
+                            if (elems.length > 1) {
+                                pieces.unshift(":eq(" + elems.index(e) + ")");
+                            }
+                            pieces.unshift(classSelector);
+                        } else {
+                            // Without classes, we try to work with :eq and the tag name
+                            var elems = $(e.parentNode).find(e.tagName);
+                            if (elems.length > 1) {
+                                pieces.unshift(":eq(" + elems.index(e) + ")");
+                            }
+                            pieces.unshift(e.tagName);
+                        }
+                        pieces.unshift(' > ');
+                    }
+
+                    var s = pieces.slice(1).join('');
+
+                    sourceFrames.unshift(s);
+                    w = parent;
+                };
+
+                return sourceFrames;
+            }();
+
+            var dialogWidgetVar = cfg.options.widgetVar;
+            if (!dialogWidgetVar) {
+                dialogWidgetVar = cfg.sourceComponentId.replace(/:/g, '_') + '_dlgwidget';
+            }
+
+            var styleClass = cfg.options.styleClass||'',
             dialogDOM = $('<div id="' + dialogId + '" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container ui-overlay-hidden ' + styleClass + '"' +
                     ' data-pfdlgcid="' + PrimeFaces.escapeHTML(cfg.pfdlgcid) + '" data-widget="' + dialogWidgetVar + '"></div>')
                     .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"><span id="' + dialogId + '_title" class="ui-dialog-title"></span></div>');
@@ -97,6 +205,7 @@ if (!PrimeFaces.dialog) {
                     PrimeFaces.cw.call(rootWindow.PrimeFaces, 'DynamicDialog', dialogWidgetVar, {
                         id: dialogId,
                         position: cfg.options.position||'center',
+                        sourceFrames: sourceFrames,
                         sourceComponentId: cfg.sourceComponentId,
                         sourceWidgetVar: cfg.sourceWidgetVar,
                         onHide: function() {
@@ -117,7 +226,7 @@ if (!PrimeFaces.dialog) {
                                 $dialogWidget.jq.remove();
                             }
 
-                            rootWindow.PF[dialogWidgetVar] = undefined;
+                            rootWindow.PrimeFaces.widgets[dialogWidgetVar] = undefined;
                         },
                         modal: cfg.options.modal,
                         blockScroll: cfg.options.blockScroll,
@@ -130,7 +239,8 @@ if (!PrimeFaces.dialog) {
                         maximizable: cfg.options.maximizable,
                         headerElement: cfg.options.headerElement,
                         responsive: cfg.options.responsive,
-                        closeOnEscape: cfg.options.closeOnEscape
+                        closeOnEscape: cfg.options.closeOnEscape,
+                        focus: cfg.options.focus
                     });
                 }
 
@@ -169,7 +279,7 @@ if (!PrimeFaces.dialog) {
          */
         closeDialog: function(cfg) {
             var rootWindow = this.findRootWindow(),
-            dlgs = $(rootWindow.document.body).children('div.ui-dialog[data-pfdlgcid="' + cfg.pfdlgcid +'"]').not('[data-queuedforremoval]'),
+            dlgs = $(rootWindow.document.body).children('div.ui-dialog[data-pfdlgcid="' + $.escapeSelector(cfg.pfdlgcid) +'"]').not('[data-queuedforremoval]'),
             dlgsLength = dlgs.length,
             dlg = dlgs.eq(dlgsLength - 1),
             parentDlg = dlgsLength > 1 ? dlgs.eq(dlgsLength - 2) : null,
@@ -187,7 +297,13 @@ if (!PrimeFaces.dialog) {
                 sourceWidget = windowContext.PF(sourceWidgetVar);
             }
             else {
+                // We have to resolve the frames from the root window to the source widget to invoke the dialog return behavior
+                // Each source frame element is a selector. We step into every nested frame until we are in the source widget frame.
                 windowContext = rootWindow;
+                var frames = dlgWidget.cfg.sourceFrames;
+                for (var i = 0; i < frames.length; i++) {
+                    windowContext = $(windowContext.document).find(frames[i]).get(0).contentWindow;
+                }
             }
 
             if(sourceWidgetVar) {
@@ -268,6 +384,7 @@ if (!PrimeFaces.dialog) {
          * @return {Window} The root window instance.
          */
         findRootWindow: function() {
+            // Note that the determination of the sourceFrames is tightly coupled to the same traversing logic, so keep both in sync
             var w = window;
             while(w.frameElement) {
                 var parent = w.parent;

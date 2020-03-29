@@ -26,8 +26,6 @@ package org.primefaces.component.slidemenu;
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.OverlayMenu;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class SlideMenuBase extends AbstractMenu implements Widget, OverlayMenu {
 
@@ -141,10 +139,5 @@ public abstract class SlideMenuBase extends AbstractMenu implements Widget, Over
 
     public void setTriggerEvent(String triggerEvent) {
         getStateHelper().put(PropertyKeys.triggerEvent, triggerEvent);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

@@ -27,7 +27,6 @@ import org.primefaces.event.DateViewChangeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.util.*;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
@@ -54,7 +53,8 @@ public class Calendar extends CalendarBase {
             "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "dateSelect", "viewChange",
             "close");
     private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("dateSelect", "viewChange", "close");
-    private final Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>();
+
+    private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);
 
     public boolean isPopup() {
         return getMode().equalsIgnoreCase("popup");
@@ -81,11 +81,8 @@ public class Calendar extends CalendarBase {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if (eventName != null) {
-                if (eventName.equals("dateSelect")) {
-                    customEvents.put("dateSelect", (AjaxBehaviorEvent) event);
-                }
-                else if (eventName.equals("close")) {
-                    customEvents.put("close", (AjaxBehaviorEvent) event);
+                if (eventName.equals("dateSelect") || eventName.equals("close")) {
+                    customEvents.put(eventName, (AjaxBehaviorEvent) event);
                 }
                 else if (eventName.equals("viewChange")) {
                     int month = Integer.parseInt(params.get(clientId + "_month"));
@@ -108,12 +105,11 @@ public class Calendar extends CalendarBase {
     public void validate(FacesContext context) {
         super.validate(context);
 
-        if (isValid() && ComponentUtils.isRequestSource(this, context)) {
-            for (Iterator<String> customEventIter = customEvents.keySet().iterator(); customEventIter.hasNext(); ) {
-                AjaxBehaviorEvent behaviorEvent = customEvents.get(customEventIter.next());
-                SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), getValue());
+        if (isValid() && ComponentUtils.isRequestSource(this, context) && customEvents != null) {
+            for (Map.Entry<String, AjaxBehaviorEvent> event : customEvents.entrySet()) {
+                SelectEvent selectEvent = new SelectEvent(this, event.getValue().getBehavior(), getValue());
 
-                if (behaviorEvent.getPhaseId().equals(PhaseId.APPLY_REQUEST_VALUES)) {
+                if (event.getValue().getPhaseId().equals(PhaseId.APPLY_REQUEST_VALUES)) {
                     selectEvent.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
                 }
                 else {
@@ -128,6 +124,8 @@ public class Calendar extends CalendarBase {
     @Override
     protected void validateValue(FacesContext context, Object value) {
         super.validateValue(context, value);
+
+        ValidationResult validationResult = ValidationResult.OK;
 
         if (isValid() && !isEmpty(value) && (value instanceof LocalDate || value instanceof LocalDateTime || value instanceof Date)) {
             LocalDate date = null;
@@ -147,30 +145,43 @@ public class Calendar extends CalendarBase {
 
             if (date != null) {
                 LocalDate minDate = CalendarUtils.getObjectAsLocalDate(context, this, getMindate());
+                LocalDate maxDate = CalendarUtils.getObjectAsLocalDate(context, this, getMaxdate());
                 if (minDate != null && date.isBefore(minDate)) {
                     setValid(false);
+                    if (maxDate != null) {
+                        validationResult = ValidationResult.INVALID_OUT_OF_RANGE;
+                    }
+                    else {
+                        validationResult = ValidationResult.INVALID_MIN_DATE;
+                    }
                 }
 
                 if (isValid()) {
-                    LocalDate maxDate = CalendarUtils.getObjectAsLocalDate(context, this, getMaxdate());
                     if (maxDate != null && date.isAfter(maxDate)) {
                         setValid(false);
+                        if (minDate != null) {
+                            validationResult = ValidationResult.INVALID_OUT_OF_RANGE;
+                        }
+                        else {
+                            validationResult = ValidationResult.INVALID_MAX_DATE;
+                        }
                     }
                 }
             }
 
             if (!isValid()) {
-                FacesMessage msg = null;
-                String validatorMessage = getValidatorMessage();
-                if (validatorMessage != null) {
-                    msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessage, validatorMessage);
-                }
-                else {
-                    Object[] params = new Object[] {MessageFactory.getLabel(context, this)};
-                    msg = MessageFactory.getMessage(DATE_OUT_OF_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
-                }
-                context.addMessage(getClientId(context), msg);
+                createFacesMessageFromValidationResult(context, validationResult);
             }
         }
+    }
+
+    @Override
+    public Object saveState(FacesContext context) {
+        // reset component for MyFaces view pooling
+        if (customEvents != null) {
+            customEvents.clear();
+        }
+
+        return super.saveState(context);
     }
 }

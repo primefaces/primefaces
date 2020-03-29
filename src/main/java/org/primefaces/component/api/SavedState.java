@@ -58,7 +58,12 @@ public class SavedState implements Serializable {
         localValueSet = evh.isLocalValueSet();
     }
 
+    @Deprecated
     public void restoreState(EditableValueHolder evh) {
+        apply(evh);
+    }
+
+    public void apply(EditableValueHolder evh) {
         evh.setValue(value);
         evh.setValid(valid);
         evh.setSubmittedValue(submittedValue);

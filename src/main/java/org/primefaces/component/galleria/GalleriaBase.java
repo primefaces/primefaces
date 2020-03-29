@@ -26,8 +26,6 @@ package org.primefaces.component.galleria;
 import javax.faces.component.UIOutput;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class GalleriaBase extends UIOutput implements Widget {
 
@@ -42,6 +40,7 @@ public abstract class GalleriaBase extends UIOutput implements Widget {
         var,
         style,
         styleClass,
+        tabindex,
         effect,
         effectSpeed,
         frameWidth,
@@ -185,8 +184,11 @@ public abstract class GalleriaBase extends UIOutput implements Widget {
         getStateHelper().put(PropertyKeys.showCaption, showCaption);
     }
 
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    public String getTabindex() {
+        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
+    }
+
+    public void setTabindex(String tabindex) {
+        getStateHelper().put(PropertyKeys.tabindex, tabindex);
     }
 }

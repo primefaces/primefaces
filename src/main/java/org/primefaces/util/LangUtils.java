@@ -23,9 +23,22 @@
  */
 package org.primefaces.util;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import javax.faces.FacesException;
+import javax.xml.bind.DatatypeConverter;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class LangUtils {
 
@@ -66,6 +79,17 @@ public class LangUtils {
         }
 
         return false;
+    }
+
+
+
+    @SafeVarargs
+    public static <T> Set<T> concat(Set<T>...  sets) {
+        HashSet<T> result = new HashSet<>();
+        for (Set<T> set : sets) {
+            result.addAll(set);
+        }
+        return Collections.unmodifiableSet(result);
     }
 
     public static String[] concat(String[] array1, String[] array2) {
@@ -110,8 +134,14 @@ public class LangUtils {
         return false;
     }
 
+    @SafeVarargs
     public static final <T> List<T> unmodifiableList(T... args) {
         return Collections.unmodifiableList(Arrays.asList(args));
+    }
+
+    @SafeVarargs
+    public static <T> Set<T> unmodifiableSet(T... args) {
+        return Collections.unmodifiableSet(new HashSet<>(Arrays.asList(args)));
     }
 
     public static Class tryToLoadClassForName(String name) {
@@ -128,12 +158,7 @@ public class LangUtils {
             return Class.forName(name, false, LangUtils.class.getClassLoader());
         }
         catch (ClassNotFoundException e) {
-            try {
-                return Class.forName(name, false, getContextClassLoader());
-            }
-            catch (ClassNotFoundException e2) {
-                throw e2;
-            }
+            return Class.forName(name, false, getContextClassLoader());
         }
     }
 
@@ -185,5 +210,45 @@ public class LangUtils {
 
         return currentClass.getName().startsWith(currentClass.getSuperclass().getName())
                 && currentClass.getName().contains("$$");
+    }
+
+    /**
+     * Determines the type of the generic collection via the getter.
+     *
+     * @param base Object which contains the collection-property as getter.
+     * @param property Name of the collection-property.
+     * @return Type of the objects within the collection-property. (eg List&lt;String&gt; -> String)
+     */
+    public static Class<?> getTypeFromCollectionProperty(Object base, String property) {
+        try {
+            BeanInfo beanInfo = Introspector.getBeanInfo(base.getClass());
+            for (PropertyDescriptor pd : beanInfo.getPropertyDescriptors()) {
+                if (pd.getName().equals(property)) {
+                    Method getter = pd.getReadMethod();
+                    if (getter.getGenericReturnType() instanceof ParameterizedType) {
+                        ParameterizedType pt = (ParameterizedType) getter.getGenericReturnType();
+                        Type listType = pt.getActualTypeArguments()[0];
+                        return loadClassForName(listType.getTypeName());
+                    }
+                    break;
+                }
+            }
+        }
+        catch (ClassNotFoundException | IntrospectionException e) {
+            throw new FacesException(e);
+        }
+
+        return null;
+    }
+
+    public static String md5Hex(byte[] bytes) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(bytes);
+            return DatatypeConverter.printHexBinary(md.digest());
+        }
+        catch (NoSuchAlgorithmException e) {
+            throw new FacesException(e);
+        }
     }
 }

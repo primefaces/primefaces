@@ -58,6 +58,7 @@ public class ColumnToggler extends ColumnTogglerBase {
             .build();
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
     private UIComponent dataSourceComponent = null;
 
     @Override

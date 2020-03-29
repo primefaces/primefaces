@@ -39,6 +39,10 @@ public class ExcelOptions implements ExporterOptions {
 
     private String cellFontSize;
 
+    private String fontName;
+
+    private boolean autoSizeColumn = true;
+
     public ExcelOptions() {
     }
 
@@ -127,4 +131,20 @@ public class ExcelOptions implements ExporterOptions {
         this.cellFontSize = cellFontSize;
     }
 
+    @Override
+    public String getFontName() {
+        return fontName;
+    }
+
+    public void setFontName(String fontName) {
+        this.fontName = fontName;
+    }
+
+    public boolean isAutoSizeColumn() {
+        return autoSizeColumn;
+    }
+
+    public void setAutoSizeColumn(boolean autoSizeColumn) {
+        this.autoSizeColumn = autoSizeColumn;
+    }
 }

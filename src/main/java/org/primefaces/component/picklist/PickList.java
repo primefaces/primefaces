@@ -98,7 +98,8 @@ public class PickList extends PickListBase {
             .put("reorder", null)
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-    private final Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>();
+
+    private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
@@ -137,8 +138,8 @@ public class PickList extends PickListBase {
             setValid(false);
         }
 
-        checkDisabled(facesContext, label, newModel.getSource(), oldModel == null ? Collections.EMPTY_LIST : oldModel.getSource());
-        checkDisabled(facesContext, label, newModel.getTarget(), oldModel == null ? Collections.EMPTY_LIST : oldModel.getTarget());
+        checkDisabled(facesContext, label, newModel.getSource(), oldModel == null ? Collections.emptyList() : oldModel.getSource());
+        checkDisabled(facesContext, label, newModel.getTarget(), oldModel == null ? Collections.emptyList() : oldModel.getTarget());
     }
 
     /**
@@ -180,9 +181,10 @@ public class PickList extends PickListBase {
     public void validate(FacesContext context) {
         super.validate(context);
         if (isValid() && customEvents != null) {
-            for (Iterator<String> customEventIter = customEvents.keySet().iterator(); customEventIter.hasNext(); ) {
-                String eventName = customEventIter.next();
-                AjaxBehaviorEvent behaviorEvent = customEvents.get(eventName);
+            for (Map.Entry<String, AjaxBehaviorEvent> event : customEvents.entrySet()) {
+                String eventName = event.getKey();
+                AjaxBehaviorEvent behaviorEvent = event.getValue();
+
                 Map<String, String> params = context.getExternalContext().getRequestParameterMap();
                 String clientId = getClientId(context);
                 DualListModel<?> list = (DualListModel<?>) getValue();
@@ -248,13 +250,7 @@ public class PickList extends PickListBase {
 
                 super.queueEvent(transferEvent);
             }
-            else if (eventName.equals("select")) {
-                customEvents.put(eventName, (AjaxBehaviorEvent) event);
-            }
-            else if (eventName.equals("unselect")) {
-                customEvents.put(eventName, (AjaxBehaviorEvent) event);
-            }
-            else if (eventName.equals("reorder")) {
+            else if (eventName.equals("select") || eventName.equals("unselect") || eventName.equals("reorder")) {
                 customEvents.put(eventName, (AjaxBehaviorEvent) event);
             }
         }
@@ -280,5 +276,15 @@ public class PickList extends PickListBase {
                 }
             }
         }
+    }
+
+    @Override
+    public Object saveState(FacesContext context) {
+        // reset component for MyFaces view pooling
+        if (customEvents != null) {
+            customEvents.clear();
+        }
+
+        return super.saveState(context);
     }
 }

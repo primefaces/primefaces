@@ -73,7 +73,7 @@ public class SliderRenderer extends CoreRenderer {
         UIComponent output = getTarget(context, slider, slider.getDisplay());
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Slider", slider.resolveWidgetVar(), clientId);
+        wb.init("Slider", slider.resolveWidgetVar(context), clientId);
 
         if (range) {
             String[] inputIds = slider.getFor().split(",");

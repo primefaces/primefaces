@@ -37,7 +37,7 @@ public class ChartSeries implements Serializable {
 
     private String label;
 
-    private Map<Object, Number> data = new LinkedHashMap<Object, Number>();
+    private Map<Object, Number> data = new LinkedHashMap<>();
 
     private AxisType xaxis;
 

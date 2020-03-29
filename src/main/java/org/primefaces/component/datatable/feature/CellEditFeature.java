@@ -25,6 +25,7 @@ package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
 import java.util.Map;
+import javax.faces.FacesException;
 
 import javax.faces.context.FacesContext;
 
@@ -37,7 +38,7 @@ public class CellEditFeature implements DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {
-        throw new RuntimeException("CellEditFeature should not decode.");
+        throw new FacesException("CellEditFeature should not decode.");
     }
 
     @Override
@@ -58,6 +59,10 @@ public class CellEditFeature implements DataTableFeature {
                     break;
                 }
             }
+        }
+
+        if (column == null) {
+            throw new FacesException("No column found for cellIndex: " + cellIndex);
         }
 
         table.setRowIndex(rowIndex);

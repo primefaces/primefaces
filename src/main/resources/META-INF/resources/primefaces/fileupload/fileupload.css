@@ -56,7 +56,7 @@
 }
 
 .ui-fileupload-content .ui-progressbar-value-legacy {
-  background: url("#{resource['primefaces:fileupload/ie-anim.gif']}") repeat-x;
+  background: url("#{resource['primefaces:fileupload/progressbar.gif']}") repeat-x;
 }
 
 .ui-fileupload-files {
@@ -77,7 +77,13 @@
 
 .ui-fileupload-row > div {
     display: table-cell;
-    padding: 4px 10px; 
+    padding: 4px 10px;
+}
+
+.ui-fileupload-row > .ui-fileupload-filename {
+    display: inline-block;
+    word-break: break-all;
+    word-wrap: break-word;
 }
 
 .ui-fileupload-row > .ui-widget-content {
@@ -129,6 +135,11 @@
     margin-left: 0.5em;
 }
 
+/* GitHub #5431 */
+.ui-fileupload-choose input {
+    pointer-events: none;
+}
+
 /* ui-fluid */
 .ui-fluid .ui-fileupload .ui-button {
     width: auto;
@@ -146,7 +157,7 @@
     .ui-fileupload-content {
         padding: 0.55em 0.4em;
     }
-    
+
     .ui-fileupload-files,
     .ui-fileupload-files > div,
     .ui-fileupload-row,
@@ -169,5 +180,5 @@
         margin-bottom: 5px;
         border-bottom: 0px;
     }
-    
+
 }

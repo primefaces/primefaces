@@ -50,7 +50,7 @@ public class LineChartRenderer extends ChartRenderer {
         String clientId = chart.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("LineChart", chart.resolveWidgetVar(), clientId);
+        wb.init("LineChart", chart.resolveWidgetVar(context), clientId);
 
         encodeConfig(context, chart.getModel());
         encodeClientBehaviors(context, chart);

@@ -27,21 +27,21 @@ import java.util.List;
 
 public interface DashboardColumn {
 
-    public void removeWidget(String widgetId);
+    void removeWidget(String widgetId);
 
-    public List<String> getWidgets();
+    List<String> getWidgets();
 
-    public int getWidgetCount();
+    int getWidgetCount();
 
-    public String getWidget(int index);
+    String getWidget(int index);
 
-    public void addWidget(String widgetId);
+    void addWidget(String widgetId);
 
-    public void addWidget(int index, String widgetId);
+    void addWidget(int index, String widgetId);
 
-    public void reorderWidget(int index, String widgetId);
+    void reorderWidget(int index, String widgetId);
 
-    public String getStyle();
+    String getStyle();
 
-    public String getStyleClass();
+    String getStyleClass();
 }

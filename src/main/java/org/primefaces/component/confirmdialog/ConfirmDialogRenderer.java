@@ -31,6 +31,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.dialog.Dialog;
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -77,11 +78,12 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         String clientId = dialog.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        wb.init("ConfirmDialog", dialog.resolveWidgetVar(), clientId)
+        wb.init("ConfirmDialog", dialog.resolveWidgetVar(context), clientId)
                 .attr("visible", dialog.isVisible(), false)
                 .attr("width", dialog.getWidth(), null)
                 .attr("height", dialog.getHeight(), null)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, dialog, dialog.getAppendTo()), null)
+                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, dialog, dialog.getAppendTo(),
+                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
                 .attr("showEffect", dialog.getShowEffect(), null)
                 .attr("hideEffect", dialog.getHideEffect(), null)
                 .attr("closeOnEscape", dialog.isCloseOnEscape(), false)
@@ -104,7 +106,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         writer.writeAttribute("id", dialog.getClientId(context) + "_title", null);
         writer.writeAttribute("class", Dialog.TITLE_CLASS, null);
 
-        if (headerFacet != null) {
+        if (ComponentUtils.shouldRenderFacet(headerFacet)) {
             headerFacet.encodeAll(context);
         }
         else if (header != null) {
@@ -152,7 +154,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", ConfirmDialog.MESSAGE_CLASS, null);
 
-        if (messageFacet != null) {
+        if (ComponentUtils.shouldRenderFacet(messageFacet)) {
             messageFacet.encodeAll(context);
         }
         else if (messageText != null) {

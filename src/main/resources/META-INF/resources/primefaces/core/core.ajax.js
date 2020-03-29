@@ -144,7 +144,7 @@ if (!PrimeFaces.ajax) {
                     var form = forms.eq(i);
 
                     if (form.attr('method') === 'post') {
-                        var input = form.children("input[name='" + parameterPrefix + name + "']");
+                        var input = form.children("input[name='" + $.escapeSelector(parameterPrefix + name) + "']");
 
                         if (input.length > 0) {
                             input.val(trimmedValue);
@@ -429,7 +429,7 @@ if (!PrimeFaces.ajax) {
                     earlyPostParams = [];
 
                     if (sourceElement.is(':checkbox')) {
-                        var checkboxPostParams = $("input[name='" + sourceElement.attr('name') + "']")
+                        var checkboxPostParams = $("input[name='" + $.escapeSelector(sourceElement.attr('name')) + "']")
                                 .filter(':checked').serializeArray();
                         $.merge(earlyPostParams, checkboxPostParams);
                     }
@@ -567,7 +567,7 @@ if (!PrimeFaces.ajax) {
                         processIds = '@all';
                     }
                 }
-                if (processIds !== '@none') {
+                if (!processIds.includes('@none')) {
                     PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.PARTIAL_PROCESS_PARAM, processIds, parameterPrefix);
                 }
 
@@ -600,6 +600,15 @@ if (!PrimeFaces.ajax) {
                 }
                 if(cfg.ext && cfg.ext.params) {
                     PrimeFaces.ajax.Request.addParams(postParams, cfg.ext.params, parameterPrefix);
+                }
+
+                // try to get partialSubmit from global config
+                if (cfg.partialSubmit === undefined) {
+                    cfg.partialSubmit = PrimeFaces.settings.partialSubmit;
+                }
+                // check for overwrite
+                if (cfg.ext && cfg.ext.partialSubmit) {
+                    cfg.partialSubmit = cfg.ext.partialSubmit;
                 }
 
                 /**
@@ -685,7 +694,7 @@ if (!PrimeFaces.ajax) {
                     }
                 };
 
-                var nonce = form.children("input[name='" + PrimeFaces.csp.NONCE_INPUT + "']");
+                var nonce = form.children("input[name='" + $.escapeSelector(PrimeFaces.csp.NONCE_INPUT) + "']");
                 if (nonce.length > 0) {
                     xhrOptions.nonce = nonce.val();
                 }
@@ -696,6 +705,12 @@ if (!PrimeFaces.ajax) {
 
                 var jqXhr = $.ajax(xhrOptions)
                     .fail(function(xhr, status, errorThrown) {
+                        var location = xhr.getResponseHeader("Location");
+                        if (xhr.status == 401 && location) {
+                            PrimeFaces.debug('Unauthorized status received. Redirecting to ' + location);
+                            window.location = location;
+                            return;
+                        }
                         if(cfg.onerror) {
                             cfg.onerror.call(this, xhr, status, errorThrown);
                         }
@@ -858,12 +873,13 @@ if (!PrimeFaces.ajax) {
              * @param {string} [parameterPrefix] Optional prefix that is added in front of the name. 
              */
             addParamFromInput: function(params, name, form, parameterPrefix) {
-                var input = null;
+                var input = null,
+                    escapedName = $.escapeSelector(name);
                 if (parameterPrefix) {
-                    input = form.children("input[name*='" + name + "']");
+                    input = form.children("input[name*='" + escapedName + "']");
                 }
                 else {
-                    input = form.children("input[name='" + name + "']");
+                    input = form.children("input[name='" + escapedName + "']");
                 }
 
                 if (input && input.length > 0) {
@@ -1010,35 +1026,42 @@ if (!PrimeFaces.ajax) {
              * and TEXTAREA elements.
              */
             handleReFocus : function(activeElementId, activeElementSelection) {
+                // skip when customFocus is active
+                if (PrimeFaces.customFocus === true) {
+                    PrimeFaces.customFocus = false;
+                    return;
+                }
 
-                // re-focus element
-                if (PrimeFaces.customFocus === false
-                        && activeElementId
-                        // do we really need to refocus? we just check the current activeElement here
-                        && activeElementId !== $(document.activeElement).attr('id')) {
+                // no active element remembered
+                if (!activeElementId) {
+                    return;
+                }
 
-                    var elementToFocus = $(PrimeFaces.escapeClientId(activeElementId));
+                var elementToFocus = $(PrimeFaces.escapeClientId(activeElementId));
+                if (elementToFocus.length > 0) {
+
                     var refocus = function() {
-                        elementToFocus.focus();
+                        // already focussed?
+                        if (activeElementId !== $(document.activeElement).attr('id')) {
+                            // focus
+                            elementToFocus.focus();
 
-                        if (activeElementSelection && activeElementSelection.start) {
-                            elementToFocus.setSelection(activeElementSelection.start, activeElementSelection.end);
+                            // reapply cursor / selection
+                            if (activeElementSelection) {
+                                elementToFocus.setSelection(activeElementSelection.start, activeElementSelection.end);
+                            }
                         }
                     };
 
-                    if(elementToFocus.length) {
-                        refocus();
+                    refocus();
 
-                        // double check it - required for IE
+                    // double check it - required for IE
+                    if (PrimeFaces.env.isIE()) {
                         setTimeout(function() {
-                            if (!elementToFocus.is(":focus")) {
-                                refocus();
-                            }
+                            refocus();
                         }, 50);
                     }
                 }
-
-                PrimeFaces.customFocus = false;
             },
 
             /**
@@ -1117,18 +1140,11 @@ if (!PrimeFaces.ajax) {
             doEval : function(node, xhr) {
                 var textContent = node.textContent || node.innerText || node.text;
 
+                var nonce;
                 if (xhr && xhr.pfSettings && xhr.pfSettings.nonce) {
-                    // $.globalEval doesn't support nonce currently
-                    // and the internal used DOMEval can't be used from outside?
-                    var script = document.createElement('script');
-                    script.nonce = xhr.pfSettings.nonce;
-                    script.setAttribute('nonce', xhr.pfSettings.nonce);
-                    script.innerHTML = textContent;
-                    document.head.appendChild(script);
+                    nonce = xhr.pfSettings.nonce;
                 }
-                else {
-                    $.globalEval(textContent);
-                }
+                PrimeFaces.csp.eval(textContent, nonce);
             },
 
             /**

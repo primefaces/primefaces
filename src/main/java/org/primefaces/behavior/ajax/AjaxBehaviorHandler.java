@@ -36,8 +36,8 @@ import java.util.Map;
 
 public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
 
-    private static final Class[] EMPTY_PARAMS = new Class[]{};
-    private static final Class[] ARG_PARAMS = new Class[]{AjaxBehaviorEvent.class};
+    private static final Class<?>[] EMPTY_PARAMS = new Class<?>[]{};
+    private static final Class<?>[] ARG_PARAMS = new Class<?>[]{AjaxBehaviorEvent.class};
 
     public AjaxBehaviorHandler(BehaviorConfig config) {
         super(config);
@@ -73,7 +73,7 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
                 behavior.addAjaxBehaviorListener(new AjaxBehaviorListenerImpl(
                         listener.getMethodExpression(ctx, Void.class, EMPTY_PARAMS),
                         listener.getMethodExpression(ctx, Void.class, ARG_PARAMS),
-                        listener.getMethodExpression(ctx, Void.class, new Class[]{eventMappingClass})));
+                        listener.getMethodExpression(ctx, Void.class, new Class<?>[]{eventMappingClass})));
             }
         }
     }

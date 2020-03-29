@@ -24,19 +24,20 @@
 package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
+import javax.faces.FacesException;
 
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
-import org.primefaces.component.datatable.TableState;
+import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.event.data.PostPageEvent;
 
 public class PageFeature implements DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {
-        throw new RuntimeException("PageFeature should not encode.");
+        throw new FacesException("PageFeature should not encode.");
     }
 
     @Override
@@ -56,7 +57,7 @@ public class PageFeature implements DataTableFeature {
         context.getApplication().publishEvent(context, PostPageEvent.class, table);
 
         if (table.isMultiViewState()) {
-            TableState ts = table.getTableState(true);
+            DataTableState ts = table.getMultiViewState(true);
 
             ts.setFirst(table.getFirst());
             ts.setRows(table.getRows());

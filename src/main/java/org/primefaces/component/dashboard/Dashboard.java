@@ -126,6 +126,10 @@ public class Dashboard extends DashboardBase {
 
     @Override
     public void processDecodes(FacesContext context) {
+        if (!isRendered() || isDisabled()) {
+            return;
+        }
+
         if (ComponentUtils.isRequestSource(this, context)) {
             decode(context);
         }

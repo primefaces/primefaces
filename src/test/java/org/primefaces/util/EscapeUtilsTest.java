@@ -23,9 +23,9 @@
  */
 package org.primefaces.util;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class EscapeUtilsTest {
 
@@ -34,11 +34,15 @@ public class EscapeUtilsTest {
         final String input = "hello world & >";
 
         // invalid
-        assertEquals("Not valid XML tag", "hello world &amp; &gt;", EscapeUtils.forXml(input)); 
+        assertEquals("hello world &amp; &gt;", EscapeUtils.forXml(input), "Not valid XML tag"); 
         // invalid
-        assertEquals("Not valid XML tag", "hello world &amp; >", EscapeUtils.forXmlAttribute(input));
+        assertEquals("hello world &amp; >", EscapeUtils.forXmlAttribute(input), "Not valid XML tag");
         // correct!!!
-        assertEquals("Valid!!", "hello_world_.26._.gt.", EscapeUtils.forXmlTag(input));
+        assertEquals("hello_world_.26._.gt.", EscapeUtils.forXmlTag(input), "Valid!!");
     }
 
+    @Test
+    public void forJavascriptVarName() {
+        assertEquals("form_datatable_0_my_input_text", EscapeUtils.forJavaScriptVarName("form:datatable:0:my_input_text")); 
+    }
 }

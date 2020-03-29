@@ -50,7 +50,7 @@ public class BarChartRenderer extends ChartRenderer {
         String clientId = chart.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("BarChart", chart.resolveWidgetVar(), clientId);
+        wb.init("BarChart", chart.resolveWidgetVar(context), clientId);
 
         encodeConfig(context, chart.getModel());
         encodeClientBehaviors(context, chart);

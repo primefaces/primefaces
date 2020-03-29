@@ -90,9 +90,13 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-     * Show the block overlay and blocks the UI.
+     * Show the component with optional duration animation.
+     * 
+     * @param {number | string} [duration] Durations are given in milliseconds; higher values indicate slower
+     * animations, not faster ones. The strings `fast` and `slow` can be supplied to indicate durations of 200 and 600
+     * milliseconds, respectively.
      */
-    show: function() {
+    show: function(duration) {
         this.blocker.css('z-index', ++PrimeFaces.zindex);
         
         //center position of content
@@ -107,35 +111,42 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             });
         }
 
-        if(this.cfg.animate)
-            this.blocker.fadeIn();    
+        var animated = this.cfg.animate;
+        if(animated)
+            this.blocker.fadeIn(duration);    
         else
-            this.blocker.show();
+            this.blocker.show(duration);
 
         if(this.hasContent()) {
-            if(this.cfg.animate)
-                this.content.fadeIn();
+            if(animated)
+                this.content.fadeIn(duration);
             else
-                this.content.show();
+                this.content.show(duration);
         }
         
         this.block.attr('aria-busy', true);
     },
-
+    
     /**
-     * Hides the block overlay and unblocks the UI.
+     * Hide the component with optional duration animation.
+     * 
+     * @param {number} [duration] Durations are given in milliseconds; higher values indicate slower animations, not
+     * faster ones. The strings `fast` and `slow` can be supplied to indicate durations of 200 and 600 milliseconds,
+     * respectively.
      */
-    hide: function() {
-        if(this.cfg.animate)
-            this.blocker.fadeOut();
+    hide: function(duration) {
+        var animated = this.cfg.animate;
+
+        if(animated)
+            this.blocker.fadeOut(duration);
         else
-            this.blocker.hide();
+            this.blocker.hide(duration);
 
         if(this.hasContent()) {
-            if(this.cfg.animate)
-                this.content.fadeOut();
+            if(animated)
+                this.content.fadeOut(duration);
             else
-                this.content.hide();
+                this.content.hide(duration);
         }
         
         this.block.attr('aria-busy', false);
@@ -159,9 +170,13 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         if(this.block.length > 1) {
             this.content = this.content.clone();
         }
-        
-        this.block.css('position', 'relative').attr('aria-busy', this.cfg.blocked).append(this.blocker).append(this.content);
-    
+
+        var position = this.block.css("position");
+        if (position !== "fixed" && position  !== "absolute") {
+            this.block.css('position', 'relative');
+        }
+        this.block.attr('aria-busy', this.cfg.blocked).append(this.blocker).append(this.content);
+
         if(this.block.length > 1) {
             this.blocker = $(PrimeFaces.escapeClientId(this.id + '_blocker'));
             this.content = this.block.children('.ui-blockui-content');

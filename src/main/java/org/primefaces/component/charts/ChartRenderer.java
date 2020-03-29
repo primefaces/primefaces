@@ -30,6 +30,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.model.charts.ChartData;
 import org.primefaces.model.charts.ChartDataSet;
 import org.primefaces.model.charts.ChartModel;
@@ -216,10 +217,6 @@ public class ChartRenderer extends CoreRenderer {
         for (int i = 0; i < axes.size(); i++) {
             CartesianAxes data = axes.get(i);
 
-            if (chartName.equals("bar")) {
-                data.setOffset(true);
-            }
-
             if (i != 0) {
                 writer.write(",");
             }
@@ -267,6 +264,11 @@ public class ChartRenderer extends CoreRenderer {
                 writer.write(",");
             }
 
+            if (PrimeRequestContext.getCurrentInstance(context).isRTL()) {
+                tooltip.setRtl(true);
+                tooltip.setTextDirection("rtl");
+            }
+
             writer.write("\"tooltips\":{");
             writer.write(tooltip.encode());
             writer.write("}");
@@ -279,6 +281,11 @@ public class ChartRenderer extends CoreRenderer {
         if (legend != null) {
             if (hasComma) {
                 writer.write(",");
+            }
+
+            if (PrimeRequestContext.getCurrentInstance(context).isRTL()) {
+                legend.setRtl(true);
+                legend.setTextDirection("rtl");
             }
 
             writer.write("\"legend\":{");

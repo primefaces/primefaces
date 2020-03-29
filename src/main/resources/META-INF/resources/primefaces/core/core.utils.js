@@ -52,7 +52,7 @@ if (!PrimeFaces.utils) {
          * @param {JQuery} appendTo The container to which the overlay is appended.
          */
         removeDynamicOverlay: function(widget, overlay, overlayId, appendTo) {
-            appendTo.children("[id='" + overlayId + "']").not(overlay).remove();
+            appendTo.children("[id='" +  overlayId + "']").not(overlay).remove();
         },
 
         /**
@@ -130,14 +130,14 @@ if (!PrimeFaces.utils) {
                         focusingRadioItem = null;
 
                         if(first.is(':radio')) {
-                            focusingRadioItem = tabbables.filter('[name="' + first.attr('name') + '"]').filter(':checked');
+                            focusingRadioItem = tabbables.filter('[name="' + $.escapeSelector(first.attr('name')) + '"]').filter(':checked');
                             if(focusingRadioItem.length > 0) {
                                 first = focusingRadioItem;
                             }
                         }
 
                         if(last.is(':radio')) {
-                            focusingRadioItem = tabbables.filter('[name="' + last.attr('name') + '"]').filter(':checked');
+                            focusingRadioItem = tabbables.filter('[name="' + $.escapeSelector(last.attr('name')) + '"]').filter(':checked');
                             if(focusingRadioItem.length > 0) {
                                 last = focusingRadioItem;
                             }
@@ -390,7 +390,89 @@ if (!PrimeFaces.utils) {
             result.top = offset.top - scrollTop;
             result.left = offset.left - scrollLeft;
             return result;
+        },
+
+        /**
+         * Blocks the enter key for an event like `keyup` or `keydown`. Useful in filter input events in many
+         * components.
+         * @param {JQuery.Event} e The key event that occurred.
+         */
+        blockEnterKey: function(e) {
+            var key = e.which,
+            keyCode = $.ui.keyCode;
+
+            if((key === keyCode.ENTER)) {
+                e.preventDefault();
+            }
+        },
+
+        /**
+         * Ignores certain keys on filter input text box. Useful in filter input events in many components.
+         * @param {JQuery.Event} e The key event that occurred.
+         * @return {boolean} `true` if the one of the keys to ignore was pressed, or `false` otherwise.
+         */
+        ignoreFilterKey: function(e) {
+            var key = e.which,
+            keyCode = $.ui.keyCode,
+            ignoredKeys = [
+                keyCode.END, 
+                keyCode.HOME, 
+                keyCode.LEFT, 
+                keyCode.RIGHT, 
+                keyCode.UP, 
+                keyCode.DOWN,
+                keyCode.TAB, 
+                16/*Shift*/, 
+                17/*Ctrl*/, 
+                18/*Alt*/, 
+                91, 92, 93/*left/right Win/Cmd*/,
+                keyCode.ESCAPE, 
+                keyCode.PAGE_UP, 
+                keyCode.PAGE_DOWN,
+                19/*pause/break*/, 
+                20/*caps lock*/, 
+                44/*print screen*/, 
+                144/*num lock*/, 
+                145/*scroll lock*/];
+
+            if (ignoredKeys.indexOf(key) > -1) {
+                return true;
+            }
+            return false;
+        },
+
+        /**
+         * Exclude elements such as buttons, links, inputs from being touch swiped.  Users can always add
+         * `class="noSwipe"` to any element to exclude it as well.
+         * @return {string} A CSS selector for the elements to be excluded from being touch swiped.
+         */
+        excludedSwipeElements: function() {
+            return ":button:enabled, :input:enabled, a, [role='combobox'], .noSwipe";
+        },
+
+        /**
+         * Helper to open a new URL and if CTRL is held down open in new browser tab.
+         * 
+         * @param {JQuery.Event} event The click event that occurred.
+         * @param {JQuery} link The URL anchor link that was clicked.
+         */
+        openLink: function(event, link) {
+            var href = link.attr('href');
+            var win;
+            if(href && href !== '#') {
+                if (event.ctrlKey) {
+                    win = window.open(href, '_blank');
+                } else {
+                    var target = link.attr('target') || '_self';
+                    win = window.open(href, target);
+                }
+                if (win) {
+                    win.focus();
+                }
+            }
+            event.preventDefault();
         }
+
     };
 
 }

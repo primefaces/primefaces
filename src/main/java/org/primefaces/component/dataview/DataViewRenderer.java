@@ -31,6 +31,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.DataRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
@@ -58,14 +59,26 @@ public class DataViewRenderer extends DataRenderer {
             }
 
             encodeLayout(context, dataview);
+
+            if (dataview.isMultiViewState()) {
+                saveMultiViewState(dataview);
+            }
         }
         else if (dataview.isLayoutRequest(context)) {
             String layout = params.get(clientId + "_layout");
             dataview.setLayout(layout);
 
             encodeLayout(context, dataview);
+
+            if (dataview.isMultiViewState()) {
+                saveMultiViewState(dataview);
+            }
         }
         else {
+            if (dataview.isMultiViewState()) {
+                dataview.restoreMultiViewState();
+            }
+
             encodeMarkup(context, dataview);
             encodeScript(context, dataview);
         }
@@ -120,7 +133,7 @@ public class DataViewRenderer extends DataRenderer {
         writer.startElement("div", dataview);
         writer.writeAttribute("class", DataView.HEADER_CLASS, null);
 
-        if (fHeader != null && fHeader.isRendered()) {
+        if (ComponentUtils.shouldRenderFacet(fHeader)) {
             fHeader.encodeAll(context);
         }
 
@@ -303,7 +316,7 @@ public class DataViewRenderer extends DataRenderer {
     protected void encodeScript(FacesContext context, DataView dataview) throws IOException {
         String clientId = dataview.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DataView", dataview.resolveWidgetVar(), clientId);
+        wb.init("DataView", dataview.resolveWidgetVar(context), clientId);
 
         if (dataview.isPaginator()) {
             encodePaginatorConfig(context, dataview, wb);
@@ -322,5 +335,14 @@ public class DataViewRenderer extends DataRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
+    }
+
+    private void saveMultiViewState(DataView dataview) {
+        if (dataview.isMultiViewState()) {
+            DataViewState viewState = dataview.getMultiViewState(true);
+            viewState.setFirst(dataview.getFirst());
+            viewState.setRows(dataview.getRows());
+            viewState.setLayout(dataview.getLayout());
+        }
     }
 }

@@ -27,21 +27,21 @@ import java.util.List;
 
 public interface MindmapNode {
 
-    public List<MindmapNode> getChildren();
+    List<MindmapNode> getChildren();
 
-    public MindmapNode getParent();
+    MindmapNode getParent();
 
-    public void setParent(MindmapNode node);
+    void setParent(MindmapNode node);
 
-    public Object getData();
+    Object getData();
 
-    public String getLabel();
+    String getLabel();
 
-    public String getFill();
+    String getFill();
 
-    public void addNode(MindmapNode node);
+    void addNode(MindmapNode node);
 
-    public void setSelectable(boolean selectable);
+    void setSelectable(boolean selectable);
 
-    public boolean isSelectable();
+    boolean isSelectable();
 }

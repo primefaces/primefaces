@@ -30,6 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class AjaxStatusRenderer extends CoreRenderer {
@@ -45,7 +46,8 @@ public class AjaxStatusRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, AjaxStatus status) throws IOException {
         String clientId = status.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("AjaxStatus", status.resolveWidgetVar(), clientId);
+        wb.init("AjaxStatus", status.resolveWidgetVar(context), clientId);
+        wb.attr("delay", status.getDelay());
 
         wb.callback(AjaxStatus.START, AjaxStatus.CALLBACK_SIGNATURE, status.getOnstart())
                 .callback(AjaxStatus.ERROR, AjaxStatus.CALLBACK_SIGNATURE, status.getOnerror())
@@ -72,13 +74,13 @@ public class AjaxStatusRenderer extends CoreRenderer {
         for (String event : AjaxStatus.EVENTS) {
             UIComponent facet = status.getFacet(event);
 
-            if (facet != null) {
+            if (ComponentUtils.shouldRenderFacet(facet)) {
                 encodeFacet(context, clientId, facet, event, true);
             }
         }
 
         UIComponent defaultFacet = status.getFacet(AjaxStatus.DEFAULT);
-        if (defaultFacet != null) {
+        if (ComponentUtils.shouldRenderFacet(defaultFacet)) {
             encodeFacet(context, clientId, defaultFacet, AjaxStatus.DEFAULT, false);
         }
 

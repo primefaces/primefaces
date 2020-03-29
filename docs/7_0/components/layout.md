@@ -3,7 +3,7 @@
 Layout component features a highly customizable borderLayout model making it very easy to
 create complex layouts even if you’re not familiar with web design.
 
-> Layout and LayoutUnit are deprecated, use  [FlexGrid](https://www.primefaces.org/showcase/ui/panel/flexGrid.xhtml) or [GridCSS](/components/gridcss.md) instead. They'll be removed on 7.1.
+> Layout and LayoutUnit are deprecated, use  [FlexGrid](https://www.primefaces.org/showcase/ui/panel/flexGrid.xhtml) or [GridCSS](/components/gridcss.md) instead. They'll be removed on 9.0.
 
 ## Info
 
@@ -18,7 +18,7 @@ create complex layouts even if you’re not familiar with web design.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -123,8 +123,8 @@ collapsed attribute of the layout unit layout will be rendered as the user left 
 ## Client Side API
 Widget: _PrimeFaces.widget.Layout_
 
-| Method | Params | Return Type | Description | 
-| --- | --- | --- | --- | 
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
 toggle(position) | position | void | Toggles layout unit.
 show(position) | position | void | Shows layout unit.
 hide(unit) | position | void | Hides layout unit.
@@ -132,8 +132,8 @@ hide(unit) | position | void | Hides layout unit.
 ## Skinning
 Following is the list of structural style classes;
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 .ui-layout | Main wrapper container element
 .ui-layout-doc | Layout container
 .ui-layout-unit | Each layout unit container

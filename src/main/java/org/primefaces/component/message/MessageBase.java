@@ -27,8 +27,6 @@ import javax.faces.component.UIMessage;
 
 import org.primefaces.component.api.UINotification;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class MessageBase extends UIMessage implements UINotification, Widget {
 
@@ -103,10 +101,5 @@ public abstract class MessageBase extends UIMessage implements UINotification, W
 
     public void setSkipDetailIfEqualsSummary(boolean skipDetailIfEqualsSummary) {
         getStateHelper().put(PropertyKeys.skipDetailIfEqualsSummary, skipDetailIfEqualsSummary);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

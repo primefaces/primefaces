@@ -95,9 +95,10 @@ public class AccordionPanel extends AccordionPanelBase {
     }
 
     public Tab findTab(String tabClientId) {
-        for (UIComponent component : getChildren()) {
-            if (component.getClientId().equals(tabClientId)) {
-                return (Tab) component;
+        for (int i = 0; i < getChildCount(); i++) {
+            UIComponent child = getChildren().get(i);
+            if (child.getClientId().equals(tabClientId)) {
+                return (Tab) child;
             }
         }
 

@@ -46,6 +46,11 @@ public class Constants {
         public static final String EARLY_POST_PARAM_EVALUATION = "primefaces.EARLY_POST_PARAM_EVALUATION";
         public static final String MOVE_SCRIPTS_TO_BOTTOM = "primefaces.MOVE_SCRIPTS_TO_BOTTOM";
         public static final String CSP = "primefaces.CSP";
+        public static final String CSP_POLICY = "primefaces.CSP_POLICY";
+
+        private ContextParams() {
+
+        }
     }
 
     public static class RequestParams {
@@ -62,6 +67,10 @@ public class Constants {
         public static final String IGNORE_AUTO_UPDATE_PARAM = "primefaces.ignoreautoupdate";
         public static final String SKIP_CHILDREN_PARAM = "primefaces.skipchildren";
         public static final String NONCE_PARAM = "primefaces.nonce";
+
+        private RequestParams() {
+
+        }
     }
 
     public static final String DOWNLOAD_COOKIE = "primefaces.download";
@@ -77,7 +86,7 @@ public class Constants {
 
     public static final String FRAGMENT_ID = "primefaces.fragment";
 
-    public static class DIALOG_FRAMEWORK {
+    public static class DialogFramework {
 
         public static final String OUTCOME = "dialog.outcome";
         public static final String OPTIONS = "dialog.options";
@@ -86,6 +95,10 @@ public class Constants {
         public static final String SOURCE_WIDGET = "dialog.source.widget";
         public static final String CONVERSATION_PARAM = "pfdlgcid";
         public static final String INCLUDE_VIEW_PARAMS = "includeViewParams";
+
+        private DialogFramework() {
+
+        }
     }
 
     public static final String EMPTY_STRING = "";

@@ -26,7 +26,7 @@ PrimeFaces.widget.InputText = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
 
         PrimeFaces.skinInput(this.jq);
-        
+
         //Counter
         if(this.cfg.counter) {
             this.counter = this.cfg.counter ? $(PrimeFaces.escapeClientId(this.cfg.counter)) : null;
@@ -55,7 +55,7 @@ PrimeFaces.widget.InputText = PrimeFaces.widget.BaseWidget.extend({
     enable: function() {
         this.jq.prop('disabled', false).removeClass('ui-state-disabled');
     },
-    
+
     /**
      * Updates the counter value that keeps count of how many more characters the user can enter before they reach the
      * limit.
@@ -71,8 +71,10 @@ PrimeFaces.widget.InputText = PrimeFaces.widget.BaseWidget.extend({
                 remaining = 0;
             }
 
-            var counterText = this.cfg.counterTemplate.replace('{0}', remaining);
-            counterText = counterText.replace('{1}', length);
+            var counterText = this.cfg.counterTemplate
+                    .replace('{0}', remaining)
+                    .replace('{1}', length)
+                    .replace('{2}', this.cfg.maxlength);
 
             this.counter.text(counterText);
         }

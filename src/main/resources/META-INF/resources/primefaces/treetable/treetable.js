@@ -265,14 +265,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     bindEnterKeyFilter: function(filter) {
         var $this = this;
 
-        filter.on('keydown', function(e) {
-            var key = e.which,
-            keyCode = $.ui.keyCode;
-
-            if(key === keyCode.ENTER) {
-                e.preventDefault();
-            }
-        }).on('keyup', function(e) {
+        filter.on('keydown', PrimeFaces.utils.blockEnterKey)
+        .on('keyup', function(e) {
             var key = e.which,
             keyCode = $.ui.keyCode;
 
@@ -293,14 +287,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         //prevent form submit on enter key
-        filter.on('keydown.treeTable-blockenter', function(e) {
-            var key = e.which,
-            keyCode = $.ui.keyCode;
-
-            if(key === keyCode.ENTER) {
-                e.preventDefault();
-            }
-        })
+        filter.on('keydown.treeTable-blockenter', PrimeFaces.utils.blockEnterKey)
         .on(this.cfg.filterEvent + '.treeTable', function(e) {
             if($this.filterTimeout) {
                 clearTimeout($this.filterTimeout);
@@ -489,20 +476,21 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 column.removeClass('ui-state-hover');
         })
         .on('click.treeTable', function(e) {
-            //Check if event target is not a clickable element in header content
-            if($(e.target).is('th,span:not(.ui-c)')) {
-                PrimeFaces.clearSelection();
-
-                var columnHeader = $(this),
-                sortOrder = columnHeader.data('sortorder')||'DESCENDING';
-
-                if(sortOrder === 'ASCENDING')
-                    sortOrder = 'DESCENDING';
-                else if(sortOrder === 'DESCENDING')
-                    sortOrder = 'ASCENDING';
-
-                $this.sort(columnHeader, sortOrder);
+            if(!$this.shouldSort(e, this)) {
+                return;
             }
+
+            PrimeFaces.clearSelection();
+
+            var columnHeader = $(this),
+            sortOrder = columnHeader.data('sortorder')||'DESCENDING';
+
+            if(sortOrder === 'ASCENDING')
+                sortOrder = 'DESCENDING';
+            else if(sortOrder === 'DESCENDING')
+                sortOrder = 'ASCENDING';
+
+            $this.sort(columnHeader, sortOrder);
         });
     },
 
@@ -1815,6 +1803,14 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         else {
             this.showCurrentCell(cell);
+
+            if(this.hasBehavior('cellEditInit')) {
+                var cellInfo = this.getCellMeta(cell);
+                var ext = {
+                    params: [{name: this.id + '_cellInfo', value: cellInfo}]
+                };
+                this.callBehavior('cellEditInit', ext);
+            }
         }
     },
 
@@ -1976,8 +1972,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     doCellEditRequest: function(cell) {
         var cellEditor = cell.children('.ui-cell-editor'),
         cellEditorId = cellEditor.attr('id'),
-        cellIndex = cell.index(),
-        cellInfo = cell.closest('tr').data('rk') + ',' + cellIndex,
+        cellInfo = this.getCellMeta(cell),
         $this = this;
 
         var options = {
@@ -2064,8 +2059,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     cellEditInit: function(cell) {
         var cellEditor = cell.children('.ui-cell-editor'),
-        cellIndex = cell.index(),
-        cellInfo = cell.closest('tr').data('rk') + ',' + cellIndex,
+        cellInfo = this.getCellMeta(cell),
         $this = this;
 
         var options = {
@@ -2100,6 +2094,18 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
+     * Retrieves the meta data of the given cell.
+     * @private
+     * @param {JQuery} cell A cell to inspect.
+     * @return {string} The meta data for the given cell.
+     */
+    getCellMeta: function(cell) {
+        var cellIndex = cell.index(),
+            cellInfo = cell.closest('tr').data('rk') + ',' + cellIndex;
+        return cellInfo;
+    },
+
+    /**
      * Updates the vertical scroll position and adjusts the margin.
      * @private
      */
@@ -2114,5 +2120,33 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 this.scrollFooterBox.css('margin-right', this.marginRight);
             }
         }
+    },
+
+    /**
+     * Checks whether the tree table should be sorted.
+     * @private
+     * @param {JQuery.Event} event Event that occurred.
+     * @param {JQuery} column Column that was clicked.
+     * @return {boolean} Whether the tree table should be sorted.
+     */
+    shouldSort: function(event, column) {
+        if(this.isEmpty()) {
+            return false;
+        }
+
+        var target = $(event.target);
+        if(target.closest('.ui-column-customfilter', column).length) {
+            return false;
+        }
+
+        return target.is('th,span');
+    },
+
+    /**
+     * Checks whether any data is currently displayed.
+     * @return {boolean} Whether there is any data displayed currently.
+     */
+    isEmpty: function() {
+        return this.tbody.children('tr.ui-treetable-empty-message').length === 1;
     }
 });

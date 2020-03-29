@@ -36,6 +36,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
+import org.primefaces.component.api.DialogReturnAware;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.*;
@@ -125,14 +126,14 @@ public class CommandLinkRenderer extends CoreRenderer {
                 }
             }
 
-            List<ClientBehaviorContext.Parameter> behaviorParams = new ArrayList<>();
+            List<ClientBehaviorContext.Parameter> behaviorParams = new ArrayList<>(1);
             behaviorParams.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
-            String dialogReturnBehavior = getEventBehaviors(context, link, "dialogReturn", behaviorParams);
+            String dialogReturnBehavior = getEventBehaviors(context, link, DialogReturnAware.EVENT_DIALOG_RETURN, behaviorParams);
             if (dialogReturnBehavior != null) {
-                writer.writeAttribute("data-dialogreturn", dialogReturnBehavior, null);
+                writer.writeAttribute(DialogReturnAware.ATTRIBUTE_DIALOG_RETURN_SCRIPT, dialogReturnBehavior, null);
             }
 
-            renderPassThruAttributes(context, link, HTML.LINK_ATTRS, HTML.CLICK_EVENT);
+            renderPassThruAttributes(context, link, LangUtils.concat(HTML.LINK_ATTRS, HTML.CLICK_EVENT));
 
             if (label != null) {
                 writer.writeText(label, "value");

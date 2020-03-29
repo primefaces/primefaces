@@ -23,27 +23,17 @@
  */
 package org.primefaces.component.splitbutton;
 
-import java.util.List;
-import javax.el.ELContext;
-import javax.el.ExpressionFactory;
-import javax.el.MethodExpression;
-import javax.el.MethodNotFoundException;
+import org.primefaces.model.menu.MenuModel;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ActionEvent;
 import javax.faces.event.FacesEvent;
-import org.primefaces.event.MenuActionEvent;
-import org.primefaces.model.menu.MenuElement;
-import org.primefaces.model.menu.MenuGroup;
-import org.primefaces.model.menu.MenuItem;
-import org.primefaces.model.menu.MenuModel;
-
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.SerializableFunction;
+import java.util.List;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -64,6 +54,8 @@ public class SplitButton extends SplitButtonBase {
     public static final String BUTTON_ICON_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-left ui-button-icon-only";
     public static final String SPLITBUTTON_CONTAINER_CLASS = "ui-menu ui-splitbuttonmenu ui-menu-dynamic ui-widget ui-widget-content ui-corner-all ui-helper-clearfix ui-shadow";
     public static final String LIST_WRAPPER_CLASS = "ui-splitbuttonmenu-list-wrapper";
+
+    private String confirmationScript;
 
     public String resolveStyleClass() {
         boolean iconBlank = LangUtils.isValueBlank(getIcon());
@@ -102,6 +94,14 @@ public class SplitButton extends SplitButtonBase {
     }
 
     @Override
+    public void processDecodes(FacesContext context) {
+        if (!isRendered() || isDisabled()) {
+            return;
+        }
+        super.processDecodes(context);
+    }
+
+    @Override
     public boolean isPartialSubmitSet() {
         return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (this.getValueExpression(PropertyKeys.partialSubmit.toString()) != null);
     }
@@ -116,6 +116,7 @@ public class SplitButton extends SplitButtonBase {
         return isAjax();
     }
 
+    @Override
     public List getElements() {
         MenuModel model = getModel();
         if (model != null) {
@@ -132,80 +133,28 @@ public class SplitButton extends SplitButtonBase {
         return (elements == null) ? 0 : elements.size();
     }
 
-    protected MenuItem findMenuitem(List<MenuElement> elements, String id) {
-        if (elements == null || elements.isEmpty()) {
-            return null;
-        }
-        else {
-            String[] paths = id.split("_");
-
-            if (paths.length == 0) {
-                return null;
-            }
-
-            int childIndex = Integer.parseInt(paths[0]);
-            if (childIndex >= elements.size()) {
-                return null;
-            }
-
-            MenuElement childElement = elements.get(childIndex);
-
-            if (paths.length == 1) {
-                return (MenuItem) childElement;
-            }
-            else {
-                String relativeIndex = id.substring(id.indexOf('_') + 1);
-
-                return findMenuitem(((MenuGroup) childElement).getElements(), relativeIndex);
-            }
-        }
+    @Override
+    public void broadcast(FacesEvent event) throws AbortProcessingException {
+        broadcastMenuActionEvent(event, getFacesContext(), super::broadcast);
     }
 
     @Override
-    public void broadcast(FacesEvent event) throws AbortProcessingException {
-        if (event instanceof MenuActionEvent) {
-            FacesContext facesContext = getFacesContext();
+    public boolean requiresConfirmation() {
+        return confirmationScript != null;
+    }
 
-            MenuActionEvent menuActionEvent = (MenuActionEvent) event;
-            MenuItem menuItem = menuActionEvent.getMenuItem();
+    @Override
+    public String getConfirmationScript() {
+        return confirmationScript;
+    }
 
-            SerializableFunction<MenuItem, String> function = menuItem.getFunction();
-            String command = menuItem.getCommand();
-            if (function != null) {
-                String outcome = function.apply(menuItem);
-                facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, null, outcome);
-            }
-            else if (command != null) {
-                ELContext elContext = facesContext.getELContext();
-                ExpressionFactory expressionFactory = facesContext.getApplication().getExpressionFactory();
+    @Override
+    public void setConfirmationScript(String confirmationScript) {
+        this.confirmationScript = confirmationScript;
+    }
 
-                Object invokeResult = null;
-                try {
-                    MethodExpression me = expressionFactory.createMethodExpression(elContext, command,
-                                String.class, new Class[0]);
-                    invokeResult = me.invoke(elContext, null);
-                }
-                catch (MethodNotFoundException mnfe1) {
-                    try {
-                        MethodExpression me = expressionFactory.createMethodExpression(elContext, command,
-                                        String.class, new Class[]{ActionEvent.class});
-                        invokeResult = me.invoke(elContext, new Object[]{event});
-                    }
-                    catch (MethodNotFoundException mnfe2) {
-                        MethodExpression me = expressionFactory.createMethodExpression(elContext, command,
-                                        String.class, new Class[]{MenuActionEvent.class});
-                        invokeResult = me.invoke(elContext, new Object[]{event});
-                    }
-                }
-                finally {
-                    String outcome = (invokeResult != null) ? invokeResult.toString() : null;
-
-                    facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, command, outcome);
-                }
-            }
-        }
-        else {
-            super.broadcast(event);
-        }
+    @Override
+    public String getDefaultEventName() {
+        return "click";
     }
 }

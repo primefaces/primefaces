@@ -37,8 +37,13 @@ PrimeFaces.widget.Captcha = PrimeFaces.widget.BaseWidget.extend({
             $this.render();
         };
 
+        var nonce = '';
+        if (PrimeFaces.csp.NONCE_VALUE) {
+            nonce = 'nonce="'+PrimeFaces.csp.NONCE_VALUE+'"';
+        }
+
         $(document.body).append('<script src="https://www.google.com/recaptcha/api.js?onload=' + this.getInitCallbackName() + '&render=explicit&hl='
-                            + this.cfg.language +'" async defer>');
+                            + this.cfg.language +'" async defer ' + nonce + '>');
 
     },
 

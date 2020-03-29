@@ -34,7 +34,6 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.celleditor.CellEditor;
 
-
 public class Columns extends ColumnsBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Columns";

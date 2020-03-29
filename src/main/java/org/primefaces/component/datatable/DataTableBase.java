@@ -23,13 +23,17 @@
  */
 package org.primefaces.component.datatable;
 
+import org.primefaces.component.api.*;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.SortMeta;
+
 import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
-import org.primefaces.component.api.*;
-import org.primefaces.util.ComponentUtils;
+import java.util.Collections;
+import java.util.Map;
 
-
-public abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable {
+public abstract class DataTableBase extends UIData
+        implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable, MultiViewStateAware<DataTableState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -95,6 +99,7 @@ public abstract class DataTableBase extends UIData implements Widget, RTLAware, 
         clientCache,
         multiViewState,
         filterBy,
+        sortMeta,
         globalFilter,
         cellEditMode,
         expandableRowGroups,
@@ -312,11 +317,11 @@ public abstract class DataTableBase extends UIData implements Widget, RTLAware, 
         getStateHelper().put(PropertyKeys.editable, editable);
     }
 
-    public java.util.List getFilteredValue() {
-        return (java.util.List) getStateHelper().eval(PropertyKeys.filteredValue, null);
+    public java.util.List<?> getFilteredValue() {
+        return (java.util.List<?>) getStateHelper().eval(PropertyKeys.filteredValue, null);
     }
 
-    public void setFilteredValue(java.util.List filteredValue) {
+    public void setFilteredValue(java.util.List<?> filteredValue) {
         getStateHelper().put(PropertyKeys.filteredValue, filteredValue);
     }
 
@@ -368,6 +373,7 @@ public abstract class DataTableBase extends UIData implements Widget, RTLAware, 
         getStateHelper().put(PropertyKeys.frozenRows, frozenRows);
     }
 
+    @Override
     public String getDir() {
         return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
     }
@@ -568,6 +574,7 @@ public abstract class DataTableBase extends UIData implements Widget, RTLAware, 
         getStateHelper().put(PropertyKeys.clientCache, clientCache);
     }
 
+    @Override
     public boolean isMultiViewState() {
         return (Boolean) getStateHelper().eval(PropertyKeys.multiViewState, false);
     }
@@ -576,12 +583,20 @@ public abstract class DataTableBase extends UIData implements Widget, RTLAware, 
         getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
     }
 
-    public java.util.List getFilterBy() {
-        return (java.util.List) getStateHelper().eval(PropertyKeys.filterBy, null);
+    public Map<String, FilterMeta> getFilterBy() {
+        return (Map<String, FilterMeta>) getStateHelper().eval(PropertyKeys.filterBy, Collections.emptyMap());
     }
 
-    public void setFilterBy(java.util.List filterBy) {
+    public void setFilterBy(Map<String, FilterMeta> filterBy) {
         getStateHelper().put(PropertyKeys.filterBy, filterBy);
+    }
+
+    public Map<String, SortMeta> getSortMeta() {
+        return (Map<String, SortMeta>) getStateHelper().eval(PropertyKeys.sortMeta, Collections.emptyMap());
+    }
+
+    public void setSortMeta(Map<String, SortMeta> sortMeta) {
+        getStateHelper().put(PropertyKeys.sortMeta, sortMeta);
     }
 
     public String getGlobalFilter() {
@@ -694,15 +709,5 @@ public abstract class DataTableBase extends UIData implements Widget, RTLAware, 
 
     public void setGlobalFilterFunction(MethodExpression globalFilterFunction) {
         getStateHelper().put(PropertyKeys.globalFilterFunction, globalFilterFunction);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
-    }
-
-    @Override
-    public boolean isRTL() {
-        return "rtl".equalsIgnoreCase(getDir());
     }
 }

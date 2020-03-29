@@ -24,8 +24,10 @@
 package org.primefaces.component.datepicker;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -37,6 +39,7 @@ import javax.faces.convert.ConverterException;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.calendar.BaseCalendarRenderer;
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.WidgetBuilder;
 
@@ -61,13 +64,6 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             writer.writeAttribute("style", datepicker.getStyle(), null);
         }
 
-        //inline container
-        if (inline) {
-            writer.startElement("div", null);
-            writer.writeAttribute("id", clientId + "_inline", null);
-            writer.endElement("div");
-        }
-
         //input
         encodeInput(context, datepicker, inputId, value, !inline);
 
@@ -80,14 +76,14 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         DatePicker datepicker = (DatePicker) uicalendar;
         String clientId = datepicker.getClientId(context);
         Locale locale = datepicker.calculateLocale(context);
-        String pattern = datepicker.isTimeOnly() ? datepicker.calculateTimeOnlyPattern() : datepicker.calculatePattern();
+        String pattern = datepicker.calculateWidgetPattern();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DatePicker", datepicker.resolveWidgetVar(), clientId);
+        wb.init("DatePicker", datepicker.resolveWidgetVar(context), clientId);
 
         String defaultDate = null;
 
         if (datepicker.isConversionFailed()) {
-            defaultDate = CalendarUtils.getValueAsString(context, datepicker, new Date());
+            defaultDate = CalendarUtils.getValueAsString(context, datepicker, LocalDateTime.now());
         }
         else if (!isValueBlank(value)) {
             defaultDate = value;
@@ -102,8 +98,8 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("focusOnSelect", datepicker.isFocusOnSelect(), false)
             .attr("disabled", datepicker.isDisabled(), false)
             .attr("yearRange", datepicker.getYearRange(), null)
-            .attr("minDate", CalendarUtils.getValueAsString(context, datepicker, datepicker.getMindate()), null)
-            .attr("maxDate", CalendarUtils.getValueAsString(context, datepicker, datepicker.getMaxdate()), null)
+            .attr("minDate", getMinMaxDate(context, datepicker, datepicker.getMindate(), false), null)
+            .attr("maxDate", getMinMaxDate(context, datepicker, datepicker.getMaxdate(), true), null)
             .attr("selectionMode", datepicker.getSelectionMode(), null)
             .attr("showOnFocus", datepicker.isShowOnFocus())
             .attr("shortYearCutoff", datepicker.getShortYearCutoff(), null)
@@ -117,18 +113,20 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("numberOfMonths", datepicker.getNumberOfMonths(), 1)
             .attr("view", datepicker.getView(), null)
             .attr("touchUI", datepicker.isTouchUI(), false)
-            .attr("appendTo", SearchExpressionFacade.resolveClientId(context, datepicker, datepicker.getAppendTo()), null)
+            .attr("appendTo", SearchExpressionFacade.resolveClientId(context, datepicker, datepicker.getAppendTo(),
+                            SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
             .attr("icon", datepicker.getTriggerButtonIcon(), null)
-            .attr("rangeSeparator", datepicker.getRangeSeparator(), null);
+            .attr("rangeSeparator", datepicker.getRangeSeparator(), null)
+            .attr("timeInput", datepicker.isTimeInput());
 
-        List<Object> disabledDays = datepicker.getDisabledDays();
+        List<Integer> disabledDays = datepicker.getDisabledDays();
         if (disabledDays != null) {
-            CalendarUtils.encodeListValue(context, datepicker, "disabledDays", disabledDays);
+            CalendarUtils.encodeListValue(context, datepicker, "disabledDays", disabledDays, pattern);
         }
 
         List<Object> disabledDates = datepicker.getDisabledDates();
         if (disabledDates != null) {
-            CalendarUtils.encodeListValue(context, datepicker, "disabledDates", disabledDates);
+            CalendarUtils.encodeListValue(context, datepicker, "disabledDates", disabledDates, pattern);
         }
 
         String dateTemplate = datepicker.getDateTemplate();
@@ -205,6 +203,14 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             default:
                 return super.getConvertedValue(context, component, value);
         }
+    }
+
+    private String getMinMaxDate(FacesContext context, DatePicker datepicker, Object value, boolean max) {
+        if (value instanceof LocalDate && datepicker.isShowTime()) {
+            LocalDate date = (LocalDate) value;
+            value = date.atTime(max ? LocalTime.MAX : LocalTime.MIN);
+        }
+        return CalendarUtils.getValueAsString(context, datepicker, value);
     }
 }
 

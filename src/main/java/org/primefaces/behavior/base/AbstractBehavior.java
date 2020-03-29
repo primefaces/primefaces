@@ -163,7 +163,7 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
         }
     }
 
-    protected Object[] savePropertyMap(FacesContext context, Map map, boolean saveValuesAsAttachedState) {
+    protected Object[] savePropertyMap(FacesContext context, Map<String, ?> map, boolean saveValuesAsAttachedState) {
         if (map == null) {
             return null;
         }

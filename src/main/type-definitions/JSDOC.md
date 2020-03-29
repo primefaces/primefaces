@@ -5,7 +5,14 @@ be interested in the [user guide](https://primefaces.github.io/primefaces/).
 
 [![PrimeFaces Logo](https://www.primefaces.org/wp-content/uploads/2016/10/prime_logo_new.png)](https://www.primefaces.org/showcase)
 
-## Type declaration file
+1. [Type declarations file](#type-declarations-file)
+1. [API Overview](#api-overview)
+    1. [Core](#core)
+    1. [Widgets](#widgets)
+    1. [JQuery extensions](#jquery-extensions)
+    1. [Third-party libraries](#third-party-libraries)
+
+## Type declarations file
 
 To enable code autocompletion or type checking etc, a type declartion file (`*.d.ts`) is available as well:
 
@@ -13,7 +20,7 @@ To enable code autocompletion or type checking etc, a type declartion file (`*.d
 * It references some types from other libraries. You may need to install:
 
 <details>
-<summary>Types from NPM packages, click to expand </summary>
+<summary>Click to see required types from NPM packages </summary>
 
 ```sh
 npm install --save-dev @types/jquery
@@ -21,16 +28,19 @@ npm install --save-dev @types/jqueryui
 npm install --save-dev @types/chart.js
 npm install --save-dev @types/googlemaps
 npm install --save-dev @types/jquery.fileupload
+npm install --save-dev @types/moment-timezone
+npm install --save-dev @types/quill
 npm install --save-dev @fullcalendar/core
 npm install --save-dev @fullcalendar/daygrid
 npm install --save-dev @fullcalendar/interaction
 npm install --save-dev @fullcalendar/list
 npm install --save-dev @fullcalendar/moment
 npm install --save-dev @fullcalendar/timegrid
-npm install --save-dev quill
+npm install --save-dev autonumeric
+npm install --save-dev cropperjs
 npm install --save-dev moment
-npm install --save-dev vis-timeline
 npm install --save-dev vis-data
+npm install --save-dev vis-timeline
 ```
 
 </details>
@@ -38,15 +48,15 @@ npm install --save-dev vis-data
 See the [typescript page](https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html) for more
 info on type declaration files.
 
-## Overview
+## API Overview
 
-The main entry point of the PrimeFaces client-side JavaScript API is the global object `window.PrimeFaces` (or just
-`PrimeFaces` for short). It contains several utilty methods as well as the widget registry of all available PrimeFaces
-widgets.
+The main entry point of the PrimeFaces client-side JavaScript API is the global object
+[window.PrimeFaces]((./modules/primefaces.html)) (or just `PrimeFaces` for short). It contains several utility methods
+as well as the [widget registry]((./modules/primefaces.widget.html)) with all available PrimeFaces widgets.
 
 ### Core
 
-The core includes all generic functionality required by the PrimeFaces framework.
+The core includes all the generic functionality required by the PrimeFaces framework.
 
 * [PrimeFaces](./modules/primefaces.html) The global object itself contains some utility methods, such as `scrollTo` or
 `escapeHTML`.
@@ -58,27 +68,6 @@ methods to resolve search expressions such as `@form` on the client.
 * [PrimeFaces.resources](./modules/primefaces.resources.html) The resources submodule. It contains some methods to
 generate JSF resource URLs.
 * [PrimeFaces.utils](./modules/primefaces.utils.html) The utility module with more advanced utility methods.
-
-### JQuery extensions and third-party libraries
-
-PrimeFaces makes use of many third-party libraries for providing advanced features, such charts and masked inputs. Many
-of these do not have typescript declarations, but fear not, PrimeFaces added them for you. For your convenience, the
-ApiDocs for all third-party libraries are included in this documentation. Some of the most notable ones are:
-
-* jQuery extensions. Please note that some of these plugins are only available when you use one of the widgets that
-required that library.
-    * See the [JQuery](./modules/jquery.html) interface for methods that can be called on jQuery instances (`$.fn`)
-    * See the [JQueryStatic](./interfaces/jquerystatic.html) interface for constants and methods available on the global
-      jQuery object (`$` / `jQuery`).
-    * See the [TypeToTriggeredEventMap](./interfaces/jquery.typetotriggeredeventmap.html) for additional events defined
-      by jQuery extensions. 
-    * Types and interfaces required by the jQuery extension are declared in a their own namespace `JQuery*`. These
-      namespaces are only for the types and do not contain any objects that are available at runtime. 
-* [chart.js](./classes/chart.html) The [chart.js](https://www.chartjs.org/) library for drawing diagrams.
-* [moment](./modules/moment.html) The [Moment.js](https://momentjs.com/) library to parse, validate, manipulate, and
-  display dates and times in JavaScript
-* [Raphael](./modules/raphael.html) The [raphael](https://dmitrybaranovskiy.github.io/raphael/) vector graphics library
-  for drawing onto a canvas.
 
 ### Widgets
 
@@ -105,3 +94,62 @@ if (widget instanceof PrimeFaces.widget.DataTable) {
     widget.unselectAllRows();
 }
 ```
+
+### JQuery extensions
+
+PrimeFaces relies heavily on [JQuery](https://jquery.com/) for interacting with the DOM. Many JQuery plugins are
+included that are used by the various widgets. You can make use of these plugins, but please note that they are not
+parts of the officially supported API and may be removed or replaced at any time.
+
+Also, as most JQuery plugins are specific to a certain widget, please note that some plugins may only be available when
+that widget is included in the page.
+
+* See the [JQuery](./modules/jquery.html) interface for methods that can be called on JQuery instances (`$.fn`)
+* See the [JQueryStatic](./interfaces/jquerystatic.html) interface for constants and methods available on the global
+  JQuery object (`$` / `jQuery`).
+* See the [TypeToTriggeredEventMap](./interfaces/jquery.typetotriggeredeventmap.html) for additional events defined
+  by JQuery extensions. 
+* Convention for JQuery plugins for for which the type declarations were written PrimeFaces: Types and interfaces
+  required by the JQuery extension are declared in a their own namespace `JQuery*`. These namespaces are only for the
+  types and do not contain any objects that are available at runtime. 
+
+### Third-party libraries
+
+PrimeFaces makes use of many third-party libraries for providing advanced features, such charts and masked inputs. Many
+of these do not have typescript declarations. But fear not, PrimeFaces added them for you. For your convenience, the
+API docs for all third-party libraries are included in this documentation. Some of the most notable ones are:
+
+* [AutoNumeric.js](./classes/autonumeric.html)
+    * The [AutoNumeric.js library](http://autonumeric.org/) that automatically formats your numbers and currencies.
+* [autosize](./modules/autosize.html)
+    * The [Autosize library](https://github.com/jackmoore/autosize), a small, stand-alone script to automatically adjust
+      the height of a textarea to fit the text. 
+* [chart.js](./classes/chart.html)
+    * The [chart.js](https://www.chartjs.org/) library for drawing diagrams.
+* [ContentFlow](./classes/contentflow.html)
+    * [The ContentFlow library](https://web.archive.org/web/20120108070056/http://www.jacksasylum.eu/ContentFlow/index.php)
+      a flexible ImageFlow like flow written in javascript, which can handle any kind of content.
+* [Cropper.js](./classes/cropper.html)
+    * The [Cropper.js](https://fengyuanchen.github.io/cropperjs/) library, a visual JavaScript image cropper.
+* [FullCalendar](./modules/__fullcalendar_core_calendar_.html)
+    * The [FullCalendar library](https://fullcalendar.io/), a full-sized drag & drop JavaScript event calendar.
+* [Google Maps](./modules/google.maps.html)
+    * The [Google Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/tutorial) for
+      including maps in a web page.
+* [jsplumb](./modules/jsplumb.html)
+    * The [jsPlumb library](https://github.com/jsplumb/jsplumb), to visually connect elements on web pages.
+* [JuxtaposeJS](./modules/juxtapose.html)
+    * The [JuxtaposeJs library](https://juxtapose.knightlab.com/), a simple, open source tool for creating before or
+      after image sliders.
+* [moment.js](./modules/moment.html)
+    * The [Moment.js](https://momentjs.com/) library to parse, validate, manipulate, and display dates and times in
+      JavaScript.
+* [Quill](./classes/quill.html)
+    * The [Quill Editor](https://quilljs.com/), a modern rich text editor for the web.
+* [Raphaël](./modules/raphael.html)
+    * The [Raphaël vector graphics library](https://dmitrybaranovskiy.github.io/raphael/) for drawing onto a canvas.
+* [Timeline/Graph2D](./classes/timeline.html)
+    * The [Timeline/Graph2D](https://github.com/visjs/vis-timeline) is an interactive visualization chart to visualize
+    data in time.
+* [WebcamJS](./modules/webcam.html)
+    * The [WebcamJS library](https://github.com/jhuckaby/webcamjs) for accessing a camera.

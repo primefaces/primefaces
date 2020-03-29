@@ -53,8 +53,14 @@ import org.primefaces.component.inputtext.InputText;
 import org.primefaces.model.CollectionDataModel;
 import org.primefaces.model.IterableDataModel;
 import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.SharedStringBuilder;
 
+/**
+ * Enhanced version of the JSF UIData.
+ * It also contains some methods of the Mojarra impl (e.g. setRowIndexRowStatePreserved), maybe can remove it in the future.
+ */
+@SuppressWarnings("unchecked")
 public class UIData extends javax.faces.component.UIData {
 
     public static final String PAGINATOR_TOP_CONTAINER_CLASS = "ui-paginator ui-paginator-top ui-widget-header";
@@ -87,17 +93,20 @@ public class UIData extends javax.faces.component.UIData {
     public static final String ROWS_PER_PAGE_LABEL = "primefaces.paginator.aria.ROWS_PER_PAGE";
 
     private static final String SB_ID = UIData.class.getName() + "#id";
+
     private final Map<String, Object> _rowTransientStates = new HashMap<>();
-    private String clientId = null;
-    private DataModel model = null;
-    private Object oldVar = null;
     private Map<String, Object> _rowDeltaStates = new HashMap<>();
     private Object _initialDescendantFullComponentState = null;
+
+    private String clientId = null;
+    private DataModel model = null;
     private Boolean isNested = null;
+    private Object oldVar = null;
 
     public enum PropertyKeys {
         paginator,
         paginatorTemplate,
+        rows,
         rowsPerPageTemplate,
         rowsPerPageLabel,
         currentPageReportTemplate,
@@ -126,6 +135,38 @@ public class UIData extends javax.faces.component.UIData {
 
     public void setPaginatorTemplate(java.lang.String _paginatorTemplate) {
         getStateHelper().put(PropertyKeys.paginatorTemplate, _paginatorTemplate);
+    }
+
+    @Override
+    public int getRows() {
+        return (Integer) getStateHelper().eval(PropertyKeys.rows, 0);
+    }
+
+    @Override
+    public void setRows(int rows) {
+        if (rows < 0) {
+            throw new IllegalArgumentException(String.valueOf(rows));
+        }
+        ELContext elContext = getFacesContext().getELContext();
+        ValueExpression rowsVe = getValueExpression("rows");
+        if (isWriteable(elContext, rowsVe)) {
+            rowsVe.setValue(elContext, rows);
+        }
+        else {
+            getStateHelper().put(UIData.PropertyKeys.rows, rows);
+        }
+    }
+
+    @Override
+    public void setFirst(int first) {
+        ELContext elContext = getFacesContext().getELContext();
+        ValueExpression firstVe = getValueExpression("first");
+        if (isWriteable(elContext, firstVe)) {
+            firstVe.setValue(elContext, first);
+        }
+        else {
+            super.setFirst(first);
+        }
     }
 
     public java.lang.String getRowsPerPageTemplate() {
@@ -200,6 +241,10 @@ public class UIData extends javax.faces.component.UIData {
     @Override
     public void setRowStatePreserved(boolean _paginator) {
         getStateHelper().put(PropertyKeys.rowStatePreserved, _paginator);
+    }
+
+    public void resetRows() {
+        getStateHelper().remove(PropertyKeys.rows);
     }
 
     public void calculateFirst() {
@@ -284,7 +329,6 @@ public class UIData extends javax.faces.component.UIData {
         data.setRowIndex(-1);
         String componentClientId = data.getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        ELContext elContext = context.getELContext();
 
         String firstParam = params.get(componentClientId + "_first");
         String rowsParam = params.get(componentClientId + "_rows");
@@ -293,24 +337,13 @@ public class UIData extends javax.faces.component.UIData {
             throw new IllegalArgumentException("Unsupported rows per page value: " + rowsParam);
         }
 
-        data.setFirst(Integer.valueOf(firstParam));
+        data.setFirst(Integer.parseInt(firstParam));
+        int newRowsValue = "*".equals(rowsParam) ? getRowCount() : Integer.parseInt(rowsParam);
+        data.setRows(newRowsValue);
+    }
 
-        if ("*".equals(rowsParam)) {
-            data.setRows(getRowCount());
-        }
-        else {
-            data.setRows(Integer.valueOf(rowsParam));
-        }
-
-        ValueExpression firstVe = data.getValueExpression("first");
-        ValueExpression rowsVe = data.getValueExpression("rows");
-
-        if (firstVe != null && !firstVe.isReadOnly(elContext)) {
-            firstVe.setValue(context.getELContext(), data.getFirst());
-        }
-        if (rowsVe != null && !rowsVe.isReadOnly(elContext)) {
-            rowsVe.setValue(context.getELContext(), data.getRows());
-        }
+    private boolean isWriteable(ELContext elContext, ValueExpression ve) {
+        return ve != null && !ve.isReadOnly(elContext);
     }
 
     @Override
@@ -354,15 +387,16 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     protected void processPhase(FacesContext context, PhaseId phaseId) {
+        processFacets(context, phaseId);
+        if (requiresColumns()) {
+            processColumnFacets(context, phaseId);
+        }
+
         if (shouldSkipChildren(context)) {
             return;
         }
 
         setRowIndex(-1);
-        processFacets(context, phaseId);
-        if (requiresColumns()) {
-            processColumnFacets(context, phaseId);
-        }
         processChildren(context, phaseId);
         setRowIndex(-1);
     }
@@ -1334,6 +1368,28 @@ public class UIData extends javax.faces.component.UIData {
 
     @Override
     public Object saveState(FacesContext context) {
+        // See MyFaces UIData
+        ComponentUtils.ViewPoolingResetMode viewPoolingResetMode = ComponentUtils.isViewPooling(context);
+        if (viewPoolingResetMode == ComponentUtils.ViewPoolingResetMode.SOFT) {
+            _rowTransientStates.clear();
+            _initialDescendantFullComponentState = null;
+
+            clientId = null;
+            model = null;
+            isNested = null;
+            oldVar = null;
+        }
+        else if (viewPoolingResetMode == ComponentUtils.ViewPoolingResetMode.HARD) {
+            _rowTransientStates.clear();
+            _rowDeltaStates.clear();
+            _initialDescendantFullComponentState = null;
+
+            clientId = null;
+            model = null;
+            isNested = null;
+            oldVar = null;
+        }
+
         if (initialStateMarked()) {
             Object superState = super.saveState(context);
 
@@ -1357,24 +1413,12 @@ public class UIData extends javax.faces.component.UIData {
         }
     }
 
-    protected Boolean isNestedWithinIterator() {
+    protected boolean isNestedWithinIterator() {
         if (isNested == null) {
-            UIComponent parent = this;
-            while (null != (parent = parent.getParent())) {
-                if (parent instanceof javax.faces.component.UIData || parent.getClass().getName().endsWith("UIRepeat")
-                        || (parent instanceof UITabPanel && ((UITabPanel) parent).isRepeating())) {
-                    isNested = Boolean.TRUE;
-                    break;
-                }
-            }
-            if (isNested == null) {
-                isNested = Boolean.FALSE;
-            }
-            return isNested;
+            isNested = ComponentUtils.isNestedWithinIterator(this);
         }
-        else {
-            return isNested;
-        }
+
+        return isNested;
     }
 
     protected void preDecode(FacesContext context) {

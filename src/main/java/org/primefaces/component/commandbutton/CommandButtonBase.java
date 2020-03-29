@@ -29,8 +29,6 @@ import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.Confirmable;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class CommandButtonBase extends HtmlCommandButton implements AjaxSource, Widget, Confirmable, PrimeClientBehaviorHolder {
 
@@ -280,10 +278,5 @@ public abstract class CommandButtonBase extends HtmlCommandButton implements Aja
 
     public void setAriaLabel(String ariaLabel) {
         getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

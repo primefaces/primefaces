@@ -25,14 +25,11 @@ package org.primefaces.component.datagrid;
 
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
-import org.primefaces.component.api.Pageable;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
-import org.primefaces.component.api.UIData;
-import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.component.api.*;
+import org.primefaces.component.datalist.DataListBase;
 
-
-public abstract class DataGridBase extends UIData implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable {
+public abstract class DataGridBase extends UIData
+        implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable, MultiViewStateAware<DataGridState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -106,7 +103,11 @@ public abstract class DataGridBase extends UIData implements Widget, ClientBehav
     }
 
     @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    public boolean isMultiViewState() {
+        return (Boolean) getStateHelper().eval(DataListBase.PropertyKeys.multiViewState, false);
+    }
+
+    public void setMultiViewState(boolean multiViewState) {
+        getStateHelper().put(DataListBase.PropertyKeys.multiViewState, multiViewState);
     }
 }

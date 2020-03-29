@@ -33,12 +33,14 @@ import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.BehaviorEvent;
-
+import javax.faces.event.FacesEvent;
+import org.primefaces.component.api.DialogReturnAware;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.MapBuilder;
 
 
-public class UIMenuItem extends UIMenuItemBase {
+public class UIMenuItem extends UIMenuItemBase implements DialogReturnAware {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.UIMenuItem";
 
@@ -46,6 +48,7 @@ public class UIMenuItem extends UIMenuItemBase {
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("click", null)
+            .put(EVENT_DIALOG_RETURN, SelectEvent.class)
             .build();
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
@@ -68,21 +71,37 @@ public class UIMenuItem extends UIMenuItemBase {
 
     @Override
     public void decode(FacesContext facesContext) {
+        if (isDisabled()) {
+            return;
+        }
+
         Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
         String clientId = getClientId(facesContext);
 
         if (params.containsKey(clientId)) {
             queueEvent(new ActionEvent(this));
         }
+
+        ComponentUtils.decodeBehaviors(facesContext, this);
+    }
+
+    @Override
+    public void queueEvent(FacesEvent e) {
+        FacesContext context = getFacesContext();
+        if (isDialogReturnEvent(e, context)) {
+            queueDialogReturnEvent(e, context, this, super::queueEvent);
+        }
+        else {
+            super.queueEvent(e);
+        }
     }
 
     @Override
     public boolean shouldRenderChildren() {
-        if (getChildCount() == 0) {
-            return false;
-        }
-        else {
-            for (UIComponent child : getChildren()) {
+        int childCount = getChildCount();
+        if (childCount > 0) {
+            for (int i = 0; i < childCount; i++) {
+                UIComponent child = getChildren().get(i);
                 if (!(child instanceof UIParameter)) {
                     return true;
                 }

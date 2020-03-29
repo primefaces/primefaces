@@ -23,6 +23,7 @@
  */
 package org.primefaces.expression;
 
+import java.util.Set;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
@@ -35,12 +36,12 @@ public class TestClientIdSearchExpressionResolver implements SearchExpressionRes
     }
 
     @Override
-    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
+    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, Set<SearchExpressionHint> hints) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
+    public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression, Set<SearchExpressionHint> hints) {
         return result;
     }
 

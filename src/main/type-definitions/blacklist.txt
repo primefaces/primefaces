@@ -2,7 +2,8 @@
 # Mainly third-party with doc comments libraries we do not want to document.
 chartjs/0-chartjs.js
 charts/0-jqPlot.js
-dock/0-interfaceelements.js
+inputnumber/0-autoNumeric.js
 keyboard/0-jquery.keypad.js
+moment/moment-timezone-with-data.js
 signature/0-signature.js
 touch/touchswipe.js

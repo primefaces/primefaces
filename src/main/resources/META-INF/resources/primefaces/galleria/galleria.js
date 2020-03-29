@@ -138,33 +138,49 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
      */
     bindEvents: function() {
         var $this = this;
-                    
+
         this.jq.children('div.ui-galleria-nav-prev').on('click.galleria', function() {
-            if($this.slideshowActive) {
-                $this.stopSlideshow();
-            }
-            
-            if(!$this.isAnimating()) {
-                $this.prev();
-            }
+            $this.stopSlideshow();
+            $this.prev();
         });
-                    
+
         this.jq.children('div.ui-galleria-nav-next').on('click.galleria', function() {
-            if($this.slideshowActive) {
-                $this.stopSlideshow();
-            }
-            
-            if(!$this.isAnimating()) {
-                $this.next();
-            }
+            $this.stopSlideshow();
+            $this.next();
         });
-                    
+
         this.strip.children('li.ui-galleria-frame').on('click.galleria', function() {
-            if($this.slideshowActive) {
-                $this.stopSlideshow();
-            }
-            
+            $this.stopSlideshow();
             $this.select($(this).index(), false);
+        });
+
+        // Touch Swipe Events
+        this.jq.swipe({
+            swipeLeft:function(event) {
+                $this.stopSlideshow();
+                $this.prev();
+            },
+            swipeRight: function(event) {
+                $this.stopSlideshow();
+                $this.next();
+            },
+            excludedElements: PrimeFaces.utils.excludedSwipeElements()
+        });
+
+        // Keyboard accessibility
+        this.jq.on('keydown.galleria', function(e) {
+            var keyCode = $.ui.keyCode;
+
+            switch(e.which) {
+                case keyCode.LEFT:
+                    $this.stopSlideshow();
+                    $this.prev();
+                    break;
+                case keyCode.RIGHT:
+                    $this.stopSlideshow();
+                    $this.next();
+                    break;
+            }
         });
     },
                 
@@ -185,9 +201,11 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
      * Starts the slideshow, if it is not stopped already.
      */
     stopSlideshow: function() {
-        clearInterval(this.interval);
+        if(this.slideshowActive) {
+           clearInterval(this.interval);
         
-        this.slideshowActive = false;
+           this.slideshowActive = false;
+        }
     },
     
     /**
@@ -273,6 +291,10 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
      * Moves to the previous image that comes before the currently shown image.
      */
     prev: function() {
+        if (this.isAnimating()) {
+            return;
+        }
+        
         if(this.cfg.activeIndex != 0) {
             this.select(this.cfg.activeIndex - 1);
         }
@@ -282,6 +304,10 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
      * Moves to the next image that comes after the currently shown image.
      */
     next: function() {
+        if (this.isAnimating()) {
+            return;
+        }
+        
         if(this.cfg.activeIndex !== (this.panels.length - 1)) {
             this.select(this.cfg.activeIndex + 1);
         } 

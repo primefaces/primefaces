@@ -91,7 +91,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
     protected void encodeScript(FacesContext context, SelectOneListbox listbox) throws IOException {
         String clientId = listbox.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectOneListbox", listbox.resolveWidgetVar(), clientId)
+        wb.init("SelectOneListbox", listbox.resolveWidgetVar(context), clientId)
                 .attr("disabled", listbox.isDisabled(), false);
 
         if (listbox.isFilter()) {

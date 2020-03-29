@@ -66,7 +66,7 @@ public class PasswordRenderer extends InputRenderer {
         String clientId = password.getClientId(context);
         boolean feedback = password.isFeedback();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Password", password.resolveWidgetVar(), clientId);
+        wb.init("Password", password.resolveWidgetVar(context), clientId);
 
         if (feedback) {
             wb.attr("feedback", true)

@@ -52,6 +52,7 @@
  * @prop {JQuery} cancelButton The DOM element for the button for canceling a file upload.
  * @prop {JQuery} content The DOM element for the content of this widget.
  * @prop {JQuery} filesTbody The DOM element for the table tbody with the files.
+ * @prop {JQuery} input The DOM element for the file input element.
  * @prop {string[]} sizes Suffixes for formatting files sizes.
  * @prop {File[]} files List of currently selected files.
  * @prop {number} fileAddIndex Current index where to add files.
@@ -199,7 +200,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                             $this.cfg.onAdd.call($this, file, function(processedFile) {
                                 file = processedFile;
                                 data.files[0] = processedFile;
-                                this.addFileToRow(file, data);
+                                $this.addFileToRow(file, data);
                             });
                         }
                         else {
@@ -263,6 +264,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         };
 
         this.jq.fileupload(this.ucfg);
+        this.input = $(this.jqId + '_input');
     },
 
     /**
@@ -274,7 +276,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
     addFileToRow: function(file, data) {
         var $this = this,
             row = $('<div class="ui-fileupload-row"></div>').append('<div class="ui-fileupload-preview"></td>')
-                .append('<div>' + PrimeFaces.escapeHTML(file.name) + '</div>')
+                .append('<div class="ui-fileupload-filename">' + PrimeFaces.escapeHTML(file.name) + '</div>')
                 .append('<div>' + this.formatSize(file.size) + '</div>')
                 .append('<div class="ui-fileupload-progress"></div>')
                 .append('<div><button class="ui-fileupload-cancel ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-icon ui-icon ui-icon-close"></span><span class="ui-button-text">ui-button</span></button></div>')
@@ -664,6 +666,13 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
      */
     enableButton: function(btn) {
         btn.prop('disabled', false).attr('aria-disabled', false).removeClass('ui-state-disabled');
+    },
+
+    /**
+     * Brings up the native file selection dialog.
+     */
+    show: function() {
+        this.input.click();
     }
 });
 
@@ -768,6 +777,18 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
             return $this.cfg.invalidSizeMessage;
         }
         return null;
+    },
+
+    /**
+     * Brings up the native file selection dialog.
+     */
+    show: function() {
+        if(this.cfg.skinSimple) {
+            this.input.click();
+        }
+        else {
+            this.jq.click();
+        }
     }
 
 });

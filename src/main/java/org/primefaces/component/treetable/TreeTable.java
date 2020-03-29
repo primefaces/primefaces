@@ -32,6 +32,7 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
+import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
@@ -46,6 +47,8 @@ import org.primefaces.component.columns.Columns;
 import org.primefaces.event.*;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.MatchMode;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.filter.*;
@@ -101,29 +104,18 @@ public class TreeTable extends TreeTableBase {
     public static final String EDITABLE_COLUMN_CLASS = "ui-editable-column";
     public static final String EDITING_ROW_CLASS = "ui-row-editing";
 
-    public static final String STARTS_WITH_MATCH_MODE = "startsWith";
-    public static final String ENDS_WITH_MATCH_MODE = "endsWith";
-    public static final String CONTAINS_MATCH_MODE = "contains";
-    public static final String EXACT_MATCH_MODE = "exact";
-    public static final String LESS_THAN_MODE = "lt";
-    public static final String LESS_THAN_EQUALS_MODE = "lte";
-    public static final String GREATER_THAN_MODE = "gt";
-    public static final String GREATER_THAN_EQUALS_MODE = "gte";
-    public static final String EQUALS_MODE = "equals";
-    public static final String IN_MODE = "in";
-    public static final String GLOBAL_MODE = "global";
-    static final Map<String, FilterConstraint> FILTER_CONSTRAINTS = MapBuilder.<String, FilterConstraint>builder()
-            .put(STARTS_WITH_MATCH_MODE, new StartsWithFilterConstraint())
-            .put(ENDS_WITH_MATCH_MODE, new EndsWithFilterConstraint())
-            .put(CONTAINS_MATCH_MODE, new ContainsFilterConstraint())
-            .put(EXACT_MATCH_MODE, new ExactFilterConstraint())
-            .put(LESS_THAN_MODE, new LessThanFilterConstraint())
-            .put(LESS_THAN_EQUALS_MODE, new LessThanEqualsFilterConstraint())
-            .put(GREATER_THAN_MODE, new GreaterThanFilterConstraint())
-            .put(GREATER_THAN_EQUALS_MODE, new GreaterThanEqualsFilterConstraint())
-            .put(EQUALS_MODE, new EqualsFilterConstraint())
-            .put(IN_MODE, new InFilterConstraint())
-            .put(GLOBAL_MODE, new GlobalFilterConstraint())
+    static final Map<MatchMode, FilterConstraint> FILTER_CONSTRAINTS = MapBuilder.<MatchMode, FilterConstraint>builder()
+            .put(MatchMode.STARTS_WITH, new StartsWithFilterConstraint())
+            .put(MatchMode.ENDS_WITH, new EndsWithFilterConstraint())
+            .put(MatchMode.CONTAINS, new ContainsFilterConstraint())
+            .put(MatchMode.EXACT, new ExactFilterConstraint())
+            .put(MatchMode.LESS_THAN, new LessThanFilterConstraint())
+            .put(MatchMode.LESS_THAN_EQUALS, new LessThanEqualsFilterConstraint())
+            .put(MatchMode.GREATER_THAN, new GreaterThanFilterConstraint())
+            .put(MatchMode.GREATER_THAN_EQUALS, new GreaterThanEqualsFilterConstraint())
+            .put(MatchMode.EQUALS, new EqualsFilterConstraint())
+            .put(MatchMode.IN, new InFilterConstraint())
+            .put(MatchMode.GLOBAL, new GlobalFilterConstraint())
             .build();
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
@@ -142,12 +134,13 @@ public class TreeTable extends TreeTableBase {
             .put("page", PageEvent.class)
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
     private int columnsCount = -1;
     private UIColumn sortColumn;
     private List<UIColumn> columns;
     private Columns dynamicColumns;
     private List<String> filteredRowKeys = new ArrayList<>();
-    private List filterMetadata;
+    private List<FilterMeta> filterMetadata;
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
@@ -302,9 +295,59 @@ public class TreeTable extends TreeTableBase {
         }
     }
 
-    public UIColumn findColumn(String clientId) {
+    @Override
+    public void processValidators(FacesContext context) {
+        super.processValidators(context);
+
+        if (isFilterRequest(context)) {
+            List<FilterMeta> filterBy = populateFilterBy(context, this);
+            setFilterMetadata(filterBy);
+        }
+    }
+
+    public List<FilterMeta> populateFilterBy(FacesContext context, TreeTable tt) {
+        List<FilterMeta> filterBy = new ArrayList<>();
+        String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+
+        for (UIColumn column : tt.getColumns()) {
+            ValueExpression columnFilterByVE = column.getValueExpression("filterBy");
+
+            if (columnFilterByVE != null) {
+                UIComponent filterFacet = column.getFacet("filter");
+                ValueExpression filterByVE = columnFilterByVE;
+                Object filterValue = null;
+                String filterId = null;
+                String filterMatchMode = null;
+
+                if (column instanceof Column) {
+                    filterId = column.getClientId(context) + separator + "filter";
+                    filterValue = (filterFacet == null) ? params.get(filterId) : ((ValueHolder) filterFacet).getLocalValue();
+                    filterMatchMode = column.getFilterMatchMode();
+                }
+                else if (column instanceof DynamicColumn) {
+                    DynamicColumn dynamicColumn = (DynamicColumn) column;
+                    dynamicColumn.applyModel();
+                    filterId = dynamicColumn.getContainerClientId(context) + separator + "filter";
+                    filterValue = (filterFacet == null) ? params.get(filterId) : ((ValueHolder) filterFacet).getLocalValue();
+                    filterMatchMode = column.getFilterMatchMode();
+                    dynamicColumn.cleanModel();
+                }
+
+                filterBy.add(new FilterMeta(null,
+                        column.getColumnKey(),
+                        filterByVE,
+                        MatchMode.byName(filterMatchMode),
+                        filterValue));
+            }
+        }
+
+        return filterBy;
+    }
+
+    public UIColumn findColumn(String columnKey) {
         for (UIColumn column : getColumns()) {
-            if (column.getColumnKey().equals(clientId)) {
+            if (Objects.equals(column.getColumnKey(), columnKey)) {
                 return column;
             }
         }
@@ -313,13 +356,13 @@ public class TreeTable extends TreeTableBase {
         ColumnGroup headerGroup = getColumnGroup("header");
         for (UIComponent row : headerGroup.getChildren()) {
             for (UIComponent col : row.getChildren()) {
-                if (col.getClientId(context).equals(clientId)) {
+                if (Objects.equals(col.getClientId(context), columnKey)) {
                     return (UIColumn) col;
                 }
             }
         }
 
-        throw new FacesException("Cannot find column with key: " + clientId);
+        throw new FacesException("Cannot find column with key: " + columnKey);
     }
 
     public boolean hasFooterColumn() {
@@ -400,7 +443,7 @@ public class TreeTable extends TreeTableBase {
 
     public Locale resolveDataLocale() {
         FacesContext context = getFacesContext();
-        return LocaleUtils.resolveLocale(getDataLocale(), getClientId(context));
+        return LocaleUtils.resolveLocale(context, getDataLocale(), getClientId(context));
     }
 
     public ColumnGroup getColumnGroup(String target) {
@@ -427,7 +470,7 @@ public class TreeTable extends TreeTableBase {
 
             for (UIComponent child : getChildren()) {
                 if (child instanceof Column) {
-                    columns.add((UIColumn) child);
+                    columns.add((Column) child);
                 }
                 else if (child instanceof Columns) {
                     Columns uiColumns = (Columns) child;
@@ -462,6 +505,14 @@ public class TreeTable extends TreeTableBase {
         if (dynamicColumns != null) {
             dynamicColumns.setRowIndex(-1);
         }
+
+        // reset component for MyFaces view pooling
+        columnsCount = -1;
+        sortColumn = null;
+        columns = null;
+        dynamicColumns = null;
+        filteredRowKeys = new ArrayList<>();
+        filterMetadata = null;
 
         return super.saveState(context);
     }
@@ -575,8 +626,7 @@ public class TreeTable extends TreeTableBase {
 
     public boolean isFilteringEnabled() {
         Object value = getStateHelper().get("filtering");
-
-        return value == null ? false : true;
+        return value != null;
     }
 
     public void enableFiltering() {
@@ -602,11 +652,11 @@ public class TreeTable extends TreeTableBase {
         this.filteredRowKeys = filteredRowKeys;
     }
 
-    public List getFilterMetadata() {
+    public List<FilterMeta> getFilterMetadata() {
         return filterMetadata;
     }
 
-    public void setFilterMetadata(List filterMetadata) {
+    public void setFilterMetadata(List<FilterMeta> filterMetadata) {
         this.filterMetadata = filterMetadata;
     }
 

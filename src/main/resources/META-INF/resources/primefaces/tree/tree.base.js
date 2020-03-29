@@ -101,7 +101,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         this.selections = selectionsValue === '' ? [] : selectionsValue.split(',');
 
         if(this.cursorNode) {
-            this.cursorNode = this.jq.find('.ui-treenode[data-rowkey="' + this.cursorNode.data('rowkey') + '"]');
+            this.cursorNode = this.jq.find('.ui-treenode[data-rowkey="' + $.escapeSelector(this.cursorNode.data('rowkey')) + '"]');
         }
 
         if(this.isCheckboxSelection() && this.cfg.propagateUp) {
@@ -126,8 +126,14 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
             var nodeContent = $(this);
 
             if($(e.target).is(':not(.ui-tree-toggler)') && (cfg.nodeType === undefined || nodeContent.parent().data('nodetype') === cfg.nodeType)) {
-                targetWidget.nodeRightClick(e, nodeContent);
-                menuWidget.show(e);
+                var isContextMenuDelayed = targetWidget.nodeRightClick(e, nodeContent, function(){
+                    menuWidget.show(e);
+                });
+
+                if(isContextMenuDelayed) {
+                    e.preventDefault();
+                    e.stopPropagation(); 
+                }
             }
         });
 
@@ -339,16 +345,22 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
      * Called when a right click was performed on a node. Fire the appropriate event.
      * @protected
      * @param {JQuery} node The node for which to fire the event.
+     * @param {() => void} fnShowMenu Callback that is invoked once the context menu is shown.
      */
-    fireContextMenuEvent: function(node) {
+    fireContextMenuEvent: function(node, fnShowMenu) {
         if(this.hasBehavior('contextMenu')) {
             var ext = {
                 params: [
                     {name: this.id + '_contextMenuNode', value: this.getRowKey(node)}
-                ]
+                ],
+                oncomplete: function() {
+                    fnShowMenu();
+                }
             };
 
             this.callBehavior('contextMenu', ext);
+        } else {
+            fnShowMenu();
         }
     },
 
@@ -503,8 +515,10 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
      * @protected
      * @param {JQuery.Event} event Event of the right click.
      * @param {JQuery} nodeContent Content of the clicked node.
+     * @param {() => void} fnShowMenu Callback that is invoked when the context menu is shown. 
+     * @return {boolean} `true` if the context menu was opened, or `false` otherwise.
      */
-    nodeRightClick: function(event, nodeContent) {
+    nodeRightClick: function(event, nodeContent, fnShowMenu) {
         PrimeFaces.clearSelection();
 
         if($(event.target).is(':not(.ui-tree-toggler)')) {
@@ -524,9 +538,11 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                     }
                 }
 
-                this.fireContextMenuEvent(node);
+                this.fireContextMenuEvent(node, fnShowMenu);
+                return true;
             }
         }
+        return false;
     },
 
     /**

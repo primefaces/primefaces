@@ -6,6 +6,11 @@
 
     <module name="FileTabCharacter"/>
 
+    <module name="LineLength">
+        <property name="max" value="160"/>
+        <property name="ignorePattern" value="@version|@see|\w*_CLASS"/>
+    </module>
+
     <module name="TreeWalker">
         <!-- allow usage of CHECKSTYLE:OFF and CHECKSTYLE:ON -->
         <module name="SuppressionCommentFilter"/>
@@ -61,10 +66,6 @@
 		
 		<module name="HideUtilityClassConstructor"/>
 
-        <module name="LineLength">
-            <property name="max" value="160"/>
-            <property name="ignorePattern" value="@version|@see|\w*_CLASS"/>
-        </module>
         <module name="MethodLength">
             <property name="max" value="300" />
         </module>

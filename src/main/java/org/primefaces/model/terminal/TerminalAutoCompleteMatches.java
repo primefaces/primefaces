@@ -73,7 +73,7 @@ public class TerminalAutoCompleteMatches extends JSONObject {
     public Collection<String> getMatches() {
         JSONArray arr = (JSONArray) get(MATCHES);
 
-        ArrayList<String> matches = new ArrayList<String>(arr.length());
+        ArrayList<String> matches = new ArrayList<>(arr.length());
         Iterator<Object> i = arr.iterator();
 
         while (i.hasNext()) {

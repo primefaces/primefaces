@@ -23,34 +23,28 @@
  */
 package org.primefaces.validate.bean;
 
-import java.util.HashMap;
-import java.util.Map;
-import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.util.HTML;
 
-public class PositiveClientValidationConstraint implements ClientValidationConstraint {
+import java.util.Map;
 
+public class PositiveClientValidationConstraint extends AbstractClientValidationConstraint {
+
+    public static final String CONSTRAINT_ID = "Positive";
     public static final String MESSAGE_METADATA = "data-p-positive-msg";
-    private static final String MESSAGE_ID = "{javax.validation.constraints.Positive.message}";
+    public static final String CONSTRAINT_CLASS_NAME = CONSTRAINT_PACKAGE  + "." + CONSTRAINT_ID;
+    public static final String MESSAGE_ID = "{" + CONSTRAINT_CLASS_NAME + ".message}";
+
+    public PositiveClientValidationConstraint() {
+        super(MESSAGE_ID, MESSAGE_METADATA);
+    }
 
     @Override
-    public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
-        Map<String, Object> metadata = new HashMap<>();
-        Map attrs = constraintDescriptor.getAttributes();
-        Object message = attrs.get(ATTR_MESSAGE);
-
-        // TODO not sure if this limit is correct
-        metadata.put(HTML.VALIDATION_METADATA.MIN_VALUE, Double.MIN_VALUE);
-
-        if (!message.equals(MESSAGE_ID)) {
-            metadata.put(MESSAGE_METADATA, message);
-        }
-
-        return metadata;
+    protected void processMetadata(Map<String, Object> metadata, Map<String, Object> attrs) {
+        metadata.put(HTML.ValidationMetadata.MIN_VALUE, Double.MIN_VALUE);
     }
 
     @Override
     public String getValidatorId() {
-        return "Positive";
+        return CONSTRAINT_ID ;
     }
 }

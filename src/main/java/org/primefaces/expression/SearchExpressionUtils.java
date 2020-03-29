@@ -23,6 +23,9 @@
  */
 package org.primefaces.expression;
 
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Set;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitContext;
@@ -32,24 +35,34 @@ import org.primefaces.util.ComponentUtils;
 
 public class SearchExpressionUtils {
 
+    public static final Set<SearchExpressionHint> SET_SKIP_UNRENDERED = Collections.unmodifiableSet(EnumSet.of(SearchExpressionHint.SKIP_UNRENDERED));
+    public static final Set<SearchExpressionHint> SET_RESOLVE_CLIENT_SIDE = Collections.unmodifiableSet(EnumSet.of(SearchExpressionHint.RESOLVE_CLIENT_SIDE));
+    public static final Set<SearchExpressionHint> SET_PARENT_FALLBACK = Collections.unmodifiableSet(EnumSet.of(SearchExpressionHint.PARENT_FALLBACK));
+    public static final Set<SearchExpressionHint> SET_IGNORE_NO_RESULT = Collections.unmodifiableSet(EnumSet.of(SearchExpressionHint.IGNORE_NO_RESULT));
+    public static final Set<SearchExpressionHint> SET_VALIDATE_RENDERER = Collections.unmodifiableSet(EnumSet.of(SearchExpressionHint.VALIDATE_RENDERER));
+
     private SearchExpressionUtils() {
     }
 
-    public static VisitContext createVisitContext(FacesContext context, int hints) {
-        if (isHintSet(hints, SearchExpressionHint.SKIP_UNRENDERED)) {
+    public static VisitContext createVisitContext(FacesContext context, Set<SearchExpressionHint> hints) {
+        if (hints.contains(SearchExpressionHint.SKIP_UNRENDERED)) {
             return VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
         }
 
         return VisitContext.createVisitContext(context);
     }
 
-    public static boolean isHintSet(int hints, int hint) {
-        return (hints & hint) != 0;
-    }
-
      // used by p:resolveClientId
     public static String resolveClientId(String expression, UIComponent source) {
         return SearchExpressionFacade.resolveClientId(
+                FacesContext.getCurrentInstance(),
+                source,
+                expression);
+    }
+
+    // used by p:resolveComponent
+    public static UIComponent resolveComponent(String expression, UIComponent source) {
+        return SearchExpressionFacade.resolveComponent(
                 FacesContext.getCurrentInstance(),
                 source,
                 expression);
@@ -65,13 +78,14 @@ public class SearchExpressionUtils {
 
     // used by p:resolveWidgetVar
     public static String resolveWidgetVar(String expression, UIComponent component) {
+        FacesContext context = FacesContext.getCurrentInstance();
         UIComponent resolvedComponent = SearchExpressionFacade.resolveComponent(
-                FacesContext.getCurrentInstance(),
+                context,
                 component,
                 expression);
 
         if (resolvedComponent instanceof Widget) {
-            return "PF('" + ((Widget) resolvedComponent).resolveWidgetVar() + "')";
+            return "PF('" + ((Widget) resolvedComponent).resolveWidgetVar(context) + "')";
         }
         else {
             throw new FacesException("Component with clientId " + resolvedComponent.getClientId() + " is not a Widget");

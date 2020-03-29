@@ -28,12 +28,15 @@ public class DatePatternConverter implements PatternConverter {
     @Override
     public String convert(String pattern) {
 
+        //year; java.time.format.DateTimeFormatter
+        pattern = pattern.replaceAll("uu", "yy");
+
         //year
         if (pattern.contains("yyyy")) {
             pattern = pattern.replaceAll("yyyy*", "yy");
         }
         else {
-            pattern = pattern.replaceAll("yy", "y");
+            pattern = pattern.replace("yy", "y");
         }
 
         //month
@@ -41,13 +44,13 @@ public class DatePatternConverter implements PatternConverter {
             pattern = pattern.replaceAll("MMMM*", "MM");
         }
         else if (pattern.contains("MMM")) {
-            pattern = pattern.replaceAll("MMM", "M");
+            pattern = pattern.replace("MMM", "M");
         }
         else if (pattern.contains("MM")) { // number
-            pattern = pattern.replaceAll("MM", "mm");
+            pattern = pattern.replace("MM", "mm");
         }
         else {
-            pattern = pattern.replaceAll("M", "m");
+            pattern = pattern.replace("M", "m");
         }
 
         //day of Year
@@ -55,7 +58,7 @@ public class DatePatternConverter implements PatternConverter {
             pattern = pattern.replaceAll("DDD*", "oo");
         }
         else {
-            pattern = pattern.replaceAll("D", "o");
+            pattern = pattern.replace("D", "o");
         }
 
         //day of Week
@@ -63,7 +66,7 @@ public class DatePatternConverter implements PatternConverter {
             pattern = pattern.replaceAll("EEEE*", "DD");
         }
         else {
-            pattern = pattern.replaceAll("EEE", "D");
+            pattern = pattern.replace("EEE", "D");
         }
 
         return pattern;

@@ -20,8 +20,8 @@ if (window.PrimeFaces) {
             'javax.faces.converter.BigDecimalConverter.DECIMAL_detail': '{2}: \'{0}\' must be a signed decimal number consisting of zero or more digits, that may be followed by a decimal point and fraction.  Example: {1}',
             'javax.faces.converter.BigIntegerConverter.BIGINTEGER': '{2}: \'{0}\' must be a number consisting of one or more digits.',
             'javax.faces.converter.BigIntegerConverter.BIGINTEGER_detail': '{2}: \'{0}\' must be a number consisting of one or more digits. Example: {1}',
-            'javax.faces.converter.ByteConverter.BYTE': '{2}: \'{0}\' must be a number between 0 and 255.',
-            'javax.faces.converter.ByteConverter.BYTE_detail': '{2}: \'{0}\' must be a number between 0 and 255.  Example: {1}',
+            'javax.faces.converter.ByteConverter.BYTE': '{2}: \'{0}\' must be a number between -128 and 127.',
+            'javax.faces.converter.ByteConverter.BYTE_detail': '{2}: \'{0}\' must be a number between -128 and 127.  Example: {1}',
             'javax.faces.converter.CharacterConverter.CHARACTER': '{1}: \'{0}\' must be a valid character.',
             'javax.faces.converter.CharacterConverter.CHARACTER_detail': '{1}: \'{0}\' must be a valid ASCII character.',
             'javax.faces.converter.ShortConverter.SHORT': '{2}: \'{0}\' must be a number consisting of one or more digits.',
@@ -362,7 +362,7 @@ if (window.PrimeFaces) {
 
         'javax.faces.Byte': {
 
-            regex: /^\d+$/,
+            regex: /^-?\d+$/,
 
             MESSAGE_ID: 'javax.faces.converter.ByteConverter.BYTE',
 
@@ -378,13 +378,13 @@ if (window.PrimeFaces) {
                 var vc = PrimeFaces.util.ValidationContext;
 
                 if(!this.regex.test(submittedValue)) {
-                    throw vc.getMessage(this.MESSAGE_ID, submittedValue, 9346, vc.getLabel(element));
+                    throw vc.getMessage(this.MESSAGE_ID, submittedValue, -12, vc.getLabel(element));
                 }
                 else {
                     var byteValue = parseInt(submittedValue);
 
-                    if(byteValue < 0 || byteValue > 255)
-                        throw vc.getMessage(this.MESSAGE_ID, submittedValue, 9346, vc.getLabel(element));
+                    if(byteValue < -128 || byteValue > 127)
+                        throw vc.getMessage(this.MESSAGE_ID, submittedValue, -12, vc.getLabel(element));
                     else
                         return byteValue;
                 }
@@ -973,6 +973,8 @@ if (window.PrimeFaces) {
                 var growl = growlComponents.eq(i),
                 redisplay = growl.data('redisplay'),
                 globalOnly = growl.data('global'),
+                showSummary = growl.data('summary'),
+                showDetail = growl.data('detail'),
                 growlWidget = PF(growl.data('widget'));
 
                 growlWidget.removeAll();
@@ -985,6 +987,14 @@ if (window.PrimeFaces) {
 
                         if(globalOnly || (msg.rendered && !redisplay)) {
                             continue;
+                        }
+
+                        if (!showSummary) {
+                            msg.summary = '';
+                        }
+
+                        if (!showDetail) {
+                            msg.detail = '';
                         }
 
                         growlWidget.renderMessage(msg);
@@ -1150,10 +1160,10 @@ if (window.PrimeFaces) {
             var value;
 
             if(element.is(':radio')) {
-                value = $('input:radio[name="' + element.attr('name') + '"]:checked').val();
+                value = $('input:radio[name="' + $.escapeSelector(element.attr('name')) + '"]:checked').val();
             }
             else if(element.is(':checkbox')) {
-                value = element.data('p-grouped') ? $('input:checkbox[name="' + element.attr('name') + '"]:checked').val(): element.prop('checked').toString();
+                value = element.data('p-grouped') ? $('input:checkbox[name="' + $.escapeSelector(element.attr('name')) + '"]:checked').val(): element.prop('checked').toString();
             }
             else {
                 value = element.val();
@@ -1234,7 +1244,7 @@ if (window.PrimeFaces) {
                     chkboxes;
                     
                     if(custom) {
-                        var groupedInputs = $('input[name="' + element.attr('name') + '"].ui-chkbox-clone');
+                        var groupedInputs = $('input[name="' + $.escapeSelector(element.attr('name')) + '"].ui-chkbox-clone');
                         chkboxes = groupedInputs.parent().next();
                     }
                     else {

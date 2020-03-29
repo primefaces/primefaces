@@ -26,8 +26,6 @@ package org.primefaces.component.imagecropper;
 import javax.faces.component.UIInput;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class ImageCropperBase extends UIInput implements Widget {
 
@@ -43,12 +41,13 @@ public abstract class ImageCropperBase extends UIInput implements Widget {
         aspectRatio,
         minSize,
         maxSize,
-        backgroundColor,
-        backgroundOpacity,
         initialCoords,
         boxWidth,
         boxHeight,
-        sizeLimit
+        sizeLimit,
+        responsive,
+        guides,
+        viewMode
     }
 
     public ImageCropperBase() {
@@ -108,22 +107,6 @@ public abstract class ImageCropperBase extends UIInput implements Widget {
         getStateHelper().put(PropertyKeys.maxSize, maxSize);
     }
 
-    public String getBackgroundColor() {
-        return (String) getStateHelper().eval(PropertyKeys.backgroundColor, null);
-    }
-
-    public void setBackgroundColor(String backgroundColor) {
-        getStateHelper().put(PropertyKeys.backgroundColor, backgroundColor);
-    }
-
-    public double getBackgroundOpacity() {
-        return (Double) getStateHelper().eval(PropertyKeys.backgroundOpacity, 0.6);
-    }
-
-    public void setBackgroundOpacity(double backgroundOpacity) {
-        getStateHelper().put(PropertyKeys.backgroundOpacity, backgroundOpacity);
-    }
-
     public String getInitialCoords() {
         return (String) getStateHelper().eval(PropertyKeys.initialCoords, null);
     }
@@ -156,8 +139,27 @@ public abstract class ImageCropperBase extends UIInput implements Widget {
         getStateHelper().put(PropertyKeys.sizeLimit, sizeLimit);
     }
 
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    public boolean isResponsive() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.responsive, true);
+    }
+
+    public void setResponsive(boolean responsive) {
+        getStateHelper().put(PropertyKeys.responsive, responsive);
+    }
+
+    public boolean isGuides() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.guides, true);
+    }
+
+    public void setGuides(boolean guides) {
+        getStateHelper().put(PropertyKeys.guides, guides);
+    }
+
+    public void setViewMode(int viewMode) {
+        getStateHelper().put(PropertyKeys.viewMode, viewMode);
+    }
+
+    public int getViewMode() {
+        return (Integer) getStateHelper().eval(PropertyKeys.viewMode, 1);
     }
 }

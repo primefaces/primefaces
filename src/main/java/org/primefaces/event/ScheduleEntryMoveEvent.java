@@ -28,19 +28,25 @@ import javax.faces.component.behavior.Behavior;
 
 import org.primefaces.model.ScheduleEvent;
 
+import java.time.Duration;
+
 public class ScheduleEntryMoveEvent extends AbstractAjaxBehaviorEvent {
 
     private static final long serialVersionUID = 1L;
 
     private ScheduleEvent scheduleEvent;
 
+    private int yearDelta;
+    private int monthDelta;
     private int dayDelta;
-
     private int minuteDelta;
 
-    public ScheduleEntryMoveEvent(UIComponent component, Behavior behavior, ScheduleEvent scheduleEvent, int dayDelta, int minuteDelta) {
+    public ScheduleEntryMoveEvent(UIComponent component, Behavior behavior, ScheduleEvent scheduleEvent,
+                                  int yearDelta, int monthDelta, int dayDelta, int minuteDelta) {
         super(component, behavior);
         this.scheduleEvent = scheduleEvent;
+        this.yearDelta = yearDelta;
+        this.monthDelta = monthDelta;
         this.dayDelta = dayDelta;
         this.minuteDelta = minuteDelta;
     }
@@ -49,11 +55,30 @@ public class ScheduleEntryMoveEvent extends AbstractAjaxBehaviorEvent {
         return scheduleEvent;
     }
 
+    public int getYearDelta() {
+        return yearDelta;
+    }
+
+    public int getMonthDelta() {
+        return monthDelta;
+    }
+
     public int getDayDelta() {
         return dayDelta;
     }
 
     public int getMinuteDelta() {
         return minuteDelta;
+    }
+
+    /**
+     * Get the delta as duration.
+     * Attention: Contains only dayDelta and minuteDelta. Does not contain yearDelta and monthDelta.
+     * @return
+     */
+    public Duration getDeltaAsDuration() {
+        Duration duration = Duration.ofMinutes(minuteDelta);
+        duration = duration.plusDays(dayDelta);
+        return duration;
     }
 }

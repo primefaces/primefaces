@@ -23,30 +23,19 @@
  */
 package org.primefaces.validate.bean;
 
-import java.util.HashMap;
-import java.util.Map;
-import javax.validation.metadata.ConstraintDescriptor;
+public class NullClientValidationConstraint extends AbstractClientValidationConstraint {
 
-public class NullClientValidationConstraint implements ClientValidationConstraint {
+    public static final String CONSTRAINT_ID = "Null";
+    public static final String MESSAGE_METADATA = "data-p-null-msg";
+    public static final String CONSTRAINT_CLASS_NAME = CONSTRAINT_PACKAGE  + "." + CONSTRAINT_ID;
+    public static final String MESSAGE_ID = "{" + CONSTRAINT_CLASS_NAME + ".message}";
 
-    private static final String MESSAGE_METADATA = "data-p-null-msg";
-    private static final String MESSAGE_ID = "{javax.validation.constraints.Null.message}";
-
-    @Override
-    public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
-        Map<String, Object> metadata = new HashMap<>();
-        Map attrs = constraintDescriptor.getAttributes();
-        Object message = attrs.get(ATTR_MESSAGE);
-
-        if (!message.equals(MESSAGE_ID)) {
-            metadata.put(MESSAGE_METADATA, message);
-        }
-
-        return metadata;
+    public NullClientValidationConstraint() {
+        super(MESSAGE_ID, MESSAGE_METADATA);
     }
 
     @Override
     public String getValidatorId() {
-        return "Null";
+        return CONSTRAINT_ID ;
     }
 }

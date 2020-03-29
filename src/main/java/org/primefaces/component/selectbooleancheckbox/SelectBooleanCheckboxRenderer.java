@@ -49,17 +49,13 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
 
         String clientId = checkbox.getClientId(context);
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
-
-        if (submittedValue != null && isChecked(submittedValue)) {
-            checkbox.setSubmittedValue(true);
-        }
-        else {
-            checkbox.setSubmittedValue(false);
-        }
+        boolean checked = isChecked(submittedValue);
+        checkbox.setSubmittedValue(checked);
     }
 
     protected boolean isChecked(String value) {
-        return value.equalsIgnoreCase("on") || value.equalsIgnoreCase("yes") || value.equalsIgnoreCase("true");
+        return value != null
+                && (value.equalsIgnoreCase("on") || value.equalsIgnoreCase("yes") || value.equalsIgnoreCase("true"));
     }
 
     @Override
@@ -102,6 +98,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
     protected void encodeInput(FacesContext context, SelectBooleanCheckbox checkbox, String clientId, boolean checked) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_input";
+        String ariaLabel = checkbox.getAriaLabel() != null ? checkbox.getAriaLabel() : checkbox.getItemLabel();
 
         writer.startElement("div", checkbox);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
@@ -111,7 +108,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
+        writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
 
         if (checked) {
             writer.writeAttribute("checked", "checked", null);
@@ -174,7 +171,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
     protected void encodeScript(FacesContext context, SelectBooleanCheckbox checkbox) throws IOException {
         String clientId = checkbox.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectBooleanCheckbox", checkbox.resolveWidgetVar(), clientId).finish();
+        wb.init("SelectBooleanCheckbox", checkbox.resolveWidgetVar(context), clientId).finish();
     }
 
     @Override

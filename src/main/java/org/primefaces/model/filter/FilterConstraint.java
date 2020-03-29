@@ -27,5 +27,5 @@ import java.util.Locale;
 
 public interface FilterConstraint {
 
-    public boolean applies(Object value, Object filter, Locale locale);
+    boolean applies(Object value, Object filter, Locale locale);
 }

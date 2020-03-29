@@ -23,10 +23,12 @@
  */
 package org.primefaces.model.diagram;
 
-import java.io.Serializable;
-import java.util.List;
 import org.primefaces.model.diagram.endpoint.EndPoint;
 import org.primefaces.model.diagram.endpoint.EndPointList;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.Objects;
 
 public class Element implements Serializable {
 
@@ -108,15 +110,15 @@ public class Element implements Serializable {
     }
 
     public void addEndPoint(EndPoint endPoint) {
-        this.endPoints.add(endPoint);
+        endPoints.add(endPoint);
     }
 
     public void removeEndPoint(EndPoint endPoint) {
-        this.endPoints.remove(endPoint);
+        endPoints.remove(endPoint);
     }
 
     public void clearEndPoints(EndPoint endPoint) {
-        this.endPoints.clear();
+        endPoints.clear();
     }
 
     public boolean isDraggable() {
@@ -136,24 +138,15 @@ public class Element implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 41 * hash + (this.id != null ? this.id.hashCode() : 0);
-        return hash;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Element element = (Element) o;
+        return Objects.equals(id, element.id);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Element other = (Element) obj;
-        if ((this.id == null) ? (other.id != null) : !this.id.equals(other.id)) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

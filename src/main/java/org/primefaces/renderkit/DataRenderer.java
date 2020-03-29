@@ -52,7 +52,7 @@ import org.primefaces.util.WidgetBuilder;
 
 public class DataRenderer extends CoreRenderer {
 
-    private static final Map<String, PaginatorElementRenderer> PAGINATOR_ELEMENTS = new HashMap<String, PaginatorElementRenderer>();
+    private static final Map<String, PaginatorElementRenderer> PAGINATOR_ELEMENTS = new HashMap<>();
 
     static {
         PAGINATOR_ELEMENTS.put("{CurrentPageReport}", new CurrentPageReportRenderer());
@@ -105,14 +105,14 @@ public class DataRenderer extends CoreRenderer {
         writer.writeAttribute("role", "navigation", null);
         writer.writeAttribute(HTML.ARIA_LABEL, ariaMessage, null);
 
-        if (leftTopContent != null && isTop) {
+        if (isTop && ComponentUtils.shouldRenderFacet(leftTopContent)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", UIData.PAGINATOR_TOP_LEFT_CONTENT_CLASS, null);
             renderChild(context, leftTopContent);
             writer.endElement("div");
         }
 
-        if (rightTopContent != null && isTop) {
+        if (isTop && ComponentUtils.shouldRenderFacet(rightTopContent)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", UIData.PAGINATOR_TOP_RIGHT_CONTENT_CLASS, null);
             renderChild(context, rightTopContent);
@@ -137,13 +137,13 @@ public class DataRenderer extends CoreRenderer {
                 }
             }
         }
-        if (leftBottomContent != null && !isTop) {
+        if (!isTop && ComponentUtils.shouldRenderFacet(leftBottomContent)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", UIData.PAGINATOR_BOTTOM_LEFT_CONTENT_CLASS, null);
             renderChild(context, leftBottomContent);
             writer.endElement("div");
         }
-        if (rightBottomContent != null && !isTop) {
+        if (!isTop && ComponentUtils.shouldRenderFacet(rightBottomContent)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", UIData.PAGINATOR_BOTTOM_RIGHT_CONTENT_CLASS, null);
             renderChild(context, rightBottomContent);
@@ -192,7 +192,7 @@ public class DataRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent component = data.getFacet(facet);
 
-        if (component != null && component.isRendered()) {
+        if (ComponentUtils.shouldRenderFacet(component)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", styleClass, null);
             component.encodeAll(context);
@@ -212,7 +212,7 @@ public class DataRenderer extends CoreRenderer {
         // for header facet
         if (ariaHeaderText == null) {
             UIComponent header = column.getFacet("header");
-            if (header != null) {
+            if (ComponentUtils.shouldRenderFacet(header)) {
                 if (header instanceof UIPanel) {
                     for (UIComponent child : header.getChildren()) {
                         if (child.isRendered()) {

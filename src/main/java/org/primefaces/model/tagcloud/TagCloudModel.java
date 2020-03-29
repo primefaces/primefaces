@@ -28,11 +28,11 @@ import java.util.List;
 
 public interface TagCloudModel extends Serializable {
 
-    public List<TagCloudItem> getTags();
+    List<TagCloudItem> getTags();
 
-    public void addTag(TagCloudItem item);
+    void addTag(TagCloudItem item);
 
-    public void removeTag(TagCloudItem item);
+    void removeTag(TagCloudItem item);
 
-    public void clear();
+    void clear();
 }

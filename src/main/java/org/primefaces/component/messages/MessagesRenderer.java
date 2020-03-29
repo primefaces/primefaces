@@ -33,7 +33,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.expression.SearchExpressionHint;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.UINotificationRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
@@ -105,13 +105,7 @@ public class MessagesRenderer extends UINotificationRenderer {
 
     protected void addMessage(Messages uiMessages, FacesMessage message, Map<String, List<FacesMessage>> messagesBySeverity, String severity) {
         if (shouldRender(uiMessages, message, severity)) {
-            List<FacesMessage> severityMessages = messagesBySeverity.get(severity);
-
-            if (severityMessages == null) {
-                severityMessages = new ArrayList<>();
-                messagesBySeverity.put(severity, severityMessages);
-            }
-
+            List<FacesMessage> severityMessages = messagesBySeverity.computeIfAbsent(severity, k -> new ArrayList<>());
             severityMessages.add(message);
         }
     }
@@ -217,20 +211,24 @@ public class MessagesRenderer extends UINotificationRenderer {
 
             // key case
             if (forType == null || forType.equals("key")) {
-                Iterator<FacesMessage> messagesIterator = context.getMessages(_for);
-                while (messagesIterator.hasNext()) {
-                    if (messages == null) {
-                        messages = new ArrayList<>();
+                String[] keys = SearchExpressionFacade.split(context, _for, SearchExpressionFacade.EXPRESSION_SEPARATORS);
+                for (String key : keys) {
+                    Iterator<FacesMessage> messagesIterator = context.getMessages(key);
+                    while (messagesIterator.hasNext()) {
+                        if (messages == null) {
+                            messages = new ArrayList<>(5);
+                        }
+                        messages.add(messagesIterator.next());
                     }
-                    messages.add(messagesIterator.next());
                 }
             }
 
             // clientId / SearchExpression case
             if (forType == null || forType.equals("expression")) {
-                UIComponent forComponent = SearchExpressionFacade.resolveComponent(context, uiMessages, _for, SearchExpressionHint.IGNORE_NO_RESULT);
-                if (forComponent != null) {
-
+                List<UIComponent> forComponents = SearchExpressionFacade.resolveComponents(context, uiMessages, _for,
+                        SearchExpressionUtils.SET_IGNORE_NO_RESULT);
+                for (int i = 0; i < forComponents.size(); i++) {
+                    UIComponent forComponent = forComponents.get(i);
                     String forComponentClientId = forComponent.getClientId(context);
                     if (!_for.equals(forComponentClientId)) {
 
@@ -238,7 +236,7 @@ public class MessagesRenderer extends UINotificationRenderer {
                         while (messagesIterator.hasNext()) {
                             FacesMessage next = messagesIterator.next();
                             if (messages == null) {
-                                messages = new ArrayList<>();
+                                messages = new ArrayList<>(5);
                             }
                             if (!messages.contains(next)) {
                                 messages.add(next);
@@ -252,7 +250,7 @@ public class MessagesRenderer extends UINotificationRenderer {
             Iterator<FacesMessage> messagesIterator = context.getMessages(null);
             while (messagesIterator.hasNext()) {
                 if (messages == null) {
-                    messages = new ArrayList<>();
+                    messages = new ArrayList<>(5);
                 }
                 messages.add(messagesIterator.next());
             }
@@ -268,7 +266,7 @@ public class MessagesRenderer extends UINotificationRenderer {
                     Iterator<FacesMessage> messagesIterator = context.getMessages(key);
                     while (messagesIterator.hasNext()) {
                         if (messages == null) {
-                            messages = new ArrayList<>();
+                            messages = new ArrayList<>(5);
                         }
                         messages.add(messagesIterator.next());
                     }

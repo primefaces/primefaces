@@ -23,15 +23,16 @@
  */
 package org.primefaces.util;
 
-import org.primefaces.mock.CollectingResponseWriter;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.IOException;
+
 import javax.faces.context.FacesContext;
 
-import org.junit.Test;
-import org.primefaces.mock.FacesContextMock;
-
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
 import org.primefaces.config.PrimeEnvironment;
+import org.primefaces.mock.CollectingResponseWriter;
+import org.primefaces.mock.FacesContextMock;
 import org.primefaces.mock.pf.PrimeConfigurationMock;
 
 public class WidgetBuilderTest {

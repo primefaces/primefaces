@@ -72,23 +72,22 @@ public class Captcha extends CaptchaBase {
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 String postBody = createPostParameters(context, value);
 
-                OutputStream out = conn.getOutputStream();
-                out.write(postBody.getBytes());
-                out.flush();
-                out.close();
-
-                BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                String inputLine;
-                StringBuffer response = new StringBuffer();
-
-                while ((inputLine = rd.readLine()) != null) {
-                    response.append(inputLine);
+                try (OutputStream out = conn.getOutputStream()) {
+                    out.write(postBody.getBytes());
+                    out.flush();
                 }
 
-                JSONObject json = new JSONObject(response.toString());
-                result = json.getBoolean("success");
+                try (BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+                    String inputLine;
+                    StringBuilder response = new StringBuilder();
 
-                rd.close();
+                    while ((inputLine = rd.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+
+                    JSONObject json = new JSONObject(response.toString());
+                    result = json.getBoolean("success");
+                }
             }
             catch (Exception exception) {
                 throw new FacesException(exception);

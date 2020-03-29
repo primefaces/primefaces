@@ -49,13 +49,8 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
 
         String clientId = button.getClientId(context);
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
-
-        if (submittedValue != null && submittedValue.equalsIgnoreCase("on")) {
-            button.setSubmittedValue(true);
-        }
-        else {
-            button.setSubmittedValue(false);
-        }
+        boolean checked = submittedValue != null && submittedValue.equalsIgnoreCase("on");
+        button.setSubmittedValue(checked);
     }
 
     @Override
@@ -142,7 +137,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
 
         String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectBooleanButton", button.resolveWidgetVar(), clientId)
+        wb.init("SelectBooleanButton", button.resolveWidgetVar(context), clientId)
                 .attr("onLabel", isValueBlank(onLabel) ? "ui-button" : onLabel)
                 .attr("offLabel", isValueBlank(offLabel) ? "ui-button" : offLabel)
                 .attr("onIcon", button.getOnIcon(), null)

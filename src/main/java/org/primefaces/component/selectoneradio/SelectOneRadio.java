@@ -23,13 +23,14 @@
  */
 package org.primefaces.component.selectoneradio;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
+
+import org.primefaces.util.LangUtils;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -41,13 +42,12 @@ public class SelectOneRadio extends SelectOneRadioBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectOneRadio";
 
-    public static final String[] SUPPORTED_EVENTS = new String[]{"onchange", "onclick"};
+    public static final Set<String> DOM_EVENTS = LangUtils.unmodifiableSet("onchange", "onclick");
 
     public static final String STYLE_CLASS = "ui-selectoneradio ui-widget";
     public static final String NATIVE_STYLE_CLASS = "ui-selectoneradio ui-selectoneradio-native ui-widget";
 
     private int index = -1;
-    private List<SelectItem> selectItems;
 
     public String getRadioButtonId(FacesContext context) {
         index++;
@@ -55,11 +55,11 @@ public class SelectOneRadio extends SelectOneRadioBase {
         return this.getClientId(context) + UINamingContainer.getSeparatorChar(context) + index;
     }
 
-    public List<SelectItem> getSelectItems() {
-        return this.selectItems;
-    }
+    @Override
+    public Object saveState(FacesContext context) {
+        // reset component for MyFaces view pooling
+        index = -1;
 
-    public void setSelectItems(List<SelectItem> selectItems) {
-        this.selectItems = selectItems;
+        return super.saveState(context);
     }
 }

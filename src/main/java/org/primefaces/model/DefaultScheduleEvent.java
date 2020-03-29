@@ -24,22 +24,25 @@
 package org.primefaces.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
-public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
+public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private String id;
+    private String groupId;
     private String title;
-    private Date startDate;
-    private Date endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private boolean allDay = false;
     private String styleClass;
-    private Object data;
+    private T data;
     private boolean editable = true;
+    private boolean overlapAllowed = false;
     private String description;
     private String url;
     private ScheduleRenderingMode renderingMode;
@@ -48,27 +51,43 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
     public DefaultScheduleEvent() {
     }
 
-    public DefaultScheduleEvent(String title, Date start, Date end) {
+    /**
+     * @deprecated Use {@link #builder()} instead.
+     */
+    @Deprecated
+    public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end) {
         this.title = title;
         this.startDate = start;
         this.endDate = end;
     }
 
-    public DefaultScheduleEvent(String title, Date start, Date end, boolean allDay) {
+    /**
+     * @deprecated Use {@link #builder()} instead.
+     */
+    @Deprecated
+    public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end, boolean allDay) {
         this.title = title;
         this.startDate = start;
         this.endDate = end;
         this.allDay = allDay;
     }
 
-    public DefaultScheduleEvent(String title, Date start, Date end, String styleClass) {
+    /**
+     * @deprecated Use {@link #builder()} instead.
+     */
+    @Deprecated
+    public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end, String styleClass) {
         this.title = title;
         this.startDate = start;
         this.endDate = end;
         this.styleClass = styleClass;
     }
 
-    public DefaultScheduleEvent(String title, Date start, Date end, Object data) {
+    /**
+     * @deprecated Use {@link #builder()} instead.
+     */
+    @Deprecated
+    public DefaultScheduleEvent(String title, LocalDateTime start, LocalDateTime end, T data) {
         this.title = title;
         this.startDate = start;
         this.endDate = end;
@@ -86,6 +105,15 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
     }
 
     @Override
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    @Override
     public String getTitle() {
         return title;
     }
@@ -95,20 +123,22 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
     }
 
     @Override
-    public Date getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    @Override
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
     @Override
-    public Date getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    @Override
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
@@ -131,17 +161,26 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
     }
 
     @Override
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 
     @Override
     public boolean isEditable() {
         return editable;
+    }
+
+    @Override
+    public boolean isOverlapAllowed() {
+        return overlapAllowed;
+    }
+
+    public void setOverlapAllowed(boolean overlapAllowed) {
+        this.overlapAllowed = overlapAllowed;
     }
 
     public void setEditable(boolean editable) {
@@ -188,37 +227,109 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final DefaultScheduleEvent other = (DefaultScheduleEvent) obj;
-        if ((this.title == null) ? (other.title != null) : !this.title.equals(other.title)) {
-            return false;
-        }
-        if (this.startDate != other.startDate && (this.startDate == null || !this.startDate.equals(other.startDate))) {
-            return false;
-        }
-        if (this.endDate != other.endDate && (this.endDate == null || !this.endDate.equals(other.endDate))) {
-            return false;
-        }
-        return true;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DefaultScheduleEvent<?> that = (DefaultScheduleEvent<?>) o;
+        return Objects.equals(title, that.title) &&
+                Objects.equals(startDate, that.startDate) &&
+                Objects.equals(endDate, that.endDate);
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 61 * hash + (this.title != null ? this.title.hashCode() : 0);
-        hash = 61 * hash + (this.startDate != null ? this.startDate.hashCode() : 0);
-        hash = 61 * hash + (this.endDate != null ? this.endDate.hashCode() : 0);
-        return hash;
+        return Objects.hash(title, startDate, endDate);
     }
 
     @Override
     public String toString() {
         return "DefaultScheduleEvent{title=" + title + ",startDate=" + startDate + ",endDate=" + endDate + "}";
+    }
+
+    public static <T> Builder<T> builder() {
+        return new Builder<>();
+    }
+
+    public static final class Builder<T> {
+
+        private DefaultScheduleEvent<T> scheduleEvent;
+
+        private Builder() {
+            scheduleEvent = new DefaultScheduleEvent();
+        }
+
+        public DefaultScheduleEvent.Builder id(String id) {
+            scheduleEvent.setId(id);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder groupId(String groupId) {
+            scheduleEvent.setGroupId(groupId);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder title(String title) {
+            scheduleEvent.setTitle(title);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder startDate(LocalDateTime startDate) {
+            scheduleEvent.setStartDate(startDate);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder endDate(LocalDateTime endDate) {
+            scheduleEvent.setEndDate(endDate);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder allDay(boolean allDay) {
+            scheduleEvent.setAllDay(allDay);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder styleClass(String styleClass) {
+            scheduleEvent.setStyleClass(styleClass);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder data(T data) {
+            scheduleEvent.setData(data);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder editable(boolean editable) {
+            scheduleEvent.setEditable(editable);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder overlapAllowed(boolean overlapAllowed) {
+            scheduleEvent.setOverlapAllowed(overlapAllowed);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder description(String description) {
+            scheduleEvent.setDescription(description);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder url(String url) {
+            scheduleEvent.setUrl(url);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder renderingMode(ScheduleRenderingMode renderingMode) {
+            scheduleEvent.setRenderingMode(renderingMode);
+            return this;
+        }
+
+        public DefaultScheduleEvent.Builder dynamicProperty(String key, Object value) {
+            scheduleEvent.setDynamicProperty(key, value);
+            return this;
+        }
+
+        public DefaultScheduleEvent build() {
+            return scheduleEvent;
+        }
     }
 }

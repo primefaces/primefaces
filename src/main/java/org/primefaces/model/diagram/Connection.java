@@ -23,12 +23,14 @@
  */
 package org.primefaces.model.diagram;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import org.primefaces.model.diagram.connector.Connector;
 import org.primefaces.model.diagram.endpoint.EndPoint;
 import org.primefaces.model.diagram.overlay.Overlay;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class Connection implements Serializable {
 
@@ -100,28 +102,16 @@ public class Connection implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 89 * hash + (this.source != null ? this.source.hashCode() : 0);
-        hash = 89 * hash + (this.target != null ? this.target.hashCode() : 0);
-        return hash;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Connection that = (Connection) o;
+        return Objects.equals(source, that.source) &&
+                Objects.equals(target, that.target);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Connection other = (Connection) obj;
-        if (this.source != other.source && (this.source == null || !this.source.equals(other.source))) {
-            return false;
-        }
-        if (this.target != other.target && (this.target == null || !this.target.equals(other.target))) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return Objects.hash(source, target);
     }
 }

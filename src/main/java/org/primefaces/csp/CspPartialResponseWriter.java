@@ -25,15 +25,14 @@ package org.primefaces.csp;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.PartialResponseWriter;
-import javax.faces.context.ResponseWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.Map;
 import javax.faces.context.FacesContext;
+import org.primefaces.context.PartialResponseWriterWrapper;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.util.EscapeUtils;
 
-public class CspPartialResponseWriter extends PartialResponseWriter {
+public class CspPartialResponseWriter extends PartialResponseWriterWrapper {
 
     private CspResponseWriter cspResponseWriter;
     private PrimeRequestContext requestContext;
@@ -166,11 +165,6 @@ public class CspPartialResponseWriter extends PartialResponseWriter {
     @Override
     public void write(char[] cbuf, int off, int len) throws IOException {
         cspResponseWriter.write(cbuf, off, len);
-    }
-
-    @Override
-    public ResponseWriter cloneWithWriter(Writer writer) {
-        return getWrapped().cloneWithWriter(writer);
     }
 
     void writeJavascriptHandlers() throws IOException {

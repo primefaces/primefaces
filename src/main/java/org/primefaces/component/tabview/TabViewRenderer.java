@@ -25,6 +25,7 @@ package org.primefaces.component.tabview;
 
 import java.io.IOException;
 import java.util.Map;
+import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -89,7 +90,7 @@ public class TabViewRenderer extends CoreRenderer {
         boolean dynamic = tabView.isDynamic();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("TabView", tabView.resolveWidgetVar(), clientId);
+        wb.init("TabView", tabView.resolveWidgetVar(context), clientId);
 
         if (dynamic) {
             wb.attr("dynamic", true).attr("cache", tabView.isCache());
@@ -112,7 +113,7 @@ public class TabViewRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, TabView tabView) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = tabView.getClientId(context);
-        String widgetVar = tabView.resolveWidgetVar();
+        String widgetVar = tabView.resolveWidgetVar(context);
         String orientation = tabView.getOrientation();
         String styleClass = tabView.getStyleClass();
         String defaultStyleClass = TabView.CONTAINER_CLASS + " ui-tabs-" + orientation;
@@ -169,8 +170,6 @@ public class TabViewRenderer extends CoreRenderer {
 
     protected void encodeHeaders(FacesContext context, TabView tabView) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String var = tabView.getVar();
-        int activeIndex = tabView.getActiveIndex();
         boolean scrollable = tabView.isScrollable();
 
         if (scrollable) {
@@ -185,32 +184,14 @@ public class TabViewRenderer extends CoreRenderer {
         writer.writeAttribute("class", TabView.NAVIGATOR_CLASS, null);
         writer.writeAttribute("role", "tablist", null);
 
-        if (var == null) {
-            int j = 0;
-            for (int i = 0; i < tabView.getChildCount(); i++) {
-                UIComponent child = tabView.getChildren().get(i);
-                if (child.isRendered() && child instanceof Tab) {
-                    encodeTabHeader(context, tabView, (Tab) child, j, (j == activeIndex));
-                    j++;
-                }
+        tabView.forEachTab((tab, i, active) -> {
+            try {
+                encodeTabHeader(context, tabView, tab, i, active);
             }
-        }
-        else {
-            int dataCount = tabView.getRowCount();
-
-            //boundary check
-            activeIndex = activeIndex >= dataCount ? 0 : activeIndex;
-
-            Tab tab = (Tab) tabView.getChildren().get(0);
-
-            for (int i = 0; i < dataCount; i++) {
-                tabView.setIndex(i);
-
-                encodeTabHeader(context, tabView, tab, i, (i == activeIndex));
+            catch (IOException ex) {
+                throw new FacesException(ex);
             }
-
-            tabView.setIndex(-1);
-        }
+        });
 
         writer.endElement("ul");
 
@@ -254,7 +235,7 @@ public class TabViewRenderer extends CoreRenderer {
         writer.startElement("a", null);
         writer.writeAttribute("href", "#" + tab.getClientId(context), null);
         writer.writeAttribute("tabindex", "-1", null);
-        if (titleFacet == null) {
+        if (!ComponentUtils.shouldRenderFacet(titleFacet)) {
             String tabTitle = tab.getTitle();
             if (tabTitle != null) {
                 writer.writeText(tabTitle, null);
@@ -273,7 +254,7 @@ public class TabViewRenderer extends CoreRenderer {
         }
 
         UIComponent actions = tab.getFacet("actions");
-        if (actions != null && actions.isRendered()) {
+        if (ComponentUtils.shouldRenderFacet(actions)) {
             writer.startElement("li", null);
             writer.writeAttribute("class", "ui-tabs-actions", null);
             writer.writeAttribute(HTML.ARIA_HIDDEN, String.valueOf(!active), null);
@@ -286,39 +267,19 @@ public class TabViewRenderer extends CoreRenderer {
 
     protected void encodeContents(FacesContext context, TabView tabView) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String var = tabView.getVar();
-        int activeIndex = tabView.getActiveIndex();
         boolean dynamic = tabView.isDynamic();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", TabView.PANELS_CLASS, null);
 
-        if (var == null) {
-            int j = 0;
-            for (int i = 0; i < tabView.getChildCount(); i++) {
-                UIComponent child = tabView.getChildren().get(i);
-                if (child.isRendered() && child instanceof Tab) {
-                    encodeTabContent(context, (Tab) child, j, (j == activeIndex), dynamic);
-                    j++;
-                }
+        tabView.forEachTab((tab, i, active) -> {
+            try {
+                encodeTabContent(context, tab, i, active, dynamic);
             }
-        }
-        else {
-            int dataCount = tabView.getRowCount();
-
-            //boundary check
-            activeIndex = activeIndex >= dataCount ? 0 : activeIndex;
-
-            Tab tab = (Tab) tabView.getChildren().get(0);
-
-            for (int i = 0; i < dataCount; i++) {
-                tabView.setIndex(i);
-
-                encodeTabContent(context, tab, i, (i == activeIndex), dynamic);
+            catch (IOException ex) {
+                throw new FacesException(ex);
             }
-
-            tabView.setIndex(-1);
-        }
+        });
 
         writer.endElement("div");
     }

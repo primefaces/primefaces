@@ -70,7 +70,8 @@ public class OrderList extends OrderListBase {
             .put("reorder", null)
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-    private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>();
+
+    private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
@@ -100,10 +101,11 @@ public class OrderList extends OrderListBase {
     public void validate(FacesContext context) {
         super.validate(context);
 
-        if (isValid()) {
-            for (Iterator<String> customEventIter = customEvents.keySet().iterator(); customEventIter.hasNext(); ) {
-                String eventName = customEventIter.next();
-                AjaxBehaviorEvent behaviorEvent = customEvents.get(eventName);
+        if (isValid() && customEvents != null) {
+            for (Map.Entry<String, AjaxBehaviorEvent> event : customEvents.entrySet()) {
+                String eventName = event.getKey();
+                AjaxBehaviorEvent behaviorEvent = event.getValue();
+
                 Map<String, String> params = context.getExternalContext().getRequestParameterMap();
                 String clientId = getClientId(context);
                 List<?> list = (List) getValue();
@@ -134,4 +136,13 @@ public class OrderList extends OrderListBase {
         }
     }
 
+    @Override
+    public Object saveState(FacesContext context) {
+        // reset component for MyFaces view pooling
+        if (customEvents != null) {
+            customEvents.clear();
+        }
+
+        return super.saveState(context);
+    }
 }

@@ -28,8 +28,6 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class ToggleSwitchBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
@@ -129,10 +127,5 @@ public abstract class ToggleSwitchBase extends UIInput implements Widget, Client
 
     public void setOnblur(String onblur) {
         getStateHelper().put(PropertyKeys.onblur, onblur);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

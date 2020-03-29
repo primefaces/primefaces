@@ -48,13 +48,8 @@ public class ToggleSwitchRenderer extends InputRenderer {
 
         String clientId = toggleSwitch.getClientId(context);
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
-
-        if (submittedValue != null && isChecked(submittedValue)) {
-            toggleSwitch.setSubmittedValue(true);
-        }
-        else {
-            toggleSwitch.setSubmittedValue(false);
-        }
+        boolean checked = isChecked(submittedValue);
+        toggleSwitch.setSubmittedValue(checked);
     }
 
     @Override
@@ -131,11 +126,12 @@ public class ToggleSwitchRenderer extends InputRenderer {
     protected void encodeScript(FacesContext context, ToggleSwitch toggleSwitch) throws IOException {
         String clientId = toggleSwitch.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("ToggleSwitch", toggleSwitch.resolveWidgetVar(), clientId).finish();
+        wb.init("ToggleSwitch", toggleSwitch.resolveWidgetVar(context), clientId).finish();
     }
 
     protected boolean isChecked(String value) {
-        return value.equalsIgnoreCase("on") || value.equalsIgnoreCase("yes") || value.equalsIgnoreCase("true");
+        return value != null
+                && (value.equalsIgnoreCase("on") || value.equalsIgnoreCase("yes") || value.equalsIgnoreCase("true"));
     }
 }
 

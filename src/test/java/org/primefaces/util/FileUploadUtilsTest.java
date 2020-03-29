@@ -24,45 +24,73 @@
 package org.primefaces.util;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.primefaces.component.fileupload.FileUpload;
+import org.primefaces.context.PrimeApplicationContext;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.faces.application.Application;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import org.primefaces.model.file.UploadedFile;
 
 public class FileUploadUtilsTest {
 
     private FileUpload fileUpload;
     private InputStream inputStream;
+    private PrimeApplicationContext appContext;
 
-    @Before
+    @BeforeEach
     public void setup() {
         fileUpload = mock(FileUpload.class);
         inputStream = mock(InputStream.class);
+        FacesContext context = mock(FacesContext.class);
+        Application app = mock(Application.class);
+        when(context.getApplication()).thenReturn(app);
+        ExternalContext externalContext = mock(ExternalContext.class);
+        when(context.getExternalContext()).thenReturn(externalContext);
+        appContext = new PrimeApplicationContext(context);
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         inputStream = null;
         fileUpload = null;
     }
     
+    private UploadedFile createFile(String filename, String contentType, InputStream stream) {
+        UploadedFile file = Mockito.mock(UploadedFile.class);
+        when(file.getFileName()).thenReturn(filename);
+        when(file.getContentType()).thenReturn(contentType);
+        try {
+            when(file.getInputStream()).thenReturn(stream);
+        }
+        catch (IOException e) {
+        }
+        return file;
+    }
+    
     @Test
     public void isValidTypeFilenameCheck() {
         when(fileUpload.getAllowTypes()).thenReturn(null);
-        Assert.assertTrue(FileUploadUtils.isValidType(fileUpload, "test.png", inputStream));
+        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", inputStream)));
 
         when(fileUpload.getAllowTypes()).thenReturn("/\\.(gif|png|jpe?g)$/i");
-        Assert.assertTrue(FileUploadUtils.isValidType(fileUpload, "test.PNG", inputStream));
-        Assert.assertTrue(FileUploadUtils.isValidType(fileUpload, "test.jpeg", inputStream));
-        Assert.assertFalse(FileUploadUtils.isValidType(fileUpload, "test.bmp", inputStream));
+        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.PNG", "image/png", inputStream)));
+        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.jpeg", "image/png", inputStream)));
+        Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload,createFile( "test.bmp", "text/plain", inputStream)));
     }
 
     //TODO Once including Apache Tika as test scope dependency, we never check the default implementation which should work well also for the non-tampered cases
@@ -79,32 +107,76 @@ public class FileUploadUtilsTest {
         when(fileUpload.isValidateContentType()).thenReturn(false);
 
         when(fileUpload.getAccept()).thenReturn("image/png");
-        Assert.assertTrue(FileUploadUtils.isValidType(fileUpload, "test.TIF", tif));
-        Assert.assertTrue(FileUploadUtils.isValidType(fileUpload, "test.mp4", mp4));
+        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.TIF", "image/tif", tif)));
+        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.mp4", "application/music", mp4)));
         
         when(fileUpload.isValidateContentType()).thenReturn(true);
 
         when(fileUpload.getAccept()).thenReturn("");
-        Assert.assertTrue(FileUploadUtils.isValidType(fileUpload, "test.png", png));
+        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", png)));
 
         when(fileUpload.getAccept()).thenReturn(".png,.bmp");
-        Assert.assertTrue(FileUploadUtils.isValidType(fileUpload, "test.png", png));
-        Assert.assertTrue(FileUploadUtils.isValidType(fileUpload, "test.bmp", bmp));
-        Assert.assertFalse(FileUploadUtils.isValidType(fileUpload, "test.tif", tif));
+        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", png)));
+        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.bmp", "image/bmp", bmp)));
+        Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.tif", "image/tif", tif)));
 
         when(fileUpload.getAccept()).thenReturn("video/*");
-        Assert.assertFalse(FileUploadUtils.isValidType(fileUpload, "test.png", png));
-        Assert.assertTrue(FileUploadUtils.isValidType(fileUpload, "test.mp4", mp4));
+        Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", png)));
+        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.mp4", "application/music", mp4)));
 
         when(fileUpload.getAccept()).thenReturn("image/png");
         //FIXME PNG not recognized by Apache Tika?
-//        Assert.assertTrue(FileUploadUtils.isValidType(fileUpload, "test.Png", png));
-        Assert.assertFalse(FileUploadUtils.isValidType(fileUpload, "test.tif", tif));
+//        Assertions.assertTrue(FileUploadUtils.isValidType(fileUpload, "test.Png", png));
+        Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.tif", "image/tiff", tif)));
 
         //Tampered - Apache Tika must be in the classpath for this to work
         when(fileUpload.getAccept()).thenReturn("image/gif");
-        Assert.assertFalse(FileUploadUtils.isValidType(fileUpload, "test.gif", exe));
-        Assert.assertTrue(FileUploadUtils.isValidType(fileUpload, "test.png", gif));
+        Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.gif", "image/gif", exe)));
+        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", gif)));
+    }
+    
+    @Test
+    public void checkPathTraversal_AbsoluteFile() {
+        // Arrange
+        String relativePath = FileUploadUtilsTest.class.getResource("/test.png").getFile();
+        
+        // Act
+        try {
+            FileUploadUtils.checkPathTraversal(relativePath);
+            fail("File was absolute path and should have failed");
+        }
+        catch (Exception e) {
+            // Assert
+            assertEquals("Path traversal attempt - absolute path not allowed.", e.getMessage());
+        }
+    }
+    
+    @Test
+    public void checkPathTraversal_PathTraversal() {
+        // Arrange
+        String relativePath = "../../test.png";
+        
+        // Act
+        try {
+            FileUploadUtils.checkPathTraversal(relativePath);
+            fail("File was absolute path and should have failed");
+        }
+        catch (Exception e) {
+            // Assert
+            assertEquals("Path traversal attempt for path ../../test.png", e.getMessage());
+        }
+    }
+    
+    @Test
+    public void checkPathTraversal_Valid() {
+        // Arrange
+        String relativePath = "test.png";
+        
+        // Act
+        String result = FileUploadUtils.checkPathTraversal(relativePath);
+
+        // Assert
+        assertEquals(relativePath, result);
     }
     
 }

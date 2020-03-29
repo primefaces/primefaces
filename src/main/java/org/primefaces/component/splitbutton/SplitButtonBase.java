@@ -26,12 +26,12 @@ package org.primefaces.component.splitbutton;
 import javax.faces.component.html.HtmlCommandButton;
 
 import org.primefaces.component.api.AjaxSource;
+import org.primefaces.component.api.Confirmable;
 import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.MenuItemAware;
 import org.primefaces.model.menu.MenuModel;
-import org.primefaces.util.ComponentUtils;
 
-
-public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxSource, Widget {
+public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxSource, Confirmable, Widget, MenuItemAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -306,10 +306,5 @@ public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxS
 
     public void setFilterPlaceholder(String filterPlaceholder) {
         getStateHelper().put(PropertyKeys.filterPlaceholder, filterPlaceholder);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

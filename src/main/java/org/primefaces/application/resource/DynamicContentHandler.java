@@ -28,6 +28,6 @@ import javax.faces.context.FacesContext;
 
 public interface DynamicContentHandler {
 
-    public void handle(FacesContext context) throws IOException;
+    void handle(FacesContext context) throws IOException;
 
 }

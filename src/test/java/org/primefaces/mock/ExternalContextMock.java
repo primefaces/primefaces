@@ -80,7 +80,7 @@ public class ExternalContextMock extends ExternalContext {
     }
 
     @Override
-    public Map getInitParameterMap() {
+    public Map<String, String> getInitParameterMap() {
         return null;
     }
 

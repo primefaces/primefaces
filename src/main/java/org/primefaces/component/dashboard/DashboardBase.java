@@ -28,8 +28,6 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class DashboardBase extends UIPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
@@ -42,6 +40,7 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
         widgetVar,
         model,
         disabled,
+        reordering,
         style,
         styleClass
     }
@@ -75,6 +74,14 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
         return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
+    public void setReordering(boolean reordering) {
+        getStateHelper().put(PropertyKeys.reordering, reordering);
+    }
+
+    public boolean isReordering() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.reordering, true);
+    }
+
     public void setDisabled(boolean disabled) {
         getStateHelper().put(PropertyKeys.disabled, disabled);
     }
@@ -93,10 +100,5 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
 
     public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

@@ -123,7 +123,7 @@ public class FacesContextMock extends FacesContext {
     @Override
     public Iterator<FacesMessage> getMessages() {
         List<FacesMessage> all = new ArrayList<>();
-        for (List msgs : messages.values()) {
+        for (List<FacesMessage> msgs : messages.values()) {
             all.addAll(msgs);
         }
         

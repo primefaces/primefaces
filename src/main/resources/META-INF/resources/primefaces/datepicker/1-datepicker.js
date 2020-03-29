@@ -128,12 +128,12 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
         //i18n and l7n
         this.configureLocale();
-        
+
         //events
         this.bindDateSelectListener();
         this.bindViewChangeListener();
         this.bindCloseListener();
-        
+
         //Client behaviors, input skinning and z-index
         if(!this.cfg.inline) {
             PrimeFaces.skinInput(this.jqEl);
@@ -147,9 +147,9 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                     _self.refocusInput = false;
                     return false;
                 }
-                
+
                 this.panel.css('z-index', ++PrimeFaces.zindex);
-                
+
                 var inst = this; // the instance of prime.datePicker API
 
                 // touch support - prevents keyboard popup
@@ -176,19 +176,19 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.panelStyleClass = (this.cfg.panelStyleClass || '') + ' p-datepicker-panel';
         this.cfg.viewDate = this.viewDateOption;
         this.cfg.appendTo = this.cfg.appendTo ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo) : null;
-        
+
         this.jq.datePicker(this.cfg);
 
         //extensions
         if(!this.cfg.inline && this.cfg.showIcon) {
             var triggerButton = this.jqEl.siblings('.ui-datepicker-trigger:button');
             triggerButton.attr('aria-label',PrimeFaces.getAriaLabel('calendar.BUTTON')).attr('aria-haspopup', true);
-                        
+
             var title = this.jqEl.attr('title');
             if(title) {
                 triggerButton.attr('title', title);
             }
-            
+
             var buttonIndex = this.cfg.buttonTabindex||this.jqEl.attr('tabindex');
             if(buttonIndex) {
                 triggerButton.attr('tabindex', buttonIndex);
@@ -203,9 +203,34 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         }
 
         //pfs metadata
-        this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);        
+        this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
-    
+
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     */
+    refresh: function(cfg) {
+        if (this.cfg.appendTo) {
+            PrimeFaces.utils.cleanupDynamicOverlay(this, this.panel, this.id + '_panel', this.cfg.appendTo);
+        }
+
+        this._super(cfg);
+    },
+
+    /**
+     * @override
+     * @inheritdoc
+     */
+    destroy: function() {
+        if (this.cfg.appendTo) {
+            PrimeFaces.utils.removeDynamicOverlay(this, null, this.id + '_panel', this.cfg.appendTo);
+        }
+
+        this._super();
+    },
+
     /**
      * Initializes the localized messages for the currently configured language.
      * @private
@@ -218,11 +243,11 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             for(var setting in localeSettings) {
                 locale[setting] = localeSettings[setting];
             }
-            
+
             this.cfg.userLocale = locale;
         }
     },
-    
+
     /**
      * Sets up the event listener for when another date was selected.
      * @private
@@ -232,15 +257,15 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
         this.cfg.onSelect = function(event, date) {
             _self.viewDateOption = this.viewDate;
-            
+
             _self.fireDateSelectEvent();
-            
+
             if(!_self.cfg.inline && _self.cfg.focusOnSelect) {
                 _self.refocusInput = true;
                 _self.jqEl.focus();
                 if(!_self.cfg.showIcon) {
                     var inst = this;
-                    
+
                     _self.jqEl.off('click.datepicker').on('click.datepicker', function() {
                         inst.showOverlay();
                     });
@@ -275,11 +300,11 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         var _self = this;
         this.cfg.onViewDateChange = function(event, date) {
             _self.viewDateOption = date;
-            
+
             if(_self.hasBehavior('viewChange')) {
                 _self.fireViewChangeEvent(date.getFullYear(), date.getMonth());
             }
-        }; 
+        };
     },
 
     /**
@@ -330,7 +355,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             }
         }
     },
-    
+
     /**
      * Sets the date value the date picker.
      * @param {Date} date The new date for this widget.
@@ -347,13 +372,14 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
     getDate: function() {
         return this.jq.datePicker('getDate');
     },
-    
+
     /**
      * Sets the displayed visible calendar date. This refers to the currently displayed month page.
      * @param {Date} date The date to be shown in the calendar. 
      */
     setViewDate: function(date) {
-        this.jq.datePicker('updateViewDate', null, date);
+        var viewDate = this.jq.data().primeDatePicker.parseValue(date);
+        this.jq.datePicker('updateViewDate', null, viewDate);
     },
 
     /**
@@ -363,5 +389,5 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
     getViewDate: function() {
         return this.jq.datePicker().data().primeDatePicker.viewDate;
     },
-    
+
 });

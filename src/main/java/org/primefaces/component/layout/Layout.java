@@ -39,6 +39,7 @@ import org.primefaces.event.CloseEvent;
 import org.primefaces.event.ResizeEvent;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.Visibility;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
 
@@ -105,7 +106,7 @@ public class Layout extends LayoutBase {
 
     @Override
     public void processDecodes(FacesContext context) {
-        if (isSelfRequest(context)) {
+        if (ComponentUtils.isRequestSource(this, context)) {
             decode(context);
         }
         else {
@@ -115,20 +116,16 @@ public class Layout extends LayoutBase {
 
     @Override
     public void processValidators(FacesContext context) {
-        if (!isSelfRequest(context)) {
+        if (!ComponentUtils.isRequestSource(this, context)) {
             super.processValidators(context);
         }
     }
 
     @Override
     public void processUpdates(FacesContext context) {
-        if (!isSelfRequest(context)) {
+        if (!ComponentUtils.isRequestSource(this, context)) {
             super.processUpdates(context);
         }
-    }
-
-    private boolean isSelfRequest(FacesContext context) {
-        return getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }
 
     @Override
@@ -138,7 +135,7 @@ public class Layout extends LayoutBase {
         String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
         String clientId = getClientId(context);
 
-        if (isSelfRequest(context)) {
+        if (ComponentUtils.isRequestSource(this, context)) {
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             FacesEvent wrapperEvent = null;

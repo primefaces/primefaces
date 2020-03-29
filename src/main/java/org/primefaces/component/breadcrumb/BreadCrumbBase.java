@@ -25,8 +25,6 @@ package org.primefaces.component.breadcrumb;
 
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class BreadCrumbBase extends AbstractMenu implements Widget {
 
@@ -102,10 +100,5 @@ public abstract class BreadCrumbBase extends AbstractMenu implements Widget {
 
     public void setLastItemDisabled(boolean lastItemDisabled) {
         getStateHelper().put(PropertyKeys.lastItemDisabled, lastItemDisabled);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

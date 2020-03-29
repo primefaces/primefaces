@@ -25,7 +25,6 @@ package org.primefaces.component.rating;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.faces.application.ResourceDependencies;
@@ -60,7 +59,8 @@ public class Rating extends RatingBase {
             .put("cancel", null)
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-    private final Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>();
+
+    private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
@@ -100,9 +100,9 @@ public class Rating extends RatingBase {
     public void validate(FacesContext context) {
         super.validate(context);
 
-        if (isValid()) {
-            for (Iterator<String> customEventIter = customEvents.keySet().iterator(); customEventIter.hasNext(); ) {
-                AjaxBehaviorEvent behaviorEvent = customEvents.get(customEventIter.next());
+        if (isValid() && customEvents != null) {
+            for (Map.Entry<String, AjaxBehaviorEvent> event : customEvents.entrySet()) {
+                AjaxBehaviorEvent behaviorEvent = event.getValue();
                 RateEvent rateEvent = new RateEvent(this, behaviorEvent.getBehavior(), getValue());
 
                 rateEvent.setPhaseId(behaviorEvent.getPhaseId());
@@ -110,5 +110,15 @@ public class Rating extends RatingBase {
                 super.queueEvent(rateEvent);
             }
         }
+    }
+
+    @Override
+    public Object saveState(FacesContext context) {
+        // reset component for MyFaces view pooling
+        if (customEvents != null) {
+            customEvents.clear();
+        }
+
+        return super.saveState(context);
     }
 }

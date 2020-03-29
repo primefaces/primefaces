@@ -96,6 +96,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.itemsWrapper = this.panel.children('.ui-selectonemenu-items-wrapper');
         this.options = this.input.children('option');
         this.cfg.effect = this.cfg.effect||'fade';
+
         this.cfg.effectSpeed = this.cfg.effectSpeed||'normal';
         this.cfg.autoWidth = this.cfg.autoWidth === false ? false : true;
         this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
@@ -227,6 +228,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             var jqWidth = this.jq.outerWidth();
             if(this.panel.outerWidth() < jqWidth) {
                 this.panel.width(jqWidth);
+            }
+            else {
+                this.panel.width(this.panel.width());
             }
 
             this.panelWidthAdjusted = true;
@@ -390,10 +394,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery} item Option to highlight.
      */
     highlightItem: function(item) {
+        this.items.attr('aria-selected', false);
         this.items.filter('.ui-state-highlight').removeClass('ui-state-highlight');
 
         if(item.length > 0) {
             item.addClass('ui-state-highlight');
+            item.attr('aria-selected', true);
             this.setLabel(item.data('label'));
         }
     },
@@ -560,9 +566,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                         break;
                     }
 
-
                     var matchedOptions = null,
-                    metaKey = e.metaKey||e.ctrlKey||e.shiftKey;
+                    metaKey = e.metaKey||e.ctrlKey||e.shiftKey||e.altKey;
 
                     if(!metaKey) {
                         clearTimeout($this.searchTimer);
@@ -870,14 +875,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         this.panel.css({'display':'block', 'opacity':0, 'pointer-events': 'none'});
+        this.itemsWrapper.css({'overflow': 'scroll'});
 
         this.alignPanel();
 
         this.panel.css({'display':'none', 'opacity':'', 'pointer-events': '', 'z-index': ++PrimeFaces.zindex});
-
-        if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
-            this.panel.parent().css('z-index', PrimeFaces.zindex - 1);
-        }
+        this.itemsWrapper.css({'overflow': ''});
 
         if(this.cfg.effect !== 'none') {
             this.panel.show(this.cfg.effect, {}, this.cfg.effectSpeed, function() {
@@ -905,10 +908,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * Hides the overlay panel with the available selectable options.
      */
     hide: function() {
-        if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
-            this.panel.parent().css('z-index', '');
-        }
-
         this.panel.css('z-index', '').hide();
         this.focusInput.attr('aria-expanded', false);
         this.jq.attr('aria-expanded', false);
@@ -1017,9 +1016,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             var hasPlaceholder = this.label[0].hasAttribute('placeholder');
             this.updatePlaceholderClass((hasPlaceholder && value === '&nbsp;'));
         }
-        else if (this.cfg.label) {
-            this.label.text(this.cfg.label);
-        }
         else {
             var labelText = this.label.data('placeholder');
             if (labelText == null || labelText == "") {
@@ -1061,7 +1057,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @param {string} value Value of the option to select.
      */
     selectValue : function(value) {
-        var option = this.options.filter('[value="' + value + '"]');
+        var option = this.options.filter('[value="' + $.escapeSelector(value) + '"]');
 
         this.selectItem(this.items.eq(option.index()), true);
     },
@@ -1314,11 +1310,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @return {string} The search expression for the element to which the overlay panel should be appended.
      */
     getAppendTo: function() {
-        var dialog = this.jq.closest('.ui-dialog');
-
-        if(dialog.length == 1) {
+        var dialog = this.jq[0].closest('.ui-dialog');
+        if (dialog) {
+            var $dialog = $(dialog);
             //set position as fixed to scroll with dialog
-            if(dialog.css('position') === 'fixed') {
+            if ($dialog.css('position') === 'fixed') {
                 this.panel.css('position', 'fixed');
             }
 

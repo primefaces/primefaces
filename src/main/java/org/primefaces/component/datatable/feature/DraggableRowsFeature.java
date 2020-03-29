@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.el.MethodExpression;
+import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.datatable.DataTable;
@@ -82,7 +83,7 @@ public class DraggableRowsFeature implements DataTableFeature {
 
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        throw new RuntimeException("DraggableRows Feature should not encode.");
+        throw new FacesException("DraggableRows Feature should not encode.");
     }
 
 }

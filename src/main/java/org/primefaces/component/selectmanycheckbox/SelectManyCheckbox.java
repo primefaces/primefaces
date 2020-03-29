@@ -23,13 +23,8 @@
  */
 package org.primefaces.component.selectmanycheckbox;
 
-import java.util.List;
-
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -43,20 +38,4 @@ public class SelectManyCheckbox extends SelectManyCheckboxBase {
 
     public static final String STYLE_CLASS = "ui-selectmanycheckbox ui-widget";
 
-    private int index = -1;
-    private List<SelectItem> selectItems;
-
-    public String getCheckboxId(FacesContext context) {
-        index++;
-
-        return this.getClientId(context) + UINamingContainer.getSeparatorChar(context) + index;
-    }
-
-    public List<SelectItem> getSelectItems() {
-        return this.selectItems;
-    }
-
-    public void setSelectItems(List<SelectItem> selectItems) {
-        this.selectItems = selectItems;
-    }
 }

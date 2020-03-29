@@ -493,5 +493,27 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
     checkResize: function() {
         google.maps.event.trigger(this.map, 'resize');
         this.map.setZoom(this.map.getZoom());
+    },
+
+    /**
+     * Sets the map viewport to contain the given bounds.
+     * 
+     * @see https://developers.google.com/maps/documentation/javascript/reference/map?hl=uk#Map.fitBounds
+     * 
+     * @param {google.maps.LatLngBounds | google.maps.LatLngBoundsLiteral} bounds The new bounds
+     * @param {number | google.maps.Padding} [padding] Optional padding around the bounds. 
+     */
+    fitBounds: function(bounds, padding) {
+        //remember the property set by PrimeFaces
+        var original = this.map.fitBounds;
+
+        //replace the code by the one provided by google maps api
+        this.map.fitBounds = google.maps.Map.prototype.fitBounds;
+
+        //execute fitBounds function
+        this.map.fitBounds(bounds, padding);
+
+        //restore PrimeFaces property
+        this.map.fitBounds = original;
     }
 });

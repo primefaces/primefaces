@@ -129,7 +129,7 @@ public class KnobRenderer extends CoreRenderer {
 
     private void encodeScript(FacesContext context, Knob knob) throws IOException {
         String clientId = knob.getClientId();
-        String widgetVar = knob.resolveWidgetVar();
+        String widgetVar = knob.resolveWidgetVar(context);
         String styleClass = knob.getStyleClass() != null ? "ui-knob " + knob.getStyleClass() : "ui-knob";
 
         WidgetBuilder wb = getWidgetBuilder(context);

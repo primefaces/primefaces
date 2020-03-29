@@ -30,7 +30,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.search.SearchExpressionContext;
 import javax.faces.component.search.SearchKeywordContext;
 import javax.faces.component.search.SearchKeywordResolver;
-import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.expression.SearchExpressionUtils;
 
 public class Jsf23WidgetVarSearchKeywordResolver extends SearchKeywordResolver {
@@ -52,7 +51,7 @@ public class Jsf23WidgetVarSearchKeywordResolver extends SearchKeywordResolver {
                 WidgetVarVisitCallback visitCallback = new WidgetVarVisitCallback(matcher.group(1));
                 context.getSearchExpressionContext().getFacesContext().getViewRoot().visitTree(
                         SearchExpressionUtils.createVisitContext(
-                                context.getSearchExpressionContext().getFacesContext(), SearchExpressionHint.SKIP_UNRENDERED),
+                                context.getSearchExpressionContext().getFacesContext(), SearchExpressionUtils.SET_SKIP_UNRENDERED),
                         visitCallback);
 
                 context.invokeContextCallback(visitCallback.getComponent());

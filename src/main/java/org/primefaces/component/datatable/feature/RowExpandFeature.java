@@ -25,6 +25,7 @@ package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
 import java.util.Map;
+import javax.faces.FacesException;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -38,7 +39,7 @@ public class RowExpandFeature implements DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {
-        throw new RuntimeException("RowExpandFeature should not encode.");
+        throw new FacesException("RowExpandFeature should not encode.");
     }
 
     @Override

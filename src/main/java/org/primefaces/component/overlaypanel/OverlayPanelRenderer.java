@@ -36,6 +36,11 @@ import org.primefaces.util.WidgetBuilder;
 public class OverlayPanelRenderer extends CoreRenderer {
 
     @Override
+    public void decode(FacesContext context, UIComponent component) {
+        decodeBehaviors(context, component);
+    }
+
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         OverlayPanel panel = (OverlayPanel) component;
 
@@ -77,7 +82,7 @@ public class OverlayPanelRenderer extends CoreRenderer {
         String clientId = panel.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("OverlayPanel", panel.resolveWidgetVar(), clientId)
+        wb.init("OverlayPanel", panel.resolveWidgetVar(context), clientId)
                 .attr("target", target)
                 .attr("showEvent", panel.getShowEvent(), null)
                 .attr("hideEvent", panel.getHideEvent(), null)
@@ -95,6 +100,8 @@ public class OverlayPanelRenderer extends CoreRenderer {
                 .attr("modal", panel.isModal(), false)
                 .attr("blockScroll", panel.isBlockScroll(), false)
                 .attr("showDelay", panel.getShowDelay(), 0);
+
+        encodeClientBehaviors(context, panel);
 
         wb.finish();
     }

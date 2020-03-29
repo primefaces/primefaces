@@ -26,8 +26,6 @@ package org.primefaces.component.dnd;
 import javax.faces.component.UIComponentBase;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class DraggableBase extends UIComponentBase implements Widget {
 
@@ -60,6 +58,7 @@ public abstract class DraggableBase extends UIComponentBase implements Widget {
         appendTo,
         onStart,
         onStop,
+        onDrag,
         cancel;
 
         private String toString;
@@ -270,16 +269,19 @@ public abstract class DraggableBase extends UIComponentBase implements Widget {
         getStateHelper().put(PropertyKeys.onStop, onStop);
     }
 
+    public String getOnDrag() {
+        return (String) getStateHelper().eval(PropertyKeys.onDrag, null);
+    }
+
+    public void setOnDrag(String onDrag) {
+        getStateHelper().put(PropertyKeys.onDrag, onDrag);
+    }
+
     public String getCancel() {
         return (String) getStateHelper().eval(PropertyKeys.cancel, null);
     }
 
     public void setCancel(String cancel) {
         getStateHelper().put(PropertyKeys.cancel, cancel);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

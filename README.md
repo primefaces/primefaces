@@ -5,6 +5,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Join the chat at https://gitter.im/primefaces/primefaces](https://badges.gitter.im/primefaces/primefaces.svg)](https://gitter.im/primefaces/primefaces?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+[![PrimeFaces Hero](https://www.primefaces.org/wp-content/uploads/2020/03/primefaces-github-02032020.jpg "PrimeFaces Hero")](https://www.primefaces.org/showcase)
+
 # PrimeFaces
 
 This is an overview page, please visit [PrimeFaces.org](https://www.primefaces.org) for more information.
@@ -23,16 +25,18 @@ This is an overview page, please visit [PrimeFaces.org](https://www.primefaces.o
 
 ##### Latest Downloads
 
-Version | Binary | Source | JSF version | Java version
------------- | -------------  | ------------- | ------------- | -------------
-7.1-SNAPSHOT|  |  | 2.0 - 2.3 | 1.8 - ?
-7.0| [primefaces-7.0.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/7.0/primefaces-7.0.jar)  | [primefaces-7.0-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/7.0/primefaces-7.0-sources.jar) | 2.0 - 2.3 | 1.7 - ?
-6.2| [primefaces-6.2.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.2/primefaces-6.2.jar)  | [primefaces-6.2-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.2/primefaces-6.2-sources.jar) | 2.0 - 2.3 | 1.6 - ?
-6.1| [primefaces-6.1.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.1/primefaces-6.1.jar)  | [primefaces-6.1-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.1/primefaces-6.1-sources.jar) | 2.0 - 2.3 | 1.5 - ?
-6.0| [primefaces-6.0.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.0/primefaces-6.0.jar)  | [primefaces-6.0-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.0/primefaces-6.0-sources.jar) | 2.0 - 2.2 | 1.5 - ?
-5.3| [primefaces-5.3.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.3/primefaces-5.3.jar)  | [primefaces-5.3-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.3/primefaces-5.3-sources.jar) | 2.0 - 2.2 | 1.5 - ?
-5.2| [primefaces-5.2.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.2/primefaces-5.2.jar)  | [primefaces-5.2-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.2/primefaces-5.2-sources.jar) | 2.0 - 2.2 | 1.5 - ?
-5.1| [primefaces-5.1.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.1/primefaces-5.1.jar)  | [primefaces-5.1-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.1/primefaces-5.1-sources.jar) | 2.0 - 2.2 | 1.5 - ?
+Version | Binary | Source | JSF version | Java version | Documentation
+------------ | -------------  | ------------- | ------------- | ------------- | ------------- |
+9.0|  |  | 2.0 - 2.3 | 1.8 - ? | [9.0 Documentation](https://primefaces.github.io/primefaces/9_0/#/)
+8.0| [primefaces-8.0.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/8.0/primefaces-8.0.jar)  | [primefaces-8.0-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/8.0/primefaces-8.0-sources.jar) | 2.0 - 2.3 | 1.8 - ? | [8.0 Documentation](https://primefaces.github.io/primefaces/8_0/#/)
+7.0| [primefaces-7.0.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/7.0/primefaces-7.0.jar)  | [primefaces-7.0-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/7.0/primefaces-7.0-sources.jar) | 2.0 - 2.3 | 1.7 - ? | [7.0 Documentation](https://primefaces.github.io/primefaces/7_0/#/)
+6.2| [primefaces-6.2.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.2/primefaces-6.2.jar)  | [primefaces-6.2-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.2/primefaces-6.2-sources.jar) | 2.0 - 2.3 | 1.6 - ? | [6.2 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_2.pdf)
+6.1| [primefaces-6.1.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.1/primefaces-6.1.jar)  | [primefaces-6.1-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.1/primefaces-6.1-sources.jar) | 2.0 - 2.3 | 1.5 - ? | [6.1 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_1.pdf)
+6.0| [primefaces-6.0.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.0/primefaces-6.0.jar)  | [primefaces-6.0-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.0/primefaces-6.0-sources.jar) | 2.0 - 2.2 | 1.5 - ? | [6.0 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_0.pdf)
+5.3| [primefaces-5.3.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.3/primefaces-5.3.jar)  | [primefaces-5.3-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.3/primefaces-5.3-sources.jar) | 2.0 - 2.2 | 1.5 - ? | [5.3 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_3.pdf)
+5.2| [primefaces-5.2.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.2/primefaces-5.2.jar)  | [primefaces-5.2-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.2/primefaces-5.2-sources.jar) | 2.0 - 2.2 | 1.5 - ? | [5.2 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_2.pdf)
+5.1| [primefaces-5.1.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.1/primefaces-5.1.jar)  | [primefaces-5.1-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.1/primefaces-5.1-sources.jar) | 2.0 - 2.2 | 1.5 - ? | [5.1 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_1.pdf)
+
 
 For a full list of the available downloads, please visit the [download page](https://www.primefaces.org/downloads).
 
@@ -44,7 +48,7 @@ For a full list of the available downloads, please visit the [download page](htt
 	<dependency>
 	    <groupId>org.primefaces</groupId>
 	    <artifactId>primefaces</artifactId>
-	    <version>7.0</version>
+	    <version>8.0</version>
 	</dependency>
 	```
 
@@ -70,7 +74,7 @@ For a full list of the available downloads, please visit the [download page](htt
 
 ##### Namespaces
 
-PrimeFaces namespace is necessary to add PrimeFaces components to your pages.
+The PrimeFaces namespace is necessary to add PrimeFaces components to your pages.
 
 ```xml
 xmlns:p="http://primefaces.org/ui"
@@ -99,19 +103,19 @@ xmlns:p="http://primefaces.org/ui"
 
 ### Demo
 ***
-Please refer to the [showcase](https://www.primefaces.org/showcase) in order to see the full usage of the components. Sources of PrimeFaces showcase is available as separate [project]( https://github.com/primefaces/showcase-facelift).
+Please refer to the [showcase](https://www.primefaces.org/showcase) in order to see the full usage of the components. Sources of PrimeFaces showcase are available as a separate [project]( https://github.com/primefaces/showcase-facelift).
 
 ### Documentation
 ***
-User Guide is available here: [click](https://primefaces.github.io/primefaces/).
+A User Guide is available [here](https://primefaces.github.io/primefaces/).
 
 ### Contribution
 ***
-Visit [Contribution Wiki](https://github.com/primefaces/primefaces/wiki/Contributing-to-PrimeFaces) page for the detailed information.
+Visit the [Contribution Wiki](https://github.com/primefaces/primefaces/wiki/Contributing-to-PrimeFaces) page for detailed information.
 
 
 ### License
 ***
-Licensed under the MIT
+Licensed under the MIT License.
 
 

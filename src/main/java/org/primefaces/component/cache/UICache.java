@@ -31,14 +31,12 @@ public class UICache extends UICacheBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Cache";
 
-    private boolean cacheSetInCurrentRequest = false;
-
     public boolean isCacheSetInCurrentRequest() {
-        return cacheSetInCurrentRequest;
+        return getFacesContext().getAttributes().containsKey(this.getClientId() + "setInCurrentRequest");
     }
 
     public void setCacheSetInCurrentRequest(boolean cacheSetInCurrentRequest) {
-        this.cacheSetInCurrentRequest = cacheSetInCurrentRequest;
+        getFacesContext().getAttributes().put(this.getClientId() + "setInCurrentRequest", cacheSetInCurrentRequest);
     }
 
     @Override

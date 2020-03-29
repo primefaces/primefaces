@@ -27,41 +27,41 @@ import java.util.List;
 
 public interface TreeNode {
 
-    public String getType();
+    String getType();
 
-    public void setType(String type);
+    void setType(String type);
 
-    public Object getData();
+    Object getData();
 
-    public List<TreeNode> getChildren();
+    List<TreeNode> getChildren();
 
-    public TreeNode getParent();
+    TreeNode getParent();
 
-    public void setParent(TreeNode treeNode);
+    void setParent(TreeNode treeNode);
 
-    public boolean isExpanded();
+    boolean isExpanded();
 
-    public void setExpanded(boolean expanded);
+    void setExpanded(boolean expanded);
 
-    public int getChildCount();
+    int getChildCount();
 
-    public boolean isLeaf();
+    boolean isLeaf();
 
-    public boolean isSelected();
+    boolean isSelected();
 
-    public void setSelected(boolean value);
+    void setSelected(boolean value);
 
-    public boolean isSelectable();
+    boolean isSelectable();
 
-    public void setSelectable(boolean selectable);
+    void setSelectable(boolean selectable);
 
-    public boolean isPartialSelected();
+    boolean isPartialSelected();
 
-    public void setPartialSelected(boolean value);
+    void setPartialSelected(boolean value);
 
-    public void setRowKey(String rowKey);
+    void setRowKey(String rowKey);
 
-    public String getRowKey();
+    String getRowKey();
 
-    public void clearParent();
+    void clearParent();
 }

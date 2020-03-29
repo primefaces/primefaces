@@ -26,7 +26,7 @@ package org.primefaces.util;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.expression.SearchExpressionHint;
+import org.primefaces.expression.SearchExpressionUtils;
 
 /**
  * Helper to generate javascript code of a client side validation*
@@ -77,7 +77,7 @@ public class CSVBuilder {
     public CSVBuilder update(UIComponent component, String expressions) {
         if (!LangUtils.isValueBlank(expressions)) {
             String resolvedExpressions = SearchExpressionFacade.resolveClientIds(
-                    context, component, expressions, SearchExpressionHint.VALIDATE_RENDERER);
+                    context, component, expressions, SearchExpressionUtils.SET_VALIDATE_RENDERER);
             buffer.append(",u:'").append(resolvedExpressions).append("'");
         }
 

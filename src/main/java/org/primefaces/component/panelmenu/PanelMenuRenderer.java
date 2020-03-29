@@ -44,7 +44,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         PanelMenu menu = (PanelMenu) abstractMenu;
         String clientId = menu.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("PanelMenu", menu.resolveWidgetVar(), clientId)
+        wb.init("PanelMenu", menu.resolveWidgetVar(context), clientId)
                 .attr("stateful", menu.isStateful())
                 .attr("multiple", menu.isMultiple());
         wb.finish();
@@ -65,7 +65,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        writer.writeAttribute("role", "menu", null);
+        writer.writeAttribute("role", "tablist", null);
 
         if (menu.getElementsCount() > 0) {
             List<MenuElement> elements = menu.getElements();

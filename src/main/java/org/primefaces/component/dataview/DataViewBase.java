@@ -25,14 +25,10 @@ package org.primefaces.component.dataview;
 
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
-import org.primefaces.component.api.Pageable;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
-import org.primefaces.component.api.UIData;
-import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.component.api.*;
 
-
-public abstract class DataViewBase extends UIData implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable {
+public abstract class DataViewBase extends UIData
+        implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable, MultiViewStateAware<DataViewState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -45,7 +41,8 @@ public abstract class DataViewBase extends UIData implements Widget, ClientBehav
         styleClass,
         layout,
         gridIcon,
-        listIcon
+        listIcon,
+        multiViewState
     }
 
     public DataViewBase() {
@@ -106,7 +103,11 @@ public abstract class DataViewBase extends UIData implements Widget, ClientBehav
     }
 
     @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    public boolean isMultiViewState() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.multiViewState, false);
+    }
+
+    public void setMultiViewState(boolean multiViewState) {
+        getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
     }
 }

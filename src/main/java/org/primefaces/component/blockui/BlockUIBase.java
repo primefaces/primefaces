@@ -26,8 +26,6 @@ package org.primefaces.component.blockui;
 import javax.faces.component.UIPanel;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class BlockUIBase extends UIPanel implements Widget {
 
@@ -100,10 +98,5 @@ public abstract class BlockUIBase extends UIPanel implements Widget {
 
     public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

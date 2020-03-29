@@ -23,12 +23,9 @@
  */
 package org.primefaces.component.export;
 
-import java.io.IOException;
-
 import javax.el.ELException;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
-import javax.faces.FacesException;
 import javax.faces.component.ActionSource;
 import javax.faces.component.UIComponent;
 import javax.faces.view.facelets.*;
@@ -43,10 +40,9 @@ public class DataExporterTagHandler extends TagHandler {
     private final TagAttribute preProcessor;
     private final TagAttribute postProcessor;
     private final TagAttribute encoding;
-    private final TagAttribute repeat;
     private final TagAttribute options;
     private final TagAttribute onTableRender;
-    private final TagAttribute customExporter;
+    private final TagAttribute exporter;
 
     public DataExporterTagHandler(TagConfig tagConfig) {
         super(tagConfig);
@@ -58,14 +54,13 @@ public class DataExporterTagHandler extends TagHandler {
         encoding = getAttribute("encoding");
         preProcessor = getAttribute("preProcessor");
         postProcessor = getAttribute("postProcessor");
-        repeat = getAttribute("repeat");
         options = getAttribute("options");
         onTableRender = getAttribute("onTableRender");
-        customExporter = getAttribute("customExporter");
+        exporter = getAttribute("exporter");
     }
 
     @Override
-    public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException, FacesException, FaceletException, ELException {
+    public void apply(FaceletContext faceletContext, UIComponent parent) throws ELException {
         if (!ComponentHandler.isNew(parent)) {
             return;
         }
@@ -78,10 +73,9 @@ public class DataExporterTagHandler extends TagHandler {
         ValueExpression encodingVE = null;
         MethodExpression preProcessorME = null;
         MethodExpression postProcessorME = null;
-        ValueExpression repeatVE = null;
         ValueExpression optionsVE = null;
         MethodExpression onTableRenderME = null;
-        ValueExpression customExporterVE = null;
+        ValueExpression exporterVE = null;
 
         if (encoding != null) {
             encodingVE = encoding.getValueExpression(faceletContext, Object.class);
@@ -98,23 +92,19 @@ public class DataExporterTagHandler extends TagHandler {
         if (postProcessor != null) {
             postProcessorME = postProcessor.getMethodExpression(faceletContext, null, new Class[]{Object.class});
         }
-        if (repeat != null) {
-            repeatVE = repeat.getValueExpression(faceletContext, Object.class);
-        }
         if (options != null) {
             optionsVE = options.getValueExpression(faceletContext, Object.class);
         }
         if (onTableRender != null) {
             onTableRenderME = onTableRender.getMethodExpression(faceletContext, null, new Class[]{Object.class, Object.class});
         }
-        if (customExporter != null) {
-            customExporterVE = customExporter.getValueExpression(faceletContext, Object.class);
+        if (exporter != null) {
+            exporterVE = exporter.getValueExpression(faceletContext, Object.class);
         }
         ActionSource actionSource = (ActionSource) parent;
         DataExporter dataExporter = new DataExporter(targetVE, typeVE, fileNameVE, pageOnlyVE, selectionOnlyVE,
                 encodingVE, preProcessorME, postProcessorME, optionsVE, onTableRenderME);
-        dataExporter.setRepeat(repeatVE);
-        dataExporter.setCustomExporter(customExporterVE);
+        dataExporter.setExporter(exporterVE);
         actionSource.addActionListener(dataExporter);
     }
 

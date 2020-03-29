@@ -267,6 +267,7 @@ case _org.primefaces.event.Unselect_ instance is passed to a listener if defined
 | itemUnselect | org.primefaces.event.UnselectEvent | On item unselection. | 
 | query | - | On query. |
 | moreText | - | When moreText is clicked. |
+| clear | - | When all text is deleted. |
 
 ## ItemTip
 Itemtip is an advanced built-in tooltip when mouse is over on suggested items. Content of the

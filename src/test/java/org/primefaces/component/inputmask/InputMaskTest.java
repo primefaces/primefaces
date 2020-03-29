@@ -23,8 +23,8 @@
  */
 package org.primefaces.component.inputmask;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.regex.Pattern;
 
@@ -37,8 +37,8 @@ public class InputMaskTest {
         InputMask inputMask = new InputMask();
         inputMask.setMask("(999) 999-9999? x99999");
         Pattern pattern = new InputMaskRenderer().translateMaskIntoRegex(new FacesContextMock(), inputMask.getMask());
-        Assert.assertEquals("\\([0-9][0-9][0-9]\\) [0-9][0-9][0-9]\\-[0-9][0-9][0-9][0-9] ?x?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?", pattern.pattern());
-        Assert.assertTrue(pattern.matcher("(012) 345-6789").matches());
+        Assertions.assertEquals("\\([0-9][0-9][0-9]\\) [0-9][0-9][0-9]\\-[0-9][0-9][0-9][0-9] ?x?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?", pattern.pattern());
+        Assertions.assertTrue(pattern.matcher("(012) 345-6789").matches());
     }
 
     @Test
@@ -46,8 +46,8 @@ public class InputMaskTest {
         InputMask inputMask = new InputMask();
         inputMask.setMask("a*9");
         Pattern pattern = new InputMaskRenderer().translateMaskIntoRegex(new FacesContextMock(), inputMask.getMask());
-        Assert.assertEquals("[A-Za-z][A-Za-z0-9][0-9]", pattern.pattern());
-        Assert.assertTrue(pattern.matcher("aX3").matches());
+        Assertions.assertEquals("[A-Za-z][A-Za-z0-9][0-9]", pattern.pattern());
+        Assertions.assertTrue(pattern.matcher("aX3").matches());
     }
 
 }

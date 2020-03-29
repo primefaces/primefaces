@@ -21,6 +21,7 @@
  * drop operations.
  * @prop {JQuery} filterInput The DOM element for the filter input field that lets the user search the tree.
  * @prop {number} filterTimeout The set-timeout timer ID of the timer for the filter delay.
+ * @prop {string[]} invalidSourceKeys A list of row keys for rows that are not valid drag sources.
  * @prop {number} scrollInterval The set-interval time ID of the timer for scrolling. 
  * @prop {JQuery} scrollStateHolder Form element that holds the current scroll state.
  * @prop {boolean} shiftKey For drag&drop, whether the shift is pressed.
@@ -130,61 +131,20 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             this.filterInput = this.jq.find('.ui-tree-filter');
             PrimeFaces.skinInput(this.filterInput);
 
-            this.filterInput.on('keydown.tree-filter', function(e) {
-                var key = e.which,
-                keyCode = $.ui.keyCode;
-
-                if((key === keyCode.ENTER)) {
-                    e.preventDefault();
-                }
-            })
+            this.filterInput.on('keydown.tree-filter', PrimeFaces.utils.blockEnterKey)
             .on('keyup.tree-filter', function(e) {
-                var keyCode = $.ui.keyCode,
-                key = e.which;
-
-                switch(key) {
-                    case keyCode.UP:
-                    case keyCode.LEFT:
-                    case keyCode.DOWN:
-                    case keyCode.RIGHT:
-                    case keyCode.ENTER:
-                    case keyCode.TAB:
-                    case keyCode.ESCAPE:
-                    case keyCode.SPACE:
-                    case keyCode.HOME:
-                    case keyCode.PAGE_DOWN:
-                    case keyCode.PAGE_UP:
-                    case keyCode.END:
-                    case keyCode.DELETE:
-                    case 16: //shift
-                    case 17: //keyCode.CONTROL:
-                    case 18: //keyCode.ALT:
-                    case 91: //left window or cmd:
-                    case 92: //right window:
-                    case 93: //right cmd:
-                    case 20: //capslock:
-                    break;
-
-                    default:
-                        //function keys (F1,F2 etc.)
-                        if(key >= 112 && key <= 123) {
-                            break;
-                        }
-
-                        var metaKey = e.metaKey||e.ctrlKey;
-
-                        if(!metaKey) {
-                            if($this.filterTimeout) {
-                                clearTimeout($this.filterTimeout);
-                            }
-
-                            $this.filterTimeout = setTimeout(function() {
-                                $this.filter();
-                                $this.filterTimeout = null;
-                            }, 300);
-                        }
-                    break;
+                if (PrimeFaces.utils.ignoreFilterKey(e)) {
+                    return;
                 }
+                
+                if($this.filterTimeout) {
+                    clearTimeout($this.filterTimeout);
+                }
+
+                $this.filterTimeout = setTimeout(function() {
+                    $this.filter();
+                    $this.filterTimeout = null;
+                }, 300);
             });
         }
 
@@ -728,6 +688,8 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     $this.droppedNodeParams = [];
                 }
 
+                $this.invalidSourceKeys = [];
+
                 for(var i = (draggedNodes.length - 1); i >= 0; i--) {
                     var draggedNode = $(draggedNodes[i]),
                     dragMode = ui.draggable.data('dragmode'),
@@ -757,18 +719,27 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     }
                 }
 
-                draggedSourceKeys = (draggedSourceKeys && draggedSourceKeys.length) ? draggedSourceKeys.reverse().join(',') : dragNodeKey;
-
-                $this.fireDragDropEvent({
-                    'dragNodeKey': draggedSourceKeys,
-                    'dropNodeKey': dropNodeKey,
-                    'dragSource': dragSource.id,
-                    'dndIndex': dropPoint.prevAll('li.ui-treenode').length,
-                    'transfer': transfer,
-                    'isDroppedNodeCopy': isDroppedNodeCopy
+                if (!draggedSourceKeys) {
+                    draggedSourceKeys = [dragNodeKey];
+                }
+                draggedSourceKeys = draggedSourceKeys.filter(function(key) {
+                    return $.inArray(key, $this.invalidSourceKeys) === -1;
                 });
 
+                if (draggedSourceKeys && draggedSourceKeys.length) {
+                    draggedSourceKeys = draggedSourceKeys.reverse().join(',');
+                    $this.fireDragDropEvent({
+                        'dragNodeKey': draggedSourceKeys,
+                        'dropNodeKey': dropNodeKey,
+                        'dragSource': dragSource.id,
+                        'dndIndex': dropPoint.prevAll('li.ui-treenode').length,
+                        'transfer': transfer,
+                        'isDroppedNodeCopy': isDroppedNodeCopy
+                    });
+                }
+
                 dragSource.draggedSourceKeys = null;
+                $this.invalidSourceKeys = null;
 
                 if(isDroppedNodeCopy) {
                     $this.initDraggable();
@@ -797,6 +768,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
         var validDrop = this.validateDropPoint(dragNode, dropPoint);
         if(!validDrop) {
+            if (this.invalidSourceKeys) {
+                var dragNodeKey = this.getRowKey(targetDragNode);
+                this.invalidSourceKeys.push(dragNodeKey);
+            }
             return;
         }
 
@@ -873,6 +848,8 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     $this.droppedNodeParams = [];
                 }
 
+                $this.invalidSourceKeys = [];
+
                 for(var i = 0; i < draggedNodes.length; i++) {
                     var draggedNode = $(draggedNodes[i]),
                     dragMode = ui.draggable.data('dragmode'),
@@ -881,7 +858,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     targetDragNode = $this.findTargetDragNode(dragNode, dragMode);
 
                     if(i === 0) {
-                        dndIndex = targetDragNode.prevAll('li.ui-treenode').length;
+                        dndIndex = dropNode.find('>.ui-treenode-children>li.ui-treenode').length;
                     }
 
                     dragNodeKey = $this.getRowKey(targetDragNode);
@@ -906,18 +883,27 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     }
                 }
 
-                draggedSourceKeys = (draggedSourceKeys && draggedSourceKeys.length) ? draggedSourceKeys.reverse().join(',') : dragNodeKey;
-
-                $this.fireDragDropEvent({
-                    'dragNodeKey': draggedSourceKeys,
-                    'dropNodeKey': dropNodeKey,
-                    'dragSource': dragSource.id,
-                    'dndIndex': dndIndex,
-                    'transfer': transfer,
-                    'isDroppedNodeCopy': isDroppedNodeCopy
+                if (!draggedSourceKeys) {
+                    draggedSourceKeys = [dragNodeKey];
+                }
+                draggedSourceKeys = draggedSourceKeys.filter(function(key) {
+                    return $.inArray(key, $this.invalidSourceKeys) === -1;
                 });
 
+                if (draggedSourceKeys && draggedSourceKeys.length) {
+                    draggedSourceKeys = draggedSourceKeys.reverse().join(',');
+                    $this.fireDragDropEvent({
+                        'dragNodeKey': draggedSourceKeys,
+                        'dropNodeKey': dropNodeKey,
+                        'dragSource': dragSource.id,
+                        'dndIndex': dndIndex,
+                        'transfer': transfer,
+                        'isDroppedNodeCopy': isDroppedNodeCopy
+                    });
+                }
+
                 dragSource.draggedSourceKeys = null;
+                $this.invalidSourceKeys = null;
 
                 if(isDroppedNodeCopy) {
                     $this.initDraggable();
@@ -947,6 +933,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
         var validDrop = this.validateDropNode(dragNode, dropNode, oldParentNode);
         if(!validDrop) {
+            if (this.invalidSourceKeys) {
+                var dragNodeKey = this.getRowKey(targetDragNode);
+                this.invalidSourceKeys.push(dragNodeKey);
+            }
             return;
         }
 

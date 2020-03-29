@@ -26,8 +26,6 @@ package org.primefaces.component.captcha;
 import javax.faces.component.UIInput;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class CaptchaBase extends UIInput implements Widget {
 
@@ -109,10 +107,5 @@ public abstract class CaptchaBase extends UIInput implements Widget {
 
     public void setSize(String size) {
         getStateHelper().put(PropertyKeys.size, size);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

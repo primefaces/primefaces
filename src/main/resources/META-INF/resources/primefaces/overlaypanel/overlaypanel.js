@@ -57,7 +57,8 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.cfg.showDelay = this.cfg.showDelay || 0;
 
         if(this.cfg.showCloseIcon) {
-            this.closerIcon = $('<a href="#" class="ui-overlaypanel-close ui-state-default" href="#"><span class="ui-icon ui-icon-closethick"></span></a>').appendTo(this.jq);
+            this.closerIcon = $('<a href="#" class="ui-overlaypanel-close ui-state-default"><span class="ui-icon ui-icon-closethick"></span></a>')
+                              .attr('aria-label', PrimeFaces.getAriaLabel('overlaypanel.CLOSE')).appendTo(this.jq);
         }
 
         this.bindCommonEvents();
@@ -145,13 +146,8 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
             });
         }
 
-        $this.target.off('keydown.ui-overlaypanel keyup.ui-overlaypanel').on('keydown.ui-overlaypanel', function(e) {
-            var keyCode = $.ui.keyCode, key = e.which;
-
-            if(key === keyCode.ENTER) {
-                e.preventDefault();
-            }
-        })
+        $this.target.off('keydown.ui-overlaypanel keyup.ui-overlaypanel')
+        .on('keydown.ui-overlaypanel', PrimeFaces.utils.blockEnterKey)
         .on('keyup.ui-overlaypanel', function(e) {
             var keyCode = $.ui.keyCode, key = e.which;
 
@@ -328,6 +324,9 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @private
      */
     postShow: function() {
+
+        this.callBehavior('show');
+
         if(this.cfg.onShow) {
             this.cfg.onShow.call(this);
         }
@@ -349,6 +348,8 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
             'display':'block'
         });
 
+        this.callBehavior('hide');
+
         if(this.cfg.onHide) {
             this.cfg.onHide.call(this);
         }
@@ -364,17 +365,19 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @private
      */
     setupDialogSupport: function() {
-        var dialog = this.target.closest('.ui-dialog');
+        var dialog = this.target[0].closest('.ui-dialog');
+        if (dialog) {
+            var $dialog = $(dialog);
+            if ($dialog.length == 1) {
+                //set position as fixed to scroll with dialog
+                if($dialog.css('position') === 'fixed') {
+                    this.jq.css('position', 'fixed');
+                }
 
-        if(dialog.length == 1) {
-            //set position as fixed to scroll with dialog
-            if(dialog.css('position') === 'fixed') {
-                this.jq.css('position', 'fixed');
-            }
-
-            //append to body if not already appended by user choice
-            if(!this.cfg.appendTo) {
-                this.jq.appendTo(document.body);
+                //append to body if not already appended by user choice
+                if(!this.cfg.appendTo) {
+                    this.jq.appendTo(document.body);
+                }
             }
         }
     },

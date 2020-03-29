@@ -23,6 +23,8 @@
  */
 package org.primefaces.util;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.apache.xmlbeans.impl.common.XMLChar;
 import org.owasp.encoder.Encode;
 
@@ -31,6 +33,8 @@ import org.owasp.encoder.Encode;
  * <p>Method calls are delegated to safe and well-tried whitelisting encoders from owasp-java-encoding.</p>
  */
 public class EscapeUtils {
+
+    private static final Pattern JAVASCRIPT_VAR_NAME = Pattern.compile("^[^a-zA-Z_$]|[^\\w$]");
 
     private EscapeUtils() {
     }
@@ -152,6 +156,11 @@ public class EscapeUtils {
      */
     public static String forJavaScriptSource(String input) {
         return Encode.forJavaScriptSource(input);
+    }
+
+    public static String forJavaScriptVarName(String input) {
+        Matcher matcher = JAVASCRIPT_VAR_NAME.matcher(input);
+        return matcher.replaceAll("_");
     }
 
     /**

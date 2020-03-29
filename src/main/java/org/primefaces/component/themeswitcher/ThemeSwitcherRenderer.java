@@ -38,7 +38,7 @@ public class ThemeSwitcherRenderer extends SelectOneMenuRenderer {
         ThemeSwitcher ts = (ThemeSwitcher) menu;
         String clientId = ts.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("ThemeSwitcher", ts.resolveWidgetVar(), clientId)
+        wb.init("ThemeSwitcher", ts.resolveWidgetVar(context), clientId)
                 .attr("effect", ts.getEffect(), null)
                 .attr("effectSpeed", ts.getEffectSpeed(), null);
 

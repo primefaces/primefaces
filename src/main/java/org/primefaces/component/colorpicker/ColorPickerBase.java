@@ -28,8 +28,6 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class ColorPickerBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
@@ -93,10 +91,5 @@ public abstract class ColorPickerBase extends UIInput implements Widget, ClientB
 
     public void setOnchange(String onchange) {
         getStateHelper().put(PropertyKeys.onchange, onchange);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

@@ -51,6 +51,7 @@ function createHookFnCompilerOptionsCreate() {
 }
 
 /**
+ * Takes a TypeScript program and collects all syntactical and semantic errors (types, overrides etc.)
  * @param {boolean} verbose
  * @return {TsHookFnValidateProgram[]}
  */

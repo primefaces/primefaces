@@ -23,11 +23,8 @@
  */
 package org.primefaces.application.resource;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.util.Constants;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -35,9 +32,10 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.primefaces.model.StreamedContent;
-import org.primefaces.util.Constants;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map;
+import java.util.logging.Logger;
 
 public class StreamedContentHandler extends BaseDynamicContentHandler {
 
@@ -110,8 +108,7 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
 
             }
             catch (Exception e) {
-                LOGGER.log(Level.SEVERE, "Error in streaming dynamic resource.", e);
-                throw new IOException(e);
+                throw new IOException("Error in streaming dynamic resource", e);
             }
             finally {
                 //cleanup

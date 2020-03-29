@@ -23,24 +23,28 @@
  */
 package org.primefaces.component.inputnumber;
 
-import org.junit.*;
-import org.junit.rules.ExpectedException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doCallRealMethod;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import java.util.HashMap;
-import java.util.Map;
 
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class InputNumberTest {
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
     private InputNumberRenderer renderer;
     private FacesContext context;
@@ -49,7 +53,7 @@ public class InputNumberTest {
     private InputNumber inputNumber;
     private ValueExpression valueExpression;
 
-    @Before
+    @BeforeEach
     public void setup() {
         renderer = new InputNumberRenderer();
         context = mock(FacesContext.class);
@@ -64,7 +68,7 @@ public class InputNumberTest {
         doCallRealMethod().when(inputNumber).setSubmittedValue(anyString());
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         valueExpression = null;
         inputNumber = null;
@@ -97,28 +101,28 @@ public class InputNumberTest {
     public void testDecodeNegativeWithinDefaultRange() {
         setupValues("-999999999.99", false, null, null, false);
         renderer.decode(context, inputNumber);
-        Assert.assertEquals("-999999999.99", inputNumber.getSubmittedValue());
+        Assertions.assertEquals("-999999999.99", inputNumber.getSubmittedValue());
     }
 
     @Test
     public void testDecodeZeroWithinDefaultRange() {
         setupValues("0", false, null, null, false);
         renderer.decode(context, inputNumber);
-        Assert.assertEquals("0", inputNumber.getSubmittedValue());
+        Assertions.assertEquals("0", inputNumber.getSubmittedValue());
     }
 
     @Test
     public void testDecodePositiveWithinDefaultRange() {
         setupValues("999999999.99", false, null, null, false);
         renderer.decode(context, inputNumber);
-        Assert.assertEquals("999999999.99", inputNumber.getSubmittedValue());
+        Assertions.assertEquals("999999999.99", inputNumber.getSubmittedValue());
     }
 
     @Test
     public void testDecodeWithinRange() {
         setupValues("3.14", false, "-1", "5", false);
         renderer.decode(context, inputNumber);
-        Assert.assertEquals("3.14", inputNumber.getSubmittedValue());
+        Assertions.assertEquals("3.14", inputNumber.getSubmittedValue());
     }
 
     @Test
@@ -126,29 +130,50 @@ public class InputNumberTest {
 
         setupValues("-1", false, "0.0", null, false);
         renderer.decode(context, inputNumber);
-        Assert.assertEquals("0.0", inputNumber.getSubmittedValue());
+        Assertions.assertEquals("0.0", inputNumber.getSubmittedValue());
     }
 
     @Test
     public void testDecodeAboveRange() {
         setupValues("2", false, "0.0", "1.0", false);
         renderer.decode(context, inputNumber);
-        Assert.assertEquals("1.0", inputNumber.getSubmittedValue());
+        Assertions.assertEquals("1.0", inputNumber.getSubmittedValue());
+    }
+
+    @Test
+    public void testDecodeNegativeBelowDefaultRange() {
+        setupValues("-90000000000000", false, null, null, false);
+        renderer.decode(context, inputNumber);
+        Assertions.assertEquals("-10000000000000", inputNumber.getSubmittedValue());
+    }
+
+    @Test
+    public void testDecodePositiveAboveDefaultRange() {
+        setupValues("90000000000000", false, null, null, false);
+        renderer.decode(context, inputNumber);
+        Assertions.assertEquals("10000000000000", inputNumber.getSubmittedValue());
     }
 
     @Test
     public void testDecodeInvalidNumber() {
-        expectedException.expect(FacesException.class);
-        expectedException.expectMessage("Invalid number");
         setupValues("crash", false, null, null, false);
-        renderer.decode(context, inputNumber);
+        
+        // Act
+        FacesException thrown = Assertions.assertThrows(FacesException.class, () -> {
+            renderer.decode(context, inputNumber);
+        });
+        
+
+        // Assert (expected exception)
+        assertEquals("Invalid number", thrown.getMessage());
+        
     }
 
     @Test
     public void testDecodeEmptyNonPrimitive() {
         setupValues("", false, "1", "10", false);
         renderer.decode(context, inputNumber);
-        Assert.assertEquals("", inputNumber.getSubmittedValue());
+        Assertions.assertEquals("", inputNumber.getSubmittedValue());
     }
 
     @Test
@@ -156,7 +181,7 @@ public class InputNumberTest {
         setupValues("", false, "1", "10", true);
         renderer.decode(context, inputNumber);
         double submittedValue = Double.parseDouble(inputNumber.getSubmittedValue().toString());
-        Assert.assertTrue(submittedValue >= 1 && submittedValue <= 10);
+        Assertions.assertTrue(submittedValue >= 1 && submittedValue <= 10);
     }
 
     @Test
@@ -164,14 +189,14 @@ public class InputNumberTest {
         setupValues("", false, null, "10.0", true);
         renderer.decode(context, inputNumber);
         double submittedValue = Double.parseDouble(inputNumber.getSubmittedValue().toString());
-        Assert.assertEquals("10.0", String.valueOf(submittedValue));
+        Assertions.assertEquals("10.0", String.valueOf(submittedValue));
     }
 
     @Test
     public void testDecodeDisabled() {
         setupValues("1", true, "0", "2", false);
         renderer.decode(context, inputNumber);
-        Assert.assertEquals(null, inputNumber.getSubmittedValue());
+        Assertions.assertEquals(null, inputNumber.getSubmittedValue());
     }
 
 }

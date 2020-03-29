@@ -33,6 +33,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class GalleriaRenderer extends CoreRenderer {
@@ -56,6 +57,7 @@ public class GalleriaRenderer extends CoreRenderer {
 
         writer.startElement("div", component);
         writer.writeAttribute("id", galleria.getClientId(context), "id");
+        writer.writeAttribute("tabindex", galleria.getTabindex(), null);
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
@@ -71,7 +73,7 @@ public class GalleriaRenderer extends CoreRenderer {
                     writer.writeAttribute("class", Galleria.PANEL_CLASS, null);
                     child.encodeAll(context);
 
-                    if (content != null) {
+                    if (ComponentUtils.shouldRenderFacet(content)) {
                         writer.startElement("div", null);
                         writer.writeAttribute("class", Galleria.PANEL_CONTENT_CLASS, null);
                         content.encodeAll(context);
@@ -118,10 +120,10 @@ public class GalleriaRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
 
         if (context.isPostback()) {
-            wb.init("Galleria", galleria.resolveWidgetVar(), clientId);
+            wb.init("Galleria", galleria.resolveWidgetVar(context), clientId);
         }
         else {
-            wb.initWithWindowLoad("Galleria", galleria.resolveWidgetVar(), clientId);
+            wb.initWithWindowLoad("Galleria", galleria.resolveWidgetVar(context), clientId);
         }
 
         wb.attr("showFilmstrip", galleria.isShowFilmstrip(), true)

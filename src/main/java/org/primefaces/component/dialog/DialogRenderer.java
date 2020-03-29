@@ -30,6 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -59,7 +60,7 @@ public class DialogRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Dialog dialog) throws IOException {
         String clientId = dialog.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Dialog", dialog.resolveWidgetVar(), clientId);
+        wb.init("Dialog", dialog.resolveWidgetVar(context), clientId);
 
         wb.attr("visible", dialog.isVisible(), false)
                 .attr("draggable", dialog.isDraggable(), true)
@@ -70,7 +71,8 @@ public class DialogRenderer extends CoreRenderer {
                 .attr("height", dialog.getHeight(), null)
                 .attr("minWidth", dialog.getMinWidth(), Integer.MIN_VALUE)
                 .attr("minHeight", dialog.getMinHeight(), Integer.MIN_VALUE)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, dialog, dialog.getAppendTo()), null)
+                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, dialog, dialog.getAppendTo(),
+                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
                 .attr("dynamic", dialog.isDynamic(), false)
                 .attr("showEffect", dialog.getShowEffect(), null)
                 .attr("hideEffect", dialog.getHideEffect(), null)
@@ -83,7 +85,7 @@ public class DialogRenderer extends CoreRenderer {
                 .callback("onShow", "function()", dialog.getOnShow());
 
         String focusExpressions = SearchExpressionFacade.resolveClientIds(
-                context, dialog, dialog.getFocus());
+                context, dialog, dialog.getFocus(), SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE);
         if (focusExpressions != null) {
             wb.attr("focus", focusExpressions);
         }
@@ -141,7 +143,7 @@ public class DialogRenderer extends CoreRenderer {
         writer.writeAttribute("id", dialog.getClientId(context) + "_title", null);
         writer.writeAttribute("class", Dialog.TITLE_CLASS, null);
 
-        if (headerFacet != null) {
+        if (ComponentUtils.shouldRenderFacet(headerFacet)) {
             headerFacet.encodeAll(context);
         }
         else if (header != null) {
@@ -178,7 +180,7 @@ public class DialogRenderer extends CoreRenderer {
         writer.writeAttribute("class", Dialog.FOOTER_CLASS, null);
 
         writer.startElement("span", null);
-        if (footerFacet != null) {
+        if (ComponentUtils.shouldRenderFacet(footerFacet)) {
             footerFacet.encodeAll(context);
         }
         else if (footer != null) {

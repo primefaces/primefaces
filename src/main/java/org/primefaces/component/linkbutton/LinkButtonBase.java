@@ -27,7 +27,6 @@ import javax.faces.component.html.HtmlOutcomeTargetLink;
 
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
 
 public abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UIOutcomeTarget, Widget {
 
@@ -113,10 +112,5 @@ public abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UI
 
     public void setIconPos(String iconPos) {
         getStateHelper().put(PropertyKeys.iconPos, iconPos);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

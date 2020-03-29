@@ -24,8 +24,6 @@
 package org.primefaces.component.menu;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class MenuBase extends AbstractMenu implements Widget, OverlayMenu {
 
@@ -157,10 +155,5 @@ public abstract class MenuBase extends AbstractMenu implements Widget, OverlayMe
 
     public void setMaxHeight(String maxHeight) {
         getStateHelper().put(PropertyKeys.maxHeight, maxHeight);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

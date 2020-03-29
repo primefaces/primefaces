@@ -7,6 +7,8 @@
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.TieredMenuCfg} cfg
+ * 
+ * @prop {number} cfg.delay Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.
  */
 PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
 
@@ -36,9 +38,16 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
             };
         }
 
-        submenu.css('z-index', ++PrimeFaces.zindex)
-                .show()
-                .position(pos);
+        //avoid queuing multiple runs
+        if(this.timeoutId) {
+            clearTimeout(this.timeoutId);
+        }
+
+        this.timeoutId = setTimeout(function () {
+           submenu.css('z-index', ++PrimeFaces.zindex)
+                  .show()
+                  .position(pos)
+        }, this.cfg.delay);
     },
 
     /**
@@ -146,12 +155,7 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
                         var currentLink = currentitem.children('.ui-menuitem-link');
                         currentLink.trigger('click');
                         $this.jq.blur();
-                        var href = currentLink.attr('href');
-                        if(href && href !== '#') {
-                            window.location.href = href;
-                        }
-
-                        e.preventDefault();
+                        PrimeFaces.utils.openLink(e, currentLink);
                     break;
 
             }

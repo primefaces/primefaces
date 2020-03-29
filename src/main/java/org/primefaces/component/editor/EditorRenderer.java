@@ -31,7 +31,6 @@ import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
 import org.primefaces.renderkit.InputRenderer;
@@ -104,7 +103,7 @@ public class EditorRenderer extends InputRenderer {
     private void encodeScript(FacesContext context, Editor editor) throws IOException {
         String clientId = editor.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Editor", editor.resolveWidgetVar(), clientId)
+        wb.init("Editor", editor.resolveWidgetVar(context), clientId)
                 .attr("disabled", editor.isDisabled(), false)
                 .attr("invalid", editor.isValid(), true)
                 .attr("controls", editor.getControls(), null)
@@ -127,14 +126,7 @@ public class EditorRenderer extends InputRenderer {
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-        Editor editor = (Editor) component;
         String value = (String) submittedValue;
-        Converter converter = ComponentUtils.getConverter(context, component);
-
-        if (converter != null) {
-            return converter.getAsObject(context, editor, value);
-        }
-
-        return value;
+        return ComponentUtils.getConvertedValue(context, component, value);
     }
 }

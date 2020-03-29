@@ -50,8 +50,7 @@ public class DynamicContentSrcBuilder {
     private DynamicContentSrcBuilder() {
     }
 
-    public static String build(FacesContext context, Object value, UIComponent component, boolean cache, DynamicContentType type, boolean stream)
-            throws UnsupportedEncodingException {
+    public static String build(FacesContext context, Object value, UIComponent component, boolean cache, DynamicContentType type, boolean stream) {
 
         String src = null;
 
@@ -84,28 +83,33 @@ public class DynamicContentSrcBuilder {
 
                 dynamicResourcesMapping.put(resourceKey, expressionString);
 
-                StringBuilder builder = SharedStringBuilder.get(context, SB_BUILD);
-                builder.append(resourcePath)
-                        .append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(resourceKey, "UTF-8"))
-                        .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(type.toString());
+                try {
+                    StringBuilder builder = SharedStringBuilder.get(context, SB_BUILD);
+                    builder.append(resourcePath)
+                            .append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(resourceKey, "UTF-8"))
+                            .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(type.toString());
 
-                for (int i = 0; i < component.getChildCount(); i++) {
-                    UIComponent child = component.getChildren().get(i);
-                    if (child instanceof UIParameter) {
-                        UIParameter param = (UIParameter) child;
-                        if (!param.isDisable()) {
-                            Object paramValue = param.getValue();
+                    for (int i = 0; i < component.getChildCount(); i++) {
+                        UIComponent child = component.getChildren().get(i);
+                        if (child instanceof UIParameter) {
+                            UIParameter param = (UIParameter) child;
+                            if (!param.isDisable()) {
+                                Object paramValue = param.getValue();
 
-                            builder.append("&").append(param.getName()).append("=");
+                                builder.append("&").append(param.getName()).append("=");
 
-                            if (paramValue != null) {
-                                builder.append(URLEncoder.encode(paramValue.toString(), "UTF-8"));
+                                if (paramValue != null) {
+                                    builder.append(URLEncoder.encode(paramValue.toString(), "UTF-8"));
+                                }
                             }
                         }
                     }
-                }
 
-                src = builder.toString();
+                    src = builder.toString();
+                }
+                catch (UnsupportedEncodingException ex) {
+                    throw new FacesException(ex);
+                }
             }
             else {
                 byte[] bytes = toByteArray(streamedContent.getStream());

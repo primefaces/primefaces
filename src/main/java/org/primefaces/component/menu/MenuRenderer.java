@@ -44,7 +44,7 @@ public class MenuRenderer extends BaseMenuRenderer {
         String clientId = menu.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("PlainMenu", menu.resolveWidgetVar(), clientId)
+        wb.init("PlainMenu", menu.resolveWidgetVar(context), clientId)
                 .attr("toggleable", menu.isToggleable(), false);
 
         if (menu.isOverlay()) {
@@ -75,7 +75,7 @@ public class MenuRenderer extends BaseMenuRenderer {
             style += ";max-height:" + menu.getMaxHeight();
             // If maxHeight is a number, add the unit "px", otherwise use it as is
             char lastChar = menu.getMaxHeight().charAt(menu.getMaxHeight().length() - 1);
-            if (lastChar >= '0' && lastChar <= '9') {
+            if (Character.isDigit(lastChar)) {
                 style += "px";
             }
         }

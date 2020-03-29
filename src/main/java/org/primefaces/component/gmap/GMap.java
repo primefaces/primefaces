@@ -23,10 +23,7 @@
  */
 package org.primefaces.component.gmap;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.faces.FacesException;
 
 import javax.faces.application.ResourceDependencies;
@@ -43,6 +40,7 @@ import org.primefaces.model.map.GeocodeResult;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.LatLngBounds;
 import org.primefaces.model.map.Marker;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
 
@@ -84,7 +82,7 @@ public class GMap extends GMapBase {
         String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
         String clientId = getClientId(context);
 
-        if (isSelfRequest(context)) {
+        if (ComponentUtils.isRequestSource(this, context)) {
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             FacesEvent wrapperEvent = null;
@@ -138,11 +136,8 @@ public class GMap extends GMapBase {
                 wrapperEvent = new GeocodeEvent(this, behaviorEvent.getBehavior(), query, results);
             }
             else if (eventName.equals("reverseGeocode")) {
-                List<String> addresses = new ArrayList<>();
                 String[] results = params.get(clientId + "_address").split("_primefaces_");
-                for (int i = 0; i < results.length; i++) {
-                    addresses.add(results[i]);
-                }
+                List<String> addresses = Arrays.asList(results);
 
                 double lat = Double.parseDouble(params.get(clientId + "_lat"));
                 double lng = Double.parseDouble(params.get(clientId + "_lng"));
@@ -152,7 +147,7 @@ public class GMap extends GMapBase {
             }
 
             if (wrapperEvent == null) {
-                throw new FacesException("Component " + this.getClass().getName() + " does not support event " + eventName + "!");
+                throw new FacesException("Component " + getClass().getName() + " does not support event " + eventName + "!");
             }
 
             wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
@@ -173,10 +168,4 @@ public class GMap extends GMapBase {
 
         return null;
     }
-
-    private boolean isSelfRequest(FacesContext context) {
-        return getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
-    }
-
-
 }

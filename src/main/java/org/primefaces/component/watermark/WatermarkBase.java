@@ -26,8 +26,6 @@ package org.primefaces.component.watermark;
 import javax.faces.component.UIComponentBase;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class WatermarkBase extends UIComponentBase implements Widget {
 
@@ -87,10 +85,5 @@ public abstract class WatermarkBase extends UIComponentBase implements Widget {
 
     public void setFor(String _for) {
         getStateHelper().put(PropertyKeys.forValue, _for);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

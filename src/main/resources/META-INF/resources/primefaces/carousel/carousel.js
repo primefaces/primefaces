@@ -232,7 +232,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
                     $this.setPage($this.page - 1);
                 }
             },
-            excludedElements: "button, input, select, textarea, a, .noSwipe"
+            excludedElements: PrimeFaces.utils.excludedSwipeElements()
         });
 
         if(this.pageLinks.length) {
@@ -428,7 +428,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
      */
     restoreState: function() {
         var carouselStateAsString = PrimeFaces.getCookie(this.stateKey) || "first: null, collapsed: null";
-        this.carouselState = eval('({' + carouselStateAsString + '})');
+        this.carouselState = PrimeFaces.csp.evalResult('({' + carouselStateAsString + '})');
 
         this.first = this.carouselState.first||this.first;
         this.page = parseInt(this.first/this.columns);

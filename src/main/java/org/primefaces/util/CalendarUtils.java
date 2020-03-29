@@ -35,7 +35,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -45,10 +44,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-/**
- * Utility class for calendar component
- */
 public class CalendarUtils {
+
+    private static final String[] TIME_CHARS = {"H", "K", "h", "k", "m", "s"};
 
     private static final PatternConverter[] PATTERN_CONVERTERS =
             new PatternConverter[]{new TimePatternConverter(), new DatePatternConverter()};
@@ -66,72 +64,13 @@ public class CalendarUtils {
     }
 
     /**
-     * Try to convert the given value to {@link Date} or return <code>null</code> if there is no appropriate converter for doing so.
+     * Try to convert the given value to {@link LocalDate} or return <code>null</code> if there is no appropriate converter for doing so.
      * @param context the faces context
      * @param calendar the calendar component
      * @param value the value to convert
-     * @return the {@link Date} object or <code>null</code>
-     * @deprecated Use eg {@link CalendarUtils#getObjectAsLocalDate(FacesContext, UICalendar, Object)} instead.
-     */
-    public static Date getObjectAsDate(FacesContext context, UICalendar calendar, Object value) {
-        if (value == null) {
-            return null;
-        }
-
-        if (value instanceof Date) {
-            return (Date) value;
-        }
-
-        String pattern = calendar.calculatePattern();
-        if (pattern != null) {
-            Locale locale = calendar.calculateLocale(context);
-            if (locale != null) {
-                SimpleDateFormat dateFormat = new SimpleDateFormat(pattern, locale);
-                try {
-                    return dateFormat.parse(value.toString());
-                }
-                catch (ParseException ex) {
-                    // NO-OP
-                }
-            }
-        }
-
-        if (calendar.getConverter() != null) {
-            try {
-                Object obj = calendar.getConverter().getAsObject(context, calendar, value.toString());
-                if (obj instanceof Date) {
-                    return (Date) obj;
-                }
-            }
-            catch (ConverterException ex) {
-                // NO-OP
-            }
-        }
-
-        Converter converter = context.getApplication().createConverter(value.getClass());
-        if (converter != null) {
-            Object obj = converter.getAsObject(context, calendar, value.toString());
-            if (obj instanceof Date) {
-                return (Date) obj;
-            }
-        }
-
-        // TODO Currently we do not support conversion of jquery datepicker's special dates like 'today' or '+1m +7d'
-        // See http://api.jqueryui.com/datepicker/#option-maxDate, https://github.com/primefaces/primefaces/issues/4621
-
-        return null;
-    }
-
-    /**
-     * Try to convert the given value to {@link Date} or return <code>null</code> if there is no appropriate converter for doing so.
-     * @param context the faces context
-     * @param calendar the calendar component
-     * @param value the value to convert
-     * @return the {@link Date} object or <code>null</code>
+     * @return the {@link LocalDate} object or <code>null</code>
      */
     public static LocalDate getObjectAsLocalDate(FacesContext context, UICalendar calendar, Object value) {
-        //TODO: do we need getObjectAsLocalDateTime additional or instead?
-
         if (value == null) {
             return null;
         }
@@ -140,11 +79,19 @@ public class CalendarUtils {
             return (LocalDate) value;
         }
 
+        if (value instanceof LocalDateTime) {
+            return ((LocalDateTime) value).toLocalDate();
+        }
+
+        if (value instanceof Date) {
+            return convertDate2LocalDate((Date) value);
+        }
+
         String pattern = calendar.calculatePattern();
         if (pattern != null) {
             Locale locale = calendar.calculateLocale(context);
             if (locale != null) {
-                DateTimeFormatter formatter =  DateTimeFormatter.ofPattern(pattern, locale);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, locale);
                 try {
                     return LocalDate.parse(value.toString(), formatter);
                 }
@@ -180,6 +127,70 @@ public class CalendarUtils {
         return null;
     }
 
+    /**
+     * Try to convert the given value to {@link LocalTime} or return <code>null</code> if there is no appropriate converter for doing so.
+     * @param context the faces context
+     * @param calendar the calendar component
+     * @param value the value to convert
+     * @return the {@link LocalTime} object or <code>null</code>
+     */
+    public static LocalTime getObjectAsLocalTime(FacesContext context, UICalendar calendar, Object value) {
+        if (value == null || value instanceof LocalDate) {
+            return null;
+        }
+
+        if (value instanceof LocalTime) {
+            return (LocalTime) value;
+        }
+
+        if (value instanceof LocalDateTime) {
+            return ((LocalDateTime) value).toLocalTime();
+        }
+
+        if (value instanceof Date) {
+            return convertDate2LocalTime((Date) value);
+        }
+
+        String pattern = calendar.calculatePattern();
+        if (pattern != null) {
+            Locale locale = calendar.calculateLocale(context);
+            if (locale != null) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, locale);
+                try {
+                    return LocalTime.parse(value.toString(), formatter);
+                }
+                catch (DateTimeParseException ex) {
+                    // NO-OP
+                }
+            }
+        }
+
+        if (calendar.getConverter() != null) {
+            try {
+                Object obj = calendar.getConverter().getAsObject(context, calendar, value.toString());
+                if (obj instanceof LocalTime) {
+                    return (LocalTime) obj;
+                }
+            }
+            catch (ConverterException ex) {
+                // NO-OP
+            }
+        }
+
+        Converter converter = context.getApplication().createConverter(value.getClass());
+        if (converter != null) {
+            Object obj = converter.getAsObject(context, calendar, value.toString());
+            if (obj instanceof LocalTime) {
+                return (LocalTime) obj;
+            }
+        }
+
+        // TODO Currently we do not support conversion of jquery datepicker's special dates like 'today' or '+1m +7d'
+        // See http://api.jqueryui.com/datepicker/#option-maxDate, https://github.com/primefaces/primefaces/issues/4621
+
+        return null;
+    }
+
     public static final String getValueAsString(FacesContext context, UICalendar calendar, Object value) {
         if (value == null) {
             return null;
@@ -198,10 +209,14 @@ public class CalendarUtils {
     }
 
     public static final String getValueAsString(FacesContext context, UICalendar calendar, Object value, String pattern) {
+        if (value == null) {
+            return null;
+        }
+
         if (value instanceof List) {
             StringBuilder valuesAsString = new StringBuilder();
-            String separator = "multiple".equals(calendar.getSelectionMode()) ? "," : " - ";
-            List values = ((List) value);
+            String separator = "multiple".equals(calendar.getSelectionMode()) ? "," : " " + calendar.getRangeSeparator() + " ";
+            List<?> values = ((List) value);
 
             for (int i = 0; i < values.size(); i++) {
                 if (i != 0) {
@@ -242,6 +257,9 @@ public class CalendarUtils {
                 return ((LocalDateTime) value).format(dateTimeFormatter);
             }
             else if (value instanceof LocalTime) {
+                if (calendar instanceof UICalendar) {
+                    return LocalDateTime.of(LocalDate.now(), (LocalTime) value).format(dateTimeFormatter);
+                }
                 return ((LocalTime) value).format(dateTimeFormatter);
             }
             else { //if (value instanceof YearMonth)
@@ -252,9 +270,9 @@ public class CalendarUtils {
             //Delegate to global defined converter (e.g. joda)
             ValueExpression ve = calendar.getValueExpression("value");
             if (ve != null) {
-                Class type = ve.getType(context.getELContext());
+                Class<?> type = ve.getType(context.getELContext());
                 if (type != null && type != Object.class && type != Date.class &&
-                        type != LocalDate.class && type != LocalDateTime.class && type != LocalTime.class && type != Year.class) {
+                        type != LocalDate.class && type != LocalDateTime.class && type != LocalTime.class && type != YearMonth.class) {
                     Converter converter = context.getApplication().createConverter(type);
                     if (converter != null) {
                         return converter.getAsString(context, calendar, value);
@@ -262,7 +280,7 @@ public class CalendarUtils {
                 }
             }
 
-            throw new FacesException("Value could be either String or java.util.Date");
+            throw new FacesException("Value could be either String, LocalDate, LocalDateTime, LocalTime, YearMonth or java.util.Date (deprecated)");
         }
     }
 
@@ -293,9 +311,10 @@ public class CalendarUtils {
      * @param uicalendar component
      * @param optionName the name of an option
      * @param values the List values of an option
+     * @param pattern the pattern for formatting
      * @throws IOException if writer is null
      */
-    public static void encodeListValue(FacesContext context, UICalendar uicalendar, String optionName, List<Object> values) throws IOException {
+    public static void encodeListValue(FacesContext context, UICalendar uicalendar, String optionName, List<?> values, String pattern) throws IOException {
         if (values == null) {
             return;
         }
@@ -308,10 +327,10 @@ public class CalendarUtils {
             Object preText = (i == 0) ? "" : ",";
 
             if (item instanceof Date) {
-                writer.write(preText + "\"" + EscapeUtils.forJavaScript(getValueAsString(context, uicalendar, item)) + "\"");
+                writer.write(preText + "\"" + EscapeUtils.forJavaScript(getValueAsString(context, uicalendar, item, pattern)) + "\"");
             }
             else if (item instanceof LocalDate || item instanceof LocalDateTime || item instanceof LocalTime) {
-                writer.write(preText + "\"" + EscapeUtils.forJavaScript(getValueAsString(context, uicalendar, item)) + "\"");
+                writer.write(preText + "\"" + EscapeUtils.forJavaScript(getValueAsString(context, uicalendar, item, pattern)) + "\"");
             }
             else {
                 writer.write(preText + "" + item);
@@ -328,7 +347,13 @@ public class CalendarUtils {
     public static ZoneId calculateZoneId(Object usertimeZone, ZoneId defaultZoneId) {
         if (usertimeZone != null) {
             if (usertimeZone instanceof String) {
-                return ZoneId.of((String) usertimeZone);
+                String usertimeZoneStr = (String) usertimeZone;
+                if (usertimeZoneStr.length() > 0) {
+                    return ZoneId.of(usertimeZoneStr);
+                }
+                else {
+                    return defaultZoneId;
+                }
             }
             else if (usertimeZone instanceof ZoneId) {
                 return (ZoneId) usertimeZone;
@@ -350,6 +375,7 @@ public class CalendarUtils {
      * @param usertimeZone
      * @return
      */
+    @Deprecated
     public static TimeZone calculateTimeZone(Object usertimeZone) {
         return calculateTimeZone(usertimeZone, TimeZone.getDefault());
     }
@@ -360,6 +386,7 @@ public class CalendarUtils {
      * @param defaultTimeZone
      * @return
      */
+    @Deprecated
     public static TimeZone calculateTimeZone(Object usertimeZone, TimeZone defaultTimeZone) {
         if (usertimeZone != null) {
             if (usertimeZone instanceof String) {
@@ -377,31 +404,118 @@ public class CalendarUtils {
         }
     }
 
+    public static ZoneOffset calculateZoneOffset(Object usertimeZone) {
+        return calculateZoneOffset(usertimeZone, ZoneId.systemDefault());
+    }
+
+    public static ZoneOffset calculateZoneOffset(Object usertimeZone, ZoneId defaultZoneId) {
+        ZoneId zoneId = calculateZoneId(usertimeZone, defaultZoneId);
+        LocalDateTime now = LocalDateTime.now();
+        return zoneId.getRules().getOffset(now);
+    }
+
     private static ZonedDateTime convertDate2ZonedDateTime(Date date, ZoneId zoneId) {
-        return date.toInstant().atZone(zoneId);
+        if (date == null) {
+            return null;
+        }
+        else {
+            return date.toInstant().atZone(zoneId);
+        }
+    }
+
+    public static LocalDate convertDate2LocalDate(Date date) {
+        return convertDate2LocalDate(date, ZoneId.systemDefault());
     }
 
     public static LocalDate convertDate2LocalDate(Date date, ZoneId zoneId) {
-        return convertDate2ZonedDateTime(date, zoneId).toLocalDate();
+        if (date == null) {
+            return null;
+        }
+        else {
+            return convertDate2ZonedDateTime(date, zoneId).toLocalDate();
+        }
+    }
+
+    public static LocalDateTime convertDate2LocalDateTime(Date date) {
+        return convertDate2LocalDateTime(date, ZoneId.systemDefault());
     }
 
     public static LocalDateTime convertDate2LocalDateTime(Date date, ZoneId zoneId) {
-        return convertDate2ZonedDateTime(date, zoneId).toLocalDateTime();
+        if (date == null) {
+            return null;
+        }
+        else {
+            return convertDate2ZonedDateTime(date, zoneId).toLocalDateTime();
+        }
+    }
+
+    public static LocalTime convertDate2LocalTime(Date date) {
+        return convertDate2LocalTime(date, ZoneId.systemDefault());
     }
 
     public static LocalTime convertDate2LocalTime(Date date, ZoneId zoneId) {
-        return convertDate2ZonedDateTime(date, zoneId).toLocalTime();
+        if (date == null) {
+            return null;
+        }
+        else {
+            return convertDate2ZonedDateTime(date, zoneId).toLocalTime();
+        }
     }
 
     public static Date convertLocalDate2Date(LocalDate localDate, ZoneId zoneId) {
-        return Date.from(localDate.atStartOfDay(zoneId).toInstant());
+        if (localDate == null) {
+            return null;
+        }
+        else {
+            return Date.from(localDate.atStartOfDay(zoneId).toInstant());
+        }
+    }
+
+    public static Date convertLocalDateTime2Date(LocalDateTime localDateTime) {
+        return convertLocalDateTime2Date(localDateTime, ZoneId.systemDefault());
     }
 
     public static Date convertLocalDateTime2Date(LocalDateTime localDateTime, ZoneId zoneId) {
-        return Date.from(localDateTime.atZone(zoneId).toInstant());
+        if (localDateTime == null)  {
+            return null;
+        }
+        else {
+            return Date.from(localDateTime.atZone(zoneId).toInstant());
+        }
     }
 
     public static Date convertLocalTime2Date(LocalTime localTime, ZoneId zoneId) {
-        return Date.from(localTime.atDate(LocalDate.now()).atZone(zoneId).toInstant());
+        if (localTime == null) {
+            return null;
+        }
+        else {
+            return Date.from(localTime.atDate(LocalDate.now()).atZone(zoneId).toInstant());
+        }
+    }
+
+    public static final String removeTime(String pattern) {
+        for (String timeChar : TIME_CHARS) {
+            if (pattern.contains(timeChar)) {
+                pattern = pattern.substring(0, pattern.indexOf(timeChar));
+            }
+        }
+        return pattern.trim();
+    }
+
+    /**
+     * Convert ISO-String (@see <a href="https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString">https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString</a>)
+     * to LocalDateTime.
+     * @param zoneId Target-ZoneId of the LocalDateTime, the isoDateString is converted into.
+     * @param isoDateString
+     * @return
+     */
+    public static LocalDateTime toLocalDateTime(ZoneId zoneId, String isoDateString) {
+        if (isoDateString == null) {
+            return null;
+        }
+
+        Instant instant = Instant.parse(isoDateString);
+        LocalDateTime result = LocalDateTime.ofInstant(instant, zoneId);
+        return result;
     }
 }

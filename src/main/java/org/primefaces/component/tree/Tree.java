@@ -40,6 +40,7 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.event.*;
 import org.primefaces.model.CheckboxTreeNode;
 import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.MatchMode;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.filter.*;
 import org.primefaces.util.ComponentUtils;
@@ -79,6 +80,20 @@ public class Tree extends TreeBase {
     public static final String NODE_ICON_CLASS = "ui-treenode-icon ui-icon";
     public static final String NODE_LABEL_CLASS = "ui-treenode-label ui-corner-all";
 
+    static final Map<MatchMode, FilterConstraint> FILTER_CONSTRAINTS = MapBuilder.<MatchMode, FilterConstraint>builder()
+            .put(MatchMode.STARTS_WITH, new StartsWithFilterConstraint())
+            .put(MatchMode.ENDS_WITH, new EndsWithFilterConstraint())
+            .put(MatchMode.CONTAINS, new ContainsFilterConstraint())
+            .put(MatchMode.EXACT, new ExactFilterConstraint())
+            .put(MatchMode.LESS_THAN, new LessThanFilterConstraint())
+            .put(MatchMode.LESS_THAN_EQUALS, new LessThanEqualsFilterConstraint())
+            .put(MatchMode.GREATER_THAN, new GreaterThanFilterConstraint())
+            .put(MatchMode.GREATER_THAN_EQUALS, new GreaterThanEqualsFilterConstraint())
+            .put(MatchMode.EQUALS, new EqualsFilterConstraint())
+            .put(MatchMode.IN, new InFilterConstraint())
+            .put(MatchMode.GLOBAL, new GlobalFilterConstraint())
+            .build();
+
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("select", NodeSelectEvent.class)
             .put("unselect", NodeUnselectEvent.class)
@@ -89,31 +104,6 @@ public class Tree extends TreeBase {
             .put("filter", null)
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-    private static final String STARTS_WITH_MATCH_MODE = "startsWith";
-    private static final String ENDS_WITH_MATCH_MODE = "endsWith";
-    private static final String CONTAINS_MATCH_MODE = "contains";
-    private static final String EXACT_MATCH_MODE = "exact";
-    private static final String LESS_THAN_MODE = "lt";
-    private static final String LESS_THAN_EQUALS_MODE = "lte";
-    private static final String GREATER_THAN_MODE = "gt";
-    private static final String GREATER_THAN_EQUALS_MODE = "gte";
-    private static final String EQUALS_MODE = "equals";
-    private static final String IN_MODE = "in";
-    private static final String GLOBAL_MODE = "global";
-
-    static final Map<String, FilterConstraint> FILTER_CONSTRAINTS = MapBuilder.<String, FilterConstraint>builder()
-            .put(STARTS_WITH_MATCH_MODE, new StartsWithFilterConstraint())
-            .put(ENDS_WITH_MATCH_MODE, new EndsWithFilterConstraint())
-            .put(CONTAINS_MATCH_MODE, new ContainsFilterConstraint())
-            .put(EXACT_MATCH_MODE, new ExactFilterConstraint())
-            .put(LESS_THAN_MODE, new LessThanFilterConstraint())
-            .put(LESS_THAN_EQUALS_MODE, new LessThanEqualsFilterConstraint())
-            .put(GREATER_THAN_MODE, new GreaterThanFilterConstraint())
-            .put(GREATER_THAN_EQUALS_MODE, new GreaterThanEqualsFilterConstraint())
-            .put(EQUALS_MODE, new EqualsFilterConstraint())
-            .put(IN_MODE, new InFilterConstraint())
-            .put(GLOBAL_MODE, new GlobalFilterConstraint())
-            .build();
 
     private Map<String, UITreeNode> nodes;
     private TreeNode dragNode;
@@ -264,6 +254,9 @@ public class Tree extends TreeBase {
 
     @Override
     public void processDecodes(FacesContext context) {
+        if (!isRendered() || isDisabled()) {
+            return;
+        }
         if (shouldSkipNodes(context)) {
             decode(context);
         }
@@ -321,7 +314,7 @@ public class Tree extends TreeBase {
 
     @Override
     protected boolean shouldVisitNode(TreeNode node) {
-        return isDynamic() ? (node.isExpanded() || node.getParent() == null) : true;
+        return !isDynamic() || (node.isExpanded() || node.getParent() == null);
     }
 
     @Override
@@ -390,6 +383,7 @@ public class Tree extends TreeBase {
             newNode = new DefaultTreeNode(node.getData());
         }
 
+        newNode.setType(node.getType());
         newNode.setSelectable(node.isSelectable());
         newNode.setExpanded(node.isExpanded());
 
@@ -438,6 +432,19 @@ public class Tree extends TreeBase {
 
     public void setFilteredRowKeys(List<String> filteredRowKeys) {
         this.filteredRowKeys = filteredRowKeys;
+    }
+
+    @Override
+    public Object saveState(FacesContext context) {
+        // reset component for MyFaces view pooling
+        nodes = null;
+        dragNode = null;
+        dragNodes = null;
+        dropNode = null;
+        retValOnDrop = true;
+        filteredRowKeys = new ArrayList<>();
+
+        return super.saveState(context);
     }
 
 }

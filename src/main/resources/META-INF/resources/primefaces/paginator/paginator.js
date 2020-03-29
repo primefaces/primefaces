@@ -264,10 +264,31 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Removes all event listeners.
-     * @private
+     * Binds swipe events to this paginator to the JQ element passed in.
+     * 
+     * @param {JQuery} owner The owner of the paginator
      */
-    unbindEvents: function() {
+    bindSwipeEvents: function(owner) {
+        if (!PrimeFaces.env.touch) {
+            return;
+        }
+        var $this = this;
+        owner.swipe({
+            swipeLeft:function(event) {
+                $this.prev();
+            },
+            swipeRight: function(event) {
+                $this.next();
+            },
+            excludedElements: PrimeFaces.utils.excludedSwipeElements()
+        });
+    },
+
+   /**
+    * Removes all event listeners.
+    * @private
+    */
+   unbindEvents: function() {
         var buttons = this.jq.children('a.ui-state-default');
         if (buttons.length > 0) {
             buttons.off();
@@ -319,7 +340,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
 
         //rows per page dropdown
         if(this.cfg.prevRows !== this.cfg.rows) {
-            this.rppSelect.filter(':not(.ui-state-focus)').children('option').filter('option[value="' + this.cfg.rows + '"]').prop('selected', true);
+            this.rppSelect.filter(':not(.ui-state-focus)').children('option').filter('option[value="' + $.escapeSelector(this.cfg.rows) + '"]').prop('selected', true);
             this.cfg.prevRows = this.cfg.rows;
         }
 
@@ -333,7 +354,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
 
                 this.jtpSelect.html(jtpOptions);
             }
-            this.jtpSelect.children('option[value=' + (this.cfg.page) + ']').prop('selected','selected');
+            this.jtpSelect.children('option[value=' + $.escapeSelector(this.cfg.page) + ']').prop('selected','selected');
         }
 
         //jump to page input
@@ -421,9 +442,8 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
      * @param {number} rpp Number of rows per page to set.
      */
     setRowsPerPage: function(rpp) {
-        this.cfg.rows = rpp;
-
         if (rpp === '*') {
+            this.cfg.rows = this.cfg.rowCount;
             this.cfg.pageCount = 1;
             this.cfg.page = 0;
 
@@ -436,9 +456,9 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.paginate.call(this, newState);
         }
         else {
-            rpp = parseInt(rpp);
-            var first = this.cfg.rows * this.cfg.page,
-            page = parseInt(first / rpp);
+            var first = this.cfg.rows * this.cfg.page;
+            this.cfg.rows = parseInt(rpp);
+            var page = parseInt(first / this.cfg.rows);
 
             this.cfg.pageCount = Math.ceil(this.cfg.rowCount / this.cfg.rows);
             this.cfg.page = -1;

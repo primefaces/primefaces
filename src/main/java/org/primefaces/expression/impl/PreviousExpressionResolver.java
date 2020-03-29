@@ -24,9 +24,11 @@
 package org.primefaces.expression.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import org.primefaces.expression.SearchExpressionHint;
 
 import org.primefaces.expression.SearchExpressionResolver;
 
@@ -36,7 +38,8 @@ import org.primefaces.expression.SearchExpressionResolver;
 public class PreviousExpressionResolver implements SearchExpressionResolver {
 
     @Override
-    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
+    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression,
+            Set<SearchExpressionHint> hints) {
         UIComponent parent = last.getParent();
 
         if (parent.getChildCount() > 1) {

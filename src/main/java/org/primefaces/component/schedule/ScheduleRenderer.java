@@ -23,18 +23,6 @@
  */
 package org.primefaces.component.schedule;
 
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
-import java.util.TimeZone;
-import java.util.logging.Logger;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.primefaces.model.LazyScheduleModel;
@@ -44,9 +32,20 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.WidgetBuilder;
 
-public class ScheduleRenderer extends CoreRenderer {
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-    private static final Logger LOGGER = Logger.getLogger(ScheduleRenderer.class.getName());
+public class ScheduleRenderer extends CoreRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -84,12 +83,9 @@ public class ScheduleRenderer extends CoreRenderer {
             String startDateParam = params.get(clientId + "_start");
             String endDateParam = params.get(clientId + "_end");
 
-            Long startMillis = Long.valueOf(startDateParam);
-            Long endMillis = Long.valueOf(endDateParam);
-
-            TimeZone tz = CalendarUtils.calculateTimeZone(schedule.getTimeZone(), TimeZone.getTimeZone("UTC"));
-            Date startDate = new Date(startMillis - tz.getOffset(startMillis));
-            Date endDate = new Date(endMillis - tz.getOffset(endMillis));
+            ZoneId zoneId = CalendarUtils.calculateZoneId(schedule.getTimeZone());
+            LocalDateTime startDate =  CalendarUtils.toLocalDateTime(zoneId, startDateParam);
+            LocalDateTime endDate =  CalendarUtils.toLocalDateTime(zoneId, endDateParam);
 
             LazyScheduleModel lazyModel = ((LazyScheduleModel) model);
             lazyModel.clear(); //Clear old events
@@ -100,34 +96,37 @@ public class ScheduleRenderer extends CoreRenderer {
     }
 
     protected void encodeEventsAsJSON(FacesContext context, Schedule schedule, ScheduleModel model) throws IOException {
-        TimeZone timeZone = CalendarUtils.calculateTimeZone(schedule.getTimeZone(), TimeZone.getTimeZone("UTC"));
+        ZoneId zoneId = CalendarUtils.calculateZoneId(schedule.getTimeZone());
 
-        SimpleDateFormat iso = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-        iso.setTimeZone(timeZone);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME.withZone(zoneId);
 
         JSONArray jsonEvents = new JSONArray();
 
         if (model != null) {
-            for (ScheduleEvent event : model.getEvents()) {
+            for (ScheduleEvent<?> event : model.getEvents()) {
                 JSONObject jsonObject = new JSONObject();
 
                 jsonObject.put("id", event.getId());
+                if (event.getGroupId() != null && event.getGroupId().length() > 0) {
+                    jsonObject.put("groupId", event.getGroupId());
+                }
                 jsonObject.put("title", event.getTitle());
-                jsonObject.put("start", iso.format(event.getStartDate()));
-                jsonObject.put("end", iso.format(event.getEndDate()));
+                jsonObject.put("start", dateTimeFormatter.format(event.getStartDate().atZone(zoneId)));
+                jsonObject.put("end", dateTimeFormatter.format(event.getEndDate().atZone(zoneId)));
                 jsonObject.put("allDay", event.isAllDay());
                 jsonObject.put("editable", event.isEditable());
+                jsonObject.put("overlap", event.isOverlapAllowed());
                 jsonObject.put("className", event.getStyleClass());
                 jsonObject.put("description", event.getDescription());
                 jsonObject.put("url", event.getUrl());
-                jsonObject.put("rendering", event.getRenderingMode());
+                jsonObject.put("rendering", Objects.toString(event.getRenderingMode(), null));
 
                 if (event.getDynamicProperties() != null) {
                     for (Map.Entry<String, Object> dynaProperty : event.getDynamicProperties().entrySet()) {
                         String key = dynaProperty.getKey();
                         Object value = dynaProperty.getValue();
-                        if (value instanceof Date) {
-                            value = iso.format((Date) value);
+                        if (value instanceof LocalDateTime) {
+                            value = ((LocalDateTime) value).format(dateTimeFormatter);
                         }
                         jsonObject.put(key, value);
                     }
@@ -147,25 +146,26 @@ public class ScheduleRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Schedule schedule) throws IOException {
         String clientId = schedule.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Schedule", schedule.resolveWidgetVar(), clientId)
-                .attr("defaultView", schedule.getView())
-                .attr("locale", schedule.calculateLocale(context).toString())
+        wb.init("Schedule", schedule.resolveWidgetVar(context), clientId)
+                .attr("defaultView", translateViewName(schedule.getView().trim()))
+                .attr("locale", schedule.calculateLocale(context).toString().toLowerCase().replace("_", "-")) //adjust locale to FullCalendar-locale
                 .attr("tooltip", schedule.isTooltip(), false)
                 .attr("eventLimit", schedule.getValue().isEventLimit(), false)
+                //timeGrid offers an additional eventLimit - integer value; see https://fullcalendar.io/docs/eventLimit; not exposed yet by PF-schedule
                 .attr("lazyFetching", false);
 
         Object initialDate = schedule.getInitialDate();
         if (initialDate != null) {
-            DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE;
+            wb.attr("defaultDate", ((LocalDate) initialDate).format(dateTimeFormatter), null);
 
-            wb.attr("defaultDate", fmt.format((Date) initialDate), null);
         }
 
         if (schedule.isShowHeader()) {
             wb.append(",header:{left:'")
                     .append(schedule.getLeftHeaderTemplate()).append("'")
                     .attr("center", schedule.getCenterHeaderTemplate())
-                    .attr("right", schedule.getRightHeaderTemplate())
+                    .attr("right", translateViewNames(schedule.getRightHeaderTemplate()))
                     .append("}");
         }
         else {
@@ -177,7 +177,7 @@ public class ScheduleRenderer extends CoreRenderer {
         wb.attr("allDaySlot", schedule.isAllDaySlot(), true)
                 .attr("slotDuration", schedule.getSlotDuration(), "00:30:00")
                 .attr("scrollTime", schedule.getScrollTime(), "06:00:00")
-                .attr("timezone", schedule.getClientTimeZone(), null)
+                .attr("timeZone", schedule.getClientTimeZone(), "local")
                 .attr("minTime", schedule.getMinTime(), null)
                 .attr("maxTime", schedule.getMaxTime(), null)
                 .attr("aspectRatio", schedule.getAspectRatio(), Double.MIN_VALUE)
@@ -185,8 +185,7 @@ public class ScheduleRenderer extends CoreRenderer {
                 .attr("eventStartEditable", schedule.isDraggable(), true)
                 .attr("eventDurationEditable", schedule.isResizable(), true)
                 .attr("slotLabelInterval", schedule.getSlotLabelInterval(), null)
-                .attr("slotLabelFormat", schedule.getSlotLabelFormat(), null)
-                .attr("timeFormat", schedule.getTimeFormat(), null)
+                .attr("eventTimeFormat", schedule.getTimeFormat(), null) //https://momentjs.com/docs/#/displaying/
                 .attr("weekNumbers", isShowWeekNumbers, false)
                 .attr("nextDayThreshold", schedule.getNextDayThreshold(), "09:00:00")
                 .attr("slotEventOverlap", schedule.isSlotEventOverlap(), true)
@@ -276,5 +275,37 @@ public class ScheduleRenderer extends CoreRenderer {
             writer.writeAttribute("value", view, null);
         }
         writer.endElement("input");
+    }
+
+    /**
+     * Translates old FullCalendar-ViewName (<=V3) to new FullCalendar-ViewName (>=V4)
+     * @param viewNameOld
+     * @return
+     */
+    private String translateViewName(String viewNameOld) {
+        switch (viewNameOld) {
+            case "month":
+                return "dayGridMonth";
+            case "basicWeek":
+                return "dayGridWeek";
+            case "basicDay":
+                return "dayGridDay";
+            case "agendaWeek":
+                return "timeGridWeek";
+            case "agendaDay":
+                return "timeGridDay";
+            default:
+                return viewNameOld;
+        }
+    }
+
+    private String translateViewNames(String viewNamesOld) {
+        if (viewNamesOld != null) {
+            return Stream.of(viewNamesOld.split(","))
+                    .map(v -> translateViewName(v.trim()))
+                    .collect(Collectors.joining(","));
+        }
+
+        return null;
     }
 }

@@ -24,8 +24,10 @@
 package org.primefaces.component.datalist;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import javax.faces.FacesException;
 import javax.faces.application.ResourceDependencies;
@@ -39,6 +41,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.model.DataModel;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.component.api.IterationStatus;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.model.LazyDataModel;
@@ -109,12 +112,12 @@ public class DataList extends DataListBase {
     }
 
     public void loadLazyData() {
-        DataModel model = getDataModel();
+        DataModel<?> model = getDataModel();
 
         if (model instanceof LazyDataModel) {
-            LazyDataModel lazyModel = (LazyDataModel) model;
+            LazyDataModel<?> lazyModel = (LazyDataModel) model;
 
-            List<?> data = lazyModel.load(getFirst(), getRows(), null, null, null);
+            List<?> data = lazyModel.load(getFirst(), getRows(), null, null, Collections.emptyMap());
 
             lazyModel.setPageSize(getRows());
             lazyModel.setWrappedData(data);
@@ -140,7 +143,7 @@ public class DataList extends DataListBase {
                 String clientId = getClientId(context);
                 int rows = getRowsToRender();
                 int first = Integer.parseInt(params.get(clientId + "_first"));
-                int page = rows > 0 ? (int) (first / rows) : 0;
+                int page = rows > 0 ? first / rows : 0;
 
                 PageEvent pageEvent = new PageEvent(this, behaviorEvent.getBehavior(), page);
                 pageEvent.setPhaseId(behaviorEvent.getPhaseId());
@@ -152,7 +155,7 @@ public class DataList extends DataListBase {
                 int index = Integer.parseInt(params.get(clientId + "_item"));
                 setRowIndex(index);
 
-                SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), getRowData());
+                SelectEvent<?> selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), getRowData());
                 selectEvent.setPhaseId(behaviorEvent.getPhaseId());
 
                 setRowIndex(-1);
@@ -179,32 +182,95 @@ public class DataList extends DataListBase {
 
     @Override
     protected void processChildren(FacesContext context, PhaseId phaseId) {
-        int first = getFirst();
-        int rows = getRows();
-        int last = rows == 0 ? getRowCount() : (first + rows);
+        boolean definition = isDefinition();
+        UIComponent descriptionFacet = definition ? getFacet("description") : null;
+        int childCount = getChildCount();
+        List<UIComponent> children = childCount > 0 ? getIterableChildren() : null;
 
-        for (int rowIndex = first; rowIndex < last; rowIndex++) {
-            setRowIndex(rowIndex);
-
-            if (!isRowAvailable()) {
-                break;
-            }
-
-            for (UIComponent child : getIterableChildren()) {
+        forEachRow((status) -> {
+            for (int i = 0; i < childCount; i++) {
+                UIComponent child = children.get(i);
                 if (child.isRendered()) {
                     process(context, child, phaseId);
                 }
             }
 
-            UIComponent descriptionFacet = getFacet("description");
-            if (descriptionFacet != null && isDefinition()) {
+            if (definition && ComponentUtils.shouldRenderFacet(descriptionFacet)) {
                 process(context, descriptionFacet, phaseId);
+            }
+        });
+    }
+
+    @Override
+    protected boolean shouldSkipChildren(FacesContext context) {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String paramValue = params.get(Constants.RequestParams.SKIP_CHILDREN_PARAM);
+        if (paramValue != null && !Boolean.parseBoolean(paramValue)) {
+            return false;
+        }
+        else {
+            return params.containsKey(getClientId(context) + "_skipChildren");
+        }
+    }
+
+    public void forEachRow(Consumer<IterationStatus> callback) {
+        FacesContext context = getFacesContext();
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+
+        String varStatus = getVarStatus();
+        String rowIndexVar = getRowIndexVar();
+
+        Object varStatusBackup = varStatus == null ? null : requestMap.get(varStatus);
+        Object rowIndexVarBackup = rowIndexVar == null ? null : requestMap.get(rowIndexVar);
+
+        int first = getFirst();
+        int rows = getRows();
+        int pageSize = first + rows;
+        int rowCount = getRowCount();
+        int last = rows == 0 ? rowCount : (first + rows);
+
+        for (int i = first; i < last; i++) {
+            setRowIndex(i);
+
+            if (!isRowAvailable()) {
+                break;
+            }
+
+            IterationStatus status = new IterationStatus((i == 0), (i == (rowCount - 1)), i, i, first, (pageSize - 1), 1);
+            if (varStatus != null) {
+                requestMap.put(varStatus, status);
+            }
+            if (rowIndexVar != null) {
+                requestMap.put(rowIndexVar, i);
+            }
+
+            callback.accept(status);
+        }
+
+        //cleanup
+        setRowIndex(-1);
+
+        if (varStatus != null) {
+            if (varStatusBackup == null) {
+                requestMap.remove(varStatus);
+            }
+            else {
+                requestMap.put(varStatus, varStatusBackup);
+            }
+        }
+        if (rowIndexVar != null) {
+            if (rowIndexVarBackup == null) {
+                requestMap.remove(rowIndexVar);
+            }
+            else {
+                requestMap.put(rowIndexVar, rowIndexVarBackup);
             }
         }
     }
 
-    public void restoreDataListState() {
-        DataListState ls = getDataListState(false);
+    @Override
+    public void restoreMultiViewState() {
+        DataListState ls = getMultiViewState(false);
         if (ls != null && isPaginator()) {
             setFirst(ls.getFirst());
             int rows = (ls.getRows() == 0) ? getRows() : ls.getRows();
@@ -212,13 +278,17 @@ public class DataList extends DataListBase {
         }
     }
 
-    public DataListState getDataListState(boolean create) {
+    @Override
+    public DataListState getMultiViewState(boolean create) {
         FacesContext fc = getFacesContext();
         String viewId = fc.getViewRoot().getViewId();
 
         return PrimeFaces.current().multiViewState()
                 .get(viewId, getClientId(fc), create, DataListState::new);
-
     }
 
+    @Override
+    public void resetMultiViewState() {
+        setFirst(0);
+    }
 }

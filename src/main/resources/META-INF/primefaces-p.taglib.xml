@@ -13,6 +13,12 @@
     </function>
 
     <function>
+        <function-name>resolveComponent</function-name>
+        <function-class>org.primefaces.expression.SearchExpressionUtils</function-class>
+        <function-signature>javax.faces.component.UIComponent resolveComponent(java.lang.String, javax.faces.component.UIComponent)</function-signature>
+    </function>
+
+    <function>
         <function-name>resolveClientIds</function-name>
         <function-class>org.primefaces.expression.SearchExpressionUtils</function-class>
         <function-signature>java.lang.String resolveClientIds(java.lang.String, javax.faces.component.UIComponent)</function-signature>
@@ -25,6 +31,18 @@
     </function>
 
     <function>
+        <function-name>resolveFirstComponentWithId</function-name>
+        <function-class>org.primefaces.util.ComponentTraversalUtils</function-class>
+        <function-signature>java.lang.String firstWithId(java.lang.String, javax.faces.component.UIComponent)</function-signature>
+    </function>
+
+    <function>
+        <function-name>escapeJavaScriptVarName</function-name>
+        <function-class>org.primefaces.util.EscapeUtils</function-class>
+        <function-signature>java.lang.String forJavaScriptVarName(java.lang.String)</function-signature>
+    </function>
+
+    <function>
         <function-name>ifGranted</function-name>
         <function-class>org.primefaces.util.SecurityUtils</function-class>
         <function-signature>java.lang.Boolean ifGranted(java.lang.String)</function-signature>
@@ -33,19 +51,19 @@
     <function>
         <function-name>ifAllGranted</function-name>
         <function-class>org.primefaces.util.SecurityUtils</function-class>
-        <function-signature>java.lang.Boolean ifAllGranted(java.lang.String)</function-signature>
+        <function-signature>java.lang.Boolean ifAllGranted(java.lang.Object)</function-signature>
     </function>
 
     <function>
         <function-name>ifAnyGranted</function-name>
         <function-class>org.primefaces.util.SecurityUtils</function-class>
-        <function-signature>java.lang.Boolean ifAnyGranted(java.lang.String)</function-signature>
+        <function-signature>java.lang.Boolean ifAnyGranted(java.lang.Object)</function-signature>
     </function>
 
     <function>
         <function-name>ifNoneGranted</function-name>
         <function-class>org.primefaces.util.SecurityUtils</function-class>
-        <function-signature>java.lang.Boolean ifNoneGranted(java.lang.String)</function-signature>
+        <function-signature>java.lang.Boolean ifNoneGranted(java.lang.Object)</function-signature>
     </function>
 
     <function>
@@ -132,20 +150,14 @@
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
-            <description>When enabled, dynamic datatables would be exported.</description>
-            <name>repeat</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
             <description>Exports the header and cell content according to the option.</description>
             <name>options</name>
             <required>false</required>
             <type>java.lang.Object</type>
         </attribute>
         <attribute>
-            <description>Custom Exporter to be used in place of Default DataExporter.</description>
-            <name>customExporter</name>
+            <description>Custom exporter to be used instead of built-in exporters.</description>
+            <name>exporter</name>
             <required>false</required>
             <type>java.lang.Object</type>
         </attribute>
@@ -507,6 +519,20 @@
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
+        <attribute>
+            <description>If value specified: Iteration begins at the item located at the specified index. First item of the collection has index 0. If value not specified: Iteration begins with index set at the specified value.
+            </description>
+            <name>begin</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>If value specified: Iteration ends at the item located at the specified index (inclusive). If value not specified: Iteration ends when index reaches the specified value (inclusive).
+            </description>
+            <name>end</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -822,6 +848,14 @@
             <name>widgetVar</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Delay in milliseconds before displaying the ajax status. Default is 0 meaning immediate.]]>
+            </description>
+            <name>delay</name>
+            <required>false</required>
+            <type>int</type>
         </attribute>
         <attribute>
             <description>
@@ -1539,6 +1573,14 @@
             <name>escape</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies query mode, valid values are "server" (default), "client" and "hybrid".]]>
+            </description>
+            <name>queryMode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
@@ -3098,6 +3140,14 @@
             <name>defaultMillisec</name>
             <required>false</required>
             <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[ResolverStyle for java.time.format.DateTimeFormatter, lenient, smart or strict, Default is smart.]]>
+            </description>
+            <name>resolverStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
@@ -6305,9 +6355,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Disables reordering.]]>
+                <![CDATA[Disables the component.]]>
             </description>
             <name>disabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Allow reordering of panels. Default is true.]]>
+            </description>
+            <name>reordering</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -6526,6 +6584,14 @@
                 <![CDATA[Keeps state of its children on a per-row basis. Default is false.]]>
             </description>
             <name>rowStatePreserved</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to keep DataGrid state across views, defaults to false.]]>
+            </description>
+            <name>multiViewState</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -7526,11 +7592,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[List of FilterState objects to filter table by default.]]>
+                <![CDATA[Map of filters; This also allows to filter the table by default.]]>
             </description>
             <name>filterBy</name>
             <required>false</required>
-            <type>java.util.List</type>
+            <type>java.util.Map</type>
         </attribute>
         <attribute>
             <description>
@@ -7829,6 +7895,14 @@
             <name>listIcon</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to keep DataView state across views, defaults to false.]]>
+            </description>
+            <name>multiViewState</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -8421,33 +8495,41 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Initial width of items. Default is 40.]]>
-            </description>
-            <name>itemWidth</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Maximum width of items. Default is 50.]]>
-            </description>
-            <name>maxWidth</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Distance to enlarge. Default is 90.]]>
-            </description>
-            <name>proximity</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Horizontal alignment. Default is center.]]>
             </description>
             <name>halign</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to block scrolling of the document. Default is true.]]>
+            </description>
+            <name>blockScroll</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to animate the OSX bounce effect when clicking an item. Default is true.]]>
+            </description>
+            <name>animate</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[How long in milliseconds to animate the bounce effect. Default is 1600ms.]]>
+            </description>
+            <name>animationDuration</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines direction of dock. Valid values are "ltr" (default) and "rtl".]]>
+            </description>
+            <name>dir</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -8666,6 +8748,14 @@
                 <![CDATA[Client side callback to execute when dragging stops.]]>
             </description>
             <name>onStop</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute while dragging.]]>
+            </description>
+            <name>onDrag</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -9625,7 +9715,7 @@
             <description>
                 <![CDATA[Whether virus scan should be performed. Default is false.]]>
             </description>
-            <name>performVirusScan</name>
+            <name>virusScan</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -10978,22 +11068,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Background color of the container.]]>
-            </description>
-            <name>backgroundColor</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Background opacity of the container. Default is 0.6]]>
-            </description>
-            <name>backgroundOpacity</name>
-            <required>false</required>
-            <type>java.lang.Double</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Initial coordinates of the cropper area.]]>
             </description>
             <name>initialCoords</name>
@@ -11023,6 +11097,30 @@
             <name>sizeLimit</name>
             <required>false</required>
             <type>java.lang.Long</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Re-render the cropper when resizing the window. Default is true.]]>
+            </description>
+            <name>responsive</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Show the dashed lines in the crop box. Default is true.]]>
+            </description>
+            <name>guides</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Define the view mode of the cropper. If you set viewMode to 0, the crop box can extend outside the canvas, while a value of 1, 2 or 3 will restrict the crop box to the size of the canvas. A viewMode of 2 or 3 will additionally restrict the canvas to the container. Note that if the proportions of the canvas and the container are the same, there is no difference between 2 and 3. Default is 1.]]>
+            </description>
+            <name>viewMode</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
         </attribute>
     </tag>
     <tag>
@@ -11641,6 +11739,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines whether mask pattern would be validated or not on the server side.]]>
+            </description>
+            <name>validateMask</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -12054,7 +12160,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Number of decimal places. Default are taken from minValue and MaxValue.]]>
+                <![CDATA[Number of decimal places. Default is 2.]]>
             </description>
             <name>decimalPlaces</name>
             <required>false</required>
@@ -12097,6 +12203,14 @@
                 <![CDATA[Controls leading zero behavior. Valid values are "allow"(default), "deny" and "keep".]]>
             </description>
             <name>leadingZero</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Allow to declare an alternative decimal separator which is automatically replaced by `decimalCharacter` when typed.]]>
+            </description>
+            <name>decimalSeparatorAlternative</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -15189,6 +15303,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.]]>
+            </description>
+            <name>delay</name>
+            <required>false</required>
+            <type>int</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Index of the active root menu to display as highlighted. By default no root is highlighted.]]>
             </description>
             <name>activeIndex</name>
@@ -17623,7 +17745,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Inline style of the table.]]>
+                <![CDATA[Inline style of the panel/table.]]>
             </description>
             <name>style</name>
             <required>false</required>
@@ -17631,9 +17753,25 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Style class of the table.]]>
+                <![CDATA[Inline style of the panel-content.]]>
+            </description>
+            <name>contentStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the panel/table.]]>
             </description>
             <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the panel-content.]]>
+            </description>
+            <name>contentStyleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -17647,7 +17785,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Displays data in a 'table' layout or 'grid' layout. The grid layout is a responsive layout. Default value is 'tabular'.]]>
+                <![CDATA[Displays data in a 'table' layout, 'grid' layout or 'flex' layout. The grid and flex layout are responsive layouts. Default value is 'tabular'.]]>
             </description>
             <name>layout</name>
             <required>false</required>
@@ -20293,7 +20431,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[The view type to use, possible values are 'month', 'agendaDay', 'agendaWeek', 'basicWeek', 'basicDay'. Default is month.]]>
+                <![CDATA[The view type to use, possible values are 'dayGridMonth', 'dayGridWeek', 'dayGridDay', 'timeGridWeek', 'timeGridDay', 'listYear' , 'listMonth', 'listWeek', 'listDay'. Default is 'dayGridMonth'.]]>
             </description>
             <name>view</name>
             <required>false</required>
@@ -20373,7 +20511,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Content of right side of header. Default is "month, agendaWeek, agendaDay"]]>
+                <![CDATA[Content of right side of header. Default is "dayGridMonth,timeGridWeek,timeGridDay"]]>
             </description>
             <name>rightHeaderTemplate</name>
             <required>false</required>
@@ -20429,15 +20567,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Determines the time-text that will be displayed within a time slot.]]>
-            </description>
-            <name>slotLabelFormat</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Determines the time-text that will be displayed on each event.]]>
+                <![CDATA[Determines the time-text that will be displayed on each event. (Moment.js - format)]]>
             </description>
             <name>timeFormat</name>
             <required>false</required>
@@ -20453,7 +20583,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Format for column headers.]]>
+                <![CDATA[Format for column headers. (eg "week:'dd DD MMM'" or "timeGridWeek: 'DD MM', timeGridDay: 'dd'")]]>
             </description>
             <name>columnHeaderFormat</name>
             <required>false</required>
@@ -20461,7 +20591,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[String or a java.util.TimeZone instance to specify the timezone used for date conversion to ISO_8601 format, defaults to "UTC".]]>
+                <![CDATA[String or a java.util.TimeZone instance to specify the timezone used for date conversion to ISO_8601 format, defaults to ZoneId.systemDefault().]]>
             </description>
             <name>timeZone</name>
             <required>false</required>
@@ -20469,7 +20599,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Timezone to define how to interpret the dates at browser. Valid values are "false", "local", "UTC" and ids like "America/Chicago".]]>
+                <![CDATA[Timezone to define how to interpret the dates at browser. Valid values are "local", "UTC" and ids like "America/Chicago", defaults to "local".]]>
             </description>
             <name>clientTimeZone</name>
             <required>false</required>
@@ -21043,6 +21173,14 @@
             <name>escape</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
@@ -22683,6 +22821,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines text direction, valid values are "ltr" (default) and "rtl".]]>
+            </description>
+            <name>dir</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -23998,6 +24144,14 @@
             <name>max</name>
             <required>false</required>
             <type>java.lang.Double</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Rotate to the minimum value when maximum value is reached and vice versa. Default is false.]]>
+            </description>
+            <name>rotate</name>
+            <required>false</required>
+            <type>boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -25722,6 +25876,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Disables the editor, default is false.]]>
+            </description>
+            <name>disabled</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Inline style of the editor container.]]>
             </description>
             <name>style</name>
@@ -25749,6 +25911,14 @@
                 <![CDATA[Whether the toolbar of the editor is visible.]]>
             </description>
             <name>toolbarVisible</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Secure the component with the HTML Sanitizer library on the classpath. Default is true.]]>
+            </description>
+            <name>secure</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -26211,7 +26381,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[User locale for i18n localization messages. The attribute can be either a String or java.util.Locale object.]]>
+                <![CDATA[User locale for i18n localization messages. The attribute can be either a String or java.util.Locale object. Default to view Locale.]]>
             </description>
             <name>locale</name>
             <required>false</required>
@@ -26219,8 +26389,8 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Target time zone to convert start / end dates for displaying. This time zone is the time zone the user would like to see dates in UI.
-                The attribute can be either a String or TimeZone object or null. If null, timeZone defaults to the server's time zone the application is running in.]]>
+                <![CDATA[Target time zone to convert start / end dates of TimelineEvent's in server side. The attribute can be either a String or TimeZone object or null.
+                If null, timeZone defaults to the server's time zone the application is running in.]]>
             </description>
             <name>timeZone</name>
             <required>false</required>
@@ -26228,17 +26398,18 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Time zone the user's browser / PC is running in. This time zone allows to correct the conversion of start / end dates to the target timeZone for displaying.
-                The attribute can be either a String or TimeZone object or null. Note: browserTimeZone should be provided if the target timeZone is provided. If null, browserTimeZone defaults to the server's timeZone.]]>
+                <![CDATA[Time zone the user would like to see dates in UI. The attribute can be either a String or TimeZone object or null.
+                If null, clientTimeZone defaults to browser's time zone.]]>
             </description>
-            <name>browserTimeZone</name>
+            <name>clientTimeZone</name>
             <required>false</required>
-            <type>java.lang.Object</type>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
-                <![CDATA[The height of the timeline in pixels, as a percentage, or "auto". When the height is set to "auto", the height of the timeline is automatically adjusted to fit the contents.
-                If not, it is possible that events get stacked so high, that they are not visible in the timeline. When height is set to "auto", a minimum height can be specified with the option minHeight. Default is "auto".]]>
+                <![CDATA[The height of the timeline in pixels or as a percentage. When height is undefined or null, the height of the timeline is automatically
+                adjusted to fit the contents. It is possible to set a maximum height using option maxHeight to prevent the timeline from getting too high in
+                case of automatically calculated height.]]>
             </description>
             <name>height</name>
             <required>false</required>
@@ -26246,9 +26417,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Specifies a minimum height for the Timeline in pixels. Useful when height is set to "auto". Default is 0.]]>
+                <![CDATA[Specifies a minimum height for the Timeline in pixels.]]>
             </description>
             <name>minHeight</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies the maximum height for the Timeline in pixels.]]>
+            </description>
+            <name>maxHeight</name>
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
@@ -26271,7 +26450,8 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If false, the horizontal axis is drawn at the bottom. If true, the axis is drawn on top. Default is false.]]>
+                <![CDATA[Deprecated, use orientationAxis instead of this.
+                If false, the horizontal axis is drawn at the bottom. If true, the axis is drawn on top. Default is false.]]>
             </description>
             <name>axisOnTop</name>
             <required>false</required>
@@ -26279,19 +26459,71 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[The width of the drag areas in pixels. When an event with date range is selected, it has a drag area on the left and right side, with which the start or end dates of the event can be manipulated.
-                Default is 10.]]>
+                <![CDATA[Orientation of the timeline axis: 'top', 'bottom' (default), 'both', or 'none'. If orientation is 'bottom', the time axis is drawn
+                at the bottom. When 'top', the axis is drawn on top. When 'both', two axes are drawn, both on top and at the bottom. In case of 'none', no axis
+                is drawn at all.]]>
             </description>
-            <name>dragAreaWidth</name>
+            <name>orientationAxis</name>
             <required>false</required>
-            <type>java.lang.Integer</type>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If true, the events can be edited, changed, created and deleted. Events can only be editable when the option selectable is true (default). When editable is true, the timeline can fire AJAX events "change", "edit", "add", "delete", "drop".
-                This global setting "editable" can be overwritten for individual events by setting a value in field "editable". Default is false.]]>
+                <![CDATA[Orientation of the timeline items: 'top' or 'bottom' (default). Determines whether items are aligned to the top or bottom
+                of the Timeline.]]>
+            </description>
+            <name>orientationItem</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If true, the items in the timeline can be manipulated. Only applicable when option selectable is true. Default is false.]]>
             </description>
             <name>editable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If true, new items can be created by double tapping an empty space in the Timeline. Takes precedence over editable.
+                Default is false.]]>
+            </description>
+            <name>editableAdd</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If true, items can be deleted by first selecting them, and then clicking the delete button on the top right of the item.
+                Takes precedence over editable. Default is false.]]>
+            </description>
+            <name>editableRemove</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If true, items can be dragged from one group to another. Only applicable when the Timeline has groups.
+                Takes precedence over editable. Default is false.]]>
+            </description>
+            <name>editableGroup</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If true, items can be dragged to another moment in time. Takes precedence over editable. Default is false.]]>
+            </description>
+            <name>editableTime</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If true, TimelineEvent specific editables properties are overridden by timeline settings. Default is false.]]>
+            </description>
+            <name>editableOverrideItems</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -26300,14 +26532,6 @@
                 <![CDATA[If true, events on the timeline are selectable. Selectable events can fire AJAX "select" events. Default is true.]]>
             </description>
             <name>selectable</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[If true, you can unselect an item by clicking in the empty space of the timeline. If false, you cannot unselect an item, there will be always one item selected. Default is true.]]>
-            </description>
-            <name>unselectable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -26333,7 +26557,7 @@
             </description>
             <name>start</name>
             <required>false</required>
-            <type>java.util.Date</type>
+            <type>java.time.LocalDateTime</type>
         </attribute>
         <attribute>
             <description>
@@ -26341,7 +26565,7 @@
             </description>
             <name>end</name>
             <required>false</required>
-            <type>java.util.Date</type>
+            <type>java.time.LocalDateTime</type>
         </attribute>
         <attribute>
             <description>
@@ -26349,7 +26573,7 @@
             </description>
             <name>min</name>
             <required>false</required>
-            <type>java.util.Date</type>
+            <type>java.time.LocalDateTime</type>
         </attribute>
         <attribute>
             <description>
@@ -26357,7 +26581,7 @@
             </description>
             <name>max</name>
             <required>false</required>
-            <type>java.util.Date</type>
+            <type>java.time.LocalDateTime</type>
         </attribute>
         <attribute>
             <description>
@@ -26393,6 +26617,22 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[The minimal horizontal margin in pixels between items. Takes precedence over eventMargin property. Default is 10.]]>
+            </description>
+            <name>eventHorizontalMargin</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The minimal vertical margin in pixels between items. Takes precedence over eventMargin property. Default is 10.]]>
+            </description>
+            <name>eventVerticalMargin</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[The minimal margin in pixels between events and the horizontal axis. Default is 10.]]>
             </description>
             <name>eventMarginAxis</name>
@@ -26401,7 +26641,8 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Specifies the style for the timeline events. Choose from "dot" or "box". Default is "box".]]>
+                <![CDATA[Specifies the default type for the timeline items. Choose from 'box', 'point' and 'range'. If undefined, the Timeline will auto detect
+                the type from the items data: if a start and end date is available, a 'range' will be created, and else, a 'box' is created. Default null.]]>
             </description>
             <name>eventStyle</name>
             <required>false</required>
@@ -26409,7 +26650,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If true, items can be moved from one group to another. Only applicable when groups are used. Default is true.]]>
+                <![CDATA[Deprecated, use editableGroup property instead.]]>
             </description>
             <name>groupsChangeable</name>
             <required>false</required>
@@ -26417,15 +26658,9 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If false, the groups legend is drawn at the left side of the timeline. If true, the groups legend is drawn on the right side. Default is false.]]>
-            </description>
-            <name>groupsOnRight</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Allows to customize the way groups are ordered. When true (default), groups will be ordered by content alphabetically (when the list of groups is missing) or by native ordering of TimelineGroup object in the list of groups (when the list of groups is available). When false, groups will not be ordered at all.]]>
+                <![CDATA[Allows to customize the way groups are ordered. When true (default), groups will be ordered by content alphabetically
+                (when the list of groups is missing) or by native ordering of TimelineGroup object in the list of groups (when the list of groups is available).
+                When false, groups will not be ordered at all.]]>
             </description>
             <name>groupsOrder</name>
             <required>false</required>
@@ -26433,27 +26668,36 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[By default, the width of the groups legend is adjusted to the group names. A fixed width can be set for the groups legend by specifying the "groupsWidth" as a string, for example "200px". Default is null.]]>
+                <![CDATA[A css text string to apply custom styling for an individual group label, for example "color: red; background-color: pink;".]]>
             </description>
-            <name>groupsWidth</name>
+            <name>groupStyle</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
-                <![CDATA[The minimum height of each individual group even if they have no items. The group height is set as the greatest value between items height and the groupMinHeight. Default is 0.]]>
-            </description>
-            <name>groupMinHeight</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[If true, the start and end of an event will be snapped nice integer values when moving or resizing the event. Default is true.]]>
+                <![CDATA[Deprecated, use snap property instead.
+                If true, the start and end of an event will be snapped nice integer values when moving or resizing the event. Default is true.]]>
             </description>
             <name>snapEvents</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When moving items on the Timeline, they will be snapped to nice dates like full hours or days, depending on the current scale.
+                The snap function can be replaced with a custom javascript function, or can be set to null to disable snapping.
+                The signature of the snap function is:
+
+                function snap(date: Date, scale: string, step: number) : Date or number
+
+                The parameter scale can be can be 'millisecond', 'second', 'minute', 'hour', 'weekday, 'week', 'day, 'month, or 'year'.
+                The parameter step is a number like 1, 2, 4, 5.
+                ]]>
+            </description>
+            <name>snap</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -26493,23 +26737,8 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Show the button "Create new event" in the a navigation menu. Default is false.]]>
-            </description>
-            <name>showButtonNew</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Show a navigation menu with buttons to move and zoom the timeline. Default is false.]]>
-            </description>
-            <name>showNavigation</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[If false, items can not be moved or dragged horizontally (neither start time nor end time is changable).
+                <![CDATA[Deprecated, use editableTime property instead.
+                If false, items can not be moved or dragged horizontally (neither start time nor end time is changable).
                 This is useful when items should be editable but can only be changed regarding group or content (typical use case: scheduling events).
                 Default is true.]]>
             </description>
@@ -26551,19 +26780,66 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[When true, events are moved animated when resizing or moving them. This is very pleasing for the eye, but does require more computational power. Default is true.]]>
+                <![CDATA[When a Timeline is configured to be clickToUse, it will react to mouse and touch events only when active. When active, a blue shadow
+                border is displayed around the Timeline. The Timeline is set active by clicking on it, and is changed to inactive again by clicking outside
+                the Timeline or by pressing the ESC key. Default is false.]]>
             </description>
-            <name>animate</name>
+            <name>clickToUse</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
-                <![CDATA[When true, events are moved animated when zooming the Timeline. This looks cool, but does require more computational power. Default is true.]]>
+                <![CDATA[If true, items with titles will display a tooltip. If false, item tooltips are prevented from showing. Default is true.]]>
             </description>
-            <name>animateZoom</name>
+            <name>showTooltips</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If true, tooltips will follow the mouse as they move around in the item. Default is false.]]>
+            </description>
+            <name>tooltipFollowMouse</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Set how the tooltip should act if it is about to overflow out of the timeline.
+                    Choose from 'cap', 'flip' and 'none'.
+                    If it is set to 'cap', the tooltip will just cap its position to inside to timeline.
+                    If set to 'flip', the position of the tooltip will flip around the cursor so that a corner is at the cursor, and the rest of it is visible.
+                    If set to 'none', the tooltip will be positioned independently of the timeline, so parts of the tooltip could possibly be hidden or stick
+                    ouf of the timeline, depending how CSS overflow is defined for the timeline (by default it's hidden). Default is 'flip'.]]>
+            </description>
+            <name>tooltipOverflowMethod</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Set a value (in ms) that the tooltip is delayed before showing. Default is 500.]]>
+            </description>
+            <name>tooltipDelay</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines direction of timeline. Valid values are "ltr" (default) and "rtl".]]>
+            </description>
+            <name>dir</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of javascript function to extend the options of the underlying timeline javascript component.]]>
+            </description>
+            <name>extender</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
@@ -29530,6 +29806,22 @@
             <name>rangeSeparator</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[ResolverStyle for java.time.format.DateTimeFormatter, lenient, smart or strict, Default is smart.]]>
+            </description>
+            <name>resolverStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Allows direct input in time field. Default is false.]]>
+            </description>
+            <name>timeInput</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
 </facelet-taglib>

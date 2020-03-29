@@ -25,8 +25,6 @@ package org.primefaces.component.datatable;
 
 import java.lang.reflect.Array;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
@@ -64,7 +62,8 @@ import org.primefaces.util.*;
         @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
         @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
         @ResourceDependency(library = "primefaces", name = "core.js"),
-        @ResourceDependency(library = "primefaces", name = "components.js")
+        @ResourceDependency(library = "primefaces", name = "components.js"),
+        @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
 })
 public class DataTable extends DataTableBase {
 
@@ -178,17 +177,16 @@ public class DataTable extends DataTableBase {
             .put("cellEditCancel", CellEditEvent.class)
             .put("virtualScroll", PageEvent.class)
             .build();
-    private static final Pattern STATIC_FIELD_PATTERN = Pattern.compile("^#\\{\\w+\\.(.*)\\}$");
+
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
     private int columnsCountWithSpan = -1;
-    private List filterMetadata;
     private boolean reset = false;
     private List<Object> selectedRowKeys = new ArrayList<>();
     private boolean isRowKeyRestored = false;
     private int columnsCount = -1;
     private List<UIColumn> columns;
     private UIColumn sortColumn;
-    private List<SortMeta> multiSortMeta = null;
     private Columns dynamicColumns;
     private ValueExpression sortByVE;
     private String togglableColumnsAsString;
@@ -298,25 +296,31 @@ public class DataTable extends DataTableBase {
 
         if (selectionVE != null) {
             selectionVE.setValue(context.getELContext(), getLocalSelection());
-
             setSelection(null);
         }
 
-        List<FilterMeta> filterMeta = getFilterMetadata();
-        if (filterMeta != null && !filterMeta.isEmpty()) {
-            ELContext eLContext = context.getELContext();
-            for (FilterMeta fm : filterMeta) {
-                UIColumn column = fm.getColumn();
-                ValueExpression columnFilterValueVE = column.getValueExpression(Column.PropertyKeys.filterValue.toString());
-                if (columnFilterValueVE != null) {
-                    if (column.isDynamic()) {
-                        DynamicColumn dynamicColumn = (DynamicColumn) column;
-                        dynamicColumn.applyStatelessModel();
-                        columnFilterValueVE.setValue(eLContext, fm.getFilterValue());
-                        dynamicColumn.cleanStatelessModel();
-                    }
-                    else {
-                        columnFilterValueVE.setValue(eLContext, fm.getFilterValue());
+        Map<String, FilterMeta> filterBy = getFilterBy();
+        if (!filterBy.isEmpty()) {
+            ELContext elContext = context.getELContext();
+            for (FilterMeta filter : filterBy.values()) {
+                UIColumn column = filter.getColumn();
+                if (column == null) {
+                    column = findColumn(filter.getColumnKey());
+                    filter.setColumn(column);
+                }
+
+                if (column != null) {
+                    ValueExpression columnFilterValueVE = column.getValueExpression(Column.PropertyKeys.filterValue.toString());
+                    if (columnFilterValueVE != null) {
+                        if (column.isDynamic()) {
+                            DynamicColumn dynamicColumn = (DynamicColumn) column;
+                            dynamicColumn.applyStatelessModel();
+                            columnFilterValueVE.setValue(elContext, filter.getFilterValue());
+                            dynamicColumn.cleanStatelessModel();
+                        }
+                        else {
+                            columnFilterValueVE.setValue(elContext, filter.getFilterValue());
+                        }
                     }
                 }
             }
@@ -451,19 +455,24 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    public UIColumn findColumn(String clientId) {
+    public UIColumn findColumn(String columnKey) {
+        if ("globalFilter".equals(columnKey)) {
+            return null;
+        }
+
         //body columns
-        for (UIColumn column : getColumns()) {
-            if (column.getColumnKey().equals(clientId)) {
+        for (int i = 0; i < getColumns().size(); i++) {
+            UIColumn column = getColumns().get(i);
+            if (Objects.equals(column.getColumnKey(), columnKey)) {
                 return column;
             }
         }
 
         //header columns
         if (getFrozenColumns() > 0) {
-            UIColumn column = findColumnInGroup(clientId, getColumnGroup("frozenHeader"));
+            UIColumn column = findColumnInGroup(columnKey, getColumnGroup("frozenHeader"));
             if (column == null) {
-                column = findColumnInGroup(clientId, getColumnGroup("scrollableHeader"));
+                column = findColumnInGroup(columnKey, getColumnGroup("scrollableHeader"));
             }
 
             if (column != null) {
@@ -471,31 +480,30 @@ public class DataTable extends DataTableBase {
             }
         }
         else {
-            return findColumnInGroup(clientId, getColumnGroup("header"));
+            return findColumnInGroup(columnKey, getColumnGroup("header"));
         }
 
-        throw new FacesException("Cannot find column with key: " + clientId);
+        throw new FacesException("Cannot find column with key: " + columnKey);
     }
 
-    public UIColumn findColumnInGroup(String clientId, ColumnGroup group) {
+    public UIColumn findColumnInGroup(String columnKey, ColumnGroup group) {
         if (group == null) {
             return null;
         }
 
-        FacesContext context = getFacesContext();
-
         for (UIComponent row : group.getChildren()) {
             for (UIComponent rowChild : row.getChildren()) {
                 if (rowChild instanceof Column) {
-                    if (rowChild.getClientId(context).equals(clientId)) {
-                        return (UIColumn) rowChild;
+                    Column column = (Column) rowChild;
+                    if (Objects.equals(column.getColumnKey(), columnKey)) {
+                        return column;
                     }
                 }
                 else if (rowChild instanceof Columns) {
                     Columns uiColumns = (Columns) rowChild;
                     List<DynamicColumn> dynaColumns = uiColumns.getDynamicColumns();
                     for (UIColumn column : dynaColumns) {
-                        if (column.getColumnKey().equals(clientId)) {
+                        if (Objects.equals(column.getColumnKey(), columnKey)) {
                             return column;
                         }
                     }
@@ -515,7 +523,6 @@ public class DataTable extends DataTableBase {
                 if (type != null && type.equals(target)) {
                     return colGroup;
                 }
-
             }
         }
 
@@ -527,11 +534,10 @@ public class DataTable extends DataTableBase {
             if (child.isRendered() && (child instanceof UIColumn)) {
                 UIColumn column = (UIColumn) child;
 
-                if (column.getFacet("footer") != null || column.getFooterText() != null) {
+                if (column.getFooterText() != null || ComponentUtils.shouldRenderFacet(column.getFacet("footer"))) {
                     return true;
                 }
             }
-
         }
 
         return false;
@@ -554,24 +560,11 @@ public class DataTable extends DataTableBase {
                 first = Integer.parseInt(params.get(getClientId(context) + "_first")) + getRows();
             }
 
-            if (isMultiViewState()) {
-                List<FilterState> filters = getFilterBy();
-                if (filters != null) {
-                    String globalFilterParam = getClientId(context) + UINamingContainer.getSeparatorChar(context) + "globalFilter";
-                    List filterMetaDataList = getFilterMetadata();
-                    if (filterMetaDataList != null) {
-                        FilterFeature filterFeature = (FilterFeature) getFeature(DataTableFeatureKey.FILTER);
-                        Map<String, Object> filterParameterMap = filterFeature.populateFilterParameterMap(context, this, filterMetaDataList, globalFilterParam);
-                        setFilters(filterParameterMap);
-                    }
-                }
-            }
-
             if (isMultiSort()) {
-                data = lazyModel.load(first, getRows(), getMultiSortMeta(), getFilters());
+                data = lazyModel.load(first, getRows(), getSortMeta(), getFilterBy());
             }
             else {
-                data = lazyModel.load(first, getRows(), resolveSortField(), convertSortOrder(), getFilters());
+                data = lazyModel.load(first, getRows(), resolveSortField(), convertSortOrder(), getFilterBy());
             }
 
             lazyModel.setPageSize(getRows());
@@ -591,12 +584,11 @@ public class DataTable extends DataTableBase {
             LazyDataModel lazyModel = (LazyDataModel) model;
 
             List<?> data = null;
-
             if (isMultiSort()) {
-                data = lazyModel.load(offset, rows, getMultiSortMeta(), getFilters());
+                data = lazyModel.load(offset, rows, getSortMeta(), getFilterBy());
             }
             else {
-                data = lazyModel.load(offset, rows, resolveSortField(), convertSortOrder(), getFilters());
+                data = lazyModel.load(offset, rows, resolveSortField(), convertSortOrder(), getFilterBy());
             }
 
             lazyModel.setPageSize(rows);
@@ -610,53 +602,39 @@ public class DataTable extends DataTableBase {
     }
 
     protected String resolveSortField() {
-        String sortField = null;
         UIColumn column = getSortColumn();
-        ValueExpression tableSortByVE = getValueExpression(PropertyKeys.sortBy.toString());
-        Object tableSortByProperty = getSortBy();
-
         if (column == null) {
-            String field = getSortField();
-            if (field == null) {
-                sortField = (tableSortByVE == null) ? (String) tableSortByProperty : resolveStaticField(tableSortByVE);
+            String sortField = getSortField();
+            if (sortField == null) {
+                ValueExpression tableSortByVE = getValueExpression(PropertyKeys.sortBy.toString());
+                sortField = (tableSortByVE == null) ? (String) getSortBy() : resolveStaticField(tableSortByVE);
             }
-            else {
-                sortField = field;
-            }
-        }
-        else {
-            sortField = resolveColumnField(sortColumn);
+
+            return sortField;
         }
 
-        return sortField;
+        return resolveColumnField(column);
     }
 
     public String resolveColumnField(UIColumn column) {
-        ValueExpression columnSortByVE = column.getValueExpression(PropertyKeys.sortBy.toString());
-        String columnField;
+        ValueExpression columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.toString());
 
         if (column.isDynamic()) {
             ((DynamicColumn) column).applyStatelessModel();
-            Object sortByProperty = column.getSortBy();
             String field = column.getField();
             if (field == null) {
-                columnField = (sortByProperty == null) ? resolveDynamicField(columnSortByVE) : sortByProperty.toString();
+                Object sortByProperty = column.getSortBy();
+                field = (sortByProperty == null) ? resolveDynamicField(columnSortByVE) : sortByProperty.toString();
             }
-            else {
-                columnField = field;
-            }
+            return field;
         }
         else {
             String field = column.getField();
             if (field == null) {
-                columnField = (columnSortByVE == null) ? (String) column.getSortBy() : resolveStaticField(columnSortByVE);
+                field = (columnSortByVE == null) ? (String) column.getSortBy() : resolveStaticField(columnSortByVE);
             }
-            else {
-                columnField = field;
-            }
+            return field;
         }
-
-        return columnField;
     }
 
     public SortOrder convertSortOrder() {
@@ -670,19 +648,15 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    /**
-     * Extract bean's property from a value expression (e.g "#{car.year}")
-     * @param exprVE value expression
-     * @return bean's property name (e.g "year")
-     */
-    public String resolveStaticField(ValueExpression exprVE) {
-        if (exprVE != null) {
-            String exprStr = exprVE.getExpressionString();
-            Matcher matcher = STATIC_FIELD_PATTERN.matcher(exprStr);
-            if (matcher.find()) {
-                return matcher.group(1);
+    public String resolveStaticField(ValueExpression expression) {
+        if (expression != null) {
+            String expressionString = expression.getExpressionString();
+            if (expressionString.startsWith("#{")) {
+                expressionString = expressionString.substring(2, expressionString.indexOf('}')); //Remove #{}
+                return expressionString.substring(expressionString.indexOf('.') + 1); //Remove var
             }
         }
+
         return null;
     }
 
@@ -720,28 +694,12 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    public Map<String, Object> getFilters() {
-        return (Map<String, Object>) getStateHelper().eval("filters", new HashMap<String, Object>());
-    }
-
-    public void setFilters(Map<String, Object> filters) {
-        getStateHelper().put("filters", filters);
-    }
-
     public int getScrollOffset() {
         return (java.lang.Integer) getStateHelper().eval("scrollOffset", 0);
     }
 
     public void setScrollOffset(int scrollOffset) {
         getStateHelper().put("scrollOffset", scrollOffset);
-    }
-
-    public List getFilterMetadata() {
-        return filterMetadata;
-    }
-
-    public void setFilterMetadata(List filterMetadata) {
-        this.filterMetadata = filterMetadata;
     }
 
     public boolean isReset() {
@@ -751,7 +709,7 @@ public class DataTable extends DataTableBase {
     public void resetValue() {
         setValue(null);
         setFilteredValue(null);
-        setFilters(null);
+        setFilterBy(null);
     }
 
     public void reset() {
@@ -765,17 +723,13 @@ public class DataTable extends DataTableBase {
         setSortColumn(null);
         setSortField(null);
         setDefaultSort(true);
-        clearMultiSortMeta();
-    }
-
-    public void resetRows() {
-        getStateHelper().remove("rows");
+        setSortMeta(null);
     }
 
     public boolean isFilteringEnabled() {
         Object value = getStateHelper().get("filtering");
 
-        return value == null ? false : true;
+        return value != null;
     }
 
     public void enableFiltering() {
@@ -1025,7 +979,7 @@ public class DataTable extends DataTableBase {
 
             for (UIComponent child : getChildren()) {
                 if (child instanceof Column) {
-                    columns.add((UIColumn) child);
+                    columns.add((Column) child);
                 }
                 else if (child instanceof Columns) {
                     Columns uiColumns = (Columns) child;
@@ -1059,7 +1013,7 @@ public class DataTable extends DataTableBase {
     protected boolean shouldSkipChildren(FacesContext context) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String paramValue = params.get(Constants.RequestParams.SKIP_CHILDREN_PARAM);
-        if (paramValue != null && Boolean.parseBoolean(paramValue) == false) {
+        if (paramValue != null && !Boolean.parseBoolean(paramValue)) {
             return false;
         }
         else {
@@ -1093,64 +1047,6 @@ public class DataTable extends DataTableBase {
         String sortMode = getSortMode();
 
         return (sortMode != null && sortMode.equals("multiple"));
-    }
-
-    public List<MultiSortState> getMultiSortState() {
-        return (List<MultiSortState>) getStateHelper().get("multiSortState");
-    }
-
-    public void setMultiSortState(List<MultiSortState> _multiSortState) {
-        getStateHelper().put("multiSortState", _multiSortState);
-    }
-
-    public List<SortMeta> getMultiSortMeta() {
-        if (multiSortMeta != null) {
-            return multiSortMeta;
-        }
-
-        List<MultiSortState> multiSortStateList = getMultiSortState();
-        if (multiSortStateList != null && !multiSortStateList.isEmpty()) {
-            multiSortMeta = new ArrayList<>();
-            for (int i = 0; i < multiSortStateList.size(); i++) {
-                MultiSortState multiSortState = multiSortStateList.get(i);
-                UIColumn column = findColumn(multiSortState.getSortKey());
-                if (column != null) {
-                    SortMeta sortMeta = new SortMeta();
-                    sortMeta.setSortBy(column);
-                    sortMeta.setSortField(multiSortState.getSortField());
-                    sortMeta.setSortOrder(multiSortState.getSortOrder());
-                    sortMeta.setSortFunction(multiSortState.getSortFunction());
-
-                    multiSortMeta.add(sortMeta);
-                }
-            }
-        }
-        else {
-            ValueExpression ve = getValueExpression(PropertyKeys.sortBy.toString());
-            if (ve != null) {
-                multiSortMeta = (List<SortMeta>) ve.getValue(getFacesContext().getELContext());
-            }
-        }
-
-        return multiSortMeta;
-    }
-
-    public void setMultiSortMeta(List<SortMeta> value) {
-        multiSortMeta = value;
-
-        if (value != null && !value.isEmpty()) {
-            List<MultiSortState> multiSortStateList = new ArrayList<>();
-            for (int i = 0; i < value.size(); i++) {
-                multiSortStateList.add(new MultiSortState(value.get(i)));
-            }
-
-            setMultiSortState(multiSortStateList);
-        }
-    }
-
-    private void clearMultiSortMeta() {
-        multiSortMeta = null;
-        getStateHelper().remove("multiSortState");
     }
 
     public String resolveSelectionMode() {
@@ -1436,7 +1332,7 @@ public class DataTable extends DataTableBase {
 
     public Locale resolveDataLocale() {
         FacesContext context = getFacesContext();
-        return LocaleUtils.resolveLocale(getDataLocale(), getClientId(context));
+        return LocaleUtils.resolveLocale(context, getDataLocale(), getClientId(context));
     }
 
     private boolean isFilterRequest(FacesContext context) {
@@ -1495,6 +1391,22 @@ public class DataTable extends DataTableBase {
             setValue(null);
         }
 
+        // reset component for MyFaces view pooling
+        columnsCountWithSpan = -1;
+        reset = false;
+        selectedRowKeys = new ArrayList<>();
+        isRowKeyRestored = false;
+        columnsCount = -1;
+        columns = null;
+        sortColumn = null;
+        dynamicColumns = null;
+        sortByVE = null;
+        togglableColumnsAsString = null;
+        togglableColsMap = null;
+        resizableColumnsAsString = null;
+        resizableColsMap = null;
+        iterableChildren = null;
+
         return super.saveState(context);
     }
 
@@ -1530,8 +1442,9 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    public void restoreTableState() {
-        TableState ts = getTableState(false);
+    @Override
+    public void restoreMultiViewState() {
+        DataTableState ts = getMultiViewState(false);
         if (ts != null) {
             if (isPaginator()) {
                 setFirst(ts.getFirst());
@@ -1539,7 +1452,7 @@ public class DataTable extends DataTableBase {
                 setRows(rows);
             }
 
-            setMultiSortState(ts.getMultiSortState());
+            setSortMeta(ts.getSortMeta());
             setValueExpression("sortBy", ts.getSortBy());
             setSortOrder(ts.getSortOrder());
             setSortFunction(ts.getSortFunction());
@@ -1554,20 +1467,25 @@ public class DataTable extends DataTableBase {
                 isRowKeyRestored = true;
             }
 
-            setFilterBy(ts.getFilters());
-            setGlobalFilter(ts.getGlobalFilterValue());
+            setFilterBy(ts.getFilterBy());
             setColumns(findOrderedColumns(ts.getOrderedColumnsAsString()));
             setTogglableColumnsAsString(ts.getTogglableColumnsAsString());
             setResizableColumnsAsString(ts.getResizableColumnsAsString());
         }
     }
 
-    public TableState getTableState(boolean create) {
+    @Override
+    public DataTableState getMultiViewState(boolean create) {
         FacesContext fc = getFacesContext();
         String viewId = fc.getViewRoot().getViewId();
 
         return PrimeFaces.current().multiViewState()
-                .get(viewId, getClientId(fc), create, TableState::new);
+                .get(viewId, getClientId(fc), create, DataTableState::new);
+    }
+
+    @Override
+    public void resetMultiViewState() {
+        reset();
     }
 
     public String getGroupedColumnIndexes() {
@@ -1595,24 +1513,23 @@ public class DataTable extends DataTableBase {
         return null;
     }
 
-    public String getSortMetaOrder(FacesContext context) {
-        List<SortMeta> multiSortMeta = getMultiSortMeta();
-        if (multiSortMeta != null) {
-            int size = multiSortMeta.size();
-            if (size > 0) {
-                StringBuilder sb = new StringBuilder();
-                sb.append("['");
-                for (int i = 0; i < size; i++) {
-                    SortMeta sortMeta = multiSortMeta.get(i);
-                    if (i > 0) {
-                        sb.append("','");
-                    }
-                    sb.append(sortMeta.getColumn().getClientId(context));
+    public String getSortMetaAsString(FacesContext context) {
+        Map<String, SortMeta> multiSortMeta = getSortMeta();
+        if (multiSortMeta != null && !multiSortMeta.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("['");
+            int i = 0;
+            for (SortMeta sortMeta : multiSortMeta.values()) {
+                if (i > 0) {
+                    sb.append("','");
                 }
-                sb.append("']");
-
-                return sb.toString();
+                UIColumn column = findColumn(sortMeta.getColumnKey());
+                sb.append(column.getClientId(context));
+                i++;
             }
+            sb.append("']");
+
+            return sb.toString();
         }
         return null;
     }

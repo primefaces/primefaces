@@ -24,6 +24,7 @@
 package org.primefaces.component.dataview;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -72,6 +73,7 @@ public class DataView extends DataViewBase {
             .build();
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
     private DataViewGridItem gridItem = null;
     private DataViewListItem listItem = null;
 
@@ -146,7 +148,7 @@ public class DataView extends DataViewBase {
         DataModel model = getDataModel();
         if (model instanceof LazyDataModel) {
             LazyDataModel lazyModel = (LazyDataModel) model;
-            List<?> data = lazyModel.load(getFirst(), getRows(), null, null, null);
+            List<?> data = lazyModel.load(getFirst(), getRows(), null, null, Collections.emptyMap());
 
             lazyModel.setPageSize(getRows());
             lazyModel.setWrappedData(data);
@@ -156,5 +158,50 @@ public class DataView extends DataViewBase {
                 PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
             }
         }
+    }
+
+    @Override
+    public Object saveState(FacesContext context) {
+        // reset component for MyFaces view pooling
+        gridItem = null;
+        listItem = null;
+
+        return super.saveState(context);
+    }
+
+    public void reset() {
+        setFirst(0);
+        //resetRows(); //TODO: do resetRows the "right" way
+        setLayout(null);
+    }
+
+    @Override
+    public void resetMultiViewState() {
+        reset();
+    }
+
+    @Override
+    public void restoreMultiViewState() {
+        DataViewState viewState = getMultiViewState(false);
+        if (viewState != null) {
+            if (viewState.getLayout() != null && viewState.getLayout().length() > 0) {
+                setLayout(viewState.getLayout());
+            }
+
+            if (isPaginator()) {
+                setFirst(viewState.getFirst());
+                int rows = (viewState.getRows() == 0) ? getRows() : viewState.getRows();
+                setRows(rows);
+            }
+        }
+    }
+
+    @Override
+    public DataViewState getMultiViewState(boolean create) {
+        FacesContext fc = getFacesContext();
+        String viewId = fc.getViewRoot().getViewId();
+
+        return PrimeFaces.current().multiViewState()
+                .get(viewId, getClientId(fc), create, DataViewState::new);
     }
 }

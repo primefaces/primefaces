@@ -25,16 +25,13 @@ package org.primefaces.component.inputnumber;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
+import java.math.BigInteger;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
 import org.primefaces.component.inputtext.InputText;
@@ -43,22 +40,20 @@ import org.primefaces.util.*;
 
 public class InputNumberRenderer extends InputRenderer {
 
+    // Default values for "minValue"/"maxValue" properties of the AutoNumeric Plugin
+    private static final BigDecimal DEFAULT_MIN_VALUE = new BigDecimal("-10000000000000");
+    private static final BigDecimal DEFAULT_MAX_VALUE = new BigDecimal("10000000000000");
+
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue)
             throws ConverterException {
 
         String submittedValueString = (String) submittedValue;
-
         if (LangUtils.isValueBlank(submittedValueString)) {
             return null;
         }
 
-        Converter converter = ComponentUtils.getConverter(context, component);
-        if (converter != null) {
-            return converter.getAsObject(context, component, submittedValueString);
-        }
-
-        return submittedValue;
+        return ComponentUtils.getConvertedValue(context, component, submittedValueString);
     }
 
     @Override
@@ -94,19 +89,9 @@ public class InputNumberRenderer extends InputRenderer {
                 }
             }
             else {
+                // Coerce submittedValue to (effective) range of [minValue, maxValue]
                 BigDecimal value = new BigDecimal(submittedValue);
-                if (!LangUtils.isValueBlank(inputNumber.getMinValue())) {
-                    BigDecimal min = new BigDecimal(inputNumber.getMinValue());
-                    if (value.compareTo(min) < 0) {
-                        submittedValue = String.valueOf(min.doubleValue());
-                    }
-                }
-                if (!LangUtils.isValueBlank(inputNumber.getMaxValue())) {
-                    BigDecimal max = new BigDecimal(inputNumber.getMaxValue());
-                    if (value.compareTo(max) > 0) {
-                        submittedValue = String.valueOf(max.doubleValue());
-                    }
-                }
+                submittedValue = coerceValueInRange(value, inputNumber).toString();
             }
         }
         catch (NumberFormatException ex) {
@@ -122,8 +107,20 @@ public class InputNumberRenderer extends InputRenderer {
 
         Object value = inputNumber.getValue();
         String valueToRender = ComponentUtils.getValueToRender(context, inputNumber, value);
-        if (valueToRender == null) {
+        if (isValueBlank(valueToRender)) {
             valueToRender = "";
+        }
+        else {
+            // Rendered value must always be inside the effective interval [minValue, maxValue],
+            // or else AutoNumeric will throw an error and the component will be broken
+            BigDecimal decimalToRender;
+            try {
+                decimalToRender = new BigDecimal(valueToRender);
+            }
+            catch (Exception e) {
+                throw new IllegalArgumentException("Error converting  [" + valueToRender + "] to a decimal value;", e);
+            }
+            valueToRender = formatForPlugin(coerceValueInRange(decimalToRender, inputNumber));
         }
 
         encodeMarkup(context, inputNumber, value, valueToRender);
@@ -222,105 +219,131 @@ public class InputNumberRenderer extends InputRenderer {
 
     protected void encodeScript(FacesContext context, InputNumber inputNumber, Object value, String valueToRender)
             throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init(InputNumber.class.getSimpleName(), inputNumber.resolveWidgetVar(), inputNumber.getClientId());
-        wb.attr("disabled", inputNumber.isDisabled())
-                .attr("valueToRender", formatForPlugin(valueToRender, inputNumber, value));
+        String emptyValue = isValueBlank(inputNumber.getEmptyValue()) || "empty".equalsIgnoreCase(inputNumber.getEmptyValue())
+                ? "null"
+                : inputNumber.getEmptyValue();
+        String digitGroupSeparator = isValueBlank(inputNumber.getThousandSeparator())
+                ? Constants.EMPTY_STRING
+                : inputNumber.getThousandSeparator();
 
-        String metaOptions = getOptions(inputNumber);
-        if (!metaOptions.isEmpty()) {
-            wb.nativeAttr("pluginOptions", metaOptions);
+        String defaultDecimalPlaces = "2";
+        if (value instanceof Long || value instanceof Integer || value instanceof Short || value instanceof BigInteger) {
+            defaultDecimalPlaces = "0";
         }
+        String decimalPlaces = isValueBlank(inputNumber.getDecimalPlaces())
+                ? defaultDecimalPlaces
+                : inputNumber.getDecimalPlaces();
+
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.init(InputNumber.class.getSimpleName(), inputNumber.resolveWidgetVar(context), inputNumber.getClientId());
+        wb.attr("disabled", inputNumber.isDisabled())
+            .attr("valueToRender", valueToRender)
+            .attr("decimalCharacter", inputNumber.getDecimalSeparator(), ".")
+            .attr("decimalCharacterAlternative", inputNumber.getDecimalSeparatorAlternative(), null)
+            .attr("digitGroupSeparator", digitGroupSeparator, ",")
+            .attr("currencySymbol", inputNumber.getSymbol())
+            .attr("currencySymbolPlacement", inputNumber.getSymbolPosition(), "p")
+            .attr("minimumValue", formatForPlugin(inputNumber.getMinValue()))
+            .attr("maximumValue", formatForPlugin(inputNumber.getMaxValue()))
+            .attr("decimalPlaces", decimalPlaces)
+            .attr("emptyInputBehavior", emptyValue, "focus")
+            .attr("leadingZero", inputNumber.getLeadingZero(), "deny")
+            .attr("allowDecimalPadding", inputNumber.isPadControl(), true)
+            .attr("roundingMethod", inputNumber.getRoundMethod(), "S")
+            .attr("selectOnFocus", false, true)
+            .attr("showWarnings", false, true);
 
         wb.finish();
     }
 
-    protected String getOptions(InputNumber inputNumber) {
-
-        String decimalSeparator = inputNumber.getDecimalSeparator();
-        String thousandSeparator = inputNumber.getThousandSeparator();
-        String symbol = inputNumber.getSymbol();
-        String symbolPosition = inputNumber.getSymbolPosition();
-        String minValue = inputNumber.getMinValue();
-        String maxValue = inputNumber.getMaxValue();
-        String roundMethod = inputNumber.getRoundMethod();
-        String decimalPlaces = inputNumber.getDecimalPlaces();
-        String emptyValue = inputNumber.getEmptyValue();
-        String lZero = inputNumber.getLeadingZero();
-        boolean padControl = inputNumber.isPadControl();
-
-        String options = "";
-        options += isValueBlank(decimalSeparator) ? "" : "aDec:\"" + EscapeUtils.forJavaScript(decimalSeparator) + "\",";
-        //empty thousandSeparator must be explicity defined.
-        options += isValueBlank(thousandSeparator) ? "aSep:''," : "aSep:\"" + EscapeUtils.forJavaScript(thousandSeparator) + "\",";
-        options += isValueBlank(symbol) ? "" : "aSign:\"" + EscapeUtils.forJavaScript(symbol) + "\",";
-        options += isValueBlank(symbolPosition) ? "" : "pSign:\"" + EscapeUtils.forJavaScript(symbolPosition) + "\",";
-        options += isValueBlank(minValue) ? "" : "vMin:\"" + EscapeUtils.forJavaScript(minValue) + "\",";
-        options += isValueBlank(maxValue) ? "" : "vMax:\"" + EscapeUtils.forJavaScript(maxValue) + "\",";
-        options += isValueBlank(roundMethod) ? "" : "mRound:\"" + EscapeUtils.forJavaScript(roundMethod) + "\",";
-        options += isValueBlank(decimalPlaces) ? "" : "mDec:\"" + EscapeUtils.forJavaScript(decimalPlaces) + "\",";
-        options += "wEmpty:\"" + EscapeUtils.forJavaScript(emptyValue) + "\",";
-        options += "lZero:\"" + EscapeUtils.forJavaScript(lZero) + "\",";
-        options += "aPad:" + padControl + ",";
-
-        //if all options are empty return empty
-        if (options.isEmpty()) {
-            return "";
+    /**
+     * Get the effective minimum Value (as interpreted in the AutoNumeric plugin)
+     * @param inputNumber the InputNumber component
+     * @return the minimumValue property as BigDecimal, or the AutoNumeric default value if empty
+     */
+    private BigDecimal getEffectiveMinValue(InputNumber inputNumber) {
+        String minimumValue = inputNumber.getMinValue();
+        if (minimumValue == null) {
+            return DEFAULT_MIN_VALUE;
         }
-
-        //delete the last comma
-        int lastInd = options.length() - 1;
-        if (options.charAt(lastInd) == ',') {
-            options = options.substring(0, lastInd);
+        try {
+            return new BigDecimal(minimumValue);
         }
-        return "{" + options + "}";
-
+        catch (Exception e) {
+            throw new IllegalArgumentException("Error converting  [" + minimumValue + "] to a decimal value for minValue", e);
+        }
     }
 
-    private String formatForPlugin(String valueToRender, InputNumber inputNumber, Object value) {
+    /**
+     * Get the effective maximum Value (as interpreted in the AutoNumeric plugin)
+     * @param inputNumber the InputNumber component
+     * @return the maximumValue property as BigDecimal, or the AutoNumeric default value if empty
+     */
+    private BigDecimal getEffectiveMaxValue(InputNumber inputNumber) {
+        String maximumValue = inputNumber.getMaxValue();
+        if (maximumValue == null) {
+            return DEFAULT_MAX_VALUE;
+        }
+        try {
+            return new BigDecimal(maximumValue);
+        }
+        catch (Exception e) {
+            throw new IllegalArgumentException("Error converting  [" + maximumValue + "] to a decimal value for maxValue", e);
+        }
+    }
 
+    /**
+     * Coerce the provided value to the range defined by the effective minimum and maximum numbers.
+     * @param value the value to render
+     * @param inputNumber the component for which the minValue and maxValue properties define the range
+     * @return the value if inside the range, or else the nearest boundary that is still inside the range
+     */
+    private BigDecimal coerceValueInRange(BigDecimal value, InputNumber inputNumber) {
+        return coerceValueInRange(value, getEffectiveMinValue(inputNumber), getEffectiveMaxValue(inputNumber));
+    }
+
+    /**
+     * Coerce the provided value to the range defined by the effective minimum and maximum numbers.
+     * @param value the value to render
+     * @param effectiveMinValue the effective minimum value
+     * @param effectiveMaxValue the effective maximum number
+     * @return the value if inside the range, or else the nearest boundary that is still inside the range
+     */
+    private BigDecimal coerceValueInRange(BigDecimal value, BigDecimal effectiveMinValue, BigDecimal effectiveMaxValue) {
+        if (value.compareTo(effectiveMinValue) < 0) {
+            return effectiveMinValue;
+        }
+        if (value.compareTo(effectiveMaxValue) > 0) {
+            return effectiveMaxValue;
+        }
+        return value;
+    }
+
+    private String formatForPlugin(String valueToRender) {
+        if (valueToRender == null) {
+            return null;
+        }
         if (isValueBlank(valueToRender)) {
             return "";
         }
         else {
             try {
-                Object objectToRender;
-                if (value instanceof BigDecimal || doubleValueCheck(valueToRender)) {
-                    objectToRender = new BigDecimal(valueToRender);
-                }
-                else {
-                    objectToRender = new Double(valueToRender);
-                }
-
-                NumberFormat formatter = new DecimalFormat("#0.0#");
-                formatter.setRoundingMode(RoundingMode.FLOOR);
-                //autoNumeric jquery plugin max and min limits
-                formatter.setMinimumFractionDigits(15);
-                formatter.setMaximumFractionDigits(15);
-                formatter.setMaximumIntegerDigits(20);
-                String f = formatter.format(objectToRender);
-
-                //force to english decimal separator
-                f = f.replace(',', '.');
-                return f;
+                BigDecimal objectToRender = new BigDecimal(valueToRender);
+                return formatForPlugin(objectToRender);
             }
             catch (Exception e) {
-                throw new IllegalArgumentException("Error converting  [" + valueToRender + "] to a double value;", e);
+                throw new IllegalArgumentException("Error converting  [" + valueToRender + "] to a decimal value;", e);
             }
         }
     }
 
-    protected boolean doubleValueCheck(String valueToRender) {
-        int counter = 0;
-        int length = valueToRender.length();
-
-        for (int i = 0; i < length; i++) {
-            if (valueToRender.charAt(i) == '9') {
-                counter++;
-            }
-        }
-
-        return (counter > 15 || length > 15);
+    /**
+     * Format a BigDecimal value as value/minValue/maxValue for the AutoNumeric plugin.
+     * @param valueToRender the value to render
+     * @return BigDecimal value as plain decimal String, without any exponential notation
+     */
+    private String formatForPlugin(BigDecimal valueToRender) {
+        return valueToRender.toPlainString();
     }
 
     @Override

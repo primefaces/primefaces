@@ -23,34 +23,42 @@
  */
 package org.primefaces.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Map;
 
-public interface ScheduleEvent {
+public interface ScheduleEvent<T> {
 
-    public String getId();
+    String getId();
 
-    public void setId(String id);
+    void setId(String id);
 
-    public Object getData();
+    String getGroupId();
 
-    public String getTitle();
+    T getData();
 
-    public Date getStartDate();
+    String getTitle();
 
-    public Date getEndDate();
+    LocalDateTime getStartDate();
 
-    public boolean isAllDay();
+    void setStartDate(LocalDateTime start);
 
-    public String getStyleClass();
+    LocalDateTime getEndDate();
 
-    public boolean isEditable();
+    void setEndDate(LocalDateTime end);
 
-    public String getDescription();
+    boolean isAllDay();
 
-    public String getUrl();
+    String getStyleClass();
 
-    public ScheduleRenderingMode getRenderingMode();
+    boolean isEditable();
 
-    public Map<String, Object> getDynamicProperties();
+    boolean isOverlapAllowed();
+
+    String getDescription();
+
+    String getUrl();
+
+    ScheduleRenderingMode getRenderingMode();
+
+    Map<String, Object> getDynamicProperties();
 }

@@ -54,7 +54,7 @@ public class InputMaskRenderer extends InputRenderer {
         if (submittedValue != null) {
             String mask = inputMask.getMask();
 
-            if (!submittedValue.isEmpty() && !LangUtils.isValueBlank(mask)) {
+            if (inputMask.isValidateMask() && !submittedValue.isEmpty() && !LangUtils.isValueBlank(mask)) {
                 Pattern pattern = translateMaskIntoRegex(context, mask);
                 if (!pattern.matcher(submittedValue).matches()) {
                     submittedValue = "";
@@ -129,7 +129,7 @@ public class InputMaskRenderer extends InputRenderer {
         String clientId = inputMask.getClientId(context);
         String mask = inputMask.getMask();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("InputMask", inputMask.resolveWidgetVar(), clientId);
+        wb.init("InputMask", inputMask.resolveWidgetVar(context), clientId);
         String slotChar = inputMask.getSlotChar();
 
         if (mask != null) {

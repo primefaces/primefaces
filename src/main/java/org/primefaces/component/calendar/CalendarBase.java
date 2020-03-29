@@ -27,8 +27,6 @@ import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class CalendarBase extends UICalendar implements Widget, InputHolder, MixedClientBehaviorHolder {
 
@@ -446,7 +444,8 @@ public abstract class CalendarBase extends UICalendar implements Widget, InputHo
     }
 
     @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    public String calculateWidgetPattern() {
+        return isTimeOnly() ? calculateTimeOnlyPattern() : calculatePattern();
     }
+
 }

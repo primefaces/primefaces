@@ -29,14 +29,17 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.treetable.TreeTable;
 
-
 public class CellEditor extends CellEditorBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.CellEditor";
+
     private UIComponent parentTable = null;
 
     @Override
     public void processDecodes(FacesContext context) {
+        if (!isRendered() || isDisabled()) {
+            return;
+        }
         if (isEditRequest(context)) {
             super.processDecodes(context);
         }

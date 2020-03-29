@@ -54,7 +54,7 @@ public class InplaceRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, Inplace inplace) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = inplace.getClientId(context);
-        String widgetVar = inplace.resolveWidgetVar();
+        String widgetVar = inplace.resolveWidgetVar(context);
 
         String userStyleClass = inplace.getStyleClass();
         String userStyle = inplace.getStyle();
@@ -85,7 +85,7 @@ public class InplaceRenderer extends CoreRenderer {
         writer.writeAttribute("class", displayClass, null);
         writer.writeAttribute("style", "display:" + displayStyle, null);
 
-        if (outputFacet != null) {
+        if (ComponentUtils.shouldRenderFacet(outputFacet)) {
             outputFacet.encodeAll(context);
         }
         else {
@@ -101,7 +101,7 @@ public class InplaceRenderer extends CoreRenderer {
             writer.writeAttribute("class", Inplace.CONTENT_CLASS, null);
             writer.writeAttribute("style", "display:" + contentStyle, null);
 
-            if (inputFacet != null) {
+            if (ComponentUtils.shouldRenderFacet(inputFacet)) {
                 inputFacet.encodeAll(context);
             }
             else {
@@ -145,7 +145,7 @@ public class InplaceRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Inplace inplace) throws IOException {
         String clientId = inplace.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Inplace", inplace.resolveWidgetVar(), clientId)
+        wb.init("Inplace", inplace.resolveWidgetVar(context), clientId)
                 .attr("effect", inplace.getEffect())
                 .attr("effectSpeed", inplace.getEffectSpeed())
                 .attr("event", inplace.getEvent())

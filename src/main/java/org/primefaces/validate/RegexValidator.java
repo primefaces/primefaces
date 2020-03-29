@@ -29,15 +29,13 @@ import org.primefaces.util.HTML;
 
 public class RegexValidator extends javax.faces.validator.RegexValidator implements ClientValidator {
 
-    private Map<String, Object> metadata;
-
     @Override
     public Map<String, Object> getMetadata() {
-        metadata = new HashMap<>();
+        Map<String, Object> metadata = new HashMap<>();
         String regex = this.getPattern();
 
         if (regex != null) {
-            metadata.put(HTML.VALIDATION_METADATA.REGEX, regex);
+            metadata.put(HTML.ValidationMetadata.REGEX, regex);
         }
 
         return metadata;

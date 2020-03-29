@@ -29,8 +29,6 @@ import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.UITree;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
-
 
 public abstract class TreeTableBase extends UITree implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable {
 
@@ -410,10 +408,5 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
 
     public void setCellEditMode(String cellEditMode) {
         getStateHelper().put(PropertyKeys.cellEditMode, cellEditMode);
-    }
-
-    @Override
-    public String resolveWidgetVar() {
-        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 }

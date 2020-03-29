@@ -71,24 +71,10 @@
         },
 
         /**
-         * Hides all watermarks (placeholders) from all input elements.
-         */
-        cleanWatermarks : function(){
-            $.watermark.hideAll();
-        },
-
-        /**
-         * Shows all available watermarks (placeholders) in input elements.
-         */
-        showWatermarks : function(){
-            $.watermark.showAll();
-        },
-
-        /**
-         * Each widget has got a container with an ID. Finds a widget by that ID.
-         * @param {string} id ID of an element.
-         * @return {PrimeFaces.widget.BaseWidget | null} The widget for the given ID, or `null` when no such widget
-         * exists.
+         * Finds a widget in the current page with the given ID.
+         * @param {string} id ID of the widget to retrieve.
+         * @return {PrimeFaces.widget.BaseWidget | null} The widget with the given ID, of `null` if no such widget was
+         * found.  
          */
         getWidgetById : function(id) {
             for (var widgetVar in PrimeFaces.widgets) {
@@ -226,19 +212,19 @@
         /**
          * Updates the class of the given INPUT element to indicate whether the element contains data or not. Used for
          * example in floating labels.
-         * @param {JQuery} input the text input to modify
-         * @param {JQuery} parent the parent element of input
+         * @param {JQuery} input The text input to modify
+         * @param {JQuery} parent The parent element of the input.
          */
         updateFilledState: function(input, parent) {
             var value = input.val();
-            
+
             if (typeof(value) == 'undefined') {
                 return;
             }
-            
+
             if (value.length) {
                 input.addClass('ui-state-filled');
-                
+
                 if(parent.is("span:not('.ui-float-label')")) {
                     parent.addClass('ui-inputwrapper-filled');
                 }
@@ -276,13 +262,13 @@
                 }
             ).focus(function() {
                 $(this).addClass('ui-state-focus');
-                
+
                 if(parent.is("span:not('.ui-float-label')")) {
                     parent.addClass('ui-inputwrapper-focus');
                 }
             }).blur(function() {
                 $(this).removeClass('ui-state-focus');
-                
+
                 if(input.hasClass('hasDatepicker')) {
                     setTimeout(function() {
                         updateFilledStateOnBlur();
@@ -685,7 +671,7 @@
                     el.parent().focus();
                 }
                 else {
-                    var checkedRadio = $(':radio[name="' + el.attr('name') + '"]').filter(':checked');
+                    var checkedRadio = $(':radio[name="' + $.escapeSelector(el.attr('name')) + '"]').filter(':checked');
                     if(checkedRadio.length)
                         checkedRadio.focus();
                     else
@@ -1010,16 +996,16 @@
             var ariaLocaleSettings = this.getLocaleSettings()['aria'];
             return (ariaLocaleSettings&&ariaLocaleSettings[key]) ? ariaLocaleSettings[key] : PrimeFaces.locales['en_US']['aria'][key];
         },
-        
+
         /**
-         * Generates a random RFC-4122 compliant UUID to be used as a unique identifiers.
-         * 
-         * https://www.ietf.org/rfc/rfc4122.txt
+         * Generate a RFC-4122 compliant UUID to be used as a unique identifier.
+         *
+         * See https://www.ietf.org/rfc/rfc4122.txt
          * 
          * @return {string} A random UUID.
          */
         uuid: function() {
-            var lut = []; 
+            var lut = [];
             for (var i=0; i<256; i++) { lut[i] = (i<16?'0':'')+(i).toString(16); }
             var d0 = Math.random()*0xffffffff|0;
             var d1 = Math.random()*0xffffffff|0;
@@ -1029,7 +1015,7 @@
               lut[d1&0xff]+lut[d1>>8&0xff]+'-'+lut[d1>>16&0x0f|0x40]+lut[d1>>24&0xff]+'-'+
               lut[d2&0x3f|0x80]+lut[d2>>8&0xff]+'-'+lut[d2>>16&0xff]+lut[d2>>24&0xff]+
               lut[d3&0xff]+lut[d3>>8&0xff]+lut[d3>>16&0xff]+lut[d3>>24&0xff];
-        }, 
+        },
 
         /**
          * A tracker for the current z-index, used for example when creating multiple modal dialogs.
@@ -1219,7 +1205,8 @@
                 'calendar.BUTTON': 'Show Calendar',
                 'datatable.sort.ASC': 'activate to sort column ascending',
                 'datatable.sort.DESC': 'activate to sort column descending',
-                'columntoggler.CLOSE': 'Close'
+                'columntoggler.CLOSE': 'Close',
+                'overlaypanel.CLOSE': 'Close'
             }
         }
 

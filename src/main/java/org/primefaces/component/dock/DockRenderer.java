@@ -24,6 +24,8 @@
 package org.primefaces.component.dock;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.faces.component.UIComponent;
@@ -34,6 +36,7 @@ import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class DockRenderer extends BaseMenuRenderer {
@@ -44,12 +47,12 @@ public class DockRenderer extends BaseMenuRenderer {
         String clientId = dock.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Dock", dock.resolveWidgetVar(), clientId)
+        wb.init("Dock", dock.resolveWidgetVar(context), clientId)
                 .attr("position", dock.getPosition())
-                .attr("maxWidth", dock.getMaxWidth())
-                .attr("itemWidth", dock.getItemWidth())
-                .attr("proximity", dock.getProximity())
-                .attr("halign", dock.getHalign());
+                .attr("halign", dock.getHalign())
+                .attr("blockScroll", dock.isBlockScroll())
+                .attr("animate", dock.isAnimate())
+                .attr("animationDuration", dock.getAnimationDuration());
 
         wb.finish();
     }
@@ -63,26 +66,33 @@ public class DockRenderer extends BaseMenuRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
-        writer.writeAttribute("class", "ui-dock-" + position + " ui-widget", "styleClass");
+        writer.writeAttribute("class", "ui-dock " + position + " ui-widget", "styleClass");
         renderPassThruAttributes(context, dock, null);
 
-        writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-dock-container-" + position + " ui-widget-header", null);
+        writer.startElement("ul", null);
+        writer.writeAttribute("class", "ui-dock-container " + dock.getHalign() + " " + position, null);
 
         encodeMenuItems(context, dock);
 
-        writer.endElement("div");
-
+        writer.endElement("ul");
         writer.endElement("div");
     }
 
     protected void encodeMenuItems(FacesContext context, Dock dock) throws IOException {
         if (dock.getElementsCount() > 0) {
-            List<MenuElement> menuElements = dock.getElements();
+            ResponseWriter writer = context.getResponseWriter();
+            List<MenuElement> menuElements = new ArrayList<>(dock.getElements());
+
+            if (ComponentUtils.isRTL(context, dock)) {
+                Collections.reverse(menuElements);
+            }
 
             for (MenuElement element : menuElements) {
                 if (element.isRendered() && element instanceof MenuItem) {
+                    writer.startElement("li", null);
+                    writer.writeAttribute("class", "ui-dock-item", "styleClass");
                     encodeMenuItem(context, dock, (MenuItem) element, "-1");
+                    writer.endElement("li");
                 }
             }
         }
@@ -90,16 +100,8 @@ public class DockRenderer extends BaseMenuRenderer {
 
     @Override
     protected void encodeMenuItemContent(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
-        String position = ((Dock) menu).getPosition();
-
-        if (position.equalsIgnoreCase("top")) {
-            encodeItemIcon(context, menuitem);
-            encodeItemLabel(context, menuitem);
-        }
-        else {
-            encodeItemLabel(context, menuitem);
-            encodeItemIcon(context, menuitem);
-        }
+        encodeItemLabel(context, menuitem);
+        encodeItemIcon(context, menuitem);
     }
 
     protected void encodeItemIcon(FacesContext context, MenuItem menuitem) throws IOException {
@@ -107,12 +109,14 @@ public class DockRenderer extends BaseMenuRenderer {
 
         writer.startElement("img", null);
         writer.writeAttribute("src", getResourceURL(context, menuitem.getIcon()), null);
+        writer.writeAttribute("class", "ui-dock-image", "styleClass");
         writer.endElement("img");
     }
 
     protected void encodeItemLabel(FacesContext context, MenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
+        writer.startElement("em", null);
         writer.startElement("span", null);
 
         if (menuitem.getValue() != null) {
@@ -125,6 +129,7 @@ public class DockRenderer extends BaseMenuRenderer {
         }
 
         writer.endElement("span");
+        writer.endElement("em");
     }
 
     @Override

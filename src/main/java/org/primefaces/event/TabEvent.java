@@ -27,7 +27,7 @@ import org.primefaces.component.tabview.Tab;
 
 public interface TabEvent<T> {
 
-    public Tab getTab();
+    Tab getTab();
 
-    public T getData();
+    T getData();
 }

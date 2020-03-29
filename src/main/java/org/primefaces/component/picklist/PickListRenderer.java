@@ -38,6 +38,7 @@ import org.primefaces.component.column.Column;
 import org.primefaces.model.DualListModel;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.RendererUtils;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -141,7 +142,7 @@ public class PickListRenderer extends InputRenderer {
     protected void encodeScript(FacesContext context, PickList pickList) throws IOException {
         String clientId = pickList.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("PickList", pickList.resolveWidgetVar(), clientId)
+        wb.init("PickList", pickList.resolveWidgetVar(context), clientId)
                 .attr("effect", pickList.getEffect())
                 .attr("effectSpeed", pickList.getEffectSpeed())
                 .attr("escape", pickList.isEscape())
@@ -230,7 +231,7 @@ public class PickListRenderer extends InputRenderer {
             encodeFilter(context, pickList, listId + "_filter", isSource);
         }
 
-        if (caption != null) {
+        if (ComponentUtils.shouldRenderFacet(caption)) {
             encodeCaption(context, caption);
             styleClass += " ui-corner-bottom";
         }

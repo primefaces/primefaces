@@ -42,7 +42,7 @@ public class PageLinksRenderer implements PaginatorElementRenderer {
         int visiblePages = Math.min(pageLinks, pageCount);
 
         //calculate range, keep current in middle if necessary
-        int start = Math.max(0, (int) Math.ceil(currentPage - ((visiblePages) / 2)));
+        int start = Math.max(0, currentPage - (visiblePages / 2));
         int end = Math.min(pageCount - 1, start + visiblePages - 1);
 
         //check when approaching to last page

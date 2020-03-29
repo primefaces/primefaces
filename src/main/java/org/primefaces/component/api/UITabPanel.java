@@ -52,6 +52,7 @@ import org.primefaces.model.IterableDataModel;
  * UITabPanel is a specialized version of UIRepeat focusing on components that repeat tabs like tabView and accordionPanel.
  * Most of the code is copied from MyFaces.
  */
+@SuppressWarnings("unchecked")
 public class UITabPanel extends UIPanel implements NamingContainer {
 
     private static final DataModel<?> EMPTY_MODEL = new ListDataModel<>(Collections.emptyList());
@@ -61,16 +62,18 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     private static final Object[] LEAF_NO_STATE = new Object[]{null, null};
 
     private static final String SB_ID = UITabPanel.class.getName() + "#id";
+
     // Holds for each row the states of the child components of this UIData.
     // Note that only "partial" component state is saved: the component fields
     // that are expected to vary between rows.
-    private final Map<String, Collection<Object[]>> _rowStates = new HashMap<>();
+    private Map<String, Collection<Object[]>> _rowStates = new HashMap<>();
+
     /**
      * Handle case where this table is nested inside another table. See method getDataModel for more details.
      * <p>
      * Key: parentClientId (aka rowId when nested within a parent table) Value: DataModel
      */
-    private final Map<String, DataModel> _dataModelMap = new HashMap<>();
+    private Map<String, DataModel> _dataModelMap = new HashMap<>();
     private Object _initialDescendantComponentState = null;
     // will be set to false if the data should not be refreshed at the beginning of the encode phase
     private boolean _isValidChilds = true;
@@ -148,20 +151,14 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         getStateHelper().put(PropertyKeys.prependId, _prependId);
     }
 
-    protected DataModel getDataModel() {
-        DataModel dataModel;
+    protected DataModel<?> getDataModel() {
         String clientID = "";
 
         UIComponent parent = getParent();
         if (parent != null) {
             clientID = parent.getContainerClientId(getFacesContext());
         }
-        dataModel = _dataModelMap.get(clientID);
-        if (dataModel == null) {
-            dataModel = createDataModel();
-            _dataModelMap.put(clientID, dataModel);
-        }
-        return dataModel;
+        return _dataModelMap.computeIfAbsent(clientID, k -> createDataModel());
     }
 
     private DataModel createDataModel() {
@@ -247,8 +244,8 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         }
     }
 
-    private RepeatStatus getRepeatStatus() {
-        return new RepeatStatus(_count == 0, _index + getStep() >= getDataModel().getRowCount(),
+    private IterationStatus getRepeatStatus() {
+        return new IterationStatus(_count == 0, _index + getStep() >= getDataModel().getRowCount(),
                 _count, _index, getOffset(), _end, getStep());
     }
 
@@ -298,7 +295,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
      * The saved state info only covers those fields that are expected to vary between rows of a table. Other fields are not modified.
      */
     private void restoreDescendantComponentStates(UIComponent parent, boolean iterateFacets, Object state,
-                                                  boolean restoreChildFacets) {
+            boolean restoreChildFacets) {
         int descendantStateIndex = -1;
         List<? extends Object[]> stateCollection = null;
 
@@ -319,7 +316,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                     if (descendantStateIndex != -1 && descendantStateIndex < stateCollection.size()) {
                         Object[] object = stateCollection.get(descendantStateIndex);
                         if (object[0] != null && component instanceof EditableValueHolder) {
-                            ((SavedState) object[0]).restoreState((EditableValueHolder) component);
+                            ((SavedState) object[0]).apply((EditableValueHolder) component);
                         }
                         // If there is descendant state to restore, call it recursively, otherwise
                         // it is safe to skip iteration.
@@ -353,7 +350,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                     if (descendantStateIndex != -1 && descendantStateIndex < stateCollection.size()) {
                         Object[] object = stateCollection.get(descendantStateIndex);
                         if (object[0] != null && component instanceof EditableValueHolder) {
-                            ((SavedState) object[0]).restoreState((EditableValueHolder) component);
+                            ((SavedState) object[0]).apply((EditableValueHolder) component);
                         }
                         // If there is descendant state to restore, call it recursively, otherwise
                         // it is safe to skip iteration.
@@ -382,7 +379,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
      * @param restoreChildFacets
      */
     private void restoreDescendantComponentWithoutRestoreState(UIComponent parent, boolean iterateFacets,
-                                                               boolean restoreChildFacets) {
+            boolean restoreChildFacets) {
         if (iterateFacets && parent.getFacetCount() > 0) {
             Iterator<UIComponent> childIterator = parent.getFacets().values().iterator();
 
@@ -423,7 +420,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
      * state of that child's child components.
      */
     private Collection<Object[]> saveDescendantComponentStates(UIComponent parent, boolean iterateFacets,
-                                                               boolean saveChildFacets) {
+            boolean saveChildFacets) {
         Collection<Object[]> childStates = null;
         // Index to indicate how many components has been passed without state to save.
         int childEmptyIndex = 0;
@@ -444,18 +441,18 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                         if (childStates == null) {
                             childStates = new ArrayList<>(
                                     parent.getFacetCount()
-                                            + parent.getChildCount()
-                                            - totalChildCount
-                                            + childEmptyIndex);
+                                    + parent.getChildCount()
+                                    - totalChildCount
+                                    + childEmptyIndex);
                             for (int ci = 0; ci < childEmptyIndex; ci++) {
                                 childStates.add(LEAF_NO_STATE);
                             }
                         }
 
                         childStates.add(child.getChildCount() > 0
-                                        ? new Object[]{new SavedState((EditableValueHolder) child),
-                                saveDescendantComponentStates(child, saveChildFacets, true)}
-                                        : new Object[]{new SavedState((EditableValueHolder) child), null});
+                                ? new Object[]{new SavedState((EditableValueHolder) child),
+                                    saveDescendantComponentStates(child, saveChildFacets, true)}
+                                : new Object[]{new SavedState((EditableValueHolder) child), null});
                     }
                     else if (child.getChildCount() > 0 || (saveChildFacets && child.getFacetCount() > 0)) {
                         Object descendantSavedState = saveDescendantComponentStates(child, saveChildFacets, true);
@@ -472,9 +469,9 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                             if (childStates == null) {
                                 childStates = new ArrayList<>(
                                         parent.getFacetCount()
-                                                + parent.getChildCount()
-                                                - totalChildCount
-                                                + childEmptyIndex);
+                                        + parent.getChildCount()
+                                        - totalChildCount
+                                        + childEmptyIndex);
                                 for (int ci = 0; ci < childEmptyIndex; ci++) {
                                     childStates.add(LEAF_NO_STATE);
                                 }
@@ -508,18 +505,18 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                         if (childStates == null) {
                             childStates = new ArrayList<>(
                                     parent.getFacetCount()
-                                            + parent.getChildCount()
-                                            - totalChildCount
-                                            + childEmptyIndex);
+                                    + parent.getChildCount()
+                                    - totalChildCount
+                                    + childEmptyIndex);
                             for (int ci = 0; ci < childEmptyIndex; ci++) {
                                 childStates.add(LEAF_NO_STATE);
                             }
                         }
 
                         childStates.add(child.getChildCount() > 0
-                                        ? new Object[]{new SavedState((EditableValueHolder) child),
-                                saveDescendantComponentStates(child, saveChildFacets, true)}
-                                        : new Object[]{new SavedState((EditableValueHolder) child), null});
+                                ? new Object[]{new SavedState((EditableValueHolder) child),
+                                    saveDescendantComponentStates(child, saveChildFacets, true)}
+                                : new Object[]{new SavedState((EditableValueHolder) child), null});
                     }
                     else if (child.getChildCount() > 0 || (saveChildFacets && child.getFacetCount() > 0)) {
                         Object descendantSavedState = saveDescendantComponentStates(child, saveChildFacets, true);
@@ -536,9 +533,9 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                             if (childStates == null) {
                                 childStates = new ArrayList<>(
                                         parent.getFacetCount()
-                                                + parent.getChildCount()
-                                                - totalChildCount
-                                                + childEmptyIndex);
+                                        + parent.getChildCount()
+                                        - totalChildCount
+                                        + childEmptyIndex);
                                 for (int ci = 0; ci < childEmptyIndex; ci++) {
                                     childStates.add(LEAF_NO_STATE);
                                 }
@@ -687,6 +684,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
      * Calculates the count value for the given index.
      *
      * @param index
+     *
      * @return
      */
     private int calculateCountForIndex(int index) {
@@ -843,7 +841,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
                 // Now Look throught facets on this UIComponent
                 if (getFacetCount() > 0) {
-                    for (Iterator<UIComponent> it = getFacets().values().iterator(); !returnValue && it.hasNext(); ) {
+                    for (Iterator<UIComponent> it = getFacets().values().iterator(); !returnValue && it.hasNext();) {
                         returnValue = it.next().invokeOnComponent(context, clientId, callback);
                     }
                 }
@@ -883,7 +881,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                             }
 
                             for (Iterator<UIComponent> it1 = getChildren().iterator();
-                                 !returnValue && it1.hasNext(); ) {
+                                    !returnValue && it1.hasNext();) {
                                 //recursive call to find the component
                                 returnValue = it1.next().invokeOnComponent(context, clientId, callback);
                             }
@@ -899,7 +897,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                         // Searching for this component's children
                         if (getChildCount() > 0) {
                             // Searching for this component's children/facets
-                            for (Iterator<UIComponent> it = getChildren().iterator(); !returnValue && it.hasNext(); ) {
+                            for (Iterator<UIComponent> it = getChildren().iterator(); !returnValue && it.hasNext();) {
                                 returnValue = it.next().invokeOnComponent(context, clientId, callback);
                             }
                         }
@@ -1231,56 +1229,23 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         }
     }
 
-    // -=Leonardo Uribe=- At the moment I haven't found any use case that
-    // require to store the rowStates in the component state, mostly
-    // because EditableValueHolder instances render the value into the
-    // client and then this value are taken back at the beginning of the
-    // next request. So, I just let this code in comments just in case
-    // somebody founds an issue with this.
-    /*
-     @SuppressWarnings("unchecked")
-     @Override
-     public void restoreState(FacesContext facesContext, Object state)
-     {
-     if (state == null)
-     {
-     return;
-     }
+    @Override
+    public Object saveState(FacesContext context) {
+        // See MyFaces UIRepeat
+        ComponentUtils.ViewPoolingResetMode viewPoolingResetMode = ComponentUtils.isViewPooling(context);
+        if (viewPoolingResetMode == ComponentUtils.ViewPoolingResetMode.SOFT) {
+            _dataModelMap.clear();
+            _isValidChilds = true;
+        }
+        else if (viewPoolingResetMode == ComponentUtils.ViewPoolingResetMode.HARD) {
+            _dataModelMap.clear();
+            _isValidChilds = true;
+            _rowStates.clear();
+        }
 
-     Object[] values = (Object[])state;
-     super.restoreState(facesContext,values[0]);
-     if (values[1] == null)
-     {
-     _rowStates.clear();
-     }
-     else
-     {
-     _rowStates = (Map<String, Collection<Object[]>>) restoreAttachedState(facesContext, values[1]);
-     }
-     }
+        return super.saveState(context);
+    }
 
-     @Override
-     public Object saveState(FacesContext facesContext)
-     {
-     if (initialStateMarked())
-     {
-     Object parentSaved = super.saveState(facesContext);
-     if (parentSaved == null && _rowStates.isEmpty())
-     {
-     //No values
-     return null;
-     }
-     return new Object[]{parentSaved, saveAttachedState(facesContext, _rowStates)};
-     }
-     else
-     {
-     Object[] values = new Object[2];
-     values[0] = super.saveState(facesContext);
-     values[1] = saveAttachedState(facesContext, _rowStates);
-     return values;
-     }
-     }
-     */
     @Override
     public void encodeBegin(FacesContext context) throws IOException {
         _initialDescendantComponentState = null;
@@ -1300,7 +1265,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     }
 
     private boolean hasErrorMessages(FacesContext context) {
-        for (Iterator<FacesMessage> iter = context.getMessages(); iter.hasNext(); ) {
+        for (Iterator<FacesMessage> iter = context.getMessages(); iter.hasNext();) {
             FacesMessage message = iter.next();
             if (FacesMessage.SEVERITY_ERROR.compareTo(message.getSeverity()) <= 0) {
                 return true;

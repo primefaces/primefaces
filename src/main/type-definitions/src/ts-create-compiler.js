@@ -37,6 +37,26 @@ async function readCompilerOptionsFromTsConfig() {
  */
 function createFallbackCompilerHost(options, declarationFile, moduleSearchLocations) {
     const host = ts.createCompilerHost(options);
+
+    host.resolveTypeReferenceDirectives = (typeReferenceDirectiveNames, containingFile, redirectedReference, options) => {
+        // Declaration file may be located in a directory outside the npm dir
+        if (containingFile === declarationFile) {
+            containingFile = Paths.NpmVirtualDeclarationFile;
+        }
+        /** @type {Map<string, ts.ResolvedTypeReferenceDirective | undefined>} */
+        const cache = new Map();
+        return typeReferenceDirectiveNames.map(name => {
+            if (cache.has(name)) {
+                return cache.get(name);
+            }
+            else {
+                const result = ts.resolveTypeReferenceDirective(name, containingFile, options, host, redirectedReference).resolvedTypeReferenceDirective;
+                cache.set(name, result);
+                return result;
+            }
+        });
+    };
+
     host.resolveModuleNames = (moduleNames, containingFile, reusedName, redirectedReference, options) => {
         return moduleNames.map(moduleName => {
             // Declaration file may be located in a directory outside the npm dir
@@ -67,6 +87,7 @@ function createFallbackCompilerHost(options, declarationFile, moduleSearchLocati
             return undefined;
         });
     };
+    
     return host;
 }
 

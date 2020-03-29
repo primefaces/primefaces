@@ -27,14 +27,14 @@ import java.io.InputStream;
 
 public interface StreamedContent {
 
-    public String getName();
+    String getName();
 
-    public InputStream getStream();
+    InputStream getStream();
 
-    public String getContentType();
+    String getContentType();
 
-    public String getContentEncoding();
+    String getContentEncoding();
 
-    public Integer getContentLength();
+    Integer getContentLength();
 
 }

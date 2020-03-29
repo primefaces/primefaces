@@ -280,6 +280,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.onRowClick) {
             this.bindRowClick();
         }
+
+        if(this.cfg.expansion) {
+            this.updateExpandedRowsColspan();
+        }
     },
 
     /**
@@ -385,6 +389,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         this.paginator = new PrimeFaces.widget.Paginator(this.cfg.paginator);
+        this.paginator.bindSwipeEvents(this.jq);
+        
 
         if(this.cfg.clientCache) {
             this.cacheRows = this.paginator.getRows();
@@ -395,7 +401,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             };
             this.clearCacheMap();
             this.fetchNextPage(newState);
-        }
+        } 
     },
 
     /**
@@ -640,7 +646,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindChangeFilter: function(filter) {
         var $this = this;
 
-        filter.change(function() {
+        filter.off('change')
+        .on('change', function() {
             $this.filter();
         });
     },
@@ -653,14 +660,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindEnterKeyFilter: function(filter) {
         var $this = this;
 
-        filter.on('keydown', function(e) {
-            var key = e.which,
-            keyCode = $.ui.keyCode;
-
-            if((key === keyCode.ENTER)) {
-                e.preventDefault();
-            }
-        }).on('keyup', function(e) {
+        filter.off('keydown keyup')
+        .on('keydown', PrimeFaces.utils.blockEnterKey)
+        .on('keyup', function(e) {
             var key = e.which,
             keyCode = $.ui.keyCode;
 
@@ -679,25 +681,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     bindFilterEvent: function(filter) {
         var $this = this;
-
+        var filterEventName = this.cfg.filterEvent + '.dataTable';
+        
         //prevent form submit on enter key
-        filter.on('keydown.dataTable-blockenter', function(e) {
-            var key = e.which,
-            keyCode = $.ui.keyCode;
-
-            if((key === keyCode.ENTER)) {
-                e.preventDefault();
-            }
-        })
-        .on(this.cfg.filterEvent + '.dataTable', function(e) {
-            var key = e.which,
-            keyCode = $.ui.keyCode,
-            ignoredKeys = [keyCode.END, keyCode.HOME, keyCode.LEFT, keyCode.RIGHT, keyCode.UP, keyCode.DOWN,
-                keyCode.TAB, 16/*Shift*/, 17/*Ctrl*/, 18/*Alt*/, 91, 92, 93/*left/right Win/Cmd*/,
-                keyCode.ESCAPE, keyCode.PAGE_UP, keyCode.PAGE_DOWN,
-                19/*pause/break*/, 20/*caps lock*/, 44/*print screen*/, 144/*num lock*/, 145/*scroll lock*/];
-
-            if (ignoredKeys.indexOf(key) > -1) {
+        filter.off('keydown.dataTable-blockenter ' + filterEventName)
+        .on('keydown.dataTable-blockenter', PrimeFaces.utils.blockEnterKey)
+        .on(filterEventName, function(e) {
+            if (PrimeFaces.utils.ignoreFilterKey(e)) {
                 return;
             }
 
@@ -714,7 +704,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         // #89 IE clear "x" button
         if (PrimeFaces.env.isIE()) {
-            filter.on('mouseup.dataTable', function(e) {
+            filter.off('mouseup.dataTable').on('mouseup.dataTable', function(e) {
                 var input = $(this),
                 oldValue = input.val();
 
@@ -844,7 +834,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var keyCode = $.ui.keyCode,
             key = e.which;
 
-            if($(e.target).is(':input') && $this.cfg.editable) {
+            if($(e.target).is(':input')) {
                 return;
             }
 
@@ -1208,6 +1198,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @param {PrimeFaces.widget.ContextMenuCfg} cfg 
      */
     bindContextMenu : function(menuWidget, targetWidget, targetId, cfg) {
+        var $this = this;
         var targetSelector = targetId + ' tbody.ui-datatable-data > tr.ui-widget-content';
         var targetEvent = cfg.event + '.datatable';
         this.contextMenuWidget = menuWidget;
@@ -1240,7 +1231,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         });
 
         if(this.cfg.scrollable && this.scrollBody) {
-            var $this = this;
             this.scrollBody.off('scroll.dataTable-contextmenu').on('scroll.dataTable-contextmenu', function() {
                 if($this.contextMenuWidget.jq.is(':visible')) {
                     $this.contextMenuWidget.hide();
@@ -1458,6 +1448,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     cloneHead: function() {
         var $this = this;
 
+        if (this.theadClone) {
+            this.theadClone.remove();
+        }
         this.theadClone = this.cloneTableHeader(this.thead, this.bodyTable);
 
         //reflect events from clone to original
@@ -1532,8 +1525,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @param {number} width New width in pixels to set.
      */
     setOuterWidth: function(element, width) {
-        var diff = element.outerWidth() - element.width();
-        element.width(parseFloat(width) - diff);
+        if (element.css('box-sizing') === 'border-box') { // Github issue: #5014
+            var diff = element.outerWidth() - element.width();
+            element.width(parseFloat(width) - diff);
+        }
+        else {
+            element.width(width);
+        }
     },
 
     /**
@@ -2145,6 +2143,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 $this.updateColumnsView();
+                $this.updateEmptyColspan();
 
                 // reset index of shift selection on multiple mode
                 $this.originRowIndex = null;
@@ -2798,6 +2797,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     displayExpandedRow: function(row, content) {
         row.after(content);
+        this.updateColspan(row.next());
     },
 
     /**
@@ -2877,7 +2877,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     bindEditEvents: function() {
         var $this = this;
-        this.cfg.cellSeparator = this.cfg.cellSeparator||' ';
         this.cfg.saveOnCellBlur = (this.cfg.saveOnCellBlur === false) ? false : true;
 
         if(this.cfg.editMode === 'row') {
@@ -2907,18 +2906,48 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         .on('blur.datatable', rowEditorSelector, null, function(e) {
                             $(this).removeClass('ui-row-editor-outline');
                         });
+
+            // GitHub #433 Allow ENTER to submit ESC to cancel row editor
+            $(document).off("keydown", "tr.ui-row-editing")
+                        .on("keydown", "tr.ui-row-editing", function(e) {
+                            var keyCode = $.ui.keyCode;
+                            switch (e.which) {
+                                case keyCode.ENTER:
+                                    $(this).closest("tr").find(".ui-row-editor-check").click();
+                                    return false; // prevents executing other event handlers (adding new row to the table)
+                                case keyCode.ESCAPE:
+                                    $(this).closest("tr").find(".ui-row-editor-close").click();
+                                    return false;
+                                default:
+                                    break;
+                }
+            });
         }
         else if(this.cfg.editMode === 'cell') {
-            var cellSelector = '> tr > td.ui-editable-column',
+            var originalCellSelector = '> tr > td.ui-editable-column'
+            cellSelector = this.cfg.cellSeparator || originalCellSelector,
             editEvent = (this.cfg.editInitEvent !== 'click') ? this.cfg.editInitEvent + '.datatable-cell click.datatable-cell' : 'click.datatable-cell';
+
+            if (this.cfg.cellSeparator) {
+                this.tbody.off(editEvent, originalCellSelector)
+                    .on(editEvent, originalCellSelector, null, function (e) {
+                        $this.incellClick = true;
+
+                        if (!$(this).hasClass('ui-cell-editing') && e.type === $this.cfg.editInitEvent && $this.cfg.editInitEvent === "dblclick") {
+                            $this.incellClick = false;
+                        }
+                    });
+            }
 
             this.tbody.off(editEvent, cellSelector)
                         .on(editEvent, cellSelector, null, function(e) {
                             $this.incellClick = true;
 
-                            var cell = $(this);
+                            var item = $(this),
+                            cell = item.hasClass('ui-editable-column') ? item : item.closest('.ui-editable-column');
+
                             if(!cell.hasClass('ui-cell-editing') && e.type === $this.cfg.editInitEvent) {
-                                $this.showCellEditor($(this));
+                                $this.showCellEditor(cell);
 
                                 if($this.cfg.editInitEvent === "dblclick") {
                                     $this.incellClick = false;
@@ -2982,18 +3011,21 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             column.find('.ui-cell-editor-output').hide();
             column.find('.ui-cell-editor-input').show();
         });
+
+        var inputs=row.find(':input:enabled');
+        if (inputs.length > 0) {
+            inputs.first().focus();
+        }
     },
 
     /**
-     * Initializes the given cell so that its content can be edited (when row editing is enabled)
-     * @private
-     * @param {JQuery} cell A cell of this data table to set up.
+     * Finds the meta data for a given cell.
+     * @param {JQuery} cell A cell for which to get the meta data.
+     * @return {string} The meta data of the given cell.
      */
-    cellEditInit: function(cell) {
+    getCellMeta: function(cell) {
         var rowMeta = this.getRowMeta(cell.closest('tr')),
-        cellEditor = cell.children('.ui-cell-editor'),
-        cellIndex = cell.index(),
-        $this = this;
+            cellIndex = cell.index();
 
         if(this.cfg.scrollable && this.cfg.frozenColumns) {
             cellIndex = (this.scrollTbody.is(cell.closest('tbody'))) ? (cellIndex + $this.cfg.frozenColumns) : cellIndex;
@@ -3003,6 +3035,19 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(rowMeta.key) {
             cellInfo = cellInfo + ',' + rowMeta.key;
         }
+
+        return cellInfo;
+    },
+
+    /**
+     * Initializes the given cell so that its content can be edited (when row editing is enabled)
+     * @private
+     * @param {JQuery} cell A cell of this data table to set up.
+     */
+    cellEditInit: function(cell) {
+        var cellInfo = this.getCellMeta(cell),
+        cellEditor = cell.children('.ui-cell-editor'),
+        $this = this;
 
         var options = {
             source: this.id,
@@ -3064,6 +3109,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         else {
             this.showCurrentCell(cell);
+
+            if(this.hasBehavior('cellEditInit')) {
+                var cellInfo = this.getCellMeta(cell);
+                var ext = {
+                    params: [{name: this.id + '_cellInfo', value: cellInfo}]
+                };
+                this.callBehavior('cellEditInit', ext);
+            }
         }
     },
 
@@ -3208,23 +3261,28 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var oldValues = cell.data('old-value');
             for(var i = 0; i < inputs.length; i++) {
                 var input = inputs.eq(i),
-                inputVal = input.val();
+                    inputVal = input.val(),
+                    oldValue = oldValues[i];
 
-                if(input.is(':checkbox')) {
-                    var checkboxVal = inputVal + "_" + input.is(':checked');
-                    if(checkboxVal != oldValues[i]) {
-                        changed = true;
-                        break;
-                    }
+                if(input.is(':checkbox') || input.is(':radio')) {
+                    inputVal = inputVal + "_" + input.is(':checked');
                 }
-                else if(inputVal != oldValues[i]) {
+
+                if(inputVal != oldValue) {
                     changed = true;
                     break;
                 }
             }
         }
         else {
-            changed = (inputs.eq(0).val() != cell.data('old-value'));
+            var input = inputs.eq(0),
+                inputVal = input.val(),
+                oldValue = cell.data('old-value');
+
+            if(input.is(':checkbox') || input.is(':radio')) {
+                inputVal = inputVal + "_" + input.is(':checked');
+            } 
+            changed = (inputVal != oldValue);
         }
 
         if(changed || valid == false)
@@ -4527,7 +4585,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             orderIndex = sortOrder > 0 ? 0 : 1;
 
             options.filter(':selected').prop('selected', false);
-            options.filter('[value="' + columnHeader.index() + '_' + orderIndex + '"]').prop('selected', true);
+            options.filter('[value="' + $.escapeSelector(columnHeader.index() + '_' + orderIndex) + '"]').prop('selected', true);
         }
     },
 
@@ -4607,27 +4665,58 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
+     * Computes the `colspan value for the table rows.
+     * @private
+     * @return {number} The computed `colspan` value.
+     */
+    calculateColspan: function() {
+        var visibleHeaderColumns = this.thead.find('> tr:first th:not(.ui-helper-hidden)'),
+            colSpanValue = 0;
+
+        for(var i = 0; i < visibleHeaderColumns.length; i++) {
+            var column = visibleHeaderColumns.eq(i);
+            if(column.is('[colspan]')) {
+                colSpanValue += parseInt(column.attr('colspan'));
+            }
+            else {
+                colSpanValue++;
+            }
+        }
+
+        return colSpanValue;
+    },
+
+    /**
+     * Updates the `colspan` attribute of the given row.
+     * @private
+     * @param {JQuery} row A row to update.
+     * @param {number} [colspanValue] The new `colspan` value. If not given, computes the value automatically.
+     */
+    updateColspan: function(row, colspanValue) {
+        row.children('td').attr('colspan', colspanValue || this.calculateColspan());
+    },
+    
+    /**
      * Updates the colspan attribute for the message shown when no rows are available.
      * @private
      */
     updateEmptyColspan: function() {
         var emptyRow = this.tbody.children('tr:first');
         if(emptyRow && emptyRow.hasClass('ui-datatable-empty-message')) {
-            var visibleHeaderColumns = this.thead.find('> tr:first th:not(.ui-helper-hidden)'),
-            colSpanValue = 0;
-
-            for(var i = 0; i < visibleHeaderColumns.length; i++) {
-                var column = visibleHeaderColumns.eq(i);
-                if(column.is('[colspan]')) {
-                    colSpanValue += parseInt(column.attr('colspan'));
-                }
-                else {
-                    colSpanValue++;
-                }
-            }
-
-            emptyRow.children('td').attr('colspan', colSpanValue);
+            this.updateColspan(emptyRow);
         }
+    },
+
+    /**
+     * Updates the `colspan` attributes of all expanded rows.
+     * @private
+     */
+    updateExpandedRowsColspan: function() {
+        var colspanValue = this.calculateColspan(),
+            $this = this;
+        this.getExpandedRows().each(function() {
+            $this.updateColspan($(this).next('.ui-expanded-row-content'), colspanValue);
+        });
     },
 
     /**
@@ -4707,9 +4796,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     updateColumnsView: function() {
+        if(this.isEmpty()) {
+            return;
+        }
+
+        // update the visibility of columns but ignore expanded rows
         for(var i = 0; i < this.headers.length; i++) {
             var header = this.headers.eq(i),
-            col = this.tbody.find('> tr > td:nth-child(' + (header.index() + 1) + ')');
+                col = this.tbody.find('> tr:not(.ui-expanded-row-content) > td:nth-child(' + (header.index() + 1) + ')');
 
             if(header.hasClass('ui-helper-hidden')) {
                 col.addClass('ui-helper-hidden');
@@ -4717,6 +4811,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             else {
                 col.removeClass('ui-helper-hidden');
             }
+        }
+
+        // update the colspan of the expanded rows
+        if(this.cfg.expansion) {
+            this.updateExpandedRowsColspan();
         }
     },
 
@@ -4925,7 +5024,14 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @inheritdoc
      */
     cloneHead: function() {
+        if (this.frozenTheadClone) {
+            this.frozenTheadClone.remove();
+        }
         this.frozenTheadClone = this.cloneTableHeader(this.frozenThead, this.frozenBodyTable);
+
+        if (this.scrollTheadClone) {
+            this.scrollTheadClone.remove();
+        }
         this.scrollTheadClone = this.cloneTableHeader(this.scrollThead, this.scrollBodyTable);
     },
 
@@ -5201,10 +5307,11 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         var twinRow = this.getTwinRow(row);
         row.after(content);
         var expansionRow = row.next();
+        this.updateColspan(expansionRow);
         expansionRow.show();
 
         twinRow.after('<tr class="ui-expanded-row-content ui-widget-content"><td></td></tr>');
-        twinRow.next().children('td').attr('colspan', twinRow.children('td').length).height(expansionRow.children('td').height());
+        twinRow.next().children('td').attr('colspan', this.updateColspan(twinRow)).height(expansionRow.children('td').height());
     },
 
     /**
