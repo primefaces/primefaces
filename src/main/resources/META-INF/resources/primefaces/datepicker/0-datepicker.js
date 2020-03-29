@@ -1163,9 +1163,26 @@
 
         renderMonthViewMonth: function (index) {
             var monthName = this.options.locale.monthNamesShort[index],
-                content = this.options.dateTemplate ? this.options.dateTemplate.call(this, monthName) : this.escapeHTML(monthName);
+                content = this.options.dateTemplate ? this.options.dateTemplate.call(this, monthName) : this.escapeHTML(monthName),
+                compareDate = new Date(this.viewDate.getFullYear(), index, 1),
+                minDate = this.options.minDate,
+                maxDate = this.options.maxDate,
+                disabled = false;
 
-            return '<a tabindex="0" class="ui-monthpicker-month' + this.getClassesToAdd({ 'ui-state-active': this.isMonthSelected(index) }) + '">' + content + '</a>';
+            if (minDate && minDate > compareDate) {
+                disabled = true;
+            }
+
+            if (maxDate && maxDate < compareDate) {
+                disabled = true;
+            }
+
+            var monthClass = this.getClassesToAdd({
+                'ui-state-active': this.isMonthSelected(index),
+                'ui-state-disabled': disabled
+            });
+
+            return '<a tabindex="0" class="ui-monthpicker-month' + monthClass + '">' + content + '</a>';
         },
 
         renderMonthViewMonths: function () {
