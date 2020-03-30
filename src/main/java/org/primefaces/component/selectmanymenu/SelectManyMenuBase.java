@@ -43,7 +43,8 @@ public abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements W
         filterMatchMode,
         filterFunction,
         caseSensitive,
-        scrollHeight;
+        scrollHeight,
+        autoSelect;
     }
 
     public SelectManyMenuBase() {
@@ -117,5 +118,13 @@ public abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements W
 
     public void setScrollHeight(int scrollHeight) {
         getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
+    }
+
+    public boolean isAutoSelect() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoSelect, false);
+    }
+
+    public void setAutoSelect(boolean autoSelect) {
+        getStateHelper().put(PropertyKeys.autoSelect, autoSelect);
     }
 }

@@ -23,7 +23,7 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
 
                 var item = $(this),
                 selectedItems = $this.items.filter('.ui-state-highlight'),
-                metaKey = (e.metaKey||e.ctrlKey);
+                metaKey = (e.metaKey||e.ctrlKey) || $this.cfg.autoSelect;
 
                 if(!e.shiftKey) {
                     if(!metaKey && !$this.cfg.showCheckbox) {
