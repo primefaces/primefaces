@@ -146,6 +146,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Unbinds events needed if refreshing to prevent multiple sort and pagination events.
+     * Cancels all current drag and drop events.
      */
     unbindEvents: function() {
         if (this.sortableColumns) {
@@ -153,6 +154,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         if (this.paginator) {
             this.paginator.unbindEvents();
+        }
+
+        // #5582: destroy any current draggable items
+        var dragdrop = $.ui.ddmanager.current;
+        if ( dragdrop ) {
+            document.body.style.cursor = 'default';
+            dragdrop.cancel();
         }
     },
 
