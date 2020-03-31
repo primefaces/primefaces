@@ -90,8 +90,7 @@
 }
 
 .ui-tabs-left > .ui-tabs-panels {
-    float:right;
-    width:75%;
+    overflow: hidden;
 }
 
 .ui-tabs.ui-tabs-left > .ui-tabs-nav li,
