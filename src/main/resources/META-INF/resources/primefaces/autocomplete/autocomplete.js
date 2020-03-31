@@ -347,7 +347,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         }
 
                         if($this.cfg.queryEvent !== 'enter') {
-                            $this.isValid($(this).val());
+                            $this.isValid($(this).val(), true);
                         }
                     break;
 
@@ -811,9 +811,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.currentItems = [this.input.val()];
         var $this = this;
 
-        this.input.blur(function() {
-            var value = $(this).val(),
-            valid = $this.isValid(value);
+        this.input.on('blur', function(e) {
+            // #5731: do not fire clear event if selecting item
+            var fireClearEvent = e.relatedTarget == null || PrimeFaces.escapeClientId(e.relatedTarget.id) !== $this.panelId,
+            value = $(this).val(),
+            valid = $this.isValid(value, fireClearEvent);
 
             if($this.cfg.autoSelection && valid && $this.checkMatchedItem && $this.items && !$this.isTabPressed && !$this.itemSelectedWithEnter) {
                 var selectedItem = $this.items.filter('[data-item-label="' + $.escapeSelector(value) + '"]');
@@ -967,7 +969,13 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.callBehavior('clear');
     },
 
-    isValid: function(value) {
+    /**
+     * Is the value matching a value in the list if ForceSelection = true.
+     * 
+     * @param value the value to check
+     * @param shouldFireClearEvent true if clear event should be fired
+     */
+    isValid: function(value, shouldFireClearEvent) {
         if(!this.cfg.forceSelection) {
             return;
         }
@@ -991,7 +999,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             if(!this.cfg.multiple) {
                 this.hinput.val('');
             }
-            this.fireClearEvent();
+            if (shouldFireClearEvent) {
+                this.fireClearEvent();
+            }
         }
 
         return valid;
