@@ -3523,7 +3523,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 helperCells = helperRow.children();
 
                 for(var i = 0; i < helperCells.length; i++) {
-                    helperCells.eq(i).width(cells.eq(i).width());
+                    var helperCell = helperCells.eq(i);
+                    helperCell.width(cells.eq(i).width());
+                    // #5584 reflow must remove column title span
+                    helperCell.children().remove('.ui-column-title');
                 }
 
                 helperRow.appendTo(helper.find('tbody'));
