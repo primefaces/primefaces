@@ -19706,6 +19706,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When set to true client side validation is enabled, global setting is required to be enabled as a prerequisite.]]>
+            </description>
+            <name>validateClient</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
