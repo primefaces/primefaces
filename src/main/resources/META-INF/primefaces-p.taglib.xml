@@ -22037,6 +22037,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[The meta key (SHIFT or CTRL) must be held down to multi-select items. Default is true.]]>
+            </description>
+            <name>metaKeySelection</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Displays an input filter for the list.]]>
             </description>
             <name>filter</name>

@@ -94,7 +94,8 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("SelectManyMenu", menu.resolveWidgetVar(context), clientId)
                 .attr("disabled", menu.isDisabled(), false)
-                .attr("showCheckbox", menu.isShowCheckbox(), false);
+                .attr("showCheckbox", menu.isShowCheckbox(), false)
+                .attr("metaKeySelection", menu.isMetaKeySelection(), true);
 
         if (menu.isFilter()) {
             wb.attr("filter", true)
