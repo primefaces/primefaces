@@ -818,9 +818,7 @@ public class TreeRenderer extends CoreRenderer {
         wb.append(",iconStates:{");
 
         boolean firstWritten = false;
-        for (Iterator<String> it = nodes.keySet().iterator(); it.hasNext(); ) {
-            String type = it.next();
-            UITreeNode node = nodes.get(type);
+        for (UITreeNode node : nodes.values()) {
             String expandedIcon = node.getExpandedIcon();
             String collapsedIcon = node.getCollapsedIcon();
 
