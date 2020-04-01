@@ -282,13 +282,12 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
     protected Class<?> resolveDateType(FacesContext context, UICalendar calendar) {
         ValueExpression ve = calendar.getValueExpression("value");
 
-        if (ve == null) {
-            return LocalDate.class;
+        Class<?> type = null;
+        if (ve != null) {
+            type = ve.getType(context.getELContext());
         }
 
-        Class<?> type = ve.getType(context.getELContext());
-
-        // If type could not be determined via value-expression try it this way. (Very unlikely, this happens in real world.)
+        // If type could not be determined via value-expression try it this way. Required for e.g. usage in custom dataTable filters
         if (type == null) {
             if (calendar.isTimeOnly()) {
                 type = LocalTime.class;
