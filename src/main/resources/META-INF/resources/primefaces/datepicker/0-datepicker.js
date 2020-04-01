@@ -1478,7 +1478,7 @@
         _bindEvents: function () {
             var $this = this;
             if (!this.options.inline) {
-                this.inputfield.off('focus.datePicker blur.datePicker keydown.datePicker change.datePicker click.datePicker')
+                this.inputfield.off('focus.datePicker blur.datePicker keydown.datePicker input.datePicker click.datePicker')
                     .on('focus.datePicker', this.onInputFocus.bind($this))
                     .on('blur.datePicker', this.onInputBlur.bind($this))
                     .on('keydown.datePicker', this.onInputKeyDown.bind($this))
@@ -1509,7 +1509,7 @@
 
             var timeSelector = '.ui-hour-picker > a,  .ui-minute-picker > a, .ui-second-picker > a',
                 ampmSelector = '.ui-ampm-picker > a';
-            this.panel.off('mousedown.datePicker-time mouseup.datePicker-time', timeSelector).off('click.datePicker-ampm', ampmSelector)
+            this.panel.off('mousedown.datePicker-time mouseup.datePicker-time mouseleave.datePicker-time', timeSelector).off('click.datePicker-ampm', ampmSelector)
                 .on('mousedown.datePicker-time', timeSelector, null, function (event) {
                     var button = $(this),
                         parentEl = button.parent();
@@ -1527,17 +1527,17 @@
                 });
 
             if (this.options.timeInput) {
-                this.panel.on('focus', '.ui-hour-picker input', null, function (event) {
+                this.panel.off('focus', '.ui-hour-picker input').on('focus', '.ui-hour-picker input', null, function (event) {
                     $this.oldHours = this.value;
-                }).on('focus', '.ui-minute-picker input', null, function (event) {
+                }).off('focus', '.ui-minute-picker input').on('focus', '.ui-minute-picker input', null, function (event) {
                     $this.oldMinutes = this.value;
-                }).on('focus', '.ui-second-picker input', null, function (event) {
+                }).off('focus', '.ui-second-picker input').on('focus', '.ui-second-picker input', null, function (event) {
                     $this.oldSeconds = this.value;
-                }).on('change', '.ui-hour-picker input', null, function (event) {
+                }).off('change', '.ui-hour-picker input').on('change', '.ui-hour-picker input', null, function (event) {
                     $this.handleHoursInput(this, event);
-                }).on('change', '.ui-minute-picker input', null, function (event) {
+                }).off('change', '.ui-minute-picker input').on('change', '.ui-minute-picker input', null, function (event) {
                     $this.handleMinutesInput(this, event);
-                }).on('change', '.ui-second-picker input', null, function (event) {
+                }).off('change', '.ui-second-picker input').on('change', '.ui-second-picker input', null, function (event) {
                     $this.handleSecondsInput(this, event);
                 });
             }
