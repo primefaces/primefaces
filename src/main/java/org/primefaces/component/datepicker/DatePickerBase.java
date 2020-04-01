@@ -213,6 +213,10 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         return (Boolean) getStateHelper().eval(PropertyKeys.showTime, false);
     }
 
+    public Boolean isShowTimeWithoutDefault() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showTime);
+    }
+
     public void setShowTime(boolean showTime) {
         getStateHelper().put(PropertyKeys.showTime, showTime);
     }
