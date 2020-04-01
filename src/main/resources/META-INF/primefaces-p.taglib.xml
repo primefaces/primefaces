@@ -22029,9 +22029,9 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[When true, the meta key (SHIFT or CTRL) does not have to be held down to multi-select items.]]>
+                <![CDATA[The meta key (SHIFT or CTRL) must be held down to multi-select items. Default is true.]]>
             </description>
-            <name>autoSelect</name>
+            <name>metaKeySelection</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>

@@ -45,7 +45,7 @@ filterMatchMode | null | String | Match mode for filtering, valid values are sta
 filterFunction | null | String | Client side function to use in custom filterMatchMode.
 caseSensitive | false | Boolean | Defines if filtering would be case sensitive.
 scrollHeight | null | Integer | Defines the height of the scrollable area
-autoSelect | false | Boolean | When true, the meta key (SHIFT or CTRL) does not have to be held down to multi-select items.
+metaKeySelection | true | Boolean | The meta key (SHIFT or CTRL) must be held down to multi-select items.
 
 ## Getting started with SelectManyMenu
 SelectManyMenu usage is same as the standard one.

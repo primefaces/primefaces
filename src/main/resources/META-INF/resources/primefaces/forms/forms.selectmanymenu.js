@@ -5,6 +5,7 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
 
     init: function(cfg) {
         this._super(cfg);
+        this.cfg.metaKeySelection = this.cfg.metaKeySelection != undefined ? this.cfg.metaKeySelection : true;
 
         this.allItems.filter('.ui-state-highlight').find('> .ui-chkbox > .ui-chkbox-box').addClass('ui-state-active');
     },
@@ -23,7 +24,7 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
 
                 var item = $(this),
                 selectedItems = $this.items.filter('.ui-state-highlight'),
-                metaKey = (e.metaKey||e.ctrlKey) || $this.cfg.autoSelect;
+                metaKey = $this.cfg.metaKeySelection && (e.metaKey||e.ctrlKey);
 
                 if(!e.shiftKey) {
                     if(!metaKey && !$this.cfg.showCheckbox) {

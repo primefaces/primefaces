@@ -44,7 +44,7 @@ public abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements W
         filterFunction,
         caseSensitive,
         scrollHeight,
-        autoSelect;
+        metaKeySelection;
     }
 
     public SelectManyMenuBase() {
@@ -120,11 +120,11 @@ public abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements W
         getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
     }
 
-    public boolean isAutoSelect() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoSelect, false);
+    public boolean isMetaKeySelection() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.metaKeySelection, true);
     }
 
-    public void setAutoSelect(boolean autoSelect) {
-        getStateHelper().put(PropertyKeys.autoSelect, autoSelect);
+    public void setMetaKeySelection(boolean metaKeySelection) {
+        getStateHelper().put(PropertyKeys.metaKeySelection, metaKeySelection);
     }
 }
