@@ -69,7 +69,8 @@ public class TreeTableRenderer extends DataRenderer {
         TreeTable tt = (TreeTable) component;
 
         if (tt.getSelectionMode() != null) {
-            decodeSelection(context, tt);
+            TreeNode root = tt.getValue();
+            decodeSelection(context, tt, root);
         }
 
         if (tt.isSortRequest(context)) {
@@ -79,7 +80,7 @@ public class TreeTableRenderer extends DataRenderer {
         decodeBehaviors(context, component);
     }
 
-    protected void decodeSelection(FacesContext context, TreeTable tt) {
+    protected void decodeSelection(FacesContext context, TreeTable tt, TreeNode root) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String selectionMode = tt.getSelectionMode();
         String clientId = tt.getClientId(context);
@@ -101,14 +102,14 @@ public class TreeTableRenderer extends DataRenderer {
                 String[] selectedRowKeys = selectionValue.split(",");
 
                 if (isSingle) {
-                    tt.setRowKey(selectedRowKeys[0]);
+                    tt.setRowKey(root, selectedRowKeys[0]);
                     tt.setSelection(tt.getRowNode());
                 }
                 else {
                     List<TreeNode> selectedNodes = new ArrayList<>();
 
                     for (int i = 0; i < selectedRowKeys.length; i++) {
-                        tt.setRowKey(selectedRowKeys[i]);
+                        tt.setRowKey(root, selectedRowKeys[i]);
                         TreeNode rowNode = tt.getRowNode();
                         if (rowNode != null) {
                             selectedNodes.add(rowNode);
@@ -118,13 +119,13 @@ public class TreeTableRenderer extends DataRenderer {
                     tt.setSelection(selectedNodes.toArray(new TreeNode[selectedNodes.size()]));
                 }
 
-                tt.setRowKey(null);     //cleanup
+                tt.setRowKey(root, null);     //cleanup
             }
         }
 
         if (tt.isCheckboxSelection() && tt.isSelectionRequest(context)) {
             String selectedNodeRowKey = params.get(clientId + "_instantSelection");
-            tt.setRowKey(selectedNodeRowKey);
+            tt.setRowKey(root, selectedNodeRowKey);
             TreeNode selectedNode = tt.getRowNode();
             List<String> descendantRowKeys = new ArrayList<>();
             tt.populateRowKeys(selectedNode, descendantRowKeys);
@@ -147,6 +148,7 @@ public class TreeTableRenderer extends DataRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         TreeTable tt = (TreeTable) component;
+        TreeNode root = tt.getValue();
         String clientId = tt.getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
@@ -154,15 +156,15 @@ public class TreeTableRenderer extends DataRenderer {
 
         String nodeKey = params.get(clientId + "_expand");
         if (nodeKey != null) {
-            tt.setRowKey(nodeKey);
+            tt.setRowKey(root, nodeKey);
             TreeNode node = tt.getRowNode();
             node.setExpanded(true);
 
             if (tt.getExpandMode().equals("self")) {
-                encodeNode(context, tt, node);
+                encodeNode(context, tt, root, node);
             }
             else {
-                encodeNodeChildren(context, tt, node);
+                encodeNodeChildren(context, tt, root, node);
             }
         }
         else if (tt.isFilterRequest(context)) {
@@ -179,7 +181,7 @@ public class TreeTableRenderer extends DataRenderer {
             String globalFilterParam = clientId + UINamingContainer.getSeparatorChar(context) + "globalFilter";
             String globalFilterValue = params.get(globalFilterParam);
 
-            filter(context, tt, tt.getFilterMetadata(), globalFilterValue);
+            filter(context, tt, root, tt.getFilterMetadata(), globalFilterValue);
 
             //sort new filtered data to restore sort state
             boolean sorted = (tt.getValueExpression("sortBy") != null || tt.getSortBy() != null);
@@ -187,21 +189,20 @@ public class TreeTableRenderer extends DataRenderer {
                 sort(tt);
             }
 
-            encodeTbody(context, tt, true);
+            encodeTbody(context, tt, root, true);
         }
         else if (tt.isSortRequest(context)) {
-            encodeSort(context, tt);
+            encodeSort(context, tt, root);
         }
         else if (tt.isRowEditRequest(context)) {
-            encodeRowEdit(context, tt);
+            encodeRowEdit(context, tt, root);
         }
         else if (tt.isCellEditRequest(context)) {
-            encodeCellEdit(context, tt);
+            encodeCellEdit(context, tt, root);
         }
         else if (tt.isPaginationRequest(context)) {
             tt.updatePaginationData(context);
-            TreeNode root = tt.getValue();
-            encodeNodeChildren(context, tt, root, tt.getFirst(), tt.getRows());
+            encodeNodeChildren(context, tt, root, root, tt.getFirst(), tt.getRows());
         }
         else {
             encodeMarkup(context, tt);
@@ -303,10 +304,10 @@ public class TreeTableRenderer extends DataRenderer {
         }
 
         if (scrollable) {
-            encodeScrollableMarkup(context, tt);
+            encodeScrollableMarkup(context, tt, root);
         }
         else {
-            encodeRegularMarkup(context, tt);
+            encodeRegularMarkup(context, tt, root);
         }
 
         if (tt.getSelectionMode() != null) {
@@ -320,7 +321,7 @@ public class TreeTableRenderer extends DataRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeScrollableMarkup(FacesContext context, TreeTable tt) throws IOException {
+    protected void encodeScrollableMarkup(FacesContext context, TreeTable tt, TreeNode root) throws IOException {
         String tableStyle = tt.getTableStyle();
         String tableStyleClass = tt.getTableStyleClass();
         boolean hasPaginator = tt.isPaginator();
@@ -336,7 +337,7 @@ public class TreeTableRenderer extends DataRenderer {
         encodeThead(context, tt);
         encodeScrollAreaEnd(context);
 
-        encodeScrollBody(context, tt, tableStyle, tableStyleClass);
+        encodeScrollBody(context, tt, root, tableStyle, tableStyleClass);
 
         encodeScrollAreaStart(context, tt, TreeTable.SCROLLABLE_FOOTER_CLASS, TreeTable.SCROLLABLE_FOOTER_BOX_CLASS,
                 tableStyle, tableStyleClass, "footer", TreeTable.FOOTER_CLASS);
@@ -348,7 +349,7 @@ public class TreeTableRenderer extends DataRenderer {
         encodeScrollAreaEnd(context);
     }
 
-    protected void encodeScrollBody(FacesContext context, TreeTable tt, String tableStyle, String tableStyleClass) throws IOException {
+    protected void encodeScrollBody(FacesContext context, TreeTable tt, TreeNode root, String tableStyle, String tableStyleClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String scrollHeight = tt.getScrollHeight();
 
@@ -367,7 +368,7 @@ public class TreeTableRenderer extends DataRenderer {
             writer.writeAttribute("class", tableStyleClass, null);
         }
 
-        encodeTbody(context, tt, false);
+        encodeTbody(context, tt, root, false);
 
         writer.endElement("table");
         writer.endElement("div");
@@ -404,7 +405,7 @@ public class TreeTableRenderer extends DataRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeRegularMarkup(FacesContext context, TreeTable tt) throws IOException {
+    protected void encodeRegularMarkup(FacesContext context, TreeTable tt, TreeNode root) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean hasPaginator = tt.isPaginator();
         String paginatorPosition = tt.getPaginatorPosition();
@@ -426,7 +427,7 @@ public class TreeTableRenderer extends DataRenderer {
 
         encodeThead(context, tt);
         encodeTfoot(context, tt);
-        encodeTbody(context, tt, false);
+        encodeTbody(context, tt, root, false);
 
         writer.endElement("table");
 
@@ -517,9 +518,8 @@ public class TreeTableRenderer extends DataRenderer {
         writer.endElement("thead");
     }
 
-    protected void encodeTbody(FacesContext context, TreeTable tt, boolean dataOnly) throws IOException {
+    protected void encodeTbody(FacesContext context, TreeTable tt, TreeNode root, boolean dataOnly) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        TreeNode root = tt.getValue();
         String clientId = tt.getClientId(context);
         boolean empty = (root == null || root.getChildCount() == 0);
         UIComponent emptyFacet = tt.getFacet("emptyMessage");
@@ -552,25 +552,25 @@ public class TreeTableRenderer extends DataRenderer {
             if (tt.isPaginator()) {
                 int first = tt.getFirst();
                 int rows = tt.getRows() == 0 ? tt.getRowCount() : tt.getRows();
-                encodeNodeChildren(context, tt, root, first, rows);
+                encodeNodeChildren(context, tt, root, root, first, rows);
             }
             else {
-                encodeNodeChildren(context, tt, root);
+                encodeNodeChildren(context, tt, root, root);
             }
         }
 
-        tt.setRowKey(null);
+        tt.setRowKey(root, null);
 
         if (!dataOnly) {
             writer.endElement("tbody");
         }
     }
 
-    protected void encodeNode(FacesContext context, TreeTable tt, TreeNode treeNode) throws IOException {
+    protected void encodeNode(FacesContext context, TreeTable tt, TreeNode root, TreeNode treeNode) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String rowKey = treeNode.getRowKey();
         String parentRowKey = treeNode.getParent().getRowKey();
-        tt.setRowKey(rowKey);
+        tt.setRowKey(root, rowKey);
         String icon = treeNode.isExpanded() ? TreeTable.COLLAPSE_ICON : TreeTable.EXPAND_ICON;
         int depth = rowKey.split(UITree.SEPARATOR).length - 1;
         String selectionMode = tt.getSelectionMode();
@@ -690,7 +690,7 @@ public class TreeTableRenderer extends DataRenderer {
         writer.endElement("tr");
 
         if (treeNode.isExpanded()) {
-            encodeNodeChildren(context, tt, treeNode);
+            encodeNodeChildren(context, tt, root, treeNode);
         }
     }
 
@@ -846,12 +846,12 @@ public class TreeTableRenderer extends DataRenderer {
         }
     }
 
-    protected void encodeNodeChildren(FacesContext context, TreeTable tt, TreeNode treeNode) throws IOException {
+    protected void encodeNodeChildren(FacesContext context, TreeTable tt, TreeNode root, TreeNode treeNode) throws IOException {
         int childCount = treeNode.getChildCount();
-        encodeNodeChildren(context, tt, treeNode, 0, childCount);
+        encodeNodeChildren(context, tt, root, treeNode, 0, childCount);
     }
 
-    protected void encodeNodeChildren(FacesContext context, TreeTable tt, TreeNode treeNode, int first, int size) throws IOException {
+    protected void encodeNodeChildren(FacesContext context, TreeTable tt, TreeNode root, TreeNode treeNode, int first, int size) throws IOException {
         if (size > 0) {
             List<TreeNode> children = treeNode.getChildren();
             int childCount = treeNode.getChildCount();
@@ -861,7 +861,7 @@ public class TreeTableRenderer extends DataRenderer {
             }
 
             for (int i = first; i < last; i++) {
-                encodeNode(context, tt, children.get(i));
+                encodeNode(context, tt, root, children.get(i));
             }
         }
     }
@@ -1057,10 +1057,10 @@ public class TreeTableRenderer extends DataRenderer {
         tt.setSortOrder(sortDir);
     }
 
-    protected void encodeSort(FacesContext context, TreeTable tt) throws IOException {
+    protected void encodeSort(FacesContext context, TreeTable tt, TreeNode root) throws IOException {
         sort(tt);
 
-        encodeTbody(context, tt, true);
+        encodeTbody(context, tt, root, true);
     }
 
     public void sort(TreeTable tt) {
@@ -1104,13 +1104,13 @@ public class TreeTableRenderer extends DataRenderer {
         writer.endElement("input");
     }
 
-    public void encodeRowEdit(FacesContext context, TreeTable tt) throws IOException {
+    public void encodeRowEdit(FacesContext context, TreeTable tt, TreeNode root) throws IOException {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = tt.getClientId(context);
         String editedRowKey = params.get(clientId + "_rowEditIndex");
         String action = params.get(clientId + "_rowEditAction");
 
-        tt.setRowKey(editedRowKey);
+        tt.setRowKey(root, editedRowKey);
         TreeNode node = tt.getRowNode();
 
         if (action.equals("cancel")) {
@@ -1135,10 +1135,10 @@ public class TreeTableRenderer extends DataRenderer {
             }
         }
 
-        encodeNode(context, tt, node);
+        encodeNode(context, tt, root, node);
     }
 
-    public void encodeCellEdit(FacesContext context, TreeTable tt) throws IOException {
+    public void encodeCellEdit(FacesContext context, TreeTable tt, TreeNode root) throws IOException {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = tt.getClientId(context);
         String[] cellInfo = params.get(clientId + "_cellInfo").split(",");
@@ -1161,7 +1161,7 @@ public class TreeTableRenderer extends DataRenderer {
             throw new FacesException("No column found for cellIndex: " + cellIndex);
         }
 
-        tt.setRowKey(rowKey);
+        tt.setRowKey(root, rowKey);
 
         if (column.isDynamic()) {
             DynamicColumn dynamicColumn = (DynamicColumn) column;
@@ -1180,13 +1180,12 @@ public class TreeTableRenderer extends DataRenderer {
         }
     }
 
-    public void filter(FacesContext context, TreeTable tt, List<FilterMeta> filterBy, String globalFilterValue) throws IOException {
+    public void filter(FacesContext context, TreeTable tt, TreeNode root, List<FilterMeta> filterBy, String globalFilterValue) throws IOException {
         Locale filterLocale = LocaleUtils.getCurrentLocale(context);
-        TreeNode root = tt.getValue();
         TreeNode filteredNode = null;
 
         tt.getFilteredRowKeys().clear();
-        findFilteredRowKeys(context, tt, root, filterBy, filterLocale, globalFilterValue);
+        findFilteredRowKeys(context, tt, root, root, filterBy, filterLocale, globalFilterValue);
 
         filteredNode = createNewNode(root, root.getParent());
 
@@ -1196,7 +1195,7 @@ public class TreeTableRenderer extends DataRenderer {
 
         tt.updateFilteredNode(context, filteredNode);
         tt.setValue(filteredNode);
-        tt.setRowKey(null);
+        tt.setRowKey(root, null);
 
         //Metadata for callback
         if (tt.isPaginator()) {
@@ -1207,8 +1206,9 @@ public class TreeTableRenderer extends DataRenderer {
         }
     }
 
-    protected void findFilteredRowKeys(FacesContext context, TreeTable tt, TreeNode node, List<FilterMeta> filterBy, Locale filterLocale,
-                                       String globalFilterValue) throws IOException {
+    protected void findFilteredRowKeys(FacesContext context, TreeTable tt, TreeNode root, TreeNode node, List<FilterMeta> filterBy,
+            Locale filterLocale, String globalFilterValue) throws IOException {
+
         int childCount = node.getChildCount();
         boolean hasGlobalFilter = !LangUtils.isValueBlank(globalFilterValue);
         GlobalFilterConstraint globalFilterConstraint = (GlobalFilterConstraint) TreeTable.FILTER_CONSTRAINTS.get(MatchMode.GLOBAL);
@@ -1225,7 +1225,7 @@ public class TreeTableRenderer extends DataRenderer {
             boolean localMatch = true;
             boolean globalMatch = false;
             String rowKey = childNode.getRowKey();
-            tt.setRowKey(rowKey);
+            tt.setRowKey(root, rowKey);
 
             for (int j = 0; j < filterBy.size(); j++) {
                 FilterMeta filter = filterBy.get(j);
@@ -1269,7 +1269,7 @@ public class TreeTableRenderer extends DataRenderer {
                 tt.getFilteredRowKeys().add(rowKey);
             }
 
-            findFilteredRowKeys(context, tt, childNode, filterBy, filterLocale, globalFilterValue);
+            findFilteredRowKeys(context, tt, root, childNode, filterBy, filterLocale, globalFilterValue);
         }
     }
 
