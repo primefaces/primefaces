@@ -3,17 +3,18 @@
 const { diffTrimmedLines } = require("diff");
 const { promises: fs } = require("fs");
 const { join, resolve } = require("path");
+const { tmpNameSync } = require("tmp");
 
-const { ReadFileOpts, Paths, ReadDirOpts, Tags } = require("../src/constants");
+const { ReadFileOpts, Paths, ReadDirOpts, Tags, WriteFileOpts } = require("../src/constants");
 const { createInclusionHandler } = require("../src/inclusion-handler");
 const { asyncMap, isNotEmpty, isNotUndefined, splitLines } = require("../src/lang");
-const { makeStackLine} = require("../src/error");
+const { makeStackLine } = require("../src/error");
 
 /**
- * @param {(input: string, sourceName: string, sourceLocation: string, inclusionHandler: InclusionHandler) => string[] | Promise<string[]>} processInput
+ * @param {(input: string, sourceName: string, sourceLocation: TypeDeclarationBundleFiles, inclusionHandler: InclusionHandler) => string[] | Promise<string[]>} processInput
  * @param {string} input
  * @param {string} sourceName
- * @param {string} sourceLocation
+ * @param {TypeDeclarationBundleFiles} sourceLocation
  * @param {InclusionHandler} inclusionHandler
  * @return {Promise<{success: true, lines: string[]} | {success: false, error: Error}>}
  */
@@ -70,7 +71,7 @@ async function checkError(error, errorFilename, dir, dirEntry) {
     }
     let i = 0;
     let j = 0;
-	const projectRootDir = Paths.ProjectRootDir.replace(/\\/g, "/");
+    const projectRootDir = Paths.ProjectRootDir.replace(/\\/g, "/");
     while (i < expected.length && j < actual.length) {
         const expectedLine = expected[i]
             .trim()
@@ -80,7 +81,7 @@ async function checkError(error, errorFilename, dir, dirEntry) {
         }
         if (j >= actual.length) {
             return [
-                `Expected error stack trace at line number ${i+1} not found in actual error`,
+                `Expected error stack trace at line number ${i + 1} not found in actual error`,
                 "-" + expectedLine,
             ];
         }
@@ -96,7 +97,7 @@ async function checkError(error, errorFilename, dir, dirEntry) {
  * @param {import("fs").Dirent} dirEntry
  * @return {Promise<string[]>}
  */
-async function checkSuccess(actual, expectedFilename, dir ,dirEntry) {
+async function checkSuccess(actual, expectedFilename, dir, dirEntry) {
     let fileContent;
     try {
         fileContent = await fs.readFile(join(dir, dirEntry.name, expectedFilename), ReadFileOpts);
@@ -111,7 +112,7 @@ async function checkSuccess(actual, expectedFilename, dir ,dirEntry) {
     });
     return diffs
         .flatMap((diff, line) => {
-            if (diff.added === true || diff.removed === true)  {
+            if (diff.added === true || diff.removed === true) {
                 return splitLines(diff.value.trim()).map(x => `${diff.added ? "+" : "-"} ${x}`);
             }
             return [undefined];
@@ -119,7 +120,7 @@ async function checkSuccess(actual, expectedFilename, dir ,dirEntry) {
         .filter(isNotUndefined);
 }
 /**
- * @param {(input: string, sourceName: string, sourceLocation: string, inclusionHandler: InclusionHandler) => string[] | Promise<string[]>} processInput
+ * @param {(input: string, sourceName: string, sourceLocation: TypeDeclarationBundleFiles, inclusionHandler: InclusionHandler) => string[] | Promise<string[]>} processInput
  * @param {{inputFilename: string, expectedFilename: string, errorFilename: string}} filenames 
  * @param {string} dir
  * @param {import("fs").Dirent} dirEntry
@@ -128,32 +129,48 @@ async function checkSuccess(actual, expectedFilename, dir ,dirEntry) {
  * @return {Promise<string | undefined>}
  */
 async function runTest(processInput, filenames, dir, dirEntry, inclusionHandler, verbose) {
-    const resolvedSourceLocation = resolve(join(dir, dirEntry.name, filenames.inputFilename));
-    const input = await fs.readFile(resolvedSourceLocation, ReadFileOpts);
-    const actual = await invokeTest(processInput, input, dirEntry.name, resolvedSourceLocation, inclusionHandler);
-    const errors = actual.success ?
-        await checkSuccess(actual.lines, filenames.expectedFilename, dir, dirEntry) :
-        await checkError(actual.error, filenames.errorFilename, dir, dirEntry);
-    // Log errors
-    if (errors.length > 0) {
-        const message = `Failure in test for '${dirEntry.name}', expected differs from actual:\n\n${errors.join("\n")}\n`;
-        const actualText = actual.success ? actual.lines.join("\n") : actual.error.stack;
-        const withActual = `${message}\nActual is:\n\n${actualText}\n`;
-        const stack = makeStackLine(dirEntry.name, resolvedSourceLocation, 1, 1);
-        if (verbose) {
-            console.warn(" -> failure");
+    const resolvedSourceDir = resolve(join(dir, dirEntry.name));
+    const resolvedSourceLocation = resolve(join(resolvedSourceDir, filenames.inputFilename));
+    const moduleLocation = tmpNameSync({
+        dir: resolvedSourceDir,
+        prefix: "module",
+        postfix: ".js",        
+    });
+    const files = {
+        ambient: resolvedSourceLocation,
+        module: moduleLocation,
+    };
+    try {
+        await fs.writeFile(moduleLocation, "// dummy", WriteFileOpts);
+        const input = await fs.readFile(resolvedSourceLocation, ReadFileOpts);
+        const actual = await invokeTest(processInput, input, dirEntry.name, files, inclusionHandler);
+        const errors = actual.success ?
+            await checkSuccess(actual.lines, filenames.expectedFilename, dir, dirEntry) :
+            await checkError(actual.error, filenames.errorFilename, dir, dirEntry);
+        // Log errors
+        if (errors.length > 0) {
+            const message = `Failure in test for '${dirEntry.name}', expected differs from actual:\n\n${errors.join("\n")}\n`;
+            const actualText = actual.success ? actual.lines.join("\n") : actual.error.stack;
+            const withActual = `${message}\nActual is:\n\n${actualText}\n`;
+            const stack = makeStackLine(dirEntry.name, resolvedSourceLocation, 1, 1);
+            if (verbose) {
+                console.warn(" -> failure");
+            }
+            return `${withActual}\n${stack}`;
         }
-        return `${withActual}\n${stack}`;
+        else {
+            return undefined;
+        }
     }
-    else {
-        return undefined;
+    finally {
+        await fs.unlink(moduleLocation);
     }
 }
 
 /**
  * @param {string} dir
  * @param {{inputFilename: string, expectedFilename: string, errorFilename: string}} filenames
- * @param {(input: string, sourceName: string, sourceLocation: string, inclusionHandler: InclusionHandler) => string[] | Promise<string[]>} processInput
+ * @param {(input: string, sourceName: string, sourceLocation: TypeDeclarationBundleFiles, inclusionHandler: InclusionHandler) => string[] | Promise<string[]>} processInput
  * @param {TestCliArgs} cliArgs
  */
 async function main(dir, filenames, processInput, cliArgs) {

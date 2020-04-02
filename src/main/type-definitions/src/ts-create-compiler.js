@@ -31,7 +31,7 @@ async function readCompilerOptionsFromTsConfig() {
 
 /**
  * @param {ts.CompilerOptions} options 
- * @param {string} declarationFile
+ * @param {TypeDeclarationBundleFiles} declarationFile
  * @param {string[]} moduleSearchLocations 
  * @return {ts.CompilerHost}
  */
@@ -40,8 +40,11 @@ function createFallbackCompilerHost(options, declarationFile, moduleSearchLocati
 
     host.resolveTypeReferenceDirectives = (typeReferenceDirectiveNames, containingFile, redirectedReference, options) => {
         // Declaration file may be located in a directory outside the npm dir
-        if (containingFile === declarationFile) {
-            containingFile = Paths.NpmVirtualDeclarationFile;
+        if (containingFile === declarationFile.ambient) {
+            containingFile = Paths.NpmVirtualDeclarationFile.ambient;
+        }
+        if (containingFile === declarationFile.module) {
+            containingFile = Paths.NpmVirtualDeclarationFile.module;
         }
         /** @type {Map<string, ts.ResolvedTypeReferenceDirective | undefined>} */
         const cache = new Map();
@@ -60,8 +63,11 @@ function createFallbackCompilerHost(options, declarationFile, moduleSearchLocati
     host.resolveModuleNames = (moduleNames, containingFile, reusedName, redirectedReference, options) => {
         return moduleNames.map(moduleName => {
             // Declaration file may be located in a directory outside the npm dir
-            if (containingFile === declarationFile) {
-                containingFile = Paths.NpmVirtualDeclarationFile;
+            if (containingFile === declarationFile.ambient) {
+                containingFile = Paths.NpmVirtualDeclarationFile.ambient;
+            }
+            if (containingFile === declarationFile.module) {
+                containingFile = Paths.NpmVirtualDeclarationFile.module;
             }
             // Try to use standard resolution
             const resolutionResult = ts.resolveModuleName(moduleName, containingFile, options, {

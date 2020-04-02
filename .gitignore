@@ -9,6 +9,8 @@
 /.project
 .vscode/
 .checkstyle
+src/main/type-definitions/src/PrimeFaces-modules.d.ts
+src/main/type-definitions/src/PrimeFaces.d.ts
 
 # Created by https://www.gitignore.io/api/node
 # Edit at https://www.gitignore.io/?templates=node

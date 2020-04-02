@@ -7,8 +7,9 @@
 /// <reference types="googlemaps" />
 /// <reference types="jquery" />
 /// <reference types="jqueryui" />
-/// <reference types="jquery.fileupload" />
 /// <reference types="moment-timezone" />
+
+/// <reference path="PrimeFaces-module.d.ts" />
 
 // Additional required type declarations for PrimeFaces that are not picked up from the source code
 
@@ -121,7 +122,7 @@ declare namespace PrimeFaces {
      * @typeparam Base Base type to intersect
      * @return A new type that is the intersection of the given `Base` with `void`.
      */
-    export type ReturnOrVoid<Base> = 
+    export type ReturnOrVoid<Base> =
         // tslint:disable-next-line
         Base | void;
 
@@ -179,8 +180,8 @@ declare namespace PrimeFaces {
      */
     export type BindThis<Base, ThisContext> =
         Base extends (...args: any) => any ?
-            (this: ThisContext, ...args: Parameters<Base>) => ReturnType<Base> :
-            Base;
+        (this: ThisContext, ...args: Parameters<Base>) => ReturnType<Base> :
+        Base;
 
     /**
      * Constructs a new type by binding the this context of `Base` to the `ThisContext`. Additionally, also adds a new
@@ -198,9 +199,9 @@ declare namespace PrimeFaces {
      */
     export type BindThisAndSuper<Base, ThisContext> =
         Base extends (...args: any) => any ?
-            (this: ThisContext & {_super: Base}, ...args: Parameters<Base>) => ReturnType<Base> :
-            Base;
-    
+        (this: ThisContext & { _super: Base }, ...args: Parameters<Base>) => ReturnType<Base> :
+        Base;
+
     /**
      * Constructs a new type that is the intersection of all property names in `Base` whose type is assignable to
      * `Condition`:
@@ -238,7 +239,7 @@ declare namespace PrimeFaces {
      * @typeparam Condition Type which the properties in the base type have to match.
      * @return A subtype of the base type with all properties excluded that do not match the condition.
     */
-    export type PickMatching<Base, Condition> = Pick<Base, MatchingKeys<Base, Condition>>;    
+    export type PickMatching<Base, Condition> = Pick<Base, MatchingKeys<Base, Condition>>;
 
     /**
      * Given the type of the base class and the sub class, constructs a new type for the argument of `Class.extend(...)`,
@@ -250,7 +251,7 @@ declare namespace PrimeFaces {
      * added to the this context.
      */
     export type ClassExtendProps<TBase, TSub> = {
-        [P in keyof TSub]: P extends keyof TBase ? BindThisAndSuper<TBase[P], TSub> : BindThis<TSub[P], TSub> 
+        [P in keyof TSub]: P extends keyof TBase ? BindThisAndSuper<TBase[P], TSub> : BindThis<TSub[P], TSub>
     };
 
     /**
@@ -262,9 +263,9 @@ declare namespace PrimeFaces {
      * @return A new type with all properties in the given type made optional, exception for `id` and `widgetVar`.
      */
     export type PartialWidgetCfg<
-        TCfg extends {id: string, widgetVar: string},
+        TCfg extends { id: string, widgetVar: string },
         TWidget = any
-    > =
+        > =
         Partial<Omit<TCfg, "id" | "widgetVar">> & Pick<TCfg, "id" | "widgetVar">
         &
         {
@@ -335,43 +336,61 @@ declare namespace PrimeFaces {
     export interface Class<TBase = {}> {
         new(): Class<TBase>;
         extend<
-            TSub extends {init(...args: TArgs): void} & Omit<TBase, "init">,
+            TSub extends { init(...args: TArgs): void } & Omit<TBase, "init">,
             TArgs extends any[],
-        >(
-            prop: PartialBy<ClassExtendProps<TBase, TSub>, keyof Omit<TBase, "init">>
-        ): Class<TSub> & (new(...args: TArgs) => TSub) & {prototype: TSub};
+            >(
+                prop: PartialBy<ClassExtendProps<TBase, TSub>, keyof Omit<TBase, "init">>
+            ): Class<TSub> & (new (...args: TArgs) => TSub) & { prototype: TSub };
     }
+
+    /**
+     * Maps the return type of a method of an instance method of a JQueryUI widget instance to the return type of the
+     * JQueryUI wrapper:
+     * - When an instance method returns `undefined` or the instance itself, the JQuery instance is returned.
+     * - Otherwise, the value of the instance method is returned.
+     * @typeparam W Type of the widget instance.
+     * @typeparam R Type of a value returned by a widget instance method.
+     * @typeparam JQ Type of the JQuery instance.
+     * @return The type that is returned by the JQueryUI wrapper method.
+     */
+    export type ToJQueryUIWidgetReturnType<W, R, JQ> =
+        // tslint:disable-next-line 
+        R extends W | undefined | void
+        ? JQ
+        : R extends undefined | void
+        ? R | JQ
+        : R;
 
     /**
      * An object with all localized strings required on the client side.
      */
     export interface Locale {
-        allDayText: string,
+        allDayText: string;
         aria: Record<string, string>;
-        closeText: string,
-        prevText: string,
-        nextText: string,
-        monthNames: [string, string, string, string, string, string, string, string, string, string, string, string],
-        monthNamesShort: [string, string, string, string, string, string, string, string, string, string, string, string],
-        dayNames: [string, string, string, string, string, string, string],
-        dayNamesShort: [string, string, string, string, string, string, string],
-        dayNamesMin: [string, string, string, string, string, string, string],
-        weekHeader: string,
-        weekNumberTitle: string,
-        firstDay: number,
-        isRTL: boolean,
-        showMonthAfterYear: boolean,
-        yearSuffix: string,
-        timeOnlyTitle: string,
-        timeText: string,
-        hourText: string,
-        minuteText: string,
-        secondText: string,
-        currentText: string,
-        ampm: boolean,
-        month: string,
-        week: string,
-        day: string,
+        closeText: string;
+        prevText: string;
+        nextText: string;
+        monthNames: [string, string, string, string, string, string, string, string, string, string, string, string];
+        monthNamesShort: [string, string, string, string, string, string, string, string, string, string, string, string];
+        dayNames: [string, string, string, string, string, string, string];
+        dayNamesShort: [string, string, string, string, string, string, string];
+        dayNamesMin: [string, string, string, string, string, string, string];
+        weekHeader: string;
+        weekNumberTitle: string;
+        firstDay: number;
+        isRTL: boolean;
+        showMonthAfterYear: boolean;
+        yearSuffix: string;
+        timeOnlyTitle: string;
+        timeText: string;
+        hourText: string;
+        minuteText: string;
+        secondText: string;
+        currentText: string;
+        ampm: boolean;
+        month: string;
+        week: string;
+        day: string;
         messages?: Record<string, string>;
         [i18nKey: string]: any;
     }
@@ -402,7 +421,7 @@ declare namespace PrimeFaces {
          */
         convert(element: JQuery, submittedValue: string | null | undefined): T;
     }
-    
+
     /**
      * A validator for checking whether the value of an element confirms to certain restrictions.
      */
@@ -425,7 +444,7 @@ declare namespace PrimeFaces {
          * A short summary of the message.
          */
         summary: string;
-        
+
         /**
          * In-depth details of the message.
          */
@@ -461,13 +480,13 @@ declare namespace PrimeFaces {
          * highlight the given element in a way that makes the user notice that the element is invalid.
          * @param element An element to highlight.
          */
-        highlight(element: JQuery): void; 
-        
+        highlight(element: JQuery): void;
+
         /**
          * When an element is invalid due to a validation error, the user needs to be informed. This method must
          * remove the highlighting of the given element that was added by `highlight`.
          */
-        unhighlight(element: JQuery): void; 
+        unhighlight(element: JQuery): void;
     }
 }
 
@@ -492,7 +511,7 @@ declare namespace PrimeFaces.ajax {
          * Additional arguments used by PrimeFaces internally.
          */
         pfArgs?: PrimeFacesArgs;
-       
+
         /**
          * Additional settings, such as portlet forms and nonces.
          */
@@ -504,47 +523,47 @@ declare namespace PrimeFaces.ajax {
      * succeeded or failed.
      */
     export type CallbackOncomplete =
-    /**
-     * @param xhr The XHR request that failed.
-     * @param status The type of error or success.
-     * @param pfArgs Internal arguments used by PrimeFaces.
-     * @param data The data that was returned by the request.
-     */
-    (this: Request, xhr: pfXHR, status: JQuery.Ajax.TextStatus, pfArgs: Record<string, any>, data: any) => void;
+        /**
+         * @param xhr The XHR request that failed.
+         * @param status The type of error or success.
+         * @param pfArgs Internal arguments used by PrimeFaces.
+         * @param data The data that was returned by the request.
+         */
+        (this: Request, xhr: pfXHR, status: JQuery.Ajax.TextStatus, pfArgs: Record<string, any>, data: any) => void;
 
     /**
      * Callback for an AJAX request that is called in case any error occurred during the request, such as a a network
      * error. Note that this is not called for errors in the application logic, such as when bean validation fails.
      */
     export type CallbackOnerror =
-    /**
-     * @param xhr The XHR request that failed.
-     * @param status The type of error that occurred.
-     * @param errorThrown The error with details on why the request failed.
-     */
-    (this: Request, xhr: pfXHR, status: JQuery.Ajax.ErrorTextStatus, errorThrown: string) => void;
+        /**
+         * @param xhr The XHR request that failed.
+         * @param status The type of error that occurred.
+         * @param errorThrown The error with details on why the request failed.
+         */
+        (this: Request, xhr: pfXHR, status: JQuery.Ajax.ErrorTextStatus, errorThrown: string) => void;
 
     /**
      * Callback for an AJAX request that is called before the request is sent. Return `false` to cancel the request.
      */
     export type CallbackOnstart =
-    /**
-     * @param cfg The current AJAX configuration.
-     * @return {boolean | undefined} `false` to abort and not send the request, `true` or `undefined` otherwise.
-     */
-    (this: Request, cfg: Configuration) => boolean;
+        /**
+         * @param cfg The current AJAX configuration.
+         * @return {boolean | undefined} `false` to abort and not send the request, `true` or `undefined` otherwise.
+         */
+        (this: Request, cfg: Configuration) => boolean;
 
     /**
      * Callback for an AJAX request that is called when the request succeeds.
      */
     export type CallbackOnsuccess =
-    /**
-     * @param data The data that was returned by the request.
-     * @param status The type of success, usually `success`.
-     * @param xhr The XHR request that succeeded.
-     * @return `true` if this handler already handle and/or parsed the response, `false` or `undefined` otherwise.
-     */
-    (this: Request, data: any, status: JQuery.Ajax.SuccessTextStatus, xhr: pfXHR) => boolean | undefined;
+        /**
+         * @param data The data that was returned by the request.
+         * @param status The type of success, usually `success`.
+         * @param xhr The XHR request that succeeded.
+         * @return `true` if this handler already handle and/or parsed the response, `false` or `undefined` otherwise.
+         */
+        (this: Request, data: any, status: JQuery.Ajax.SuccessTextStatus, xhr: pfXHR) => boolean | undefined;
 
     /**
      * Describes a server callback parameter for an AJAX call. For example, when you call a
@@ -574,7 +593,7 @@ declare namespace PrimeFaces.ajax {
          * The name of the parameter to pass to the server.
          */
         name: string;
-       
+
         /**
          * The value of the parameter to pass to the server.
          */
@@ -592,7 +611,7 @@ declare namespace PrimeFaces.ajax {
          * The widget which triggered the AJAX request.
          */
         widget: TWidget,
-       
+
         /**
          * The handle function which is given the HTML string of the update
          * @param content The new HTML content from the update. 
@@ -608,17 +627,17 @@ declare namespace PrimeFaces.ajax {
          * Start of the selection, that is, the index of the first selected character.
          */
         start: number;
-        
+
         /**
          * End of the selection, that is, one plus the index of the last selected character. 
          */
         end: number;
-        
+
         /**
          * The number of selected characters. 
          */
         length: number;
-        
+
         /**
          * The selected text 
          */

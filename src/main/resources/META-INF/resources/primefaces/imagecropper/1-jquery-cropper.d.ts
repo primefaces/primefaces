@@ -24,22 +24,6 @@ declare namespace JQueryCropper {
     export type CropAction = "crop" | "move" | "zoom" | "e" | "w" | "s" | "n" | "se" | "sw" | "ne" | "nw" | "all";
 
     /**
-     * Maps the return type of a method of {@link Cropper} to the return type of the JQuery plugin:
-     * - When a Cropper method returns `undefined` or the Cropper instance, the JQuery instance is returned.
-     * - Otherwise, the value of the Cropper method is returned.
-     * @typeparam R Type of a value returned by a Cropper method.
-     * @typeparam JQ Type of the JQuery instance.
-     * @return The type that is returned by the JQuery Cropper plugin wrapper.
-     */
-    export type ToWrapperReturnType<R, JQ> =
-        // tslint:disable-next-line 
-        R extends Cropper | undefined | void
-        ? JQ
-        : R extends undefined | void
-        ? R | JQ
-        : R;
-
-    /**
      * Details about the `cropstart`, `cropmove`, and `cropend` event.
      */
     export interface CropPhaseDetail {
@@ -132,7 +116,10 @@ interface JQuery {
      */
     cropper<
         K extends PrimeFaces.MatchingKeys<Cropper, (...args: any) => void>
-    >(method: K, ...args: Parameters<Cropper[K]>): JQueryCropper.ToWrapperReturnType<ReturnType<Cropper[K]>, this>;
+    >(
+        method: K,
+        ...args: Parameters<Cropper[K]>
+    ): PrimeFaces.ToJQueryUIWidgetReturnType<Cropper, ReturnType<Cropper[K]>, this>;
 }
 
 declare namespace JQuery {

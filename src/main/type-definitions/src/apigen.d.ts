@@ -112,6 +112,8 @@ type ConstantSignatureConverter = (signature: ConstantSignature) => string[];
 
 type ConstantType = "constant" | "let";
 
+type DeclarationFileType = "module" | "ambient";
+
 type DocumentableHandler = (
     node: import("estree").Node,
     program: CommentedAst<import("estree").Program>,
@@ -230,6 +232,10 @@ interface CliArgs {
      * Filename (without path) of the generated `*.d.ts` file
      */
     outputFilename: string;
+    /**
+     * Filename (without path) of the generated `*.module.d.ts` file
+     */
+    moduleOutputFilename: string;
     /**
      * Overrides for the default severity settings.
      */
@@ -712,7 +718,7 @@ type TsCallSignatureIndex = string;
 type TsHookFnValidateReport = (validationMessage: TsGroupedValidationMessages) => Result<Error | Error[]>;
 type TsHookFnValidateProgram = (program: import("typescript").Program, sourceFiles: import("typescript").SourceFile[], docCommentAccessor: TsDocCommentAccessor) => Result<TsValidationMessage | TsValidationMessage[]>;
 type TsHookFnEmitTransform = (node: import("typescript").Node) => import("typescript").Node;
-type TsHookFnCompilerHostCreate = (options: import("typescript").CompilerOptions, sourceFiles: string[]) => Result<import("typescript").CompilerHost>;
+type TsHookFnCompilerHostCreate = (options: import("typescript").CompilerOptions, sourceFiles: TypeDeclarationBundleFiles) => Result<import("typescript").CompilerHost>;
 type TsHookFnCompilerOptionsCreate = () => Result<import("typescript").CompilerOptions>;
 type TsHookFnCompilerOptionsModify = (options: import("typescript").CompilerOptions) => Result<import("typescript").CompilerOptions>;
 type TsHookFnProcessAst = (program: import("typescript").Program, sourceFiles: import("typescript").SourceFile[], docCommentAccessor: TsDocCommentAccessor, severitySettings: SeveritySettingsConfig) => void;
@@ -790,6 +796,21 @@ interface TsNodeMembersResult {
     constructors: ConstructorLikeNode[];
     methods: Map<string, CallOrMethodLikeNode[]>;
     properties: Map<string, PropertyLikeNode[]>;
+}
+
+interface TypeDeclarationBundleContent {
+    ambient: string[];
+    module: string[];
+}
+
+interface TypeDeclarationBundleFiles {
+    ambient: string;
+    module: string;
+}
+
+interface TypeDeclarationBundleSourceFiles {
+    ambient: import("typescript").SourceFile;
+    module: import("typescript").SourceFile;
 }
 
 interface TypedefFunctionInfo {

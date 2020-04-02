@@ -20,8 +20,8 @@
  * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnCompleteCallback 
  * @param {PrimeFaces.ajax.PrimeFacesArgs} PrimeFaces.widget.FileUpload.OnCompleteCallback.pfArgs The additional
  * arguments from the jQuery XHR requests.
- * @param {JqueryFileUploadAddObject} PrimeFaces.widget.FileUpload.OnCompleteCallback.data Details about the uploaded
- * file or files.
+ * @param {JQueryFileUpload.JQueryAjaxCallbackData} PrimeFaces.widget.FileUpload.OnCompleteCallback.data Details about
+ * the uploaded file or files.
  * 
  * @typedef PrimeFaces.widget.FileUpload.OnErrorCallback Callback that is invoked when a file could not be uploaded to
  * the server. See also {@link FileUploadCfg.onerror}.
@@ -44,7 +44,7 @@
  * widget.
  * @prop {JQuery} UploadFile.row Row of an uploaded file.
  * 
- * @prop {JQueryFileInputOptions} ucfg Options for the blueimp jQuery file upload plugin.
+ * @prop {JQueryFileUpload.FileUploadOptions} ucfg Options for the BlueImp jQuery file upload plugin.
  * @prop {JQuery} form The DOM element for the form containing this upload widget.
  * @prop {JQuery} buttonBar The DOM element for the bar with the buttons of this widget.
  * @prop {JQuery} chooseButton The DOM element for the button for selecting a file.
@@ -271,7 +271,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
      * Adds a file selected by the user to this upload widget.
      * @private
      * @param {File} file A file to add.
-     * @param {JqueryFileUploadAddObject} data The data from the selected file.
+     * @param {JQueryFileUpload.AddCallbackData} data The data from the selected file.
      */
     addFileToRow: function(file, data) {
         var $this = this,
@@ -334,7 +334,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Called after a file was added to this upload widget. Takes care of the UI buttons.
      * @private
-     * @param {JqueryFileUploadAddObject} data Data of the selected file.
+     * @param {JQueryFileUpload.AddCallbackData} data Data of the selected file.
      */
     postSelectFile: function(data) {
         if(this.files.length > 0) {

@@ -14,7 +14,7 @@ const { resolveInheritDocs } = require("./ts-resolve-inheritdoc");
  */
 function createHookFnCompilerHostCreate() {
     return (options, sourceFiles) => {
-        return createFallbackCompilerHost(options, sourceFiles[0] || "", [
+        return createFallbackCompilerHost(options, sourceFiles, [
             join(Paths.NpmTypesDir, "node"),
         ]);
     };

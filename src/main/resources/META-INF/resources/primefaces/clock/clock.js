@@ -397,16 +397,16 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
  * @prop {number} Dimensions.second_hand_stroke_width Stroke width in pixels of the seconds hand.
  * @prop {number} Dimensions.pin_width Radius in pixels of the pin at the center of the clock face.
  * 
- * @prop {Raphael.RaphaelPaper} canvas The canvas for the analog clock.
- * @prop {Raphael.RaphaelElement} clock The drawn element for the clock outline.
+ * @prop {import("raphael").RaphaelPaper} canvas The canvas for the analog clock.
+ * @prop {import("raphael").RaphaelElement} clock The drawn element for the clock outline.
  * @prop {Date} current The currently displayed time.
  * @prop {PrimeFaces.widget.Clock.Dimensions} dimensions Calculated sizes for the analog clock elements.
- * @prop {Raphael.RaphaelElement[]} hour_sign The drawn elements for the hour signs (1-12).
- * @prop {Raphael.RaphaelElement} hour_hand The drawn element for the hour hand.
+ * @prop {import("raphael").RaphaelElement[]} hour_sign The drawn elements for the hour signs (1-12).
+ * @prop {import("raphael").RaphaelElement} hour_hand The drawn element for the hour hand.
  * @prop {number} interval The set-interval timer ID for the ticking of the clock.
- * @prop {Raphael.RaphaelElement} minute_hand The drawn element for the minute hand.
- * @prop {Raphael.RaphaelElement} pin The drawn element for the pin at the center of the clock.
- * @prop {Raphael.RaphaelElement} second_hand The drawn element for the second hand.
+ * @prop {import("raphael").RaphaelElement} minute_hand The drawn element for the minute hand.
+ * @prop {import("raphael").RaphaelElement} pin The drawn element for the pin at the center of the clock.
+ * @prop {import("raphael").RaphaelElement} second_hand The drawn element for the second hand.
  * 
  * @interface {PrimeFaces.widget.ClockCfg} cfg The configuration for the {@link  Clock| Clock widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this

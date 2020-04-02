@@ -24,10 +24,10 @@ function createExcludes(cliArgs) {
 
 /**
  * Generates typedocs for the given `*.d.ts` file.
- * @param {string} sourceFileName 
+ * @param {TypeDeclarationBundleFiles} sourceFiles 
  * @param {CliArgs} cliArgs
  */
-function generateTypedocs(sourceFileName, cliArgs) {
+function generateTypedocs(sourceFiles, cliArgs) {
     const targetDir = cliArgs.typedocOutputDir || join(cliArgs.outputDir, "jsdocs");
     const app = new typedoc.Application();
     app.bootstrap({
@@ -38,11 +38,13 @@ function generateTypedocs(sourceFileName, cliArgs) {
         exclude: createExcludes(cliArgs),
         ignoreCompilerErrors: true,
         includeDeclarations: true,
+        listInvalidSymbolLinks: false, // TODO: enable once typedoc support {@link Class#method} syntax
         disableSources: true,
     });
-    withTemporaryFileOnDisk(sourceFileName, Paths.NpmVirtualDeclarationFile, file => {
+    withTemporaryFileOnDisk(sourceFiles, Paths.NpmVirtualDeclarationFile, tempFiles => {
         app.generateDocs(app.expandInputFiles([
-            file,
+            tempFiles.ambient,
+            tempFiles.module,
             Paths.NpmTypesDir,
         ]), targetDir);
     });

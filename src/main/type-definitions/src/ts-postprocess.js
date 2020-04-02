@@ -54,31 +54,31 @@ async function createCompilerOptions(postProcessorsHooks) {
 }
 
 /**
- * @param {string} declarationFile 
+ * @param {TypeDeclarationBundleFiles} declarationFiles 
  * @param {TsPostProcessingHooks} postProcessorsHooks
  * @return {Promise<import("typescript").Program>}
  */
-async function createProgram(declarationFile, postProcessorsHooks) {
+async function createProgram(declarationFiles, postProcessorsHooks) {
     const options = await createCompilerOptions(postProcessorsHooks);
-    const host = await invokeHookToResult(postProcessorsHooks.compilerHost.createCompilerHost, undefined, options, [declarationFile]);
+    const host = await invokeHookToResult(postProcessorsHooks.compilerHost.createCompilerHost, undefined, options, declarationFiles);
     return ts.createProgram({
         options,
-        rootNames: [declarationFile],
+        rootNames: [declarationFiles.ambient, declarationFiles.module],
         host: host,
     });
 }
 
 /**
  * @param {import("typescript").Program} program
- * @param {import("typescript").SourceFile} sourceFile
+ * @param {TypeDeclarationBundleSourceFiles} sourceFiles
  * @param {TsDocCommentAccessor} docCommentAccessor
  * @param {TsPostProcessingHooks} postProcessorsHooks
  * @return {Promise<Error | undefined>}
  */
-async function validateProgram(program, sourceFile, docCommentAccessor, postProcessorsHooks) {
+async function validateProgram(program, sourceFiles, docCommentAccessor, postProcessorsHooks) {
     const validationResult = await asyncFlatMap(
         postProcessorsHooks.validateProgram.validate,
-        hook => invokeHook(hook, undefined, program, [sourceFile], docCommentAccessor),
+        hook => invokeHook(hook, undefined, program, [sourceFiles.ambient, sourceFiles.module], docCommentAccessor),
     );
     /** @type {TsGroupedValidationMessages} */
     const validationMessages = {
@@ -132,14 +132,14 @@ function fixupInlineBlockComments(sourceCode) {
 }
 
 /**
- * @param {import("typescript").SourceFile} sourceFile 
+ * @param {TypeDeclarationBundleSourceFiles} sourceFiles 
  * @param {TsPostProcessingHooks} postProcessorsHooks
- * @return {string}
+ * @return {TypeDeclarationBundleContent}
  */
-function stringifySourceFile(sourceFile, postProcessorsHooks) {
+function stringifySourceFile(sourceFiles, postProcessorsHooks) {
     const printer = ts.createPrinter(
         {
-        newLine: ts.NewLineKind.LineFeed,        
+            newLine: ts.NewLineKind.LineFeed,
         },
         {
             onEmitNode(hint, node, callback) {
@@ -158,48 +158,68 @@ function stringifySourceFile(sourceFile, postProcessorsHooks) {
             }
         }
     );
-    const sourceCode = printer.printFile(sourceFile);
-    return fixupInlineBlockComments(sourceCode);
+    const sourceCodeAmbient = printer.printFile(sourceFiles.ambient);
+    const sourceCodeModule = printer.printFile(sourceFiles.module);
+    return {
+        ambient: [fixupInlineBlockComments(sourceCodeAmbient)],
+        module: [fixupInlineBlockComments(sourceCodeModule)],
+    };
 }
 
 /**
- * @param {string} filePath 
+ * @param {TypeDeclarationBundleFiles} filePaths 
  * @param {import("typescript").Program} program 
- * @return {import("typescript").SourceFile}
+ * @return {TypeDeclarationBundleSourceFiles}
  */
-function getSourceFile(filePath, program) {
-    const sourceFile = program.getSourceFile(filePath);
-    if (sourceFile === undefined) {
-        throw new Error(`Source file ${filePath} not found in program`);
+function getSourceFile(filePaths, program) {
+    const sourceFileAmbient = program.getSourceFile(filePaths.ambient);
+    const sourceFileModule = program.getSourceFile(filePaths.module);
+    if (sourceFileAmbient === undefined) {
+        throw new Error(`Source file ${filePaths.ambient} not found in program`);
     }
-    return sourceFile;
+    if (sourceFileModule === undefined) {
+        throw new Error(`Source file ${filePaths.module} not found in program`);
+    }
+    return { ambient: sourceFileAmbient, module: sourceFileModule };
 }
 
 /**
  * Performs post-processing of  a `*.d.ts` file, such as whether it is valid.
- * @param {string} filePath Path of the declaration file to post-process.
+ * @param {TypeDeclarationBundleFiles} filePaths Path of the declaration file to post-process.
  * @param {SeveritySettingsConfig} severitySettings
  * @param {Partial<TsPostProcessingHooks>} postProcessorsHooks
- * @return {Promise<string>} Content of the post-processed file.
+ * @return {Promise<TypeDeclarationBundleContent>} Content of the post-processed file.
  */
-async function postprocessDeclarationFile(filePath, severitySettings, postProcessorsHooks = {}) {
+async function postprocessDeclarationFile(filePaths, severitySettings, postProcessorsHooks = {}) {
     // Read compiler options and parse program
     const resolvedHooks = Object.assign(createEmptyHooks(), postProcessorsHooks);
-    const program = await createProgram(filePath, resolvedHooks);
-    const sourceFile = getSourceFile(filePath, program);
+    const program = await createProgram(filePaths, resolvedHooks);
+    const sourceFiles = getSourceFile(filePaths, program);
     // Prepare handler for modifying doc comment
-    fixupParents(program.getTypeChecker(), sourceFile);
-    const commentHandler = createCommentHandler(sourceFile, severitySettings);
+    fixupParents(program.getTypeChecker(), sourceFiles.ambient);
+    fixupParents(program.getTypeChecker(), sourceFiles.module);
+    const commentHandler = createCommentHandler(sourceFiles, severitySettings);
     // Validate program
-    const error = await validateProgram(program, sourceFile, commentHandler, resolvedHooks);
+    const error = await validateProgram(program, sourceFiles, commentHandler, resolvedHooks);
     if (error) {
         throw error;
     }
     // Perform other processing
-    await asyncForEach(resolvedHooks.process.processAst, hook => invokeHook(hook, undefined, program, [sourceFile], commentHandler, severitySettings));
+    await asyncForEach(
+        resolvedHooks.process.processAst,
+        hook => invokeHook(
+            hook,
+            undefined,
+            program,
+            [sourceFiles.ambient, sourceFiles.module],
+            commentHandler,
+            severitySettings
+        )
+    );
     // Write declaration file back
-    commentHandler.applyToSourceFile(sourceFile);
-    return stringifySourceFile(sourceFile,resolvedHooks);
+    commentHandler.applyToSourceFile(sourceFiles.ambient);
+    commentHandler.applyToSourceFile(sourceFiles.module);
+    return stringifySourceFile(sourceFiles, resolvedHooks);
 }
 
 module.exports = {

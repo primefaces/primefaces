@@ -1,12 +1,13 @@
 # JavaScript API Docs for PrimeFaces
 
-This is the documentation for the client-side JavaScript part of PrimeFaces, please visit [PrimeFaces.org](https://www.primefaces.org) for more information. You may also 
-be interested in the [user guide](https://primefaces.github.io/primefaces/).
+This is the documentation for the client-side JavaScript part of PrimeFaces, please visit
+[PrimeFaces.org](https://www.primefaces.org) for more information. You may also  be interested in the
+[user guide](https://primefaces.github.io/primefaces/).
 
 [![PrimeFaces Logo](https://www.primefaces.org/wp-content/uploads/2016/10/prime_logo_new.png)](https://www.primefaces.org/showcase)
 
-1. [Type declarations file](#type-declarations-file)
-1. [API Overview](#api-overview)
+* [Type declarations file](#type-declarations-file)
+* [API Overview](#api-overview)
     1. [Core](#core)
     1. [Widgets](#widgets)
     1. [JQuery extensions](#jquery-extensions)
@@ -14,33 +15,35 @@ be interested in the [user guide](https://primefaces.github.io/primefaces/).
 
 ## Type declarations file
 
-To enable code autocompletion or type checking etc, a type declartion file (`*.d.ts`) is available as well:
+To enable code autocompletion or type checking etc, a type declaration file
+(`*.d.ts`) is available as well:
 
-* You can download it from here: [click](../PrimeFaces.d.ts)
+* You can download it from here: [main](../PrimeFaces.d.ts) and [sub](../PrimeFaces-module.d.ts)
 * It references some types from other libraries. You may need to install:
 
 <details>
 <summary>Click to see required types from NPM packages </summary>
 
 ```sh
-npm install --save-dev @types/jquery
-npm install --save-dev @types/jqueryui
-npm install --save-dev @types/chart.js
-npm install --save-dev @types/googlemaps
-npm install --save-dev @types/jquery.fileupload
-npm install --save-dev @types/moment-timezone
-npm install --save-dev @types/quill
-npm install --save-dev @fullcalendar/core
-npm install --save-dev @fullcalendar/daygrid
-npm install --save-dev @fullcalendar/interaction
-npm install --save-dev @fullcalendar/list
-npm install --save-dev @fullcalendar/moment
-npm install --save-dev @fullcalendar/timegrid
-npm install --save-dev autonumeric
-npm install --save-dev cropperjs
-npm install --save-dev moment
-npm install --save-dev vis-data
-npm install --save-dev vis-timeline
+npm install --save-dev  \
+  @types/jquery \
+  @types/jqueryui \
+  @types/chart.js \
+  @types/googlemaps \
+  @types/moment-timezone \
+  @types/quill \
+  @types/raphael \
+  @fullcalendar/core \
+  @fullcalendar/daygrid \
+  @fullcalendar/interaction \
+  @fullcalendar/list \
+  @fullcalendar/moment \
+  @fullcalendar/timegrid \
+  autonumeric \
+  cropperjs \
+  moment \
+  vis-data \
+  vis-timeline
 ```
 
 </details>
@@ -146,7 +149,7 @@ API docs for all third-party libraries are included in this documentation. Some 
       JavaScript.
 * [Quill](./classes/quill.html)
     * The [Quill Editor](https://quilljs.com/), a modern rich text editor for the web.
-* [Raphaël](./modules/raphael.html)
+* [Raphaël](./interfaces/raphaelstatic.html) ([plugins](./modules/_raphael_.html))
     * The [Raphaël vector graphics library](https://dmitrybaranovskiy.github.io/raphael/) for drawing onto a canvas.
 * [Timeline/Graph2D](./classes/timeline.html)
     * The [Timeline/Graph2D](https://github.com/visjs/vis-timeline) is an interactive visualization chart to visualize

@@ -24,12 +24,12 @@ const SeveritySettings = createDefaultSeveritySettings({
 /**
  * @param {string} input 
  * @param {string} sourceName 
- * @param {string} sourceLocation
+ * @param {TypeDeclarationBundleFiles} sourceLocation
  * @param {InclusionHandler} inclusionHandler
  * @return {string[]}
  */
 function processInput(input, sourceName, sourceLocation, inclusionHandler) {
-    const program = parseJsProgram(input, sourceName, sourceLocation);
+    const program = parseJsProgram(input, sourceName, sourceLocation.ambient);
     const documentable = aggregateDocumentable(program, inclusionHandler, SeveritySettings, [
         aggregateHandlerWidgets,
         aggregateHandlerDefaults,

@@ -7,21 +7,21 @@ const { withTemporaryFileOnDisk } = require("./lang-fs");
 
 /**
  * 
- * @param {string} sourceFileName 
+ * @param {TypeDeclarationBundleFiles} sourceFileNames 
  */
-async function lintTsFile(sourceFileName) {
-    const report = await withTemporaryFileOnDisk(sourceFileName, Paths.NpmVirtualDeclarationFile, file => {
+async function lintTsFile(sourceFileNames) {
+    const report = await withTemporaryFileOnDisk(sourceFileNames, Paths.NpmVirtualDeclarationFile, file => {
         const linter = new CLIEngine({
             configFile: Paths.EsLintRcPath,
             useEslintrc: true,
             fix: false,
         });
-        return linter.executeOnFiles([file]);
+        return linter.executeOnFiles([file.ambient, file.module]);
     });
     console.log(`Linting done, found ${report.errorCount} error(s) and ${report.warningCount} warning(s)`);
     for (const result of report.results) {
-        for (const message of result.messages) {        
-            const stack = makeStackLine(message.ruleId ? `[rule:${message.ruleId}]` : "[linting-message]", sourceFileName, message.line || 0, message.column || 0);
+        for (const message of result.messages) {
+            const stack = makeStackLine(message.ruleId ? `[rule:${message.ruleId}]` : "[linting-message]", result.filePath, message.line || 0, message.column || 0);
             const msg = `${stack}\n${message.message}\n`;
             switch (message.severity) {
                 case 0: // off
@@ -30,7 +30,7 @@ async function lintTsFile(sourceFileName) {
                     console.warn("Warning:", msg);
                     break;
                 case 2: // error
-                    console.warn("Error:", msg);
+                    console.error("Error:", msg);
                     break;
                 default:
                     throw new Error("Unknown severity level: " + message.severity);
@@ -38,7 +38,7 @@ async function lintTsFile(sourceFileName) {
         }
     }
     if (report.errorCount > 0) {
-        throw new Error(`Linting of file ${sourceFileName} failed see above for details`);
+        throw new Error(`Linting of files '${sourceFileNames.ambient}' and '${sourceFileNames.module}' failed see above for details`);
     }
 }
 

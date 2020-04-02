@@ -178,12 +178,13 @@ function processNode(fullText, node, plainCommentsByStartpos, docsByStartpos, do
 }
 
 /**
- * @param {import("typescript").SourceFile} sourceFile
+ * @param {TypeDeclarationBundleSourceFiles} sourceFiles
  * @param {SeveritySettingsConfig} severitySettings
  * @return {TsDocCommentHandler}
  */
-function createCommentHandler(sourceFile, severitySettings) {
-    const fullText = sourceFile.getFullText();
+function createCommentHandler(sourceFiles, severitySettings) {
+    const fullTextAmbient = sourceFiles.ambient.getFullText();
+    const fullTextModule = sourceFiles.module.getFullText();
 
     /** @type {Set<number>} */
     const plainCommentsByStartpos = new Set();
@@ -192,15 +193,26 @@ function createCommentHandler(sourceFile, severitySettings) {
     /** @type {WeakMap<TsNode, TsDocCommentWithPos[]>} */
     const docsByNode = new WeakMap();
 
-    depthFirstNode(sourceFile, node => {
+    depthFirstNode(sourceFiles.ambient, node => {
         if (node.kind === ts.SyntaxKind.JSDocComment || node.kind === ts.SyntaxKind.JsxText) {
             return false;
         }
         if (node.pos !== node.end && node.kind !== ts.SyntaxKind.SyntaxList && node.kind !== ts.SyntaxKind.SourceFile) {
-            processNode(fullText, node, plainCommentsByStartpos, docsByStartpos, docsByNode, severitySettings);
+            processNode(fullTextAmbient, node, plainCommentsByStartpos, docsByStartpos, docsByNode, severitySettings);
         }
         return true;
     });
+
+    depthFirstNode(sourceFiles.module, node => {
+        if (node.kind === ts.SyntaxKind.JSDocComment || node.kind === ts.SyntaxKind.JsxText) {
+            return false;
+        }
+        if (node.pos !== node.end && node.kind !== ts.SyntaxKind.SyntaxList && node.kind !== ts.SyntaxKind.SourceFile) {
+            processNode(fullTextModule, node, plainCommentsByStartpos, docsByStartpos, docsByNode, severitySettings);
+        }
+        return true;
+    });
+
     return makeCommentHandler(docsByNode);
 }
 

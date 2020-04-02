@@ -4,113 +4,43 @@
  * DatePicker is an input component used to select a date featuring display modes, paging, localization, ajax selection
  * and more.
  * 
- * DatePicker is designed to replace the old `p:calendar` component.
+ * DatePicker is designed to replace the old {@link Calendar|p:calendar} component.
  * 
- * @typedef {"single" | "multiple"} PrimeFaces.widget.Diagram.SelectionMode Indicates whether only one date or multiple
- * can be selected at any given time.
+ * To interact with the calendar, use the methods of this widget, or for more advanced usages, use the `datePicker`
+ * JQueryUI widget plugin, for example:
  * 
- * @typedef {"date" | "month"} PrimeFaces.widget.Diagram.ViewMode View mode of the date picker, either a date picker
- * or a month picker.
+ * ```javascript
+ * PF("datePickerWidget").getDate();
+ * PF("datePickerWidget").jq.datePicker("getDate");
  * 
- * @typedef PrimeFaces.widget.DatePicker.OnBeforeHideCallback Callback that is invoked before the date picker popup is
- * hidden.
- * @this {unknown} PrimeFaces.widget.DatePicker.OnBeforeHideCallback
+ * PF("datePickerWidget").setDate(new Date());
+ * PF("datePickerWidget").jq.datePicker("setDate", new Date());
  * 
- * @typedef PrimeFaces.widget.DatePicker.OnSelectCallback Callback that is invoked when the user has selected a date.
- * @this {unknown} PrimeFaces.widget.DatePicker.OnSelectCallback 
- * @param {JQuery.Event} PrimeFaces.widget.DatePicker.OnSelectCallback.event Event that occurred.
- * @param {Date} PrimeFaces.widget.DatePicker.OnSelectCallback.date The selected date.
- * 
- * @typedef PrimeFaces.widget.DatePicker.OnBeforeShowCallback Callback that is invoked before the date picker popup is
- * shown.
- * @this {unknown} PrimeFaces.widget.DatePicker.OnBeforeShowCallback
- * @return {boolean} PrimeFaces.widget.DatePicker.OnBeforeShowCallback Whether the datepicker should be shown.
- * 
- * @typedef PrimeFaces.widget.DatePicker.OnViewDateChangeCallback Callback that is invoked when the month page of the
- * datepicker (inline or popup) has changed. 
- * @this {unknown} PrimeFaces.widget.DatePicker.OnViewDateChangeCallback
- * @param {JQuery.Event} PrimeFaces.widget.DatePicker.OnViewDateChangeCallback.event The event that occurred.
- * @param {Date} PrimeFaces.widget.DatePicker.OnViewDateChangeCallback.value The new date that is shown.
+ * PF("datePickerWidget").jq.datePicker("enableModality");
+ * ```
  * 
  * @typedef PrimeFaces.widget.DatePicker.PreShowCallback User-defined callback invoked before the date picker overlay is
  * shown.
  * @this {PrimeFaces.widget.DatePickerCfg} PrimeFaces.widget.DatePicker.PreShowCallback
- * @param {unknown} PrimeFaces.widget.DatePicker.PreShowCallback.datePicker The current date picker instance.
+ * @param {JQueryPrimeDatePicker.PickerInstance} PrimeFaces.widget.DatePicker.PreShowCallback.datePicker The current
+ * date picker instance.
  * 
- * @typedef PrimeFaces.widget.DatePicker.DateTemplate Javascript function that takes a date object and returns the
- * content for the date cell.
- * @this {unknown} PrimeFaces.widget.DatePicker.DateTemplate
- * @param {string | {day: number, month: number, year: number, today: boolean, selectable: boolean}} PrimeFaces.widget.DatePicker.DateTemplate.monthNameOrMonth
- * A month or month name to format.
- * @return {string} PrimeFaces.widget.DatePicker.DateTemplate The content for the date cell.
- * 
- * @prop {JQuery} input The DOM element with the hidden input element.
- * @prop {JQuery} panel The DOM element with the inline or popup element with the date picker.
- * @prop {Date} viewDate Current date shown by the date picker.
+ * @prop {JQuery} input The DOM element for the hidden input element with the selected date.
+ * @prop {JQuery} jqEl The DOM element for the inline picker or the input.
+ * @prop {boolean} refocusInput Whether focus should be put on the input again.
+ * @prop {Date | Date[]} viewDateOption The date that is displayed in the date picker.
  * 
  * @interface {PrimeFaces.widget.DatePickerCfg} cfg The configuration for the {@link  DatePicker| DatePicker widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * @extends {JQueryPrimeDatePicker.PickerOptions} cfg 
  * 
- * @prop {JQuery} cfg.appendTo Appends the dialog to the given element.
  * @prop {string} cfg.buttonTabindex Tabindex of the datepicker button
- * @prop {string} cfg.dateFormat Date format to use, e.g. `mm/yy`
- * @prop {PrimeFaces.widget.DatePicker.DateTemplate} cfg.dateTemplate Javascript function that takes a date object and
- * returns the content for the date cell.
- * @prop {(string | Date)[]} disabledDates List of dates that should be disabled.
- * @prop {number[]} disabledDays List of week day indexes that should be disabled.
  * @prop {boolean} cfg.focusOnSelect When enabled, input receives focus after a value is picked.
- * @prop {boolean} cfg.hideOnDateTimeSelect Defines if the popup should be hidden when a time is selected.
- * @prop {string} cfg.hourFormat Defines the hour format, valid values are '12' and '24'.
- * @prop {boolean} cfg.inline Whether to show the datepicker inline or as a popup.
- * @prop {string} cfg.inputStyle Inline style of the input element. Used when mode is popup.
- * @prop {string} cfg.inputStyleClass Style class of the input element. Used when mode is popup.
- * @prop {boolean} cfg.keepInvalid Whether to keep the invalid inputs in the field or not.
- * @prop {Record<string, any>} locale Locale to be used for labels and conversion.
- * @prop {string | Date} maxdate Sets DatePicker's maximum visible date.
- * @prop {number} maxDateCount Defines the maximum number of selectable dates in multiple selection mode.
- * @prop {string | Date} mindate Sets DatePicker's minimum visible date.
- * @prop {boolean} cfg.monthNavigator Whether to show the month navigator.
- * @prop {number} cfg.numberOfMonths Number of months to display concurrently.
- * @prop {PrimeFaces.widget.DatePicker.OnBeforeHideCallback} cfg.onBeforeHide Callback that is invoked before the date
- * picker popup is hidden. Used internally, should not be overridden by the user.
- * @prop {PrimeFaces.widget.DatePicker.OnBeforeShowCallback} cfg.onBeforeShow Callback that is invoked before the date
- * picker popup is shown. Used internally, should not be overridden by the user.
- * @prop {PrimeFaces.widget.DatePicker.OnSelectCallback} cfg.onSelect Callback that is invoked when the user has
- * selected a date. Used internally should not be overridden by the user.
- * @prop {PrimeFaces.widget.DatePicker.OnViewDateChangeCallback} cfg.onViewDateChange Callback that is invoked when the
- * month page of the datepicker (inline or popup) has changed. Used internally, should not be overridden by the user.
- * @prop {string} cfg.panelStyleClass Style class of the container element.
  * @prop {PrimeFaces.widget.DatePicker.PreShowCallback} cfg.preShow User-defined callback that may be overridden by the
  * user. Invoked before the date picker overlay is shown.
- * @prop {string} cfg.rangeSeparator Character for separating ranges, e.g. a dash (`-`).
- * @prop {boolean} cfg.readonlyInput Makes input text of a popup DatePicker readonly.
- * @prop {PrimeFaces.widget.Diagram.SelectionMode} cfg.selectionMode Indicates whether only one date or multiple can be
- * selected at any given time.
- * @prop {boolean} cfg.selectOtherMonths Enables selection of days belonging to other months.
- * @prop {string} cfg.shortYearCutoff The cutoff year for determining the century for a date. Any dates entered with a
- * year value less than or equal to the cutoff year are considered to be in the current century, while those greater
- * than it are deemed to be in the previous century. Defaults to `+10`.
- * @prop {boolean} cfg.showButtonBar Whether to display buttons at the footer.
- * @prop {boolean} cfg.showIcon Whether to show an icon to display the picker in an overlay.
- * @prop {boolean} cfg.showOnFocus Whether to show the popup when input receives focus.
- * @prop {boolean} cfg.showOtherMonths Displays days belonging to other months.
- * @prop {boolean} cfg.showSeconds Whether to show the seconds in time picker. Default is false.
- * @prop {boolean} cfg.showTime Specifies if the time picker should be displayed.
- * @prop {boolean} cfg.timeOnly Shows only time picker without date.
- * @prop {number} cfg.stepHour Hour steps.
- * @prop {number} cfg.stepMinute Minute steps.
- * @prop {number} cfg.stepSeconds Seconds steps.
- * @prop {boolean} cfg.touchUI Activates touch friendly mode.
  * @prop {string} cfg.triggerButtonIcon Icon of the datepicker element that toggles the visibility in popup mode.
- * @prop {Record<string, any>} cfg.userLocale Localized message for days, months etc.
- * @prop {PrimeFaces.widget.Diagram.ViewMode} cfg.view Defines the view mode, valid values are `date` for datepicker and
- * `month` for month picker.
- * @prop {Date | null} cfg.viewDate Date to highlight in the date picker.
- * @prop {boolean} cfg.yearNavigator Whether to show the year navigator. The yearRange attribute is required to use this
- * feature.
- * @prop {string} cfg.yearRange Years to show in the date picker, e.g. `2000:2030`.
  */
 PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
@@ -358,7 +288,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Sets the date value the date picker.
-     * @param {Date} date The new date for this widget.
+     * @param {Date | string} date The new date for this widget.
      */
     setDate: function(date) {
         this.jq.datePicker('setDate', date);
@@ -375,7 +305,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Sets the displayed visible calendar date. This refers to the currently displayed month page.
-     * @param {Date} date The date to be shown in the calendar. 
+     * @param {string | Date | Date[]} date The date to be shown in the calendar. 
      */
     setViewDate: function(date) {
         var viewDate = this.jq.data().primeDatePicker.parseValue(date);
@@ -384,7 +314,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Gets the displayed visible calendar date. This refers to the currently displayed month page.
-     * @return {Date} The date curre 
+     * @return {Date | Date[]} The currently displayed date or dates. 
      */
     getViewDate: function() {
         return this.jq.datePicker().data().primeDatePicker.viewDate;

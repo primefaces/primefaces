@@ -14,11 +14,11 @@
  * @prop {boolean} [MindmapNode.selectable] `true` if this node can be selected, or `false` otherwise.
  * 
  * @prop {boolean} dragged Whether a node was being dragged.
- * @prop {Raphael.RaphaelElement[]} nodes A list of all drawn mindmap nodes.
+ * @prop {import("raphael").RaphaelElement[]} nodes A list of all drawn mindmap nodes.
  * @prop {number} ox When a node is being dragged, the original horizontal coordinated where the drag started.
  * @prop {number} oy When a node is being dragged, the original vertical coordinated where the drag started.
- * @prop {Raphael.RaphaelPaper} raphael The canvas on which the mindmap is drawn.
- * @prop {Raphael.RaphaelElement} root The drawn root node for the mindmap. 
+ * @prop {import("raphael").RaphaelPaper} raphael The canvas on which the mindmap is drawn.
+ * @prop {import("raphael").RaphaelElement} root The drawn root node for the mindmap. 
  * @prop {JQuery} tooltip The DOM element for the tooltip of a mindmap node.
  * 
  * @interface {PrimeFaces.widget.MindmapCfg} cfg The configuration for the {@link  Mindmap| Mindmap widget}.
@@ -77,7 +77,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
      * @param {number} x Horizontal coordinate where the node is drawn.
      * @param {number} y Vertical coordinate where the node is drawn.
      * @param {PrimeFaces.widget.Mindmap.MindmapNode} model Model with the data describing the node to be created.
-     * @return {Raphael.RaphaelElement} The created node.
+     * @return {import("raphael").RaphaelElement} The created node.
      * @private
      */
     createNode: function(x, y, model) {
@@ -184,7 +184,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Brings up the tooltip for the given node, it it is not shown already.
-     * @param {Raphael.RaphaelElement} node A node for which to show the tooltip. 
+     * @param {import("raphael").RaphaelElement} node A node for which to show the tooltip. 
      */
     showTooltip: function(node) {
         var title = node.data('title');
@@ -208,7 +208,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Hides the tooltip for the given node, it it is shown.
-     * @param {Raphael.RaphaelElement} node A node for which to hide the tooltip. 
+     * @param {import("raphael").RaphaelElement} node A node for which to hide the tooltip. 
      */
     hideTooltip: function(node) {
         var title = node.data('title');
@@ -222,7 +222,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Centers the given node so that it is positioned near the center of the mindmap viewport.
-     * @param {Raphael.RaphaelElement} node A node to center. 
+     * @param {import("raphael").RaphaelElement} node A node to center. 
      */
     centerNode: function(node) {
         var _self = this,
@@ -244,7 +244,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Creates the mindmap nodes for all immediate children of the given node.
-     * @param {Raphael.RaphaelElement} node A node with children.
+     * @param {import("raphael").RaphaelElement} node A node with children.
      * @private
      */
     createSubNodes: function(node) {
@@ -301,7 +301,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Callback that is invoked when a click was performed on a mindmap node.
-     * @param {Raphael.RaphaelElement} node The node that received the click.
+     * @param {import("raphael").RaphaelElement} node The node that received the click.
      * @private
      */
     handleNodeClick: function(node) {
@@ -351,7 +351,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Callback that is invoked when a double click was performed on a mindmap node.
-     * @param {Raphael.RaphaelElement} node Node that received the double click.
+     * @param {import("raphael").RaphaelElement} node Node that received the double click.
      * @private
      */
     handleDblclickNode: function(node) {
@@ -370,7 +370,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Expands the given mindmap node, showing it and its children.
-     * @param {Raphael.RaphaelElement} node A node to expand. 
+     * @param {import("raphael").RaphaelElement} node A node to expand. 
      */
     expandNode: function(node) {
         var $this = this,
@@ -417,7 +417,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Removes the given node and all of its connections from this mindmap.
-     * @param {Raphael.RaphaelElement} node Mindmap node to delete.
+     * @param {import("raphael").RaphaelElement} node Mindmap node to delete.
      */
     removeNode: function(node) {
         //test
@@ -516,7 +516,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Updates the connections for the given mindmap node.
-     * @param {Raphael.RaphaelElement} node The node for which to update the connections.
+     * @param {import("raphael").RaphaelElement} node The node for which to update the connections.
      * @private
      */
     updateConnections: function(node) {
@@ -530,18 +530,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
     }
 });
 
-/**
- * Draws a connection between two mindmap nodes.
- * @function
- * @interface {Raphael.RaphaelPaper}
- * @param {Raphael.RaphaelElement} obj1 Source node where the connection starts.
- * @param {Raphael.RaphaelElement} obj2 Target node where the connection ends.
- * @param {string | null} line Color of the connection.
- * @param {string | null} bg Background specifier for the connection.
- * @param {number} effectSpeed Effect speed for showing the new connection, in milliseconds.
- * @return {undefined | {bg: RaphaelElement, line: RaphaelElement, from: RaphaelElement, to: RaphaelElement}} An object
- * with the newly created connection and the given source and target nodes.
- */
+// Documented in mindmap.d.ts
 Raphael.fn.connection = function (obj1, obj2, line, bg, effectSpeed) {
     if (obj1.line && obj1.from && obj1.to) {
         line = obj1;

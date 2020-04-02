@@ -50,7 +50,10 @@ const Paths = {
     JsdocReadmePath: resolve(__dirname, "..", "JSDOC.md"),
     NpmTypesDir: resolve(__dirname, "..", "node_modules", "@types"), 
     NpmRootDir: resolve(__dirname, ".."),
-    NpmVirtualDeclarationFile: resolve(__dirname, "..", "src", "PrimeFaces.d.ts"),
+    NpmVirtualDeclarationFile: {
+        ambient: resolve(__dirname, "..", "src", "PrimeFaces.d.ts"),
+        module: resolve(__dirname, "..", "src", "PrimeFaces-modules.d.ts"),
+    },
     ProjectRootDir: resolve(__dirname, "..", "..", "..", ".."),
     TargetTestDir: resolve(join(__dirname, "..", "dist", "test")),
     TargetMainDir: resolve(join(__dirname, "..", "..", "..", "..", "target", "generated-resources", "type-definitions")),

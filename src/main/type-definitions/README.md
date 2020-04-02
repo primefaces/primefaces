@@ -62,7 +62,7 @@ node test/index.js -- "TsValidateTest#ValidationError" --verbose
 # For local development, use some path outside this project.
 npm run generate-d-ts -- \
   --outputDir /path/to/temporary/output/directory \
-  --includemodules jquery,jqueryui,jquery.fileupload,autonumeric,cropperjs,googlemaps,chart.js,moment,moment-timezone,@fullcalendar,quill,vis-timeline,vis-data
+  --includemodules @fullcalendar,autonumeric,cropperjs,chart.js,googlemaps,jquery,jqueryui,moment,moment-timezone,quill,raphael,vis-data,vis-timeline
 ```
 
 To see a list of all available options, run 
@@ -107,11 +107,15 @@ JavaScript API docs::
 
 ## TODOs
 
-* Update Raphael typing or use DT, see https://github.com/DefinitelyTyped/DefinitelyTyped/pull/43305
-* Create `*.d.ts` files for datePicker and fileUpload JQuery extensions
-* Revise README.md and JSDOC.md
+* Revise this README.md -> tutorial on how to doc a widget
+
+## Questions
+
+* Publish to NPM?
 * Update *.MD user guide files?
-* Quick smote test that each widget is still working
+* Is the workflow / build process ok or should it be changed ?
+* Possibly extract the JavaScript / NPM stuff into a maven plugin ?
+* Quick smoke test that each widget is still working
 * Test build with Windows
 
 ## Documenting a widget

@@ -26,7 +26,7 @@ const SeveritySettings = createDefaultSeveritySettings({
 /**
  * @param {string} input 
  * @param {string} sourceName 
- * @param {string} sourceLocation
+ * @param {TypeDeclarationBundleFiles} sourceLocation
  * @param {InclusionHandler} inclusionHandler
  * @return {Promise<string[]>}
  */
@@ -46,7 +46,10 @@ async function processInput(input, sourceName, sourceLocation, inclusionHandler)
             processAst: createHookFnProcessAst(false),
         },
     });
-    return splitLines(fileContent);
+    return [
+        ...splitLines(fileContent.ambient.join("\n")),
+        ...splitLines(fileContent.module.join("\n")),
+    ];
 }
 
 /** @type {StartTestFn} */

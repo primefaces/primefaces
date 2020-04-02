@@ -1,6 +1,8 @@
 /**
  * __PrimeFaces Calendar Widget__
  * 
+ * __Deprecated__: Use the {@link DatePicker|p:datePicker} component instead.
+ * 
  * Calendar is an input component used to select a date featuring display modes, paging, localization, ajax selection
  * and more.
  * 

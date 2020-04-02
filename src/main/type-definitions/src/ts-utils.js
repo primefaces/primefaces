@@ -231,6 +231,34 @@ function isTypeReference(type) {
 }
 
 /**
+ * @param {ts.Node} node 
+ * @param {ts.NodeFlags[]} flags
+ * @return boolean
+ */
+function hasOneOrMoreFlag(node, ...flags) {
+    return flags.some(flag => (node.flags & flag) !== 0);
+}
+
+/**
+ * @param {ts.Node} node 
+ * @param {ts.NodeFlags[]} flags
+ * @return boolean
+ */
+function hasAllFlags(node, ...flags) {
+    return flags.every(flag => (node.flags & flag) !== 0);
+}
+
+
+/**
+ * @param {ts.Node} node 
+ * @param {ts.NodeFlags[]} flags
+ * @return boolean
+ */
+function hasNeitherFlag(node, ...flags) {
+    return !hasAllFlags(node, ...flags);
+}
+
+/**
  * @param {TsType} type 
  * @return {import("typescript").InterfaceType | undefined}
  */
@@ -369,7 +397,7 @@ function getLocalTypeParameterNames(type) {
                 type
                     .localTypeParameters
                     .map(x => getSymbolName(x.getSymbol()))
-            );    
+            );
         }
         else {
             return new Set();
@@ -719,11 +747,11 @@ function getAllHeritageNodesRecursiveUntilMatching(checker, node, predicate) {
 function getOverridenMethods(checker, node) {
     const classType = checker.getTypeAtLocation(node.parent);
     const propertyName = getPropertyNameOfCallLikeNode(node);
-    return collectToMap(getHeritageTypes(checker, classType), 
+    return collectToMap(getHeritageTypes(checker, classType),
         type => type,
         type => getOwnMembersOfType(type).methods.get(propertyName) || [],
         {
-            filter: (type, methods) => methods.length > 0, 
+            filter: (type, methods) => methods.length > 0,
         },
     );
 }
@@ -736,11 +764,11 @@ function getOverridenMethods(checker, node) {
 function getOverridenMethodsRecursive(checker, node) {
     const classType = checker.getTypeAtLocation(node.parent);
     const propertyName = getPropertyNameOfCallLikeNode(node);
-    return collectToMap(getHeritageTypesRecursive(checker, classType), 
+    return collectToMap(getHeritageTypesRecursive(checker, classType),
         type => type,
         type => getOwnMembersOfType(type).methods.get(propertyName) || [],
         {
-            filter: (type, methods) => methods.length > 0, 
+            filter: (type, methods) => methods.length > 0,
         },
     );
 }
@@ -939,7 +967,7 @@ function fixupNodes(typeChecker, rootNode, sourceFile = rootNode.getSourceFile()
 
 module.exports = {
     depthFirstNode,
-    
+
     getAllHeritageNodes,
     getAllHeritageNodesRecursive,
     getAllHeritageNodesRecursiveUntilMatching,
@@ -963,9 +991,13 @@ module.exports = {
     getSymbolName,
     getTypeName,
     getTypeParameterNames,
-    
+
+    hasOneOrMoreFlag,
+    hasAllFlags,
+    hasNeitherFlag,
+
     fixupNodes,
-    
+
     hasBaseTypes,
     hasCallSignature,
     hasHeritageTypes,

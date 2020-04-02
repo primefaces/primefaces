@@ -14,6 +14,7 @@ const { documentObject } = require("./document-object");
 const { createDefaultSeveritySettings, getSortedSeveritySettingKeys, isSeverityLevel, isSeveritySetting, Level } = require("./error-types");
 const { createInclusionHandler } = require("./inclusion-handler");
 const { isNotEmpty, splitLines } = require("./lang");
+const { classifyDeclarationFile } = require("./ts-classify-declaration-file");
 const { postprocessDeclarationFile } = require("./ts-postprocess");
 const { createDefaultHooks } = require("./ts-postprocess-defaulthooks");
 const { lintTsFile } = require("./ts-lint");
@@ -26,6 +27,7 @@ const DefaultCliArgs = {
     inputDir: Paths.ComponentsMainDir,
     outputDir: Paths.TargetMainDir,
     outputFilename: "PrimeFaces.d.ts",
+    moduleOutputFilename: "PrimeFaces-module.d.ts",
     severitySettings: {},
     skipEsLint: false,
     skipPostProcess: false,
@@ -64,7 +66,7 @@ async function* listComponents(componentPath) {
     const blacklist = await readBlacklist();
     const componentDirs = await fs.readdir(componentPath, ReadDirOpts);
     for (const componentDir of componentDirs.filter(x => x.isDirectory())) {
-        const componentFiles = await fs.readdir(join(componentPath , componentDir.name), ReadDirOpts);
+        const componentFiles = await fs.readdir(join(componentPath, componentDir.name), ReadDirOpts);
         yield {
             name: componentDir.name,
             path: join(componentPath, componentDir.name),
@@ -108,6 +110,10 @@ function parseCliArgs() {
                     console.log(` --outputfilename`);
                     console.log(`     Specifies the filename for the generated *.d.ts declaration file.`);
                     console.log(`     Default to 'PrimeFaces.d.ts'`);
+                    console.log(` -n`);
+                    console.log(` --moduleoutputfilename`);
+                    console.log(`     Specifies the filename for the generated *.module.d.ts declaration file.`);
+                    console.log(`     Default to 'PrimeFaces-module.d.ts'`);
                     console.log(` -g`);
                     console.log(` --skiptypedocgenerate`);
                     console.log(`     If set to true, the typedoc documentation HTML files are not generated.`);
@@ -149,12 +155,16 @@ function parseCliArgs() {
                 case "--outputfilename":
                     result.outputFilename = stack.pop() || "";
                     break;
+                case "-n":
+                case "--moduleoutputfilename":
+                    result.moduleOutputFilename = stack.pop() || "";
+                    break;
                 case "-g":
                 case "--skiptypedocgenerate":
                     result.skipTypedocGenerate = true;
                     break;
                 case "-s":
-                case "--skipeslint": 
+                case "--skipeslint":
                     result.skipEsLint = true;
                     break;
                 case "":
@@ -201,7 +211,7 @@ function parseCliArgs() {
                 case "--level": {
                     const [setting, level] = (stack.pop() || "").split("=");
                     if (!isSeveritySetting(setting)) {
-                        throw new Error("Invalid severity settings '" + setting+ "'");
+                        throw new Error("Invalid severity settings '" + setting + "'");
                     }
                     if (!isSeverityLevel(level)) {
                         throw new Error("Invalid severity level '" + level + "'");
@@ -232,29 +242,39 @@ function parseCliArgs() {
 
 /**
  * @param {Component} component 
- * @return {AsyncIterableIterator<string>}
+ * @return {AsyncIterableIterator<{source: string, type: DeclarationFileType}>}
  */
 async function* readTypedefFiles(component) {
     for (const file of component.typedefFiles.sort()) {
         const sourceFile = join(component.path, file);
         const source = await fs.readFile(sourceFile, ReadFileOpts);
-        yield source;
+        const type = classifyDeclarationFile(source);
+        yield { source, type };
     }
 }
 
 /**
- * @param {string[]} lines 
+ * @param {TypeDeclarationBundleContent} bundle 
  * @param {CliArgs} cliArgs
- * @return {Promise<string>} The path to the written file.
+ * @return {Promise<TypeDeclarationBundleFiles>} The path to the written file.
  */
-async function writeOutput(lines, cliArgs) {
+async function writeOutput(bundle, cliArgs) {
     await fs.mkdir(cliArgs.outputDir, {
         recursive: true,
     });
-    const outputFile = resolve(join(cliArgs.outputDir, cliArgs.outputFilename));
-    console.log("Writing output file to ", outputFile);
-    await fs.writeFile(outputFile, lines.join("\n"), WriteFileOpts);
-    return outputFile;
+
+    const outputFileAmbient = resolve(join(cliArgs.outputDir, cliArgs.outputFilename));
+    const outputFileModule = resolve(join(cliArgs.outputDir, cliArgs.moduleOutputFilename));
+
+    console.log("Writing ambient output file to ", outputFileAmbient);
+    console.log("Writing module output file to ", outputFileModule);
+
+    await Promise.all([
+        fs.writeFile(outputFileAmbient, bundle.ambient.join("\n"), WriteFileOpts),
+        fs.writeFile(outputFileModule, bundle.module.join("\n"), WriteFileOpts)
+    ]);
+
+    return { ambient: outputFileAmbient, module: outputFileModule };
 }
 
 /**
@@ -274,17 +294,22 @@ function logVerbose(cliArgs, ...message) {
 async function main(cliArgs) {
     const inclusionHandler = createInclusionHandler(cliArgs.exclusionTags);
     const severitySettings = createDefaultSeveritySettings(cliArgs.severitySettings);
-    /** @type {string[]} */
-    const lines = [];
-    lines.push(await fs.readFile("./core.d.ts", ReadFileOpts));
-   
+
+    /** @type {TypeDeclarationBundleContent} */
+    const bundle = {
+        ambient: [],
+        module: [],
+    };
+
+    bundle.ambient.push(await fs.readFile("./core.d.ts", ReadFileOpts));
+
     // Scan the base directory and list the directories with the JavaScript source files to process
     for await (const component of listComponents(cliArgs.inputDir)) {
         console.log("Processing component directory", component.path);
 
         // Include all *.d.ts file found in the directory
         for await (const typedefFile of readTypedefFiles(component)) {
-            lines.push(typedefFile);
+            bundle[typedefFile.type].push(typedefFile.source);
         }
 
         // Parse the JavaScript source files for symbols to document
@@ -301,38 +326,41 @@ async function main(cliArgs) {
             for (const constantDefinition of documentable.constants) {
                 logVerbose(cliArgs, "    -> Processing constant defintion", constantDefinition.name);
                 const moreLines = documentConstant(constantDefinition, severitySettings);
-                lines.push(...moreLines);
-                lines.push("");
+                bundle.ambient.push(...moreLines);
+                bundle.ambient.push("");
             }
 
             // Document functions (function foo() {...})
             for (const fnDefinition of documentable.functions) {
                 logVerbose(cliArgs, "    -> Processing function defintion", fnDefinition.name);
                 const moreLines = documentFunction(fnDefinition, severitySettings);
-                lines.push(...moreLines);
-                lines.push("");
+                bundle.ambient.push(...moreLines);
+                bundle.ambient.push("");
             }
 
             // Document objects and types (class A { ... }, const x = { ... })
             for (const objectDefinition of documentable.objects) {
                 logVerbose(cliArgs, "    -> Processing object defintion", objectDefinition.name);
                 const moreLines = documentObject(objectDefinition, program, inclusionHandler, severitySettings);
-                lines.push(...moreLines);
-                lines.push("");
+                bundle.ambient.push(...moreLines);
+                bundle.ambient.push("");
             }
         }
     }
 
     // Create the type declaration file
-    const filePath = await writeOutput(lines, cliArgs);
+    const filePaths = await writeOutput(bundle, cliArgs);
 
     // Post process the type declaration file: fix formatting and run it through
     // the typescript parser to check whether all types can be resolved and are
     // consistent
     if (!cliArgs.skipPostProcess) {
         console.info("Running post-processing on generated type declarations file");
-        const fileContent = await postprocessDeclarationFile(filePath, severitySettings, createDefaultHooks(severitySettings, true));
-        await fs.writeFile(filePath, fileContent, WriteFileOpts);
+        const fileContents = await postprocessDeclarationFile(filePaths, severitySettings, createDefaultHooks(severitySettings, true));
+        await Promise.all([
+            fs.writeFile(filePaths.ambient, fileContents.ambient, WriteFileOpts),
+            fs.writeFile(filePaths.module, fileContents.module, WriteFileOpts),
+        ]);
         console.info("Post-processing step complete");
     }
     else {
@@ -342,7 +370,7 @@ async function main(cliArgs) {
     // Run linter on the generated type declaration file, i.e. forbid Object or Array<...> types
     if (!cliArgs.skipEsLint) {
         console.log("Linting declaration file");
-        await lintTsFile(filePath);
+        await lintTsFile(filePaths);
     }
     else {
         console.info("Skipping linter pass");
@@ -351,7 +379,7 @@ async function main(cliArgs) {
     // Generate the documentation based on the type declaration file
     if (!cliArgs.skipTypedocGenerate) {
         console.info("Generating typedocs");
-        generateTypedocs(filePath, cliArgs);
+        generateTypedocs(filePaths, cliArgs);
     }
     else {
         console.info("Skipping typedoc generation");
