@@ -26,8 +26,10 @@ package org.primefaces.component.api;
 import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
+import java.time.format.ResolverStyle;
 import java.util.Locale;
 
+import javax.el.ValueExpression;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
@@ -61,7 +63,8 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
         inputStyle,
         inputStyleClass,
         type,
-        rangeSeparator
+        rangeSeparator,
+        resolverStyle
     }
 
     public Object getLocale() {
@@ -108,6 +111,10 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
         return (Boolean) getStateHelper().eval(PropertyKeys.timeOnly, false);
     }
 
+    public Boolean isTimeOnlyWithoutDefault() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.timeOnly);
+    }
+
     public void setTimeOnly(boolean timeOnly) {
         getStateHelper().put(PropertyKeys.timeOnly, timeOnly);
     }
@@ -149,7 +156,7 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
     }
 
     public Locale calculateLocale(FacesContext facesContext) {
-        return LocaleUtils.resolveLocale(getLocale(), getClientId(facesContext));
+        return LocaleUtils.resolveLocale(facesContext, getLocale(), getClientId(facesContext));
     }
 
     public boolean hasTime() {
@@ -236,6 +243,14 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
         getStateHelper().put(PropertyKeys.rangeSeparator, _rangeSeparator);
     }
 
+    public String getResolverStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.resolverStyle, ResolverStyle.SMART.name());
+    }
+
+    public void setResolverStyle(String resolverStyle) {
+        getStateHelper().put(PropertyKeys.resolverStyle, resolverStyle);
+    }
+
     public enum ValidationResult {
         OK, INVALID_DISABLED_DATE, INVALID_RANGE_DATES_SEQUENTIAL, INVALID_MIN_DATE, INVALID_MAX_DATE, INVALID_OUT_OF_RANGE
     }
@@ -271,6 +286,20 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
             }
         }
         context.addMessage(getClientId(context), msg);
+    }
+
+    /**
+     * Only for internal usage within PrimeFaces.
+     * @return Type of the value bound via value expression. May return null when no value is bound.
+     */
+    public Class<?> getTypeFromValueByValueExpression(FacesContext context) {
+        ValueExpression ve = getValueExpression("value");
+        if (ve != null) {
+            return ve.getType(context.getELContext());
+        }
+        else {
+            return null;
+        }
     }
 
     /*

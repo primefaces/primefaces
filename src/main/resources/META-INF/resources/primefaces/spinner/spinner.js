@@ -110,6 +110,12 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             if ($this.cfg.min >= 0 && event.key === "-") {
                 e.preventDefault();
             }
+
+            /* GitHub #5579 prevent multiple '-' '.' */
+            var value = $(this).val();
+            if ((event.key === '-' && value.indexOf('-') != -1) || (event.key === '.' && value.indexOf('.')!= -1)) {
+                e.preventDefault();
+            }
         })
         .on('keyup.spinner', function (e) {
             $this.updateValue();

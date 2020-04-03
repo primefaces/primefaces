@@ -278,17 +278,19 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
     },
 
     setupDialogSupport: function() {
-        var dialog = this.target.closest('.ui-dialog');
+        var dialog = this.target[0].closest('.ui-dialog');
+        if (dialog) {
+            var $dialog = $(dialog);
+            if ($dialog.length == 1) {
+                //set position as fixed to scroll with dialog
+                if($dialog.css('position') === 'fixed') {
+                    this.jq.css('position', 'fixed');
+                }
 
-        if(dialog.length == 1) {
-            //set position as fixed to scroll with dialog
-            if(dialog.css('position') === 'fixed') {
-                this.jq.css('position', 'fixed');
-            }
-
-            //append to body if not already appended by user choice
-            if(!this.cfg.appendTo) {
-                this.jq.appendTo(document.body);
+                //append to body if not already appended by user choice
+                if(!this.cfg.appendTo) {
+                    this.jq.appendTo(document.body);
+                }
             }
         }
     },

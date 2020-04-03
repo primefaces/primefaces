@@ -101,6 +101,7 @@ public class TextEditorRenderer extends InputRenderer {
         String style = editor.getStyle();
         String styleClass = editor.getStyleClass();
         styleClass = (styleClass != null) ? TextEditor.EDITOR_CLASS + " " + styleClass : TextEditor.EDITOR_CLASS;
+        styleClass = !editor.isDisabled() ? styleClass : styleClass + " ui-state-disabled";
 
         writer.startElement("div", editor);
         writer.writeAttribute("id", clientId, null);
@@ -142,6 +143,7 @@ public class TextEditorRenderer extends InputRenderer {
         wb.init("TextEditor", editor.resolveWidgetVar(context), clientId)
                 .attr("toolbarVisible", editor.isToolbarVisible())
                 .attr("readOnly", editor.isReadonly(), false)
+                .attr("disabled", editor.isDisabled(), false)
                 .attr("placeholder", editor.getPlaceholder(), null)
                 .attr("height", editor.getHeight(), Integer.MIN_VALUE);
 

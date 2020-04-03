@@ -59,14 +59,26 @@ public class DataViewRenderer extends DataRenderer {
             }
 
             encodeLayout(context, dataview);
+
+            if (dataview.isMultiViewState()) {
+                saveMultiViewState(dataview);
+            }
         }
         else if (dataview.isLayoutRequest(context)) {
             String layout = params.get(clientId + "_layout");
             dataview.setLayout(layout);
 
             encodeLayout(context, dataview);
+
+            if (dataview.isMultiViewState()) {
+                saveMultiViewState(dataview);
+            }
         }
         else {
+            if (dataview.isMultiViewState()) {
+                dataview.restoreMultiViewState();
+            }
+
             encodeMarkup(context, dataview);
             encodeScript(context, dataview);
         }
@@ -323,5 +335,14 @@ public class DataViewRenderer extends DataRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
+    }
+
+    private void saveMultiViewState(DataView dataview) {
+        if (dataview.isMultiViewState()) {
+            DataViewState viewState = dataview.getMultiViewState(true);
+            viewState.setFirst(dataview.getFirst());
+            viewState.setRows(dataview.getRows());
+            viewState.setLayout(dataview.getLayout());
+        }
     }
 }

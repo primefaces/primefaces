@@ -9,8 +9,8 @@ PrimeFaces.widget.ImageCropper = PrimeFaces.widget.DeferredWidget.extend({
         this.jqCoords = $(this.jqId + '_coords');
 
         // calculate the min and max of the cropper box
-        var imageWidth = this.image.width(),
-            imageHeight = this.image.height();
+        var imageWidth = this.image[0].naturalWidth,
+            imageHeight = this.image[0].naturalHeight;
         this.cfg.minCropBoxWidth = this.cfg.minSize ? this.cfg.minSize[0] : 0;
         this.cfg.minCropBoxHeight = this.cfg.minSize ? this.cfg.minSize[1] : 0;
         this.cfg.maxCropBoxWidth = Math.min(imageWidth, this.cfg.maxSize ? this.cfg.maxSize[0] : imageWidth);
@@ -62,6 +62,10 @@ PrimeFaces.widget.ImageCropper = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     onCrop : function (event) {
+        if (this.cropping) {
+            return;
+        }
+
         var width = event.detail.width;
         var height = event.detail.height;
 
@@ -74,6 +78,7 @@ PrimeFaces.widget.ImageCropper = PrimeFaces.widget.DeferredWidget.extend({
             width = Math.max(this.cfg.minCropBoxWidth, Math.min(this.cfg.maxCropBoxWidth, width));
             height = Math.max(this.cfg.minCropBoxHeight, Math.min(this.cfg.maxCropBoxHeight, height));
 
+            this.cropping = true;
             this.cropper.setCropBoxData({
                 width : width,
                 height : height
@@ -83,6 +88,7 @@ PrimeFaces.widget.ImageCropper = PrimeFaces.widget.DeferredWidget.extend({
         // set the new box coordinates
         var cropCoords = event.detail.x + "_" + event.detail.y + "_" + width + "_" + height;
         this.jqCoords.val(cropCoords);
+        this.cropping = false;
     },
 
     /**

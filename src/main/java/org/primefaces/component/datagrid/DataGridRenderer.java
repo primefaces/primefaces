@@ -54,8 +54,18 @@ public class DataGridRenderer extends DataRenderer {
             }
 
             encodeContent(context, grid);
+
+            if (grid.isMultiViewState()) {
+                DataGridState gs = grid.getMultiViewState(true);
+                gs.setFirst(grid.getFirst());
+                gs.setRows(grid.getRows());
+            }
         }
         else {
+            if (grid.isMultiViewState()) {
+                grid.restoreMultiViewState();
+            }
+
             encodeMarkup(context, grid);
             encodeScript(context, grid);
         }

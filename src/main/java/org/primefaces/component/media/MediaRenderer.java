@@ -36,6 +36,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.application.resource.DynamicContentType;
 import org.primefaces.component.media.player.MediaPlayer;
 import org.primefaces.component.media.player.MediaPlayerFactory;
+import org.primefaces.component.media.player.PDFPlayer;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AgentUtils;
@@ -60,7 +61,7 @@ public class MediaRenderer extends CoreRenderer {
         String sourceParam = player.getSourceParam();
 
         Object value = media.getValue();
-        if (value instanceof StreamedContent && player.getType().equals("application/pdf")) {
+        if (value instanceof StreamedContent && PDFPlayer.MIME_TYPE.equals(player.getType())) {
             StreamedContent streamedContent = (StreamedContent) value;
             if (streamedContent.getName() != null) {
                 int index = src.indexOf('?');
@@ -70,7 +71,7 @@ public class MediaRenderer extends CoreRenderer {
         }
 
         String type = player.getType();
-        if (type != null && type.equals("application/pdf")) {
+        if (type != null && PDFPlayer.MIME_TYPE.equals(type)) {
             String view = media.getView();
             String zoom = media.getZoom();
 

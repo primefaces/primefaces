@@ -46,6 +46,15 @@ import org.primefaces.util.Constants;
 public class DataTableCSVExporter extends DataTableExporter {
 
     private CSVOptions csvOptions;
+    private StringBuilder sb;
+
+    protected StringBuilder createStringBuilder() {
+        return new StringBuilder();
+    }
+
+    protected StringBuilder getStringBuilder() {
+        return sb;
+    }
 
     @Override
     protected void preExport(FacesContext context, ExportConfiguration config) throws IOException {
@@ -65,34 +74,34 @@ public class DataTableCSVExporter extends DataTableExporter {
     public void doExport(FacesContext context, DataTable table, ExportConfiguration config, int index) throws IOException {
         ExternalContext externalContext = context.getExternalContext();
         configureResponse(externalContext, config.getOutputFileName(), config.getEncodingType());
-        StringBuilder builder = new StringBuilder();
+        sb = createStringBuilder();
 
         if (config.getPreProcessor() != null) {
-            config.getPreProcessor().invoke(context.getELContext(), new Object[]{builder});
+            config.getPreProcessor().invoke(context.getELContext(), new Object[]{sb});
         }
 
-        addColumnFacets(builder, table, ColumnType.HEADER);
+        addColumnFacets(sb, table, ColumnType.HEADER);
 
         if (config.isPageOnly()) {
-            exportPageOnly(context, table, builder);
+            exportPageOnly(context, table, sb);
         }
         else if (config.isSelectionOnly()) {
-            exportSelectionOnly(context, table, builder);
+            exportSelectionOnly(context, table, sb);
         }
         else {
-            exportAll(context, table, builder);
+            exportAll(context, table, sb);
         }
 
         if (table.hasFooterColumn()) {
-            addColumnFacets(builder, table, ColumnType.FOOTER);
+            addColumnFacets(sb, table, ColumnType.FOOTER);
         }
 
         if (config.getPostProcessor() != null) {
-            config.getPostProcessor().invoke(context.getELContext(), new Object[]{builder});
+            config.getPostProcessor().invoke(context.getELContext(), new Object[]{sb});
         }
 
         Writer writer = externalContext.getResponseOutputWriter();
-        writer.write(builder.toString());
+        writer.write(sb.toString());
         writer.flush();
         writer.close();
     }
@@ -231,5 +240,11 @@ public class DataTableCSVExporter extends DataTableExporter {
     @Override
     protected void postRowExport(DataTable table, Object document) {
         ((StringBuilder) document).append(csvOptions.getEndOfLineSymbols());
+    }
+
+    @Override
+    protected void postExport(FacesContext context, ExportConfiguration config) throws IOException {
+        super.postExport(context, config);
+        sb = null;
     }
 }

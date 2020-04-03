@@ -88,6 +88,11 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
                 return false;
             }
         });
+
+        // handle mousewheel and paste
+        this.input.off('input').on('input', function (e) {
+            $this.copyValueToHiddenInput();
+        });
     },
 
     copyValueToHiddenInput: function() {
@@ -127,11 +132,6 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
     },
 
     getValue: function () {
-        var val = this.autonumeric.getNumericString();
-        if (val && this.cfg.decimalPlaces) {
-            return parseFloat(val).toFixed(this.cfg.decimalPlaces);
-        }
-
-        return val;
+        return this.autonumeric.getNumericString();
     }
 });

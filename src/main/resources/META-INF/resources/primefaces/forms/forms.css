@@ -231,13 +231,16 @@ input[type=text]::-ms-clear {
 
 /** SelectOneMenu **/
 .ui-selectonemenu {
-    display: inline-block;
-    position: relative;
-    width: auto;
-    zoom: 1;
-    cursor: pointer;
-    padding-right: 22px;
-    vertical-align: top;
+	display: inline-block;
+	position: relative;
+	width: auto;
+	-moz-transform: scaleX(1);
+	-o-transform: scaleX(1);
+	-webkit-transform: scaleX(1);
+	transform: scaleX(1);
+	cursor: pointer;
+	padding-right: 22px;
+	vertical-align: top;
 }
 
 .ui-selectonemenu .ui-selectonemenu-trigger {
@@ -348,6 +351,7 @@ input[type=text]::-ms-clear {
     margin: 0;
     padding: 0.4em;
     display: inline-block;
+    width: 100%;
 }
 
 .ui-selectonemenu-panel .ui-selectonemenu-filter-container .ui-icon {
@@ -389,7 +393,10 @@ input[type=text]::-ms-clear {
     text-decoration: none !important;
     cursor: pointer;
     text-align: center;
-    zoom: 1;
+    -moz-transform: scale(1);
+    -o-transform: scale(1);
+    -webkit-transform: scale(1);
+    transform: scale(1);
     overflow: visible; /* the overflow property removes extra width in IE */
 }
 
@@ -485,7 +492,10 @@ button.ui-button::-moz-focus-inner {
     display: inline-block;
     position: relative;
     width: auto;
-    zoom: 1;
+    -moz-transform: scale(1);
+    -o-transform: scale(1);
+    -webkit-transform: scale(1);
+    transform: scale(1);
     cursor: pointer;
 }
 
@@ -731,7 +741,10 @@ button.ui-button::-moz-focus-inner {
 /** IE Hacks **/
 div.ui-button, .ui-splitbutton {
     display: inline-block;
-    zoom: 1;
+    -moz-transform: scale(1);
+    -o-transform: scale(1);
+    -webkit-transform: scale(1);
+    transform: scale(1);
 }
 
 /** Password **/
@@ -998,12 +1011,17 @@ div.ui-button, .ui-splitbutton {
 
 .ui-float-label > input:focus ~ label,
 .ui-float-label > input.ui-state-filled ~ label,
-.ui-float-label > input:-webkit-autofill ~ label,
 .ui-float-label > textarea:focus ~ label,
 .ui-float-label > textarea.ui-state-filled ~ label,
-.ui-float-label > textarea:-webkit-autofill ~ label,
 .ui-float-label > .ui-inputwrapper-focus ~ label,
 .ui-float-label > .ui-inputwrapper-filled ~ label {
+    top: -.75em;
+    font-size: 12px;
+}
+
+/** Firefox: https://github.com/primefaces/primefaces/issues/5508 **/
+.ui-float-label > input:-webkit-autofill ~ label,
+.ui-float-label > textarea:-webkit-autofill ~ label {
     top: -.75em;
     font-size: 12px;
 }

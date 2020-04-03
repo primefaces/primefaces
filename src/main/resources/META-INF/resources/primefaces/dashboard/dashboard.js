@@ -12,6 +12,12 @@ PrimeFaces.widget.Dashboard = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.revert=false;
         this.cfg.handle='.ui-panel-titlebar';
 
+        this.bindEvents();
+
+        $(this.jqId + ' .ui-dashboard-column').sortable(this.cfg);
+    },
+
+    bindEvents: function() {
         var $this = this;
 
         if(this.hasBehavior('reorder')) {
@@ -37,8 +43,14 @@ PrimeFaces.widget.Dashboard = PrimeFaces.widget.BaseWidget.extend({
                 }
             };
         }
+    },
 
-        $(this.jqId + ' .ui-dashboard-column').sortable(this.cfg);
+    disable: function () {
+        this.jq.addClass('ui-state-disabled');
+    },
+
+    enable: function () {
+        this.jq.removeClass('ui-state-disabled');
     }
 
 });

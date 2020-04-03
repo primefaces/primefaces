@@ -84,7 +84,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return rowKey;
     }
 
-    public void setRowKey(String rowKey) {
+    public void setRowKey(TreeNode root, String rowKey) {
         Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
         saveDescendantState();
         String nodeVar = getNodeVar();
@@ -99,7 +99,6 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             }
         }
         else {
-            TreeNode root = getValue();
             rowNode = findTreeNode(root, rowKey);
 
             if (rowNode != null) {
@@ -399,10 +398,11 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             return;
         }
 
-        FacesContext context = FacesContext.getCurrentInstance();
+        TreeNode root = getValue();
+        FacesContext context = getFacesContext();
         WrapperEvent wrapperEvent = (WrapperEvent) event;
         String oldRowKey = getRowKey();
-        setRowKey(wrapperEvent.getRowKey());
+        setRowKey(root, wrapperEvent.getRowKey());
         FacesEvent originalEvent = wrapperEvent.getFacesEvent();
         UIComponent source = (UIComponent) originalEvent.getSource();
         UIComponent compositeParent = null;
@@ -424,7 +424,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             }
         }
 
-        setRowKey(oldRowKey);
+        setRowKey(root, oldRowKey);
     }
 
     @Override
@@ -441,7 +441,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             getStateHelper().remove(PropertyKeys.saved);
         }
 
-        processNodes(context, PhaseId.APPLY_REQUEST_VALUES);
+        processNodes(context, PhaseId.APPLY_REQUEST_VALUES, getValue());
 
         try {
             decode(context);
@@ -464,7 +464,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         Application application = context.getApplication();
         application.publishEvent(context, PreValidateEvent.class, this);
         preValidate(context);
-        processNodes(context, PhaseId.PROCESS_VALIDATIONS);
+        processNodes(context, PhaseId.PROCESS_VALIDATIONS, getValue());
         validateSelection(context);
         application.publishEvent(context, PostValidateEvent.class, this);
         popComponentFromEL(context);
@@ -516,7 +516,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
         preUpdate(context);
 
-        processNodes(context, PhaseId.UPDATE_MODEL_VALUES);
+        processNodes(context, PhaseId.UPDATE_MODEL_VALUES, getValue());
 
         updateSelection(context);
 
@@ -574,24 +574,23 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
     }
 
-    protected void processNodes(FacesContext context, PhaseId phaseId) {
+    protected void processNodes(FacesContext context, PhaseId phaseId, TreeNode root) {
         if (isSkipChildren()) {
             return;
         }
 
-        processFacets(context, phaseId);
-        processColumnFacets(context, phaseId);
+        processFacets(context, phaseId, root);
+        processColumnFacets(context, phaseId, root);
 
-        TreeNode root = getValue();
         if (root != null) {
-            processNode(context, phaseId, root, null);
+            processNode(context, phaseId, root, root, null);
         }
 
-        setRowKey(null);
+        setRowKey(root, null);
     }
 
-    protected void processNode(FacesContext context, PhaseId phaseId, TreeNode treeNode, String rowKey) {
-        processColumnChildren(context, phaseId, rowKey);
+    protected void processNode(FacesContext context, PhaseId phaseId, TreeNode root, TreeNode treeNode, String rowKey) {
+        processColumnChildren(context, phaseId, root, rowKey);
 
         //process child nodes if node is expanded or node itself is the root
         if (shouldVisitNode(treeNode)) {
@@ -599,15 +598,15 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             for (Iterator<TreeNode> iterator = treeNode.getChildren().iterator(); iterator.hasNext(); ) {
                 String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + SEPARATOR + childIndex;
 
-                processNode(context, phaseId, iterator.next(), childRowKey);
+                processNode(context, phaseId, root, iterator.next(), childRowKey);
 
                 childIndex++;
             }
         }
     }
 
-    protected void processFacets(FacesContext context, PhaseId phaseId) {
-        setRowKey(null);
+    protected void processFacets(FacesContext context, PhaseId phaseId, TreeNode root) {
+        setRowKey(root, null);
 
         if (getFacetCount() > 0) {
             for (UIComponent facet : getFacets().values()) {
@@ -627,8 +626,8 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
     }
 
-    protected void processColumnFacets(FacesContext context, PhaseId phaseId) {
-        setRowKey(null);
+    protected void processColumnFacets(FacesContext context, PhaseId phaseId, TreeNode root) {
+        setRowKey(root, null);
 
         for (UIComponent child : getChildren()) {
             if (child instanceof UIColumn && child.isRendered()) {
@@ -654,8 +653,8 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
     }
 
-    protected void processColumnChildren(FacesContext context, PhaseId phaseId, String nodeKey) {
-        setRowKey(nodeKey);
+    protected void processColumnChildren(FacesContext context, PhaseId phaseId, TreeNode root, String nodeKey) {
+        setRowKey(root, nodeKey);
 
         if (nodeKey == null) {
             return;
@@ -800,10 +799,11 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
         FacesContext facesContext = context.getFacesContext();
         boolean visitNodes = requiresIteration(facesContext, context);
+        TreeNode root = getValue();
 
         String oldRowKey = getRowKey();
         if (visitNodes) {
-            setRowKey(null);
+            setRowKey(root, null);
         }
 
         pushComponentToEL(facesContext, null);
@@ -816,11 +816,11 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             }
 
             if ((result == VisitResult.ACCEPT) && doVisitChildren(context)) {
-                if (visitFacets(context, callback, visitNodes)) {
+                if (visitFacets(context, root, callback, visitNodes)) {
                     return true;
                 }
 
-                if (visitNodes(context, callback, visitNodes)) {
+                if (visitNodes(context, root, callback, visitNodes)) {
                     return true;
                 }
             }
@@ -829,7 +829,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             popComponentFromEL(facesContext);
 
             if (visitNodes) {
-                setRowKey(oldRowKey);
+                setRowKey(root, oldRowKey);
             }
         }
 
@@ -842,9 +842,9 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return (!idsToVisit.isEmpty());
     }
 
-    protected boolean visitFacets(VisitContext context, VisitCallback callback, boolean visitNodes) {
+    protected boolean visitFacets(VisitContext context, TreeNode root, VisitCallback callback, boolean visitNodes) {
         if (visitNodes) {
-            setRowKey(null);
+            setRowKey(root, null);
         }
 
         if (getFacetCount() > 0) {
@@ -858,10 +858,10 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return false;
     }
 
-    private boolean visitColumns(VisitContext context, VisitCallback callback, String rowKey, boolean visitNodes) {
+    private boolean visitColumns(VisitContext context, TreeNode root, VisitCallback callback, String rowKey, boolean visitNodes) {
         String treeNodeType = null;
         if (visitNodes) {
-            setRowKey(rowKey);
+            setRowKey(root, rowKey);
 
             if (rowKey == null) {
                 return false;
@@ -918,16 +918,15 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return false;
     }
 
-    protected boolean visitNodes(VisitContext context, VisitCallback callback, boolean visitRows) {
+    protected boolean visitNodes(VisitContext context, TreeNode root, VisitCallback callback, boolean visitRows) {
         if (visitRows) {
-            TreeNode root = getValue();
             if (root != null) {
-                if (visitNode(context, callback, root, null)) {
+                if (visitNode(context, root, callback, root, null)) {
                     return true;
                 }
             }
 
-            setRowKey(null);
+            setRowKey(root, null);
         }
         else {
             // visit without iterating over the tree model
@@ -939,8 +938,8 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return false;
     }
 
-    protected boolean visitNode(VisitContext context, VisitCallback callback, TreeNode treeNode, String rowKey) {
-        if (visitColumns(context, callback, rowKey, true)) {
+    protected boolean visitNode(VisitContext context, TreeNode root, VisitCallback callback, TreeNode treeNode, String rowKey) {
+        if (visitColumns(context, root, callback, rowKey, true)) {
             return true;
         }
 
@@ -950,7 +949,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             for (Iterator<TreeNode> iterator = treeNode.getChildren().iterator(); iterator.hasNext(); ) {
                 String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + SEPARATOR + childIndex;
 
-                if (visitNode(context, callback, iterator.next(), childRowKey)) {
+                if (visitNode(context, root, callback, iterator.next(), childRowKey)) {
                     return true;
                 }
 

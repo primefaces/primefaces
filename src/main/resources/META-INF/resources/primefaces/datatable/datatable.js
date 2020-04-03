@@ -37,7 +37,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.expansion) {
             this.expansionProcess = [];
             this.bindExpansionEvents();
-            this.updateExpandedRowsColspan();
         }
 
         if(this.cfg.editable) {
@@ -92,6 +91,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.onRowClick) {
             this.bindRowClick();
         }
+
+        if(this.cfg.expansion) {
+            this.updateExpandedRowsColspan();
+        }
     },
 
     getThead: function() {
@@ -143,6 +146,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Unbinds events needed if refreshing to prevent multiple sort and pagination events.
+     * Cancels all current drag and drop events.
      */
     unbindEvents: function() {
         if (this.sortableColumns) {
@@ -150,6 +154,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         if (this.paginator) {
             this.paginator.unbindEvents();
+        }
+
+        // #5582: destroy any current draggable items
+        var dragdrop = $.ui.ddmanager.current;
+        if (dragdrop) {
+            document.body.style.cursor = 'default';
+            dragdrop.cancel();
         }
     },
 
@@ -393,7 +404,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindChangeFilter: function(filter) {
         var $this = this;
 
-        filter.change(function() {
+        filter.off('change')
+        .on('change', function() {
             $this.filter();
         });
     },
@@ -401,7 +413,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindEnterKeyFilter: function(filter) {
         var $this = this;
 
-        filter.on('keydown', PrimeFaces.utils.blockEnterKey)
+        filter.off('keydown keyup')
+        .on('keydown', PrimeFaces.utils.blockEnterKey)
         .on('keyup', function(e) {
             var key = e.which,
             keyCode = $.ui.keyCode;
@@ -416,10 +429,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
     bindFilterEvent: function(filter) {
         var $this = this;
-
+        var filterEventName = this.cfg.filterEvent + '.dataTable';
+        
         //prevent form submit on enter key
-        filter.on('keydown.dataTable-blockenter', PrimeFaces.utils.blockEnterKey)
-        .on(this.cfg.filterEvent + '.dataTable', function(e) {
+        filter.off('keydown.dataTable-blockenter ' + filterEventName)
+        .on('keydown.dataTable-blockenter', PrimeFaces.utils.blockEnterKey)
+        .on(filterEventName, function(e) {
             if (PrimeFaces.utils.ignoreFilterKey(e)) {
                 return;
             }
@@ -437,7 +452,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         // #89 IE clear "x" button
         if (PrimeFaces.env.isIE()) {
-            filter.on('mouseup.dataTable', function(e) {
+            filter.off('mouseup.dataTable').on('mouseup.dataTable', function(e) {
                 var input = $(this),
                 oldValue = input.val();
 
@@ -1098,6 +1113,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     cloneHead: function() {
         var $this = this;
 
+        if (this.theadClone) {
+            this.theadClone.remove();
+        }
         this.theadClone = this.cloneTableHeader(this.thead, this.bodyTable);
 
         //reflect events from clone to original
@@ -3505,7 +3523,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 helperCells = helperRow.children();
 
                 for(var i = 0; i < helperCells.length; i++) {
-                    helperCells.eq(i).width(cells.eq(i).width());
+                    var helperCell = helperCells.eq(i);
+                    helperCell.width(cells.eq(i).width());
+                    // #5584 reflow must remove column title span
+                    helperCell.children().remove('.ui-column-title');
                 }
 
                 helperRow.appendTo(helper.find('tbody'));
@@ -4151,7 +4172,14 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
     },
 
     cloneHead: function() {
+        if (this.frozenTheadClone) {
+            this.frozenTheadClone.remove();
+        }
         this.frozenTheadClone = this.cloneTableHeader(this.frozenThead, this.frozenBodyTable);
+
+        if (this.scrollTheadClone) {
+            this.scrollTheadClone.remove();
+        }
         this.scrollTheadClone = this.cloneTableHeader(this.scrollThead, this.scrollBodyTable);
     },
 

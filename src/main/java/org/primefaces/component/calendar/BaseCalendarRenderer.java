@@ -40,9 +40,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -52,6 +49,7 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.time.temporal.ChronoField;
 import java.time.temporal.Temporal;
 import java.util.Collection;
@@ -197,8 +195,10 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
                     .parseCaseInsensitive()
                     .appendPattern(calendar.calculatePattern())
                     .parseDefaulting(ChronoField.DAY_OF_MONTH, 1) //because of Month Picker which does not contain day of month
+                    .parseDefaulting(ChronoField.ERA, 1)
                     .toFormatter(calendar.calculateLocale(context))
-                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()));
+                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()))
+                    .withResolverStyle(resolveResolverStyle(calendar.getResolverStyle()));
 
             try {
                 return type == LocalDate.class
@@ -213,7 +213,8 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             String pattern = calendar instanceof Calendar ? calendar.calculatePattern() : calendar.calculateTimeOnlyPattern();
             DateTimeFormatter formatter = DateTimeFormatter
                     .ofPattern(pattern, calendar.calculateLocale(context))
-                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()));
+                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()))
+                    .withResolverStyle(resolveResolverStyle(calendar.getResolverStyle()));
 
             try {
                 return LocalTime.parse(submittedValue, formatter);
@@ -226,8 +227,10 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                     .parseCaseInsensitive()
                     .appendPattern(calendar.calculatePattern())
+                    .parseDefaulting(ChronoField.ERA, 1)
                     .toFormatter(calendar.calculateLocale(context))
-                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()));
+                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()))
+                    .withResolverStyle(resolveResolverStyle(calendar.getResolverStyle()));
 
             try {
                 return LocalDateTime.parse(submittedValue, formatter);
@@ -240,6 +243,15 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         //TODO: implement if necessary
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, type.getName() + " not supported", null);
         throw new ConverterException(message);
+    }
+
+    private ResolverStyle resolveResolverStyle(String passedResolverStyle) {
+        for (ResolverStyle resolverStyle : ResolverStyle.values()) {
+            if (resolverStyle.name().equalsIgnoreCase(passedResolverStyle)) {
+                return resolverStyle;
+            }
+        }
+        return ResolverStyle.SMART;
     }
 
     protected ConverterException createConverterException(FacesContext context,
@@ -270,13 +282,12 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
     protected Class<?> resolveDateType(FacesContext context, UICalendar calendar) {
         ValueExpression ve = calendar.getValueExpression("value");
 
-        if (ve == null) {
-            return LocalDate.class;
+        Class<?> type = null;
+        if (ve != null) {
+            type = ve.getType(context.getELContext());
         }
 
-        Class<?> type = ve.getType(context.getELContext());
-
-        // If type could not be determined via value-expression try it this way. (Very unlikely, this happens in real world.)
+        // If type could not be determined via value-expression try it this way. Required for e.g. usage in custom dataTable filters
         if (type == null) {
             if (calendar.isTimeOnly()) {
                 type = LocalTime.class;
@@ -294,15 +305,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             Object base = valueReference.getBase();
             Object property = valueReference.getProperty();
 
-            try {
-                Field field = LangUtils.getUnproxiedClass(base.getClass()).getDeclaredField((String) property);
-                ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
-                Type listType = parameterizedType.getActualTypeArguments()[0];
-                type = Class.forName(listType.getTypeName());
-            }
-            catch (ReflectiveOperationException ex) {
-                //NOOP
-            }
+            type = LangUtils.getTypeFromCollectionProperty(base, (String) property);
         }
 
         return type;

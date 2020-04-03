@@ -50,8 +50,8 @@
             if($this.cfg.popup) {
                 $this.overlay.css({
                     'z-index': ++PrimeFaces.zindex,
-                    'display':'block', 
-                    'opacity':0, 
+                    'display':'block',
+                    'opacity':0,
                     'pointer-events': 'none'
                 });
             }
@@ -68,11 +68,11 @@
                     ,at: 'left bottom'
                     ,of: $this.jqEl
                 });
-            
+
             if($this.cfg.popup) {
                 $this.overlay.css({
-                    'display':'none', 
-                    'opacity':'', 
+                    'display':'none',
+                    'opacity':'',
                     'pointer-events': ''
                 });
             }
@@ -102,12 +102,15 @@
             }
         });
     },
-    
+
     setupDialogSupport: function() {
-        var dialog = this.jqEl.closest('.ui-dialog');
-        
-        if(dialog.length == 1 && dialog.css('position') === 'fixed') {
-            this.overlay.css('position', 'fixed');
+        var dialog = this.jqEl[0].closest('.ui-dialog');
+        if (dialog) {
+            var $dialog = $(dialog);
+
+            if($dialog.length == 1 && $dialog.css('position') === 'fixed') {
+                this.overlay.css('position', 'fixed');
+            }
         }
     }
 });

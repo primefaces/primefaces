@@ -98,6 +98,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
     protected void encodeInput(FacesContext context, SelectBooleanCheckbox checkbox, String clientId, boolean checked) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_input";
+        String ariaLabel = checkbox.getAriaLabel() != null ? checkbox.getAriaLabel() : checkbox.getItemLabel();
 
         writer.startElement("div", checkbox);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
@@ -107,7 +108,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
+        writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
 
         if (checked) {
             writer.writeAttribute("checked", "checked", null);

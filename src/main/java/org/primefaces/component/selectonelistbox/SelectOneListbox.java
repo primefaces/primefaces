@@ -23,8 +23,12 @@
  */
 package org.primefaces.component.selectonelistbox;
 
+import java.util.Set;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
+
+import org.primefaces.util.LangUtils;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -43,7 +47,7 @@ public class SelectOneListbox extends SelectOneListboxBase {
     public static final String FILTER_CONTAINER_CLASS = "ui-selectlistbox-filter-container";
     public static final String FILTER_CLASS = "ui-selectlistbox-filter ui-inputfield ui-widget ui-state-default ui-corner-all";
     public static final String FILTER_ICON_CLASS = "ui-icon ui-icon-search";
-    public static final String[] DOM_EVENTS = {"onchange", "onclick", "ondblclick"};
+    public static final Set<String> DOM_EVENTS = LangUtils.unmodifiableSet("onchange", "onclick", "ondblclick");
 
     @Override
     public String getInputClientId() {

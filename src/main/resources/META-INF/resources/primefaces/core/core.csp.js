@@ -51,10 +51,24 @@ if (!PrimeFaces.csp) {
             var options = {};
             if (nonceValue) {
                 options = {nonce: nonceValue};
+            } else if (PrimeFaces.csp.NONCE_VALUE) {
+                options = {nonce: PrimeFaces.csp.NONCE_VALUE};
             }
 
             // evaluate the script
             $.globalEval(js, options);
+        },
+        
+        /**
+         * Perform a CSP safe eval() with a return result value.
+         *
+         * @param js the Javascript to evaluate
+         * @see https://stackoverflow.com/a/33945236/502366
+         */
+        evalResult: function (js) {
+            var executeJs = "var cspResult = " + js;
+            PrimeFaces.csp.eval(executeJs);
+            return cspResult;
         },
 
         /**

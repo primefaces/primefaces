@@ -3141,6 +3141,14 @@
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[ResolverStyle for java.time.format.DateTimeFormatter, lenient, smart or strict, Default is smart.]]>
+            </description>
+            <name>resolverStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -6347,9 +6355,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Disables reordering.]]>
+                <![CDATA[Disables the component.]]>
             </description>
             <name>disabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Allow reordering of panels. Default is true.]]>
+            </description>
+            <name>reordering</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -6568,6 +6584,14 @@
                 <![CDATA[Keeps state of its children on a per-row basis. Default is false.]]>
             </description>
             <name>rowStatePreserved</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to keep DataGrid state across views, defaults to false.]]>
+            </description>
+            <name>multiViewState</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -7872,6 +7896,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to keep DataView state across views, defaults to false.]]>
+            </description>
+            <name>multiViewState</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -8463,30 +8495,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Initial width of items. Default is 40.]]>
-            </description>
-            <name>itemWidth</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Maximum width of items. Default is 50.]]>
-            </description>
-            <name>maxWidth</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Distance to enlarge. Default is 90.]]>
-            </description>
-            <name>proximity</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Horizontal alignment. Default is center.]]>
             </description>
             <name>halign</name>
@@ -8500,6 +8508,30 @@
             <name>blockScroll</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to animate the OSX bounce effect when clicking an item. Default is true.]]>
+            </description>
+            <name>animate</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[How long in milliseconds to animate the bounce effect. Default is 1600ms.]]>
+            </description>
+            <name>animationDuration</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines direction of dock. Valid values are "ltr" (default) and "rtl".]]>
+            </description>
+            <name>dir</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
@@ -9683,7 +9715,7 @@
             <description>
                 <![CDATA[Whether virus scan should be performed. Default is false.]]>
             </description>
-            <name>performVirusScan</name>
+            <name>virusScan</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -12128,7 +12160,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Number of decimal places. Default are taken from minValue and MaxValue.]]>
+                <![CDATA[Number of decimal places. Default is 2.]]>
             </description>
             <name>decimalPlaces</name>
             <required>false</required>
@@ -12171,6 +12203,14 @@
                 <![CDATA[Controls leading zero behavior. Valid values are "allow"(default), "deny" and "keep".]]>
             </description>
             <name>leadingZero</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Allow to declare an alternative decimal separator which is automatically replaced by `decimalCharacter` when typed.]]>
+            </description>
+            <name>decimalSeparatorAlternative</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -19666,6 +19706,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When set to true client side validation is enabled, global setting is required to be enabled as a prerequisite.]]>
+            </description>
+            <name>validateClient</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -21134,6 +21182,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -21976,6 +22032,14 @@
                 <![CDATA[When true, a checkbox is displayed next to each item.]]>
             </description>
             <name>showCheckbox</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The meta key (SHIFT or CTRL) must be held down to multi-select items. Default is true.]]>
+            </description>
+            <name>metaKeySelection</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -25825,6 +25889,14 @@
             <name>readonly</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Disables the editor, default is false.]]>
+            </description>
+            <name>disabled</name>
+            <required>false</required>
+            <type>boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -29750,6 +29822,22 @@
             <name>rangeSeparator</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[ResolverStyle for java.time.format.DateTimeFormatter, lenient, smart or strict, Default is smart.]]>
+            </description>
+            <name>resolverStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Allows direct input in time field. Default is false.]]>
+            </description>
+            <name>timeInput</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
 </facelet-taglib>

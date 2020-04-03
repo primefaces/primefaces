@@ -1407,6 +1407,14 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         else {
             this.showCurrentCell(cell);
+
+            if(this.hasBehavior('cellEditInit')) {
+                var cellInfo = this.getCellMeta(cell);
+                var ext = {
+                    params: [{name: this.id + '_cellInfo', value: cellInfo}]
+                };
+                this.callBehavior('cellEditInit', ext);
+            }
         }
     },
 
@@ -1541,8 +1549,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     doCellEditRequest: function(cell) {
         var cellEditor = cell.children('.ui-cell-editor'),
         cellEditorId = cellEditor.attr('id'),
-        cellIndex = cell.index(),
-        cellInfo = cell.closest('tr').data('rk') + ',' + cellIndex,
+        cellInfo = this.getCellMeta(cell),
         $this = this;
 
         var options = {
@@ -1617,8 +1624,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
     cellEditInit: function(cell) {
         var cellEditor = cell.children('.ui-cell-editor'),
-        cellIndex = cell.index(),
-        cellInfo = cell.closest('tr').data('rk') + ',' + cellIndex,
+        cellInfo = this.getCellMeta(cell),
         $this = this;
 
         var options = {
@@ -1652,6 +1658,12 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    getCellMeta: function(cell) {
+        var cellIndex = cell.index(),
+            cellInfo = cell.closest('tr').data('rk') + ',' + cellIndex;
+        return cellInfo;
+    },
+
     updateVerticalScroll: function() {
         if(this.cfg.scrollable && this.cfg.scrollHeight) {
             if(this.bodyTable.outerHeight() < this.scrollBody.outerHeight()) {
@@ -1676,5 +1688,12 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         return target.is('th,span');
+    },
+
+    /**
+     * Returns if there is any data displayed
+     */
+    isEmpty: function() {
+        return this.tbody.children('tr.ui-treetable-empty-message').length === 1;
     }
 });

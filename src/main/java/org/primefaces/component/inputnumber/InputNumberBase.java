@@ -53,7 +53,8 @@ public abstract class InputNumberBase extends HtmlInputText implements Widget, I
         inputStyle,
         inputStyleClass,
         padControl,
-        leadingZero
+        leadingZero,
+        decimalSeparatorAlternative
     }
 
     public InputNumberBase() {
@@ -130,7 +131,7 @@ public abstract class InputNumberBase extends HtmlInputText implements Widget, I
     }
 
     public String getDecimalPlaces() {
-        return (String) getStateHelper().eval(PropertyKeys.decimalPlaces, "2");
+        return (String) getStateHelper().eval(PropertyKeys.decimalPlaces, null);
     }
 
     public void setDecimalPlaces(String decimalPlaces) {
@@ -193,5 +194,13 @@ public abstract class InputNumberBase extends HtmlInputText implements Widget, I
 
     public void setLeadingZero(String leadingZero) {
         getStateHelper().put(PropertyKeys.leadingZero, leadingZero);
+    }
+
+    public String getDecimalSeparatorAlternative() {
+        return (String) getStateHelper().eval(PropertyKeys.decimalSeparatorAlternative, null);
+    }
+
+    public void setDecimalSeparatorAlternative(String decimalSeparatorAlternative) {
+        getStateHelper().put(PropertyKeys.decimalSeparatorAlternative, decimalSeparatorAlternative);
     }
 }

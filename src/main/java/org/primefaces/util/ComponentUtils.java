@@ -642,7 +642,7 @@ public class ComponentUtils {
     }
 
     // See MyFaces ViewPoolProcessor
-    public static enum ViewPoolingResetMode {
+    public enum ViewPoolingResetMode {
         OFF,
         SOFT,
         HARD;

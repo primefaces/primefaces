@@ -26,31 +26,33 @@ package org.primefaces.virusscan.impl;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.primefaces.model.file.UploadedFile;
 import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.MessageFactory;
 import org.primefaces.virusscan.VirusException;
 import org.primefaces.virusscan.VirusScanner;
 
+import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.FacesException;
 
 /**
  * This is the default {@link VirusScanner} provider bundled with PrimeFaces.
- * The implementation makes use of the <a href="https://www.virustotal.com/de/documentation/public-api/">VirusTotal Public API v2.0</a>.
+ * The implementation makes use of the <a href="https://developers.virustotal.com/reference">VirusTotal Public API v2.0</a>.
  * It requires {@link #CONTEXT_PARAM_KEY} to be specified.
  */
-public class VirusTotalVirusScanner implements VirusScanner {
+public class VirusTotalReportScanner implements VirusScanner {
 
-    private static final Logger LOGGER = Logger.getLogger(VirusTotalVirusScanner.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(VirusTotalReportScanner.class.getName());
 
     private static final String CONTEXT_PARAM_KEY = "primefaces.virusscan.VIRUSTOTAL_KEY";
 
@@ -62,40 +64,20 @@ public class VirusTotalVirusScanner implements VirusScanner {
         return ctx.getInitParameter(CONTEXT_PARAM_KEY) != null;
     }
 
+    /**
+     * Scan file using "/file/report" endpoint
+     * @throws VirusException if a virus has been detected by the scanner
+     */
     @Override
-    public void performVirusScan(InputStream inputStream) throws VirusException {
-        ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
-        String key = ctx.getInitParameter(CONTEXT_PARAM_KEY);
+    public void scan(UploadedFile file) {
         try {
-            byte[] content = IOUtils.toByteArray(inputStream);
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(content);
-            String hash = DatatypeConverter.printHexBinary(md.digest());
-            URL url = new URL(String.format(API_ENDPOINT, EscapeUtils.forUriComponent(key), EscapeUtils.forUriComponent(hash)));
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.connect();
-            checkResponseCode(connection.getResponseCode());
-
+            URLConnection connection = openConnection(file);
             try (InputStream response = connection.getInputStream()) {
-                JSONObject json = new JSONObject(IOUtils.toString(response, "UTF-8"));
-                int responseCode = json.getInt("response_code");
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(String.format("Retrieved response code %d.", responseCode));
-                }
-                if (responseCode == 1) {
-                    // present
-                    int positives = json.getInt("positives");
-                    if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine(String.format("Retrieved %d positives.", positives));
-                    }
-                    if (positives > 0) {
-                        throw new VirusException();
-                    }
-                }
+                JSONObject json = new JSONObject(IOUtils.toString(response, StandardCharsets.UTF_8));
+                handleBodyResponse(file, json);
             }
         }
-        catch (JSONException | IOException | NoSuchAlgorithmException ex) {
+        catch (JSONException | IOException ex) {
             if (LOGGER.isLoggable(Level.WARNING)) {
                 LOGGER.log(Level.WARNING, "Cannot perform virus scan", ex);
             }
@@ -103,7 +85,47 @@ public class VirusTotalVirusScanner implements VirusScanner {
         }
     }
 
-    protected void checkResponseCode(int code) {
+    protected void handleBodyResponse(UploadedFile file, JSONObject json) {
+        int responseCode = json.getInt("response_code");
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine(String.format("Retrieved response code %d.", responseCode));
+        }
+
+        if (responseCode == 1) {
+            // present
+            int positives = json.getInt("positives");
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine(String.format("Retrieved %d positives.", positives));
+            }
+            if (positives > 0) {
+                String message = createErrorMessage(file, json);
+                throw new VirusException(message);
+            }
+        }
+    }
+
+    protected String createErrorMessage(UploadedFile file, JSONObject json) {
+        return MessageFactory.getMessage("primefaces.fileupload.VIRUS_TOTAL_FILE", new Object[]{file.getFileName()});
+    }
+
+    protected URLConnection openConnection(UploadedFile file) throws IOException {
+        HttpURLConnection connection;
+
+        try {
+            ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
+            String key = ctx.getInitParameter(CONTEXT_PARAM_KEY);
+
+            String hash = LangUtils.md5Hex(file.getContent());
+            URL url = new URL(String.format(API_ENDPOINT, EscapeUtils.forUriComponent(key), EscapeUtils.forUriComponent(hash)));
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
+        }
+        catch (IOException e) {
+            throw new FacesException(e);
+        }
+
+        int code = connection.getResponseCode();
         switch (code) {
             case 200:
                 // OK
@@ -121,6 +143,8 @@ public class VirusTotalVirusScanner implements VirusScanner {
             default:
                 throw new FacesException("Unexpected HTTP code " + code + " calling Virus Total web service.");
         }
+
+        return connection;
     }
 
 }

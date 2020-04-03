@@ -38,7 +38,8 @@ public abstract class SelectBooleanCheckboxBase extends HtmlSelectBooleanCheckbo
 
         widgetVar,
         itemLabel,
-        escape;
+        escape,
+        ariaLabel;
     }
 
     public SelectBooleanCheckboxBase() {
@@ -72,5 +73,13 @@ public abstract class SelectBooleanCheckboxBase extends HtmlSelectBooleanCheckbo
 
     public void setEscape(boolean escape) {
         getStateHelper().put(SelectBooleanCheckboxBase.PropertyKeys.escape, escape);
+    }
+
+    public String getAriaLabel() {
+        return (String) getStateHelper().eval(SelectBooleanCheckboxBase.PropertyKeys.ariaLabel, null);
+    }
+
+    public void setAriaLabel(String ariaLabel) {
+        getStateHelper().put(SelectBooleanCheckboxBase.PropertyKeys.ariaLabel, ariaLabel);
     }
 }

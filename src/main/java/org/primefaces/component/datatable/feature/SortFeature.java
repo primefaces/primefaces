@@ -38,7 +38,7 @@ import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
-import org.primefaces.component.datatable.TableState;
+import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.event.data.PostSortEvent;
 import org.primefaces.model.*;
 
@@ -59,7 +59,7 @@ public class SortFeature implements DataTableFeature {
         if (table.isMultiSort()) {
             String[] sortKeys = sortKey.split(",");
             String[] sortOrders = sortDir.split(",");
-            Map<String, SortMeta> sortMeta = new HashMap<>(sortKeys.length);
+            Map<String, SortMeta> sortMeta = new LinkedHashMap<>(sortKeys.length);
 
             for (int i = 0; i < sortKeys.length; i++) {
                 UIColumn sortColumn = table.findColumn(sortKeys[i]);
@@ -133,7 +133,7 @@ public class SortFeature implements DataTableFeature {
             ValueExpression sortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
             Map<String, SortMeta> multiSortState = table.isMultiSort() ? table.getSortMeta() : null;
             if (sortByVE != null || (multiSortState != null && !multiSortState.isEmpty())) {
-                TableState ts = table.getTableState(true);
+                DataTableState ts = table.getMultiViewState(true);
                 ts.setSortBy(sortByVE);
                 ts.setSortMeta(multiSortState);
                 ts.setSortOrder(table.getSortOrder());

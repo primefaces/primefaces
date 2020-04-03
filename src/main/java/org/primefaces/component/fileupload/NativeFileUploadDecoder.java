@@ -23,9 +23,7 @@
  */
 package org.primefaces.component.fileupload;
 
-import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.file.*;
-import org.primefaces.util.FileUploadUtils;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -69,7 +67,7 @@ public class NativeFileUploadDecoder {
                     .map(p -> new NativeUploadedFile(p, sizeLimit))
                     .collect(Collectors.toList());
 
-            if (!files.isEmpty() && FileUploadUtils.areValidFiles(context, fileUpload, files)) {
+            if (!files.isEmpty()) {
                 UploadedFiles uploadedFiles = new UploadedFiles(files);
                 fileUpload.setSubmittedValue(new UploadedFilesWrapper(uploadedFiles));
             }
@@ -79,12 +77,9 @@ public class NativeFileUploadDecoder {
         }
         else {
             Part part = request.getPart(inputToDecodeId);
-
             if (part != null) {
                 NativeUploadedFile uploadedFile = new NativeUploadedFile(part, fileUpload.getSizeLimit());
-                if (FileUploadUtils.isValidFile(context, fileUpload, uploadedFile)) {
-                    fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
-                }
+                fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
             }
             else {
                 fileUpload.setSubmittedValue("");
@@ -98,9 +93,7 @@ public class NativeFileUploadDecoder {
 
         if (part != null) {
             NativeUploadedFile uploadedFile = new NativeUploadedFile(part, fileUpload.getSizeLimit());
-            if (FileUploadUtils.isValidFile(context, fileUpload, uploadedFile)) {
-                fileUpload.queueEvent(new FileUploadEvent(fileUpload, uploadedFile));
-            }
+            fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
         }
     }
 }

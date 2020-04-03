@@ -30,6 +30,7 @@ import org.primefaces.util.LangUtils;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import java.util.List;
@@ -90,6 +91,14 @@ public class SplitButton extends SplitButtonBase {
         }
 
         return styleClass;
+    }
+
+    @Override
+    public void processDecodes(FacesContext context) {
+        if (!isRendered() || isDisabled()) {
+            return;
+        }
+        super.processDecodes(context);
     }
 
     @Override

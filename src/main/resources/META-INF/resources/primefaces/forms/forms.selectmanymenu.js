@@ -5,6 +5,7 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
 
     init: function(cfg) {
         this._super(cfg);
+        this.cfg.metaKeySelection = this.cfg.metaKeySelection != undefined ? this.cfg.metaKeySelection : true;
 
         this.allItems.filter('.ui-state-highlight').find('> .ui-chkbox > .ui-chkbox-box').addClass('ui-state-active');
     },
@@ -23,8 +24,7 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
 
                 var item = $(this),
                 selectedItems = $this.items.filter('.ui-state-highlight'),
-                metaKey = (e.metaKey||e.ctrlKey),
-                unchanged = (!metaKey && selectedItems.length === 1 && selectedItems.index() === item.index());
+                metaKey = $this.cfg.metaKeySelection && (e.metaKey||e.ctrlKey);
 
                 if(!e.shiftKey) {
                     if(!metaKey && !$this.cfg.showCheckbox) {
@@ -63,10 +63,7 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
                     }
                 }
 
-                if(!unchanged) {
-                    $this.input.trigger('change');
-                }
-
+                $this.input.trigger('change');
                 $this.input.trigger('click');
                 PrimeFaces.clearSelection();
                 e.preventDefault();
@@ -114,7 +111,7 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
             itemNative.classList.remove('ui-state-hover');
 
             if(this.cfg.showCheckbox) {
-                var checkbox = item.children('div.ui-chkbox').children('div.ui-chkbox-box');
+                var checkbox = item.find('div.ui-chkbox').children('div.ui-chkbox-box');
 
                 var checkboxNative = checkbox[0];
                 checkboxNative.classList.remove('ui-state-hover');
@@ -145,7 +142,7 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
             itemNative.classList.remove('ui-state-highlight');
 
             if(this.cfg.showCheckbox) {
-                var checkbox = item.children('div.ui-chkbox').children('div.ui-chkbox-box');
+                var checkbox = item.find('div.ui-chkbox').children('div.ui-chkbox-box');
 
                 var checkboxNative = checkbox[0];
                 checkboxNative.classList.remove('ui-state-active');

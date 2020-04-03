@@ -183,15 +183,20 @@ public class DataScrollerRenderer extends CoreRenderer {
     protected void loadChunk(FacesContext context, DataScroller ds, int start, int size) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean isLazy = ds.isLazy();
+        int _start = start < 0 ? 0 : start;
 
         if (isLazy) {
-            loadLazyData(context, ds, start, size);
+            loadLazyData(context, ds, _start, size);
         }
 
         String rowIndexVar = ds.getRowIndexVar();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
-        for (int i = start; i < (start + size); i++) {
+        int lastIndex = (_start + size);
+
+        lastIndex = start < 0 ? lastIndex + start : lastIndex;
+
+        for (int i = _start; i < lastIndex; i++) {
             ds.setRowIndex(i);
 
             if (rowIndexVar != null) {

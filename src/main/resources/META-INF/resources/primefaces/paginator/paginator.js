@@ -276,7 +276,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
 
                 this.jtpSelect.html(jtpOptions);
             }
-            this.jtpSelect.children('option[value=' + $.escapeSelector(this.cfg.page) + ']').prop('selected','selected');
+            this.jtpSelect.children('option[value=' + (this.cfg.page) + ']').prop('selected','selected');
         }
 
         //jump to page input
@@ -351,9 +351,8 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
     },
 
     setRowsPerPage: function(rpp) {
-        this.cfg.rows = rpp;
-
         if (rpp === '*') {
+            this.cfg.rows = this.cfg.rowCount;
             this.cfg.pageCount = 1;
             this.cfg.page = 0;
 
@@ -366,9 +365,9 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.paginate.call(this, newState);
         }
         else {
-            rpp = parseInt(rpp);
-            var first = this.cfg.rows * this.cfg.page,
-            page = parseInt(first / rpp);
+            var first = this.cfg.rows * this.cfg.page;
+            this.cfg.rows = parseInt(rpp);
+            var page = parseInt(first / this.cfg.rows);
 
             this.cfg.pageCount = Math.ceil(this.cfg.rowCount / this.cfg.rows);
             this.cfg.page = -1;

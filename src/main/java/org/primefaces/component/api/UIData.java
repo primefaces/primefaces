@@ -101,6 +101,7 @@ public class UIData extends javax.faces.component.UIData {
     private String clientId = null;
     private DataModel model = null;
     private Boolean isNested = null;
+    private Object oldVar = null;
 
     public enum PropertyKeys {
         paginator,
@@ -146,7 +147,26 @@ public class UIData extends javax.faces.component.UIData {
         if (rows < 0) {
             throw new IllegalArgumentException(String.valueOf(rows));
         }
-        getStateHelper().put(PropertyKeys.rows, rows);
+        ELContext elContext = getFacesContext().getELContext();
+        ValueExpression rowsVe = getValueExpression("rows");
+        if (isWriteable(elContext, rowsVe)) {
+            rowsVe.setValue(elContext, rows);
+        }
+        else {
+            getStateHelper().put(UIData.PropertyKeys.rows, rows);
+        }
+    }
+
+    @Override
+    public void setFirst(int first) {
+        ELContext elContext = getFacesContext().getELContext();
+        ValueExpression firstVe = getValueExpression("first");
+        if (isWriteable(elContext, firstVe)) {
+            firstVe.setValue(elContext, first);
+        }
+        else {
+            super.setFirst(first);
+        }
     }
 
     public java.lang.String getRowsPerPageTemplate() {
@@ -309,7 +329,6 @@ public class UIData extends javax.faces.component.UIData {
         data.setRowIndex(-1);
         String componentClientId = data.getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        ELContext elContext = context.getELContext();
 
         String firstParam = params.get(componentClientId + "_first");
         String rowsParam = params.get(componentClientId + "_rows");
@@ -318,22 +337,9 @@ public class UIData extends javax.faces.component.UIData {
             throw new IllegalArgumentException("Unsupported rows per page value: " + rowsParam);
         }
 
-        ValueExpression firstVe = data.getValueExpression("first");
-        if (isWriteable(elContext, firstVe)) {
-            firstVe.setValue(elContext, Integer.valueOf(firstParam));
-        }
-        else {
-            data.setFirst(Integer.valueOf(firstParam));
-        }
-
-        ValueExpression rowsVe = data.getValueExpression("rows");
-        int newRowsValue = "*".equals(rowsParam) ? getRowCount() : Integer.valueOf(rowsParam);
-        if (isWriteable(elContext, rowsVe)) {
-            rowsVe.setValue(elContext, newRowsValue);
-        }
-        else {
-            data.setRows(newRowsValue);
-        }
+        data.setFirst(Integer.parseInt(firstParam));
+        int newRowsValue = "*".equals(rowsParam) ? getRowCount() : Integer.parseInt(rowsParam);
+        data.setRows(newRowsValue);
     }
 
     private boolean isWriteable(ELContext elContext, ValueExpression ve) {
@@ -381,15 +387,16 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     protected void processPhase(FacesContext context, PhaseId phaseId) {
+        processFacets(context, phaseId);
+        if (requiresColumns()) {
+            processColumnFacets(context, phaseId);
+        }
+
         if (shouldSkipChildren(context)) {
             return;
         }
 
         setRowIndex(-1);
-        processFacets(context, phaseId);
-        if (requiresColumns()) {
-            processColumnFacets(context, phaseId);
-        }
         processChildren(context, phaseId);
         setRowIndex(-1);
     }
@@ -566,22 +573,20 @@ public class UIData extends javax.faces.component.UIData {
         // Clear or expose the current row data as a request scope attribute
         String var = getVar();
         if (var != null) {
-            //Object oldVar = null;
-
             Map<String, Object> requestMap
                     = getFacesContext().getExternalContext().getRequestMap();
             if (rowIndex == -1) {
-                requestMap.remove(var);
+                oldVar = requestMap.remove(var);
             }
             else if (isRowAvailable()) {
                 requestMap.put(var, getRowData());
             }
             else {
                 requestMap.remove(var);
-                /*if (null != oldVar) {
+                if (null != oldVar) {
                     requestMap.put(var, oldVar);
                     oldVar = null;
-                }*/
+                }
             }
         }
 
@@ -629,13 +634,11 @@ public class UIData extends javax.faces.component.UIData {
         //update var
         String var = getVar();
         if (var != null) {
-            //Object oldVar = null;
-
             String rowIndexVar = getRowIndexVar();
             Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
 
             if (rowIndex == -1) {
-                requestMap.remove(var);
+                oldVar = requestMap.remove(var);
 
                 if (rowIndexVar != null) {
                     requestMap.remove(rowIndexVar);
@@ -655,10 +658,10 @@ public class UIData extends javax.faces.component.UIData {
                     requestMap.put(rowIndexVar, rowIndex);
                 }
 
-                /*if (oldVar != null) {
+                if (oldVar != null) {
                     requestMap.put(var, oldVar);
                     oldVar = null;
-                }*/
+                }
             }
         }
     }
@@ -1374,6 +1377,7 @@ public class UIData extends javax.faces.component.UIData {
             clientId = null;
             model = null;
             isNested = null;
+            oldVar = null;
         }
         else if (viewPoolingResetMode == ComponentUtils.ViewPoolingResetMode.HARD) {
             _rowTransientStates.clear();
@@ -1383,6 +1387,7 @@ public class UIData extends javax.faces.component.UIData {
             clientId = null;
             model = null;
             isNested = null;
+            oldVar = null;
         }
 
         if (initialStateMarked()) {

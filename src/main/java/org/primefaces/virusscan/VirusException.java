@@ -23,8 +23,25 @@
  */
 package org.primefaces.virusscan;
 
-public class VirusException extends Exception {
+import javax.faces.FacesException;
+
+public class VirusException extends FacesException {
 
     private static final long serialVersionUID = 1L;
 
+    public VirusException() {
+        // NOOP
+    }
+
+    public VirusException(String message) {
+        super(message);
+    }
+
+    public VirusException(Throwable cause) {
+        super(cause);
+    }
+
+    public VirusException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

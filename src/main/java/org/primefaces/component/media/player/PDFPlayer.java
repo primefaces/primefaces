@@ -25,6 +25,7 @@ package org.primefaces.component.media.player;
 
 public class PDFPlayer implements MediaPlayer {
 
+    public static final String MIME_TYPE = "application/pdf";
     private static final String[] SUPPORTED_TYPES = new String[]{"pdf"};
 
     @Override
@@ -44,7 +45,7 @@ public class PDFPlayer implements MediaPlayer {
 
     @Override
     public String getType() {
-        return "application/pdf";
+        return MIME_TYPE;
     }
 
     @Override

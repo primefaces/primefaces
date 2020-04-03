@@ -18,12 +18,15 @@ PrimeFaces.widget.Resizable = PrimeFaces.widget.BaseWidget.extend({
             this._render();
         }
         else {
-            var container = this.jqTarget.parent().closest('.ui-hidden-container'),
-            $this = this;
-            if(container.length) {
-                PrimeFaces.addDeferredRender(this.id, container.attr('id'), function() {
-                    return $this.render();
-                });
+            var container = this.jqTarget.parent()[0].closest('.ui-hidden-container');
+            if (container) {
+                var $container = $(container);
+                if ($container.length) {
+                    var $this = this;
+                    PrimeFaces.addDeferredRender(this.id, $container.attr('id'), function() {
+                        return $this.render();
+                    });
+                }
             }
         }
     },

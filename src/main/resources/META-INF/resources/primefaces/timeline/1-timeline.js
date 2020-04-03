@@ -84,7 +84,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      */
     _bindItemsEvents: function () {
         // "add" event
-        if (this.cfg.opts.selectable && this.cfg.opts.editable && this.getBehavior("add")) {
+        if (this.cfg.opts.selectable && this.cfg.opts.editable.add && this.getBehavior("add")) {
             this.cfg.opts.onAdd =
                $.proxy(function(item, callback) {
                     var params = [];
@@ -201,7 +201,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         // "edit" event
-        if (this.cfg.opts.selectable && this.cfg.opts.editable && this.getBehavior("edit")) {
+        if (this.cfg.opts.selectable && this.cfg.opts.editable.updateTime && this.getBehavior("edit")) {
             this.cfg.opts.onUpdate =
                 $.proxy(function(item, callback) {
                     var options = {
@@ -222,7 +222,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         // "delete" event
-        if (this.cfg.opts.selectable && this.cfg.opts.editable && this.getBehavior("delete")) {
+        if (this.cfg.opts.selectable && this.cfg.opts.editable.remove && this.getBehavior("delete")) {
             this.cfg.opts.onRemove =
                 $.proxy(function(item, callback) {
                     var options = {

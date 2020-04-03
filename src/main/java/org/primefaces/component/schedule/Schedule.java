@@ -77,7 +77,7 @@ public class Schedule extends ScheduleBase {
     }
 
     Locale calculateLocale(FacesContext facesContext) {
-        return LocaleUtils.resolveLocale(getLocale(), getClientId(facesContext));
+        return LocaleUtils.resolveLocale(facesContext, getLocale(), getClientId(facesContext));
     }
 
     @Override
