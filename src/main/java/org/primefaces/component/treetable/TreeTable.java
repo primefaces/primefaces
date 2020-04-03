@@ -152,6 +152,14 @@ public class TreeTable extends TreeTableBase {
         return EVENT_NAMES;
     }
 
+    public boolean isExpandRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_expand");
+    }
+
+    public boolean isCollapseRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_collapse");
+    }
+
     public boolean isSelectionRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_instantSelection");
     }

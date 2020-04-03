@@ -154,8 +154,8 @@ public class TreeTableRenderer extends DataRenderer {
 
         preRender(context, tt);
 
-        String nodeKey = params.get(clientId + "_expand");
-        if (nodeKey != null) {
+        if (tt.isExpandRequest(context)) {
+            String nodeKey = params.get(clientId + "_expand");
             tt.setRowKey(root, nodeKey);
             TreeNode node = tt.getRowNode();
             node.setExpanded(true);
@@ -166,6 +166,12 @@ public class TreeTableRenderer extends DataRenderer {
             else {
                 encodeNodeChildren(context, tt, root, node);
             }
+        }
+        else if (tt.isCollapseRequest(context)) {
+            String nodeKey = params.get(clientId + "_collapse");
+            tt.setRowKey(root, nodeKey);
+            TreeNode node = tt.getRowNode();
+            node.setExpanded(false);
         }
         else if (tt.isFilterRequest(context)) {
             tt.updateFilteredNode(context, null);
