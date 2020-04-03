@@ -32,7 +32,9 @@ import javax.faces.event.PhaseId;
 
 import java.io.IOException;
 
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.CSVBuilder;
 
 public class RemoteCommandRenderer extends CoreRenderer {
 
@@ -55,14 +57,26 @@ public class RemoteCommandRenderer extends CoreRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         RemoteCommand command = (RemoteCommand) component;
+        PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
+        boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled() && command.isValidateClient();
+        ResponseWriter writer = context.getResponseWriter();
         String clientId = command.getClientId(context);
         String name = resolveName(command, context);
 
         String request = preConfiguredAjaxRequestBuilder(context, command)
                 .passParams()
                 .build();
+
+        if (csvEnabled) {
+            CSVBuilder csvb = requestContext.getCSVBuilder();
+            request = csvb.init()
+                        .source("this")
+                        .ajax(true)
+                        .process(command, command.getProcess())
+                        .update(command, command.getUpdate())
+                        .command(request).build();
+        }
 
         //script
         writer.startElement("script", command);

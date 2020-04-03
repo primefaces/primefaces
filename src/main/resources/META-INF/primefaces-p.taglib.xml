@@ -19706,6 +19706,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When set to true client side validation is enabled, global setting is required to be enabled as a prerequisite.]]>
+            </description>
+            <name>validateClient</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -22024,6 +22032,14 @@
                 <![CDATA[When true, a checkbox is displayed next to each item.]]>
             </description>
             <name>showCheckbox</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The meta key (SHIFT or CTRL) must be held down to multi-select items. Default is true.]]>
+            </description>
+            <name>metaKeySelection</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>

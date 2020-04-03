@@ -34,7 +34,7 @@ ajax selection and more.
 | validatorMessage | null | String | Message to be displayed when validation fails.
 | widgetVar | null | String | Name of the client side widget.
 | placeholder | null | String | Specifies a short hint.
-| timeOnly | false | Boolean | Shows only timepicker without date.
+| timeOnly | false * | Boolean | Shows only timepicker without date. (* Defaults to true, when value is bound to java.time.LocalTime)
 | inline |  false | Boolean | Whether to show the datepicker inline or as a popup
 | buttonTabindex | null | String | Tabindex of the datepicker button
 | showIcon | false | String | Whether to show an icon to display the picker in an overlay
@@ -48,7 +48,7 @@ ajax selection and more.
 | shortYearCutoff | +10 | String | The cutoff year for determining the century for a date. Any dates entered with a year value less than or equal to the cutoff year are considered to be in the current century, while those greater than it are deemed to be in the previous century.
 | monthNavigator | false | Boolean | Whether to show the month navigator
 | yearNavigator | false | Boolean | Whether to show the year navigator
-| showTime | false | Boolean | Specifies if the timepicker should be displayed
+| showTime | false * | Boolean | Specifies if the timepicker should be displayed.  (* Defaults to true, when value is bound to java.time.LocalDateTime)
 | hourFormat | '24' | String | Defines the hour format, valid values are '12' and '24'
 | showSeconds | false | Boolean | Whether to show the seconds in time picker. Default is false.
 | stepHour | 1 | Integer | Hour steps.
@@ -162,7 +162,7 @@ Translation is a simple javascript object, we suggest adding the code to a javas
 in your application. Following is a Turkish DatePicker.
 
 ```xhtml
-<h:outputScript name=â€?path_to_your_translations.jsâ€? />
+<h:outputScript name="path_to_your_translations.js" />
 <p:datePicker value="#{dateController.date}" locale="tr" />
 ```
 
@@ -188,7 +188,7 @@ _org.primefaces.event.SelectEvent_ instance.
 
 ```xhtml
 <p:datePicker value="#{DatePickerBean.date}">
-    <p:ajax event=â€?dateSelectâ€? listener=â€?#{bean.handleDateSelect}â€? update=â€?msgâ€? />
+    <p:ajax event="dateSelect" listener="#{bean.handleDateSelect}" update="msg" />
 </p:datePicker>
 <p:messages id="msg" />
 ```
@@ -242,12 +242,14 @@ Navigator is an easy way to jump between months/years quickly.
 
 ## TimePicker
 TimePicker functionality is enabled by _showTime_ property.
+_showTime_ defaults to _true_, when value is bound to _java.time.LocalDateTime_.
 
 ```xhtml
 <p:datePicker value="#{dateBean.dateTime}" showTime="true" />
 ```
 
 To show the TimePicker only, use the _timeOnly_ attribute.
+_timeOnly_ defaults to _true_, when value is bound to _java.time.LocalTime_.
 
 ```xhtml
 <p:datePicker value="#{dateBean.time}" timeOnly="true" />

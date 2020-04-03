@@ -746,7 +746,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery} node A node to collapse, must be a TR element.
      */
     collapseNode: function(node) {
-        var nodeKey = node.attr('data-rk'),
+        var $this = this,
+        nodeKey = node.attr('data-rk'),
         nextNodes = node.nextAll();
 
         for(var i = 0; i < nextNodes.length; i++) {
@@ -767,36 +768,34 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.scrollable) {
             this.alignScrollBody();
         }
+  
+        var options = {
+            source: this.id,
+            process: this.id,
+            update: this.id,
+            params: [
+                {name: this.id + '_collapse', value: nodeKey}
+            ],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            // do nothing
+                        }
+                    });
+
+                return true;
+            },
+            oncomplete: function() {
+                $this.updateVerticalScroll();
+            }
+        };
 
         if(this.hasBehavior('collapse')) {
-            var $this = this,
-            nodeKey = node.attr('data-rk'),
-            options = {
-                source: this.id,
-                process: this.id,
-                update: this.id,
-                params: [
-                    {name: this.id + '_collapse', value: nodeKey}
-                ],
-                onsuccess: function(responseXML, status, xhr) {
-                    PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                            widget: $this,
-                            handle: function(content) {
-                                // do nothing
-                            }
-                        });
-
-                    return true;
-                },
-                oncomplete: function() {
-                    $this.updateVerticalScroll();
-                }
-            };
-
             this.callBehavior('collapse', options);
         }
         else {
-            this.updateVerticalScroll();
+            PrimeFaces.ajax.Request.handle(options);
         }
     },
 

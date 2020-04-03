@@ -361,7 +361,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Unbinds events needed if refreshing to prevent multiple sort and pagination events.
+     * Removes event listeners needed if refreshing to prevent multiple sort and pagination events.
+     * 
+     * Cancels all current drag and drop events.
      * @private
      */
     unbindEvents: function() {
@@ -370,6 +372,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         if (this.paginator) {
             this.paginator.unbindEvents();
+        }
+
+        // #5582: destroy any current draggable items
+        var dragdrop = $.ui.ddmanager.current;
+        if (dragdrop) {
+            document.body.style.cursor = 'default';
+            dragdrop.cancel();
         }
     },
 
@@ -4217,7 +4226,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 helperCells = helperRow.children();
 
                 for(var i = 0; i < helperCells.length; i++) {
-                    helperCells.eq(i).width(cells.eq(i).width());
+                    var helperCell = helperCells.eq(i);
+                    helperCell.width(cells.eq(i).width());
+                    // #5584 reflow must remove column title span
+                    helperCell.children().remove('.ui-column-title');
                 }
 
                 helperRow.appendTo(helper.find('tbody'));

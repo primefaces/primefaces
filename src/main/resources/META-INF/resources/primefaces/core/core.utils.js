@@ -331,7 +331,7 @@ if (!PrimeFaces.utils) {
         registerScrollHandler: function(widget, scrollNamespace, scrollCallback) {
 
             var scrollParent = widget.getJQ().scrollParent();
-            if (scrollParent.is('body')) {
+            if (scrollParent.is('body') || scrollParent.is('html')) {
                 scrollParent = $(window);
             }
 
@@ -351,7 +351,7 @@ if (!PrimeFaces.utils) {
          */
         unbindScrollHandler: function(widget, scrollNamespace) {
             var scrollParent = widget.getJQ().scrollParent();
-            if (scrollParent.is('body')) {
+            if (scrollParent.is('body') || scrollParent.is('html')) {
                 scrollParent = $(window);
             }
 

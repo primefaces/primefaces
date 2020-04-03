@@ -462,7 +462,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         }
 
                         if($this.cfg.queryEvent !== 'enter') {
-                            $this.isValid($(this).val());
+                            $this.isValid($(this).val(), true);
                         }
                     break;
 
@@ -988,9 +988,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.currentItems = [this.input.val()];
         var $this = this;
 
-        this.input.blur(function() {
-            var value = $(this).val(),
-            valid = $this.isValid(value);
+        this.input.on('blur', function(e) {
+            // #5731: do not fire clear event if selecting item
+            var fireClearEvent = e.relatedTarget == null || PrimeFaces.escapeClientId(e.relatedTarget.id) !== $this.panelId,
+            value = $(this).val(),
+            valid = $this.isValid(value, fireClearEvent);
 
             if($this.cfg.autoSelection && valid && $this.checkMatchedItem && $this.items && !$this.isTabPressed && !$this.itemSelectedWithEnter) {
                 var selectedItem = $this.items.filter('[data-item-label="' + $.escapeSelector(value) + '"]');
@@ -1189,11 +1191,12 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Checks whether the given value is part of the available suggestion items.
-     * @private
      * @param {string} value A value to check.
-     * @return {boolean} Whether the given value is allowed to be entered.
+     * @param {boolean} [shouldFireClearEvent] `true` if clear event should be fired.
+     * @return {boolean | undefined} Whether the given value matches a value in the list of available suggestion items;
+     * or `undefined` if {@link AutoCompleteCfg.forceSelection} is set to `false`.
      */
-    isValid: function(value) {
+    isValid: function(value, shouldFireClearEvent) {
         if(!this.cfg.forceSelection) {
             return;
         }
@@ -1217,7 +1220,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             if(!this.cfg.multiple) {
                 this.hinput.val('');
             }
-            this.fireClearEvent();
+            if (shouldFireClearEvent) {
+                this.fireClearEvent();
+            }
         }
 
         return valid;

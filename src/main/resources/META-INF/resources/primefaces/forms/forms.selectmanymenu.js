@@ -9,6 +9,8 @@
  * @extends {PrimeFaces.widget.SelectListboxCfg} cfg
  * 
  * @prop {boolean} cfg.disabled Whether the select many menu is initially disabled.
+ * @prop {boolean} cfg.metaKeySelection Whether the meta key (`SHIFT` or `CTRL`) must be held down to select multiple
+ * items.
  * @prop {boolean} cfg.showCheckbox When set to `true`, a checkbox is displayed next to each item.
  */
 PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
@@ -20,6 +22,7 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
      */
     init: function(cfg) {
         this._super(cfg);
+        this.cfg.metaKeySelection = this.cfg.metaKeySelection != undefined ? this.cfg.metaKeySelection : true;
 
         this.allItems.filter('.ui-state-highlight').find('> .ui-chkbox > .ui-chkbox-box').addClass('ui-state-active');
     },
@@ -43,7 +46,7 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
 
                 var item = $(this),
                 selectedItems = $this.items.filter('.ui-state-highlight'),
-                metaKey = (e.metaKey||e.ctrlKey);
+                metaKey = $this.cfg.metaKeySelection && (e.metaKey||e.ctrlKey);
 
                 if(!e.shiftKey) {
                     if(!metaKey && !$this.cfg.showCheckbox) {

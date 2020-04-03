@@ -800,6 +800,11 @@ This will generate something like:
 function oneToThreeArgs(x: number, y?: number, z: number = 42): void;
 ```
 
+> __Note:__ Boolean arguments that comes at the end of a parameter list are
+often a supposed to be optional. For example, a widget method with a final
+parameter named `silent` (don't trigger events) - if the caller does not pass
+a value, it is treated as `false`.
+
 ## Destructuring
 
 Destructured parameters are supported by the parser. But please check out the
