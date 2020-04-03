@@ -930,7 +930,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
         else {
             // visit without iterating over the tree model
-            if (visitColumns(context, callback, null, false)) {
+            if (visitColumns(context, root, callback, null, false)) {
                 return true;
             }
         }
