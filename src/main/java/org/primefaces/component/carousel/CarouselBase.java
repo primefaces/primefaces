@@ -23,10 +23,11 @@
  */
 package org.primefaces.component.carousel;
 
+import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.UIData;
 import org.primefaces.component.api.Widget;
 
-public abstract class CarouselBase extends UIData implements Widget {
+public abstract class CarouselBase extends UIData implements Widget, TouchAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -56,7 +57,8 @@ public abstract class CarouselBase extends UIData implements Widget {
         toggleable,
         toggleSpeed,
         collapsed,
-        stateful
+        stateful,
+        touchable
     }
 
     public CarouselBase() {
@@ -252,5 +254,15 @@ public abstract class CarouselBase extends UIData implements Widget {
 
     public void setStateful(boolean stateful) {
         getStateHelper().put(PropertyKeys.stateful, stateful);
+    }
+
+    @Override
+    public boolean isTouchable() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, true);
+    }
+
+    @Override
+    public void setTouchable(boolean touchable) {
+        getStateHelper().put(PropertyKeys.touchable, touchable);
     }
 }

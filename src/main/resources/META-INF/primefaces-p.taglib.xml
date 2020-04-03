@@ -3524,6 +3524,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+            </description>
+            <name>touchable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Makes panel toggleable. Default is false.]]>
             </description>
             <name>toggleable</name>

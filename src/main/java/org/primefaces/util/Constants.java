@@ -35,6 +35,7 @@ public class Constants {
         public static final String FONT_AWESOME = "primefaces.FONT_AWESOME";
         public static final String SUBMIT = "primefaces.SUBMIT";
         public static final String DIRECTION = "primefaces.DIR";
+        public static final String TOUCHABLE = "primefaces.TOUCHABLE";
         public static final String RESET_VALUES = "primefaces.RESET_VALUES";
         public static final String PFV_KEY = "primefaces.CLIENT_SIDE_VALIDATION";
         public static final String UPLOADER = "primefaces.UPLOADER";
