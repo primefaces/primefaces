@@ -313,10 +313,10 @@ function findAndParseLastBlockComment(comments, severitySettings) {
 /**
  * @param {import("estree").Node} node
  * @param {"ReturnStatement" | "YieldExpression"} type
- * @return {boolean} `true` if the node is a `ReturnStatement` or `YieldStatement` that (possible) returns/yields a
- * value (`return x;` or `yield x`), `false` otherwise (`return;` or `yield`).
+ * @return {node is import("estree").ReturnStatement} `true` if the node is a `ReturnStatement` or `YieldStatement` that
+ * (possibly) returns a value (`return x;` or `yield x`), `false` otherwise (`return;` or `yield`).
  */
-function isNonEmptyReturnOrYield(node, type) {
+function isNonEmptyReturn(node, type) {
     return node.type === type && node.argument !== null && node.argument !== undefined;
 }
 
@@ -332,7 +332,7 @@ function findFunctionNonEmptyReturnStatement(block) {
     const state = {found: undefined};
     recursive(block, state, {
         ReturnStatement(node, state, callback) {
-            if (isNonEmptyReturnOrYield(node, "ReturnStatement") && state.found === undefined) {
+            if (isNonEmptyReturn(node, "ReturnStatement") && state.found === undefined) {
                 state.found = node;
             }
             // Need to visit return, YieldExpression can be inside ReturnStatement ("return yield* [1,2,3]")
@@ -351,18 +351,18 @@ function findFunctionNonEmptyReturnStatement(block) {
 }
 
 /**
- * Checks whether a (function body) block contains an explicit `yield` statement that is non-empty, ie.
- * yields a value. This makes sure to ignore `yield` statements within nested functions or lambdas.
+ * Checks whether a (function body) block contains an explicit `yield` statement. This makes sure to ignore `yield`
+ * statements within nested functions or lambdas.
  * @param {import("estree").BlockStatement} block A block statement to check (usually a function body)
- * @return {import("estree").YieldExpression | undefined} The non-empty yield statement, or `undefined`
- * if no such statement exists.
+ * @return {import("estree").YieldExpression | undefined} The non-empty yield expression, or `undefined`
+ * if no such expression exists.
  */
-function findFunctionNonEmptyYieldExpression(block) {
+function findFunctionYieldExpression(block) {
     /** @type {{found: import("estree").YieldExpression | undefined}} */
     const state = {found: undefined};
     recursive(block, state, {
         YieldExpression(node, state, callback) {
-            if (isNonEmptyReturnOrYield(node, "YieldExpression") && state.found === undefined) {
+            if (state.found === undefined) {
                 state.found = node;
             }
         },
@@ -374,6 +374,38 @@ function findFunctionNonEmptyYieldExpression(block) {
         }
     });
     return state.found;
+}
+
+/**
+ * Checks whether a (function body) block contains an explicit `yield` statement that is not a top-level statement, i.e.
+ * whose return value might be used in some way. This makes sure to ignore `yield` statements within nested functions or
+ * lambdas.
+ * @param {import("estree").BlockStatement} block A block statement to check (usually a function body)
+ * @return {import("estree").YieldExpression | undefined}
+ * The yield statement, or `undefined` if no such statement exists.
+ */
+function findFunctionYieldStatement(block) {
+    /** @type {{includes: Set<import("estree").YieldExpression>, excludes: Set<import("estree").YieldExpression>}} */
+    const state = {includes: new Set(), excludes: new Set()};
+    recursive(block, state, {
+        ExpressionStatement(node, state, callback) {
+            if (node.expression.type === "YieldExpression") {
+                state.excludes.add(node.expression);
+            }
+            callback(node.expression, state);
+        },
+        YieldExpression(node, state, callback) {
+            state.includes.add(node);
+        },
+        FunctionDeclaration(node, state, callback) {
+            // ignore return in nested functions / lambdas
+        },
+        FunctionExpression(node, state, callback) {
+            // ignore return in nested functions / lambdas
+        }
+    });
+    state.excludes.forEach(exclude => state.includes.delete(exclude));
+    return [...state.includes][0];
 }
 
 /**
@@ -402,7 +434,8 @@ function parsePattern(pattern) {
 module.exports = {
     findAndParseLastBlockComment,
     findFunctionNonEmptyReturnStatement,
-    findFunctionNonEmptyYieldExpression,
+    findFunctionYieldExpression,
+    findFunctionYieldStatement,
     getIdentMemberPath,
     is,
     isIdentMemberExpression,

@@ -15,6 +15,19 @@
  * @method hogehoge method hogehoge
  * @yield {string} hogehoge hogehoge yield
  * @return {RegExp} hogehoge hogehoge retval
+ * 
+ * @async hogehogera
+ * @generator hogehogera
+ * @method hogehogera method hogehogera
+ * @next {number} hogehogera hogehogera next
+ * @yield {string} hogehogera hogehogera yield
+ * @return {RegExp} hogehogera hogehogera retval
+ * 
+ * @async hogehogerara
+ * @generator hogehogerara
+ * @method hogehogerara method hogehogerara
+ * @next {number} hogehogerara hogehogerara next
+ * @yield {string} hogehogerara hogehogerara yield
  */
 ({
     /**
@@ -39,5 +52,33 @@
     baz: async function*() {
         yield false;
         return 0;
-    }
+    },
+    /**
+     * method foobar
+     * @next {string} foobar next
+     * @yield {boolean} foobar yield
+     * @return {number} foobar retval
+     */
+    foobar: async function*() {
+        const x = yield false;
+        return 0;
+    },
+    /**
+     * method foobaz
+     * @next {string} foobaz next
+     * @yield {boolean} foobaz yield
+     */
+    foobaz: async function*() {
+        const x = yield false;
+    },
+    /**
+     * method foobazbar
+     * @yield {undefined} foobazbar yield
+     * @next {string} foobazbar next
+     * @return {number} foobazbar retval
+     */
+    foobazbar: async function*() {
+        const x = yield;
+        return 0;
+    },
 })

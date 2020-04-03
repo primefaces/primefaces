@@ -199,13 +199,30 @@ function createObjectDocInfo(jsdoc, node, severitySettings) {
                     if (!typedefTagHandler.yield(tag, jsdoc.tags, false)) {
                         const method = getOrCreateMethodAtNestingLevel(node, root, parts, 0);
                         if (method.yield !== undefined) {
-                            handleError("tagDuplicateYield", severitySettings, () => factory(`Found duplicate tag '@yield(s) ${tag.name}' in doc comments`));
+                            handleError("tagDuplicateYield", severitySettings, () => factory(`Found duplicate tag '@yield ${tag.name}' in doc comments`));
                         }
                         else {
                             tag.type = checkTagHasType(tag, severitySettings, factory);
                             tag.description = checkTagHasDescription(tag, severitySettings, factory, jsdoc.tags, true);
                             tag.name = "";
                             method.yield = tag;
+                        }
+                    }
+                    break;
+                }
+
+                // @next {boolean} settings.show The next value
+                case Tags.Next: {
+                    if (!typedefTagHandler.next(tag, jsdoc.tags, false)) {
+                        const method = getOrCreateMethodAtNestingLevel(node, root, parts, 0);
+                        if (method.next !== undefined) {
+                            handleError("tagDuplicateNext", severitySettings, () => factory(`Found duplicate tag '@next ${tag.name}' in doc comments`));
+                        }
+                        else {
+                            tag.type = checkTagHasType(tag, severitySettings, factory);
+                            tag.description = checkTagHasDescription(tag, severitySettings, factory, jsdoc.tags, true);
+                            tag.name = "";
+                            method.next = tag;
                         }
                     }
                     break;
@@ -435,6 +452,7 @@ function getOrCreateMethodAtNestingLevel(node, current, path, offset) {
             generator: false,
             method: undefined,
             name: "",
+            next: undefined,
             node: node,
             params: new NativeInsertionOrderMap(),
             return: undefined,

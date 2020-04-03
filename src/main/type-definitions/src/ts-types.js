@@ -65,55 +65,47 @@ function getArgumentType(type, rest, baseType = "any") {
 
 /**
  * @param {ReturnSpec} spec The base return type and whether is is an async or generator function.
- * @return {string} The 
+ * @return {string} The return type for the function or generator.
  */
-function getReturnType({async, baseTypeReturn, baseTypeYield, generator}) {
+function getReturnType({ async, generator, baseTypeNext, baseTypeReturn, baseTypeYield }) {
     if (baseTypeReturn === "" || baseTypeReturn === "*") {
         baseTypeReturn = "any";
     }
     if (baseTypeYield === "" || baseTypeYield === "*") {
         baseTypeYield = "any";
     }
-    if (!async && !generator) {
-        return baseTypeReturn;
+    if (baseTypeNext === "" || baseTypeNext === "*") {
+        baseTypeNext = "any";
     }
-    else if (async && !generator) {
-        if (baseTypeReturn.startsWith("Promise<")) {
-            return baseTypeReturn;
-         }
-         else {
-             return`Promise<${baseTypeReturn}>`;
-         }
-    }
-    else if (!async && generator) {
-        if (baseTypeReturn.startsWith("IterableIterator<") || baseTypeReturn.startsWith("PrimeFaces.GeneratorResult<")) {
-            return baseTypeReturn;
-        }
-        else if (generator.hasReturn && !generator.hasYield) {
-            return `IterableIterator<${baseTypeReturn}>`;
-        }
-        else if (!generator.hasReturn && generator.hasYield) {
-            return `IterableIterator<${baseTypeYield}>`;
+    if (generator) {
+        const returnType = generator.hasReturn ? baseTypeReturn : "void";
+        const yieldType = generator.hasYield ? baseTypeYield : "never";
+        const nextType = generator.hasNext ? baseTypeNext : "unknown";
+        if (async) {
+            if (generator.hasNext) {
+                return `AsyncGenerator<${yieldType}, ${returnType}, ${nextType}>`;
+            }
+            else {
+                return `AsyncGenerator<${yieldType}, ${returnType}>`;
+            }
         }
         else {
-            return `PrimeFaces.GeneratorResult<${baseTypeYield}, ${baseTypeReturn}>`;
+            if (generator.hasNext) {
+                return `Generator<${yieldType}, ${returnType}, ${nextType}>`;
+            }
+            else {
+                return `Generator<${yieldType}, ${returnType}>`;
+            }
         }
     }
-    else if (generator && async) {
-        if (baseTypeReturn.startsWith("AsyncIterableIterator<") || baseTypeReturn.startsWith("PrimeFaces.AsyncGeneratorResult<")) {
-            return baseTypeReturn;
-        }
-        else if (generator.hasReturn && !generator.hasYield) {
-            return `AsyncIterableIterator<${baseTypeReturn}>`;
-        }
-        else if (!generator.hasReturn && generator.hasYield) {
-            return `AsyncIterableIterator<${baseTypeYield}>`;
+    else {
+        if (async) {
+            return `Promise<${baseTypeReturn}>`;
         }
         else {
-            return `PrimeFaces.AsyncGeneratorResult<${baseTypeYield}, ${baseTypeReturn}>`;
+            return baseTypeReturn;
         }
     }
-    return baseTypeReturn;
 }
 
 /**
@@ -191,7 +183,7 @@ function createMethodSignature(methodCodeInfo) {
         else {
             param = generate(removeInitializerFromPattern(arg.node));
         }
-        const rest = arg.rest ?  "..." : "";
+        const rest = arg.rest ? "..." : "";
         const typedef = arg.typedef !== "" && arg.typedef !== "..." ? removeRestFromType(arg.typedef) : getArgumentType(arg.type, arg.rest);
         // Rest argument cannot be optional
         // Argument with initializer cannot be optional
@@ -221,14 +213,17 @@ function createMethodSignature(methodCodeInfo) {
     // Create return and yield type
     const baseTypeReturn = methodCodeInfo.return.node !== undefined ? methodCodeInfo.return.typedef : "void";
     const baseTypeYield = methodCodeInfo.yield.node !== undefined ? methodCodeInfo.yield.typedef : "void";
+    const baseTypeNext = methodCodeInfo.next.node !== undefined ? methodCodeInfo.next.typedef : "void";
     const returnType = getReturnType({
         async: methodCodeInfo.isAsync,
+        baseTypeNext: baseTypeNext,
+        baseTypeReturn: baseTypeReturn,
+        baseTypeYield: baseTypeYield,
         generator: !methodCodeInfo.isGenerator ? undefined : {
+            hasNext: methodCodeInfo.next.node !== undefined,
             hasReturn: methodCodeInfo.return.node !== undefined,
             hasYield: methodCodeInfo.yield.node !== undefined,
         },
-        baseTypeReturn: baseTypeReturn,
-        baseTypeYield: baseTypeYield,
     });
 
     return {

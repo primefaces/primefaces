@@ -3,7 +3,7 @@
 const { parsePattern } = require("./acorn-util");
 const { createTagForTypeParameter } = require("./create-tags");
 const { getArgVariableInfo, getArgumentInfo } = require("./create-code-info-params");
-const { checkTagHasType }  = require("./doc-comment-check-tags");
+const { checkTagHasType } = require("./doc-comment-check-tags");
 const { handleError, newNodeErrorMessage } = require("./error");
 const { NativeInsertionOrderMap } = require("./InsertionOrderMap");
 const { countNonEmptyArraySlots } = require("./lang");
@@ -48,10 +48,10 @@ function createMethodCodeInfoFromTags(severitySettings, method, additionalTempla
                 const argVarInfo = getArgVariableInfo(pattern);
                 argInfo.typedef = removeRestFromType(arg.pattern.type);
                 argInfo.rest = argInfo.rest || hasRestSpecifier(arg.pattern.type);
-                argInfo.initializer  = arg.pattern.default || argInfo.initializer || "";
+                argInfo.initializer = arg.pattern.default || argInfo.initializer || "";
                 argInfo.required = !arg.pattern.optional;
                 argumentInfo[index] = argInfo;
-                argVarInfo.map(x => x.name).forEach(x => destructuredVars.add(x));    
+                argVarInfo.map(x => x.name).forEach(x => destructuredVars.add(x));
             }
         }
         const remainingParamsMap = new NativeInsertionOrderMap(method.params);
@@ -60,9 +60,9 @@ function createMethodCodeInfoFromTags(severitySettings, method, additionalTempla
                 handleError("tagMissingParamForStructure", severitySettings, () => factory(`Found destructured variable ${name} in @structure tag, but no corresponding '@param {...} ${name}' was found`));
             }
             remainingParamsMap.delete(name);
-        }    
+        }
         const remainingParams = remainingParamsMap.toArray().reverse().filter(x => !destructuredVars.has(x.name));
-        const argCount =  Math.max(argumentInfo.length, countNonEmptyArraySlots(argumentInfo) + remainingParams.length);
+        const argCount = Math.max(argumentInfo.length, countNonEmptyArraySlots(argumentInfo) + remainingParams.length);
         for (let index = 0; index < argCount; ++index) {
             if (argumentInfo[index] === undefined) {
                 const tag = remainingParams.pop();
@@ -117,6 +117,16 @@ function createMethodCodeInfoFromTags(severitySettings, method, additionalTempla
             typedef: method.yield === undefined || method.yield.type === undefined ? "" : method.yield.type,
         };
 
+        /** @type {YieldInfo} */
+        const nextInfo = {
+            node: method.next === undefined ? undefined : {
+                type: "YieldExpression",
+                delegate: false,
+            },
+            typedef: method.next === undefined || method.next.type === undefined ? "" : method.next.type,
+        };
+
+
         /** @type {DocInfoTemplate[]} */
         const templateInfo = tagToDocInfoTemplate(templates);
         return {
@@ -126,6 +136,7 @@ function createMethodCodeInfoFromTags(severitySettings, method, additionalTempla
             isAsync: method.async,
             isGenerator: method.generator,
             name: method.name,
+            next: nextInfo,
             return: returnInfo,
             thisTypedef: method.thisTypedef,
             variables: variableInfo,
@@ -152,6 +163,11 @@ function createMethodDocInfoFromTags(method, additionalTemplates, additionalTags
             additionalTags: additionalTags,
             typedefs: [],
             description: method.method ? method.method.description || "" : "",
+            next: {
+                description: method.next !== undefined ? method.next.description : "",
+                hasNext: method.next !== undefined,
+                typedef: method.next !== undefined ? method.next.type : "",
+            },
             patterns: new Map(Array.from(method.destructuring, ([index, info]) => [index, {
                 index: index,
                 typedef: info.pattern ? info.pattern.type || "" : "",
@@ -192,7 +208,7 @@ function createMethodDocInfoFromTags(method, additionalTemplates, additionalTags
  */
 function createTopLevelDocData(objectDefinition, objectDocInfo) {
     // @template
-    
+
     /** @type {Set<string>} */
     const processedTypeParams = new Set();
     /** @type {import("comment-parser").Tag[]} */
@@ -235,7 +251,7 @@ function createTopLevelDocData(objectDefinition, objectDocInfo) {
  */
 function makeNamespacedTypeForObject(objectDefinition, docInfo, indent) {
     const shape = docInfo.shape;
-    const {name: exportName, namespace: exportNamespace} = typeToNamespacedName(shape.export.name || "");
+    const { name: exportName, namespace: exportNamespace } = typeToNamespacedName(shape.export.name || "");
     const docData = createTopLevelDocData(objectDefinition, docInfo);
     const exportType = shape.export.type && shape.export.type !== "unspecified" ? shape.export.type : objectDefinition.spec.type;
     const namespaceOnly = exportType === "namespace";

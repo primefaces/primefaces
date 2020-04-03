@@ -101,22 +101,6 @@ declare namespace PrimeFaces {
     export type PartialBy<Base, Key extends keyof Base> = Omit<Base, Key> & Partial<Pick<Base, Key>>;
 
     /**
-     * Construct a new type that represents the result of calling a generator function. May be changed in the future
-     * when typescript supports distinguishing between the yield and the return value.
-     * @typeparam TYield Type of the yielded value.
-     * @typeparam TResult Type of the result value.
-     */
-    export type GeneratorResult<TYield, TReturn> = IterableIterator<TYield | TReturn>;
-
-    /**
-     * Construct a new type that represents the result of calling an asynchronous generator function. May be changed in
-     * the future when typescript supports distinguishing between the yield and the return value.
-     * @typeparam TYield Type of the yielded value.
-     * @typeparam TResult Type of the result value.
-     */
-    export type AsyncGeneratorResult<TYield, TReturn> = AsyncIterableIterator<TYield | TReturn>;
-
-    /**
      * Constructs a new type by intersecting the given `Base` with `void`. This is a hack, required because some methods
      * of a parent class explicitly return a value, but some derived classes do not.
      * @typeparam Base Base type to intersect

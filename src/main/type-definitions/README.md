@@ -10,9 +10,36 @@ It
 1. gathers type information from the doc comments,
 1. validates that there are no obvious mistakes such as undocumented returns,
 1. creates a type declarations file, and
-1. generates the JavaScript API documentation.
+1. generates the JavaScript API documentation as HTML pages.
 
-## Build
+## Contents
+
+- [Build](#build)
+- [Technical overview](#technical-overview)
+- [Documenting a widget](#documenting-a-widget)
+    * [Basic widget documentation](#basic-widget-documentation)
+        + [Methods](#methods)
+        + [Widget header](#widget-header)
+        + [Properties](#properties)
+        + [Widget configuration](#widget-configuration)
+- [Advanced documenting](#advanced-documenting)
+    * [Excluding source files](#excluding-source-files)
+    * [Additional type declarations](#additional-type-declarations)
+    * [Namespaces](#namespaces)
+    * [DefinitelyTyped](#definitelytyped)
+    * [Overriding a method](#overriding-a-method)
+    * [Typedef](#typedef)
+    * [Interfaces](#interfaces)
+    * [Type parameters](#type-parameters)
+    * [Optional parameters and initializers](#optional-parameters-and-initializers)
+    * [Destructuring](#destructuring)
+    * [Asynchronous methods and generators](#asynchronous-methods-and-generators)
+- [Style and conventions](#style-and-conventions)
+    * [Typescript types](#typescript-types)
+    * [Doc comments](#doc-comments)
+    * [Private and public methods](#private-and-public-methods)
+
+# Build
 
 Building is integrated into the maven build process, just run
 
@@ -21,7 +48,8 @@ mvn clean install
 ```
 
 This will generate the type declaration file in the target directory
-`target/type-decarlation/`.
+`target/type-declaration/`.  It will also lint the declarations file for
+common mistakes and errors.
 
 Add the profile `release` to create the JavaScript API documentation:
 
@@ -29,7 +57,7 @@ Add the profile `release` to create the JavaScript API documentation:
 mvn clean install -P release
 ```
 
-The doc files can be found in `doc/<current_version>`.
+The doc files can then be found in `docs/<current_version>/jsdoc`.
 
 ---
 
@@ -54,7 +82,7 @@ npm run test
 
 # Run just a specific test
 node test/index.js -- TsValidateTest --verbose
-# Run just a specifc subtest of a test
+# Run just a specific sub test of a test
 node test/index.js -- "TsValidateTest#ValidationError" --verbose
 
 # Generates the type declaration file and the API documentation via typedoc
@@ -71,7 +99,7 @@ To see a list of all available options, run
 npm run generate-d-ts -- --help
 ```
 
-## Technical overview
+# Technical overview
 
 More technically speaking, the following steps are performed to create the the
 JavaScript API docs::
@@ -105,35 +133,41 @@ JavaScript API docs::
       type declarations file to check form common mistakes, such as `Function`
       or `Object`.
 
-## TODOs
+If you are wondering, _why not just use JSDoc?_
 
-* Revise this README.md -> tutorial on how to doc a widget
+* I checked out JSDoc and tries to use it for the documentation, but it's got
+  several minor issues that could be worked around and one to two major issues:
+    * The major issue is that JSDoc uses its own type system that is
+      fundamentally incompatible with TypeScript types. For simple types such as
+      `string` and `number`, that's not an issues, but JSDoc starts complaining
+      as soon you try to use more complex types such as
+      `(x: number) => boolean`, `{[key: string]: boolean}`, or
+      `import("foo").Bar`.
+    * It's also not obvious how to generate a type declaration file via JSDoc.
+      There are tools like [tsd-jsdoc](https://github.com/englercj/tsd-jsdoc),
+      but they don't solve the issues above and come with their own limitations.
+* There's also ESDoc, with similar issues to JSDoc. It's also meant for
+  module-like files and hasn't got tags for converting the pseudo widget
+  classes.
 
-## Questions
-
-* Publish to NPM?
-* Update *.MD user guide files?
-* Is the workflow / build process ok or should it be changed ?
-* Possibly extract the JavaScript / NPM stuff into a maven plugin ?
-* Quick smoke test that each widget is still working
-* Test build with Windows
-
-## Documenting a widget
+# Documenting a widget
 
 You can add doc comments and type annotations directly in the JavaScript code.
-During the build process, we parse the JavaScript and extract the relevant doc
-comments and types, and generate a type declarations file from that. If you make
-any mistakes, you will get a (hopefullly very helpful) warning or error when you
-build the the project.
+During the build process, the JavaScript gets parsed and the relevant doc
+comments and types are extracted. Based on that, a type declarations file is
+generated. If you make any mistakes, you will get a (hopefully helpful) warning
+or error when you build the the project.
 
-In general, we tried to keep the syntax as close to [jsdoc](https://jsdoc.app)
-as possible, but a few customizations (mainly new tags) had to be made to allow
-for creating high-quality type declaration files.
+In general, the syntax closely resembles [jsdoc](https://jsdoc.app), but a few
+customizations (mainly new tags) had to be made to allow for the creation of
+high-quality type declaration files.
 
 You can always take a look at widgets that are already documented to see how
-it's done. Below are a few tips to help you get started.
+it's done. You can find them in
+`src/main/resources/META-INF/resources/primefaces` Below are a few tips to help
+you get started.
 
-### Basic widget
+## Basic widget documentation
 
 Let's start with a simple case, a widget that has got some
 
@@ -141,277 +175,339 @@ Let's start with a simple case, a widget that has got some
 * some internal state (properties),
 * and some configuration (`cfg`)
 
-Let's take the `AccordionalPanel` as an example. Without any documentation, it
-looks like this (implementation and some details omitted):
+Let's take the AccordionPanel (`accordion.js`) as an example. Without any
+documentation, it looks like this (implementation and some details omitted):
 
 ```javascript
 PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
     }
-    initActive: function() {
-    },
-    bindEvents: function() {
-    },
-    select: function(index) {
-    },
-    unselect: function(index) {
-    }
+
+    initActive: function() {},
+    
+    bindEvents: function() {},
+    
+    select: function(index) {},
+    
+    unselect: function(index) {}
 });
 ```
 
-First, we start by adding `@private` to methods that are used only internally
-and that we do not want to expose to the public, eg because they are subject to
-change. (Note that methods that start with an underscore `_` are exclude by
-default. If you want to include them, add `@public`.)
+### Methods
+
+First, we start by documenting the methods (the easiest part). We need to add
+a short description of what the method does, and figure out the types of the
+parameters and the return value. We use the `@param` and `@return` tags for
+that.
+
+> __Note:__ All @tags need to be placed after the description of the method.
+
+If a method is not meant to be used from outside the widget, add the `@private`
+tag before the other tags. You can also use `@protected` for methods that can
+be used by a sub class. If you are wondering how to decide whether a method
+should be private or public,
+[see below for some guidance](#private-and-public-methods).
+
+> __Note:__ The build process checks for inconsistencies in the class hierarchy.
+So for example, you can't make a method public in one class but mark it as
+@protected in a sub class; or have a method in a sub class that needs more
+parameters than the super class. 
+
+> __Note:__ Methods that start with an underscore `_` are excluded by default. If
+you want to include them, add `@public`.)
+
+As a convention, order the tags the way the corresponding tokens would appear
+in Java or TypeScript - first `@private`, then [@typeparam](#type-parameters)
+and `@param`, then `@return`.
+
+With that in mind, here's how the accordion widget looks like with documented
+methods:
+
+<details>
+<summary>Click to see code snippet</summary>
 
 ```javascript
 PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
+
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     */
     init: function(cfg) {
-        this._super(cfg);
+      this._super(cfg);
     }
     
     /**
+     * Called when this accordion panel is initialized. Reads the selected
+     * panels from the saved state, see also `saveState`.
      * @private
      */
     initActive: function() {
     },
 
     /**
+     * Binds all event listeners required by this accordion panel.
      * @private
      */
     bindEvents: function() {
     },
 
+    /**
+     * Activates (opens) the tab with given index. This may fail by returning
+     * `false`, such as when a callback is registered that prevent the tab from
+     * being opened.
+     * @param {number} index 0-based index of the tab to open. Must not be out
+     * of range.
+     * @return {boolean} `true` when the given panel is now active, `false`
+     * otherwise. 
+     */
     select: function(index) {
     },
 
+    /**
+     * Deactivates (closes) the tab with given index.
+     * @param {number} index 0-based index of the tab to close. Must not be out
+     * of range.
+     */
     unselect: function(index) {
     }
 });
 ```
+
+</details>
+
+See how we added the `@param` tag to the `select` and `unselect` method? You
+might have noticed the `@param` tag consist of several parts:
+
+1. The type of the parameter, enclosed in braces (`{number}`).
+1. The name of parameter (`index`).
+1. A short description of the parameter itself. It can span multiple lines.
+
+> __Note__ The build process checks whether the parameters declared by code
+match the parameters you annotated with `@param` tags. So if you misspell then
+name of a parameter or forget to document a parameter, you'll be informed when
+you run `mvn install`.
+
+The types you can add are `TypeScript` types. The most basic types correspond to
+the basic JavaScript types - `number`, `boolean`, `string`, as well as
+`undefined` and `null`. But TypeScript offers many more types that help to make
+the documentation clearer, such as via [@typedef](#typedef). For a technical overview, see the
+TypeScript manual pages on
+[Basic Types](https://www.typescriptlang.org/docs/handbook/basic-types.html) and
+[Advanced Types](https://www.typescriptlang.org/docs/handbook/advanced-types.html).
+
+The `@return` tags works pretty much the same. The only difference is that
+there's no need for a name, as a method can return only one value. Oh, and of
+course, no return tag is needed when the method does not return a value.
+
+> __Note__ The build process checks for return values as well. So you'll be
+informed in case you forget to document a return value.
+
+But wait, there's more. If you took a close look at the code above, you'll have
+noticed there are some strange tags on the `init` method:
+
+```javascript
+/**
+ * @override
+ * @inheritdoc
+ * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+ */
+init: function(cfg) {
+  this._super(cfg);
+}
+```
+
+What's going on with `@override` and `@inheritdoc`? Well, the `AccordionWidget`
+actually inherits from the `BaseWidget`. And the base widget already declares
+an `init` method. It`s marked as protected, so we can override it. To indicate
+that, we add the `@override` tag.
+
+Now remember I said we had add a description for the method and its parameters?
+Well, the `BaseWidget` has already got a description. So why repeat it? That's
+what the `@override` tag is for. It tells the build process it should copy the
+description from the parent method.
 
 Next, we add documentation for the other methods of the widget. A `@param` tag
 for the parameters (arguments) and a `@return` tag for the return value. If a
 method does not return anything (= no `return <value>` in the code), omit the
 `@return` tag.
 
-```javascript
-PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
-    /**
-     * @override
-     * @inheritdoc
-     * @param {PrimeFaces.widget.AccordionPanelCfg} cfg
-     */
-    init: function(cfg) {
-        this._super(cfg);
-    }
-    
-    /**
-     * @private
-     */
-    initActive: function() {
-    },
+That leaves us with the pretty complex type for the `cfg` parameter. This is
+explained in detail further below. So for now, let's just say that `TCfg` is
+a type parameter that represents all the settings of the widget, and
+`PartialWidgetCfg` makes it so that all options are optional (can be
+`undefined`). Just remember that this is the standard doc comment (boilerplate)
+you should always add to the `init` method.
 
-    /**
-     * @private
-     */
-    bindEvents: function() {
-    },
+Alright, that covers the basics for methods. On to the widget header.
 
-    /**
-     * Activates (opens) the tab with given index. This may fail by returning `false`, such
-     * as when a callback is registered that prevent the tab from being opened.
-     * @param {number} index 0-based index of the tab to open. Must not be out of range.
-     * @return {boolean} `true` when the given panel is now active, `false` otherwise. 
-     */
-    select: function(index) {
-    },
+### Widget header
 
-    /**
-     * Deactivates (closes) the tab with given index.
-     * @param {number} index 0-based index of the tab to close. Must not be out of range.
-     */
-    unselect: function(index) {
-    }
-});
-```
+We also need to add some documentation for the widget class itself. This will
+also be the part where we'll document the state and configuration of the widget.
 
-For each parameter, we add the type of the parameter in braces, directly after
-the tag. If you are wondering what kind of types you can use, see below and
-check out the official
-[typescript documentation -> basic types](https://www.typescriptlang.org/docs/handbook/basic-types.html).
+Before we take a look at a sample, let's summarize the information we need to
+include (in the order it should appear in the doc comment):
 
-Did you notice some for the `init` method? It references the
-`PrimeFaces.widget.AccordionPanelCfg`. Each widget has got a configuration
-object that it receives from the server. This configuration is accessible via
-the `cfg` property on the widget instance. So let's specify the structure and
-the types of this configuration object. We can do this by adding doc comment
-to the widget itself:
+1. A general description of the widget, such as what it does or what it is meant
+   for.
+1. Additional TypeScript types and interfaces that we need for the widget.
+1. A list of all properties (fields) the widget has got, i.e. the widget state.
+1. A list of all configuration keys. The configuration is stored in the `cfg`
+   property of the widget. This will be an interface and you might think it
+   should be placed under (2). But the configuration interface is vital to all
+   widgets and as a matter of style, is separated from the other parts.
+
+The second part, additional types and interfaces are covered in the
+[advanced section below](#advanced-documenting). For now, let's take a look at
+the other three parts. Returning to our accordion example, the header looks like
+this:
+
+<details>
+<summary>Click to see code snippet</summary>
 
 ```javascript
 /**
  * __PrimeFaces AccordionPanel Widget__
  * 
- * The AccordionPanel is a container component that displays content in a stacked format.
- * 
- * @interface {PrimeFaces.widget.AccordionPanelCfg} cfg The configuration for the {@link  AccordionPanel| AccordionPanel widget}.
- * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
- * configuration is usually meant to be read-only and should not be modified.
- * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * @prop {number[]} cfg.active List of tabs that are currenty active (open). Eaach item is a 0-based index of a tab.
- * @prop {boolean} cfg.cache `true` if activating a dynamic tab should not load the contents from server again and use
- * the cached contents; or `false` if the caching is disabled.
- * @prop {string} cfg.collapsedIcon The icon class name for the collapsed icon.
- * @prop {boolean} cfg.controlled `true` if a tab controller was specified for this widget; or `false` otherwise. A tab
- * controller is a server side listener that decides whether a tab change or tab close should be allowed.
- * @prop {boolean} cfg.dynamic `true` if the contents of each panel are loaded on-demand via AJAX; `false` otherwise.
- * @prop {string} cfg.expandedIcon The icon class name for the expanded icon.
- * @prop {boolean} cfg.multiple `true` if multiple tabs may be open at the same time; or `false` if opening one tab
- * closes all other tabs.
- * @prop {boolean} cfg.rtl `true` if the current text direction `rtl` (right-to-left); or `false` otherwise.
- */
-PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
-    /**
-     * Initializes this accordion widget and sets up all events.
-     * @param {PrimeFaces.widget.AccordionPanelCfg} cfg Configuration as created in the renderer.
-     */
-    init: function(cfg) {
-        this._super(cfg);
-    }
-    
-    /**
-     * @private
-     */
-    initActive: function() {
-    },
-
-    /**
-     * @private
-     */
-    bindEvents: function() {
-    },
-
-    /**
-     * Activates (opens) the tab with given index. This may fail by returning `false`, such
-     * as when a callback is registered that prevent the tab from being opened.
-     * @param {number} index 0-based index of the tab to open. Must not be out of range.
-     * @return {boolean} `true` when the given panel is now active, `false` otherwise. 
-     */
-    select: function(index) {
-    },
-
-    /**
-     * Deactivates (closes) the tab with given index.
-     * @param {number} index 0-based index of the tab to close. Must not be out of range.
-     */
-    unselect: function(index) {
-    }
-});
-```
-
-Alright, this might be a lot at once, but let's take a look at each part:
-
-* `@interface {PrimeFaces.widget.AccordionPanelCfg} cfg`
-    * This defines the name of the widget configuration object. By convention,
-      we use the name of the widget with the suffix `Cfg`.
-    * In case you are curious, yes, this means a new `interface` will be created
-      in the type declaration file.
-* `@extends {PrimeFaces.widget.BaseWidgetCfg} cfg`
-    * This makes the configuration inherit all properties from the base widget
-      configuration. This includes properties such as `id` and `widgetVar`. This
-      way, we can just inherit them and do not have to specify them ourselves.
-* `@prop {PrimeFaces.widget.AccordionPanelCfg} cfg`
-    * Now that we created an interface, we can add a `cfg` property and simply
-      make its type that interface.
-* `@prop {number[]} cfg.active`
-    * To specify the properties of the configuration object, we add more `@prop`
-      tags. The property will be named `active`, but we need to add `cfg.` to
-      indicate that this is a property of the configuration object, not of the
-      widget itself.
-
-Now we are almost done. The widget has also got some properties of its own,
-which we also add to the header:
-
-```javascript
-/**
- * __PrimeFaces AccordionPanel Widget__
- * 
- * The AccordionPanel is a container component that displays content in a stacked format.
+ * The AccordionPanel is a container component that displays content in a
+ * stacked format.
  * 
  * @prop {JQuery} headers The DOM elements for the header of each tab.
- * @prop {JQuery} panels The DOM elements for the content of each tab pabel.
+ * @prop {JQuery} panels The DOM elements for the content of each tab panel.
+ * @prop {JQuery} stateHolder The DOM elements for the hidden input storing
+ * which panels are expanded and collapsed.
  * 
- * @interface {PrimeFaces.widget.AccordionPanelCfg} cfg The configuration for the {@link  AccordionPanel| AccordionPanel widget}.
- * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
- * configuration is usually meant to be read-only and should not be modified.
+ * @interface {PrimeFaces.widget.AccordionPanelCfg} cfg The configuration for
+ * the {@link  AccordionPanel| AccordionPanel widget}. You can access this
+ * configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}.
+ * Please note that this configuration is usually meant to be read-only and
+ * should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * @prop {number[]} cfg.active List of tabs that are currenty active (open). Eaach item is a 0-based index of a tab.
- * @prop {boolean} cfg.cache `true` if activating a dynamic tab should not load the contents from server again and use
- * the cached contents; or `false` if the caching is disabled.
+ * 
+ * @prop {number[]} cfg.active List of tabs that are currently active (open).
+ * Each item is a 0-based index of a tab.
+ * @prop {boolean} cfg.cache `true` if activating a dynamic tab should not load
+ * the contents from server again and use the cached contents; or `false` if the
+ * caching is disabled.
  * @prop {string} cfg.collapsedIcon The icon class name for the collapsed icon.
- * @prop {boolean} cfg.controlled `true` if a tab controller was specified for this widget; or `false` otherwise. A tab
- * controller is a server side listener that decides whether a tab change or tab close should be allowed.
- * @prop {boolean} cfg.dynamic `true` if the contents of each panel are loaded on-demand via AJAX; `false` otherwise.
+ * @prop {boolean} cfg.controlled `true` if a tab controller was specified for
+ * this widget; or `false` otherwise. A tab controller is a server side listener
+ * that decides whether a tab change or tab close should be allowed.
+ * @prop {boolean} cfg.dynamic `true` if the contents of each panel are loaded
+ * on-demand via AJAX; `false` otherwise.
  * @prop {string} cfg.expandedIcon The icon class name for the expanded icon.
- * @prop {boolean} cfg.multiple `true` if multiple tabs may be open at the same time; or `false` if opening one tab
- * closes all other tabs.
- * @prop {boolean} cfg.rtl `true` if the current text direction `rtl` (right-to-left); or `false` otherwise.
+ * @prop {boolean} cfg.multiple `true` if multiple tabs may be open at the same
+ * time; or `false` if opening one tab closes all other tabs.
+ * @prop {boolean} cfg.rtl `true` if the current text direction `rtl`
+ * (right-to-left); or `false` otherwise.
  */
 PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
-    /**
-     * Initializes this accordion widget and sets up all events.
-     * @param {PrimeFaces.widget.AccordionPanelCfg} cfg Configuration as created in the renderer.
-     */
-    init: function(cfg) {
-        this._super(cfg);
-    }
-    
-    /**
-     * @private
-     */
-    initActive: function() {
-    },
 
-    /**
-     * @private
-     */
-    bindEvents: function() {
-    },
+  // omitted for brevity
 
-    /**
-     * Activates (opens) the tab with given index. This may fail by returning `false`, such
-     * as when a callback is registered that prevent the tab from being opened.
-     * @param {number} index 0-based index of the tab to open. Must not be out of range.
-     * @return {boolean} `true` when the given panel is now active, `false` otherwise. 
-     */
-    select: function(index) {
-    },
-
-    /**
-     * Deactivates (closes) the tab with given index.
-     * @param {number} index 0-based index of the tab to close. Must not be out of range.
-     */
-    unselect: function(index) {
-    }
 });
 ```
+
+</details>
+
+The description is pretty simple and comes at the beginning as usual, before
+all tags. As a matter of convention, the first line contains the name of the
+widget in bold.
+
+> __Note:__ You can use markdown in the doc comments to add some basic 
+formatting.
+
+### Properties
+
+After the description, you can see the documentation for the three properties
+of the widget:
+
+```javascript
+/**
+ * @prop {JQuery} headers The DOM elements for the header of each tab.
+ * @prop {JQuery} panels The DOM elements for the content of each tab panel.
+ * @prop {JQuery} stateHolder The DOM elements for the hidden input storing
+ * which panels are expanded and collapsed.
+ */
+```
+
+Notice it looks pretty similar to the `@param` tag of methods? It consists of a
+type, the name of the property, and a description for the property. Many widget
+properties are references to DOM elements in a JQuery wrapper. For these we use
+the type `JQuery`, which is defined by the
+[type declaration for JQuery](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/jquery).
+
+> __Note:__ When the description doesn't fit on single line, add a line
+break. A line should not be longer than 120 characters (with some minor
+exceptions such as long, complex types or long links). Also, don't indent lines,
+start immediately after the asterisk (`*`) at the beginning of the line.
+
+### Widget configuration
+
+Did you notice something in the `init` method earlier on? It takes a parameter
+called `cfg` and passes it to the super method. This is widget configuration and
+it's stored in the property `this.cfg`. Usually this configuration object comes
+from the server when it renders the HTML for the widget, and is usually defined
+in an `xhtml` file. 
+
+Since this configuration is so fundamental to a widget, the base widget from
+which all widgets inherit (with one minor exception) defines a type parameter
+for that configuration. It lets the base widget know about the available
+configuration properties, which it needs for defining the type of some basic
+methods common to all widgets. What that means is that we don't have to worry
+about it - all we need to do is document the configuration and tell the bas
+class about it:
+
+```javascript
+/**
+ * @interface {PrimeFaces.widget.AccordionPanelCfg} cfg The configuration for
+ * the {@link  AccordionPanel| AccordionPanel widget}. You can access this
+ * configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {number[]} cfg.active List of tabs that are currently active (open).
+ * Each item is a 0-based index of a tab.
+ * 
+ * (omitted for brevity)
+ */
+```
+
+1. The first line declares a new interface for our accordion panel configuration
+   that will contain all the available configuration properties.
+1. The second lines contains the `@extends` tag. We use it to extend the base
+   widget configuration, which contains common properties such as `id` and
+   `widgetVar`. Note that we don't have to repeat these properties here.
+1. On the third line, we declare the actual properties of the widget
+   configuration. This is the same as the widget properties, with one minor
+   difference: The name of each configuration __is prefixed with `cfg.` - if we
+   had not added this prefix, it would be misinterpreted as a property of the
+   widget itself__. Be careful here!
+
+> __Note:__ Another thing the careful reader may have noticed. We can add
+references to other symbols (classes, interfaces etc.) via the
+`{@link SomeNamespace.SomeClass}`. To change the displayed text of the rendered
+link, use a vertical bar: `{@link SomeNamespace.SomeClass|Click here}`.
 
 To finish the widget documentation, we can add additional tags, such as
 `@author` (who wrote the widget?) or `@since` (which version was it added?).
 
-## Advanced documenting
+# Advanced documenting
 
 Sometimes types are getting more complex. Below are some of the more common
 cases. See also the tests in `src/main/type-definitions/specs/` for more
-examples.
+examples on how to use the various tags.
 
 ## Excluding source files
 
-All JS files in `src/main/resources/META-INF/resources/primefaces` are processed
-by default. Some of those files are third-party libraries and some have got
-JSDoc comments that are invalid. To prevent these libraries from being processed
-at all, add them to the blacklist in `src/main/type-definitions/blacklist.txt`:
+All JavaScript files in `src/main/resources/META-INF/resources/primefaces` are
+processed by default. Some of those files are third-party libraries and some
+have got doc comments that are invalid.
+
+To prevent these libraries from being processed, add them to the blacklist in
+`src/main/type-definitions/blacklist.txt`, which looks like this:
 
 ```
 # List of files to be excluded from the type declaration file.
@@ -422,9 +518,9 @@ keyboard/0-jquery.keypad.js
 touch/touchswipe.js
 ```
 
-### Additional type declarations
+## Additional type declarations
 
-If you need to do advanced typings that cannot be done via doc comments, you
+If you need to create advanced typings that cannot be done via doc comments, you
 can create a separate `*.d.ts` file in a widget directory. As long as it ends
 in `.d.ts`, is is picked up automatically:
 
@@ -437,14 +533,69 @@ in `.d.ts`, is is picked up automatically:
         * calendar.js
         * AdditionalDeclarations.d.ts
 
-In case more that one type declaration files are found for a component, the
-files are sorted alphabetically.
+> __Note:__ Separate declaration files are recommended for documenting included
+third-party libraries.
+
+In case more multiple type declaration files are found, the files are sorted
+alphabetically.
+
+## Namespaces
+
+The type declarations for PrimeFaces are organized via namespaces and do not
+make make use of modules. Namespaces are a perfect fit since PrimeFaces is
+always loaded into the global window scope and not bundled as a module.
+
+The main namespace is `PrimeFaces`, with sub namespaces such as `widget`,
+`ajax` etc. These reflect the actual namespaces as declared by the PrimeFaces
+JavaScript.
+
+There are a few rare cases where you need additional type declarations that
+augment a module (via `declare module`). Adding these would break the
+PrimeFaces declaration file.  To work around this, the build process checks
+whether an additional type declaration file contains any `import` or
+`declare module` statements. It it does, it's not added to the main
+`PrimeFaces.d.ts` file, but to the separate `PrimeFaces-module.d.ts` file. See
+`mindmap.d.ts` for an example.
+
+## DefinitelyTyped
+
+DefinitelyTypes is a
+[repository for high quality TypeScript type definitions](https://github.com/DefinitelyTyped/DefinitelyTyped). When you document a widget that uses some
+third-party library, you should first check there whether they have already got
+the types for that library. If they do, you can simply add the types via
+
+```sh
+cd src/main/type-definitions/
+npm install `@types/<library-name>`
+```
+
+> __Note:__ Occasionally the NPM module itself comes bundles with type
+declarations. In this case, just install the library directly:
+`npm install <library-name>`.
+
+Next, you need to edit the main `pom.xml` and look for a line that contains
+`--includemodules`. This is a list of all [NPM modules](https://www.npmjs.com/)
+modules that should be included in the generated typedocs. Add the name of the
+third-party library there.
+
+> __Note:__ Please also update the `JSDOC.md` file where it tells users about
+the NPM types they may have to install.
+
+Finally, depending on the type of the declarations, you may have to:
+
+1. Add a
+   [triple-slash directive](https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html)
+   to the beginning or `core.d.ts` (if it's a global library)
+1. Use
+  [import types](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-9.html#import-types)
+  in the widget documentation (if it's a modular library).
+
 
 ## Overriding a method
 
 Sometimes a subclass overrides a method of the base class. In this, case add the
 `@override` tag. If you want to inherit the doc comment from the parent class as
-well, also add the `@inheritdoc` tag. This tag only inherits the documeation,
+well, also add the `@inheritdoc` tag. This tag only inherits the documentation,
 not the typings of the method. This means you still need to add the `@param` and
 `@return` tags to indicate the type, but you can leave the description empty:
 
@@ -462,7 +613,7 @@ PrimeFaces.widget.SubWidget = PrimeFaces.widget.BaseWidget.extend({
 });
 ```
 
-### Typedefs
+## Typedef
 
 If you need to add a type for convenience, you can do so via `@typedef` tag:
 
@@ -498,25 +649,120 @@ namespace PrimeFaces.widget {
 }
 ```
 
-Note that you can also use the `@typedef` tag on a method, this will behave the
-same way as if you had added it to the widget.
+> __Note:__ You can also use the `@typedef` tag on a method, this will behave
+the same way as if you had added it to the widget. But for clarity, prefer to
+add the typedef to the widget header.
 
-Note however, that I personally prefer putting these additional declarations in
-a separate `.d.ts` file.
+Some common use cases where a typedef is recommended include:
 
-### Generics
+1. String unions. For example, consider a widget configuration property named
+  `selectionMode`. It's not just any string, but can only take the values
+  `single` and `multiple`. The type, therefore, should be
+  `"single" | "multiple"`. Using a typedef for this has several advantages: (a)
+  it follows the DRY principle as you don't have to repeat the string constants
+  every time you need to use the type; (b) it lets you document the meaning
+  of the individual options in one place; and (c) it doesn't result in the type
+  taking up the entire first line of the widget property declaration.
+1. Callbacks. Same as for string unions. Consider a widget configuration
+   property that is named `onShow`. It's type is a function type with a this
+   context, two parameters, and a return value. Refactoring this type into a
+   typedef has the same advantages as for string unions. And in addition, it
+   also makes it easier to document the parameters (see the example below).
+
+A typedef can also define a function type. In this case you should document
+the parameters and the return type. Here's an example of how it works (taken
+from the `TabView` widget):
+
+```javascript
+/**
+ * @typedef PrimeFaces.widget.TabView.OnTabCloseCallback Client side callback to
+ * execute on tab close. When the callback returns `false`, the tab is not
+ * closed. See also {@link TabViewCfg.onTabClose}.
+ * @this {PrimeFaces.widget.TabView} PrimeFaces.widget.TabView.OnTabCloseCallback
+ * @param {number} PrimeFaces.widget.TabView.OnTabCloseCallback.index 0-based
+ * index of the tab that is about to be closed.
+ * @return {boolean} PrimeFaces.widget.TabView.OnTabCloseCallback `true` to
+ * close the tab, `false` to keep the tab open.
+ */
+```
+
+This will result in the following typedef:
+
+```typescript
+declare namespace PrimeFaces.widget.TabView {
+  /**
+   * Client side callback to execute on tab close. When the callback
+   * returns `false`, the tab is not closed. See also {@link TabViewCfg.onTabClose}.
+   */
+  export type OnTabCloseCallback =
+  /**
+   * @param index 0-based index of the tab that is about to be
+   * closed.
+   * @return `true` to close the tab, `false` to keep the tab
+   * open.
+   */
+  (this: PrimeFaces.widget.TabView, index: number) => boolean;
+}
+```
+
+## Interfaces
+
+You can also define an additional interface in a widget header and use it for
+the widget's properties and methods. This works the same way as the interface
+for the widget configuration - use the `@interface` tag:
+
+```javascript
+/**
+ * @interface {PrimeFaces.widget.Knob.ColorTheme} ColorTheme A color theme for
+ * the knob, consisting of the color for the filled and unfilled part of the
+ * knob.
+ * @prop {string} ColorTheme.fgColor The foreground color, i.e. the color of the
+ * filled part of the knob. Must be a CSS color, e.g. `#ff0000`.
+ * @prop {string} ColorTheme.bgColor The background color, i.e. the color of the
+ * unfilled part of the knob. Must be a CSS color, e.g. `#ff0000`.
+ */
+```
+
+The code above create an interface name `Color` theme in the namespace
+`PrimeFaces.widget.Knob`. That interfaces declares two properties, `fgColor` and
+`bgColor`, both of type `string`:
+
+```typescript
+declare namespace PrimeFaces.widget.Knob {
+  /**
+   * A color theme for the knob, consisting of the color for the
+   * filled and unfilled part of the knob.
+   */
+  export interface ColorTheme {
+    /**
+     * The background color, i.e. the color of the unfilled part of the knob.
+     * Must be a CSS color, e.g. `#ff0000`.
+     */
+    bgColor: string;
+    
+    /**
+     * The foreground color, i.e. the color of the filled part of the knob. Must
+     * be a CSS color, e.g. `#ff0000`.
+     */
+    fgColor: string;
+  }
+}
+```
+
+## Type parameters
 
 Generic type parameters are supported for methods via the `@template` tag. You
-can also specify a bound for the type parameter:
+can also specify a bound or default for the type parameter:
 
 ```javascript
 PrimeFaces.widget.Destructured = PrimeFaces.widget.BaseWidget.extend({
     /**
      * @template T Type of an object
      * @template {keyof T} K Type of the key to access
+     * @template [S=T] Type of an object
      * @param {T} object Any object
      * @param {K} key A key in the object
-     * @return {T[K]} The value  at the given key in the object
+     * @return {T[K] & S} The value  at the given key in the object
      */
     genericMethod: function(object, key) {
         // ...
@@ -527,10 +773,10 @@ PrimeFaces.widget.Destructured = PrimeFaces.widget.BaseWidget.extend({
 This will generate something like:
 
 ```typescript
-function genericMethod<T, K extends keyof T>(object: T, key: K): T[K];
+function genericMethod<T, K extends keyof T, S = T>(object: T, key: K): T[K] & S;
 ```
 
-### Optional parameters and initializers
+## Optional parameters and initializers
 
 To indicate that a parameter of a method is optional, enclose its name in
 brackets:
@@ -554,7 +800,7 @@ This will generate something like:
 function oneToThreeArgs(x: number, y?: number, z: number = 42): void;
 ```
 
-### Destructuring
+## Destructuring
 
 Destructured parameters are supported by the parser. But please check out the
 style guide for the JavaScript. As of now, ES6 features should not be used.
@@ -570,11 +816,13 @@ PrimeFaces.widget.Destructured = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} normalParam the param x - type annotation as normal
      * @param y1 the param y1 - no type annotation
      * @param y2 the param y2 - no type annotation
-     * @param z the param z - no tag for z2, as z2 does not exist as a variable within the function
+     * @param z the param z - no tag for z2, as z2 does not exist as a variable
+     * within the function
      * @param k the param k
-     * @pattern {{x: string, y: {y1: number, y2: number}, z2: boolean}} 1 Type declaration for the destructured argument
-     * at position=1
-     * @pattern {MapFromCharacterToCode} 2 Type declaration for the destructured argument at position=2
+     * @pattern {{x: string, y: {y1: number, y2: number}, z2: boolean}} 1 Type
+     * declaration for the destructured argument at position=1
+     * @pattern {MapFromCharacterToCode} 2 Type declaration for the destructured
+     * argument at position=2
      * @return {RegExp} the return value with its type as normal
      */
     destructureObject: function(normalParam, {x, y: {y1, y2}, z2: z }, {k}) {
@@ -599,8 +847,8 @@ PrimeFaces.widget.Destructured = PrimeFaces.widget.BaseWidget.extend({
 });
 ```
 
-If you need to support destructured parameters for a a method in a property (
-widget configuration or otherwise), you need to describe the structure
+If you need to support destructured parameters for a a method in a property
+(widget configuration or otherwise), you need to describe the structure
 explicitly, as no code is available:
 
 ```javascript
@@ -634,7 +882,7 @@ namespace PrimeFaces.widget {
 }
 ```
 
-### Asynchronous methods and generators
+## Asynchronous methods and generators
 
 Asynchronous methods and generators are recognized automatically by their
 syntax. The return type is modified automatically, so just write down the base
@@ -649,16 +897,24 @@ PrimeFaces.widget.Destructured = PrimeFaces.widget.BaseWidget.extend({
         // ...
     },
     /**
-     * @return {string}
+     * @yield {string}
      */
     list: function* () {
         // ...
     },
     /**
-     * @return {string}
+     * @yield {string}
      */
     listFromNetwork: async function* () {
         // ...
+    }
+    /**
+     * @yield {string}
+     * @next {number}
+     * @return {boolean}
+     */
+    complicatedStuff: async function* () {
+        return (4 + (yield "")) === 8;
     }
 });
 ```
@@ -667,48 +923,50 @@ This will generate something like:
 
 ```typescript
 function doWork(): Promise<string>;
-function list(): IterableIterator<string>
-function listFromNetwork(): AsyncIterableIterator<string>;
+function list(): Generator<string, void>
+function listFromNetwork(): AsyncGenerator<string, void>;
+function complicatedStuff(): AsyncGenerator<string, boolean, string>;
 ```
 
-
-## Style and conventions
+# Style and conventions
 
 If you want to contribute, that's great. For the sake of consistency, please
-keep to our style guide.
+follow the basics of our style guide.
 
-### Private and public methods
+## Typescript types
 
-There are no hard or clear-cut rules to decide whether a method should be
-private (not appear in the documentation) or part of the public API. Part of the
-motivation behind creating a type declaration file was that it makes it possible
-to check existing JavaScript code against the API. When you know a method is not
-available anymore you can change it and catch bugs early. So you do not have to
-be overly protective when deciding which methods to expose, but proceed with
-care. Ask yourself the following question:
+Some guidelines for annotating properties, parameters and return values with
+types:
 
-* Is this method temporary, deprecated or will it change soon?
-* How "useful" is this method, what could people do if it were exposed?
-* Does the method actually work standalone, or does it require several
-  other actions? (Eg. `ColumnToggler#check` is, despite its name, only a handler
-  for the event after the user checked a checkbox - just calling this method
-  will do every thing a click on the checkbox would,
-  *except actually checking the checkbox*)
-* Is this method essential, or are there other ways to achieve the same goal?
-* How many camel-case words does the method name consist of, and
-* How many words do you need to describe what this method does? If you need too
-  many, it's probably some very specific internal helper method.
-* Is it used only in the `init` method? That's a good sign of an internal
-  method.
+* Follow common typescript conventions, see for example
+  [Do's and Don'ts](https://www.typescriptlang.org/docs/handbook/declaration-files/do-s-and-don-ts.html)
+* Use `string`, `number`, `boolean` instead of `String`, `Number`, `Boolean`
+* Use import types when possible: `import("chart.js").ChartConfiguration`. Not
+  possible for global declarations such as `JQuery`.
+* Do not use `object` if it can be avoided. If possible, describe the shape of
+  the object, such as `{x: string, y: number}`. For generic objects that behave
+  like a map, use  for example `Record<string, number>`.
+* For arrays, use `string[]` or `JQuery[][]` instead of `Array<string>` and
+  `Array<JQuery>[]` 
+* Use only `undefined`, unless the code you are describing absolutely requires
+  the use of the type `null`.
+* But be explicit about `nullness`: If a method may return either a string or
+  nothing, the return value is `string | undefined`. (If it never returns a
+  value, the return type is `void`.)
+* Try making the name of type parameters more descriptive, such as
+  `Class<TConfig>` instead of `Class<T>`. But keep them short.
+* Add a default for a type parameter whenever possible, especially when the type
+  parameter is bounded:
+  
+```typescript
+    export function doSomethingWithWidget<
+        TWidget extends PrimeFaces.widget.BaseWidget = PrimeFaces.widget.BaseWidget
+    >(widget: TWidget) {
+        // ...
+    }
+```
 
-Here are some common traits for methods that should most likely be private:
-
-* Methods that perform initial setup and event binding, often called `bind...`,
- `setup...`, `listen...`, or `attach...`
-* Internal logic, such as `clearCache`, `processKeyEvents`, `invoke...` or
-  `compute...`.
-
-### Doc comments
+## Doc comments
 
 These are just some general guidelines to keep the documentation consistent, you
 do not have to follow every single rule to the letter.
@@ -737,8 +995,8 @@ do not have to follow every single rule to the letter.
     * (for callbacks) What happens if I throw an error?
     * ...
 * Limit doc comments to at most 120 characters per line. This limit includes the
-  indentation at the beginning of the line. The only exception are long typedefs.
-* Use markup syntax in doc comments, avoid using plain HTML.
+  indentation at the beginning of the line. The only exception are long types.
+* Use markup syntax in doc comments, avoid using raw HTML.
 * If a `@param` can be `null` or `undefined`, describe what happens if it is:
   Will it throw an error, will it return immediately without doing anything
   useful, will it substitute some default value (which?), or something else?
@@ -752,7 +1010,7 @@ do not have to follow every single rule to the letter.
   `So that the user can no longer select a date` instead of
   `So that no date can be selected anymore` or
   `So that no date is selectable any longer`.
-* Inside a class, refer to the the instance by the word `this`. For example, the
+* Inside a class, refer to the instance by the word `this`. For example, the
   documentation for the method `start` of the `Clock` widget should read
   `Starts this clock if not already running`, not `Starts (the/a) clock...`
 * Prefer American English spellings, eg `behavior`, `color`, `meter`, `license`,
@@ -764,14 +1022,15 @@ do not have to follow every single rule to the letter.
 * Some tags have multiple names, and while neither is wrong, to keep it
   consistent:
     * use `@return` instead of `@returns`
-    * use `@prop` instead of `@property` 
+    * use `@prop` instead of `@property`
+    * use `@yield` instead of `@yield`
 * Keep tags of the same type together. If possible, try to keep tags in this
   order:
     * @typedef
     * @override
+    * @inheritdoc
     * @class / @interface
     * @public / @protected / @private / @internal / @abstract
-    * @inheritdoc
     * @template
     * @prop
     * @method
@@ -780,35 +1039,30 @@ do not have to follow every single rule to the letter.
     * @see
     * @author
 
-### Typescript types
+## Private and public methods
 
-Some guidelines for annotating properties, parameters and return values with
-types:
+There are no hard or clear-cut rules to decide whether a method should be
+private or part of the public API. But there are some good indicates.
 
-* Follow common typescript conventions, see for example
-  [Do's and Don'ts](https://www.typescriptlang.org/docs/handbook/declaration-files/do-s-and-don-ts.html)
-* Use the `string`, `number`, `boolean` instead of `String`, `Number`, `Boolean`
-* Use import types when possible: `import("chart.js").ChartConfiguration`. Not
-  possible for global declarations such as `JQuery`.
-* Do not use `object` if it can be avoided. If possible, describe the shape of
-  the object, such as `{x: string, y: number}`. For generic objects that behave
-  like a map, use  for example `Record<string, number>`.
-* For arrays, use `string[]` or `JQuery[][]` instead of `Array<string>` and
-  `Array<JQuery>[]` 
-* Use only `undefined`, unless the code you are describing absolutely requires
-  the use of the type `null`
-* But be explicit about `nullness`: If a method may return either a string or
-  nothing, the return value is `string | undefined`. (If it never returns a
-  value, the return type is `void`.)
-* Try making the name of type parameters more descriptive, such as
-  `Class<TConfig>` instead of `Class<T>`. But please keep them short.
-* Add a default for a type parameter whenever possible, especially when the type
-  parameter is bounded:
-  
-```typescript
-    export function doSomethingWithWidget<
-        TWidget extends PrimeFaces.widget.BaseWidget = PrimeFaces.widget.BaseWidget
-    >(widget: TWidget) {
-        // ...
-    }
-```
+Ask yourself the following questions:
+
+1. Is this method temporary, deprecated or will it change soon?
+1. How "useful" is this method, what could people do if it were exposed?
+1. Does the method actually work standalone? Does it take arguments that the
+   consumer would not have? Does it require other methods to be called in a
+   specific order to work? If a checkbox widget has a method called `toggle`,
+   that is useful. But not when the method requires the checkbox element to
+   be passed to it - the widget should know about its element, not the
+   caller.
+1. Is this method essential, or are there other ways to achieve the same goal?
+1. How many words do you need to describe what this method does? If you need too
+  many, it's probably some very specific private helper method.
+1. Is it used only in the `init` method? That's a good sign of a private
+  method.
+
+Here are some common traits for methods that should most likely be private:
+
+* Methods that perform initial setup and event binding, often called `bind...`,
+ `setup...`, `listen...`, or `attach...`
+* Internal logic, such as `clearCache`, `processKeyEvents`, `invoke...` or
+  `compute...`.

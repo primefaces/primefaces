@@ -56,6 +56,7 @@ function createEmptyTypedocFunction(node) {
     async: false,
     destructuring: new Map(),
     generator: false,
+    next: undefined,
     node: node,
     params: new NativeInsertionOrderMap,
     return: undefined,
@@ -226,6 +227,22 @@ function createTypedefTagHandler(node, severitySettings, typedefs) {
         tag.name = parts[parts.length - 1];
         tag.tag = Tags.Template;
         typedef.function.templates.set(parts[parts.length - 1], tag);
+        return true;
+      }
+      else {
+        if (logMissing === true) {
+          handleError("unsupportedTag", severitySettings, () => factory(`@${tag.type} is not supported in this context. Are you missing a @typedef? Did you make sure to put @typedef first?`));
+        }
+        return false;
+      }
+    },
+    next(tag, allTags, logMissing) {
+      const parts = tag.name.split(".");
+      const typedef = getOrCreateTypedefFunction(node, typedefs, parts, 0);
+      if (typedef && typedef.function) {
+        tag.description = checkTagHasDescription(tag, severitySettings, factory, allTags, true);
+        tag.name = "";
+        typedef.function.next = tag;
         return true;
       }
       else {

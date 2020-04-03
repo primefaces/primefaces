@@ -28,6 +28,11 @@ function createMethodDocInfo(name, jsdoc, method, severitySettings) {
         abstract: false,
         additionalTags: [],
         description: jsdoc.description || "",
+        next: {
+            description: "",
+            hasNext: false,
+            typedef: "",
+        },
         patterns: new Map(),
         return: {
             description: "",
@@ -123,6 +128,21 @@ function createMethodDocInfo(name, jsdoc, method, severitySettings) {
                     docInfo.yield.hasYield = true;
                     docInfo.yield.description = desc;
                     docInfo.yield.typedef = type;
+                }
+                break;
+            }
+
+            // @next {string}
+            case Tags.Next: {
+                if (!typedefTagHandler.next(tag, jsdoc.tags, false)) {
+                    if (docInfo.next.hasNext) {
+                        handleError("tagDuplicateNext", severitySettings, () => factory("'@next' must not occur multiple times"));
+                    }
+                    const type = checkTagHasType(tag, severitySettings, factory);
+                    const desc = checkTagHasDescription(tag, severitySettings, factory, jsdoc.tags, false);
+                    docInfo.next.hasNext = true;
+                    docInfo.next.description = desc;
+                    docInfo.next.typedef = type;
                 }
                 break;
             }

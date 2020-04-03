@@ -252,11 +252,16 @@ function createMethodDocComment(methodDocInfo, sortedDocVariables) {
     const yieldTag = !methodDocInfo.yield.hasYield ? undefined : createTag(Tags.Yield, {
         description: methodDocInfo.yield.description,
     });
+    // @next ...
+    const nextTag = !methodDocInfo.next.hasNext ? undefined : createTag(Tags.Next, {
+        description: methodDocInfo.next.description,
+    });
     return createDocComment(methodDocInfo.description, [
         ...templateTags,
         ...positionalParamTags,
         ...paramTags,
         ...(yieldTag ? [yieldTag] : []),
+        ...(nextTag ? [nextTag] : []),
         ...(returnTag ? [returnTag] : []),
         ...methodDocInfo.additionalTags,
     ]);

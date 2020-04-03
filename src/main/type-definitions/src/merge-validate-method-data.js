@@ -15,29 +15,42 @@ const { getArgumentType } = require("./ts-types");
 function mergeAndValidateMethodReturnAndYield(method, methodCodeInfo, methodDocInfo, severitySettings) {
     // return
     if (methodCodeInfo.return.node !== undefined && !methodDocInfo.return.hasReturn) {
-        handleError("tagMissingReturn", severitySettings, () => newMethodErrorMessage("Found explicit return statement in method, but no @return(s) tag was specified in the doc comments", method, methodCodeInfo.return.node));
+        handleError("tagMissingReturn", severitySettings, () => newMethodErrorMessage("Found explicit return statement in method, but no @return tag was specified in the doc comments", method, methodCodeInfo.return.node));
         methodDocInfo.return.hasReturn = true;
         methodDocInfo.return.typedef = "any";
         methodDocInfo.return.description = "";
     }
     if (methodCodeInfo.return.node === undefined && methodDocInfo.return.hasReturn && !methodDocInfo.abstract) {
-        handleError("tagSuperfluousReturn", severitySettings, () => newMethodErrorMessage("@return(s) tag was specified, but method is neither abstract nor does it contain an explicit return statement", method));
+        handleError("tagSuperfluousReturn", severitySettings, () => newMethodErrorMessage("@return tag was specified, but method is neither abstract nor does it contain an explicit return statement", method));
         methodDocInfo.return.hasReturn = false;
         methodDocInfo.return.typedef = "any";
         methodDocInfo.return.description = "";
     }
     // yield
     if (methodCodeInfo.yield.node !== undefined && !methodDocInfo.yield.hasYield) {
-        handleError("tagMissingYield", severitySettings, () => newMethodErrorMessage("Found explicit yield statement in method, but no @yield(s) tag was specified in the doc comments", method, methodCodeInfo.yield.node));
+        handleError("tagMissingYield", severitySettings, () => newMethodErrorMessage("Found explicit yield expression in method, but no @yield tag was specified in the doc comments", method, methodCodeInfo.yield.node));
         methodDocInfo.yield.hasYield = true;
         methodDocInfo.yield.typedef = "any";
         methodDocInfo.yield.description = "";
     }
     if (methodCodeInfo.yield.node === undefined && methodDocInfo.yield.hasYield && !methodDocInfo.abstract) {
-        handleError("tagSuperfluousYield", severitySettings, () => newMethodErrorMessage("@yield(s) tag was specified, but method contains no explicit yield statement", method));
+        handleError("tagSuperfluousYield", severitySettings, () => newMethodErrorMessage("@yield tag was specified, but method contains no explicit yield expression", method));
         methodDocInfo.yield.hasYield = false;
         methodDocInfo.yield.typedef = "any";
         methodDocInfo.yield.description = "";
+    }
+    // next
+    if (methodCodeInfo.next.node !== undefined && !methodDocInfo.next.hasNext) {
+        handleError("tagMissingNext", severitySettings, () => newMethodErrorMessage("Found yield expression in method whose return value appears to be used, but no @next tag was specified in the doc comments", method, methodCodeInfo.next.node));
+        methodDocInfo.next.hasNext = true;
+        methodDocInfo.next.typedef = "any";
+        methodDocInfo.next.description = "";
+    }
+    if (methodCodeInfo.next.node === undefined && methodDocInfo.next.hasNext && !methodDocInfo.abstract) {
+        handleError("tagSuperfluousNext", severitySettings, () => newMethodErrorMessage("@next tag was specified, but method contains yield expression whose return value is used ", method));
+        methodDocInfo.next.hasNext = false;
+        methodDocInfo.next.typedef = "any";
+        methodDocInfo.next.description = "";
     }
     // JavaScript has got no concept of abstract methods, so they need an implementation. This is usually just a
     // 'throw new Error("must be overridden")' without a return statement, so we need to create one.
@@ -52,6 +65,7 @@ function mergeAndValidateMethodReturnAndYield(method, methodCodeInfo, methodDocI
     }
     methodCodeInfo.return.typedef = methodDocInfo.return.typedef;
     methodCodeInfo.yield.typedef = methodDocInfo.yield.typedef;
+    methodCodeInfo.next.typedef = methodDocInfo.next.typedef;
 }
 
 /**

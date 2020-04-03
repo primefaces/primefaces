@@ -13,7 +13,7 @@
  * read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * 
- * @prop {number[]} cfg.active List of tabs that are currenty active (open). Eaach item is a 0-based index of a tab.
+ * @prop {number[]} cfg.active List of tabs that are currently active (open). Each item is a 0-based index of a tab.
  * @prop {boolean} cfg.cache `true` if activating a dynamic tab should not load the contents from server again and use
  * the cached contents; or `false` if the caching is disabled.
  * @prop {string} cfg.collapsedIcon The icon class name for the collapsed icon.

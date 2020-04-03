@@ -8,38 +8,76 @@ declare namespace PrimeFaces.widget {
          * 
          * @yield hoge yield
          */
-        hoge(): AsyncIterableIterator<string>;
+        hoge(): AsyncGenerator<string, void>;
         /**
          * method hogehoge
          * 
          * @yield hogehoge yield
          * @return hogehoge retval
          */
-        hogehoge(): PrimeFaces.AsyncGeneratorResult<string, RegExp>;
+        hogehoge(): AsyncGenerator<string, RegExp>;
+        /**
+         * method hogehogera
+         * 
+         * @yield hogehogera yield
+         * @next hogehogera next
+         * @return hogehogera retval
+         */
+        hogehogera(): AsyncGenerator<string, RegExp, number>;
+        /**
+         * method hogehogerara
+         * 
+         * @yield hogehogerara yield
+         * @next hogehogerara next
+         */
+        hogehogerara(): AsyncGenerator<string, void, number>;
         /**
          * method hogera
          * 
          * @return hogera retval
          */
-        hogera(): AsyncIterableIterator<RegExp>;
+        hogera(): AsyncGenerator<never, RegExp>;
         /**
          * method bar
          * 
          * @return bar retval
          */
-        bar(): AsyncIterableIterator<number>;
+        bar(): AsyncGenerator<never, number>;
         /**
          * method baz
          * 
          * @yield baz yield
          * @return baz retval
          */
-        baz(): PrimeFaces.AsyncGeneratorResult<boolean, number>;
+        baz(): AsyncGenerator<boolean, number>;
         /**
          * method foo
          * 
          * @yield foo yield
          */
-        foo(): AsyncIterableIterator<boolean>;
+        foo(): AsyncGenerator<boolean, void>;
+        /**
+         * method foobar
+         * 
+         * @yield foobar yield
+         * @next foobar next
+         * @return foobar retval
+         */
+        foobar(): AsyncGenerator<boolean, number, string>;
+        /**
+         * method foobaz
+         * 
+         * @yield foobaz yield
+         * @next foobaz next
+         */
+        foobaz(): AsyncGenerator<boolean, void, string>;
+        /**
+         * method foobazbar
+         * 
+         * @yield foobazbar yield
+         * @next foobazbar next
+         * @return foobazbar retval
+         */
+        foobazbar(): AsyncGenerator<undefined, number, string>;
     }
 }

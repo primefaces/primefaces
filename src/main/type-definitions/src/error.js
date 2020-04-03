@@ -89,7 +89,7 @@ function makeMessage(key, messageSupplier) {
 }
 
 /**
- * Throws an error, warns the user about or ignores it, depending on the severiy setting.
+ * Throws an error, warns the user about or ignores it, depending on the severity setting.
  * @param {keyof SeveritySettingsConfig} key
  * @param {SeveritySettingsConfig} severitySettings
  * @param {() => string} messageSupplier 

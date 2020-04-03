@@ -88,6 +88,7 @@ const Tags = {
     Method: "method",
     Methodtemplate: "methodtemplate",
     Namespace: "namespace",
+    Next: "next",
     Override: "override",
     Overrides: "overrides",
     Param: "param",

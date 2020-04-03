@@ -43,6 +43,7 @@ interface SeveritySettingsConfig {
     tagMissingFunction: SeverityLevel;
     tagMissingMethod: SeverityLevel;
     tagMissingName: SeverityLevel;
+    tagMissingNext: SeverityLevel;
     tagMissingParam: SeverityLevel;
     tagMissingParamForStructure: SeverityLevel;
     tagMissingParentProp: SeverityLevel;
@@ -61,6 +62,7 @@ interface SeveritySettingsConfig {
     tagDuplicateGenerator: SeverityLevel;
     tagDuplicateImplements: SeverityLevel;
     tagDuplicateMethod: SeverityLevel;
+    tagDuplicateNext: SeverityLevel;
     tagDuplicateParameter: SeverityLevel;
     tagDuplicatePattern: SeverityLevel;
     tagDuplicateReadonly: SeverityLevel;
@@ -75,6 +77,7 @@ interface SeveritySettingsConfig {
     tagSuperfluousReturn: SeverityLevel;
     tagSuperfluousParameter: SeverityLevel;
     tagSuperfluousDesc: SeverityLevel;
+    tagSuperfluousNext: SeverityLevel;
     tagSuperfluousType: SeverityLevel;
     tagSuperfluousPattern: SeverityLevel;
     tagSuperfluousYield: SeverityLevel;
@@ -359,6 +362,12 @@ interface DestructuringInfo {
     structure: import("comment-parser").Tag | undefined;
 }
 
+interface DocInfoNext {
+    typedef: string;
+    hasNext: boolean;
+    description: string;
+}
+
 interface DocInfoReturn {
     typedef: string;
     hasReturn: boolean;
@@ -479,6 +488,7 @@ interface MethodCodeInfo {
     isGenerator: boolean;
     generics: DocInfoTemplate[];
     name: string;
+    next: NextInfo,
     return: ReturnInfo;
     thisTypedef: string;
     variables: VariableInfo[];
@@ -495,6 +505,7 @@ interface MethodDocInfo {
     abstract: boolean,
     additionalTags: import("comment-parser").Tag[];
     description: string;
+    next: DocInfoNext;
     patterns: Map<number, DocInfoPattern>;
     return: DocInfoReturn;
     templates: DocInfoTemplate[];
@@ -679,9 +690,11 @@ interface ReturnInfo {
 
 interface ReturnSpec {
     async: boolean,
+    baseTypeNext: string,
     baseTypeReturn: string,
     baseTypeYield: string,
     generator: undefined | {
+        hasNext: boolean;
         hasReturn: boolean,
         hasYield: boolean,
     },
@@ -817,6 +830,7 @@ interface TypedefFunctionInfo {
     async: boolean;
     destructuring: Map<number, DestructuringInfo>;
     generator: boolean;
+    next: import("comment-parser").Tag | undefined;
     node: import("estree").Node;
     params: InsertionOrderMap<string, import("comment-parser").Tag>;
     return: import("comment-parser").Tag | undefined;
@@ -835,6 +849,7 @@ interface TypedefTagHandlers {
     async: TypedefTagHandler;
     generator: TypedefTagHandler;
     methodtemplate: TypedefTagHandler;
+    next: TypedefTagHandler;
     params: TypedefTagHandler;
     return: TypedefTagHandler;
     template: TypedefTagHandler;
@@ -853,6 +868,11 @@ interface VariableInfo {
 interface CollectToMapOpts<K, V> {
     filter: (key: K, value: V) => boolean;
     reducer: (oldValue: V, currentValue: V) => V;
+}
+
+interface NextInfo {
+    typedef: string;
+    node: import("estree").YieldExpression | undefined;
 }
 
 interface YieldInfo {

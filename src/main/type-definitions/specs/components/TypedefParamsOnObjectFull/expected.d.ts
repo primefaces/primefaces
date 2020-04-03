@@ -15,7 +15,7 @@ declare namespace Test.TypedefParamsOnObjectFull.Extern {
      * @yield foobar yield
      * @return foobar return
      */
-    <T>(this: string, x: number, y: T[], [z1, z2]: [number, boolean]) => PrimeFaces.AsyncGeneratorResult<RegExp, string>;
+    <T>(this: string, x: number, y: T[], [z1, z2]: [number, boolean]) => AsyncGenerator<RegExp, string>;
 }
 declare namespace PrimeFaces.widget {
     /**

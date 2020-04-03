@@ -1,6 +1,6 @@
 //@ts-check
 
-const { findFunctionNonEmptyReturnStatement, findFunctionNonEmptyYieldExpression } = require("./acorn-util");
+const { findFunctionYieldStatement, findFunctionNonEmptyReturnStatement, findFunctionYieldExpression } = require("./acorn-util");
 const { getArgVariableInfo, getArgumentInfo } = require("./create-code-info-params");
 
 /**
@@ -10,25 +10,30 @@ const { getArgVariableInfo, getArgumentInfo } = require("./create-code-info-para
  */
 function createMethodCodeInfo(name, method) {
     const returnStatement = findFunctionNonEmptyReturnStatement(method.body);
-    const yieldStatement = findFunctionNonEmptyYieldExpression(method.body);
+    const yieldStatement = findFunctionYieldExpression(method.body);
+    const nextStatement = findFunctionYieldStatement(method.body);
     return {
         abstract: false,
         arguments: method.params.map(getArgumentInfo),
         generics: [],
+        isAsync: method.async !== undefined ? method.async : false,
+        isGenerator: method.generator !== undefined ? method.generator : false,
+        name: name,
+        next: {
+            node: nextStatement !== undefined ? nextStatement : undefined,
+            typedef: "",
+        },
         return: {
             node: returnStatement !== undefined ? returnStatement : undefined,
             typedef: "",
         },
-        isAsync: method.async !== undefined ? method.async : false,
-        isGenerator: method.generator !== undefined ? method.generator : false,
-        name: name,
         thisTypedef: "",
         variables: method.params.flatMap(getArgVariableInfo),
+        visibility: undefined,
         yield: {
             node: yieldStatement !== undefined ? yieldStatement : undefined,
             typedef: "",
         },
-        visibility: undefined,
     };
 }
 
