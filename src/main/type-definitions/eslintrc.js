@@ -10,7 +10,7 @@ module.exports = {
         "sourceType": "module",
     },
     "plugins": [
-        "@typescript-eslint",
+        "@typescript-eslint/eslint-plugin",
         "@typescript-eslint/tslint",
         "import",
         "jsdoc",

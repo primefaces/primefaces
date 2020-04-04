@@ -4,6 +4,7 @@ const { join } = require("path");
 const ts = require("typescript");
 
 const { Paths } = require("./constants");
+const { arePathsEqual } = require("./lang-fs");
 
 /**
  * @return {Promise<import("typescript").CompilerOptions>}
@@ -40,10 +41,10 @@ function createFallbackCompilerHost(options, declarationFile, moduleSearchLocati
 
     host.resolveTypeReferenceDirectives = (typeReferenceDirectiveNames, containingFile, redirectedReference, options) => {
         // Declaration file may be located in a directory outside the npm dir
-        if (containingFile === declarationFile.ambient) {
+        if (arePathsEqual(containingFile, declarationFile.ambient)) {
             containingFile = Paths.NpmVirtualDeclarationFile.ambient;
         }
-        if (containingFile === declarationFile.module) {
+        if (arePathsEqual(containingFile, declarationFile.module)) {
             containingFile = Paths.NpmVirtualDeclarationFile.module;
         }
         /** @type {Map<string, ts.ResolvedTypeReferenceDirective | undefined>} */
@@ -63,10 +64,10 @@ function createFallbackCompilerHost(options, declarationFile, moduleSearchLocati
     host.resolveModuleNames = (moduleNames, containingFile, reusedName, redirectedReference, options) => {
         return moduleNames.map(moduleName => {
             // Declaration file may be located in a directory outside the npm dir
-            if (containingFile === declarationFile.ambient) {
+            if (arePathsEqual(containingFile, declarationFile.ambient)) {
                 containingFile = Paths.NpmVirtualDeclarationFile.ambient;
             }
-            if (containingFile === declarationFile.module) {
+            if (arePathsEqual(containingFile, declarationFile.module)) {
                 containingFile = Paths.NpmVirtualDeclarationFile.module;
             }
             // Try to use standard resolution

@@ -4,11 +4,11 @@
 
 const { parse, parseExpressionAt } = require("acorn");
 const { full, make, recursive } = require("acorn-walk");
-const { promises: fs } = require("fs");
+const { readFileUtf8 } = require("./lang-fs");
 const { join, resolve } = require("path");
 
 const { getEmptyDocComment, parseSingleComment } = require("./doc-comments");
-const { DefaultParseOptions, ReadFileOpts } = require("./constants");
+const { DefaultParseOptions } = require("./constants");
 const { makeStackLine } = require("./error");
 
 /**
@@ -184,7 +184,7 @@ async function* parseJs(files, basePath = "/") {
     for (const file of files) {
         const sourceFile = join(basePath, file);
         const resolvedSourceFile = resolve(sourceFile);
-        const source = await fs.readFile(sourceFile, ReadFileOpts);
+        const source = await readFileUtf8(sourceFile);
         const parsed = parseJsProgram(source, file, resolvedSourceFile);
         yield parsed;
     }

@@ -1,6 +1,6 @@
 //@ts-check
 
-const { WhiteSpaceChars, Indentation } = require("./constants");
+const { Indentation, LineBreak, LineBreakPattern, WhiteSpaceChars } = require("./constants");
 
 /**
  * @param {never} x 
@@ -202,7 +202,7 @@ function splitLines(str, {
         trimLines = false,
         excludeEmptyLines = false,
     } = {}) {
-    let lines = str.split(/\r\n|\r|\n/);
+    let lines = str.split(LineBreakPattern);
     if (removeTrailingLines) {
         while (lines.length > 0 && lines[0].trim() === removeTrailingLines) {
             lines.shift();
@@ -218,6 +218,15 @@ function splitLines(str, {
         lines = lines.filter(isNotEmpty);
     }
     return lines;
+}
+
+/**
+ * Normalizes line breaks to unix style ("\n").
+ * @param {string} string A string with line breaks to normalize.
+ * @return string The same string, but with line breaks normalized to UNIX "\n".
+ */
+function normalizeLineBreaksUnix(string) {
+    return string.replace(LineBreakPattern, LineBreak);
 }
 
 /**
@@ -437,6 +446,7 @@ module.exports = {
     mapCompute,
     mergeIntoMap,
     newEmptyArray,
+    normalizeLineBreaksUnix,
     pushToMappedArray,
     reduceIntoFirstArray,
     removeLineBreaksFromStartAndEnd,

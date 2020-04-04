@@ -1,11 +1,11 @@
 //@ts-check
 
 const { main } = require("./base");
-const { Paths } = require("../src/constants");
+const { LineBreak, Paths } = require("../src/constants");
 const { createDefaultSeveritySettings, Level } = require("../src/error-types");
 const { postprocessDeclarationFile } = require("../src/ts-postprocess");
 const { createBaseHooks, createHookFnProcessAst, createHookFnCompilerOptionsCreate, createHookFnCompilerOptionsModify } = require("../src/ts-postprocess-defaulthooks");
-const { splitLines } = require("../src/lang");
+const { strJoin, splitLines } = require("../src/lang");
 
 const Filenames = {
     inputFilename: "input.d.ts",
@@ -47,8 +47,8 @@ async function processInput(input, sourceName, sourceLocation, inclusionHandler)
         },
     });
     return [
-        ...splitLines(fileContent.ambient.join("\n")),
-        ...splitLines(fileContent.module.join("\n")),
+        ...splitLines(strJoin(fileContent.ambient, LineBreak)),
+        ...splitLines(strJoin(fileContent.module, LineBreak)),
     ];
 }
 

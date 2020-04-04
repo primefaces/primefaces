@@ -2,6 +2,9 @@
 
 const { join, resolve } = require("path");
 
+const LineBreakPattern = /\r\n|\r|\n/g;
+
+const LineBreak = "\n";
 
 /** @type {{encoding: string, withFileTypes: true}} */
 const ReadDirOpts = {
@@ -9,6 +12,7 @@ const ReadDirOpts = {
     withFileTypes: true,
 };
 
+/** @type {{encoding: string, flag: string}} */
 const WriteFileOpts = {
     encoding: "utf8",
     flag: "w",
@@ -46,6 +50,7 @@ const Paths = {
     BlacklistPath: resolve(join(__dirname, "..", "blacklist.txt")),
     ComponentsTestDir: resolve(join(__dirname, "..", "specs", "components")),
     ComponentsMainDir: resolve(join(__dirname, "..", "..", "resources", "META-INF", "resources", "primefaces")),
+    CoreDeclarationFile: resolve(join(__dirname, "..", "core.d.ts")),
     EsLintRcPath: resolve(__dirname, "..", "eslintrc.js"),
     JsdocReadmePath: resolve(__dirname, "..", "JSDOC.md"),
     NpmTypesDir: resolve(__dirname, "..", "node_modules", "@types"), 
@@ -206,6 +211,8 @@ module.exports = {
     DefaultParseOptions,
     FlaggingTags,
     Indentation,
+    LineBreak,
+    LineBreakPattern,
     NamedTags,
     Paths,
     ReadDirOpts,

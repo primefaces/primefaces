@@ -1,19 +1,19 @@
 //@ts-check
 
-const { promises: fs } = require("fs");
 const { extname, join, resolve, isAbsolute } = require("path");
 
 const { parseJs } = require("./acorn-util");
 const { aggregateDocumentable } = require("./aggregate-documentable");
 const { aggregateHandlerDefaults } = require("./aggregate-defaults");
 const { aggregateHandlerWidgets } = require("./aggregate-widgets");
-const { Paths, ReadDirOpts, ReadFileOpts, WriteFileOpts } = require("./constants");
+const { Paths } = require("./constants");
 const { documentConstant } = require("./document-constant");
 const { documentFunction } = require("./document-function");
 const { documentObject } = require("./document-object");
 const { createDefaultSeveritySettings, getSortedSeveritySettingKeys, isSeverityLevel, isSeveritySetting, Level } = require("./error-types");
 const { createInclusionHandler } = require("./inclusion-handler");
 const { isNotEmpty, splitLines } = require("./lang");
+const { mkDirRecursive, readDir, readFileUtf8, writeFileUtf8 } = require("./lang-fs");
 const { classifyDeclarationFile } = require("./ts-classify-declaration-file");
 const { postprocessDeclarationFile } = require("./ts-postprocess");
 const { createDefaultHooks } = require("./ts-postprocess-defaulthooks");
@@ -41,7 +41,7 @@ const DefaultCliArgs = {
  * declaration file. Mainly third-party libraries we do not want to document.
  */
 async function readBlacklist() {
-    const blacklist = await fs.readFile(Paths.BlacklistPath, ReadFileOpts);
+    const blacklist = await readFileUtf8(Paths.BlacklistPath);
     const lines = splitLines(blacklist, {
         excludeEmptyLines: true,
         trimLines: true,
@@ -64,9 +64,9 @@ async function readBlacklist() {
  */
 async function* listComponents(componentPath) {
     const blacklist = await readBlacklist();
-    const componentDirs = await fs.readdir(componentPath, ReadDirOpts);
+    const componentDirs = await readDir(componentPath);
     for (const componentDir of componentDirs.filter(x => x.isDirectory())) {
-        const componentFiles = await fs.readdir(join(componentPath, componentDir.name), ReadDirOpts);
+        const componentFiles = await readDir(join(componentPath, componentDir.name));
         yield {
             name: componentDir.name,
             path: join(componentPath, componentDir.name),
@@ -247,7 +247,7 @@ function parseCliArgs() {
 async function* readTypedefFiles(component) {
     for (const file of component.typedefFiles.sort()) {
         const sourceFile = join(component.path, file);
-        const source = await fs.readFile(sourceFile, ReadFileOpts);
+        const source = await readFileUtf8(sourceFile);
         const type = classifyDeclarationFile(source);
         yield { source, type };
     }
@@ -259,9 +259,7 @@ async function* readTypedefFiles(component) {
  * @return {Promise<TypeDeclarationBundleFiles>} The path to the written file.
  */
 async function writeOutput(bundle, cliArgs) {
-    await fs.mkdir(cliArgs.outputDir, {
-        recursive: true,
-    });
+    await mkDirRecursive(cliArgs.outputDir);
 
     const outputFileAmbient = resolve(join(cliArgs.outputDir, cliArgs.outputFilename));
     const outputFileModule = resolve(join(cliArgs.outputDir, cliArgs.moduleOutputFilename));
@@ -270,8 +268,8 @@ async function writeOutput(bundle, cliArgs) {
     console.log("Writing module output file to ", outputFileModule);
 
     await Promise.all([
-        fs.writeFile(outputFileAmbient, bundle.ambient.join("\n"), WriteFileOpts),
-        fs.writeFile(outputFileModule, bundle.module.join("\n"), WriteFileOpts)
+        writeFileUtf8(outputFileAmbient, { data: bundle.ambient }),
+        writeFileUtf8(outputFileModule, { data: bundle.module })
     ]);
 
     return { ambient: outputFileAmbient, module: outputFileModule };
@@ -301,7 +299,7 @@ async function main(cliArgs) {
         module: [],
     };
 
-    bundle.ambient.push(await fs.readFile("./core.d.ts", ReadFileOpts));
+    bundle.ambient.push(await readFileUtf8(Paths.CoreDeclarationFile));
 
     // Scan the base directory and list the directories with the JavaScript source files to process
     for await (const component of listComponents(cliArgs.inputDir)) {
@@ -358,8 +356,8 @@ async function main(cliArgs) {
         console.info("Running post-processing on generated type declarations file");
         const fileContents = await postprocessDeclarationFile(filePaths, severitySettings, createDefaultHooks(severitySettings, true));
         await Promise.all([
-            fs.writeFile(filePaths.ambient, fileContents.ambient, WriteFileOpts),
-            fs.writeFile(filePaths.module, fileContents.module, WriteFileOpts),
+            writeFileUtf8(filePaths.ambient, { data: fileContents.ambient }),
+            writeFileUtf8(filePaths.module, { data: fileContents.module }),
         ]);
         console.info("Post-processing step complete");
     }

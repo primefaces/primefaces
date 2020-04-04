@@ -1,4 +1,8 @@
 const { promises: fs } = require("fs");
+const path = require("path");
+
+const { LineBreak, ReadDirOpts, ReadFileOpts, WriteFileOpts } = require("./constants");
+const { strJoin, normalizeLineBreaksUnix } = require("./lang");
 
 /**
  * Copies the source file to the target file path, invokes the callback, then
@@ -27,6 +31,118 @@ async function withTemporaryFileOnDisk(bundle, target, callback) {
     }
 }
 
+/**
+ * Reads th text of a non-binary text file encoded in UTF-8. Also normalizes
+ * line breaks to UNIX style.
+ * @param {string} path Path to a file to read.
+ * @return {Promise<string>} The contents of the file.
+ */
+async function readFileUtf8(path) {
+    const data = await fs.readFile(path, ReadFileOpts);
+    const normalized = normalizeLineBreaksUnix(data);
+    return normalized;
+}
+
+/**
+ * Writes the contents to the given file, using UTF-8 encoding.
+ * @param {string} path Path to a file to which the contents are written.
+ * @param {{data: string | string[]}} content Content to write to the file. If an array, the array items are joined with UNIX
+ * style line breaks.
+ */
+async function writeFileUtf8(path, content) {
+    const data = Array.isArray(content.data) ? strJoin(content.data, LineBreak) : content.data;
+    await fs.writeFile(path, data, WriteFileOpts);
+}
+
+/**
+ * Creates the given directory. Creates parent directories if they do not exist yet.
+ * @param {string} path Path of a directory to create.
+ */
+async function mkDirRecursive(path) {
+    await fs.mkdir(path, {
+        recursive: true,
+    });
+}
+
+/**
+ * Reads all files and directories in the given path.
+ * @param {string} path A directory to read.
+ * @return {Promise<import("fs").Dirent[]>} All files and directories in the given directory.
+ */
+async function readDir(path) {
+    const entries = await fs.readdir(path, ReadDirOpts);
+    return entries;
+}
+
+/**
+ * Checks whether the path is an existing file or directory.
+ * @param {string} path Path to check.
+ * @return {Promise<{exists: true, type: "file" | "dir"} | {exists: boolean}>} Whether the path is an existing file or
+ * directory.
+ */
+async function isExistingFileOrDir(path) {
+    try {
+        const stat = await fs.stat(path);
+        /** @type {"file" | "dir"} */
+        let type;
+        if (stat.isFile()) {
+            type = "file";
+        }
+        else if (stat.isDirectory()) {
+            type = "dir";
+        }
+        else {
+            throw new Error(`File system entry at '${path}' exists, but is neither a file nor a directory.`);
+        }
+        return {
+            exists: true,
+            type: type,
+        }
+    }
+    catch {
+        return { exists: false };
+    }
+}
+
+/**
+ * Deletes a file, if it exists. If it does not exist, do nothing. Throw an error if it is an existing directory.
+ * @param {string} path Path to a file to delete.
+ */
+async function deleteFile(path) {
+    try {
+        const stat = await fs.stat(path);
+        if (stat.isFile()) {
+            await fs.unlink(path);
+        }
+        else {
+            throw new Error(`Cannot delete, given path is directory: ${path}`);
+        }
+    }
+    catch {
+        // ignore, file does not exist
+    }
+}
+
+/**
+ * Checks if two paths point two the same file or directory. Handles UNIX and Windows path separators. Does not check
+ * if the file or directiory actually exists.
+ * @param {string} pathLhs First path to check
+ * @param {string} pathRhs Second path to check 
+ * @param {string} root Optional root path for resolving relative paths.
+ */
+function arePathsEqual(pathLhs, pathRhs, root = "") {
+    const lhs = root.length > 0 ? path.resolve(path.join(root, pathLhs)) : path.resolve(pathLhs);
+    const rhs = root.length > 0 ? path.resolve(path.join(root, pathRhs)) : path.resolve(pathRhs);
+    return lhs === rhs;
+}
+
 module.exports = {
+    arePathsEqual,
+    deleteFile,
+    isExistingFileOrDir,
+    mkDirRecursive,
+    readDir,
+    readFileUtf8,
     withTemporaryFileOnDisk,
+    writeFileUtf8,
 };

@@ -1,13 +1,13 @@
 //@ts-check
 
 const { diffTrimmedLines } = require("diff");
-const { promises: fs } = require("fs");
 const { join, resolve } = require("path");
 const { tmpNameSync } = require("tmp");
 
-const { ReadFileOpts, Paths, ReadDirOpts, Tags, WriteFileOpts } = require("../src/constants");
+const { Paths, Tags } = require("../src/constants");
 const { createInclusionHandler } = require("../src/inclusion-handler");
 const { asyncMap, isNotEmpty, isNotUndefined, splitLines } = require("../src/lang");
+const { deleteFile, readDir, readFileUtf8, writeFileUtf8 } = require("../src/lang-fs");
 const { makeStackLine } = require("../src/error");
 
 /**
@@ -45,7 +45,7 @@ async function checkError(error, errorFilename, dir, dirEntry) {
     /** @type {string | undefined} */
     let fileContent;
     try {
-        fileContent = await fs.readFile(join(dir, dirEntry.name, errorFilename), ReadFileOpts);
+        fileContent = await readFileUtf8(join(dir, dirEntry.name, errorFilename));
     }
     catch (e) {
         return [
@@ -100,7 +100,7 @@ async function checkError(error, errorFilename, dir, dirEntry) {
 async function checkSuccess(actual, expectedFilename, dir, dirEntry) {
     let fileContent;
     try {
-        fileContent = await fs.readFile(join(dir, dirEntry.name, expectedFilename), ReadFileOpts);
+        fileContent = await readFileUtf8(join(dir, dirEntry.name, expectedFilename));
     }
     catch (e) {
         return [`Test did not throw an error, but file '${expectedFilename}' with the expected output could not be read. Either add the expected output this file or fix the code / test.`];
@@ -134,15 +134,15 @@ async function runTest(processInput, filenames, dir, dirEntry, inclusionHandler,
     const moduleLocation = tmpNameSync({
         dir: resolvedSourceDir,
         prefix: "module",
-        postfix: ".js",        
+        postfix: ".js",
     });
     const files = {
         ambient: resolvedSourceLocation,
         module: moduleLocation,
     };
     try {
-        await fs.writeFile(moduleLocation, "// dummy", WriteFileOpts);
-        const input = await fs.readFile(resolvedSourceLocation, ReadFileOpts);
+        await writeFileUtf8(moduleLocation, { data: "// dummy" });
+        const input = await readFileUtf8(resolvedSourceLocation);
         const actual = await invokeTest(processInput, input, dirEntry.name, files, inclusionHandler);
         const errors = actual.success ?
             await checkSuccess(actual.lines, filenames.expectedFilename, dir, dirEntry) :
@@ -163,7 +163,7 @@ async function runTest(processInput, filenames, dir, dirEntry, inclusionHandler,
         }
     }
     finally {
-        await fs.unlink(moduleLocation);
+        await deleteFile(moduleLocation);
     }
 }
 
@@ -174,7 +174,7 @@ async function runTest(processInput, filenames, dir, dirEntry, inclusionHandler,
  * @param {TestCliArgs} cliArgs
  */
 async function main(dir, filenames, processInput, cliArgs) {
-    const dirContent = await fs.readdir(dir, ReadDirOpts);
+    const dirContent = await readDir(dir);
     const inclusionHandler = createInclusionHandler([Tags.Internal, Tags.Exclude, Tags.Ignore]);
     const subTests = cliArgs.items.map(x => x.trim()).filter(isNotEmpty);
     const testItems = dirContent
