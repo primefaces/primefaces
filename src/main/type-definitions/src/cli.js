@@ -161,14 +161,14 @@ function parseCliArgs() {
                     break;
                 case "-g":
                 case "--skiptypedocgenerate":
-                    result.skipTypedocGenerate = true;
+                    result.skipTypedocGenerate = stack.pop() === "true";
                     break;
                 case "-s":
                 case "--skipeslint":
-                    result.skipEsLint = true;
+                    result.skipEsLint = stack.pop() === "true";
                     break;
-                case "":
-                    result.skipPostProcess = true;
+                case "--skippostprocess":
+                    result.skipPostProcess = stack.pop() === "true";
                     break;
                 case "-t":
                 case "--typedocoutputdir":

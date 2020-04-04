@@ -72,6 +72,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jsdoc.included.modules>@fullcalendar,autonumeric,cropperjs,chart.js,googlemaps,jquery,jqueryui,moment,moment-timezone,quill,raphael,vis-data,vis-timeline</jsdoc.included.modules>
     </properties>
 
     <dependencies>
@@ -262,6 +263,69 @@
     </dependencies>
 
     <build>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.github.eirslett</groupId>
+                    <artifactId>frontend-maven-plugin</artifactId>
+                    <version>1.9.1</version>
+                    <configuration>
+                        <installDirectory>${project.build.directory}</installDirectory>
+                        <nodeVersion>v13.12.0</nodeVersion>
+                        <npmVersion>6.14.4</npmVersion>
+                        <workingDirectory>${basedir}/src/main/type-definitions</workingDirectory>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>install node and npm</id>
+                            <goals>
+                                <goal>install-node-and-npm</goal>
+                            </goals>
+                            <phase>initialize</phase>
+                        </execution>
+                        <execution>
+                            <id>npm install</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>initialize</phase>
+                            <configuration>
+                                <arguments>install</arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>validate tool</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>test</phase>
+                            <configuration>
+                                <arguments>run validate</arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>test tool</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>test</phase>
+                            <configuration>
+                                <arguments>run test</arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>generate type declaration</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>prepare-package</phase>
+                        </execution>
+                    </executions>
+                </plugin>                
+            </plugins>
+        </pluginManagement>
+
         <defaultGoal>install</defaultGoal>
 
         <resources>
@@ -1002,68 +1066,6 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M3</version>
             </plugin>
-            <plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-                <version>1.9.1</version>
-                <configuration>
-                    <installDirectory>${project.build.directory}</installDirectory>
-                    <nodeVersion>v13.12.0</nodeVersion>
-                    <npmVersion>6.14.4</npmVersion>
-                    <workingDirectory>${basedir}/src/main/type-definitions</workingDirectory>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>install node and npm</id>
-                        <goals>
-                            <goal>install-node-and-npm</goal>
-                        </goals>
-                        <phase>initialize</phase>
-                    </execution>
-                    <execution>
-                        <id>npm install</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <phase>initialize</phase>
-                        <configuration>
-                            <arguments>install</arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>validate tool</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <phase>test</phase>
-                        <configuration>
-                            <arguments>run validate</arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>test tool</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <phase>test</phase>
-                        <configuration>
-                            <arguments>run test</arguments>
-                        </configuration>
-                    </execution>
-                    <!-- Check if JS doc comments are valid, but don't generate documentation. -->
-                    <!-- Documentation is generated only for the release profile -->
-                    <execution>
-                        <id>generate type declaration</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <phase>prepare-package</phase>
-                        <configuration>
-                            <arguments>run generate-d-ts -- --outputDir target/type-declaration/${parsedVersion.majorVersion}_${parsedVersion.minorVersion} --skiptypedocgenerate</arguments>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
@@ -1101,6 +1103,29 @@
                                 <goals>
                                     <goal>check</goal>
                                 </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>jsdoc</id>
+            <properties>
+                <jsdoc.skip.typedoc>false</jsdoc.skip.typedoc>
+            </properties>
+            <build>
+                <plugins>
+                    <!-- Write docs and *.d.ts file to the target dir -->
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>generate type declaration</id>
+                                <configuration>
+                                    <arguments>run generate-d-ts -- --outputDir target/type-declaration/ --includemodules ${jsdoc.included.modules} --skiptypedocgenerate ${jsdoc.skip.typedoc}</arguments>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
@@ -1201,19 +1226,15 @@
                         </configuration>
                     </plugin>
 
-                    <!-- Write typedocs and type declarations file to the current documentation directory -->
+                    <!-- Write docs and *.d.ts file to the current documentation directory docs/<version>/jsdocs -->
                     <plugin>
                         <groupId>com.github.eirslett</groupId>
                         <artifactId>frontend-maven-plugin</artifactId>
                         <executions>
                             <execution>
                                 <id>generate type declaration</id>
-                                <goals>
-                                    <goal>npm</goal>
-                                </goals>
-                                <phase>prepare-package</phase>
                                 <configuration>
-                                    <arguments>run generate-d-ts -- --outputDir docs/${parsedVersion.majorVersion}_${parsedVersion.minorVersion} --includemodules @fullcalendar,autonumeric,cropperjs,chart.js,googlemaps,jquery,jqueryui,moment,moment-timezone,quill,raphael,vis-data,vis-timeline</arguments>
+                                    <arguments>run generate-d-ts -- --outputDir docs/${parsedVersion.majorVersion}_${parsedVersion.minorVersion} --includemodules ${jsdoc.included.modules}</arguments>
                                 </configuration>
                             </execution>
                         </executions>

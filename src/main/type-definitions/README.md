@@ -44,20 +44,19 @@ It
 Building is integrated into the maven build process, just run
 
 ```sh
-mvn clean install
+mvn clean install -P jsdoc
 ```
 
-This will generate the type declaration file in the target directory
-`target/type-declaration/`.  It will also lint the declarations file for
-common mistakes and errors.
+This will generate the type declaration file `target/type-declaration/` and the
+API docs in `target/type-declaration/jsdocs`.  It will also lint the
+declarations file for common mistakes and errors.
 
-Add the profile `release` to create the JavaScript API documentation:
+Add the profile `release` to create the JavaScript API documentation in the
+`docs/<version>/jsdocs` directory:
 
 ```sh
 mvn clean install -P release
 ```
-
-The doc files can then be found in `docs/<current_version>/jsdoc`.
 
 ---
 
@@ -65,9 +64,10 @@ The maven build uses the
 [maven frontend plugin](https://github.com/eirslett/frontend-maven-plugin) to
 install a local version of `node.js` in the `target` directory.
 
-If you are working on the scripts for generating the type declaration file, you
-may want to build directly via npm and node. To do so, first go to the type
-definitions directory and run:
+If you are working on the scripts for generating the type declaration file, or
+want to generate the type declarations file quickly without maven overhead, you
+can build directly via npm and node. To do so, navigate to the type definitions
+directory and run:
 
 ```bash
 cd src/main/type-definitions

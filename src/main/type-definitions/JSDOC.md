@@ -120,7 +120,10 @@ that widget is included in the page.
 
 PrimeFaces makes use of many third-party libraries for providing advanced features, such charts and masked inputs. Many
 of these do not have typescript declarations. But fear not, PrimeFaces added them for you. For your convenience, the
-API docs for all third-party libraries are included in this documentation. Some of the most notable ones are:
+API docs for all third-party libraries are included in this documentation.
+
+Please note that these third-party libraries may be exchanged at any time by a different library. Some of the most
+notable ones are:
 
 * [AutoNumeric.js](./classes/autonumeric.html)
     * The [AutoNumeric.js library](http://autonumeric.org/) that automatically formats your numbers and currencies.
