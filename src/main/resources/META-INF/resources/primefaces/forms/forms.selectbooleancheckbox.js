@@ -51,7 +51,7 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
                 $this.box.removeClass('ui-state-focus');
             })
             .on('change.selectBooleanCheckbox', function(e) {
-                if($this.isChecked()) {
+                if($this.isChecked()) {
                     $this.input.prop('checked', true).attr('aria-checked', true);
                     $this.box.addClass('ui-state-active').children('.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
                 }
