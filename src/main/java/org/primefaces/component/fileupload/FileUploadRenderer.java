@@ -53,7 +53,7 @@ public class FileUploadRenderer extends CoreRenderer {
 
             FileUploadDecoder decoder = applicationContext.getFileUploadDecoder(uploader);
             if (decoder == null) {
-                throw new FacesException("FileUploader '" + uploader + "' not found");
+                throw new FacesException("FileUploaderDecoder '" + uploader + "' not found");
             }
 
             decoder.decode(context, fileUpload);
