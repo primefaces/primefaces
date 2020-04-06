@@ -276,7 +276,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
 
                 this.jtpSelect.html(jtpOptions);
             }
-            this.jtpSelect.children('option[value=' + $.escapeSelector(this.cfg.page) + ']').prop('selected','selected');
+            this.jtpSelect.children('option[value=' + (this.cfg.page) + ']').prop('selected','selected');
         }
 
         //jump to page input

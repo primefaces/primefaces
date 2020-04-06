@@ -290,10 +290,16 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
 
     /**
      * Only for internal usage within PrimeFaces.
+     * @return Type of the value bound via value expression. May return null when no value is bound.
      */
     public Class<?> getTypeFromValueByValueExpression(FacesContext context) {
         ValueExpression ve = getValueExpression("value");
-        return ve.getType(context.getELContext());
+        if (ve != null) {
+            return ve.getType(context.getELContext());
+        }
+        else {
+            return null;
+        }
     }
 
     /*
