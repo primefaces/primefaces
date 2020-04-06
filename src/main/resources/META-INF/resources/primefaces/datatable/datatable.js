@@ -949,7 +949,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             reflowHeaderText = headerColumn.find('.ui-reflow-headertext:first').text(),
             colTitleEl = headerColumn.children('.ui-column-title'),
             title = (reflowHeaderText && reflowHeaderText.length) ? reflowHeaderText : colTitleEl.text();
-            this.tbody.find('> tr:not(.ui-datatable-empty-message) > td:nth-child(' + (i + 1) + ')').prepend('<span class="ui-column-title">' + PrimeFaces.escapeHTML(title) + '</span>');
+            this.tbody.find('> tr:not(.ui-datatable-empty-message,.ui-datatable-summaryrow) > td:nth-child(' + (i + 1) + ')').prepend('<span class="ui-column-title">' + PrimeFaces.escapeHTML(title) + '</span>');
         }
     },
 
