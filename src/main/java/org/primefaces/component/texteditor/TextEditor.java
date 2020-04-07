@@ -25,18 +25,15 @@ package org.primefaces.component.texteditor;
 
 import java.util.Collection;
 
-import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
 import org.primefaces.util.LangUtils;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "texteditor/texteditor.css"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
-        @ResourceDependency(library = "primefaces", name = "core.js"),
-        @ResourceDependency(library = "primefaces", name = "texteditor/texteditor.js")
-})
+@ResourceDependency(library = "primefaces", name = "texteditor/texteditor.css")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "texteditor/texteditor.js")
 public class TextEditor extends TextEditorBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TextEditor";

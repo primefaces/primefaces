@@ -28,7 +28,6 @@ import java.util.EnumSet;
 import java.util.Set;
 
 import javax.el.MethodExpression;
-import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.behavior.ClientBehaviorHint;
 import javax.faces.event.AjaxBehaviorListener;
@@ -37,11 +36,9 @@ import org.primefaces.behavior.base.AbstractBehavior;
 import org.primefaces.behavior.base.BehaviorAttribute;
 import org.primefaces.component.api.AjaxSource;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
-        @ResourceDependency(library = "primefaces", name = "core.js")
-    })
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
 public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
 
     public static final String BEHAVIOR_ID = "org.primefaces.component.AjaxBehavior";
