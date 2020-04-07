@@ -27,7 +27,7 @@ function createExcludes(cliArgs) {
  * @param {TypeDeclarationBundleFiles} sourceFiles 
  * @param {CliArgs} cliArgs
  */
-function generateTypedocs(sourceFiles, cliArgs) {
+async function generateTypedocs(sourceFiles, cliArgs) {
     const targetDir = cliArgs.typedocOutputDir || join(cliArgs.outputDir, "jsdocs");
     const app = new typedoc.Application();
     app.bootstrap({
@@ -41,7 +41,7 @@ function generateTypedocs(sourceFiles, cliArgs) {
         listInvalidSymbolLinks: false, // TODO: enable once typedoc support {@link Class#method} syntax
         disableSources: true,
     });
-    withTemporaryFileOnDisk(sourceFiles, Paths.NpmVirtualDeclarationFile, tempFiles => {
+    await withTemporaryFileOnDisk(sourceFiles, Paths.NpmVirtualDeclarationFile, tempFiles => {
         app.generateDocs(app.expandInputFiles([
             tempFiles.ambient,
             tempFiles.module,

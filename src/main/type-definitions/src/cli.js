@@ -377,7 +377,7 @@ async function main(cliArgs) {
     // Generate the documentation based on the type declaration file
     if (!cliArgs.skipTypedocGenerate) {
         console.info("Generating typedocs");
-        generateTypedocs(filePaths, cliArgs);
+        await generateTypedocs(filePaths, cliArgs);
     }
     else {
         console.info("Skipping typedoc generation");
