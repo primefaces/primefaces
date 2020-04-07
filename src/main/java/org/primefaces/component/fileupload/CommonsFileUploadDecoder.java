@@ -24,25 +24,44 @@
 package org.primefaces.component.fileupload;
 
 import org.apache.commons.fileupload.FileItem;
-import org.primefaces.model.file.*;
+import org.primefaces.model.file.CommonsUploadedFile;
+import org.primefaces.model.file.UploadedFile;
 import org.primefaces.webapp.MultipartRequest;
 
-import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequestWrapper;
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CommonsFileUploadDecoder {
+public class CommonsFileUploadDecoder extends AbstractFileUploadDecoder<MultipartRequest> {
 
-    private CommonsFileUploadDecoder() {
+    @Override
+    public String getName() {
+        return "commons";
     }
 
-    public static void decode(FacesContext context, FileUpload fileUpload, String inputToDecodeId) {
-        MultipartRequest multipartRequest = null;
-        Object request = context.getExternalContext().getRequest();
+    @Override
+    protected List<UploadedFile> createUploadedFiles(MultipartRequest request, FileUpload fileUpload, String inputToDecodeId) {
+        Long sizeLimit = fileUpload.getSizeLimit();
+        return request.getFileItems(inputToDecodeId).stream()
+                .map(p -> new CommonsUploadedFile(p, sizeLimit))
+                .collect(Collectors.toList());
+    }
 
+    @Override
+    protected UploadedFile createUploadedFile(MultipartRequest request, FileUpload fileUpload, String inputToDecodeId) {
+        FileItem file = request.getFileItem(inputToDecodeId);
+        if (file != null && !file.getName().isEmpty()) {
+            return new CommonsUploadedFile(file, fileUpload.getSizeLimit());
+        }
+
+        return null;
+    }
+
+    @Override
+    protected MultipartRequest getRequest(FacesContext ctxt) {
+        MultipartRequest multipartRequest = null;
+        Object request = ctxt.getExternalContext().getRequest();
         while (request instanceof ServletRequestWrapper) {
             if (request instanceof MultipartRequest) {
                 multipartRequest = (MultipartRequest) request;
@@ -53,52 +72,6 @@ public class CommonsFileUploadDecoder {
             }
         }
 
-        if (multipartRequest != null) {
-            try {
-                if (fileUpload.getMode().equals("simple")) {
-                    decodeSimple(context, fileUpload, multipartRequest, inputToDecodeId);
-                }
-                else {
-                    decodeAdvanced(context, fileUpload, multipartRequest);
-                }
-            }
-            catch (IOException e) {
-                throw new FacesException(e);
-            }
-        }
-    }
-
-    private static void decodeSimple(FacesContext context, FileUpload fileUpload, MultipartRequest request, String inputToDecodeId) throws IOException {
-        if (fileUpload.isMultiple()) {
-            Long sizeLimit = fileUpload.getSizeLimit();
-            List<UploadedFile> files = request.getFileItems(inputToDecodeId).stream()
-                    .map(p -> new CommonsUploadedFile(p, sizeLimit))
-                    .collect(Collectors.toList());
-
-            if (!files.isEmpty()) {
-                UploadedFiles uploadedFiles = new UploadedFiles(files);
-                fileUpload.setSubmittedValue(new UploadedFilesWrapper(uploadedFiles));
-            }
-            else {
-                fileUpload.setSubmittedValue("");
-            }
-        }
-        else {
-            FileItem file = request.getFileItem(inputToDecodeId);
-            if (file != null && !file.getName().isEmpty()) {
-                UploadedFile uploadedFile = new CommonsUploadedFile(file, fileUpload.getSizeLimit());
-                fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
-            }
-        }
-    }
-
-    private static void decodeAdvanced(FacesContext context, FileUpload fileUpload, MultipartRequest request) throws IOException {
-        String clientId = fileUpload.getClientId(context);
-        FileItem file = request.getFileItem(clientId);
-
-        if (file != null) {
-            UploadedFile uploadedFile = new CommonsUploadedFile(file, fileUpload.getSizeLimit());
-            fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
-        }
+        return multipartRequest;
     }
 }
