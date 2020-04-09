@@ -23,10 +23,7 @@
  */
 package org.primefaces.component.fileupload;
 
-import org.primefaces.model.file.UploadedFile;
-import org.primefaces.model.file.UploadedFileWrapper;
-import org.primefaces.model.file.UploadedFiles;
-import org.primefaces.model.file.UploadedFilesWrapper;
+import org.primefaces.model.file.*;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -34,8 +31,11 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public abstract class AbstractFileUploadDecoder<T extends ServletRequest> implements FileUploadDecoder {
+
+    protected static final Pattern CONTENT_RANGE_PATTERN = Pattern.compile("^bytes (\\d+)-(\\d+)\\/(\\d+|\\*)$");
 
     @Override
     public void decode(FacesContext context, FileUpload fileUpload) {
@@ -81,7 +81,12 @@ public abstract class AbstractFileUploadDecoder<T extends ServletRequest> implem
     protected void decodeAdvanced(FileUpload fileUpload, T request, String inputToDecodeId) throws IOException, ServletException {
         UploadedFile uploadedFile = createUploadedFile(request, fileUpload, inputToDecodeId);
         if (uploadedFile != null) {
-            fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
+            if (uploadedFile instanceof UploadedFileChunk) {
+                fileUpload.setSubmittedValue(new UploadedFileChunkWrapper((UploadedFileChunk) uploadedFile));
+            }
+            else {
+                fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
+            }
         }
     }
 

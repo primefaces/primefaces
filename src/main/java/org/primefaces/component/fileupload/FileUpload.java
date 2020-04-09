@@ -23,8 +23,10 @@
  */
 package org.primefaces.component.fileupload;
 
+import org.primefaces.event.FileChunkUploadEvent;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.file.UploadedFile;
+import org.primefaces.model.file.UploadedFileChunk;
 import org.primefaces.model.file.UploadedFiles;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FileUploadUtils;
@@ -71,6 +73,21 @@ public class FileUpload extends FileUploadBase {
         if (me != null && event instanceof org.primefaces.event.FileUploadEvent) {
             me.invoke(facesContext.getELContext(), new Object[]{event});
         }
+        else if (event instanceof org.primefaces.event.FileChunkUploadEvent) {
+            FileChunkUploadEvent fileChunkUploadEvent = (FileChunkUploadEvent) event;
+
+            UploadedFileChunk uploadedFileChunk = fileChunkUploadEvent.getFileChunk();
+            MethodExpression meChunk = getChunkListener();
+
+            if (meChunk != null) {
+                meChunk.invoke(facesContext.getELContext(), new Object[]{event});
+            }
+
+            if (uploadedFileChunk.isLastChunk() && (me != null)) {
+                FileUploadEvent fileUploadEvent = new FileUploadEvent(fileChunkUploadEvent.getComponent(), fileChunkUploadEvent.getFileChunk());
+                me.invoke(facesContext.getELContext(), new Object[]{fileUploadEvent});
+            }
+        }
     }
 
     @Override
@@ -90,7 +107,12 @@ public class FileUpload extends FileUploadBase {
                 }
 
                 if (newValue instanceof UploadedFile && "advanced".equals(getMode())) {
-                    queueEvent(new FileUploadEvent(this, (UploadedFile) newValue));
+                    if (newValue instanceof UploadedFileChunk) {
+                        queueEvent(new FileChunkUploadEvent(this, (UploadedFileChunk) newValue));
+                    }
+                    else {
+                        queueEvent(new FileUploadEvent(this, (UploadedFile) newValue));
+                    }
                 }
             }
             catch (VirusException | ValidatorException e) {
@@ -98,5 +120,9 @@ public class FileUpload extends FileUploadBase {
                 context.addMessage(getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
             }
         }
+    }
+
+    public boolean isChunkedUpload() {
+        return (getMaxChunkSize() > 0);
     }
 }
