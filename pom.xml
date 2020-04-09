@@ -166,10 +166,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-             <groupId>org.junit.jupiter</groupId>
-             <artifactId>junit-jupiter-params</artifactId>
-             <version>5.5.2</version>
-             <scope>test</scope>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>5.5.2</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
@@ -279,9 +279,9 @@
 
         <extensions>
             <extension>
-            <groupId>org.apache.maven.wagon</groupId>
-            <artifactId>wagon-ssh</artifactId>
-            <version>3.0.0</version>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh</artifactId>
+                <version>3.0.0</version>
             </extension>
         </extensions>
 
@@ -440,7 +440,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>1.16</version>
+                <version>1.18</version>
                 <executions>
                     <execution>
                         <id>aggregate-download-licenses</id>
@@ -458,6 +458,16 @@
                 </executions>
                 <configuration>
                     <excludedScopes>test,provided</excludedScopes>
+                    <licenseUrlReplacements>
+                        <licenseUrlReplacement>
+                            <regexp>.*BSD-3.*</regexp>
+                            <replacement>https://raw.githubusercontent.com/teamdigitale/licenses/master/BSD-3-Clause</replacement>
+                        </licenseUrlReplacement>
+                        <licenseUrlReplacement>
+                            <regexp>.*json.*</regexp>
+                            <replacement>https://raw.githubusercontent.com/stleary/JSON-java/master/LICENSE</replacement>
+                        </licenseUrlReplacement>
+                    </licenseUrlReplacements>
                 </configuration>
             </plugin>
 
@@ -902,7 +912,7 @@
                         </filter>
                     </filters>
                 </configuration>
-               <executions>
+                <executions>
                     <execution>
                         <id>shade-dependencies</id>
                         <phase>package</phase>
