@@ -146,6 +146,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Unbinds events needed if refreshing to prevent multiple sort and pagination events.
+     * Cancels all current drag and drop events.
      */
     unbindEvents: function() {
         if (this.sortableColumns) {
@@ -153,6 +154,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         if (this.paginator) {
             this.paginator.unbindEvents();
+        }
+
+        // #5582: destroy any current draggable items
+        var dragdrop = $.ui.ddmanager.current;
+        if (dragdrop) {
+            document.body.style.cursor = 'default';
+            dragdrop.cancel();
         }
     },
 
@@ -941,7 +949,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             reflowHeaderText = headerColumn.find('.ui-reflow-headertext:first').text(),
             colTitleEl = headerColumn.children('.ui-column-title'),
             title = (reflowHeaderText && reflowHeaderText.length) ? reflowHeaderText : colTitleEl.text();
-            this.tbody.find('> tr:not(.ui-datatable-empty-message) > td:nth-child(' + (i + 1) + ')').prepend('<span class="ui-column-title">' + PrimeFaces.escapeHTML(title) + '</span>');
+            this.tbody.find('> tr:not(.ui-datatable-empty-message,.ui-datatable-summaryrow) > td:nth-child(' + (i + 1) + ')').prepend('<span class="ui-column-title">' + PrimeFaces.escapeHTML(title) + '</span>');
         }
     },
 
@@ -3515,7 +3523,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 helperCells = helperRow.children();
 
                 for(var i = 0; i < helperCells.length; i++) {
-                    helperCells.eq(i).width(cells.eq(i).width());
+                    var helperCell = helperCells.eq(i);
+                    helperCell.width(cells.eq(i).width());
+                    // #5584 reflow must remove column title span
+                    helperCell.children().remove('.ui-column-title');
                 }
 
                 helperRow.appendTo(helper.find('tbody'));

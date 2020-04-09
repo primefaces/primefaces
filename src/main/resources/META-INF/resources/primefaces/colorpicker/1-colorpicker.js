@@ -81,6 +81,7 @@
         this.cfg.onHide = function(cp) {
             $this.overlay.css('z-index', ++PrimeFaces.zindex);
             $(cp).fadeOut('fast');
+            $this.callBehavior('close');
             return false;
         };
     },

@@ -47,31 +47,16 @@ public class FileUploadRenderer extends CoreRenderer {
         }
 
         FileUpload fileUpload = (FileUpload) component;
-
         if (!fileUpload.isDisabled()) {
             PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
             String uploader = applicationContext.getConfig().getUploader();
-            boolean isAtLeastJSF22 = applicationContext.getEnvironment().isAtLeastJsf22();
-            String inputToDecodeId = getSimpleInputDecodeId(fileUpload, context);
 
-            if (uploader.equals("auto")) {
-                if (isAtLeastJSF22) {
-                    NativeFileUploadDecoder.decode(context, fileUpload, inputToDecodeId);
-                }
-                else {
-                    CommonsFileUploadDecoder.decode(context, fileUpload, inputToDecodeId);
-                }
+            FileUploadDecoder decoder = applicationContext.getFileUploadDecoder(uploader);
+            if (decoder == null) {
+                throw new FacesException("FileUploaderDecoder '" + uploader + "' not found");
             }
-            else if (uploader.equals("native")) {
-                if (!isAtLeastJSF22) {
-                    throw new FacesException("native uploader requires at least a JSF 2.2 runtime");
-                }
 
-                NativeFileUploadDecoder.decode(context, fileUpload, inputToDecodeId);
-            }
-            else if (uploader.equals("commons")) {
-                CommonsFileUploadDecoder.decode(context, fileUpload, inputToDecodeId);
-            }
+            decoder.decode(context, fileUpload);
         }
     }
 
@@ -381,17 +366,6 @@ public class FileUploadRenderer extends CoreRenderer {
         }
         else {
             return submittedValue;
-        }
-    }
-
-    public String getSimpleInputDecodeId(FileUpload fileUpload, FacesContext context) {
-        String clientId = fileUpload.getClientId(context);
-
-        if (fileUpload.getMode().equals("simple") && !fileUpload.isSkinSimple()) {
-            return clientId;
-        }
-        else {
-            return clientId + "_input";
         }
     }
 

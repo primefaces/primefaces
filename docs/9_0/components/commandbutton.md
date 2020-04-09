@@ -71,6 +71,7 @@ CommandButton is an extended version of standard commandButton with ajax and the
 | widgetVar | null | String | Name of the client side widget.
 | form | null | String | Form to serialize for an ajax request. Default is the enclosing form.
 | renderDisabledClick | true | Boolean | When enabled, click event can be added to disabled button.
+| validateClient | false | Boolean | When set to true client side validation is enabled, global setting is required to be enabled as a prerequisite.
 
 
 ## Getting started with CommandButton

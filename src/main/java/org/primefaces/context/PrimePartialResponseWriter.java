@@ -175,9 +175,10 @@ public class PrimePartialResponseWriter extends PartialResponseWriterWrapper {
             startExtension(CALLBACK_EXTENSION_PARAMS);
             getWrapped().write("{");
 
-            for (Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
-                String paramName = it.next();
-                Object paramValue = params.get(paramName);
+            for (Iterator<Map.Entry<String, Object>> it = params.entrySet().iterator(); it.hasNext();) {
+                Map.Entry<String, Object> entry = it.next();
+                String paramName = entry.getKey();
+                Object paramValue = entry.getValue();
 
                 if (paramValue == null) {
                     encodeJSONValue(paramName, null);

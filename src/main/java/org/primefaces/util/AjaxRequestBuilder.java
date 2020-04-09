@@ -308,9 +308,11 @@ public class AjaxRequestBuilder {
         if (params != null && !params.isEmpty()) {
             buffer.append(",pa:[");
 
-            for (Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
-                String name = it.next();
-                List<String> paramValues = params.get(name);
+            for (Iterator<Map.Entry<String, List<String>>> it = params.entrySet().iterator(); it.hasNext();) {
+                Map.Entry<String, List<String>> entry = it.next();
+                String name = entry.getKey();
+                List<String> paramValues = entry.getValue();
+
                 int size = paramValues.size();
                 for (int i = 0; i < size; i++) {
                     String paramValue = paramValues.get(i);

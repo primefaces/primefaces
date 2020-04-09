@@ -227,7 +227,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             }
         })
         .on('change.columnToggler', function(e) {
-            if($(this).attr('aria-checked')) {
+            if($(this).attr('aria-checked') === "true") {
                 $this.check(box);
                 $(this).removeClass('ui-state-active');
             }

@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright (c) 2009-2019 PrimeTek
@@ -25,7 +25,7 @@ package org.primefaces.util;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import java.util.List;;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -43,6 +43,20 @@ public class LangUtilsTest {
         Class type = LangUtils.getTypeFromCollectionProperty(new ConcreteClass(), "ints");
 
         assertEquals(Integer.class, type);
+    }
+
+    @Test
+    public void getTypeFromCollectionProperty_GenericInheritance() {
+        Class type = LangUtils.getTypeFromCollectionProperty(new ConcreteGenericClass(), "values");
+
+        assertEquals(String.class, type);
+    }
+
+    @Test
+    public void getTypeFromCollectionProperty_GenericInheritance_Multilevel() {
+        Class type = LangUtils.getTypeFromCollectionProperty(new DetailedConcreteGenericClass(), "values");
+
+        assertEquals(String.class, type);
     }
 
     class SimpleClass {
@@ -70,6 +84,26 @@ public class LangUtilsTest {
     }
 
     class ConcreteClass extends AbstractClass {
+
+    }
+
+    abstract class AbstractGenericClass<T> {
+        private List<T> values;
+
+        public List<T> getValues() {
+            return values;
+        }
+
+        public void setValues(List<T> values) {
+            this.values = values;
+        }
+    }
+
+    class ConcreteGenericClass extends AbstractGenericClass<String> {
+
+    }
+
+    class DetailedConcreteGenericClass extends ConcreteGenericClass {
 
     }
 }

@@ -48,6 +48,33 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
     @Override
     protected void encodeMarkup(FacesContext context, UICalendar uicalendar, String value) throws IOException {
         DatePicker datepicker = (DatePicker) uicalendar;
+
+        if (datepicker.isShowTimeWithoutDefault() == null) {
+            Class<?> type = datepicker.getTypeFromValueByValueExpression(context);
+
+            if (type != null) {
+                if (LocalDateTime.class.isAssignableFrom(type)) {
+                    datepicker.setShowTime(true);
+                }
+                else {
+                    datepicker.setShowTime(false);
+                }
+            }
+        }
+
+        if (datepicker.isTimeOnlyWithoutDefault() == null) {
+            Class<?> type = datepicker.getTypeFromValueByValueExpression(context);
+
+            if (type != null) {
+                if (LocalTime.class.isAssignableFrom(type)) {
+                    datepicker.setTimeOnly(true);
+                }
+                else {
+                    datepicker.setTimeOnly(false);
+                }
+            }
+        }
+
         ResponseWriter writer = context.getResponseWriter();
         String clientId = datepicker.getClientId(context);
         String styleClass = datepicker.getStyleClass();

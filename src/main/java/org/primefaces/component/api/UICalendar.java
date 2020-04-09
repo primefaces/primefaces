@@ -29,6 +29,7 @@ import java.time.format.FormatStyle;
 import java.time.format.ResolverStyle;
 import java.util.Locale;
 
+import javax.el.ValueExpression;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
@@ -108,6 +109,10 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
 
     public boolean isTimeOnly() {
         return (Boolean) getStateHelper().eval(PropertyKeys.timeOnly, false);
+    }
+
+    public Boolean isTimeOnlyWithoutDefault() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.timeOnly);
     }
 
     public void setTimeOnly(boolean timeOnly) {
@@ -281,6 +286,20 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
             }
         }
         context.addMessage(getClientId(context), msg);
+    }
+
+    /**
+     * Only for internal usage within PrimeFaces.
+     * @return Type of the value bound via value expression. May return null when no value is bound.
+     */
+    public Class<?> getTypeFromValueByValueExpression(FacesContext context) {
+        ValueExpression ve = getValueExpression("value");
+        if (ve != null) {
+            return ve.getType(context.getELContext());
+        }
+        else {
+            return null;
+        }
     }
 
     /*
