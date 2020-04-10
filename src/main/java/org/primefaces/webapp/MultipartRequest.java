@@ -50,6 +50,8 @@ public class MultipartRequest extends HttpServletRequestWrapper {
     private Map<String, List<FileItem>> fileParams;
     private Map<String, String[]> parameterMap;
 
+    private String contentRange;
+
     public MultipartRequest(HttpServletRequest request, ServletFileUpload servletFileUpload) throws IOException {
         super(request);
         formParams = new LinkedHashMap<>();
@@ -62,6 +64,7 @@ public class MultipartRequest extends HttpServletRequestWrapper {
     private void parseRequest(HttpServletRequest request, ServletFileUpload servletFileUpload) throws IOException {
         try {
             List<FileItem> fileItems = servletFileUpload.parseRequest(request);
+            setContentRange(request.getHeader("Content-Range"));
 
             for (FileItem item : fileItems) {
                 if (item.isFormField()) {
@@ -169,5 +172,13 @@ public class MultipartRequest extends HttpServletRequestWrapper {
         }
 
         return Collections.emptyList();
+    }
+
+    public String getContentRange() {
+        return contentRange;
+    }
+
+    public void setContentRange(String contentRange) {
+        this.contentRange = contentRange;
     }
 }

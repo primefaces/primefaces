@@ -23,21 +23,20 @@
  */
 package org.primefaces.model.file;
 
-import javax.servlet.http.Part;
+import org.apache.commons.fileupload.FileItem;
 
-public class NativeUploadedFileChunk extends NativeUploadedFile implements UploadedFileChunk {
+public class CommonsUploadedFileChunk extends CommonsUploadedFile implements UploadedFileChunk {
 
     private Long chunkRangeBegin;
     private Long chunkRangeEnd;
     private Long chunkTotalFileSize;
     private boolean lastChunk = false;
 
-    public NativeUploadedFileChunk() {
-        super();
+    public CommonsUploadedFileChunk() {
     }
 
-    public NativeUploadedFileChunk(Part part, Long sizeLimit) {
-        super(part, sizeLimit);
+    public CommonsUploadedFileChunk(FileItem fileItem, Long sizeLimit) {
+        super(fileItem, sizeLimit);
     }
 
     public Long getChunkRangeBegin() {
@@ -71,4 +70,7 @@ public class NativeUploadedFileChunk extends NativeUploadedFile implements Uploa
     public void setLastChunk(boolean lastChunk) {
         this.lastChunk = lastChunk;
     }
+
+
+
 }

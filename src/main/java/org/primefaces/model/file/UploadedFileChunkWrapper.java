@@ -39,8 +39,18 @@ public class UploadedFileChunkWrapper extends UploadedFileWrapper implements Upl
     }
 
     @Override
+    public void setChunkRangeBegin(Long chunkRangeBegin) {
+        ((UploadedFileChunk) getWrapped()).setChunkRangeBegin(chunkRangeBegin);
+    }
+
+    @Override
     public Long getChunkRangeEnd() {
         return ((UploadedFileChunk) getWrapped()).getChunkRangeEnd();
+    }
+
+    @Override
+    public void setChunkRangeEnd(Long chunkRangeEnd) {
+        ((UploadedFileChunk) getWrapped()).setChunkRangeEnd(chunkRangeEnd);
     }
 
     @Override
@@ -49,7 +59,17 @@ public class UploadedFileChunkWrapper extends UploadedFileWrapper implements Upl
     }
 
     @Override
+    public void setChunkTotalFileSize(Long chunkTotalFileSize) {
+        ((UploadedFileChunk) getWrapped()).setChunkTotalFileSize(chunkTotalFileSize);
+    }
+
+    @Override
     public boolean isLastChunk() {
         return ((UploadedFileChunk) getWrapped()).isLastChunk();
+    }
+
+    @Override
+    public void setLastChunk(boolean lastChunk) {
+        ((UploadedFileChunk) getWrapped()).setLastChunk(lastChunk);
     }
 }

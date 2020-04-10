@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -61,25 +60,8 @@ public class NativeFileUploadDecoder extends AbstractFileUploadDecoder<HttpServl
         Part part = request.getPart(inputToDecodeId);
 
         if (fileUpload.isChunkedUpload()) {
-            //TODO: check whether some parts may be moved to AbstractFileUploadDecoder and reused by CommonsFileUploadDecoder
-
             NativeUploadedFileChunk uploadedFile = new NativeUploadedFileChunk(part, fileUpload.getSizeLimit());
-
-            String contentRange = request.getHeader("Content-Range");
-            Matcher matcher = CONTENT_RANGE_PATTERN.matcher(contentRange);
-
-            if (matcher.matches()) {
-                uploadedFile.setChunkRangeBegin(Long.parseLong(matcher.group(1)));
-                uploadedFile.setChunkRangeEnd(Long.parseLong(matcher.group(2)));
-                uploadedFile.setChunkTotalFileSize(Long.parseLong(matcher.group(3)));
-                if ((uploadedFile.getChunkRangeEnd() + 1) == uploadedFile.getChunkTotalFileSize()) {
-                    uploadedFile.setLastChunk(true);
-                }
-            }
-            else {
-                throw new IOException("Content-Range-Header does not match pattern '" + CONTENT_RANGE_PATTERN.pattern() + "'");
-            }
-
+            processContentRange(request.getHeader("Content-Range"), uploadedFile);
             return uploadedFile;
         }
         else {
