@@ -3,6 +3,8 @@
 Tooltip goes beyond the legacy HTML title attribute by providing custom effects, events, HTML content
 and advance theme support.
 
+[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.tooltip.html)
+
 ## Info
 
 | Name | Value |

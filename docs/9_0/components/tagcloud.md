@@ -2,6 +2,8 @@
 
 TagCloud displays a collection of tag with different strengths.
 
+[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.tagcloud.html)
+
 ## Info
 
 | Name | Value |

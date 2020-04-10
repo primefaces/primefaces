@@ -31,6 +31,7 @@
     "@types/chart.js": "^2.9.16",
     "@types/googlemaps": "^3.39.3",
     "@types/jquery": "^3.3.33",
+    "@types/jquery.cleditor": "^1.4.30",
     "@types/jquery.fileupload": "^9.22.0",
     "@types/jqueryui": "^1.12.10",
     "@types/moment-timezone": "^0.5.13",

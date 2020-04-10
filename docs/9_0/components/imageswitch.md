@@ -2,6 +2,8 @@
 
 ImageSwitch component is a simple image gallery component.
 
+[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.imageswitch.html)
+
 ## Info
 
 | Name | Value |

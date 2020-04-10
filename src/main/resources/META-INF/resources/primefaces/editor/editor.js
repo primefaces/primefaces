@@ -1215,7 +1215,7 @@
  * 
  * Editor is an input component with rich text editing capabilities.
  * 
- * __Deprecated__: Use TextEditor instead.
+ * __Deprecated__: Use {@link TextEditor} instead.
  * 
  * @prop {JQuery} jqInput The DOM element for the hidden input field.
  * @prop {JQuery} editor The DOM element with the editor UI.

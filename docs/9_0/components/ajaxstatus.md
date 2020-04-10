@@ -2,6 +2,8 @@
 
 AjaxStatus is a global notifier for ajax requests.
 
+[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.ajaxstatus.html)
+
 ## Info
 
 | Name | Value |

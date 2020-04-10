@@ -2,6 +2,8 @@
 
 Menubar is a horizontal navigation component.
 
+[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.menubar.html)
+
 ## Info
 
 | Name | Value |

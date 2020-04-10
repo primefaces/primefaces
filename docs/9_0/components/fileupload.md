@@ -3,6 +3,8 @@
 FileUpload goes beyond the browser input type="file" functionality and features an HTML5
 powered rich solution with graceful degradation for legacy browsers.
 
+[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.fileupload.html)
+
 ## Info
 
 | Name | Value |

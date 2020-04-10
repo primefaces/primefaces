@@ -299,7 +299,11 @@ async function main(cliArgs) {
         module: [],
     };
 
-    bundle.ambient.push(await readFileUtf8(Paths.CoreDeclarationFile));
+    // Add core declaration files
+    bundle.ambient.push(...await Promise.all([
+        readFileUtf8(Paths.CoreDeclarationFile),
+        readFileUtf8(Paths.CoreJsfDeclarationFile),
+    ]));
 
     // Scan the base directory and list the directories with the JavaScript source files to process
     for await (const component of listComponents(cliArgs.inputDir)) {

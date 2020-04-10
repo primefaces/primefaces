@@ -2,6 +2,8 @@
 
 Chart.js based components are a modern replacement for the older p:chart component. Each chart component has its own model api that defines the data and the options to customize the graph.
 
+[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.basechart.html)
+
 ## BarChart
 
 A bar chart provides a way of showing data values represented as vertical bars. It is sometimes used to show trend data, and the comparison of multiple data sets side by side.

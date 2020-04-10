@@ -2,6 +2,18 @@
  * Namespace for the rangy JQueryUI plugin.
  * 
  * Contains some additional types and interfaces required for the typings.
+ * 
+ * The rangy JQueryUI plugin adds a few methods to jQuery instances:
+ * 
+ * - {@link JQuery.collapseSelection}
+ * - {@link JQuery.deleteSelectedText}
+ * - {@link JQuery.deleteText}
+ * - {@link JQuery.extractSelectedText}
+ * - {@link JQuery.getSelection}
+ * - {@link JQuery.insertText}
+ * - {@link JQuery.replaceSelectedText}
+ * - {@link JQuery.setSelection}
+ * - {@link JQuery.surroundSelectedText}
  */
 declare namespace JQueryRangy {
     /**

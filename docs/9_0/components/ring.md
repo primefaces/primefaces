@@ -2,6 +2,8 @@
 
 Ring is a data display component with a circular animation.
 
+[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.ring.html)
+
 ## Info
 
 | Name | Value |

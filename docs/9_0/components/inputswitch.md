@@ -2,6 +2,8 @@
 
 InputSwitch is used to select a boolean value.
 
+[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.inputswitch.html)
+
 ## Info
 
 | Name | Value |

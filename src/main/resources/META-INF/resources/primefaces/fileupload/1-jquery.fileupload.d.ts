@@ -1225,6 +1225,25 @@ declare namespace JQueryFileUpload {
         files: ArrayLike<File | Blob>;
     }
 
+    /**
+     * Interface for an instance of the jQuery BlueImp File Upload plugin.
+     * 
+     * The widget can be initialized on a file upload in the following way:
+     * 
+     * ```javascript
+     * $('#fileupload').fileupload();
+     * ```
+     * 
+     * File Upload widget with multiple file selection, drag&drop support, progress bars, validation and preview images,
+     * audio and video for jQuery.
+     * 
+     * Supports cross-domain, chunked and resumable file uploads and client-side image resizing.
+     * 
+     * Works with any server-side platform (PHP, Python, Ruby on Rails, Java, Node.js, Go etc.) that supports standard
+     * HTML form file uploads.
+     * 
+     * See https://github.com/blueimp/jQuery-File-Upload
+     */
     interface FileUpload extends JQueryUI.WidgetCommonProperties {
         /**
          * Namespace for the events of this widget.
@@ -1350,7 +1369,13 @@ declare namespace JQueryFileUpload {
      */
     interface BlueImpNamespace {
         /**
-         * The constructor the the {@link FileUpload} widget.
+         * The constructor for the {@link FileUpload} widget.
+         * 
+         * The widget can be initialized on a file upload in the following way:
+         * 
+         * ```javascript
+         * $('#fileupload').fileupload();
+         * ```
          */
         fileupload: FileUploadConstructor;
     }

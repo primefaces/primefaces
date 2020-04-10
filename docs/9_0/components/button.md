@@ -2,6 +2,8 @@
 
 Button is an extension to the standard h:button component with skinning capabilities.
 
+[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.button.html)
+
 ## Info
 
 | Name | Value |

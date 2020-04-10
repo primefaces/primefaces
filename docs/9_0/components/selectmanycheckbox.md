@@ -2,6 +2,8 @@
 
 SelectManyCheckbox is an extended version of the standard SelectManyCheckbox.
 
+[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.selectmanycheckbox.html)
+
 ## Info
 
 | Name | Value |

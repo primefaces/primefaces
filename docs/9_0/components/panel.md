@@ -2,6 +2,8 @@
 
 Panel is a grouping component with content toggle, close and menu integration.
 
+[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.panel.html)
+
 ## Info
 
 | Name | Value |

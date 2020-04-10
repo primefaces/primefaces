@@ -2,6 +2,8 @@
 
 SplitButton displays a command by default and additional ones in an overlay.
 
+[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.splitbutton.html)
+
 ## Info
 
 | Name | Value |

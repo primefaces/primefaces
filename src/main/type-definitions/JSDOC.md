@@ -26,10 +26,11 @@ To enable code autocompletion or type checking etc, a type declaration file
 
 ```sh
 npm install --save-dev  \
-  @types/jquery \
-  @types/jqueryui \
   @types/chart.js \
   @types/googlemaps \
+  @types/jquery \
+  @types/jqueryui \
+  @types/jquery.cleditor
   @types/moment-timezone \
   @types/quill \
   @types/raphael \

@@ -2,6 +2,8 @@
 
 Watermark applies a HTML5 placeholder attribute on an target input field.
 
+[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.watermark.html)
+
 ## Info
 
 | Name | Value |

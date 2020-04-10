@@ -50,6 +50,7 @@ const Paths = {
     BlacklistPath: resolve(join(__dirname, "..", "blacklist.txt")),
     ComponentsTestDir: resolve(join(__dirname, "..", "specs", "components")),
     ComponentsMainDir: resolve(join(__dirname, "..", "..", "resources", "META-INF", "resources", "primefaces")),
+    CoreJsfDeclarationFile: resolve(join(__dirname, "..", "core-jsf.d.ts")),
     CoreDeclarationFile: resolve(join(__dirname, "..", "core.d.ts")),
     EsLintRcPath: resolve(__dirname, "..", "eslintrc.js"),
     JsdocReadmePath: resolve(__dirname, "..", "JSDOC.md"),

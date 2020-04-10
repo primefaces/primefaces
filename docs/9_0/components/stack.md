@@ -2,6 +2,8 @@
 
 Stack is a navigation component that mimics the stacks feature in Mac OS X.
 
+[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.stack.html)
+
 ## Info
 
 | Name | Value |

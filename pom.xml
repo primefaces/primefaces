@@ -72,7 +72,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jsdoc.included.modules>@fullcalendar,autonumeric,cropperjs,chart.js,googlemaps,jquery,jqueryui,moment,moment-timezone,quill,raphael,vis-data,vis-timeline</jsdoc.included.modules>
+        <jsdoc.included.modules>@fullcalendar,autonumeric,cropperjs,chart.js,googlemaps,jquery,jqueryui,jquery.cleditor,moment,moment-timezone,quill,raphael,vis-data,vis-timeline</jsdoc.included.modules>
     </properties>
 
     <dependencies>
@@ -1109,6 +1109,8 @@
                 </plugins>
             </build>
         </profile>
+        <!-- Generates the JavaScript Api docs in the target directory -->
+        <!-- Use "-Djsdoc.skip.typedoc=true" if you only want to check and lint the declarations file -->
         <profile>
             <id>jsdoc</id>
             <properties>
@@ -1226,7 +1228,7 @@
                         </configuration>
                     </plugin>
 
-                    <!-- Write docs and *.d.ts file to the current documentation directory docs/<version>/jsdocs -->
+                    <!-- Write docs and *.d.ts file to the current documentation directory docs/jsdocs -->
                     <plugin>
                         <groupId>com.github.eirslett</groupId>
                         <artifactId>frontend-maven-plugin</artifactId>
@@ -1234,7 +1236,7 @@
                             <execution>
                                 <id>generate type declaration</id>
                                 <configuration>
-                                    <arguments>run generate-d-ts -- --outputDir docs/${parsedVersion.majorVersion}_${parsedVersion.minorVersion} --includemodules ${jsdoc.included.modules}</arguments>
+                                    <arguments>run generate-d-ts -- --outputDir docs --includemodules ${jsdoc.included.modules}</arguments>
                                 </configuration>
                             </execution>
                         </executions>

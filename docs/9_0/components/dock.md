@@ -2,6 +2,8 @@
 
 Dock component mimics the well known dock interface of Mac OS X.
 
+[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.dock.html)
+
 ## Info
 
 | Name | Value |

@@ -386,7 +386,7 @@ if (!PrimeFaces.ajax) {
             /**
              * Handles the given AJAX request, either by sending it immediately (if `async` is set to `true`), or by
              * adding it to the AJAX queue otherwise. The AJAX queue ensures that requests are sent and handled in the
-             * order they were started.
+             * order they were started. See also {@link jsf.ajax.request}.
              * @param {Partial<PrimeFaces.ajax.Configuration>} cfg Configuration for the AJAX request to send, such as
              * the HTTP method, the URL, and the content of the request. 
              * @param {Partial<PrimeFaces.ajax.ConfigurationExtender>} [ext] Optional extender with additional options
@@ -944,8 +944,12 @@ if (!PrimeFaces.ajax) {
         Response: {
 
             /**
-             * Handles the reponse of an AJAX request. The response consists of one or more actions such as executing a
-             * script or updating a DOM element. 
+             * Handles the response of an AJAX request. The response consists of one or more actions such as executing a
+             * script or updating a DOM element. See also {@link jsf.ajax.response}.
+             *
+             * Also updates the specified components if any and synchronizes the client side JSF state. DOM updates are
+             * implemented using jQuery which uses a very algorithm.
+             *
              * @template {PrimeFaces.widget.BaseWidget} [TWidget=PrimeFaces.widget.BaseWidget] Type of the widget which
              * triggered the AJAX request.
              * @param {XMLDocument} xml The XML that was returned by the AJAX request.

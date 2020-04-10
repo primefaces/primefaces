@@ -2,6 +2,8 @@
 
 DataView displays data in grid or list layout.
 
+[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.dataview.html)
+
 ## Info
 
 | Name | Value |

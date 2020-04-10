@@ -7,6 +7,7 @@
 /// <reference types="googlemaps" />
 /// <reference types="jquery" />
 /// <reference types="jqueryui" />
+/// <reference types="jquery.cleditor" />
 /// <reference types="moment-timezone" />
 
 /// <reference path="PrimeFaces-module.d.ts" />
@@ -814,4 +815,63 @@ interface JQuery {
  * JavaScript dependencies were loaded.
  */
 interface JQueryStatic {
+}
+
+declare namespace JQuery {
+    /**
+     * This interface contains all known types of events triggered by various jQuery extensions. It maps the name of the
+     * event to the type the event that is triggered. Please note that this interface does not define the custom
+     * additional arguments that may be passed when triggering event. These are deprecated in favor of using
+     * `CustomEvent`.
+     */
+    interface TypeToTriggeredEventMap<
+        TDelegateTarget,
+        TData,
+        TCurrentTarget,
+        TTarget
+        > {
+        /**
+         * Triggered on the document before an AJAX request made by {@link PrimeFaces.ajax} starts.
+         * 
+         * Usually the following arguments are passed to the callback:
+         * - {@link JQuery.jqXHR}: The AJAX request that is about to be sent.
+         * - {@link JQuery.AjaxSettings}: The settings of the AJAX request.
+         */
+        pfAjaxSend: JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
+
+        /**
+         * Triggered on the document when an AJAX request made by {@link PrimeFaces.ajax} starts.
+         * 
+         * Usually no arguments are passed to the callback.
+         */
+        pfAjaxStart: JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
+
+        /**
+         * Triggered on the document when an AJAX request made by {@link PrimeFaces.ajax} fails.
+         * 
+         * Usually the following arguments are passed to the callback:
+         * - {@link JQuery.jqXHR}: The AJAX request that failed.
+         * - {@link JQuery.AjaxSettings}: The settings of the AJAX request.
+         * - A string: The error that occurred.
+         */
+        pfAjaxError: JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
+
+        /**
+         * Triggered on the document when an AJAX request made by {@link PrimeFaces.ajax} succeeds.
+         * 
+         * Usually the following arguments are passed to the callback:
+         * - {@link JQuery.jqXHR}: The AJAX request that was successful.
+         * - {@link JQuery.AjaxSettings}: The settings of the AJAX request.
+         */
+        pfAjaxSuccess: JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
+
+        /**
+         * Triggered on the document when an AJAX request completes (both success and failure). Only when `global` is set to `true`.
+         * 
+         * Usually the following arguments are passed to the callback:
+         * - {@link JQuery.jqXHR}: The AJAX request that completed
+         * - {@link JQuery.AjaxSettings}: The settings of the AJAX request.
+         */
+        pfAjaxComplete: JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
+   }
 }

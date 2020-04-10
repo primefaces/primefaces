@@ -2,6 +2,8 @@
 
 Knob is an input component to insert numeric values in a range.
 
+[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.knob.html)
+
 ## Info
 
 | Name | Value |

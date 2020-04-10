@@ -2,6 +2,8 @@
 
 ImageCompare provides a user interface to compare two images.
 
+[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.imagecompare.html)
+
 ## Info
 
 | Name | Value |

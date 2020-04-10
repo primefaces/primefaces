@@ -3,6 +3,8 @@
 Lifecycle is a utility component which displays the execution time of each JSF phase. It also
 synchronizes automatically after each AJAX request.
 
+[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.lifecycle.html)
+
 ## Info
 
 | Name | Value |

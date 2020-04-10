@@ -2,6 +2,8 @@
 
 ContentFlow is a horizontal content gallery component with a slide animation.
 
+[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.contentflow.html)
+
 ## Info
 
 | Name | Value |

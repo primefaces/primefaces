@@ -4,6 +4,8 @@ DataList presents a collection of data in list layout with several display types
 
 > DataGrid is deprecated, use  [DataView](/components/dataview.md) instead.
 
+[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.datalist.html)
+
 ## Info
 
 | Name | Value |

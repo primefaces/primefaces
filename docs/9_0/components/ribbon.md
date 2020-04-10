@@ -3,6 +3,8 @@
 Ribbon is container component to group different sets of controls in a tabbed layout. Special styling
 is applied to inner components for a unified look.
 
+[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.ribbon.html)
+
 ## Info
 
 | Name | Value |
