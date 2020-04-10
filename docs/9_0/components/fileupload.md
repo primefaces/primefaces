@@ -294,7 +294,59 @@ Chunked file upload comes with following restrictions:
 1. It is only supported for `mode="advanced"`
 2. It does not support `virusScan="true"` and `validateContentType="true"` (The application has to care about this itself. PrimeFaces can't handle this for chunked upload.)
 
-TODO: code-example, restrictions, ....
+```xhtml
+<h:form>          
+	<p:fileUpload chunkListener="#{fileUploadView.handleFileChunkUpload}" listener="#{fileUploadView.handleFileUpload}" mode="advanced" dragDropSupport="false"
+				  multiple="true" update="messages" sizeLimit="10000000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+				  maxChunkSize="1000000" />
+
+	<p:growl id="messages" showDetail="true" keepAlive="true" />
+</h:form>
+```
+
+```java
+public void handleFileChunkUpload(FileChunkUploadEvent event) {
+	UploadedFileChunk uploadedFileChunk = event.getFileChunk();
+
+	FacesMessage msg = new FacesMessage("Chunk Successful", "Chunk " + uploadedFileChunk.getChunkRangeBegin() +
+			" - " + uploadedFileChunk.getChunkRangeEnd() +
+			" of file " + uploadedFileChunk.getFileName() + " is uploaded.");
+	FacesContext.getCurrentInstance().addMessage(null, msg);
+
+	try {
+		OpenOption openOption = StandardOpenOption.APPEND;
+		if (uploadedFileChunk.getChunkRangeBegin() == 0) {
+			openOption = StandardOpenOption.CREATE;
+		}
+
+		Files.write(Paths.get(System.getProperty("java.io.tmpdir"), uploadedFileChunk.getFileName()), uploadedFileChunk.getContent(), openOption);
+	}
+	catch (IOException ex) {
+		msg = new FacesMessage("Chunk Error", "Chunk " + uploadedFileChunk.getChunkRangeBegin() +
+				" - " + uploadedFileChunk.getChunkRangeEnd() +
+				" of file " + uploadedFileChunk.getFileName() + " can´t be written to tempDir. " + ex.getMessage());
+		msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+}
+
+public void handleFileUpload(FileUploadEvent event) {
+	FacesMessage msg = new FacesMessage("Successful", event.getFile().getFileName() + " is uploaded.");
+	FacesContext.getCurrentInstance().addMessage(null, msg);
+
+    try {
+        //TODO: process file
+
+        //delete file from tmpdir
+        Files.delete(Paths.get(System.getProperty("java.io.tmpdir"), event.getFile().getFileName()));
+    }
+    catch (IOException ex) {
+        msg = new FacesMessage("Error", event.getFile().getFileName() + " can´t be deleted from tempDir. " + ex.getMessage());
+        msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+}
+```
 
 ## More secure file upload
 

@@ -123,6 +123,6 @@ public class FileUpload extends FileUploadBase {
     }
 
     public boolean isChunkedUpload() {
-        return (getMaxChunkSize() > 0);
+        return getMaxChunkSize() > 0;
     }
 }
