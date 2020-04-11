@@ -11,8 +11,8 @@ const { hasTag, hasTagSet } = require("./doc-comments");
  */
 function excludeSymbol(jsdoc, name, exclusionTagsSet) {
     const hasPrivate = hasTagSet(jsdoc, exclusionTagsSet);
-    const hasPublic = hasTag(jsdoc, Tags.Public);
-    if (hasPrivate || (name.startsWith("_") && !hasPublic)) {
+    const hasInclude = hasTag(jsdoc, Tags.Include);
+    if (hasPrivate || (name.startsWith("_") && !hasInclude)) {
         return true;
     }
     return false;

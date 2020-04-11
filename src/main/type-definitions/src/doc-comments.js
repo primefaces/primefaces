@@ -3,7 +3,7 @@
 const CommentParser = require("comment-parser");
 const { handleError } = require("./error");
 const { collectToMap, isNotBlank, removeLineBreaksFromStartAndEnd, splitLines } = require("./lang");
-const { NamedTags } = require("./constants");
+const { NamedTags, Tags } = require("./constants");
 
 /** @type {Partial<import("comment-parser").Options>} */
 const CommentParserOpts = {
@@ -21,7 +21,8 @@ const CommentParserOpts = {
                 data: {
                     ...data,
                     name: data.name ? data.name.trim() : "",
-            }};
+                }
+            };
         },
     ],
 };
@@ -47,7 +48,7 @@ function isParseResultEmpty(parseResult) {
 
 /**
  * Parses a single doc comment.
- * @param {string} commentContent Content of the comment, without the comment delimiters (slash, asterix)
+ * @param {string} commentContent Content of the comment, without the comment delimiters (slash, asterisk)
  * @param {SeveritySettingsConfig} severitySettings
  * @return {import("comment-parser").Comment} The parsed comment.
  */
@@ -245,11 +246,26 @@ function hasParseResultAnyDescription(doc) {
 }
 
 /**
+ * Checks whether the given tag should be output. Some tags that are only used internally such as `@include` are
+ * omitted.
+ * @param {import("comment-parser").Tag} tag Tag to check.
+ * @return {boolean} Whether the tag should be included in the generated declaration file.
+ */
+function includeTagInDoc(tag) {
+    switch (tag.tag) {
+        case Tags.Include:
+            return false;
+        default:
+            return true;
+    }
+}
+
+/**
  * Creates a new doc comment with the given description and tags. Adds the doc comment
- * limiters (slash and asterix) and properly indents the lines. 
+ * limiters (slash and asterisk) and properly indents the lines. 
  * @param {string} description Description of the comment, may be empty.
  * @param {import("comment-parser").Tag[]} tags Tags of the comment, may be an empty array.
- * @return {string[]} The doc comment with the given descrpition and tags.
+ * @return {string[]} The doc comment with the given description and tags.
  */
 function createDocComment(description, tags) {
     description = removeLineBreaksFromStartAndEnd(description);
@@ -259,7 +275,7 @@ function createDocComment(description, tags) {
         description: removeLineBreaksFromStartAndEnd(description),
         line: 0,
         source: "",
-        tags: tags.map(sanitizeTag),
+        tags: tags.map(sanitizeTag).filter(includeTagInDoc),
     };
     let stringified = CommentParser.stringify(parseResult, { indent: 0 });
     if (stringified === undefined || stringified === "") {

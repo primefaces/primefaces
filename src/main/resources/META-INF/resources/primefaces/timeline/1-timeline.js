@@ -76,7 +76,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * @override
      * @inheritdoc
-     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     init: function (cfg) {
         this._super(cfg);
@@ -111,8 +111,10 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Creates timeline widget with all initialization steps.
+     * @include
      * @override
      * @protected
+     * @inheritdoc
      */
     _render: function () {
         // instantiate a timeline object
@@ -138,7 +140,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * @override
      * @inheritdoc
-     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     refresh: function(cfg) { 
         // clean up memory

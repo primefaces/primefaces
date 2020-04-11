@@ -7,6 +7,9 @@ The available methods and constants are fully documented, [click here to access 
 To enable features such as code autocompletion or type checking, a type declaration file (`*.d.ts`) is available as well:
 
 * You can download it from here: [main](../PrimeFaces.d.ts) and [sub](../PrimeFaces-module.d.ts)
+* Use it with a
+  [triple-slash directive](https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html#-reference-path-):
+  `/// <reference path="./path/to/PrimeFaces.d.ts" />`
 * It references some types from other libraries which you may need to install via npm. See the
   [main page of the JavaScript API Docs](../../jsdocs/index.html) for more details.
 

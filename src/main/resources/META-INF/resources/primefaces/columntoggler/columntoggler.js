@@ -27,7 +27,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
 	/**
 	 * @override
 	 * @inheritdoc
-     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
 	 */
     init: function(cfg) {
         this._super(cfg);
@@ -58,7 +58,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * @override
      * @inheritdoc
-     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     refresh: function(cfg) {
         var jqs = $('[id=' + cfg.id.replace(/:/g,"\\:") + ']');
@@ -506,6 +506,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
+     * @include
      * @override
      * @protected
      * @inheritdoc

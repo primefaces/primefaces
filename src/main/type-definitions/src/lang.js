@@ -12,6 +12,34 @@ function assertNever(x) {
 
 /**
  * @template T
+ * @param {[string, T][]} keyValuePairs
+ * @return {Record<string, T>}
+ */
+function pairsToObject(keyValuePairs) {
+    /** @type {Record<string, T>} */
+    const result = {};
+    for (const pair of keyValuePairs) {
+        result[pair[0]] = pair[1];
+    }
+    return result;
+}
+
+/**
+ * @template T
+ * @param {{key: string, value: T}[]} entries
+ * @return {Record<string, T>}
+ */
+function entriesToObject(entries) {
+    /** @type {Record<string, T>} */
+    const result = {};
+    for (const entry of entries) {
+        result[entry.key] = entry.value;
+    }
+    return result;
+}
+
+/**
+ * @template T
  * @template S
  * @param {T[] | undefined} arr
  * @param {(item: T, index: number) => Promise<S | undefined>} mapper
@@ -60,6 +88,15 @@ async function asyncFlatMap(arr, mapper) {
  */
 function isNotUndefined(value) {
     return value !== undefined;
+}
+
+/**
+ * @template T
+ * @param {T | null} value
+ * @return {value is T} 
+ */
+function isNotNull(value) {
+    return value !== null;
 }
 
 /**
@@ -346,6 +383,28 @@ function indentLines(lines, indent) {
 }
 
 /**
+ * @param {string} data 
+ * @return {Json}
+ */
+function parseJson(data) {
+    return JSON.parse(data);
+}
+
+/**
+ * @param {string} data 
+ * @return {JsonObject}
+ */
+function parseJsonObject(data) {
+    const parsed = parseJson(data);
+    if (typeof parsed === "object" && parsed !== null && !Array.isArray(parsed)) {
+        return parsed;
+    }
+    else {
+        throw new Error("Given data is not a valid JSON object.");
+    }
+}
+
+/**
  * @template T
  * @template K
  * @template V
@@ -437,16 +496,21 @@ module.exports = {
     collectToMap,
     createIndent,
     curry1,
+    entriesToObject,
     indentLines,
     isBlank,
     isEmpty,
     isNotBlank,
     isNotEmpty,
+    isNotNull,
     isNotUndefined,
     mapCompute,
     mergeIntoMap,
     newEmptyArray,
     normalizeLineBreaksUnix,
+    pairsToObject,
+    parseJson,
+    parseJsonObject,
     pushToMappedArray,
     reduceIntoFirstArray,
     removeLineBreaksFromStartAndEnd,

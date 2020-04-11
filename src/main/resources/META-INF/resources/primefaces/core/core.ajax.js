@@ -58,16 +58,6 @@ if (!PrimeFaces.ajax) {
      * request receives an XML response, which consists of one or multiple actions that are to be performed. This
      * includes creating new DOM elements, deleting or updating existing elements, or executing some JavaScript.
      * 
-     * @typedef PrimeFaces.ajax.AjaxBehavior A callback function for an AJAX behavior of a widget. You can
-     * add a behavior via `<p:ajax event="behaviorName" actionListener="..." onstart=".." />`. This behavior callback
-     * is invoked when the behavior (event) is triggered. The default behavior callback calls the configured client-side
-     * and server-side callbacks.
-     * @template [PrimeFaces.ajax.AjaxBehavior.TWidget = any]
-     * Type of the widget to which this behavior belongs.
-     * @this {TWidget} PrimeFaces.ajax.AjaxBehavior
-     * @param {Partial<PrimeFaces.ajax.ConfigurationExtender>} [PrimeFaces.ajax.AjaxBehavior.ext]
-     * Additional data to be sent with the AJAX request that is made to the server.
-     * 
      * @namespace
      */
     PrimeFaces.ajax = {

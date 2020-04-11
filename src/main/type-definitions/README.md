@@ -15,6 +15,7 @@ It
 ## Contents
 
 - [Build](#build)
+- [Publish to npm](#publish-to-npm)
 - [Technical overview](#technical-overview)
 - [Documenting a widget](#documenting-a-widget)
     * [Basic widget documentation](#basic-widget-documentation)
@@ -90,13 +91,85 @@ node test/index.js -- "TsValidateTest#ValidationError" --verbose
 # For local development, use some path outside this project.
 npm run generate-d-ts -- \
   --outputDir /path/to/temporary/output/directory \
-  --includemodules @fullcalendar,autonumeric,cropperjs,chart.js,googlemaps,jquery,jqueryui,moment,moment-timezone,quill,raphael,vis-data,vis-timeline
+  --includemodules @fullcalendar,autonumeric,cropperjs,chart.js,googlemaps,jquery,jqueryui,jquery.cleditor,moment,moment-timezone,quill,raphael,vis-data,vis-timeline
 ```
 
 To see a list of all available options, run 
 
 ```bash
 npm run generate-d-ts -- --help
+```
+
+# Publish to npm
+
+The type declarations are published to npm when you run `mvn deploy -P release`.
+The major and minor version is taken from the `pom.xml`, the patch version is
+determined automatically by searching for the next free version. 
+
+To authorize, you need to provide either your npm token or a username, password,
+and email:
+
+```bash
+# Using an npm token
+mvn deploy -P release "-Dnpm.token=token"
+
+# Using a username, password, and email
+mvn deploy -P release \
+  "-Dnpm.username=username" \
+  "-Dnpm.password=password" \
+  "-Dnpm.email=email@example.com"
+```
+
+* Other settings such as the package name etc. are taken form the file
+  `src/main/type-definitions/package.json`.
+* The `LICENSE` and `src/main/type-definitions/NPM.md` are included as well.
+
+To manually publish the current type declarations to npm, run
+
+```bash
+mvn \
+  org.codehaus.mojo:build-helper-maven-plugin:parse-version \
+  com.github.eirslett:frontend-maven-plugin:npm@publish-to-npm \
+  "-Dnpm.token=token"
+
+# you can also just use a profile, but this compiles Java etc. and takes longer
+mvn package -P jsdoc-publish -DskipTests "-Dnpm.token=token"
+```
+
+To publish with a different major and minor version, run
+
+```bash
+mvn com.github.eirslett:frontend-maven-plugin:npm@publish-to-npm \
+  -DparsedVersion.majorVersion=9 \
+  -DparsedVersion.minorVersion=0 \
+  "-Dnpm.token=token"
+```
+
+Finally, you can also run the publish tool directly via node:
+
+```bash
+cd src/main/type-definitions
+npm install
+
+# Show all available options
+npm run npm-publish -- --help
+
+# Don't publish, just write the tarball that would
+# be published to "/tmp/package.tgz"
+npm run npm-publish -- \
+  --major 9 \
+  --minor 0 \
+  --extrafiles LICENSE \
+  --readme src/main/type-definitions/NPM.md \
+  --dryrun /tmp/package.tgz
+
+# Publish to npm using the given version
+# Prompts for the credentials
+npm run npm-publish -- \
+  --major 9 \
+  --minor 0 \
+  --extrafiles LICENSE \
+  --readme src/main/type-definitions/NPM.md
 ```
 
 # Technical overview
@@ -214,8 +287,8 @@ So for example, you can't make a method public in one class but mark it as
 @protected in a sub class; or have a method in a sub class that needs more
 parameters than the super class. 
 
-> __Note:__ Methods that start with an underscore `_` are excluded by default. If
-you want to include them, add `@public`.)
+> __Note:__ Methods that start with an underscore `_` are excluded by default.
+If you want to include them, add `@include`.)
 
 As a convention, order the tags the way the corresponding tokens would appear
 in Java or TypeScript - first `@private`, then [@typeparam](#type-parameters)
@@ -573,10 +646,10 @@ npm install `@types/<library-name>`
 declarations. In this case, just install the library directly:
 `npm install <library-name>`.
 
-Next, you need to edit the main `pom.xml` and look for a line that contains
-`--includemodules`. This is a list of all [NPM modules](https://www.npmjs.com/)
-modules that should be included in the generated typedocs. Add the name of the
-third-party library there.
+Next, you need to edit the main `pom.xml` and look for the line where the
+property `jsdoc.included.modules` is defined. This is a list of all
+[NPM modules](https://www.npmjs.com/) modules that should be included in the
+generated typedocs. Add the name of the third-party library there.
 
 > __Note:__ Please also update the `JSDOC.md` file where it tells users about
 the NPM types they may have to install.

@@ -1,12 +1,12 @@
 //@ts-check
 
-const { extname, join, resolve, isAbsolute } = require("path");
+const { extname, join, resolve } = require("path");
 
 const { parseJs } = require("./acorn-util");
 const { aggregateDocumentable } = require("./aggregate-documentable");
 const { aggregateHandlerDefaults } = require("./aggregate-defaults");
 const { aggregateHandlerWidgets } = require("./aggregate-widgets");
-const { Paths } = require("./constants");
+const { Names, Paths } = require("./constants");
 const { documentConstant } = require("./document-constant");
 const { documentFunction } = require("./document-function");
 const { documentObject } = require("./document-object");
@@ -26,8 +26,8 @@ const DefaultCliArgs = {
     includeModules: [],
     inputDir: Paths.ComponentsMainDir,
     outputDir: Paths.TargetMainDir,
-    outputFilename: "PrimeFaces.d.ts",
-    moduleOutputFilename: "PrimeFaces-module.d.ts",
+    outputFilename: Names.PrimeFacesDeclaration,
+    moduleOutputFilename: Names.PrimeFacesModuleDeclaration,
     severitySettings: {},
     skipEsLint: false,
     skipPostProcess: false,
@@ -233,7 +233,6 @@ function parseCliArgs() {
     }
     result.outputDir = resolve(Paths.ProjectRootDir, result.outputDir);
     if (result.typedocOutputDir) {
-        isAbsolute
         result.typedocOutputDir = resolve(Paths.ProjectRootDir, result.typedocOutputDir);
     }
     console.log("Parsed CLI arguments:", JSON.stringify(result));

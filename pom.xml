@@ -73,6 +73,10 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jsdoc.included.modules>@fullcalendar,autonumeric,cropperjs,chart.js,googlemaps,jquery,jqueryui,jquery.cleditor,moment,moment-timezone,quill,raphael,vis-data,vis-timeline</jsdoc.included.modules>
+        <npm.token></npm.token>
+        <npm.username></npm.username>
+        <npm.password></npm.password>
+        <npm.email></npm.email>
     </properties>
 
     <dependencies>
@@ -295,7 +299,7 @@
                             </configuration>
                         </execution>
                         <execution>
-                            <id>validate tool</id>
+                            <id>validate-tool</id>
                             <goals>
                                 <goal>npm</goal>
                             </goals>
@@ -305,7 +309,7 @@
                             </configuration>
                         </execution>
                         <execution>
-                            <id>test tool</id>
+                            <id>test-tool</id>
                             <goals>
                                 <goal>npm</goal>
                             </goals>
@@ -315,11 +319,21 @@
                             </configuration>
                         </execution>
                         <execution>
-                            <id>generate type declaration</id>
+                            <id>generate-type-declaration</id>
                             <goals>
                                 <goal>npm</goal>
                             </goals>
                             <phase>prepare-package</phase>
+                        </execution>
+                        <execution>
+                            <id>publish-to-npm</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>deploy</phase>
+                            <configuration>
+                                <arguments>run npm-publish -- --major ${parsedVersion.majorVersion} --minor ${parsedVersion.minorVersion} --readme src/main/type-definitions/NPM.md --extrafiles LICENSE --prompt false --username ${npm.username} --password ${npm.password} --email ${npm.email} --token ${npm.token}</arguments>
+                            </configuration>
                         </execution>
                     </executions>
                 </plugin>                
@@ -1124,10 +1138,27 @@
                         <artifactId>frontend-maven-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>generate type declaration</id>
+                                <id>generate-type-declaration</id>
                                 <configuration>
                                     <arguments>run generate-d-ts -- --outputDir target/type-declaration/ --includemodules ${jsdoc.included.modules} --skiptypedocgenerate ${jsdoc.skip.typedoc}</arguments>
                                 </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>jsdoc-publish</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>publish-to-npm</id>
+                                <phase>package</phase>
                             </execution>
                         </executions>
                     </plugin>
@@ -1234,10 +1265,13 @@
                         <artifactId>frontend-maven-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>generate type declaration</id>
+                                <id>generate-type-declaration</id>
                                 <configuration>
                                     <arguments>run generate-d-ts -- --outputDir docs --includemodules ${jsdoc.included.modules}</arguments>
                                 </configuration>
+                            </execution>
+                            <execution>
+                                <id>publish-to-npm</id>
                             </execution>
                         </executions>
                     </plugin>

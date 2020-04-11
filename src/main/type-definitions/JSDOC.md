@@ -8,10 +8,10 @@ This is the documentation for the client-side JavaScript part of PrimeFaces, ple
 
 * [Type declarations file](#type-declarations-file)
 * [API Overview](#api-overview)
-    1. [Core](#core)
-    1. [Widgets](#widgets)
-    1. [JQuery extensions](#jquery-extensions)
-    1. [Third-party libraries](#third-party-libraries)
+    - [Core](#core)
+    - [Widgets](#widgets)
+    - [JQuery extensions](#jquery-extensions)
+    - [Third-party libraries](#third-party-libraries)
 
 ## Type declarations file
 
@@ -49,8 +49,22 @@ npm install --save-dev  \
 
 </details>
 
-See the [typescript page](https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html) for more
-info on type declaration files.
+PrimeFaces is a global library that adds methods and constants t the global window scope. To use the type declarations
+in a JavaScript or TypeScript file, use a
+[triple-slash directive](https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html#-reference-path-)
+like this (must be at the top of the file):
+
+```javascript
+/// <reference path="./path/to/PrimeFaces.d.ts" />
+
+// Now your IDE or transpiler can issue a warning that "search" does
+// not exist on a jQuery object. You also get autocompletion.
+PF("dataTable").jq.search("tbody td");
+```
+
+Make sure the `PrimeFaces-module.d.ts` is in the same directory. See the
+[TypeScript page](https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html) for more info on
+type declaration files.
 
 ## API Overview
 

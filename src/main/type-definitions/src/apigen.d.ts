@@ -126,6 +126,10 @@ type DocumentableHandler = (
 
 type ExportInfoType = "interface" | "class" | "namespace" | "unspecified";
 
+type Json = null | boolean | number | string | JsonArray | JsonObject;
+type JsonArray = Json[];
+type JsonObject = {[key: string]: Json};
+
 type MessageFactory = (message: string) => string;
 
 type MethodSignatureConverter = (signature: MethodSignature, ambientContext: boolean) => string[];
@@ -202,6 +206,45 @@ interface ArgSignature {
     rest: string;
     optional: string;
     initializer: string;
+}
+
+/** Files to include in the package to publish. Key is path to file, value is file content. */
+type NpmPublishFiles = Record<string, string>;
+
+interface PublishCliArgs {
+    /** Either `public` or `protected`. */
+    access: import("npm-registry-client").Access;
+    /** Whether to prompt the user if they did pass credentials via the CLI. */
+    askForMissingCredentials: boolean;
+    /** Credentials for publishing. */
+    credentials: import("npm-registry-client").Credentials;
+    /** Path to the directory with the generated declaration files. */
+    declarations: {
+        /** Entry declaration file */
+        entry: string,
+        /** More declaration files referenced by the entry declaration file */
+        referenced: string[],
+    };
+    /** If set, do not publish to NPM, but only write tarball to this file. */
+    dryRun?: string;
+    /** package.json fields to exclude */
+    excludedPackageJsonFields: string[];
+    /** Extra files to include in the published package */
+    extraFiles: string[];
+    /** Path to the package.json file to use */
+    packageJson: string;
+    /** Path to a file to be used as the README.md for the package */
+    readme?: string;
+    /** URL to the npm registry. */
+    registry: string;
+    /** Root directory to which other paths are relative to. */
+    rootDir: string;
+    /** Version to publish */
+    version: {
+        major?: number;
+        minor?: number;
+        patch?: number;    
+    },
 }
 
 interface BuildCommentMapState {

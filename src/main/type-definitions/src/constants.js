@@ -45,6 +45,15 @@ const WhiteSpaceChars = {
 
 const Indentation = "    ";
 
+const DefaultNpmRegistry = "https://registry.npmjs.com";
+
+const Names = {
+    PrimeFacesDeclaration: "PrimeFaces.d.ts",
+    PrimeFacesModuleDeclaration: "PrimeFaces-module.d.ts",
+    NpmPackageJson: "package.json",
+    NpmReadme: "README.md",
+}
+
 const Paths = {
     AggregateTestDir: resolve(join(__dirname, "..", "specs", "aggregate")),
     BlacklistPath: resolve(join(__dirname, "..", "blacklist.txt")),
@@ -57,9 +66,12 @@ const Paths = {
     NpmTypesDir: resolve(__dirname, "..", "node_modules", "@types"), 
     NpmRootDir: resolve(__dirname, ".."),
     NpmVirtualDeclarationFile: {
-        ambient: resolve(__dirname, "..", "src", "PrimeFaces.d.ts"),
-        module: resolve(__dirname, "..", "src", "PrimeFaces-modules.d.ts"),
+        ambient: resolve(__dirname, "..", "src", Names.PrimeFacesDeclaration),
+        module: resolve(__dirname, "..", "src", Names.PrimeFacesModuleDeclaration),
     },
+    PackageJsonFile: resolve(join(__dirname, "..", "package.json")),
+    PrimeFacesDeclarationFile: resolve(join(__dirname, "..", "..", "..", "..", "docs", Names.PrimeFacesDeclaration)),
+    PrimeFacesModuleDeclarationFile: resolve(join(__dirname, "..", "..", "..", "..", "docs", Names.PrimeFacesModuleDeclaration)),
     ProjectRootDir: resolve(__dirname, "..", "..", "..", ".."),
     TargetTestDir: resolve(join(__dirname, "..", "dist", "test")),
     TargetMainDir: resolve(join(__dirname, "..", "..", "..", "..", "target", "generated-resources", "type-definitions")),
@@ -87,6 +99,7 @@ const Tags = {
     Generator: "generator",
     Ignore: "ignore",
     Implements: "implements",
+    Include: "include",
     InheritDoc: "inheritdoc",
     Interface: "interface",
     Internal: "internal",
@@ -209,11 +222,13 @@ const DefaultParseOptions = {
 
 module.exports = {
     CharCodes,
+    DefaultNpmRegistry,
     DefaultParseOptions,
     FlaggingTags,
     Indentation,
     LineBreak,
     LineBreakPattern,
+    Names,
     NamedTags,
     Paths,
     ReadDirOpts,

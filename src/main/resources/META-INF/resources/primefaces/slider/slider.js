@@ -40,7 +40,7 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
     /**
      * @override
      * @inheritdoc
-     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     init: function(cfg) {
         this._super(cfg);

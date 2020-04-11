@@ -79,6 +79,14 @@ declare const Class: PrimeFaces.Class;
 
 declare namespace PrimeFaces {
     /**
+     * Construct a type with the properties of T except for those in type K.
+     * 
+     * Same as the builtin TypeScript type `Omit`, but repeated here to support slightly older TypeScript versions (3.4
+     * and lower) that did not include it yet.
+     */
+    export type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
+
+    /**
      * Similar to `Partial<Base>`, but in addition to making the properties optional, also makes the properties
      * nullable.
      * @typeparam Base Type of an object with properties to make partial.
@@ -248,13 +256,12 @@ declare namespace PrimeFaces {
      * @return A new type with all properties in the given type made optional, exception for `id` and `widgetVar`.
      */
     export type PartialWidgetCfg<
-        TCfg extends { id: string, widgetVar: string },
-        TWidget = any
+        TCfg extends { id: string, widgetVar: string }
         > =
         Partial<Omit<TCfg, "id" | "widgetVar">> & Pick<TCfg, "id" | "widgetVar">
         &
         {
-            behaviors?: Record<string, PrimeFaces.ajax.AjaxBehavior<TWidget>>;
+            behaviors?: Record<string, PrimeFaces.Behavior>;
         };
 
     /**
@@ -473,6 +480,31 @@ declare namespace PrimeFaces {
          */
         unhighlight(element: JQuery): void;
     }
+
+    /*
+     * __Note__: Do not parametrize the this context via a type parameter. This would require changing the return type
+     * of BaseWidget#getBehavior to "PrimeFaces.Behavior<this>"". If that were done, however, it would not be longer be
+     * possible to assign, for example, an object of type AccordionPanel to a variable of type BaseWidget - as that
+     * would allow calling "getBehavior" on the AccordionPanel and only passing a BaseWidget as the this context.
+     */
+    /**
+     * A callback function for a behavior of a widget. A behavior is a way for associating client-side scripts with UI
+     * components that opens all sorts of possibilities, including client-side validation, DOM and style manipulation,
+     * keyboard handling, and more. When the behavior is triggered, the configured JavaScript gets executed.
+     *
+     * Behaviors are often, but not necessarily, AJAX behavior. When triggered, it initiates a request the server and
+     * processes the response once it is received. This enables several features such as updating or replacing elements
+     * dynamically. You can add an AJAX behavior via `<p:ajax event="name" actionListener="#{...}" onstart="..." />`.
+     * 
+     */
+    export type Behavior =
+        /**
+         * @this This callback takes the widget instance as the this context. This must be the widget instance that owns
+         * the behavior. The type is only required to be a {@link BaseWidget} as only common widget properties such as
+         * its ID are used. 
+         * @param ext Additional data to be sent with the AJAX request that is made to the server.
+         */
+        (this: PrimeFaces.widget.BaseWidget, ext?: Partial<PrimeFaces.ajax.ConfigurationExtender>) => void;
 }
 
 declare namespace PrimeFaces.ajax {
@@ -873,5 +905,5 @@ declare namespace JQuery {
          * - {@link JQuery.AjaxSettings}: The settings of the AJAX request.
          */
         pfAjaxComplete: JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
-   }
+    }
 }

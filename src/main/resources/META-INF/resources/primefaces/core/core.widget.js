@@ -72,35 +72,82 @@ if (!PrimeFaces.widget) {
      * There are a few base classes defined by PrimeFaces that you can use when writing the client-side part of your
      * custom widget:
      * 
-     * - `BaseWidget`: Base class that you should extend if you do not required any advanced functionality.
-     * - `DeferredWidget`: When you widget needs to be initialized on the client in a way does required the element to
-     * be visible, you can use this class as a base. A widget may not be visible, for example, when it is inside a
-     * dialog or tab. The deferred widget provides the the method `addDeferredRenderer` (to register a listener) and
-     * `renderDeferred` (to render the widget once it is visible).
-     * - `DynamicOverlayWidget`: When your widget is an overlay with dynamically loaded content, you can use this base
-     * class.
+     * - {@link BaseWidget}: Base class that you should extend if you do not required any advanced functionality.
+     * - {@link DeferredWidget}: When you widget needs to be initialized on the client in a way does required the
+     * element to be visible, you can use this class as a base. A widget may not be visible, for example, when it is
+     * inside a dialog or tab. The deferred widget provides the the method {@link DeferredWidget.addDeferredRender}
+     * (to register a listener) and {@link DeferredWidget.renderDeferred} (to render the widget once it is visible).
+     * - {@link DynamicOverlayWidget}: When your widget is an overlay with dynamically loaded content, you can use this
+     * base class.
      * 
-     * Note to typescript users: you could use these widget classes to check whether a widget instance is of a certain
+     * Note to TypeScript users: you could use these widget classes to check whether a widget instance is of a certain
      * type:
      * 
+     * <details>
+     * 
+     * <summary>Click to view</summary>
+     * 
      * ```typescript
-     * function getWidgetByVar<TWidget extends PrimeFaces.widget.BaseWidget>(widgetVar: string, expectedType: TWidget): TWidget | undefined {
-     *   const widget = PrimeFaces.widgets[widgetVar];
-     *   if (widget !== undefined && widget instanceof expectedType) {
-     *     return widget;
+     * type Constructor<T> = new (...args: any) => T;
+     * 
+     * function getWidgetName(
+     *   widgetType:
+     *     PrimeFaces.widget.BaseWidget
+     *     | Constructor<PrimeFaces.widget.BaseWidget>
+     * ): string {
+     *   if (typeof widgetType === "function") {
+     *     for (const [name, type] of Object.entries(PrimeFaces.widget)) {
+     *       if (type === widgetType) {
+     *         return name;
+     *       }
+     *     }
      *   }
      *   else {
-     *     console.warn(`No widget of type ${expectedType} found for widget variable ${widgetVar}`);
+     *     const widgetClass = Object.getPrototypeOf(widgetType);
+     *     for (const [name, type] of Object.entries(PrimeFaces.widget)) {
+     *       if (
+     *         "prototype" in type && widgetClass === type.prototype
+     *         || widgetClass === type
+     *       ) {
+     *         return name;
+     *       }
+     *     }
+     *   }
+     *   return "BaseWidget";
+     * }
+     * 
+     * function getWidgetOfType<
+     *   C extends Constructor<any> = Constructor<PrimeFaces.widget.BaseWidget>
+     * >(widgetVar: string, widgetType: C): InstanceType<C> | undefined {
+     *   const widget = PF(widgetVar);
+     *   if (widget !== undefined && widget !== null) {
+     *     if (widget instanceof widgetType) {
+     *       // @ts-ignore
+     *       return widget;
+     *     }
+     *     else {
+     *       PrimeFaces.error([
+     *         `Widget for var '${widgetVar}' of type '${getWidgetName(widget)}'`,
+     *         `was found, but expected type '${getWidgetName(widgetType)}'!`
+     *       ].join(" "));
+     *       return undefined;
+     *     }
+     *   }
+     *   else {
      *     return undefined;
      *   }
      * }
      * ```
      * 
+     * </details>
+     * 
      * This function could then be called like this:
      * 
-     * ```javascript
-     * const confirmDialog = getWidgetByVar("dialog", PrimeFaces.widget.ConfirmDialog);
+     * ```typescript
+     * // Automatically inferred to be of type "PrimeFaces.widget.Chart | undefined"
+     * const chart = getWidgetByVar("charWidgetVar", PrimeFaces.widget.Chart);
      * ```
+     * 
      * @namespace
      */
     PrimeFaces.widget = {};
@@ -171,12 +218,12 @@ if (!PrimeFaces.widget) {
      * to save bandwidth, the server only sends a value for a given configuration key when the value differs from the
      * default value. That is, you must expect any configuration value to be absent and make sure you check for its
      * presence before accessing it.
-     * @prop {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg The configuration of this widget instance. Please note that
+     * @prop {PrimeFaces.PartialWidgetCfg<TCfg>} cfg The configuration of this widget instance. Please note that
      * no property is guaranteed to be present, you should always check for `undefined` before accessing a property.
      * This is partly because the value of a property is not transmitted from the server to the client when it equals
      * the default.
      * 
-     * @prop {Record<string, PrimeFaces.ajax.AjaxBehavior>} cfg.behaviors A map with all behaviors that
+     * @prop {Record<string, PrimeFaces.Behavior>} cfg.behaviors A map with all behaviors that
      * were defined for this widget. The key is the name of the behavior, the value is the callback function that is
      * invoked when the behavior is called.
      * @prop {string} cfg.id The client-side ID of this widget, with all parent naming containers, such as
@@ -203,8 +250,9 @@ if (!PrimeFaces.widget) {
          * });
          * ```
          * 
-         * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg The widget configuration to be used for this widget instance. This widget configuration is
-         * usually created on the server by the `javax.faces.render.Renderer` for this component.
+         * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg The widget configuration to be used for this widget instance.
+         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * component.
          */
         init: function(cfg) {
             this.cfg = cfg;
@@ -241,7 +289,7 @@ if (!PrimeFaces.widget) {
          * By default, this method calls all refresh listeners, then reinitializes the widget by calling the `init`
          * method.
          * 
-         * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg The new widget configuration from the server.
+         * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg The new widget configuration from the server.
          * @return {unknown} The value as returned by the `init` method, which is often `undefined`.
          */
         refresh: function(cfg) {
@@ -317,9 +365,18 @@ if (!PrimeFaces.widget) {
         },
 
         /**
-         * Each widget may have one or several behaviors attached to it. A behavior is a server-side callback, such
-         * as those that may be added to a PrimeFaces component with the `<p:ajax event="..."/>` tag. This method checks
-         * whether this widget has got a behavior for the given event.
+         * Each widget may have one or several behaviors attached to it. This method checks whether this widget has got
+         * at least one behavior associated with given event name.
+         * 
+         * A behavior is a way for associating client-side scripts with UI components that opens all sorts of
+         * possibilities, including client-side validation, DOM and style manipulation, keyboard handling, and more.
+         * When the behavior is triggered, the configured JavaScript gets executed.
+         *
+         * Behaviors are often, but not necessarily, AJAX behavior. When triggered, it initiates a request the server
+         * and processes the response once it is received. This enables several features such as updating or replacing
+         * elements dynamically. You can add an AJAX behavior via
+         * `<p:ajax event="name" actionListener="#{...}" onstart="..." />`.
+         * 
          * @param {string} event The name of an event to check.
          * @return {boolean} `true` if this widget has the given behavior, `false` otherwise.
          */
@@ -332,11 +389,20 @@ if (!PrimeFaces.widget) {
         },
 
         /**
-         * Each widget may have one or several behaviors attached to it. A behavior is a server-side callback, such as
-         * those that may be added to a PrimeFaces component with the `<p:ajax event="..."/>` tag. This method calls
-         * the behavior for the given event. In case no such behavior exists, does nothing and returns immediately.
+         * Each widget may have one or several behaviors attached to it. This method calls all attached behaviors for
+         * the given event name. In case no such behavior exists, this method does nothing and returns immediately.
+         * 
+         * A behavior is a way for associating client-side scripts with UI components that opens all sorts of
+         * possibilities, including client-side validation, DOM and style manipulation, keyboard handling, and more.
+         * When the behavior is triggered, the configured JavaScript gets executed.
+         *
+         * Behaviors are often, but not necessarily, AJAX behavior. When triggered, it initiates a request the server
+         * and processes the response once it is received. This enables several features such as updating or replacing
+         * elements dynamically. You can add an AJAX behavior via
+         * `<p:ajax event="name" actionListener="#{...}" onstart="..." />`.
+         * 
          * @param {string} event The name of an event to call.
-         * @param {Partial<PrimeFaces.ajax.ConfigurationExtender>} [ext] Addtional configuration that is passed to the
+         * @param {Partial<PrimeFaces.ajax.ConfigurationExtender>} [ext] Additional configuration that is passed to the
          * AJAX request for the server-side callback.
          * @since 7.0
          */
@@ -347,12 +413,24 @@ if (!PrimeFaces.widget) {
         },
 
         /**
-         * Each widget may have one or several behaviors attached to it. A behavior is a server-side callback, such as
-         * those that may be added to a PrimeFaces component with the `<p:ajax event="..."/>` tag. This method returns
-         * the callback function for the given event.
-         * @param {string} name The name of an event for which to return the callback.
-         * @return {PrimeFaces.ajax.AjaxBehavior<this> | null} The behavior with the given name, or `null` if no
-         * such behavior exists.
+         * Each widget may have one or several behaviors attached to it. This method returns the callback function for
+         * the given event.
+         * 
+         * __Note__: Do not call the method directly, the recommended way to invoke a behavior is via
+         * {@link callBehavior}.
+         * 
+         * A behavior is a way for associating client-side scripts with UI components that opens all sorts of
+         * possibilities, including client-side validation, DOM and style manipulation, keyboard handling, and more.
+         * When the behavior is triggered, the configured JavaScript gets executed.
+         *
+         * Behaviors are often, but not necessarily, AJAX behavior. When triggered, it initiates a request the server
+         * and processes the response once it is received. This enables several features such as updating or replacing
+         * elements dynamically. You can add an AJAX behavior via
+         * `<p:ajax event="name" actionListener="#{...}" onstart="..." />`.
+         * 
+         * @param {string} name The name of an event for which to retrieve the behavior.
+         * @return {PrimeFaces.Behavior | null} The behavior with the given name, or `null` if no such behavior
+         * exists.
          */
         getBehavior: function(name) {
             return this.cfg.behaviors ? this.cfg.behaviors[name] : null;
@@ -415,7 +493,7 @@ if (!PrimeFaces.widget) {
      * 
      * @prop {boolean} blockScroll `true` to prevent the body from being scrolled, `false` otherwise.
      * @prop {JQuery} modalOverlay The DOM element that is displayed as an overlay with the appropriate `z-index` and
-     * `position`. It is usally a child of the `body` element.
+     * `position`. It is usually a child of the `body` element.
      * 
      * @interface {PrimeFaces.widget.DynamicOverlayWidgetCfg} cfg The configuration for the {@link  DynamicOverlayWidget| DynamicOverlayWidget widget}.
      * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -427,7 +505,7 @@ if (!PrimeFaces.widget) {
 	    /**
 	     * @override
     	 * @inheritdoc
-         * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+         * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
     	 */
         init: function(cfg) {
             this._super(cfg);
@@ -439,7 +517,7 @@ if (!PrimeFaces.widget) {
         /**
          * @override
          * @inheritdoc
-         * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+         * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
          */
         refresh: function(cfg) {
             PrimeFaces.utils.removeModal(this);
@@ -505,9 +583,10 @@ if (!PrimeFaces.widget) {
      * For example, a widget may need to know the width and height of its container so that it can resize itself
      * properly.
      * 
-     * Do not call the `render` or `_render` method directly in the `init` method. Instead, call `renderDeferred`.
-     * PrimeFaces will then check whether the widget is visible and call the `_render` method once it is. Make sure you
-     * actually override the `_render` method, as the default implementation throws an error. 
+     * Do not call the {@link render} or {@link _render} method directly in the {@link init} method. Instead, call
+     * {@link renderDeferred}. PrimeFaces will then check whether the widget is visible and call the {@link _render}
+     * method once it is. Make sure you actually override the {@link _render} method, as the default implementation
+     * throws an error. 
      * 
      * ```javascript
      * class MyWidget extends PrimeFaces.widget.DeferredWidget {
@@ -530,15 +609,15 @@ if (!PrimeFaces.widget) {
      * @abstract
      * 
      * @interface {PrimeFaces.widget.DeferredWidgetCfg} cfg The configuration for the {@link  DeferredWidget| DeferredWidget widget}.
-     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
-     * configuration is usually meant to be read-only and should not be modified.
+     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that
+     * this configuration is usually meant to be read-only and should not be modified.
      * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
      */
     PrimeFaces.widget.DeferredWidget = PrimeFaces.widget.BaseWidget.extend({
 
         /**
-         * Call this method in the `init` method if you want deferred rendering support. This method checks whether the
-         * container of this widget is visible and call `_render` only once it is.
+         * Call this method in the {@link init} method if you want deferred rendering support. This method checks
+         * whether the container of this widget is visible and call {@link _render} only once it is.
          */
         renderDeferred: function() {
             if(this.jq.is(':visible')) {
@@ -563,7 +642,8 @@ if (!PrimeFaces.widget) {
          * This render method to check whether the widget container is visible. Do not override this method, or the
          * deferred widget functionality may not work properly anymore.
          * 
-         * @return {PrimeFaces.ReturnOrVoid<boolean|undefined>} `true` if the widget container is visible, `false` or `undefined` otherwise.
+         * @return {PrimeFaces.ReturnOrVoid<boolean|undefined>} `true` if the widget container is visible, `false` or
+         * `undefined` otherwise.
          */
         render: function() {
             if(this.jq.is(':visible')) {
@@ -582,6 +662,7 @@ if (!PrimeFaces.widget) {
          * 
          * __Must be overridden__, or an error will be thrown.
          * 
+         * @include
          * @abstract
          * @protected
          */
@@ -590,7 +671,7 @@ if (!PrimeFaces.widget) {
         },
 
         /**
-         * Called after the widget has become visible and after it was rendered. May be overriden, the default
+         * Called after the widget has become visible and after it was rendered. May be overridden, the default
          * implementation is a no-op.
          * @protected
          */

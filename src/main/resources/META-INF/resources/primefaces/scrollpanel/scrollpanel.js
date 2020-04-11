@@ -1409,7 +1409,7 @@ PrimeFaces.widget.ScrollPanel = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * @override
      * @inheritdoc
-     * @param {PrimeFaces.PartialWidgetCfg<TCfg, this>} cfg
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     init: function(cfg) {
         this._super(cfg);
@@ -1418,6 +1418,7 @@ PrimeFaces.widget.ScrollPanel = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     /**
+     * @include
      * @override
      * @protected
      * @inheritdoc

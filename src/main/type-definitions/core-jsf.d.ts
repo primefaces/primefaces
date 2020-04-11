@@ -3,6 +3,8 @@
 
 /**
  * The top level global namespace for JavaServer Faces functionality.
+ * 
+ * Please note that this functionality may only be available when you use certain tags such as `<f:ajax .../>` tags.
  */
 declare namespace jsf {
     /**
@@ -75,6 +77,8 @@ declare namespace jsf {
 
 /**
  * The namespace for Ajax functionality provided by JSF.
+ * 
+ * Please note that this functionality may only be available when you use certain tags such as `<f:ajax .../>` tags.
  */
 declare namespace jsf.ajax {
     /**
@@ -621,6 +625,8 @@ declare namespace jsf.ajax {
 
 /**
  * The namespace for JavaServer Faces JavaScript utilities.
+ * 
+ * Please note that this functionality may only be available when you use certain tags such as `<f:ajax .../>` tags.
  */
 declare namespace jsf.util {
     /**

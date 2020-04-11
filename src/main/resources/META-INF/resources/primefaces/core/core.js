@@ -9,17 +9,17 @@
      * This is the main global object for accessing the client-side API of PrimeFaces. Broadly speaking, it consists
      * of the following entries:
      * 
-     * - `PrimeFaces.ajax` The AJAX module with functionality for sending AJAX requests
-     * - `PrimeFaces.csp` The  CSP module for the HTTP Content-Security-Policy (CSP) policy `script-src` directive.
-     * - `PrimeFaces.dialog` The dialog module with functionality related to the dialog framework
-     * - `PrimeFaces.env` The environment module with information about the current browser
-     * - `PrimeFaces.expressions` The search expressions module with functionality for working with search expression
-     * - `PrimeFaces.resources` The resources module with functionality for creating resource links
-     * - `PrimeFaces.utils` The utility module with functionality that does not fit anywhere else
-     * - `PrimeFaces.widget` The registry with all available widget classes
-     * - `PrimeFaces.widgets` The registry with all currently instantiated widgets
-     * - Several other utility methods defined directly on the `PrimeFaces` object, such as `monitorDownload`,
-     * `getWidgetById`, or `escapeHTML`.
+     * - {@link PrimeFaces.ajax} The AJAX module with functionality for sending AJAX requests
+     * - {@link PrimeFaces.csp} The  CSP module for the HTTP Content-Security-Policy (CSP) policy `script-src` directive.
+     * - {@link PrimeFaces.dialog} The dialog module with functionality related to the dialog framework
+     * - {@link PrimeFaces.env} The environment module with information about the current browser
+     * - {@link PrimeFaces.expressions} The search expressions module with functionality for working with search expression
+     * - {@link PrimeFaces.resources} The resources module with functionality for creating resource links
+     * - {@link PrimeFaces.utils} The utility module with functionality that does not fit anywhere else
+     * - {@link PrimeFaces.widget} The registry with all available widget classes
+     * - {@link PrimeFaces.widgets} The registry with all currently instantiated widgets
+     * - Several other utility methods defined directly on the `PrimeFaces` object, such as
+     * {@link PrimeFaces.monitorDownload}, {@link PrimeFaces.getWidgetById}, or {@link PrimeFaces.escapeHTML}.
      * 
      * @namespace {PrimeFaces}
      * 
