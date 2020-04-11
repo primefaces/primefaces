@@ -458,6 +458,9 @@
                 </executions>
                 <configuration>
                     <excludedScopes>test,provided</excludedScopes>
+                    <outputDirectory>${project.basedir}/target/classes/META-INF/licenses/</outputDirectory>
+                    <licensesOutputFile>${project.basedir}/target/classes/META-INF/licenses/licenses-generated.xml</licensesOutputFile>
+                    <licensesOutputDirectory>${project.basedir}/target/classes/META-INF/licenses/</licensesOutputDirectory>
                     <licenseUrlReplacements>
                         <licenseUrlReplacement>
                             <regexp>.*BSD-3.*</regexp>
