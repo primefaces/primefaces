@@ -23,12 +23,9 @@
  */
 package org.primefaces.component.panelgrid;
 
-import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "components.css")
-})
+@ResourceDependency(library = "primefaces", name = "components.css")
 public class PanelGrid extends PanelGridBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.PanelGrid";

@@ -26,17 +26,14 @@ package org.primefaces.component.idlemonitor;
 import java.util.Collection;
 import java.util.Map;
 
-import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.event.BehaviorEvent;
 
 import org.primefaces.util.MapBuilder;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "primefaces", name = "core.js"),
-        @ResourceDependency(library = "primefaces", name = "idlemonitor/idlemonitor.js")
-})
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "idlemonitor/idlemonitor.js")
 public class IdleMonitor extends IdleMonitorBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.IdleMonitor";
