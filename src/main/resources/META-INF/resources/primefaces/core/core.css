@@ -38,6 +38,10 @@ ui-overlay-visible * {
     background-position: 16px 16px;
 }
 
+.ui-transparent-pixel {
+	content:url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==)
+}
+
 /* Column Priorities */
 @media only all {
 	th.ui-column-p-6,
