@@ -6,8 +6,8 @@ PrimeFaces.widget.KeyFilter = PrimeFaces.widget.BaseWidget.extend({
      * @param {object} cfg The widget configuration.
      */
     init : function(cfg) {
-        this.id = cfg.id;
-        this.cfg = cfg;
+        this._super(cfg);
+
         this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.target);
 
         if (this.target.is(':input')) {
@@ -16,8 +16,6 @@ PrimeFaces.widget.KeyFilter = PrimeFaces.widget.BaseWidget.extend({
             var nestedInput = $(':not(:submit):not(:button):input:visible:enabled:first', this.target);
             this.applyKeyFilter(nestedInput, cfg);
         }
-
-        this.removeScriptElement(this.id);
     },
 
     /**

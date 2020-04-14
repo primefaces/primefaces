@@ -74,14 +74,21 @@ if (!PrimeFaces.widget) {
         init: function(cfg) {
             this.cfg = cfg;
             this.id = cfg.id;
-            this.jqId = PrimeFaces.escapeClientId(this.id);
+            if ($.isArray(this.id)) {
+                this.jqId = $.map(this.id, function(id) {
+                    return PrimeFaces.escapeClientId(id);
+                }).join(",");
+            }
+            else {
+                this.jqId = PrimeFaces.escapeClientId(this.id);
+            }
             this.jq = $(this.jqId);
             this.widgetVar = cfg.widgetVar;
             this.destroyListeners = [];
             this.refreshListeners = [];
 
             //remove script tag
-            $(this.jqId + '_s').remove();
+            this.removeScriptElement(this.id);
 
             if (this.widgetVar) {
                 var $this = this;
@@ -137,10 +144,17 @@ if (!PrimeFaces.widget) {
         /**
          * Removes the widget's script block from the DOM.
          *
-         * @param {string} clientId The id of the widget.
+         * @param {string | string[]} clientId The id of the widget.
          */
         removeScriptElement: function(clientId) {
-            $(PrimeFaces.escapeClientId(clientId) + '_s').remove();
+            if ($.isArray(clientId)) {
+                $.each(clientId, function(_, id) {
+                    $(PrimeFaces.escapeClientId(id) + '_s').remove();
+                });
+            }
+            else {
+                $(PrimeFaces.escapeClientId(clientId) + '_s').remove();
+            }
         },
 
         hasBehavior: function(event) {

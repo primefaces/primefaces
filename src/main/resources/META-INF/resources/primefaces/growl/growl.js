@@ -4,13 +4,9 @@
 PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
 
     init: function(cfg) {
-        this.cfg = cfg;
-        this.id = this.cfg.id;
-        this.jqId = PrimeFaces.escapeClientId(this.id);
+        this._super(cfg);
 
         this.render();
-
-        this.removeScriptElement(this.id);
     },
 
     //Override
