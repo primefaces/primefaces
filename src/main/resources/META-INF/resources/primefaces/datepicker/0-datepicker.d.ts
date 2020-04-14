@@ -280,7 +280,7 @@ declare namespace JQueryPrimeDatePicker {
         /**
          * The ID of this widget, usually the ID of the DOM element.
          */
-        id: string;
+        id: string | string[];
 
         /**
          * The name of this widget.

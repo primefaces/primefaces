@@ -251,12 +251,11 @@ declare namespace PrimeFaces {
      * The widget configuration of each widget may contain only some of the declared properties. For example, when the
      * value of a property is equal to the default value, it is not transmitted from the server to the client. Only the
      * two properties `id` and `widgetVar` are guaranteed to be always available.
-     * @typeparam TWidget Type of a widget with the configuration. Used for the `behaviors` property.
      * @typeparam TCfg Type of a widget configuration. It must have at least the two properties `id` and `widgetVar`.
      * @return A new type with all properties in the given type made optional, exception for `id` and `widgetVar`.
      */
     export type PartialWidgetCfg<
-        TCfg extends { id: string, widgetVar: string }
+        TCfg extends { id: string | string[], widgetVar: string }
         > =
         Partial<Omit<TCfg, "id" | "widgetVar">> & Pick<TCfg, "id" | "widgetVar">
         &

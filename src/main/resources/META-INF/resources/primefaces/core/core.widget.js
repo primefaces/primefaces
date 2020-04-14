@@ -203,11 +203,19 @@ if (!PrimeFaces.widget) {
      * @template {PrimeFaces.widget.BaseWidgetCfg} [TCfg=PrimeFaces.widget.BaseWidgetCfg] Type of the configuration
      * object for this widget.
      * 
-     * @prop {string} id The client-side ID of this widget, with all parent naming containers, such as
-     * `myForm:myWidget`. This is also the ID of the container HTML element for this widget.
-     * @prop {JQuery} jq The JQuery instance of the container element of this widget.
-     * @prop {string} jqId A CSS selector for the container element of this widget, This is usually an ID selector (that
-     * is properly escaped). You can select the container elements lke this: `jQuery(widget.jqId)`.
+     * @prop {PrimeFaces.PartialWidgetCfg<TCfg>} cfg The configuration of this widget instance. Please note that
+     * no property is guaranteed to be present, you should always check for `undefined` before accessing a property.
+     * This is partly because the value of a property is not transmitted from the server to the client when it equals
+     * the default.
+     * @prop {string | string[]} id The client-side ID of this widget, with all parent naming containers, such as
+     * `myForm:myWidget`. This is also the ID of the container HTML element for this widget. In case the widget needs
+     * multiple container elements (such as {@link Paginator}), this may also be an array if IDs.
+     * @prop {JQuery} jq The jQuery instance of the container element of this widget. In case {@link id} is an array, it
+     * will contain multiple elements. Please note that some widgets have got not DOM elements at all, in this case this
+     * will be an empty jQuery instance.
+     * @prop {string} jqId A CSS selector for the container element (or elements, in case {@link id} is an array) of
+     * this widget, This is usually an ID selector (that is properly escaped). You can select the container element or
+     * elements like this: `$(widget.jqId)`.
      * @prop {string} widgetVar The name of the widget variables of this widget. The widget variable can be used to
      * access a widget instance by calling `PF('myWidgetVar')`.
      * 
@@ -218,16 +226,13 @@ if (!PrimeFaces.widget) {
      * to save bandwidth, the server only sends a value for a given configuration key when the value differs from the
      * default value. That is, you must expect any configuration value to be absent and make sure you check for its
      * presence before accessing it.
-     * @prop {PrimeFaces.PartialWidgetCfg<TCfg>} cfg The configuration of this widget instance. Please note that
-     * no property is guaranteed to be present, you should always check for `undefined` before accessing a property.
-     * This is partly because the value of a property is not transmitted from the server to the client when it equals
-     * the default.
      * 
      * @prop {Record<string, PrimeFaces.Behavior>} cfg.behaviors A map with all behaviors that
      * were defined for this widget. The key is the name of the behavior, the value is the callback function that is
      * invoked when the behavior is called.
-     * @prop {string} cfg.id The client-side ID of this widget, with all parent naming containers, such as
-     * `myForm:myWidget`. This is also the ID of the container HTML element for this widget.
+     * @prop {string | string[]} cfg.id The client-side ID of the widget, with all parent naming containers, such as
+     * `myForm:myWidget`. This is also the ID of the container HTML element for this widget. In case the widget needs
+     * multiple container elements (such as {@link Paginator}), this may also be an array if IDs.
      * @prop {string} cfg.widgetVar The name of the widget variables of this widget. The widget variable can be used to
      * access a widget instance by calling `PF("myWidgetVar")`.
      */
@@ -349,7 +354,7 @@ if (!PrimeFaces.widget) {
         /**
          * Each widget has got a container element, this method returns that container. This container element is
          * usually also the element whose ID is the client-side ID of the JSF component.  
-         * @return {JQuery} The JQuery instance representing the main HTML container element of this widget.
+         * @return {JQuery} The jQuery instance representing the main HTML container element of this widget.
          */
         getJQ: function(){
             return this.jq;
