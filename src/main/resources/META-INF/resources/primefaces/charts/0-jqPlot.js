@@ -9287,19 +9287,23 @@
                     // get the first div and stroke it
                     var elem = $(this);
                     newContext.strokeStyle = elem.css('border-top-color');
-                    var l = _left + elem.position().left;
-                    var t = _top + elem.position().top;
-                    newContext.strokeRect(l, t, elem.innerWidth(), elem.innerHeight());
+
+                    var containerOffset = elem.parent().parent().offset();
+                    var rowOffset = elem.offset();
+                    var position = {
+                              top: ((rowOffset.top - containerOffset.top) * 5) == 0 ? 3 : (rowOffset.top - containerOffset.top) * 5,
+                              left: rowOffset.left - containerOffset.left
+                    };
+
+                    var l = left + position.left;
+                    var t = top + position.top;
 
                     // now fill the swatch
-                    
                     l += parseInt(elem.css('padding-left'), 10);
                     t += parseInt(elem.css('padding-top'), 10);
                     var h = elem.innerHeight() - 2 * parseInt(elem.css('padding-top'), 10);
                     var w = elem.innerWidth() - 2 * parseInt(elem.css('padding-left'), 10);
 
-                    _top += elem.outerHeight(true) + parseInt(css.borderSpacing, 10) + parseInt($(el).css('border-top-width'), 10);
-                    
                     var swatch = elem.children('div.jqplot-table-legend-swatch');
                     newContext.fillStyle = swatch.css('background-color');
                     newContext.fillRect(l, t, w, h);
