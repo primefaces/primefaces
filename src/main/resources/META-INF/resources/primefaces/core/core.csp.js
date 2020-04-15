@@ -24,9 +24,9 @@ if (!PrimeFaces.csp) {
 
         register: function(id, event, js){
             if (event) {
-                var shortenedEvent = event.substring(2, event.length);
-
-                var element = document.getElementById(id);
+                var shortenedEvent = event.substring(2, event.length),
+                    element = document.getElementById(id),
+                    jqEvent = shortenedEvent + '.' + id;
 
                 // if the eventhandler return false, we must use preventDefault
                 var jsWrapper = function(event) {
@@ -36,7 +36,7 @@ if (!PrimeFaces.csp) {
                     }
                 };
 
-                $(element).on(shortenedEvent, jsWrapper);
+                $(element).off(jqEvent).on(jqEvent, jsWrapper);
             }
         },
 
@@ -88,6 +88,18 @@ if (!PrimeFaces.csp) {
 
             // call the function
             cspFunction.call(id, e);
+        },
+
+        /**
+         * GitHub #5790: When using jQuery to trigger a click event on a button while using CSP
+         * we must set preventDefault or else it will trigger a non-ajax button click.
+         */
+        clickEvent: function() {
+            var clickEvent = $.Event( "click" );
+            if (PrimeFaces.csp.NONCE_VALUE) {
+                clickEvent.preventDefault();
+            }
+            return clickEvent;
         }
 
     };
