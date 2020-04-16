@@ -2,7 +2,7 @@
 
 Editor is an input component with rich text editing capabilities. (Deprecated: Use TextEditor instead)
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.editor.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.editor.html)
 
 ## Info
 

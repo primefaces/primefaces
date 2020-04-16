@@ -4,7 +4,7 @@ Signature is used to draw a signature as an input. Various options such as backg
 foreground color, thickness are available for customization. Signature also supports touch enabled
 devices and legacy browsers without canvas support.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.signature.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.signature.html)
 
 ## Info
 

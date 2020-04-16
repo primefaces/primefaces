@@ -3,7 +3,7 @@
 MultiSelectListbox is used to select an item from a collection of listboxes that are in parent-child
 relationship.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.multiselectlistbox.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.multiselectlistbox.html)
 
 ## Info
 

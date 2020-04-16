@@ -2,7 +2,7 @@
 
 Fieldset is a grouping component as an extension to HTML fieldset.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.fieldset.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.fieldset.html)
 
 ## Info
 

@@ -371,7 +371,7 @@ if (!PrimeFaces.widget) {
          * Removes the widget's script block from the DOM. Currently, the ID of this script block consists of the
          * client-side ID of this widget with the prefix `_s`, but this is subject to change.
          *
-         * @param {string | string[]} clientId The id of the widget.
+         * @param {string | string[]} clientId The client-side ID of the widget.
          */
         removeScriptElement: function(clientId) {
             if ($.isArray(clientId)) {

@@ -2,7 +2,7 @@
 
 SelectOneButton is an input component to do a single select.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.selectonebutton.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.selectonebutton.html)
 
 ## Info
 

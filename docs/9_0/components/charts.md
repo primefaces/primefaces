@@ -2,7 +2,7 @@
 
 Chart.js based components are a modern replacement for the older p:chart component. Each chart component has its own model api that defines the data and the options to customize the graph.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.basechart.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.basechart.html)
 
 ## BarChart
 

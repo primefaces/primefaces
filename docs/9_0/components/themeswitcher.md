@@ -2,7 +2,7 @@
 
 ThemeSwitcher enables switching PrimeFaces themes on the fly with no page refresh.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.themeswitcher.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.themeswitcher.html)
 
 ## Info
 

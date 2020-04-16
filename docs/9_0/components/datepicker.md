@@ -5,7 +5,7 @@ ajax selection and more.
 
 > DatePicker is designed to replace the old p:calendar component.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.datepicker.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.datepicker.html)
 
 ## Info
 

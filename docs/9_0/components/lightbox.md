@@ -3,7 +3,7 @@
 Lightbox is a powerful overlay that can display images, multimedia content, custom content and
 external urls.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.lightbox.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.lightbox.html)
 
 ## Info
 

@@ -2,7 +2,7 @@
 
 GMap is a map component integrated with Google Maps API V3.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.gmap.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.gmap.html)
 
 ## Info
 

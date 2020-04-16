@@ -3,7 +3,7 @@
 Mindmap is an interactive tool to visualize mindmap data featuring lazy loading, callbacks,
 animations and more.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.mindmap.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.mindmap.html)
 
 ## Info
 

@@ -2,7 +2,7 @@
 
 Clock displays server or client datetime live.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.clock.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.clock.html)
 
 ## Info
 

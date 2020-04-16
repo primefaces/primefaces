@@ -2,7 +2,7 @@
 
 ColorPicker is an input component with a color palette.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.colorpicker.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.colorpicker.html)
 
 ## Info
 

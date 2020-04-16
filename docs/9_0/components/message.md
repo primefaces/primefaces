@@ -2,7 +2,7 @@
 
 Message is a pre-skinned extended version of the standard JSF message component.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.message.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.message.html)
 
 ## Info
 

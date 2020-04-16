@@ -3,7 +3,7 @@
 Password component is an extended version of standard inputSecret component with theme
 integration and strength indicator.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.password.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.password.html)
 
 ## Info
 

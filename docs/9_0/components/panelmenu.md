@@ -2,7 +2,7 @@
 
 PanelMenu is a hybrid component of accordionPanel and tree components.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.panelmenu.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.panelmenu.html)
 
 ## Info
 

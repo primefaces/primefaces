@@ -2,7 +2,7 @@
 
 Menu is a navigation component with submenus and menuitems.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.menu.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.menu.html)
 
 ## Info
 

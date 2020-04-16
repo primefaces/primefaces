@@ -4,7 +4,7 @@ Chart component is a generic graph component to create various types of charts u
 Each chart type has its own subsection with code examples and section 3.12.10 documents the full
 charting API.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.chart.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.chart.html)
 
 ## Info
 

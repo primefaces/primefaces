@@ -3,7 +3,7 @@
 ProgressBar is a process status indicator that can either work purely on client side or interact with
 server side using ajax.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.progressbar.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.progressbar.html)
 
 ## Info
 

@@ -2,7 +2,7 @@
 
 MegaMenu is a horizontal navigation component that displays submenus together.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.megamenu.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.megamenu.html)
 
 ## Info
 

@@ -4,7 +4,7 @@ Diagram is generic component to create visual elements and connect them on a web
 used on modern browsers and VML on IE 8 and below. Component is highly flexible in terms of
 api, events and theming.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.diagram.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.diagram.html)
 
 ## Info
 

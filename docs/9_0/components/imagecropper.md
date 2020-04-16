@@ -3,7 +3,7 @@
 ImageCropper allows cropping a certain region of an image. A new image is created containing the
 cropped area and assigned to a CroppedImage instanced on the server side.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.imagecropper.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.imagecropper.html)
 
 ## Info
 

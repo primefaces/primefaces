@@ -5,7 +5,7 @@ create complex layouts even if you’re not familiar with web design.
 
 > Layout and LayoutUnit are deprecated, use  [FlexGrid](https://www.primefaces.org/showcase/ui/panel/flexGrid.xhtml) or [GridCSS](/components/gridcss.md) instead.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.layout.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.layout.html)
 
 ## Info
 

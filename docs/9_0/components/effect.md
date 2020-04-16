@@ -2,7 +2,7 @@
 
 Effect component is based on the jQuery UI effects library.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.effect.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.effect.html)
 
 ## Info
 

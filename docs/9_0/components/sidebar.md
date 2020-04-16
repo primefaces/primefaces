@@ -2,7 +2,7 @@
 
 Sidebar is a panel component displayed as an overlay at the edges of the screen.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.sidebar.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.sidebar.html)
 
 ## Info
 

@@ -2,7 +2,7 @@
 
 Terminal is an ajax powered web based terminal that brings desktop terminals to JSF.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.terminal.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.terminal.html)
 
 ## Info
 

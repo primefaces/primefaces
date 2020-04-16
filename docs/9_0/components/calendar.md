@@ -3,7 +3,7 @@
 Calendar is an input component used to select a date featuring display modes, paging, localization,
 ajax selection and more.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.calendar.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.calendar.html)
 
 ## Info
 

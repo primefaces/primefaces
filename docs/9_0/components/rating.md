@@ -2,7 +2,7 @@
 
 Rating component features a star based rating system.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.rating.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.rating.html)
 
 ## Info
 

@@ -2,7 +2,7 @@
 
 TieredMenu is used to display nested submenus with overlays.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.tieredmenu.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.tieredmenu.html)
 
 ## Info
 

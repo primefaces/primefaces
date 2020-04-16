@@ -3,7 +3,7 @@
 ScrollPanel is used to display scrollable content with theme aware scrollbars instead of native
 browser scrollbars.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.scrollpanel.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.scrollpanel.html)
 
 ## Info
 

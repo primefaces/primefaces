@@ -2,7 +2,7 @@
 
 Organigram is a data component to display an organizational hierarchy.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.organigram.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.organigram.html)
 
 ## Info
 

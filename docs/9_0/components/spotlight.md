@@ -2,7 +2,7 @@
 
 Spotlight highlights a certain component on page.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.spotlight.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.spotlight.html)
 
 ## Info
 

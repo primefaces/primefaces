@@ -2,7 +2,7 @@
 
 PickList is used for transferring data between two different collections.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.picklist.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.picklist.html)
 
 ## Info
 

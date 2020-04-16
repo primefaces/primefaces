@@ -107,7 +107,7 @@ The major and minor version is taken from the `pom.xml`, the patch version is
 determined automatically by searching for the next free version. 
 
 To authorize, you need to provide either your npm token or a username, password,
-and email:
+and email (in case you do not provide credentials, publishing is skipped):
 
 ```bash
 # Using an npm token

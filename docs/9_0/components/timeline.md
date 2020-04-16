@@ -2,7 +2,7 @@
 
 Timeline is an interactive graph to visualize events in time.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.timeline.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.timeline.html)
 
 ## Info
 

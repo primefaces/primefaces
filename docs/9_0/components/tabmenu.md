@@ -2,7 +2,7 @@
 
 TabMenu is a navigation component that displays menuitems as tabs.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.tabmenu.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.tabmenu.html)
 
 ## Info
 

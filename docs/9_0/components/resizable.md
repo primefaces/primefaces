@@ -2,7 +2,7 @@
 
 Resizable component is used to make another JSF component resizable.
 
-[See this widget in the JavaScript API Docs.](../../jsdocs/classes/primefaces.widget.resizable.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.resizable.html)
 
 ## Info
 
