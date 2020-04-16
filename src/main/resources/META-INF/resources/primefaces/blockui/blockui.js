@@ -26,9 +26,8 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     init: function(cfg) {
-        this.cfg = cfg;
-        this.id = this.cfg.id;
-        this.jqId = PrimeFaces.escapeClientId(this.id);
+        this._super(cfg);
+
         this.block = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.block);
         this.content = $(this.jqId);
         this.cfg.animate = (this.cfg.animate === false)? false : true;
@@ -43,8 +42,6 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.blocked) {
             this.show();
         }
-
-        this.removeScriptElement(this.id);
     },
 
     /**

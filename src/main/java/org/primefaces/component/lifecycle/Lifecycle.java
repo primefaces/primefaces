@@ -23,16 +23,13 @@
  */
 package org.primefaces.component.lifecycle;
 
-import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
-        @ResourceDependency(library = "primefaces", name = "core.js"),
-        @ResourceDependency(library = "primefaces", name = "lifecycle/lifecycle.js"),
-        @ResourceDependency(library = "primefaces", name = "lifecycle/lifecycle.css")
-})
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "lifecycle/lifecycle.js")
+@ResourceDependency(library = "primefaces", name = "lifecycle/lifecycle.css")
 public class Lifecycle extends LifecycleBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Lifecycle";

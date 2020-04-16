@@ -28,9 +28,8 @@ PrimeFaces.widget.Effect = PrimeFaces.widget.BaseWidget.extend({
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     init: function(cfg) {
-        this.cfg = cfg;
-        this.id = this.cfg.id;
-        this.jqId = PrimeFaces.escapeClientId(this.id);
+        this._super(cfg);
+
         this.source = $(PrimeFaces.escapeClientId(this.cfg.source));
         var _self = this;
 
@@ -49,8 +48,6 @@ PrimeFaces.widget.Effect = PrimeFaces.widget.BaseWidget.extend({
         else {
             this.source.on(this.cfg.event, this.runner);
         }
-        
-        this.removeScriptElement(this.id);
     }
     
 });

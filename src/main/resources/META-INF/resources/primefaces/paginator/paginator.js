@@ -63,13 +63,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     init: function(cfg) {
-        this.cfg = cfg;
-        this.jq = $();
-
-        var _self = this;
-        $.each(this.cfg.id, function(index, id){
-            _self.jq = _self.jq.add($(PrimeFaces.escapeClientId(id)));
-        });
+        this._super(cfg);
 
         //elements
         this.pagesContainer = this.jq.children('.ui-paginator-pages');

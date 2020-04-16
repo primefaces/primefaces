@@ -31,8 +31,8 @@ PrimeFaces.widget.Poll = PrimeFaces.widget.BaseWidget.extend({
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     init: function(cfg) {
-        this.cfg = cfg;
-        this.id = this.cfg.id;
+        this._super(cfg);
+
         this.active = false;
 
         if(this.cfg.autoStart) {

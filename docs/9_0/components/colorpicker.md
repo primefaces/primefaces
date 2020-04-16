@@ -67,6 +67,7 @@ ColorPicker has two modes, default mode is _popup_ and other available option is
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
 | change | javax.faces.event.AjaxBehaviorEvent | On change.
+| close | javax.faces.event.AjaxBehaviorEvent | On close of the popup in popup mode.
 
 
 ## Skinning

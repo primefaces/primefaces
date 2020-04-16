@@ -21,37 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.idlemonitor;
+package org.primefaces.component.fileupload;
 
-import java.util.Collection;
-import java.util.Map;
+import org.primefaces.context.PrimeApplicationContext;
 
-import javax.faces.application.ResourceDependency;
-import javax.faces.event.BehaviorEvent;
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
 
-import org.primefaces.util.MapBuilder;
-
-@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "core.js")
-@ResourceDependency(library = "primefaces", name = "idlemonitor/idlemonitor.js")
-public class IdleMonitor extends IdleMonitorBase {
-
-    public static final String COMPONENT_TYPE = "org.primefaces.component.IdleMonitor";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("idle", null)
-            .put("active", null)
-            .build();
-
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+public class AutoFileUploadDecoder implements FileUploadDecoder {
 
     @Override
-    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-        return BEHAVIOR_EVENT_MAPPING;
+    public String getName() {
+        return "auto";
     }
 
     @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
+    public void decode(FacesContext context, FileUpload fileUpload) {
+        PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
+        boolean isAtLeastJSF22 = applicationContext.getEnvironment().isAtLeastJsf22();
+
+        String uploader = isAtLeastJSF22 ? "native" : "commons";
+        FileUploadDecoder decoder = applicationContext.getFileUploadDecoder(uploader);
+        if (decoder == null) {
+            throw new FacesException("FileUploaderDecoder '" + uploader + "' not found");
+        }
+
+        decoder.decode(context, fileUpload);
     }
 }

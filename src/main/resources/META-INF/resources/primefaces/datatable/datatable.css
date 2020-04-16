@@ -219,7 +219,7 @@
     height:100%;
     padding:0px;
     cursor:col-resize;
-    background-image: url("#{resource['primefaces:spacer/dot_clear.gif']}");
+    background-image: url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==);
     border: 1px solid transparent;
     box-sizing: border-box;
 }

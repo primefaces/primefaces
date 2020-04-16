@@ -21,19 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.tieredmenu;
+package org.primefaces.component.fileupload;
 
-import javax.faces.application.ResourceDependency;
+import javax.faces.context.FacesContext;
 
-@ResourceDependency(library = "primefaces", name = "components.css")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
-@ResourceDependency(library = "primefaces", name = "core.js")
-@ResourceDependency(library = "primefaces", name = "components.js")
-public class TieredMenu extends TieredMenuBase {
+public interface FileUploadDecoder {
 
-    public static final String COMPONENT_TYPE = "org.primefaces.component.TieredMenu";
+    String getName();
 
-    public static final String STATIC_CONTAINER_CLASS = "ui-menu ui-tieredmenu ui-widget ui-widget-content ui-corner-all ui-helper-clearfix";
-    public static final String DYNAMIC_CONTAINER_CLASS = "ui-menu ui-tieredmenu ui-menu-dynamic ui-widget ui-widget-content ui-corner-all ui-helper-clearfix ui-shadow";
+    void decode(FacesContext context, FileUpload fileUpload);
+
 }
