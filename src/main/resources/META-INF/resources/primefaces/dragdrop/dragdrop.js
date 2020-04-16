@@ -4,10 +4,9 @@
 PrimeFaces.widget.Draggable = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
-        this.cfg = cfg;
-        this.id = this.cfg.id;
-        this.jqId = PrimeFaces.escapeClientId(this.id);
-        this.jq = $(PrimeFaces.escapeClientId(this.cfg.target));
+        this._super(cfg);
+
+        this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target));
         this.cfg.cancel = this.cfg.cancel || "input,textarea,button,select,option";
 
         if(this.cfg.appendTo) {
@@ -28,9 +27,7 @@ PrimeFaces.widget.Draggable = PrimeFaces.widget.BaseWidget.extend({
             }
         };
         
-        this.jq.draggable(this.cfg);
-        
-        this.removeScriptElement(this.id);
+        this.jqTarget.draggable(this.cfg);
     }
     
 });
@@ -41,16 +38,12 @@ PrimeFaces.widget.Draggable = PrimeFaces.widget.BaseWidget.extend({
 PrimeFaces.widget.Droppable = PrimeFaces.widget.BaseWidget.extend({
     
     init: function(cfg) {
-        this.cfg = cfg;
-        this.id = this.cfg.id;
-        this.jqId = PrimeFaces.escapeClientId(this.id);
-        this.jq = $(PrimeFaces.escapeClientId(this.cfg.target));
+        this._super(cfg);
+        this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target));
 
         this.bindDropListener();
 
-        this.jq.droppable(this.cfg);
-        
-        this.removeScriptElement(this.id);
+        this.jqTarget.droppable(this.cfg);
     },
     
     bindDropListener: function() {

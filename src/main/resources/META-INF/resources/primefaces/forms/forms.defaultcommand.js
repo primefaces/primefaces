@@ -4,9 +4,7 @@
 PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
 
     init: function(cfg) {
-        this.cfg = cfg;
-        this.id = this.cfg.id;
-        this.jqId = PrimeFaces.escapeClientId(this.id);
+        this._super(cfg);
         this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target));
         this.scope = this.cfg.scope ? $(PrimeFaces.escapeClientId(this.cfg.scope)) : null;
         var $this = this;
@@ -47,7 +45,5 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
                 }
             });
         }
-
-        this.removeScriptElement(this.id);
     }
 });

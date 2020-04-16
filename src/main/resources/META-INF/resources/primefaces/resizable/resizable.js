@@ -4,9 +4,8 @@
 PrimeFaces.widget.Resizable = PrimeFaces.widget.BaseWidget.extend({
 
     init: function(cfg) {
-        this.cfg = cfg;
-        this.id = this.cfg.id;
-        this.jqId = PrimeFaces.escapeClientId(this.id);
+        this._super(cfg);
+
         this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target));
 
         this.renderDeferred();
