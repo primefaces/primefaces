@@ -8,11 +8,25 @@ page layout should optimize these sections according to the screen size. You may
 layout with CSS, pick one from a responsive css framework or choose PrimeFaces Premium
 Layouts such as Sentinel, Spark, Modena, Rio and more.
 
-## Grid Framework
+## Grid CSS Framework
 Grid framework is used to define container where you place the content and the components. A
 typical grid framework usually consists of columns with varying widths and since they are also
 responsive, containers adjust themselves according to the screen size. There are 3rd party grid
 frameworks you can use whereas PrimeFaces also provides Grid CSS as a solution.
+
+Showcase Example: https://www.primefaces.org/showcase/ui/panel/grid.xhtml
+
+## FlexGrid CSS Framework
+Flex Grid CSS is a lightweight flex based responsive layout utility optimized for mobile phones, 
+tablets and desktops. Flex Grid CSS is not included in PrimeFaces as it is provided by [PrimeFlex](https://github.com/primefaces/primeflex), 
+a shared grid library between PrimeFaces, PrimeNG and PrimeReact projects. To use [PrimeFlex](https://github.com/primefaces/primeflex) you must
+download and include a separate CSS file.
+
+```xml
+<h:outputStylesheet name="css/primeflex.css" />
+```
+
+Showcase Example: https://www.primefaces.org/showcase/ui/panel/flexGrid.xhtml
 
 ## Components
 Components also must be flexible enough to use within a responsive layout, if a component has
