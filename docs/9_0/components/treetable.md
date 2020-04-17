@@ -64,6 +64,7 @@ paginatorAlwaysVisible | true | Boolean | Defines if paginator should be hidden 
 rows | 0 | Integer | Number of rows to display per page. Default value is 0 meaning to display all data available.
 first | 0 | Integer | Index of the first data to display.
 disabledTextSelection | true | Boolean | Disables text selection on row click.
+touchable | true | Boolean | Enable touch support if browser detection supports it.
 
 ## Getting started with the TreeTable
 Similar to the Tree, TreeTable is populated with an _org.primefaces.model.TreeNode_ instance that

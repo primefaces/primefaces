@@ -41,6 +41,7 @@ import org.primefaces.component.calendar.BaseCalendarRenderer;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class DatePickerRenderer extends BaseCalendarRenderer {
@@ -146,7 +147,8 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
                             SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
             .attr("icon", datepicker.getTriggerButtonIcon(), null)
             .attr("rangeSeparator", datepicker.getRangeSeparator(), null)
-            .attr("timeInput", datepicker.isTimeInput());
+            .attr("timeInput", datepicker.isTimeInput())
+            .attr("touchable", ComponentUtils.isTouchable(context, datepicker),  true);
 
         List<Integer> disabledDays = datepicker.getDisabledDays();
         if (disabledDays != null) {

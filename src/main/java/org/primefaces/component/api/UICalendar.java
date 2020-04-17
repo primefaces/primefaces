@@ -38,7 +38,7 @@ import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.MessageFactory;
 
-public abstract class UICalendar extends HtmlInputText implements InputHolder {
+public abstract class UICalendar extends HtmlInputText implements InputHolder, TouchAware {
 
     public static final String CONTAINER_CLASS = "ui-calendar";
     public static final String INPUT_STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
@@ -64,7 +64,8 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
         inputStyleClass,
         type,
         rangeSeparator,
-        resolverStyle
+        resolverStyle,
+        touchable
     }
 
     public Object getLocale() {
@@ -249,6 +250,16 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
 
     public void setResolverStyle(String resolverStyle) {
         getStateHelper().put(PropertyKeys.resolverStyle, resolverStyle);
+    }
+
+    @Override
+    public boolean isTouchable() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, true);
+    }
+
+    @Override
+    public void setTouchable(boolean touchable) {
+        getStateHelper().put(PropertyKeys.touchable, touchable);
     }
 
     public enum ValidationResult {

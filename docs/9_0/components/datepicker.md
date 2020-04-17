@@ -115,6 +115,7 @@ ajax selection and more.
 | rangeSeparator | - | String | Separator for joining start and end dates on range selection mode.
 | resolverStyle | smart | String | Relevant when parsing to a Java 8 Date/Time object. lenient, smart or strict. See [ResolverStyle](https://docs.oracle.com/javase/8/docs/api/java/time/format/ResolverStyle.html).
 | timeInput | false | Boolean | Allows direct input in time field.
+| touchable | true | Boolean | Enable touch support if browser detection supports it.
 
 ## Getting Started with DatePicker
 Value of the DatePicker should be a java.time.LocalDate in single selection mode which is the default.

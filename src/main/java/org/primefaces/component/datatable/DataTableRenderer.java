@@ -296,6 +296,7 @@ public class DataTableRenderer extends DataRenderer {
                 .callback("onRowClick", "function(row)", table.getOnRowClick());
 
         wb.attr("disableContextMenuIfEmpty", table.isDisableContextMenuIfEmpty());
+        wb.attr("touchable", ComponentUtils.isTouchable(context, table),  true);
 
         //Behaviors
         encodeClientBehaviors(context, table);

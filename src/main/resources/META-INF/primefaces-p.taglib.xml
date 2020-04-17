@@ -3157,6 +3157,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+            </description>
+            <name>touchable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -6343,6 +6351,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+            </description>
+            <name>touchable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -6635,6 +6651,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+            </description>
+            <name>touchable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -6859,6 +6883,14 @@
                 <![CDATA[Whether to keep list state across views, defaults to false.]]>
             </description>
             <name>multiViewState</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+            </description>
+            <name>touchable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -7758,6 +7790,14 @@
             <required>false</required>
             <type>javax.el.MethodExpression</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+            </description>
+            <name>touchable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -7949,6 +7989,14 @@
                 <![CDATA[Whether to keep DataView state across views, defaults to false.]]>
             </description>
             <name>multiViewState</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+            </description>
+            <name>touchable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -10050,6 +10098,14 @@
                 <![CDATA[Displays information retrieved from title and alt attributes of images in content caption.]]>
             </description>
             <name>showCaption</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+            </description>
+            <name>touchable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -23069,6 +23125,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+            </description>
+            <name>touchable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -23947,6 +24011,14 @@
             <name>displayTemplate</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+            </description>
+            <name>touchable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -25833,6 +25905,14 @@
             <name>tabindex</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+            </description>
+            <name>touchable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -28401,6 +28481,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+            </description>
+            <name>touchable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -30102,6 +30190,14 @@
             <name>weekCalculator</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+            </description>
+            <name>touchable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
 </facelet-taglib>
