@@ -94,7 +94,7 @@ if (!PrimeFaces.csp) {
          * GitHub #5790: When using jQuery to trigger a click event on a button while using CSP
          * we must set preventDefault or else it will trigger a non-ajax button click.
          * 
-         * @return {JQuery} the JQuery click event
+         * @return {JQuery.Event} the JQuery click event
          */
         clickEvent: function() {
             var clickEvent = $.Event( "click" );
