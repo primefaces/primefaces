@@ -30,7 +30,7 @@ PrimeFaces.widget.DataGrid = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        this.cfg.formId = $(this.jqId).closest('form').attr('id');
+        this.cfg.formId = this.jq.closest('form').attr('id');
         this.content = $(this.jqId + '_content');
 
         if(this.cfg.paginator) {

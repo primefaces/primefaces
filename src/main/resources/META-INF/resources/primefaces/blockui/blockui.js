@@ -29,9 +29,9 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
 
         this.block = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.block);
-        this.content = $(this.jqId);
-        this.cfg.animate = (this.cfg.animate === false)? false : true;
-        this.cfg.blocked = (this.cfg.blocked === true)? true : false;
+        this.content = this.jq;
+        this.cfg.animate = (this.cfg.animate === false) ? false : true;
+        this.cfg.blocked = (this.cfg.blocked === true) ? true : false;
         
         this.render();
 

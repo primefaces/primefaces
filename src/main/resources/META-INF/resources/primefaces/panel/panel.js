@@ -229,7 +229,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
      */
     show: function() {
         var $this = this;
-        $(this.jqId).fadeIn(this.cfg.closeSpeed, function() {
+        this.jq.fadeIn(this.cfg.closeSpeed, function() {
             PrimeFaces.invokeDeferredRenders($this.id);
         });
 

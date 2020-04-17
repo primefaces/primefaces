@@ -30,7 +30,7 @@ PrimeFaces.widget.DataList = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        this.cfg.formId = $(this.jqId).parents('form:first').attr('id');
+        this.cfg.formId = this.jq.parents('form:first').attr('id');
         this.content = $(this.jqId + '_content');
 
         if(this.cfg.paginator) {

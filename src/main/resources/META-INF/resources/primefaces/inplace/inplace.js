@@ -64,7 +64,7 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
             }
 
             if(this.cfg.editor) {
-                this.cfg.formId = $(this.jqId).parents('form:first').attr('id');
+                this.cfg.formId = this.jq.parents('form:first').attr('id');
 
                 this.editor = $(this.jqId + '_editor');
 
