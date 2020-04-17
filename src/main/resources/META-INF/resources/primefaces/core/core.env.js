@@ -64,7 +64,7 @@ if (!PrimeFaces.env) {
          * A widget is touch enabled if the browser supports touch AND the widget has the touchable property enabled.
          * The default will be true if it widget status can't be determined.
          * 
-         * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg the widget configuration
+         * @param {PrimeFaces.widget.BaseWidgetCfg} cfg the widget configuration
          * @return {boolean} true if touch is enabled, false if disabled
          */
         isTouchable: function(cfg) {
