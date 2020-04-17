@@ -101,7 +101,7 @@
     "@typescript-eslint/eslint-plugin": "^2.26.0",
     "@typescript-eslint/eslint-plugin-tslint": "^2.26.0",
     "@typescript-eslint/parser": "^2.26.0",
-    "acorn": "^7.0.0",
+    "acorn": "^7.1.1",
     "acorn-walk": "^7.0.0",
     "astring": "^1.4.3",
     "comment-parser": "^0.7.2",
