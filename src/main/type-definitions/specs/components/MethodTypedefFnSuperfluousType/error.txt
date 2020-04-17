@@ -1,0 +1,2 @@
+Error: [tagSuperfluousTypedef] Found type signature on @typedef {string} MethodTypedefTypeFn, but method tags (@param, @return etc.) are present already. Remove the type signature.
+at <unknown> (${PROJECT_BASEDIR}/src/main/type-definitions/specs/components/MethodTypedefFnSuperfluousType/input.js:14:7)

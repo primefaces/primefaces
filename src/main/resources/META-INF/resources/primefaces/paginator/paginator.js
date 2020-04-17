@@ -1,5 +1,67 @@
+/**
+ * __PrimeFaces Paginator Widget__
+ * 
+ * A widget for handling pagination that is usually used by other widget via composition, that is, they create and save
+ * an instance of this widget during initialization. After you create a new instance of this paginator, you should set
+ * the `paginate` property to an appropriate callback function.
+ * 
+ * ```javascript
+ * const paginator = new PrimeFaces.widget.Paginator(paginatorCfg);
+ * paginator.paginator = newState => {
+ *  // handle pagination
+ * };
+ * ```
+ * 
+ * @typedef PrimeFaces.widget.Paginator.PaginateCallback A callback method that is invoked when the pagination state
+ * changes, see {@link PaginatorCfg.paginate}.
+ * @param {PrimeFaces.widget.Paginator.PaginationState} PrimeFaces.widget.Paginator.PaginateCallback.newState The new
+ * values for the current page and the rows per page count. 
+ * 
+ * @interface {PrimeFaces.widget.Paginator.PaginationState} PaginatorState Represents a pagination state, that is, a
+ * range of items that should be displayed.
+ * @prop {number} PaginatorState.first 0-based index of the first item on the current page.
+ * @prop {number} PaginatorState.rows The number of rows per page.
+ * @prop {number} PaginatorState.page The current page, 0-based index.
+ * 
+ * @prop {JQuery} currentReport DOM element of the status text as configured by the `currentPageTemplate`.
+ * @prop {JQuery} endLink DOM element of the link to the last page.
+ * @prop {JQuery} firstLink DOM element of the link back to the first page.
+ * @prop {JQuery} jtpInput INPUT element for selecting a page to navigate to (`jump to page`)
+ * @prop {JQuery} jtpSelect SELECT element for selecting a page to navigate to (`jump to page`)
+ * @prop {JQuery} nextLink DOM element of the link to the next page.
+ * @prop {JQuery} pagesContainer DOM element of the container with the numbered page links.
+ * @prop {JQuery} pageLinks DOM elements of each numbered page link.
+ * @prop {JQuery} prevLink DOM element of the link back to the previous page.
+ * @prop {JQuery} rppSelect SELECT element for selection the number of pages to display (`rows per page`).
+ * 
+ * @interface {PrimeFaces.widget.PaginatorCfg} cfg The configuration for the {@link  Paginator| Paginator widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {boolean} cfg.alwaysVisible `true` if the paginator should be displayed always, or `false` if it is allowed to
+ * be hidden under some circumstances that depend on the widget that uses the paginator.
+ * @prop {string} cfg.ariaPageLabel ARIA LABEL attribute for the page links.
+ * @prop {string} cfg.currentPageTemplate Template for the paginator text. It may contain placeholders such as
+ * `{currentPage}` or `{totalPages}`. 
+ * @prop {number} cfg.page The current page, 0-based index.
+ * @prop {number} cfg.pageCount The number of pages.
+ * @prop {number} cfg.pageLinks The maximum number of page links to display (when there are many pages).
+ * @prop {PrimeFaces.widget.Paginator.PaginateCallback} cfg.paginate A callback method that is invoked when the
+ * pagination state changes, such as when the user selects a different page or changes the current rows per page count.
+ * This property is usually provided by another widget that makes use of this paginator. You should use this callback to
+ * perform any actions required to apply the new pagination state.
+ * @prop {number} cfg.prevRows The number of rows per page for the dropdown.
+ * @prop {number} cfg.rowCount Total number of rows (records) to be displayed.
+ * @prop {number} cfg.rows The number of rows per page.
+ */
 PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
@@ -29,6 +91,10 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         this.bindEvents();
     },
 
+    /**
+     * Sets up all event listeners for this widget.
+     * @private
+     */
     bindEvents: function(){
         var $this = this;
 
@@ -140,6 +206,10 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Sets up the event listeners for page link buttons.
+     * @private
+     */
     bindPageLinkEvents: function(){
         var $this = this,
         pageLinks = this.pagesContainer.children('.ui-paginator-page');
@@ -190,7 +260,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Binds swipe events to this paginator to the JQ element passed in.
      * 
-     * @param owner the owner of the paginator
+     * @param {JQuery} owner The owner of the paginator
      */
     bindSwipeEvents: function(owner) {
         if (!PrimeFaces.env.touch) {
@@ -208,7 +278,11 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
-    unbindEvents: function() {
+   /**
+    * Removes all event listeners.
+    * @private
+    */
+   unbindEvents: function() {
         var buttons = this.jq.children('a.ui-state-default');
         if (buttons.length > 0) {
             buttons.off();
@@ -219,6 +293,10 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Updates the UI so that it reflects the current pagination state.
+     * @private
+     */
     updateUI: function() {
         //boundaries
         if(this.cfg.page === 0) {
@@ -282,6 +360,10 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         this.updatePageLinks();
     },
 
+    /**
+     * Updates the UI of page link button so that they reflect the current pagination state.
+     * @private
+     */
     updatePageLinks: function() {
         var start, end, delta,
         focusedElement = $(document.activeElement),
@@ -326,6 +408,11 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         this.bindPageLinkEvents();
     },
 
+    /**
+     * Switches this pagination to the given page.
+     * @param {number} p 0-based index of the page to switch to.
+     * @param {boolean} [silent=false] `true` to not invoke any event listeners, `false` otherwise. 
+     */
     setPage: function(p, silent) {
         if(p >= 0 && p < this.cfg.pageCount && this.cfg.page != p){
             var newState = {
@@ -344,6 +431,10 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Modifies the number of rows that are shown per page.
+     * @param {number} rpp Number of rows per page to set.
+     */
     setRowsPerPage: function(rpp) {
         if (rpp === '*') {
             this.cfg.rows = this.cfg.rowCount;
@@ -370,6 +461,10 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Modifies the total number of items that are available, and switches to the first page.
+     * @param {number} value The total number of items to set.
+     */
     setTotalRecords: function(value) {
         this.cfg.rowCount = value;
         this.cfg.pageCount = Math.ceil(value / this.cfg.rows)||1;
@@ -377,24 +472,47 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         this.updateUI();
     },
 
+    /**
+     * Modifies the total number of items that are available.
+     * @param {number} value The total number of items to set.
+     * @private
+     */
     updateTotalRecords: function(value) {
         this.cfg.rowCount = value;
         this.cfg.pageCount = Math.ceil(value / this.cfg.rows)||1;
         this.updateUI();
     },
 
+    /**
+     * Finds the index of the page that is currently displayed.
+     * @return {number} 0-based index of the current page.
+     */
     getCurrentPage: function() {
         return this.cfg.page;
     },
 
+    /**
+     * Finds the index of the item that is shown first on the current page.
+     * @return {number} 0-based index of the first item on the current page.
+     */
     getFirst: function() {
         return (this.cfg.rows * this.cfg.page);
     },
 
+    /**
+     * Finds the current number of rows per page.
+     * @return {number} The number of rows per page.
+     */
     getRows: function() {
         return this.cfg.rows;
     },
 
+    /**
+     * Calculates the required height of the container with the items of the current page.
+     * @private
+     * @param {number} margin Additional margin in pixels to consider.
+     * @return {number} The height of the items container in pixels
+     */
     getContainerHeight: function(margin) {
         var height = 0;
 
@@ -405,19 +523,35 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         return height;
     },
 
+    /**
+     * Disables one of the items of this pagination.
+     * @private
+     * @param {JQuery} element Element to disabled.
+     */
     disableElement: function(element) {
         element.removeClass('ui-state-hover ui-state-focus ui-state-active').addClass('ui-state-disabled').attr('tabindex', -1);
         element.removeClass('ui-state-hover ui-state-focus ui-state-active').addClass('ui-state-disabled').attr('tabindex', -1);
     },
 
+    /**
+     * Enables one of the items of this pagination.
+     * @private
+     * @param {JQuery} element Element to disabled.
+     */
     enableElement: function(element) {
         element.removeClass('ui-state-disabled').attr('tabindex', 0);
     },
 
+    /**
+     * Switches to the next page. Does nothing when this pagination is already on the last page.
+     */
     next: function() {
         this.setPage(this.cfg.page + 1);
     },
 
+    /**
+     * Switches to the previous page. Does nothing when this pagination is already on the first page.
+     */
     prev: function() {
         this.setPage(this.cfg.page - 1);
     }

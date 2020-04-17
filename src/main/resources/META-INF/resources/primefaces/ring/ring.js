@@ -1196,10 +1196,23 @@
 
 
 /**
- * PrimeFaces Ring Widget
+ * __PrimeFaces Ring Widget__
+ * 
+ * Ring is a data display component with a circular animation.
+ * 
+ * @interface {PrimeFaces.widget.RingCfg} cfg The configuration for the {@link  Ring| Ring widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * @extends {JQueryRoundabout.RoundaboutSettings} cfg
  */
 PrimeFaces.widget.Ring = PrimeFaces.widget.BaseWidget.extend({
-    
+
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
         

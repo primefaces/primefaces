@@ -3,6 +3,8 @@
 Growl is based on the Mac’s growl notification widget and used to display FacesMessages in an
 overlay.
 
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.growl.html)
+
 ## Info
 
 | Name | Value |

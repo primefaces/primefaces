@@ -1,9 +1,54 @@
 /**
- * PrimeFaces DatePicker Widget
+ * __PrimeFaces DatePicker Widget__
+ * 
+ * DatePicker is an input component used to select a date featuring display modes, paging, localization, ajax selection
+ * and more.
+ * 
+ * DatePicker is designed to replace the old {@link Calendar|p:calendar} component.
+ * 
+ * To interact with the calendar, use the methods of this widget, or for more advanced usages, use the `datePicker`
+ * JQueryUI widget plugin, for example:
+ * 
+ * ```javascript
+ * PF("datePickerWidget").getDate();
+ * PF("datePickerWidget").jq.datePicker("getDate");
+ * 
+ * PF("datePickerWidget").setDate(new Date());
+ * PF("datePickerWidget").jq.datePicker("setDate", new Date());
+ * 
+ * PF("datePickerWidget").jq.datePicker("enableModality");
+ * ```
+ * 
+ * @typedef PrimeFaces.widget.DatePicker.PreShowCallback User-defined callback invoked before the date picker overlay is
+ * shown.
+ * @this {PrimeFaces.widget.DatePickerCfg} PrimeFaces.widget.DatePicker.PreShowCallback
+ * @param {JQueryPrimeDatePicker.PickerInstance} PrimeFaces.widget.DatePicker.PreShowCallback.datePicker The current
+ * date picker instance.
+ * 
+ * @prop {JQuery} input The DOM element for the hidden input element with the selected date.
+ * @prop {JQuery} jqEl The DOM element for the inline picker or the input.
+ * @prop {boolean} refocusInput Whether focus should be put on the input again.
+ * @prop {Date | Date[]} viewDateOption The date that is displayed in the date picker.
+ * 
+ * @interface {PrimeFaces.widget.DatePickerCfg} cfg The configuration for the {@link  DatePicker| DatePicker widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * @extends {JQueryPrimeDatePicker.PickerOptions} cfg 
+ * 
+ * @prop {string} cfg.buttonTabindex Tabindex of the datepicker button
+ * @prop {boolean} cfg.focusOnSelect When enabled, input receives focus after a value is picked.
+ * @prop {PrimeFaces.widget.DatePicker.PreShowCallback} cfg.preShow User-defined callback that may be overridden by the
+ * user. Invoked before the date picker overlay is shown.
+ * @prop {string} cfg.triggerButtonIcon Icon of the datepicker element that toggles the visibility in popup mode.
  */
 PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
-    //@override
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
@@ -91,7 +136,11 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
 
-    //@override
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     refresh: function(cfg) {
         if (this.cfg.appendTo) {
             PrimeFaces.utils.cleanupDynamicOverlay(this, this.panel, this.id + '_panel', this.cfg.appendTo);
@@ -100,7 +149,10 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
     },
 
-    //@override
+    /**
+     * @override
+     * @inheritdoc
+     */
     destroy: function() {
         if (this.cfg.appendTo) {
             PrimeFaces.utils.removeDynamicOverlay(this, null, this.id + '_panel', this.cfg.appendTo);
@@ -109,6 +161,10 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         this._super();
     },
 
+    /**
+     * Initializes the localized messages for the currently configured language.
+     * @private
+     */
     configureLocale: function() {
         var localeSettings = PrimeFaces.locales[this.cfg.userLocale];
 
@@ -122,6 +178,10 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Sets up the event listener for when another date was selected.
+     * @private
+     */
     bindDateSelectListener: function() {
         var _self = this;
 
@@ -148,6 +208,10 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         };
     },
 
+    /**
+     * Triggers the event for when another date was selected.
+     * @private
+     */
     fireDateSelectEvent: function() {
         if(this.cfg.behaviors) {
             var dateSelectBehavior = this.cfg.behaviors['dateSelect'];
@@ -158,6 +222,10 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Sets up the event listener for when the date picker changes to a different month or year page.
+     * @private
+     */
     bindViewChangeListener: function() {
         var _self = this;
         this.cfg.onViewDateChange = function(event, date) {
@@ -169,6 +237,12 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         };
     },
 
+    /**
+     * Triggers the event for when the date picker changed to a different month or year page.
+     * @private
+     * @param {number} year The year to which the date picker changed.
+     * @param {number} month The year to which the date picker changed, starting with `0` for `Janurary`.
+     */
     fireViewChangeEvent: function(year, month) {
         if(this.cfg.behaviors) {
             var viewChangeBehavior = this.cfg.behaviors['viewChange'];
@@ -186,6 +260,10 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Sets up the event listeners for when the date picker is closed.
+     * @private
+     */
     bindCloseListener: function() {
         if(this.hasBehavior('close')) {
             var $this = this;
@@ -195,6 +273,10 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Fires the close event when the date picker is closed.
+     * @private
+     */
     fireCloseEvent: function() {
         if(this.cfg.behaviors) {
             var closeBehavior = this.cfg.behaviors['close'];
@@ -205,21 +287,25 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Sets the date value the DatePicker.
+     * Sets the date value the date picker.
+     * @param {Date | string} date The new date for this widget.
      */
     setDate: function(date) {
         this.jq.datePicker('setDate', date);
     },
 
     /**
-     * Gets the date value of the DatePicker
+     * Gets the currently selected date value of the date picker.
+     * @return {Date | string | null} The date, if one is currently selected. The empty `string` or `null` when no date
+     * is selected.
      */
     getDate: function() {
         return this.jq.datePicker('getDate');
     },
 
     /**
-     * Sets the displayed visible calendar date.
+     * Sets the displayed visible calendar date. This refers to the currently displayed month page.
+     * @param {string | Date | Date[]} date The date to be shown in the calendar. 
      */
     setViewDate: function(date) {
         var viewDate = this.jq.data().primeDatePicker.parseValue(date);
@@ -227,7 +313,8 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Gets the displayed visible calendar date.
+     * Gets the displayed visible calendar date. This refers to the currently displayed month page.
+     * @return {Date | Date[]} The currently displayed date or dates. 
      */
     getViewDate: function() {
         return this.jq.datePicker().data().primeDatePicker.viewDate;

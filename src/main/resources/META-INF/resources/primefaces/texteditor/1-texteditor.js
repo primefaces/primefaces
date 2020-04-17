@@ -1,8 +1,33 @@
 /**
- * PrimeFaces TextEditor Widget
+ * __PrimeFaces TextEditor Widget__
+ * 
+ * Editor is an input component with rich text editing capabilities based on [Quill](https://quilljs.com/).
+ * 
+ * @typedef {import("quill").QuillOptionsStatic} PrimeFaces.widget.TextEditor.QuillOptionsStatic Type alias for the
+ * Quill editor options, needed for technical reasons. 
+ * 
+ * @prop {boolean} disabled Whether this text editor is disabled.
+ * @prop {import("quill").Quill} editor The current Quill text editor instance.
+ * @prop {JQuery} editorContainer The DOM element for the container with the Quill editor.
+ * @prop {JQuery} input The DOM element for the hidden input field with the current value.
+ * @prop {JQuery} toolbar The DOM element for the toolbar of the editor.
+ * 
+ * @interface {PrimeFaces.widget.TextEditorCfg} cfg The configuration for the {@link  TextEditor| TextEditor widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
+ * @extends {PrimeFaces.widget.TextEditor.QuillOptionsStatic} cfg
+ * 
+ * @prop {boolean} cfg.disabled Whether this text editor is initially disabled.
+ * @prop {number} cfg.height The height of the editor.
+ * @prop {boolean} cfg.toolbarVisible Whether the editor toolbar should be displayed.
  */
 PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
 
+    /**
+     * The default HTML template for the toolbar of the editor. Use the appopriate classes to insert a toolbar button.
+     * @type {string}
+     */
     toolbarTemplate: '<div class="ui-editor-toolbar">' +
                 '<span class="ql-formats">' +
                     '<select class="ql-font"></select>' +
@@ -48,6 +73,11 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
                 '</span>' +
             '</div>',
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
         this.disabled = (cfg.disabled === undefined) ? false : cfg.disabled;
@@ -63,6 +93,12 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
         this.renderDeferred();
     },
 
+    /**
+     * @include
+     * @override
+     * @protected
+     * @inheritdoc
+     */
     _render: function() {
         var $this = this;
 
@@ -116,6 +152,10 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
 
     },
 
+    /**
+     * Finds an returns the current contents of the editor.
+     * @return {string} The current contents of the editor, as an HTML string.
+     */
     getEditorValue: function() {
         var html = this.editorContainer.get(0).children[0].innerHTML;
         var value = (html == '<p><br></p>') ? '' : html;
@@ -123,10 +163,18 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
         return value;
     },
 
+    /**
+     * Clears the entire text of the editor.
+     */
     clear: function() {
         this.editor.setText('');
     },
 
+    /**
+     * Registers an event with the Quill editor and invokes the appropriate behavior when that event is triggered.
+     * @private
+     * @param {string} event Name of the event to register. 
+     */
     registerEvent: function(event) {
         var $this = this;
         if(this.hasBehavior(event)) {
@@ -136,6 +184,9 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Enables this text editor so that text can be entered.
+     */
     enable: function () {
         this.editor.enable();
         this.input.removeAttr("disabled");
@@ -143,6 +194,9 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
         this.disabled = false;
     },
 
+    /**
+     * Enables this text editor so that no text can be entered or removed.
+     */
     disable: function () {
         this.editor.disable();
         this.input.attr("disabled", "disabled");

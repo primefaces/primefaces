@@ -2,6 +2,8 @@
 
 IdleMonitor watches user actions on a page and notify callbacks in case they go idle or active again.
 
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.idlemonitor.html)
+
 ## Info
 
 | Name | Value |

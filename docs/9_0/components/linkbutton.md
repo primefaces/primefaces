@@ -2,6 +2,8 @@
 
 LinkButton a simple link, which is styled as a button and integrated with JSF navigation model.
 
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.linkbutton.html)
+
 ## Info
 
 | Name | Value |

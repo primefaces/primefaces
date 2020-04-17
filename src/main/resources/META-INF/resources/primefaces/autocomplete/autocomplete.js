@@ -1,8 +1,86 @@
 /**
- * PrimeFaces AutoComplete Widget
+ * __PrimeFaces AutoComplete Widget__
+ * 
+ * AutoComplete provides live suggestions while the user is entering text
+ * 
+ * @typedef {"blank" | "current"} PrimeFaces.widget.AutoComplete.DropdownMode Specifies the behavior of the dropdown
+ * button.
+ * - `blank`: Sends an empty string.
+ * - `current`: Send the input value.
+ * 
+ * @typedef {"keyup" | "enter"} PrimeFaces.widget.AutoComplete.QueryEvent  Event to initiate the autocomplete search.
+ * - `enter`: Starts the search for suggestion items when the enter key is pressed.
+ * - `keyup`: Starts the search for suggestion items as soon as a key is released.
+ * 
+ * @typedef {"server" | "client" | "hybrid"} PrimeFaces.widget.AutoComplete.QueryMode Specifies whether filter requests
+ * are evaluated by the client's browser or whether they are sent to the server.
+ * 
+ * @prop {boolean} active Whether the autocomplete is active.
+ * @prop {Record<string, string>} [cache] The cache for the results of an autocomplete search.
+ * @prop {number} [cacheTimeout] The set-interval timer ID for the cache timeout. 
+ * @prop {JQuery} dropdown The DOM element for the container with the dropdown suggestions.
+ * @prop {JQuery} input The DOM element for the input element.
+ * @prop {boolean} isDynamicLoaded If dynamic loading is enabled, whether the content was loaded already.
+ * @prop {boolean} isTabPressed Whether the tab key is currently pressed.
+ * @prop {JQuery} hinput The DOM element for the hidden input with the selected value.
+ * @prop {JQuery} [items] The DOM elements for the suggestion items.
+ * @prop {JQuery} itemtip The DOM element for the tooltip of a suggestion item.
+ * @prop {boolean} [itemClick] Whether an item was clicked.
+ * @prop {JQuery} [itemContainer] The DOM element for the container with the suggestion items.
+ * @prop {boolean} [itemSelectedWithEnter] Whether an item was selected via the enter key.
+ * @prop {JQuery} [multiItemContainer] The DOM element for the container with multiple selection items.
+ * @prop {JQuery} panel The DOM element for the overlay panel with the suggestion items. 
+ * @prop {string} panelId The client ID of the overlay panel with the suggestion items.
+ * @prop {JQuery} status The DOM element for the autocomplete status ARIA element.
+ * @prop {boolean} suppressInput Whether key input events should be ignored currently.
+ * @prop {boolean} touchToDropdownButton Whether a touch is made on the dropdown button.
+ * @prop {string} wrapperStartTag The starting HTML with the wrapper element of the suggestions box.  
+ * @prop {string} wrapperEndTag The finishing HTML with the wrapper element of the suggestions box.
+ * 
+ * @interface {PrimeFaces.widget.AutoCompleteCfg} cfg The configuration for the {@link  AutoComplete| AutoComplete widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {boolean} cfg.active Whether autocompletion search is initially active.
+ * @prop {string} cfg.appendTo ID of the container to which the suggestion box is appended.
+ * @prop {string} cfg.atPos Defines which position on the target element to align the positioned element against.
+ * @prop {boolean} cfg.autoHighlight Highlights the first suggested item automatically.
+ * @prop {boolean} cfg.autoSelection Defines if auto selection of items that are equal to the typed input is enabled. If
+ * `true`, an item that is equal to the typed input is selected.
+ * @prop {boolean} cfg.cache When enabled autocomplete caches the searched result list.
+ * @prop {number} cfg.cacheTimeout Timeout in milliseconds value for cached results.
+ * @prop {number} cfg.delay The delay in milliseconds before an autocomplete search is triggered.
+ * @prop {PrimeFaces.widget.AutoComplete.DropdownMode} cfg.dropdownMode Specifies the behavior of the dropdown button.
+ * @prop {boolean} cfg.dynamic Defines if dynamic loading is enabled for the element's panel. If the value is `true`,
+ * the overlay is not rendered on page load to improve performance.
+ * @prop {string} cfg.effect Effect to use when showing and hiding suggestions.
+ * @prop {number} cfg.effectDuration Duration of the effect in milliseconds.
+ * @prop {string} cfg.emptyMessage Text to display when there is no data to display.
+ * @prop {boolean} cfg.escape Whether the text of the suggestion items is escaped for HTML.
+ * @prop {boolean} cfg.forceSelection Whether one of the available suggestion items is forced to be preselected.
+ * @prop {boolean} cfg.grouping Whether suggestion items are grouped.
+ * @prop {boolean} cfg.itemtip Whether a tooltip is shown for the suggestion items.
+ * @prop {string} cfg.itemtipAtPosition Position of item corner relative to item tip.
+ * @prop {string} cfg.itemtipMyPosition Position of itemtip corner relative to item.
+ * @prop {number} cfg.minLength Minimum length before an autocomplete search is triggered.
+ * @prop {boolean} cfg.multiple When `true`, enables multiple selection.
+ * @prop {string} cfg.myPos Defines which position on the element being positioned to align with the target element.
+ * @prop {PrimeFaces.widget.AutoComplete.QueryEvent} cfg.queryEvent Event to initiate the the autocomplete search.
+ * @prop {PrimeFaces.widget.AutoComplete.QueryMode} cfg.queryMode Specifies query mode, whether autocomplete contacts
+ * the server.
+ * @prop {string} cfg.resultsMessage Hint text for screen readers to provide information about the search results.
+ * @prop {number} cfg.selectLimit Limits the number of simultaneously selected items. Default is unlimited.
+ * @prop {number} cfg.scrollHeight Height of the container with the suggestion items.
+ * @prop {boolean} cfg.unique Ensures uniqueness of the selected items.
  */
 PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
@@ -95,15 +173,27 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.status = this.jq.children('.ui-autocomplete-status');
     },
 
-    //@override
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     refresh: function(cfg) {
         this._super(cfg);
     },
 
+    /**
+     * Appends the overlay panel to the DOM.
+     * @private
+     */
     appendPanel: function() {
         PrimeFaces.utils.registerDynamicOverlay(this, this.panel, this.id + '_panel');
     },
 
+    /**
+     * Initializes the cache that stores the retrieved suggestions for a search term.
+     * @private
+     */
     initCache: function() {
         this.cache = {};
         var $this=this;
@@ -113,12 +203,17 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }, this.cfg.cacheTimeout);
     },
 
+    /**
+     * Clears the cache with the results of an autocomplete search.
+     * @private
+     */
     clearCache: function() {
         this.cache = {};
     },
 
     /**
      * Binds events for multiple selection mode
+     * @private
      */
     setupMultipleMode: function() {
         var $this = this;
@@ -152,6 +247,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Sets up all global event listeners for the overlay.
+     * @private
+     */
     bindStaticEvents: function() {
         var $this = this;
 
@@ -178,6 +277,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Sets up all event listeners for the dropdown menu.
+     * @private
+     */
     bindDropdownEvents: function() {
         var $this = this;
 
@@ -201,12 +304,20 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Disables the dropdown menu.
+     * @private
+     */
     disableDropdown: function() {
         if(this.dropdown.length) {
             this.dropdown.off().prop('disabled', true).addClass('ui-state-disabled');
         }
     },
 
+    /**
+     * Enables the dropdown menu.
+     * @private
+     */
     enableDropdown: function() {
         if(this.dropdown.length && this.dropdown.prop('disabled')) {
             this.bindDropdownEvents();
@@ -214,6 +325,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Sets up all keyboard related event listeners.
+     * @private
+     */
     bindKeyEvents: function() {
         var $this = this;
 
@@ -367,6 +482,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 		});
     },
 
+    /**
+     * Sets up all event listeners for mouse and click events.
+     * @private
+     */
     bindDynamicEvents: function() {
         var $this = this;
 
@@ -460,6 +579,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Callback for when a key event occurred.
+     * @private
+     * @param {JQuery.Event} e Key event that occurred.
+     */
     processKeyEvent: function(e) {
         var $this = this;
 
@@ -507,6 +631,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Shows the tooltip for the given suggestion item.
+     * @private
+     * @param {JQuery} item Item with a tooltip.
+     */
     showItemtip: function(item) {
         if(item.hasClass('ui-autocomplete-moretext')) {
             this.itemtip.hide();
@@ -549,6 +678,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Performs the search for the available suggestion items.
+     * @private
+     * @param {string} query Keyword for the search. 
+     */
     showSuggestions: function(query) {
         this.items = this.panel.find('.ui-autocomplete-item');
         this.items.attr('role', 'option');
@@ -616,6 +750,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Performs a search the same ways as if the user had opened the dropdown menu. Depending on the configured
+     * `dropdownMode`, performs the search either with an empty string or with the current value.
+     */
     searchWithDropdown: function() {
         this.isSearchWithDropdown = true;
         
@@ -625,6 +763,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.search('');
     },
 
+    /**
+     * Initiates a search with given value, that is, look for matching options and present the options that were found
+     * to the user.
+     * @param {string} query Keyword for the search. 
+     */
     search: function(query) {
         //allow empty string but not undefined or null
         if (!this.cfg.active || query === undefined || query === null) {
@@ -730,6 +873,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Shows the panel with the suggestions.
+     * @private
+     */
     show: function() {
         this.alignPanel();
 
@@ -739,6 +886,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.panel.show();
     },
 
+    /**
+     * Hides the panel with the suggestions.
+     * @private
+     */
     hide: function() {
         this.panel.hide();
         this.panel.css('height', 'auto');
@@ -748,6 +899,12 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Invokes the appropriate behavior for when a suggestion item was selected.
+     * @private
+     * @param {JQuery.Event} event The event that occurred.
+     * @param {string} itemValue Value of the selected item.
+     */
     invokeItemSelectBehavior: function(event, itemValue) {
         if(this.hasBehavior('itemSelect')) {
             var ext = {
@@ -760,6 +917,12 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Invokes the appropriate behavior when a suggestion item was unselected.
+     * @private
+     * @param {JQuery.Event} event The event that occurred.
+     * @param {string} itemValue Value of the unselected item.
+     */
     invokeItemUnselectBehavior: function(event, itemValue) {
         if(this.hasBehavior('itemUnselect')) {
             var ext = {
@@ -772,6 +935,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Invokes the appropriate behavior for when more text was selected.
+     * @private
+     */
     invokeMoreTextBehavior: function() {
         if(this.hasBehavior('moreText')) {
             var ext = {
@@ -784,6 +951,12 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Removes the given suggestion item.
+     * @private
+     * @param {JQuery.Event} event The event that occurred.
+     * @param {JQuery} item Suggestion item to remove.
+     */
     removeItem: function(event, item) {
         var itemValue = item.attr('data-token-value'),
         itemIndex = this.multiItemContainer.children('li.ui-autocomplete-token').index(item),
@@ -807,6 +980,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Sets up the event listener for the blur event to force a selection, when that feature is enabled.
+     * @private
+     */
     setupForceSelection: function() {
         this.currentItems = [this.input.val()];
         var $this = this;
@@ -828,6 +1005,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Disables the input field.
+     */
     disable: function() {
         this.input.addClass('ui-state-disabled').prop('disabled', true);
 
@@ -836,6 +1016,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Enables the input field.
+     */
     enable: function() {
         this.input.removeClass('ui-state-disabled').prop('disabled', false);
 
@@ -844,18 +1027,30 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Hides suggested items menu.
+     */
     close: function() {
         this.hide();
     },
 
+    /**
+     * Deactivates search behavior.
+     */
     deactivate: function() {
         this.active = false;
     },
 
+    /**
+     * Activates search behavior.
+     */
     activate: function() {
         this.active = true;
     },
 
+    /**
+     * Aligns (positions) the overlay panel that shows the found suggestions.
+     */
     alignPanel: function() {
         var panelWidth = null;
 
@@ -908,10 +1103,19 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Adds the given text to the ARIA status label element.
+     * @private
+     * @param {string} text Label text to display.
+     */
     displayAriaStatus: function(text) {
         this.status.html('<div>' + PrimeFaces.escapeHTML(text) + '</div>');
     },
 
+    /**
+     * Takes the available suggestion items and groups them. 
+     * @private
+     */
     groupItems: function() {
         var $this = this;
 
@@ -939,6 +1143,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Creates the grouped suggestion item for the given parameters.
+     * @private
+     * @param {string} group A group where to look for the item.
+     * @param {JQuery} container Container element of the group.
+     * @param {string} tooltip Optional tooltip for the group item.
+     * @return {JQuery} The newly created group item.
+     */
     getGroupItem: function(group, container, tooltip) {
         var element = null;
 
@@ -960,20 +1172,29 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         return element;
     },
 
+    /**
+     * Clears the set-timeout timer for the autocomplete search.
+     * @private
+     */
     deleteTimeout: function() {
         clearTimeout(this.timeout);
         this.timeout = null;
     },
 
+    /**
+     * Triggers the behavior for when the input was cleared.
+     * @private
+     */
     fireClearEvent: function() {
         this.callBehavior('clear');
     },
 
     /**
-     * Is the value matching a value in the list if ForceSelection = true.
-     * 
-     * @param value the value to check
-     * @param shouldFireClearEvent true if clear event should be fired
+     * Checks whether the given value is part of the available suggestion items.
+     * @param {string} value A value to check.
+     * @param {boolean} [shouldFireClearEvent] `true` if clear event should be fired.
+     * @return {boolean | undefined} Whether the given value matches a value in the list of available suggestion items;
+     * or `undefined` if {@link AutoCompleteCfg.forceSelection} is set to `false`.
      */
     isValid: function(value, shouldFireClearEvent) {
         if(!this.cfg.forceSelection) {
@@ -1007,6 +1228,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         return valid;
     },
     
+    /**
+     * Fetches the suggestion items for the current query from the server.
+     * @private
+     */
     fetchItems: function() {
         var $this = this;
         
@@ -1032,6 +1257,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.ajax.Request.handle(options);
     },
     
+    /**
+     * Adds the suggestions items in the given wrapper to the local cache of suggestion items.
+     * @private
+     * @param {JQuery} wrapper Wrapper element with the suggestions fetched from the server.
+     */
     setCache: function(wrapper) {
         var $this = this,
         items = wrapper.find('.ui-autocomplete-item'),
@@ -1055,6 +1285,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
+    /**
+     * Finds and sets the wrapper HTML snippets on this instance.
+     * @private
+     * @param {JQuery} wrapper Wrapper element with the suggestions fetched from the server.
+     */
     findWrapperTag: function(wrapper) {
         if (wrapper.is('ul')) {
             this.wrapperStartTag = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset">';

@@ -2,6 +2,10 @@
 
 Drag&Drop utilities of PrimeFaces consists of two components; Draggable and Droppable.
 
+[See the draggable widget in the JavaScript API Docs:](../jsdocs/classes/primefaces.widget.draggable.html)
+
+[See the droppable widget in the JavaScript API Docs:](../jsdocs/classes/primefaces.widget.droppable.html)
+
 ##  Draggable
 
 ### Info

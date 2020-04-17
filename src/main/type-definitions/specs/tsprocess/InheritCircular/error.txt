@@ -1,0 +1,3 @@
+Error: Could not sort type inheritance graph
+
+AssertionError [ERR_ASSERTION]: Node C2 forms circular dependency: C2 -> C3 -> C1 -> C2

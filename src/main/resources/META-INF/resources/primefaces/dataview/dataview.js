@@ -1,8 +1,34 @@
-/*
- * PrimeFaces DataView Widget
+/**
+ * __PrimeFaces DataView Widget__
+ * 
+ * DataView displays data in grid or list layout.
+ * 
+ * @typedef {"grid" | "list"} PrimeFaces.widget.DataView.Layout The layout mode the data view. `grid` displays the
+ * item in a grid with cards, `list` displays the items in a vertical list.
+ * 
+ * @prop {JQuery} buttons DOM elements of the buttons for switching the layout (grid or list).
+ * @prop {JQuery} content DOM element of the content container for the data grid.
+ * @prop {JQuery} header DOM element of the data view header. 
+ * @prop {JQuery} layoutOptions DOM element of the container with the layout switch buttons.
+ * @prop {PrimeFaces.widget.Paginator} paginator When pagination is enabled: The paginator widget instance used for
+ * paging.
+ * 
+ * @interface {PrimeFaces.widget.DataViewCfg} cfg The configuration for the {@link  DataView| DataView widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {string} cfg.formId ID of the form to use for AJAX requests.
+ * @prop {Partial<PrimeFaces.widget.PaginatorCfg>} cfg.paginator When pagination is enabled: The paginator configuration
+ * for the paginator.
  */
 PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
@@ -19,6 +45,10 @@ PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
         this.bindEvents();
     },
 
+    /**
+     * Initializes the paginator, called during widget initialization.
+     * @private
+     */
     setupPaginator: function() {
         var $this = this;
         this.cfg.paginator.paginate = function(newState) {
@@ -28,6 +58,10 @@ PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
         this.paginator = new PrimeFaces.widget.Paginator(this.cfg.paginator);
     },
 
+    /**
+     * Sets up all event listeners required by this widget.
+     * @private
+     */
     bindEvents: function () {
         var $this = this;
 
@@ -72,6 +106,16 @@ PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Switches this data view to the given layout (grid or list).
+     * 
+     * ```javascript
+     * const widget = PF("MyDataView");
+     * // Switch to grid layout
+     * widget.select(widget.buttons.eq(1));
+     * ```
+     * @param {JQuery} button One of the layout switch buttons (`.ui-button`).
+     */
     select: function(button) {
         this.buttons.filter('.ui-state-active').removeClass('ui-state-active ui-state-hover').children(':radio').prop('checked', false);
 
@@ -80,6 +124,11 @@ PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
         this.loadLayoutContent(button.children(':radio').val());
     },
 
+    /**
+     * Loads the content with the data items for the selected layout (grid or list).
+     * @private
+     * @param {PrimeFaces.widget.DataView.Layout} layout The current layout of this data view.
+     */
     loadLayoutContent: function(layout) {
         var $this = this,
         options = {
@@ -107,6 +156,11 @@ PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.ajax.Request.handle(options);
     },
 
+    /**
+     * Handles a pagination event by updating the data grid and invoking the appropriate behaviors.
+     * @private
+     * @param {PrimeFaces.widget.Paginator.PaginationState} newState The new pagination state to apply. 
+     */
     handlePagination: function(newState) {
         var $this = this,
         options = {
@@ -143,6 +197,12 @@ PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Retrieves the paginator widget used by this data grid for pagination. You can use this widget to switch to a
+     * different page programatically.
+     * @return {PrimeFaces.widget.Paginator | undefined} The paginator widget, or `undefined` when pagination is not
+     * enabled.
+     */
     getPaginator: function() {
         return this.paginator;
     }

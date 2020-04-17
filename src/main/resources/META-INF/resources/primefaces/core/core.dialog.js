@@ -1,9 +1,39 @@
 if (!PrimeFaces.dialog) {
 
+    /**
+     * The object with functionality related to working with dialogs and the dialog framework.
+     * @namespace
+     * 
+     * @interface {PrimeFaces.dialog.DialogHandlerCfg} DialogHandlerCfg Interface of the configuration object for a
+     * dialog of the dialog framework. Used by `PrimeFaces.dialog.DialogHandler.openDialog`.
+     * @prop {Partial<PrimeFaces.dialog.DialogHandlerCfgOptions>} DialogHandlerCfg.options The options for the dialog.
+     * @prop {string} DialogHandlerCfg.pfdlgcid PrimeFaces dialog client ID.
+     * @prop {string} DialogHandlerCfg.sourceComponentId ID of the dialog.
+     * @prop {string} DialogHandlerCfg.sourceWidgetVar Widget variable of the dialog.
+     * @prop {string} DialogHandlerCfg.url Source URL for the IFRAME element with the dialog.
+     *
+     * @interface {PrimeFaces.dialog.DialogHandlerCfgOptions} DialogHandlerCfgOptions Interface of the dialog
+     * configuration object for a dialog of the dialog framework. Used by `PrimeFaces.dialog.DialogHandlerCfg`. This is
+     * mainly just the `PrimeFaces.widget.DialogCfg`, but adds a few more properties.
+     * @extends {PrimeFaces.widget.DialogCfg} DialogHandlerCfgOptions
+     * @prop {number} DialogHandlerCfgOptions.contentHeight Height of the IFRAME in pixels.
+     * @prop {number} DialogHandlerCfgOptions.contentWidth Width of the IFRAME in pixels.
+     * @prop {string} DialogHandlerCfgOptions.headerElement ID of the header element of the dialog.
+     */
     PrimeFaces.dialog = {};
 
+    /**
+     * The interface of the object with all methods for working with dialogs and the dialog framework.
+     * @interface
+     * @constant {PrimeFaces.dialog.DialogHandler} . The object with all methods for dialogs and the dialog framework.
+     */
     PrimeFaces.dialog.DialogHandler = {
 
+        /**
+         * Opens the dialog as specified by the given configuration. When the dialog is dynamic, loads the content from
+         * the server.
+         * @param {PrimeFaces.dialog.DialogHandlerCfg} cfg Configuration of the dialog.
+         */
         openDialog: function(cfg) {
             var rootWindow = this.findRootWindow(),
             dialogId = cfg.sourceComponentId + '_dlg';
@@ -243,6 +273,10 @@ if (!PrimeFaces.dialog) {
             .attr('src', frameURL);
         },
 
+        /**
+         * Closes the dialog as specified by the given configuration.
+         * @param {PrimeFaces.dialog.DialogHandlerCfg} cfg Configuration of the dialog.
+         */
         closeDialog: function(cfg) {
             var rootWindow = this.findRootWindow(),
             dlgs = $(rootWindow.document.body).children('div.ui-dialog[data-pfdlgcid="' + $.escapeSelector(cfg.pfdlgcid) +'"]').not('[data-queuedforremoval]'),
@@ -296,6 +330,10 @@ if (!PrimeFaces.dialog) {
             dlgWidget.hide();
         },
 
+        /**
+         * Displays a message in the messages dialog.
+         * @param {string} msg Message to show.
+         */
         showMessageInDialog: function(msg) {
             if(!this.messageDialog) {
                 var messageDialogDOM = $('<div id="primefacesmessagedlg" class="ui-message-dialog ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container"/>')
@@ -325,6 +363,11 @@ if (!PrimeFaces.dialog) {
             this.messageDialog.show();
         },
 
+        /**
+         * Asks the user to confirm an action. Shows a confirmation dialog with the given message. Requires a
+         * `<p:confirmDialog>` to be available on the current page.
+         * @param {string} msg Message to show in the confirmation dialog.
+         */
         confirm: function(msg) {
             if(PrimeFaces.confirmDialog) {
                 PrimeFaces.confirmSource = (typeof(msg.source) === 'string') ? $(PrimeFaces.escapeClientId(msg.source)) : $(msg.source);
@@ -335,6 +378,11 @@ if (!PrimeFaces.dialog) {
             }
         },
 
+        /**
+         * Returns the current window instance. When inside an iframe, returns the window instance of the topmost
+         * document.
+         * @return {Window} The root window instance.
+         */
         findRootWindow: function() {
             // Note that the determination of the sourceFrames is tightly coupled to the same traversing logic, so keep both in sync
             var w = window;

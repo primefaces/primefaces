@@ -32,6 +32,10 @@
       coverpage: {
         '/': 'cover.md'
       },
+      noCompileLinks: [
+        '(\\.\\./)*jsdocs/.*', // jsdoc directory
+        '.*\.d\.ts*', // TypeScript declarations file
+      ],
       plugins: [
         function(hook, vm) {
           hook.ready(function () {

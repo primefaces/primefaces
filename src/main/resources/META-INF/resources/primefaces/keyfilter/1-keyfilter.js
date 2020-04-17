@@ -1,9 +1,33 @@
+/**
+ * __PrimeFaces KeyFilter Widget__
+ * 
+ * KeyFilter is used to filter keyboard input on specified input components.
+ * 
+ * @prop {JQuery} target The DOM element for the target input element to which this key filter is applied.
+ * @prop {string} value The current value of the input field.
+ * 
+ * @interface {PrimeFaces.widget.KeyFilterCfg} cfg The configuration for the {@link  KeyFilter| KeyFilter widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {RegExp} cfg.inputRegEx Defines the regular expression which should be used to test the complete input text
+ * content. The options `testFunction`, `regEx`, `inputRegEx`, and `mask` are mutually exclusive.
+ * @prop {keyof JQueryKeyfilter.DefaultMasks} cfg.mask Defines the predefined mask which should be used. The options
+ * `testFunction`, `regEx`, `inputRegEx`, and `mask` are mutually exclusive.
+ * @prop {boolean} cfg.preventPaste Whether the component also should prevent paste.
+ * @prop {RegExp} cfg.regEx Defines the regular expression which should be used for filtering the input. The options
+ * `testFunction`, `regEx`, `inputRegEx`, and `mask` are mutually exclusive.
+ * @prop {string} cfg.target The target input expression, defaults to the parent of this component.
+ * @prop {JQueryKeyfilter.TestFunction} cfg.testFunction An optional function which should be used for filtering. The
+ * options `testFunction`, `regEx`, `inputRegEx`, and `mask` are mutually exclusive.
+ */
 PrimeFaces.widget.KeyFilter = PrimeFaces.widget.BaseWidget.extend({
 
     /**
-     * Initializes the widget.
-     *
-     * @param {object} cfg The widget configuration.
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     init : function(cfg) {
         this._super(cfg);
@@ -19,10 +43,10 @@ PrimeFaces.widget.KeyFilter = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Applies the keyFilter to the given jQuery selector object.
+     * Applies the key filter to the given input or textarea element.
      *
-     * @param {object} input A jQuery selector object.
-     * @param {object} cfg The widget configuration.
+     * @param {JQuery} input A jQuery selector object.
+     * @param {TCfg} cfg The widget configuration.
      * @private
      */
     applyKeyFilter : function(input, cfg) {

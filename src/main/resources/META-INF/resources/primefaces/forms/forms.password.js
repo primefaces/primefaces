@@ -1,8 +1,32 @@
 /**
- * PrimeFaces Password
+ * __PrimeFaces Password Widget__
+ * 
+ * Password component is an extended version of standard inputSecret component with theme integration and strength
+ * indicator.
+ * 
+ * @prop {JQuery} panel The DOM element for the overlay panel with the hint regarding how strong the password is.
+ * @prop {JQuery} meter The DOM element for the gauge giving visual feedback regarding how strong the password is.
+ * @prop {JQuery} infoText The DOM element for the informational text regarding how strong the password is.
+ * 
+ * @interface {PrimeFaces.widget.PasswordCfg} cfg The configuration for the {@link  Password| Password widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {boolean} cfg.feedback Enables strength indicator.
+ * @prop {string} cfg.promptLabel Label of the password prompt.
+ * @prop {string} cfg.weakLabel Text of the hint when the password is judged to be weak.
+ * @prop {string} cfg.goodLabel Text of the hint when the password is judged to be good.
+ * @prop {string} cfg.strongLabel Text of the hint when the password is judged to be strong.
+ * @prop {boolean} cfg.inline Displays feedback inline rather than using a popup.
  */
 PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
@@ -15,6 +39,10 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Sets up the overlay panel informing the user about how good the password their typed is.
+     * @private
+     */
     setupFeedback: function() {
         var _self = this;
 
@@ -95,6 +123,14 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Computes a numerical score that estimates how strong the given password is. The returned value can range from `0`
+     * (very weak) to `128` (very strong). This test takes into account whether the password has got a certain minimal
+     * length and whether it contains characters from certain character classes.
+     * @param {string} password A password to check for its strength.
+     * @return {number} A value between `0` and `128` that indicates how good the password is, with `0` indicating a
+     * very weak password and `128` indicating a very strong password.
+     */
     testStrength: function(password) {
         // return a number between 0 and 100.
         var score = 0;
@@ -121,6 +157,15 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         return parseInt(score);
     },
 
+    /**
+     * Returns a normalized value between `0` and `1.5` that indicates how much bigger the first input x is compared
+     * to the other input y. `0` means that x is much smaller than `y`, a value of `1.5` mean that `x` is much larger
+     * than `y`.
+     * @private
+     * @param {number} x First input, must be a non-negative number.
+     * @param {number} y  Second input, must be a positive number
+     * @return {number} A value between `0` and `1.5` that indicates how big `x` is compared to `y`.
+     */
     normalize: function(x, y) {
         var diff = x - y;
 
@@ -132,6 +177,10 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Align the panel with the password strength indicator so that it is next to the password input field.
+     * @private
+     */
     align: function() {
         this.panel.css({
             left:'',
@@ -145,6 +194,9 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Brings up the panel with the password strength indicator.
+     */
     show: function() {
         if(!this.cfg.inline) {
             this.align();
@@ -156,6 +208,9 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Hides the panel with the password strength indicator.
+     */
     hide: function() {
         if(this.cfg.inline)
             this.panel.slideUp();

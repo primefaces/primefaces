@@ -1,6 +1,34 @@
-
+/**
+ * __PrimeFaces TriStateCheckbox Widget__
+ * 
+ * TriStateCheckbox adds a new state to a checkbox value.
+ * 
+ * @typedef PrimeFaces.widget.TriStateCheckbox.FixedMod A modulo operation with the result being in the range `[0,mod)`.
+ * @param {number} PrimeFaces.widget.TriStateCheckbox.FixedMod.number The divisor for the modulo operation.
+ * @param {number} PrimeFaces.widget.TriStateCheckbox.FixedMod.mod The dividend for the modulo operation.
+ * @return {number} PrimeFaces.widget.TriStateCheckbox.FixedMod The result of the module operation, in the range
+ * `[0,mod)]`.
+ * 
+ * @prop {JQuery} box The DOM element for the container with the label and the icon.
+ * @prop {boolean} disabled Whether this widget is initially disabled.
+ * @prop {PrimeFaces.widget.TriStateCheckbox.FixedMod} fixedMod A modulo operation with the result being in the range
+ * `[0,mod)`.
+ * @prop {JQuery} icon The DOM element for the icon showing the current state of this checkbox widget.
+ * @prop {JQuery} input The DOM element for the hidden input field storing the value of this widget.
+ * @prop {JQuery} itemLabel The DOM element for the label of the checkbox.
+ * 
+ * @interface {PrimeFaces.widget.TriStateCheckboxCfg} cfg The configuration for the {@link  TriStateCheckbox| TriStateCheckbox widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ */
 PrimeFaces.widget.TriStateCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init:function (cfg) {
         this._super(cfg);
 
@@ -79,6 +107,10 @@ PrimeFaces.widget.TriStateCheckbox = PrimeFaces.widget.BaseWidget.extend({
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
 
+    /**
+     * Toggles this tri state checkbox in the given direction. Moves between unchecked, half-checked, and fully-checked.
+     * @param {-1 | 1} direction `-1` to move backwards through the states, `+1` to move forward through the states 
+     */
     toggle:function (direction) {
         if (!this.disabled) {
             // default to switch to next state

@@ -1,0 +1,2 @@
+Error: [tagMissingNext] Found yield expression in method whose return value appears to be used, but no @next tag was specified in the doc comments
+at method foo (${PROJECT_BASEDIR}/src/main/type-definitions/specs/components/MethodReturnGeneratorMissingNext/input.js:10:18)

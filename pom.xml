@@ -72,6 +72,11 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jsdoc.included.modules>@fullcalendar,autonumeric,cropperjs,chart.js,googlemaps,jquery,jqueryui,jquery.cleditor,moment,moment-timezone,quill,raphael,vis-data,vis-timeline</jsdoc.included.modules>
+        <npm.token></npm.token>
+        <npm.username></npm.username>
+        <npm.password></npm.password>
+        <npm.email></npm.email>
     </properties>
 
     <dependencies>
@@ -262,6 +267,79 @@
     </dependencies>
 
     <build>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.github.eirslett</groupId>
+                    <artifactId>frontend-maven-plugin</artifactId>
+                    <version>1.9.1</version>
+                    <configuration>
+                        <installDirectory>${project.build.directory}</installDirectory>
+                        <nodeVersion>v13.12.0</nodeVersion>
+                        <npmVersion>6.14.4</npmVersion>
+                        <workingDirectory>${basedir}/src/main/type-definitions</workingDirectory>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>install node and npm</id>
+                            <goals>
+                                <goal>install-node-and-npm</goal>
+                            </goals>
+                            <phase>initialize</phase>
+                        </execution>
+                        <execution>
+                            <id>npm install</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>initialize</phase>
+                            <configuration>
+                                <arguments>install</arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>validate-tool</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>test</phase>
+                            <configuration>
+                                <arguments>run validate</arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>test-tool</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>test</phase>
+                            <configuration>
+                                <arguments>run test</arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>generate-type-declaration</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>prepare-package</phase>
+                        </execution>
+                        <execution>
+                            <id>publish-to-npm</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>deploy</phase>
+                            <configuration>
+                                <arguments>run npm-publish -- --major ${parsedVersion.majorVersion} --minor ${parsedVersion.minorVersion} --readme src/main/type-definitions/NPM.md --extrafiles LICENSE --prompt false --username ${npm.username} --password ${npm.password} --email ${npm.email} --token ${npm.token}</arguments>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>                
+            </plugins>
+        </pluginManagement>
+
         <defaultGoal>install</defaultGoal>
 
         <resources>
@@ -286,6 +364,31 @@
         </extensions>
 
         <plugins>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>src/main/type-definitions/node_modules</directory>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                  <execution>
+                    <id>parse-version</id>
+                    <goals>
+                      <goal>parse-version</goal>
+                    </goals>
+                  </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
@@ -752,6 +855,15 @@
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/signature/signature.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/signature/0-signature.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/signature/1-widget.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/timeline.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/0-timeline.min.js</include>
@@ -1024,6 +1136,48 @@
                 </plugins>
             </build>
         </profile>
+        <!-- Generates the JavaScript Api docs in the target directory -->
+        <!-- Use "-Djsdoc.skip.typedoc=true" if you only want to check and lint the declarations file -->
+        <profile>
+            <id>jsdoc</id>
+            <properties>
+                <jsdoc.skip.typedoc>false</jsdoc.skip.typedoc>
+            </properties>
+            <build>
+                <plugins>
+                    <!-- Write docs and *.d.ts file to the target dir -->
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>generate-type-declaration</id>
+                                <configuration>
+                                    <arguments>run generate-d-ts -- --outputDir target/type-declaration/ --includemodules ${jsdoc.included.modules} --skiptypedocgenerate ${jsdoc.skip.typedoc}</arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>jsdoc-publish</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>publish-to-npm</id>
+                                <phase>package</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
         <profile>
             <id>release</id>
             <build>
@@ -1116,6 +1270,23 @@
                                 <include>**/*.css</include>
                             </includes>
                         </configuration>
+                    </plugin>
+
+                    <!-- Write docs and *.d.ts file to the current documentation directory docs/jsdocs -->
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>generate-type-declaration</id>
+                                <configuration>
+                                    <arguments>run generate-d-ts -- --outputDir docs --includemodules ${jsdoc.included.modules}</arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>publish-to-npm</id>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>

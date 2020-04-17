@@ -962,6 +962,10 @@
             this.onOverlayHide();
         },
 
+        /**
+         * @override
+         * @protected
+         */
         _render: function () {
             if (this.options.styleClass) {
                 this.container.addClass(this.options.styleClass);

@@ -1,5 +1,30 @@
+/**
+ * __PrimeFaces MenuButton Widget__
+ * 
+ * MenuButton displays different commands in a popup menu.
+ * 
+ * @prop {JQuery} button The DOM element for the menu button.
+ * @prop {JQuery} menu The DOM element for the menu overlay panel.
+ * @prop {JQuery} menuitems The DOM elements for the individual menu entries.
+ * @prop {string} menuId Client ID of the menu overlay panel.
+ * 
+ * @interface {PrimeFaces.widget.MenuButtonCfg} cfg The configuration for the {@link  MenuButton| MenuButton widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {string} cfg.collision When the positioned element overflows the window in some direction, move it to an
+ * alternative position. Similar to my and at, this accepts a single value or a pair for horizontal/vertical,
+ * e.g., `flip`, `fit`, `fit flip`, `fit none`.
+ * @prop {boolean} cfg.disabled Whether this menu button is initially disabled.
+ */
 PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
@@ -15,11 +40,19 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
-    //@override
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     refresh: function(cfg) {
         this._super(cfg);
     },
 
+    /**
+     * Sets up all event listeners that are required by this widget.
+     * @private
+     */
     bindEvents: function() {
         var $this = this;
 
@@ -136,18 +169,27 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
         this.button.attr('role', 'button').attr('aria-disabled', this.button.is(':disabled'));
     },
 
+    /**
+     * Brings up the overlay menu with the menu items, as if the menu button were pressed.
+     */
     show: function() {
         this.alignPanel();
 
         this.menu.show();
     },
 
+    /**
+     * Hides the overlay menu with the menu items, as if the user clicked outside the menu.
+     */
     hide: function() {
         this.menuitems.filter('.ui-state-hover').removeClass('ui-state-hover');
 
         this.menu.fadeOut('fast');
     },
 
+    /**
+     * Align the overlay panel with the menu items so that it is positioned next to the menu button.
+     */
     alignPanel: function() {
         this.menu.css({left:'', top:'','z-index': ++PrimeFaces.zindex});
 
