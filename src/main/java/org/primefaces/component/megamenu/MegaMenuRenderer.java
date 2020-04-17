@@ -138,7 +138,6 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", style, null);
         }
         writer.writeAttribute("role", "none", null);
-        
 
         //title
         writer.startElement("a", null);
