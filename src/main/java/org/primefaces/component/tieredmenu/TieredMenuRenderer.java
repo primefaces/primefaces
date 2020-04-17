@@ -158,6 +158,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
 
         //title
         writer.startElement("a", null);
+        writer.writeAttribute("role", "menuitem", null);
         writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("tabindex", "-1", null);
