@@ -81,11 +81,11 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        writer.writeAttribute("role", "menubar", null);
 
         encodeKeyboardTarget(context, menu);
 
         writer.startElement("ul", null);
+        writer.writeAttribute("role", "menubar", null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
 
         if (menu.getElementsCount() > 0) {
@@ -95,7 +95,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         if (ComponentUtils.shouldRenderFacet(optionsFacet)) {
             writer.startElement("li", null);
             writer.writeAttribute("class", Menu.OPTIONS_CLASS, null);
-            writer.writeAttribute("role", "menuitem", null);
+            writer.writeAttribute("role", "none", null);
             optionsFacet.encodeAll(context);
             writer.endElement("li");
         }
@@ -118,7 +118,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
 
                     writer.startElement("li", null);
                     writer.writeAttribute("class", containerStyleClass, null);
-                    writer.writeAttribute("role", "menuitem", null);
+                    writer.writeAttribute("role", "none", null);
                     if (containerStyle != null) {
                         writer.writeAttribute("style", containerStyle, null);
                     }
@@ -139,8 +139,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
                     if (style != null) {
                         writer.writeAttribute("style", style, null);
                     }
-                    writer.writeAttribute("role", "menuitem", null);
-                    writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
+                    writer.writeAttribute("role", "none", null);
                     encodeSubmenu(context, menu, submenu);
                     writer.endElement("li");
                 }
@@ -159,6 +158,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
 
         //title
         writer.startElement("a", null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("tabindex", "-1", null);
 

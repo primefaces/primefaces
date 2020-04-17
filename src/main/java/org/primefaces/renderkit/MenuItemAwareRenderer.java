@@ -152,6 +152,7 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
 
         //title
         writer.startElement("li", null);
+        writer.writeAttribute("role", "none", null);
         writer.writeAttribute("class", styleClass, null);
         if (style != null) {
             writer.writeAttribute("style", style, null);
