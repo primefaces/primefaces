@@ -23,7 +23,7 @@ const DefaultCliArgs = {
         referenced: [Paths.PrimeFacesModuleDeclarationFile],
     },
     dryRun: "",
-    excludedPackageJsonFields: ["devDependencies", "scripts"],
+    excludedPackageJsonFields: ["devDependencies", "jsdocs", "scripts"],
     extraFiles: [],
     packageJson: Paths.PackageJsonFile,
     readme: undefined,
@@ -125,7 +125,7 @@ async function parseCliArgs() {
                     console.log(" (all paths can also be absolute)")
                     console.log(` -b`);
                     console.log(` --rootdir`);
-                    console.log(`     Root dir to which other pats are relative to.`);
+                    console.log(`     Root dir to which other paths are relative to.`);
                     console.log(` -j`);
                     console.log(` --packagejson`);
                     console.log(`     package.json file to use, relative to the project root directory.`);

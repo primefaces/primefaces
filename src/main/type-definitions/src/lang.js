@@ -396,12 +396,20 @@ function parseJson(data) {
  */
 function parseJsonObject(data) {
     const parsed = parseJson(data);
-    if (typeof parsed === "object" && parsed !== null && !Array.isArray(parsed)) {
+    if (isJsonObject(parsed)) {
         return parsed;
     }
     else {
         throw new Error("Given data is not a valid JSON object.");
     }
+}
+
+/**
+ * @param {Json | undefined} json
+ * @return {json is JsonObject}
+ */
+function isJsonObject(json) {
+    return json !== undefined && typeof json === "object" && json !== null && !Array.isArray(json);
 }
 
 /**
@@ -499,6 +507,7 @@ module.exports = {
     entriesToObject,
     indentLines,
     isBlank,
+    isJsonObject,
     isEmpty,
     isNotBlank,
     isNotEmpty,

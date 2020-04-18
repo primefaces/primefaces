@@ -77,7 +77,7 @@ async function readDir(path) {
 /**
  * Checks whether the path is an existing file or directory.
  * @param {string} path Path to check.
- * @return {Promise<{exists: true, type: "file" | "dir"} | {exists: boolean}>} Whether the path is an existing file or
+ * @return {Promise<{exists: true, type: "file" | "dir"} | {exists: false}>} Whether the path is an existing file or
  * directory.
  */
 async function isExistingFileOrDir(path) {
@@ -125,7 +125,7 @@ async function deleteFile(path) {
 
 /**
  * Checks if two paths point two the same file or directory. Handles UNIX and Windows path separators. Does not check
- * if the file or directiory actually exists.
+ * if the file or directory actually exists.
  * @param {string} pathLhs First path to check
  * @param {string} pathRhs Second path to check 
  * @param {string} root Optional root path for resolving relative paths.
@@ -136,6 +136,26 @@ function arePathsEqual(pathLhs, pathRhs, root = "") {
     return lhs === rhs;
 }
 
+/**
+ * Resolves the given sub paths against the root path. If the sub path is already absolute, the root path is not used.
+ * @param {string} rootPath 
+ * @param {string} subPath 
+ * @param  {string[]} morePaths 
+ * @return {string}
+ */
+function resolvePath(rootPath, subPath, ...morePaths) {
+    return path.resolve(...[rootPath, subPath, ...morePaths]);
+}
+
+/**
+ * Makes the given path absolute, relative to the current directory.
+ * @param {string} somePath
+ * @return {string}
+ */
+function toAbsolutePath(somePath) {
+    return path.resolve(somePath);
+}
+
 module.exports = {
     arePathsEqual,
     deleteFile,
@@ -143,6 +163,8 @@ module.exports = {
     mkDirRecursive,
     readDir,
     readFileUtf8,
+    resolvePath,
+    toAbsolutePath,
     withTemporaryFileOnDisk,
     writeFileUtf8,
 };
