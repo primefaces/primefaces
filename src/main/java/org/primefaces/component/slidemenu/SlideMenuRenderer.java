@@ -31,6 +31,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class SlideMenuRenderer extends TieredMenuRenderer {
@@ -66,7 +67,7 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        writer.writeAttribute("role", "menu", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
 
         //wrapper
         writer.startElement("div", menu);

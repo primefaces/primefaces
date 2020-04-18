@@ -56,7 +56,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute("role", "menu", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
         if (breadCrumb.getStyle() != null) {
             writer.writeAttribute("style", breadCrumb.getStyle(), null);
         }
@@ -78,7 +78,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
                     }
 
                     writer.startElement("li", null);
-                    writer.writeAttribute("role", "menuitem", null);
+                    writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
 
                     if (item.isDisabled() || (breadCrumb.isLastItemDisabled() && i + 1 == elementCount)) {
                         encodeDisabledMenuItem(context, item);
@@ -95,7 +95,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
             if (ComponentUtils.shouldRenderFacet(optionsFacet)) {
                 writer.startElement("li", null);
                 writer.writeAttribute("class", BreadCrumb.OPTIONS_CLASS, null);
-                writer.writeAttribute("role", "menuitem", null);
+                writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
                 optionsFacet.encodeAll(context);
                 writer.endElement("li");
             }

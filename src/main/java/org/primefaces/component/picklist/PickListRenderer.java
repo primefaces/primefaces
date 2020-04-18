@@ -241,7 +241,7 @@ public class PickListRenderer extends InputRenderer {
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute("role", "menu", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
 
         encodeOptions(context, pickList, model);
 
@@ -284,11 +284,11 @@ public class PickListRenderer extends InputRenderer {
             writer.writeAttribute("class", itemClass, null);
             writer.writeAttribute("data-item-value", itemValue, null);
             writer.writeAttribute("data-item-label", itemLabel, null);
-            writer.writeAttribute("role", "menuitem", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
 
             if (pickList.getChildCount() > 0) {
                 writer.startElement("table", null);
-                writer.writeAttribute("role", "presentation", null);
+                writer.writeAttribute(HTML.ARIA_ROLE, "presentation", null);
 
                 writer.startElement("tbody", null);
                 writer.startElement("tr", null);
@@ -387,7 +387,7 @@ public class PickListRenderer extends InputRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId + "_ariaRegion", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
-        writer.writeAttribute("role", "region", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, "region", null);
         writer.writeAttribute(HTML.ARIA_LIVE, "polite", null);
         writer.writeAttribute(HTML.ARIA_ATOMIC, "true", null);
         writer.endElement("div");

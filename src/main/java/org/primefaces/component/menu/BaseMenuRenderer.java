@@ -73,7 +73,7 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
 
         writer.startElement("a", null);
         writer.writeAttribute("tabindex", tabindex, null);
-        writer.writeAttribute("role", "menuitem", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
         if (shouldRenderId(menuitem)) {
             writer.writeAttribute("id", menuitem.getClientId(), null);
         }

@@ -68,7 +68,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         String defaultStyleClass = menu.isOverlay() ? TieredMenu.DYNAMIC_CONTAINER_CLASS : TieredMenu.STATIC_CONTAINER_CLASS;
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 
-        encodeMenu(context, menu, style, styleClass, "menu");
+        encodeMenu(context, menu, style, styleClass, HTML.ARIA_ROLE_MENU);
     }
 
     protected void encodeMenu(FacesContext context, AbstractMenu menu, String style, String styleClass, String role) throws IOException {
@@ -85,7 +85,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         encodeKeyboardTarget(context, menu);
 
         writer.startElement("ul", null);
-        writer.writeAttribute("role", "menubar", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUBAR, null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
 
         if (menu.getElementsCount() > 0) {
@@ -95,7 +95,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         if (ComponentUtils.shouldRenderFacet(optionsFacet)) {
             writer.startElement("li", null);
             writer.writeAttribute("class", Menu.OPTIONS_CLASS, null);
-            writer.writeAttribute("role", "none", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
             optionsFacet.encodeAll(context);
             writer.endElement("li");
         }
@@ -118,7 +118,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
 
                     writer.startElement("li", null);
                     writer.writeAttribute("class", containerStyleClass, null);
-                    writer.writeAttribute("role", "none", null);
+                    writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
                     if (containerStyle != null) {
                         writer.writeAttribute("style", containerStyle, null);
                     }
@@ -139,7 +139,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
                     if (style != null) {
                         writer.writeAttribute("style", style, null);
                     }
-                    writer.writeAttribute("role", "none", null);
+                    writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
                     encodeSubmenu(context, menu, submenu);
                     writer.endElement("li");
                 }
@@ -158,7 +158,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
 
         //title
         writer.startElement("a", null);
-        writer.writeAttribute("role", "menuitem", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
         writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("tabindex", "-1", null);
@@ -196,7 +196,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
             if (submenu.getElementsCount() > 0) {
                 writer.startElement("ul", null);
                 writer.writeAttribute("class", Menu.TIERED_CHILD_SUBMENU_CLASS, null);
-                writer.writeAttribute("role", "menu", null);
+                writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
                 encodeElements(context, menu, submenu.getElements());
                 writer.endElement("ul");
             }
