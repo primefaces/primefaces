@@ -1018,6 +1018,14 @@
         },
 
         /**
+         * Logs the current PrimeFaces and jQuery version to console.
+         */
+        version: function() {
+            var version = 'PrimeFaces ' + PrimeFaces.VERSION + ' (jQuery ' + jQuery.fn.jquery + ')';
+            console.log(version);
+        },
+
+        /**
          * A tracker for the current z-index, used for example when creating multiple modal dialogs.
          * @type {number}
          */

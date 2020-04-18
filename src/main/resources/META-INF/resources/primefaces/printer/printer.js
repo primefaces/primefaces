@@ -39,7 +39,7 @@
         try {
             jqObj = jQueryCloneWithSelectAndTextAreaValues(string);
         } catch (e) {
-            jqObj = $("<span />")
+            jqObj = $("<span></span>")
                 .html(string);
         }
         return jqObj;

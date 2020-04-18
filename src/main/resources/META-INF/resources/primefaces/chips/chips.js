@@ -109,7 +109,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
         if(value && value.trim().length && (!this.cfg.max||this.cfg.max > this.hinput.children('option').length)) {
             var escapedValue = PrimeFaces.escapeHTML(value);
             var itemDisplayMarkup = '<li class="ui-chips-token ui-state-active ui-corner-all">';
-            itemDisplayMarkup += '<span class="ui-chips-token-icon ui-icon ui-icon-close" />';
+            itemDisplayMarkup += '<span class="ui-chips-token-icon ui-icon ui-icon-close"></span>';
             itemDisplayMarkup += '<span class="ui-chips-token-label">' + escapedValue + '</span></li>';
 
             this.inputContainer.before(itemDisplayMarkup);
