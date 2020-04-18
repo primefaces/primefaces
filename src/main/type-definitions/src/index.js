@@ -1,8 +1,11 @@
 //@ts-check
 
-const { main, parseCliArgs } = require("./cli");
+const { main, readArguments } = require("./cli");
 
-main(parseCliArgs()).catch(e => {
-    console.error(e);
-    process.exit(1);
-});
+Promise.resolve(void 0)
+    .then(readArguments)
+    .then(main)
+    .catch(e => {
+        console.error(e);
+        process.exit(1);
+    });

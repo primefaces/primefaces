@@ -1,6 +1,6 @@
 //@ts-check
 
-const { extname, join, resolve } = require("path");
+const { dirname, extname } = require("path");
 
 const { parseJs } = require("./acorn-util");
 const { aggregateDocumentable } = require("./aggregate-documentable");
@@ -12,8 +12,8 @@ const { documentFunction } = require("./document-function");
 const { documentObject } = require("./document-object");
 const { createDefaultSeveritySettings, getSortedSeveritySettingKeys, isSeverityLevel, isSeveritySetting, Level } = require("./error-types");
 const { createInclusionHandler } = require("./inclusion-handler");
-const { isNotEmpty, splitLines } = require("./lang");
-const { mkDirRecursive, readDir, readFileUtf8, writeFileUtf8 } = require("./lang-fs");
+const { isJsonObject, isNotUndefined, isNotEmpty, parseJsonObject, splitLines } = require("./lang");
+const { isExistingFileOrDir, mkDirRecursive, readDir, readFileUtf8, resolvePath, writeFileUtf8 } = require("./lang-fs");
 const { classifyDeclarationFile } = require("./ts-classify-declaration-file");
 const { postprocessDeclarationFile } = require("./ts-postprocess");
 const { createDefaultHooks } = require("./ts-postprocess-defaulthooks");
@@ -22,12 +22,14 @@ const { generateTypedocs } = require("./typedoc");
 
 /** @type {CliArgs} */
 const DefaultCliArgs = {
+    declarationOutputDir: Paths.TargetMainDir,
     exclusionTags: ["ignore", "exclude", "hidden"],
     includeModules: [],
     inputDir: Paths.ComponentsMainDir,
-    outputDir: Paths.TargetMainDir,
     outputFilename: Names.PrimeFacesDeclaration,
+    packageJson: Paths.PackageJsonFile,
     moduleOutputFilename: Names.PrimeFacesModuleDeclaration,
+    rootDir: Paths.ProjectRootDir,
     severitySettings: {},
     skipEsLint: false,
     skipPostProcess: false,
@@ -66,10 +68,10 @@ async function* listComponents(componentPath) {
     const blacklist = await readBlacklist();
     const componentDirs = await readDir(componentPath);
     for (const componentDir of componentDirs.filter(x => x.isDirectory())) {
-        const componentFiles = await readDir(join(componentPath, componentDir.name));
+        const componentFiles = await readDir(resolvePath(componentPath, componentDir.name));
         yield {
             name: componentDir.name,
-            path: join(componentPath, componentDir.name),
+            path: resolvePath(componentPath, componentDir.name),
             typedefFiles: componentFiles
                 .filter(x => x.isFile())
                 .filter(x => x.name.endsWith(".d.ts"))
@@ -84,11 +86,77 @@ async function* listComponents(componentPath) {
 }
 
 /**
+ * Resolves the paths in the args against the given root dir.
+ * @param {string} root Root path against which to resolve. 
+ * @param {Partial<CliArgs>} args Arguments to resolve. 
+ * @return {Partial<CliArgs>} A copy of the args, with the paths resolved.
+ */
+function resolveArgsPaths(root, args) {
+    if (root) {
+        const copy = Object.assign({}, args);
+        if (copy.inputDir) {
+            copy.inputDir = resolvePath(root, copy.inputDir);
+        }
+        if (copy.declarationOutputDir) {
+            copy.declarationOutputDir = resolvePath(root, copy.declarationOutputDir);
+        }
+        if (copy.packageJson) {
+            copy.packageJson = resolvePath(root, copy.packageJson);
+        }
+        if (copy.typedocOutputDir) {
+            copy.typedocOutputDir = resolvePath(root, copy.typedocOutputDir);
+        }
+        return copy;
+    }
+    else {
+        return args;
+    }
+}
+
+/**
+ * Reads the the arguments from the package JSON file, if it exists.
+ * @param {string} packageJson 
+ * @return {Promise<Partial<CliArgs>>}
+ */
+async function parsePackageArgs(packageJson) {
+    /** @type {Partial<CliArgs>} */
+    const result = {};
+    const stats = await isExistingFileOrDir(packageJson);
+    if (packageJson && stats.exists === true && stats.type === "file") {
+        const json = await readFileUtf8(packageJson);
+        const parsed = parseJsonObject(json);
+        if (isJsonObject(parsed.jsdocs)) {
+            delete parsed.jsdocs.packageJson;
+            delete parsed.jsdocs.rootDir;
+            Object.assign(result, parsed.jsdocs);
+        }
+        if (result.includeModules === undefined && isJsonObject(parsed.dependencies)) {
+            const modules = Object.keys(parsed.dependencies)
+                .map(dependency => {
+                    const [main, ...sub] = dependency.split("/");
+                    if (main === "@types") {
+                        return sub.join("/");
+                    }
+                    else {
+                        return main;
+                    }
+                })
+                .filter(isNotUndefined);
+            if (modules.length > 0) {
+                result.includeModules = [...new Set(modules)].sort();
+            }
+        }
+    }
+    return result;
+}
+
+/**
  * Simple parser for CLI arguments. Throws an error in case an unknown option is passed.
- * @return {CliArgs}
+ * @return {Partial<CliArgs>}
  */
 function parseCliArgs() {
-    const result = Object.assign({}, DefaultCliArgs);
+    /** @type {Partial<CliArgs>} */
+    const result = {};
     const stack = process.argv.slice(2).reverse();
     while (stack.length > 0) {
         const arg = stack.pop();
@@ -96,44 +164,47 @@ function parseCliArgs() {
             switch (arg.toLowerCase()) {
                 case "-h":
                 case "--help":
-                    console.log(`Usage: ${process.argv[0]} ${process.argv[1]} -- --outputDir <doc-out-dir>`)
+                    console.log(`Usage: ${process.argv[0]} ${process.argv[1]} -- --packagejson <path-to-package-json>`)
                     console.log(`Options:`);
+                    console.log(` -p`);
+                    console.log(` --packageJson`);
+                    console.log(`     Specifies the path to a package.json file to use. This package.json may contain a field "jsdocs" with these settings (camel case). Paths in the 'package.json' are relative to that file. Argument specified on the command line take precedence over arguments in the 'package.json'.`);
                     console.log(` -i`);
-                    console.log(` --inputdir`);
+                    console.log(` --inputDir`);
                     console.log(`     Specifies the main input directory with the individual JavaScript components.`);
                     console.log(`     Defaults to '../../resources/META-INF/resources/primefaces'`);
                     console.log(` -o`);
-                    console.log(` --outputdir`);
+                    console.log(` --declarationOutputDir`);
                     console.log(`     Specifies the output directory for the generated *.d.ts declaration file.`);
                     console.log(`     Defaults to ../../../../target/generated-resources/type-definitions`);
                     console.log(` -f`);
-                    console.log(` --outputfilename`);
+                    console.log(` --outputFileName`);
                     console.log(`     Specifies the filename for the generated *.d.ts declaration file.`);
                     console.log(`     Default to 'PrimeFaces.d.ts'`);
                     console.log(` -n`);
-                    console.log(` --moduleoutputfilename`);
+                    console.log(` --moduleOutputFilename`);
                     console.log(`     Specifies the filename for the generated *.module.d.ts declaration file.`);
                     console.log(`     Default to 'PrimeFaces-module.d.ts'`);
                     console.log(` -g`);
-                    console.log(` --skiptypedocgenerate`);
+                    console.log(` --skipTypedocGenerate`);
                     console.log(`     If set to true, the typedoc documentation HTML files are not generated.`);
                     console.log(` -s`);
-                    console.log(` --skipeslint`);
+                    console.log(` --skipEsLint`);
                     console.log(`     If set to true, the linter is not run on the generated *.d.ts declaration file.`);
                     console.log(` -t`);
-                    console.log(` --typedocoutputdir`);
+                    console.log(` --typedocOutputDir`);
                     console.log(`     Specifies the directory for the generated typedoc HTML files`);
                     console.log(` -v`);
                     console.log(` --verbose`);
                     console.log(`     Enables more verbose output`);
                     console.log(` -e`);
-                    console.log(` --exclusiontags`);
+                    console.log(` --exclusionTags`);
                     console.log(`     Comma separated list of tags in a doc comment that cause a constant, function, or class to be skipped and not documented`);
                     console.log(`     Default to 'internal,ignore,exclude'`);
                     console.log(` -m`);
-                    console.log(` --includemodules`);
+                    console.log(` --includeModules`);
                     console.log(`     Comma separated list of node modules to include in the generated typedoc files`);
-                    console.log(`     Default to no additional modules`);
+                    console.log(`     Default to no additional modules; or, if a 'package.json' is defined, the "dependencies" of that 'package.json'`);
                     console.log(` -l`);
                     console.log(` --level`);
                     console.log(`     Specifies how severe a type of error is considered, in the format '<error-type>=<level>'. May be specified multiple times.`);
@@ -141,15 +212,18 @@ function parseCliArgs() {
                     console.log(` --ignore`);
                     console.log(`     Comma separated list of errors that are ignored and do not make the build fail`);
                     console.log(`     Default to none`);
+                    console.log(``);
                     console.log(`     Available error types are: ${getSortedSeveritySettingKeys()}`)
+                    console.log(``);
+                    console.log(`The 'level' option is not available when specifying the options via a 'package.json' file. Instead, use "severitySettings". It must be an object with the key being the name of the severity setting and the value being the severity level, such as '{"tagMissingParam": "error"}'.`);
                     process.exit(0);
                 case "-i":
                 case "--inputdir":
                     result.inputDir = stack.pop() || "";
                     break;
                 case "-o":
-                case "--outputdir":
-                    result.outputDir = stack.pop() || "";
+                case "--declarationoutputdir":
+                    result.declarationOutputDir = stack.pop() || "";
                     break;
                 case "-f":
                 case "--outputfilename":
@@ -162,6 +236,10 @@ function parseCliArgs() {
                 case "-g":
                 case "--skiptypedocgenerate":
                     result.skipTypedocGenerate = stack.pop() === "true";
+                    break;
+                case "-p":
+                case "--packagejson":
+                    result.packageJson = stack.pop() || "";
                     break;
                 case "-s":
                 case "--skipeslint":
@@ -199,6 +277,7 @@ function parseCliArgs() {
                         .split(",")
                         .map(x => x.trim())
                         .filter(isSeveritySetting);
+                    result.severitySettings = result.severitySettings || {};
                     for (const settingToIgnore of settingsToIgnore) {
                         if (settingToIgnore in result.severitySettings) {
                             throw new Error("Level for severity setting '" + settingToIgnore + "' was specified twice");
@@ -216,10 +295,11 @@ function parseCliArgs() {
                     if (!isSeverityLevel(level)) {
                         throw new Error("Invalid severity level '" + level + "'");
                     }
-                    else if (setting in result.severitySettings) {
+                    else if (result.severitySettings && setting in result.severitySettings) {
                         throw new Error("Level for severity setting '" + setting + "' was specified twice");
                     }
                     else {
+                        result.severitySettings = result.severitySettings || {};
                         result.severitySettings[setting] = level;
                     }
                     break;
@@ -231,12 +311,35 @@ function parseCliArgs() {
             }
         }
     }
-    result.outputDir = resolve(Paths.ProjectRootDir, result.outputDir);
-    if (result.typedocOutputDir) {
-        result.typedocOutputDir = resolve(Paths.ProjectRootDir, result.typedocOutputDir);
-    }
-    console.log("Parsed CLI arguments:", JSON.stringify(result));
     return result;
+}
+
+/**
+ * Reads the arguments from the package.json and CLI, merges them and return the result.
+ * @return {Promise<CliArgs>}
+ */
+async function readArguments() {
+    const cliArgs = parseCliArgs();
+
+    const rootDir = cliArgs.rootDir !== undefined ? cliArgs.rootDir : DefaultCliArgs.rootDir;
+
+    const resolvedCliArgs = resolveArgsPaths(rootDir, cliArgs);
+
+    const packageJson = resolvedCliArgs.packageJson !== undefined ? resolvedCliArgs.packageJson : DefaultCliArgs.packageJson;
+
+    const packageArgs = await parsePackageArgs(packageJson);
+
+    const resolvedPackageArgs = resolveArgsPaths(packageJson ? dirname(packageJson) : "", packageArgs);
+
+    const mergedArgs = Object.assign({}, DefaultCliArgs, resolvedPackageArgs, resolvedCliArgs);
+
+    console.log("Root dir:", rootDir);
+    console.log("Package JSON dir:", packageJson);
+    //console.debug("Parsed CLI arguments:", JSON.stringify(resolvedCliArgs));
+    //console.debug("Parsed package arguments:", JSON.stringify(resolvedPackageArgs));
+    console.log("Final arguments:", JSON.stringify(mergedArgs));
+
+    return mergedArgs;
 }
 
 /**
@@ -245,7 +348,7 @@ function parseCliArgs() {
  */
 async function* readTypedefFiles(component) {
     for (const file of component.typedefFiles.sort()) {
-        const sourceFile = join(component.path, file);
+        const sourceFile = resolvePath(component.path, file);
         const source = await readFileUtf8(sourceFile);
         const type = classifyDeclarationFile(source);
         yield { source, type };
@@ -258,10 +361,10 @@ async function* readTypedefFiles(component) {
  * @return {Promise<TypeDeclarationBundleFiles>} The path to the written file.
  */
 async function writeOutput(bundle, cliArgs) {
-    await mkDirRecursive(cliArgs.outputDir);
+    await mkDirRecursive(cliArgs.declarationOutputDir);
 
-    const outputFileAmbient = resolve(join(cliArgs.outputDir, cliArgs.outputFilename));
-    const outputFileModule = resolve(join(cliArgs.outputDir, cliArgs.moduleOutputFilename));
+    const outputFileAmbient = resolvePath(cliArgs.declarationOutputDir, cliArgs.outputFilename);
+    const outputFileModule = resolvePath(cliArgs.declarationOutputDir, cliArgs.moduleOutputFilename);
 
     console.log("Writing ambient output file to ", outputFileAmbient);
     console.log("Writing module output file to ", outputFileModule);
@@ -325,7 +428,7 @@ async function main(cliArgs) {
 
             // Document constants (const x = ...)
             for (const constantDefinition of documentable.constants) {
-                logVerbose(cliArgs, "    -> Processing constant defintion", constantDefinition.name);
+                logVerbose(cliArgs, "    -> Processing constant definition", constantDefinition.name);
                 const moreLines = documentConstant(constantDefinition, severitySettings);
                 bundle.ambient.push(...moreLines);
                 bundle.ambient.push("");
@@ -333,7 +436,7 @@ async function main(cliArgs) {
 
             // Document functions (function foo() {...})
             for (const fnDefinition of documentable.functions) {
-                logVerbose(cliArgs, "    -> Processing function defintion", fnDefinition.name);
+                logVerbose(cliArgs, "    -> Processing function definition", fnDefinition.name);
                 const moreLines = documentFunction(fnDefinition, severitySettings);
                 bundle.ambient.push(...moreLines);
                 bundle.ambient.push("");
@@ -341,7 +444,7 @@ async function main(cliArgs) {
 
             // Document objects and types (class A { ... }, const x = { ... })
             for (const objectDefinition of documentable.objects) {
-                logVerbose(cliArgs, "    -> Processing object defintion", objectDefinition.name);
+                logVerbose(cliArgs, "    -> Processing object definition", objectDefinition.name);
                 const moreLines = documentObject(objectDefinition, program, inclusionHandler, severitySettings);
                 bundle.ambient.push(...moreLines);
                 bundle.ambient.push("");
@@ -389,5 +492,5 @@ async function main(cliArgs) {
 
 module.exports = {
     main,
-    parseCliArgs,
+    readArguments,
 };

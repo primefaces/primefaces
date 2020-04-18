@@ -72,7 +72,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jsdoc.included.modules>@fullcalendar,autonumeric,cropperjs,chart.js,googlemaps,jquery,jqueryui,jquery.cleditor,moment,moment-timezone,quill,raphael,vis-data,vis-timeline</jsdoc.included.modules>
         <npm.token></npm.token>
         <npm.username></npm.username>
         <npm.password></npm.password>
@@ -276,7 +275,7 @@
                     <version>1.9.1</version>
                     <configuration>
                         <installDirectory>${project.build.directory}</installDirectory>
-                        <nodeVersion>v13.12.0</nodeVersion>
+                        <nodeVersion>v13.13.0</nodeVersion>
                         <npmVersion>6.14.4</npmVersion>
                         <workingDirectory>${basedir}/src/main/type-definitions</workingDirectory>
                     </configuration>
@@ -324,6 +323,9 @@
                                 <goal>npm</goal>
                             </goals>
                             <phase>prepare-package</phase>
+                            <configuration>
+                                <arguments>run generate-d-ts -- --packagejson src/main/type-definitions/package.json</arguments>
+                            </configuration>
                         </execution>
                         <execution>
                             <id>publish-to-npm</id>
@@ -1153,7 +1155,7 @@
                             <execution>
                                 <id>generate-type-declaration</id>
                                 <configuration>
-                                    <arguments>run generate-d-ts -- --outputDir target/type-declaration/ --includemodules ${jsdoc.included.modules} --skiptypedocgenerate ${jsdoc.skip.typedoc}</arguments>
+                                    <arguments>run generate-d-ts -- --packagejson src/main/type-definitions/package.json --declarationoutputdir target/type-declaration/ --typedocoutputdir target/type-declaration/jsdocs --skiptypedocgenerate ${jsdoc.skip.typedoc}</arguments>
                                 </configuration>
                             </execution>
                         </executions>
@@ -1279,9 +1281,6 @@
                         <executions>
                             <execution>
                                 <id>generate-type-declaration</id>
-                                <configuration>
-                                    <arguments>run generate-d-ts -- --outputDir docs --includemodules ${jsdoc.included.modules}</arguments>
-                                </configuration>
                             </execution>
                             <execution>
                                 <id>publish-to-npm</id>

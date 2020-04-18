@@ -20,7 +20,13 @@
         "strictBindCallApply": true,
         "strictFunctionTypes": true,
         "strictNullChecks": true,
-        "strictPropertyInitialization": true
+        "strictPropertyInitialization": true,
+        "baseUrl": ".",
+        "paths": {
+            "acorn-walk": [
+                "src/acorn-walk/index.d.ts"
+            ]
+        },
     },
     "include": [
         "src/**/*",

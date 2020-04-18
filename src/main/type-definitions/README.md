@@ -59,6 +59,11 @@ Add the profile `release` to create the JavaScript API documentation in the
 mvn clean install -P release
 ```
 
+To configure how the JavaScript API docs and type declarations file is
+generated, modify the `jsdocs` entry in the
+`src/main/type-definitions/package.json` file. See the CLI program below for a
+detailed explanation of the available options.
+
 ---
 
 The maven build uses the

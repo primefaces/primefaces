@@ -28,7 +28,7 @@ function createExcludes(cliArgs) {
  * @param {CliArgs} cliArgs
  */
 async function generateTypedocs(sourceFiles, cliArgs) {
-    const targetDir = cliArgs.typedocOutputDir || join(cliArgs.outputDir, "jsdocs");
+    const targetDir = cliArgs.typedocOutputDir || join(cliArgs.declarationOutputDir, "jsdocs");
     const app = new typedoc.Application();
     app.bootstrap({
         mode: "file",
