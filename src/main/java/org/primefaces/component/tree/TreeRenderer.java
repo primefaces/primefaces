@@ -152,7 +152,7 @@ public class TreeRenderer extends CoreRenderer {
             }
             else {
                 Tree otherTree = (Tree) tree.findComponent(":" + dragSource);
-                otherTree.setRowKey(root, rowKey);
+                otherTree.setRowKey(otherTree.getValue(), rowKey);
                 dragNodeList.add(otherTree.getRowNode());
             }
         }
