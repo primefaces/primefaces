@@ -263,7 +263,7 @@ interface CliArgs {
     exclusionTags: string[],
     /**
      * A comma separated list of third-party node modules that should be included in the generated documentation, such
-     * as `jquery,chart.js`.
+     * as `jquery,chart.js`. Defaults to reading the dependencies of the `package.json`.
      */
     includeModules: string[],
     /**
@@ -273,15 +273,21 @@ interface CliArgs {
     /**
      * Directory where the type declaration output file(s) are written to.
      */
-    outputDir: string;
+    declarationOutputDir: string;
     /**
      * Filename (without path) of the generated `*.d.ts` file
      */
     outputFilename: string;
     /**
+     * Path of the package.json file of the project.
+     */
+    packageJson: string;
+    /**
      * Filename (without path) of the generated `*.module.d.ts` file
      */
     moduleOutputFilename: string;
+    /** Root directory of the project (e.g. maven project) */
+    rootDir: string;
     /**
      * Overrides for the default severity settings.
      */
