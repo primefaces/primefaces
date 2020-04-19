@@ -21,7 +21,7 @@ $(function() {
 			'overflow-y': 'auto'
 		},
 
-		simulator : $('<div id="textarea_simulator"/>').css({
+		simulator : $('<div id="textarea_simulator"></div>').css({
 				position: 'absolute',
 				top: 0,
 				left: 0,

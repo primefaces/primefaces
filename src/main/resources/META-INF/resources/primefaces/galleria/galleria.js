@@ -120,7 +120,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
             frameClass = (i == this.cfg.activeIndex) ? 'ui-galleria-frame ui-galleria-frame-active' : 'ui-galleria-frame',
             frameMarkup = '<li class="'+ frameClass + '" ' + frameStyle + '>'
             + '<div class="ui-galleria-frame-content" ' + frameStyle + '>'
-            + '<img src="' + image.attr('src') + '" class="ui-galleria-frame-image" ' + frameStyle + '/>'
+            + '<img src="' + image.attr('src') + '" class="ui-galleria-frame-image" ' + frameStyle + '></img>'
             + '</div></li>';
                                       
             this.strip.append(frameMarkup);

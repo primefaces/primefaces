@@ -98,7 +98,7 @@
             var form = $(this.escapeClientId(parent));
 
             for(var key in params) {
-                form.append("<input type=\"hidden\" name=\"" + PrimeFaces.escapeHTML(key) + "\" value=\"" + PrimeFaces.escapeHTML(params[key]) + "\" class=\"ui-submit-param\"/>");
+                form.append("<input type=\"hidden\" name=\"" + PrimeFaces.escapeHTML(key) + "\" value=\"" + PrimeFaces.escapeHTML(params[key]) + "\" class=\"ui-submit-param\"></input>");
             }
 
             return this;
@@ -784,9 +784,9 @@
          */
         calculateScrollbarWidth: function() {
             if(!this.scrollbarWidth) {
-                var $div = $('<div />')
+                var $div = $('<div></div>')
                     .css({ width: 100, height: 100, overflow: 'auto', position: 'absolute', top: -1000, left: -1000 })
-                    .prependTo('body').append('<div />').find('div')
+                    .prependTo('body').append('<div></div>').find('div')
                         .css({ width: '100%', height: 200 });
                 this.scrollbarWidth = 100 - $div.width();
                 $div.parent().remove();
