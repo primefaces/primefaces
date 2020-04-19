@@ -2,6 +2,8 @@
 
 InputMask forces an input to fit in a defined mask template.
 
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.inputmask.html)
+
 ## Info
 
 | Name | Value |

@@ -1,11 +1,41 @@
+/**
+ * __PrimeFaces Organigram Widget__
+ * 
+ * Organigram is a data component to display an organizational hierarchy.
+ * 
+ * @implements {PrimeFaces.widget.ContextMenu.ContextMenuProvider<PrimeFaces.widget.Organigram>}
+ * 
+ * @prop {boolean} redraw Whether the organigram requires redrawing.
+ * @prop {JQuery} source The DOM elements for the source nodes when drawing the lines connecting two nodes.
+ * @prop {JQuery} target The DOM elements for the target nodes when drawing the lines connecting two nodes.
+ * @prop {number} zoomFactor The current zoom factor of the organigram.
+ * 
+ * @interface {PrimeFaces.widget.OrganigramCfg} cfg The configuration for the {@link  Organigram| Organigram widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {string} cfg.event Base namespace for the events triggered by this widget.
+ * @prop {number} cfg.leafNodeConnectorHeight The height of the connector line for leaf nodes.
+ * @prop {boolean} cfg.zoom Whether zooming is enabled.
+ */
 PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
         this.draw();
     },
 
+    /**
+     * Draws (renders) the organigram with the current nodes.
+     * @private
+     */
     draw : function() {
         this.source = this.jq.children('ul');
         this.target = this.jq.children('div');
@@ -18,6 +48,10 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
         this.setupControls();
     },
 
+    /**
+     * Sets up the event listeners for when a node is selected.
+     * @private
+     */
     setupSelection : function() {
         var widget = this;
 
@@ -31,6 +65,13 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Selects the given organigram node.
+     * @private
+     * @param {PrimeFaces.widget.Organigram} widget This widget instance. 
+     * @param {JQuery} node The node to select, with the class `.ui-organigram-node`. 
+     * @param {string} event Name of the event that triggered the selection, usually `select` or `contextmenu`. 
+     */
     selectNode : function(widget, node, event) {
         if (!node.hasClass("selected")) {
             widget.target.find(".ui-organigram-node.selected").removeClass("selected");
@@ -47,6 +88,10 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Sets up the event listeners for dragging and dropping nodes.
+     * @private
+     */
     setupDragAndDrop : function() {
         var widget = this;
 
@@ -192,8 +237,8 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Setup global controls.
-     * Currently zoom-in and zoom-out.
+     * Sets up the buttons for the global controls, such as the buttons for zooming in and out.
+     * @private
      */
     setupControls : function() {
         var widget = this;
@@ -227,9 +272,10 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Applies css zoom/scale to the target DOM.
+     * Applies the given zoom factor (scaling) to the organigram.
      *
-     * @param {type} zoom The zoom factor. (e.g. 1.0 or 0.5)
+     * @param {number} zoom The zoom factor. Must be a positive number. `1.0` means no zoom, `2.0` means zoomed-in,
+     * `0.5` means zoomed-out.
      */
     zoom : function(zoom) {
         var element = this.target.find(">:first-child");
@@ -250,6 +296,14 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Draws the given organigram node.
+     * @private
+     * @param {string} parentRowKey Row key of the node to draw.
+     * @param {JQuery} nodeSource Element of the node to draw.
+     * @param {JQuery} appendTo Element to which the node is appended. 
+     * @param {number} level Nesting level of the node.
+     */
     drawNode : function(parentRowKey, nodeSource, appendTo, level) {
 
         var childNodes = nodeSource.children("ul:first").children("li");
@@ -342,6 +396,13 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Adds an expander button for expanding or collapsing the given node.
+     * @private
+     * @param {JQuery} nodeSource Node to use as a source.
+     * @param {JQuery} node Node to collapse and expand. 
+     * @param {JQuery} bottomIconContainer Container element to which the expander button is added. 
+     */
     addExpander : function(nodeSource, node, bottomIconContainer) {
 
         if (node.hasClass("collapsible")) {
@@ -404,6 +465,12 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Draws the lines connecting the nodes.
+     * @private
+     * @param {number} childNodeCount Number of children in the sub table.
+     * @param {JQuery} table The DOM element for the sub table for which to draw the children.
+     */
     drawLines : function(childNodeCount, table) {
 
         // draw vertical row
@@ -425,6 +492,16 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
         horizontalRow.find("td:last").removeClass("top");
     },
 
+    /**
+     * Draws the child nodes of the given parent node.
+     * @private
+     * @param {string} parentRowKey Row key of the parent node with children to draw.
+     * @param {JQuery} leafChildNodes  Children of the parent that are leaf nodes, i.e. do no have any children.
+     * @param {JQuery} nonLeafChildNodes Children of the parent that are not leaf nodes, i.e. do have at least one
+     * child.
+     * @param {JQuery} table The DOM element for the sub table for which to draw the children.
+     * @param {number} level The nesting level of the parent node.
+     */
     drawChildNodes : function(parentRowKey, leafChildNodes, nonLeafChildNodes, table, level) {
         var row = $("<tr/>").appendTo(table);
 
@@ -457,7 +534,14 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
-    // contextMenu integration
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.widget.ContextMenu} menuWidget
+     * @param {PrimeFaces.widget.Organigram} targetWidget
+     * @param {string} targetId
+     * @param {PrimeFaces.widget.ContextMenuCfg} cfg 
+     */
     bindContextMenu : function(menuWidget, targetWidget, targetId, cfg) {
         var selector = targetId + " .ui-organigram-node.selectable",
         event = cfg.event + ".organigram";
@@ -472,6 +556,9 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Scrolls the organigram to the currently selected node, so that the node is in view.
+     */
     scrollToSelection : function() {
         var selection = this.target.find(".ui-organigram-node.selected");
         if (selection.length > 0) {

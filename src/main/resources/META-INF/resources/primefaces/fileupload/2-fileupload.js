@@ -1,10 +1,111 @@
 /**
- * PrimeFaces FileUpload Widget
+ * __PrimeFaces FileUpload Widget__
+ * 
+ * FileUpload goes beyond the browser input `type="file"` functionality and features an HTML5 powered rich solution with
+ * graceful degradation for legacy browsers.
+ * 
+ * @typedef PrimeFaces.widget.FileUpload.OnAddCallback Callback invoked when file was selected and is added to this
+ * widget. See also {@link FileUploadCfg.onAdd}.
+ * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnAddCallback 
+ * @param {File} PrimeFaces.widget.FileUpload.OnAddCallback.file The file that was selected for the upload.
+ * @param {(processedFile: File) => void} PrimeFaces.widget.FileUpload.OnAddCallback.callback Callback that needs to be
+ * invoked with the file that should be added to the upload queue.
+ * 
+ * @typedef PrimeFaces.widget.FileUpload.OnCancelCallback Callback that is invoked when a file upload was canceled. See
+ * also {@link FileUploadCfg.oncancel}.
+ * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnCancelCallback 
+ * 
+ * @typedef PrimeFaces.widget.FileUpload.OnCompleteCallback Callback that is invoked after a file was uploaded to the
+ * server successfully. See also {@link FileUploadCfg.oncomplete}.
+ * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnCompleteCallback 
+ * @param {PrimeFaces.ajax.PrimeFacesArgs} PrimeFaces.widget.FileUpload.OnCompleteCallback.pfArgs The additional
+ * arguments from the jQuery XHR requests.
+ * @param {JQueryFileUpload.JQueryAjaxCallbackData} PrimeFaces.widget.FileUpload.OnCompleteCallback.data Details about
+ * the uploaded file or files.
+ * 
+ * @typedef PrimeFaces.widget.FileUpload.OnErrorCallback Callback that is invoked when a file could not be uploaded to
+ * the server. See also {@link FileUploadCfg.onerror}.
+ * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnErrorCallback 
+ * @param {JQuery.jqXHR} PrimeFaces.widget.FileUpload.OnErrorCallback.jqXHR The XHR object from the HTTP request.
+ * @param {string} PrimeFaces.widget.FileUpload.OnErrorCallback.textStatus The HTTP status text of the failed request.
+ * @param {PrimeFaces.ajax.PrimeFacesArgs} PrimeFaces.widget.FileUpload.OnErrorCallback.pfArgs The additional arguments
+ * from the jQuery XHR request.
+ * 
+ * @typedef PrimeFaces.widget.FileUpload.OnStartCallback Callback that is invoked at the beginning of a file upload,
+ * when a file is sent to the server. See also {@link FileUploadCfg.onstart}.
+ * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnStartCallback 
+ * 
+ * @interface {PrimeFaces.widget.FileUpload.UploadMessage} UploadMessage A error message for a file upload widget.
+ * @prop {number} UploadMessage.filesize The size of the uploaded file in bytes.
+ * @prop {string} UploadMessage.filename The name of the uploaded file.
+ * @prop {string} UploadMessage.summary A short summary of this message.
+ * 
+ * @interface {PrimeFaces.widget.FileUpload.UploadFile} UploadFile Represents an uploaded file added to the upload
+ * widget.
+ * @prop {JQuery} UploadFile.row Row of an uploaded file.
+ * 
+ * @prop {JQueryFileUpload.FileUploadOptions} ucfg Options for the BlueImp jQuery file upload plugin.
+ * @prop {JQuery} form The DOM element for the form containing this upload widget.
+ * @prop {JQuery} buttonBar The DOM element for the bar with the buttons of this widget.
+ * @prop {JQuery} chooseButton The DOM element for the button for selecting a file.
+ * @prop {JQuery} uploadButton The DOM element for the button for starting the file upload.
+ * @prop {JQuery} cancelButton The DOM element for the button for canceling a file upload.
+ * @prop {JQuery} content The DOM element for the content of this widget.
+ * @prop {JQuery} filesTbody The DOM element for the table tbody with the files.
+ * @prop {JQuery} input The DOM element for the file input element.
+ * @prop {string[]} sizes Suffixes for formatting files sizes.
+ * @prop {File[]} files List of currently selected files.
+ * @prop {number} fileAddIndex Current index where to add files.
+ * @prop {number} uploadedFileCount Number of currently uploaded files.
+ * @prop {string} fileId ID of the current file.
+ * @prop {number} width Width of the preview.
+ * @prop {number} height Height of the preview.
+ * @prop {string} rowActionSelector Selector for the available actions (buttons) of a row.
+ * @prop {string} rowCancelActionSelector Selector for the button for canceling a file upload.
+ * @prop {string} clearMessagesSelector Selector for the button to clear the error messages.
+ * 
+ * @interface {PrimeFaces.widget.FileUploadCfg} cfg The configuration for the {@link  FileUpload| FileUpload widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {RegExp} cfg.allowTypes Regular expression for accepted file types.
+ * @prop {boolean} cfg.auto When set to true, selecting a file starts the upload process implicitly.
+ * @prop {boolean} cfg.dnd Whether drag and drop is enabled.
+ * @prop {boolean} cfg.disabled Whether this file upload is disabled.
+ * @prop {number} cfg.fileLimit Maximum number of files allowed to upload.
+ * @prop {string} cfg.fileLimitMessage Message to display when file limit exceeds.
+ * @prop {string} cfg.invalidFileMessage Message to display when file is not accepted.
+ * @prop {string} cfg.invalidSizeMessage Message to display when size limit exceeds.
+ * @prop {number} cfg.maxFileSize Maximum allowed size in bytes for files.
+ * @prop {string} cfg.messageTemplate Message template to use when displaying file validation errors.
+ * @prop {PrimeFaces.widget.FileUpload.OnAddCallback} cfg.onAdd Callback invoked when an uploaded file is added.
+ * @prop {PrimeFaces.widget.FileUpload.OnCancelCallback} cfg.oncancel Callback that is invoked when a file upload was
+ * canceled.
+ * @prop {PrimeFaces.widget.FileUpload.OnCompleteCallback} cfg.oncomplete Callback that is invoked after a file was
+ * uploaded to the server successfully.
+ * @prop {PrimeFaces.widget.FileUpload.OnErrorCallback} cfg.onerror Callback that is invoked when a file could not be
+ * uploaded to the server.
+ * @prop {PrimeFaces.widget.FileUpload.OnStartCallback} cfg.onstart Callback that is invoked at the beginning of a file
+ * upload, when a file is sent to the server.
+ * @prop {number} cfg.previewWidth Width for image previews in pixels.
+ * @prop {string} cfg.process Component(s) to process in fileupload request.
+ * @prop {boolean} cfg.sequentialUploads `true` to upload files one after each other, `false` to upload in parallel.
+ * @prop {string} cfg.update Component(s) to update after fileupload completes.
  */
 PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * Regular expression that matches image files for which a preview can be shown.
+     * @type {RegExp}
+     */
     IMAGE_TYPES: /(\.|\/)(gif|jpe?g|png)$/i,
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
         if(this.cfg.disabled) {
@@ -172,7 +273,6 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             chunkbeforesend: function (e, data) {
                 var params = $this.createPostData();
                 var file = data.files[0];
-                params.push({name : 'X-File-Id', value: $this.createXFileId(file)});
                 data.formData = params;
             },
         };
@@ -181,6 +281,12 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.input = $(this.jqId + '_input');
     },
 
+    /**
+     * Adds a file selected by the user to this upload widget.
+     * @private
+     * @param {File} file A file to add.
+     * @param {JQueryFileUpload.AddCallbackData} data The data from the selected file.
+     */
     addFileToRow: function(file, data) {
         var $this = this,
             row = $('<div class="ui-fileupload-row"></div>').append('<div class="ui-fileupload-preview"></td>')
@@ -239,6 +345,11 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.postSelectFile(data);
     },
 
+    /**
+     * Called after a file was added to this upload widget. Takes care of the UI buttons.
+     * @private
+     * @param {JQueryFileUpload.AddCallbackData} data Data of the selected file.
+     */
     postSelectFile: function(data) {
         if(this.files.length > 0) {
             this.enableButton(this.uploadButton);
@@ -251,6 +362,10 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Sets up all events listeners for this file upload widget.
+     * @private
+     */
     bindEvents: function() {
         var $this = this;
 
@@ -381,6 +496,10 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 });
     },
 
+    /**
+     * Uploads the selected files to the server.
+     * @private
+     */
     upload: function() {
         for(var i = 0; i < this.files.length; i++) {
             this.files[i].ajaxRequest = this.files[i].row.data('filedata');
@@ -388,6 +507,11 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Creates the HTML post data for uploading the selected files.
+     * @private
+     * @return {PrimeFaces.ajax.ServerCallbackParameter} Parameters to post when upload the files.
+     */
     createPostData: function() {
         var process = this.cfg.process ? this.id + ' ' + PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.process).join(' ') : this.id;
         var params = this.form.serializeArray();
@@ -406,10 +530,22 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         return params;
     },
 
+
+    /**
+     * Createsa FileId-object for a file.
+     * @param {File} file A file to create a FileId-oject.
+     * @return {TODO} FileId-object.
+     * @private
+     */
     createXFileId: function(file) {
       return [file.name, file.lastModified, file.type, file.size].join();
     },
 
+    /**
+     * Formats the given file size in a more human-friendly format, e.g. `1.5 MB` etc.
+     * @param {number} bytes File size in bytes to format
+     * @return {string} The given file size, formatted in a more human-friendly format.
+     */
     formatSize: function(bytes) {
         if(bytes === undefined)
             return '';
@@ -424,12 +560,22 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + this.sizes[i];
     },
 
+    /**
+     * Removes the given uploadeds file from this upload widget.
+     * @private
+     * @param {PrimeFaces.widget.FileUpload.UploadFile[]} files Files to remove from this widget.
+     */
     removeFiles: function(files) {
         for (var i = 0; i < files.length; i++) {
             this.removeFile(files[i]);
         }
     },
 
+    /**
+     * Removes the given uploaded file from this upload widget.
+     * @private
+     * @param {PrimeFaces.widget.FileUpload.UploadFile} file File to remove from this widget.
+     */
     removeFile: function(file) {
         var $this = this;
 
@@ -441,6 +587,11 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         file.row = null;
     },
 
+    /**
+     * Removes a row with an uploaded file form this upload widget.
+     * @private
+     * @param {JQuery} row Row of an uploaded file to remove.
+     */
     removeFileRow: function(row) {
         if(row) {
             this.disableButton(row.find('> div:last-child').children('.ui-fileupload-cancel'));
@@ -451,6 +602,9 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Clears this file upload field, i.e. removes all uploaded files.
+     */
     clear: function() {
         for (var i = 0; i < this.files.length; i++) {
             this.removeFileRow(this.files[i].row);
@@ -462,6 +616,12 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.files = [];
     },
 
+    /**
+     * Validates the given file against the current validation settings
+     * @private
+     * @param {File} file Uploaded file to validate.
+     * @return {string | null} `null` if the given file is valid, or an error message otherwise.
+     */
     validate: function(file) {
         if (this.cfg.allowTypes && !(this.cfg.allowTypes.test(file.type) || this.cfg.allowTypes.test(file.name))) {
             return this.cfg.invalidFileMessage;
@@ -474,6 +634,10 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         return null;
     },
 
+    /**
+     * Displays the current error messages on this widget.
+     * @private
+     */
     renderMessages: function() {
         var markup = '<div class="ui-messages ui-widget ui-helper-hidden ui-fileupload-messages"><div class="ui-messages-error ui-corner-all">' +
                 '<a class="ui-messages-close" href="#"><span class="ui-icon ui-icon-close"></span></a>' +
@@ -486,11 +650,19 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.clearMessageLink = this.messageContainer.find('> .ui-messages-error > a.ui-messages-close');
     },
 
+    /**
+     * Removes all error messages that are shown for this widget.
+     */
     clearMessages: function() {
         this.messageContainer.hide();
         this.messageList.children().remove();
     },
 
+    /**
+     * Shows the given error message
+     * @param {PrimeFaces.widget.FileUpload.UploadMessage} msg Error message to show.
+     * @private
+     */
     showMessage: function(msg) {
         var summary = msg.summary,
         detail = '';
@@ -503,24 +675,56 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.messageContainer.show();
     },
 
+    /**
+     * Disabled the given file upload button.
+     * @param {JQuery} btn Button to disabled.
+     * @private
+     */
     disableButton: function(btn) {
         btn.prop('disabled', true).attr('aria-disabled', true).addClass('ui-state-disabled').removeClass('ui-state-hover ui-state-active ui-state-focus');
     },
 
+    /**
+     * Enables the given file upload button.
+     * @param {JQuery} btn Button to enable.
+     * @private
+     */
     enableButton: function(btn) {
         btn.prop('disabled', false).attr('aria-disabled', false).removeClass('ui-state-disabled');
     },
 
+    /**
+     * Brings up the native file selection dialog.
+     */
     show: function() {
         this.input.click();
     }
 });
 
 /**
- * PrimeFaces Simple FileUpload Widget
+ * __PrimeFaces Simple FileUpload Widget__
+ * 
+ * @prop {number} maxFileSize Maximum allowed size in bytes for files.
+ * @prop {JQuery} button The DOM element for the button for selecting a file.
+ * @prop {JQuery} display The DOM element for the UI display.
+ * @prop {JQuery} input The DOM element for the file input element.
+ * 
+ * @interface {PrimeFaces.widget.SimpleFileUploadCfg} cfg The configuration for the {@link  SimpleFileUpload| SimpleFileUpload widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {number} cfg.maxFileSize Maximum allowed size in bytes for files.
+ * @prop {string} cfg.invalidSizeMessage Message to display when size limit exceeds.
+ * @prop {boolean} cfg.skinSimple Applies theming to simple uploader.
  */
 PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
@@ -538,6 +742,10 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Sets up all events listeners for this file upload widget.
+     * @private
+     */
     bindEvents: function() {
         var $this = this;
 
@@ -579,6 +787,13 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
 
     },
 
+    /**
+     * Validates the given file against the current validation settings
+     * @private
+     * @param {HTMLElement} input File input element to validate.
+     * @param {File} file Uploaded file to validate.
+     * @return {string | null} `null` if the given file is valid, or an error message otherwise.
+     */
     validate: function(input, file) {
         var $this = this;
 
@@ -589,6 +804,9 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
         return null;
     },
 
+    /**
+     * Brings up the native file selection dialog.
+     */
     show: function() {
         if(this.cfg.skinSimple) {
             this.input.click();

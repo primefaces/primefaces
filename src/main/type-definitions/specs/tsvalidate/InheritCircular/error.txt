@@ -1,0 +1,4 @@
+Error: Program failed to validate:
+
+Error: [tsDiagnosticsError] at <unknown> (${PROJECT_BASEDIR}/src/main/type-definitions/specs/tsvalidate/InheritCircular/input.d.ts:5:15)
+Type 'C1' recursively references itself as a base type.

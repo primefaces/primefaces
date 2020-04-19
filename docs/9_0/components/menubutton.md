@@ -2,6 +2,8 @@
 
 MenuButton displays different commands in a popup menu.
 
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.menubutton.html)
+
 ## Info
 
 | Name | Value |

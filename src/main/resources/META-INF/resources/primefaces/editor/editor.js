@@ -1211,10 +1211,27 @@
 })(jQuery);
 
 /**
- * PrimeFaces Editor Widget
+ * __PrimeFaces Editor Widget__
+ * 
+ * Editor is an input component with rich text editing capabilities.
+ * 
+ * __Deprecated__: Use {@link TextEditor} instead.
+ * 
+ * @prop {JQuery} jqInput The DOM element for the hidden input field.
+ * @prop {JQuery} editor The DOM element with the editor UI.
+ * 
+ * @interface {PrimeFaces.widget.EditorCfg} cfg The configuration for the {@link  Editor| Editor widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
  */
 PrimeFaces.widget.Editor = PrimeFaces.widget.DeferredWidget.extend({
     
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
         
@@ -1223,6 +1240,12 @@ PrimeFaces.widget.Editor = PrimeFaces.widget.DeferredWidget.extend({
         this.renderDeferred();
     },
     
+    /**
+     * @include
+     * @override
+     * @protected
+     * @inheritdoc
+     */
     _render: function() {
         this.editor = this.jqInput.cleditor(this.cfg)[0];
 
@@ -1245,6 +1268,10 @@ PrimeFaces.widget.Editor = PrimeFaces.widget.DeferredWidget.extend({
         this.jq.css('visibility', '');
     },
     
+    /**
+     * Sets up the event listener for when the maximum length is reached.
+     * @private
+     */
     bindMaxlength: function() {
         var $this = this,
         frameDoc = this.editor.$frame[0].contentWindow.document;
@@ -1274,38 +1301,68 @@ PrimeFaces.widget.Editor = PrimeFaces.widget.DeferredWidget.extend({
         });
     },
     
+    /**
+     * Saves the current content of the editor.
+     */
     saveHTML: function() {
         this.editor.updateTextArea();
     },
     
+    /**
+     * Clears the content of the editor, so that is becomes empty.
+     */
     clear: function() {
         this.editor.clear();
     },
     
+    /**
+     * Enables the editor and allows the user to enter text.
+     */
     enable: function() {
         this.editor.disable(false);
     },
     
+    /**
+     * Disables the editor and prevents the user from entering text.
+     */
     disable: function() {
         this.editor.disable(true);
     },
     
+    /**
+     * Marks this editor widget as invalid, i.e. having validation errors.
+     * @private
+     */
     invalidate: function() {
         this.jq.children('div.ui-editor').addClass('ui-state-error');
     },
     
+    /**
+     * Puts focus on this editor widget.
+     */
     focus: function() {
         this.editor.focus();
     },
     
+    /**
+     * Selects the entire text of this editor.
+     */
     selectAll: function() {
         this.editor.select();
     },
     
+    /**
+     * Fetches the currently selected content of this editor widget as an HTML string.
+     * @return {string} The currently selected content of this editor widget as an HTML string.
+     */
     getSelectedHTML: function() {
         return this.editor.selectedHTML();
     },
     
+    /**
+     * Fetches the currently selected content as plain text (without markup).
+     * @return {string} The currently selected content as plain text (without markup).
+     */
     getSelectedText: function() {
         return this.editor.selectedText();
     }

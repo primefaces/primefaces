@@ -72,6 +72,10 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <npm.token></npm.token>
+        <npm.username></npm.username>
+        <npm.password></npm.password>
+        <npm.email></npm.email>
     </properties>
 
     <dependencies>
@@ -166,10 +170,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-             <groupId>org.junit.jupiter</groupId>
-             <artifactId>junit-jupiter-params</artifactId>
-             <version>5.5.2</version>
-             <scope>test</scope>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>5.5.2</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
@@ -262,6 +266,82 @@
     </dependencies>
 
     <build>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.github.eirslett</groupId>
+                    <artifactId>frontend-maven-plugin</artifactId>
+                    <version>1.9.1</version>
+                    <configuration>
+                        <installDirectory>${project.build.directory}</installDirectory>
+                        <nodeVersion>v13.13.0</nodeVersion>
+                        <npmVersion>6.14.4</npmVersion>
+                        <workingDirectory>${basedir}/src/main/type-definitions</workingDirectory>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>install node and npm</id>
+                            <goals>
+                                <goal>install-node-and-npm</goal>
+                            </goals>
+                            <phase>initialize</phase>
+                        </execution>
+                        <execution>
+                            <id>npm install</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>initialize</phase>
+                            <configuration>
+                                <arguments>install</arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>validate-tool</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>test</phase>
+                            <configuration>
+                                <arguments>run validate</arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>test-tool</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>test</phase>
+                            <configuration>
+                                <arguments>run test</arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>generate-type-declaration</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>prepare-package</phase>
+                            <configuration>
+                                <arguments>run generate-d-ts -- --packagejson src/main/type-definitions/package.json</arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>publish-to-npm</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>deploy</phase>
+                            <configuration>
+                                <arguments>run npm-publish -- --major ${parsedVersion.majorVersion} --minor ${parsedVersion.minorVersion} --readme src/main/type-definitions/NPM.md --extrafiles LICENSE --prompt false --username ${npm.username} --password ${npm.password} --email ${npm.email} --token ${npm.token}</arguments>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>                
+            </plugins>
+        </pluginManagement>
+
         <defaultGoal>install</defaultGoal>
 
         <resources>
@@ -279,13 +359,38 @@
 
         <extensions>
             <extension>
-            <groupId>org.apache.maven.wagon</groupId>
-            <artifactId>wagon-ssh</artifactId>
-            <version>3.0.0</version>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh</artifactId>
+                <version>3.0.0</version>
             </extension>
         </extensions>
 
         <plugins>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>src/main/type-definitions/node_modules</directory>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                  <execution>
+                    <id>parse-version</id>
+                    <goals>
+                      <goal>parse-version</goal>
+                    </goals>
+                  </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
@@ -440,7 +545,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>1.16</version>
+                <version>1.18</version>
                 <executions>
                     <execution>
                         <id>aggregate-download-licenses</id>
@@ -458,6 +563,19 @@
                 </executions>
                 <configuration>
                     <excludedScopes>test,provided</excludedScopes>
+                    <outputDirectory>${project.basedir}/target/classes/META-INF/licenses/</outputDirectory>
+                    <licensesOutputFile>${project.basedir}/target/classes/META-INF/licenses/licenses-generated.xml</licensesOutputFile>
+                    <licensesOutputDirectory>${project.basedir}/target/classes/META-INF/licenses/</licensesOutputDirectory>
+                    <licenseUrlReplacements>
+                        <licenseUrlReplacement>
+                            <regexp>.*BSD-3.*</regexp>
+                            <replacement>https://raw.githubusercontent.com/teamdigitale/licenses/master/BSD-3-Clause</replacement>
+                        </licenseUrlReplacement>
+                        <licenseUrlReplacement>
+                            <regexp>.*json.*</regexp>
+                            <replacement>https://raw.githubusercontent.com/stleary/JSON-java/master/LICENSE</replacement>
+                        </licenseUrlReplacement>
+                    </licenseUrlReplacements>
                 </configuration>
             </plugin>
 
@@ -739,6 +857,15 @@
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/signature/signature.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/signature/0-signature.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/signature/1-widget.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/timeline.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/0-timeline.min.js</include>
@@ -902,7 +1029,7 @@
                         </filter>
                     </filters>
                 </configuration>
-               <executions>
+                <executions>
                     <execution>
                         <id>shade-dependencies</id>
                         <phase>package</phase>
@@ -1011,6 +1138,48 @@
                 </plugins>
             </build>
         </profile>
+        <!-- Generates the JavaScript Api docs in the target directory -->
+        <!-- Use "-Djsdoc.skip.typedoc=true" if you only want to check and lint the declarations file -->
+        <profile>
+            <id>jsdoc</id>
+            <properties>
+                <jsdoc.skip.typedoc>false</jsdoc.skip.typedoc>
+            </properties>
+            <build>
+                <plugins>
+                    <!-- Write docs and *.d.ts file to the target dir -->
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>generate-type-declaration</id>
+                                <configuration>
+                                    <arguments>run generate-d-ts -- --packagejson src/main/type-definitions/package.json --declarationoutputdir target/type-declaration/ --typedocoutputdir target/type-declaration/jsdocs --skiptypedocgenerate ${jsdoc.skip.typedoc}</arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>jsdoc-publish</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>publish-to-npm</id>
+                                <phase>package</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
         <profile>
             <id>release</id>
             <build>
@@ -1103,6 +1272,20 @@
                                 <include>**/*.css</include>
                             </includes>
                         </configuration>
+                    </plugin>
+
+                    <!-- Write docs and *.d.ts file to the current documentation directory docs/jsdocs -->
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>generate-type-declaration</id>
+                            </execution>
+                            <execution>
+                                <id>publish-to-npm</id>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>

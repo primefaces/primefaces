@@ -26,7 +26,6 @@ package org.primefaces.component.barchart;
 import java.util.Collection;
 import java.util.Map;
 
-import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
@@ -35,13 +34,11 @@ import javax.faces.event.FacesEvent;
 import org.primefaces.event.ItemSelectEvent;
 import org.primefaces.util.MapBuilder;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "primefaces", name = "core.js"),
-        @ResourceDependency(library = "primefaces", name = "components.js"),
-        @ResourceDependency(library = "primefaces", name = "moment/moment.js"),
-        @ResourceDependency(library = "primefaces", name = "chartjs/chartjs.js")
-})
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "components.js")
+@ResourceDependency(library = "primefaces", name = "moment/moment.js")
+@ResourceDependency(library = "primefaces", name = "chartjs/chartjs.js")
 public class BarChart extends BarChartBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.BarChart";

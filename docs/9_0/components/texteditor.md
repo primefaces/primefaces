@@ -2,6 +2,8 @@
 
 Editor is an input component with rich text editing capabilities based on Quill.
 
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.texteditor.html)
+
 ## Info
 
 | Name | Value |

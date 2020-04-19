@@ -1,7 +1,17 @@
 if (!PrimeFaces.utils) {
 
+    /**
+     * The object with various utilities needed by PrimeFaces.
+     * @namespace
+     */
     PrimeFaces.utils = {
 
+        /**
+         * Finds the container element to which an overlay widget should be appended. This is either the element
+         * specified by the widget configurations's `appendTo` attribute, or the document BODY element otherwise.
+         * @param {PrimeFaces.widget.DynamicOverlayWidget} widget A widget to be displayed as an overlay.
+         * @return {JQuery} The container DOM element to which the overlay is to be appended. 
+         */
         resolveDynamicOverlayContainer: function(widget) {
             return widget.cfg.appendTo
                 ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(widget.cfg.appendTo)
@@ -9,13 +19,21 @@ if (!PrimeFaces.utils) {
         },
 
         /**
-         * Cleanup the "detached" overlay.
-         * If you update a component, the overlay is rendered below the component markup but moved to the "appendTo" via our scripts.
-         * After the AJAX update, we have now 2 overlays with the same id:
-         * 1) below the root element
-         * 2) the old, detached overlay, below the "appendTo"
+         * Cleanup the `detached` overlay.
+         * 
+         * If you update a component, the overlay is rendered as specified in the component tree (XHTML view), but moved
+         * to a different container via JavaScript.
+         * 
+         * This means that after an AJAX update, we now have 2 overlays with the same id:
+         * 
+         * 1. The newly rendered overlay, as a child of the element specified by the component tree (XHTML view)
+         * 1. The old, detached overlay, as a child of the element specified by `appendTo` attribute
          *
-         * We now need to remove the detached overlay.
+         * We now need to remove the detached overlay. This is done by this function.
+         * @param {PrimeFaces.widget.DynamicOverlayWidget} widget The (old) overlay widget instance.
+         * @param {JQuery} overlay The DOM element for the overlay.
+         * @param {string} overlayId ID of the overlay, usually the widget ID.
+         * @param {JQuery} appendTo The container to which the overlay is appended.
          */
         cleanupDynamicOverlay: function(widget, overlay, overlayId, appendTo) {
             if (widget.cfg.appendTo) {
@@ -27,12 +45,24 @@ if (!PrimeFaces.utils) {
         },
 
         /**
-         * Removes the overlay from the appendTo overlay container.
+         * Removes the overlay from the overlay container as specified by the `appendTo` attribute.
+         * @param {PrimeFaces.widget.DynamicOverlayWidget} widget The overlay widget instance.
+         * @param {JQuery} overlay The (new) DOM element of the overlay.
+         * @param {string} overlayId ID of the the overlay, usually the widget ID.
+         * @param {JQuery} appendTo The container to which the overlay is appended.
          */
         removeDynamicOverlay: function(widget, overlay, overlayId, appendTo) {
             appendTo.children("[id='" +  overlayId + "']").not(overlay).remove();
         },
 
+        /**
+         * An overlay widget is moved in the DOM to the position as specified by the `appendTo` attribute. This function
+         * moves the widget to its position in the DOM and removes old elements from previous AJAX updates.
+         * @param {PrimeFaces.widget.BaseWidget} widget The overlay widget instance.
+         * @param {JQuery} overlay The DOM element for the overlay.
+         * @param {string} overlayId ID of the overlay, usually the widget ID.
+         * @param {JQuery} appendTo The container to which the overlay is appended.
+         */
         appendDynamicOverlay: function(widget, overlay, overlayId, appendTo) {
             var elementParent = overlay.parent();
 
@@ -48,6 +78,15 @@ if (!PrimeFaces.utils) {
             }
         },
 
+        /**
+         * Creates a new (empty) container for a modal overlay. A modal overlay is an overlay that blocks the content
+         * belown it. To remove the modal overlay, use `PrimeFaces.utils.removeModal`.
+         * @param {PrimeFaces.widget.BaseWidget} widget An overlay widget instance.
+         * @param {number} zIndex The z-index to set on the modal overlay.
+         * @param {() => JQuery} tabbablesCallback A supplier function that return a list of tabbable elements. A
+         * tabbable element is an element to which the user can navigate to via the tab key.
+         * @return {JQuery} The DOM element for the newly added modal overlay container.
+         */
         addModal: function(widget, zIndex, tabbablesCallback) {
             var id = widget.id;
             PrimeFaces.utils.preventTabbing(id, zIndex, tabbablesCallback);
@@ -65,6 +104,14 @@ if (!PrimeFaces.utils) {
             return modalOverlay;
         },
 
+        /**
+         * Given a modal overlay, prevents navigating via the tab key to elements outside of that modal overlay. Use
+         * `PrimeFaces.utils.enableTabbing` to restore the original behavior.
+         * @param {string} id ID of a modal overlay widget.
+         * @param {number} zIndex The z-index of the modal overlay.
+         * @param {() => JQuery} tabbablesCallback A supplier function that return a list of tabbable elements. A
+         * tabbable element is an element to which the user can navigate to via the tab key.
+         */
         preventTabbing: function(id, zIndex, tabbablesCallback) {
             //Disable tabbing out of modal and stop events from targets outside of the overlay element
             var $document = $(document);
@@ -116,6 +163,11 @@ if (!PrimeFaces.utils) {
             });
         },
 
+        /**
+         * Given a modal overlay widget, removes the modal overlay element from the DOM. This reverts the changes as
+         * made by `PrimeFaces.utils.addModal`.
+         * @param {PrimeFaces.widget.BaseWidget} widget A modal overlay widget instance.
+         */
         removeModal: function(widget) {
             var id = widget.id;
             var modalId = id + '_modal';
@@ -132,14 +184,19 @@ if (!PrimeFaces.utils) {
             PrimeFaces.utils.enableTabbing(id);
         },
 
+        /**
+         * Enables navigating to an element via the tab key outside an overlay widget. Usually called when a modal
+         * overlay is removed. This reverts the changes as made by `PrimeFaces.utils.preventTabbing`.
+         * @param {string} id ID of a modal overlay, usually the widget ID.
+         */
         enableTabbing: function(id) {
             $(document).off('focus.' + id + ' mousedown.' + id + ' mouseup.' + id + ' keydown.' + id);
         },
 
         /**
-         * Checks if a modal for the given id is currently displayed.
-         *
-         * @param {type} id the base id
+         * Checks if a modal with the given ID is currently displayed.
+         * @param {string} id The base ID of a modal overlay, usually the widget ID.
+         * @return {boolean} Whether the modal with the given ID is displayed.
          */
         isModalActive: function(id) {
             var modalId = id + '_modal';
@@ -150,13 +207,17 @@ if (!PrimeFaces.utils) {
 
 
         /**
-         * Registers the document handler, to execute the hideCallback when it's clicked outside of the overlay panel.
+         * Registers a callback on the document that is invoked when the user clicks on an element outside the overlay
+         * widget.
          *
-         * @param {type} widget the widget instance
-         * @param {type} hideNamespace the namespace
-         * @param {type} overlay the overlay $element
-         * @param {type} resolveIgnoredElementsCallback the callback which resolves the elements to ignore when clicked
-         * @param {type} hideCallback will be executed when clicked outside
+         * @param {PrimeFaces.widget.BaseWidget} widget An overlay widget instance.
+         * @param {string} hideNamespace A click event with a namspace to listen to, such as `mousedown.widgetId`. 
+         * @param {JQuery} overlay The DOM element for the overlay.
+         * @param {((event: JQuery.Event) => JQuery) | undefined} resolveIgnoredElementsCallback The callback which
+         * resolves the elements to ignore when the user clicks outside the overlay. The `hideCallback` is not invoked
+         * when the user clicks on one those elements.
+         * @param {(event: JQuery.Event, eventTarget: JQuery) => void} hideCallback A callback that is invoked when the
+         * user clicks on an element outside the overlay widget.
          */
         registerHideOverlayHandler: function(widget, hideNamespace, overlay, resolveIgnoredElementsCallback, hideCallback) {
 
@@ -206,7 +267,16 @@ if (!PrimeFaces.utils) {
             });
         },
 
-
+        /**
+         * Registers a callback that is invoked when the window is resized.
+         * @param {PrimeFaces.widget.BaseWidget} widget A widget instance for which to register a resize handler.
+         * @param {string} resizeNamespace A resize event with a namespace to listen to, such as `resize.widgetId`.
+         * @param {JQuery | undefined} element An element that prevents the callback from being invoked when it is not
+         * visible, usually a child element of the widget.
+         * @param {(event: JQuery.Event) => void} resizeCallback A callback that is invoked when the window is resized.
+         * @param {string} [params] Optional CSS selector. If given, the callback is invoked only when the resize event
+         * is triggered on an element the given selector.
+         */
         registerResizeHandler: function(widget, resizeNamespace, element, resizeCallback, params) {
 
             widget.addDestroyListener(function() {
@@ -222,6 +292,14 @@ if (!PrimeFaces.utils) {
             });
         },
 
+        /**
+         * Sets up an overlay widget. Appends the overlay widget to the element as specified by the `appendTo`
+         * attribute. Also makes sure the overlay widget is handled propertly during AJAX updates.
+         * @param {PrimeFaces.widget.DynamicOverlayWidget} widget An overlay widget instance.
+         * @param {JQuery} overlay The DOM element for the overlay.
+         * @param {string} overlayId The ID of the overlay, usually the widget ID.
+         * @return {JQuery} The overlay that was passed to this function. 
+         */
         registerDynamicOverlay: function(widget, overlay, overlayId) {
 
             if (widget.cfg.appendTo) {
@@ -243,7 +321,13 @@ if (!PrimeFaces.utils) {
             return overlay;
         },
 
-
+        /**
+         * Registers a callback that is invoked when a scroll event is triggered on The DOM element for the widget.
+         * @param {PrimeFaces.widget.BaseWidget} widget A widget instance for which to register a scroll handler.
+         * @param {string} scrollNamespace A scroll event with a namespace, such as `scroll.widgetId`.
+         * @param {(event: JQuery.Event) => void} scrollCallback A callnback that is invoked when a scroll event occurs
+         * on the widget.
+         */
         registerScrollHandler: function(widget, scrollNamespace, scrollCallback) {
 
             var scrollParent = widget.getJQ().scrollParent();
@@ -260,6 +344,11 @@ if (!PrimeFaces.utils) {
             });
         },
 
+        /**
+         * Removes a scroll handler as registered by `PrimeFaces.utils.registerScrollHandler`.
+         * @param {PrimeFaces.widget.BaseWidget} widget A widget instance for which a scroll handler was registered.
+         * @param {string} scrollNamespace A scroll event with a namespace, such as `scroll.widgetId`.
+         */
         unbindScrollHandler: function(widget, scrollNamespace) {
             var scrollParent = widget.getJQ().scrollParent();
             if (scrollParent.is('body') || scrollParent.is('html')) {
@@ -270,21 +359,25 @@ if (!PrimeFaces.utils) {
         },
 
         /**
-         * Disables scrolling of the document body.
+         * Prevents the user from scrolling the document BODY element. You can enable scrolling again via
+         * `PrimeFaces.utils.enableScrolling`.
          */
         preventScrolling: function() {
             $(document.body).addClass('ui-overflow-hidden');
         },
 
         /**
-         * Enables scrolling again if previously disabled.
+         * Enables scrolling again if previously disabled via `PrimeFaces.utils.preventScrolling`.
          */
         enableScrolling: function() {
             $(document.body).removeClass('ui-overflow-hidden');
         },
         
         /**
-         * Calculates an element offset relative to where the Window is currently scrolled.
+         * Calculates an element offset relative to the current scroll position of the window.
+         * @param {JQuery} element An element for which to calculate the scroll position.
+         * @return {JQuery.Coordinates} The offset of the given element, relative to the current scroll position of the
+         * window.
          */
         calculateRelativeOffset: function (element) {
             var result = {
@@ -300,8 +393,9 @@ if (!PrimeFaces.utils) {
         },
 
         /**
-         * Blocks the enter key for an event like keyup or keydown.
-         * Useful in filter input events in many components.
+         * Blocks the enter key for an event like `keyup` or `keydown`. Useful in filter input events in many
+         * components.
+         * @param {JQuery.Event} e The key event that occurred.
          */
         blockEnterKey: function(e) {
             var key = e.which,
@@ -313,8 +407,9 @@ if (!PrimeFaces.utils) {
         },
 
         /**
-         * Ignores certain keys on filter input textbox. 
-         * Useful in filter input events in many components.
+         * Ignores certain keys on filter input text box. Useful in filter input events in many components.
+         * @param {JQuery.Event} e The key event that occurred.
+         * @return {boolean} `true` if the one of the keys to ignore was pressed, or `false` otherwise.
          */
         ignoreFilterKey: function(e) {
             var key = e.which,
@@ -347,8 +442,9 @@ if (!PrimeFaces.utils) {
         },
 
         /**
-         * Exclude elements such as buttons, links, inputs from being touch swiped. 
-         * Users can always add class="noSwipe" to any element to exclude it as well.
+         * Exclude elements such as buttons, links, inputs from being touch swiped.  Users can always add
+         * `class="noSwipe"` to any element to exclude it as well.
+         * @return {string} A CSS selector for the elements to be excluded from being touch swiped.
          */
         excludedSwipeElements: function() {
             return ":button:enabled, :input:enabled, a, [role='combobox'], .noSwipe";
@@ -357,8 +453,8 @@ if (!PrimeFaces.utils) {
         /**
          * Helper to open a new URL and if CTRL is held down open in new browser tab.
          * 
-         * @param {*} event the on click event
-         * @param {*} link the URL anchor link
+         * @param {JQuery.Event} event The click event that occurred.
+         * @param {JQuery} link The URL anchor link that was clicked.
          */
         openLink: function(event, link) {
             var href = link.attr('href');

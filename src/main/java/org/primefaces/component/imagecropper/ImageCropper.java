@@ -23,16 +23,13 @@
  */
 package org.primefaces.component.imagecropper;
 
-import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "imagecropper/imagecropper.css"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "primefaces", name = "core.js"),
-        @ResourceDependency(library = "primefaces", name = "components.js"),
-        @ResourceDependency(library = "primefaces", name = "imagecropper/imagecropper.js")
-})
+@ResourceDependency(library = "primefaces", name = "imagecropper/imagecropper.css")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "components.js")
+@ResourceDependency(library = "primefaces", name = "imagecropper/imagecropper.js")
 public class ImageCropper extends ImageCropperBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ImageCropper";

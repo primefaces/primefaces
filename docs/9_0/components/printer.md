@@ -2,6 +2,8 @@
 
 Printer allows sending a specific JSF component to the printer, not the whole page.
 
+[See the jQuery print method in the JavaScript API Docs.](../jsdocs/modules/jquery.html#print)
+
 ## Info
 
 | Name | Value |

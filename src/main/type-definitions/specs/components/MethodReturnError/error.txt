@@ -1,0 +1,2 @@
+Error: [tagSuperfluousReturn] @return tag was specified, but method is neither abstract nor does it contain an explicit return statement
+at method foo (${PROJECT_BASEDIR}/src/main/type-definitions/specs/components/MethodReturnError/input.js:15:7)

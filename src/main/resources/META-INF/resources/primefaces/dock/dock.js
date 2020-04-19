@@ -1,8 +1,27 @@
 /**
- * PrimeFace Dock Widget
+ * __PrimeFaces Dock Widget__
+ * 
+ * Dock component mimics the well known dock interface of Mac OS X.
+ * 
+ * @prop {JQuery} items The DOM elements for the dock items.
+ * @prop {JQuery} links The DOM elements for the clickable anchors of the dock items.
+ * 
+ * @interface {PrimeFaces.widget.DockCfg} cfg The configuration for the {@link  Dock| Dock widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {string} cfg.animate Whether opening and closing the dock should be animated.
+ * @prop {string} cfg.animationDuration The duration for the opening and closing animation in milliseconds.
+ * @prop {boolean} cfg.blockScroll Whether to block scrolling of the document. 
  */
 PrimeFaces.widget.Dock = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function (cfg) {
         this._super(cfg);
 
@@ -16,6 +35,10 @@ PrimeFaces.widget.Dock = PrimeFaces.widget.BaseWidget.extend({
         this.bindAnimations();
     },
 
+    /**
+     * Sets up the hover and click event listeners required for the dock.
+     * @private
+     */
     bindAnimations: function () {
         var $this = this;
         this.items.hover(

@@ -1,0 +1,2 @@
+Error: [tagSuperfluousNext] @next tag was specified, but method contains yield expression whose return value is used
+at method foo (${PROJECT_BASEDIR}/src/main/type-definitions/specs/components/MethodReturnGeneratorSuperfluousNext/input.js:10:9)

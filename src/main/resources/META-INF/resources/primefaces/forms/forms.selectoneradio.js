@@ -1,8 +1,33 @@
 /**
- * PrimeFaces SelectOneRadio Widget
+ * __PrimeFaces SelectOneRadio Widget__
+ * 
+ * SelectOneRadio is an extended version of the standard SelectOneRadio with theme integration.
+ * 
+ * @prop {JQuery} originalInputs The DOM elements for the hidden radio input fields of type checkbox storing the value
+ * of this widget.
+ * @prop {JQuery} enabledInputs The (cloned) DOM elements for the non-disabled hidden input fields of type radio storing
+ * the value of this widget. 
+ * @prop {JQuery} inputs The (cloned) DOM elements for the hidden input fields of type radio storing the value of this
+ * widget.
+ * @prop {JQuery} outputs The DOM elements for the radio icons shown on the UI.
+ * @prop {JQuery} checkedRadio The DOM elements for the active radio icons shown on the UI .
+ * @prop {JQuery} labels The DOM elements for the label texts of each radio button.
+ * 
+ * @interface {PrimeFaces.widget.SelectOneRadioCfg} cfg The configuration for the {@link  SelectOneRadio| SelectOneRadio widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {boolean} cfg.custom Whether a custom layout is enabled.
+ * @prop {boolean} cfg.unselectable Unselectable mode when true clicking a radio again will clear the selection.
  */
 PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
@@ -55,6 +80,11 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         this.bindEvents();
     },
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     refresh: function(cfg) {
         if(this.cfg.custom) {
             for(var i = 0; i < this.inputs.length; i++) {
@@ -69,6 +99,10 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         this.init(cfg);
     },
 
+    /**
+     * Sets up all event listeners required by this widget.
+     * @private
+     */
     bindEvents: function() {
         var $this = this;
 
@@ -172,6 +206,10 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Unselects the given radio button option.
+     * @param {JQuery} radio A radio button of this widget to unselect.
+     */
     unselect: function(radio) {
         var radioInput = radio.prev().children(':radio');
         radioInput.prop('checked', false);
@@ -183,6 +221,10 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Selects the given radio button option. If another radio button option is selected already, it will be unselected.
+     * @param {JQuery} radio A radio button of this widget to select.
+     */
     select: function(radio) {
         var radioInput = radio.prev().children(':radio');
         this.checkedRadio = radio;
@@ -195,6 +237,11 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Removes some of the event listeners added by `bindEvents`. Called when this widget is disabled.
+     * @private
+     * @param {JQuery} input Radio input element for which to remove the listeners. 
+     */
     unbindEvents: function(input) {
         if(input) {
             input.off();
@@ -208,6 +255,10 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Disables a given radio button option of this widget.
+     * @param {number} index Index of the radio button option to disable. 
+     */
     disable: function(index) {
         if(index == null) {
             this.inputs.attr('disabled', 'disabled');
@@ -225,6 +276,10 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
 
     },
 
+    /**
+     * Enables a given radio button option of this widget.
+     * @param {number} index Index of the radio button option to enable. 
+     */
     enable: function(index) {
         if(index == null) {
             this.inputs.removeAttr('disabled');
@@ -240,6 +295,12 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         this.bindEvents();
     },
 
+    /**
+     * Calls the behavior for when a radio button options was clicked.
+     * @private
+     * @param {JQuery} input Radio button input that was clicked.
+     * @param {JQuery.Event} event (Click) event that was triggered.
+     */
     fireClickEvent: function(input, event) {
         var userOnClick = input.prop('onclick');
         if (userOnClick) {

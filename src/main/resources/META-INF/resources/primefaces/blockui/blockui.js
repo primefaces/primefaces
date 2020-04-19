@@ -1,16 +1,37 @@
 /**
- * PrimeFaces BlockUI Widget
+ * __PrimeFaces BlockUI Widget__
+ * 
+ * BlockUI is used to block interactivity of JSF components with optional AJAX integration.
+ * 
+ * @prop {JQuery} block The DOM element for the overlay that blocks the UI.
+ * @prop {JQuery} content The DOM element for the content of the blocker.
+ * @prop {JQuery} blocker The DOM element for the content of the blocking overlay. 
+ * 
+ * @interface {PrimeFaces.widget.BlockUICfg} cfg The configuration for the {@link  BlockUI| BlockUI widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {boolean} cfg.animate When disabled, displays block without animation effect.
+ * @prop {boolean} cfg.blocked Blocks the UI by default when enabled.
+ * @prop {string} cfg.block Search expression for block targets.
+ * @prop {string} cfg.styleClass Style class of the component.
+ * @prop {string} cfg.triggers Search expression of the components to bind.
  */
 PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
-        this.cfg = cfg;
-        this.id = this.cfg.id;
-        this.jqId = PrimeFaces.escapeClientId(this.id);
+        this._super(cfg);
+
         this.block = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.block);
-        this.content = $(this.jqId);
-        this.cfg.animate = (this.cfg.animate === false)? false : true;
-        this.cfg.blocked = (this.cfg.blocked === true)? true : false;
+        this.content = this.jq;
+        this.cfg.animate = (this.cfg.animate === false) ? false : true;
+        this.cfg.blocked = (this.cfg.blocked === true) ? true : false;
         
         this.render();
 
@@ -21,10 +42,13 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.blocked) {
             this.show();
         }
-
-        this.removeScriptElement(this.id);
     },
-            
+
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     refresh: function(cfg) {
         this.blocker.remove();
         this.block.children('.ui-blockui-content').remove();
@@ -33,6 +57,10 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
     },
     
+    /**
+     * Sets up the global event listeners on the document.
+     * @private
+     */
     bindTriggers: function() {
         var $this = this;
         
@@ -61,9 +89,9 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Show the component with optional duration animation.
      * 
-     * @param [duration] Durations are given in milliseconds; higher values indicate slower animations, not faster ones. 
-     *                 The strings 'fast' and 'slow' can be supplied to indicate durations of 200 and 600 milliseconds, 
-     *                 respectively.
+     * @param {number | string} [duration] Durations are given in milliseconds; higher values indicate slower
+     * animations, not faster ones. The strings `fast` and `slow` can be supplied to indicate durations of 200 and 600
+     * milliseconds, respectively.
      */
     show: function(duration) {
         this.blocker.css('z-index', ++PrimeFaces.zindex);
@@ -99,9 +127,9 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Hide the component with optional duration animation.
      * 
-     * @param [duration] Durations are given in milliseconds; higher values indicate slower animations, not faster ones. 
-     *                 The strings 'fast' and 'slow' can be supplied to indicate durations of 200 and 600 milliseconds, 
-     *                 respectively.
+     * @param {number} [duration] Durations are given in milliseconds; higher values indicate slower animations, not
+     * faster ones. The strings `fast` and `slow` can be supplied to indicate durations of 200 and 600 milliseconds,
+     * respectively.
      */
     hide: function(duration) {
         var animated = this.cfg.animate;
@@ -121,6 +149,10 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         this.block.attr('aria-busy', false);
     },
     
+    /**
+     * Renders the client-side parts of this widget.
+     * @private
+     */
     render: function() {   
         this.blocker = $('<div id="' + this.id + '_blocker" class="ui-blockui ui-widget-overlay ui-helper-hidden"></div>');
 
@@ -148,6 +180,11 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         }
     },
     
+    /**
+     * Checks whether the blocking overlay contains any content items.
+     * @private
+     * @return {boolean} `true` if this blocking overlay has got any content, `false` otherwise.
+     */
     hasContent: function() {
         return this.content.contents().length > 0;
     }

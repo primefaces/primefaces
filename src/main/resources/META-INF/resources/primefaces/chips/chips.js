@@ -1,8 +1,29 @@
 /**
- * PrimeFaces Chips Widget
+ * __PrimeFaces Chips Widget__
+ * 
+ * Chips is used to enter multiple values on an inputfield.
+ * 
+ * @prop {JQuery} input DOM element of the visible INPUT field.
+ * @prop {JQuery} hinput DOM element of the hidden INPUT field with the current value.
+ * @prop {JQuery} itemContainer DOM element of the container of the items (chips).
+ * @prop {JQuery} inputContainer DOM element of the container for the visible INPUT.
+ * @prop {string} placeholder Placeholder for the input field.
+ * 
+ * @interface {PrimeFaces.widget.ChipsCfg} cfg The configuration for the {@link  Chips| Chips widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {boolean} cfg.addOnBlur Whether to add an item when the input loses focus.
+ * @prop {number} cfg.max Maximum number of entries allowed.
  */
 PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
@@ -19,6 +40,10 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
         this.bindEvents();
     },
 
+    /**
+     * Sets up all event listeners required for this widget.
+     * @private
+     */
     bindEvents: function() {
         var $this = this;
 
@@ -74,6 +99,12 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Adds a new item (chip) to the list of currently displayed items.
+     * @param {string} value Value of the chip to add.
+     * @param {boolean} [refocus] `true` to put focus back on the INPUT again after the chip was added, or `false`
+     * otherwise. 
+     */
     addItem : function(value, refocus) {
         if(value && value.trim().length && (!this.cfg.max||this.cfg.max > this.hinput.children('option').length)) {
             var escapedValue = PrimeFaces.escapeHTML(value);
@@ -94,6 +125,10 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Removes an item (chip) from the list of currently displayed items.
+     * @param {JQuery} item An item  (LI element) that should be removed.
+     */
     removeItem: function(item) {
         var itemIndex = this.itemContainer.children('li.ui-chips-token').index(item);
         var itemValue = item.find('span.ui-chips-token-label').html()
@@ -116,6 +151,11 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Triggers the behaviors and event listeners for when an item (chip) was selected.
+     * @param {string} itemValue Value of the selected item.
+     * @private
+     */
     invokeItemSelectBehavior: function(itemValue) {
         if(this.hasBehavior('itemSelect')) {
             var ext = {
@@ -128,6 +168,11 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Triggers the behaviors and event listeners for when an item (chip) was unselected.
+     * @param {string} itemValue Value of the unselected item.
+     * @private 
+     */
     invokeItemUnselectBehavior: function(itemValue) {
         if(this.hasBehavior('itemUnselect')) {
             var ext = {

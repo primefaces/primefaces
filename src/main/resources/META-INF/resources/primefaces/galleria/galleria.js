@@ -1,8 +1,42 @@
 /**
- * PrimeFaces Galleria Widget
+ * __PrimeFaces Galleria Widget__
+ * 
+ * Galleria is used to display a set of images, optionally with a slideshow.
+ * 
+ * @prop {JQuery} caption The DOM element for the caption below the image.
+ * @prop {JQuery} frames The DOM elements for the frames in the image strip with the image preview. 
+ * @prop {number} interval ID of the set-interval ID for the slideshow.
+ * @prop {JQuery} panels The DOM element for the panels with the images.
+ * @prop {JQuery} panelWrapper The DOM element for the wrapper with the panel with the images.
+ * @prop {boolean} slideshowActive Whether the slideshow is currently running.
+ * @prop {JQuery} strip The DOM element for the strip at the bottom with the preview images.
+ * @prop {JQuery} stripWrapper The DOM element for the wrapper with strip at the bottom with the preview images.
+ * 
+ * @interface {PrimeFaces.widget.GalleriaCfg} cfg The configuration for the {@link  Galleria| Galleria widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
+ * 
+ * @prop {boolean} cfg.autoPlay Images are displayed in a slideshow in autoPlay.
+ * @prop {number} cfg.activeIndex Index of the image that is currently displayed.
+ * @prop {string} cfg.effect Name of animation to use.
+ * @prop {number} cfg.effectSpeed Duration of the animation in milliseconds.
+ * @prop {JQuery.EffectsOptions<HTMLElement>} cfg.effectOptions Options for the transition between two images.
+ * @prop {number} cfg.frameHeight Height of the frames.
+ * @prop {number} cfg.frameWidth Width of the frames.
+ * @prop {number} cfg.panelHeight Height of the viewport.
+ * @prop {number} cfg.panelWidth Width of the viewport.
+ * @prop {boolean} cfg.showCaption Whether the caption below the image is shown.
+ * @prop {boolean} cfg.showFilmstrip Whether the strip with all available images is shown.
+ * @prop {number} cfg.transitionInterval Defines interval of slideshow, in milliseconds.
  */
 PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
     
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
@@ -24,6 +58,12 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
         this.renderDeferred();
     },
     
+    /**
+     * @include
+     * @override
+     * @protected
+     * @inheritdoc
+     */
     _render: function() {
         this.panelWrapper.width(this.cfg.panelWidth).height(this.cfg.panelHeight);
         this.panels.width(this.cfg.panelWidth).height(this.cfg.panelHeight);
@@ -59,7 +99,11 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
             this.startSlideshow();
         }
     },
-                
+
+    /**
+     * Creates the HTML elements for the strip with the available images.
+     * @private
+     */
     renderStrip: function() {
         //strip
         var frameStyle = 'style="width:' + this.cfg.frameWidth + "px;height:" + this.cfg.frameHeight + 'px;"';
@@ -89,6 +133,10 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
             '<div class="ui-galleria-nav-next ui-icon ui-icon-circle-triangle-e" style="bottom:' + (this.cfg.frameHeight / 2) + 'px"></div>');
     },
                 
+    /**
+     * Sets up all event listenters required by this widget.
+     * @private
+     */
     bindEvents: function() {
         var $this = this;
 
@@ -137,6 +185,9 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
         });
     },
                 
+    /**
+     * Starts the slideshow, if it is not started already.
+     */
     startSlideshow: function() {
         var $this = this;
                     
@@ -147,6 +198,9 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
         this.slideshowActive = true;
     },
     
+    /**
+     * Starts the slideshow, if it is not stopped already.
+     */
     stopSlideshow: function() {
         if(this.slideshowActive) {
            clearInterval(this.interval);
@@ -155,10 +209,19 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
     
+    /**
+     * Checks whether the slideshow is currently active.
+     * @return {boolean} `true` if the slideshow is currently active, or `false` otherwise.
+     */
     isSlideshowActive: function() {
         return this.slideshowActive;
     },
-                
+
+    /**
+     * Moves the slideshow to the image at the given index.
+     * @param {number} index 0-based index of the image to display. 
+     * @param {boolean} [reposition] `true` (or not given) to reposition the image strip with an animation.
+     */
     select: function(index, reposition) {
         if(index !== this.cfg.activeIndex) {
             if(this.cfg.showCaption) {
@@ -207,10 +270,17 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
     
+    /**
+     * Hides the caption text below the image.
+     */
     hideCaption: function() {
         this.caption.stop().slideUp(this.cfg.effectSpeed);
     },
         
+    /**
+     * Shows the caption text below the image. Pass the `activePanel` property of this panel as the parameter.
+     * @param {JQuery} panel The panel that contains the caption text.
+     */
     showCaption: function(panel) {
         var image = panel.children('img');
         this.caption.queue(function () {
@@ -218,6 +288,9 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
         }).slideDown(this.cfg.effectSpeed);
     },
                 
+    /**
+     * Moves to the previous image that comes before the currently shown image.
+     */
     prev: function() {
         if (this.isAnimating()) {
             return;
@@ -228,6 +301,9 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
                 
+    /**
+     * Moves to the next image that comes after the currently shown image.
+     */
     next: function() {
         if (this.isAnimating()) {
             return;
@@ -242,6 +318,10 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
     
+    /**
+     * Checks whether an animation is currently in progress.
+     * @return {boolean} `true` if an animation is currently active, or `false` otherwise.
+     */
     isAnimating: function() {
         return this.frames.is(':animated');
     }

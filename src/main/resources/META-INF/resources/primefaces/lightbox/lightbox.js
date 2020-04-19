@@ -1,8 +1,66 @@
 /**
- * PrimeFaces LightBox Widget
+ * __PrimeFaces LightBox Widget__
+ * 
+ * @typedef {"iframe" | "image" | "inlne"} PrimeFaces.widget.LightBox.ContentMode Type of the content that is shown in
+ * the lightbox.
+ * 
+ * @typedef PrimeFaces.widget.LightBox.OnHideCallback Client-side callback invoked when the lightbox is hidden. See also
+ * {@link LightBoxCfg.onHide}.
+ * @this {PrimeFaces.widget.LightBox} PrimeFaces.widget.LightBox.OnHideCallback 
+ * 
+ * @typedef PrimeFaces.widget.LightBox.OnShowCallback Client-side callback invoked when the lightbox is shown. See also
+ * {@link LightBoxCfg.onShow}.
+ * @this {PrimeFaces.widget.LightBox} PrimeFaces.widget.LightBox.OnShowCallback 
+ * 
+ * @typedef {() => void} PrimeFaces.widget.LightBox.OnShowHandlersCallback List of registered callback handlers for when
+ * the lightbox is shown. See also {@link LightBox.onshowHandlers}.
+ * 
+ * @interface {PrimeFaces.widget.LightBox.UrlSettings} UrlSettings Settings for showing an URL in an iframe inside
+ * the lightbox.
+ * @prop {number} [UrlSettings.height] Height of the iframe in pixels.
+ * @prop {string} UrlSettings.src URL to show in an iframe.
+ * @prop {string} [UrlSettings.title] Title text to show below the iframe.
+ * @prop {number} [UrlSettings.width] Width of the iframe in pixels.
+ * 
+ * @prop {JQuery} caption The DOM element for the caption container below the lightbox.
+ * @prop {JQuery} captionText The DOM element for the caption text below the lightbox.
+ * @prop {JQuery} closeIcon The DOM element for the close icon to hide the lightbox.
+ * @prop {JQuery} content The DOM element for the content of the lightbox
+ * @prop {JQuery} contentWrapper The DOM element for the content container of the lightbox-
+ * @prop {number} current Index of the slide currently being shown.
+ * @prop {JQuery} iframe The DOM element for the iframe, if `mode` is set to `iframe`.
+ * @prop {boolean} iframeLoaded Whether the iframe was already loaded.
+ * @prop {JQuery} imageDisplay The DOM element for the image, if `mode` is set to `image`.
+ * @prop {JQuery} inline The DOM element for the inline content element, if `mode` is set to `inline`.
+ * @prop {JQuery} links The DOM element for the links in the inline content, if `mode` is set to `inline`.
+ * @prop {JQuery} navigators The DOM element for the arrow buttons for switching to the previous or next slide. 
+ * @prop {PrimeFaces.widget.LightBox.OnShowHandlersCallback[]} onshowHandlers List of registered callback handlers for
+ * when the lightbox is shown.
+ * @prop {JQuery} panel The DOM element for the entire lightbox overlay panel.
+ * 
+ * @interface {PrimeFaces.widget.LightBoxCfg} cfg The configuration for the {@link  LightBox| LightBox widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {string} cfg.appendTo Selector for the element to which the overlay lightbox panel is appended.
+ * @prop {number} cfg.height Height of the overlay in iframe mode.
+ * @prop {string} cfg.iframeTitle Title of the iframe element.
+ * @prop {PrimeFaces.widget.LightBox} cfg.mode The type of content that is shown in the lightbox.
+ * @prop {PrimeFaces.widget.LightBox.OnHideCallback} cfg.onHide Client-side callback invoked when the lightbox is
+ * hidden.
+ * @prop {PrimeFaces.widget.LightBox.OnShowCallback} cfg.onShow Client-side callback invoked when the lightbox is
+ * shown.
+ * @prop {boolean} cfg.visible Whether the lightbox is initially visible.
+ * @prop {number} cfg.width Width of the overlay in iframe mode.
  */
 PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         // the dynamic overlay must be appended to the body
         cfg.appendTo = '@(body)';
@@ -28,13 +86,21 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
-    //@override
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     refresh: function(cfg) {
         PrimeFaces.utils.removeDynamicOverlay(this, this.panel, this.id + '_panel', $(document.body));
 
         this._super(cfg);
     },
 
+    /**
+     * Creates the DOM elements for the lightbox panel.
+     * @private
+     */
     createPanel: function() {
         this.panel = $('<div id="' + this.id + '_panel" class="ui-lightbox ui-widget ui-helper-hidden ui-corner-all ui-shadow">'
             + '<div class="ui-lightbox-content-wrapper">'
@@ -55,6 +121,10 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         this.closeIcon = this.caption.children('.ui-lightbox-close');
     },
 
+    /**
+     * Sets up the DOM elements and events handlers for showing images in the lightbox
+     * @private
+     */
     setupImaging: function() {
         var $this = this;
 
@@ -146,6 +216,11 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Scales the given image so that it fits the lightbox viewport.
+     * @param {JQuery} image An image to be scaled.
+     * @private
+     */
     scaleImage: function(image) {
         var win = $(window),
         winWidth = win.width(),
@@ -169,6 +244,10 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Sets up the DOM elements and events handlers for inline content such as videos in the lightbox.
+     * @private
+     */
     setupInline: function() {
         this.inline = this.jq.children('.ui-lightbox-inline');
         this.inline.appendTo(this.content).show();
@@ -187,6 +266,10 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Sets up the DOM elements and events handlers for showing an external page inside an iframe in the lightbox.
+     * @private
+     */
     setupIframe: function() {
         var $this = this;
         this.iframeLoaded = false;
@@ -228,6 +311,10 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Sets up some common event handlers required independent of the content shown in the lightbox.
+     * @private
+     */
     bindCommonEvents: function() {
         var $this = this;
 
@@ -261,6 +348,9 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Brings up this lightbox and shows it to the user.
+     */
     show: function() {
         this.center();
 
@@ -275,6 +365,9 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Closes this lightbox and hides it from view.
+     */
     hide: function() {
         this.panel.fadeOut();
         this.disableModality();
@@ -290,6 +383,9 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Centers this lightbox so that is moved to the center of the browser viewport.
+     */
     center: function() {
         var win = $(window),
         left = (win.width() / 2 ) - (this.panel.width() / 2),
@@ -301,30 +397,55 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Makes this  lightbox a modal dialog so that the user cannot interact with other content on the page.
+     */
     enableModality: function() {
         PrimeFaces.utils.addModal(this, this.panel.css('z-index') - 1);
     },
 
+    /**
+     * Makes this  lightbox a non-modal dialog so that the user can interact with other content on the page.
+     */
     disableModality: function() {
         PrimeFaces.utils.removeModal(this);
     },
 
+    /**
+     * Displays the navigator buttons for switching to the previous or next slide.
+     */
     showNavigators: function() {
         this.navigators.zIndex(this.imageDisplay.zIndex() + 1).show();
     },
 
+    /**
+     * Hides the navigator buttons for switching to the previous or next slide.
+     */
     hideNavigators: function() {
         this.navigators.hide();
     },
 
+    /**
+     * Adds a callback that is invoked when the lightbox is displayed.
+     * @param {() => void} fn A callback that is invoked when the lightbox is shown. 
+     * @private
+     */
     addOnshowHandler: function(fn) {
         this.onshowHandlers.push(fn);
     },
 
+    /**
+     * Checks whether this light is currently being displayed.
+     * @return {boolean} `true` if this lightbox is currently hidden, or `false` otherwise.
+     */
     isHidden: function() {
         return this.panel.is(':hidden');
     },
 
+    /**
+     * Shows the given URL in an IFRAME inside this lightbox.
+     * @param {PrimeFaces.widget.LightBox.UrlSettings} opt Options for how the URL is shown.
+     */
     showURL: function(opt) {
         if(opt.width)
             this.iframe.attr('width', opt.width);

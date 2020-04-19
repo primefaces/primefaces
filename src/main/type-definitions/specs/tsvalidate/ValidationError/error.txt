@@ -1,0 +1,5 @@
+Error: Program failed to validate:
+Error: [tsDiagnosticsError] at <unknown> (${PROJECT_BASEDIR}/src/main/type-definitions/specs/tsvalidate/ValidationError/input.d.ts:5:15)
+Interface 'Bar' incorrectly extends interface 'Foo'.
+  Types of property 'foo' are incompatible.
+    Type '(x: number, y: string) => string[]' is not assignable to type '(x: number) => boolean[]'.

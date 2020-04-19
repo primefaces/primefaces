@@ -2,6 +2,8 @@
 
 CommandButton is an extended version of standard commandButton with ajax and theming.
 
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.commandbutton.html)
+
 ## Info
 
 | Name | Value |

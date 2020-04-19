@@ -180,7 +180,7 @@ public class TreeTableRenderer extends DataRenderer {
 
             //update rows with rpp value
             String rppValue = params.get(clientId + "_rppDD");
-            if (rppValue != null) {
+            if (rppValue != null && !rppValue.equals("*")) {
                 tt.setRows(Integer.parseInt(rppValue));
             }
 

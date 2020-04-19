@@ -1,8 +1,60 @@
 /**
- * PrimeFaces Carousel Widget
+ * __PrimeFaces Carousel Widget__
+ * 
+ * Carousel is a multi purpose component to display a set of data or general content with slide effects.
+ * 
+ * @typedef {"fade" | "slide"} PrimeFaces.widget.Carousel.Effect Name of the animation for the carousel widget.
+ * 
+ * @prop {number} columns The number of simultaneously visible items.
+ * @prop {JQuery} dropdown The DOM element for the dropdown for selecting the item to show.
+ * @prop {number} first 0-based index of the the first items that is shown currently.
+ * @prop {JQuery} header The DOM element for the header of the carousel.
+ * @prop {JQuery} items The DOM elements for the carousel items.
+ * @prop {JQuery} itemsContainer The DOM element for the container of the carousel items.
+ * @prop {number} itemsCount The total number of carousel items.
+ * @prop {JQuery} nextNav The DOM element for the button to switch to the next carousel item.
+ * @prop {number} page The currently displayed page of carousel items.
+ * @prop {JQuery} pageLinks The DOM elements for the links to other carousel pages.
+ * @prop {JQuery} prevNav The DOM element for the button to switch to the previous carousel item.
+ * @prop {JQuery} responsiveDropdown The DOM element for the responsive dropdown for selecting the item show.
+ * @prop {JQuery} stateholder The DOM element for the hidden input storing the currently visible carousel items.
+ * @prop {string} stateKey The key of the cookie that stores the current carousel state.
+ * @prop {JQuery} toggler The DOM element for the carousel toggler.
+ * @prop {JQuery} toggleableContent The DOM element for the toggleable content of the carousel.
+ * @prop {JQuery} toggleStateHolder The DOM element for the hidden input with the current toggle state.
+ * @prop {number} totalPages The total number of available carousel pages.
+ * @prop {JQuery} viewport The DOM element for the viewport of the carousel that shows the carousel items.
+ * 
+ * @interface {PrimeFaces.widget.CarouselCfg} cfg The configuration for the {@link  Carousel| Carousel widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
+ * 
+ * @prop {number} cfg.autoplayInterval Sets the time in milliseconds to have Carousel start scrolling automatically
+ * after being initialized.
+ * @prop {number} cfg.breakpoint Breakpoint value in pixels to switch between small and large viewport.
+ * @prop {boolean} cfg.circular Sets continuous scrolling
+ * @prop {boolean} cfg.collapsed Whether the carousel is initially collapsed.
+ * @prop {string} cfg.easing Name of the easing animation.
+ * @prop {PrimeFaces.widget.Carousel.Effect} cfg.effect Name of the animation for transitioning between pages.
+ * @prop {number} cfg.effectDuration Duration of the animation in milliseconds.
+ * @prop {number} cfg.firstVisible 0-based index of the first element to be displayed
+ * @prop {number} cfg.numVisible Number of visible items per page
+ * @prop {number} cfg.pageLinks Defines the number of page links of paginator.
+ * @prop {boolean} cfg.responsive In responsive mode, carousel adjusts its content based on screen size.
+ * @prop {boolean} cfg.stateful Whether the state of the carousel is saved between page loads.
+ * @prop {number} cfg.toggleSpeed The speed at which the carousel toggles.
+ * @prop {boolean} cfg.toggleable Whether the carousel is toggleable.
+ * @prop {boolean} cfg.vertical Sets vertical scrolling
+ *  
  */
 PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
         this.viewport = this.jq.children('.ui-carousel-viewport');
@@ -42,6 +94,12 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.renderDeferred();
     },
 
+    /**
+     * @include
+     * @override
+     * @inheritdoc
+     * @protected
+     */
     _render: function() {
         this.updateNavigators();
         this.bindEvents();
@@ -63,6 +121,10 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Calculates the required width of each item, and applies that width.
+     * @private
+     */
     calculateItemWidths: function() {
         var firstItem = this.items.eq(0);
         if(firstItem.length) {
@@ -71,6 +133,10 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Calculates the required height of each item, and applies that height.
+     * @private
+     */
     calculateItemHeights: function() {
         var firstItem = this.items.eq(0);
         if(firstItem.length) {
@@ -95,6 +161,10 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Calculates the proper size for this widget and applies it.
+     * @private
+     */
     refreshDimensions: function() {
         var win = $(window);
         if(win.width() <= this.cfg.breakpoint) {
@@ -117,6 +187,10 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.itemsContainer.css('left', (-1 * (this.viewport.innerWidth() * this.page)));
     },
 
+    /**
+     * Sets up all event listeners required by this widget.
+     * @private
+     */
     bindEvents: function() {
         var $this = this;
 
@@ -201,6 +275,10 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Updates the navigator icons to reflect the current page.
+     * @private
+     */
     updateNavigators: function() {
         if(!this.cfg.circular) {
             if(this.page === 0) {
@@ -231,6 +309,10 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Moves this carousel to the given page.
+     * @param {number} p 0-based index of the page to display.
+     */
     setPage: function(p) {
         if(p !== this.page && !this.itemsContainer.is(':animated')) {
             var $this = this,
@@ -254,6 +336,9 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Enables autoplay and starts the slideshow.
+     */
     startAutoplay: function() {
         var $this = this;
 
@@ -265,10 +350,17 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         }, this.cfg.autoplayInterval);
     },
 
+    /**
+     * Disables autoplay and stops the slideshow.
+     */
     stopAutoplay: function() {
         clearInterval(this.interval);
     },
 
+    /**
+     * Expands or collapses the content this carousel, depending on whether it is currently collapsed or expanded,
+     * respectively.
+     */
     toggle: function() {
         if(this.cfg.collapsed) {
             this.expand();
@@ -280,26 +372,47 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         PrimeFaces.invokeDeferredRenders(this.id);
     },
 
+    /**
+     * If enabled, expands the content of this carousel.
+     */
     expand: function() {
         this.toggleState(false, 'ui-icon-plusthick', 'ui-icon-minusthick');
 
         this.slideDown();
     },
 
+    /**
+     * If enabled, collapses the content of this carousel.
+     */
     collapse: function() {
         this.toggleState(true, 'ui-icon-minusthick', 'ui-icon-plusthick');
 
         this.slideUp();
     },
 
+    /**
+     * Slides up the toggleable content.
+     * @private
+     */
     slideUp: function() {
         this.toggleableContent.slideUp(this.cfg.toggleSpeed, 'easeInOutCirc');
     },
 
+    /**
+     * Slides down the toggleable content.
+     * @private
+     */
     slideDown: function() {
         this.toggleableContent.slideDown(this.cfg.toggleSpeed, 'easeInOutCirc');
     },
 
+    /**
+     * Expands or collapses this carousel as indicated by the given arguments.
+     * @private
+     * @param {boolean} collapsed `false` to expand, `true` to collapse. 
+     * @param {string} removeIcon Class of the remove icon 
+     * @param {string} addIcon Class of the add icon.
+     */
     toggleState: function(collapsed, removeIcon, addIcon) {
         this.toggler.children('span.ui-icon').removeClass(removeIcon).addClass(addIcon);
         this.cfg.collapsed = collapsed;
@@ -310,6 +423,10 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Restores the state as saved by `saveState` to this carousel.
+     * @private
+     */
     restoreState: function() {
         var carouselStateAsString = PrimeFaces.getCookie(this.stateKey) || "first: null, collapsed: null";
         this.carouselState = PrimeFaces.csp.evalResult('({' + carouselStateAsString + '})');
@@ -325,6 +442,10 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Saves the current state of this carousel (current page etc.) in a cookie.
+     * @private
+     */
     saveState: function() {
         var carouselStateAsString = "first:" + this.first;
 
@@ -335,6 +456,10 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         PrimeFaces.setCookie(this.stateKey, carouselStateAsString, {path:'/'});
     },
 
+    /**
+     * Clears the state as saved by `saveState`.
+     * @private 
+     */
     clearState: function() {
         if(this.cfg.stateful) {
             PrimeFaces.deleteCookie(this.stateKey, {path:'/'});

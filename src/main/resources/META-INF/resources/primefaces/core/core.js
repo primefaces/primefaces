@@ -5,12 +5,62 @@
         return;
     }
 
+    /**
+     * This is the main global object for accessing the client-side API of PrimeFaces. Broadly speaking, it consists
+     * of the following entries:
+     * 
+     * - {@link PrimeFaces.ajax} The AJAX module with functionality for sending AJAX requests
+     * - {@link PrimeFaces.csp} The  CSP module for the HTTP Content-Security-Policy (CSP) policy `script-src` directive.
+     * - {@link PrimeFaces.dialog} The dialog module with functionality related to the dialog framework
+     * - {@link PrimeFaces.env} The environment module with information about the current browser
+     * - {@link PrimeFaces.expressions} The search expressions module with functionality for working with search expression
+     * - {@link PrimeFaces.resources} The resources module with functionality for creating resource links
+     * - {@link PrimeFaces.utils} The utility module with functionality that does not fit anywhere else
+     * - {@link PrimeFaces.widget} The registry with all available widget classes
+     * - {@link PrimeFaces.widgets} The registry with all currently instantiated widgets
+     * - Several other utility methods defined directly on the `PrimeFaces` object, such as
+     * {@link PrimeFaces.monitorDownload}, {@link PrimeFaces.getWidgetById}, or {@link PrimeFaces.escapeHTML}.
+     * 
+     * @namespace {PrimeFaces}
+     * 
+     * @interface {PrimeFaces.DeferredRender} DeferredRender Represents a deferred render added for a deferred widget.
+     * Some widgets need to compute their dimensions based on their parent element(s). This requires that such widgets
+     * are not rendered until they have become visible. A widget may not be visible, for example, when it is inside a
+     * tab that is not shown when the page is rendered. PrimeFaces provides a global mechanism for widgets to render
+     * once they are visible. This is done by keeping a list of widgets that need to be rendered, and checking on every
+     * change (AJAX request, tab change etc.) whether any of those have become visible. A widgets should extend
+     * `PrimeFaces.widget.DeferredWidget` to make use of this functionality.
+     * @prop {string} DeferredRender.widget The ID of a deferred widget.
+     * @prop {string} DeferredRender.container ID of the container that should be visible before the widget can be rendered.
+     * @method DeferredRender.callback Callback that is invoked when the widget _may_ possibly have become visible.
+     * Checks whether the widget can be rendered and if so, renders it. 
+     * @return {boolean} DeferredRender.callback `true` when the widget was rendered, or `false` when the widget still
+     * needs to be rendered later.
+     */
     var PrimeFaces = {
 
+        /**
+         * Creates an ID to a CSS ID selector that matches elements with that ID. For example:
+         * ```
+         * PrimeFaces.escapeClientId("form:input"); // => "#form\:input" 
+         * PrimeFaces.escapeClientId("form#input"); // => "#form#input" 
+         * ```
+         * 
+         * __Please note that this method does not escape all characters that need to be escaped and will not work with arbitrary IDs__
+         * @param {string} id ID to convert.
+         * @return {string} A CSS ID selector for the given ID.
+         */
         escapeClientId : function(id) {
             return "#" + id.replace(/:/g,"\\:");
         },
 
+        /**
+         * Registeres a listener that will be called as soon as the given element was loaded completely. Please note the
+         * listener may be called synchronously (immediately) or asynchronously, depending on whether the element is
+         * already loaded.
+         * @param {JQuery} element Element to wait for
+         * @param {() => void} listener Listener to call once the element is loaded
+         */
         onElementLoad: function(element, listener) {
             if (element.prop('complete')) {
                 listener();
@@ -20,8 +70,13 @@
             }
         },
 
+        /**
+         * Finds a widget in the current page with the given ID.
+         * @param {string} id ID of the widget to retrieve.
+         * @return {PrimeFaces.widget.BaseWidget | null} The widget with the given ID, of `null` if no such widget was
+         * found.  
+         */
         getWidgetById : function(id) {
-
             for (var widgetVar in PrimeFaces.widgets) {
                 var widget = PrimeFaces.widgets[widgetVar];
                 if (widget && widget.id === id) {
@@ -32,6 +87,13 @@
             return null;
         },
 
+        /**
+         * Adds hidden input elements to the given form. For each key-value pair, a new hidden input element is created
+         * with the given value and the key used as the name. 
+         * @param {string} parent The ID of a FORM element.
+         * @param {Record<string, string>} params An object with key-value pairs.
+         * @return {typeof PrimeFaces}
+         */
         addSubmitParam : function(parent, params) {
             var form = $(this.escapeClientId(parent));
 
@@ -43,7 +105,12 @@
         },
 
         /**
-         * Submits a form and clears ui-submit-param after that to prevent dom caching issues
+         * Submits the given form, and clears all `ui-submit-param`s after that to prevent dom caching issues.
+         * 
+         * If a target is given, it is set on the form temporarily before it is submitted. Afterwards, the original
+         * target attribute of the form is restored.
+         * @param {string} formId ID of the FORM element.
+         * @param {string} [target] The target attribute to use on the form during the submit process.
          */
         submit : function(formId, target) {
             var form = $(this.escapeClientId(formId));
@@ -66,15 +133,30 @@
             }
         },
 
+        /**
+         * Callback that is invoked after a POST request.
+         */
         onPost : function() {
             this.nonAjaxPosted = true;
             this.abortXHRs();
         },
 
+        /**
+         * Aborts all pending AJAX requests. This includes both requests that were already sent but did not receive a
+         * response yet, as well as requests that are waiting in the queue and have not been sent yet.
+         */
         abortXHRs : function() {
             PrimeFaces.ajax.Queue.abortAll();
         },
 
+        /**
+         * Attaches the given behaviors to the element. For each behavior, an event listener is registered on the
+         * element. Then, when the event is triggered, the behavior callback is invoked.
+         * @param {JQuery} element The element for which to attach the behaviors.
+         * @param {Record<string, (this: JQuery, event: JQuery.Event) => void>} behaviors An object with an event name
+         * as the key and event handlers for that event as the value. Each event handler is called with the given
+         * element as the this context and the event that occurred as the first argument.
+         */
         attachBehaviors : function(element, behaviors) {
             $.each(behaviors, function(event, fn) {
                 element.on(event, function(e) {
@@ -83,18 +165,39 @@
             });
         },
 
+        /**
+         * Fetches the value of a cookie by its name
+         * @param {string} name Name of a cookie
+         * @return {string | undefined} The value of the given cookie, or `undefined` if no such cookie exists
+         */
         getCookie : function(name) {
             return $.cookie(name);
         },
 
+        /**
+         * Sets the value of a given cookie.
+         * @param {string} name Name of the cookie to set
+         * @param {string} value Value to set 
+         * @param {Partial<JQueryCookie.Options>} [cfg] Configuration for this cookie: when it expires, its
+         * paths and domain and whether it is secure cookie.
+         */
         setCookie : function(name, value, cfg) {
             $.cookie(name, value, cfg);
         },
 
+        /**
+         * Deletes the given cookie.
+         * @param {string} name Name of the cookie to delete 
+         * @param {Partial<JQueryCookie.Options>} [cfg] The cookie configuration used to set the cookie. 
+         */
         deleteCookie: function(name, cfg) {
             $.removeCookie(name, cfg);
         },
 
+        /**
+         * Checks whether cookies are enabled in the current browser.
+         * @return {boolean} `true` if cookies are enabled and can be used, `false` otherwise.
+         */
         cookiesEnabled: function() {
             var cookieEnabled = (navigator.cookieEnabled) ? true : false;
 
@@ -107,10 +210,10 @@
         },
 
         /**
-         * Updates the Input to add style whether it contains data or not. Used particularly in Floating Labels.
-         *
-         * @param the text input to modify
-         * @param the parent element of input
+         * Updates the class of the given INPUT element to indicate whether the element contains data or not. Used for
+         * example in floating labels.
+         * @param {JQuery} input The text input to modify
+         * @param {JQuery} parent The parent element of the input.
          */
         updateFilledState: function(input, parent) {
             var value = input.val();
@@ -131,6 +234,14 @@
             }
         },
 
+        /**
+         * INPUT elements may have different states, such as `hovering` or `focused`. For each state, there is a
+         * corresponding style class that is added to the input when it is in that state, such as `ui-state-hover` or
+         * `ui-state-focus`. These classes are used by CSS rules for styling. This method sets up an input element so
+         * that the classes are added correctly (by adding event listeners).
+         * @param {JQuery} input INPUT element to skin
+         * @return {typeof PrimeFaces} this for chaining
+         */
         skinInput : function(input) {
             var parent = input.parent(),
             updateFilledStateOnBlur = function () {
@@ -180,6 +291,14 @@
             return this;
         },
 
+        /**
+         * BUTTON elements may have different states, such as `hovering` or `focused`. For each state, there is a
+         * corresponding style class that is added to the button when it is in that state, such as `ui-state-hover` or
+         * `ui-state-focus`. These classes are used by CSS rules for styling. This method sets up a button element so
+         * that the classes are added correctly (by adding event listeners).
+         * @param {JQuery} button BUTTON element to skin
+         * @return {typeof PrimeFaces} this for chaining
+         */
         skinButton : function(button) {
             button.mouseover(function(){
                 var el = $(this);
@@ -217,6 +336,14 @@
             return this;
         },
 
+        /**
+         * SELECT elements may have different states, such as `hovering` or `focused`. For each state, there is a
+         * corresponding style class that is added to the select when it is in that state, such as `ui-state-hover` or
+         * `ui-state-focus`. These classes are used by CSS rules for styling. This method sets up a select element so
+         * that the classes are added correctly (by adding event listeners).
+         * @param {JQuery} select SELECT element to skin
+         * @return {typeof PrimeFaces} this for chaining
+         */
         skinSelect : function(select) {
             select.mouseover(function() {
                 var el = $(this);
@@ -233,18 +360,30 @@
             return this;
         },
 
+        /**
+         * Logs the given message at the `info` level.
+         * @param {string} log Message to log
+         */
         info: function(log) {
             if(this.logger) {
                 this.logger.info(log);
             }
         },
 
+        /**
+         * Logs the given message at the `debug` level.
+         * @param {string} log Message to log
+         */
         debug: function(log) {
             if(this.logger) {
                 this.logger.debug(log);
             }
         },
 
+        /**
+         * Logs the given message at the `warn` level.
+         * @param {string} log Message to log
+         */
         warn: function(log) {
             if(this.logger) {
                 this.logger.warn(log);
@@ -255,6 +394,10 @@
             }
         },
 
+        /**
+         * Logs the given message at the `error` level.
+         * @param {string} log Message to log
+         */
         error: function(log) {
             if(this.logger) {
                 this.logger.error(log);
@@ -265,14 +408,27 @@
             }
         },
 
+        /**
+         * Checks whether the current application is running in a development environment or a production environment.
+         * @return {boolean} `true` if this is a development environment, `false` otherwise.
+         */
         isDevelopmentProjectStage: function() {
             return PrimeFaces.settings.projectStage === 'Development';
         },
 
+        /**
+         * Handles the error case when a widget was requested that is not available. Currently just logs an error
+         * message.
+         * @param {string} widgetVar Widget variables of a widget
+         */
         widgetNotAvailable: function(widgetVar) {
            PrimeFaces.error("Widget for var '" + widgetVar + "' not available!");
         },
 
+        /**
+         * Takes an input or textarea element and sets the caret (text cursor) position to the end of the the text.
+         * @param {JQuery} element An input or textarea element.
+         */
         setCaretToEnd: function(element) {
             if(element) {
                 element.focus();
@@ -293,6 +449,11 @@
             }
         },
 
+        /**
+         * Changes the current theme to the given theme (by exchanging CSS files). Requires that the theme was
+         * installed and is available.
+         * @param {string} newTheme The new theme, eg. `aristo`, `nova-dark`, or `omega`.
+         */
         changeTheme: function(newTheme) {
             if(newTheme && newTheme !== '') {
                 var themeLink = $('link[href*="' + PrimeFaces.RESOURCE_IDENTIFIER + '/theme.css"]');
@@ -310,16 +471,30 @@
             }
         },
 
+        /**
+         * Creates a regexp that matches the given text literal, and HTML-escapes that result.
+         * @param {string} text The literal text to escape.
+         * @return {string} A regexp that matches the given text, escaped to be used as a text-literal within an HTML
+         * document.
+         */
         escapeRegExp: function(text) {
             return this.escapeHTML(text.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1"));
         },
 
+        /**
+         * Escapes the given value to be used as the content of an HTML element or attribute.
+         * @param {string} value A string to be escaped
+         * @return {string} The given value, escaped to be used as a text-literal within an HTML document.
+         */
         escapeHTML: function(value) {
             return String(value).replace(/[&<>"'`=\/]/g, function (s) {
                 return PrimeFaces.entityMap[s];
             });
         },
 
+        /**
+         * Clears the text selected by the user on the current page.
+         */
         clearSelection: function() {
             if(window.getSelection) {
                 if(window.getSelection().empty) {
@@ -337,6 +512,10 @@
             }
         },
 
+        /**
+         * Finds the text currently selected by the user on the current page.
+         * @return {string | Selection}
+         */
         getSelection: function() {
             var text = '';
             if (window.getSelection) {
@@ -350,22 +529,44 @@
             return text;
         },
 
+        /**
+         * Checks whether any text on the current page is selected by the user.
+         * @return {boolean} `true` if text is selected, `false` otherwise.
+         */
         hasSelection: function() {
             return this.getSelection().length > 0;
         },
 
+        /**
+         * A shortcut for {@link createWidget}.
+         * @param {string} widgetName Name of the widget class, as registered in {@link PrimeFaces.widget}.
+         * @param {string} widgetVar Widget variable of the widget 
+         * @param {PrimeFaces.widget.BaseWidgetCfg} cfg Configuration for the widget
+         */
         cw : function(widgetName, widgetVar, cfg) {
             this.createWidget(widgetName, widgetVar, cfg);
         },
 
-
         /**
-         * @deprecated moved to PrimeFaces.resources.getFacesResource
+         * Deprecated, use {@link PrimeFaces.resources.getFacesResource} instead.
+         * @deprecated
+         * @param {string} name Name of the resource
+         * @param {string} library Library of the resource
+         * @param {string} version Version of the resource
+         * @return {string} The URL for accessing the given resource.
          */
         getFacesResource : function(name, library, version) {
            return PrimeFaces.resources.getFacesResource(name, library, version);
         },
 
+        /**
+         * Creates a new widget of the given type and with the given configuration. Registers that widget in the widgets
+         * registry {@link PrimeFaces.widgets}. If this method is called in response to an AJAX request and the method
+         * exists already, it is refreshed.
+         * @param {string} widgetName Name of the widget class, as registered in `PrimeFaces.widget`
+         * @param {string} widgetVar Widget variable of the widget 
+         * @param {PrimeFaces.widget.BaseWidgetCfg} cfg Configuration for the widget
+         */
         createWidget : function(widgetName, widgetVar, cfg) {
             cfg.widgetVar = widgetVar;
 
@@ -391,6 +592,14 @@
             }
         },
 
+        /**
+         * Checks whether an items is contained in the given array. The items is compared against the array entries
+         * via the `===` operator.
+         * @template [T=any] Type of the array items
+         * @param {T[]} arr An array with items 
+         * @param {T} item An item to check
+         * @return {boolean} `true` if the given item is in the given array, `false` otherwise.
+         */
         inArray: function(arr, item) {
             for(var i = 0; i < arr.length; i++) {
                 if(arr[i] === item) {
@@ -401,10 +610,25 @@
             return false;
         },
 
+        /**
+         * Checks whether a value is of type `number` and is neither `Infinity` nor `NaN`.
+         * @param {any} value A value to check
+         * @return {boolean} `true` if the given value is a finite number, `false` otherwise.
+         */
         isNumber: function(value) {
             return typeof value === 'number' && isFinite(value);
         },
 
+        /**
+         * Attempts to put focus an element:
+         * 
+         * - When `id` is given, puts focus on the element with that `id`
+         * - Otherwise, when `context` is given, puts focus on the first focusable element within that context
+         * (container)
+         * - Otherwise, puts focus on the first focusable element in the page.
+         * @param {string} [id] ID of an element to focus.
+         * @param {string} [context] The ID of a container with an element to focus
+         */
         focus: function(id, context) {
             var selector = ':not(:submit):not(:button):input:visible:enabled[name]';
 
@@ -436,6 +660,10 @@
             PrimeFaces.customFocus = true;
         },
 
+        /**
+         * Puts focus on the given element.
+         * @param {JQuery} el Element to focus
+         */
         focusElement: function(el) {
             if(el.is(':radio')) {
                 // github issue: #2582
@@ -455,6 +683,38 @@
             }
         },
 
+        /**
+         * As a `<p:fileDownload>` process is implemented as a norma, non-AJAX request, `<p:ajaxStatus>` will not work.
+         * Still, PrimeFaces provides a feature to monitor file downloads via this client-side function. This is done
+         * by sending a cookie with the HTTP response of the file download request. On the client-side, polling is used
+         * to check when the cookie is set.
+         * 
+         * The example below displays a modal dialog when a download begins and hides it when the download is complete:
+         * 
+         * Client-side callbacks:
+         * 
+         * ```javascript
+         * function showStatus() {
+         *   PF('statusDialog').show();
+         * }
+         * function hideStatus() {
+         *   PF('statusDialog').hide();
+         * }
+         * ```
+         * 
+         * Server-side XHTML view:
+         * 
+         * ```xml
+         * <p:commandButton value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(showStatus, hideStatus)">
+         *   <p:fileDownload value="#{fileDownloadController.file}"/>
+         * </p:commandButton>
+         * ```
+         * @param {() => void} start Callback that is invoked when the download starts.
+         * @param {() => void} complete Callback that is invoked when the download ends.
+         * @param {string} [monitorKey] Name of the cookie for monitoring the download. The cookie name defaults to
+         * `primefaces.download`. When a monitor key is given, the name of the cookie will consist of a prefix and the
+         * given monitor key.
+         */
         monitorDownload: function(start, complete, monitorKey) {
             if(this.cookiesEnabled()) {
                 if(start) {
@@ -478,6 +738,7 @@
 
         /**
          *  Scrolls to a component with given client id
+         * @param {string} id The ID of an element to scroll to.
          */
         scrollTo: function(id) {
             var offset = $(PrimeFaces.escapeClientId(id)).offset();
@@ -489,11 +750,12 @@
             },{
                 easing: 'easeInCirc'
             },1000);
-
         },
 
         /**
-         *  Aligns container scrollbar to keep item in container viewport, algorithm copied from jquery-ui menu widget
+         * Aligns container scrollbar to keep item in container viewport, algorithm copied from JQueryUI menu widget.
+         * @param {JQuery} container The container with a scrollbar that contains the item.
+         * @param {JQuery} item The item to scroll into view.
          */
         scrollInView: function(container, item) {
             if(item === null || item.length === 0) {
@@ -515,6 +777,11 @@
             }
         },
 
+        /**
+         * Finds the width of the scrollbar that is used by the current browser, as scrollbar widths are different for
+         * across different browsers.
+         * @return {number} The width of the scrollbars of the current browser.
+         */
         calculateScrollbarWidth: function() {
             if(!this.scrollbarWidth) {
                 var $div = $('<div />')
@@ -528,6 +795,14 @@
             return this.scrollbarWidth;
         },
 
+        /**
+         * A function that is used as the handler function for HTML event tags (`onclick`, `onkeyup` etc.). When a
+         * component has got an `onclick` etc attribute, the JavaScript for that attribute is called by this method.
+         * @param {HTMLElement} element Element on which the event occurred.
+         * @param {Event} event Event that occurred.
+         * @param {((this: HTMLElement, event: Event) => boolean | undefined)[]} functions A list of callback
+         * functions. If any returns `false`, the default action of the event is prevented.
+         */
         bcn: function(element, event, functions) {
             if(functions) {
                 for(var i = 0; i < functions.length; i++) {
@@ -546,6 +821,15 @@
             }
         },
 
+        /**
+         * A function that is used as the handler function for AJAX behaviors. When a component has got an AJAX
+         * behavior, the JavaScript that implements behavior's client-side logic is called by this method.
+         * @param {Partial<PrimeFaces.ajax.ConfigurationExtender>} ext Additional options to override the current
+         * options.
+         * @param {Event} event Event that occurred.
+         * @param {((this: typeof PrimeFaces, ext: Partial<PrimeFaces.ajax.ConfigurationExtender>, event: Event) => boolean | undefined)[]} fns
+         * A list of callback functions. If any returns `false`, the other callbacks are not invoked.
+         */
         bcnu: function(ext, event, fns) {
             if(fns) {
                 for(var i = 0; i < fns.length; i++) {
@@ -558,27 +842,86 @@
         },
 
     	/**
-    	 * moved to core.dialog.js
+    	 * Deprecated, use `PrimeFaces.dialog.DialogHandler.openDialog` instead.
+         * @deprecated
+         * @param {PrimeFaces.dialog.DialogHandlerCfg} cfg Configuration of the dialog.
     	 */
         openDialog: function(cfg) {
         	PrimeFaces.dialog.DialogHandler.openDialog(cfg);
         },
+        
+        /**
+    	 * Deprecated, use `PrimeFaces.dialog.DialogHandler.closeDialog` instead.
+         * @deprecated
+         * @param {PrimeFaces.dialog.DialogHandlerCfg} cfg Configuration of the dialog.
+         */
         closeDialog: function(cfg) {
         	PrimeFaces.dialog.DialogHandler.closeDialog(cfg);
         },
+
+        /**
+    	 * Deprecated, use `PrimeFaces.dialog.DialogHandler.showMessageInDialog` instead.
+         * @deprecated
+         * @param {string} msg Message to show in a dialog.
+         */
         showMessageInDialog: function(msg) {
         	PrimeFaces.dialog.DialogHandler.showMessageInDialog(msg);
         },
+
+        /**
+    	 * Deprecated, use `PrimeFaces.dialog.DialogHandler.confirm` instead.
+         * @deprecated
+         * @param {string} msg Message to show with the confirm dialog.
+         */
         confirm: function(msg) {
         	PrimeFaces.dialog.DialogHandler.confirm(msg);
         },
 
+        /**
+         * Some widgets need to compute their dimensions based on their parent element(s). This requires that such
+         * widgets are not rendered until they have become visible. A widget may not be visible, for example, when it
+         * is inside a tab that is not shown when the page is rendered. PrimeFaces provides a global mechanism for
+         * widgets to render once they are visible. This is done by keeping a list of widgets that need to be rendered,
+         * and checking on every change (AJAX request, tab change etc.) whether any of those have become visible. A
+         * widgets should extend `PrimeFaces.widget.DeferredWidget` to make use of this functionality.
+         * 
+         * This is the list of renders for widgets that are currently waiting to become visible.
+         * 
+         * @type {PrimeFaces.DeferredRender[]}
+         */
         deferredRenders: [],
 
+        /**
+         * Some widgets need to compute their dimensions based on their parent element(s). This requires that such
+         * widgets are not rendered until they have become visible. A widget may not be visible, for example, when it
+         * is inside a tab that is not shown when the page is rendered. PrimeFaces provides a global mechanism for
+         * widgets to render once they are visible. This is done by keeping a list of widgets that need to be rendered,
+         * and checking on every change (AJAX request, tab change etc.) whether any of those have become visible. A
+         * widgets should extend `PrimeFaces.widget.DeferredWidget` to make use of this functionality.
+         * 
+         * Adds a deferred render to the global list.
+         * 
+         * @param {string} widgetId The ID of a deferred widget.
+         * @param {string} containerId ID of the container that should be visible before the widget can be rendered.
+         * @param {() => boolean} fn Callback that is invoked when the widget _may_ possibly have become visible. Should
+         * return `true` when the widget was rendered, or `false` when the widget still needs to be rendered later.
+         */
         addDeferredRender: function(widgetId, containerId, fn) {
             this.deferredRenders.push({widget: widgetId, container: containerId, callback: fn});
         },
 
+        /**
+         * Some widgets need to compute their dimensions based on their parent element(s). This requires that such
+         * widgets are not rendered until they have become visible. A widget may not be visible, for example, when it
+         * is inside a tab that is not shown when the page is rendered. PrimeFaces provides a global mechanism for
+         * widgets to render once they are visible. This is done by keeping a list of widgets that need to be rendered,
+         * and checking on every change (AJAX request, tab change etc.) whether any of those have become visible. A
+         * widgets should extend `PrimeFaces.widget.DeferredWidget` to make use of this functionality.
+         * 
+         * Removes a deferred render from the global list.
+         * 
+         * @param {string} widgetId The ID of a deferred widget.
+         */
         removeDeferredRenders: function(widgetId) {
             for(var i = (this.deferredRenders.length - 1); i >= 0; i--) {
                 var deferredRender = this.deferredRenders[i];
@@ -589,6 +932,20 @@
             }
         },
 
+        /**
+         * Some widgets need to compute their dimensions based on their parent element(s). This requires that such
+         * widgets are not rendered until they have become visible. A widget may not be visible, for example, when it
+         * is inside a tab that is not shown when the page is rendered. PrimeFaces provides a global mechanism for
+         * widgets to render once they are visible. This is done by keeping a list of widgets that need to be rendered,
+         * and checking on every change (AJAX request, tab change etc.) whether any of those have become visible. A
+         * widgets should extend `PrimeFaces.widget.DeferredWidget` to make use of this functionality.
+         * 
+         * Invokes all deferred renders. This is usually called when an action was performed that _may_ have resulted
+         * in a container now being visible. This includes actions such as an AJAX request request was made or a tab
+         * change. 
+         * 
+         * @param {string} containerId ID of the container that _may_ have become visible.
+         */
         invokeDeferredRenders: function(containerId) {
             var widgetsToRemove = [];
             for(var i = 0; i < this.deferredRenders.length; i++) {
@@ -607,6 +964,10 @@
             }
         },
 
+        /**
+         * Returns the i18n key-value-pairs for the current locale.
+         * @return {PrimeFaces.Locale} The current locale settings.
+         */
         getLocaleSettings: function() {
             if(!this.localeSettings) {
                 var localeKey = PrimeFaces.settings.locale;
@@ -625,15 +986,23 @@
             return this.localeSettings;
         },
 
+        /**
+         * Some ARIA attributes have a value that depends on the current locale. This returns the localized version for
+         * the given aria key.
+         * @param {string} key An aria key
+         * @return {string} The translation for the given aria key
+         */
         getAriaLabel: function(key) {
             var ariaLocaleSettings = this.getLocaleSettings()['aria'];
             return (ariaLocaleSettings&&ariaLocaleSettings[key]) ? ariaLocaleSettings[key] : PrimeFaces.locales['en_US']['aria'][key];
         },
 
         /**
-         * Generate an RFC-4122 compliant UUID to be used to unique identifiers.
+         * Generate a RFC-4122 compliant UUID to be used as a unique identifier.
          *
-         * https://www.ietf.org/rfc/rfc4122.txt
+         * See https://www.ietf.org/rfc/rfc4122.txt
+         * 
+         * @return {string} A random UUID.
          */
         uuid: function() {
             var lut = [];
@@ -648,55 +1017,163 @@
               lut[d3&0xff]+lut[d3>>8&0xff]+lut[d3>>16&0xff]+lut[d3>>24&0xff];
         },
 
+        /**
+         * A tracker for the current z-index, used for example when creating multiple modal dialogs.
+         * @type {number}
+         */
         zindex : 1000,
 
+        /**
+         * Used to store whether a custom focus has been rendered. This avoids having to retain the last focused element
+         * after AJAX update.
+         * @type {boolean}
+         */
         customFocus : false,
 
+        /**
+         * A list of widgets that were once instantiated, but are not removed from the DOM, such as due to the result
+         * of an AJAX update request.
+         * @type {PrimeFaces.widget.BaseWidget[]}
+         * @readonly
+         */
         detachedWidgets : [],
 
+        /**
+         * Name of the POST parameter that indicates whether the request is an AJAX request.
+         * @type {string}
+         * @readonly
+         */
         PARTIAL_REQUEST_PARAM : "javax.faces.partial.ajax",
 
+        /**
+         * Name of the POST parameter that contains the list of components to be updated.
+         * @type {string}
+         * @readonly
+         */
         PARTIAL_UPDATE_PARAM : "javax.faces.partial.render",
 
+        /**
+         * Name of the POST parameter that contains the list of components to process. 
+         * @type {string}
+         * @readonly
+         */
         PARTIAL_PROCESS_PARAM : "javax.faces.partial.execute",
 
+        /**
+         * Name of the POST parameter that indicates which element or component triggered the AJAX request.
+         * @type {string}
+         * @readonly
+         */
         PARTIAL_SOURCE_PARAM : "javax.faces.source",
 
+        /**
+         * Name of the POST parameter that contains the name of the current behavior event.
+         * @type {string}
+         * @readonly
+         */
         BEHAVIOR_EVENT_PARAM : "javax.faces.behavior.event",
 
+        /**
+         * Name of the POST parameter that contains the name of the current partial behavior event.
+         * @type {string}
+         * @readonly
+         */
         PARTIAL_EVENT_PARAM : "javax.faces.partial.event",
 
+        /**
+         * Name of the POST parameter that indicates whether forms should have their values reset.
+         * @type {string}
+         * @readonly
+         */
         RESET_VALUES_PARAM : "primefaces.resetvalues",
 
+        /**
+         * Name of the POST parameter that indicates whether `<p:autoUpdate>` tags should be ignored.
+         * @type {string}
+         * @readonly
+         */
         IGNORE_AUTO_UPDATE_PARAM : "primefaces.ignoreautoupdate",
 
+        /**
+         * Name of the POST parameter that indicates whether children should be skipped.
+         * @type {string}
+         * @readonly
+         */
         SKIP_CHILDREN_PARAM : "primefaces.skipchildren",
 
+        /**
+         * Name of the POST parameter that contains the current view state.
+         * @type {string}
+         * @readonly
+         */
         VIEW_STATE : "javax.faces.ViewState",
 
+        /**
+         * Name of the POST parameter with the current client window.
+         * @type {string}
+         * @readonly
+         */
         CLIENT_WINDOW : "javax.faces.ClientWindow",
 
+        /**
+         * Name of the POST parameter that contains the view root.
+         * @type {string}
+         * @readonly
+         */
         VIEW_ROOT : "javax.faces.ViewRoot",
 
+        /**
+         * Name of the POST parameter with the current client ID
+         * @type {string}
+         * @readonly
+         */
         CLIENT_ID_DATA : "primefaces.clientid",
 
+        /**
+         * Name of the faces resource servlet, eg. `javax.faces.resource`.
+         * @type {string}
+         * @readonly
+         */
         RESOURCE_IDENTIFIER: 'javax.faces.resource',
 
+        /**
+         * The current version of PrimeFaces.
+         * @type {string}
+         * @readonly
+         */
         VERSION: '${project.version}'
     };
 
+    // PrimeFaces Namespaces
+
     /**
-     * PrimeFaces Namespaces
+     * An object with some runtime settings, such as the current locale.
+     * @namespace
+     * 
+     * @prop {string} locale The current locale, such as `en`,`en_US`, or `ja`.
+     * @readonly locale
+     * 
+     * @prop {boolean} validateEmptyFields `true` if empty (input etc.) fields should be validated, or `false` otherwise.
+     * @readonly validateEmptyFields
+     * 
+     * @prop {boolean} considerEmptyStringNull `true` if the empty string and `null` should be treated the same way, or
+     * `false` otherwise.
+     * @readonly considerEmptyStringNull
      */
     PrimeFaces.settings = {};
     PrimeFaces.util = {};
+    /**
+     * A registry of all instantiated widgets that are available on the current page.
+     * @type {Record<string, PrimeFaces.widget.BaseWidget>}
+     */
     PrimeFaces.widgets = {};
 
     /**
-     * Locales
+     * A map with language specific translations. This is a map between the language keys and another map with the i18n
+     * keys mapped to the translation.
+     * @type {Record<string, PrimeFaces.Locale>}
      */
     PrimeFaces.locales = {
-
         'en_US': {
             closeText: 'Close',
             prevText: 'Previous',
@@ -737,6 +1214,10 @@
 
     PrimeFaces.locales['en'] = PrimeFaces.locales['en_US'];
 
+    /**
+     * A map between some HTML entities and their HTML-escaped equivalent.
+     * @type {Record<string, string>}
+     */
     PrimeFaces.entityMap = {
         '&': '&amp;',
         '<': '&lt;',
@@ -748,6 +1229,22 @@
         '=': '&#x3D;'
     };
 
+    /**
+     * Finds and returns a widget
+     * 
+     * Note to typescript users: You should define a method that takes a widget variables and widget constructor, and
+     * check whether the widget is of the given type. If so, you can return the widget and cast it to the desired type:
+     * ```typescript
+     * function getWidget<T extends PrimeFaces.widget.BaseWidget>(widgetVar, widgetClass: new() => T): T | undefined {
+     *   const widget = PrimeFaces.widget[widgetVar];
+     *   return widget !== undefined && widget instanceof constructor ? widgetClass : undefined;
+     * }
+     * ```
+     * @function
+     * @param {string} widgetVar The widget variable of a widget.
+     * @return {PrimeFaces.widget.BaseWidget | undefined} The widget instance, or `undefined` if no such widget exists
+     * currently.
+     */
     PF = function(widgetVar) {
     	var widgetInstance = PrimeFaces.widgets[widgetVar];
 

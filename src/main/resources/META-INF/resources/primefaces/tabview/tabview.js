@@ -1,8 +1,71 @@
 /**
- * PrimeFaces TabView Widget
+ * __PrimeFaces TabView Widget__
+ * 
+ * TabView is a container component to group content in tabs.
+ * 
+ * @typedef PrimeFaces.widget.TabView.OnTabChangeCallback Client side callback to execute when a tab is clicked. If the
+ * callback returns `false`, the tab is not selected. See also {@link TabViewCfg.onTabChange}.
+ * @this {PrimeFaces.widget.TabView} PrimeFaces.widget.TabView.OnTabChangeCallback 
+ * @param {number} PrimeFaces.widget.TabView.OnTabChangeCallback.index 0-based index of the tab that is about to be
+ * selected. 
+ * @return {boolean} PrimeFaces.widget.TabView.OnTabChangeCallback `true` to switch to the tab, `false` to stay at the
+ * current tab.
+ * 
+ * @typedef PrimeFaces.widget.TabView.OnTabCloseCallback Client side callback to execute on tab close. When the callback
+ * returns `false`, the tab is not closed. See also {@link TabViewCfg.onTabClose}.
+ * @this {PrimeFaces.widget.TabView} PrimeFaces.widget.TabView.OnTabCloseCallback 
+ * @param {number} PrimeFaces.widget.TabView.OnTabCloseCallback.index 0-based index of the tab that is about to be
+ * closed.
+ * @return {boolean} PrimeFaces.widget.TabView.OnTabCloseCallback `true` to close the tab, `false` to keep the tab
+ * open.
+ * 
+ * @typedef PrimeFaces.widget.TabView.OnTabShowCallback Client side callback to execute when a tab is shown. See also
+ * {@link TabViewCfg.onTabShow}.
+ * @this {PrimeFaces.widget.TabView} PrimeFaces.widget.TabView.OnTabShowCallback
+ * @param {number} PrimeFaces.widget.TabView.OnTabShowCallback.index 0-based index of the tab that was
+ * shown.
+ * 
+ * @prop {JQuery} firstTab The DOM element for the first tab.
+ * @prop {JQuery} focusedTab The DOM element for the tab that is currently focused.
+ * @prop {JQuery} headerContainer The DOM element for the container element with the tab header.
+ * @prop {JQuery} lastTab The DOM element for the last tab.
+ * @prop {JQuery} navscroller The DOM element for the tab navigation bar.
+ * @prop {JQuery} navcrollerLeft The DOM element for the button that scrolls the tab navigation bar to the left.
+ * @prop {JQuery} navcrollerRight The DOM element for the button that scrolls the tab navigation bar to the right.
+ * @prop {JQuery} navContainer The DOM element for the container element with the tab navigation bar.
+ * @prop {JQuery} panelContainer The DOM element for the panel with the tab's contents.
+ * @prop {JQuery} scrollStateHolder The DOM element for the hidden input field storing the current scroll position.
+ * @prop {JQuery} stateHolder The DOM element for the hidden input field storing which is tab is active and visible.
+ * @prop {number} tabindex Position of the element in the tabbing order.
+ * 
+ * @interface {PrimeFaces.widget.TabViewCfg} cfg The configuration for the {@link  TabView| TabView widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg 
+ * 
+ * @prop {boolean} cfg.cache When tab contents are lazy loaded via AJAX toggle mode, caching only retrieves the tab
+ * contents once and subsequent toggles of a cached tab does not communicate with server. If caching is turned off, tab
+ * contents are reloaded from server each time tab is clicked.
+ * @prop {boolean} cfg.dynamic Enables lazy loading of inactive tabs.
+ * @prop {string} cfg.effect Name of the transition effect.
+ * @prop {number} cfg.effectDuration Duration of the transition effect.
+ * @prop {PrimeFaces.widget.TabView.OnTabChangeCallback} cfg.onTabChange Client side callback to execute when a tab is
+ * clicked. If the callback returns `false`, the tab is not selected.
+ * @prop {PrimeFaces.widget.TabView.OnTabCloseCallback} cfg.onTabClose Client side callback to execute on tab close.
+ * When the callback returns `false`, the tab is not closed.
+ * @prop {PrimeFaces.widget.TabView.OnTabShowCallback} cfg.onTabShow Client side callback to execute when a tab is
+ * shown.
+ * @prop {boolean} cfg.scrollable When enabled, tab headers can be scrolled horizontally instead of wrapping.
+ * @prop {number} cfg.selected The currently selected tab.
+ * @prop {number} cfg.tabindex Position of the element in the tabbing order.
  */
 PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
@@ -37,7 +100,10 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         this.renderDeferred();
     },
 
-    //@Override
+    /**
+     * @override
+     * @inheritdoc
+     */
     renderDeferred: function() {
         if(this.jq.is(':visible')) {
             this._render();
@@ -56,6 +122,12 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * @include
+     * @override
+     * @protected
+     * @inheritdoc
+     */
     _render: function() {
         if(this.cfg.scrollable) {
             this.initScrolling();
@@ -68,6 +140,10 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Sets up all event listeners that are required by this widget.
+     * @private
+     */
     bindEvents: function() {
         var $this = this;
 
@@ -166,6 +242,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Binds swipe events to this tabview.
+     * @private
      */
     bindSwipeEvents: function() {
         if (!PrimeFaces.env.touch) {
@@ -189,7 +266,11 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         });
     },
 
-    bindKeyEvents: function() {
+   /**
+    * Sets up all keyboard related event listeners that are required by this widget.
+    * @private
+    */
+   bindKeyEvents: function() {
         var $this = this,
             tabs = this.headerContainer;
 
@@ -250,6 +331,10 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Sets up the classes and attributes required for scrolling the tab navigation bar.
+     * @private
+     */
     initScrolling: function() {
         if(this.headerContainer.length) {
             var overflown = ((this.lastTab.position().left + this.lastTab.width()) - this.firstTab.position().left) > this.navscroller.innerWidth();
@@ -267,6 +352,11 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Scrolls the tab navigation bar by the given amount.
+     * @param {number} step Amount to scroll the navigation bar, positive to scroll to the right, negative to scroll to
+     * the left.
+     */
     scroll: function(step) {
         if(this.navContainer.is(':animated')) {
             return;
@@ -304,18 +394,35 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Disables the buttons for scrolling the contents of the navigation bar.
+     * @param {JQuery} btn The scroll button to enable. 
+     */
     disableScrollerButton: function(btn) {
         btn.addClass('ui-state-disabled').removeClass('ui-state-hover ui-state-active ui-state-focus').attr('tabindex', -1);
     },
 
+    /**
+     * Enables the buttons for scrolling the contents of the navigation bar.
+     * @param {JQuery} btn The scroll button to enable.
+     */
     enableScrollerButton: function(btn) {
         btn.removeClass('ui-state-disabled').attr('tabindex', this.tabindex);
     },
 
+    /**
+     * Stores the current scroll position in a hidden input field, called before an AJAX request.
+     * @private
+     * @param {number} value The scroll position to be saved.
+     */
     saveScrollState: function(value) {
         this.scrollStateHolder.val(value);
     },
 
+    /**
+     * Restores the current scroll position in a hidden input field, called after an AJAX request.
+     * @private
+     */
     restoreScrollState: function() {
         var value = parseInt(this.scrollStateHolder.val());
         if(value === 0) {
@@ -326,7 +433,10 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Selects an inactive tab given index
+     * Selects the given tab, if it is not selected already.
+     * @param {number} index 0-based index of the tab to select.
+     * @param {boolean} [silent] Controls whether events are triggered.
+     * @return {boolean} Whether the given tab is now selected. 
      */
     select: function(index, silent) {
         //Call user onTabChange callback
@@ -357,6 +467,11 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         return true;
     },
 
+    /**
+     * After a tab was loaded from the server, prepares the given tab and shows it.
+     * @private
+     * @param {JQuery} newPanel New tab to be shown.
+     */
     show: function(newPanel) {
         var headers = this.headerContainer,
         oldHeader = headers.filter('.ui-state-active'),
@@ -417,7 +532,9 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Loads tab contents with ajax
+     * Dynamically loads contents of a tab from the server via AJAX.
+     * @private
+     * @param {JQuery} newPanel The tab whose content needs to be loaded.
      */
     loadDynamicTab: function(newPanel) {
         var $this = this,
@@ -458,7 +575,8 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Removes a tab with given index
+     * Closes the tab at the given index.
+     * @param {number} index 0-based index of the tab to close.
      */
     remove: function(index) {
         // remove old header and content
@@ -500,14 +618,27 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         this.fireTabCloseEvent(panel.attr('id'), index);
     },
 
+    /**
+     * Fins the number of tabs of this tab view.
+     * @return {number} The number of tabs. 
+     */
     getLength: function() {
         return this.navContainer.children().length;
     },
 
+    /**
+     * Finds and returns the tab that is currently selected.
+     * @return {number} The 0-based index of the currently selected tab.
+     */
     getActiveIndex: function() {
         return this.cfg.selected;
     },
 
+    /**
+     * Calls the appropriate behaviors when a different tab was selected.
+     * @private
+     * @param {JQuery} panel The tab that was selected.
+     */
     fireTabChangeEvent: function(panel) {
         var ext = {
             params: [
@@ -519,6 +650,12 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         this.callBehavior('tabChange', ext);
     },
 
+    /**
+     * Calls the appropriate behaviors when a tab was closed.
+     * @private
+     * @param {string} id Client ID of the tab that was closed.
+     * @param {number} index 0-based index of the tab that was closed. 
+     */
     fireTabCloseEvent: function(id, index) {
         if(this.hasBehavior('tabClose')) {
             var ext = {
@@ -532,22 +669,46 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Marks the content of the given tab as loaded.
+     * @private
+     * @param {JQuery} panel A panel with content that was loaded. 
+     */
     markAsLoaded: function(panel) {
         panel.data('loaded', true);
     },
 
+    /**
+     * If the content of the tab is loaded dynamically via AJAX, checks if the content was loaded already.
+     * @private
+     * @param {JQuery} panel A panel to check.
+     * @return {boolean} Whether the content of the given panel was loaded from the server.
+     */
     isLoaded: function(panel) {
         return panel.data('loaded') === true;
     },
 
+    /**
+     * Disables the tab at the given index. Disabled tabs may not be selected.
+     * @param {number} index 0-based index of the tab to disable. 
+     */
     disable: function(index) {
         this.headerContainer.eq(index).addClass('ui-state-disabled');
     },
 
+    /**
+     * Enables the tab at the given index. Enabled tabs may be selected.
+     * @param {number} index 0-based index of the tab to enable. 
+     */
     enable: function(index) {
         this.headerContainer.eq(index).removeClass('ui-state-disabled');
     },
 
+    /**
+     * Callback that is invoked after a tab was shown.
+     * @private
+     * @param {JQuery} newPanel The panel with the content of the tab.
+     */
     postTabShow: function(newPanel) {
         //execute user defined callback
         if(this.cfg.onTabShow) {

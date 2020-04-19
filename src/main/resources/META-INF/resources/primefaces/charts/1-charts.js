@@ -232,10 +232,30 @@ PrimeFaces.widget.ChartUtils = {
 };
 
 /**
- * PrimeFaces Chart Widget
+ * __PrimeFaces Chart Widget__
+ * 
+ * The chart component is a generic graph component to create various types of charts using jqplot library.
+ * 
+ * @typedef {"pie" | "line" | "bar" | "donut" | "bubble" | "ohlc" | "metergauge"} PrimeFaces.widget.Chart.Type The
+ * chart component supports several different types, this is a list of available diagram types.
+ * 
+ * @prop {any} plot The jqplot instance of this chart.
+ * 
+ * @interface {PrimeFaces.widget.ChartCfg} cfg The configuration for the {@link  Chart| Chart widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
+ * 
+ * @prop {string} cfg.type The type of chart to render.
+ * @prop {boolean} cfg.responsive Whether this widget should be responsive.
  */
 PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
         this.jqpid = this.id.replace(/:/g,"\\:");
@@ -249,7 +269,11 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         this.renderDeferred();
     },
 
-    //@Override
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     refresh: function(cfg) {
         if(this.plot) {
             this.plot.destroy();
@@ -258,7 +282,10 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         this._super(cfg);
     },
 
-    //@Override
+    /**
+     * @override
+     * @inheritdoc
+     */
     destroy: function() {
         this._super();
 
@@ -267,11 +294,20 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
-    //@Override
+    /**
+     * @include
+     * @override
+     * @protected
+     * @inheritdoc
+     */
     _render: function() {
         this._draw();
     },
 
+    /**
+     * Called during initialization. Draws this chart to the screen.
+     * @private
+     */
     _draw: function() {
         this.bindItemSelect();
         this.plot = $.jqplot(this.jqpid, this.cfg.data, this.cfg);
@@ -282,6 +318,10 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Enables responsive mode for this chart.
+     * @private
+     */
     makeResponsive: function() {
         var $this = this;
 
@@ -300,6 +340,10 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         });
     },
 
+    /**
+     * Fixes the legend of this chart.
+     * @private
+     */
     adjustLegendTable: function() {
         var tableLegend = this.jq.find('table.jqplot-table-legend'),
             tr = tableLegend.find('tr.jqplot-table-legend');
@@ -315,6 +359,10 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Creates the configuration for the jqplot library to render the chart.
+     * @private
+     */
     configure: function() {
         //legend config
         if(this.cfg.legendPosition) {
@@ -362,14 +410,22 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         PrimeFaces.widget.ChartUtils.CONFIGURATORS[this.cfg.type].configure(this);
     },
 
+    /**
+     * Export the current visual state of this chart as an image.
+     * @return {HTMLImageElement}
+     */
     exportAsImage: function() {
         return this.jq.jqplotToImageElem();
     },
 
+    /**
+     * Sets up the event listeners for when the user select an item (data point).
+     * @private
+     */
     bindItemSelect: function() {
         var $this = this;
 
-        $(this.jqId).bind("jqplotClick", function(ev, gridpos, datapos, neighbor) {
+        this.jq.bind("jqplotClick", function(ev, gridpos, datapos, neighbor) {
             if(neighbor && $this.hasBehavior('itemSelect')) {
                 var ext = {
                     params: [
@@ -383,6 +439,9 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         });
     },
 
+    /**
+     * Resets the zoom back to its original setting.
+     */
     resetZoom: function() {
         this.plot.resetZoom();
     }

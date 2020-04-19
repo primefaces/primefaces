@@ -1,8 +1,27 @@
 /**
- * PrimeFaces OrderList Widget
+ * __PrimeFaces OrderList Widget__
+ * 
+ * OrderList is used to sort a collection featuring drag&drop based reordering, transition effects and POJO support.
+ * 
+ * @prop {JQuery} input The DOM element for the hidden form field storing the current order of the items.
+ * @prop {JQuery} items The DOM elements for the available items that can be reordered.
+ * @prop {JQuery} list The DOM element for the container with the items.
+ * 
+ * @interface {PrimeFaces.widget.OrderListCfg} cfg The configuration for the {@link  OrderList| OrderList widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * 
+ * @prop {boolean} cfg.disabled Whether this widget is disabled initially.
+ * @prop {string} cfg.effect Name of animation to display.
  */
 PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
@@ -33,6 +52,10 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Reads the current item order and stores it in a hidden form field.
+     * @private
+     */
     generateItems: function() {
         var $this = this;
 
@@ -46,6 +69,10 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Sets up all event listeners that are required by this widget.
+     * @private
+     */
     bindEvents: function() {
         var $this = this;
         
@@ -100,6 +127,10 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Sets up the buttons and corresponding event listeners for moving order list items up and down.
+     * @private
+     */
     setupButtons: function() {
         var $this = this;
 
@@ -111,18 +142,33 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
         this.jq.find(' .ui-orderlist-controls .ui-orderlist-button-move-bottom').click(function() {$this.moveBottom($this.sourceList);});
     },
 
+    /**
+     * Callback that is invoked when an order list item was moved via drag and drop. Saves the new order of the items
+     * and invokes the appropriate behaviors.
+     * @private
+     * @param {JQuery.Event} event The event that triggered the drag or drop.
+     * @param {JQueryUI.SortableUIParams} ui The UI params as passed by JQuery UI to the event handler.
+     */
     onDragDrop: function(event, ui) {
         ui.item.removeClass('ui-state-highlight');
         this.saveState();
         this.fireReorderEvent();
     },
 
+    /**
+     * Saves the current value of this order list, i.e. the order of the items.  The value is saved in a hidden form
+     * field.
+     * @private
+     */
     saveState: function() {
         this.input.children().remove();
 
         this.generateItems();
     },
 
+    /**
+     * Moves the selected order list items up by one, as if the `move up` button were pressed.
+     */
     moveUp: function() {
         var $this = this,
         selectedItems = $this.list.children('.ui-orderlist-item.ui-state-highlight'),
@@ -155,6 +201,9 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Moves the selected order list items to the top, as if the `move to top` button were pressed.
+     */
     moveTop: function() {
         var $this = this,
         selectedItems = $this.list.children('.ui-orderlist-item.ui-state-highlight'),
@@ -189,6 +238,9 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Moves the selected order list items down by one, as if the `move down` button were pressed.
+     */
     moveDown: function() {
         var $this = this,
         selectedItems = $($this.list.children('.ui-orderlist-item.ui-state-highlight').get().reverse()),
@@ -221,6 +273,9 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Moves the selected order list items to the bottom, as if the `move to bottom` button were pressed.
+     */
     moveBottom: function() {
         var $this = this,
         selectedItems = $($this.list.children('.ui-orderlist-item.ui-state-highlight').get().reverse()),
@@ -256,6 +311,12 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    /**
+     * Invokes the appropriate behavior for when an item of the order list was selected.
+     * @private
+     * @param {JQuery} item The item that was selected.
+     * @param {JQuery.Event} e The event that occurred.
+     */
     fireItemSelectEvent: function(item, e) {
         if(this.hasBehavior('select')) {
             var ext = {
@@ -270,6 +331,11 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Invokes the appropriate behavior for when an item of the order list was unselected.
+     * @private
+     * @param {JQuery} item The item that was unselected.
+     */
     fireItemUnselectEvent: function(item) {
         if(this.hasBehavior('unselect')) {
             var ext = {
@@ -282,6 +348,10 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Invokes the appropriate behavior for when the order list was reordered.
+     * @private
+     */
     fireReorderEvent: function() {
         if(this.hasBehavior('reorder')) {
             this.callBehavior('reorder');

@@ -3,6 +3,8 @@
 Keyboard is an input component that uses a virtual keyboard to provide the input. Notable features
 are the customizable layouts and skinning capabilities.
 
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.keyboard.html)
+
 ## Info
 
 | Name | Value |

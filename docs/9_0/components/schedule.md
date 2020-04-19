@@ -2,6 +2,8 @@
 
 Schedule provides an Outlook Calendar, iCal like JSF component to manage events which is based on FullCalendar.
 
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.schedule.html)
+
 ## Info
 
 | Name | Value |

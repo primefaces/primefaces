@@ -2,6 +2,8 @@
 
 KeyFilter is used to filter keyboard input on specified input components.
 
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/primefaces.widget.keyfilter.html)
+
 ## Info
 
 | Name | Value |

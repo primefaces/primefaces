@@ -1,0 +1,4 @@
+Error: Program failed to validate:
+
+Error: [tsMissingParentDoc] at C2 (${PROJECT_BASEDIR}/src/main/type-definitions/specs/tsvalidate/InheritEmptyParentError/input.d.ts:8:30)
+'@inheritdoc found on property 'foo' of type 'C2', but none of the parent methods C1#foo have got a doc comment. Add a doc comment.
