@@ -25,15 +25,11 @@ package org.primefaces.model.file;
 
 public interface UploadedFileChunk extends UploadedFile {
 
-    Long getChunkRangeBegin();
-    void setChunkRangeBegin(Long chunkRangeBegin);
+    long getChunkRangeBegin();
 
-    Long getChunkRangeEnd();
-    void setChunkRangeEnd(Long chunkRangeEnd);
+    long getChunkRangeEnd();
 
-    Long getChunkTotalFileSize();
-    void setChunkTotalFileSize(Long chunkTotalFileSize);
+    long getChunkTotalFileSize();
 
     boolean isLastChunk();
-    void setLastChunk(boolean lastChunk);
 }

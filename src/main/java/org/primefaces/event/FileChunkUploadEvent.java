@@ -26,31 +26,17 @@ package org.primefaces.event;
 import org.primefaces.model.file.UploadedFileChunk;
 
 import javax.faces.component.UIComponent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.FacesListener;
 
-public class FileChunkUploadEvent extends FacesEvent {
+public class FileChunkUploadEvent extends FileUploadEvent {
 
     private static final long serialVersionUID = 1L;
 
-    private UploadedFileChunk fileChunk;
-
-    public FileChunkUploadEvent(UIComponent component, UploadedFileChunk fileChunk) {
-        super(component);
-        this.fileChunk = fileChunk;
+    public FileChunkUploadEvent(UIComponent component, UploadedFileChunk chunk) {
+        super(component, chunk);
     }
 
     @Override
-    public boolean isAppropriateListener(FacesListener listener) {
-        return false;
-    }
-
-    @Override
-    public void processListener(FacesListener listener) {
-        throw new UnsupportedOperationException();
-    }
-
-    public UploadedFileChunk getFileChunk() {
-        return fileChunk;
+    public UploadedFileChunk getFile() {
+        return (UploadedFileChunk) super.getFile();
     }
 }

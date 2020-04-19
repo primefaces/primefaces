@@ -50,8 +50,6 @@ public class MultipartRequest extends HttpServletRequestWrapper {
     private Map<String, List<FileItem>> fileParams;
     private Map<String, String[]> parameterMap;
 
-    private String contentRange;
-
     public MultipartRequest(HttpServletRequest request, ServletFileUpload servletFileUpload) throws IOException {
         super(request);
         formParams = new LinkedHashMap<>();
@@ -64,7 +62,6 @@ public class MultipartRequest extends HttpServletRequestWrapper {
     private void parseRequest(HttpServletRequest request, ServletFileUpload servletFileUpload) throws IOException {
         try {
             List<FileItem> fileItems = servletFileUpload.parseRequest(request);
-            setContentRange(request.getHeader("Content-Range"));
 
             for (FileItem item : fileItems) {
                 if (item.isFormField()) {
@@ -110,7 +107,7 @@ public class MultipartRequest extends HttpServletRequestWrapper {
     }
 
     @Override
-    public Map getParameterMap() {
+    public Map<String, String[]> getParameterMap() {
         if (parameterMap == null) {
             Map<String, String[]> map = new LinkedHashMap<>();
 
@@ -127,9 +124,8 @@ public class MultipartRequest extends HttpServletRequestWrapper {
     }
 
     @Override
-    public Enumeration getParameterNames() {
-        Set<String> paramNames = new LinkedHashSet<>();
-        paramNames.addAll(formParams.keySet());
+    public Enumeration<String> getParameterNames() {
+        Set<String> paramNames = new LinkedHashSet<>(formParams.keySet());
 
         Enumeration<String> original = super.getParameterNames();
         while (original.hasMoreElements()) {
@@ -147,7 +143,7 @@ public class MultipartRequest extends HttpServletRequestWrapper {
                 return new String[0];
             }
             else {
-                return values.toArray(new String[values.size()]);
+                return values.toArray(new String[0]);
             }
         }
         else {
@@ -172,13 +168,5 @@ public class MultipartRequest extends HttpServletRequestWrapper {
         }
 
         return Collections.emptyList();
-    }
-
-    public String getContentRange() {
-        return contentRange;
-    }
-
-    public void setContentRange(String contentRange) {
-        this.contentRange = contentRange;
     }
 }

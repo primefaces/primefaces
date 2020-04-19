@@ -24,7 +24,6 @@
 package org.primefaces.component.fileupload;
 
 import org.primefaces.model.file.NativeUploadedFile;
-import org.primefaces.model.file.NativeUploadedFileChunk;
 import org.primefaces.model.file.UploadedFile;
 
 import javax.faces.context.FacesContext;
@@ -58,15 +57,7 @@ public class NativeFileUploadDecoder extends AbstractFileUploadDecoder<HttpServl
     protected UploadedFile createUploadedFile(HttpServletRequest request, FileUpload fileUpload, String inputToDecodeId)
             throws IOException, ServletException {
         Part part = request.getPart(inputToDecodeId);
-
-        if (fileUpload.isChunkedUpload()) {
-            NativeUploadedFileChunk uploadedFile = new NativeUploadedFileChunk(part, fileUpload.getSizeLimit());
-            processContentRange(request.getHeader("Content-Range"), uploadedFile);
-            return uploadedFile;
-        }
-        else {
-            return new NativeUploadedFile(part, fileUpload.getSizeLimit());
-        }
+        return new NativeUploadedFile(part, fileUpload.getSizeLimit());
     }
 
     @Override

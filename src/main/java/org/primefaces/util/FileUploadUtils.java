@@ -26,7 +26,7 @@ package org.primefaces.util;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.component.fileupload.FileUpload;
-import org.primefaces.component.fileupload.FileUploadBase;
+import org.primefaces.component.fileupload.FileUploadChunkDecoder;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.file.UploadedFile;
 import org.primefaces.shaded.owasp.SafeFile;
@@ -40,14 +40,19 @@ import javax.faces.validator.ValidatorException;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Utilities for FileUpload components.
@@ -200,14 +205,6 @@ public class FileUploadUtils {
             return true;
         }
 
-        if (fileUpload.isChunkedUpload()) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning("ValidateContentType is not supported for chunked file upload indicated via " +
-                        FileUploadBase.PropertyKeys.maxChunkSize + "-attribute");
-            }
-            return false;
-        }
-
         boolean tika = context.getEnvironment().isTikaAvailable();
         if (!tika && LOGGER.isLoggable(Level.WARNING)) {
             LOGGER.warning("Could not find Apache Tika in classpath which is recommended for reliable content type checking");
@@ -310,13 +307,7 @@ public class FileUploadUtils {
         }
 
         if (fileUpload.isVirusScan()) {
-            if (fileUpload.isChunkedUpload()) {
-                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                        "VirusScan is not supported for chunked file upload indicated via " + FileUploadBase.PropertyKeys.maxChunkSize + "-attribute", ""));
-            }
-            else {
-                performVirusScan(context, uploadedFile);
-            }
+            performVirusScan(context, uploadedFile);
         }
     }
 
@@ -363,5 +354,33 @@ public class FileUploadUtils {
             throw new FacesException("Path traversal - unexpected exception.", ex);
         }
         return relativePath;
+    }
+
+    public static List<Path> listChunks(Path path) {
+        try (Stream<Path> walk = Files.walk(path)) {
+            return walk
+                    .filter(p -> Files.isRegularFile(p) && p.getFileName().toString().matches("\\d+"))
+                    .sorted(Comparator.comparing(p -> Long.parseLong(p.getFileName().toString())))
+                    .collect(Collectors.toList());
+        } catch (IOException | SecurityException e) {
+            throw new FacesException(e);
+        }
+    }
+
+    public static List<Path> listChunks(HttpServletRequest request) {
+        PrimeApplicationContext pfContext = PrimeApplicationContext.getCurrentInstance(request.getServletContext());
+        FileUploadChunkDecoder chunkDecoder = pfContext.getFileUploadChunkDecoder();
+        String fileKey = chunkDecoder.generateFileInfoKey(request);
+        String dir = chunkDecoder.getUploadDirectory();
+        return listChunks(Paths.get(dir, fileKey));
+    }
+
+    public static String generateFileInfoKey(HttpServletRequest request) {
+        String fileInfo = request.getParameter("X-File-Id");
+        if (fileInfo == null) {
+            throw new FacesException();
+        }
+
+        return String.valueOf(fileInfo.hashCode());
     }
 }
