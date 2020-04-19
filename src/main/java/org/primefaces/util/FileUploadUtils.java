@@ -362,7 +362,8 @@ public class FileUploadUtils {
                     .filter(p -> Files.isRegularFile(p) && p.getFileName().toString().matches("\\d+"))
                     .sorted(Comparator.comparing(p -> Long.parseLong(p.getFileName().toString())))
                     .collect(Collectors.toList());
-        } catch (IOException | SecurityException e) {
+        }
+        catch (IOException | SecurityException e) {
             throw new FacesException(e);
         }
     }

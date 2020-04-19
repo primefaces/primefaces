@@ -63,8 +63,8 @@ powered rich solution with graceful degradation for legacy browsers.
 | uploadIcon | ui-icon-arrowreturnthick-1-n | String | The icon of upload button
 | cancelIcon | ui-icon-cancel | String | The icon of cancel button
 | onAdd | null | String | Callback to execute before adding a file.
-| validateContentType | false | Boolean | Whether content type validation should be performed, based on the types defined in the accept attribute. Default is false. (Not supported for chunked file upload activated via maxChunkSize.)
-| virusScan | false | Boolean | Whether virus scan should be performed. Default is false. (Not supported for chunked file upload activated via maxChunkSize.)
+| validateContentType | false | Boolean | Whether content type validation should be performed, based on the types defined in the accept attribute. Default is false.
+| virusScan | false | Boolean | Whether virus scan should be performed. Default is false.
 | maxChunkSize | 0 | Long | To upload large files in smaller chunks, set this option to a preferred maximum chunk size. If set to 0 (default), null or undefined, or the browser does not support the required Blob API, files will be uploaded as a whole. Only works in "advanced" mode.
 
 ## Getting started with FileUpload
