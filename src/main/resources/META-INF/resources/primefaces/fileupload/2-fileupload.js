@@ -6,8 +6,7 @@
  * 
  * @typedef PrimeFaces.widget.FileUpload.OnAddCallback Callback invoked when file was selected and is added to this
  * widget. See also {@link FileUploadCfg.onAdd}.
- * @typedef {{filename: string, lastmodified: Date, type: string, size: number}} FileId
- * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnAddCallback 
+ * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnAddCallback
  * @param {File} PrimeFaces.widget.FileUpload.OnAddCallback.file The file that was selected for the upload.
  * @param {(processedFile: File) => void} PrimeFaces.widget.FileUpload.OnAddCallback.callback Callback that needs to be
  * invoked with the file that should be added to the upload queue.
@@ -34,8 +33,14 @@
  * 
  * @typedef PrimeFaces.widget.FileUpload.OnStartCallback Callback that is invoked at the beginning of a file upload,
  * when a file is sent to the server. See also {@link FileUploadCfg.onstart}.
- * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnStartCallback 
- * 
+ * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnStartCallback
+ *
+ * @interface {PrimeFaces.widget.FileUpload.XFileId} XFileId - Identifier of an uploaded file.
+ * @prop {string} XFileId.filename - Name of the uploaded file.
+ * @prop {Date} XFileId.lastmodified - Lastmodified-attribute of the uploaded file.
+ * @prop {string} XFileId.type - (Mime-)type of the uploaded file.
+ * @prop {number} XFileId.size - Size of the uploaded file.
+ *
  * @interface {PrimeFaces.widget.FileUpload.UploadMessage} UploadMessage A error message for a file upload widget.
  * @prop {number} UploadMessage.filesize The size of the uploaded file in bytes.
  * @prop {string} UploadMessage.filename The name of the uploaded file.
@@ -534,10 +539,10 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
 
     /**
-     * Creates a FileId-object for a file.
+     * Creates a XFileId-object for a file.
      * @private
-     * @param {File} file A file to create a FileId-oject.
-     * @return {FileId} FileId-object.
+     * @param {File} file A file to create a FileId-object.
+     * @return {PrimeFaces.widget.FileUpload.XFileId}
      */
     createXFileId: function(file) {
       return [file.name, file.lastModified, file.type, file.size].join();
