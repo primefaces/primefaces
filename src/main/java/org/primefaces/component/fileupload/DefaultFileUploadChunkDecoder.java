@@ -23,8 +23,9 @@
  */
 package org.primefaces.component.fileupload;
 
-import org.primefaces.event.FileChunkUploadEvent;
-import org.primefaces.model.file.*;
+import org.primefaces.model.file.NIOUploadedFile;
+import org.primefaces.model.file.UploadedFile;
+import org.primefaces.model.file.UploadedFileWrapper;
 import org.primefaces.util.FileUploadUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,17 +44,15 @@ public class DefaultFileUploadChunkDecoder implements FileUploadChunkDecoder {
         String basename = generateFileInfoKey(request);
         Path chunksDir = Paths.get(tmpDir, basename);
 
-        UploadedFileChunk chunk = createChunk(fileUpload, uploadedFile, chunksDir, contentRange);
+        writeChunk(fileUpload, uploadedFile, chunksDir, contentRange);
 
-        fileUpload.queueEvent(new FileChunkUploadEvent(fileUpload, chunk));
-
-        if (chunk.isLastChunk()) {
-            UploadedFile file = processLastChunk(fileUpload, chunk, chunksDir);
+        if (contentRange.isLastChunk()) {
+            UploadedFile file = processLastChunk(fileUpload, uploadedFile, chunksDir, contentRange);
             fileUpload.setSubmittedValue(new UploadedFileWrapper(file));
         }
     }
 
-    protected UploadedFileChunk createChunk(FileUpload fileUpload, UploadedFile uploadedFile, Path path, ContentRange contentRange) throws IOException {
+    protected void writeChunk(FileUpload fileUpload, UploadedFile uploadedFile, Path path, ContentRange contentRange) throws IOException {
         if (Files.notExists(path)) {
             Files.createDirectory(path);
         }
@@ -64,11 +63,9 @@ public class DefaultFileUploadChunkDecoder implements FileUploadChunkDecoder {
         try (InputStream is = uploadedFile.getInputStream()) {
             Files.copy(is, chunkFile, StandardCopyOption.REPLACE_EXISTING);
         }
-
-        return new DefaultUploadedFileChunk(uploadedFile, contentRange);
     }
 
-    protected UploadedFile processLastChunk(FileUpload fileUpload, UploadedFileChunk chunk, Path chunksDir) throws IOException {
+    protected UploadedFile processLastChunk(FileUpload fileUpload, UploadedFile chunk, Path chunksDir, ContentRange contentRange) throws IOException {
         Path wholePath = Paths.get(getUploadDirectory(), chunk.getFileName());
         Files.deleteIfExists(wholePath);
         Path whole = Files.createFile(wholePath);
@@ -76,13 +73,12 @@ public class DefaultFileUploadChunkDecoder implements FileUploadChunkDecoder {
         List<Path> chunks = FileUploadUtils.listChunks(chunksDir);
         for (Path p : chunks) {
             Files.write(whole, Files.readAllBytes(p), StandardOpenOption.APPEND);
-            Files.delete(p);
         }
 
-        Files.delete(chunksDir);
+        deleteChunkFolder(chunksDir, chunks);
 
-        if (Files.size(whole) != chunk.getChunkTotalFileSize()) {
-            throw new IOException();
+        if (Files.size(whole) != contentRange.getChunkTotalFileSize()) {
+            throw new IOException("Merged file does not meet expected size: " + contentRange.getChunkTotalFileSize());
         }
 
         return new NIOUploadedFile(whole, chunk.getFileName(), chunk.getContentType());
@@ -91,4 +87,13 @@ public class DefaultFileUploadChunkDecoder implements FileUploadChunkDecoder {
     protected String getContentRange(HttpServletRequest request) {
         return request.getHeader("Content-Range");
     }
+
+    protected void deleteChunkFolder(Path chunksDir, List<Path> chunks) throws IOException {
+        for (Path p : chunks) {
+            Files.delete(p);
+        }
+
+        Files.delete(chunksDir);
+    }
+
 }

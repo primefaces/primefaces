@@ -45,6 +45,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -373,15 +374,11 @@ public class FileUploadUtils {
         FileUploadChunkDecoder chunkDecoder = pfContext.getFileUploadChunkDecoder();
         String fileKey = chunkDecoder.generateFileInfoKey(request);
         String dir = chunkDecoder.getUploadDirectory();
-        return listChunks(Paths.get(dir, fileKey));
-    }
-
-    public static String generateFileInfoKey(HttpServletRequest request) {
-        String fileInfo = request.getParameter("X-File-Id");
-        if (fileInfo == null) {
-            throw new FacesException();
+        Path chunkDir = Paths.get(dir, fileKey);
+        if (!Files.exists(chunkDir)) {
+            return Collections.emptyList();
         }
 
-        return String.valueOf(fileInfo.hashCode());
+        return listChunks(Paths.get(dir, fileKey));
     }
 }

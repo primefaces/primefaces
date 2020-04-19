@@ -48,7 +48,7 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
                 decodeSimple(fileUpload, request, inputToDecodeId);
             }
             else {
-                decodeAdvanced(context, fileUpload, request, inputToDecodeId);
+                decodeAdvanced(fileUpload, request, inputToDecodeId);
             }
         }
         catch (IOException | ServletException e) {
@@ -79,11 +79,11 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
         }
     }
 
-    protected void decodeAdvanced(FacesContext context, FileUpload fileUpload, T request, String inputToDecodeId) throws IOException, ServletException {
+    protected void decodeAdvanced(FileUpload fileUpload, T request, String inputToDecodeId) throws IOException, ServletException {
         UploadedFile uploadedFile = createUploadedFile(request, fileUpload, inputToDecodeId);
         if (uploadedFile != null) {
             if (isChunkedUpload(request)) {
-                PrimeApplicationContext.getCurrentInstance(context)
+                PrimeApplicationContext.getCurrentInstance(request.getServletContext())
                         .getFileUploadChunkDecoder().decodeContentRange(fileUpload, request, uploadedFile);
             }
             else {
