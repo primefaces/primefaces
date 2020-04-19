@@ -298,6 +298,7 @@ Chunked file upload comes with following restrictions:
 ```xhtml
 <h:form>          
 	<p:fileUpload chunkListener="#{fileUploadView.handleFileChunkUpload}" 
+                  listener="#{fileUploadView.handleFileUpload}"
                   mode="advanced"
 				  maxChunkSize="1000000" />
 	<p:growl id="messages" showDetail="true" keepAlive="true" />
@@ -306,6 +307,12 @@ Chunked file upload comes with following restrictions:
 
 ```java
 public void handleFileUploadChunk(FileChunkUploadEvent event) {
+    // called after each chunk
+    // DO SOMETHING
+}
+
+public void handleFileUpload(FileUploadEvent event) {
+    // called after the last chunk was uploaded and we have the whole file on the server
     // DO SOMETHING
 }
 ```

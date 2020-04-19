@@ -26,6 +26,7 @@ package org.primefaces.component.fileupload;
 import org.primefaces.event.FileChunkUploadEvent;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.file.UploadedFile;
+import org.primefaces.model.file.UploadedFileChunk;
 import org.primefaces.model.file.UploadedFiles;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FileUploadUtils;
@@ -67,16 +68,16 @@ public class FileUpload extends FileUploadBase {
 
         FacesContext facesContext = getFacesContext();
 
-        if (event instanceof FileUploadEvent) {
-            MethodExpression me = getListener();
-            if (me != null) {
-                me.invoke(facesContext.getELContext(), new Object[]{event});
-            }
-        }
-        else if (event instanceof FileChunkUploadEvent) {
+        if (event instanceof FileChunkUploadEvent) {
             MethodExpression meChunk = getChunkListener();
             if (meChunk != null) {
                 meChunk.invoke(facesContext.getELContext(), new Object[]{event});
+            }
+        }
+        else if (event instanceof FileUploadEvent) {
+            MethodExpression me = getListener();
+            if (me != null) {
+                me.invoke(facesContext.getELContext(), new Object[]{event});
             }
         }
     }
@@ -97,8 +98,13 @@ public class FileUpload extends FileUploadBase {
                     throw new IllegalArgumentException("Argument of type '" + newValue.getClass().getName() + "' not supported");
                 }
 
-                if (newValue instanceof UploadedFile && "advanced".equals(getMode())) {
-                    queueEvent(new FileUploadEvent(this, (UploadedFile) newValue));
+                if ("advanced".equals(getMode())) {
+                    if (newValue instanceof UploadedFileChunk) {
+                        queueEvent(new FileChunkUploadEvent(this, (UploadedFileChunk) newValue));
+                    }
+                    else if (newValue instanceof UploadedFile) {
+                        queueEvent(new FileUploadEvent(this, (UploadedFile) newValue));
+                    }
                 }
             }
             catch (VirusException | ValidatorException e) {
