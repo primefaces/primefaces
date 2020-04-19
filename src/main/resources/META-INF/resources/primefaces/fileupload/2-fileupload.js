@@ -98,6 +98,8 @@
  * @prop {string} cfg.process Component(s) to process in fileupload request.
  * @prop {boolean} cfg.sequentialUploads `true` to upload files one after each other, `false` to upload in parallel.
  * @prop {string} cfg.update Component(s) to update after fileupload completes.
+ * @prop {number} cfg.maxChunkSize To upload large files in smaller chunks, set this option to a preferred maximum chunk size. If set to 0, null or undefined, or the browser does not support the required Blob API, files will be uploaded as a whole.
+ * @prop {string} cfg.resumeContextPath Server-side path which provides information to resume chunked file upload.
  */
 PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 

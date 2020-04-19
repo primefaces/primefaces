@@ -76,6 +76,7 @@ public class DefaultFileUploadChunkDecoder implements FileUploadChunkDecoder {
         List<Path> chunks = FileUploadUtils.listChunks(chunksDir);
         for (Path p : chunks) {
             Files.write(whole, Files.readAllBytes(p), StandardOpenOption.APPEND);
+            Files.delete(p);
         }
 
         Files.delete(chunksDir);

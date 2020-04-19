@@ -289,12 +289,11 @@ folder.
 **Note** that uploadDirectory is used internally, you always need to implement the logic to save the file
 contents yourself in your backing bean.
 
-## Chunking
+## Chunking and Resume
 FileUpload supports chunked fileupload in advanced-mode using `maxChunkSize` attribute.
 
 Chunked file upload comes with following restrictions:
 1. It is only supported for `mode="advanced"`
-2. It does not support `virusScan="true"` and `validateContentType="true"` (The application has to care about this itself. PrimeFaces can't handle this for chunked upload.)
 
 ```xhtml
 <h:form>          
@@ -324,6 +323,8 @@ FileUpload is able to resume uploads that have been canceled (e.g user abort, lo
 ```
 
 > You're free to choose `url-pattern` mapping, as long it doesn't conflict with an existing page
+>
+>TODO- continue here, WIP
 
 ## More secure file upload
 
