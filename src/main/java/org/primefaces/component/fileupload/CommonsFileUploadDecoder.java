@@ -25,13 +25,11 @@ package org.primefaces.component.fileupload;
 
 import org.apache.commons.fileupload.FileItem;
 import org.primefaces.model.file.CommonsUploadedFile;
-import org.primefaces.model.file.CommonsUploadedFileChunk;
 import org.primefaces.model.file.UploadedFile;
 import org.primefaces.webapp.MultipartRequest;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequestWrapper;
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,17 +49,10 @@ public class CommonsFileUploadDecoder extends AbstractFileUploadDecoder<Multipar
     }
 
     @Override
-    protected UploadedFile createUploadedFile(MultipartRequest request, FileUpload fileUpload, String inputToDecodeId) throws IOException {
+    protected UploadedFile createUploadedFile(MultipartRequest request, FileUpload fileUpload, String inputToDecodeId) {
         FileItem file = request.getFileItem(inputToDecodeId);
         if (file != null && !file.getName().isEmpty()) {
-            if (fileUpload.isChunkedUpload()) {
-                CommonsUploadedFileChunk uploadedFile = new CommonsUploadedFileChunk(file, fileUpload.getSizeLimit());
-                processContentRange(request.getContentRange(), uploadedFile);
-                return uploadedFile;
-            }
-            else {
-                return new CommonsUploadedFile(file, fileUpload.getSizeLimit());
-            }
+            return new CommonsUploadedFile(file, fileUpload.getSizeLimit());
         }
 
         return null;

@@ -23,20 +23,20 @@
  */
 package org.primefaces.component.fileupload;
 
-import org.primefaces.model.file.*;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.model.file.UploadedFile;
+import org.primefaces.model.file.UploadedFileWrapper;
+import org.primefaces.model.file.UploadedFiles;
+import org.primefaces.model.file.UploadedFilesWrapper;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public abstract class AbstractFileUploadDecoder<T extends ServletRequest> implements FileUploadDecoder {
-
-    protected static final Pattern CONTENT_RANGE_PATTERN = Pattern.compile("^bytes (\\d+)-(\\d+)\\/(\\d+|\\*)$");
+public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> implements FileUploadDecoder {
 
     @Override
     public void decode(FacesContext context, FileUpload fileUpload) {
@@ -48,7 +48,7 @@ public abstract class AbstractFileUploadDecoder<T extends ServletRequest> implem
                 decodeSimple(fileUpload, request, inputToDecodeId);
             }
             else {
-                decodeAdvanced(fileUpload, request, inputToDecodeId);
+                decodeAdvanced(context, fileUpload, request, inputToDecodeId);
             }
         }
         catch (IOException | ServletException e) {
@@ -79,11 +79,12 @@ public abstract class AbstractFileUploadDecoder<T extends ServletRequest> implem
         }
     }
 
-    protected void decodeAdvanced(FileUpload fileUpload, T request, String inputToDecodeId) throws IOException, ServletException {
+    protected void decodeAdvanced(FacesContext context, FileUpload fileUpload, T request, String inputToDecodeId) throws IOException, ServletException {
         UploadedFile uploadedFile = createUploadedFile(request, fileUpload, inputToDecodeId);
         if (uploadedFile != null) {
-            if (uploadedFile instanceof UploadedFileChunk) {
-                fileUpload.setSubmittedValue(new UploadedFileChunkWrapper((UploadedFileChunk) uploadedFile));
+            if (isChunkedUpload(request)) {
+                PrimeApplicationContext.getCurrentInstance(context)
+                        .getFileUploadChunkDecoder().decodeContentRange(fileUpload, request, uploadedFile);
             }
             else {
                 fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
@@ -106,21 +107,9 @@ public abstract class AbstractFileUploadDecoder<T extends ServletRequest> implem
 
     protected abstract UploadedFile createUploadedFile(T request, FileUpload fileUpload, String inputToDecodeId) throws IOException, ServletException;
 
-    protected void processContentRange(String contentRange, UploadedFileChunk uploadedFile) throws IOException {
-        Matcher matcher = CONTENT_RANGE_PATTERN.matcher(contentRange);
-
-        if (matcher.matches()) {
-            uploadedFile.setChunkRangeBegin(Long.parseLong(matcher.group(1)));
-            uploadedFile.setChunkRangeEnd(Long.parseLong(matcher.group(2)));
-            uploadedFile.setChunkTotalFileSize(Long.parseLong(matcher.group(3)));
-            if ((uploadedFile.getChunkRangeEnd() + 1) == uploadedFile.getChunkTotalFileSize()) {
-                uploadedFile.setLastChunk(true);
-            }
-        }
-        else {
-            throw new IOException("Content-Range-Header does not match pattern '" + CONTENT_RANGE_PATTERN.pattern() + "'");
-        }
-    }
-
     protected abstract T getRequest(FacesContext ctxt);
+
+    protected boolean isChunkedUpload(T request) {
+        return request.getHeader("Content-Range") != null;
+    }
 }

@@ -63,7 +63,7 @@ powered rich solution with graceful degradation for legacy browsers.
 | cancelIcon | ui-icon-cancel | String | The icon of cancel button
 | onAdd | null | String | Callback to execute before adding a file.
 | validateContentType | false | Boolean | Whether content type validation should be performed, based on the types defined in the accept attribute. Default is false.
-| virusScan | false | Boolean | Whether virus scan should be performed. Default is false.
+| performVirusScan | false | Boolean | Whether virus scan should be performed. Default is false.
 
 ## Getting started with FileUpload
 FileUpload engine on the server side can either be servlet 3.0 or commons fileupload. PrimeFaces

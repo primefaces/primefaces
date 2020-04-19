@@ -24,6 +24,7 @@
 package org.primefaces.model.file;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BoundedInputStream;
 import org.primefaces.shaded.owasp.SafeFile;
 import org.primefaces.util.FileUploadUtils;

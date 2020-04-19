@@ -107,6 +107,13 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                             $this.addFileToRow(file, data);
                         }
                     }
+
+                    if ($this.cfg.resumeContextPath) {
+                        $.getJSON($this.cfg.resumeContextPath, {'X-File-Id': $this.createXFileId(file)},function (result) {
+                            var uploadedBytes = result.uploadedBytes;
+                            data.uploadedBytes = uploadedBytes;
+                        });
+                    }
                 }
             },
             send: function(e, data) {
@@ -160,7 +167,14 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 if($this.cfg.oncomplete) {
                     $this.cfg.oncomplete.call($this, data.jqXHR.pfArgs, data);
                 }
-            }
+            },
+
+            chunkbeforesend: function (e, data) {
+                var params = $this.createPostData();
+                var file = data.files[0];
+                params.push({name : 'X-File-Id', value: $this.createXFileId(file)});
+                data.formData = params;
+            },
         };
 
         this.jq.fileupload(this.ucfg);
@@ -390,6 +404,10 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         }
 
         return params;
+    },
+
+    createXFileId: function(file) {
+      return [file.name, file.lastModified, file.type, file.size].join();
     },
 
     formatSize: function(bytes) {
