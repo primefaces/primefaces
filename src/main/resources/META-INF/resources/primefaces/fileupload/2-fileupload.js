@@ -6,6 +6,7 @@
  * 
  * @typedef PrimeFaces.widget.FileUpload.OnAddCallback Callback invoked when file was selected and is added to this
  * widget. See also {@link FileUploadCfg.onAdd}.
+ * @typedef {{filename: string, lastmodified: Date, type: string, size: number}} FileId
  * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnAddCallback 
  * @param {File} PrimeFaces.widget.FileUpload.OnAddCallback.file The file that was selected for the upload.
  * @param {(processedFile: File) => void} PrimeFaces.widget.FileUpload.OnAddCallback.callback Callback that needs to be
@@ -273,6 +274,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             chunkbeforesend: function (e, data) {
                 var params = $this.createPostData();
                 var file = data.files[0];
+                params.push({name : 'X-File-Id', value: $this.createXFileId(file)});
                 data.formData = params;
             },
         };
@@ -532,10 +534,10 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
 
     /**
-     * Createsa FileId-object for a file.
-     * @param {File} file A file to create a FileId-oject.
-     * @return {TODO} FileId-object.
+     * Creates a FileId-object for a file.
      * @private
+     * @param {File} file A file to create a FileId-oject.
+     * @return {FileId} FileId-object.
      */
     createXFileId: function(file) {
       return [file.name, file.lastModified, file.type, file.size].join();
