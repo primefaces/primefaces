@@ -250,7 +250,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", menuId, null);
         writer.writeAttribute("class", menuStyleClass, "styleClass");
-        writer.writeAttribute("role", "menu", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
         writer.writeAttribute(HTML.ARIA_LABELLEDBY, button.getClientId(context), null);
         writer.writeAttribute("tabindex", "-1", null);
 
@@ -289,7 +289,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
 
                     writer.startElement("li", null);
                     writer.writeAttribute("class", containerStyleClass, null);
-                    writer.writeAttribute("role", "menuitem", null);
+                    writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
                     if (containerStyle != null) {
                         writer.writeAttribute("style", containerStyle, null);
                     }

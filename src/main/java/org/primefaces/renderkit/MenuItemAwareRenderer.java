@@ -34,6 +34,7 @@ import org.primefaces.event.MenuActionEvent;
 import org.primefaces.model.menu.*;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.HTML;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -152,6 +153,7 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
 
         //title
         writer.startElement("li", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
         writer.writeAttribute("class", styleClass, null);
         if (style != null) {
             writer.writeAttribute("style", style, null);
