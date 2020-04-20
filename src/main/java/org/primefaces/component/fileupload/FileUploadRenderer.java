@@ -31,7 +31,6 @@ import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -49,13 +48,8 @@ public class FileUploadRenderer extends CoreRenderer {
         FileUpload fileUpload = (FileUpload) component;
         if (!fileUpload.isDisabled()) {
             PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
-            String uploader = applicationContext.getConfig().getUploader();
 
-            FileUploadDecoder decoder = applicationContext.getFileUploadDecoder(uploader);
-            if (decoder == null) {
-                throw new FacesException("FileUploaderDecoder '" + uploader + "' not found");
-            }
-
+            FileUploadDecoder decoder = applicationContext.getFileUploadDecoder();
             decoder.decode(context, fileUpload);
         }
     }

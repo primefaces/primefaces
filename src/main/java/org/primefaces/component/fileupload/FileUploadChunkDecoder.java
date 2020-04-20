@@ -29,7 +29,7 @@ import javax.faces.FacesException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-public interface FileUploadChunkDecoder {
+public interface FileUploadChunkDecoder<T extends HttpServletRequest> {
 
     default String generateFileInfoKey(HttpServletRequest request) {
         String fileInfo = request.getParameter("X-File-Id");
@@ -40,9 +40,9 @@ public interface FileUploadChunkDecoder {
         return String.valueOf(fileInfo.hashCode());
     }
 
-    default String getUploadDirectory() {
+    default String getUploadDirectory(T request) {
         return System.getProperty("java.io.tmpdir");
     }
 
-    void decodeContentRange(FileUpload fileUpload, HttpServletRequest request, UploadedFile uploadedFile) throws IOException;
+    void decodeContentRange(FileUpload fileUpload, T request, UploadedFile uploadedFile) throws IOException;
 }

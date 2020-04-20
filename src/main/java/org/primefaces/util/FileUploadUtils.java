@@ -27,6 +27,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.component.fileupload.FileUploadChunkDecoder;
+import org.primefaces.component.fileupload.FileUploadDecoder;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.file.UploadedFile;
 import org.primefaces.shaded.owasp.SafeFile;
@@ -369,11 +370,16 @@ public class FileUploadUtils {
         }
     }
 
-    public static List<Path> listChunks(HttpServletRequest request) {
+    public static <T extends HttpServletRequest> List<Path> listChunks(T request) {
         PrimeApplicationContext pfContext = PrimeApplicationContext.getCurrentInstance(request.getServletContext());
-        FileUploadChunkDecoder chunkDecoder = pfContext.getFileUploadChunkDecoder();
+        FileUploadDecoder decoder = pfContext.getFileUploadDecoder();
+        if (!(decoder instanceof FileUploadChunkDecoder)) {
+            throw new FacesException("Chunk decoder not supported");
+        }
+
+        FileUploadChunkDecoder<T> chunkDecoder = (FileUploadChunkDecoder<T>) decoder;
         String fileKey = chunkDecoder.generateFileInfoKey(request);
-        String dir = chunkDecoder.getUploadDirectory();
+        String dir = chunkDecoder.getUploadDirectory(request);
         Path chunkDir = Paths.get(dir, fileKey);
         if (!Files.exists(chunkDir)) {
             return Collections.emptyList();
