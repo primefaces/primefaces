@@ -36,7 +36,6 @@ powered rich solution with graceful degradation for legacy browsers.
 | update | @none | String | Component(s) to update after fileupload completes.
 | process | @all | String | Component(s) to process in fileupload request.
 | listener | null | MethodExpr | Method to invoke when a file is uploaded. (For chunked file upload after the last chunk was uploaded.)
-| chunkListener | null | MethodExpr | Method to invoke when a chunk of a file is uploaded. (For chunked file upload activated via maxChunkSize.)
 | multiple | false | Boolean | Allows choosing of multi file uploads from native file browse dialog
 | auto | false | Boolean | When set to true, selecting a file starts the upload process implicitly.
 | label | Choose | String | Label of the browse button.
@@ -295,27 +294,6 @@ FileUpload supports chunked fileupload in advanced-mode using `maxChunkSize` att
 Chunked file upload comes with following restrictions:
 1. It is only supported for `mode="advanced"`
 
-```xhtml
-<h:form>          
-	<p:fileUpload chunkListener="#{fileUploadView.handleFileChunkUpload}" 
-                  listener="#{fileUploadView.handleFileUpload}"
-                  mode="advanced"
-				  maxChunkSize="1000000" />
-	<p:growl id="messages" showDetail="true" keepAlive="true" />
-</h:form>
-```
-
-```java
-public void handleFileUploadChunk(FileChunkUploadEvent event) {
-    // called after each chunk
-    // DO SOMETHING
-}
-
-public void handleFileUpload(FileUploadEvent event) {
-    // called after the last chunk was uploaded and we have the whole file on the server
-    // DO SOMETHING
-}
-```
 ### Resuming file uploads
 FileUpload is able to resume uploads that have been canceled (e.g user abort, lost of connection etc.) At first, you'll need to enable chunking and add this servlet:
 ```xml

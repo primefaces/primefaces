@@ -23,6 +23,7 @@
  */
 package org.primefaces.webapp;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import java.util.Map.Entry;
 
@@ -49,12 +51,14 @@ public class MultipartRequest extends HttpServletRequestWrapper {
     private Map<String, List<String>> formParams;
     private Map<String, List<FileItem>> fileParams;
     private Map<String, String[]> parameterMap;
+    private File uploadDirectory;
 
     public MultipartRequest(HttpServletRequest request, ServletFileUpload servletFileUpload) throws IOException {
         super(request);
         formParams = new LinkedHashMap<>();
         fileParams = new LinkedHashMap<>();
 
+        this.uploadDirectory = ((DiskFileItemFactory) servletFileUpload.getFileItemFactory()).getRepository();
         parseRequest(request, servletFileUpload);
     }
 
@@ -168,5 +172,9 @@ public class MultipartRequest extends HttpServletRequestWrapper {
         }
 
         return Collections.emptyList();
+    }
+
+    public File getUploadDirectory() {
+        return uploadDirectory;
     }
 }

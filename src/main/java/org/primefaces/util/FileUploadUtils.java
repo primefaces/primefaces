@@ -27,6 +27,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.component.fileupload.FileUploadChunkDecoder;
+import org.primefaces.component.fileupload.FileUploadDecoder;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.file.UploadedFile;
 import org.primefaces.shaded.owasp.SafeFile;
@@ -45,6 +46,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -368,20 +370,21 @@ public class FileUploadUtils {
         }
     }
 
-    public static List<Path> listChunks(HttpServletRequest request) {
+    public static <T extends HttpServletRequest> List<Path> listChunks(T request) {
         PrimeApplicationContext pfContext = PrimeApplicationContext.getCurrentInstance(request.getServletContext());
-        FileUploadChunkDecoder chunkDecoder = pfContext.getFileUploadChunkDecoder();
-        String fileKey = chunkDecoder.generateFileInfoKey(request);
-        String dir = chunkDecoder.getUploadDirectory();
-        return listChunks(Paths.get(dir, fileKey));
-    }
-
-    public static String generateFileInfoKey(HttpServletRequest request) {
-        String fileInfo = request.getParameter("X-File-Id");
-        if (fileInfo == null) {
-            throw new FacesException();
+        FileUploadDecoder decoder = pfContext.getFileUploadDecoder();
+        if (!(decoder instanceof FileUploadChunkDecoder)) {
+            throw new FacesException("Chunk decoder not supported");
         }
 
-        return String.valueOf(fileInfo.hashCode());
+        FileUploadChunkDecoder<T> chunkDecoder = (FileUploadChunkDecoder<T>) decoder;
+        String fileKey = chunkDecoder.generateFileInfoKey(request);
+        String dir = chunkDecoder.getUploadDirectory(request);
+        Path chunkDir = Paths.get(dir, fileKey);
+        if (!Files.exists(chunkDir)) {
+            return Collections.emptyList();
+        }
+
+        return listChunks(Paths.get(dir, fileKey));
     }
 }

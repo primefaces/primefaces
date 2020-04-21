@@ -41,7 +41,6 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         update,
         process,
         listener,
-        chunkListener,
         multiple,
         auto,
         label,
@@ -129,14 +128,6 @@ public abstract class FileUploadBase extends UIInput implements Widget {
 
     public void setListener(javax.el.MethodExpression fileUploadListener) {
         getStateHelper().put(PropertyKeys.listener, fileUploadListener);
-    }
-
-    public javax.el.MethodExpression getChunkListener() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.chunkListener, null);
-    }
-
-    public void setChunkListener(javax.el.MethodExpression fileUploadListener) {
-        getStateHelper().put(PropertyKeys.chunkListener, fileUploadListener);
     }
 
     public boolean isMultiple() {

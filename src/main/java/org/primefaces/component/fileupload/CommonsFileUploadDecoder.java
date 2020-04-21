@@ -74,4 +74,9 @@ public class CommonsFileUploadDecoder extends AbstractFileUploadDecoder<Multipar
 
         return multipartRequest;
     }
+
+    @Override
+    public String getUploadDirectory(MultipartRequest request) {
+        return request.getUploadDirectory().getAbsolutePath();
+    }
 }

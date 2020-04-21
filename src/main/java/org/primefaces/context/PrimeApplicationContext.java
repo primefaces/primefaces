@@ -25,7 +25,6 @@ package org.primefaces.context;
 
 import org.primefaces.cache.CacheProvider;
 import org.primefaces.cache.DefaultCacheProvider;
-import org.primefaces.component.fileupload.FileUploadChunkDecoder;
 import org.primefaces.component.fileupload.FileUploadDecoder;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.config.PrimeEnvironment;
@@ -50,10 +49,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -82,8 +79,7 @@ public class PrimeApplicationContext {
     private final Lazy<CacheProvider> cacheProvider;
     private final Lazy<VirusScannerService> virusScannerService;
     private FileTypeDetector fileTypeDetector;
-    private Map<String, FileUploadDecoder> fileUploadDecoders;
-    private FileUploadChunkDecoder fileUploadChunkDecoder;
+    private FileUploadDecoder fileUploadDecoder;
     private String fileUploadResumeUrl;
 
     public PrimeApplicationContext(FacesContext facesContext) {
@@ -161,8 +157,7 @@ public class PrimeApplicationContext {
             }
         });
 
-        fileUploadDecoders = StreamSupport.stream(ServiceLoader.load(FileUploadDecoder.class, classLoader).spliterator(), false)
-                .collect(Collectors.toMap(FileUploadDecoder::getName, Function.identity()));
+        resolveFileUploadDecoder();
 
         Object request = facesContext.getExternalContext().getRequest();
         if (request instanceof HttpServletRequest) {
@@ -175,8 +170,19 @@ public class PrimeApplicationContext {
                     .map(s -> facesContext.getExternalContext().getApplicationContextPath() + s)
                     .orElse(null);
         }
+    }
 
-        fileUploadChunkDecoder = ServiceLoader.load(FileUploadChunkDecoder.class, classLoader).iterator().next();
+    private void resolveFileUploadDecoder() {
+        String uploader = config.getUploader();
+        if ("auto".equals(uploader)) {
+            uploader = environment.isAtLeastJsf22() ? "native" : "commons";
+        }
+
+        String finalUploader = uploader;
+        fileUploadDecoder = StreamSupport.stream(ServiceLoader.load(FileUploadDecoder.class, applicationClassLoader).spliterator(), false)
+                .filter(d -> d.getName().equals(finalUploader))
+                .findFirst()
+                .orElseThrow(() -> new FacesException("FileUploaderDecoder '" + finalUploader + "' not found"));
     }
 
     public static PrimeApplicationContext getCurrentInstance(FacesContext facesContext) {
@@ -255,15 +261,11 @@ public class PrimeApplicationContext {
         }
     }
 
-    public FileUploadDecoder getFileUploadDecoder(String uploader) {
-        return fileUploadDecoders.get(uploader);
+    public FileUploadDecoder getFileUploadDecoder() {
+        return fileUploadDecoder;
     }
 
     public String getFileUploadResumeUrl() {
         return fileUploadResumeUrl;
-    }
-
-    public FileUploadChunkDecoder getFileUploadChunkDecoder() {
-        return fileUploadChunkDecoder;
     }
 }
