@@ -109,7 +109,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
             + '<a class="ui-state-default ui-lightbox-nav-right ui-corner-left ui-helper-hidden"><span class="ui-icon ui-icon-carat-1-e">go</span></a>'
             + '</div>'
             + '<div class="ui-lightbox-caption ui-widget-header"><span class="ui-lightbox-caption-text"></span>'
-            + '<a class="ui-lightbox-close ui-corner-all" href="#"><span class="ui-icon ui-icon-closethick"></span></a><div style="clear:both" /></div>'
+            + '<a class="ui-lightbox-close ui-corner-all" href="#"><span class="ui-icon ui-icon-closethick"></span></a><div style="clear:both"></div></div>'
             + '</div>');
 
         PrimeFaces.utils.registerDynamicOverlay(this, this.panel, this.id + '_panel');

@@ -82,7 +82,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.itemContainer = this.panel.children('ul');
 
         var stateHolderId = this.tableId + "_columnTogglerState";
-        this.togglerStateHolder = $('<input type="hidden" id="' + stateHolderId + '" name="' + stateHolderId + '" autocomplete="off" />');
+        this.togglerStateHolder = $('<input type="hidden" id="' + stateHolderId + '" name="' + stateHolderId + '" autocomplete="off"></input>');
         this.table.append(this.togglerStateHolder);
         this.togglerState = [];
 

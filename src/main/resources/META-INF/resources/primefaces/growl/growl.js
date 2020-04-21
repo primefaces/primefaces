@@ -88,7 +88,7 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
         var markup = '<div class="ui-growl-item-container ui-state-highlight ui-corner-all ui-helper-hidden ui-shadow ui-growl-' + msg.severity + '">';
         markup += '<div role="alert" class="ui-growl-item">';
         markup += '<div class="ui-growl-icon-close ui-icon ui-icon-closethick" style="display:none"></div>';
-        markup += '<span class="ui-growl-image ui-growl-image-' + msg.severity + '" />';
+        markup += '<span class="ui-growl-image ui-growl-image-' + msg.severity + '" ></span>';
         if (msg.severityText) {
             // GitHub #5153 for screen readers
             markup += '<span class="ui-growl-severity ui-helper-hidden-accessible">' + msg.severityText + '</span>';

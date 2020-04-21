@@ -354,8 +354,8 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
             appendTo.append(node);
         }
         else if (childNodes.length > 0) {
-            var table = $("<table cellpadding='0' cellspacing='0' border='0'/>").appendTo(appendTo);
-            var row = $("<tr/>").appendTo(table);
+            var table = $("<table cellpadding='0' cellspacing='0' border='0'></table>").appendTo(appendTo);
+            var row = $("<tr></tr>").appendTo(table);
 
             var leafChildNodes = childNodes.filter(".leaf:not(.skip-leaf)");
             var nonLeafChildNodes = childNodes.filter(":not(.leaf),.skip-leaf");
@@ -364,7 +364,7 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
                 childNodeCount += 1;
             }
 
-            var cell = $("<td colspan='" + (childNodeCount * 2) + "'/>").appendTo(row);
+            var cell = $("<td colspan='" + (childNodeCount * 2) + "'></td>").appendTo(row);
             cell.append(node);
 
             this.addExpander(nodeSource, node, bottomIconContainer);
@@ -475,13 +475,13 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
 
         // draw vertical row
         var verticalColspan = childNodeCount * 2;
-        var verticalRow = $("<tr/>").appendTo(table);
-        var verticalCell = $("<td colspan='" + verticalColspan + "'/>").appendTo(verticalRow);
+        var verticalRow = $("<tr></tr>").appendTo(table);
+        var verticalCell = $("<td colspan='" + verticalColspan + "'></td>").appendTo(verticalRow);
         verticalCell.append($("<div class='line down'></div>"));
 
 
         // draw horizontal row/cells
-        var horizontalRow = $("<tr/>").appendTo(table);
+        var horizontalRow = $("<tr></tr>").appendTo(table);
         for (var i = 0; i < childNodeCount; i++) {
             horizontalRow.append($("<td class='line left top'></td>"));
             horizontalRow.append($("<td class='line right top'></td>"));
@@ -503,13 +503,13 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
      * @param {number} level The nesting level of the parent node.
      */
     drawChildNodes : function(parentRowKey, leafChildNodes, nonLeafChildNodes, table, level) {
-        var row = $("<tr/>").appendTo(table);
+        var row = $("<tr></tr>").appendTo(table);
 
         // draw leaf nodes in a different way
         if (leafChildNodes && leafChildNodes.length > 0) {
-            var cell = $("<td colspan='2'/>").appendTo(row);
+            var cell = $("<td colspan='2'></td>").appendTo(row);
 
-            var leafTable = $("<table cellpadding='0' cellspacing='0' border='0'/>").appendTo(cell);
+            var leafTable = $("<table cellpadding='0' cellspacing='0' border='0'></table>").appendTo(cell);
 
             for (var j = 0; j < leafChildNodes.length; j++) {
                 // add connector line
@@ -517,8 +517,8 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
                     leafTable.append($("<tr><td><div class='line down' style='height:" + this.cfg.leafNodeConnectorHeight + "px'></div></td></tr>"));
                 }
 
-                var leafRow = $("<tr/>").appendTo(leafTable);
-                var leafCell = $("<td/>").appendTo(leafRow);
+                var leafRow = $("<<tr></tr>").appendTo(leafTable);
+                var leafCell = $("<td></td>").appendTo(leafRow);
 
                 var childNode = $(leafChildNodes[j]);
                 this.drawNode(parentRowKey, childNode, leafCell, level + 1);
@@ -527,7 +527,7 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
 
         // draw normal nodes
         for (var i = 0; i < nonLeafChildNodes.length; i++) {
-            var cell = $("<td colspan='2'/>").appendTo(row);
+            var cell = $("<td colspan='2'></td>").appendTo(row);
 
             var childNode = $(nonLeafChildNodes[i]);
             this.drawNode(parentRowKey, childNode, cell, level + 1);

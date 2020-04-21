@@ -60,8 +60,8 @@
 
 					elem.width(paneWidth);
 					
-					pane = $('<div class="ui-scrollpanel-content" />').css('padding', originalPadding).append(elem.children());
-					container = $('<div class="ui-scrollpanel-container" />')
+					pane = $('<div class="ui-scrollpanel-content"></div>').css('padding', originalPadding).append(elem.children());
+					container = $('<div class="ui-scrollpanel-container"></div>')
 						.css({
 							'width': paneWidth + 'px',
 							'height': paneHeight + 'px'
@@ -198,15 +198,15 @@
 				if (isScrollableV) {
 
 					container.append(
-						$('<div class="ui-scrollpanel-vbar" />').append(
-							$('<div class="ui-scrollpanel-cap ui-scrollpanel-captop" />'),
-							$('<div class="ui-scrollpanel-track ui-widget-header" />').append(
-								$('<div class="ui-scrollpanel-drag ui-state-highlight" />').append(
-									$('<div class="ui-scrollpanel-dragtop" />'),
-									$('<div class="ui-scrollpanel-dragbottom" />')
+						$('<div class="ui-scrollpanel-vbar"></div>').append(
+							$('<div class="ui-scrollpanel-cap ui-scrollpanel-captop"></div>'),
+							$('<div class="ui-scrollpanel-track ui-widget-header"></div>').append(
+								$('<div class="ui-scrollpanel-drag ui-state-highlight"></div>').append(
+									$('<div class="ui-scrollpanel-dragtop"></div>'),
+									$('<div class="ui-scrollpanel-dragbottom"></div>')
 								)
 							),
-							$('<div class="ui-scrollpanel-cap ui-scrollpanel-capbottom" />')
+							$('<div class="ui-scrollpanel-cap ui-scrollpanel-capbottom"></div>')
 						)
 					);
 
@@ -215,10 +215,10 @@
 					verticalDrag = verticalTrack.find('>.ui-scrollpanel-drag');
 
 					if (settings.showArrows) {
-						arrowUp = $('<a class="jspArrow jspArrowUp" />').bind(
+						arrowUp = $('<a class="jspArrow jspArrowUp"></a>').bind(
 							'mousedown.jsp', getArrowScroll(0, -1)
 						).bind('click.jsp', nil);
-						arrowDown = $('<a class="jspArrow jspArrowDown" />').bind(
+						arrowDown = $('<a class="jspArrow jspArrowDown"></a>').bind(
 							'mousedown.jsp', getArrowScroll(0, 1)
 						).bind('click.jsp', nil);
 						if (settings.arrowScrollOnHover) {
@@ -296,15 +296,15 @@
 				if (isScrollableH) {
 
 					container.append(
-						$('<div class="ui-scrollpanel-hbar" />').append(
-							$('<div class="ui-scrollpanel-cap ui-scrollpanel-capleft" />'),
-							$('<div class="ui-scrollpanel-track ui-widget-header" />').append(
-								$('<div class="ui-scrollpanel-drag ui-state-highlight" />').append(
-									$('<div class="ui-scrollpanel-dragleft" />'),
-									$('<div class="ui-scrollpanel-dragright" />')
+						$('<div class="ui-scrollpanel-hbar"></div>').append(
+							$('<div class="ui-scrollpanel-cap ui-scrollpanel-capleft"></div>'),
+							$('<div class="ui-scrollpanel-track ui-widget-header"></div>').append(
+								$('<div class="ui-scrollpanel-drag ui-state-highlight"></div>').append(
+									$('<div class="ui-scrollpanel-dragleft"></div>'),
+									$('<div class="ui-scrollpanel-dragright"></div>')
 								)
 							),
-							$('<div class="ui-scrollpanel-cap ui-scrollpanel-capright" />')
+							$('<div class="ui-scrollpanel-cap ui-scrollpanel-capright"></div>')
 						)
 					);
 
@@ -313,10 +313,10 @@
 					horizontalDrag = horizontalTrack.find('>.ui-scrollpanel-drag');
 
 					if (settings.showArrows) {
-						arrowLeft = $('<a class="jspArrow jspArrowLeft" />').bind(
+						arrowLeft = $('<a class="jspArrow jspArrowLeft"></a>').bind(
 							'mousedown.jsp', getArrowScroll(-1, 0)
 						).bind('click.jsp', nil);
-						arrowRight = $('<a class="jspArrow jspArrowRight" />').bind(
+						arrowRight = $('<a class="jspArrow jspArrowRight"></a>').bind(
 							'mousedown.jsp', getArrowScroll(1, 0)
 						).bind('click.jsp', nil);
 						if (settings.arrowScrollOnHover) {
@@ -390,7 +390,7 @@
 					paneHeight -= verticalTrackWidth;
 					paneWidth -= horizontalTrackHeight;
 					horizontalTrack.parent().append(
-						$('<div class="ui-scrollpanel-corner ui-widget-header" />').css('width', horizontalTrackHeight + 'px')
+						$('<div class="ui-scrollpanel-corner ui-widget-header"></div>').css('width', horizontalTrackHeight + 'px')
 					);
 					sizeVerticalScrollbar();
 					sizeHorizontalScrollbar();

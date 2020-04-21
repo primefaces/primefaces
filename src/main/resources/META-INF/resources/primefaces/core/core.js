@@ -98,7 +98,7 @@
             var form = $(this.escapeClientId(parent));
 
             for(var key in params) {
-                form.append("<input type=\"hidden\" name=\"" + PrimeFaces.escapeHTML(key) + "\" value=\"" + PrimeFaces.escapeHTML(params[key]) + "\" class=\"ui-submit-param\"/>");
+                form.append("<input type=\"hidden\" name=\"" + PrimeFaces.escapeHTML(key) + "\" value=\"" + PrimeFaces.escapeHTML(params[key]) + "\" class=\"ui-submit-param\"></input>");
             }
 
             return this;
@@ -784,9 +784,9 @@
          */
         calculateScrollbarWidth: function() {
             if(!this.scrollbarWidth) {
-                var $div = $('<div />')
+                var $div = $('<div></div>')
                     .css({ width: 100, height: 100, overflow: 'auto', position: 'absolute', top: -1000, left: -1000 })
-                    .prependTo('body').append('<div />').find('div')
+                    .prependTo('body').append('<div></div>').find('div')
                         .css({ width: '100%', height: 200 });
                 this.scrollbarWidth = 100 - $div.width();
                 $div.parent().remove();
@@ -1015,6 +1015,14 @@
               lut[d1&0xff]+lut[d1>>8&0xff]+'-'+lut[d1>>16&0x0f|0x40]+lut[d1>>24&0xff]+'-'+
               lut[d2&0x3f|0x80]+lut[d2>>8&0xff]+'-'+lut[d2>>16&0xff]+lut[d2>>24&0xff]+
               lut[d3&0xff]+lut[d3>>8&0xff]+lut[d3>>16&0xff]+lut[d3>>24&0xff];
+        },
+
+        /**
+         * Logs the current PrimeFaces and jQuery version to console.
+         */
+        version: function() {
+            var version = 'PrimeFaces ' + PrimeFaces.VERSION + ' (jQuery ' + jQuery.fn.jquery + ')';
+            console.log(version);
         },
 
         /**
