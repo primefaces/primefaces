@@ -35,6 +35,7 @@ import org.primefaces.component.menu.Menu;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.Submenu;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class PanelMenuRenderer extends BaseMenuRenderer {
@@ -65,7 +66,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        writer.writeAttribute("role", "tablist", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, "tablist", null);
 
         if (menu.getElementsCount() > 0) {
             List<MenuElement> elements = menu.getElements();
@@ -100,7 +101,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         //header
         writer.startElement("h3", null);
         writer.writeAttribute("class", headerClass, null);
-        writer.writeAttribute("role", "tab", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, "tab", null);
         writer.writeAttribute("tabindex", "0", null);
 
         //icon
@@ -119,7 +120,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         //content
         writer.startElement("div", null);
         writer.writeAttribute("class", contentClass, null);
-        writer.writeAttribute("role", "tabpanel", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, "tabpanel", null);
         writer.writeAttribute("id", menu.getClientId(context) + "_" + submenu.getId(), null);
         writer.writeAttribute("tabindex", "0", null);
 
@@ -127,6 +128,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
             List<MenuElement> elements = submenu.getElements();
 
             writer.startElement("ul", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
             writer.writeAttribute("class", PanelMenu.LIST_CLASS, null);
 
             for (MenuElement element : elements) {
@@ -138,6 +140,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
                         containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS : Menu.MENUITEM_CLASS + " " + containerStyleClass;
 
                         writer.startElement("li", null);
+                        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
                         writer.writeAttribute("class", containerStyleClass, null);
                         if (containerStyle != null) {
                             writer.writeAttribute("style", containerStyle, null);
@@ -173,12 +176,14 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
 
         writer.startElement("li", null);
         writer.writeAttribute("id", submenu.getClientId(), null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
         writer.writeAttribute("class", styleClass, null);
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
 
         writer.startElement("a", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
         writer.writeAttribute("class", linkClass, null);
 
         //toggle icon
@@ -207,11 +212,13 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
 
             writer.startElement("ul", null);
             writer.writeAttribute("class", listClass, null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
 
             for (MenuElement element : elements) {
                 if (element.isRendered()) {
                     if (element instanceof MenuItem) {
                         writer.startElement("li", null);
+                        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                         encodeMenuItem(context, menu, (MenuItem) element, "-1");
                         writer.endElement("li");
