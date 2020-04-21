@@ -78,6 +78,7 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
         catch (ArrayIndexOutOfBoundsException e) {
             processArgListener(context, elContext, event);
         }
+        // it's wrapped in a ELException since newer Payara versions
         catch (ELException e) {
             if (e.getCause() instanceof MethodNotFoundException || e.getCause() instanceof IllegalArgumentException) {
                 processArgListener(context, elContext, event);
@@ -102,6 +103,7 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
         catch (ArrayIndexOutOfBoundsException e) {
             processCustomArgListener(context, elContext, event);
         }
+        // it's wrapped in a ELException since newer Payara versions
         catch (ELException e) {
             if (e.getCause() instanceof MethodNotFoundException || e.getCause() instanceof IllegalArgumentException) {
                 processCustomArgListener(context, elContext, event);
