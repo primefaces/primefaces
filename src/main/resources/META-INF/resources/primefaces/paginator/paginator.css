@@ -37,10 +37,6 @@
 .ui-paginator .ui-paginator-current {
 	display: inline-block;
 	padding: 2px 6px;
-    -moz-transform: scale(1);
-    -o-transform: scale(1);
-    -webkit-transform: scale(1);
-    transform: scale(1);
 	margin-left: 1px;
 	margin-right: 1px;
 	text-decoration: none;
