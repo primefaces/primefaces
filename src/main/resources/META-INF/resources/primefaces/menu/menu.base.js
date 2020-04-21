@@ -30,10 +30,10 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
             this.jq.appendTo(document.body);
         }
         else {
-            // this is required if the id does NOT contain a ':' - See #2485
+                // this is required if the id does NOT contain a ':' - See #2485
             $(document.body).children("[id='" + this.id + "']").not(this.jq).remove();
             if(this.jq.parent().is(':not(body)')) {
-                this.jq.appendTo(document.body);
+            this.jq.appendTo(document.body);
             }
         }
 
