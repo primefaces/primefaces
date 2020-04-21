@@ -28,6 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.el.ELContext;
+import javax.el.ELException;
 import javax.el.MethodExpression;
 import javax.el.MethodNotFoundException;
 import javax.faces.context.FacesContext;
@@ -70,8 +71,19 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
         try {
             listener.invoke(elContext, new Object[]{});
         }
-        catch (MethodNotFoundException | IllegalArgumentException | ArrayIndexOutOfBoundsException mnfe) {
+        catch (MethodNotFoundException | IllegalArgumentException e) {
             processArgListener(context, elContext, event);
+        }
+        // JBoss hack, see #1375
+        catch (ArrayIndexOutOfBoundsException e) {
+            processArgListener(context, elContext, event);
+        }
+        catch (ELException e) {
+            if (e.getCause() instanceof MethodNotFoundException || e.getCause() instanceof IllegalArgumentException) {
+                processArgListener(context, elContext, event);
+                return;
+            }
+            throw e;
         }
     }
 
@@ -83,8 +95,19 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
         try {
             listenerWithArg.invoke(elContext, new Object[]{event});
         }
-        catch (MethodNotFoundException | IllegalArgumentException mnfe) {
+        catch (MethodNotFoundException | IllegalArgumentException e) {
             processCustomArgListener(context, elContext, event);
+        }
+        // JBoss hack, see #1375
+        catch (ArrayIndexOutOfBoundsException e) {
+            processCustomArgListener(context, elContext, event);
+        }
+        catch (ELException e) {
+            if (e.getCause() instanceof MethodNotFoundException || e.getCause() instanceof IllegalArgumentException) {
+                processCustomArgListener(context, elContext, event);
+                return;
+            }
+            throw e;
         }
     }
 
