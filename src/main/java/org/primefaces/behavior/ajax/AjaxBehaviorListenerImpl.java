@@ -69,22 +69,10 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
         }
 
         try {
+            processArgListener(context, elContext, event);
+        }
+        catch (MethodNotFoundException | IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
             listener.invoke(elContext, new Object[]{});
-        }
-        catch (MethodNotFoundException | IllegalArgumentException e) {
-            processArgListener(context, elContext, event);
-        }
-        // JBoss hack, see #1375
-        catch (ArrayIndexOutOfBoundsException e) {
-            processArgListener(context, elContext, event);
-        }
-        // it's wrapped in a ELException since newer Payara versions
-        catch (ELException e) {
-            if (e.getCause() instanceof MethodNotFoundException || e.getCause() instanceof IllegalArgumentException) {
-                processArgListener(context, elContext, event);
-                return;
-            }
-            throw e;
         }
     }
 
