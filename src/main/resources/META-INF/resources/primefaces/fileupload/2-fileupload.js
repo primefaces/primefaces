@@ -162,6 +162,8 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             dropZone: (this.cfg.dnd === false) ? null : this.jq,
             sequentialUploads: this.cfg.sequentialUploads,
             maxChunkSize: this.cfg.maxChunkSize,
+            maxRetries: 60,
+            retryTimeout: 1000,
             formData: function() {
                 return $this.createPostData();
             },
@@ -247,7 +249,41 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                     }
                     return;
                 }
-                if($this.cfg.onerror) {
+                if ($this.cfg.maxChunkSize >0) {
+                    if (data.context === undefined) {
+                        data.context = $(this);
+                    }
+
+                    // jQuery Widget Factory uses "namespace-widgetname" since version 1.10.0:
+                    var fu = $(this).data('blueimp-fileupload') || $(this).data('fileupload');
+                    var retries = data.context.data('retries') || 0;
+
+                    var retry = function () {
+                        $.getJSON($this.cfg.resumeContextPath, {'X-File-Id': $this.createXFileId(data.files[0])})
+                            .done(function (result) {
+                                var uploadedBytes = result.uploadedBytes;
+                                data.uploadedBytes = uploadedBytes;
+                                // clear the previous data:
+                                data.data = null;
+                                data.submit();
+                            })
+                            .fail(function () {
+                                fu._trigger('fail', e, data);
+                            });
+                    };
+
+                    if (data.errorThrown !== 'abort' &&
+                        data.uploadedBytes < data.files[0].size &&
+                        retries < fu.options.maxRetries) {
+                        retries += 1;
+                        data.context.data('retries', retries);
+                        window.setTimeout(retry, retries * fu.options.retryTimeout);
+                        return;
+                    }
+                    data.context.removeData('retries');
+                }
+
+                if ($this.cfg.onerror) {
                     $this.cfg.onerror.call($this, data.jqXHR, data.textStatus, data.jqXHR.pfArgs);
                 }
             },
