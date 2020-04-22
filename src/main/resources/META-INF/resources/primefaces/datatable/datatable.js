@@ -1967,54 +1967,56 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             },
             oncomplete: function(xhr, status, args, data) {
                 var paginator = $this.getPaginator();
-                if(args && args.totalRecords) {
-                    $this.cfg.scrollLimit = args.totalRecords;
+                if(args) {
+                    if(args.totalRecords) {
+                        $this.cfg.scrollLimit = args.totalRecords;
 
-                    if(paginator && paginator.cfg.rowCount !== args.totalRecords) {
-                        paginator.setTotalRecords(args.totalRecords);
-                    }
-                }
-
-                if(!args.validationFailed) {
-                    if(paginator) {
-                        paginator.setPage(0, true);
+                        if(paginator && paginator.cfg.rowCount !== args.totalRecords) {
+                            paginator.setTotalRecords(args.totalRecords);
+                        }
                     }
 
-                    // remove aria-sort
-                    var activeColumns = $this.sortableColumns.filter('.ui-state-active');
-                    if(activeColumns.length) {
-                        activeColumns.removeAttr('aria-sort');
-                    }
-                    else {
-                        $this.sortableColumns.eq(0).removeAttr('aria-sort');
-                    }
-
-                    if(!multi) {
-                        //aria reset
-                        for(var i = 0; i < activeColumns.length; i++) {
-                            var activeColumn = $(activeColumns.get(i)),
-                                ariaLabelOfActive = activeColumn.attr('aria-label');
-
-                            activeColumn.attr('aria-label', $this.getSortMessage(ariaLabelOfActive, $this.ascMessage));
-                            $(PrimeFaces.escapeClientId(activeColumn.attr('id') + '_clone')).removeAttr('aria-sort').attr('aria-label', $this.getSortMessage(ariaLabelOfActive, $this.ascMessage));
+                    if(!args.validationFailed) {
+                        if(paginator) {
+                            paginator.setPage(0, true);
                         }
 
-                        activeColumns.data('sortorder', $this.SORT_ORDER.UNSORTED).removeClass('ui-state-active')
-                                    .find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
-                    }
+                        // remove aria-sort
+                        var activeColumns = $this.sortableColumns.filter('.ui-state-active');
+                        if(activeColumns.length) {
+                            activeColumns.removeAttr('aria-sort');
+                        }
+                        else {
+                            $this.sortableColumns.eq(0).removeAttr('aria-sort');
+                        }
 
-                    columnHeader.data('sortorder', order).removeClass('ui-state-hover').addClass('ui-state-active');
-                    var sortIcon = columnHeader.find('.ui-sortable-column-icon'),
-                    ariaLabel = columnHeader.attr('aria-label');
+                        if(!multi) {
+                            //aria reset
+                            for(var i = 0; i < activeColumns.length; i++) {
+                                var activeColumn = $(activeColumns.get(i)),
+                                    ariaLabelOfActive = activeColumn.attr('aria-label');
 
-                    if(order === $this.SORT_ORDER.DESCENDING) {
-                        sortIcon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
-                        columnHeader.attr('aria-sort', 'descending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
-                        $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'descending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
-                    } else if(order === $this.SORT_ORDER.ASCENDING) {
-                        sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
-                        columnHeader.attr('aria-sort', 'ascending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
-                        $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'ascending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
+                                activeColumn.attr('aria-label', $this.getSortMessage(ariaLabelOfActive, $this.ascMessage));
+                                $(PrimeFaces.escapeClientId(activeColumn.attr('id') + '_clone')).removeAttr('aria-sort').attr('aria-label', $this.getSortMessage(ariaLabelOfActive, $this.ascMessage));
+                            }
+
+                            activeColumns.data('sortorder', $this.SORT_ORDER.UNSORTED).removeClass('ui-state-active')
+                                        .find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
+                        }
+
+                        columnHeader.data('sortorder', order).removeClass('ui-state-hover').addClass('ui-state-active');
+                        var sortIcon = columnHeader.find('.ui-sortable-column-icon'),
+                        ariaLabel = columnHeader.attr('aria-label');
+
+                        if(order === $this.SORT_ORDER.DESCENDING) {
+                            sortIcon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
+                            columnHeader.attr('aria-sort', 'descending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
+                            $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'descending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
+                        } else if(order === $this.SORT_ORDER.ASCENDING) {
+                            sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
+                            columnHeader.attr('aria-sort', 'ascending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
+                            $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'ascending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
+                        }
                     }
                 }
 
