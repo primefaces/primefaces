@@ -47,6 +47,7 @@ public class Constants {
         public static final String MOVE_SCRIPTS_TO_BOTTOM = "primefaces.MOVE_SCRIPTS_TO_BOTTOM";
         public static final String CSP = "primefaces.CSP";
         public static final String CSP_POLICY = "primefaces.CSP_POLICY";
+        public static final String EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING = "primefaces.EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING";
 
         private ContextParams() {
 

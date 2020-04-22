@@ -88,3 +88,14 @@ available attributes.
 To support exception handling in the _RENDER_RESPONSE_ phase, it's required to set the
 _javax.faces.FACELETS_BUFFER_SIZE_ parameter. Otherwise you will probably see a
 ServletException with "Response already committed" message.
+
+## Exception Logging
+Per default all exceptions are logged in all _ProjectStages_ -  we just skip logging ViewExpiredExceptions in _Production_.
+You can also configure ignores via:
+
+```xml
+<context-param>
+    <param-name>primefaces.EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING</param-name>
+    <param-value>org.mycompany.MyException, org.anothercompany.AnotherException</param-value>
+</context-param>
+```

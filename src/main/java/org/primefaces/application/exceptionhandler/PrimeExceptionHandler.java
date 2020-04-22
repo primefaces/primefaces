@@ -51,11 +51,13 @@ import javax.faces.event.PhaseId;
 import javax.faces.view.ViewDeclarationLanguage;
 import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandler;
 import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandlerVisitCallback;
+import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.Lazy;
 
 public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
@@ -63,10 +65,12 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
     private final ExceptionHandler wrapped;
+    private final Lazy<PrimeConfiguration> config;
 
     @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeExceptionHandler(ExceptionHandler wrapped) {
         this.wrapped = wrapped;
+        this.config = new Lazy(() -> PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig());
     }
 
     @Override
@@ -133,6 +137,14 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         if (context.isProjectStage(ProjectStage.Production)) {
             if (rootCause instanceof ViewExpiredException) {
                 return false;
+            }
+
+            if (rootCause != null) {
+                for (String ignore : config.get().getExceptionTypesToIgnoreInLogging()) {
+                    if (ignore.trim().equals(rootCause.getClass().getName())) {
+                        return false;
+                    }
+                }
             }
         }
 

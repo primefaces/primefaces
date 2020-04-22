@@ -30,6 +30,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 /**
  * Container for all config parameters.
@@ -52,6 +53,7 @@ public class PrimeConfiguration {
     private final boolean moveScriptsToBottom;
     private boolean csp;
     private String cspPolicy;
+    private String[] exceptionTypesToIgnoreInLogging;
 
     // internal config
     private final boolean stringConverterAvailable;
@@ -114,6 +116,14 @@ public class PrimeConfiguration {
         csp = Boolean.parseBoolean(value);
         if (csp) {
             cspPolicy = externalContext.getInitParameter(Constants.ContextParams.CSP_POLICY);
+        }
+
+        value = externalContext.getInitParameter(Constants.ContextParams.EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING);
+        if (LangUtils.isValueBlank(value)) {
+            exceptionTypesToIgnoreInLogging = new String[0];
+        }
+        else {
+            exceptionTypesToIgnoreInLogging = value.split(",");
         }
     }
 
@@ -214,5 +224,9 @@ public class PrimeConfiguration {
 
     public String getCspPolicy() {
         return cspPolicy;
+    }
+
+    public String[] getExceptionTypesToIgnoreInLogging() {
+        return exceptionTypesToIgnoreInLogging;
     }
 }
