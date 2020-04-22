@@ -4533,6 +4533,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     }
                 });
 
+                if ($this.isEmpty()) {
+                    $this.tbody.children('tr.ui-datatable-empty-message').remove();
+                }
+
                 return true;
             }
         };
