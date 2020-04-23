@@ -166,11 +166,19 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery.Event} [e] The (click) event which triggered the saving. Currently unused. 
      */
     save: function(e) {
+        var $this = this;
+
         var options = {
             source: this.id,
             update: this.id,
             process: this.id,
-            formId: this.cfg.formId
+            formId: this.cfg.formId,
+            oncomplete: function(responseXML, status, xhr) {
+                if (xhr && xhr.validationFailed) {
+                    $this.show();
+                }
+                return true;
+            }
         };
 
         if(this.hasBehavior('save')) {
