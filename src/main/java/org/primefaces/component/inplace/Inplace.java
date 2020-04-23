@@ -111,6 +111,17 @@ public class Inplace extends InplaceBase {
                 valid = false;
                 break;
             }
+
+            int childCount = component.getChildCount();
+            if (childCount > 0) {
+                for (int i = 0; i < childCount; i++) {
+                    UIComponent child = component.getChildren().get(i);
+                    if (child instanceof EditableValueHolder && !((EditableValueHolder) child).isValid()) {
+                        valid = false;
+                        break;
+                    }
+                }
+            }
         }
 
         return valid;

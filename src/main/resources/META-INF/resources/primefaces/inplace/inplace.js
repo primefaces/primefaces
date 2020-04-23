@@ -172,13 +172,7 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
             source: this.id,
             update: this.id,
             process: this.id,
-            formId: this.cfg.formId,
-            oncomplete: function(responseXML, status, xhr) {
-                if (xhr && xhr.validationFailed) {
-                    $this.show();
-                }
-                return true;
-            }
+            formId: this.cfg.formId
         };
 
         if(this.hasBehavior('save')) {
