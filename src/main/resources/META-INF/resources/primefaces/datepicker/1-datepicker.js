@@ -213,13 +213,12 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     fireDateSelectEvent: function() {
-        if(this.cfg.behaviors) {
-            var dateSelectBehavior = this.cfg.behaviors['dateSelect'];
-
-            if(dateSelectBehavior) {
-                dateSelectBehavior.call(this);
-            }
+        // #5830: do not fire in range mode if only the first value is set
+        if (this.cfg.selectionMode === "range" && this.input.val().indexOf(this.cfg.rangeSeparator) === -1) {
+            return;
         }
+
+        this.callBehavior('dateSelect');
     },
 
     /**
