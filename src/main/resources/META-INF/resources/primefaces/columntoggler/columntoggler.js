@@ -183,7 +183,8 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
 
         this.bindKeyEvents();
 
-        PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.panel, null,
+        PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.panel, 
+            function() { return $this.trigger; },
             function(e, eventTarget) {
                 if(!($this.panel.is(eventTarget) || $this.panel.has(eventTarget).length > 0)) {
                     $this.hide();
