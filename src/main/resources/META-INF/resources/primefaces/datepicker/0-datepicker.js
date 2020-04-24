@@ -1524,7 +1524,7 @@
                     $this.onTimePickerElementMouseUp(event);
                 })
                 .on('mouseleave.datePicker-time', timeSelector, null, function (event) {
-                    if (this.timePickerTimer) {
+                    if ($this.timePickerTimer) {
                         $this.onTimePickerElementMouseUp(event);
                     }
                 })
@@ -1778,9 +1778,11 @@
 
         onTimePickerElementMouseUp: function (event) {
             if (!this.options.disabled) {
+                console.log('onTimePickerElementMouseUp');
                 this.clearTimePickerTimer();
 
                 if (this.options.onSelect) {
+                    console.log('...fire dateSelect');
                     this.options.onSelect.call(this, event, this.value);
                 }
             }
@@ -2240,8 +2242,7 @@
         },
 
         updateTime: function (event, hour, minute, second) {
-            var newDateTime = (this.value && this.value instanceof Date) ? new Date(this.value) : new Date(),
-                $this = this;
+            var newDateTime = (this.value && this.value instanceof Date) ? new Date(this.value) : new Date();
 
             newDateTime.setHours(hour);
             newDateTime.setMinutes(minute);
@@ -2256,7 +2257,6 @@
                 }
             }
         },
-
 
 
         updateTimeAfterInput: function (event, newDateTime) {
