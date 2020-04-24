@@ -1778,11 +1778,9 @@
 
         onTimePickerElementMouseUp: function (event) {
             if (!this.options.disabled) {
-                console.log('onTimePickerElementMouseUp');
                 this.clearTimePickerTimer();
 
                 if (this.options.onSelect) {
-                    console.log('...fire dateSelect');
                     this.options.onSelect.call(this, event, this.value);
                 }
             }
@@ -2257,7 +2255,6 @@
                 }
             }
         },
-
 
         updateTimeAfterInput: function (event, newDateTime) {
             this.value = newDateTime;
