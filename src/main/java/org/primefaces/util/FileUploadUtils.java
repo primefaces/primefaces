@@ -370,7 +370,7 @@ public class FileUploadUtils {
         }
     }
 
-    public static <T extends HttpServletRequest> List<Path> listChunks(T request) {
+    public static <T extends HttpServletRequest> List<Path> listChunks(T request) throws IOException {
         PrimeApplicationContext pfContext = PrimeApplicationContext.getCurrentInstance(request.getServletContext());
         FileUploadDecoder decoder = pfContext.getFileUploadDecoder();
         if (!(decoder instanceof FileUploadChunkDecoder)) {

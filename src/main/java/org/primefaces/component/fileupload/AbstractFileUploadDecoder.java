@@ -33,9 +33,20 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
+import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> implements FileUploadDecoder, FileUploadChunkDecoder<T> {
+
+    private static final Logger LOGGER = Logger.getLogger(AbstractFileUploadDecoder.class.getName());
+
+    private static LocalDate lastUploadDirCleanup = null;
 
     @Override
     public void decode(FacesContext context, FileUpload fileUpload) {
@@ -113,7 +124,7 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
 
         // tmpDir is used as temporary location for creating chunks
         // while the final file will be written into the upload directory set by the user
-        String tmpDir = System.getProperty("java.io.tmpdir");
+        String tmpDir = getUploadDirectory(request);
         String basename = generateFileInfoKey(request);
         Path chunksDir = Paths.get(tmpDir, basename);
 
@@ -139,7 +150,7 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
     }
 
     protected UploadedFile processLastChunk(T request, UploadedFile chunk, Path chunksDir, ContentRange contentRange) throws IOException {
-        Path wholePath = Paths.get(getUploadDirectory(request), chunk.getFileName());
+        Path wholePath = Paths.get(getUploadDirectory(request), UUID.randomUUID().toString() + "_" + chunk.getFileName());
         Files.deleteIfExists(wholePath);
         Path whole = Files.createFile(wholePath);
 
@@ -152,6 +163,11 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
 
         if (Files.size(whole) != contentRange.getChunkTotalFileSize()) {
             throw new IOException("Merged file does not meet expected size: " + contentRange.getChunkTotalFileSize());
+        }
+
+        if (lastUploadDirCleanup == null || lastUploadDirCleanup.isBefore(LocalDate.now())) {
+            lastUploadDirCleanup = LocalDate.now();
+            cleanupChunkDirsFromCanceledUpload(Paths.get(getUploadDirectory(request)));
         }
 
         return new NIOUploadedFile(whole, chunk.getFileName(), chunk.getContentType());
@@ -167,6 +183,36 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
         }
 
         Files.delete(chunksDir);
+    }
+
+    protected void cleanupChunkDirsFromCanceledUpload(Path uploadDirectory) throws IOException {
+        LocalDateTime deleteAllBefore = LocalDateTime.now().minusDays(1);
+
+        List<Path> chunkDirs2Delete = Files.list(uploadDirectory).filter(
+            p -> {
+                if (Files.isDirectory(p)) {
+                    try {
+                        LocalDateTime lastModified = Files.getLastModifiedTime(p).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+                        return (lastModified.isBefore(deleteAllBefore));
+                    }
+                    catch (IOException ex) {
+                        LOGGER.log(Level.WARNING, "Error when listening chunkdirs form canceled uploads", ex);
+                    }
+                }
+                return false;
+            }
+        ).collect(Collectors.toList());
+
+        for (Path chunkDir: chunkDirs2Delete) {
+            try {
+                List<Path> chunks = FileUploadUtils.listChunks(chunkDir);
+                deleteChunkFolder(chunkDir, chunks);
+            }
+            catch (IOException ex) {
+                //Cleanup should not fail when there is an issue with one chunkDir
+                LOGGER.log(Level.SEVERE, "Can´t delete chunkDir '" + chunkDir.toString() + "'", ex);
+            }
+        }
     }
 
     protected boolean isChunkedUpload(T request) {

@@ -43,9 +43,16 @@ public class FileUploadResumeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
-        long uploadedBytes = FileUploadUtils.listChunks(req).stream()
-                .mapToLong(this::getSize)
-                .sum();
+        long uploadedBytes = 0;
+
+        try {
+            uploadedBytes = FileUploadUtils.listChunks(req).stream()
+                    .mapToLong(this::getSize)
+                    .sum();
+        }
+        catch (IOException ex) {
+            LOGGER.log(Level.SEVERE, "Can´t list already uploaded chunks.", ex);
+        }
 
         printUploadedBytes(resp, uploadedBytes);
     }

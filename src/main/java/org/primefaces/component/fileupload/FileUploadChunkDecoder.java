@@ -28,6 +28,9 @@ import org.primefaces.model.file.UploadedFile;
 import javax.faces.FacesException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public interface FileUploadChunkDecoder<T extends HttpServletRequest> {
 
@@ -40,8 +43,12 @@ public interface FileUploadChunkDecoder<T extends HttpServletRequest> {
         return String.valueOf(fileInfo.hashCode());
     }
 
-    default String getUploadDirectory(T request) {
-        return System.getProperty("java.io.tmpdir");
+    default String getUploadDirectory(T request) throws IOException {
+        Path uploadDir = Paths.get(System.getProperty("java.io.tmpdir"), "PF_chunkedUpoad");
+        if (!Files.exists(uploadDir)) {
+            Files.createDirectory(uploadDir);
+        }
+        return uploadDir.toString();
     }
 
     void decodeContentRange(FileUpload fileUpload, T request, UploadedFile uploadedFile) throws IOException;
