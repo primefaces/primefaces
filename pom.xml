@@ -978,7 +978,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.3-SNAPSHOT</version>
+                <version>3.2.2</version>
                 <configuration>
                     <shadedArtifactAttached>false</shadedArtifactAttached>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
@@ -1037,8 +1037,6 @@
                             <goal>shade</goal>
                         </goals>
                     </execution>
-                    <!--
-                    Not merged in master yet: https://github.com/apache/maven-shade-plugin/tree/rmannibucau/MSHADE-353-ensure-relocations-can-be-applied-to-any-transformer
                     <execution>
                         <id>jakarta</id>
                         <phase>package</phase>
@@ -1051,7 +1049,7 @@
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.RelocationTransformer">
+                                <transformer implementation="io.yupiik.maven.shade.transformer.RelocationTransformer">
                                     <delegates>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
                                             <resource>META-INF/faces-config.xml</resource>
@@ -1087,8 +1085,14 @@
                             </relocations>
                         </configuration>
                     </execution>
-                    -->
                 </executions>
+                <dependencies>
+                <dependency>
+                    <groupId>io.yupiik.maven</groupId>
+                    <artifactId>maven-shade-transformers</artifactId>
+                    <version>0.0.1</version>
+                </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
