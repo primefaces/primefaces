@@ -103,6 +103,56 @@ However, you may find your labels not lining up in horizontal forms.  You can us
              styleClass="customPanelGrid">
 ```
 
+## Responsive Style, StyleClass, and ID
+PanelGrid offers responsive support using `layout="flex"` for PrimeFlex or `layout="grid"` for Grid CSS and
+ a non-responsive layout using `layout="tabular"`. Flex and Grid layout wraps components in a DIV and grid layout
+ further wraps a row in a DIV.  These DIVs may now be styled by utilizing `row` and `column` components which optionally
+ represent the cell and may be utilized to attach `style`, `styleClass` and `id`.
+
+`layout="grid"` supports `column` and `row`.
+`layout="flex"` supports `column`.
+
+`row` may contain individual components, or additional `column` cells, within the grid responsive layout.
+The respective cell style will be utilized from the provided `columnClasses` and from any `styleClass` on the
+component.  If more components are contained within the row component then the respective `columnClasses` will
+be utilized based `columnClasses[column%columns]`.
+
+
+```xml
+<p:panelGrid 
+        columns="2" 
+        layout="grid"
+        columnClasses="ui-grid-col-8,ui-grid-col-4,ui-grid-col-8,ui-grid-col-4">
+    <h:outputLabel for="field01" value="Firstname: *" />
+    <p:inputText id="field01" value="#{bean.firstname}" label="Firstname" />
+
+    <p:column id="col01" styleClass="foo-cell" style="background-color:red;" >
+       <h:outputLabel for="field02" value="Firstname: *" />
+    </p:column>
+    <p:column id="col02">
+       <p:inputText id="field02" value="#{bean.firstname}" label="Firstname" />
+    </p:column>
+
+    <p:row id="row01"  styleClass="foo-row" style="background-color:red;">
+       <h:outputLabel for="field03" value="Firstname: *" />
+       <p:inputText id="field03" value="#{bean.firstname}" label="Firstname" />
+       <h:outputLabel for="field04" value="Firstname: *" />
+       <p:column id="col03">
+           <p:inputText id="field04" value="#{bean.firstname}" label="Firstname" />
+       </p:column>
+    </p:row>
+
+    <p:row id="row02"  styleClass="foo-row" style="background-color:red;">
+       <p:column id="col04">
+           <h:outputLabel for="field05" value="Firstname: *" />
+       </p:column>
+       <p:column id="col05">
+           <p:inputText id="field05" value="#{bean.firstname}" label="Firstname" />
+       </p:column>
+    </p:row>
+</p:panelGrid>
+```
+
 ## Skinning
 PanelGrid resides in a main container which _style_ and _styleClass_ attributes apply. Following is the
 list of structural style classes;

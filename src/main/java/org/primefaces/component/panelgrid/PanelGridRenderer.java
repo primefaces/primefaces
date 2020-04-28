@@ -271,34 +271,51 @@ public class PanelGridRenderer extends CoreRenderer {
             writer.writeAttribute("style", grid.getContentStyle(), null);
         }
 
+        Row row = null;
         int i = 0;
         for (UIComponent child : grid.getChildren()) {
             if (!child.isRendered()) {
                 continue;
             }
 
+            if (child instanceof Row) {
+                row = (Row)child;
+                i = 0;
+            }
+
             int colMod = i % columns;
             if (colMod == 0) {
                 writer.startElement("div", null);
                 String rowClass = (columnClasses.length > 0 && columnClasses[0].contains("ui-grid-col-")) ? "ui-grid-row" : PanelGrid.GRID_ROW_CLASS;
+                if (row != null && row.getStyleClass() != null) {
+                    rowClass = rowClass + " " + row.getStyleClass();
+                }
                 writer.writeAttribute("class", rowClass, null);
+                if (row != null && row.getStyle() != null) {
+                    writer.writeAttribute("style", row.getStyle(), null);
+                }
+                if (row != null && row.getId() != null) {
+                    writer.writeAttribute("id", row.getClientId(context), null);
+                }
             }
 
-            String columnClass = (colMod < columnClasses.length) ? PanelGrid.CELL_CLASS + " " + columnClasses[colMod].trim() : PanelGrid.CELL_CLASS;
-            if (!columnClass.contains("ui-md-") && !columnClass.contains("ui-g-") && !columnClass.contains("ui-grid-col-")) {
-                columnClass = columnClass + " " + GridLayoutUtils.getColumnClass(columns);
+            if (row != null) {
+                int iRow = 0;
+                for (UIComponent rowChild : row.getChildren()) {
+                    encodeColumn(context, columns, writer, columnClasses, rowChild, iRow++);
             }
 
-            writer.startElement("div", null);
-            writer.writeAttribute("class", columnClass, null);
-            child.encodeAll(context);
-            writer.endElement("div");
+            } else {
+                encodeColumn(context, columns, writer, columnClasses, child, colMod);
+            }
 
             i++;
             colMod = i % columns;
 
-            if (colMod == 0) {
+            if (colMod == 0 || row != null) {
                 writer.endElement("div");
+                row = null;
+                i = 0;
             }
         }
 
@@ -331,20 +348,58 @@ public class PanelGridRenderer extends CoreRenderer {
                 continue;
             }
 
+            Column column = child instanceof Column ? (Column) child : null;
+
             int colMod = i % columns;
             String columnClass = (colMod < columnClasses.length) ? PanelGrid.CELL_CLASS + " " + columnClasses[colMod].trim() : PanelGrid.CELL_CLASS;
             if (!columnClass.contains("p-md-") && !columnClass.contains("p-col-")) {
                 columnClass = columnClass + " " + GridLayoutUtils.getFlexColumnClass(columns);
             }
 
+            if (column != null && column.getStyleClass() != null) {
+                columnClass += columnClass + " " + column.getStyleClass();
+            }
+
             writer.startElement("div", null);
             writer.writeAttribute("class", columnClass, null);
+            if (column != null && column.getStyle() != null) {
+                writer.writeAttribute("style", column.getStyle(), null);
+            }
+            if (column != null && column.getId() != null) {
+                writer.writeAttribute("id", column.getClientId(context), null);
+            }
             child.encodeAll(context);
             writer.endElement("div");
 
             i++;
         }
 
+        writer.endElement("div");
+    }
+
+
+    private void encodeColumn(FacesContext context, int columns, ResponseWriter writer, String[] columnClasses, UIComponent child, int colMod) throws IOException {
+        Column column = child instanceof Column ? (Column) child : null;
+
+        String columnClass = (colMod < columnClasses.length) ? PanelGrid.CELL_CLASS + " " + columnClasses[colMod].trim() : PanelGrid.CELL_CLASS;
+        if (!columnClass.contains("ui-md-") && !columnClass.contains("ui-g-") && !columnClass.contains("ui-grid-col-")) {
+            columnClass = columnClass + " " + GridLayoutUtils.getColumnClass(columns);
+        }
+        if (column != null && column.getStyleClass() != null) {
+            columnClass += columnClass + " " + column.getStyleClass();
+        }
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", columnClass, null);
+
+        if (column != null && column.getStyle() != null) {
+            writer.writeAttribute("style", column.getStyle(), null);
+        }
+        if (column != null && column.getId() != null) {
+            writer.writeAttribute("id", column.getClientId(context), null);
+        }
+
+        child.encodeAll(context);
         writer.endElement("div");
     }
 
