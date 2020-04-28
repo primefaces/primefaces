@@ -296,7 +296,8 @@ public class PanelGridRenderer extends CoreRenderer {
 
             if (row == null) {
                 encodeColumn(context, columns, writer, columnClasses, child, colMod);
-            } else {
+            }
+            else {
                 int iRow = 0;
                 for (UIComponent rowChild : row.getChildren()) {
                     encodeColumn(context, columns, writer, columnClasses, rowChild, iRow++);
