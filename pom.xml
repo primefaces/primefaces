@@ -1087,11 +1087,11 @@
                     </execution>
                 </executions>
                 <dependencies>
-                <dependency>
-                    <groupId>io.yupiik.maven</groupId>
-                    <artifactId>maven-shade-transformers</artifactId>
-                    <version>0.0.1</version>
-                </dependency>
+                    <dependency>
+                        <groupId>io.yupiik.maven</groupId>
+                        <artifactId>maven-shade-transformers</artifactId>
+                        <version>0.0.1</version>
+                    </dependency>
                 </dependencies>
             </plugin>
             <plugin>
