@@ -185,6 +185,7 @@ public class ScheduleRenderer extends CoreRenderer {
                 .attr("eventStartEditable", schedule.isDraggable(), true)
                 .attr("eventDurationEditable", schedule.isResizable(), true)
                 .attr("slotLabelInterval", schedule.getSlotLabelInterval(), null)
+                .attr("slotLabelFormat", schedule.getSlotLabelFormat(), null)
                 .attr("eventTimeFormat", schedule.getTimeFormat(), null) //https://momentjs.com/docs/#/displaying/
                 .attr("weekNumbers", isShowWeekNumbers, false)
                 .attr("nextDayThreshold", schedule.getNextDayThreshold(), "09:00:00")
