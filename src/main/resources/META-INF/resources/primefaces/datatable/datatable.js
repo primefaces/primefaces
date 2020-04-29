@@ -2007,7 +2007,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                                     ariaLabelOfActive = activeColumn.attr('aria-label');
 
                                 activeColumn.attr('aria-label', $this.getSortMessage(ariaLabelOfActive, $this.ascMessage));
-                                $(PrimeFaces.escapeClientId(activeColumn.attr('id') + '_clone')).removeAttr('aria-sort').attr('aria-label', $this.getSortMessage(ariaLabelOfActive, $this.ascMessage));
+                                $(PrimeFaces.escapeClientId(activeColumn.attr('id') + '_clone')).removeAttr('aria-sort')
+                                    .attr('aria-label', $this.getSortMessage(ariaLabelOfActive, $this.ascMessage));
                             }
 
                             activeColumns.data('sortorder', $this.SORT_ORDER.UNSORTED).removeClass('ui-state-active')
@@ -2020,11 +2021,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                         if(order === $this.SORT_ORDER.DESCENDING) {
                             sortIcon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
-                            columnHeader.attr('aria-sort', 'descending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
+                            columnHeader.attr('aria-sort', 'descending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.otherMessage));
                             $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'descending')
-                                .attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
+                                .attr('aria-label', $this.getSortMessage(ariaLabel, $this.otherMessage));
                         } else if(order === $this.SORT_ORDER.ASCENDING) {
-                            sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
+                            sortIcon.removeClass('ui-icon-carat-2-n-s').addClass('ui-icon-triangle-1-n');
                             columnHeader.attr('aria-sort', 'ascending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
                             $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'ascending')
                                 .attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
