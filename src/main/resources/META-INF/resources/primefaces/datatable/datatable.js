@@ -428,8 +428,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.sortableColumns.attr('tabindex', this.cfg.tabindex);
 
         //aria messages
-        this.ascMessage = PrimeFaces.getAriaLabel('datatable.sort.ASC');
-        this.descMessage = PrimeFaces.getAriaLabel('datatable.sort.DESC');
+        this.ascMessage = PrimeFaces.getAriaLabel('datatable.sort.SORT_ASC');
+        this.descMessage = PrimeFaces.getAriaLabel('datatable.sort.SORT_DESC');
+        this.otherMessage = PrimeFaces.getAriaLabel('datatable.sort.SORT_LABEL');
 
         //reflow dropdown
         this.reflowDD = $(this.jqId + '_reflowDD');
@@ -455,11 +456,18 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         hasAriaSort = true;
                     }
                 }
-                else {
+                else if (sortIcon.hasClass('ui-icon-triangle-1-s')) {
                     sortOrder = this.SORT_ORDER.DESCENDING;
-                    columnHeader.attr('aria-label', this.getSortMessage(ariaLabel, this.ascMessage));
+                    columnHeader.attr('aria-label', this.getSortMessage(ariaLabel, this.otherMessage));
                     if(!hasAriaSort) {
                         columnHeader.attr('aria-sort', 'descending');
+                        hasAriaSort = true;
+                    }
+                } else {
+                    sortOrder = this.SORT_ORDER.UNSORTED;
+                    columnHeader.attr('aria-label', this.getSortMessage(ariaLabel, this.ascMessage));
+                    if(!hasAriaSort) {
+                        columnHeader.attr('aria-sort', 'other');
                         hasAriaSort = true;
                     }
                 }
@@ -523,7 +531,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             var columnHeader = $(this),
             sortOrderData = columnHeader.data('sortorder'),
-            sortOrder = (sortOrderData === $this.SORT_ORDER.UNSORTED) ? $this.SORT_ORDER.ASCENDING : -1 * sortOrderData,
+            sortOrder = (sortOrderData === $this.SORT_ORDER.UNSORTED) ? $this.SORT_ORDER.ASCENDING :
+                (sortOrderData === $this.SORT_ORDER.ASCENDING) ? $this.SORT_ORDER.DESCENDING :
+                    $this.SORT_ORDER.UNSORTED,
             metaKey = e.metaKey||e.ctrlKey||metaKeyOn;
             if($this.cfg.multiSort) {
                 if(metaKey) {
@@ -2008,14 +2018,22 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         var sortIcon = columnHeader.find('.ui-sortable-column-icon'),
                         ariaLabel = columnHeader.attr('aria-label');
 
-                        if(order === $this.SORT_ORDER.DESCENDING) {
+                        if (order === $this.SORT_ORDER.DESCENDING) {
                             sortIcon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
-                            columnHeader.attr('aria-sort', 'descending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
-                            $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'descending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
-                        } else if(order === $this.SORT_ORDER.ASCENDING) {
-                            sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
+                            columnHeader.attr('aria-sort', 'descending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.otherMessage));
+                            $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'descending')
+                                .attr('aria-label', $this.getSortMessage(ariaLabel, $this.otherMessage));
+                        } else if (order === $this.SORT_ORDER.ASCENDING) {
+                            sortIcon.removeClass('ui-icon-carat-2-n-s').addClass('ui-icon-triangle-1-n');
                             columnHeader.attr('aria-sort', 'ascending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
-                            $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'ascending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
+                            $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'ascending')
+                                .attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
+                        } else {
+                            sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-carat-2-n-s');
+                            columnHeader.removeClass('ui-state-active ').attr('aria-sort', 'other')
+                                .attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
+                            $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'other')
+                                .attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
                         }
                     }
                 }
