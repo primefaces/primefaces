@@ -99,6 +99,8 @@
  * @prop {boolean} cfg.sequentialUploads `true` to upload files one after each other, `false` to upload in parallel.
  * @prop {string} cfg.update Component(s) to update after fileupload completes.
  * @prop {number} cfg.maxChunkSize To upload large files in smaller chunks, set this option to a preferred maximum chunk size. If set to 0, null or undefined, or the browser does not support the required Blob API, files will be uploaded as a whole.
+ * @prop {number} cfg.maxRetries Only for chunked file upload: Amount of retries when upload get´s interrupted due to e.g. unstable network connection.
+ * @prop {number} cfg.retryTimeout Only for chunked file upload: (Base-)Timeout in milliseconds to wait until the next retry. It is multiplied with the retry count. (first retry: retryTimeout * 1, second retry: retryTimeout *2, ...)
  * @prop {string} cfg.resumeContextPath Server-side path which provides information to resume chunked file upload.
  */
 PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
@@ -136,6 +138,8 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.fileLimitMessage = this.cfg.fileLimitMessage || 'Maximum number of files exceeded';
         this.cfg.messageTemplate = this.cfg.messageTemplate || '{name} {size}';
         this.cfg.previewWidth = this.cfg.previewWidth || 80;
+        this.cfg.maxRetries = this.cfg.maxRetries || 30;
+        this.cfg.retryTimeout = this.cfg.retryTimeout || 1000;
         this.uploadedFileCount = 0;
         this.fileId = 0;
 
@@ -162,8 +166,8 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             dropZone: (this.cfg.dnd === false) ? null : this.jq,
             sequentialUploads: this.cfg.sequentialUploads,
             maxChunkSize: this.cfg.maxChunkSize,
-            maxRetries: 60,
-            retryTimeout: 1000,
+            maxRetries: this.cfg.maxRetries,
+            retryTimeout: this.cfg.retryTimeout,
             formData: function() {
                 return $this.createPostData();
             },

@@ -9545,6 +9545,22 @@
 		</attribute>
         <attribute>
             <description>
+                <![CDATA[Only for chunked file upload: Amount of retries when upload get´s interrupted due to e.g. unstable network connection.]]>
+            </description>
+            <name>maxRetries</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Only for chunked file upload: (Base-)Timeout in milliseconds to wait until the next retry. It is multiplied with the retry count. (first retry: retryTimeout * 1, second retry: retryTimeout *2, ...)]]>
+            </description>
+            <name>retryTimeout</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Mode of the uploader, valid values are "simple" and "advanced".]]>
             </description>
             <name>mode</name>

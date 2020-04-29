@@ -67,6 +67,8 @@ powered rich solution with graceful degradation for legacy browsers.
 | validateContentType | false | Boolean | Whether content type validation should be performed, based on the types defined in the accept attribute. Default is false.
 | virusScan | false | Boolean | Whether virus scan should be performed. Default is false.
 | maxChunkSize | 0 | Long | To upload large files in smaller chunks, set this option to a preferred maximum chunk size. If set to 0 (default), null or undefined, or the browser does not support the required Blob API, files will be uploaded as a whole. Only works in "advanced" mode.
+| maxRetries | 30 | Integer | Only for chunked file upload: Amount of retries when upload get´s interrupted due to e.g. unstable network connection. 
+| retryTimeout | 1000 | Integer | Only for chunked file upload: (Base-)Timeout in milliseconds to wait until the next retry. It is multiplied with the retry count. (first retry: retryTimeout * 1, second retry: retryTimeout *2, ...)  
 
 ## Getting started with FileUpload
 FileUpload engine on the server side can either be servlet 3.0 or commons fileupload. PrimeFaces

@@ -89,6 +89,8 @@ public class FileUploadRenderer extends CoreRenderer {
                     .attr("disabled", fileUpload.isDisabled(), false)
                     .attr("sequentialUploads", fileUpload.isSequential(), false)
                     .attr("maxChunkSize", fileUpload.getMaxChunkSize(), 0)
+                    .attr("maxRetries", fileUpload.getMaxRetries(), 30)
+                    .attr("retryTimeout", fileUpload.getRetryTimeout(), 1000)
                     .attr("resumeContextPath", pfContext.getFileUploadResumeUrl(), null)
                     .callback("onAdd", "function(file, callback)", fileUpload.getOnAdd())
                     .callback("onstart", "function()", fileUpload.getOnstart())
