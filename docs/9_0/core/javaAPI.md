@@ -17,6 +17,7 @@ PrimeFaces instance = PrimeFaces.current();
 | Method | Description |
 | --- | --- |
 executeScript(String script) | Executes script after ajax request completes or on page load.
+isFacesRequest() | Returns a boolean value if current request is a Faces request.
 isAjaxRequest() | Returns a boolean value if current request is a PrimeFaces ajax request.
 scrollTo(String clientId) | Scrolls to the component with given clientId after ajax request completes.
 focus(String expression) | Focus the input(s) targeted by the given search expression.
