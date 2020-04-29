@@ -82,6 +82,7 @@
             clearButtonStyleClass: 'ui-priority-secondary',
             appendTo: null,
             dateTemplate: null,
+            timeInput: false,
             onFocus: null,
             onBlur: null,
             onInput: null,
@@ -187,12 +188,17 @@
         },
 
         setDate: function(date) {
+            if (!date) {
+                this.updateModel(null, null);
+                return;
+            }
+
             var newDate = this.parseValue(date);
             var newDateMeta = { day: newDate.getDate(), month: newDate.getMonth(), year: newDate.getFullYear(), selectable: true /*, today: true*/ };
 
             /* set changes */
-            this.updateViewDate(event, newDate);
-            this.onDateSelect(event, newDateMeta);
+            this.updateViewDate(null, newDate);
+            this.onDateSelect(null, newDateMeta);
         },
 
         getDate: function() {
@@ -956,6 +962,10 @@
             this.onOverlayHide();
         },
 
+        /**
+         * @override
+         * @protected
+         */
         _render: function () {
             if (this.options.styleClass) {
                 this.container.addClass(this.options.styleClass);
@@ -1121,7 +1131,7 @@
         },
 
         renderTimePicker: function () {
-            var timepicker = '<div class="ui-timepicker ui-widget-header ui-corner-all">';
+            var timepicker = '<div class="ui-timepicker ui-widget-header ui-corner-all' + (this.options.timeInput ? ' ui-timepicker-timeinput' : '') + '">';
 
             //hour
             timepicker += this.renderHourPicker();
@@ -1157,9 +1167,26 @@
 
         renderMonthViewMonth: function (index) {
             var monthName = this.options.locale.monthNamesShort[index],
-                content = this.options.dateTemplate ? this.options.dateTemplate.call(this, monthName) : this.escapeHTML(monthName);
+                content = this.options.dateTemplate ? this.options.dateTemplate.call(this, monthName) : this.escapeHTML(monthName),
+                compareDate = new Date(this.viewDate.getFullYear(), index, 1),
+                minDate = this.options.minDate,
+                maxDate = this.options.maxDate,
+                disabled = false;
 
-            return '<a tabindex="0" class="ui-monthpicker-month' + this.getClassesToAdd({ 'ui-state-active': this.isMonthSelected(index) }) + '">' + content + '</a>';
+            if (minDate && minDate > compareDate) {
+                disabled = true;
+            }
+
+            if (maxDate && maxDate < compareDate) {
+                disabled = true;
+            }
+
+            var monthClass = this.getClassesToAdd({
+                'ui-state-active': this.isMonthSelected(index),
+                'ui-state-disabled': disabled
+            });
+
+            return '<a tabindex="0" class="ui-monthpicker-month' + monthClass + '">' + content + '</a>';
         },
 
         renderMonthViewMonths: function () {
@@ -1371,14 +1398,18 @@
 
             var hourDisplay = hour < 10 ? '0' + hour : hour;
 
-            return this.renderTimeElements("ui-hour-picker", '<span>' + hourDisplay + '</span>', 0);
+            //type="number" min="' + minHour + '" max="' + maxHour + '" - does not work well on Firefox 70, so we don´t use it
+            var html = this.options.timeInput ? '<input value="' + hourDisplay + '" size="2" maxlength="2" tabindex="1"></input>' : '<span>' + hourDisplay + '</span>';
+            return this.renderTimeElements("ui-hour-picker", html, 0);
         },
 
         renderMinutePicker: function () {
             var minute = (this.value && this.value instanceof Date) ? this.value.getMinutes() : this.viewDate.getMinutes(),
                 minuteDisplay = minute < 10 ? '0' + minute : minute;
 
-            return this.renderTimeElements("ui-minute-picker", '<span>' + minuteDisplay + '</span>', 1);
+            //type="number" min="0" max="59" does not work well on Firefox 70, so we don´t use it
+            var html = this.options.timeInput ? '<input value="' + minuteDisplay + '" size="2" maxlength="2" tabindex="2"></input>' : '<span>' + minuteDisplay + '</span>';
+            return this.renderTimeElements("ui-minute-picker", html, 1);
         },
 
         renderSecondPicker: function () {
@@ -1386,7 +1417,9 @@
                 var second = (this.value && this.value instanceof Date) ? this.value.getSeconds() : this.viewDate.getSeconds(),
                     secondDisplay = second < 10 ? '0' + second : second;
 
-                return this.renderTimeElements("ui-second-picker", '<span>' + secondDisplay + '</span>', 2);
+                //type="number" min="0" max="59" does not work well on Firefox 70, so we don´t use it
+                var html =  this.options.timeInput ? '<input value="' + secondDisplay + '" size="2" maxlength="2" tabindex="3"></input>' : '<span>' + secondDisplay + '</span>';
+                return this.renderTimeElements("ui-second-picker", html, 2);
             }
 
             return '';
@@ -1449,7 +1482,7 @@
         _bindEvents: function () {
             var $this = this;
             if (!this.options.inline) {
-                this.inputfield.off('focus.datePicker blur.datePicker keydown.datePicker change.datePicker click.datePicker')
+                this.inputfield.off('focus.datePicker blur.datePicker keydown.datePicker input.datePicker click.datePicker')
                     .on('focus.datePicker', this.onInputFocus.bind($this))
                     .on('blur.datePicker', this.onInputBlur.bind($this))
                     .on('keydown.datePicker', this.onInputKeyDown.bind($this))
@@ -1480,7 +1513,7 @@
 
             var timeSelector = '.ui-hour-picker > a,  .ui-minute-picker > a, .ui-second-picker > a',
                 ampmSelector = '.ui-ampm-picker > a';
-            this.panel.off('mousedown.datePicker-time mouseup.datePicker-time', timeSelector).off('click.datePicker-ampm', ampmSelector)
+            this.panel.off('mousedown.datePicker-time mouseup.datePicker-time mouseleave.datePicker-time', timeSelector).off('click.datePicker-ampm', ampmSelector)
                 .on('mousedown.datePicker-time', timeSelector, null, function (event) {
                     var button = $(this),
                         parentEl = button.parent();
@@ -1490,12 +1523,30 @@
                 .on('mouseup.datePicker-time', timeSelector, null, function (event) {
                     $this.onTimePickerElementMouseUp(event);
                 })
-                .on('mouseleave.datePicker-time', timeSelector, null, function () {
-                    $this.clearTimePickerTimer();
+                .on('mouseleave.datePicker-time', timeSelector, null, function (event) {
+                    if ($this.timePickerTimer) {
+                        $this.onTimePickerElementMouseUp(event);
+                    }
                 })
                 .on('click.datePicker-ampm', ampmSelector, null, function (event) {
                     $this.toggleAmPm(event);
                 });
+
+            if (this.options.timeInput) {
+                this.panel.off('focus', '.ui-hour-picker input').on('focus', '.ui-hour-picker input', null, function (event) {
+                    $this.oldHours = this.value;
+                }).off('focus', '.ui-minute-picker input').on('focus', '.ui-minute-picker input', null, function (event) {
+                    $this.oldMinutes = this.value;
+                }).off('focus', '.ui-second-picker input').on('focus', '.ui-second-picker input', null, function (event) {
+                    $this.oldSeconds = this.value;
+                }).off('change', '.ui-hour-picker input').on('change', '.ui-hour-picker input', null, function (event) {
+                    $this.handleHoursInput(this, event);
+                }).off('change', '.ui-minute-picker input').on('change', '.ui-minute-picker input', null, function (event) {
+                    $this.handleMinutesInput(this, event);
+                }).off('change', '.ui-second-picker input').on('change', '.ui-second-picker input', null, function (event) {
+                    $this.handleSecondsInput(this, event);
+                });
+            }
 
             var todayButtonSelector = '.ui-datepicker-buttonbar .ui-today-button',
                 clearButtonSelector = '.ui-datepicker-buttonbar .ui-clear-button';
@@ -1552,7 +1603,7 @@
                 //put the focus back to the inputfield
                 this.inputfield.focus();
             }
-            
+
             if (event.keyCode === 9 || event.keyCode === 27) {
                 if (this.options.touchUI) {
                     this.disableModality();
@@ -1728,6 +1779,10 @@
         onTimePickerElementMouseUp: function (event) {
             if (!this.options.disabled) {
                 this.clearTimePickerTimer();
+
+                if (this.options.onSelect) {
+                    this.options.onSelect.call(this, event, this.value);
+                }
             }
         },
 
@@ -1767,6 +1822,7 @@
         clearTimePickerTimer: function () {
             if (this.timePickerTimer) {
                 clearTimeout(this.timePickerTimer);
+                this.timePickerTimer = null;
             }
         },
 
@@ -1783,6 +1839,10 @@
                 setTimeout(function () {
                     $this.bindDocumentClickListener();
                 }, 10);
+            }
+
+            if ((this.options.showTime || this.options.timeOnly) && this.options.timeInput) {
+                this.panel.find('.ui-hour-picker input').focus();
             }
         },
 
@@ -1802,7 +1862,9 @@
                     :
                     ((((this.isMultipleSelection() || this.isRangeSelection()) && this.value instanceof Array) ? this.value[0] : this.value) || this.parseValue(new Date()));
 
-                this.updateViewDate(null, viewDate);
+                if(viewDate instanceof Date) {
+                    this.updateViewDate(null, viewDate);
+                }
             }
         },
 
@@ -1886,7 +1948,9 @@
 
         onDateSelect: function (event, dateMeta) {
             if (this.options.disabled || !dateMeta.selectable) {
-                event.preventDefault();
+                if(event) {
+                    event.preventDefault();
+                }
                 return;
             }
 
@@ -1920,7 +1984,9 @@
                 }
             }
 
-            event.preventDefault();
+            if(event) {
+                event.preventDefault();
+            }
         },
 
         selectDate: function (event, dateMeta) {
@@ -2060,6 +2126,90 @@
             event.preventDefault();
         },
 
+        handleHoursInput: function(input, event) {
+            var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
+                value = input.value,
+                valid = false,
+                newHours;
+
+            var reg = new RegExp('^([0-9]){1,2}$');
+            if (reg.test(value)) {
+                newHours = parseInt(value);
+                if (this.options.hourFormat === '12') {
+                    if (newHours >= 1 || newHours <= 12) {
+                        valid = this.validateTime(newHours, currentTime.getMinutes(), currentTime.getSeconds(), currentTime);
+                    }
+                } else {
+                    if (newHours >= 0 || newHours <= 23) {
+                        valid = this.validateTime(newHours, currentTime.getMinutes(), currentTime.getSeconds(), currentTime);
+                    }
+                }
+            }
+
+            if (!valid) {
+                event.preventDefault();
+                input.value = this.oldHours;
+                return;
+            }
+
+            var newDateTime = (this.value && this.value instanceof Date) ? new Date(this.value) : new Date();
+            newDateTime.setHours(newHours);
+
+            this.updateTimeAfterInput(event, newDateTime);
+        },
+
+        handleMinutesInput: function(input, event) {
+            var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
+                value = input.value,
+                valid = false,
+                newMinutes;
+
+            var reg = new RegExp('^([0-9]){1,2}$');
+            if (reg.test(value)) {
+                newMinutes = parseInt(value);
+                if (newMinutes >= 0 || newMinutes <= 59) {
+                    valid = this.validateTime(currentTime.getHours(), newMinutes, currentTime.getSeconds(), currentTime);
+                }
+            }
+
+            if (!valid) {
+                event.preventDefault();
+                input.value = this.oldMinutes;
+                return;
+            }
+
+            var newDateTime = (this.value && this.value instanceof Date) ? new Date(this.value) : new Date();
+            newDateTime.setMinutes(newMinutes);
+
+            this.updateTimeAfterInput(event, newDateTime);
+        },
+
+        handleSecondsInput: function(input, event) {
+            var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
+                value = input.value,
+                valid = false,
+                newSeconds;
+
+            var reg = new RegExp('^([0-9]){1,2}$');
+            if (reg.test(value)) {
+                newSeconds = parseInt(value);
+                if (newSeconds >= 0 || newSeconds <= 59) {
+                    valid = this.validateTime(currentTime.getHours(), currentTime.getMinutes(), newSeconds, currentTime);
+                }
+            }
+
+            if (!valid) {
+                event.preventDefault();
+                input.value = this.oldSeconds;
+                return;
+            }
+
+            var newDateTime = (this.value && this.value instanceof Date) ? new Date(this.value) : new Date();
+            newDateTime.setSeconds(newSeconds);
+
+            this.updateTimeAfterInput(event, newDateTime);
+        },
+
         validateTime: function(hour, minute, second, value, direction) {
             var valid = true;
             var dateNew = new Date(value.getFullYear(), value.getMonth(), value.getDate(), hour, minute, second, 0);
@@ -2098,6 +2248,17 @@
             newDateTime.setMilliseconds(0);
 
             this.updateModel(event, newDateTime);
+
+            if (this.options.onSelect) {
+                if (this.timePickerTimer === 'undefined' || this.timePickerTimer === null) {
+                    this.options.onSelect.call(this, event, newDateTime);
+                }
+            }
+        },
+
+        updateTimeAfterInput: function (event, newDateTime) {
+            this.value = newDateTime;
+            this.inputfield.val(this.getValueToRender());
 
             if (this.options.onSelect) {
                 this.options.onSelect.call(this, event, newDateTime);
@@ -2160,7 +2321,7 @@
         },
 
         updateModel: function (event, value) {
-            this.value = value;
+            this.value = (value === '' ? null : value);
             this.inputfield.val(this.getValueToRender());
 
             this.panel.get(0).innerHTML = this.renderPanelElements();

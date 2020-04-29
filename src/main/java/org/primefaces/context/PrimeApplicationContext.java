@@ -23,29 +23,33 @@
  */
 package org.primefaces.context;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.nio.file.spi.FileTypeDetector;
-import java.util.Map;
-import java.util.ServiceLoader;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import org.primefaces.cache.CacheProvider;
 import org.primefaces.cache.DefaultCacheProvider;
-
+import org.primefaces.component.fileupload.FileUploadDecoder;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.config.PrimeEnvironment;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.Lazy;
 import org.primefaces.virusscan.VirusScannerService;
+
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.nio.file.spi.FileTypeDetector;
+import java.util.Map;
+import java.util.ServiceLoader;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * A {@link PrimeApplicationContext} is a contextual store for the current application.
@@ -72,6 +76,7 @@ public class PrimeApplicationContext {
     private final Lazy<CacheProvider> cacheProvider;
     private final Lazy<VirusScannerService> virusScannerService;
     private FileTypeDetector fileTypeDetector;
+    private Map<String, FileUploadDecoder> fileUploadDecoders;
 
     public PrimeApplicationContext(FacesContext facesContext) {
         environment = new PrimeEnvironment(facesContext);
@@ -147,6 +152,9 @@ public class PrimeApplicationContext {
                 }
             }
         });
+
+        fileUploadDecoders = StreamSupport.stream(ServiceLoader.load(FileUploadDecoder.class, classLoader).spliterator(), false)
+                .collect(Collectors.toMap(FileUploadDecoder::getName, Function.identity()));
     }
 
     public static PrimeApplicationContext getCurrentInstance(FacesContext facesContext) {
@@ -223,5 +231,9 @@ public class PrimeApplicationContext {
                 validatorFactory.get().close();
             }
         }
+    }
+
+    public FileUploadDecoder getFileUploadDecoder(String uploader) {
+        return fileUploadDecoders.get(uploader);
     }
 }

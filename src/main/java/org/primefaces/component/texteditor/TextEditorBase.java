@@ -40,6 +40,7 @@ public abstract class TextEditorBase extends UIInput implements Widget, ClientBe
         widgetVar,
         height,
         readonly,
+        disabled,
         style,
         styleClass,
         placeholder,
@@ -172,5 +173,13 @@ public abstract class TextEditorBase extends UIInput implements Widget, ClientBe
 
     public void setSecure(boolean secure) {
         getStateHelper().put(PropertyKeys.secure, secure);
+    }
+
+    public boolean isDisabled() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+    }
+
+    public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 }

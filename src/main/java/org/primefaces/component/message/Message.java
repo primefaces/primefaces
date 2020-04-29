@@ -23,12 +23,9 @@
  */
 package org.primefaces.component.message;
 
-import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "components.css")
-})
+@ResourceDependency(library = "primefaces", name = "components.css")
 public class Message extends MessageBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Message";

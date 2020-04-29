@@ -39,7 +39,7 @@
         try {
             jqObj = jQueryCloneWithSelectAndTextAreaValues(string);
         } catch (e) {
-            jqObj = $("<span />")
+            jqObj = $("<span></span>")
                 .html(string);
         }
         return jqObj;
@@ -93,7 +93,7 @@
         var iframeCount = $iframe.length;
         if (iframeCount === 0) {
             // Create a new iFrame if none is given
-            $iframe = $('<iframe height="0" width="0" border="0" wmode="Opaque"/>')
+            $iframe = $('<iframe height="0" width="0" border="0" wmode="Opaque"></iframe>')
                 .prependTo('body')
                 .css({
                     "position": "absolute",
@@ -209,7 +209,7 @@
         // Create a copy of the element to print
         var copy = jQueryCloneWithSelectAndTextAreaValues($this);
         // Wrap it in a span to get the HTML markup string
-        copy = $("<span/>")
+        copy = $("<span></span>")
             .append(copy);
         // Remove unwanted elements
         copy.find(options.noPrintSelector)
@@ -220,7 +220,7 @@
         if (options.title) {
             var title = $("title", copy);
             if (title.length === 0) {
-                title = $("<title />");
+                title = $("<title></title>");
                 copy.append(title);                
             }
             title.text(options.title);            

@@ -339,7 +339,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         writer.writeAttribute("type", "radio", null);
         writer.writeAttribute("value", value, null);
 
-        renderDomEvents(context, radio, SelectOneRadio.SUPPORTED_EVENTS);
+        renderDomEvents(context, radio, SelectOneRadio.DOM_EVENTS);
 
         if (radio.getTabindex() != null) {
             writer.writeAttribute("tabindex", radio.getTabindex(), null);

@@ -31,7 +31,6 @@ import java.util.Map;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
-import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -44,15 +43,13 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.util.*;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "schedule/schedule.css"),
-        @ResourceDependency(library = "primefaces", name = "components.css"),
-        @ResourceDependency(library = "primefaces", name = "moment/moment.js"),
-        @ResourceDependency(library = "primefaces", name = "moment/moment-timezone-with-data.js"),
-        @ResourceDependency(library = "primefaces", name = "core.js"),
-        @ResourceDependency(library = "primefaces", name = "components.js"),
-        @ResourceDependency(library = "primefaces", name = "schedule/schedule.js")
-})
+@ResourceDependency(library = "primefaces", name = "schedule/schedule.css")
+@ResourceDependency(library = "primefaces", name = "components.css")
+@ResourceDependency(library = "primefaces", name = "moment/moment.js")
+@ResourceDependency(library = "primefaces", name = "moment/moment-timezone-with-data.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "components.js")
+@ResourceDependency(library = "primefaces", name = "schedule/schedule.js")
 public class Schedule extends ScheduleBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Schedule";

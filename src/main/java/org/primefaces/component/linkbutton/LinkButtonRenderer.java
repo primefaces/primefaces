@@ -31,6 +31,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class LinkButtonRenderer extends OutcomeTargetRenderer {
@@ -74,7 +75,7 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
 
             writer.startElement("a", null);
             writer.writeAttribute("href", targetURL, null);
-            renderPassThruAttributes(context, linkButton, HTML.LINK_ATTRS_WITHOUT_EVENTS_AND_STYLE, HTML.TITLE);
+            renderPassThruAttributes(context, linkButton, LangUtils.concat(HTML.LINK_ATTRS_WITHOUT_EVENTS_AND_STYLE, HTML.TITLE));
             renderDomEvents(context, linkButton, HTML.OUTPUT_EVENTS);
             renderContent(context, linkButton);
             writer.endElement("a");

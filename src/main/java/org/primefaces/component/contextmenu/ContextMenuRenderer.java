@@ -32,6 +32,7 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class ContextMenuRenderer extends TieredMenuRenderer {
@@ -71,6 +72,6 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
         String styleClass = menu.getStyleClass();
         styleClass = styleClass == null ? ContextMenu.CONTAINER_CLASS : ContextMenu.CONTAINER_CLASS + " " + styleClass;
 
-        encodeMenu(context, menu, style, styleClass, "menu");
+        encodeMenu(context, menu, style, styleClass, HTML.ARIA_ROLE_MENU);
     }
 }

@@ -1014,49 +1014,51 @@ Charts are canvas based and can be exported as static images with client side ap
 ```
 
 ## Extender
-Extender function allows access to the underlying chart.js api using the setExtender method of the model.
+Extender function allows access to the underlying chart.js api using the setExtender method of the model. The exstender function needs to be defined before the chart component, otherwise it could happen that on the first model load, the script isn't found.
 
 ```xhtml
-<p:radarChart model="#{bean.radarModel2}" />
-
 <h:outputScript>
         function chartExtender() {
            //copy the config options into a variable
            var options = $.extend(true, {}, this.cfg.config);
         
            options = {
-              //remove the legend
-              legend: {
-                 display: false
-              },
-              scales: {
-                 xAxes: [{
-                    display: true,
-                    type: "time",
-                    time: {
-                       parser: 'h:mm:ss a',
-                       tooltipFormat: 'h:mm:ss a',
-                       unit: 'hour',
-                       displayFormats: {
-                          'hour': 'h:mm:ss a'
-                       }
-                    }
-                 }],
-                 yAxes: [{
-                    display: true,
-                    scaleLabel: {
-                       display: true,
-                       labelString: 'Your Y Axis',
-                       fontSize: 13,
-                    }
-                 }]
-              }
+              options: {
+                  //remove the legend
+                  legend: {
+                     display: false
+                  },
+                  scales: {
+                     xAxes: [{
+                        display: true,
+                        type: "time",
+                        time: {
+                           parser: 'h:mm:ss a',
+                           tooltipFormat: 'h:mm:ss a',
+                           unit: 'hour',
+                           displayFormats: {
+                              'hour': 'h:mm:ss a'
+                           }
+                        }
+                     }],
+                     yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                           display: true,
+                           labelString: 'Your Y Axis',
+                           fontSize: 13,
+                        }
+                     }]
+                  }
+                }
            };
         
            //merge all options into the main chart options
            $.extend(true, this.cfg.config, options);
         };
 </h:outputScript>
+
+<p:radarChart model="#{bean.radarModel2}" />
 ```
 
 ```java

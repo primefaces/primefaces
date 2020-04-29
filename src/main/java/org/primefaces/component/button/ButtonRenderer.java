@@ -57,7 +57,7 @@ public class ButtonRenderer extends OutcomeTargetRenderer {
         writer.writeAttribute("type", "button", null);
         writer.writeAttribute("class", button.resolveStyleClass(), "styleClass");
 
-        renderPassThruAttributes(context, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);
+        renderPassThruAttributes(context, button, HTML.BUTTON_WITH_CLICK_ATTRS);
 
         if (button.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", "disabled");

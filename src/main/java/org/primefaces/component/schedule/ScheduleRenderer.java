@@ -41,6 +41,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -118,7 +119,7 @@ public class ScheduleRenderer extends CoreRenderer {
                 jsonObject.put("className", event.getStyleClass());
                 jsonObject.put("description", event.getDescription());
                 jsonObject.put("url", event.getUrl());
-                jsonObject.put("rendering", event.getRenderingMode());
+                jsonObject.put("rendering", Objects.toString(event.getRenderingMode(), null));
 
                 if (event.getDynamicProperties() != null) {
                     for (Map.Entry<String, Object> dynaProperty : event.getDynamicProperties().entrySet()) {
@@ -184,6 +185,7 @@ public class ScheduleRenderer extends CoreRenderer {
                 .attr("eventStartEditable", schedule.isDraggable(), true)
                 .attr("eventDurationEditable", schedule.isResizable(), true)
                 .attr("slotLabelInterval", schedule.getSlotLabelInterval(), null)
+                .attr("slotLabelFormat", schedule.getSlotLabelFormat(), null)
                 .attr("eventTimeFormat", schedule.getTimeFormat(), null) //https://momentjs.com/docs/#/displaying/
                 .attr("weekNumbers", isShowWeekNumbers, false)
                 .attr("nextDayThreshold", schedule.getNextDayThreshold(), "09:00:00")

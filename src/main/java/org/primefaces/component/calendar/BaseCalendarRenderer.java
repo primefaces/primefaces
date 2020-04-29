@@ -40,9 +40,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -285,13 +282,12 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
     protected Class<?> resolveDateType(FacesContext context, UICalendar calendar) {
         ValueExpression ve = calendar.getValueExpression("value");
 
-        if (ve == null) {
-            return LocalDate.class;
+        Class<?> type = null;
+        if (ve != null) {
+            type = ve.getType(context.getELContext());
         }
 
-        Class<?> type = ve.getType(context.getELContext());
-
-        // If type could not be determined via value-expression try it this way. (Very unlikely, this happens in real world.)
+        // If type could not be determined via value-expression try it this way. Required for e.g. usage in custom dataTable filters
         if (type == null) {
             if (calendar.isTimeOnly()) {
                 type = LocalTime.class;
@@ -309,15 +305,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             Object base = valueReference.getBase();
             Object property = valueReference.getProperty();
 
-            try {
-                Field field = LangUtils.getUnproxiedClass(base.getClass()).getDeclaredField((String) property);
-                ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
-                Type listType = parameterizedType.getActualTypeArguments()[0];
-                type = Class.forName(listType.getTypeName());
-            }
-            catch (ReflectiveOperationException ex) {
-                //NOOP
-            }
+            type = LangUtils.getTypeFromCollectionProperty(base, (String) property);
         }
 
         return type;

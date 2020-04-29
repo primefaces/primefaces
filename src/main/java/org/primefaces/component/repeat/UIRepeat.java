@@ -913,7 +913,7 @@ public class UIRepeat extends UINamingContainer {
             this.resetDataModel();
             int prevIndex = this.index;
             FacesEvent target = idxEvent.getTarget();
-            FacesContext ctx = target.getFacesContext();
+            FacesContext ctx = getFacesContext();
             UIComponent source = target.getComponent();
             UIComponent compositeParent = null;
             try {

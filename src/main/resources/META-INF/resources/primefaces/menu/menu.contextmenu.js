@@ -1,5 +1,61 @@
+/**
+ * __PrimeFaces ContextMenu Widget__
+ * 
+ * ContextMenu provides an overlay menu displayed on mouse right-click event.
+ * 
+ * @typedef {"single" | "multiple"} PrimeFaces.widget.ContextMenu.SelectionMode  Selection mode for the context, whether
+ * the user may select only one or multiple items at the same time.
+ * 
+ * @typedef PrimeFaces.widget.ContextMenu.BeforeShowCallback Client side callback invoked before the context menu is
+ * shown.
+ * @this {PrimeFaces.widget.ContextMenu} PrimeFaces.widget.ContextMenu.BeforeShowCallback
+ * @param {JQuery.Event} PrimeFaces.widget.ContextMenu.BeforeShowCallback.event Event that triggered the context menu to
+ * be shown (e.g. a mouse click).
+ * @return {boolean} PrimeFaces.widget.ContextMenu.BeforeShowCallback ` true` to show the context menu, `false` to
+ * prevent is from getting displayed.
+ * 
+ * @interface {PrimeFaces.widget.ContextMenu.ContextMenuProvider} ContextMenuProvider Interface for widgets that wish to
+ * provide a context menu. They need to implement the `bindContextMenu` method.  This method is called once when the
+ * context menu is initialized. Widgets should register the appropriate event listeners and call `menuWidget.show()`
+ * to bring up the context menu.
+ * @template ContextMenuProvider.TTarget Type of the widget that wishes to provide a context menu.
+ * @method ContextMenuProvider.bindContextMenu Callback that is invoked when the context menu is initialized. Lets the
+ * context menu provider register the appropriate event listeners for when the context menu should be shown and hidden.
+ * @param {PrimeFaces.widget.ContextMenu} ContextMenuProvider.bindContextMenu.menuWidget The widget instance of the
+ * context menu.
+ * @param {TTarget} ContextMenuProvider.bindContextMenu.targetWidget The widget instance of the target widget that wants
+ * to add a context menu.
+ * @param {string | JQuery} ContextMenuProvider.bindContextMenu.targetId ID selector or DOM element of the target, i.e.
+ * the element the context menu belongs to.
+ * @param {PrimeFaces.widget.ContextMenuCfg} ContextMenuProvider.bindContextMenu.cfg The current configuration of the
+ * context menu.
+ * 
+ * @prop {JQuery} jqTarget Target element of this context menu. A right click on the target brings up this context menu.
+ * @prop {string | JQuery} jqTargetId ID selector or DOM element of the target, i.e. the element this context menu
+ * belongs to.
+ * 
+ * @interface {PrimeFaces.widget.ContextMenuCfg} cfg The configuration for the {@link  ContextMenu| ContextMenu widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.TieredMenuCfg} cfg
+ * 
+ * @prop {string} cfg.appendTo Search expression for the element to which this context menu is appended. This is usually
+ * invoke before the context menu is shown. When it returns `false`, this context menu is not shown.
+ * @prop {PrimeFaces.widget.ContextMenu.BeforeShowCallback} cfg.beforeShow Client side callback invoked before the
+ * context menu is shown.
+ * @prop {string} cfg.event Event that triggers this context menu, usually a (right) mouse click.
+ * @prop {PrimeFaces.widget.ContextMenu.SelectionMode} cfg.selectionMode Defines the selection behavior.
+ * @prop {string} cfg.target Client ID of the target widget.
+ * @prop {string} cfg.targetFilter Selector to filter the elements to attach the menu.
+ * @prop {string} cfg.targetWidgetVar Widget variable of the target widget.
+ */
 PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         cfg.autoDisplay = true;
         this._super(cfg);
@@ -81,7 +137,11 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         });
     },
 
-    // @Override
+    /**
+     * @override
+     * @protected
+     * @inheritdoc
+     */
     bindItemEvents: function() {
         this._super();
 
@@ -100,6 +160,14 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         });
     },
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {JQuery.Event} [e] The event that triggered this context menu to be shown.
+     * 
+     * Note:  __This parameter is not optional__, but is marked as such since this method overrides a parent method
+     * that does not have any parameters. Do not (implicitly) cast an instance of this class to a parent type.
+     */
     show: function(e) {
         if(this.cfg.targetFilter && $(e.target).is(':not(' + this.cfg.targetFilter + ')')) {
             return;
@@ -142,6 +210,10 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         e.stopPropagation();
     },
 
+    /**
+     * @override
+     * @inheritdoc
+     */
     hide: function() {
         var $this = this;
 
@@ -153,10 +225,19 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         this.jq.fadeOut('fast');
     },
 
+    /**
+     * Checks whether this context menu is open.
+     * @return {boolean} `true` if this context menu is currently visible, `false` otherwise.
+     */
     isVisible: function() {
         return this.jq.is(':visible');
     },
 
+    /**
+     * Finds the target element of this context menu. A right-click on that target element brings up this context menu. 
+     * @private
+     * @return {JQuery} The target element of this context men.
+     */
     getTarget: function() {
         return this.jqTarget;
     }

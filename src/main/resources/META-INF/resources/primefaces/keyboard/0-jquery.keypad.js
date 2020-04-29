@@ -664,7 +664,7 @@ $('selector').tabs(); // And instantiate it */
 			@param {object} inst The instance settings. */
 		_setInput: function(elem, inst) {
 			inst._input = $(!inst._inline ? elem : inst.options.target ||
-				'<input type="text" class="' + this._inlineEntryClass + '" disabled/>');
+				'<input type="text" class="' + this._inlineEntryClass + '" disabled></input>');
 			if (inst._inline) {
 				elem.find('input').remove();
 				if (!inst.options.target) {
@@ -695,11 +695,11 @@ $('selector').tabs(); // And instantiate it */
 					var buttonImage = inst.options.buttonImage;
 					var trigger = $(inst.options.buttonImageOnly ?
 						$('<img src="' + buttonImage + '" alt="' +
-						buttonStatus + '" title="' + buttonStatus + '"/>') :
+						buttonStatus + '" title="' + buttonStatus + '"></img>') :
 					$('<button type="button" title="' + buttonStatus + '"></button>').
 						html(buttonImage === '' ? inst.options.buttonText :
 						$('<img src="' + buttonImage + '" alt="' +
-						buttonStatus + '" title="' + buttonStatus + '"/>')));
+						buttonStatus + '" title="' + buttonStatus + '"></img>')));
 					elem[inst.options.isRTL ? 'before' : 'after'](trigger);
 					trigger.addClass(this._triggerClass).click(function() {
 						if (plugin._keypadShowing && plugin._lastField === elem[0]) {

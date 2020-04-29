@@ -65,6 +65,8 @@ public class ColorPickerRenderer extends InputRenderer {
                 colorPicker.setSubmittedValue(submittedValue);
             }
         }
+
+        decodeBehaviors(context, component);
     }
 
     @Override

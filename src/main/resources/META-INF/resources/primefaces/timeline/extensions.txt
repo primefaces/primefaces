@@ -1,0 +1,16 @@
+Notes on updating Timeline
+---------------------------
+
+1. Add the custom PrimeFaces CSS at the bottom of timeline.css
+
+/**************************/
+/** Custom PrimeFaces css */
+/**************************/
+
+2. Remove all sourceMaps from both CSS and JS files. You can use Regexp in NotePad++ to remove \/\*(.*?)\*\/
+
+Example: /*# sourceMappingURL=vis-timeline-graph2d.min.css.map */
+
+3. Remove this last line of 0-timeline.js to remove the source mapping URL
+
+//# sourceMappingURL=vis-timeline-graph2d.min.js.map

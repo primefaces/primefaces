@@ -1,5 +1,30 @@
+/**
+ * __PrimeFaces SlideMenu Widget__
+ * 
+ * SlideMenu is used to display nested submenus with sliding animation.
+ * 
+ * @prop {JQuery} backward The DOM element for the link to navigate back to the previous menu page.
+ * @prop {JQuery} submenus The DOM elements for the sub menu items other that the root menu items.
+ * @prop {JQuery} content The DOM element for the slide menu content.
+ * @prop {number} jqWidth Width of the menu container in pixels.
+ * @prop {JQuery} links The DOM elements for the the links to sub menus.
+ * @prop {boolean} rendered Whether this menu was already rendered.
+ * @prop {JQuery} rootList The DOM elements for the root menu entries.
+ * @prop {JQuery[]} stack A stack with the menu items that were selected. Used to slide back to the previous menu page.
+ * @prop {JQuery} wrapper The DOM element for the wrapper of the slide menu.
+ * 
+ * @interface {PrimeFaces.widget.SlideMenuCfg} cfg The configuration for the {@link  SlideMenu| SlideMenu widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.MenuCfg} cfg
+ */
 PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
@@ -36,6 +61,10 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
         this.bindEvents();
     },
 
+    /**
+     * Sets up all event listeners that are required by this widget.
+     * @private
+     */
     bindEvents: function() {
         var $this = this;
 
@@ -60,6 +89,10 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
         });
     },
 
+    /**
+     * Slides to the given sub menu.
+     * @param {JQuery} submenu A sub menu to show, with the class `ui-menuitem-link`.
+     */
     forward: function(submenu) {
         var _self = this;
 
@@ -80,6 +113,9 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
         });
     },
 
+    /**
+     * Slides back to the previous menu page.
+     */
     back: function() {
         if(!this.rootList.is(':animated')) {
             var _self = this,
@@ -102,22 +138,46 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
         }
     },
 
+    /**
+     * Adds the menu page to the top of the stack.
+     * @param {JQuery} submenu A menu page to push to the stack. 
+     * @private
+     */
     push: function(submenu) {
         this.stack.push(submenu);
     },
 
+    /**
+     * Pops the most recently a menu page from the stack and return it.
+     * @return {JQuery | null} The item on top of the stack, or `null` if the stack is empty.
+     * @private
+     */
     pop: function() {
         return this.stack.length !== 0 ? this.stack.pop() : null;
     },
 
+    /**
+     * Peeks the stack and returns the topmost item.
+     * @return {JQuery | undefined} The last item on the stack, or `undefined` if the stack is empty
+     * @private
+     */
     last: function() {
         return this.stack[this.stack.length - 1];
     },
 
+    /**
+     * Inspects the stack and returns its size.
+     * @return {number} The number of items on the stack.
+     * @private
+     */
     depth: function() {
         return this.stack.length;
     },
 
+    /**
+     * Renders the client-side parts of this widget.
+     * @private
+     */
     render: function() {
         this.submenus.width(this.jq.width());
         this.wrapper.height(this.rootList.outerHeight(true) + this.backward.outerHeight(true));
@@ -125,6 +185,10 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
         this.rendered = true;
     },
 
+    /**
+     * @override
+     * @inheritdoc
+     */
     show: function() {
         this.align();
         this.jq.css('z-index', ++PrimeFaces.zindex).show();

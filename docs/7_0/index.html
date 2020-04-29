@@ -33,9 +33,6 @@
       plugins: [
         function(hook, vm) {
           hook.ready(function () {
-            console.log("Mein Docsify-Plugin; Init");
-
-            //let el = document.querySelector("h1.app-name");
             let h1Elt = document.querySelector("main aside h1.app-name");
             let versionElt = document.createElement("div");
             versionElt.setAttribute("class", "PF-version")

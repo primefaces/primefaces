@@ -102,7 +102,7 @@ public class FilterFeature implements DataTableFeature {
 
         //update rows with rpp value
         String rppValue = params.get(clientId + "_rppDD");
-        if (rppValue != null) {
+        if (rppValue != null && !rppValue.equals("*")) {
             table.setRows(Integer.parseInt(rppValue));
         }
 

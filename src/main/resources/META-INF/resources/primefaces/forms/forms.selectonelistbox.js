@@ -1,8 +1,26 @@
 /**
- * PrimeFaces SelectOneListbox Widget
+ * __PrimeFaces SelectOneListbox Widget__
+ * 
+ * SelectOneListbox is an extended version of the standard selectOneListbox component.
+ * 
+ * @prop {JQuery} focusedItem The DOM element for the button select item currently focused.
+ * @prop {JQuery} items The DOM element for the select items the user can select.
+ * @prop {JQuery} input The DOM element for the hidden input field storing the selected item.
+ * 
+ * @interface {PrimeFaces.widget.SelectOneListboxCfg} cfg The configuration for the {@link  SelectOneListbox| SelectOneListbox widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.SelectListboxCfg} cfg
+ * 
+ * @prop {boolean} cfg.disabled Whether this widget is currently disabled.
  */
 PrimeFaces.widget.SelectOneListbox = PrimeFaces.widget.SelectListbox.extend({
 
+    /**
+     * @override
+     * @protected
+     * @inheritdoc
+     */
     bindEvents: function() {
         this._super();
         var $this = this;
@@ -38,6 +56,10 @@ PrimeFaces.widget.SelectOneListbox = PrimeFaces.widget.SelectListbox.extend({
         this.bindKeyEvents();
     },
     
+    /**
+     * Sets up the event listeners for keyboard related events.
+     * @private
+     */
     bindKeyEvents: function() {
         var $this = this;
 
@@ -107,6 +129,10 @@ PrimeFaces.widget.SelectOneListbox = PrimeFaces.widget.SelectListbox.extend({
 
     },
     
+    /**
+     * Removes the outline around the listbox with the select options.
+     * @private
+     */
     removeOutline: function() {
         if(this.focusedItem && this.focusedItem.hasClass('ui-listbox-outline')) {
             this.focusedItem.removeClass('ui-listbox-outline');

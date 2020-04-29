@@ -9,7 +9,7 @@ jdk:
 
 script:
 # add --update-snapshots if snapshots are used
-- mvn clean install -Psecurity-checks -Dmaven.javadoc.skip=true --batch-mode --show-version
+- mvn clean install -Psecurity-checks -Pjsdoc -Dmaven.javadoc.skip=true -Djsdoc.skip.typedoc=true --batch-mode --show-version
 # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
 - if [[ "$TRAVIS_PULL_REQUEST" = "false" ]]; then mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar; fi
 

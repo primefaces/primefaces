@@ -25,18 +25,15 @@ package org.primefaces.component.clock;
 
 import java.util.Map;
 
-import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "clock/clock.css"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "primefaces", name = "core.js"),
-        @ResourceDependency(library = "primefaces", name = "components.js"),
-        @ResourceDependency(library = "primefaces", name = "raphael/raphael.js"),
-        @ResourceDependency(library = "primefaces", name = "clock/clock.js")
-})
+@ResourceDependency(library = "primefaces", name = "clock/clock.css")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "components.js")
+@ResourceDependency(library = "primefaces", name = "raphael/raphael.js")
+@ResourceDependency(library = "primefaces", name = "clock/clock.js")
 public class Clock extends ClockBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Clock";

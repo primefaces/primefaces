@@ -23,16 +23,13 @@
  */
 package org.primefaces.component.ring;
 
-import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "ring/ring.css"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "primefaces", name = "core.js"),
-        @ResourceDependency(library = "primefaces", name = "components.js"),
-        @ResourceDependency(library = "primefaces", name = "ring/ring.js")
-})
+@ResourceDependency(library = "primefaces", name = "ring/ring.css")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "components.js")
+@ResourceDependency(library = "primefaces", name = "ring/ring.js")
 public class Ring extends RingBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Ring";

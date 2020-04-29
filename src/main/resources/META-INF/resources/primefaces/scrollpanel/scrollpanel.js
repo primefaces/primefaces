@@ -60,8 +60,8 @@
 
 					elem.width(paneWidth);
 					
-					pane = $('<div class="ui-scrollpanel-content" />').css('padding', originalPadding).append(elem.children());
-					container = $('<div class="ui-scrollpanel-container" />')
+					pane = $('<div class="ui-scrollpanel-content"></div>').css('padding', originalPadding).append(elem.children());
+					container = $('<div class="ui-scrollpanel-container"></div>')
 						.css({
 							'width': paneWidth + 'px',
 							'height': paneHeight + 'px'
@@ -198,15 +198,15 @@
 				if (isScrollableV) {
 
 					container.append(
-						$('<div class="ui-scrollpanel-vbar" />').append(
-							$('<div class="ui-scrollpanel-cap ui-scrollpanel-captop" />'),
-							$('<div class="ui-scrollpanel-track ui-widget-header" />').append(
-								$('<div class="ui-scrollpanel-drag ui-state-highlight" />').append(
-									$('<div class="ui-scrollpanel-dragtop" />'),
-									$('<div class="ui-scrollpanel-dragbottom" />')
+						$('<div class="ui-scrollpanel-vbar"></div>').append(
+							$('<div class="ui-scrollpanel-cap ui-scrollpanel-captop"></div>'),
+							$('<div class="ui-scrollpanel-track ui-widget-header"></div>').append(
+								$('<div class="ui-scrollpanel-drag ui-state-highlight"></div>').append(
+									$('<div class="ui-scrollpanel-dragtop"></div>'),
+									$('<div class="ui-scrollpanel-dragbottom"></div>')
 								)
 							),
-							$('<div class="ui-scrollpanel-cap ui-scrollpanel-capbottom" />')
+							$('<div class="ui-scrollpanel-cap ui-scrollpanel-capbottom"></div>')
 						)
 					);
 
@@ -215,10 +215,10 @@
 					verticalDrag = verticalTrack.find('>.ui-scrollpanel-drag');
 
 					if (settings.showArrows) {
-						arrowUp = $('<a class="jspArrow jspArrowUp" />').bind(
+						arrowUp = $('<a class="jspArrow jspArrowUp"></a>').bind(
 							'mousedown.jsp', getArrowScroll(0, -1)
 						).bind('click.jsp', nil);
-						arrowDown = $('<a class="jspArrow jspArrowDown" />').bind(
+						arrowDown = $('<a class="jspArrow jspArrowDown"></a>').bind(
 							'mousedown.jsp', getArrowScroll(0, 1)
 						).bind('click.jsp', nil);
 						if (settings.arrowScrollOnHover) {
@@ -296,15 +296,15 @@
 				if (isScrollableH) {
 
 					container.append(
-						$('<div class="ui-scrollpanel-hbar" />').append(
-							$('<div class="ui-scrollpanel-cap ui-scrollpanel-capleft" />'),
-							$('<div class="ui-scrollpanel-track ui-widget-header" />').append(
-								$('<div class="ui-scrollpanel-drag ui-state-highlight" />').append(
-									$('<div class="ui-scrollpanel-dragleft" />'),
-									$('<div class="ui-scrollpanel-dragright" />')
+						$('<div class="ui-scrollpanel-hbar"></div>').append(
+							$('<div class="ui-scrollpanel-cap ui-scrollpanel-capleft"></div>'),
+							$('<div class="ui-scrollpanel-track ui-widget-header"></div>').append(
+								$('<div class="ui-scrollpanel-drag ui-state-highlight"></div>').append(
+									$('<div class="ui-scrollpanel-dragleft"></div>'),
+									$('<div class="ui-scrollpanel-dragright"></div>')
 								)
 							),
-							$('<div class="ui-scrollpanel-cap ui-scrollpanel-capright" />')
+							$('<div class="ui-scrollpanel-cap ui-scrollpanel-capright"></div>')
 						)
 					);
 
@@ -313,10 +313,10 @@
 					horizontalDrag = horizontalTrack.find('>.ui-scrollpanel-drag');
 
 					if (settings.showArrows) {
-						arrowLeft = $('<a class="jspArrow jspArrowLeft" />').bind(
+						arrowLeft = $('<a class="jspArrow jspArrowLeft"></a>').bind(
 							'mousedown.jsp', getArrowScroll(-1, 0)
 						).bind('click.jsp', nil);
-						arrowRight = $('<a class="jspArrow jspArrowRight" />').bind(
+						arrowRight = $('<a class="jspArrow jspArrowRight"></a>').bind(
 							'mousedown.jsp', getArrowScroll(1, 0)
 						).bind('click.jsp', nil);
 						if (settings.arrowScrollOnHover) {
@@ -390,7 +390,7 @@
 					paneHeight -= verticalTrackWidth;
 					paneWidth -= horizontalTrackHeight;
 					horizontalTrack.parent().append(
-						$('<div class="ui-scrollpanel-corner ui-widget-header" />').css('width', horizontalTrackHeight + 'px')
+						$('<div class="ui-scrollpanel-corner ui-widget-header"></div>').css('width', horizontalTrackHeight + 'px')
 					);
 					sizeVerticalScrollbar();
 					sizeHorizontalScrollbar();
@@ -1391,33 +1391,70 @@
 
 })(jQuery,this);
 
-/* 
- * PrimeFaces ScrollPanel Widget 
+/** 
+ * __PrimeFaces ScrollPanel Widget__
+ * 
+ * ScrollPanel is used to display scrollable content with theme aware scrollbars instead of native browser scrollbars.
+ * 
+ * @prop {JQueryJScrollPane.JScrollPaneInstance} jsp The current jQuery Scroll Pane instance.
+ * 
+ * @interface {PrimeFaces.widget.ScrollPanelCfg} cfg The configuration for the {@link  ScrollPanel| ScrollPanel widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
+ * @extends {JQueryJScrollPane.JScrollPaneSettings} cfg
  */
 PrimeFaces.widget.ScrollPanel = PrimeFaces.widget.DeferredWidget.extend({
-    
+
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
         
         this.renderDeferred();
     },
     
+    /**
+     * @include
+     * @override
+     * @protected
+     * @inheritdoc
+     */
     _render: function() {
         this.jsp = this.jq.jScrollPane(this.cfg).data('jsp');
     },
-    
+		
+		/**
+		 * Scrolls to the given scroll position.
+		 * @param {number} x Horizontal coordinate of the new scroll position.
+		 * @param {number} y Vertical coordinate of the new scroll position.
+		 */
     scrollTo: function(x, y) {
         this.jsp.scrollTo(x, y);
     },
-        
+
+		/**
+		 * Scroll horizontally to the given scroll position.
+		 * @param {number} x The new horizontal scroll position.
+		 */
     scrollX: function(x){
         this.jsp.scrollToX(x);
     },
     
+		/**
+		 * Scroll vertically to the given scroll position.
+		 * @param {number} y The new vertical scroll position.
+		 */
     scrollY: function(y){
         this.jsp.scrollToY(y);
     },
-    
+		
+		/**
+		 * Redraws the scrollbars.
+		 */
     redraw: function() {
         this.jsp.reinitialise();
     }

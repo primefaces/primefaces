@@ -100,7 +100,7 @@ public class CellEditEvent<T> extends AbstractAjaxBehaviorEvent {
         }
         else if (source instanceof UITree) {
             TreeTable data = (TreeTable) source;
-            data.setRowKey(rowKey);
+            data.setRowKey(data.getValue(), rowKey);
         }
 
         if (column.isDynamic()) {
@@ -125,7 +125,7 @@ public class CellEditEvent<T> extends AbstractAjaxBehaviorEvent {
 
                     value = (T) values;
                 }
-//single
+                //single
                 else {
                     value = (T) ((ValueHolder) inputFacet).getValue();
                 }

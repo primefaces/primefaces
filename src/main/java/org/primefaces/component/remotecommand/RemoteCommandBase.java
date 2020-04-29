@@ -52,7 +52,8 @@ public abstract class RemoteCommandBase extends UICommand implements AjaxSource 
         resetValues,
         ignoreAutoUpdate,
         partialSubmitFilter,
-        form
+        form,
+        validateClient
     }
 
     public RemoteCommandBase() {
@@ -213,6 +214,14 @@ public abstract class RemoteCommandBase extends UICommand implements AjaxSource 
 
     public void setForm(String form) {
         getStateHelper().put(PropertyKeys.form, form);
+    }
+
+    public boolean isValidateClient() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.validateClient, false);
+    }
+
+    public void setValidateClient(boolean validateClient) {
+        getStateHelper().put(PropertyKeys.validateClient, validateClient);
     }
 
 }

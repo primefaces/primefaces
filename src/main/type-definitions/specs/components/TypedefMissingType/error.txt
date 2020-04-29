@@ -1,0 +1,2 @@
+Error: [tagMissingTypedef] Tag @typedef must specify a type, eg. '@typedef {string} foobar'
+at <unknown> (${PROJECT_BASEDIR}/src/main/type-definitions/specs/components/TypedefMissingType/input.js:5:1)

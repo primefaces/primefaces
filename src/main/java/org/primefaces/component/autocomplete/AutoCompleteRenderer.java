@@ -348,6 +348,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("id", ac.getClientId(context) + "_panel", null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "listbox", null);
+        writer.writeAttribute("tabindex", "-1", null);
 
         if (ac.getPanelStyle() != null) {
             writer.writeAttribute("style", ac.getPanelStyle(), null);

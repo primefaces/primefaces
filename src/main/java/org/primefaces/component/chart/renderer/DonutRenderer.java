@@ -50,9 +50,10 @@ public class DonutRenderer extends BasePlotRenderer {
 
             writer.write("[");
             Map<String, Number> map = (Map) data.get(i);
-            for (Iterator<String> it = map.keySet().iterator(); it.hasNext(); ) {
-                String key = it.next();
-                Number value = map.get(key);
+            for (Iterator<Map.Entry<String, Number>> it = map.entrySet().iterator(); it.hasNext(); ) {
+                Map.Entry<String, Number> entry = it.next();
+                String key = entry.getKey();
+                Number value = entry.getValue();
 
                 writer.write("[" + escapeChartData(key) + "," + value + "]");
 

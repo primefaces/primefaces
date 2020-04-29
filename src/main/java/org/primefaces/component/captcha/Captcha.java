@@ -33,7 +33,6 @@ import java.net.URLEncoder;
 
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
-import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
@@ -41,12 +40,10 @@ import org.primefaces.PrimeFaces;
 import org.json.JSONObject;
 import org.primefaces.util.MessageFactory;
 
-@ResourceDependencies({
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "primefaces", name = "core.js"),
-        @ResourceDependency(library = "primefaces", name = "components.js"),
-        @ResourceDependency(library = "primefaces", name = "captcha/captcha.js")
-})
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "components.js")
+@ResourceDependency(library = "primefaces", name = "captcha/captcha.js")
 public class Captcha extends CaptchaBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Captcha";

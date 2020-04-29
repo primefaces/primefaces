@@ -1,9 +1,26 @@
 if (!PrimeFaces.expressions) {
 
+    /**
+     * The object with functionality related to working with search expressions.
+     * @namespace
+     */
     PrimeFaces.expressions = {};
 
+    /**
+     * The interface of the object with all methods for working with search expressions.
+     * @interface
+     * @constant {PrimeFaces.expressions.SearchExpressionFacade} . The object with all methods for working with search
+     * expressions.
+     */
     PrimeFaces.expressions.SearchExpressionFacade = {
 
+        /**
+         * Takes a search expression that may contain multiple components, separated by commas or whitespaces. Resolves
+         * each search expression to the component it refers to and returns a JQuery object with the DOM elements of
+         * the resolved components.
+         * @param {string} expressions A search expression with one or multiple components to resolve.
+         * @return {JQuery} A list with the resolved components.
+         */
         resolveComponentsAsSelector: function(expressions) {
 
             var splittedExpressions = PrimeFaces.expressions.SearchExpressionFacade.splitExpressions(expressions);
@@ -49,6 +66,12 @@ if (!PrimeFaces.expressions) {
             return elements;
         },
 
+        /**
+         * Takes a search expression that may contain multiple components, separated by commas or whitespaces. Resolves
+         * each search expression to the component it refers to and returns a list of IDs of the resolved components.
+         * @param {string} expressions A search expression with one or multiple components to resolve.
+         * @return {string[]} A list of IDs with the resolved components.
+         */
         resolveComponents: function(expressions) {
             var splittedExpressions = PrimeFaces.expressions.SearchExpressionFacade.splitExpressions(expressions),
             ids = [];
@@ -98,6 +121,19 @@ if (!PrimeFaces.expressions) {
             return ids;
         },
 
+        /**
+         * Splits the given search expression into its components. The components of a search expression are separated
+         * by either a comman or a whitespace.
+         * ```javascript
+         * splitExpressions("") // => [""]
+         * splitExpressions("form") // => ["form"]
+         * splitExpressions("form,input") // => ["form", "input"]
+         * splitExpressions("form input") // => ["form", "input"]
+         * splitExpressions("form,@child(1,2)") // => ["form", "child(1,2)"]
+         * ```
+         * @param {string} expression A search expression to split.
+         * @return {string[]} The individual components of the given search expression.
+         */
         splitExpressions: function(expression) {
 
             var expressions = [];

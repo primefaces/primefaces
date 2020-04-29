@@ -23,13 +23,23 @@
  */
 package org.primefaces.util;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PushbackInputStream;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.primefaces.component.fileupload.FileUpload;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.model.file.UploadedFile;
+import org.primefaces.shaded.owasp.SafeFile;
+import org.primefaces.shaded.owasp.ValidationException;
+import org.primefaces.virusscan.VirusException;
+
+import javax.faces.FacesException;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -37,20 +47,6 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-import org.primefaces.component.fileupload.FileUpload;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.shaded.owasp.SafeFile;
-import org.primefaces.shaded.owasp.ValidationException;
-import org.primefaces.virusscan.VirusException;
-import org.primefaces.model.file.UploadedFile;
 
 /**
  * Utilities for FileUpload components.
@@ -212,6 +208,7 @@ public class FileUploadUtils {
         String tempFileSuffix = tika ? null : "." + FilenameUtils.getExtension(fileName);
         String tempFilePrefix = UUID.randomUUID().toString();
         Path tempFile = Files.createTempFile(tempFilePrefix, tempFileSuffix);
+
         try {
             try (InputStream in = new PushbackInputStream(new BufferedInputStream(stream))) {
                 try (OutputStream out = new FileOutputStream(tempFile.toFile())) {
@@ -234,6 +231,7 @@ public class FileUploadUtils {
                 }
                 return false;
             }
+
             //Comma-separated values: file_extension|audio/*|video/*|image/*|media_type (see https://www.w3schools.com/tags/att_input_accept.asp)
             String[] accepts = fileUpload.getAccept().split(",");
             boolean accepted = false;
@@ -286,37 +284,38 @@ public class FileUploadUtils {
         return true;
     }
 
-    public static void performVirusScan(FacesContext facesContext, InputStream inputStream) throws VirusException {
-        PrimeApplicationContext.getCurrentInstance(facesContext).getVirusScannerService().performVirusScan(inputStream);
+    public static void performVirusScan(FacesContext facesContext, UploadedFile file) throws VirusException {
+        PrimeApplicationContext.getCurrentInstance(facesContext).getVirusScannerService().performVirusScan(file);
     }
 
-    public static boolean isValidFile(FacesContext context, FileUpload fileUpload, UploadedFile uploadedFile) throws IOException {
+    public static void tryValidateFile(FacesContext context, FileUpload fileUpload, UploadedFile uploadedFile) throws ValidatorException {
         Long sizeLimit = fileUpload.getSizeLimit();
         PrimeApplicationContext appContext = PrimeApplicationContext.getCurrentInstance(context);
-        boolean valid = (sizeLimit == null || uploadedFile.getSize() <= sizeLimit)
-                && isValidType(appContext, fileUpload, uploadedFile);
-        if (valid && fileUpload.isPerformVirusScan()) {
-            try (InputStream input = uploadedFile.getInputStream()) {
-                performVirusScan(context, input);
-            }
-            catch (VirusException ex) {
-                return false;
-            }
+
+        if (sizeLimit != null && uploadedFile.getSize() > sizeLimit) {
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidSizeMessage(), ""));
         }
-        return valid;
+
+        if (!isValidType(appContext, fileUpload, uploadedFile)) {
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidFileMessage(), ""));
+        }
+
+        if (fileUpload.isVirusScan()) {
+            performVirusScan(context, uploadedFile);
+        }
     }
 
-    public static boolean areValidFiles(FacesContext context, FileUpload fileUpload, List<UploadedFile> files) throws IOException {
+    public static void tryValidateFiles(FacesContext context, FileUpload fileUpload, List<UploadedFile> files) {
         long totalPartSize = 0;
         Long sizeLimit = fileUpload.getSizeLimit();
         for (UploadedFile file : files) {
             totalPartSize += file.getSize();
-            if (!isValidFile(context, fileUpload, file)) {
-                return false;
-            }
+            tryValidateFile(context, fileUpload, file);
         }
 
-        return sizeLimit == null || totalPartSize <= sizeLimit;
+        if (sizeLimit != null && totalPartSize > sizeLimit) {
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidFileMessage(), ""));
+        }
     }
 
     /**

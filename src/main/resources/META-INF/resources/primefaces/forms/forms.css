@@ -393,10 +393,6 @@ input[type=text]::-ms-clear {
     text-decoration: none !important;
     cursor: pointer;
     text-align: center;
-    -moz-transform: scale(1);
-    -o-transform: scale(1);
-    -webkit-transform: scale(1);
-    transform: scale(1);
     overflow: visible; /* the overflow property removes extra width in IE */
 }
 
@@ -492,10 +488,6 @@ button.ui-button::-moz-focus-inner {
     display: inline-block;
     position: relative;
     width: auto;
-    -moz-transform: scale(1);
-    -o-transform: scale(1);
-    -webkit-transform: scale(1);
-    transform: scale(1);
     cursor: pointer;
 }
 
@@ -741,10 +733,6 @@ button.ui-button::-moz-focus-inner {
 /** IE Hacks **/
 div.ui-button, .ui-splitbutton {
     display: inline-block;
-    -moz-transform: scale(1);
-    -o-transform: scale(1);
-    -webkit-transform: scale(1);
-    transform: scale(1);
 }
 
 /** Password **/

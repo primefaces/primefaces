@@ -75,7 +75,8 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         disabledDates,
         disabledDays,
         onMonthChange,
-        onYearChange
+        onYearChange,
+        timeInput
     }
 
     public DatePickerBase() {
@@ -210,6 +211,10 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     public boolean isShowTime() {
         return (Boolean) getStateHelper().eval(PropertyKeys.showTime, false);
+    }
+
+    public Boolean isShowTimeWithoutDefault() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showTime);
     }
 
     public void setShowTime(boolean showTime) {
@@ -382,6 +387,14 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     public void setOnYearChange(String onYearChange) {
         getStateHelper().put(PropertyKeys.onYearChange, onYearChange);
+    }
+
+    public boolean isTimeInput() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.timeInput, false);
+    }
+
+    public void setTimeInput(boolean timeInput) {
+        getStateHelper().put(PropertyKeys.timeInput, timeInput);
     }
 
     @Override

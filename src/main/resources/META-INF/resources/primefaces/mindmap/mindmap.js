@@ -1,14 +1,57 @@
 /**
- * PrimeFaces Mindmap Widget
+ * __PrimeFaces Mindmap Widget__
+ * 
+ * Mindmap is an interactive tool to visualize mindmap data featuring lazy loading, callbacks, animations and more.
+ * 
+ * @interface {PrimeFaces.widget.Mindmap.MindmapNode} MindmapNode Model that describes a node of the mindmap, such as
+ * its parent and children, its label, its geometry etc.
+ * @prop {PrimeFaces.widget.Mindmap.MindmapNode[]} MindmapNode.children The children of this node.
+ * @prop {PrimeFaces.widget.Mindmap.MindmapNode | null} MindmapNode.parent The parent of this node, or `null` if it has
+ * got no parent.
+ * @prop {string} MindmapNode.label The label text of this node.
+ * @prop {string} [MindmapNode.key] The unique ID of this node.
+ * @prop {string} [MindmapNode.fill] The fill color of this node.
+ * @prop {boolean} [MindmapNode.selectable] `true` if this node can be selected, or `false` otherwise.
+ * 
+ * @prop {boolean} dragged Whether a node was being dragged.
+ * @prop {import("raphael").RaphaelElement[]} nodes A list of all drawn mindmap nodes.
+ * @prop {number} ox When a node is being dragged, the original horizontal coordinated where the drag started.
+ * @prop {number} oy When a node is being dragged, the original vertical coordinated where the drag started.
+ * @prop {import("raphael").RaphaelPaper} raphael The canvas on which the mindmap is drawn.
+ * @prop {import("raphael").RaphaelElement} root The drawn root node for the mindmap. 
+ * @prop {JQuery} tooltip The DOM element for the tooltip of a mindmap node.
+ * 
+ * @interface {PrimeFaces.widget.MindmapCfg} cfg The configuration for the {@link  Mindmap| Mindmap widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
+ * 
+ * @prop {number} cfg.effectSpeed Duration for all animations with nodes, in milliseconds.
+ * @prop {number} cfg.centerX Horizontal coordinate for the center of the canvas.
+ * @prop {number} cfg.centerY Vertical coordinate for the center of the canvas.
+ * @prop {number} cfg.height Total height of the canvas. 
+ * @prop {PrimeFaces.widget.Mindmap.MindmapNode} cfg.model Root node shown by the mindmap.
+ * @prop {number} cfg.width Total width of the canvas.
  */
 PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
         this.renderDeferred();
     },
 
+    /**
+     * @include
+     * @override
+     * @protected
+     * @inheritdoc
+     */
     _render: function() {
         this.cfg.width = this.jq.width();
         this.cfg.height = this.jq.height();
@@ -30,6 +73,14 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
         this.tooltip = $('<div class="ui-tooltip ui-mindmap-tooltip ui-widget ui-widget-content ui-corner-all"></div>').appendTo(document.body);
     },
 
+    /**
+     * Creates a mindmap node at the given position for the given model.
+     * @param {number} x Horizontal coordinate where the node is drawn.
+     * @param {number} y Vertical coordinate where the node is drawn.
+     * @param {PrimeFaces.widget.Mindmap.MindmapNode} model Model with the data describing the node to be created.
+     * @return {import("raphael").RaphaelElement} The created node.
+     * @private
+     */
     createNode: function(x, y, model) {
         var node = this.raphael.ellipse(x, y, 40, 25).attr('opacity', 0)
                             .data('model', model)
@@ -90,18 +141,30 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
         return node;
     },
 
+    /**
+     * Callback that is invoked when the mouse cursor was moved over a mindmap node.
+     * @private
+     */
     mouseoverNode: function() {
         var _self = PF(this.data('widget'));
 
         _self.showTooltip(this);
     },
 
+    /**
+     * Callback that is invoked when the mouse cursor was moved away from a mindmap node.
+     * @private
+     */
     mouseoutNode: function() {
         var _self = PF(this.data('widget'));
 
         _self.hideTooltip(this);
     },
 
+    /**
+     * Callback that is invoked when the mouse cursor was moved over a text label.
+     * @private
+     */
     mouseoverText: function() {
         var node = this.data('node'),
         _self = PF(node.data('widget'));
@@ -109,6 +172,10 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
         _self.showTooltip(node);
     },
 
+    /**
+     * Callback that is invoked when the mouse cursor was moved away from a text label.
+     * @private
+     */
     mouseoutText: function() {
         var node = this.data('node'),
         _self = PF(node.data('widget'));
@@ -116,6 +183,10 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
         _self.hideTooltip(node);
     },
 
+    /**
+     * Brings up the tooltip for the given node, it it is not shown already.
+     * @param {import("raphael").RaphaelElement} node A node for which to show the tooltip. 
+     */
     showTooltip: function(node) {
         var title = node.data('title');
 
@@ -136,6 +207,10 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
 
     },
 
+    /**
+     * Hides the tooltip for the given node, it it is shown.
+     * @param {import("raphael").RaphaelElement} node A node for which to hide the tooltip. 
+     */
     hideTooltip: function(node) {
         var title = node.data('title');
 
@@ -146,6 +221,10 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Centers the given node so that it is positioned near the center of the mindmap viewport.
+     * @param {import("raphael").RaphaelElement} node A node to center. 
+     */
     centerNode: function(node) {
         var _self = this,
         text = node.data('text');
@@ -164,6 +243,11 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
         text.attr({cursor:'default'});
     },
 
+    /**
+     * Creates the mindmap nodes for all immediate children of the given node.
+     * @param {import("raphael").RaphaelElement} node A node with children.
+     * @private
+     */
     createSubNodes: function(node) {
         var nodeModel = node.data('model');
 
@@ -216,6 +300,11 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
 
     },
 
+    /**
+     * Callback that is invoked when a click was performed on a mindmap node.
+     * @param {import("raphael").RaphaelElement} node The node that received the click.
+     * @private
+     */
     handleNodeClick: function(node) {
         if(node.dragged) {
             node.dragged = false;
@@ -240,12 +329,20 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Callback that is invoked when a click was performed on a mindmap node.
+     * @private
+     */
     clickNode: function() {
         var _self = PF(this.data('widget'));
 
         _self.handleNodeClick(this);
     },
 
+    /**
+     * Callback that is invoked when a click was performed on a text label.
+     * @private
+     */
     clickNodeText: function() {
         var node = this.data('node'),
         _self = PF(node.data('widget'));
@@ -253,6 +350,11 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
         _self.handleNodeClick(node);
     },
 
+    /**
+     * Callback that is invoked when a double click was performed on a mindmap node.
+     * @param {import("raphael").RaphaelElement} node Node that received the double click.
+     * @private
+     */
     handleDblclickNode: function(node) {
         if(this.hasBehavior('dblselect')) {
             var key = node.data('model').key;
@@ -267,6 +369,10 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    /**
+     * Expands the given mindmap node, showing it and its children.
+     * @param {import("raphael").RaphaelElement} node A node to expand. 
+     */
     expandNode: function(node) {
         var $this = this,
         key = node.data('model').key,
@@ -310,6 +416,10 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
         this.callBehavior('select', ext);
     },
 
+    /**
+     * Removes the given node and all of its connections from this mindmap.
+     * @param {import("raphael").RaphaelElement} node Mindmap node to delete.
+     */
     removeNode: function(node) {
         //test
         node.data('text').remove();
@@ -329,11 +439,21 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
         });
     },
 
+    /**
+     * Callback that is invoked once at the start when a node is dragged.
+     * @private
+     */
     nodeDragStart: function () {
         this.ox = this.attr("cx");
         this.oy = this.attr("cy");
     },
 
+    /**
+     * Callback that is invoked while a node is being dragged. Updates the UI.
+     * @param {number} dx Amount the node was dragged horizontally since the last call of this callback 
+     * @param {number} dy Amount the node was dragged vertically since the last call of this callback
+     * @private
+     */
     nodeDrag: function(dx, dy) {
         //update location
         this.attr({cx: this.ox + dx, cy: this.oy + dy});
@@ -349,14 +469,28 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
         this.dragged = true;
     },
 
+    /**
+     * Callback invoked after a node was dragged.
+     * @private
+     */
     nodeDragEnd: function () {
     },
 
+    /**
+     * Callback that is invoked once at the start when a text label is dragged.
+     * @private
+     */
     textDragStart: function () {
         this.ox = this.attr("x");
         this.oy = this.attr("y");
     },
 
+    /**
+     * Callback that is invoked while a text label is being dragged. Updates the UI.
+     * @param {number} dx Amount the text was dragged horizontally since the last call of this callback 
+     * @param {number} dy Amount the text was dragged vertically since the last call of this callback
+     * @private
+     */
     textDrag: function(dx, dy) {
         var node = this.data('node');
 
@@ -374,10 +508,19 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
         node.dragged = true;
     },
 
+    /**
+     * Callback invoked after a text label was dragged.
+     * @private
+     */
     textDragEnd: function () {
-    }
+    },
 
-    ,updateConnections: function(node) {
+    /**
+     * Updates the connections for the given mindmap node.
+     * @param {import("raphael").RaphaelElement} node The node for which to update the connections.
+     * @private
+     */
+    updateConnections: function(node) {
         var connections = node.data('connections');
 
         for(var i = 0; i < connections.length; i++) {
@@ -388,6 +531,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
     }
 });
 
+// Documented in mindmap.d.ts
 Raphael.fn.connection = function (obj1, obj2, line, bg, effectSpeed) {
     if (obj1.line && obj1.from && obj1.to) {
         line = obj1;

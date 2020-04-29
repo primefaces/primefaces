@@ -45,6 +45,7 @@ import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneMenuRenderer extends SelectOneRenderer {
@@ -64,12 +65,14 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             menu.setSubmittedValue(editorInput);
 
             // #2862 check if it matches a label and if so use the value
-            List<SelectItem> selectItems = getSelectItems(context, menu);
-            for (int i = 0; i < selectItems.size(); i++) {
-                SelectItem item = selectItems.get(i);
-                if (item.getLabel().equalsIgnoreCase(editorInput)) {
-                    menu.setSubmittedValue(getOptionAsString(context, menu, menu.getConverter(), item.getValue()));
-                    break;
+            if (!LangUtils.isValueBlank(editorInput)) {
+                List<SelectItem> selectItems = getSelectItems(context, menu);
+                for (int i = 0; i < selectItems.size(); i++) {
+                    SelectItem item = selectItems.get(i);
+                    if (item.getLabel().equalsIgnoreCase(editorInput)) {
+                        menu.setSubmittedValue(getOptionAsString(context, menu, menu.getConverter(), item.getValue()));
+                        break;
+                    }
                 }
             }
 

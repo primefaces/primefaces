@@ -43,13 +43,15 @@ public class SpacerRenderer extends CoreRenderer {
         writer.writeAttribute("width", spacer.getWidth(), "width");
         writer.writeAttribute("height", spacer.getHeight(), "height");
         writer.writeAttribute("alt", "", null);
-        writer.writeAttribute("src", getResourceRequestPath(context, "spacer/dot_clear.gif"), null);
+
+        String styleClass = "ui-transparent-pixel ";
+        if (spacer.getStyleClass() != null) {
+            styleClass = styleClass + spacer.getStyleClass();
+        }
+        writer.writeAttribute("class", styleClass, "styleClass");
 
         if (spacer.getStyle() != null) {
             writer.writeAttribute("style", spacer.getStyle(), "style");
-        }
-        if (spacer.getStyleClass() != null) {
-            writer.writeAttribute("class", spacer.getStyleClass(), "styleClass");
         }
         if (spacer.getTitle() != null) {
             writer.writeAttribute("title", spacer.getTitle(), "title");

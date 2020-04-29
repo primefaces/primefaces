@@ -50,6 +50,23 @@
     opacity: 0;
 }
 
+.p-datepicker-panel .ui-timepicker.ui-timepicker-timeinput input {
+    text-align: center;
+    font-size: 1.1em;
+    width: 1.7em;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+}
+
+.p-datepicker-panel .ui-timepicker.ui-timepicker-timeinput .ui-ampm-picker .ui-picker-up {
+    padding-bottom: .1em;
+}
+
+.p-datepicker-panel .ui-timepicker.ui-timepicker-timeinput .ui-ampm-picker .ui-picker-down {
+    padding-top: .1em;
+}
+
 .ui-datepicker-multiple-month .ui-datepicker-group {
     display: table-cell;
     border-left-width: 0;

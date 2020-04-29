@@ -24,6 +24,8 @@
 package org.primefaces.component.spinner;
 
 import java.io.IOException;
+import java.math.BigInteger;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -46,19 +48,23 @@ public class SpinnerRenderer extends InputRenderer {
         decodeBehaviors(context, spinner);
 
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(spinner.getClientId(context) + "_input");
-        String prefix = spinner.getPrefix();
-        String suffix = spinner.getSuffix();
 
-        if (prefix != null && submittedValue.startsWith(prefix)) {
-            submittedValue = submittedValue.substring(prefix.length());
+        if (submittedValue != null) {
+            String prefix = spinner.getPrefix();
+            String suffix = spinner.getSuffix();
+
+            if (prefix != null && submittedValue.startsWith(prefix)) {
+                submittedValue = submittedValue.substring(prefix.length());
+            }
+            if (suffix != null && submittedValue.endsWith(suffix)) {
+                submittedValue = submittedValue.substring(0, (submittedValue.length() - suffix.length()));
+            }
+            if (!LangUtils.isValueEmpty(spinner.getThousandSeparator())) {
+                submittedValue = submittedValue.replace(spinner.getThousandSeparator(), "");
+            }
+            submittedValue = submittedValue.replace(spinner.getDecimalSeparator(), ".");
         }
-        if (suffix != null && submittedValue.endsWith(suffix)) {
-            submittedValue = submittedValue.substring(0, (submittedValue.length() - suffix.length()));
-        }
-        if (!LangUtils.isValueEmpty(spinner.getThousandSeparator())) {
-            submittedValue = submittedValue.replace(spinner.getThousandSeparator(), "");
-        }
-        submittedValue = submittedValue.replace(spinner.getDecimalSeparator(), ".");
+
         spinner.setSubmittedValue(submittedValue);
     }
 
@@ -73,6 +79,16 @@ public class SpinnerRenderer extends InputRenderer {
     protected void encodeScript(FacesContext context, Spinner spinner) throws IOException {
         String clientId = spinner.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
+
+        Object value = spinner.getValue();
+        String defaultDecimalPlaces = null;
+        if (value instanceof Long || value instanceof Integer || value instanceof Short || value instanceof BigInteger) {
+            defaultDecimalPlaces = "0";
+        }
+        String decimalPlaces = isValueBlank(spinner.getDecimalPlaces())
+                ? defaultDecimalPlaces
+                : spinner.getDecimalPlaces();
+
         wb.init("Spinner", spinner.resolveWidgetVar(context), clientId)
                 .attr("step", spinner.getStepFactor(), 1.0)
                 .attr("min", spinner.getMin(), Double.MIN_VALUE)
@@ -81,7 +97,7 @@ public class SpinnerRenderer extends InputRenderer {
                 .attr("suffix", spinner.getSuffix(), null)
                 .attr("required", spinner.isRequired(), false)
                 .attr("rotate", spinner.isRotate(), false)
-                .attr("decimalPlaces", spinner.getDecimalPlaces(), null)
+                .attr("decimalPlaces", decimalPlaces, null)
                 .attr(SpinnerBase.PropertyKeys.thousandSeparator.name(), spinner.getThousandSeparator())
                 .attr(SpinnerBase.PropertyKeys.decimalSeparator.name(), spinner.getDecimalSeparator());
 

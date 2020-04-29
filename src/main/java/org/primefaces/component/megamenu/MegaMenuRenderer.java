@@ -75,11 +75,11 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        writer.writeAttribute("role", "menubar", null);
 
         encodeKeyboardTarget(context, menu);
 
         writer.startElement("ul", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUBAR, null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
 
         if (menu.getElementsCount() > 0) {
@@ -90,7 +90,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         if (ComponentUtils.shouldRenderFacet(optionsFacet)) {
             writer.startElement("li", null);
             writer.writeAttribute("class", Menu.OPTIONS_CLASS, null);
-            writer.writeAttribute("role", "menuitem", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
             optionsFacet.encodeAll(context);
             writer.endElement("li");
         }
@@ -109,7 +109,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
                 if (element instanceof MenuItem) {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
-                    writer.writeAttribute("role", "menuitem", null);
+                    writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
                     encodeMenuItem(context, menu, (MenuItem) element, "-1");
                     writer.endElement("li");
                 }
@@ -137,11 +137,12 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
-        writer.writeAttribute("role", "menuitem", null);
-        writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
 
         //title
         writer.startElement("a", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM, null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", Menu.SUBMENU_LINK_CLASS, null);
         writer.writeAttribute("tabindex", "-1", null);
@@ -173,10 +174,10 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
             List<MenuElement> submenuElements = submenu.getElements();
             writer.startElement("ul", null);
             writer.writeAttribute("class", Menu.TIERED_CHILD_SUBMENU_CLASS, null);
-            writer.writeAttribute("role", "menu", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
 
             writer.startElement("table", null);
-            writer.writeAttribute("role", "presentation", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, "presentation", null);
 
             writer.startElement("tbody", null);
             writer.startElement("tr", null);
@@ -240,7 +241,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
-        writer.writeAttribute("role", "menu", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
 
         //title
         writer.startElement("li", null);
@@ -265,7 +266,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
                     if (submenuElement instanceof MenuItem) {
                         writer.startElement("li", null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
-                        writer.writeAttribute("role", "menuitem", null);
+                        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
                         encodeMenuItem(context, menu, (MenuItem) submenuElement, "-1");
                         writer.endElement("li");
                     }

@@ -217,10 +217,6 @@ public class ChartRenderer extends CoreRenderer {
         for (int i = 0; i < axes.size(); i++) {
             CartesianAxes data = axes.get(i);
 
-            if (chartName.equals("bar")) {
-                data.setOffset(true);
-            }
-
             if (i != 0) {
                 writer.write(",");
             }

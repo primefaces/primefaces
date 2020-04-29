@@ -40,6 +40,7 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
         widgetVar,
         model,
         disabled,
+        reordering,
         style,
         styleClass
     }
@@ -71,6 +72,14 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
 
     public boolean isDisabled() {
         return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+    }
+
+    public void setReordering(boolean reordering) {
+        getStateHelper().put(PropertyKeys.reordering, reordering);
+    }
+
+    public boolean isReordering() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.reordering, true);
     }
 
     public void setDisabled(boolean disabled) {

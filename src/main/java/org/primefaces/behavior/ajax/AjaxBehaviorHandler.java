@@ -55,6 +55,9 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
 
         if (listener != null) {
 
+            // see https://github.com/primefaces/primefaces/issues/1098
+            // we need to check for custom events on buildtime
+            // if we would do it lazy later, we would loose the FaceletContext and the method can't be resolved
             Class<? extends BehaviorEvent> eventMappingClass = null;
 
             if (parent instanceof PrimeClientBehaviorHolder) {

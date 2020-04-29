@@ -1,0 +1,189 @@
+diff --git a/node_modules/autonumeric/index.d.ts b/node_modules/autonumeric/index.d.ts
+index 3d6f0e6..0b951db 100644
+--- a/node_modules/autonumeric/index.d.ts
++++ b/node_modules/autonumeric/index.d.ts
+@@ -21,8 +21,8 @@ export = AutoNumeric;
+ declare class AutoNumeric {
+     constructor(
+         elementOrSelector: string | HTMLInputElement | HTMLElement,
+-        initialValue: string | number = null,
+-        options: Options | string = null
++        initialValue: string | number | null,
++        options: AutoNumeric.Options | string | null
+     );
+ 
+     static multiple(
+@@ -30,39 +30,39 @@ declare class AutoNumeric {
+             | string
+             | HTMLElement[]
+             | { rootElement: HTMLElement; exclude?: HTMLInputElement[] },
+-        initialValue: number | Array<number | null> = null,
+-        options: Options | Options[] = null
++        initialValue: number | Array<number | null> | null,
++        options: AutoNumeric.Options | AutoNumeric.Options[] | null
+     ): AutoNumeric[];
+ 
+     /**
+      * Return true in the settings are valid
+      */
+-    static areSettingsValid(options: Options): boolean;
++    static areSettingsValid(options: AutoNumeric.Options): boolean;
+ 
+     /**
+      * Format the given number with the given options. This returns the formatted value as a string.
+      */
+-    static format(value: number | string | HTMLElement, options: Options): string;
++    static format(value: number | string | HTMLElement, options: AutoNumeric.Options): string;
+ 
+     /**
+      * Format the domElement value with the given options and returns the formatted value as a string.
+      */
+-    static formatAndSet(domElement: HTMLElement, options: Options): string;
++    static formatAndSet(domElement: HTMLElement, options: AutoNumeric.Options): string;
+ 
+     /**
+      * Return the AutoNumeric object that manages the given DOM element
+      */
+-    static getAutoNumericElement(domElement: HTMLElement): Input;
++    static getAutoNumericElement(domElement: HTMLElement): AutoNumeric;
+ 
+     /**
+      * Return the default autoNumeric settings
+      */
+-    static getDefaultConfig(): Options;
++    static getDefaultConfig(): AutoNumeric.Options;
+ 
+     /**
+      * Return all the predefined options in one object
+      */
+-    static getPredefinedOptions(): PredefinedOptions;
++    static getPredefinedOptions(): AutoNumeric.PredefinedOptions;
+ 
+     /**
+      * Return true if the given DOM element has an AutoNumeric object that manages it.
+@@ -72,17 +72,17 @@ declare class AutoNumeric {
+     /**
+      * Unformat and localize the given formatted string with the given options.
+      */
+-    static localize(value: string | HTMLElement, options: Options): string;
++    static localize(value: string | HTMLElement, options: AutoNumeric.Options): string;
+ 
+-    static localizeAndSet(domElement: HTMLElement, options: Options): string;
++    static localizeAndSet(domElement: HTMLElement, options: AutoNumeric.Options): string;
+ 
+-    static mergeOptions(...options: Options[]): Options;
++    static mergeOptions(...options: AutoNumeric.Options[]): AutoNumeric.Options;
+ 
+     static reformatAndSet(referenceToTheDomElement: HTMLElement): void;
+ 
+     static test(domElement: HTMLElement): boolean;
+ 
+-    static validate(options: Options): boolean;
++    static validate(options: AutoNumeric.Options): boolean;
+ 
+     static version(): string;
+ 
+@@ -104,7 +104,7 @@ declare class AutoNumeric {
+      */
+     set(
+         newValue: number | string | null,
+-        options?: Options,
++        options?: AutoNumeric.Options,
+         saveChangeToHistory?: boolean
+     ): void;
+ 
+@@ -112,7 +112,7 @@ declare class AutoNumeric {
+      * Set the given value directly as the DOM element value, without formatting it beforehand.
+      * You can also set the value and update the setting in one go (the value will again not be formatted immediately).
+      */
+-    setUnformatted(value: number, options?: Options): void;
++    setUnformatted(value: number, options?: AutoNumeric.Options): void;
+ 
+     /**
+      * The get() function is deprecated and should not be used. Omitted from TS def for that reason.
+@@ -130,7 +130,7 @@ declare class AutoNumeric {
+      * Return the element unformatted value as a real JavaScript number.
+      */
+     getNumber(
+-        callback?: (value: number | null, instance: AutoNumeric) => void = null
++        callback?: ((value: number | null, instance: AutoNumeric) => void) | null
+     ): number | null;
+ 
+     /**
+@@ -138,7 +138,7 @@ declare class AutoNumeric {
+      * This can also return `null` if `rawValue` is null.
+      */
+     getNumericString(
+-        callback?: (value: string | null, instance: AutoNumeric) => void = null
++        callback?: ((value: string | null, instance: AutoNumeric) => void) | null
+     ): string | null;
+ 
+     /**
+@@ -150,14 +150,14 @@ declare class AutoNumeric {
+      * By default the returned values are an ISO numeric string "1234.56" or "-1234.56" where the decimal character is a period.
+      * Check the `outputFormat` option definition for more details.
+      */
+-    getLocalized(forcedOutputFormat?: OutputFormatOption, callback?: (value: string) => void): string;
++    getLocalized(forcedOutputFormat?: AutoNumeric.OutputFormatOption, callback?: (value: string) => void): string;
+     getLocalized(callback: (value: string) => void): string;
+ 
+     reformat(): void;
+ 
+     unformat(): void;
+ 
+-    unformatLocalized(forcedOutputFormat?: OutputFormatOption): void;
++    unformatLocalized(forcedOutputFormat?: AutoNumeric.OutputFormatOption): void;
+ 
+     isPristine(): boolean;
+ 
+@@ -174,7 +174,7 @@ declare class AutoNumeric {
+     /**
+      * Updates the AutoNumeric settings, and immediately format the element accordingly.
+      */
+-    update(...options: Options[]): Input;
++    update(...options: AutoNumeric.Options[]): this;
+ 
+     /**
+      * Remove the autoNumeric data and event listeners from the element, but keep the element content intact.
+@@ -205,7 +205,7 @@ declare class AutoNumeric {
+ 
+     attach(otherAnElement: HTMLElement, reFormat?: boolean): void;
+ 
+-    init(domeElement2: HTMLElement): Input;
++    init(domeElement2: HTMLElement): this;
+ 
+     form(forcedSearch?: boolean): HTMLFormElement;
+ 
+@@ -213,7 +213,7 @@ declare class AutoNumeric {
+ 
+     formFormatted(): string;
+ 
+-    formLocalized(forcedOutputFormat?: PredefinedLanguages): string;
++    formLocalized(forcedOutputFormat?: AutoNumeric.PredefinedLanguages): string;
+ 
+     formArrayNumericString(): HTMLInputElement[];
+ 
+@@ -231,17 +231,17 @@ declare class AutoNumeric {
+ 
+     formReformat(): void;
+ 
+-    formSubmitArrayNumericString(callback: Function): Input;
++    formSubmitArrayNumericString(callback: Function): this;
+ 
+-    formSubmitArrayFormatted(callback: Function): Input;
++    formSubmitArrayFormatted(callback: Function): this;
+ 
+-    formSubmitArrayLocalized(callback: Function): Input;
++    formSubmitArrayLocalized(callback: Function): this;
+ 
+-    formSubmitJsonNumericString(callback: Function): Input;
++    formSubmitJsonNumericString(callback: Function): this;
+ 
+-    formSubmitJsonFormatted(callback: Function): Input;
++    formSubmitJsonFormatted(callback: Function): this;
+ 
+-    formSubmitJsonLocalized(callback: Function): Input;
++    formSubmitJsonLocalized(callback: Function): this;
+ }
+ 
+ /**
