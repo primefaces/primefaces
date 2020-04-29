@@ -23,31 +23,44 @@
  */
 package org.primefaces.event.data;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.Behavior;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.SortOrder;
+
+import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.Behavior;
 
 public class SortEvent extends AbstractAjaxBehaviorEvent {
 
     private static final long serialVersionUID = 1L;
 
-    private UIColumn sortColumn;
+    private final UIColumn sortColumn;
 
-    private boolean ascending;
+    private final SortOrder sortOrder;
 
-    private int sortColumnIndex;
+    private final int sortColumnIndex;
 
     public SortEvent(UIComponent component, Behavior behavior, UIColumn sortColumn, SortOrder order, int sortColumnIndex) {
         super(component, behavior);
         this.sortColumn = sortColumn;
-        this.ascending = order.equals(SortOrder.ASCENDING);
+        this.sortOrder = order;
         this.sortColumnIndex = sortColumnIndex;
     }
 
+    public SortOrder getSortOrder() {
+        return sortOrder;
+    }
+
     public boolean isAscending() {
-        return ascending;
+        return sortOrder == SortOrder.ASCENDING;
+    }
+
+    public boolean isDescending() {
+        return sortOrder == SortOrder.DESCENDING;
+    }
+
+    public boolean isUnsorted() {
+        return sortOrder == SortOrder.UNSORTED;
     }
 
     public UIColumn getSortColumn() {
