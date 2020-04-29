@@ -214,7 +214,8 @@ template.
 
 
 ## Sorting
-Defining _sortBy_ attribute enables ajax based sorting on that particular column.
+Defining _sortBy_ attribute enables ajax based sorting on that particular column. Sorting cycles through ascending,
+descending and unsorted upon clicking on the column header.
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}">

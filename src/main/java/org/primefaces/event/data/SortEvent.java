@@ -51,15 +51,15 @@ public class SortEvent extends AbstractAjaxBehaviorEvent {
     }
 
     public boolean isAscending() {
-        return sortOrder==SortOrder.ASCENDING;
+        return sortOrder == SortOrder.ASCENDING;
     }
 
     public boolean isDescending() {
-        return sortOrder==SortOrder.DESCENDING;
+        return sortOrder == SortOrder.DESCENDING;
     }
 
     public boolean isUnsorted() {
-        return sortOrder==SortOrder.UNSORTED;
+        return sortOrder == SortOrder.UNSORTED;
     }
 
     public UIColumn getSortColumn() {
