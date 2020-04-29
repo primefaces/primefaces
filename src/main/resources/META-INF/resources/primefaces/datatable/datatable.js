@@ -456,7 +456,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         hasAriaSort = true;
                     }
                 }
-                else if(sortIcon.hasClass('ui-icon-triangle-1-s')) {
+                else if (sortIcon.hasClass('ui-icon-triangle-1-s')) {
                     sortOrder = this.SORT_ORDER.DESCENDING;
                     columnHeader.attr('aria-label', this.getSortMessage(ariaLabel, this.otherMessage));
                     if(!hasAriaSort) {
