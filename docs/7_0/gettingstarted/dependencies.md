@@ -8,7 +8,7 @@ any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 | --- | --- | --- | --- |
 | JSF runtime | 2.0, 2.1, 2.2, 2.3 | Required | Apache MyFaces or Oracle Mojarra |
 | itext | 2.1.7 | Optional | DataExporter (PDF) |
-| apache poi | 3.17 | Optional | DataExporter (Excel) |
+| apache poi | 3.17 | Optional | DataExporter (Excel or XML) |
 | rome | 1.9.0 | Optional | FeedReader |
 | apache tika | 1.22 | Optional | FileUpload |
 | commons-fileupload | 1.3.3 | Optional | FileUpload |
