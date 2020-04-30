@@ -93,4 +93,9 @@ public class NIOUploadedFile implements UploadedFile {
         String validFileName = FileUploadUtils.getValidFilename(FilenameUtils.getName(getFileName()));
         Files.copy(file, Paths.get(validFileName));
     }
+
+    @Override
+    public void delete() throws IOException {
+        Files.delete(file);
+    }
 }

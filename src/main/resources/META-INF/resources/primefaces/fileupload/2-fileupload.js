@@ -247,6 +247,14 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 }
             },
             fail: function(e, data) {
+                if ($this.cfg.resumeContextPath) {
+                    $.ajax({
+                        url: $this.cfg.resumeContextPath + '?' + $.param({'X-File-Id' : $this.createXFileId(data.files[0])}),
+                        dataType: 'json',
+                        type: 'DELETE'
+                    });
+                }
+
                 if (data.errorThrown === 'abort') {
                     if ($this.cfg.oncancel) {
                         $this.cfg.oncancel.call($this);

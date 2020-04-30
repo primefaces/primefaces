@@ -370,21 +370,28 @@ public class FileUploadUtils {
         }
     }
 
-    public static <T extends HttpServletRequest> List<Path> listChunks(T request) throws IOException {
+    public static <T extends HttpServletRequest> List<Path> listChunks(T request) {
+        Path chunkDir = getChunkDir(request);
+        if (!Files.exists(chunkDir)) {
+            return Collections.emptyList();
+        }
+
+        return listChunks(chunkDir);
+    }
+
+    public static <T extends HttpServletRequest> FileUploadChunkDecoder<T> getFileUploadChunkDecoder(T request) {
         PrimeApplicationContext pfContext = PrimeApplicationContext.getCurrentInstance(request.getServletContext());
         FileUploadDecoder decoder = pfContext.getFileUploadDecoder();
         if (!(decoder instanceof FileUploadChunkDecoder)) {
             throw new FacesException("Chunk decoder not supported");
         }
 
-        FileUploadChunkDecoder<T> chunkDecoder = (FileUploadChunkDecoder<T>) decoder;
-        String fileKey = chunkDecoder.generateFileInfoKey(request);
-        String dir = chunkDecoder.getUploadDirectory(request);
-        Path chunkDir = Paths.get(dir, fileKey);
-        if (!Files.exists(chunkDir)) {
-            return Collections.emptyList();
-        }
+        return (FileUploadChunkDecoder<T>) decoder;
+    }
 
-        return listChunks(Paths.get(dir, fileKey));
+    public static <T extends HttpServletRequest> Path getChunkDir(T request) {
+        FileUploadChunkDecoder<T> chunkDecoder = getFileUploadChunkDecoder(request);
+        String fileKey = chunkDecoder.generateFileInfoKey(request);
+        return Paths.get(FileUploadChunkDecoder.CHUNK_UPLOAD_DIRECTORY, fileKey);
     }
 }

@@ -33,20 +33,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> implements FileUploadDecoder, FileUploadChunkDecoder<T> {
 
     private static final Logger LOGGER = Logger.getLogger(AbstractFileUploadDecoder.class.getName());
-
-    private static LocalDate lastUploadDirCleanup = null;
 
     @Override
     public void decode(FacesContext context, FileUpload fileUpload) {
@@ -122,11 +115,10 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
     public void decodeContentRange(FileUpload fileUpload, T request, UploadedFile uploadedFile) throws IOException {
         ContentRange contentRange = ContentRange.of(getContentRange(request));
 
-        // tmpDir is used as temporary location for creating chunks
+        // chunks are stored in temporary location java.io.tmpdir
         // while the final file will be written into the upload directory set by the user
-        String tmpDir = getUploadDirectory(request);
         String basename = generateFileInfoKey(request);
-        Path chunksDir = Paths.get(tmpDir, basename);
+        Path chunksDir = Paths.get(CHUNK_UPLOAD_DIRECTORY, basename);
 
         writeChunk(fileUpload, uploadedFile, chunksDir, contentRange);
 
@@ -134,6 +126,29 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
             UploadedFile file = processLastChunk(request, uploadedFile, chunksDir, contentRange);
             fileUpload.setSubmittedValue(new UploadedFileWrapper(file));
         }
+    }
+
+    @Override
+    public long decodeUploadedBytes(T request) {
+        long uploadedBytes = 0;
+        for (Path chunk : FileUploadUtils.listChunks(request)) {
+            try {
+                uploadedBytes += Files.size(chunk);
+            }
+            catch (IOException e) {
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                break;
+            }
+
+        }
+        return uploadedBytes;
+    }
+
+    @Override
+    public void deleteChunks(T request) throws IOException {
+        Path chunkDir = FileUploadUtils.getChunkDir(request);
+        List<Path> chunks = FileUploadUtils.listChunks(chunkDir);
+        deleteChunkFolder(chunkDir, chunks);
     }
 
     protected void writeChunk(FileUpload fileUpload, UploadedFile uploadedFile, Path path, ContentRange contentRange) throws IOException {
@@ -150,7 +165,8 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
     }
 
     protected UploadedFile processLastChunk(T request, UploadedFile chunk, Path chunksDir, ContentRange contentRange) throws IOException {
-        Path wholePath = Paths.get(getUploadDirectory(request), UUID.randomUUID().toString() + "_" + chunk.getFileName());
+        String fileKey = generateFileInfoKey(request);
+        Path wholePath = Paths.get(getUploadDirectory(request), "[" + fileKey +  "]" + chunk.getFileName());
         Files.deleteIfExists(wholePath);
         Path whole = Files.createFile(wholePath);
 
@@ -162,15 +178,13 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
         deleteChunkFolder(chunksDir, chunks);
 
         if (Files.size(whole) != contentRange.getChunkTotalFileSize()) {
+            Files.delete(whole);
             throw new IOException("Merged file does not meet expected size: " + contentRange.getChunkTotalFileSize());
         }
 
-        if (lastUploadDirCleanup == null || lastUploadDirCleanup.isBefore(LocalDate.now())) {
-            lastUploadDirCleanup = LocalDate.now();
-            cleanupChunkDirsFromCanceledUpload(Paths.get(getUploadDirectory(request)));
-        }
-
-        return new NIOUploadedFile(whole, chunk.getFileName(), chunk.getContentType());
+        UploadedFile uploadedFile = new NIOUploadedFile(whole, chunk.getFileName(), chunk.getContentType());
+        request.setAttribute(MULTIPARTS, uploadedFile);
+        return uploadedFile;
     }
 
     protected String getContentRange(HttpServletRequest request) {
@@ -185,37 +199,8 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
         Files.delete(chunksDir);
     }
 
-    protected void cleanupChunkDirsFromCanceledUpload(Path uploadDirectory) throws IOException {
-        LocalDateTime deleteAllBefore = LocalDateTime.now().minusDays(1);
-
-        List<Path> chunkDirs2Delete = Files.list(uploadDirectory).filter(
-            p -> {
-                if (Files.isDirectory(p)) {
-                    try {
-                        LocalDateTime lastModified = Files.getLastModifiedTime(p).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-                        return (lastModified.isBefore(deleteAllBefore));
-                    }
-                    catch (IOException ex) {
-                        LOGGER.log(Level.WARNING, "Error when listening chunkdirs form canceled uploads", ex);
-                    }
-                }
-                return false;
-            }
-        ).collect(Collectors.toList());
-
-        for (Path chunkDir: chunkDirs2Delete) {
-            try {
-                List<Path> chunks = FileUploadUtils.listChunks(chunkDir);
-                deleteChunkFolder(chunkDir, chunks);
-            }
-            catch (IOException ex) {
-                //Cleanup should not fail when there is an issue with one chunkDir
-                LOGGER.log(Level.SEVERE, "Can´t delete chunkDir '" + chunkDir.toString() + "'", ex);
-            }
-        }
-    }
-
     protected boolean isChunkedUpload(T request) {
         return getContentRange(request) != null;
     }
+
 }

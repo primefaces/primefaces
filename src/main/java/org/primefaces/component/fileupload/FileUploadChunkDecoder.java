@@ -28,13 +28,16 @@ import org.primefaces.model.file.UploadedFile;
 import javax.faces.FacesException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public interface FileUploadChunkDecoder<T extends HttpServletRequest> {
 
-    default String generateFileInfoKey(HttpServletRequest request) {
+    String DEFAULT_UPLOAD_DIRECTORY = System.getProperty("java.io.tmpdir");
+
+    String CHUNK_UPLOAD_DIRECTORY = System.getProperty("java.io.tmpdir");
+
+    String MULTIPARTS = "org.primefaces.file.multiParts";
+
+    default String generateFileInfoKey(T request) {
         String fileInfo = request.getParameter("X-File-Id");
         if (fileInfo == null) {
             throw new FacesException("Missing X-File-Id header");
@@ -43,13 +46,15 @@ public interface FileUploadChunkDecoder<T extends HttpServletRequest> {
         return String.valueOf(fileInfo.hashCode());
     }
 
-    default String getUploadDirectory(T request) throws IOException {
-        Path uploadDir = Paths.get(System.getProperty("java.io.tmpdir"), "PF_chunkedUpoad");
-        if (!Files.exists(uploadDir)) {
-            Files.createDirectory(uploadDir);
-        }
-        return uploadDir.toString();
+    default String getUploadDirectory(T request) {
+        return DEFAULT_UPLOAD_DIRECTORY;
     }
 
     void decodeContentRange(FileUpload fileUpload, T request, UploadedFile uploadedFile) throws IOException;
+
+    long decodeUploadedBytes(T request);
+
+    void deleteChunks(T request) throws IOException;
+
+
 }

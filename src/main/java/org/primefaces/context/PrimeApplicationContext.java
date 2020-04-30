@@ -32,7 +32,7 @@ import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.Lazy;
 import org.primefaces.virusscan.VirusScannerService;
-import org.primefaces.webapp.FileUploadResumeServlet;
+import org.primefaces.webapp.FileUploadChunksServlet;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -159,10 +159,14 @@ public class PrimeApplicationContext {
 
         resolveFileUploadDecoder();
 
+        resolveFileUploadResumeUrl(facesContext);
+    }
+
+    private void resolveFileUploadResumeUrl(FacesContext facesContext) {
         Object request = facesContext.getExternalContext().getRequest();
         if (request instanceof HttpServletRequest) {
             fileUploadResumeUrl = ((HttpServletRequest) request).getServletContext().getServletRegistrations().values().stream()
-                    .filter(s -> FileUploadResumeServlet.class.getName().equals(s.getClassName()))
+                    .filter(s -> FileUploadChunksServlet.class.getName().equals(s.getClassName()))
                     .findFirst()
                     .map(ServletRegistration::getMappings)
                     .map(Collection::stream)

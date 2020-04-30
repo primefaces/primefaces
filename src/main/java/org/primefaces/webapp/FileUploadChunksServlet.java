@@ -32,39 +32,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class FileUploadResumeServlet extends HttpServlet {
+public class FileUploadChunksServlet extends HttpServlet {
 
-    private static final Logger LOGGER = Logger.getLogger(FileUploadResumeServlet.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(FileUploadChunksServlet.class.getName());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
-        long uploadedBytes = 0;
-
-        try {
-            uploadedBytes = FileUploadUtils.listChunks(req).stream()
-                    .mapToLong(this::getSize)
-                    .sum();
-        }
-        catch (IOException ex) {
-            LOGGER.log(Level.SEVERE, "Can´t list already uploaded chunks.", ex);
-        }
-
+        long uploadedBytes = FileUploadUtils.getFileUploadChunkDecoder(req).decodeUploadedBytes(req);
         printUploadedBytes(resp, uploadedBytes);
     }
 
-    protected long getSize(Path p) {
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException  {
         try {
-            return Files.size(p);
+            FileUploadUtils.getFileUploadChunkDecoder(req).deleteChunks(req);
         }
         catch (IOException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
-        return 0;
     }
 
     protected void printUploadedBytes(HttpServletResponse response, long uploadedBytes) {

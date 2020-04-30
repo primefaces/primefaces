@@ -301,7 +301,7 @@ FileUpload is able to resume uploads that have been canceled (e.g user abort, lo
 ```xml
 <servlet>
     <servlet-name>FileUpload Resume Servlet</servlet-name>
-    <servlet-class>org.primefaces.webapp.FileUploadResumeServlet</servlet-class>
+    <servlet-class>org.primefaces.webapp.FileUploadChunksServlet</servlet-class>
 </servlet>
 <servlet-mapping>
     <servlet-name>FileUpload Resume Servlet</servlet-name>

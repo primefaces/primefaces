@@ -21,24 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model.file;
+package org.primefaces.webapp;
 
+import org.primefaces.component.fileupload.FileUploadChunkDecoder;
+import org.primefaces.model.file.UploadedFile;
+
+import javax.servlet.ServletRequestEvent;
+import javax.servlet.ServletRequestListener;
 import java.io.IOException;
-import java.io.InputStream;
 
-public interface UploadedFile {
+public class UploadedFileCleanerListener implements ServletRequestListener {
 
-    String getFileName();
+    @Override
+    public void requestDestroyed(ServletRequestEvent sre) {
+        UploadedFile uploadedFile = (UploadedFile) sre.getServletRequest().getAttribute(FileUploadChunkDecoder.MULTIPARTS);
+        if (uploadedFile != null) {
+            try {
+                uploadedFile.delete();
+            }
+            catch (IOException e) {
+                sre.getServletContext().log("Errors deleting multipart tmp files", e);
+            }
+        }
+    }
 
-    InputStream getInputStream() throws IOException;
-
-    byte[] getContent();
-
-    String getContentType();
-
-    long getSize();
-
-    void write(String filePath) throws Exception;
-
-    void delete() throws IOException;
+    @Override
+    public void requestInitialized(ServletRequestEvent sre) {
+        // NOOP
+    }
 }
