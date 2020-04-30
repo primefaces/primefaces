@@ -90,7 +90,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
 
         encodeInput(context, checkbox, clientId, checked);
         encodeOutput(context, checkbox, checked, disabled);
-        encodeItemLabel(context, checkbox, clientId);
+        encodeItemLabel(context, checkbox, clientId, disabled);
 
         writer.endElement("div");
     }
@@ -148,14 +148,16 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeItemLabel(FacesContext context, SelectBooleanCheckbox checkbox, String clientId) throws IOException {
+    protected void encodeItemLabel(FacesContext context, SelectBooleanCheckbox checkbox, String clientId, boolean disabled) throws IOException {
         String label = checkbox.getItemLabel();
 
         if (label != null) {
             ResponseWriter writer = context.getResponseWriter();
 
             writer.startElement("span", null);
-            writer.writeAttribute("class", HTML.CHECKBOX_LABEL_CLASS, null);
+            String styleClass = HTML.CHECKBOX_BOX_CLASS;
+            styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
+            writer.writeAttribute("class", styleClass, null);
 
             if (checkbox.isEscape()) {
                 writer.writeText(label, "itemLabel");
