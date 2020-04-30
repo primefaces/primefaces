@@ -226,6 +226,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.writeAttribute("name", menu.getClientId(context) + "_editableInput", null);
             writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
 
+            String ariaLabel = LangUtils.isValueBlank(menu.getLabel()) ? menu.getPlaceholder() : menu.getLabel();
+            writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
+
             if (menu.getTabindex() != null) {
                 writer.writeAttribute("tabindex", menu.getTabindex(), null);
             }
