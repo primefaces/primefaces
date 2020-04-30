@@ -249,6 +249,7 @@ public class InputNumberRenderer extends InputRenderer {
             .attr("emptyInputBehavior", emptyValue, "focus")
             .attr("leadingZero", inputNumber.getLeadingZero(), "deny")
             .attr("allowDecimalPadding", inputNumber.isPadControl(), true)
+            .attr("modifyValueOnWheel", inputNumber.isModifyValueOnWheel(), true)
             .attr("roundingMethod", inputNumber.getRoundMethod(), "S")
             .attr("selectOnFocus", false, true)
             .attr("showWarnings", false, true);
