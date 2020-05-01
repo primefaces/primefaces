@@ -40,6 +40,8 @@ import org.primefaces.util.LangUtils;
 
 public abstract class InputRenderer extends CoreRenderer {
 
+    public static final String ARIA_FILTER = "primefaces.input.aria.filter";
+
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         Converter converter = ComponentUtils.getConverter(context, component);

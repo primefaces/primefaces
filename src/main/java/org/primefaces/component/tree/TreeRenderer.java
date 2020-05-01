@@ -38,6 +38,7 @@ import org.primefaces.component.api.UITree;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.filter.FilterConstraint;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.*;
 
@@ -428,6 +429,7 @@ public class TreeRenderer extends CoreRenderer {
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("class", Tree.FILTER_CLASS, null);
+        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER, null), null);
         writer.endElement("input");
 
         writer.startElement("span", null);

@@ -42,10 +42,12 @@ import javax.faces.render.Renderer;
 import org.primefaces.component.column.Column;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
+import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneMenuRenderer extends SelectOneRenderer {
@@ -652,6 +654,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute(HTML.ARIA_AUTOCOMPLETE, "list", null);
         writer.writeAttribute(HTML.ARIA_CONTROLS, menu.getClientId(context) + "_table", null);
+        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER, null), null);
 
         if (menu.getFilterPlaceholder() != null) {
             writer.writeAttribute("placeholder", menu.getFilterPlaceholder(), null);

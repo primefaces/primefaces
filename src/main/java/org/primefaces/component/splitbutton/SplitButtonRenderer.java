@@ -31,9 +31,11 @@ import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.MenuModel;
 import org.primefaces.model.menu.Separator;
 import org.primefaces.model.menu.Submenu;
+import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.MenuItemAwareRenderer;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.MessageFactory;
 import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
 
@@ -403,6 +405,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER, null), null);
 
         if (button.getFilterPlaceholder() != null) {
             writer.writeAttribute("placeholder", button.getFilterPlaceholder(), null);
