@@ -27,11 +27,9 @@ import org.primefaces.config.PrimeEnvironment;
 import org.primefaces.config.StartupPrimeEnvironment;
 import org.primefaces.util.Jsf23Helper;
 
-import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
-import javax.servlet.ServletContext;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -56,12 +54,5 @@ public class PostConstructApplicationEventListener implements SystemEventListene
         if (environment.isAtLeastJsf23()) {
             Jsf23Helper.addSearchKeywordResolvers();
         }
-
-        addUploadedFileCleanerListener(FacesContext.getCurrentInstance());
-    }
-
-    protected void addUploadedFileCleanerListener(FacesContext context) {
-        ServletContext servletContext = (ServletContext) context.getExternalContext().getContext();
-        servletContext.addListener(new UploadedFileCleanerListener());
     }
 }

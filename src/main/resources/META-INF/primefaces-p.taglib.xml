@@ -9481,8 +9481,8 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Method expression to invoke when a file is uploaded. (For chunked file upload after the last chunk was uploaded.).]]>
-            </description>listen file upload events.
+                <![CDATA[Method expression to invoke when a file is uploaded.]]>
+            </description>
             <name>listener</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>

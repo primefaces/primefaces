@@ -224,7 +224,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                     }
 
                     if ($this.cfg.resumeContextPath) {
-                        $.getJSON($this.cfg.resumeContextPath, {'X-File-Id': $this.createXFileId(file)},function (result) {
+                        $.getJSON($this.cfg.resumeContextPath, {'X-File-Id': $this.createXFileId(file)}, function (result) {
                             var uploadedBytes = result.uploadedBytes;
                             data.uploadedBytes = uploadedBytes;
                         });
