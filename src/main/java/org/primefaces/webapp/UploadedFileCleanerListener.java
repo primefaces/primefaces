@@ -40,7 +40,7 @@ public class UploadedFileCleanerListener implements ServletRequestListener {
                 uploadedFile.delete();
             }
             catch (IOException e) {
-                sre.getServletContext().log("Errors deleting multipart tmp files", e);
+                sre.getServletContext().log("Errors deleting multipart tmp file", e);
             }
         }
     }

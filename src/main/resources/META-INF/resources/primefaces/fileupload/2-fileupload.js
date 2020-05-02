@@ -223,7 +223,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                         }
                     }
 
-                    if ($this.cfg.resumeContextPath) {
+                    if ($this.cfg.resumeContextPath && $this.cfg.maxChunkSize > 0) {
                         $.getJSON($this.cfg.resumeContextPath, {'X-File-Id': $this.createXFileId(file)}, function (result) {
                             var uploadedBytes = result.uploadedBytes;
                             data.uploadedBytes = uploadedBytes;
@@ -247,21 +247,21 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 }
             },
             fail: function(e, data) {
-                if ($this.cfg.resumeContextPath) {
-                    $.ajax({
-                        url: $this.cfg.resumeContextPath + '?' + $.param({'X-File-Id' : $this.createXFileId(data.files[0])}),
-                        dataType: 'json',
-                        type: 'DELETE'
-                    });
-                }
-
                 if (data.errorThrown === 'abort') {
+                    if ($this.cfg.resumeContextPath && $this.cfg.maxChunkSize > 0) {
+                        $.ajax({
+                            url: $this.cfg.resumeContextPath + '?' + $.param({'X-File-Id' : $this.createXFileId(data.files[0])}),
+                            dataType: 'json',
+                            type: 'DELETE'
+                        });
+                    }
+
                     if ($this.cfg.oncancel) {
                         $this.cfg.oncancel.call($this);
                     }
                     return;
                 }
-                if ($this.cfg.maxChunkSize >0) {
+                if ($this.cfg.resumeContextPath && $this.cfg.maxChunkSize > 0) {
                     if (data.context === undefined) {
                         data.context = $(this);
                     }
