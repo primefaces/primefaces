@@ -296,7 +296,7 @@ FileUpload supports chunked fileupload in advanced-mode using `maxChunkSize` att
 Chunked file upload comes with following restrictions:
 1. It is only supported for `mode="advanced"`
 
-### Resuming file uploads
+### Resuming chunked file uploads
 FileUpload is able to resume uploads that have been canceled (e.g user abort, lost of connection etc.) At first, you'll need to enable chunking and add this servlet:
 ```xml
 <servlet>
@@ -310,8 +310,22 @@ FileUpload is able to resume uploads that have been canceled (e.g user abort, lo
 ```
 
 > You're free to choose `url-pattern` mapping, as long it doesn't conflict with an existing page
->
->TODO- continue here, WIP
+
+### Removal of uploaded files merged from chunked file upload
+For Servlet 3.0 and up uploaded files (merged from chunks) are automatically removed from the internal (temporary) 
+upload directory after the request was processed.
+
+When you still use a Servlet 2.5 - container you need the add the following listener to your web.xml:
+```xml
+<listener>
+	<listener-class>org.primefaces.webapp.UploadedFileCleanerListener</listener-class>
+</listener>
+```
+
+The single uploaded chunks also get put into an internal (temporary) upload directory.
+These chunk-files get removed
+1. after the last chunk is uploaded and the merged file is created 
+2. when the users aborts the upload.
 
 ## More secure file upload
 
