@@ -278,7 +278,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         if (node == null) {
             return;
         }
-        
+
         if (node.isExpanded() || node.getParent() == null || node.getParent().isExpanded()) {
             int childCount = node.getChildCount();
             if (childCount > 0) {
