@@ -275,15 +275,17 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
 
     public void populateRowKeys(TreeNode node, List<String> keys) {
+        if (node == null) {
+            return;
+        }
+        
         if (node.isExpanded() || node.getParent() == null || node.getParent().isExpanded()) {
-            if (node != null) {
-                int childCount = node.getChildCount();
-                if (childCount > 0) {
-                    for (int i = 0; i < childCount; i++) {
-                        TreeNode childNode = node.getChildren().get(i);
-                        keys.add(childNode.getRowKey());
-                        populateRowKeys(childNode, keys);
-                    }
+            int childCount = node.getChildCount();
+            if (childCount > 0) {
+                for (int i = 0; i < childCount; i++) {
+                    TreeNode childNode = node.getChildren().get(i);
+                    keys.add(childNode.getRowKey());
+                    populateRowKeys(childNode, keys);
                 }
             }
         }
