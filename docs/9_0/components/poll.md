@@ -41,6 +41,7 @@ autoStart | true | Boolean | In autoStart mode, polling starts automatically on 
 stop | false | Boolean | Stops polling when true.
 resetValues | false | Boolean | If true, local values of input components to be updated within the ajax request would be reset.
 ignoreAutoUpdate | false | Boolean | If true, components which autoUpdate="true" will not be updated for this request. If not specified, or the value is false, no such indication is made.
+ignoreComponentNotFound | false | Boolean | If true, unresolvable components referenced in the update/process attribute are ignored. Default is 'false' and therefore a ComponentNotFoundException will be thrown.
 timeout | 0 | Integer | Timeout for the ajax request in milliseconds.
 form | null | String | Form to serialize for an ajax request. Default is the enclosing form.
 intervalType | second | String | Type of interval value. Valid values are "second" (default) and "millisecond".

@@ -73,7 +73,8 @@ public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UI
         partialSubmitFilter,
         form,
         escape,
-        rel
+        rel,
+        ignoreComponentNotFound
     }
 
     public UIMenuItemBase() {
@@ -386,5 +387,14 @@ public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UI
     @Override
     public SerializableFunction<MenuItem, String> getFunction() {
         return null;
+    }
+
+    @Override
+    public boolean isIgnoreComponentNotFound() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ignoreComponentNotFound, false);
+    }
+
+    public void setIgnoreComponentNotFound(boolean ignoreComponentNotFound) {
+        getStateHelper().put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
     }
 }

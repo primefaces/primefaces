@@ -55,7 +55,8 @@ public abstract class CommandLinkBase extends HtmlCommandLink implements AjaxSou
         validateClient,
         partialSubmitFilter,
         form,
-        ariaLabel
+        ariaLabel,
+        ignoreComponentNotFound
     }
 
     public CommandLinkBase() {
@@ -226,4 +227,12 @@ public abstract class CommandLinkBase extends HtmlCommandLink implements AjaxSou
         getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
     }
 
+    @Override
+    public boolean isIgnoreComponentNotFound() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ignoreComponentNotFound, false);
+    }
+
+    public void setIgnoreComponentNotFound(boolean ignoreComponentNotFound) {
+        getStateHelper().put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
+    }
 }

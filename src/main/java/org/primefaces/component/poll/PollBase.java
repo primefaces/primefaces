@@ -57,7 +57,8 @@ public abstract class PollBase extends UIComponentBase implements AjaxSource, Wi
         ignoreAutoUpdate,
         partialSubmitFilter,
         form,
-        intervalType
+        intervalType,
+        ignoreComponentNotFound
     }
 
     public PollBase() {
@@ -258,5 +259,14 @@ public abstract class PollBase extends UIComponentBase implements AjaxSource, Wi
 
     public void setIntervalType(String intervalType) {
         getStateHelper().put(PropertyKeys.intervalType, intervalType);
+    }
+
+    @Override
+    public boolean isIgnoreComponentNotFound() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ignoreComponentNotFound, false);
+    }
+
+    public void setIgnoreComponentNotFound(boolean ignoreComponentNotFound) {
+        getStateHelper().put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
     }
 }

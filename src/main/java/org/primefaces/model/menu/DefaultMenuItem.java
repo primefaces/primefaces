@@ -78,6 +78,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private String form;
     private boolean escape = true;
     private String rel;
+    private boolean ignoreComponentNotFound = false;
 
     /**
      * Creates a new menu item without value.
@@ -289,11 +290,8 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
             params = new LinkedHashMap<>();
         }
 
-        if (!params.containsKey(key)) {
-            params.put(key, new ArrayList<String>());
-        }
-
-        params.get(key).add(value.toString());
+        params.computeIfAbsent(key, k -> new ArrayList<>(3))
+              .add(value.toString());
     }
 
     @Override
@@ -564,6 +562,15 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.rel = rel;
     }
 
+    @Override
+    public boolean isIgnoreComponentNotFound() {
+        return ignoreComponentNotFound;
+    }
+
+    public void setIgnoreComponentNotFound(boolean ignoreComponentNotFound) {
+        this.ignoreComponentNotFound = ignoreComponentNotFound;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -778,6 +785,11 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
 
         public Builder rel(String rel) {
             menuItem.setRel(rel);
+            return this;
+        }
+
+        public Builder ignoreComponentNotFound(boolean ignoreComponentNotFound) {
+            menuItem.setIgnoreComponentNotFound(ignoreComponentNotFound);
             return this;
         }
 
