@@ -204,8 +204,15 @@ public class ImageCropperRenderer extends CoreRenderer {
                     ExternalContext externalContext = context.getExternalContext();
                     // GitHub #3268 OWASP Path Traversal
                     imagePath = FileUploadUtils.checkPathTraversal(imagePath);
+
                     String webRoot = externalContext.getRealPath(Constants.EMPTY_STRING);
-                    File file = new File(webRoot + imagePath);
+                    String fileSeparator = Constants.EMPTY_STRING;
+                    if (!(webRoot.endsWith("\\") || webRoot.endsWith("/")) &&
+                                !(imagePath.endsWith("\\") || imagePath.endsWith("/"))) {
+                        fileSeparator = "/";
+                    }
+
+                    File file = new File(webRoot + fileSeparator + imagePath);
                     inputStream = new FileInputStream(file);
                 }
             }
@@ -234,6 +241,7 @@ public class ImageCropperRenderer extends CoreRenderer {
             return new CroppedImage(cropper.getImage(), croppedOutImage.toByteArray(), x, y, w, h);
         }
         catch (IOException e) {
+            LOGGER.severe(e.getMessage());
             throw new ConverterException(e);
         }
         finally {
