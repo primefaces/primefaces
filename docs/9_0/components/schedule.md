@@ -51,7 +51,7 @@ timeZone | null | Object | String or a java.time.ZoneId instance to specify the 
 tooltip | false | Boolean | Displays description of events on a tooltip.
 clientTimeZone | local | String | Defines how to interpret the dates at browser. Valid values are "local", "UTC" and ids like "America/Chicago". (see https://fullcalendar.io/docs/timeZone)
 showWeekNumbers | false | Boolean | Display week numbers in schedule.
-extender | null | String | Name of javascript function to extend the options of the underlying fullcalendar plugin.
+extender | null | String | Name of JavaScript function to extend the options of the underlying FullCalendar plugin.
 displayEventEnd | null | String | Whether or not to display an event's end time text when it is rendered on the calendar. Value can be a boolean to globally configure for all views or a comma separated list such as "month:false,basicWeek:true" to configure per view.
 weekNumberCalculation | local | String | The method for calculating week numbers that are displayed. Valid values are "local"(default), "ISO" and "custom".
 weekNumberCalculator | null | String | Client side function to use in custom weekNumberCalculation.
@@ -134,10 +134,10 @@ much more effective then updating with regular PPR. An example of this is demons
 schedule example, save button is calling PF(' _widgetvar').update()_ at oncomplete event handler.
 
 ## TimeZone
-By default schedule takes care of timezone differences by calculating the client browser timezone
+By default, schedule takes care of timezone differences by calculating the client's browser timezone
 and the event date so that events are displayed at the clients local time.
 
-see https://fullcalendar.io/docs/timeZone, setting 'locale' 
+See also https://fullcalendar.io/docs/timeZone, setting `timeZone=local`.
 
 ## Editable Schedule
 Let’s put it altogether to come up a fully editable and complex schedule.
@@ -290,9 +290,9 @@ attribute. Locale attribute can take a locale key as a | String | or a java.util
 To display a link when there are too many events on a slot, use _setEventLimit(true)_ on model.
 
 ## Extender Method
-If the schedule component lacking functions/options that are provided by the full calendar, 
-they can be used by the extender function. For more details about the configuration of full calender
-look at their documentation.
+If the schedule component is lacking functions/options that are provided by the FullCalendar library, 
+you can access them via the extender function. For more details about the configuration of FullCalender,
+look [at their documentation](https://fullcalendar.io/docs/).
 
 ```xhtml
 <h:form>
