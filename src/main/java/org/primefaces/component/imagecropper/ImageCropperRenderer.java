@@ -207,8 +207,9 @@ public class ImageCropperRenderer extends CoreRenderer {
 
                     String webRoot = externalContext.getRealPath(Constants.EMPTY_STRING);
                     String fileSeparator = Constants.EMPTY_STRING;
-                    if (!webRoot.endsWith(File.separator) && !imagePath.startsWith(File.separator)) {
-                        fileSeparator = File.separator;
+                    if (!(webRoot.endsWith("\\") || webRoot.endsWith("/")) &&
+                                !(imagePath.endsWith("\\") || imagePath.endsWith("/"))) {
+                        fileSeparator = "/";
                     }
 
                     File file = new File(webRoot + fileSeparator + imagePath);
