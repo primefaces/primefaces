@@ -106,7 +106,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 if ($this.cfg.noOpener) {
                     targetWindow.opener = null;    
                 }
-                targetWindow.location = targetWindow.event.url;
+                targetWindow.location = eventClickInfo.event.url;
                 return false;
             }
 
