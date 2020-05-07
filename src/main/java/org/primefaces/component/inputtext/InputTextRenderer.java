@@ -33,6 +33,7 @@ import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class InputTextRenderer extends InputRenderer {
@@ -53,7 +54,7 @@ public class InputTextRenderer extends InputRenderer {
         if (submittedValue != null) {
             int maxlength = inputText.getMaxlength();
             if (maxlength > 0 && submittedValue.length() > maxlength) {
-                return;
+                submittedValue = LangUtils.substring(submittedValue, 0, maxlength);
             }
             inputText.setSubmittedValue(submittedValue);
         }
