@@ -73,8 +73,10 @@ public class MediaBean {
     private StreamedContent media;
 
     public MediaController() {
-        InputStream stream = //Create binary stream from database
-        media = new DefaultStreamedContent(stream, "video/quicktime");
+        media = DefaultStreamedContent.builder()
+                    .contentType("video/quicktime")
+                    .stream(() -> //Create binary stream from database)
+                    .build();
     }
     public StreamedContent getMedia() { 
         return media;
