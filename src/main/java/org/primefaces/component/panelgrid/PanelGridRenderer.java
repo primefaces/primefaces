@@ -278,6 +278,9 @@ public class PanelGridRenderer extends CoreRenderer {
 
             Row row = null;
             if (child instanceof Row) {
+                if (i > 0) {
+                    writer.endElement("div");
+                }
                 row = (Row) child;
                 i = 0;
             }
