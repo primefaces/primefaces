@@ -151,8 +151,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         if (submittedValue instanceof Boolean) {
             return submittedValue;
         }
-        String submittedValueString = (String) submittedValue;
-        Object convertedValue = ComponentUtils.getConvertedValue(context, component, submittedValueString);
+        Object convertedValue = ComponentUtils.getConvertedValue(context, component, submittedValue);
         return ((convertedValue instanceof Boolean) ? submittedValue : Boolean.valueOf(convertedValue.toString()));
     }
 
