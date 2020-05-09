@@ -34,18 +34,20 @@ public class ContentRange {
     private long chunkRangeEnd;
     private long chunkTotalFileSize;
     private boolean lastChunk;
+    private long packet;
 
-    private ContentRange(long chunkRangeBegin, long chunkRangeEnd, long chunkTotalFileSize) {
+    private ContentRange(long chunkRangeBegin, long chunkRangeEnd, long chunkTotalFileSize, long chunkSize) {
         this.chunkRangeBegin = chunkRangeBegin;
         this.chunkRangeEnd = chunkRangeEnd;
         this.chunkTotalFileSize = chunkTotalFileSize;
         this.lastChunk = chunkRangeEnd + 1 == chunkTotalFileSize;
+        this.packet = chunkRangeBegin / chunkSize;
     }
 
-    public static final ContentRange of(String contentRange) {
+    public static final ContentRange of(String contentRange, long chunkSize) {
         Matcher matcher = CONTENT_RANGE_PATTERN.matcher(contentRange);
         if (matcher.find()) {
-            return new ContentRange(Long.parseLong(matcher.group(1)), Long.parseLong(matcher.group(2)), Long.parseLong(matcher.group(3)));
+            return new ContentRange(Long.parseLong(matcher.group(1)), Long.parseLong(matcher.group(2)), Long.parseLong(matcher.group(3)), chunkSize);
         }
 
         throw new IllegalArgumentException("Content-Range does not follow pattern: " + CONTENT_RANGE_PATTERN.pattern());
@@ -65,5 +67,9 @@ public class ContentRange {
 
     public boolean isLastChunk() {
         return lastChunk;
+    }
+
+    public long getPacket() {
+        return packet;
     }
 }

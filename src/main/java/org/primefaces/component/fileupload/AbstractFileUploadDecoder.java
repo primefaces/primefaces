@@ -113,14 +113,14 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
 
     @Override
     public void decodeContentRange(FileUpload fileUpload, T request, UploadedFile uploadedFile) throws IOException {
-        ContentRange contentRange = ContentRange.of(getContentRange(request));
+        ContentRange contentRange = ContentRange.of(getContentRange(request), fileUpload.getMaxChunkSize());
 
         // chunks are stored in temporary location java.io.tmpdir
         // while the final file will be written into the upload directory set by the user
         String basename = generateFileInfoKey(request);
         Path chunksDir = Paths.get(CHUNK_UPLOAD_DIRECTORY, basename);
 
-        writeChunk(fileUpload, uploadedFile, chunksDir, contentRange);
+        writeChunk(uploadedFile, chunksDir, contentRange);
 
         if (contentRange.isLastChunk()) {
             UploadedFile file = processLastChunk(request, uploadedFile, chunksDir, contentRange);
@@ -152,13 +152,12 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
         deleteChunkFolder(chunkDir, chunks);
     }
 
-    protected void writeChunk(FileUpload fileUpload, UploadedFile uploadedFile, Path path, ContentRange contentRange) throws IOException {
+    protected void writeChunk(UploadedFile uploadedFile, Path path, ContentRange contentRange) throws IOException {
         if (Files.notExists(path)) {
             Files.createDirectory(path);
         }
 
-        long packet = contentRange.getChunkRangeBegin() / fileUpload.getMaxChunkSize();
-        String chunkname = String.valueOf(packet);
+        String chunkname = String.valueOf(contentRange.getPacket());
         Path chunkFile = Paths.get(path.toFile().getAbsolutePath(), chunkname);
         try (InputStream is = uploadedFile.getInputStream()) {
             Files.copy(is, chunkFile, StandardCopyOption.REPLACE_EXISTING);
@@ -201,5 +200,4 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
     protected boolean isChunkedUpload(T request) {
         return getContentRange(request) != null;
     }
-
 }
