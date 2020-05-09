@@ -40,7 +40,7 @@ public class FileUploadChunksServlet extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(FileUploadChunksServlet.class.getName());
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         long uploadedBytes = FileUploadUtils.getFileUploadChunkDecoder(req).decodeUploadedBytes(req);
         printUploadedBytes(resp, uploadedBytes);
     }
@@ -56,15 +56,16 @@ public class FileUploadChunksServlet extends HttpServlet {
         }
     }
 
-    protected void printUploadedBytes(HttpServletResponse response, long uploadedBytes) {
-        try (PrintWriter w = response.getWriter()) {
-            response.setContentType("application/json");
+    protected void printUploadedBytes(HttpServletResponse resp, long uploadedBytes) throws IOException {
+        try (PrintWriter w = resp.getWriter()) {
+            resp.setContentType("application/json");
             JSONObject json = new JSONObject();
             json.put("uploadedBytes", uploadedBytes);
             w.print(json.toString());
         }
         catch (IOException | JSONException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 }
