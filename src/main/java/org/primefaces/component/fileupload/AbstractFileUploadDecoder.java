@@ -124,6 +124,7 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
 
         if (contentRange.isLastChunk()) {
             UploadedFile file = processLastChunk(request, uploadedFile, chunksDir, contentRange);
+            request.setAttribute(MULTIPARTS, uploadedFile);
             fileUpload.setSubmittedValue(new UploadedFileWrapper(file));
         }
     }
@@ -166,9 +167,9 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
 
     protected UploadedFile processLastChunk(T request, UploadedFile chunk, Path chunksDir, ContentRange contentRange) throws IOException {
         String fileKey = generateFileInfoKey(request);
-        Path wholePath = Paths.get(getUploadDirectory(request), "[" + fileKey +  "]" + chunk.getFileName());
-        Files.deleteIfExists(wholePath);
-        Path whole = Files.createFile(wholePath);
+        Path whole = Paths.get(getUploadDirectory(request), "[" + fileKey +  "]" + chunk.getFileName());
+        Files.deleteIfExists(whole);
+        Files.createFile(whole);
 
         List<Path> chunks = FileUploadUtils.listChunks(chunksDir);
         for (Path p : chunks) {
@@ -182,9 +183,7 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
             throw new IOException("Merged file does not meet expected size: " + contentRange.getChunkTotalFileSize());
         }
 
-        UploadedFile uploadedFile = new NIOUploadedFile(whole, chunk.getFileName(), chunk.getContentType());
-        request.setAttribute(MULTIPARTS, uploadedFile);
-        return uploadedFile;
+        return new NIOUploadedFile(whole, chunk.getFileName(), chunk.getContentType());
     }
 
     protected String getContentRange(HttpServletRequest request) {

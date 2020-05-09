@@ -35,7 +35,7 @@ powered rich solution with graceful degradation for legacy browsers.
 | widgetVar | null | String | Name of the client side widget.
 | update | @none | String | Component(s) to update after fileupload completes.
 | process | @all | String | Component(s) to process in fileupload request.
-| listener | null | MethodExpr | Method to invoke when a file is uploaded. (For chunked file upload after the last chunk was uploaded.)
+| listener | null | MethodExpr | Method to invoke when a file is uploaded.
 | multiple | false | Boolean | Allows choosing of multi file uploads from native file browse dialog
 | auto | false | Boolean | When set to true, selecting a file starts the upload process implicitly.
 | label | Choose | String | Label of the browse button.
@@ -274,9 +274,7 @@ folder.
 ```xml
 <filter>
     <filter-name>PrimeFaces FileUpload Filter</filter-name>
-    <filter-class>
-    org.primefaces.webapp.filter.FileUploadFilter
-    </filter-class>
+    <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
     <init-param>
         <param-name>thresholdSize</param-name>
         <param-value>51200</param-value>
@@ -311,21 +309,22 @@ FileUpload is able to resume uploads that have been canceled (e.g user abort, lo
 
 > You're free to choose `url-pattern` mapping, as long it doesn't conflict with an existing page
 
-### Removal of uploaded files merged from chunked file upload
-For Servlet 3.0 and up uploaded files (merged from chunks) are automatically removed from the internal (temporary) 
-upload directory after the request was processed.
+### Deleting aborted chunked uploads
+For Servlet 3.0 and later versions, uploaded files are automatically removed from the internal 
+upload directory after the request is destroyed.
 
-When you still use a Servlet 2.5 - container you need the add the following listener to your web.xml:
+If you're running a Servlet 2.5 container, you'll need to add the following listener to your web.xml:
 ```xml
 <listener>
 	<listener-class>org.primefaces.webapp.UploadedFileCleanerListener</listener-class>
 </listener>
 ```
 
-The single uploaded chunks also get put into an internal (temporary) upload directory.
-These chunk-files get removed
+Chunks file are put into internal temporary upload directory `java.io.tmpdir`, they get removed:
 1. after the last chunk is uploaded and the merged file is created 
-2. when the users aborts the upload.
+2. when the user aborts the upload.
+
+Though it is recommended to run a cron-job that deletes incomplete uploaded files.
 
 ## More secure file upload
 
@@ -348,6 +347,7 @@ Here are some measures that can be taken into account when using PrimeFaces's `f
 
         ```java
         public class CustomVirusScanner implements org.primefaces.virusscan.VirusScanner {
+        
             @Override
             public boolean isEnabled() {
                 // maybe read some config here
