@@ -90,7 +90,7 @@ public class FileUpload extends FileUploadBase {
                     throw new IllegalArgumentException("Argument of type '" + newValue.getClass().getName() + "' not supported");
                 }
 
-                if ("advanced".equals(getMode()) && newValue instanceof UploadedFile) {
+                if (newValue instanceof UploadedFile && "advanced".equals(getMode())) {
                     queueEvent(new FileUploadEvent(this, (UploadedFile) newValue));
                 }
             }
