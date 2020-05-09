@@ -112,7 +112,7 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
     protected abstract T getRequest(FacesContext ctxt);
 
     @Override
-    public void decodeContentRange(FileUpload fileUpload, T request, UploadedFile uploadedFile) throws IOException {
+    public void decodeContentRange(FileUpload fileUpload, T request, UploadedFile chunk) throws IOException {
         ContentRange contentRange = ContentRange.of(getContentRange(request), fileUpload.getMaxChunkSize());
 
         // chunks are stored in temporary location java.io.tmpdir
@@ -120,12 +120,12 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
         String basename = generateFileInfoKey(request);
         Path chunksDir = Paths.get(CHUNK_UPLOAD_DIRECTORY, basename);
 
-        writeChunk(uploadedFile, chunksDir, contentRange);
+        writeChunk(chunk, chunksDir, contentRange);
 
         if (contentRange.isLastChunk()) {
-            UploadedFile file = processLastChunk(request, uploadedFile, chunksDir, contentRange);
+            UploadedFile uploadedFile = processLastChunk(request, chunk, chunksDir, contentRange);
             request.setAttribute(MULTIPARTS, uploadedFile);
-            fileUpload.setSubmittedValue(new UploadedFileWrapper(file));
+            fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
         }
     }
 

@@ -50,7 +50,7 @@ public interface FileUploadChunkDecoder<T extends HttpServletRequest> {
         return DEFAULT_UPLOAD_DIRECTORY;
     }
 
-    void decodeContentRange(FileUpload fileUpload, T request, UploadedFile uploadedFile) throws IOException;
+    void decodeContentRange(FileUpload fileUpload, T request, UploadedFile chunk) throws IOException;
 
     long decodeUploadedBytes(T request);
 
