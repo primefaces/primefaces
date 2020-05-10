@@ -172,9 +172,9 @@ public class ComponentUtils {
     }
 
     public static Object getConvertedValue(FacesContext context, UIComponent component, Object value) {
-        String submittedValue = null;
-        if (value != null) {
-            submittedValue = value.toString();
+        String submittedValue = Objects.toString(value, null);
+        if (LangUtils.isValueBlank(submittedValue)) {
+            submittedValue = null;
         }
 
         Converter<?> converter = getConverter(context, component);
