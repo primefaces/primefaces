@@ -33,6 +33,7 @@ import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class InputTextRenderer extends InputRenderer {
@@ -51,6 +52,10 @@ public class InputTextRenderer extends InputRenderer {
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId);
 
         if (submittedValue != null) {
+            int maxlength = inputText.getMaxlength();
+            if (maxlength > 0 && submittedValue.length() > maxlength) {
+                submittedValue = LangUtils.substring(submittedValue, 0, maxlength);
+            }
             inputText.setSubmittedValue(submittedValue);
         }
     }
@@ -68,7 +73,7 @@ public class InputTextRenderer extends InputRenderer {
         String counter = inputText.getCounter();
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("InputText", inputText.resolveWidgetVar(context), clientId)
-                .attr("maxlength", inputText.getMaxlength(), Integer.MAX_VALUE);
+                .attr("maxlength", inputText.getMaxlength(), Integer.MIN_VALUE);
 
         if (counter != null) {
             UIComponent counterComponent = SearchExpressionFacade.resolveComponent(context, inputText, counter);
