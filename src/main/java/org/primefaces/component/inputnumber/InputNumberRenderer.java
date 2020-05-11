@@ -47,13 +47,7 @@ public class InputNumberRenderer extends InputRenderer {
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue)
             throws ConverterException {
-
-        String submittedValueString = (String) submittedValue;
-        if (LangUtils.isValueBlank(submittedValueString)) {
-            return null;
-        }
-
-        return ComponentUtils.getConvertedValue(context, component, submittedValueString);
+        return ComponentUtils.getConvertedValue(context, component, submittedValue);
     }
 
     @Override
