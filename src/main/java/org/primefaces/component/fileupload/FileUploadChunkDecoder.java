@@ -27,13 +27,10 @@ import org.primefaces.model.file.UploadedFile;
 
 import javax.faces.FacesException;
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.io.IOException;
 
 public interface FileUploadChunkDecoder<T extends HttpServletRequest> {
-
-    String DEFAULT_UPLOAD_DIRECTORY = System.getProperty("java.io.tmpdir");
-
-    String CHUNK_UPLOAD_DIRECTORY = System.getProperty("java.io.tmpdir");
 
     String MULTIPARTS = "org.primefaces.file.multiParts";
 
@@ -47,7 +44,12 @@ public interface FileUploadChunkDecoder<T extends HttpServletRequest> {
     }
 
     default String getUploadDirectory(T request) {
-        return DEFAULT_UPLOAD_DIRECTORY;
+        // Servlet 2.5 compatibility, equivalent to ServletContext.TMP_DIR
+        File tmpDir = (File)request.getServletContext().getAttribute("javax.servlet.context.tempdir");
+        if (tmpDir == null) {
+            tmpDir = new File(System.getenv("java.io.tmpdir"));
+        }
+        return tmpDir.getAbsolutePath();
     }
 
     void decodeContentRange(FileUpload fileUpload, T request, UploadedFile chunk) throws IOException;

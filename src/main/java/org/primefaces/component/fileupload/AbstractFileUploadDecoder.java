@@ -115,10 +115,7 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
     public void decodeContentRange(FileUpload fileUpload, T request, UploadedFile chunk) throws IOException {
         ContentRange contentRange = ContentRange.of(getContentRange(request), fileUpload.getMaxChunkSize());
 
-        // chunks are stored in temporary location java.io.tmpdir
-        // while the final file will be written into the upload directory set by the user
-        String basename = generateFileInfoKey(request);
-        Path chunksDir = Paths.get(CHUNK_UPLOAD_DIRECTORY, basename);
+        Path chunksDir = FileUploadUtils.getChunkDir(request);
 
         writeChunk(chunk, chunksDir, contentRange);
 

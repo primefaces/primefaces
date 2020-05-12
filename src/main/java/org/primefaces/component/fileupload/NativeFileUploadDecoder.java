@@ -75,6 +75,6 @@ public class NativeFileUploadDecoder extends AbstractFileUploadDecoder<HttpServl
                 .map(MultipartConfigElement.class::cast)
                 .findFirst()
                 .map(MultipartConfigElement::getLocation)
-                .orElse(DEFAULT_UPLOAD_DIRECTORY);
+                .orElse(super.getUploadDirectory(request));
     }
 }

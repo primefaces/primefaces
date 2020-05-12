@@ -392,6 +392,6 @@ public class FileUploadUtils {
     public static <T extends HttpServletRequest> Path getChunkDir(T request) {
         FileUploadChunkDecoder<T> chunkDecoder = getFileUploadChunkDecoder(request);
         String fileKey = chunkDecoder.generateFileInfoKey(request);
-        return Paths.get(FileUploadChunkDecoder.CHUNK_UPLOAD_DIRECTORY, fileKey);
+        return Paths.get(chunkDecoder.getUploadDirectory(request), fileKey);
     }
 }
