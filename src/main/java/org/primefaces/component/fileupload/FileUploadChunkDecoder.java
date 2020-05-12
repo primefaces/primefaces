@@ -45,7 +45,7 @@ public interface FileUploadChunkDecoder<T extends HttpServletRequest> {
 
     default String getUploadDirectory(T request) {
         // Servlet 2.5 compatibility, equivalent to ServletContext.TMP_DIR
-        File tmpDir = (File)request.getServletContext().getAttribute("javax.servlet.context.tempdir");
+        File tmpDir = (File) request.getServletContext().getAttribute("javax.servlet.context.tempdir");
         if (tmpDir == null) {
             tmpDir = new File(System.getenv("java.io.tmpdir"));
         }
