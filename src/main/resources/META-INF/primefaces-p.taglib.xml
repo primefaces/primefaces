@@ -4274,6 +4274,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Disables the component.]]>
+            </description>
+            <name>disabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[A method expression referring to a method validationg the input.]]>
             </description>
             <name>validator</name>
