@@ -86,7 +86,7 @@ public class ColorPickerRenderer extends InputRenderer {
 
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", createStyleClass(colorPicker), "styleClass");
+        writer.writeAttribute("class", createStyleClass(colorPicker, ColorPicker.STYLE_CLASS), "styleClass");
 
         if (colorPicker.getStyle() != null) {
             writer.writeAttribute("style", colorPicker.getStyle(), "style");
@@ -168,14 +168,4 @@ public class ColorPickerRenderer extends InputRenderer {
         wb.finish();
     }
 
-    protected String createStyleClass(ColorPicker colorPicker) {
-        String defaultClass = ColorPicker.STYLE_CLASS;
-        defaultClass = colorPicker.isValid() ? defaultClass : defaultClass + " ui-state-error";
-        defaultClass = !colorPicker.isDisabled() ? defaultClass : defaultClass + " ui-state-disabled";
-
-        String styleClass = colorPicker.getStyleClass();
-        styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
-
-        return styleClass;
-    }
 }

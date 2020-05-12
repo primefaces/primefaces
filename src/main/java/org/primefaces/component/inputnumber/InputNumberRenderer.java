@@ -126,9 +126,7 @@ public class InputNumberRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = inputNumber.getClientId(context);
 
-        String styleClass = inputNumber.getStyleClass();
-        styleClass = styleClass == null ? InputNumber.STYLE_CLASS : InputNumber.STYLE_CLASS + " " + styleClass;
-        styleClass = inputNumber.isValid() ? styleClass : styleClass + " ui-state-error"; // see #3706
+        String styleClass = createStyleClass(inputNumber, InputNumber.STYLE_CLASS);
 
         writer.startElement("span", inputNumber);
         writer.writeAttribute("id", clientId, null);
@@ -180,16 +178,8 @@ public class InputNumberRenderer extends InputRenderer {
         String inputId = clientId + "_input";
 
         String inputStyle = inputNumber.getInputStyle();
-        String inputStyleClass = inputNumber.getInputStyleClass();
-
         String style = inputStyle;
-
-        String styleClass = InputText.STYLE_CLASS;
-        styleClass = inputNumber.isValid() ? styleClass : styleClass + " ui-state-error";
-        styleClass = !inputNumber.isDisabled() ? styleClass : styleClass + " ui-state-disabled";
-        if (!isValueBlank(inputStyleClass)) {
-            styleClass += " " + inputStyleClass;
-        }
+        String styleClass = createStyleClass(inputNumber, "inputStyleClass", InputText.STYLE_CLASS) ;
 
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);

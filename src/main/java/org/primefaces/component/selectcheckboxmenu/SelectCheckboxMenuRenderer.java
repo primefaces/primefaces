@@ -72,10 +72,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         String title = menu.getTitle();
 
         String style = menu.getStyle();
-        String styleclass = menu.getStyleClass();
-        styleclass = styleclass == null ? SelectCheckboxMenu.STYLE_CLASS : SelectCheckboxMenu.STYLE_CLASS + " " + styleclass;
-        styleclass = menu.isDisabled() ? styleclass + " ui-state-disabled" : styleclass;
-        styleclass = !valid ? styleclass + " ui-state-error" : styleclass;
+        String styleclass =  createStyleClass(menu, SelectCheckboxMenu.STYLE_CLASS);
         styleclass = menu.isMultiple() ? SelectCheckboxMenu.MULTIPLE_CLASS + " " + styleclass : styleclass;
 
         writer.startElement("div", menu);
@@ -92,7 +89,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         encodeKeyboardTarget(context, menu);
         encodeInputs(context, menu, selectItems);
         if (menu.isMultiple()) {
-            encodeMultipleLabel(context, menu, selectItems, valid);
+            encodeMultipleLabel(context, menu, selectItems);
         }
         else {
             encodeLabel(context, menu, selectItems, valid);
@@ -227,16 +224,14 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.endElement("span");
     }
 
-    protected void encodeMultipleLabel(FacesContext context, SelectCheckboxMenu menu, List<SelectItem> selectItems, boolean valid)
+    protected void encodeMultipleLabel(FacesContext context, SelectCheckboxMenu menu, List<SelectItem> selectItems)
             throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Converter converter = menu.getConverter();
         Object values = getValues(menu);
         Object submittedValues = getSubmittedValues(menu);
         Object valuesArray = (submittedValues != null) ? submittedValues : values;
-        String listClass = menu.isDisabled() ?
-                           SelectCheckboxMenu.MULTIPLE_CONTAINER_CLASS + " ui-state-disabled" : SelectCheckboxMenu.MULTIPLE_CONTAINER_CLASS;
-        listClass = valid ? listClass : listClass + " ui-state-error";
+        String listClass = createStyleClass(menu, null, SelectCheckboxMenu.MULTIPLE_CONTAINER_CLASS);
 
         writer.startElement("ul", null);
         writer.writeAttribute("label", menu.getLabel(), null);
