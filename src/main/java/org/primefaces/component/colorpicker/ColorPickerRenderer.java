@@ -33,6 +33,8 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -51,19 +53,10 @@ public class ColorPickerRenderer extends InputRenderer {
 
         if (params.containsKey(paramName)) {
             String submittedValue = params.get(paramName);
-
             if (!COLOR_HEX_PATTERN.matcher(submittedValue).matches()) {
-                return;
+                submittedValue = Constants.EMPTY_STRING;
             }
-
-            Converter converter = colorPicker.getConverter();
-            if (converter != null) {
-                colorPicker.setSubmittedValue(
-                        converter.getAsObject(context, component, submittedValue));
-            }
-            else {
-                colorPicker.setSubmittedValue(submittedValue);
-            }
+            colorPicker.setSubmittedValue(ComponentUtils.getConvertedValue(context, component, submittedValue));
         }
 
         decodeBehaviors(context, component);
@@ -96,6 +89,7 @@ public class ColorPickerRenderer extends InputRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
+
         if (colorPicker.getStyle() != null) {
             writer.writeAttribute("style", colorPicker.getStyle(), "style");
         }
@@ -112,6 +106,7 @@ public class ColorPickerRenderer extends InputRenderer {
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "hidden", null);
+        writer.writeAttribute("autocomplete", "off", null);
 
         String onchange = colorPicker.getOnchange();
         if (!isValueBlank(onchange)) {
@@ -119,6 +114,8 @@ public class ColorPickerRenderer extends InputRenderer {
         }
 
         renderPassThruAttributes(context, colorPicker, null);
+        renderValidationMetadata(context, colorPicker);
+        renderAccessibilityAttributes(context, colorPicker);
 
         if (value != null) {
             writer.writeAttribute("value", value, null);
