@@ -1,7 +1,7 @@
 # Themes
 
 PrimeFaces provides a complete skinning/theming architecture allowing you to build your own theme or use a pre-built
-theme to completely change the look and feel of web pages. based on ThemeRoller, introduces 28 new themes and an on-line tool to create your own themes without knowing CSS.
+theme to completely change the look and feel of web pages.
 
 ## Configuration
 
