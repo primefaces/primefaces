@@ -9,21 +9,22 @@
 
 - Core
 
-  - [Search Expression](/core/searchexpression.md)
-  - [Client Side Validation](/core/clientsidevalidation.md)
-  - [Dialog Framework](/core/dialogframework.md)
-  - [Error Handling](/core/errorhandling.md)
+  - [Accessibility](/core/accessibility.md)
   - [BeanValidation Transformation](/core/beanvalidationtransformation.md)
+  - [Client Side Validation](/core/clientsidevalidation.md)
+  - [Content Security Policy](/core/contentsecuritypolicy.md)
+  - [Dialog Framework](/core/dialogframework.md)
+  - [EL Functions](/core/elFunctions.md)
+  - [Error Handling](/core/errorhandling.md)
+  - [Font Icons](/core/fonticons.md)
   - [Java API](/core/javaAPI.md)
   - [Javascript API](/core/javascriptAPI.md)
-  - [EL Functions](/core/elFunctions.md)
   - [Localization](/core/localization.md)
-  - [Font Icons](/core/fonticons.md)
-  - [Accessibility](/core/accessibility.md)
-  - [Responsive Design](/core/responsive.md)
   - [Performance](/core/performance.md)
-  - [Content Security Policy](/core/contentsecuritypolicy.md)
   - [Portlets](/core/portlets.md)
+  - [Responsive Design](/core/responsive.md)
+  - [Search Expression](/core/searchexpression.md)
+  - [Themes](/core/themes.md)
   - [Third Party Libraries](/core/thirdpartylibs.md)
 
 - AJAX
