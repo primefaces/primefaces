@@ -190,7 +190,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         String itemLabel;
         String inputStyle = ac.getInputStyle();
         String defaultStyleClass = ac.isDropdown() ? AutoComplete.INPUT_WITH_DROPDOWN_CLASS : AutoComplete.INPUT_CLASS;
-        String inputStyleClass = createStyleClass(ac, "inputStyleClass", defaultStyleClass);
+        String inputStyleClass = createStyleClass(ac, AutoComplete.PropertyKeys.inputStyleClass.name(), defaultStyleClass);
         String autocompleteProp = (ac.getAutocomplete() != null) ? ac.getAutocomplete() : "off";
 
         writer.startElement("input", null);

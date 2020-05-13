@@ -179,7 +179,7 @@ public class InputNumberRenderer extends InputRenderer {
 
         String inputStyle = inputNumber.getInputStyle();
         String style = inputStyle;
-        String styleClass = createStyleClass(inputNumber, "inputStyleClass", InputText.STYLE_CLASS) ;
+        String styleClass = createStyleClass(inputNumber, InputNumber.PropertyKeys.inputStyleClass.name(), InputText.STYLE_CLASS) ;
 
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);

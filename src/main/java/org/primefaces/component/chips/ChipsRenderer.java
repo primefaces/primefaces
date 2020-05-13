@@ -97,7 +97,7 @@ public class ChipsRenderer extends InputRenderer {
         styleClass = styleClass == null ? Chips.STYLE_CLASS : Chips.STYLE_CLASS + " " + styleClass;
 
         String inputStyle = chips.getInputStyle();
-        String listClass = createStyleClass(chips, "inputStyleClass", Chips.CONTAINER_CLASS);
+        String listClass = createStyleClass(chips, Chips.PropertyKeys.inputStyleClass.name(), Chips.CONTAINER_CLASS);
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
