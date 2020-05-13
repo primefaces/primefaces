@@ -43,7 +43,7 @@ import org.primefaces.util.SharedStringBuilder;
 
 public abstract class InputRenderer extends CoreRenderer {
 
-    private static final String SB_STYLECLASS = ComponentUtils.class.getName() + "#createStyleClass";
+    private static final String SB_STYLECLASS = InputRenderer.class.getName() + "#createStyleClass";
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
