@@ -13,8 +13,6 @@
  * 
  * @prop {string} cfg.counter ID of the label component to display remaining and entered characters.
  * @prop {string} cfg.counterTemplate Template text to display in counter, default value is `{0}`.
- * @prop {number} cfg.maxlength Maximum number of characters that may be entered in this field. Default to 
- *                              Integer.MAX_VALUE (2147483648).
  */
 PrimeFaces.widget.InputText = PrimeFaces.widget.BaseWidget.extend({
 
@@ -25,7 +23,6 @@ PrimeFaces.widget.InputText = PrimeFaces.widget.BaseWidget.extend({
      */
     init: function(cfg) {
         this._super(cfg);
-        this.cfg.maxlength = (this.cfg.maxlength === undefined) ? 2147483648 : this.cfg.maxlength;
 
         PrimeFaces.skinInput(this.jq);
 
@@ -67,7 +64,7 @@ PrimeFaces.widget.InputText = PrimeFaces.widget.BaseWidget.extend({
         var value = this.normalizeNewlines(this.jq.val()),
         length = value.length;
 
-        if(this.counter) {
+        if(this.counter && this.cfg.maxlength) {
             var remaining = this.cfg.maxlength - length;
             if(remaining < 0) {
                 remaining = 0;
