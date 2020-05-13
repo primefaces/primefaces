@@ -57,6 +57,4 @@ public interface FileUploadChunkDecoder<T extends HttpServletRequest> {
     long decodeUploadedBytes(T request);
 
     void deleteChunks(T request) throws IOException;
-
-
 }

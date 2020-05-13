@@ -320,7 +320,7 @@ If you're running a Servlet 2.5 container, you'll need to add the following list
 </listener>
 ```
 
-Chunks file are put into internal temporary upload directory `java.io.tmpdir`, they get removed:
+Chunks file are put either into directory from Apache Commons or Servlet 3.0, if not defined then into internal temporary upload directory [ServletContext.TMP_DIR](https://docs.oracle.com/javaee/6/api/javax/servlet/ServletContext.html#TEMPDIR). They get removed:
 1. after the last chunk is uploaded and the merged file is created 
 2. when the user aborts the upload.
 
