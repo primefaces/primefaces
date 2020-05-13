@@ -39,8 +39,11 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
+import org.primefaces.util.SharedStringBuilder;
 
 public abstract class InputRenderer extends CoreRenderer {
+
+    private static final String SB_STYLECLASS = ComponentUtils.class.getName() + "#createStyleClass";
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
@@ -187,7 +190,7 @@ public abstract class InputRenderer extends CoreRenderer {
      * @return the properly constructed style class string
      */
     protected String createStyleClass(UIInput component, String styleClassProperty, String defaultStyleClass) {
-        StringBuilder sb = new StringBuilder(128);
+        StringBuilder sb = SharedStringBuilder.get(SB_STYLECLASS, 128);
 
         if (!LangUtils.isValueBlank(defaultStyleClass)) {
             sb.append(defaultStyleClass);
