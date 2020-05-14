@@ -66,10 +66,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         List<SelectItem> selectItems = getSelectItems(context, listbox);
 
         String style = listbox.getStyle();
-        String styleClass = listbox.getStyleClass();
-        styleClass = styleClass == null ? SelectOneListbox.CONTAINER_CLASS : SelectOneListbox.CONTAINER_CLASS + " " + styleClass;
-        styleClass = listbox.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
-        styleClass = !listbox.isValid() ? styleClass + " ui-state-error" : styleClass;
+        String styleClass = createStyleClass(listbox, SelectOneListbox.CONTAINER_CLASS);
 
         writer.startElement("div", listbox);
         writer.writeAttribute("id", clientId, "id");

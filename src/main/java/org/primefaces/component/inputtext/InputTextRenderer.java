@@ -103,7 +103,7 @@ public class InputTextRenderer extends InputRenderer {
             writer.writeAttribute("style", inputText.getStyle(), null);
         }
 
-        writer.writeAttribute("class", createStyleClass(inputText), "styleClass");
+        writer.writeAttribute("class", createStyleClass(inputText, InputText.STYLE_CLASS), "styleClass");
 
         renderAccessibilityAttributes(context, inputText);
         renderRTLDirection(context, inputText);
@@ -114,14 +114,4 @@ public class InputTextRenderer extends InputRenderer {
         writer.endElement("input");
     }
 
-    protected String createStyleClass(InputText inputText) {
-        String defaultClass = InputText.STYLE_CLASS;
-        defaultClass = inputText.isValid() ? defaultClass : defaultClass + " ui-state-error";
-        defaultClass = !inputText.isDisabled() ? defaultClass : defaultClass + " ui-state-disabled";
-
-        String styleClass = inputText.getStyleClass();
-        styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
-
-        return styleClass;
-    }
 }

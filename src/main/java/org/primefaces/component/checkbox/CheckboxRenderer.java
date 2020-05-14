@@ -129,9 +129,8 @@ public class CheckboxRenderer extends InputRenderer {
 
     protected void encodeOptionOutput(FacesContext context, boolean disabled, SelectManyCheckbox selectManyCheckbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String boxClass = HTML.CHECKBOX_BOX_CLASS;
+        String boxClass = createStyleClass(selectManyCheckbox, null, HTML.CHECKBOX_BOX_CLASS) ;
         boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
-        boxClass = !selectManyCheckbox.isValid() ? boxClass + " ui-state-error" : boxClass;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", boxClass, null);

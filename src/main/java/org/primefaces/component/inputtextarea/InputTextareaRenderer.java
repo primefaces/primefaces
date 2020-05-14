@@ -174,12 +174,7 @@ public class InputTextareaRenderer extends InputRenderer {
     }
 
     protected String createStyleClass(InputTextarea inputTextarea) {
-        String defaultClass = InputTextarea.STYLE_CLASS;
-        defaultClass = inputTextarea.isValid() ? defaultClass : defaultClass + " ui-state-error";
-        defaultClass = !inputTextarea.isDisabled() ? defaultClass : defaultClass + " ui-state-disabled";
-
-        String styleClass = inputTextarea.getStyleClass();
-        styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
+        String styleClass = createStyleClass(inputTextarea, InputTextarea.STYLE_CLASS) ;
 
         if (inputTextarea.isAutoResize()) {
             styleClass = styleClass + " ui-inputtextarea-resizable";
