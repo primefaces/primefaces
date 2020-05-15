@@ -58,7 +58,7 @@
         var input = inst.input[0];
         if (!$.datepicker._pos) { // position below input
             $.datepicker._pos = $.datepicker._findPos(input);
-            $.datepicker._pos[1] += inst.input[0].offsetHeight; // add the height
+            $.datepicker._pos[1] += input.offsetHeight; // add the height
         }
 
         var offset = {left: $.datepicker._pos[0], top: $.datepicker._pos[1]};
