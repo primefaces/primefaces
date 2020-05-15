@@ -58,20 +58,23 @@ _DefaultStreamedContent_. Please see our core documentation about it: [Dynamic C
  Following examples loads an image from the classpath.
 
 ```xhtml
-<p:graphicImage value="#{imageBean.image}" />
+<p:graphicImage value="#{imageView.image}" />
 ```
 ```java
-public class ImageBean {
+@Named
+@RequestScoped
+public class ImageView {
     private StreamedContent image;
 
-    public DynamicImageController() {
+    public ImageView() {
         image = DefaultStreamedContent.builder()
                     .contentType("image/jpeg")
                     .stream(() -> this.getClass().getResourceAsStream("barcalogo.jpg"))
                     .build();
     }
+
     public StreamedContent getImage() {
-        return this.image;
+        return image;
     }
 }
 ```
@@ -90,13 +93,13 @@ Similar to the chart example, a barcode can be generated as well. This sample us
 for the barcode API.
 
 ```xhtml
-<p:graphicImage value="#{backingBean.barcode}" />
+<p:graphicImage value="#{barcodeView.barcode}" />
 ```
 ```java
 public class BarcodeBean {
     private StreamedContent barcode;
 
-    public BackingBean() {
+    public BarcodeView() {
         barcode = DefaultStreamedContent.builder()
                     .contentType("image/jpeg")
                     .stream(() -> {
@@ -113,8 +116,9 @@ public class BarcodeBean {
                     })
                     .build();
     }
-    public BarcodeBean getBarcode() {
-        return this.barcode;
+
+    public StreamedContent getBarcode() {
+        return barcode;
     }
 }
 ```
