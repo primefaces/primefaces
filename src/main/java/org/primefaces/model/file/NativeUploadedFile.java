@@ -105,6 +105,11 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
         part.write(validFileName);
     }
 
+    @Override
+    public void delete() throws IOException {
+        part.delete();
+    }
+
     public Part getPart() {
         return part;
     }

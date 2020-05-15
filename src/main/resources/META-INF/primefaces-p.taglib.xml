@@ -9513,7 +9513,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Method expression to listen file upload events.]]>
+                <![CDATA[Method expression to invoke when a file is uploaded.]]>
             </description>
             <name>listener</name>
             <required>false</required>
@@ -9566,6 +9566,30 @@
             <name>sizeLimit</name>
             <required>false</required>
             <type>java.lang.Long</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[To upload large files in smaller chunks, set this option to a preferred maximum chunk size. If set to 0 (default), null or undefined, or the browser does not support the required Blob API, files will be uploaded as a whole. Only works in "advanced" mode.]]>
+            </description>
+            <name>maxChunkSize</name>
+            <required>false</required>
+            <type>java.lang.Long</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Only for chunked file upload: Amount of retries when upload get´s interrupted due to e.g. unstable network connection.]]>
+            </description>
+            <name>maxRetries</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Only for chunked file upload: (Base-)Timeout in milliseconds to wait until the next retry. It is multiplied with the retry count. (first retry: retryTimeout * 1, second retry: retryTimeout *2, ...)]]>
+            </description>
+            <name>retryTimeout</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
         </attribute>
         <attribute>
             <description>

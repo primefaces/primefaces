@@ -40,7 +40,7 @@ powered rich solution with graceful degradation for legacy browsers.
 | auto | false | Boolean | When set to true, selecting a file starts the upload process implicitly.
 | label | Choose | String | Label of the browse button.
 | allowTypes | null | String | Regular expression for accepted file types, e.g. /(\\.\|\\/)(gif\|jpe?g\|png)$/
-| sizeLimit | null | Integer | Individual file size limit in bytes.
+| sizeLimit | null | Long | Individual file size limit in bytes.
 | fileLimit | null | Integer | Maximum number of files allowed to upload.
 | style | null | String | Inline style of the component.
 | styleClass | null | String | Style class of the component.
@@ -66,6 +66,9 @@ powered rich solution with graceful degradation for legacy browsers.
 | onAdd | null | String | Callback to execute before adding a file.
 | validateContentType | false | Boolean | Whether content type validation should be performed, based on the types defined in the accept attribute. Default is false.
 | virusScan | false | Boolean | Whether virus scan should be performed. Default is false.
+| maxChunkSize | 0 | Long | To upload large files in smaller chunks, set this option to a preferred maximum chunk size. If set to 0 (default), null or undefined, or the browser does not support the required Blob API, files will be uploaded as a whole. Only works in "advanced" mode.
+| maxRetries | 30 | Integer | Only for chunked file upload: Amount of retries when upload get´s interrupted due to e.g. unstable network connection. 
+| retryTimeout | 1000 | Integer | Only for chunked file upload: (Base-)Timeout in milliseconds to wait until the next retry. It is multiplied with the retry count. (first retry: retryTimeout * 1, second retry: retryTimeout *2, ...)  
 
 ## Getting started with FileUpload
 FileUpload engine on the server side can either be servlet 3.0 or commons fileupload. PrimeFaces
@@ -271,9 +274,7 @@ folder.
 ```xml
 <filter>
     <filter-name>PrimeFaces FileUpload Filter</filter-name>
-    <filter-class>
-    org.primefaces.webapp.filter.FileUploadFilter
-    </filter-class>
+    <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
     <init-param>
         <param-name>thresholdSize</param-name>
         <param-value>51200</param-value>
@@ -286,6 +287,44 @@ folder.
 ```
 **Note** that uploadDirectory is used internally, you always need to implement the logic to save the file
 contents yourself in your backing bean.
+
+## Chunking and Resume
+FileUpload supports chunked fileupload in advanced-mode using `maxChunkSize` attribute.
+
+Chunked file upload comes with following restrictions:
+1. It is only supported for `mode="advanced"`
+
+### Resuming chunked file uploads
+FileUpload is able to resume uploads that have been canceled (e.g user abort, lost of connection etc.) At first, you'll need to enable chunking and add this servlet:
+```xml
+<servlet>
+    <servlet-name>FileUpload Resume Servlet</servlet-name>
+    <servlet-class>org.primefaces.webapp.FileUploadChunksServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>FileUpload Resume Servlet</servlet-name>
+    <url-pattern>/file/resume/</url-pattern>
+</servlet-mapping>
+```
+
+> You're free to choose `url-pattern` mapping, as long it doesn't conflict with an existing page
+
+### Deleting aborted chunked uploads
+For Servlet 3.0 and later versions, uploaded files are automatically removed from the internal 
+upload directory after the request is destroyed.
+
+If you're running a Servlet 2.5 container, you'll need to add the following listener to your web.xml:
+```xml
+<listener>
+	<listener-class>org.primefaces.webapp.UploadedFileCleanerListener</listener-class>
+</listener>
+```
+
+Chunks file are put either into directory from Apache Commons or Servlet 3.0, if not defined then into internal temporary upload directory [ServletContext.TMP_DIR](https://docs.oracle.com/javaee/6/api/javax/servlet/ServletContext.html#TEMPDIR). They get removed:
+1. after the last chunk is uploaded and the merged file is created 
+2. when the user aborts the upload.
+
+Though it is recommended to run a cron-job that deletes incomplete uploaded files.
 
 ## More secure file upload
 
@@ -308,6 +347,7 @@ Here are some measures that can be taken into account when using PrimeFaces's `f
 
         ```java
         public class CustomVirusScanner implements org.primefaces.virusscan.VirusScanner {
+        
             @Override
             public boolean isEnabled() {
                 // maybe read some config here

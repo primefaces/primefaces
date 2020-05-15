@@ -6,7 +6,7 @@
  * 
  * @typedef PrimeFaces.widget.FileUpload.OnAddCallback Callback invoked when file was selected and is added to this
  * widget. See also {@link FileUploadCfg.onAdd}.
- * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnAddCallback 
+ * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnAddCallback
  * @param {File} PrimeFaces.widget.FileUpload.OnAddCallback.file The file that was selected for the upload.
  * @param {(processedFile: File) => void} PrimeFaces.widget.FileUpload.OnAddCallback.callback Callback that needs to be
  * invoked with the file that should be added to the upload queue.
@@ -33,8 +33,14 @@
  * 
  * @typedef PrimeFaces.widget.FileUpload.OnStartCallback Callback that is invoked at the beginning of a file upload,
  * when a file is sent to the server. See also {@link FileUploadCfg.onstart}.
- * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnStartCallback 
- * 
+ * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnStartCallback
+ *
+ * @interface {PrimeFaces.widget.FileUpload.XFileId} XFileId - Identifier of an uploaded file.
+ * @prop {string} XFileId.filename - Name of the uploaded file.
+ * @prop {Date} XFileId.lastmodified - Lastmodified-attribute of the uploaded file.
+ * @prop {string} XFileId.type - (Mime-)type of the uploaded file.
+ * @prop {number} XFileId.size - Size of the uploaded file.
+ *
  * @interface {PrimeFaces.widget.FileUpload.UploadMessage} UploadMessage A error message for a file upload widget.
  * @prop {number} UploadMessage.filesize The size of the uploaded file in bytes.
  * @prop {string} UploadMessage.filename The name of the uploaded file.
@@ -92,6 +98,10 @@
  * @prop {string} cfg.process Component(s) to process in fileupload request.
  * @prop {boolean} cfg.sequentialUploads `true` to upload files one after each other, `false` to upload in parallel.
  * @prop {string} cfg.update Component(s) to update after fileupload completes.
+ * @prop {number} cfg.maxChunkSize To upload large files in smaller chunks, set this option to a preferred maximum chunk size. If set to 0, null or undefined, or the browser does not support the required Blob API, files will be uploaded as a whole.
+ * @prop {number} cfg.maxRetries Only for chunked file upload: Amount of retries when upload get´s interrupted due to e.g. unstable network connection.
+ * @prop {number} cfg.retryTimeout Only for chunked file upload: (Base-)Timeout in milliseconds to wait until the next retry. It is multiplied with the retry count. (first retry: retryTimeout * 1, second retry: retryTimeout *2, ...)
+ * @prop {string} cfg.resumeContextPath Server-side path which provides information to resume chunked file upload.
  */
 PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
@@ -128,6 +138,8 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.fileLimitMessage = this.cfg.fileLimitMessage || 'Maximum number of files exceeded';
         this.cfg.messageTemplate = this.cfg.messageTemplate || '{name} {size}';
         this.cfg.previewWidth = this.cfg.previewWidth || 80;
+        this.cfg.maxRetries = this.cfg.maxRetries || 30;
+        this.cfg.retryTimeout = this.cfg.retryTimeout || 1000;
         this.uploadedFileCount = 0;
         this.fileId = 0;
 
@@ -153,6 +165,9 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             dataType: 'xml',
             dropZone: (this.cfg.dnd === false) ? null : this.jq,
             sequentialUploads: this.cfg.sequentialUploads,
+            maxChunkSize: this.cfg.maxChunkSize,
+            maxRetries: this.cfg.maxRetries,
+            retryTimeout: this.cfg.retryTimeout,
             formData: function() {
                 return $this.createPostData();
             },
@@ -207,6 +222,13 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                             $this.addFileToRow(file, data);
                         }
                     }
+
+                    if ($this.cfg.resumeContextPath && $this.cfg.maxChunkSize > 0) {
+                        $.getJSON($this.cfg.resumeContextPath, {'X-File-Id': $this.createXFileId(file)}, function (result) {
+                            var uploadedBytes = result.uploadedBytes;
+                            data.uploadedBytes = uploadedBytes;
+                        });
+                    }
                 }
             },
             send: function(e, data) {
@@ -226,12 +248,54 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             },
             fail: function(e, data) {
                 if (data.errorThrown === 'abort') {
+                    if ($this.cfg.resumeContextPath && $this.cfg.maxChunkSize > 0) {
+                        $.ajax({
+                            url: $this.cfg.resumeContextPath + '?' + $.param({'X-File-Id' : $this.createXFileId(data.files[0])}),
+                            dataType: 'json',
+                            type: 'DELETE'
+                        });
+                    }
+
                     if ($this.cfg.oncancel) {
                         $this.cfg.oncancel.call($this);
                     }
                     return;
                 }
-                if($this.cfg.onerror) {
+                if ($this.cfg.resumeContextPath && $this.cfg.maxChunkSize > 0) {
+                    if (data.context === undefined) {
+                        data.context = $(this);
+                    }
+
+                    // jQuery Widget Factory uses "namespace-widgetname" since version 1.10.0:
+                    var fu = $(this).data('blueimp-fileupload') || $(this).data('fileupload');
+                    var retries = data.context.data('retries') || 0;
+
+                    var retry = function () {
+                        $.getJSON($this.cfg.resumeContextPath, {'X-File-Id': $this.createXFileId(data.files[0])})
+                            .done(function (result) {
+                                var uploadedBytes = result.uploadedBytes;
+                                data.uploadedBytes = uploadedBytes;
+                                // clear the previous data:
+                                data.data = null;
+                                data.submit();
+                            })
+                            .fail(function () {
+                                fu._trigger('fail', e, data);
+                            });
+                    };
+
+                    if (data.errorThrown !== 'abort' &&
+                        data.uploadedBytes < data.files[0].size &&
+                        retries < fu.options.maxRetries) {
+                        retries += 1;
+                        data.context.data('retries', retries);
+                        window.setTimeout(retry, retries * fu.options.retryTimeout);
+                        return;
+                    }
+                    data.context.removeData('retries');
+                }
+
+                if ($this.cfg.onerror) {
                     $this.cfg.onerror.call($this, data.jqXHR, data.textStatus, data.jqXHR.pfArgs);
                 }
             },
@@ -260,7 +324,14 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 if($this.cfg.oncomplete) {
                     $this.cfg.oncomplete.call($this, data.jqXHR.pfArgs, data);
                 }
-            }
+            },
+
+            chunkbeforesend: function (e, data) {
+                var params = $this.createPostData();
+                var file = data.files[0];
+                params.push({name : 'X-File-Id', value: $this.createXFileId(file)});
+                data.formData = params;
+            },
         };
 
         this.jq.fileupload(this.ucfg);
@@ -514,6 +585,17 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         }
 
         return params;
+    },
+
+
+    /**
+     * Creates a XFileId-object for a file.
+     * @private
+     * @param {File} file A file to create a FileId-object.
+     * @return {PrimeFaces.widget.FileUpload.XFileId}
+     */
+    createXFileId: function(file) {
+      return [file.name, file.lastModified, file.type, file.size].join();
     },
 
     /**

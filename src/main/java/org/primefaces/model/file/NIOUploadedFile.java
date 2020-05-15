@@ -23,84 +23,79 @@
  */
 package org.primefaces.model.file;
 
+import org.apache.commons.io.FilenameUtils;
+import org.primefaces.util.FileUploadUtils;
+
+import javax.faces.FacesException;
 import java.io.IOException;
 import java.io.InputStream;
-import javax.faces.FacesWrapper;
-import javax.faces.component.StateHolder;
-import javax.faces.context.FacesContext;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-/**
- * Internal wrapper to avoid the file binaries to beeing saved in the ViewState.
- */
-public class UploadedFileWrapper implements UploadedFile, FacesWrapper<UploadedFile>, StateHolder {
+public class NIOUploadedFile implements UploadedFile {
 
-    private UploadedFile wrapped;
+    private Path file;
+    private String filename;
+    private byte[] content;
+    private String contentType;
 
-    public UploadedFileWrapper() {
+    public NIOUploadedFile() {
         // NOOP
     }
 
-    public UploadedFileWrapper(UploadedFile wrapped) {
-        this.wrapped = wrapped;
-    }
-
-    @Override
-    public UploadedFile getWrapped() {
-        return wrapped;
-    }
-
-    @Override
-    public Object saveState(FacesContext fc) {
-        return null;
-    }
-
-    @Override
-    public void restoreState(FacesContext fc, Object o) {
-        // NOOP
-    }
-
-    @Override
-    public boolean isTransient() {
-        return true;
-    }
-
-    @Override
-    public void setTransient(boolean value) {
-        // NOOP
-    }
-
-    @Override
-    public long getSize() {
-        return getWrapped().getSize();
-    }
-
-    @Override
-    public void write(String filePath) throws Exception {
-        getWrapped().write(filePath);
+    public NIOUploadedFile(Path file, String filename, String contentType) {
+        this.file = file;
+        this.filename = filename;
+        this.contentType = contentType;
     }
 
     @Override
     public String getFileName() {
-        return getWrapped().getFileName();
+        return filename;
     }
 
     @Override
     public InputStream getInputStream() throws IOException {
-        return getWrapped().getInputStream();
+        return Files.newInputStream(file);
     }
 
     @Override
     public byte[] getContent() {
-        return getWrapped().getContent();
+        if (content == null) {
+            try {
+                content = Files.readAllBytes(file);
+            }
+            catch (IOException e) {
+                throw new FacesException(e);
+            }
+        }
+        return content;
     }
 
     @Override
     public String getContentType() {
-        return getWrapped().getContentType();
+        return contentType;
+    }
+
+    @Override
+    public long getSize() {
+        try {
+            return Files.size(file);
+        }
+        catch (IOException e) {
+            throw new FacesException(e);
+        }
+    }
+
+    @Override
+    public void write(String filePath) throws Exception {
+        String validFileName = FileUploadUtils.getValidFilename(FilenameUtils.getName(getFileName()));
+        Files.copy(file, Paths.get(validFileName));
     }
 
     @Override
     public void delete() throws IOException {
-        getWrapped().delete();
+        Files.delete(file);
     }
 }
