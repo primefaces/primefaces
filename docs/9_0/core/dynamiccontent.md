@@ -28,33 +28,33 @@ public class ImageView {
 }
 ```
 
-## Dynamic content streaming (stream=`true`, which is the default)
+## Dynamic content streaming (stream=_true_, which is the default)
 
-### What happens when rendering the `p:graphicImage`:
+### What happens when rendering the _p:graphicImage_:
 
-- `ImageView` and therefore `DefaultStreamedContent` is instantiated the first time
-- the `ValueExpression` string (`#{imageView.image}`) is extracted 
+- _ImageView_ and therefore _DefaultStreamedContent_ is instantiated the first time
+- the _ValueExpression_ string (_#{imageView.image}_) is extracted 
 - a UID is generated
-- the UID and the `ValueExpression` string are stored into the HTTP session
-- the UID is appended to the image URL, which points to JSF `ResourceHandler`
+- the UID and the _ValueExpression_ string are stored into the HTTP session
+- the UID is appended to the image URL, which points to JSF _ResourceHandler_
 
 ### What happens when the browser requests the URL:
 
-- our `ResourceHandler` gets the UID from the URL
-- receive the `ValueExpression` from the session
-- call the `ValueExpression` via EL API
-- `ImageView` and therefore `DefaultStreamedContent` is instantiated the second time
-- the stream from the `StreamedContent` is now copied to the HTTP response
+- our _ResourceHandler_ gets the UID from the URL
+- receive the _ValueExpression_ from the session
+- call the _ValueExpression_ via EL API
+- _ImageView_ and therefore _DefaultStreamedContent_ is instantiated the second time
+- the stream from the _StreamedContent_ is now copied to the HTTP response
 
 ### @ViewScoped support
 
-As the resource is streamed in a second request, which isn't bound to any viewstate, `@ViewScoped` beans are not supported.
-A common pattern is to pass the informations, which are probably stored in your `@ViewScoped` bean, via request parameters as you can see in the next chapter.
+As the resource is streamed in a second request, which isn't bound to any viewstate, _@ViewScoped_ beans are not supported.
+A common pattern is to pass the informations, which are probably stored in your _@ViewScoped_ bean, via request parameters as you can see in the next chapter.
 
 ### Pass parameters to the resource request
 
-You can pass request parameters via `f:param`, which will be appended to the resource URL.
-This is extremely handy to display dynamic content, if your image is in a data iteration component like `p:dataTable` or `ui:repeat`.
+You can pass request parameters via _f:param_, which will be appended to the resource URL.
+This is extremely handy to display dynamic content, if your image is in a data iteration component like _p:dataTable_ or _ui:repeat_.
 
 ```xhtml
 <p:graphicImage value="#{imageView.image}">
@@ -85,19 +85,19 @@ public class ImageView {
 }
 ```
 
-## Dynamic content rendering via Data URI (stream=`false`)
+## Dynamic content rendering via Data URI (stream=_false_)
 
-### What happens when rendering the `p:graphicImage`:
+### What happens when rendering the _p:graphicImage_:
 
-- `ImageView` and therefore `DefaultStreamedContent` is instantiated
-- the `StreamedContent` is received via the `ValueExpression` (`#{imageView.image}`)
-- the stream from the `StreamedContent` is now converted and into a base64 string and rendered as `src` attribute
+- _ImageView_ and therefore _DefaultStreamedContent_ is instantiated
+- the _StreamedContent_ is received via the _ValueExpression_ (_#{imageView.image}_)
+- the stream from the _StreamedContent_ is now converted and into a base64 string and rendered as _src_ attribute
 
 ### Advantages
 
-- it supports `@ViewScoped` beans
+- it supports _@ViewScoped_ beans
 
 ### Disadvantages
 
-- slower rendering time; it should be avoided to use it very often in the view or inside reapeating components like `ui:repeat`
+- slower rendering time; it should be avoided to use it very often in the view or inside reapeating components like _ui:repeat_
 - bigger content size

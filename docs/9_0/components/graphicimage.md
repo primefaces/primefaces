@@ -79,7 +79,7 @@ DefaultStreamedContent gets an inputstream as the first parameter and mime type 
 
 
 In a real life application, you can create the inputstream after reading the image from the database.
-For example _java.sql.ResultsSet_ API has the `getBinaryStream()` method to read blob files stored in
+For example _java.sql.ResultsSet_ API has the _getBinaryStream()_ method to read blob files stored in
 database.
 
 ## Displaying Charts with JFreeChart
@@ -121,8 +121,8 @@ public class BarcodeBean {
 
 ## Displaying regular / static images
 
-As the PrimeFaces `GraphicImage` extends the standard JSF `GraphicImage` component, it can also display regular non-dynamic images,
-just like standard graphicImage component using `name` and optional `library`.
+As the PrimeFaces _GraphicImage_ extends the standard JSF _GraphicImage_ component, it can also display regular non-dynamic images,
+just like standard graphicImage component using _name_ and optional _library_.
 
 ```xhtml
 <p:graphicImage name="barcalogo.jpg" library="yourapp" />
