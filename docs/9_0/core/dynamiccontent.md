@@ -46,12 +46,12 @@ public class ImageView {
 
 ### @ViewScoped support
 
-As the resource is streamed in a second request, which isn't bound to any viewstate, _@ViewScoped_ beans are not supported.
-A common pattern is to pass the informations, which are probably stored in your _@ViewScoped_ bean, via request parameters as you can see in the next chapter.
+As the resource is streamed in a second request, which is not bound to any viewstate, _@ViewScoped_ beans are not supported.
+A common pattern is to pass the information, which is probably stored in your _@ViewScoped_ bean, via request parameters as you can see in the next chapter.
 
 ### MethodExpression support
 
-As the _ValueExpression_ is evaluated in the second request, not when rendering the view, a _MethodExpression_ and method parameters are not supported.
+As the _ValueExpression_ is evaluated in the second request, not when rendering the view, a _MethodExpression_ and method parameters are **NOT** supported.
 
 ### Pass parameters to the resource request
 
@@ -102,5 +102,5 @@ public class ImageView {
 
 ### Disadvantages
 
-- slower rendering time; it should be avoided to use it very often in the view or inside reapeating components like _ui:repeat_
-- bigger content size
+- slower rendering time; it should be avoided to use it very often in the view or inside repeating components like _ui:repeat_
+- larger content size
