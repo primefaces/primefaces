@@ -26,7 +26,7 @@ public class ImageView {
 }
 ```
 
-## Dynamic content streaming (stream=_true_, which is the default)
+## Dynamic content streaming
 
 ### What happens when rendering the _p:graphicImage_:
 
