@@ -53,7 +53,7 @@ A common pattern is to pass the informations, which are probably stored in your 
 
 ### MethodExpression support
 
-As the _ValueExpression_ is evaluated in the second request, not when rendering the view, a `MethodExpression` and method parameters are not supported.
+As the _ValueExpression_ is evaluated in the second request, not when rendering the view, a _MethodExpression_ and method parameters are not supported.
 
 ### Pass parameters to the resource request
 
