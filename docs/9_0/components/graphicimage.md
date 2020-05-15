@@ -53,7 +53,9 @@ stream | true | Boolean | Defines if the image is streamed or rendered directly 
 ## Getting started with GraphicImage
 GraphicImage requires an _org.primefaces.model.StreamedContent_ content as it’s value for dynamic
 images. StreamedContent is an interface and PrimeFaces provides a built-in implementation called
-_DefaultStreamedContent_. Following examples loads an image from the classpath.
+_DefaultStreamedContent_. Please see our core documentation about it: [Dynamic Content Streaming / Rendering](/core/dynamiccontent.md)
+
+ Following examples loads an image from the classpath.
 
 ```xhtml
 <p:graphicImage value="#{imageBean.image}" />
@@ -77,7 +79,7 @@ DefaultStreamedContent gets an inputstream as the first parameter and mime type 
 
 
 In a real life application, you can create the inputstream after reading the image from the database.
-For example _java.sql.ResultsSet_ API has the getBinaryStream() method to read blob files stored in
+For example _java.sql.ResultsSet_ API has the `getBinaryStream()` method to read blob files stored in
 database.
 
 ## Displaying Charts with JFreeChart
@@ -116,37 +118,12 @@ public class BarcodeBean {
     }
 }
 ```
-## Displaying Regular Images
-As GraphicImage extends standard graphicImage component, it can also display regular non
-dynamic images just like standard graphicImage component using name and optional library.
+
+## Displaying regular / static images
+
+As the PrimeFaces `GraphicImage` extends the standard JSF `GraphicImage` component, it can also display regular non-dynamic images,
+just like standard graphicImage component using `name` and optional `library`.
 
 ```xhtml
 <p:graphicImage name="barcalogo.jpg" library="yourapp" />
 ```
-## How It Works
-Default dynamic image display works as follows;
-
-- A UID is generated for each StreamedContent reference
-- The mapping between the UID and the ValueExpression string of StreamedContent ref is put into the HTTP session
-- This UID is appended to the image url that points to JSF resource handler.
-- Our custom PrimeFaces ResourceHandler gets the UID from the URL, gets the ValueExpression from the session and resolves the
-    StreamedContent instance and finally streams it to client.
-
-As a result there will be 2 requests to display an image, at first browser will make a request to load
-the page initially and then another one to the dynamic image url that points to JSF resource handler.
-Note that you cannot use ViewScope beans in this way as they are not available in resource loading
-request. See Data URI section below for an alternative to support ViewScope.
-
-You can pass request parameters to the graphicImage via f:param tags, as a result the actual request
-rendering the image can have access to these values. This is extremely handy to display dynamic
-images if your image is in a data iteration component like datatable or ui:repeat.
-
-## ViewScope support via Data URI
-Setting stream attribute to false uses an alternative approach by converting the value to base64 and
-displays the image via data URI. In this approach, only one request is required so ViewScope is
-supported.
-
-## StreamedContent
-There are two StreamedContent implementations out of the box; DefaultStreamedContent is not
-uses an InputStream and not serializable whereas the serializable ByteArrayContent uses a byte
-array.

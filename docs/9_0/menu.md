@@ -14,6 +14,7 @@
   - [Client Side Validation](/core/clientsidevalidation.md)
   - [Content Security Policy](/core/contentsecuritypolicy.md)
   - [Dialog Framework](/core/dialogframework.md)
+  - [Dynamic Content Streaming / Rendering](/core/dynamiccontent.md)
   - [EL Functions](/core/elFunctions.md)
   - [Error Handling](/core/errorhandling.md)
   - [Font Icons](/core/fonticons.md)
