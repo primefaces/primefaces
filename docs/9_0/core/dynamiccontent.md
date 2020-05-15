@@ -87,7 +87,7 @@ public class ImageView {
 }
 ```
 
-## Dynamic content rendering via Data URI (stream=_false_)
+## Dynamic content rendering via Data URI (stream=_false_ - currently only supported by _p:graphicImage_)
 
 ### What happens when rendering the _p:graphicImage_:
 
@@ -98,6 +98,7 @@ public class ImageView {
 ### Advantages
 
 - it supports _@ViewScoped_ beans
+- it supports _MethodExpression_ and parameters
 
 ### Disadvantages
 
