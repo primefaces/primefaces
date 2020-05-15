@@ -1,9 +1,7 @@
 # Dynamic content rendering / streaming
 
 Per default JSF only supports static content placed in resource folders.
-Streaming of dynamic content can be done with a custom Servlet or with PrimeFaces.
-
-Lets take this example:
+Streaming of dynamic content can be done with a custom Servlet or with PrimeFaces:
 
 ```xhtml
 <p:graphicImage value="#{imageView.image}" />
