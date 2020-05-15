@@ -39,6 +39,7 @@ import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.Temporal;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -517,5 +518,18 @@ public class CalendarUtils {
         Instant instant = Instant.parse(isoDateString);
         LocalDateTime result = LocalDateTime.ofInstant(instant, zoneId);
         return result;
+    }
+
+    /**
+     * Calculates NOW based on the calendar's current timezone or will default to system timezone if none set.
+     * It will return a LocalDateTime if time units needed else just a LocalDate if no time is needed.
+     *
+     * @param uicalendar the base calendar to calculate NOW for
+     * @return a Temporal representing either a Date or DateTime
+     */
+    public static Temporal now(UICalendar uicalendar) {
+        boolean hasTime = uicalendar.hasTime();
+        ZoneId zone = calculateZoneId(uicalendar.getTimeZone());
+        return hasTime ? LocalDateTime.now(zone) : LocalDate.now(zone);
     }
 }
