@@ -29,6 +29,7 @@ import org.primefaces.component.spinner.Spinner;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
 import org.primefaces.metadata.transformer.AbstractInputMetadataTransformer;
+import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.validate.bean.FutureOrPresentClientValidationConstraint;
 import org.primefaces.validate.bean.NegativeClientValidationConstraint;
@@ -44,8 +45,8 @@ import javax.validation.constraints.*;
 import javax.validation.metadata.ConstraintDescriptor;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.Temporal;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -170,18 +171,19 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
         if (input instanceof UICalendar) {
             UICalendar uicalendar = (UICalendar) input;
             boolean hasTime = uicalendar.hasTime();
+            Temporal now = CalendarUtils.now(uicalendar);
 
             if (annotationType.equals(Past.class) && uicalendar.getMaxdate() == null) {
-                uicalendar.setMaxdate(hasTime ? LocalDateTime.now() : LocalDate.now().minusDays(1));
+                uicalendar.setMaxdate(hasTime ? now : now.minus(1, ChronoUnit.DAYS));
             }
             if (annotationClassName.equals(PastOrPresentClientValidationConstraint.CONSTRAINT_ID) && uicalendar.getMaxdate() == null) {
-                uicalendar.setMaxdate(hasTime ? LocalDateTime.now() : LocalDate.now());
+                uicalendar.setMaxdate(now);
             }
             if (annotationType.equals(Future.class) && uicalendar.getMindate() == null) {
-                uicalendar.setMindate(hasTime ? LocalDateTime.now() : LocalDate.now().plusDays(1));
+                uicalendar.setMindate(hasTime ? now : now.plus(1, ChronoUnit.DAYS));
             }
             if (annotationClassName.equals(FutureOrPresentClientValidationConstraint.CONSTRAINT_ID) && uicalendar.getMindate() == null) {
-                uicalendar.setMindate(hasTime ? LocalDateTime.now() : LocalDate.now());
+                uicalendar.setMindate(now);
             }
         }
     }

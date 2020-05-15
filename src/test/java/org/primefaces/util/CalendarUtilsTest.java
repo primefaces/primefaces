@@ -24,12 +24,15 @@
 package org.primefaces.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.temporal.Temporal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -159,6 +162,22 @@ public class CalendarUtilsTest {
         pattern = "HH:mm:ss dd/MM/yyyy";
         cleanedPattern = CalendarUtils.removeTime(pattern);
         assertEquals(cleanedPattern, "");
+    }
+
+    @Test
+    public void now_LocalDate() {
+        when(datePicker.hasTime()).thenReturn(false);
+        when(datePicker.getTimeZone()).thenReturn(ZoneId.systemDefault());
+        Temporal now = CalendarUtils.now(datePicker);
+        assertEquals(LocalDate.now(), now);
+    }
+
+    @Test
+    public void now_LocalDateTime() {
+        when(datePicker.hasTime()).thenReturn(true);
+        when(datePicker.getTimeZone()).thenReturn(ZoneId.systemDefault());
+        LocalDateTime now = (LocalDateTime) CalendarUtils.now(datePicker);
+        assertTrue(LocalDateTime.now().compareTo(now) >= 0);
     }
 
 }
