@@ -51,6 +51,10 @@ public class ImageView {
 As the resource is streamed in a second request, which isn't bound to any viewstate, _@ViewScoped_ beans are not supported.
 A common pattern is to pass the informations, which are probably stored in your _@ViewScoped_ bean, via request parameters as you can see in the next chapter.
 
+### MethodExpression support
+
+As the _ValueExpression_ is evaluated in the second request, not when rendering the view, a `MethodExpression` and method parameters are not supported.
+
 ### Pass parameters to the resource request
 
 You can pass request parameters via _f:param_, which will be appended to the resource URL.
