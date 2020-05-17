@@ -95,7 +95,8 @@ DataTable displays data in tabular format.
 | sortMeta                  | null               | Map              | Ordered map of sort information in _multiple_ sortMode; This also allows to sort the table by default.
 | sortBy                    | null               | Object           | Property to be used for default sorting in _single_ sortMode.
 | sortField                 | null               | String           | Name of the field to pass lazy load method for sorting. If not specified, sortBy expression is used to extract the name.
-| sortOrder                 | ascending          | String           | “ascending” or “descending”.
+| sortOrder                 | ascending          | String           | Sets sorting order in 'single' sortMode. Default is "ascending"
+| sortFunction              | null               |                  | Custom pluggable sortFunction for default sorting in 'single' sortMode.
 | skipChildren              | false              | Boolean          | Ignores processing of children during lifecycle, improves performance if table only has output components.
 | stickyHeader              | false              | Boolean          | Sticky header stays in window viewport during scrolling.
 | stickyTopAt               | null               | String           | Selector to position on the page according to other fixing elements on the top of the table. Default is null.
