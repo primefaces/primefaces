@@ -1324,15 +1324,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         this.cloneHead();
 
-        this.restoreScrollState();
-
         if(this.cfg.liveScroll) {
+            this.clearScrollState();
             this.scrollOffset = 0;
             this.cfg.liveScrollBuffer = (100 - this.cfg.liveScrollBuffer) / 100;
             this.shouldLiveScroll = true;
             this.loadingLiveScroll = false;
             this.allLoadedLiveScroll = $this.cfg.scrollStep >= $this.cfg.scrollLimit;
         }
+
+        this.restoreScrollState();
 
         if(this.cfg.virtualScroll) {
             var row = this.bodyTable.children('tbody').children('tr.ui-widget-content');
@@ -4957,15 +4958,16 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
 
         this.cloneHead();
 
-        this.restoreScrollState();
-
         if(this.cfg.liveScroll) {
+            this.clearScrollState();
             this.scrollOffset = 0;
             this.cfg.liveScrollBuffer = (100 - this.cfg.liveScrollBuffer) / 100;
             this.shouldLiveScroll = true;
             this.loadingLiveScroll = false;
             this.allLoadedLiveScroll = $this.cfg.scrollStep >= $this.cfg.scrollLimit;
         }
+
+        this.restoreScrollState();
 
         if(this.cfg.virtualScroll) {
             var row = this.scrollTbody.children('tr.ui-widget-content');
