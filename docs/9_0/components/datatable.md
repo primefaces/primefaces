@@ -43,7 +43,6 @@ DataTable displays data in tabular format.
 | expandableRowGroups       | false              | Boolean          | Makes row groups toggleable, default is false.
 | expandedRow               | false              | Boolean          | Defines if row should be rendered as expanded by default.
 | filterBy                  | null               | Map              | Map of filters; This also allows to filter the table by default.
-| sortMeta                  | null               | Map              | Map of sort infrmations; This also allows to sort the table by default.
 | filterDelay               | 300                | Integer          | Delay in milliseconds before sending an ajax filter query.
 | filterEvent               | keyup              | String           | Event to invoke filtering for input filters.
 | filteredValue             | null               | List             | List to keep filtered data.
@@ -92,11 +91,12 @@ DataTable displays data in tabular format.
 | scrollable                | false              | Boolean          | Makes data scrollable with fixed header.
 | selection                 | null               | Object           | Reference to the selection data.
 | selectionMode             | null               | String           | Enables row selection, valid values are “single” and “multiple”.
-| skipChildren              | false              | Boolean          | Ignores processing of children during lifecycle, improves performance if table only has output components.
-| sortBy                    | null               | Object           | Property to be used for default sorting.
-| sortField                 | null               | String           | Name of the field to pass lazy load method for sorting. If not specified, sortBy expression is used to extract the name.
 | sortMode                  | single             | String           | Defines sorting mode, valid values are _single_ and _multiple_.
+| sortMeta                  | null               | Map              | Ordered map of sort information in _multiple_ sortMode; This also allows to sort the table by default.
+| sortBy                    | null               | Object           | Property to be used for default sorting in _single_ sortMode.
+| sortField                 | null               | String           | Name of the field to pass lazy load method for sorting. If not specified, sortBy expression is used to extract the name.
 | sortOrder                 | ascending          | String           | “ascending” or “descending”.
+| skipChildren              | false              | Boolean          | Ignores processing of children during lifecycle, improves performance if table only has output components.
 | stickyHeader              | false              | Boolean          | Sticky header stays in window viewport during scrolling.
 | stickyTopAt               | null               | String           | Selector to position on the page according to other fixing elements on the top of the table. Default is null.
 | style                     | null               | String           | Inline style of the component.
