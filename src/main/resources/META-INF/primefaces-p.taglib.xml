@@ -16611,6 +16611,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.]]>
+            </description>
+            <name>hideNoSelectionOption</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -21594,6 +21602,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.]]>
+            </description>
+            <name>hideNoSelectionOption</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -21756,6 +21772,14 @@
             <name>tabindex</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.]]>
+            </description>
+            <name>hideNoSelectionOption</name>
+            <required>false</required>
+            <type>boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -21935,6 +21959,14 @@
             <name>tabindex</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.]]>
+            </description>
+            <name>hideNoSelectionOption</name>
+            <required>false</required>
+            <type>boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -22179,6 +22211,14 @@
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.]]>
+            </description>
+            <name>hideNoSelectionOption</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -22349,6 +22389,14 @@
             <name>unselectable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.]]>
+            </description>
+            <name>hideNoSelectionOption</name>
+            <required>false</required>
+            <type>boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -22577,6 +22625,14 @@
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.]]>
+            </description>
+            <name>hideNoSelectionOption</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -22723,6 +22779,14 @@
             <name>label</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.]]>
+            </description>
+            <name>hideNoSelectionOption</name>
+            <required>false</required>
+            <type>boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -23143,6 +23207,14 @@
             <name>unselectable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.]]>
+            </description>
+            <name>hideNoSelectionOption</name>
+            <required>false</required>
+            <type>boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -26292,6 +26364,14 @@
             <name>tabindex</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.]]>
+            </description>
+            <name>hideNoSelectionOption</name>
+            <required>false</required>
+            <type>boolean</type>
         </attribute>
     </tag>
     <tag>
