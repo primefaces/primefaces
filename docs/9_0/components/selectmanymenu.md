@@ -48,6 +48,7 @@ filterFunction | null | String | Client side function to use in custom filterMat
 caseSensitive | false | Boolean | Defines if filtering would be case sensitive.
 scrollHeight | null | Integer | Defines the height of the scrollable area
 metaKeySelection | true | Boolean | The meta key (SHIFT or CTRL) must be held down to multi-select items.
+hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
 
 ## Getting started with SelectManyMenu
 SelectManyMenu usage is same as the standard one.
