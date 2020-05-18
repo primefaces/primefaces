@@ -87,7 +87,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
             String monitorKeyCookieName = Constants.DOWNLOAD_COOKIE + context.getViewRoot().getViewId().replace('/', '_');
             if (monitorKey != null) {
                 String evaluated = (String) monitorKey.getValue(elContext);
-                if (LangUtils.isValueBlank(evaluated)) {
+                if (!LangUtils.isValueBlank(evaluated)) {
                     monitorKeyCookieName += "_" + evaluated;
                 }
             }
