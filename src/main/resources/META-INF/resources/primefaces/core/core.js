@@ -712,7 +712,7 @@
          * @param {() => void} start Callback that is invoked when the download starts.
          * @param {() => void} complete Callback that is invoked when the download ends.
          * @param {string} [monitorKey] Name of the cookie for monitoring the download. The cookie name defaults to
-         * `primefaces.download`. When a monitor key is given, the name of the cookie will consist of a prefix and the
+         * `primefaces.download` + the current viewId. When a monitor key is given, the name of the cookie will consist of a prefix and the
          * given monitor key.
          */
         monitorDownload: function(start, complete, monitorKey) {
@@ -721,7 +721,16 @@
                     start();
                 }
 
-                var cookieName = monitorKey ? 'primefaces.download_' + monitorKey : 'primefaces.download';
+                var cookieName = 'primefaces.download' + PrimeFaces.settings.viewId.replace(/\//g, '_');
+                if (monitorKey && monitorKey !== '') {
+                    cookieName += '_' + monitorKey;
+                }
+
+                var cookiePath = PrimeFaces.settings.contextPath;
+                if (!cookiePath || cookiePath === '') {
+                    cookiePath = '/';
+                }
+
                 window.downloadMonitor = setInterval(function() {
                     var downloadComplete = PrimeFaces.getCookie(cookieName);
 
@@ -730,7 +739,7 @@
                             complete();
                         }
                         clearInterval(window.downloadMonitor);
-                        PrimeFaces.setCookie(cookieName, null);
+                        PrimeFaces.setCookie(cookieName, null, { path: cookiePath });
                     }
                 }, 1000);
             }
