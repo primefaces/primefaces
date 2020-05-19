@@ -30,6 +30,7 @@ import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.WidgetBuilder;
 
 import javax.faces.component.UIComponent;
@@ -148,7 +149,7 @@ public class ScheduleRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Schedule", schedule.resolveWidgetVar(context), clientId)
                 .attr("defaultView", translateViewName(schedule.getView().trim()))
-                .attr("locale", schedule.calculateLocale(context).toString().toLowerCase().replace("_", "-")) //adjust locale to FullCalendar-locale
+                .attr("locale", LocaleUtils.toJavascriptLocale(schedule.calculateLocale(context)))
                 .attr("tooltip", schedule.isTooltip(), false)
                 .attr("eventLimit", schedule.getValue().isEventLimit(), false)
                 //timeGrid offers an additional eventLimit - integer value; see https://fullcalendar.io/docs/eventLimit; not exposed yet by PF-schedule
