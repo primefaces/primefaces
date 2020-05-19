@@ -1,10 +1,10 @@
 /**
  * __PrimeFaces Carousel Widget__
- * 
+ *
  * Carousel is a multi purpose component to display a set of data or general content with slide effects.
- * 
+ *
  * @typedef {"fade" | "slide"} PrimeFaces.widget.Carousel.Effect Name of the animation for the carousel widget.
- * 
+ *
  * @prop {number} columns The number of simultaneously visible items.
  * @prop {JQuery} dropdown The DOM element for the dropdown for selecting the item to show.
  * @prop {number} first 0-based index of the the first items that is shown currently.
@@ -24,12 +24,12 @@
  * @prop {JQuery} toggleStateHolder The DOM element for the hidden input with the current toggle state.
  * @prop {number} totalPages The total number of available carousel pages.
  * @prop {JQuery} viewport The DOM element for the viewport of the carousel that shows the carousel items.
- * 
+ *
  * @interface {PrimeFaces.widget.CarouselCfg} cfg The configuration for the {@link  Carousel| Carousel widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
- * 
+ *
  * @prop {number} cfg.autoplayInterval Sets the time in milliseconds to have Carousel start scrolling automatically
  * after being initialized.
  * @prop {number} cfg.breakpoint Breakpoint value in pixels to switch between small and large viewport.
@@ -46,7 +46,7 @@
  * @prop {number} cfg.toggleSpeed The speed at which the carousel toggles.
  * @prop {boolean} cfg.toggleable Whether the carousel is toggleable.
  * @prop {boolean} cfg.vertical Sets vertical scrolling
- *  
+ *
  */
 PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
 
@@ -75,15 +75,15 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             this.toggleableContent = this.jq.find(' > .ui-carousel-viewport > .ui-carousel-items, > .ui-carousel-footer');
         }
 
-        this.cfg.numVisible = this.cfg.numVisible||3;
-        this.cfg.firstVisible = this.cfg.firstVisible||0;
+        this.cfg.numVisible = this.cfg.numVisible || 3;
+        this.cfg.firstVisible = this.cfg.firstVisible || 0;
         this.columns = this.cfg.numVisible;
         this.first = this.cfg.firstVisible;
-        this.cfg.effectDuration = this.cfg.effectDuration||500;
-        this.cfg.circular = this.cfg.circular||false;
-        this.cfg.breakpoint = this.cfg.breakpoint||640;
-        this.page = parseInt(this.first/this.columns);
-        this.totalPages = Math.ceil(this.itemsCount/this.cfg.numVisible);
+        this.cfg.effectDuration = this.cfg.effectDuration || 500;
+        this.cfg.circular = this.cfg.circular || false;
+        this.cfg.breakpoint = this.cfg.breakpoint || 640;
+        this.page = parseInt(this.first / this.columns);
+        this.totalPages = Math.ceil(this.itemsCount / this.cfg.numVisible);
 
         if(this.cfg.stateful) {
             this.stateKey = 'carousel-' + this.id;
@@ -92,6 +92,17 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         this.renderDeferred();
+    },
+
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
+    refresh: function(cfg) {
+        this.stopAutoplay();
+
+        this._super(cfg);
     },
 
     /**
@@ -409,8 +420,8 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Expands or collapses this carousel as indicated by the given arguments.
      * @private
-     * @param {boolean} collapsed `false` to expand, `true` to collapse. 
-     * @param {string} removeIcon Class of the remove icon 
+     * @param {boolean} collapsed `false` to expand, `true` to collapse.
+     * @param {string} removeIcon Class of the remove icon
      * @param {string} addIcon Class of the add icon.
      */
     toggleState: function(collapsed, removeIcon, addIcon) {
@@ -458,7 +469,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Clears the state as saved by `saveState`.
-     * @private 
+     * @private
      */
     clearState: function() {
         if(this.cfg.stateful) {
