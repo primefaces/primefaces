@@ -108,7 +108,7 @@ public class LocaleUtils {
     }
 
     /**
-     * Some JS libraries like Timeline and Schedule require the locale for "pt_BR" to be "pt-br".
+     * Some JS libraries like FullCalendar used by Schedule require the locale for "pt_BR" to be "pt-br".
      *
      * @param locale the Locale to convert
      * @return the Javascript string locale
