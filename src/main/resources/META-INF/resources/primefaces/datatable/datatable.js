@@ -2398,7 +2398,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery} row Row to unhighlight.
      */
     unhighlightRow: function(row) {
-        row.removeClass('ui-state-highlight').attr('aria-selected', false);
+        row.removeClass('ui-state-highlight ui-state-hover').attr('aria-selected', false);
     },
 
     /**
