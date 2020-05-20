@@ -44,9 +44,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CalendarUtils {
 
+    private static final Logger LOGGER = Logger.getLogger(CalendarUtils.class.getName());
     private static final String[] TIME_CHARS = {"H", "K", "h", "k", "m", "s"};
 
     private static final PatternConverter[] PATTERN_CONVERTERS =
@@ -236,10 +239,18 @@ public class CalendarUtils {
 
     public static final String getValue(FacesContext context, UICalendar calendar, Object value, String pattern) {
         //first ask the converter
-        if (calendar.getConverter() != null) {
-            return calendar.getConverter().getAsString(context, calendar, value);
+        try {
+            if (calendar.getConverter() != null) {
+                return calendar.getConverter().getAsString(context, calendar, value);
+            }
         }
-        else if (value instanceof String) {
+        catch (Exception e) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine(String.format("Could not convert date value...defaulting to built-in converter"));
+            }
+        }
+
+        if (value instanceof String) {
             return (String) value;
         }
         //Use built-in converter

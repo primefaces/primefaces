@@ -87,7 +87,7 @@ public class CalendarRenderer extends BaseCalendarRenderer {
         String defaultDate = null;
 
         if (calendar.isConversionFailed()) {
-            defaultDate = CalendarUtils.getValueAsString(context, calendar, LocalDateTime.now());
+            defaultDate = CalendarUtils.getValueAsString(context, calendar, CalendarUtils.now(uicalendar));
         }
         else if (!isValueBlank(value)) {
             defaultDate = value;
