@@ -529,12 +529,12 @@ public class CalendarUtils {
      * @return a Temporal representing either a Date or DateTime
      */
     public static Temporal now(UICalendar uicalendar) {
-        boolean hasTime = uicalendar.hasTime();
         boolean timeOnly = uicalendar.isTimeOnly();
         ZoneId zone = calculateZoneId(uicalendar.getTimeZone());
-        if (hasTime && timeOnly) {
+        if (timeOnly) {
             return LocalTime.now(zone);
         }
+        boolean hasTime = uicalendar.hasTime();
         return hasTime ? LocalDateTime.now(zone) : LocalDate.now(zone);
     }
 
