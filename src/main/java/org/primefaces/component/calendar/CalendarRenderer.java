@@ -24,7 +24,6 @@
 package org.primefaces.component.calendar;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Locale;
 
 import javax.faces.context.FacesContext;

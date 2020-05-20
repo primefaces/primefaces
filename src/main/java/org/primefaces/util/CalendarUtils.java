@@ -238,15 +238,15 @@ public class CalendarUtils {
     }
 
     public static final String getValue(FacesContext context, UICalendar calendar, Object value, String pattern) {
-        //first ask the converter
         try {
+            //first ask the converter, if it fails fall back to built-in conversion
             if (calendar.getConverter() != null) {
                 return calendar.getConverter().getAsString(context, calendar, value);
             }
         }
         catch (Exception e) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine(String.format("Could not convert date value...defaulting to built-in converter"));
+                LOGGER.fine(String.format("Could not convert date value using converter...defaulting to built-in converter"));
             }
         }
 
