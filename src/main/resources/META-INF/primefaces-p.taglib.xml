@@ -11194,6 +11194,14 @@
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Controls browser caching mode of the resource. Default is true]]>
+            </description>
+            <name>cache</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
