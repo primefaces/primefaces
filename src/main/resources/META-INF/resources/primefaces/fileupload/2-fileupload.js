@@ -142,7 +142,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.retryTimeout = this.cfg.retryTimeout || 1000;
         this.uploadedFileCount = 0;
         this.fileId = 0;
-
+        
         this.renderMessages();
 
         this.bindEvents();
@@ -209,6 +209,15 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                         });
 
                         $this.postSelectFile(data);
+                        
+                        if ($this.cfg.onvalidationerror) {
+                        	
+                        	$this.cfg.onvalidationerror({
+                                summary: validMsg,
+                                filename: file.name,
+                                filesize: file.size
+                            });
+                        }
                     }
                     else {
                         if($this.cfg.onAdd) {

@@ -95,6 +95,7 @@ public class FileUploadRenderer extends CoreRenderer {
                     .callback("onAdd", "function(file, callback)", fileUpload.getOnAdd())
                     .callback("onstart", "function()", fileUpload.getOnstart())
                     .callback("onerror", "function()", fileUpload.getOnerror())
+                    .callback("onvalidationerror", "function(msg)", fileUpload.getOnvalidationerror())
                     .callback("oncancel", "function()", fileUpload.getOncancel())
                     .callback("oncomplete", "function(args)", fileUpload.getOncomplete());
 
