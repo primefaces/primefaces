@@ -27,6 +27,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
+
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.Resource;
@@ -55,6 +57,19 @@ public class ResourceUtils {
 
             return context.getExternalContext().encodeResourceURL(url);
         }
+    }
+
+    public static String appendCacheBuster(String url, boolean cache) {
+        if (url == null) {
+            return url;
+        }
+        url += url.contains("?") ? "&" : "?";
+        url += Constants.DYNAMIC_CONTENT_CACHE_PARAM + "=" + cache;
+
+        if (!cache) {
+            url += "&uid=" + UUID.randomUUID().toString();
+        }
+        return url;
     }
 
     public static String getResourceRequestPath(FacesContext context, String resourceName) {
