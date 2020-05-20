@@ -28,6 +28,7 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import javax.el.ValueExpression;
@@ -152,11 +153,25 @@ public class ImageCropperRenderer extends CoreRenderer {
         writer.startElement("img", null);
         writer.writeAttribute("id", clientId + "_image", null);
         writer.writeAttribute("alt", alt, null);
-        writer.writeAttribute("src", getResourceURL(context, cropper.getImage()), null);
+        String imageSrc = generateImageSrc(context, cropper);
+        writer.writeAttribute("src", imageSrc, null);
         writer.writeAttribute("height", "auto", null);
         writer.writeAttribute("width", "100%", null);
         writer.writeAttribute("style", "max-width: 100%;", null);
         writer.endElement("img");
+    }
+
+    private String generateImageSrc(FacesContext context, ImageCropper cropper) {
+        String result = getResourceURL(context, cropper.getImage());
+        if (!cropper.isCache()) {
+            StringBuilder builder = new StringBuilder();
+            builder.append(result);
+            builder.append(result.contains("?") ? "&" : "?");
+            builder.append("no-cache-uid=");
+            builder.append(UUID.randomUUID().toString());
+            result = builder.toString();
+        }
+        return result;
     }
 
     @Override
