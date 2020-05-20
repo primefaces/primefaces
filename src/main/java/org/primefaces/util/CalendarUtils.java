@@ -236,7 +236,7 @@ public class CalendarUtils {
     }
 
     public static final String getValue(FacesContext context, UICalendar calendar, Object value, String pattern) {
-      //first ask the converter, if it fails fall back to built-in conversion
+        //first ask the converter
         if (calendar.getConverter() != null) {
             return calendar.getConverter().getAsString(context, calendar, value);
         }
@@ -530,7 +530,11 @@ public class CalendarUtils {
      */
     public static Temporal now(UICalendar uicalendar) {
         boolean hasTime = uicalendar.hasTime();
+        boolean timeOnly = uicalendar.isTimeOnly();
         ZoneId zone = calculateZoneId(uicalendar.getTimeZone());
+        if (hasTime && timeOnly) {
+            return LocalTime.now(zone);
+        }
         return hasTime ? LocalDateTime.now(zone) : LocalDate.now(zone);
     }
 
@@ -547,6 +551,9 @@ public class CalendarUtils {
             java.util.Date date;
             if (now instanceof LocalDate) {
                 date = java.util.Date.from(((LocalDate) now).atStartOfDay(zone).toInstant());
+            }
+            else if (now instanceof LocalTime) {
+                date = java.util.Date.from(((LocalTime) now).atDate(LocalDate.now(zone)).atZone(zone).toInstant());
             }
             else {
                 date = java.util.Date.from(((LocalDateTime) now).atZone(zone).toInstant());

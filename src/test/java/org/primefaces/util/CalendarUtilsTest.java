@@ -33,11 +33,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.Temporal;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 
 import javax.el.ELContext;
 import javax.faces.context.ExternalContext;
@@ -191,6 +187,15 @@ public class CalendarUtilsTest {
     @Test
     public void now_Date() {
         when(datePicker.hasTime()).thenReturn(false);
+        when(datePicker.getTimeZone()).thenReturn(ZoneId.systemDefault());
+        Date now = (Date) CalendarUtils.now(datePicker, java.util.Date.class);
+        assertTrue(new Date().compareTo(now) >= 0);
+    }
+
+    @Test
+    public void now_Time() {
+        when(datePicker.hasTime()).thenReturn(true);
+        when(datePicker.isTimeOnly()).thenReturn(true);
         when(datePicker.getTimeZone()).thenReturn(ZoneId.systemDefault());
         Date now = (Date) CalendarUtils.now(datePicker, java.util.Date.class);
         assertTrue(new Date().compareTo(now) >= 0);
