@@ -180,4 +180,19 @@ public class CalendarUtilsTest {
         assertTrue(LocalDateTime.now().compareTo(now) >= 0);
     }
 
+    @Test
+    public void now_DateTime() {
+        when(datePicker.hasTime()).thenReturn(true);
+        when(datePicker.getTimeZone()).thenReturn(ZoneId.systemDefault());
+        Date now = (Date) CalendarUtils.now(datePicker, java.util.Date.class);
+        assertTrue(new Date().compareTo(now) >= 0);
+    }
+
+    @Test
+    public void now_Date() {
+        when(datePicker.hasTime()).thenReturn(false);
+        when(datePicker.getTimeZone()).thenReturn(ZoneId.systemDefault());
+        Date now = (Date) CalendarUtils.now(datePicker, java.util.Date.class);
+        assertTrue(new Date().compareTo(now) >= 0);
+    }
 }

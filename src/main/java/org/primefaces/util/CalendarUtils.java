@@ -23,17 +23,6 @@
  */
 package org.primefaces.util;
 
-import org.primefaces.component.api.UICalendar;
-import org.primefaces.convert.DatePatternConverter;
-import org.primefaces.convert.PatternConverter;
-import org.primefaces.convert.TimePatternConverter;
-
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.*;
@@ -44,12 +33,21 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
+
+import org.primefaces.component.api.UICalendar;
+import org.primefaces.convert.DatePatternConverter;
+import org.primefaces.convert.PatternConverter;
+import org.primefaces.convert.TimePatternConverter;
 
 public class CalendarUtils {
 
-    private static final Logger LOGGER = Logger.getLogger(CalendarUtils.class.getName());
     private static final String[] TIME_CHARS = {"H", "K", "h", "k", "m", "s"};
 
     private static final PatternConverter[] PATTERN_CONVERTERS =
@@ -238,19 +236,11 @@ public class CalendarUtils {
     }
 
     public static final String getValue(FacesContext context, UICalendar calendar, Object value, String pattern) {
-        try {
-            //first ask the converter, if it fails fall back to built-in conversion
-            if (calendar.getConverter() != null) {
-                return calendar.getConverter().getAsString(context, calendar, value);
-            }
+      //first ask the converter, if it fails fall back to built-in conversion
+        if (calendar.getConverter() != null) {
+            return calendar.getConverter().getAsString(context, calendar, value);
         }
-        catch (Exception e) {
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine(String.format("Could not convert date value using converter...defaulting to built-in converter"));
-            }
-        }
-
-        if (value instanceof String) {
+        else if (value instanceof String) {
             return (String) value;
         }
         //Use built-in converter
@@ -542,5 +532,27 @@ public class CalendarUtils {
         boolean hasTime = uicalendar.hasTime();
         ZoneId zone = calculateZoneId(uicalendar.getTimeZone());
         return hasTime ? LocalDateTime.now(zone) : LocalDate.now(zone);
+    }
+
+    /**
+     * Calculates NOW based on the calendar's current timezone or will default to system timezone if none set.
+     *
+     * @param uicalendar the base calendar to calculate NOW for
+     * @return an Object representing either a Date or Temporal
+     */
+    public static Object now(UICalendar uicalendar, Class<?> dateType) {
+        Temporal now = now(uicalendar);
+        if (dateType.isAssignableFrom(java.util.Date.class)) {
+            ZoneId zone = calculateZoneId(uicalendar.getTimeZone());
+            java.util.Date date;
+            if (now instanceof LocalDate) {
+                date = java.util.Date.from(((LocalDate) now).atStartOfDay(zone).toInstant());
+            }
+            else {
+                date = java.util.Date.from(((LocalDateTime) now).atZone(zone).toInstant());
+            }
+            return date;
+        }
+        return now;
     }
 }
