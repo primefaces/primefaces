@@ -639,7 +639,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} list The source or target list that is to be filtered. 
      */
     filter: function(value, list) {
-        var filterValue = $.trim(value).toLowerCase(),
+        var filterValue = String.prototype.trim.call(value).toLowerCase(),
         items = list.children('li.ui-picklist-item'),
         animated = this.isAnimated();
 

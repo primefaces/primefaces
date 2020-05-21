@@ -670,7 +670,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} value A value against which the available options are matched.
      */
     filter: function(value) {
-        var filterValue = this.cfg.caseSensitive ? $.trim(value) : $.trim(value).toLowerCase();
+        var filterValue = this.cfg.caseSensitive ? String.prototype.trim.call(value) : String.prototype.trim.call(value).toLowerCase();
 
         if(filterValue === '') {
             this.itemContainer.children('li.ui-selectcheckboxmenu-item').filter(':hidden').show();

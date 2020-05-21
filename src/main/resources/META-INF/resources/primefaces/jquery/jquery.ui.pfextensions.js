@@ -329,7 +329,7 @@ $.widget( "ui.sortable", $.ui.sortable, {
             
             // PrimeFaces https://github.com/primefaces/primefaces/issues/3765
             _addTimePicker: function (dp_inst) {
-                var currDT = $.trim((this.$altInput && this._defaults.altFieldTimeOnly) ? this.$input.val() + ' ' + this.$altInput.val() : (dp_inst.inline ? this.$input.next().val() : this.$input.val()));
+                var currDT = String.prototype.trim.call((this.$altInput && this._defaults.altFieldTimeOnly) ? this.$input.val() + ' ' + this.$altInput.val() : (dp_inst.inline ? this.$input.next().val() : this.$input.val()));
 
                 this.timeDefined = this._parseTime(currDT);
                 this._limitMinMaxDateTime(dp_inst, false);
@@ -406,7 +406,7 @@ $.widget( "ui.sortable", $.ui.sortable, {
                                 for (var i = min; i <= max; i += step) {
                                         sel += '<option value="' + i + '"' + (i === val ? ' selected' : '') + '>';
                                         if (unit === 'hour') {
-                                                sel += $.datepicker.formatTime($.trim(format.replace(/[^ht ]/ig, '')), {hour: i}, tp_inst._defaults);
+                                                sel += $.datepicker.formatTime(String.prototype.trim.call(format.replace(/[^ht ]/ig, '')), {hour: i}, tp_inst._defaults);
                                         }
                                         else if (unit === 'millisec' || unit === 'microsec' || i >= 10) { sel += i; }
                                         else {sel += '0' + i.toString(); }

@@ -1127,7 +1127,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      */
     filter: function(value) {
         this.cfg.initialHeight = this.cfg.initialHeight||this.itemsWrapper.height();
-        var filterValue = this.cfg.caseSensitive ? $.trim(value) : $.trim(value).toLowerCase();
+        var filterValue = this.cfg.caseSensitive ? String.prototype.trim.call(value) : String.prototype.trim.call(value).toLowerCase();
 
         if(filterValue === '') {
             this.items.filter(':hidden').show();

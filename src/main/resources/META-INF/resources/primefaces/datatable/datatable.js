@@ -2778,7 +2778,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            if(content && $.trim(content).length) {
+                            if(content && String.prototype.trim.call(content).length) {
                                 row.addClass('ui-expanded-row');
                                 this.displayExpandedRow(row, content);
                             }
