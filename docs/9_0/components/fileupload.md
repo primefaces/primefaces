@@ -32,6 +32,7 @@ powered rich solution with graceful degradation for legacy browsers.
 | requiredMessage | null | String | Message to be displayed when required field validation fails.
 | converterMessage | null | String | Message to be displayed when conversion fails.
 | validatorMessage | null | String | Message to be displayed when validation fails.
+| onvalidationfailure | null | String | Handler called when validation fails.
 | widgetVar | null | String | Name of the client side widget.
 | update | @none | String | Component(s) to update after fileupload completes.
 | process | @all | String | Component(s) to process in fileupload request.
