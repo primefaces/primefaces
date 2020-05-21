@@ -346,7 +346,7 @@
       if ($.type(options.formData) === 'function') {
         return options.formData(options.form);
       }
-      if ($.isArray(options.formData)) {
+      if (Array.isArray(options.formData)) {
         return options.formData;
       }
       if ($.type(options.formData) === 'object') {
@@ -639,7 +639,7 @@
         if (!paramName.length) {
           paramName = [fileInput.prop('name') || 'files[]'];
         }
-      } else if (!$.isArray(paramName)) {
+      } else if (!Array.isArray(paramName)) {
         paramName = [paramName];
       }
       return paramName;

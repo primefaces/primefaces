@@ -121,7 +121,7 @@
         var options = [];
         // see how many data arrays we have
         for (var i=0, l=arguments.length; i<l; i++) {
-            if ($.isArray(arguments[i])) {
+            if (Array.isArray(arguments[i])) {
                 datas.push(arguments[i]);
             }
             else if ($.isPlainObject(arguments[i])) {
@@ -200,7 +200,7 @@
         }
 
         else if (arguments.length === 2) {
-            if ($.isArray(data)) {
+            if (Array.isArray(data)) {
                 _data = data;
             }
 
@@ -2060,7 +2060,7 @@
                 $.extend(true, this.noDataIndicator, options.noDataIndicator);
             }
             
-            if (data == null || $.isArray(data) == false || data.length == 0 || $.isArray(data[0]) == false || data[0].length == 0) {
+            if (data == null || Array.isArray(data) == false || data.length == 0 || Array.isArray(data[0]) == false || data[0].length == 0) {
                 
                 if (this.noDataIndicator.show == false) {
                     throw new Error("No data specified");
@@ -2191,7 +2191,7 @@
             if (ax === true) {
                 ax = this.axes;
             }
-            if ($.isArray(ax)) {
+            if (Array.isArray(ax)) {
                 for (var i = 0; i < ax.length; i++) {
                     this.axes[ax[i]].resetScale(opts[ax[i]]);
                 }
@@ -2718,7 +2718,7 @@
                 var temp = [];
                 var i, l;
                 dir = dir || 'vertical';
-                if (!$.isArray(data[0])) {
+                if (!Array.isArray(data[0])) {
                     // we have a series of scalars.  One line with just y values.
                     // turn the scalar list of data into a data array of form:
                     // [[1, data[0]], [2, data[1]], ...]
@@ -3829,7 +3829,7 @@
     // conpute a highlight color or array of highlight colors from given colors.
     $.jqplot.computeHighlightColors  = function(colors) {
         var ret;
-        if ($.isArray(colors)) {
+        if (Array.isArray(colors)) {
             ret = [];
             for (var i=0; i<colors.length; i++){
                 var rgba = $.jqplot.getColorComponents(colors[i]);
@@ -5132,7 +5132,7 @@
         if (bd.length == 2) {
             // Do we have an array of x,y values?
             // like [[[1,1], [2,4], [3,3]], [[1,3], [2,6], [3,5]]]
-            if ($.isArray(bd[0][0])) {
+            if (Array.isArray(bd[0][0])) {
                 // since an arbitrary array of points, spin through all of them to determine max and min lines.
 
                 var p;
@@ -5186,7 +5186,7 @@
         // if more than 2 arrays, have arrays of [ylow, yhi] values.
         // note, can't distinguish case of [[ylow, yhi], [ylow, yhi]] from [[ylow, ylow], [yhi, yhi]]
         // this is assumed to be of the latter form.
-        else if (bd.length > 2 && !$.isArray(bd[0][0])) {
+        else if (bd.length > 2 && !Array.isArray(bd[0][0])) {
             var hi = (bd[0][0] > bd[0][1]) ? 0 : 1;
             var low = (hi) ? 0 : 1;
             for (var i=0, l=bd.length; i<l; i++) {
@@ -5203,7 +5203,7 @@
             var afunc = null;
             var bfunc = null;
 
-            if ($.isArray(intrv)) {
+            if (Array.isArray(intrv)) {
                 a = intrv[0];
                 b = intrv[1];
             }
@@ -6183,7 +6183,7 @@
         this._scalefact = 1.0;
         $.extend(true, this, options);
         if (this.breakPoints) {
-            if (!$.isArray(this.breakPoints)) {
+            if (!Array.isArray(this.breakPoints)) {
                 this.breakPoints = null;
             }
             else if (this.breakPoints.length < 2 || this.breakPoints[1] <= this.breakPoints[0]) {
@@ -6351,7 +6351,7 @@
             for (i=0; i<userTicks.length; i++){
                 var ut = userTicks[i];
                 var t = new this.tickRenderer(this.tickOptions);
-                if ($.isArray(ut)) {
+                if (Array.isArray(ut)) {
                     t.value = ut[0];
                     if (this.breakPoints) {
                         if (ut[0] == this.breakPoints[0]) {
@@ -6846,7 +6846,7 @@
     // > plot.axes.yaxis.renderer.resetTickValues.call(plot.axes.yaxis, yarr);
     //
     $.jqplot.LinearAxisRenderer.prototype.resetTickValues = function(opts) {
-        if ($.isArray(opts) && opts.length == this._ticks.length) {
+        if (Array.isArray(opts) && opts.length == this._ticks.length) {
             var t;
             for (var i=0; i<opts.length; i++) {
                 t = this._ticks[i];
