@@ -257,17 +257,17 @@ function buildOptions($cont, $slides, els, options, o) {
 	var first = opts.startingSlide;
 
 	// set position and zIndex on all the slides
-	$slides.css({position: 'absolute', top:0, left:0}).hide().each(function(i) {
+	$slides.css({position: 'absolute', top:'0px', left:'0px'}).hide().each(function(i) {
 		var z;
 		if (opts.backwards)
 			z = first ? i <= first ? els.length + (i-first) : first-i : els.length-i;
 		else
 			z = first ? i >= first ? els.length - (i-first) : first-i : els.length-i;
-		$(this).css('z-index', z)
+		$(this).css('z-index', String(z))
 	});
 
 	// make sure first slide is visible
-	$(els[first]).css('opacity',1).show(); // opacity bit needed to handle restart use case
+	$(els[first]).css('opacity','1').show(); // opacity bit needed to handle restart use case
 	removeFilter(els[first], opts);
 
 	// stretch slides
@@ -844,7 +844,7 @@ $.fn.cycle.custom = function(curr, next, opts, cb, fwd, speedOverride) {
 // transition definitions - only fade is defined here, transition pack defines the rest
 $.fn.cycle.transitions = {
 	fade: function($cont, $slides, opts) {
-		$slides.not(':eq('+opts.currSlide+')').css('opacity',0);
+		$slides.not(':eq('+opts.currSlide+')').css('opacity','0');
 		opts.before.push(function(curr,next,opts) {
 			$.fn.cycle.commonReset(curr,next,opts);
 			opts.cssBefore.opacity = 0;

@@ -284,7 +284,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
             this.targetZindex = this.targetElement.zIndex();
         }
 
-        this.jq.css({'left':'', 'top':'', 'z-index': ++PrimeFaces.zindex})
+        this.jq.css({'left':'', 'top':'', 'z-index': PrimeFaces.nextZindex()})
                 .position({
                     my: this.cfg.my
                     ,at: this.cfg.at
@@ -438,7 +438,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this._super();
 
         if(this.targetElement) {
-            this.targetElement.css('z-index', this.jq.css('z-index'));
+            this.targetElement.css('z-index', String(this.jq.css('z-index')));
         }
     },
 
@@ -450,7 +450,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this._super();
 
         if(this.targetElement) {
-            this.targetElement.css('z-index', this.targetZindex);
+            this.targetElement.css('z-index', String(this.targetZindex));
         }
     },
 

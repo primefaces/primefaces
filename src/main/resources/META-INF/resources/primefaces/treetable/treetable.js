@@ -530,10 +530,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
         this.stickyContainer.css({
             position: 'absolute',
-            width: table.outerWidth(),
-            top: offset.top,
-            left: offset.left,
-            'z-index': ++PrimeFaces.zindex
+            width: table.outerWidth() + 'px',
+            top: offset.top + 'px',
+            left: offset.left + 'px',
+            'z-index': PrimeFaces.nextZindex()
         });
 
         this.jq.prepend(this.stickyContainer);
@@ -565,7 +565,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             else {
                 $this.stickyContainer.css({
                                         'position': 'absolute',
-                                        'top': tableOffset.top
+                                        'top': tableOffset.top + 'px'
                                     })
                                     .removeClass('ui-shadow ui-sticky');
 
@@ -1308,8 +1308,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
         this.scrollBody.scroll(function() {
             var scrollLeft = $this.scrollBody.scrollLeft();
-            $this.scrollHeaderBox.css('margin-left', -scrollLeft);
-            $this.scrollFooterBox.css('margin-left', -scrollLeft);
+            $this.scrollHeaderBox.css('margin-left', -scrollLeft + 'px');
+            $this.scrollFooterBox.css('margin-left', -scrollLeft + 'px');
 
             $this.saveScrollState();
         });
@@ -1453,7 +1453,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             $this.setOuterWidth($(this), width);
         });
         this.scrollHeader.width(width);
-        this.scrollBody.css('padding-right', 0).width(width);
+        this.scrollBody.css('padding-right', '0px').width(width);
         this.scrollFooter.width(width);
     },
 
@@ -1464,9 +1464,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     alignScrollBody: function() {
         if(!this.cfg.scrollWidth) {
             if(this.hasVerticalOverflow())
-                this.scrollBody.css('padding-right', 0);
+                this.scrollBody.css('padding-right', '0px');
             else
-                this.scrollBody.css('padding-right', this.getScrollbarWidth());
+                this.scrollBody.css('padding-right', this.getScrollbarWidth() + 'px');
         }
     },
 
@@ -2112,8 +2112,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     updateVerticalScroll: function() {
         if(this.cfg.scrollable && this.cfg.scrollHeight) {
             if(this.bodyTable.outerHeight() < this.scrollBody.outerHeight()) {
-                this.scrollHeaderBox.css('margin-right', 0);
-                this.scrollFooterBox.css('margin-right', 0);
+                this.scrollHeaderBox.css('margin-right', '0px');
+                this.scrollFooterBox.css('margin-right', '0px');
             }
             else {
                 this.scrollHeaderBox.css('margin-right', this.marginRight);

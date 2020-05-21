@@ -63,39 +63,39 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
         var doc = $(document),
         documentBody = $(document.body),
         offset = PrimeFaces.utils.calculateRelativeOffset(this.target),
-        zindex = ++PrimeFaces.zindex;
+        zindex = PrimeFaces.nextZindex();
 
         documentBody.children('div.ui-spotlight-top').css({
-            'left': 0,
-            'top': 0,
-            'width': documentBody.width(),
-            'height': offset.top,
+            'left': '0px',
+            'top': '0px',
+            'width': documentBody.width() + 'px',
+            'height': offset.top + 'px',
             'z-index': zindex
         });
 
         var bottomTop = offset.top + this.target.outerHeight();
         documentBody.children('div.ui-spotlight-bottom').css({
-            'left': 0,
-            'top': bottomTop,
-            'width': documentBody.width(),
-            'height': doc.height() - bottomTop,
+            'left': '0px',
+            'top': bottomTop + 'px',
+            'width': documentBody.width() + 'px',
+            'height': (doc.height() - bottomTop)  + 'px',
             'z-index': zindex
         });
 
         documentBody.children('div.ui-spotlight-left').css({
-            'left': 0,
-            'top': offset.top,
-            'width': offset.left,
-            'height': this.target.outerHeight(),
+            'left': '0px',
+            'top': offset.top + 'px',
+            'width': offset.left + 'px',
+            'height': this.target.outerHeight() + 'px',
             'z-index': zindex
         });
 
         var rightLeft = offset.left + this.target.outerWidth();
         documentBody.children('div.ui-spotlight-right').css({
-            'left': rightLeft,
-            'top': offset.top,
-            'width': documentBody.width() - rightLeft,
-            'height': this.target.outerHeight(),
+            'left': rightLeft + 'px',
+            'top': offset.top + 'px',
+            'width': (documentBody.width() - rightLeft + 'px'),
+            'height': this.target.outerHeight() + 'px',
             'z-index': zindex
         });
     },
@@ -107,7 +107,7 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
     bindEvents: function() {
         var $this = this;
 
-        this.target.data('zindex',this.target.zIndex()).css('z-index', ++PrimeFaces.zindex);
+        this.target.data('zindex',this.target.zIndex()).css('z-index', PrimeFaces.nextZindex());
 
         if (this.cfg.blockScroll) {
             PrimeFaces.utils.preventScrolling();
@@ -139,7 +139,7 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
     hide: function() {
         $(document.body).children('.ui-spotlight').hide();
         this.unbindEvents();
-        this.target.css('z-index', this.target.zIndex());
+        this.target.css('z-index', String(this.target.zIndex()));
     }
 
 });

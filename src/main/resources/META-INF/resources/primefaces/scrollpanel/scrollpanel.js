@@ -50,7 +50,7 @@
 					elem.css(
 						{
 							overflow: 'hidden',
-							padding: 0
+							padding: '0px'
 						}
 					);
 					// TODO: Deal with where width/ height is 0 as it probably means the element is hidden and we should
@@ -132,9 +132,9 @@
 				if (!(isScrollableH || isScrollableV)) {
 					elem.removeClass('jspScrollable');
 					pane.css({
-            top: 0,
-            left: 0,
-						width: container.width() - originalPaddingTotalWidth
+                        top: '0px',
+                        left: '0px',
+						width: (container.width() - originalPaddingTotalWidth) + 'px'
 					});
 					removeMousewheel();
 					removeFocusHandler();
@@ -636,7 +636,7 @@
 				if (animate) {
 					jsp.animate(verticalDrag, 'top', destY,	_positionDragY);
 				} else {
-					verticalDrag.css('top', destY);
+					verticalDrag.css('top', destY + 'px');
 					_positionDragY(destY);
 				}
 
@@ -663,7 +663,7 @@
 				}
 				
 				updateVerticalArrows(isAtTop, isAtBottom);
-				pane.css('top', destTop);
+				pane.css('top', destTop + 'px');
 				elem.trigger('jsp-scroll-y', [-destTop, isAtTop, isAtBottom]).trigger('scroll');
 			}
 
@@ -684,7 +684,7 @@
 				if (animate) {
 					jsp.animate(horizontalDrag, 'left', destX,	_positionDragX);
 				} else {
-					horizontalDrag.css('left', destX);
+					horizontalDrag.css('left', destX + 'px');
 					_positionDragX(destX);
 				}
 			}
@@ -710,7 +710,7 @@
 				}
 				
 				updateHorizontalArrows(isAtLeft, isAtRight);
-				pane.css('left', destLeft);
+				pane.css('left', destLeft + 'px');
 				elem.trigger('jsp-scroll-x', [-destLeft, isAtLeft, isAtRight]).trigger('scroll');
 			}
 

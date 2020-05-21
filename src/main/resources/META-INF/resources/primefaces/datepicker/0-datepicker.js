@@ -1904,8 +1904,8 @@
 
                 if (this.panel.parent().is(this.container)) {
                     this.panel.css({
-                        left: 0,
-                        top: this.container.innerHeight()
+                        left: '0px',
+                        top: String(this.container.innerHeight())
                     });
                 }
                 else {

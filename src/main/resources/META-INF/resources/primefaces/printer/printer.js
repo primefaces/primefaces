@@ -97,8 +97,8 @@
                 .prependTo('body')
                 .css({
                     "position": "absolute",
-                    "top": -999,
-                    "left": -999
+                    "top": '-999px',
+                    "left": '-999px'
                 });
         }
         var frameWindow = $iframe.get(0);

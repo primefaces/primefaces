@@ -794,9 +794,9 @@
         calculateScrollbarWidth: function() {
             if(!this.scrollbarWidth) {
                 var $div = $('<div></div>')
-                    .css({ width: 100, height: 100, overflow: 'auto', position: 'absolute', top: -1000, left: -1000 })
+                    .css({ width: '100px', height: '100px', overflow: 'auto', position: 'absolute', top: '-1000px', left: '-1000px' })
                     .prependTo('body').append('<div></div>').find('div')
-                        .css({ width: '100%', height: 200 });
+                        .css({ width: '100%', height: '200px' });
                 this.scrollbarWidth = 100 - $div.width();
                 $div.parent().remove();
             }
@@ -1024,6 +1024,16 @@
               lut[d1&0xff]+lut[d1>>8&0xff]+'-'+lut[d1>>16&0x0f|0x40]+lut[d1>>24&0xff]+'-'+
               lut[d2&0x3f|0x80]+lut[d2>>8&0xff]+'-'+lut[d2>>16&0xff]+lut[d2>>24&0xff]+
               lut[d3&0xff]+lut[d3>>8&0xff]+lut[d3>>16&0xff]+lut[d3>>24&0xff];
+        },
+
+        /**
+         * Increment and return the next zindex for CSS as a String.
+         * jQuery will no longer accept numeric values in $.css as of 4.0.
+         * 
+         *  @return {string} the next zindex as a String
+         */
+        nextZindex: function() {
+            return String(++PrimeFaces.zindex);
         },
 
         /**

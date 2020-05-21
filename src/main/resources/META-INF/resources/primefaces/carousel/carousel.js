@@ -168,7 +168,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             var totalMargins = ((firstItem.outerHeight(true) - firstItem.outerHeight()) / 2) * (this.cfg.numVisible);
             this.viewport.height((firstItem.outerHeight() * this.cfg.numVisible) + totalMargins);
             this.updateNavigators();
-            this.itemsContainer.css('top', -1 * (this.viewport.innerHeight() * this.page));
+            this.itemsContainer.css('top', (-1 * (this.viewport.innerHeight() * this.page))+ 'px');
         }
     },
 
@@ -195,7 +195,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
 
         this.page = parseInt(this.first / this.columns);
         this.updateNavigators();
-        this.itemsContainer.css('left', (-1 * (this.viewport.innerWidth() * this.page)));
+        this.itemsContainer.css('left', (-1 * (this.viewport.innerWidth() * this.page))+ 'px');
     },
 
     /**

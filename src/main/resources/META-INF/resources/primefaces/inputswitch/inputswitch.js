@@ -52,29 +52,29 @@ PrimeFaces.widget.InputSwitch = PrimeFaces.widget.DeferredWidget.extend({
         var containerWidth = (onContainerWidth > offContainerWidth) ? onContainerWidth : offContainerWidth,
         handleWidth = containerWidth;
 
-        this.handle.css({'width':handleWidth});
+        this.handle.css({'width':handleWidth + 'px'});
         handleWidth = this.handle.width();
 
         containerWidth = containerWidth + handleWidth + 6;
 
         var labelWidth = containerWidth - handleWidth - spanPadding - handleMargins;
 
-        this.jq.css({'width': containerWidth });
+        this.jq.css({'width': containerWidth + 'px' });
         this.onLabel.width(labelWidth);
         this.offLabel.width(labelWidth);
 
         //position
-        this.offContainer.css({ width: this.jq.width() - 5 });
+        this.offContainer.css({ width: (this.jq.width() - 5) + 'px' });
         this.offset = this.jq.width() - this.handle.outerWidth();
 
         if(this.input.prop('checked')) {
-            this.handle.css({ 'left': this.offset});
-            this.onContainer.css({ 'width': this.offset});
-            this.offLabel.css({ 'margin-right': -this.offset});
+            this.handle.css({ 'left': this.offset + 'px'});
+            this.onContainer.css({ 'width': this.offset + 'px'});
+            this.offLabel.css({ 'margin-right': -this.offset + 'px'});
         }
         else {
-            this.onContainer.css({ 'width': 0 });
-            this.onLabel.css({'margin-left': -this.offset});
+            this.onContainer.css({ 'width': '0px' });
+            this.onLabel.css({'margin-left': -this.offset + 'px'});
         }
 
         if(!this.input.prop('disabled')) {

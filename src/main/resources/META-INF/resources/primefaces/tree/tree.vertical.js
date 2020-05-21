@@ -640,7 +640,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 return el;
             },
             appendTo: document.body,
-            zIndex: ++PrimeFaces.zindex,
+            zIndex: PrimeFaces.nextZindex(),
             revert: true,
             scope: dragdropScope,
             containment: 'document'

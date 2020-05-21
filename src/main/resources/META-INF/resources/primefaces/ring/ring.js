@@ -141,7 +141,7 @@
 
 					self
 						.css({  // starting styles
-							padding:   0,
+							padding:   '0px',
 							position:  holderCSSPosition
 						})
 						.data(  // starting options
@@ -494,8 +494,8 @@
 					top: ((factors.y * info.midStage.height + info.nudge.height) - factors.height / 2.0).toFixed(0) + "px",
 					width: factors.width + "px",
 					height: factors.height + "px",
-					opacity: (info.opacity.min + (info.opacity.diff * factors.scale)).toFixed(2),
-					zIndex: Math.round(info.zValues.min + (info.zValues.diff * factors.z)),
+					opacity: String((info.opacity.min + (info.opacity.diff * factors.scale)).toFixed(2)),
+					zIndex: String(Math.round(info.zValues.min + (info.zValues.diff * factors.z))),
 					fontSize: (factors.adjustedScale * data.startFontSize).toFixed(1) + "px"
 				});
 			data.currentScale = factors.adjustedScale;

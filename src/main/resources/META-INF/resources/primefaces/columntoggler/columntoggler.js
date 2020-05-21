@@ -403,7 +403,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
      * Aligns the overlay panel of this column toggler according to the current widget configuration.
      */
     alignPanel: function() {
-        this.panel.css({'left':'', 'top':'', 'z-index': ++PrimeFaces.zindex}).position({
+        this.panel.css({'left':'', 'top':'', 'z-index': PrimeFaces.nextZindex()}).position({
                             my: 'left top'
                             ,at: 'left bottom'
                             ,of: this.trigger

@@ -132,7 +132,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
      */
     show: function() {
         this.jq.css({
-            'z-index': ++PrimeFaces.zindex,
+            'z-index': PrimeFaces.nextZindex(),
             'visibility': 'hidden'
         });
         this.align();

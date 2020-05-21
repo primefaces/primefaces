@@ -197,9 +197,9 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
             _self.tooltip.text(title)
                         .css(
                             {
-                                'left': offset.left + node.attr('cx') + 20,
-                                'top':offset.top + node.attr('cy') + 10,
-                                'z-index': ++PrimeFaces.zindex
+                                'left': (offset.left + node.attr('cx') + 20) + 'px',
+                                'top': (offset.top + node.attr('cy') + 10)  + 'px',
+                                'z-index': PrimeFaces.nextZindex()
                             })
                         .show();
         }

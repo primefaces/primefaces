@@ -98,7 +98,7 @@
         _refresh: function(init) {
             if (this.resize) {
                 var parent = $(this.canvas);
-                $('div', this.canvas).css({width: parent.width(), height: parent.height()});
+                $('div', this.canvas).css({width: parent.width() + 'px', height: parent.height() + 'px'});
             }
             this.ctx.fillStyle = this.options.background;
             this.ctx.strokeStyle = this.options.color;
