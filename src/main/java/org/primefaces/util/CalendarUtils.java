@@ -24,6 +24,7 @@
 package org.primefaces.util;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -42,6 +43,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
 import org.primefaces.component.api.UICalendar;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.convert.DatePatternConverter;
 import org.primefaces.convert.PatternConverter;
 import org.primefaces.convert.TimePatternConverter;
@@ -237,10 +239,34 @@ public class CalendarUtils {
 
     public static final String getValue(FacesContext context, UICalendar calendar, Object value, String pattern) {
         //first ask the converter
-        if (calendar.getConverter() != null) {
-            return calendar.getConverter().getAsString(context, calendar, value);
+        Converter converter = calendar.getConverter();
+        if (converter != null) {
+            if (converter instanceof javax.faces.convert.DateTimeConverter) {
+                String dateType = "date";
+
+                try {
+                    javax.faces.convert.DateTimeConverter nativeConverter = (javax.faces.convert.DateTimeConverter) converter;
+                    if (PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnvironment().isAtLeastJsf23()) {
+                        Field field = javax.faces.convert.DateTimeConverter.class.getDeclaredField("type");
+                        field.setAccessible(true);
+                        dateType = (String) field.get(nativeConverter);
+                    }
+                }
+                catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+                    // could not determine converter date type
+                }
+
+                // only run converter if type for dates match
+                if (dateType.equalsIgnoreCase(value.getClass().getSimpleName())) {
+                    return calendar.getConverter().getAsString(context, calendar, value);
+                }
+            }
+            else {
+                return calendar.getConverter().getAsString(context, calendar, value);
+            }
         }
-        else if (value instanceof String) {
+
+        if (value instanceof String) {
             return (String) value;
         }
         //Use built-in converter
@@ -275,7 +301,7 @@ public class CalendarUtils {
                 Class<?> type = ve.getType(context.getELContext());
                 if (type != null && type != Object.class && type != Date.class &&
                         type != LocalDate.class && type != LocalDateTime.class && type != LocalTime.class && type != YearMonth.class) {
-                    Converter converter = context.getApplication().createConverter(type);
+                    converter = context.getApplication().createConverter(type);
                     if (converter != null) {
                         return converter.getAsString(context, calendar, value);
                     }
