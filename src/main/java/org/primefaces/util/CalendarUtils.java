@@ -30,10 +30,7 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.Temporal;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -246,10 +243,10 @@ public class CalendarUtils {
 
                 try {
                     javax.faces.convert.DateTimeConverter nativeConverter = (javax.faces.convert.DateTimeConverter) converter;
-                    if (PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnvironment().isAtLeastJsf23()) {
+                    if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf23()) {
                         Field field = javax.faces.convert.DateTimeConverter.class.getDeclaredField("type");
                         field.setAccessible(true);
-                        dateType = (String) field.get(nativeConverter);
+                        dateType = Objects.toString(field.get(nativeConverter), "date");
                     }
                 }
                 catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
