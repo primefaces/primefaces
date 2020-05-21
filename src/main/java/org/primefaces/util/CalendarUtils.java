@@ -255,11 +255,11 @@ public class CalendarUtils {
 
                 // only run converter if type for dates match
                 if (dateType.equalsIgnoreCase(value.getClass().getSimpleName())) {
-                    return calendar.getConverter().getAsString(context, calendar, value);
+                    return converter.getAsString(context, calendar, value);
                 }
             }
             else {
-                return calendar.getConverter().getAsString(context, calendar, value);
+                return converter.getAsString(context, calendar, value);
             }
         }
 
