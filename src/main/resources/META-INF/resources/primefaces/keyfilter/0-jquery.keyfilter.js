@@ -139,7 +139,7 @@
 			{
 				return;
 			}
-			if ($.isFunction(re))
+			if (typeof re === "function")
 			{
 				ok = re.call(this, cc);
 			}
