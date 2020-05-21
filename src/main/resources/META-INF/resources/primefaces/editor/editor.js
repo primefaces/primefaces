@@ -262,7 +262,7 @@
                     .data(BUTTON_NAME, button.name)
                     .addClass(BUTTON_CLASS)
                     .attr("title", button.title)
-                    .on(CLICK, $.proxy(buttonClick, editor))
+                    .bind(CLICK, $.proxy(buttonClick, editor))
                     .appendTo($group)
                     .hover(hoverEnter, hoverLeave);
 
@@ -307,7 +307,7 @@
 
         // Bind the window resize event when the width or height is auto or %
         if (/auto|%/.test("" + options.width + options.height))
-            $(window).on("resize.cleditor", function () { refresh(editor); });
+            $(window).bind("resize.cleditor", function () { refresh(editor); });
 
         // Create the iframe and resize the controls
         refresh(editor);
@@ -350,22 +350,22 @@
         };
     });
 
-    // blurred - shortcut for .on("blurred", handler) or .trigger("blurred")
+    // blurred - shortcut for .bind("blurred", handler) or .trigger("blurred")
     fn.blurred = function (handler) {
         var $this = $(this);
-        return handler ? $this.on(BLURRED, handler) : $this.trigger(BLURRED);
+        return handler ? $this.bind(BLURRED, handler) : $this.trigger(BLURRED);
     };
 
-    // change - shortcut for .on("change", handler) or .trigger("change")
+    // change - shortcut for .bind("change", handler) or .trigger("change")
     fn.change = function change(handler) {
         var $this = $(this);
-        return handler ? $this.on(CHANGE, handler) : $this.trigger(CHANGE);
+        return handler ? $this.bind(CHANGE, handler) : $this.trigger(CHANGE);
     };
 
-    // focused - shortcut for .on("focused", handler) or .trigger("focused")
+    // focused - shortcut for .bind("focused", handler) or .trigger("focused")
     fn.focused = function (handler) {
         var $this = $(this);
-        return handler ? $this.on(FOCUSED, handler) : $this.trigger(FOCUSED);
+        return handler ? $this.bind(FOCUSED, handler) : $this.trigger(FOCUSED);
     };
 
     //===============
@@ -438,8 +438,8 @@
 
                     // Wire up the submit button click event handler
                     $popup.children(":button")
-                        .off(CLICK)
-                        .on(CLICK, function () {
+                        .unbind(CLICK)
+                        .bind(CLICK, function () {
 
                             // Insert the image or link if a url was entered
                             var $text = $popup.find(":text"),
@@ -461,8 +461,8 @@
 
                     // Wire up the submit button click event handler
                     $popup.children(":button")
-                        .off(CLICK)
-                        .on(CLICK, function () {
+                        .unbind(CLICK)
+                        .bind(CLICK, function () {
 
                             // Insert the unformatted text replacing new lines with break tags
                             var $textarea = $popup.find("textarea"),
@@ -828,7 +828,7 @@
         $.each(popups, function (idx, popup) {
             $(popup)
                 .hide()
-                .off(CLICK)
+                .unbind(CLICK)
                 .removeData(BUTTON);
         });
     }
@@ -887,7 +887,7 @@
             // Save the current user selection. This code is needed since IE will
             // reset the selection just after the beforedeactivate event and just
             // before the beforeactivate event.
-            $doc.on("beforedeactivate beforeactivate selectionchange keypress keyup", function (e) {
+            $doc.bind("beforedeactivate beforeactivate selectionchange keypress keyup", function (e) {
 
                 // Flag the editor as inactive
                 if (e.type === "beforedeactivate")
@@ -943,11 +943,11 @@
                     e.preventDefault();
                 }
             })
-            .on("keyup mouseup", function () {
+            .bind("keyup mouseup", function () {
                 refreshButtons(editor);
                 updateTextArea(editor, true);
             })
-            .on("paste", function() {
+            .bind("paste", function() {
                 setTimeout(function() {
                     refreshButtons(editor);
                     updateTextArea(editor, true);
@@ -1126,7 +1126,7 @@
         // Assign the popup button and click event handler
         if (button) {
             $.data(popup, BUTTON, button);
-            $popup.on(CLICK, { popup: popup }, $.proxy(popupClick, editor));
+            $popup.bind(CLICK, { popup: popup }, $.proxy(popupClick, editor));
         }
 
         // Focus the first input element if any
@@ -1276,7 +1276,7 @@ PrimeFaces.widget.Editor = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this,
         frameDoc = this.editor.$frame[0].contentWindow.document;
 
-        $(frameDoc).on('keydown.editor', function(event){
+        $(frameDoc).bind('keydown.editor', function(event){
             $this.editor.updateTextArea();
 
             var text = $this.editor.$area.val();

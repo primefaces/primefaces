@@ -46,7 +46,7 @@
                     return false;
                 }
             };
-            $(this).on(this.getAttribute("data-event"), handler[this.getAttribute("data-handler")]);
+            $(this).bind(this.getAttribute("data-event"), handler[this.getAttribute("data-handler")]);
         });
     };
 
@@ -202,14 +202,14 @@
                     "mousedown";
 
             return function () {
-                return this.on(eventType + ".ui-disableSelection", function (event) {
+                return this.bind(eventType + ".ui-disableSelection", function (event) {
                     event.preventDefault();
                 });
             };
         })(),
 
         enableSelection: function () {
-            return this.off(".ui-disableSelection");
+            return this.unbind(".ui-disableSelection");
         },
 
         zIndex: function (zIndex) {

@@ -49,7 +49,7 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
         if(!this.cfg.disabled) {
 
             if(this.cfg.toggleable) {
-                this.display.on(this.cfg.event, function(){
+                this.display.bind(this.cfg.event, function(){
                     $this.show();
                 });
 

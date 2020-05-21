@@ -81,12 +81,12 @@
               '" name="iframe-transport-' +
               counter +
               '"></iframe>'
-          ).on('load', function() {
+          ).bind('load', function() {
             var fileInputClones,
               paramNames = $.isArray(options.paramName)
                 ? options.paramName
                 : [options.paramName];
-            iframe.off('load').on('load', function() {
+            iframe.unbind('load').bind('load', function() {
               var response;
               // Wrap in a try/catch block to catch exceptions thrown
               // when trying to access cross-domain iframe contents:
@@ -173,7 +173,7 @@
           if (iframe) {
             // javascript:false as iframe src aborts the request
             // and prevents warning popups on HTTPS in IE6.
-            iframe.off('load').prop('src', initialIframeSrc);
+            iframe.unbind('load').prop('src', initialIframeSrc);
           }
           if (form) {
             form.remove();

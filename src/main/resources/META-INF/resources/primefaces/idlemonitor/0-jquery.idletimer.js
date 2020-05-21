@@ -273,7 +273,7 @@
         });
 
         if (opts.timerSyncId) {
-            $(window).on("storage", handleEvent);
+            $(window).bind("storage", handleEvent);
         }
 
         // Internal Object Properties, This isn't all necessary, but we

@@ -188,13 +188,13 @@ function removeFilter(el, opts) {
 // unbind event handlers
 function destroy(opts) {
 	if (opts.next)
-		$(opts.next).off(opts.prevNextEvent);
+		$(opts.next).unbind(opts.prevNextEvent);
 	if (opts.prev)
-		$(opts.prev).off(opts.prevNextEvent);
+		$(opts.prev).unbind(opts.prevNextEvent);
 
 	if (opts.pager || opts.pagerAnchorBuilder)
 		$.each(opts.pagerAnchors || [], function() {
-			this.off().remove();
+			this.unbind().remove();
 		});
 	opts.pagerAnchors = null;
 	if (opts.destroy) // callback
@@ -392,9 +392,9 @@ function buildOptions($cont, $slides, els, options, o) {
 		opts.after[1].apply(e0, [e0, e0, opts, true]);
 
 	if (opts.next)
-		$(opts.next).on(opts.prevNextEvent,function(){return advance(opts,opts.rev?-1:1)});
+		$(opts.next).bind(opts.prevNextEvent,function(){return advance(opts,opts.rev?-1:1)});
 	if (opts.prev)
-		$(opts.prev).on(opts.prevNextEvent,function(){return advance(opts,opts.rev?1:-1)});
+		$(opts.prev).bind(opts.prevNextEvent,function(){return advance(opts,opts.rev?1:-1)});
 	if (opts.pager || opts.pagerAnchorBuilder)
 		buildPager(els,opts);
 
@@ -751,7 +751,7 @@ $.fn.cycle.createPagerAnchor = function(i, el, $p, els, opts) {
 
 	opts.pagerAnchors =  opts.pagerAnchors || [];
 	opts.pagerAnchors.push($a);
-	$a.on(opts.pagerEvent, function(e) {
+	$a.bind(opts.pagerEvent, function(e) {
 		e.preventDefault();
 		opts.nextSlide = i;
 		var p = opts.$cont[0], timeout = p.cycleTimeout;
@@ -767,7 +767,7 @@ $.fn.cycle.createPagerAnchor = function(i, el, $p, els, opts) {
 	});
 
 	if ( ! /^click/.test(opts.pagerEvent) && !opts.allowPagerClickBubble)
-		$a.on('click.cycle', function(){return false;}); // suppress click
+		$a.bind('click.cycle', function(){return false;}); // suppress click
 
 	if (opts.pauseOnPagerHover)
 		$a.hover(function() {opts.$cont[0].cyclePause++;}, function() {opts.$cont[0].cyclePause--;} );

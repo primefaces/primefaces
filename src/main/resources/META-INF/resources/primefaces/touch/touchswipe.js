@@ -506,8 +506,8 @@
 
     // Add gestures to all swipable areas if supported
     try {
-      $element.on(START_EV, touchStart);
-      $element.on(CANCEL_EV, touchCancel);
+      $element.bind(START_EV, touchStart);
+      $element.bind(CANCEL_EV, touchCancel);
     } catch (e) {
       $.error('events not supported ' + START_EV + ',' + CANCEL_EV + ' on jQuery.swipe');
     }
@@ -526,8 +526,8 @@
     this.enable = function() {
       //Incase we are already enabled, clean up...
       this.disable();
-      $element.on(START_EV, touchStart);
-      $element.on(CANCEL_EV, touchCancel);
+      $element.bind(START_EV, touchStart);
+      $element.bind(CANCEL_EV, touchCancel);
       return $element;
     };
 
@@ -930,14 +930,14 @@
      * @inner
      */
     function removeListeners() {
-      $element.off(START_EV, touchStart);
-      $element.off(CANCEL_EV, touchCancel);
-      $element.off(MOVE_EV, touchMove);
-      $element.off(END_EV, touchEnd);
+      $element.unbind(START_EV, touchStart);
+      $element.unbind(CANCEL_EV, touchCancel);
+      $element.unbind(MOVE_EV, touchMove);
+      $element.unbind(END_EV, touchEnd);
 
       //we only have leave events on desktop, we manually calculate leave on touch as its not supported in webkit
       if (LEAVE_EV) {
-        $element.off(LEAVE_EV, touchLeave);
+        $element.unbind(LEAVE_EV, touchLeave);
       }
 
       setTouchInProgress(false);
@@ -1597,21 +1597,21 @@
 
       //Add or remove event listeners depending on touch status
       if (val === true) {
-        $element.on(MOVE_EV, touchMove);
-        $element.on(END_EV, touchEnd);
+        $element.bind(MOVE_EV, touchMove);
+        $element.bind(END_EV, touchEnd);
 
         //we only have leave events on desktop, we manually calcuate leave on touch as its not supported in webkit
         if (LEAVE_EV) {
-          $element.on(LEAVE_EV, touchLeave);
+          $element.bind(LEAVE_EV, touchLeave);
         }
       } else {
 
-        $element.off(MOVE_EV, touchMove, false);
-        $element.off(END_EV, touchEnd, false);
+        $element.unbind(MOVE_EV, touchMove, false);
+        $element.unbind(END_EV, touchEnd, false);
 
         //we only have leave events on desktop, we manually calcuate leave on touch as its not supported in webkit
         if (LEAVE_EV) {
-          $element.off(LEAVE_EV, touchLeave, false);
+          $element.unbind(LEAVE_EV, touchLeave, false);
         }
       }
 

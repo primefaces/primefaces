@@ -71,9 +71,9 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     unbindEvents: function() {
-        this.stars.off('click');
+        this.stars.unbind('click');
 
-        this.cancel.off('hover click');
+        this.cancel.unbind('hover click');
     },
 
     /**
