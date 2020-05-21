@@ -57,6 +57,7 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         onstart,
         oncomplete,
         onerror,
+        onvalidationfailure,
         oncancel,
         disabled,
         messageTemplate,
@@ -250,6 +251,15 @@ public abstract class FileUploadBase extends UIInput implements Widget {
 
     public void setOncomplete(String oncomplete) {
         getStateHelper().put(PropertyKeys.oncomplete, oncomplete);
+    }
+
+    public String getOnvalidationfailure() {
+        Object eval = getStateHelper().eval(PropertyKeys.onvalidationfailure, null);
+        return (String) eval;
+    }
+
+    public void setOnvalidationfailure(String onvalidationfailure) {
+        getStateHelper().put(PropertyKeys.onvalidationfailure, onvalidationfailure);
     }
 
     public String getOnerror() {

@@ -9673,6 +9673,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Callback to execute after a fileupload client validation error.]]>
+            </description>
+            <name>onvalidationfailure</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Callback to execute after fileupload request is cancelled.]]>
             </description>
             <name>oncancel</name>

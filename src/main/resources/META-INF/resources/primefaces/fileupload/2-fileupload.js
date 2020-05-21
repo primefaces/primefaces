@@ -209,6 +209,14 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                         });
 
                         $this.postSelectFile(data);
+                        
+                        if ($this.cfg.onvalidationfailure) {
+                        	$this.cfg.onvalidationfailure({
+                                summary: validMsg,
+                                filename: file.name,
+                                filesize: file.size
+                            });
+                        }
                     }
                     else {
                         if($this.cfg.onAdd) {
