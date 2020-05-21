@@ -425,7 +425,7 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
     bindItemSelect: function() {
         var $this = this;
 
-        this.jq.bind("jqplotClick", function(ev, gridpos, datapos, neighbor) {
+        this.jq.on("jqplotClick", function(ev, gridpos, datapos, neighbor) {
             if(neighbor && $this.hasBehavior('itemSelect')) {
                 var ext = {
                     params: [
