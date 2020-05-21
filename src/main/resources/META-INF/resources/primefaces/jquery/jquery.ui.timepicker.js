@@ -304,7 +304,7 @@
 			if (tp_inst._defaults.maxDateTime !== undefined && tp_inst._defaults.maxDateTime instanceof Date) {
 				tp_inst._defaults.maxDate = new Date(tp_inst._defaults.maxDateTime.getTime());
 			}
-			tp_inst.$input.bind('focus', function () {
+			tp_inst.$input.on('focus', function () {
 				tp_inst._onFocus();
 			});
 

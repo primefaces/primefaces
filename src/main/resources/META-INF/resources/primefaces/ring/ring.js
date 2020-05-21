@@ -162,13 +162,13 @@
 					// unbind any events that we set if we're relaying out
 					if (relayout) {
 						self
-							.unbind(".roundabout")
+							.off(".roundabout")
 							.children(settings.childSelector)
-								.unbind(".roundabout");
+								.off(".roundabout");
 					} else {
 						// bind responsive action
 						if (settings.responsive) {
-							$(window).bind("resize", function() {
+							$(window).on("resize", function() {
 								methods.stopAutoplay.apply(self);
 								methods.relayoutChildren.apply(self);
 							});
@@ -181,7 +181,7 @@
 							.children(settings.childSelector)
 							.each(function(i) {
 								$(this)
-									.bind("click.roundabout", function() {
+									.on("click.roundabout", function() {
 										var degrees = methods.getPlacement.apply(self, [i]);
 
 										if (!methods.isInFocus.apply(self, [degrees])) {
@@ -198,7 +198,7 @@
 					// bind next buttons
 					if (settings.btnNext) {
 						$(settings.btnNext)
-							.bind("click.roundabout", function() {
+							.on("click.roundabout", function() {
 								if (!self.data("roundabout").animating) {
 									methods.animateToNextChild.apply(self, [self.data("roundabout").btnNextCallback]);
 								}
@@ -209,7 +209,7 @@
 					// bind previous buttons
 					if (settings.btnPrev) {
 						$(settings.btnPrev)
-							.bind("click.roundabout", function() {
+							.on("click.roundabout", function() {
 								methods.animateToPreviousChild.apply(self, [self.data("roundabout").btnPrevCallback]);
 								return false;
 							});
@@ -218,7 +218,7 @@
 					// bind toggle autoplay buttons
 					if (settings.btnToggleAutoplay) {
 						$(settings.btnToggleAutoplay)
-							.bind("click.roundabout", function() {
+							.on("click.roundabout", function() {
 								methods.toggleAutoplay.apply(self);
 								return false;
 							});
@@ -227,7 +227,7 @@
 					// bind start autoplay buttons
 					if (settings.btnStartAutoplay) {
 						$(settings.btnStartAutoplay)
-							.bind("click.roundabout", function() {
+							.on("click.roundabout", function() {
 								methods.startAutoplay.apply(self);
 								return false;
 							});
@@ -236,7 +236,7 @@
 					// bind stop autoplay buttons
 					if (settings.btnStopAutoplay) {
 						$(settings.btnStopAutoplay)
-							.bind("click.roundabout", function() {
+							.on("click.roundabout", function() {
 								methods.stopAutoplay.apply(self);
 								return false;
 							});
@@ -245,10 +245,10 @@
 					// autoplay pause on hover
 					if (settings.autoplayPauseOnHover) {
 						self
-							.bind("mouseenter.roundabout.autoplay", function() {
+							.on("mouseenter.roundabout.autoplay", function() {
 								methods.stopAutoplay.apply(self, [true]);
 							})
-							.bind("mouseleave.roundabout.autoplay", function() {
+							.on("mouseleave.roundabout.autoplay", function() {
 								methods.startAutoplay.apply(self);
 							});
 					}
@@ -965,7 +965,7 @@
 					
 					// this will prevent autoplayPauseOnHover from restarting autoplay
 					if (!keepAutoplayBindings) {
-						$(this).unbind(".autoplay");
+						$(this).off(".autoplay");
 					}
 					
 					$(this).trigger("autoplayStop");
