@@ -361,7 +361,7 @@ if (!PrimeFaces.ajax) {
             abortAll: function() {
                 // clear out any pending requests
                 this.requests = new Array();
-                
+
                 // abort any in-flight that are not DONE(4)
                 for(var i = 0; i < this.xhrs.length; i++) {
                     var xhr = this.xhrs[i];
