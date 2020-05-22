@@ -24,7 +24,6 @@
 package org.primefaces.component.calendar;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Locale;
 
 import javax.faces.context.FacesContext;
@@ -87,7 +86,8 @@ public class CalendarRenderer extends BaseCalendarRenderer {
         String defaultDate = null;
 
         if (calendar.isConversionFailed()) {
-            defaultDate = CalendarUtils.getValueAsString(context, calendar, LocalDateTime.now());
+            Class<?> dateType = resolveDateType(context, calendar);
+            defaultDate = CalendarUtils.getValueAsString(context, calendar, CalendarUtils.now(uicalendar, dateType));
         }
         else if (!isValueBlank(value)) {
             defaultDate = value;
