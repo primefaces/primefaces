@@ -79,7 +79,6 @@ public class FileUploadRenderer extends CoreRenderer {
                     .attr("process", SearchExpressionFacade.resolveClientIds(context, fileUpload, process,
                             SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
                     .attr("previewWidth", fileUpload.getPreviewWidth(), 80)
-                    .attr("disabled", fileUpload.isDisabled(), false)
                     .attr("sequentialUploads", fileUpload.isSequential(), false)
                     .attr("maxChunkSize", fileUpload.getMaxChunkSize(), 0)
                     .attr("maxRetries", fileUpload.getMaxRetries(), 30)
@@ -97,7 +96,8 @@ public class FileUploadRenderer extends CoreRenderer {
                     .attr("skinSimple", fileUpload.isSkinSimple(), false);
         }
 
-        wb.attr("invalidSizeMessage", fileUpload.getInvalidSizeMessage(), null)
+        wb.attr("disabled", fileUpload.isDisabled(), false)
+                .attr("invalidSizeMessage", fileUpload.getInvalidSizeMessage(), null)
                 .attr("invalidFileMessage", fileUpload.getInvalidFileMessage(), null)
                 .attr("fileLimitMessage", fileUpload.getFileLimitMessage(), null)
                 .attr("messageTemplate", fileUpload.getMessageTemplate(), null)
