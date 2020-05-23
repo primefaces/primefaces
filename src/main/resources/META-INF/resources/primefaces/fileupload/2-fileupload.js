@@ -836,8 +836,9 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.input.on('change.fileupload', function() {
             var files = $this.input[0].files;
             var file = files.length > 0 ? files[files.length - 1] : null;
-            var validMsg = $this.validate($this.input[0], file);
+            var validMsg = $this.validate(file);
             if(validMsg) {
+            	$this.input.val('');
                 $this.display.text(validMsg);
             } else {
                 $this.display.text($this.input.val().replace(/\\/g, '/').replace(/.*\//, ''));
@@ -855,15 +856,13 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Validates the given file against the current validation settings
      * @private
-     * @param {HTMLElement} input File input element to validate.
-     * @param {File} file Uploaded file to validate.
+     * @param {File} file to be validated.
      * @return {string | null} `null` if the given file is valid, or an error message otherwise.
      */
-    validate: function(input, file) {
+    validate: function(file) {
         var $this = this;
 
         if(file && $this.cfg.maxFileSize && file.size > $this.cfg.maxFileSize) {
-            $(input).replaceWith($(input).val('').clone(true));
             return $this.cfg.invalidSizeMessage;
         }
         return null;
