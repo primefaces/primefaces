@@ -481,7 +481,7 @@
                 <version>3.1.0</version>
                 <configuration>
                     <consoleOutput>true</consoleOutput>
-                    <configLocation>./checkstyle.xml</configLocation>
+                    <configLocation>${project.basedir}/src/conf/checkstyle.xml</configLocation>
                 </configuration>
                 <executions>
                     <execution>
@@ -524,7 +524,7 @@
                 <artifactId>license-maven-plugin</artifactId>
                 <version>3.0</version>
                 <configuration>
-                    <header>./header.txt</header>
+                    <header>${project.basedir}/src/conf/header.txt</header>
                     <includes>
                         <include>src/main/java/**</include>
                     </includes>
