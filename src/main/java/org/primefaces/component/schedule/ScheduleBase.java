@@ -250,7 +250,7 @@ public abstract class ScheduleBase extends UIComponentBase implements Widget, Cl
     }
 
     public void setSlotLabelInterval(String slotLabelInterval) {
-        getStateHelper().put(PropertyKeys.slotLabelFormat, slotLabelInterval);
+        getStateHelper().put(PropertyKeys.slotLabelInterval, slotLabelInterval);
     }
 
     public String getSlotLabelFormat() {

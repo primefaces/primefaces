@@ -110,7 +110,8 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         String defaultDate = null;
 
         if (datepicker.isConversionFailed()) {
-            defaultDate = CalendarUtils.getValueAsString(context, datepicker, LocalDateTime.now());
+            Class<?> dateType = resolveDateType(context, datepicker);
+            defaultDate = CalendarUtils.getValueAsString(context, datepicker, CalendarUtils.now(uicalendar, dateType));
         }
         else if (!isValueBlank(value)) {
             defaultDate = value;

@@ -76,6 +76,7 @@ emptyValue | focus | String | Defines what to display when the input value is em
 inputStyle | null | String | Inline style of the input element.
 inputStyleClass | null | String | Style class of the input element.
 padControl | true | Boolean | Controls padding of the decimal places. If true, always pads the decimal with zeros.
+modifyValueOnWheel | true | Boolean | Allows the user to increment or decrement the element value with the mouse wheel.
 
 
 

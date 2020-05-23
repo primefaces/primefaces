@@ -38,6 +38,7 @@ CommandLink extends standard JSF commandLink with Ajax capabilities.
 | partialSubmitFilter | null | String | Selector to use when partial submit is on, default is ":input" to select all descendant inputs of a partially processed components.
 | resetValues | false | Boolean | If true, local values of input components to be updated within the ajax request would be reset.
 | ignoreAutoUpdate | false | Boolean | If true, components which autoUpdate="true" will not be updated for this request. If not specified, or the value is false, no such indication is made.
+| ignoreComponentNotFound | false | Boolean | If true, unresolvable components referenced in the update/process attribute are ignored. Default is 'false' and therefore a ComponentNotFoundException will be thrown. 
 | timeout | 0 | Integer | Timeout for the ajax request in milliseconds.
 | style | null | String | Style to be applied on the anchor element
 | styleClass | null | String | StyleClass to be applied on the anchor element

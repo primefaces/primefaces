@@ -30,6 +30,7 @@ disabled | false | Boolean | If true, disables the component.
 effect | null | String | Effect to use when showing a group of items.
 showHeaders | false | Boolean | Displays label of a group at header section of the children items.
 header | null | String | Label of the root group items.
+hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
 
 ## Getting started with MultiSelectListbox
 MultiSelectListbox needs a collection of SelectItemGroups.

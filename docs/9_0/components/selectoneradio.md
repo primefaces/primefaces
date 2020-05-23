@@ -43,6 +43,7 @@ styleClass | null | String | Style class of the container.
 tabindex | null | String | Specifies the tab order of element in tab navigation.
 plain | false | Boolean | Plain mode displays radiobuttons using native browser rendering instead of themes.
 unselectable | false | Boolean | Unselectable mode when true clicking a radio again will clear the selection. Default false.
+hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
 
 ## Getting started with SelectOneRadio
 SelectOneRadio usage is same as the standard one.

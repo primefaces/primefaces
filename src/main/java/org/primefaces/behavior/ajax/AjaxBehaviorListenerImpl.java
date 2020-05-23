@@ -28,7 +28,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.el.ELContext;
-import javax.el.ELException;
 import javax.el.MethodExpression;
 import javax.el.MethodNotFoundException;
 import javax.faces.context.FacesContext;
@@ -78,14 +77,6 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
         catch (ArrayIndexOutOfBoundsException e) {
             processArgListener(context, elContext, event);
         }
-        // it's wrapped in a ELException since newer Payara versions
-        catch (ELException e) {
-            if (e.getCause() instanceof MethodNotFoundException || e.getCause() instanceof IllegalArgumentException) {
-                processArgListener(context, elContext, event);
-                return;
-            }
-            throw e;
-        }
     }
 
     private void processArgListener(FacesContext context, ELContext elContext, AjaxBehaviorEvent event) throws AbortProcessingException {
@@ -102,14 +93,6 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
         // JBoss hack, see #1375
         catch (ArrayIndexOutOfBoundsException e) {
             processCustomArgListener(context, elContext, event);
-        }
-        // it's wrapped in a ELException since newer Payara versions
-        catch (ELException e) {
-            if (e.getCause() instanceof MethodNotFoundException || e.getCause() instanceof IllegalArgumentException) {
-                processCustomArgListener(context, elContext, event);
-                return;
-            }
-            throw e;
         }
     }
 

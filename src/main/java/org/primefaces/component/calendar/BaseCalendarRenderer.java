@@ -94,7 +94,6 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String type = popup ? uicalendar.getType() : "hidden";
         String inputStyle = uicalendar.getInputStyle();
-        String inputStyleClass = uicalendar.getInputStyleClass();
 
         writer.startElement("input", null);
         writer.writeAttribute("id", id, null);
@@ -109,17 +108,9 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         boolean disabled = false;
 
         if (popup) {
-            inputStyleClass = (inputStyleClass == null) ? UICalendar.INPUT_STYLE_CLASS
-                                                        : UICalendar.INPUT_STYLE_CLASS + " " + inputStyleClass;
+            String inputStyleClass = createStyleClass(uicalendar, UICalendar.PropertyKeys.inputStyleClass.name(), UICalendar.INPUT_STYLE_CLASS);
             readonly = uicalendar.isReadonly() || uicalendar.isReadonlyInput();
-
-            if (uicalendar.isDisabled()) {
-                inputStyleClass = inputStyleClass + " ui-state-disabled";
-                disabled = true;
-            }
-            if (!uicalendar.isValid()) {
-                inputStyleClass = inputStyleClass + " ui-state-error";
-            }
+            disabled = uicalendar.isDisabled();
 
             writer.writeAttribute("class", inputStyleClass, null);
 

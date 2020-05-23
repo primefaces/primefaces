@@ -15,6 +15,7 @@
   - [Error Handling](/core/errorhandling.md)
   - [BeanValidation Transformation](/core/beanvalidationtransformation.md)
   - [Misc](/core/misc.md)
+  - [Themes](/core/themes.md)
 
 - AJAX
 

@@ -39,6 +39,7 @@ style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the container.
 tabindex | 0 | String | Position of the element in the tabbing order.
 unselectable | true | Boolean | Whether selection can be cleared.
+hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
 
 ## Getting started with SelectOneButton
 SelectOneButton usage is same as selectOneRadio component, buttons just replace the radios.

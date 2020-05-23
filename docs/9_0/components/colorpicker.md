@@ -26,6 +26,7 @@ ColorPicker is an input component with a color palette.
 | converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
 | immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
 | required | false | Boolean | Marks component as required.
+| disabled | false | Boolean | Marks component as disabled.
 | validator | null | MethodExpr | A method expression that refers to a method for validation the input.
 | valueChangeListener | null | ValueChangeListener | A method binding expression that refers to a method for handling a valuchangeevent.
 | requiredMessage | null | String | Message to be displayed when required field validation fails.

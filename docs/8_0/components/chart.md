@@ -794,12 +794,21 @@ public class Bean {
     private StreamedContent chart;
 
     public Bean() {
-        JFreeChart jfreechart = ChartFactory.createPieChart("Cities",
-        createDataset(), true, true, false);
-        File chartFile = new File("dynamichart");
-        ChartUtilities.saveChartAsPNG(chartFile, jfreechart, 375, 300);
-        chart = new DefaultStreamedContent(new FileInputStream(chartFile),
-        "image/png");
+        chart = DefaultStreamedContent.builder()
+                    .contentType("image/png")
+                    .stream(() -> {
+                        try {
+                            JFreeChart jfreechart = ChartFactory.createPieChart("Cities", createDataset(), true, true, false);
+                            File chartFile = new File("dynamichart");
+                            ChartUtilities.saveChartAsPNG(chartFile, jfreechart, 375, 300);
+                            return new FileInputStream(chartFile);
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                            return null;
+                        }
+                    })
+                    .build();
     }
     public StreamedContent getChart() {
         return model;

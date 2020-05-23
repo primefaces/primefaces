@@ -47,7 +47,8 @@ public abstract class ImageCropperBase extends UIInput implements Widget {
         sizeLimit,
         responsive,
         guides,
-        viewMode
+        viewMode,
+        cache
     }
 
     public ImageCropperBase() {
@@ -161,5 +162,13 @@ public abstract class ImageCropperBase extends UIInput implements Widget {
 
     public int getViewMode() {
         return (Integer) getStateHelper().eval(PropertyKeys.viewMode, 1);
+    }
+
+    public boolean isCache() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.cache, true);
+    }
+
+    public void setCache(boolean cache) {
+        getStateHelper().put(PropertyKeys.cache, cache);
     }
 }

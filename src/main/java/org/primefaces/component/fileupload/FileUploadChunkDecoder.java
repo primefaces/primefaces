@@ -23,29 +23,38 @@
  */
 package org.primefaces.component.fileupload;
 
-import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.model.file.UploadedFile;
 
 import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 
-public class AutoFileUploadDecoder implements FileUploadDecoder {
+public interface FileUploadChunkDecoder<T extends HttpServletRequest> {
 
-    @Override
-    public String getName() {
-        return "auto";
-    }
+    String MULTIPARTS = "org.primefaces.file.multiParts";
 
-    @Override
-    public void decode(FacesContext context, FileUpload fileUpload) {
-        PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
-        boolean isAtLeastJSF22 = applicationContext.getEnvironment().isAtLeastJsf22();
-
-        String uploader = isAtLeastJSF22 ? "native" : "commons";
-        FileUploadDecoder decoder = applicationContext.getFileUploadDecoder(uploader);
-        if (decoder == null) {
-            throw new FacesException("FileUploaderDecoder '" + uploader + "' not found");
+    default String generateFileInfoKey(T request) {
+        String fileInfo = request.getParameter("X-File-Id");
+        if (fileInfo == null) {
+            throw new FacesException("Missing X-File-Id header");
         }
 
-        decoder.decode(context, fileUpload);
+        return String.valueOf(fileInfo.hashCode());
     }
+
+    default String getUploadDirectory(T request) {
+        // Servlet 2.5 compatibility, equivalent to ServletContext.TMP_DIR
+        File tmpDir = (File) request.getServletContext().getAttribute("javax.servlet.context.tempdir");
+        if (tmpDir == null) {
+            tmpDir = new File(System.getenv("java.io.tmpdir"));
+        }
+        return tmpDir.getAbsolutePath();
+    }
+
+    void decodeContentRange(FileUpload fileUpload, T request, UploadedFile chunk) throws IOException;
+
+    long decodeUploadedBytes(T request);
+
+    void deleteChunks(T request) throws IOException;
 }

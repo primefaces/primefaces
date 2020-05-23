@@ -29,6 +29,8 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.component.selectonemenu.SelectOneMenuRenderer;
+import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class ThemeSwitcherRenderer extends SelectOneMenuRenderer {
@@ -40,7 +42,22 @@ public class ThemeSwitcherRenderer extends SelectOneMenuRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("ThemeSwitcher", ts.resolveWidgetVar(context), clientId)
                 .attr("effect", ts.getEffect(), null)
-                .attr("effectSpeed", ts.getEffectSpeed(), null);
+                .attr("effectSpeed", ts.getEffectSpeed(), null)
+                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo(),
+                            SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
+                    .attr("syncTooltip", menu.isSyncTooltip(), false)
+                    .attr("labelTemplate", menu.getLabelTemplate(), null)
+                    .attr("autoWidth", menu.isAutoWidth(), true)
+                    .attr("dynamic", menu.isDynamic(), false);
+
+        if (menu.isFilter()) {
+            wb.attr("filter", true)
+                    .attr("filterMatchMode", menu.getFilterMatchMode(), null)
+                    .nativeAttr("filterFunction", menu.getFilterFunction(), null)
+                    .attr("caseSensitive", menu.isCaseSensitive(), false);
+        }
+
+        encodeClientBehaviors(context, menu);
 
         wb.finish();
     }

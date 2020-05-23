@@ -2327,6 +2327,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             return;
         }
 
+        // #5944 in single select all other rows should be unselected
+        if (this.isSingleSelection()) {
+            this.unselectAllRows();
+        }
+
         var rowMeta = this.getRowMeta(row);
 
         this.highlightRow(row);
@@ -2360,7 +2365,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(!row.hasClass('ui-datatable-selectable')) {
             return;
         }
-
+        
         var rowMeta = this.getRowMeta(row);
 
         this.unhighlightRow(row);
@@ -2398,7 +2403,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery} row Row to unhighlight.
      */
     unhighlightRow: function(row) {
-        row.removeClass('ui-state-highlight').attr('aria-selected', false);
+        row.removeClass('ui-state-highlight ui-state-hover').attr('aria-selected', false);
     },
 
     /**

@@ -90,7 +90,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
 
         encodeInput(context, checkbox, clientId, checked);
         encodeOutput(context, checkbox, checked, disabled);
-        encodeItemLabel(context, checkbox, clientId);
+        encodeItemLabel(context, checkbox, clientId, disabled);
 
         writer.endElement("div");
     }
@@ -131,9 +131,8 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
 
     protected void encodeOutput(FacesContext context, SelectBooleanCheckbox checkbox, boolean checked, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = HTML.CHECKBOX_BOX_CLASS;
+        String styleClass = createStyleClass(checkbox, null, HTML.CHECKBOX_BOX_CLASS);
         styleClass = checked ? styleClass + " ui-state-active" : styleClass;
-        styleClass = !checkbox.isValid() ? styleClass + " ui-state-error" : styleClass;
         styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
 
         String iconClass = checked ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
@@ -148,14 +147,16 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeItemLabel(FacesContext context, SelectBooleanCheckbox checkbox, String clientId) throws IOException {
+    protected void encodeItemLabel(FacesContext context, SelectBooleanCheckbox checkbox, String clientId, boolean disabled) throws IOException {
         String label = checkbox.getItemLabel();
 
         if (label != null) {
             ResponseWriter writer = context.getResponseWriter();
 
             writer.startElement("span", null);
-            writer.writeAttribute("class", HTML.CHECKBOX_LABEL_CLASS, null);
+            String styleClass = HTML.CHECKBOX_LABEL_CLASS;
+            styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
+            writer.writeAttribute("class", styleClass, null);
 
             if (checkbox.isEscape()) {
                 writer.writeText(label, "itemLabel");

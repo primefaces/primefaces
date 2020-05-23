@@ -23,19 +23,23 @@
  */
 package org.primefaces.component.fileupload;
 
-import org.primefaces.model.file.UploadedFile;
-import org.primefaces.model.file.UploadedFileWrapper;
-import org.primefaces.model.file.UploadedFiles;
-import org.primefaces.model.file.UploadedFilesWrapper;
+import org.primefaces.model.file.*;
+import org.primefaces.util.FileUploadUtils;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.*;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public abstract class AbstractFileUploadDecoder<T extends ServletRequest> implements FileUploadDecoder {
+public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> implements FileUploadDecoder, FileUploadChunkDecoder<T> {
+
+    private static final Logger LOGGER = Logger.getLogger(AbstractFileUploadDecoder.class.getName());
 
     @Override
     public void decode(FacesContext context, FileUpload fileUpload) {
@@ -81,7 +85,12 @@ public abstract class AbstractFileUploadDecoder<T extends ServletRequest> implem
     protected void decodeAdvanced(FileUpload fileUpload, T request, String inputToDecodeId) throws IOException, ServletException {
         UploadedFile uploadedFile = createUploadedFile(request, fileUpload, inputToDecodeId);
         if (uploadedFile != null) {
-            fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
+            if (isChunkedUpload(request)) {
+                decodeContentRange(fileUpload, request, uploadedFile);
+            }
+            else {
+                fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
+            }
         }
     }
 
@@ -101,4 +110,91 @@ public abstract class AbstractFileUploadDecoder<T extends ServletRequest> implem
     protected abstract UploadedFile createUploadedFile(T request, FileUpload fileUpload, String inputToDecodeId) throws IOException, ServletException;
 
     protected abstract T getRequest(FacesContext ctxt);
+
+    @Override
+    public void decodeContentRange(FileUpload fileUpload, T request, UploadedFile chunk) throws IOException {
+        ContentRange contentRange = ContentRange.of(getContentRange(request), fileUpload.getMaxChunkSize());
+
+        Path chunksDir = FileUploadUtils.getChunkDir(request);
+
+        writeChunk(chunk, chunksDir, contentRange);
+
+        if (contentRange.isLastChunk()) {
+            UploadedFile uploadedFile = processLastChunk(request, chunk, chunksDir, contentRange);
+            request.setAttribute(MULTIPARTS, uploadedFile);
+            fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
+        }
+    }
+
+    @Override
+    public long decodeUploadedBytes(T request) {
+        long uploadedBytes = 0;
+        for (Path chunk : FileUploadUtils.listChunks(request)) {
+            try {
+                uploadedBytes += Files.size(chunk);
+            }
+            catch (IOException e) {
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                break;
+            }
+
+        }
+        return uploadedBytes;
+    }
+
+    @Override
+    public void deleteChunks(T request) throws IOException {
+        Path chunkDir = FileUploadUtils.getChunkDir(request);
+        List<Path> chunks = FileUploadUtils.listChunks(chunkDir);
+        deleteChunkFolder(chunkDir, chunks);
+    }
+
+    protected void writeChunk(UploadedFile uploadedFile, Path path, ContentRange contentRange) throws IOException {
+        if (Files.notExists(path)) {
+            Files.createDirectory(path);
+        }
+
+        String chunkname = String.valueOf(contentRange.getPacket());
+        Path chunkFile = Paths.get(path.toFile().getAbsolutePath(), chunkname);
+        try (InputStream is = uploadedFile.getInputStream()) {
+            Files.copy(is, chunkFile, StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
+
+    protected UploadedFile processLastChunk(T request, UploadedFile chunk, Path chunksDir, ContentRange contentRange) throws IOException {
+        String fileKey = generateFileInfoKey(request);
+        Path whole = Paths.get(getUploadDirectory(request), "[" + fileKey +  "]" + chunk.getFileName());
+        Files.deleteIfExists(whole);
+        Files.createFile(whole);
+
+        List<Path> chunks = FileUploadUtils.listChunks(chunksDir);
+        for (Path p : chunks) {
+            Files.write(whole, Files.readAllBytes(p), StandardOpenOption.APPEND);
+        }
+
+        deleteChunkFolder(chunksDir, chunks);
+
+        if (Files.size(whole) != contentRange.getChunkTotalFileSize()) {
+            Files.delete(whole);
+            throw new IOException("Merged file does not meet expected size: " + contentRange.getChunkTotalFileSize());
+        }
+
+        return new NIOUploadedFile(whole, chunk.getFileName(), chunk.getContentType());
+    }
+
+    protected String getContentRange(HttpServletRequest request) {
+        return request.getHeader("Content-Range");
+    }
+
+    protected void deleteChunkFolder(Path chunksDir, List<Path> chunks) throws IOException {
+        for (Path p : chunks) {
+            Files.delete(p);
+        }
+
+        Files.delete(chunksDir);
+    }
+
+    protected boolean isChunkedUpload(T request) {
+        return getContentRange(request) != null;
+    }
 }

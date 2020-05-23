@@ -650,6 +650,10 @@ public class TreeRenderer extends CoreRenderer {
 
         //preselection
         String rowKey = node.getRowKey();
+        if (rowKey == null) {
+            tree.buildRowKeys(node.getParent());
+            rowKey = node.getRowKey();
+        }
         boolean selected = node.isSelected();
         boolean partialSelected = node.isPartialSelected();
         boolean filter = (tree.getValueExpression("filterBy") != null);
