@@ -268,7 +268,7 @@
          * @param {Event} event A DOM2-normalized event object.
          * @return {void}
          */
-        jqElem.on(String.prototype.trim.call((opts.events + " ").split(" ").join("._idleTimer" + uniqueId + " ")), function (e) {
+        jqElem.on(PrimeFaces.trim((opts.events + " ").split(" ").join("._idleTimer" + uniqueId + " ")), function (e) {
             handleEvent(e);
         });
 

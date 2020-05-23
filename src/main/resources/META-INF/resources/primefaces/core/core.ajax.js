@@ -119,7 +119,7 @@ if (!PrimeFaces.ajax) {
              * data, such as which forms should be updated. 
              */
             updateFormStateInput: function(name, value, xhr) {
-                var trimmedValue = String.prototype.trim.call(value);
+                var trimmedValue = PrimeFaces.trim(value);
 
                 var forms = null;
                 if (xhr && xhr.pfSettings && xhr.pfSettings.portletForms) {
@@ -567,7 +567,7 @@ if (!PrimeFaces.ajax) {
                 // fallback to @all if no process was defined by the user
                 else {
                     var definedProcess = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall(cfg, 'process');
-                    definedProcess = String.prototype.trim.call(definedProcess);
+                    definedProcess = PrimeFaces.trim(definedProcess);
                     if (definedProcess === '') {
                         processIds = '@all';
                     }

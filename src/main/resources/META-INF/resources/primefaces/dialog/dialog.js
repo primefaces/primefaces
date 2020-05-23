@@ -504,8 +504,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         }
         else {
             var coords = this.cfg.position.split(','),
-            x = String.prototype.trim.call(coords[0]),
-            y = String.prototype.trim.call(coords[1]);
+            x = PrimeFaces.trim(coords[0]),
+            y = PrimeFaces.trim(coords[1]);
 
             this.jq.offset({
                 left: x

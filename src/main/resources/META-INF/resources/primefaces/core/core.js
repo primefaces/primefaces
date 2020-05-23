@@ -1007,6 +1007,17 @@
         },
 
         /**
+         * jQuery deprecated $.trim in favor of PrimeFaces.trim however that does not handle
+         * NULL and jQuery did so this function allows a drop in replacement.
+         * 
+         * @param {string} the value to trim
+         * @return {string} trimmed value or "" if it was NULL
+         */
+        trim: function(value) {
+            return value == null ? "" : value.trim();
+        },
+
+        /**
          * Generate a RFC-4122 compliant UUID to be used as a unique identifier.
          *
          * See https://www.ietf.org/rfc/rfc4122.txt

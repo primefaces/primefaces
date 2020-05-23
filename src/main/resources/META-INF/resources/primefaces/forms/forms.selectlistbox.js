@@ -192,7 +192,7 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} value Current value of the filter.
      */
     filter: function(value) {
-        var filterValue = this.cfg.caseSensitive ? String.prototype.trim.call(value) : String.prototype.trim.call(value).toLowerCase();
+        var filterValue = this.cfg.caseSensitive ? PrimeFaces.trim(value) : PrimeFaces.trim(value).toLowerCase();
 
         if(filterValue === '') {
             this.items.filter(':hidden').show();

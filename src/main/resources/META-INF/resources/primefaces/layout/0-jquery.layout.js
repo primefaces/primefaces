@@ -1195,7 +1195,7 @@
                             retVal = g(fn)(Instance, s, o, lName);
                     }
                 } catch (ex) {
-                    _log(options.errors.callbackError.replace(/EVENT/, String.prototype.trim.call((pane || "") + " " + lng)), false);
+                    _log(options.errors.callbackError.replace(/EVENT/, PrimeFaces.trim((pane || "") + " " + lng)), false);
                     if ($.type(ex) === "string" && string.length)
                         _log("Exception:  " + ex, false);
                 }
@@ -1519,7 +1519,7 @@
             if (type == "resizer" && $El.hasClass(root + _slide))
                 classes += (root + _slide + _hover) + (root + _pane + _slide + _hover);
 
-            return String.prototype.trim.call(classes);
+            return PrimeFaces.trim(classes);
         }
         , addHover = function (evt, el) {
             var $E = $(el || this);
@@ -5488,7 +5488,7 @@ jQuery.cookie = function (name, value, options) {
         if (document.cookie && document.cookie != '') {
             var cookies = document.cookie.split(';');
             for (var i = 0; i < cookies.length; i++) {
-                var cookie = String.prototype.trim.call(cookies[i]);
+                var cookie = PrimeFaces.trim(cookies[i]);
                 // Does this cookie string begin with the name we want?
                 if (cookie.substring(0, name.length + 1) == (name + '=')) {
                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
@@ -5550,7 +5550,7 @@ jQuery.cookie = function (name, value, options) {
                     , pair, data, i
                     ;
             for (i = 0; pair = cs[i]; i++) {
-                data = String.prototype.trim.call(pair).split('='); // name=value => [ name, value ]
+                data = PrimeFaces.trim(pair).split('='); // name=value => [ name, value ]
                 if (data[0] == name) // found the layout cookie
                     return decodeURIComponent(data[1]);
             }

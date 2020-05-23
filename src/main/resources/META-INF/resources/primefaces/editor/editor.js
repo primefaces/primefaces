@@ -443,7 +443,7 @@
 
                             // Insert the image or link if a url was entered
                             var $text = $popup.find(":text"),
-                                url = String.prototype.trim.call($text.val());
+                                url = PrimeFaces.trim($text.val());
                             if (url !== "")
                                 execCommand(editor, data.command, url, null, data.button);
 
