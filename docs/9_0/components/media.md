@@ -61,9 +61,11 @@ using f:param tags.
     <f:param name="param1" value="value1" />
 </p:media>
 ```
+
 ## StreamedContent Support
 Media component can also play binary media content, example for this use case is storing media
 files in database using binary format. In order to implement this, bind a StreamedContent.
+Please see our core documentation about it: [Dynamic Content Streaming / Rendering](/core/dynamiccontent.md)
 
 ```xhtml
 <p:media value="#{mediaBean.media}" width="250" height="225" player="quicktime"/>
@@ -73,8 +75,10 @@ public class MediaBean {
     private StreamedContent media;
 
     public MediaController() {
-        InputStream stream = //Create binary stream from database
-        media = new DefaultStreamedContent(stream, "video/quicktime");
+        media = DefaultStreamedContent.builder()
+                    .contentType("video/quicktime")
+                    .stream(() -> //Create binary stream from database)
+                    .build();
     }
     public StreamedContent getMedia() { 
         return media;

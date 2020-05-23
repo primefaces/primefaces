@@ -23,6 +23,7 @@
  */
 package org.primefaces.util;
 
+import java.util.Collections;
 import java.util.EnumSet;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.config.PrimeConfiguration;
@@ -42,7 +43,6 @@ import java.util.Set;
 import java.util.logging.Logger;
 import javax.faces.component.UIForm;
 import org.primefaces.component.api.AjaxSource;
-import org.primefaces.expression.SearchExpressionUtils;
 
 /**
  * Helper to generate javascript code of an ajax call
@@ -51,9 +51,22 @@ public class AjaxRequestBuilder {
 
     private static final Logger LOG = Logger.getLogger(AjaxRequestBuilder.class.getName());
 
-    private static final Set<SearchExpressionHint> HINTS_UPDATE = EnumSet.of(SearchExpressionHint.VALIDATE_RENDERER,
+    private static final Set<SearchExpressionHint> HINTS_UPDATE = Collections.unmodifiableSet(EnumSet.of(
+            SearchExpressionHint.VALIDATE_RENDERER,
             SearchExpressionHint.SKIP_UNRENDERED,
-            SearchExpressionHint.RESOLVE_CLIENT_SIDE);
+            SearchExpressionHint.RESOLVE_CLIENT_SIDE));
+    private static final Set<SearchExpressionHint> HINTS_UPDATE_IGNORE_NO_RESULT = Collections.unmodifiableSet(EnumSet.of(
+            SearchExpressionHint.VALIDATE_RENDERER,
+            SearchExpressionHint.SKIP_UNRENDERED,
+            SearchExpressionHint.RESOLVE_CLIENT_SIDE,
+            SearchExpressionHint.IGNORE_NO_RESULT));
+
+    private static final Set<SearchExpressionHint> HINTS_PROCESS = Collections.unmodifiableSet(EnumSet.of(
+            SearchExpressionHint.RESOLVE_CLIENT_SIDE));
+
+    private static final Set<SearchExpressionHint> HINTS_PROCESS_IGNORE_NO_RESULT = Collections.unmodifiableSet(EnumSet.of(
+            SearchExpressionHint.RESOLVE_CLIENT_SIDE,
+            SearchExpressionHint.IGNORE_NO_RESULT));
 
     protected StringBuilder buffer;
     protected FacesContext context;
@@ -127,13 +140,21 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder process(UIComponent component, String expressions) {
-        addExpressions(component, expressions, "p", SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE);
+        return process(component, expressions, false);
+    }
+
+    public AjaxRequestBuilder process(UIComponent component, String expressions, boolean ignoreNoResult) {
+        addExpressions(component, expressions, "p", ignoreNoResult ? HINTS_PROCESS_IGNORE_NO_RESULT : HINTS_PROCESS);
 
         return this;
     }
 
     public AjaxRequestBuilder update(UIComponent component, String expressions) {
-        addExpressions(component, expressions, "u", HINTS_UPDATE);
+        return update(component, expressions, false);
+    }
+
+    public AjaxRequestBuilder update(UIComponent component, String expressions, boolean ignoreNoResult) {
+        addExpressions(component, expressions, "u", ignoreNoResult ? HINTS_UPDATE_IGNORE_NO_RESULT : HINTS_UPDATE);
 
         return this;
     }

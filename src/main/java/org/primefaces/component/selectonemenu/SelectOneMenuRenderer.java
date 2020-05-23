@@ -123,10 +123,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         String title = menu.getTitle();
 
         String style = menu.getStyle();
-        String styleClass = menu.getStyleClass();
-        styleClass = styleClass == null ? SelectOneMenu.STYLE_CLASS : SelectOneMenu.STYLE_CLASS + " " + styleClass;
-        styleClass = !valid ? styleClass + " ui-state-error" : styleClass;
-        styleClass = menu.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
+        String styleClass = createStyleClass(menu, SelectOneMenu.STYLE_CLASS);
 
         if (ComponentUtils.isRTL(context, menu)) {
             styleClass = styleClass + " " + SelectOneMenu.RTL_CLASS;

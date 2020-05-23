@@ -181,6 +181,8 @@ public class HeadRenderer extends Renderer {
         writer.write("if(window.PrimeFaces){");
 
         writer.write("PrimeFaces.settings.locale='" + LocaleUtils.getCurrentLocale(context) + "';");
+        writer.write("PrimeFaces.settings.viewId='" + context.getViewRoot().getViewId() + "';");
+        writer.write("PrimeFaces.settings.contextPath='" + context.getExternalContext().getRequestContextPath() + "';");
 
         if (csvEnabled) {
             writer.write("PrimeFaces.settings.validateEmptyFields=" + applicationContext.getConfig().isValidateEmptyFields() + ";");

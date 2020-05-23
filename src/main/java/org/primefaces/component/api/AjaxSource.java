@@ -58,6 +58,8 @@ public interface AjaxSource {
 
     boolean isAjaxified();
 
+    boolean isIgnoreComponentNotFound();
+
     String getDelay();
 
     int getTimeout();

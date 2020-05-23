@@ -26,6 +26,8 @@ package org.primefaces.util;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.component.fileupload.FileUpload;
+import org.primefaces.component.fileupload.FileUploadChunkDecoder;
+import org.primefaces.component.fileupload.FileUploadDecoder;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.file.UploadedFile;
 import org.primefaces.shaded.owasp.SafeFile;
@@ -39,14 +41,20 @@ import javax.faces.validator.ValidatorException;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Utilities for FileUpload components.
@@ -321,7 +329,7 @@ public class FileUploadUtils {
     /**
      * OWASP prevent directory path traversal of "../../image.png".
      *
-     * @see https://www.owasp.org/index.php/Path_Traversal
+     * @see <a href="https://owasp.org/www-community/attacks/Path_Traversal">https://owasp.org/www-community/attacks/Path_Traversal</a>
      * @param relativePath the relative path to check for path traversal
      * @return the relative path
      * @throws FacesException if any error is detected
@@ -348,5 +356,42 @@ public class FileUploadUtils {
             throw new FacesException("Path traversal - unexpected exception.", ex);
         }
         return relativePath;
+    }
+
+    public static List<Path> listChunks(Path path) {
+        try (Stream<Path> walk = Files.walk(path)) {
+            return walk
+                    .filter(p -> Files.isRegularFile(p) && p.getFileName().toString().matches("\\d+"))
+                    .sorted(Comparator.comparing(p -> Long.parseLong(p.getFileName().toString())))
+                    .collect(Collectors.toList());
+        }
+        catch (IOException | SecurityException e) {
+            throw new FacesException(e);
+        }
+    }
+
+    public static <T extends HttpServletRequest> List<Path> listChunks(T request) {
+        Path chunkDir = getChunkDir(request);
+        if (!Files.exists(chunkDir)) {
+            return Collections.emptyList();
+        }
+
+        return listChunks(chunkDir);
+    }
+
+    public static <T extends HttpServletRequest> FileUploadChunkDecoder<T> getFileUploadChunkDecoder(T request) {
+        PrimeApplicationContext pfContext = PrimeApplicationContext.getCurrentInstance(request.getServletContext());
+        FileUploadDecoder decoder = pfContext.getFileUploadDecoder();
+        if (!(decoder instanceof FileUploadChunkDecoder)) {
+            throw new FacesException("Chunk decoder not supported");
+        }
+
+        return (FileUploadChunkDecoder<T>) decoder;
+    }
+
+    public static <T extends HttpServletRequest> Path getChunkDir(T request) {
+        FileUploadChunkDecoder<T> chunkDecoder = getFileUploadChunkDecoder(request);
+        String fileKey = chunkDecoder.generateFileInfoKey(request);
+        return Paths.get(chunkDecoder.getUploadDirectory(request), fileKey);
     }
 }

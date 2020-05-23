@@ -126,7 +126,6 @@ public class EditorRenderer extends InputRenderer {
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-        String value = (String) submittedValue;
-        return ComponentUtils.getConvertedValue(context, component, value);
+        return ComponentUtils.getConvertedValue(context, component, submittedValue);
     }
 }

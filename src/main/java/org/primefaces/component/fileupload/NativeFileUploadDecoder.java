@@ -27,12 +27,14 @@ import org.primefaces.model.file.NativeUploadedFile;
 import org.primefaces.model.file.UploadedFile;
 
 import javax.faces.context.FacesContext;
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class NativeFileUploadDecoder extends AbstractFileUploadDecoder<HttpServletRequest> {
@@ -63,5 +65,16 @@ public class NativeFileUploadDecoder extends AbstractFileUploadDecoder<HttpServl
     @Override
     protected HttpServletRequest getRequest(FacesContext ctxt) {
         return (HttpServletRequest) ctxt.getExternalContext().getRequest();
+    }
+
+    @Override
+    public String getUploadDirectory(HttpServletRequest request) {
+        return  Stream.of(request.getAttributeNames())
+                .map(o -> request.getAttribute(o.nextElement()))
+                .filter(MultipartConfigElement.class::isInstance)
+                .map(MultipartConfigElement.class::cast)
+                .findFirst()
+                .map(MultipartConfigElement::getLocation)
+                .orElse(super.getUploadDirectory(request));
     }
 }

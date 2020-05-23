@@ -33,6 +33,8 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -51,19 +53,10 @@ public class ColorPickerRenderer extends InputRenderer {
 
         if (params.containsKey(paramName)) {
             String submittedValue = params.get(paramName);
-
             if (!COLOR_HEX_PATTERN.matcher(submittedValue).matches()) {
-                return;
+                submittedValue = Constants.EMPTY_STRING;
             }
-
-            Converter converter = colorPicker.getConverter();
-            if (converter != null) {
-                colorPicker.setSubmittedValue(
-                        converter.getAsObject(context, component, submittedValue));
-            }
-            else {
-                colorPicker.setSubmittedValue(submittedValue);
-            }
+            colorPicker.setSubmittedValue(ComponentUtils.getConvertedValue(context, component, submittedValue));
         }
 
         decodeBehaviors(context, component);
@@ -72,7 +65,7 @@ public class ColorPickerRenderer extends InputRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ColorPicker colorPicker = (ColorPicker) component;
-        Converter converter = colorPicker.getConverter();
+        Converter<Object> converter = ComponentUtils.getConverter(context, component);
         String value;
         if (converter != null) {
             value = converter.getAsString(context, component, colorPicker.getValue());
@@ -90,12 +83,11 @@ public class ColorPickerRenderer extends InputRenderer {
         String clientId = colorPicker.getClientId(context);
         String inputId = clientId + "_input";
         boolean isPopup = colorPicker.getMode().equals("popup");
-        String styleClass = colorPicker.getStyleClass();
-        styleClass = styleClass == null ? ColorPicker.STYLE_CLASS : ColorPicker.STYLE_CLASS + " " + styleClass;
 
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", styleClass, "styleClass");
+        writer.writeAttribute("class", createStyleClass(colorPicker, ColorPicker.STYLE_CLASS), "styleClass");
+
         if (colorPicker.getStyle() != null) {
             writer.writeAttribute("style", colorPicker.getStyle(), "style");
         }
@@ -112,6 +104,7 @@ public class ColorPickerRenderer extends InputRenderer {
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "hidden", null);
+        writer.writeAttribute("autocomplete", "off", null);
 
         String onchange = colorPicker.getOnchange();
         if (!isValueBlank(onchange)) {
@@ -119,6 +112,8 @@ public class ColorPickerRenderer extends InputRenderer {
         }
 
         renderPassThruAttributes(context, colorPicker, null);
+        renderValidationMetadata(context, colorPicker);
+        renderAccessibilityAttributes(context, colorPicker);
 
         if (value != null) {
             writer.writeAttribute("value", value, null);
@@ -172,4 +167,5 @@ public class ColorPickerRenderer extends InputRenderer {
 
         wb.finish();
     }
+
 }

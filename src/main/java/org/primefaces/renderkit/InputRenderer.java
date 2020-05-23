@@ -24,6 +24,8 @@
 package org.primefaces.renderkit;
 
 import java.io.IOException;
+import java.util.Objects;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
@@ -33,12 +35,15 @@ import javax.faces.convert.ConverterException;
 
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.RTLAware;
-
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
+import org.primefaces.util.SharedStringBuilder;
 
 public abstract class InputRenderer extends CoreRenderer {
+
+    private static final String SB_STYLECLASS = InputRenderer.class.getName() + "#createStyleClass";
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
@@ -155,6 +160,57 @@ public abstract class InputRenderer extends CoreRenderer {
         writer.writeAttribute("role", "combobox", null);
         writer.writeAttribute(HTML.ARIA_HASPOPUP, "listbox", null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
+    }
+
+    /**
+     * Creates a styleClass for the component which consists of:
+     * 1) default style class
+     * 2) Error State
+     * 3) Disabled State
+     * 4) user style class
+     *
+     * @param component the {@link UIInput} component to construct styleClass for
+     * @param defaultStyleClass the default style for the component if any
+     * @return the properly constructed style class string
+     */
+    protected String createStyleClass(UIInput component, String defaultStyleClass) {
+        return createStyleClass(component, "styleClass", defaultStyleClass);
+    }
+
+    /**
+     * Creates a styleClass for the component which consists of:
+     * 1) default style class
+     * 2) Error State
+     * 3) Disabled State
+     * 4) user style class
+     *
+     * @param component the {@link UIInput} component to construct styleClass for
+     * @param styleClassProperty eg "styleClass" or "inputStyleClass"
+     * @param defaultStyleClass the default style for the component if any
+     * @return the properly constructed style class string
+     */
+    protected String createStyleClass(UIInput component, String styleClassProperty, String defaultStyleClass) {
+        StringBuilder sb = SharedStringBuilder.get(SB_STYLECLASS, 128);
+
+        if (!LangUtils.isValueBlank(defaultStyleClass)) {
+            sb.append(defaultStyleClass);
+        }
+
+        if (!component.isValid()) {
+            sb.append(" ui-state-error");
+        }
+
+        if (isDisabled(component)) {
+            sb.append(" ui-state-disabled");
+        }
+
+
+        if (!LangUtils.isValueBlank(styleClassProperty)) {
+            String styleClass = Objects.toString(component.getAttributes().get(styleClassProperty), Constants.EMPTY_STRING);
+            sb.append(" ").append(styleClass);
+        }
+
+        return sb.toString();
     }
 
 }

@@ -31,7 +31,7 @@ import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
-import java.util.UUID;
+
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Resource;
@@ -39,6 +39,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.xml.bind.DatatypeConverter;
+
 import org.primefaces.application.resource.DynamicContentType;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.model.StreamedContent;
@@ -118,14 +119,7 @@ public class DynamicContentSrcBuilder {
             }
         }
 
-        if (src != null) {
-            src += src.contains("?") ? "&" : "?";
-            src += Constants.DYNAMIC_CONTENT_CACHE_PARAM + "=" + cache;
-
-            if (!cache) {
-                src += "&uid=" + UUID.randomUUID().toString();
-            }
-        }
+        src = ResourceUtils.appendCacheBuster(src, cache);
 
         return context.getExternalContext().encodeResourceURL(src);
     }

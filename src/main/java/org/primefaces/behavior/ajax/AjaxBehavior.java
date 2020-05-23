@@ -64,7 +64,8 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
         timeout(Integer.class),
         partialSubmitFilter(String.class),
         form(String.class),
-        skipChildren(Boolean.class);
+        skipChildren(Boolean.class),
+        ignoreComponentNotFound(Boolean.class);
 
         private final Class<?> expectedType;
 
@@ -278,6 +279,10 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
         return true;
     }
 
+    @Override
+    public boolean isIgnoreComponentNotFound() {
+        return eval(PropertyKeys.ignoreComponentNotFound, Boolean.FALSE);
+    }
 
     @Override
     protected BehaviorAttribute[] getAllAttributes() {

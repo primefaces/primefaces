@@ -122,7 +122,7 @@ public class FileUploadFilter implements Filter {
     protected FileItemFactory createFileItemFactory(HttpServletRequest httpServletRequest) {
         DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
         if (thresholdSize != null) {
-            diskFileItemFactory.setSizeThreshold(Integer.valueOf(thresholdSize));
+            diskFileItemFactory.setSizeThreshold(Integer.parseInt(thresholdSize));
         }
         if (uploadDir != null) {
             diskFileItemFactory.setRepository(new File(uploadDir));

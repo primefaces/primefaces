@@ -65,7 +65,8 @@ public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxS
         filter,
         filterMatchMode,
         filterFunction,
-        filterPlaceholder
+        filterPlaceholder,
+        ignoreComponentNotFound
     }
 
     public SplitButtonBase() {
@@ -306,5 +307,14 @@ public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxS
 
     public void setFilterPlaceholder(String filterPlaceholder) {
         getStateHelper().put(PropertyKeys.filterPlaceholder, filterPlaceholder);
+    }
+
+    @Override
+    public boolean isIgnoreComponentNotFound() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ignoreComponentNotFound, false);
+    }
+
+    public void setIgnoreComponentNotFound(boolean ignoreComponentNotFound) {
+        getStateHelper().put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
     }
 }

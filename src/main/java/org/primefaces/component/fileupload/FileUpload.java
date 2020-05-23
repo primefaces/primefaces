@@ -34,6 +34,8 @@ import javax.el.MethodExpression;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.FacesEvent;
 import javax.faces.validator.ValidatorException;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
@@ -59,14 +61,16 @@ public class FileUpload extends FileUploadBase {
     public static final String FILENAME_CLASS = "ui-fileupload-filename";
 
     @Override
-    public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
+    public void broadcast(FacesEvent event) throws AbortProcessingException {
         super.broadcast(event);
 
         FacesContext facesContext = getFacesContext();
-        MethodExpression me = getListener();
 
-        if (me != null && event instanceof org.primefaces.event.FileUploadEvent) {
-            me.invoke(facesContext.getELContext(), new Object[]{event});
+        if (event instanceof FileUploadEvent) {
+            MethodExpression me = getListener();
+            if (me != null) {
+                me.invoke(facesContext.getELContext(), new Object[]{event});
+            }
         }
     }
 
