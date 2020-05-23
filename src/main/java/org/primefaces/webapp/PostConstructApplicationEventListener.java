@@ -23,16 +23,15 @@
  */
 package org.primefaces.webapp;
 
+import org.primefaces.config.PrimeEnvironment;
+import org.primefaces.config.StartupPrimeEnvironment;
 import org.primefaces.util.Jsf23Helper;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
-
-import org.primefaces.config.PrimeEnvironment;
-import org.primefaces.config.StartupPrimeEnvironment;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PostConstructApplicationEventListener implements SystemEventListener {
 
@@ -56,5 +55,4 @@ public class PostConstructApplicationEventListener implements SystemEventListene
             Jsf23Helper.addSearchKeywordResolvers();
         }
     }
-
 }

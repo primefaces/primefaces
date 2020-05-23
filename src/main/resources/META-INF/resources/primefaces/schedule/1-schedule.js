@@ -106,7 +106,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 if ($this.cfg.noOpener) {
                     targetWindow.opener = null;    
                 }
-                targetWindow.location = targetWindow.event.url;
+                targetWindow.location = eventClickInfo.event.url;
                 return false;
             }
 
@@ -234,31 +234,15 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Sets up the event listeners for the view buttons.
+     * Sets up the event listeners for when the user switches the to a different view (month view, week day, or time
+     * view). Updates the hidden input field with the current view name. Used for restoring the view after an AJAX
+     * update.
      * @private
      */
     bindViewChangeListener: function() {
-        var excludedClasses = '.fc-prev-button,.fc-next-button,.fc-prevYear-button,.fc-nextYear-button,.fc-today-button';
-        var viewButtons = this.jq.find('> .fc-toolbar button:not(' + excludedClasses + ')'),
-            $this = this;
-
-        viewButtons.each(function(i) {
-            var viewButton = viewButtons.eq(i),
-                buttonClasses = viewButton.attr('class').split(' ');
-            for(var i = 0; i < buttonClasses.length; i++) {
-                var buttonClassParts = buttonClasses[i].split('-');
-                if(buttonClassParts.length === 3) {
-                    viewButton.data('view', buttonClassParts[1]);
-                    break;
-                }
-            }
-        });
-
-        viewButtons.on('click.schedule', function() {
-            var viewName = $(this).data('view');
-
-            $this.viewNameState.val(viewName);
-
+        var $this = this;
+        this.calendar.on('viewSkeletonRender', function(event) {
+            $this.viewNameState.val(event.view.type);
             $this.callBehavior('viewChange');
         });
     },

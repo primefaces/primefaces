@@ -56,6 +56,8 @@ dynamic | false | Boolean | Defines if dynamic loading is enabled for the elemen
 labelSeparator | , | String | Separator for joining item lables if updateLabel is set to true. Default is ",".
 emptyLabel | null | String | Label to be shown in updateLabel mode when no item is selected. If not set the label is shown.
 filterPlaceholder | null | String  | Placeholder text to show when filter input is empty.
+hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
+
 
 ## Getting started with SelectCheckboxMenu
 SelectCheckboxMenu usage is same as the standard selectManyCheckbox or PrimeFaces

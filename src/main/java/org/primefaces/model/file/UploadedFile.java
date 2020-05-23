@@ -38,11 +38,7 @@ public interface UploadedFile {
 
     long getSize();
 
-    /**
-     * Writes the uploaded file to the given file path.
-     *
-     * @param filePath The target file path.
-     * @throws Exception If something went wrong.
-     */
     void write(String filePath) throws Exception;
+
+    void delete() throws IOException;
 }

@@ -40,14 +40,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 import javax.imageio.ImageIO;
-import org.apache.commons.io.input.BoundedInputStream;
 
+import org.apache.commons.io.input.BoundedInputStream;
 import org.primefaces.model.CroppedImage;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.Constants;
-import org.primefaces.util.FileUploadUtils;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public class ImageCropperRenderer extends CoreRenderer {
 
@@ -147,12 +144,13 @@ public class ImageCropperRenderer extends CoreRenderer {
 
     private void renderImage(FacesContext context, ImageCropper cropper, String clientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String alt = cropper.getAlt() == null ? "" : cropper.getAlt();
+        String alt = cropper.getAlt() == null ? Constants.EMPTY_STRING : cropper.getAlt();
+        String url = getResourceURL(context, cropper.getImage());
 
         writer.startElement("img", null);
         writer.writeAttribute("id", clientId + "_image", null);
         writer.writeAttribute("alt", alt, null);
-        writer.writeAttribute("src", getResourceURL(context, cropper.getImage()), null);
+        writer.writeAttribute("src", ResourceUtils.appendCacheBuster(url, cropper.isCache()), null);
         writer.writeAttribute("height", "auto", null);
         writer.writeAttribute("width", "100%", null);
         writer.writeAttribute("style", "max-width: 100%;", null);
@@ -204,8 +202,15 @@ public class ImageCropperRenderer extends CoreRenderer {
                     ExternalContext externalContext = context.getExternalContext();
                     // GitHub #3268 OWASP Path Traversal
                     imagePath = FileUploadUtils.checkPathTraversal(imagePath);
+
                     String webRoot = externalContext.getRealPath(Constants.EMPTY_STRING);
-                    File file = new File(webRoot + imagePath);
+                    String fileSeparator = Constants.EMPTY_STRING;
+                    if (!(webRoot.endsWith("\\") || webRoot.endsWith("/")) &&
+                                !(imagePath.startsWith("\\") || imagePath.startsWith("/"))) {
+                        fileSeparator = "/";
+                    }
+
+                    File file = new File(webRoot + fileSeparator + imagePath);
                     inputStream = new FileInputStream(file);
                 }
             }
@@ -234,6 +239,7 @@ public class ImageCropperRenderer extends CoreRenderer {
             return new CroppedImage(cropper.getImage(), croppedOutImage.toByteArray(), x, y, w, h);
         }
         catch (IOException e) {
+            LOGGER.severe(e.getMessage());
             throw new ConverterException(e);
         }
         finally {

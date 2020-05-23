@@ -67,10 +67,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         List<SelectItem> selectItems = getSelectItems(context, menu);
 
         String style = menu.getStyle();
-        String styleClass = menu.getStyleClass();
-        styleClass = styleClass == null ? SelectManyMenu.CONTAINER_CLASS : SelectManyMenu.CONTAINER_CLASS + " " + styleClass;
-        styleClass = menu.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
-        styleClass = !menu.isValid() ? styleClass + " ui-state-error" : styleClass;
+        String styleClass = createStyleClass(menu, SelectManyMenu.CONTAINER_CLASS);
 
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");

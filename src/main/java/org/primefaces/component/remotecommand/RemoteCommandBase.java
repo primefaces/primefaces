@@ -53,7 +53,8 @@ public abstract class RemoteCommandBase extends UICommand implements AjaxSource 
         ignoreAutoUpdate,
         partialSubmitFilter,
         form,
-        validateClient
+        validateClient,
+        ignoreComponentNotFound
     }
 
     public RemoteCommandBase() {
@@ -224,4 +225,12 @@ public abstract class RemoteCommandBase extends UICommand implements AjaxSource 
         getStateHelper().put(PropertyKeys.validateClient, validateClient);
     }
 
+    @Override
+    public boolean isIgnoreComponentNotFound() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ignoreComponentNotFound, false);
+    }
+
+    public void setIgnoreComponentNotFound(boolean ignoreComponentNotFound) {
+        getStateHelper().put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
+    }
 }

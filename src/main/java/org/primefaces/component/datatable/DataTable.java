@@ -861,7 +861,7 @@ public class DataTable extends DataTableBase {
 
         Object rowKey = hasRowKey ? getRowKey() : getRowKeyFromModel(object);
 
-        if (rowKey != null && !isDisabledSelection()) {
+        if (rowKey != null) {
             selectedRowKeys.add(rowKey);
         }
     }

@@ -708,7 +708,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
                 case keyCode.ENTER:
                     $this.handleEnterKey(e);
-                    e.stopPropagation();
                 break;
 
                 case keyCode.TAB:
@@ -797,6 +796,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         event.preventDefault();
+        event.stopPropagation();
     },
 
     /**

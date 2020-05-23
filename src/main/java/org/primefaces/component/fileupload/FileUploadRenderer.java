@@ -25,18 +25,17 @@ package org.primefaces.component.fileupload;
 
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 import java.io.IOException;
-import org.primefaces.expression.SearchExpressionUtils;
 
 public class FileUploadRenderer extends CoreRenderer {
 
@@ -49,13 +48,8 @@ public class FileUploadRenderer extends CoreRenderer {
         FileUpload fileUpload = (FileUpload) component;
         if (!fileUpload.isDisabled()) {
             PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
-            String uploader = applicationContext.getConfig().getUploader();
 
-            FileUploadDecoder decoder = applicationContext.getFileUploadDecoder(uploader);
-            if (decoder == null) {
-                throw new FacesException("FileUploaderDecoder '" + uploader + "' not found");
-            }
-
+            FileUploadDecoder decoder = applicationContext.getFileUploadDecoder();
             decoder.decode(context, fileUpload);
         }
     }
@@ -75,6 +69,8 @@ public class FileUploadRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
 
         if (fileUpload.getMode().equals("advanced")) {
+            PrimeApplicationContext pfContext = PrimeApplicationContext.getCurrentInstance(context);
+
             wb.init("FileUpload", fileUpload.resolveWidgetVar(context), clientId);
 
             wb.attr("auto", fileUpload.isAuto(), false)
@@ -92,9 +88,14 @@ public class FileUploadRenderer extends CoreRenderer {
                     .attr("previewWidth", fileUpload.getPreviewWidth(), 80)
                     .attr("disabled", fileUpload.isDisabled(), false)
                     .attr("sequentialUploads", fileUpload.isSequential(), false)
+                    .attr("maxChunkSize", fileUpload.getMaxChunkSize(), 0)
+                    .attr("maxRetries", fileUpload.getMaxRetries(), 30)
+                    .attr("retryTimeout", fileUpload.getRetryTimeout(), 1000)
+                    .attr("resumeContextPath", pfContext.getFileUploadResumeUrl(), null)
                     .callback("onAdd", "function(file, callback)", fileUpload.getOnAdd())
                     .callback("onstart", "function()", fileUpload.getOnstart())
                     .callback("onerror", "function()", fileUpload.getOnerror())
+                    .callback("onvalidationfailure", "function(msg)", fileUpload.getOnvalidationfailure())
                     .callback("oncancel", "function()", fileUpload.getOncancel())
                     .callback("oncomplete", "function(args)", fileUpload.getOncomplete());
 

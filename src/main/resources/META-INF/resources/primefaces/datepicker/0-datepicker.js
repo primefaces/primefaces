@@ -921,8 +921,11 @@
             }
             else {
                 if (this.options.showTime) {
-                    date = this.parseDate(parts[0], this.options.dateFormat);
-                    this.populateTime(date, parts[1], parts[2]);
+                    var ampm = this.options.hourFormat == '12' ? parts.pop() : null;
+                    var timeString = parts.pop();
+
+                    date = this.parseDate(parts.join(' '), this.options.dateFormat);
+                    this.populateTime(date, timeString, ampm);
                 }
                 else {
                     date = this.parseDate(text, this.options.dateFormat);

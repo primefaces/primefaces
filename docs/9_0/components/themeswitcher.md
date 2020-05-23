@@ -33,6 +33,7 @@ styleClass | null | String | Style class of the component.
 var | null | String | Variable name to refer to each item.
 height | null | Integer | Height of the panel.
 tabindex | null | Integer | Position of the element in the tabbing order.
+hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
 
 ## Getting Started with the ThemeSwitcher
 ThemeSwitcher usage is very similar to selectOneMenu.

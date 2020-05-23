@@ -38,6 +38,7 @@ partialSubmitFilter | null | String | Selector to use when partial submit is on,
 autoRun | false | Boolean | When enabled command is executed on page load.
 resetValues | false | Boolean | If true, local values of input components to be updated within the ajax request would be reset.
 ignoreAutoUpdate | false | Boolean | If true, components which autoUpdate="true" will not be updated for this request. If not specified, or the value is false, no such indication is made.
+ignoreComponentNotFound | false | Boolean | If true, unresolvable components referenced in the update/process attribute are ignored. Default is 'false' and therefore a ComponentNotFoundException will be thrown.
 timeout | 0 | Integer | Timeout for the ajax request in milliseconds.
 form | null | String | Form to serialize for an ajax request. Default is the enclosing form.
 validateClient | false | Boolean | When set to true client side validation is enabled, global setting is required to be enabled as a prerequisite.
@@ -57,14 +58,74 @@ RemoteCommand is used by invoking the command from your javascript code.
     }
 </script>
 ```
+
 That’s it whenever you execute your custom javascript function(eg customfunction()), a remote call
 will be made, actionListener is processed and output text is updated. Note that remoteCommand
 must be nested inside a form.
 
 
-## Passing Parameters
+## Passing parameters
+
 Remote command can send dynamic parameters in the following way;
 
 ```js
 increment([{name:'x', value:10}, {name:'y', value:20}]);
 ```
+
+To access these parameters in a bean method:
+
+```java
+    public void execute() {
+        String param1 = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("x");
+        String param2 = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("y");
+        // Do something with the parameters
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Executed", "x: " + param1 + ", y: " + param2));
+    }
+```
+
+## Receiving parameters
+
+You can receive parameters from the server in the following way.
+
+First, in your bean method, add a callback parameter:
+
+```java
+    public void execute() {
+        // Do something interesting when the remote command is called
+        // ...
+
+        // Return data to the client
+        PrimeFaces.current().ajax().addCallbackParam("serverTime", System.currentTimeMillis());
+    }
+```
+
+Then access the parameter on the client:
+
+```xhtml
+<p:remoteCommand name="rc" update="msgs" action="#{remoteCommandView.execute}"
+    oncomplete="alert('Return value from server: ' + args.serverTime)"/>
+```
+
+## Using promises
+
+You can add also add callbacks for when the remote succeeds or fails via the
+promise returned by the remote command. Compared with adding a callback via
+`oncomplete`, this lets you register as many callbacks as you want, and also
+register different callbacks dynamically from the calling JavaScript code:
+
+Using `async` JavaScript functions (check browser support!), this would look as follows:
+
+```javascript
+async function main(param1, param2) {
+    const responseData = await rc([
+        {name: 'x', value: param1},
+        {name: 'y', value: param2},
+    ]);
+    
+    const serverTime = responseData.jqXHR.pfArgs.serverTime;
+}
+
+main("foo", "bar");
+```
+
+Without support for async function, use `rc().then(...).catch(...)` instead.
