@@ -1010,7 +1010,7 @@
          * jQuery deprecated $.trim in favor of PrimeFaces.trim however that does not handle
          * NULL and jQuery did so this function allows a drop in replacement.
          * 
-         * @param {string} the value to trim
+         * @param {string} value the String to trim
          * @return {string} trimmed value or "" if it was NULL
          */
         trim: function(value) {
