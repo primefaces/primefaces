@@ -18,6 +18,7 @@
   - [EL Functions](/core/elFunctions.md)
   - [Error Handling](/core/errorhandling.md)
   - [Font Icons](/core/fonticons.md)
+  - [Global Attributes](/core/globalattributes.md)
   - [Java API](/core/javaAPI.md)
   - [Javascript API](/core/javascriptAPI.md)
   - [Localization](/core/localization.md)
