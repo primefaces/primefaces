@@ -24,6 +24,7 @@
 package org.primefaces.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.io.IOException;
 
@@ -130,4 +131,46 @@ public class WidgetBuilderTest {
 
         assertEquals("<script id=\"dt1_s\" type=\"text/javascript\">$(function(){PrimeFaces.cw(\"DataTable\",\"dt\",{id:\"dt1\",selectionMode:\"single\",lazy:true,onRowSelect:function(row){alert(row);}});});</script>", writer.toString());
     }
+
+    @Test
+    public void attributeDefaultValueIsNotEncoded() throws IOException {
+        CollectingResponseWriter writer = new CollectingResponseWriter();
+
+        FacesContext context = new FacesContextMock(writer);
+        PrimeConfigurationMock config = new PrimeConfigurationMock(context, new PrimeEnvironment(context));
+        config.setMoveScriptsToBottom(true);
+        WidgetBuilder builder = new WidgetBuilder(context, config);
+
+        builder.init("MyComponent", "myComponent", "myComponent1");
+        String defaultValue = "'My custom default value'";
+        builder.attr("someAttribute", null, defaultValue);
+        builder.finish();
+        
+        String output = writer.toString();
+        assertFalse(output.contains(defaultValue));
+
+        String expectedOutput = "<script id=\"myComponent1_s\" type=\"text/javascript\">PrimeFaces.cw(\"MyComponent\",\"myComponent\",{id:\"myComponent1\"});</script>";
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    public void attrJavascriptEscapeJavascript() throws IOException {
+    	CollectingResponseWriter writer = new CollectingResponseWriter();
+
+        FacesContext context = new FacesContextMock(writer);
+        PrimeConfigurationMock config = new PrimeConfigurationMock(context, new PrimeEnvironment(context));
+        config.setMoveScriptsToBottom(true);
+        WidgetBuilder builder = new WidgetBuilder(context, config);
+
+        builder.init("MyComponent", "myComponent", "myComponent1");
+        builder.attr("someAttribute", "<script>alert('Hello World!')</script>", null);
+        builder.finish();
+        
+        String output = writer.toString();
+
+        String expectedOutput = "<script id=\"myComponent1_s\" type=\"text/javascript\">PrimeFaces.cw(\"MyComponent\",\"myComponent\",{id:\"myComponent1\",someAttribute:\"<script>alert(\\x27Hello World!\\x27)<\\/script>\"});</script>";
+        assertEquals(expectedOutput, output);
+    }
+    
+    
 }
