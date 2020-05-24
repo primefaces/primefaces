@@ -1007,7 +1007,7 @@
         },
 
         /**
-         * jQuery deprecated $.trim in favor of PrimeFaces.trim however that does not handle
+         * For 4.0 jQuery deprecated $.trim in favor of PrimeFaces.trim however that does not handle
          * NULL and jQuery did so this function allows a drop in replacement.
          * 
          * @param {string} value the String to trim
