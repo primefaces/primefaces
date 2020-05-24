@@ -34,9 +34,6 @@ public class DemoApplication extends ApplicationWrapper {
     private static final Set<String> BLACKLISTED_COMPONENT_TYPES = Collections
             .unmodifiableSet(new HashSet<>(Arrays.asList("org.primefaces.component.Layout")));
 
-    private static final Set<String> DATE_COMPONENT_TYPES = Collections.unmodifiableSet(
-            new HashSet<>(Arrays.asList("org.primefaces.component.Calendar", "org.primefaces.component.DatePicker")));
-
     private final Application wrapped;
 
     public DemoApplication(Application wrapped) {
@@ -59,14 +56,13 @@ public class DemoApplication extends ApplicationWrapper {
         final UIComponent component = super.createComponent(context, componentType, rendererType);
 
         // set a global date pattern by default
-        if (DATE_COMPONENT_TYPES.contains(componentType)) {
+        if (component instanceof UICalendar) {
             final UICalendar calendar = (UICalendar) component;
             calendar.setPattern("dd-MMM-yyyy");
         }
 
         return component;
     }
-
 }
 ```
 
