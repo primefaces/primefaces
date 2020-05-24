@@ -28,11 +28,12 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.UICalendar;
+import org.primefaces.component.layout.Layout;
 
 public class DemoApplication extends ApplicationWrapper {
 
     private static final Set<String> BLACKLISTED_COMPONENT_TYPES = Collections
-            .unmodifiableSet(new HashSet<>(Arrays.asList("org.primefaces.component.Layout")));
+            .unmodifiableSet(new HashSet<>(Arrays.asList(Layout.COMPONENT_TYPE)));
 
     private final Application wrapped;
 
@@ -64,6 +65,7 @@ public class DemoApplication extends ApplicationWrapper {
         return component;
     }
 }
+
 ```
 
 ## Application Factory
