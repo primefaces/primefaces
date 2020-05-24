@@ -2327,6 +2327,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             return;
         }
 
+        // #5944 in single select all other rows should be unselected
+        if (this.isSingleSelection()) {
+            this.unselectAllRows();
+        }
+
         var rowMeta = this.getRowMeta(row);
 
         this.highlightRow(row);
@@ -2360,7 +2365,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(!row.hasClass('ui-datatable-selectable')) {
             return;
         }
-
+        
         var rowMeta = this.getRowMeta(row);
 
         this.unhighlightRow(row);
