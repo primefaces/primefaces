@@ -48,9 +48,9 @@ powered rich solution with graceful degradation for legacy browsers.
 | mode | advanced | String | Mode of the fileupload, can be _simple_ or _advanced_.
 | uploadLabel | Upload | String | Label of the upload button.
 | cancelLabel | Cancel | String | Label of the cancel button.
-| invalidSizeMessage | null | String | Message to display when size limit exceeds.
-| invalidFileMessage | null | String | Message to display when file is not accepted.
-| fileLimitMessage | null | String | Message to display when file limit exceeds.
+| invalidSizeMessage | Invalid file size | String | Message to display when size limit exceeds.
+| invalidFileMessage | Invalid file type | String | Message to display when file is not accepted.
+| fileLimitMessage | Maximum number of files exceeded | String | Message to display when file limit exceeds.
 | dragDropSupport | true | Boolean | Specifies dragdrop based file selection from filesystem, default is true and works only on supported browsers.
 | onstart | null | String | Client side callback to execute when upload begins.
 | onerror | null | String | Callback to execute if fileupload request fails.

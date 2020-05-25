@@ -27,7 +27,6 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -79,14 +78,7 @@ public class FileUploadRenderer extends CoreRenderer {
                             SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
                     .attr("process", SearchExpressionFacade.resolveClientIds(context, fileUpload, process,
                             SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
-                    .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
-                    .attr("fileLimit", fileUpload.getFileLimit(), Integer.MAX_VALUE)
-                    .attr("invalidFileMessage", fileUpload.getInvalidFileMessage(), null)
-                    .attr("invalidSizeMessage", fileUpload.getInvalidSizeMessage(), null)
-                    .attr("fileLimitMessage", fileUpload.getFileLimitMessage(), null)
-                    .attr("messageTemplate", fileUpload.getMessageTemplate(), null)
                     .attr("previewWidth", fileUpload.getPreviewWidth(), 80)
-                    .attr("disabled", fileUpload.isDisabled(), false)
                     .attr("sequentialUploads", fileUpload.isSequential(), false)
                     .attr("maxChunkSize", fileUpload.getMaxChunkSize(), 0)
                     .attr("maxRetries", fileUpload.getMaxRetries(), 30)
@@ -95,21 +87,27 @@ public class FileUploadRenderer extends CoreRenderer {
                     .callback("onAdd", "function(file, callback)", fileUpload.getOnAdd())
                     .callback("onstart", "function()", fileUpload.getOnstart())
                     .callback("onerror", "function()", fileUpload.getOnerror())
-                    .callback("onvalidationfailure", "function(msg)", fileUpload.getOnvalidationfailure())
                     .callback("oncancel", "function()", fileUpload.getOncancel())
                     .callback("oncomplete", "function(args)", fileUpload.getOncomplete());
 
-            String allowTypes = fileUpload.getAllowTypes();
-
-            if (allowTypes != null) {
-                wb.append(",allowTypes:").append(allowTypes);
-            }
         }
         else {
             wb.init("SimpleFileUpload", fileUpload.resolveWidgetVar(context), clientId)
-                    .attr("skinSimple", fileUpload.isSkinSimple(), false)
-                    .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
-                    .attr("invalidSizeMessage", EscapeUtils.forJavaScript(fileUpload.getInvalidSizeMessage()), null);
+                    .attr("skinSimple", fileUpload.isSkinSimple(), false);
+        }
+
+        wb.attr("disabled", fileUpload.isDisabled(), false)
+                .attr("invalidSizeMessage", fileUpload.getInvalidSizeMessage(), null)
+                .attr("invalidFileMessage", fileUpload.getInvalidFileMessage(), null)
+                .attr("fileLimitMessage", fileUpload.getFileLimitMessage(), null)
+                .attr("messageTemplate", fileUpload.getMessageTemplate(), null)
+                .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
+                .attr("fileLimit", fileUpload.getFileLimit(), Integer.MAX_VALUE)
+                .callback("onvalidationfailure", "function(msg)", fileUpload.getOnvalidationfailure());
+
+        String allowTypes = fileUpload.getAllowTypes();
+        if (allowTypes != null) {
+            wb.append(",allowTypes:").append(allowTypes);
         }
 
         wb.finish();
