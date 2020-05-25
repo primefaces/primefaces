@@ -293,6 +293,9 @@ public class FileUploadRenderer extends CoreRenderer {
         if (fileUpload.getAccept() != null) {
             writer.writeAttribute("accept", fileUpload.getAccept(), null);
         }
+        if (fileUpload.getTitle() != null) {
+            writer.writeAttribute("title", fileUpload.getTitle(), null);
+        }
 
         renderDynamicPassThruAttributes(context, fileUpload);
 
@@ -316,6 +319,9 @@ public class FileUploadRenderer extends CoreRenderer {
         }
         if (fileUpload.getAccept() != null) {
             writer.writeAttribute("accept", fileUpload.getAccept(), null);
+        }
+        if (fileUpload.getTitle() != null) {
+            writer.writeAttribute("title", fileUpload.getTitle(), null);
         }
         if (style != null) {
             writer.writeAttribute("style", style, "style");

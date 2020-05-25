@@ -74,6 +74,7 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         maxChunkSize,
         maxRetries,
         retryTimeout,
+        title,
         chooseButtonTitle,
         uploadButtonTitle,
         cancelButtonTitle
@@ -399,6 +400,14 @@ public abstract class FileUploadBase extends UIInput implements Widget {
 
     public void setRetryTimeout(int retryTimeout) {
         getStateHelper().put(PropertyKeys.retryTimeout, retryTimeout);
+    }
+
+    public String getTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.title, null);
+    }
+
+    public void setTitle(String title) {
+        getStateHelper().put(PropertyKeys.title, title);
     }
 
     public String getChooseButtonTitle() {
