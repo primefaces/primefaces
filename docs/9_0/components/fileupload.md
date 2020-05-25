@@ -64,6 +64,9 @@ powered rich solution with graceful degradation for legacy browsers.
 | chooseIcon | ui-icon-plusthick | String | The icon of choose button
 | uploadIcon | ui-icon-arrowreturnthick-1-n | String | The icon of upload button
 | cancelIcon | ui-icon-cancel | String | The icon of cancel button
+| chooseButtonTitle | null | String | Native title tooltip for choose button
+| uploadButtonTitle | null | String | Native title tooltip for upload button
+| cancelButtonTitle | null | String | Native title tooltip for cancel button
 | onAdd | null | String | Callback to execute before adding a file.
 | validateContentType | false | Boolean | Whether content type validation should be performed, based on the types defined in the accept attribute. Default is false.
 | virusScan | false | Boolean | Whether virus scan should be performed. Default is false.

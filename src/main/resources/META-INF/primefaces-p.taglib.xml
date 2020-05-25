@@ -9783,6 +9783,30 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Native title tooltip for choose button.]]>
+            </description>
+            <name>chooseButtonTitle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Native title tooltip for upload button.]]>
+            </description>
+            <name>uploadButtonTitle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Native title tooltip for cancel button.]]>
+            </description>
+            <name>cancelButtonTitle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>

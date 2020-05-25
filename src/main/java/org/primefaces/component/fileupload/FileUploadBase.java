@@ -73,7 +73,10 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         virusScan,
         maxChunkSize,
         maxRetries,
-        retryTimeout
+        retryTimeout,
+        chooseButtonTitle,
+        uploadButtonTitle,
+        cancelButtonTitle
     }
 
     public FileUploadBase() {
@@ -397,4 +400,29 @@ public abstract class FileUploadBase extends UIInput implements Widget {
     public void setRetryTimeout(int retryTimeout) {
         getStateHelper().put(PropertyKeys.retryTimeout, retryTimeout);
     }
+
+    public String getChooseButtonTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.chooseButtonTitle, null);
+    }
+
+    public void setChooseButtonTitle(String chooseButtonTitle) {
+        getStateHelper().put(PropertyKeys.chooseButtonTitle, chooseButtonTitle);
+    }
+
+    public String getUploadButtonTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.uploadButtonTitle, null);
+    }
+
+    public void setUploadButtonTitle(String uploadButtonTitle) {
+        getStateHelper().put(PropertyKeys.uploadButtonTitle, uploadButtonTitle);
+    }
+
+    public String getCancelButtonTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.cancelButtonTitle, null);
+    }
+
+    public void setCancelButtonTitle(String cancelButtonTitle) {
+        getStateHelper().put(PropertyKeys.cancelButtonTitle, cancelButtonTitle);
+    }
+
 }
