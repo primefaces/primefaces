@@ -233,7 +233,7 @@ public class ImageCropperRenderer extends CoreRenderer {
                     contentType = stream.getContentType();
                 }
                 else {
-                    throw new IllegalArgumentException("Either image and stream attributes are not provided.");
+                    throw new IllegalArgumentException("Either image or stream attribute is not provided.");
                 }
             }
 
