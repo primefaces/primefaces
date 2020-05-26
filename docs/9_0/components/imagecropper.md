@@ -33,7 +33,7 @@ requiredMessage | null | String | Message to be displayed when required field va
 converterMessage | null | String | Message to be displayed when conversion fails.
 validatorMessage | null | String | Message to be displayed when validation fields.
 widgetVar | null | String | Name of the client side widget.
-image | null | String | Context relative path to the image.
+image | null | Object | Binary data to stream or context relative path.
 alt | null | String | Alternate text of the image.
 aspectRatio | null | Double | Aspect ratio of the cropper area.
 minSize | null | String | Minimum size of the cropper area (width,height).
@@ -45,7 +45,6 @@ sizeLimit | 10485760 | Long | Maximum number of bytes the image.
 responsive | true | Boolean | Re-render the cropper when resizing the window.
 guides | true | Boolean | Show the dashed lines in the crop box.
 cache | true | Boolean | Controls browser caching mode of the resource. Default is true.
-stream | null | Object | Binary data to stream.
 viewMode | 1 | Integer | Define the view mode of the cropper. If you set viewMode to 0, the crop box can extend outside the canvas, while a value of 1, 2 or 3 will restrict the crop box to the size of the canvas. A viewMode of 2 or 3 will additionally restrict the canvas to the container. Note that if the proportions of the canvas and the container are the same, there is no difference between 2 and 3.
 
 ## Getting started with the ImageCropper
@@ -88,7 +87,7 @@ accomplish this simply just add slash ("/path/to/image.png") and imagecropper wi
 %WEBAPP_ROOT%/path/to/image.png. Action url relative local images are not supported.
 
 ## Dynamic Images
-A dynamic image can be used with ImageCropper which requires _org.primefaces.model.StreamedContent_ `stream` as it’s value  
+A dynamic image can be used with ImageCropper which requires _org.primefaces.model.StreamedContent_ `image` as it’s value  
 StreamedContent is an interface and PrimeFaces provides a built-in implementation called
 _DefaultStreamedContent_. Please see our core documentation about it: [Dynamic Content Streaming / Rendering](/core/dynamiccontent.md)
 

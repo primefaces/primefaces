@@ -82,7 +82,7 @@ public class ImageCropperRendererTest {
                 return null;
             }
         }).build();
-        cropper.setStream(stream);
+        cropper.setImage(stream);
         ImageCropperRenderer renderer = new ImageCropperRenderer();
         Object value = renderer.getConvertedValue(context, cropper, "1_100_1_100");
         Assertions.assertNotNull(value);
@@ -97,7 +97,7 @@ public class ImageCropperRendererTest {
             Assertions.fail("should thrown IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             String message = e.getMessage();
-            if(!"Either image or stream attribute is not provided.".equals(message)) {
+            if(!"'image' must be either an String relative path or a StreamedObject.".equals(message)) {
                 Assertions.fail("should thrown IllegalArgumentException with message: " + message);
             }
         } catch (Exception e) {

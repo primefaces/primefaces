@@ -183,16 +183,19 @@ public class ImageCropperRenderer extends CoreRenderer {
         ImageCropper cropper = (ImageCropper) component;
         Resource resource = getImageResource(context, cropper);
         InputStream inputStream = null;
-        String imagePath = cropper.getImage();
-        Object streamObject = cropper.getStream();
+        Object imageObject = cropper.getImage();
+        String imagePath = null;
         StreamedContent stream = null;
-        if (streamObject != null && !(streamObject instanceof StreamedContent)) {
-            throw new IllegalArgumentException(
-                    "Stream type isn't recognized as a stream provider: " + streamObject.getClass().getName());
+        if (imageObject instanceof String) {
+            imagePath = imageObject.toString();
+        }
+        else if (imageObject instanceof StreamedContent) {
+            stream = (StreamedContent) imageObject;
         }
         else {
-            stream = (StreamedContent) streamObject;
+            throw new IllegalArgumentException("'image' must be either an String relative path or a StreamedObject.");
         }
+
         String contentType = null;
 
         try {
@@ -232,9 +235,7 @@ public class ImageCropperRenderer extends CoreRenderer {
                     inputStream = stream.getStream();
                     contentType = stream.getContentType();
                 }
-                else {
-                    throw new IllegalArgumentException("Either image or stream attribute is not provided.");
-                }
+
             }
 
             // wrap input stream by BoundedInputStream to prevent uncontrolled resource consumption (#3286)
@@ -258,7 +259,7 @@ public class ImageCropperRenderer extends CoreRenderer {
             String format = guessImageFormat(contentType, imagePath);
             ImageIO.write(cropped, format, croppedOutImage);
 
-            return new CroppedImage(cropper.getImage(), croppedOutImage.toByteArray(), x, y, w, h);
+            return new CroppedImage(cropper.getImage().toString(), croppedOutImage.toByteArray(), x, y, w, h);
         }
         catch (IOException e) {
             LOGGER.severe(e.getMessage());
@@ -355,15 +356,15 @@ public class ImageCropperRenderer extends CoreRenderer {
 
     private String getImageSrc(FacesContext context, ImageCropper imageCropper) {
         String result = null;
-        String image = imageCropper.getImage();
-        Object stream = imageCropper.getStream();
+        Object image = imageCropper.getImage();
 
-        if (image != null) {
-            String url = getResourceURL(context, image);
+        if (image instanceof String) {
+            String url = getResourceURL(context, image.toString());
             result = ResourceUtils.appendCacheBuster(url, imageCropper.isCache());
         }
-        else if (stream != null) {
-            result = DynamicContentSrcBuilder.build(context, stream, imageCropper, imageCropper.isCache(), DynamicContentType.STREAMED_CONTENT, true, "stream");
+        else if (image instanceof StreamedContent) {
+            result = DynamicContentSrcBuilder.build(context, (StreamedContent) image, imageCropper,
+                    imageCropper.isCache(), DynamicContentType.STREAMED_CONTENT, true, "image");
         }
         else {
             result = "RES_NOT_FOUND";
