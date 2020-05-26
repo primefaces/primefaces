@@ -64,6 +64,7 @@ powered rich solution with graceful degradation for legacy browsers.
 | chooseIcon | ui-icon-plusthick | String | The icon of choose button
 | uploadIcon | ui-icon-arrowreturnthick-1-n | String | The icon of upload button
 | cancelIcon | ui-icon-cancel | String | The icon of cancel button
+| title | null | String | Native title tooltip for simple mode
 | chooseButtonTitle | null | String | Native title tooltip for choose button
 | uploadButtonTitle | null | String | Native title tooltip for upload button
 | cancelButtonTitle | null | String | Native title tooltip for cancel button
