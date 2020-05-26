@@ -60,7 +60,7 @@ public class ImageCropperRendererTest {
     @Test
     public void checkStreamIsNullButImageIsGiven() {
         ImageCropper cropper = new ImageCropper();
-        cropper.setImage("/org/primefaces/images/nature/nature1.jpg");
+        cropper.setImage("org/primefaces/images/nature/nature1.jpg");
         ImageCropperRenderer renderer = new ImageCropperRenderer();
         Object value = renderer.getConvertedValue(context, cropper, "1_100_1_100");
         Assertions.assertNotNull(value);
