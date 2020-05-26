@@ -45,6 +45,7 @@ sizeLimit | 10485760 | Long | Maximum number of bytes the image.
 responsive | true | Boolean | Re-render the cropper when resizing the window.
 guides | true | Boolean | Show the dashed lines in the crop box.
 cache | true | Boolean | Controls browser caching mode of the resource. Default is true.
+stream | null | Object | Binary data to stream.
 viewMode | 1 | Integer | Define the view mode of the cropper. If you set viewMode to 0, the crop box can extend outside the canvas, while a value of 1, 2 or 3 will restrict the crop box to the size of the canvas. A viewMode of 2 or 3 will additionally restrict the canvas to the container. Note that if the proportions of the canvas and the container are the same, there is no difference between 2 and 3.
 
 ## Getting started with the ImageCropper

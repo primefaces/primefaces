@@ -11202,6 +11202,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Binary data to stream the image dynamically]]>
+            </description>
+            <name>stream</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+        </attribute>
     </tag>
     <tag>
         <description>

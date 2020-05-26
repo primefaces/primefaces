@@ -42,7 +42,9 @@ import javax.faces.convert.ConverterException;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.io.input.BoundedInputStream;
+import org.primefaces.application.resource.DynamicContentType;
 import org.primefaces.model.CroppedImage;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.*;
 
@@ -145,12 +147,14 @@ public class ImageCropperRenderer extends CoreRenderer {
     private void renderImage(FacesContext context, ImageCropper cropper, String clientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String alt = cropper.getAlt() == null ? Constants.EMPTY_STRING : cropper.getAlt();
-        String url = getResourceURL(context, cropper.getImage());
 
         writer.startElement("img", null);
         writer.writeAttribute("id", clientId + "_image", null);
         writer.writeAttribute("alt", alt, null);
-        writer.writeAttribute("src", ResourceUtils.appendCacheBuster(url, cropper.isCache()), null);
+
+        String src = getImageSrc(context, cropper);
+        writer.writeAttribute("src", src, null);
+
         writer.writeAttribute("height", "auto", null);
         writer.writeAttribute("width", "100%", null);
         writer.writeAttribute("style", "max-width: 100%;", null);
@@ -180,6 +184,15 @@ public class ImageCropperRenderer extends CoreRenderer {
         Resource resource = getImageResource(context, cropper);
         InputStream inputStream = null;
         String imagePath = cropper.getImage();
+        Object streamObject = cropper.getStream();
+        StreamedContent stream = null;
+        if (streamObject != null && !(streamObject instanceof StreamedContent)) {
+            throw new IllegalArgumentException(
+                    "Stream type isn't recognized as a stream provider: " + streamObject.getClass().getName());
+        }
+        else {
+            stream = (StreamedContent) streamObject;
+        }
         String contentType = null;
 
         try {
@@ -189,29 +202,38 @@ public class ImageCropperRenderer extends CoreRenderer {
                 contentType = resource.getContentType();
             }
             else {
+                if (imagePath != null) {
 
-                boolean isExternal = imagePath.startsWith("http");
+                    boolean isExternal = imagePath.startsWith("http");
 
-                if (isExternal) {
-                    URL url = new URL(imagePath);
-                    URLConnection urlConnection = url.openConnection();
-                    inputStream = urlConnection.getInputStream();
-                    contentType = urlConnection.getContentType();
+                    if (isExternal) {
+                        URL url = new URL(imagePath);
+                        URLConnection urlConnection = url.openConnection();
+                        inputStream = urlConnection.getInputStream();
+                        contentType = urlConnection.getContentType();
+                    }
+                    else {
+                        ExternalContext externalContext = context.getExternalContext();
+                        // GitHub #3268 OWASP Path Traversal
+                        imagePath = FileUploadUtils.checkPathTraversal(imagePath);
+
+                        String webRoot = externalContext.getRealPath(Constants.EMPTY_STRING);
+                        String fileSeparator = Constants.EMPTY_STRING;
+                        if (!(webRoot.endsWith("\\") || webRoot.endsWith("/")) &&
+                                    !(imagePath.startsWith("\\") || imagePath.startsWith("/"))) {
+                            fileSeparator = "/";
+                        }
+
+                        File file = new File(webRoot + fileSeparator + imagePath);
+                        inputStream = new FileInputStream(file);
+                    }
+                }
+                else if (stream != null) {
+                    inputStream = stream.getStream();
+                    contentType = stream.getContentType();
                 }
                 else {
-                    ExternalContext externalContext = context.getExternalContext();
-                    // GitHub #3268 OWASP Path Traversal
-                    imagePath = FileUploadUtils.checkPathTraversal(imagePath);
-
-                    String webRoot = externalContext.getRealPath(Constants.EMPTY_STRING);
-                    String fileSeparator = Constants.EMPTY_STRING;
-                    if (!(webRoot.endsWith("\\") || webRoot.endsWith("/")) &&
-                                !(imagePath.startsWith("\\") || imagePath.startsWith("/"))) {
-                        fileSeparator = "/";
-                    }
-
-                    File file = new File(webRoot + fileSeparator + imagePath);
-                    inputStream = new FileInputStream(file);
+                    throw new IllegalArgumentException("Either image and stream attributes are not provided.");
                 }
             }
 
@@ -330,4 +352,23 @@ public class ImageCropperRenderer extends CoreRenderer {
 
         return format;
     }
+
+    private String getImageSrc(FacesContext context, ImageCropper imageCropper) {
+        String result = null;
+        String image = imageCropper.getImage();
+        Object stream = imageCropper.getStream();
+
+        if (image != null) {
+            String url = getResourceURL(context, image);
+            result = ResourceUtils.appendCacheBuster(url, imageCropper.isCache());
+        }
+        else if (stream != null) {
+            result = DynamicContentSrcBuilder.build(context, stream, imageCropper, imageCropper.isCache(), DynamicContentType.STREAMED_CONTENT, true, "stream");
+        }
+        else {
+            result = "RES_NOT_FOUND";
+        }
+        return result;
+    }
+
 }
