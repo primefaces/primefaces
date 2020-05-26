@@ -90,6 +90,7 @@
   - [FileDownload](/components/filedownload.md)
   - [FileUpload](/components/fileupload.md)
   - [Focus](/components/focus.md)
+  - [Form Layout](/components/formlayout.md)
   - [Fragment](/components/fragment.md)
   - [Galleria](/components/galleria.md)
   - [GMap](/components/gmap.md)
