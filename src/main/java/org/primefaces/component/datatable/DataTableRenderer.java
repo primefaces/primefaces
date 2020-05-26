@@ -1648,26 +1648,40 @@ public class DataTableRenderer extends DataRenderer {
             encodeNativeCheckbox(context, table, checked, disabled, isHeaderCheckbox);
         }
         else {
+            String ariaRowLabel = table.getAriaRowLabel();
+            Object rowKey = table.getRowKey();
             String boxClass = HTML.CHECKBOX_BOX_CLASS;
             boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
             boxClass = checked ? boxClass + " ui-state-active" : boxClass;
             String iconClass = checked ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
 
+            if (isHeaderCheckbox) {
+                rowKey = "head";
+                ariaRowLabel = MessageFactory.getMessage(DataTable.ARIA_HEADER_CHECKBOX_ALL, new Object[]{});
+            }
+
             writer.startElement("div", null);
             writer.writeAttribute("class", styleClass, "styleClass");
 
             writer.startElement("div", null);
-            writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
-            encodeNativeCheckbox(context, table, checked, disabled, isHeaderCheckbox);
-            writer.endElement("div");
 
-            writer.startElement("div", null);
+            writer.writeAttribute("id", table.getClientId(context) + "_" + rowKey + "_checkbox", null);
+            writer.writeAttribute("role", "checkbox", null);
+            writer.writeAttribute("tabindex", "0", null);
+            writer.writeAttribute(HTML.ARIA_LABEL, ariaRowLabel, null);
+            writer.writeAttribute(HTML.ARIA_CHECKED, String.valueOf(checked), null);
+
+            if (disabled) {
+                writer.writeAttribute("aria-disabled", "true", null);
+            }
+
             writer.writeAttribute("class", boxClass, null);
+
             writer.startElement("span", null);
             writer.writeAttribute("class", iconClass, null);
             writer.endElement("span");
-            writer.endElement("div");
 
+            writer.endElement("div");
             writer.endElement("div");
         }
     }
