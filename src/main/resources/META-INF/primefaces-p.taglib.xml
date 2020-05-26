@@ -11100,11 +11100,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Context relative path to the image.]]>
+                <![CDATA[Binary data to stream or context relative path]]>
             </description>
             <name>image</name>
-            <required>false</required>
-            <type>java.lang.String</type>
+            <required>true</required>
+            <type>java.lang.Object</type>
         </attribute>
         <attribute>
             <description>
@@ -11201,14 +11201,6 @@
             <name>cache</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Binary data to stream the image dynamically]]>
-            </description>
-            <name>stream</name>
-            <required>false</required>
-            <type>java.lang.Object</type>
         </attribute>
     </tag>
     <tag>
