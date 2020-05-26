@@ -363,8 +363,8 @@ public class ImageCropperRenderer extends CoreRenderer {
             result = ResourceUtils.appendCacheBuster(url, imageCropper.isCache());
         }
         else if (image instanceof StreamedContent) {
-            result = DynamicContentSrcBuilder.build(context, (StreamedContent) image, imageCropper,
-                    imageCropper.isCache(), DynamicContentType.STREAMED_CONTENT, true, "image");
+            result = DynamicContentSrcBuilder.build(context, image, imageCropper,
+                    imageCropper.isCache(), DynamicContentType.STREAMED_CONTENT, true, ImageCropper.PropertyKeys.image.name());
         }
         else {
             result = "RES_NOT_FOUND";
