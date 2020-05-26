@@ -11132,11 +11132,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Context relative path to the image.]]>
+                <![CDATA[Binary data to stream or context relative path]]>
             </description>
             <name>image</name>
-            <required>false</required>
-            <type>java.lang.String</type>
+            <required>true</required>
+            <type>java.lang.Object</type>
         </attribute>
         <attribute>
             <description>
