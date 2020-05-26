@@ -145,8 +145,8 @@ public class FileUploadRenderer extends CoreRenderer {
         encodeChooseButton(context, fileUpload, disabled);
 
         if (!fileUpload.isAuto()) {
-            encodeButton(context, fileUpload.getUploadLabel(), FileUpload.UPLOAD_BUTTON_CLASS, " " + fileUpload.getUploadIcon());
-            encodeButton(context, fileUpload.getCancelLabel(), FileUpload.CANCEL_BUTTON_CLASS, " " + fileUpload.getCancelIcon());
+            encodeButton(context, fileUpload.getUploadLabel(), FileUpload.UPLOAD_BUTTON_CLASS, " " + fileUpload.getUploadIcon(), fileUpload.getUploadButtonTitle());
+            encodeButton(context, fileUpload.getCancelLabel(), FileUpload.CANCEL_BUTTON_CLASS, " " + fileUpload.getCancelIcon(), fileUpload.getCancelButtonTitle());
         }
 
         writer.endElement("div");
@@ -243,6 +243,11 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.writeAttribute("role", "button", null);
         writer.writeAttribute(HTML.ARIA_LABELLEDBY, clientId + "_label", null);
 
+        String chooseButtonTitle = fileUpload.getChooseButtonTitle();
+        if (chooseButtonTitle != null) {
+            writer.writeAttribute("title", chooseButtonTitle, null);
+        }
+
         //button icon
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + fileUpload.getChooseIcon(), null);
@@ -288,6 +293,9 @@ public class FileUploadRenderer extends CoreRenderer {
         if (fileUpload.getAccept() != null) {
             writer.writeAttribute("accept", fileUpload.getAccept(), null);
         }
+        if (fileUpload.getTitle() != null) {
+            writer.writeAttribute("title", fileUpload.getTitle(), null);
+        }
 
         renderDynamicPassThruAttributes(context, fileUpload);
 
@@ -312,6 +320,9 @@ public class FileUploadRenderer extends CoreRenderer {
         if (fileUpload.getAccept() != null) {
             writer.writeAttribute("accept", fileUpload.getAccept(), null);
         }
+        if (fileUpload.getTitle() != null) {
+            writer.writeAttribute("title", fileUpload.getTitle(), null);
+        }
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
@@ -324,7 +335,7 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.endElement("input");
     }
 
-    protected void encodeButton(FacesContext context, String label, String styleClass, String icon) throws IOException {
+    protected void encodeButton(FacesContext context, String label, String styleClass, String icon, String title) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String cssClass = HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS + " ui-state-disabled " + styleClass;
         cssClass = isValueBlank(label) ? FileUpload.BUTTON_ICON_ONLY + " " + cssClass : cssClass;
@@ -333,6 +344,10 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.writeAttribute("type", "button", null);
         writer.writeAttribute("class", cssClass, null);
         writer.writeAttribute("disabled", "disabled", null);
+
+        if (title != null) {
+            writer.writeAttribute("title", title, null);
+        }
 
         //button icon
         String iconClass = HTML.BUTTON_LEFT_ICON_CLASS;
