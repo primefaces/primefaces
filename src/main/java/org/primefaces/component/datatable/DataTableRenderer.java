@@ -114,6 +114,10 @@ public class DataTableRenderer extends DataRenderer {
             table.setDefaultSortFunction(table.getSortFunction());
         }
 
+        if (table.isLiveScroll()) {
+            table.setScrollOffset(0);
+        }
+
         if (table.isLazy()) {
             if (table.isLiveScroll()) {
                 table.loadLazyScrollData(0, table.getScrollRows());
