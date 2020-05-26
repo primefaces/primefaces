@@ -87,6 +87,11 @@ For local images, ImageCropper always requires the image path to be context rela
 accomplish this simply just add slash ("/path/to/image.png") and imagecropper will recognize it at
 %WEBAPP_ROOT%/path/to/image.png. Action url relative local images are not supported.
 
+## Dynamic Images
+A dynamic image can be used with ImageCropper which requires _org.primefaces.model.StreamedContent_ `stream` as it’s value  
+StreamedContent is an interface and PrimeFaces provides a built-in implementation called
+_DefaultStreamedContent_. Please see our core documentation about it: [Dynamic Content Streaming / Rendering](/core/dynamiccontent.md)
+
 ## Initial Coordinates
 By default, user action is necessary to initiate the cropper area on an image, you can specify an
 initial area to display on page load using _initialCoords_ option in _x,y,w,h_ format.
