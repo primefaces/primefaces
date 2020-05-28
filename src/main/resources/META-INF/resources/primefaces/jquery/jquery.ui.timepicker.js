@@ -278,7 +278,7 @@
 				if (tp_inst._defaults.altRedirectFocus === true) {
 					tp_inst.$altInput.css({
 						cursor: 'pointer'
-					}).focus(function () {
+					}).on("focus", function () {
 						$input.trigger("focus");
 					});
 				}
@@ -458,7 +458,7 @@
 							marginLeft: o.isRTL ? '0' : ((size / (-2 * gridSize[litem])) + "%"),
 							marginRight: o.isRTL ? ((size / (-2 * gridSize[litem])) + "%") : '0',
 							borderCollapse: 'collapse'
-						}).find("td").click(function (e) {
+						}).find("td").on("click", function (e) {
 								var $t = $(this),
 									h = $t.html(),
 									n = parseInt(h.replace(/[^0-9]/g), 10),

@@ -45,19 +45,19 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
     bindEvents: function() {
         var $this = this;
 
-        this.menuitemLinks.mouseenter(function(e) {
+        this.menuitemLinks.on("mouseenter", function(e) {
             if($this.jq.is(':focus')) {
                 $this.jq.blur();
             }
 
             $(this).addClass('ui-state-hover');
         })
-        .mouseleave(function(e) {
+        .on("mouseleave", function(e) {
             $(this).removeClass('ui-state-hover');
         });
 
         if(this.cfg.overlay) {
-            this.menuitemLinks.click(function() {
+            this.menuitemLinks.on("click", function() {
                 $this.hide();
             });
 

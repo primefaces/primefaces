@@ -2926,10 +2926,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             var keyCode = $.ui.keyCode;
                             switch (e.which) {
                                 case keyCode.ENTER:
-                                    $(this).closest("tr").find(".ui-row-editor-check").click();
+                                    $(this).closest("tr").find(".ui-row-editor-check").trigger("click");
                                     return false; // prevents executing other event handlers (adding new row to the table)
                                 case keyCode.ESCAPE:
-                                    $(this).closest("tr").find(".ui-row-editor-close").click();
+                                    $(this).closest("tr").find(".ui-row-editor-close").trigger("click");
                                     return false;
                                 default:
                                     break;

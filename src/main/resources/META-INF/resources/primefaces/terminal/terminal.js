@@ -183,7 +183,7 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
                                 // create the anchors
                                 for (i = 0; i < responseObj.matches.length; i++) { 
                                     var anchor = $('<a href="javascript:void(0);">' + PrimeFaces.escapeHTML(responseObj.matches[i]) + '</a>')
-                                    .click(function(e) {
+                                    .on("click", function(e) {
                                         e.preventDefault();
 
                                         // prepend the baseCommand to the selected command on click

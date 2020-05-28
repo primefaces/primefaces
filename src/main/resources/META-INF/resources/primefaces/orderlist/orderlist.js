@@ -136,10 +136,10 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.skinButton(this.jq.find('.ui-button'));
 
-        this.jq.find(' .ui-orderlist-controls .ui-orderlist-button-move-up').click(function() {$this.moveUp($this.sourceList);});
-        this.jq.find(' .ui-orderlist-controls .ui-orderlist-button-move-top').click(function() {$this.moveTop($this.sourceList);});
-        this.jq.find(' .ui-orderlist-controls .ui-orderlist-button-move-down').click(function() {$this.moveDown($this.sourceList);});
-        this.jq.find(' .ui-orderlist-controls .ui-orderlist-button-move-bottom').click(function() {$this.moveBottom($this.sourceList);});
+        this.jq.find(' .ui-orderlist-controls .ui-orderlist-button-move-up').on("click", function() {$this.moveUp($this.sourceList);});
+        this.jq.find(' .ui-orderlist-controls .ui-orderlist-button-move-top').on("click", function() {$this.moveTop($this.sourceList);});
+        this.jq.find(' .ui-orderlist-controls .ui-orderlist-button-move-down').on("click", function() {$this.moveDown($this.sourceList);});
+        this.jq.find(' .ui-orderlist-controls .ui-orderlist-button-move-bottom').on("click", function() {$this.moveBottom($this.sourceList);});
     },
 
     /**

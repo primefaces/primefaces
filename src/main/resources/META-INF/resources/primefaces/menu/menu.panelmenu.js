@@ -61,17 +61,17 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
     bindEvents: function() {
         var $this = this;
 
-        this.headers.mouseover(function() {
+        this.headers.on("mouseover", function() {
             var element = $(this);
             if(!element.hasClass('ui-state-active')) {
                 element.addClass('ui-state-hover');
             }
-        }).mouseout(function() {
+        }).on("mouseout", function() {
             var element = $(this);
             if(!element.hasClass('ui-state-active')) {
                 element.removeClass('ui-state-hover');
             }
-        }).click(function(e) {
+        }).on("click", function(e) {
             var header = $(this);
 
             if (!$this.cfg.multiple) {
@@ -88,17 +88,17 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
             e.preventDefault();
         });
 
-        this.menuitemLinks.mouseover(function() {
+        this.menuitemLinks.on("mouseover", function() {
             $(this).addClass('ui-state-hover');
-        }).mouseout(function() {
+        }).on("mouseout", function() {
             $(this).removeClass('ui-state-hover');
-        }).click(function(e) {
+        }).on("click", function(e) {
             var currentLink = $(this);
             $this.focusItem(currentLink.closest('.ui-menuitem'));
             PrimeFaces.utils.openLink(e, currentLink);
         });
 
-        this.treeLinks.click(function(e) {
+        this.treeLinks.on("click", function(e) {
             var link = $(this),
             submenu = link.parent(),
             submenuList = link.next();

@@ -255,17 +255,17 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         //Triggers
-        this.triggers.mouseenter(function() {
+        this.triggers.on("mouseenter", function() {
             if(!$this.jq.hasClass('ui-state-focus')) {
                 $this.jq.addClass('ui-state-hover');
                 $this.menuIcon.addClass('ui-state-hover');
             }
         })
-        .mouseleave(function() {
+        .on("mouseleave", function() {
             $this.jq.removeClass('ui-state-hover');
             $this.menuIcon.removeClass('ui-state-hover');
         })
-        .click(function(e) {
+        .on("click", function(e) {
             if($this.panel.is(":hidden")) {
                 $this.show();
             }

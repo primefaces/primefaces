@@ -253,20 +253,17 @@
 
             PrimeFaces.updateFilledState(input, parent);
 
-            input.hover(
-                function() {
-                    $(this).addClass('ui-state-hover');
-                },
-                function() {
-                    $(this).removeClass('ui-state-hover');
-                }
-            ).focus(function() {
+            input.on("mouseenter", function() {
+                $(this).addClass('ui-state-hover');
+            }).on("mouseleave", function() {
+                $(this).removeClass('ui-state-hover');
+            }).on("focus", function() {
                 $(this).addClass('ui-state-focus');
 
                 if(parent.is("span:not('.ui-float-label')")) {
                     parent.addClass('ui-inputwrapper-focus');
                 }
-            }).blur(function() {
+            }).on("blur", function() {
                 $(this).removeClass('ui-state-focus');
 
                 if(input.hasClass('hasDatepicker')) {
@@ -300,32 +297,32 @@
          * @return {typeof PrimeFaces} this for chaining
          */
         skinButton : function(button) {
-            button.mouseover(function(){
+            button.on("mouseover", function(){
                 var el = $(this);
                 if(!button.prop('disabled')) {
                     el.addClass('ui-state-hover');
                 }
-            }).mouseout(function() {
+            }).on("mouseout", function() {
                 $(this).removeClass('ui-state-active ui-state-hover');
-            }).mousedown(function() {
+            }).on("mousedown", function() {
                 var el = $(this);
                 if(!button.prop('disabled')) {
                     el.addClass('ui-state-active').removeClass('ui-state-hover');
                 }
-            }).mouseup(function() {
+            }).on("mouseup", function() {
                 $(this).removeClass('ui-state-active').addClass('ui-state-hover');
-            }).focus(function() {
+            }).on("focus", function() {
                 $(this).addClass('ui-state-focus');
-            }).blur(function() {
+            }).on("blur", function() {
                 $(this).removeClass('ui-state-focus ui-state-active');
-            }).keydown(function(e) {
+            }).on("keydown", function(e) {
                 if(e.which === $.ui.keyCode.SPACE || e.which === $.ui.keyCode.ENTER) {
                     $(this).addClass('ui-state-active');
                 }
-            }).keyup(function() {
+            }).on("keyup", function() {
                 $(this).removeClass('ui-state-active');
             });
-
+            
             //aria
             var role = button.attr('role');
             if(!role) {
@@ -345,15 +342,15 @@
          * @return {typeof PrimeFaces} this for chaining
          */
         skinSelect : function(select) {
-            select.mouseover(function() {
+            select.on("mouseover", function() {
                 var el = $(this);
                 if(!el.hasClass('ui-state-focus'))
                     el.addClass('ui-state-hover');
-            }).mouseout(function() {
+            }).on("mouseout", function() {
                 $(this).removeClass('ui-state-hover');
-            }).focus(function() {
+            }).on("focus", function() {
                 $(this).addClass('ui-state-focus').removeClass('ui-state-hover');
-            }).blur(function() {
+            }).on("blur", function() {
                 $(this).removeClass('ui-state-focus ui-state-hover');
             });
 

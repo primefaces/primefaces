@@ -701,7 +701,7 @@ $('selector').tabs(); // And instantiate it */
 						$('<img src="' + buttonImage + '" alt="' +
 						buttonStatus + '" title="' + buttonStatus + '"></img>')));
 					elem[inst.options.isRTL ? 'before' : 'after'](trigger);
-					trigger.addClass(this._triggerClass).click(function() {
+					trigger.addClass(this._triggerClass).on("click", function() {
 						if (plugin._keypadShowing && plugin._lastField === elem[0]) {
 							plugin.hide();
 						}
@@ -1171,13 +1171,13 @@ $('selector').tabs(); // And instantiate it */
 			var buttons = html.find('button');
 			PrimeFaces.skinButton(buttons);
 
-			buttons.mousedown(function() { $(this).addClass(activeClasses); }).
+			buttons.on("mousedown", function() { $(this).addClass(activeClasses); }).
 				mouseup(function() { $(this).removeClass(activeClasses); }).
 				mouseout(function() { $(this).removeClass(activeClasses); }).
 				filter('.' + this._keyClass).
-				click(function() { plugin._selectValue(thisInst, $(this).text()); });
+				.on("click", function() { plugin._selectValue(thisInst, $(this).text()); });
 			$.each(this._specialKeys, function(i, keyDef) {
-				html.find('.' + plugin._namePrefixClass + keyDef.name).click(function() {
+				html.find('.' + plugin._namePrefixClass + keyDef.name).on("click", function() {
 					keyDef.action.apply(thisInst._input, [thisInst]);
 				});
 			});
