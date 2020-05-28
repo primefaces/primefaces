@@ -677,6 +677,11 @@
     </component>
 
     <component>
+        <component-type>org.primefaces.component.ai.smartcam.SmartCam</component-type>
+        <component-class>org.primefaces.component.ai.smartcam.SmartCam</component-class>
+    </component>
+
+    <component>
         <component-type>org.primefaces.component.PickList</component-type>
         <component-class>org.primefaces.component.picklist.PickList</component-class>
     </component>
@@ -1471,6 +1476,11 @@
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.PhotoCamRenderer</renderer-type>
             <renderer-class>org.primefaces.component.photocam.PhotoCamRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component.ai.smartcam</component-family>
+            <renderer-type>org.primefaces.component.ai.smartcam.SmartCamRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.ai.smartcam.SmartCamRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>

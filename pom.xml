@@ -1057,6 +1057,9 @@
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
                                             <resource>META-INF/primefaces-p.taglib.xml</resource>
                                         </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
+                                            <resource>META-INF/primefaces-ai.taglib.xml</resource>
+                                        </transformer>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                             <resource>META-INF/resources/primefaces/core.js</resource>
                                         </transformer>
