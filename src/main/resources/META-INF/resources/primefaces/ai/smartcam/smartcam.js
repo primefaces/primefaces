@@ -1,8 +1,7 @@
 PrimeFaces.widget.SmartCam = PrimeFaces.widget.BaseWidget.extend({
 
     init: function(cfg) {
-    	console.log(cfg);
-        this._super(cfg);
+    	this._super(cfg);
         if(this.cfg.disabled) {
             return;
         }
@@ -13,6 +12,22 @@ PrimeFaces.widget.SmartCam = PrimeFaces.widget.BaseWidget.extend({
         
         if (!("autoStart" in this.cfg)) {
             this.cfg.autoStart = true;
+        }
+
+        if ("doDetection" in this.cfg) {
+            this.cfg.doDetection = true;
+        }
+        
+        if(this.cfg.doDetection) {
+        	this.initializeDetectionModel();
+        }
+        
+        if(this.cfg.imageHandler) {
+        	this.imageHandler = this.cfg.imageHandler;
+        } else {
+        	this.imageHandler = function(video, canvasContext, detections) {
+        		canvasContext.drawImage(video, 0, 0, video.width, video.height);
+        	}
         }
         
         this.loop();
@@ -45,7 +60,6 @@ PrimeFaces.widget.SmartCam = PrimeFaces.widget.BaseWidget.extend({
 				});
 			}
         }
-
     },
     
     stop: function() {
@@ -64,19 +78,35 @@ PrimeFaces.widget.SmartCam = PrimeFaces.widget.BaseWidget.extend({
 	        this.video = null;
         }
     },
-    
-    drawImage: function() {
-    	this.context.drawImage(this.video, 0, 0, this.cfg.width, this.cfg.height);
+
+    detect: async function() {
+    	return await this.model.estimateFaces(this.video);
+    },
+
+    handleVideo: function() {
+    	if(this.video && this.video.readyState && this.context) {
+    		var detections = null;
+    		if (this.modelInitialized) {
+            	detectionsCall = this.detect();
+            	detectionsCall.then(detections => this.imageHandler(this.video, this.context, detections));
+            } else {
+            	this.imageHandler(this.video, this.context, null);
+            }
+    	}
     },
     
     loop: function() {
     	var $this=this;
         this.imageRenderTimeout = setInterval(function(){
-    		if($this.video && $this.context) {
-    			$this.drawImage();
-            }
-        }, this.renderTimeout);
-    		
+			$this.handleVideo();
+        }, this.cfg.renderTimeout);
+    },
+    
+    initializeDetectionModel: async function() {
+    	this.model = await facemesh.load();
+        //warm-up
+    	this.model.estimateFaces(tf.zeros([640, 480, 3]));
+    	this.modelInitialized = true;
     }
 
 });

@@ -49,7 +49,9 @@ public abstract class SmartCamBase extends UIInput implements Widget {
         jpegQuality,
         forceFlash,
         autoStart,
-        renderTimeout
+        renderTimeout,
+        doDetection,
+        imageHandler
     }
 
     public SmartCamBase() {
@@ -180,4 +182,21 @@ public abstract class SmartCamBase extends UIInput implements Widget {
     public void setRenderTimeout(int renderTimeout) {
         getStateHelper().put(PropertyKeys.renderTimeout, renderTimeout);
     }
+
+    public boolean isDoDetection() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.doDetection, false);
+    }
+
+    public void setDoDetection(boolean doDetection) {
+        getStateHelper().put(PropertyKeys.doDetection, doDetection);
+    }
+
+    public String getImageHandler() {
+        return (String) getStateHelper().eval(PropertyKeys.imageHandler, null);
+    }
+
+    public void setImageHandler(String imageHandler) {
+        getStateHelper().put(PropertyKeys.imageHandler, imageHandler);
+    }
+
 }

@@ -91,7 +91,9 @@ public class SmartCamRenderer extends CoreRenderer {
                 .attr("width", component.getWidth(), 320)
                 .attr("height", component.getHeight(), 240)
                 .attr("renderTimeout", component.getRenderTimeout(), 50)
-                .attr("autoStart", component.isAutoStart(), true);
+                .attr("doDetection", component.isDoDetection(), false)
+                .attr("autoStart", component.isAutoStart(), true)
+                .callback("imageHandler", "function(video, canvasContext, detections)", component.getImageHandler());
 
         if (component.getUpdate() != null) {
             wb.attr("update", SearchExpressionFacade.resolveClientIds(context, component, component.getUpdate(),
