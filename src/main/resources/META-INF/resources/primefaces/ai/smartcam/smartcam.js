@@ -1,6 +1,14 @@
 PrimeFaces.widget.SmartCam = PrimeFaces.widget.BaseWidget.extend({
 
-    init: function(cfg) {
+	defaultLoad: async function() {
+		return await facemesh.load();
+	},
+	
+	defaultPredict: async function(model, input) {
+		return await this.model.estimateFaces(input);
+	},
+	
+	init: function(cfg) {
     	this._super(cfg);
         if(this.cfg.disabled) {
             return;
@@ -13,12 +21,11 @@ PrimeFaces.widget.SmartCam = PrimeFaces.widget.BaseWidget.extend({
         if (!("autoStart" in this.cfg)) {
             this.cfg.autoStart = true;
         }
-
-        if ("doDetection" in this.cfg) {
-            this.cfg.doDetection = true;
-        }
         
-        if(this.cfg.doDetection) {
+        this.modelLoader = this.cfg.model || this.defaultLoad;
+        this.doPrediction = this.cfg.predict || this.defaultPredict;
+
+        if(this.modelLoader && this.doPrediction) {
         	this.initializeDetectionModel();
         }
         
@@ -80,7 +87,7 @@ PrimeFaces.widget.SmartCam = PrimeFaces.widget.BaseWidget.extend({
     },
 
     detect: async function() {
-    	return await this.model.estimateFaces(this.video);
+    	return await this.doPrediction(this.model, this.video);
     },
 
     handleVideo: function() {
@@ -103,10 +110,13 @@ PrimeFaces.widget.SmartCam = PrimeFaces.widget.BaseWidget.extend({
     },
     
     initializeDetectionModel: async function() {
-    	this.model = await facemesh.load();
-        //warm-up
-    	this.model.estimateFaces(tf.zeros([640, 480, 3]));
-    	this.modelInitialized = true;
+    	$this = this;
+    	this.modelLoader.call().then(model => {
+    		$this.model = model;
+    		$this.doPrediction(model, tf.zeros([this.cfg.width, this.cfg.height, 3], dtype='int32'));
+    		$this.modelInitialized = true;
+    	});
+    	
     }
 
 });

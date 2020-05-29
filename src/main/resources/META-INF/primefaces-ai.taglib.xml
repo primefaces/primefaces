@@ -8,29 +8,6 @@
 
     <tag>
         <description>
-        	<![CDATA[Pattern detector used a model to classify the input instance.]]>
-        </description>
-        <tag-name>detector</tag-name>
-        <handler-class>
-            org.primefaces.ai.pattern.PatternDetectorTag
-        </handler-class>
-        <attribute>
-            <description>The model to be used to detect the object.</description>
-            <name>model</name>
-            <required>false</required>
-            <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Value of the component.]]>
-            </description>
-            <name>value</name>
-            <required>false</required>
-            <type>java.lang.Object</type>
-        </attribute>
-    </tag>
-    <tag>
-        <description>
             <![CDATA[.]]>
         </description>
         <tag-name>smartCam</tag-name>
@@ -57,14 +34,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
-            </description>
-            <name>binding</name>
-            <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Value of the component.]]>
             </description>
             <name>value</name>
@@ -73,36 +42,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[An el expression or a literal text that defines a converter for the component. When it's an EL expression, it's resolved to a converter instance.
-    In case it's a static text, it must refer to a converter id.]]>
-            </description>
-            <name>converter</name>
-            <required>false</required>
-            <type>java.faces.convert.Converter</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[When set true, process validations logic is executed at apply request values phase for this component. Default is false.]]>
-            </description>
-            <name>immediate</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Marks component as required.]]>
             </description>
             <name>required</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[A method expression referring to a method validationg the input.]]>
-            </description>
-            <name>validator</name>
-            <required>false</required>
-            <type>javax.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -117,22 +61,6 @@
                 <![CDATA[Message to display when required field validation fails.]]>
             </description>
             <name>requiredMessage</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Message to display when conversion fails.]]>
-            </description>
-            <name>converterMessage</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Message to display when validation fails.]]>
-            </description>
-            <name>validatorMessage</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -162,22 +90,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Identifiers of components to process during photo capture.]]>
-            </description>
-            <name>process</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Identifiers of components to update after photo capture.]]>
-            </description>
-            <name>update</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Method expression to listen capture events.]]>
             </description>
             <name>listener</name>
@@ -202,46 +114,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Width of the captured photo, defaults to width.]]>
-            </description>
-            <name>photoWidth</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Height of the captured photo, defaults to height]]>
-            </description>
-            <name>photoHeight</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Format of the image, valid values are "jpeg" default and png.]]>
-            </description>
-            <name>format</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Quality of the image between 0 and 100 when the format is jpeg, default value is 90.]]>
-            </description>
-            <name>jpegQuality</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Enables always using flash fallback even in an HTML5 environment.]]>
-            </description>
-            <name>forceFlash</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Disable camera start after initialize]]>
             </description>
             <name>autoStart</name>
@@ -258,17 +130,25 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Try to detect semantic objects in image]]>
+                <![CDATA[callback called when detections are caught]]>
             </description>
-            <name>doDetection</name>
+            <name>renderTimeout</name>
             <required>false</required>
-            <type>java.lang.Boolean</type>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
-                <![CDATA[callback called when detections are caught]]>
+                <![CDATA[constructor function for the model used to make predictions]]>
             </description>
-            <name>consumeDetections</name>
+            <name>model</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[function called to make predictions]]>
+            </description>
+            <name>predict</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
