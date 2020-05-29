@@ -33,6 +33,7 @@ import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.HTML;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class ContextMenuRenderer extends TieredMenuRenderer {
@@ -60,7 +61,8 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
                 .attr("event", menu.getEvent(), null)
                 .attr("selectionMode", menu.getSelectionMode(), "multiple")
                 .callback("beforeShow", "function(event)", menu.getBeforeShow())
-                .attr("targetFilter", menu.getTargetFilter(), null);
+                .attr("targetFilter", menu.getTargetFilter(), null)
+                .attr("touchable", ComponentUtils.isTouchable(context, menu),  true);
 
         wb.finish();
     }

@@ -103,7 +103,8 @@ public class TabViewRenderer extends CoreRenderer {
         wb.attr("effect", tabView.getEffect(), null)
                 .attr("effectDuration", tabView.getEffectDuration(), null)
                 .attr("scrollable", tabView.isScrollable())
-                .attr("tabindex", tabView.getTabindex(), null);
+                .attr("tabindex", tabView.getTabindex(), null)
+                .attr("touchable", ComponentUtils.isTouchable(context, tabView),  true);
 
         encodeClientBehaviors(context, tabView);
 

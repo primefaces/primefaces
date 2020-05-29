@@ -56,6 +56,7 @@ PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
         };
 
         this.paginator = new PrimeFaces.widget.Paginator(this.cfg.paginator);
+        this.paginator.bindSwipeEvents(this.jq, this.cfg);
     },
 
     /**

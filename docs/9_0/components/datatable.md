@@ -110,6 +110,7 @@ DataTable displays data in tabular format.
 | var                       | null               | String           | Name of the request-scoped variable used to refer each data.
 | virtualScroll             | false              | Boolean          | Loads data on demand as the scrollbar gets close to the bottom. Default is false.
 | widgetVar                 | null               | String           | Name of the client side widget.
+| touchable                 | true               | Boolean          | Enable touch support if browser detection supports it.
 
 ## Getting started with the DataTable
 We will be using the same Car and CarBean classes described in DataGrid section.

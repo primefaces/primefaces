@@ -252,7 +252,12 @@ public class DataTableRenderer extends DataRenderer {
                     .attr("scrollHeight", table.getScrollHeight(), null)
                     .attr("frozenColumns", table.getFrozenColumns(), 0)
                     .attr("liveScrollBuffer", table.getLiveScrollBuffer())
-                    .attr("virtualScroll", table.isVirtualScroll());
+                    .attr("virtualScroll", table.isVirtualScroll())
+                    .attr("touchable", false,  true);
+        }
+        else {
+            // only allow swipe if not scrollable
+            wb.attr("touchable", ComponentUtils.isTouchable(context, table),  true);
         }
 
         //Resizable/Draggable Columns
