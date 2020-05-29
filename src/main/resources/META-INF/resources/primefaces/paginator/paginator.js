@@ -259,9 +259,9 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Binds swipe events to this paginator to the JQ element passed in.
-     *
+     * @private
      * @param {JQuery} owner the owner JQ element of the paginator
-     * @param ownerConfig the owner configuration to check if touch enabled or not
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} ownerConfig the owner configuration to check if touch enabled or not
      */
     bindSwipeEvents: function(owner, ownerConfig) {
         if (!PrimeFaces.env.isTouchable(ownerConfig)) {
