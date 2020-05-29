@@ -3524,19 +3524,19 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Breakpoint value in pixels to switch between small and large viewport. Default is 640]]>
-            </description>
-            <name>breakpoint</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
             </description>
             <name>touchable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Breakpoint value in pixels to switch between small and large viewport. Default is 640]]>
+            </description>
+            <name>breakpoint</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
         </attribute>
         <attribute>
             <description>
@@ -30198,6 +30198,22 @@
             <name>touchable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Display the current calendar week infront of each row in the calendar panel.]]>
+            </description>
+            <name>showWeek</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[A javascript method that is used to calculate the calendar week. Default implementations are available if start of week is monday, sunday or saturday.]]>
+            </description>
+            <name>weekCalculator</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
 </facelet-taglib>
