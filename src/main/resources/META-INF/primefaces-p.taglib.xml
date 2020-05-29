@@ -7254,7 +7254,23 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Property to be used for default sorting.]]>
+                <![CDATA[Defines sorting mode, valid values are "single" (default) and "multiple".]]>
+            </description>
+            <name>sortMode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Ordered map of sort information in "multiple" sortMode; This also allows to sort the table by default.]]>
+            </description>
+            <name>sortMeta</name>
+            <required>false</required>
+            <type>java.util.Map</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Property to be used for default sorting in "single" sortMode.]]>
             </description>
             <name>sortBy</name>
             <required>false</required>
@@ -7262,7 +7278,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Sets sorting order. Default is "ascending"]]>
+                <![CDATA[Sets sorting order in "single" sortMode. Default is "ascending"]]>
             </description>
             <name>sortOrder</name>
             <required>false</required>
@@ -7270,11 +7286,28 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Custom pluggable sortFunction for default sorting.]]>
+                <![CDATA[Custom pluggable sortFunction for default sorting in "single" sortMode.]]>
             </description>
             <name>sortFunction</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the field to pass lazy load method for sorting in "single" sortMode. If not specified, sortBy expression is used to extract the name.]]>
+            </description>
+            <name>sortField</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines where the null values are placed in ascending sort order. Default value is "1" meaning null values are placed at the end in ascending mode and
+                at beginning in descending mode. Set to "-1" for the opposite behavior.]]>
+            </description>
+            <name>nullSortOrder</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
         </attribute>
         <attribute>
             <description>
@@ -7355,14 +7388,6 @@
             <name>filteredValue</name>
             <required>false</required>
             <type>java.util.List</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Defines sorting mode, valid values are "single" (default) and "multiple".]]>
-            </description>
-            <name>sortMode</name>
-            <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -7518,28 +7543,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Name of the field to pass lazy load method for sorting. If not specified, sortBy expression is used to extract the name.]]>
-            </description>
-            <name>sortField</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Defines when the datatable is initiated at client side, valid values are "load" (default) and "immediate".]]>
             </description>
             <name>initMode</name>
             <required>false</required>
             <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Defines where the null values are placed in ascending sort order. Default value is "1" meaning null values are placed at the end in ascending mode and
-                at beginning in descending mode. Set to "-1" for the opposite behavior.]]>
-            </description>
-            <name>nullSortOrder</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
         </attribute>
         <attribute>
             <description>
