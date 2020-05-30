@@ -532,7 +532,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
                         $this.hinput.append('<option value="' + PrimeFaces.escapeHTML(itemValue) + '" selected="selected"></option>');
                         if($this.multiItemContainer.children('li.ui-autocomplete-token').length >= $this.cfg.selectLimit) {
-                            $this.input.css('display', 'none').blur();
+                            $this.input.css('display', 'none').trigger("blur");
                             $this.disableDropdown();
                         }
 

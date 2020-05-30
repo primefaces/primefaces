@@ -1180,7 +1180,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      */
     disableButton: function (button) {
         if (button.hasClass('ui-state-focus')) {
-            button.blur();
+            button.trigger("blur");
         }
         
         button.attr('disabled', 'disabled').addClass('ui-state-disabled');

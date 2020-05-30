@@ -423,7 +423,7 @@
             }
 
             if (this.relative) {
-                $(window).resize(function() {
+                $(window).on("resize", function() {
                     s._carve().init();
                     s._draw();
                 });

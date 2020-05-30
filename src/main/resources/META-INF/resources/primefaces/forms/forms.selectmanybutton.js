@@ -90,7 +90,7 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} button A button of this widget to select.
      */
     select: function(button) {
-        button.children(':checkbox').prop('checked', true).change();
+        button.children(':checkbox').prop('checked', true).trigger('change');
     },
 
     /**
@@ -98,7 +98,7 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} button A button of this widget to unselect.
      */
     unselect: function(button) {
-        button.children(':checkbox').prop('checked', false).change();
+        button.children(':checkbox').prop('checked', false).trigger('change');
     }
 
 });

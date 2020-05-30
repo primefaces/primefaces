@@ -230,10 +230,10 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
      */
     triggerOnchange: function(input) {
         if (input.parent().hasClass('ui-inputnumber')) {
-            input.change();
+            input.trigger('change');
         }
         else if (input.hasClass('ui-spinner-input')) {
-            input.change();
+            input.trigger('change');
         }
     },
 

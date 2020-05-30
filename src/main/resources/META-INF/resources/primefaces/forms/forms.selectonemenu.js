@@ -941,7 +941,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * Removes focus from this widget.
      */
     blur: function() {
-        this.focusInput.blur();
+        this.focusInput.trigger("blur");
 
         this.callBehavior('blur');
     },

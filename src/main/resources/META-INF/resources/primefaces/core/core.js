@@ -121,7 +121,7 @@
                 form.attr('target', target);
             }
 
-            form.submit();
+            form.trigger('submit');
             form.children('input.ui-submit-param').remove();
 
             if (target) {

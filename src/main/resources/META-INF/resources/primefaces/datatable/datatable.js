@@ -4980,7 +4980,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             }
         }
 
-        this.scrollBody.scroll(function() {
+        this.scrollBody.on('scroll.datatable', function() {
             var scrollLeft = $this.scrollBody.scrollLeft(),
             scrollTop = $this.scrollBody.scrollTop();
             

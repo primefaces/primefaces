@@ -47,7 +47,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
 
         this.menuitemLinks.on("mouseenter", function(e) {
             if($this.jq.is(':focus')) {
-                $this.jq.blur();
+                $this.jq.trigger("blur");
             }
 
             $(this).addClass('ui-state-hover');
@@ -132,7 +132,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
 
                     case keyCode.ENTER:
                         currentLink.trigger('click');
-                        $this.jq.blur();
+                        $this.jq.trigger("blur");
                         PrimeFaces.utils.openLink(e, currentLink);
                     break;
 

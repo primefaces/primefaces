@@ -536,7 +536,7 @@
 						$.datepicker._setTime(tp_inst.inst, update);
 					} else {
 						this.value = tp_inst.formattedTime;
-						this.blur();
+						this.trigger('blur');
 					}
 				});
 

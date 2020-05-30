@@ -235,7 +235,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                     setTimeout(function(){
                         currentLink.trigger('click');
                     },1);
-                    $this.jq.blur();
+                    $this.jq.trigger("blur");
 
                     var href = currentLink.attr('href');
                     if(href && href !== '#') {
