@@ -21,32 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.ai.smartcam;
+package org.primefaces.component.ai.speechrecognition;
 
-import java.util.List;
+import javax.el.MethodExpression;
+import javax.faces.application.ResourceDependency;
+import javax.faces.context.FacesContext;
 
-import javax.faces.view.facelets.ComponentConfig;
-import javax.faces.view.facelets.ComponentHandler;
-import javax.faces.view.facelets.MetaRule;
-import javax.faces.view.facelets.MetaRuleset;
+@ResourceDependency(library = "primefaces", name = "components.css")
+@ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
+@ResourceDependency(library = "primefaces", name = "core.js")
+@ResourceDependency(library = "primefaces", name = "components.js")
+@ResourceDependency(library = "primefaces", name = "ai/speechrecognition/speechrecognition.js")
+public class SpeechRecognition extends SpeechRecognitionBase {
 
-import org.primefaces.event.CaptureEvent;
-import org.primefaces.facelets.MethodRule;
+    public static final String COMPONENT_TYPE = "org.primefaces.component.ai.speechrecognition.SpeechRecognition";
 
-public class SmartCamHandler extends ComponentHandler {
-
-    private static final MetaRule LISTENER
-            = new MethodRule("listener", List.class, new Class[]{CaptureEvent.class});
-
-    public SmartCamHandler(ComponentConfig config) {
-        super(config);
-    }
-
-    @SuppressWarnings("rawtypes")
     @Override
-    protected MetaRuleset createMetaRuleset(Class type) {
-        MetaRuleset metaRuleset = super.createMetaRuleset(type);
-        metaRuleset.addRule(LISTENER);
-        return metaRuleset;
+    public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
+        super.broadcast(event);
+
+        FacesContext facesContext = getFacesContext();
+        MethodExpression me = getListener();
+
+        if (me != null && event instanceof org.primefaces.event.CaptureEvent) {
+            me.invoke(facesContext.getELContext(), new Object[]{event});
+        }
     }
+
 }

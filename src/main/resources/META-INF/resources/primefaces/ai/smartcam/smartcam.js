@@ -1,12 +1,4 @@
 PrimeFaces.widget.SmartCam = PrimeFaces.widget.BaseWidget.extend({
-
-	defaultLoad: async function() {
-		return await facemesh.load();
-	},
-	
-	defaultPredict: async function(model, input) {
-		return await this.model.estimateFaces(input);
-	},
 	
 	init: function(cfg) {
     	this._super(cfg);
@@ -45,6 +37,14 @@ PrimeFaces.widget.SmartCam = PrimeFaces.widget.BaseWidget.extend({
 
     },
     
+	defaultLoad: async function() {
+		return await facemesh.load();
+	},
+	
+	defaultPredict: async function(model, input) {
+		return await this.model.estimateFaces(input);
+	},
+    
     play: function() {
         var div = document.getElementById(this.cfg.id);
         
@@ -78,12 +78,12 @@ PrimeFaces.widget.SmartCam = PrimeFaces.widget.BaseWidget.extend({
 		        this.canvas = null;
 	        }
         }
-        if(this.video) {
+        if(this.video && this.video.srcObject && this.video.srcObject.getTracks()) {
 	        this.video.srcObject.getTracks().forEach(function(track) {
 	      	  track.stop();
 	      	});
-	        this.video = null;
         }
+        this.video = null;
     },
 
     detect: async function() {

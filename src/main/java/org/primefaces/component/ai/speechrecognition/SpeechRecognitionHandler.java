@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.ai.smartcam;
+package org.primefaces.component.ai.speechrecognition;
 
 import java.util.List;
 
@@ -33,12 +33,12 @@ import javax.faces.view.facelets.MetaRuleset;
 import org.primefaces.event.CaptureEvent;
 import org.primefaces.facelets.MethodRule;
 
-public class SmartCamHandler extends ComponentHandler {
+public class SpeechRecognitionHandler extends ComponentHandler {
 
     private static final MetaRule LISTENER
             = new MethodRule("listener", List.class, new Class[]{CaptureEvent.class});
 
-    public SmartCamHandler(ComponentConfig config) {
+    public SpeechRecognitionHandler(ComponentConfig config) {
         super(config);
     }
 

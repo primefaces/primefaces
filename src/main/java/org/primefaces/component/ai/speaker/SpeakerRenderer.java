@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.ai.smartcam;
+package org.primefaces.component.ai.speaker;
 
 import java.io.IOException;
 
@@ -34,21 +34,20 @@ import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
-public class SmartCamRenderer extends CoreRenderer {
+public class SpeakerRenderer extends CoreRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        SmartCam cam = (SmartCam) component;
-
-        encodeMarkup(context, cam);
-        encodeScript(context, cam);
+        Speaker speaker = (Speaker) component;
+        encodeMarkup(context, speaker);
+        encodeScript(context, speaker);
     }
 
-    protected void encodeMarkup(FacesContext context, SmartCam cam) throws IOException {
+    protected void encodeMarkup(FacesContext context, Speaker component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = cam.getClientId(context);
-        String style = cam.getStyle();
-        String styleClass = cam.getStyleClass();
+        String clientId = component.getClientId(context);
+        String style = component.getStyle();
+        String styleClass = component.getStyleClass();
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
@@ -62,18 +61,14 @@ public class SmartCamRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, SmartCam component) throws IOException {
+    protected void encodeScript(FacesContext context, Speaker component) throws IOException {
         String clientId = component.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SmartCam", component.resolveWidgetVar(context), clientId)
+        wb.init("Speaker", component.resolveWidgetVar(context), clientId)
                 .attr("width", component.getWidth(), 320)
                 .attr("height", component.getHeight(), 240)
-                .attr("renderTimeout", component.getRenderTimeout(), 50)
-                .attr("autoStart", component.isAutoStart(), true)
-                .callback("model", "function()", component.getModel())
-                .callback("predict", "function(model, input)", component.getPredict())
-                .callback("imageHandler", "function(video, canvasContext, detections)", component.getImageHandler());
+                .attr("language", component.getLanguage(), "en-US");
 
         if (component.getUpdate() != null) {
             wb.attr("update", SearchExpressionFacade.resolveClientIds(context, component, component.getUpdate(),

@@ -21,17 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.ai.smartcam;
+package org.primefaces.component.ai.speechrecognition;
 
 import javax.faces.component.UIInput;
 
 import org.primefaces.component.api.Widget;
 
-public abstract class SmartCamBase extends UIInput implements Widget {
+public abstract class SpeechRecognitionBase extends UIInput implements Widget {
 
-    public static final String COMPONENT_FAMILY = "org.primefaces.component.ai.smartcam";
+    public static final String COMPONENT_FAMILY = "org.primefaces.component.ai.speechrecognition";
 
-    public static final String DEFAULT_RENDERER = "org.primefaces.component.ai.smartcam.SmartCamRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.ai.speechrecognition.SpeechRecognitionRenderer";
 
     public enum PropertyKeys {
 
@@ -43,14 +43,12 @@ public abstract class SmartCamBase extends UIInput implements Widget {
         listener,
         width,
         height,
-        autoStart,
-        renderTimeout,
-        imageHandler,
-        model,
-        predict
+        language,
+        speechHandler,
+        speechErrorHandler
     }
 
-    public SmartCamBase() {
+    public SpeechRecognitionBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
@@ -123,44 +121,28 @@ public abstract class SmartCamBase extends UIInput implements Widget {
         getStateHelper().put(PropertyKeys.height, height);
     }
 
-    public boolean isAutoStart() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoStart, true);
+    public String getLanguage() {
+        return (String) getStateHelper().eval(PropertyKeys.language, "en-US");
     }
 
-    public void setAutoStart(boolean autoStart) {
-        getStateHelper().put(PropertyKeys.autoStart, autoStart);
+    public void setLanguage(String language) {
+        getStateHelper().put(PropertyKeys.language, language);
     }
 
-    public int getRenderTimeout() {
-        return (Integer) getStateHelper().eval(PropertyKeys.renderTimeout, 50);
+    public String getSpeechHandler() {
+        return (String) getStateHelper().eval(PropertyKeys.speechHandler, null);
     }
 
-    public void setRenderTimeout(int renderTimeout) {
-        getStateHelper().put(PropertyKeys.renderTimeout, renderTimeout);
+    public void setSpeechHandler(String speechHandler) {
+        getStateHelper().put(PropertyKeys.speechHandler, speechHandler);
     }
 
-    public String getImageHandler() {
-        return (String) getStateHelper().eval(PropertyKeys.imageHandler, null);
+    public String getSpeechErrorHandler() {
+        return (String) getStateHelper().eval(PropertyKeys.speechErrorHandler, null);
     }
 
-    public void setImageHandler(String imageHandler) {
-        getStateHelper().put(PropertyKeys.imageHandler, imageHandler);
-    }
-
-    public String getModel() {
-        return (String) getStateHelper().eval(PropertyKeys.model, null);
-    }
-
-    public void setModel(String model) {
-        getStateHelper().put(PropertyKeys.model, model);
-    }
-
-    public String getPredict() {
-        return (String) getStateHelper().eval(PropertyKeys.predict, null);
-    }
-
-    public void setPredict(String predict) {
-        getStateHelper().put(PropertyKeys.predict, predict);
+    public void setSpeechErrorHandler(String speechErrorHandler) {
+        getStateHelper().put(PropertyKeys.speechErrorHandler, speechErrorHandler);
     }
 
 }
