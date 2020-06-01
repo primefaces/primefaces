@@ -70,6 +70,8 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
             'top': '0px',
             'width': documentBody.width() + 'px',
             'height': offset.top + 'px',
+            'pointer-events' : 'none',
+            'user-select': 'none',
             'z-index': zindex
         });
 
@@ -78,7 +80,9 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
             'left': '0px',
             'top': bottomTop + 'px',
             'width': documentBody.width() + 'px',
-            'height': (doc.height() - bottomTop)  + 'px',
+            'height': (doc.height() - bottomTop) + 'px',
+            'pointer-events' : 'none',
+            'user-select': 'none',
             'z-index': zindex
         });
 
@@ -87,6 +91,8 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
             'top': offset.top + 'px',
             'width': offset.left + 'px',
             'height': this.target.outerHeight() + 'px',
+            'pointer-events' : 'none',
+            'user-select': 'none',
             'z-index': zindex
         });
 
@@ -94,8 +100,10 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
         documentBody.children('div.ui-spotlight-right').css({
             'left': rightLeft + 'px',
             'top': offset.top + 'px',
-            'width': (documentBody.width() - rightLeft + 'px'),
+            'width': (documentBody.width() - rightLeft) + 'px',
             'height': this.target.outerHeight() + 'px',
+            'pointer-events' : 'none',
+            'user-select': 'none',
             'z-index': zindex
         });
     },

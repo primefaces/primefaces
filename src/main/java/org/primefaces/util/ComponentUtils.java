@@ -24,6 +24,7 @@
 package org.primefaces.util;
 
 import org.primefaces.component.api.RTLAware;
+import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.Widget;
 import org.primefaces.config.PrimeConfiguration;
@@ -222,6 +223,12 @@ public class ComponentUtils {
         boolean globalValue = PrimeRequestContext.getCurrentInstance(context).isRTL();
 
         return globalValue || component.isRTL();
+    }
+
+    public static boolean isTouchable(FacesContext context, TouchAware component) {
+        boolean globalValue = PrimeRequestContext.getCurrentInstance(context).isTouchable();
+
+        return globalValue || component.isTouchable();
     }
 
     public static void processDecodesOfFacetsAndChilds(UIComponent component, FacesContext context) {

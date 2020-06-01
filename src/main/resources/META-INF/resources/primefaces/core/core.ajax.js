@@ -359,12 +359,18 @@ if (!PrimeFaces.ajax) {
              * removes all requests that are waiting in the queue and have not been sent yet.
              */
             abortAll: function() {
+                // clear out any pending requests
+                this.requests = new Array();
+
+                // abort any in-flight that are not DONE(4)
                 for(var i = 0; i < this.xhrs.length; i++) {
-                    this.xhrs[i].abort();
+                    var xhr = this.xhrs[i];
+                    if (xhr.readyState != 4) {
+                        xhr.abort();
+                    }
                 }
 
                 this.xhrs = new Array();
-                this.requests = new Array();
             }
         },
 

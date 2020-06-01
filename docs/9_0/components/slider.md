@@ -38,6 +38,7 @@ onSlide | null | String | Client side callback to execute during sliding.
 onSlideEnd | null | String | Client side callback to execute when slide ends.
 range | false | Boolean | When enabled, two handles are provided for selection a range.
 displayTemplate | null | String | String template to use when updating the display. Valid placeholders are {value}, {min} and {max}.
+touchable | true | Boolean | Enable touch support if browser detection supports it.
 
 ## Getting started with Slider
 Slider requires an input component to work with, _for_ attribute is used to set the id of the input

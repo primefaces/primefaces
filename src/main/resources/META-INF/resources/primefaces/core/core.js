@@ -92,7 +92,7 @@
          * with the given value and the key used as the name. 
          * @param {string} parent The ID of a FORM element.
          * @param {Record<string, string>} params An object with key-value pairs.
-         * @return {typeof PrimeFaces}
+         * @return {typeof PrimeFaces} This object for chaining.
          */
         addSubmitParam : function(parent, params) {
             var form = $(this.escapeClientId(parent));
@@ -514,7 +514,7 @@
 
         /**
          * Finds the text currently selected by the user on the current page.
-         * @return {string | Selection}
+         * @return {string | Selection} The text currently selected by the user on the current page.
          */
         getSelection: function() {
             var text = '';
@@ -1034,6 +1034,18 @@
          */
         nextZindex: function() {
             return String(++PrimeFaces.zindex);
+        },
+      
+       /**
+         * Converts a date into an ISO-8601 date without using the browser timezone offset.
+         * 
+         * See https://stackoverflow.com/questions/10830357/javascript-toisostring-ignores-timezone-offset
+         * 
+         * @param {Date} date the date to convert
+         * @return {string} ISO-8601 version of the date
+         */
+        toISOString: function(date) {
+            return new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString();
         },
 
         /**

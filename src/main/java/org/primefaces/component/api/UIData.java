@@ -61,7 +61,7 @@ import org.primefaces.util.SharedStringBuilder;
  * It also contains some methods of the Mojarra impl (e.g. setRowIndexRowStatePreserved), maybe can remove it in the future.
  */
 @SuppressWarnings("unchecked")
-public class UIData extends javax.faces.component.UIData {
+public class UIData extends javax.faces.component.UIData implements TouchAware {
 
     public static final String PAGINATOR_TOP_CONTAINER_CLASS = "ui-paginator ui-paginator-top ui-widget-header";
     public static final String PAGINATOR_BOTTOM_CONTAINER_CLASS = "ui-paginator ui-paginator-bottom ui-widget-header";
@@ -117,7 +117,8 @@ public class UIData extends javax.faces.component.UIData {
         rowIndexVar,
         saved,
         lazy,
-        rowStatePreserved;
+        rowStatePreserved,
+        touchable;
     }
 
     public boolean isPaginator() {
@@ -135,6 +136,16 @@ public class UIData extends javax.faces.component.UIData {
 
     public void setPaginatorTemplate(java.lang.String _paginatorTemplate) {
         getStateHelper().put(PropertyKeys.paginatorTemplate, _paginatorTemplate);
+    }
+
+    @Override
+    public boolean isTouchable() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, true);
+    }
+
+    @Override
+    public void setTouchable(boolean touchable) {
+        getStateHelper().put(PropertyKeys.touchable, touchable);
     }
 
     @Override

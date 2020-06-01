@@ -128,7 +128,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         // see #7602
-        if (PrimeFaces.env.touch) {
+        if (PrimeFaces.env.isTouchable(this.cfg)) {
             this.focusInput.attr('readonly', true);
         }
 

@@ -81,7 +81,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
                 $this.show(e);
             });
 
-            if (PrimeFaces.env.touch) {
+            if (PrimeFaces.env.isTouchable(this.cfg)) {
                 $(document).swipe({
                     longTap:function(e, target) {
                        $this.show(e);
@@ -113,7 +113,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
                     $this.show(e);
                 });
 
-                if (PrimeFaces.env.touch) {
+                if (PrimeFaces.env.isTouchable(this.cfg)) {
                     $(this.jqTargetId).swipe({
                         longTap:function(e, target) {
                            $this.show(e);

@@ -225,27 +225,29 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             }
         });
 
-        this.itemsContainer.swipe({
-            swipeLeft:function(event) {
-                if($this.page === ($this.totalPages - 1)) {
-                    if($this.cfg.circular)
-                        $this.setPage(0);
-                }
-                else {
-                    $this.setPage($this.page + 1);
-                }
-            },
-            swipeRight: function(event) {
-            	if($this.page === 0) {
-                    if($this.cfg.circular)
-                        $this.setPage($this.totalPages - 1);
-                }
-                else {
-                    $this.setPage($this.page - 1);
-                }
-            },
-            excludedElements: PrimeFaces.utils.excludedSwipeElements()
-        });
+        if (PrimeFaces.env.isTouchable(this.cfg)) {
+            this.itemsContainer.swipe({
+                swipeLeft:function(event) {
+                    if($this.page === ($this.totalPages - 1)) {
+                        if($this.cfg.circular)
+                            $this.setPage(0);
+                    }
+                    else {
+                        $this.setPage($this.page + 1);
+                    }
+                },
+                swipeRight: function(event) {
+                    if($this.page === 0) {
+                        if($this.cfg.circular)
+                            $this.setPage($this.totalPages - 1);
+                    }
+                    else {
+                        $this.setPage($this.page - 1);
+                    }
+                },
+                excludedElements: PrimeFaces.utils.excludedSwipeElements()
+            });
+        }
 
         if(this.pageLinks.length) {
             this.pageLinks.on('click', function(e) {

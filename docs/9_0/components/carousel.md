@@ -43,6 +43,7 @@ Carousel is a multi purpose component to display a set of data or general conten
 | footerText | null | String | Label for footer.
 | responsive | false | Boolean | In responsive mode, carousel adjusts its content based on screen size.
 | breakpoint | 560 | Integer | Breakpoint value in pixels to switch between small and large viewport.
+| touchable | true | Boolean | Enable touch support if browser detection supports it.
 
 ## Getting Started with Carousel
 Carousel has two main use-cases; data and general content display. To begin with data iteration let’s

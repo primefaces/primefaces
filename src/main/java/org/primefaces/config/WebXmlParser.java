@@ -85,6 +85,12 @@ public class WebXmlParser {
     private static Map<String, String> getWebXmlErrorPages(FacesContext context) {
         try {
             Document webXml = toDocument(context.getExternalContext().getResource("/WEB-INF/web.xml"));
+
+            if (webXml == null) {
+                // Quarkus
+                webXml = toDocument(context.getExternalContext().getResource("/META-INF/web.xml"));
+            }
+
             if (webXml != null) {
                 return parseErrorPages(webXml.getDocumentElement());
             }
