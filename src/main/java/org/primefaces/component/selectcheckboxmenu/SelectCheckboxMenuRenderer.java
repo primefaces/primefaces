@@ -233,7 +233,6 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         Object valuesArray = (submittedValues != null) ? submittedValues : values;
         String listClass = createStyleClass(menu, null, SelectCheckboxMenu.MULTIPLE_CONTAINER_CLASS);
 
-
         writer.startElement("ul", null);
         writer.writeAttribute("label", menu.getLabel(), null);
         writer.writeAttribute("class", listClass, null);
