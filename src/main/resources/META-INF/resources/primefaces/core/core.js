@@ -92,7 +92,7 @@
          * with the given value and the key used as the name. 
          * @param {string} parent The ID of a FORM element.
          * @param {Record<string, string>} params An object with key-value pairs.
-         * @return {typeof PrimeFaces}
+         * @return {typeof PrimeFaces} This object for chaining.
          */
         addSubmitParam : function(parent, params) {
             var form = $(this.escapeClientId(parent));
@@ -514,7 +514,7 @@
 
         /**
          * Finds the text currently selected by the user on the current page.
-         * @return {string | Selection}
+         * @return {string | Selection} The text currently selected by the user on the current page.
          */
         getSelection: function() {
             var text = '';

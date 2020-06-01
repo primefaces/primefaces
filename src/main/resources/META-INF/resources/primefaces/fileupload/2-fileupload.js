@@ -35,12 +35,6 @@
  * when a file is sent to the server. See also {@link FileUploadCfg.onstart}.
  * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnStartCallback
  *
- * @interface {PrimeFaces.widget.FileUpload.XFileId} XFileId - Identifier of an uploaded file.
- * @prop {string} XFileId.filename - Name of the uploaded file.
- * @prop {Date} XFileId.lastmodified - Lastmodified-attribute of the uploaded file.
- * @prop {string} XFileId.type - (Mime-)type of the uploaded file.
- * @prop {number} XFileId.size - Size of the uploaded file.
- *
  * @interface {PrimeFaces.widget.FileUpload.UploadMessage} UploadMessage A error message for a file upload widget.
  * @prop {number} UploadMessage.filesize The size of the uploaded file in bytes.
  * @prop {string} UploadMessage.filename The name of the uploaded file.
@@ -98,9 +92,14 @@
  * @prop {string} cfg.process Component(s) to process in fileupload request.
  * @prop {boolean} cfg.sequentialUploads `true` to upload files one after each other, `false` to upload in parallel.
  * @prop {string} cfg.update Component(s) to update after fileupload completes.
- * @prop {number} cfg.maxChunkSize To upload large files in smaller chunks, set this option to a preferred maximum chunk size. If set to 0, null or undefined, or the browser does not support the required Blob API, files will be uploaded as a whole.
- * @prop {number} cfg.maxRetries Only for chunked file upload: Amount of retries when upload get´s interrupted due to e.g. unstable network connection.
- * @prop {number} cfg.retryTimeout Only for chunked file upload: (Base-)Timeout in milliseconds to wait until the next retry. It is multiplied with the retry count. (first retry: retryTimeout * 1, second retry: retryTimeout *2, ...)
+ * @prop {number} cfg.maxChunkSize To upload large files in smaller chunks, set this option to a preferred maximum chunk
+ * size. If set to `0`, `null` or `undefined`, or the browser does not support the required Blob API, files will be
+ * uploaded as a whole.
+ * @prop {number} cfg.maxRetries Only for chunked file upload: Amount of retries when upload gets interrupted due to
+ * e.g. an unstable network connection.
+ * @prop {number} cfg.retryTimeout Only for chunked file upload: (Base) timeout in milliseconds to wait until the next
+ * retry. It is multiplied with the retry count. (first retry: `retryTimeout * 1`, second retry: `retryTimeout * 2`,
+ * ...)
  * @prop {string} cfg.resumeContextPath Server-side path which provides information to resume chunked file upload.
  */
 PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
@@ -597,10 +596,11 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
 
     /**
-     * Creates a XFileId-object for a file.
+     * Creates a unique identifier (file key) for a given file. That identifier consists e.g. of the name of the
+     * uploaded file, its last modified-attribute etc. This is used by the server to identify uploaded files.
      * @private
-     * @param {File} file A file to create a FileId-object.
-     * @return {PrimeFaces.widget.FileUpload.XFileId}
+     * @param {File} file A file for which to create an identifier.
+     * @return {string} An identifier for the given file.
      */
     createXFileId: function(file) {
       return [file.name, file.lastModified, file.type, file.size].join();
@@ -626,7 +626,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Removes the given uploadeds file from this upload widget.
+     * Removes the given uploaded file from this upload widget.
      * @private
      * @param {PrimeFaces.widget.FileUpload.UploadFile[]} files Files to remove from this widget.
      */
@@ -773,12 +773,13 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
  * @prop {JQuery} display The DOM element for the UI display.
  * @prop {JQuery} input The DOM element for the file input element.
  * 
- * @interface {PrimeFaces.widget.SimpleFileUploadCfg} cfg The configuration for the {@link  SimpleFileUpload| SimpleFileUpload widget}.
+ * @interface {PrimeFaces.widget.SimpleFileUploadCfg} cfg The configuration for the
+ * {@link  SimpleFileUpload| SimpleFileUpload widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * 
- * @prop {boolean} cfg.skinSimple Applies theming to simple uploader.
+ * @prop {boolean} cfg.skinSimple Whether to apply theming to the simple upload widget.
  * @prop {boolean} cfg.disabled Whether this file upload is disabled.
  * @prop {number} cfg.fileLimit Maximum number of files allowed to upload.
  * @prop {string} cfg.fileLimitMessage Message to display when file limit exceeds.
