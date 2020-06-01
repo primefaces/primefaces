@@ -233,6 +233,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         Object valuesArray = (submittedValues != null) ? submittedValues : values;
         String listClass = createStyleClass(menu, null, SelectCheckboxMenu.MULTIPLE_CONTAINER_CLASS);
 
+
         writer.startElement("ul", null);
         writer.writeAttribute("label", menu.getLabel(), null);
         writer.writeAttribute("class", listClass, null);
@@ -241,12 +242,6 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             for (int i = 0; i < length; i++) {
                 Object value = Array.get(valuesArray, i);
                 String itemValueAsString = getOptionAsString(context, menu, converter, value);
-                writer.startElement("li", null);
-                writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_DISPLAY_CLASS, null);
-                writer.writeAttribute("data-item-value", itemValueAsString, null);
-
-                writer.startElement("span", null);
-                writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_LABEL_CLASS, null);
 
                 SelectItem selectedItem = null;
                 for (SelectItem item : selectItems) {
@@ -265,25 +260,35 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                     }
                 }
 
-                if (selectedItem != null && selectedItem.getLabel() != null) {
-                    if (selectedItem.isEscape()) {
-                        writer.writeText(selectedItem.getLabel(), null);
+                // #5956 Do not render a chip for the value if no matching option exists
+                if (selectedItem != null) {
+                    writer.startElement("li", null);
+                    writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_DISPLAY_CLASS, null);
+                    writer.writeAttribute("data-item-value", itemValueAsString, null);
+
+                    writer.startElement("span", null);
+                    writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_LABEL_CLASS, null);
+
+                    if (selectedItem.getLabel() != null) {
+                        if (selectedItem.isEscape()) {
+                            writer.writeText(selectedItem.getLabel(), null);
+                        }
+                        else {
+                            writer.write(selectedItem.getLabel());
+                        }
                     }
                     else {
-                        writer.write(selectedItem.getLabel());
+                        writer.writeText(value, null);
                     }
+
+                    writer.endElement("span");
+
+                    writer.startElement("span", null);
+                    writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_ICON_CLASS, null);
+                    writer.endElement("span");
+
+                    writer.endElement("li");
                 }
-                else {
-                    writer.writeText(value, null);
-                }
-
-                writer.endElement("span");
-
-                writer.startElement("span", null);
-                writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_ICON_CLASS, null);
-                writer.endElement("span");
-
-                writer.endElement("li");
             }
         }
 
