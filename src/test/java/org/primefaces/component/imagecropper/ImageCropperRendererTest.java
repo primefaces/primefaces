@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.org.primefaces.component.imagecropper;
+package org.primefaces.component.imagecropper;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;

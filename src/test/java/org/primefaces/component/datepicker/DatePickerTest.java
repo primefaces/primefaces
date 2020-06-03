@@ -980,14 +980,14 @@ public class DatePickerTest {
     @Test
     public void calculatePatternDefault() {
         setupValues(null, Locale.ENGLISH);
-        assertEquals(datePicker.calculatePattern(), "M/d/yy");
+        assertEquals("M/d/yy", datePicker.calculatePattern());
     }
 
     @Test
     public void calculatePatternWithTime() {
         setupValues(null, Locale.ENGLISH);
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
-        assertEquals(datePicker.calculatePattern(), "M/d/yy HH:mm");
+        assertEquals("M/d/yy HH:mm", datePicker.calculatePattern());
     }
 
     @Test
@@ -995,7 +995,7 @@ public class DatePickerTest {
         setupValues(null, Locale.ENGLISH);
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
         when(datePicker.isShowSeconds()).thenReturn(Boolean.TRUE);
-        assertEquals(datePicker.calculatePattern(), "M/d/yy HH:mm:ss");
+        assertEquals("M/d/yy HH:mm:ss", datePicker.calculatePattern());
     }
 
     @Test
@@ -1004,7 +1004,7 @@ public class DatePickerTest {
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
         when(datePicker.isShowSeconds()).thenReturn(Boolean.TRUE);
         when(datePicker.getHourFormat()).thenReturn("12");
-        assertEquals(datePicker.calculatePattern(), "M/d/yy KK:mm:ss a");
+        assertEquals("M/d/yy KK:mm:ss a", datePicker.calculatePattern());
     }
 
     @Test
@@ -1012,7 +1012,7 @@ public class DatePickerTest {
         setupValues(null, Locale.ENGLISH);
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
         when(datePicker.getHourFormat()).thenReturn("12");
-        assertEquals(datePicker.calculatePattern(), "M/d/yy KK:mm a");
+        assertEquals("M/d/yy KK:mm a", datePicker.calculatePattern());
     }
 
 
@@ -1021,7 +1021,7 @@ public class DatePickerTest {
         setupValues(null, Locale.ENGLISH);
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
         when(datePicker.getPattern()).thenReturn("yyyy-MM-dd KK:mm:ss a");
-        assertEquals(datePicker.calculatePattern(), "yyyy-MM-dd HH:mm");
+        assertEquals("yyyy-MM-dd HH:mm", datePicker.calculatePattern());
     }
 
 }

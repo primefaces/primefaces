@@ -1995,7 +1995,7 @@ public class SearchExpressionFacadeTest {
         root.getChildren().add(dialog);
 
         String clientId = resolveClientId(root, " @widgetVar(myDlg) ", EnumSet.of(SearchExpressionHint.RESOLVE_CLIENT_SIDE));
-        assertEquals(clientId, "@widgetVar(myDlg)");
+        assertEquals("@widgetVar(myDlg)", clientId);
     }
     
     @Test
@@ -2010,6 +2010,6 @@ public class SearchExpressionFacadeTest {
         root.getChildren().add(dialog);
 
         String clientId = resolveClientId(root, " @widgetVar(myDlg) ");
-        assertSame(clientId, "dlg");
+        assertSame("dlg", clientId);
     }
 }
