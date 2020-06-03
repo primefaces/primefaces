@@ -125,8 +125,8 @@
 			    now = (new Date()).getTime();
 
 			options   = (typeof options === "object") ? options : {};
-			callback  = ($.isFunction(callback)) ? callback : function() {};
-			callback  = ($.isFunction(options)) ? options : callback;
+			callback  = (typeof callback === "function") ? callback : function() {};
+			callback  = (typeof options === "function") ? options : callback;
 			settings  = $.extend({}, defaults, options, internalData);
 
 			return this
@@ -256,11 +256,11 @@
 					// drag and drop
 					if (settings.enableDrag) {
 						// on screen
-						if (!$.isFunction(self.drag)) {
+						if (typeof self.drag !== "function") {
 							if (settings.debug) {
 								alert("You do not have the drag plugin loaded.");
 							}
-						} else if (!$.isFunction(self.drop)) {
+						} else if (typeof self.drop !== "function") {
 							if (settings.debug) {
 								alert("You do not have the drop plugin loaded.");
 							}
@@ -635,13 +635,13 @@
 			callback = callback || function() {};
 
 			// find callback function in arguments
-			if ($.isFunction(passedData)) {
+			if (typeof passedData === "function") {
 				callback = passedData;
 				passedData = null;
-			} else if ($.isFunction(easing)) {
+			} else if (typeof easing === "function") {
 				callback = easing;
 				easing = null;
-			} else if ($.isFunction(duration)) {
+			} else if (typeof duration === "function") {
 				callback = duration;
 				duration = null;
 			}
@@ -730,10 +730,10 @@
 			    callback = passedArgs[2] || function() {};
 
 			// find callback
-			if ($.isFunction(easing)) {
+			if (typeof easing === "function") {
 				callback = easing;
 				easing = null;
-			} else if ($.isFunction(duration)) {
+			} else if (typeof duration === "function") {
 				callback = duration;
 				duration = null;
 			}
@@ -802,10 +802,10 @@
 			callback = callback || function() {};
 
 			// find callback
-			if ($.isFunction(easing)) {
+			if (typeof easing === "function") {
 				callback = easing;
 				easing = null;
-			} else if ($.isFunction(duration)) {
+			} else if (typeof duration === "function") {
 				callback = duration;
 				duration = null;
 			}
@@ -824,10 +824,10 @@
 			callback = callback || function() {};
 
 			// find callback
-			if ($.isFunction(easing)) {
+			if (typeof easing === "function") {
 				callback = easing;
 				easing = null;
-			} else if ($.isFunction(duration)) {
+			} else if (typeof duration === "function") {
 				callback = duration;
 				duration = null;
 			}
@@ -866,10 +866,10 @@
 			callback = callback || function() {};
 
 			// find callback
-			if ($.isFunction(easing)) {
+			if (typeof easing === "function") {
 				callback = easing;
 				easing = null;
-			} else if ($.isFunction(duration)) {
+			} else if (typeof duration === "function") {
 				callback = duration;
 				duration = null;
 			}
@@ -888,10 +888,10 @@
 			callback = callback || function() {};
 
 			// find callback
-			if ($.isFunction(easing)) {
+			if (typeof easing === "function") {
 				callback = easing;
 				easing = null;
-			} else if ($.isFunction(duration)) {
+			} else if (typeof duration === "function") {
 				callback = duration;
 				duration = null;
 			}
@@ -1186,7 +1186,7 @@
 	$.fn.roundabout = function(method) {
 		if (methods[method]) {
 			return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
-		} else if (typeof method === "object" || $.isFunction(method) || !method) {
+		} else if (typeof method === "object" || typeof method === "function" || !method) {
 			return methods.init.apply(this, arguments);
 		} else {
 			$.error("Method " + method + " does not exist for jQuery.roundabout.");

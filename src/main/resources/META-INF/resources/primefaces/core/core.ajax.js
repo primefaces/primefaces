@@ -996,7 +996,7 @@ if (!PrimeFaces.ajax) {
                             var activeElement = $(document.activeElement);
                             var activeElementId = activeElement.attr('id');
                             var activeElementSelection;
-                            if (activeElement.length > 0 && activeElement.is('input') && $.isFunction($.fn.getSelection)) {
+                            if (activeElement.length > 0 && activeElement.is('input') && typeof $.fn.getSelection === "function") {
                                 activeElementSelection = activeElement.getSelection();
                             }
 
