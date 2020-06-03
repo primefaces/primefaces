@@ -189,7 +189,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                                 $this.mouseEvent = e;
                             }
 
-                            if($.trim($this.jq.children('.ui-tooltip-text').html()) !== '') {
+                            if(PrimeFaces.trim($this.jq.children('.ui-tooltip-text').html()) !== '') {
                                 $this.show();
                             }
                         })
@@ -204,7 +204,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                                 $this.mouseEvent = e;
                             }
 
-                            if($.trim($this.jq.children('.ui-tooltip-text').html()) !== '') {
+                            if(PrimeFaces.trim($this.jq.children('.ui-tooltip-text').html()) !== '') {
                                 $this.show();
                             }
                         })
@@ -215,7 +215,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
 
         this.jq.appendTo(document.body);
 
-        if($.trim(this.jq.children('.ui-tooltip-text').html()) === '') {
+        if(PrimeFaces.trim(this.jq.children('.ui-tooltip-text').html()) === '') {
             var text = this.target.attr('title');
             if(this.cfg.escape)
                 this.jq.children('.ui-tooltip-text').text(text);

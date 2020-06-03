@@ -1540,7 +1540,7 @@
                         if (type == "resizer" && $El.hasClass(root + _slide))
                             classes += (root + _slide + _hover) + (root + _pane + _slide + _hover);
 
-                        return $.trim(classes);
+                        return PrimeFaces.trim(classes);
                     }
                     , addHover = function (evt, el) {
                         var $E = $(el || this);

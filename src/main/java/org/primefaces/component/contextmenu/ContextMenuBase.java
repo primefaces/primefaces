@@ -23,10 +23,11 @@
  */
 package org.primefaces.component.contextmenu;
 
+import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 
-public abstract class ContextMenuBase extends AbstractMenu implements Widget {
+public abstract class ContextMenuBase extends AbstractMenu implements Widget, TouchAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -43,7 +44,8 @@ public abstract class ContextMenuBase extends AbstractMenu implements Widget {
         event,
         beforeShow,
         selectionMode,
-        targetFilter;
+        targetFilter,
+        touchable;
 
         private String toString;
 
@@ -148,5 +150,15 @@ public abstract class ContextMenuBase extends AbstractMenu implements Widget {
 
     public void setTargetFilter(String targetFilter) {
         getStateHelper().put(PropertyKeys.targetFilter, targetFilter);
+    }
+
+    @Override
+    public boolean isTouchable() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, true);
+    }
+
+    @Override
+    public void setTouchable(boolean touchable) {
+        getStateHelper().put(PropertyKeys.touchable, touchable);
     }
 }

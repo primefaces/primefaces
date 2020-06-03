@@ -28,7 +28,7 @@ Steps to reproduce the behavior:
 A clear and concise description of what you expected to happen.
 
 **Example XHTML**
-```xml
+```html
 <h:form id="frmTest">
   ..
 </h:form>

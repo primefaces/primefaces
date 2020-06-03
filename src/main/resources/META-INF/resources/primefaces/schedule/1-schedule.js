@@ -92,7 +92,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             if($this.hasBehavior('dateSelect')) {
                 var ext = {
                     params: [
-                        {name: $this.id + '_selectedDate', value: dateClickInfo.date.toISOString()}
+                        {name: $this.id + '_selectedDate', value: PrimeFaces.toISOString(dateClickInfo.date)}
                     ]
                 };
 
@@ -206,8 +206,8 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 update: $this.id,
                 formId: $this.cfg.formId,
                 params: [
-                    {name: $this.id + '_start', value: fetchInfo.start.toISOString()},
-                    {name: $this.id + '_end', value: fetchInfo.end.toISOString()}
+                    {name: $this.id + '_start', value: PrimeFaces.toISOString(fetchInfo.start)},
+                    {name: $this.id + '_end', value: PrimeFaces.toISOString(fetchInfo.end)}
                 ],
                 onsuccess: function(responseXML, status, xhr) {
                     PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {

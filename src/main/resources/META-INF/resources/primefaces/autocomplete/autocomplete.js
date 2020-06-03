@@ -257,7 +257,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.bindDropdownEvents();
 
         if(PrimeFaces.env.browser.mobile) {
-            this.dropdown.bind('touchstart', function() {
+            this.dropdown.on('touchstart', function() {
                 $this.touchToDropdownButton = true;
             });
         }
@@ -569,7 +569,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         });
 
         if(PrimeFaces.env.browser.mobile) {
-            this.items.bind('touchstart', function() {
+            this.items.on('touchstart', function() {
                 if(!$this.touchToDropdownButton) {
                     $this.itemClick = true;
                 }

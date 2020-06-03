@@ -109,6 +109,7 @@ public class SliderRenderer extends CoreRenderer {
                 .attr("disabled", slider.isDisabled(), false)
                 .attr("range", range)
                 .attr("displayTemplate", slider.getDisplayTemplate(), null)
+                .attr("touchable", ComponentUtils.isTouchable(context, slider),  true)
                 .callback("onSlideStart", "function(event,ui)", slider.getOnSlideStart())
                 .callback("onSlide", "function(event,ui)", slider.getOnSlide())
                 .callback("onSlideEnd", "function(event,ui)", slider.getOnSlideEnd());

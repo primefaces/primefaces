@@ -721,6 +721,7 @@ public class DataTable extends DataTableBase {
         setSortField(null);
         setDefaultSort(true);
         setSortMeta(null);
+        setScrollOffset(0);
     }
 
     public boolean isFilteringEnabled() {

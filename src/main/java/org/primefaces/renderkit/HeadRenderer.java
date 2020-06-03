@@ -201,7 +201,7 @@ public class HeadRenderer extends Renderer {
             writer.write("PrimeFaces.settings.partialSubmit=true;");
         }
 
-        if (!projectStage.equals(ProjectStage.Production)) {
+        if (projectStage != ProjectStage.Production) {
             writer.write("PrimeFaces.settings.projectStage='" + projectStage.toString() + "';");
         }
 

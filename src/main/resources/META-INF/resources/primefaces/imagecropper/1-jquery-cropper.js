@@ -47,7 +47,7 @@
         if (typeof option === 'string') {
           var fn = cropper[option];
 
-          if ($.isFunction(fn)) {
+          if (typeof fn === "function") {
             result = fn.apply(cropper, args);
 
             if (result === cropper) {

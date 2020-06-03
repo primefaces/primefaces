@@ -27,9 +27,10 @@ import javax.faces.component.html.HtmlSelectOneMenu;
 
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.RTLAware;
+import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.Widget;
 
-public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, InputHolder, RTLAware {
+public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, InputHolder, RTLAware, TouchAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -58,7 +59,8 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
         placeholder,
         autoWidth,
         dynamic,
-        dir
+        dir,
+        touchable
     }
 
     public SelectOneMenuBase() {
@@ -248,5 +250,15 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
     @Override
     public void setDir(String dir) {
         getStateHelper().put(PropertyKeys.dir, dir);
+    }
+
+    @Override
+    public boolean isTouchable() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, true);
+    }
+
+    @Override
+    public void setTouchable(boolean touchable) {
+        getStateHelper().put(PropertyKeys.touchable, touchable);
     }
 }

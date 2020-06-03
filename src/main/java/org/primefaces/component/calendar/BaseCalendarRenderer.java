@@ -278,8 +278,12 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             type = ve.getType(context.getELContext());
         }
 
-        // If type could not be determined via value-expression try it this way. Required for e.g. usage in custom dataTable filters
-        if (type == null) {
+        /*
+        If type could not be determined via value-expression try it this way.
+        a) Required for e.g. usage in custom dataTable filters
+        b) some Usecases with generics - see https://github.com/primefaces/primefaces/issues/5913
+        */
+        if (type == null || type.equals(Object.class)) {
             if (calendar.isTimeOnly()) {
                 type = LocalTime.class;
             }

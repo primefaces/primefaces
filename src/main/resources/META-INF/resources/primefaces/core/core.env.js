@@ -58,6 +58,18 @@ if (!PrimeFaces.env) {
          */
         isLtIE: function(version) {
             return (this.browser.msie) ? parseInt(this.browser.version, 10) < version : false;
+        },
+
+        /**
+         * A widget is touch enabled if the browser supports touch AND the widget has the touchable property enabled.
+         * The default will be true if it widget status can't be determined.
+         * 
+         * @param {PrimeFaces.widget.BaseWidgetCfg} cfg the widget configuration
+         * @return {boolean} true if touch is enabled, false if disabled
+         */
+        isTouchable: function(cfg) {
+            var widgetTouchable = (cfg == undefined) || (cfg.touchable != undefined ? cfg.touchable : true);
+            return PrimeFaces.env.touch && widgetTouchable;
         }
     };
 

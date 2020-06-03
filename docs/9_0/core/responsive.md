@@ -58,3 +58,18 @@ For a detailed example of a responsive page that uses all of the parts above, vi
 http://www.primefaces.org/showcase/ui/misc/responsive.xhtml
 
 Source code is available at GitHub.
+
+## Touch Support
+Some components are mobile aware and support mobile concepts such as Swipe on TabView or Long Press to bring up the Context Menu.
+This can be disabled per component or globally using primefaces.TOUCHABLE global setting to `false` instructs PrimeFaces Touch aware 
+components such as datatable, galleria, tabview, carousel, context menu to disable touch support on browsers that support it.
+
+```xml
+<context-param>
+    <param-name>primefaces.TOUCHABLE</param-name>
+    <param-value>false</param-value>
+</context-param>
+```
+
+Parameter value can also be an EL expression for dynamic values.
+

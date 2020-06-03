@@ -45,4 +45,9 @@ public class EscapeUtilsTest {
     public void forJavascriptVarName() {
         assertEquals("form_datatable_0_my_input_text", EscapeUtils.forJavaScriptVarName("form:datatable:0:my_input_text")); 
     }
+
+    @Test
+    public void forJavascriptNullInput() {
+        assertEquals("null", EscapeUtils.forJavaScript(null)); 
+    }
 }

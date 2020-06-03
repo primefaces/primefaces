@@ -862,7 +862,7 @@ $('selector').tabs(); // And instantiate it */
 					(inst.options.useThemeRoller ? ' ui-widget ui-widget-content ui-corner-all ui-shadow' : '') +
 					(inst.options.isRTL ? ' ' + this._rtlClass : '') + ' ' +
 					(inst._inline ? this._inlineClass : this._mainDivClass));
-			if ($.isFunction(inst.options.beforeShow)) {
+			if (typeof inst.options.beforeShow === "function") {
 				inst.options.beforeShow.apply((inst._input ? inst._input[0] : null),
 					[inst._mainDiv, inst]);
 			}
@@ -941,7 +941,7 @@ $('selector').tabs(); // And instantiate it */
 						(showAnim === 'fadeIn' ? 'fadeOut' : 'hide'))](showAnim ? duration : 0);
 				}
 			}
-			if ($.isFunction(inst.options.onClose)) {
+			if (typeof inst.options.onClose === "function") {
 				inst.options.onClose.apply((inst._input ? inst._input[0] : null),  // trigger custom callback
 					[inst._input.val(), inst]);
 			}
@@ -1112,7 +1112,7 @@ $('selector').tabs(); // And instantiate it */
 				value = value.substr(0, maxlen);
 			}
 			inst._input.val(value);
-			if (!$.isFunction(inst.options.onKeypress)) {
+			if (typeof value !== "function") {
 				inst._input.trigger('change'); // fire the change event
 			}
 		},
@@ -1122,7 +1122,7 @@ $('selector').tabs(); // And instantiate it */
 			@param {object} inst The instance settings.
 			@param {string} key The character pressed. */
 		_notifyKeypress: function(inst, key) {
-			if ($.isFunction(inst.options.onKeypress)) { // trigger custom callback
+			if (typeof inst.options.onKeypress === "function") { // trigger custom callback
 				inst.options.onKeypress.apply((inst._input ? inst._input[0] : null),
 					[key, inst._input.val(), inst]);
 			}

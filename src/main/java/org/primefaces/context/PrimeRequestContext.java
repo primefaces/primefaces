@@ -63,6 +63,7 @@ public class PrimeRequestContext {
     private PrimeApplicationContext applicationContext;
     private Boolean ignoreAutoUpdate;
     private Boolean rtl;
+    private Boolean touchable;
 
     public PrimeRequestContext(FacesContext context) {
         this.context = context;
@@ -253,5 +254,23 @@ public class PrimeRequestContext {
         }
 
         return rtl;
+    }
+
+    public boolean isTouchable() {
+        if (touchable == null) {
+            String param = context.getExternalContext().getInitParameter(Constants.ContextParams.TOUCHABLE);
+            if (param == null) {
+                touchable = true;
+            }
+            else {
+                ELContext elContext = context.getELContext();
+                ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
+                ValueExpression expression = expressionFactory.createValueExpression(elContext, param, String.class);
+                String expressionValue = (String) expression.getValue(elContext);
+                touchable = expressionValue == null || Boolean.parseBoolean(expressionValue);
+            }
+        }
+
+        return touchable;
     }
 }

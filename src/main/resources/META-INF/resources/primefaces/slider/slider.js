@@ -65,7 +65,7 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
 
         this.bindEvents();
 
-        if (PrimeFaces.env.touch) {
+        if (PrimeFaces.env.isTouchable(this.cfg)) {
             this.bindTouchEvents();
         }
     },

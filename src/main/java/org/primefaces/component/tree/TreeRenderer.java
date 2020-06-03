@@ -625,7 +625,7 @@ public class TreeRenderer extends CoreRenderer {
 
         writer.startElement("tr", null);
         writer.startElement("td", null);
-        if (!nodeOrder.equals(NodeOrder.FIRST)) {
+        if (nodeOrder != NodeOrder.FIRST) {
             writer.writeAttribute("class", "ui-treenode-connector-line", null);
         }
         writer.endElement("td");
@@ -633,7 +633,7 @@ public class TreeRenderer extends CoreRenderer {
 
         writer.startElement("tr", null);
         writer.startElement("td", null);
-        if (!nodeOrder.equals(NodeOrder.LAST)) {
+        if (nodeOrder != NodeOrder.LAST) {
             writer.writeAttribute("class", "ui-treenode-connector-line", null);
         }
         writer.endElement("td");

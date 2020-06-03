@@ -341,7 +341,7 @@ if (window.PrimeFaces) {
      * @param {JQuery} element Element for which to create the message.
      * @param {string} [defaultKey] Key of the message.
      * @param {string} [msg] Default message to show. May be used to find the key of the message.
-     * @return {PrimeFaces.FacesMessageBase}
+     * @return {PrimeFaces.FacesMessageBase} A faces message with the given key for the given element.
      */
     PrimeFaces.util.ValidationContext.getMessageBV = function(element, defaultKey, msg) {
         if (msg && msg.charAt(0) !== '{') {
