@@ -122,11 +122,11 @@ PrimeFaces.widget.InputSwitch = PrimeFaces.widget.DeferredWidget.extend({
         });
 
 
-        this.handle.mouseover(function() {
+        this.handle.on("mouseover", function() {
             if(!$this.jq.hasClass('ui-state-disabled')) {
                 $(this).addClass('ui-state-hover');
             }
-        }).mouseout(function() {
+        }).on("mouseout", function() {
             if(!$this.jq.hasClass('ui-state-disabled')) {
                 $(this).removeClass('ui-state-hover');
             }

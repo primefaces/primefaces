@@ -42,7 +42,7 @@ public class SortEvent extends AbstractAjaxBehaviorEvent {
     public SortEvent(UIComponent component, Behavior behavior, UIColumn sortColumn, SortOrder order, int sortColumnIndex) {
         super(component, behavior);
         this.sortColumn = sortColumn;
-        this.ascending = order.equals(SortOrder.ASCENDING);
+        this.ascending = order == SortOrder.ASCENDING;
         this.sortColumnIndex = sortColumnIndex;
     }
 

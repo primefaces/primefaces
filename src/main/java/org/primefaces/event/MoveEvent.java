@@ -31,7 +31,6 @@ public class MoveEvent extends AbstractAjaxBehaviorEvent {
     private static final long serialVersionUID = 1L;
 
     private int top;
-
     private int left;
 
     public MoveEvent(UIComponent component, Behavior behavior, int top, int left) {

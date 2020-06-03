@@ -111,11 +111,11 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
         if(title) {
             node.data('title', title);
 
-            node.mouseover(this.mouseoverNode);
-            node.mouseout(this.mouseoutNode);
+            node.on("mouseover", this.mouseoverNode);
+            node.on("mouseout", this.mouseoutNode);
 
-            text.mouseover(this.mouseoverText);
-            text.mouseout(this.mouseoutText);
+            text.on("mouseover", this.mouseoverText);
+            text.on("mouseout", this.mouseoutText);
         }
 
         //show

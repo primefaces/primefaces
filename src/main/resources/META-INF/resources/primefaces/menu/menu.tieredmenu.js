@@ -62,7 +62,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
     bindHoverModeEvents: function() {
         var $this = this;
 
-        this.links.mouseenter(function() {
+        this.links.on("mouseenter", function() {
             var link = $(this),
             menuitem = link.parent();
 
@@ -85,7 +85,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
             }
         });
 
-        this.rootLinks.click(function(e) {
+        this.rootLinks.on("click", function(e) {
             var link = $(this),
             menuitem = link.parent(),
             submenu = menuitem.children('ul.ui-menu-child');
@@ -105,12 +105,12 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
             }
         });
 
-        this.links.filter('.ui-submenu-link').click(function(e) {
+        this.links.filter('.ui-submenu-link').on("click", function(e) {
             $this.itemClick = true;
             e.preventDefault();
         });
 
-        this.jq.find('ul.ui-menu-list').mouseleave(function(e) {
+        this.jq.find('ul.ui-menu-list').on("mouseleave", function(e) {
            if($this.activeitem) {
                $this.deactivate($this.activeitem);
            }
@@ -126,14 +126,14 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
     bindClickModeEvents: function() {
         var $this = this;
 
-        this.links.mouseenter(function() {
+        this.links.on("mouseenter", function() {
             var menuitem = $(this).parent();
 
             if(!menuitem.hasClass('ui-menuitem-active')) {
                 menuitem.addClass('ui-menuitem-highlight').children('a.ui-menuitem-link').addClass('ui-state-hover');
             }
         })
-        .mouseleave(function() {
+        .on("mouseleave", function() {
             var menuitem = $(this).parent();
 
             if(!menuitem.hasClass('ui-menuitem-active')) {

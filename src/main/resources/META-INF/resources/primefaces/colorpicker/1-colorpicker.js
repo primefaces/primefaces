@@ -91,7 +91,7 @@
                 $this.livePreview.css('backgroundColor', '#' + hex);
             }
 
-            $this.input.change();
+            $this.input.trigger('change');
 
             $this.callBehavior('change');
         };

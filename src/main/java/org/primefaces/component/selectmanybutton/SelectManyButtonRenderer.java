@@ -148,6 +148,7 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("value", itemValueAsString, null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute(HTML.ARIA_LABEL, option.getLabel(), null);
 
         renderOnchange(context, button);
 

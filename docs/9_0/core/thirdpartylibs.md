@@ -31,7 +31,7 @@ are many other third party libraries and plugins used to support features.
 | jQuery UI Touch Punch | 1.0.5 | https://github.com/RWAP/jquery-ui-touch-punch |
 | jQuery UI | 1.12.1 | https://github.com/jquery/jquery-ui |
 | [jQuery](../jsdocs/modules/jquery.html) | 3.4.1 | https://jquery.com/ |
-| [jquery.layout](../jsdocs/modules/jquery.html#layout) | 1.5.12 | https://github.com/GedMarc/layout |
+| [jquery.layout](../jsdocs/modules/jquery.html#layout) | 1.7.4 | https://github.com/GedMarc/layout |
 | [Jquery.print](../jsdocs/modules/jquery.html#print) | 1.6.0 | https://github.com/DoersGuild/jQuery.print |
 | [jScrollPane](../jsdocs/modules/jquery.html#jscrollpane) | 2.0.19 | http://jscrollpane.kelvinluck.com/ |
 | [JSPlumb Diagram](../jsdocs/globals.html#jsplumb) | 2.1.0 | https://github.com/jsplumb/jsplumb |

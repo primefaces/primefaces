@@ -258,13 +258,13 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         params[2] = MessageFactory.getLabel(context, calendar);
 
         if (calendar.isTimeOnly()) {
-            message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.TIME", FacesMessage.SEVERITY_ERROR, params);
+            message = MessageFactory.getFacesMessage("javax.faces.converter.DateTimeConverter.TIME", FacesMessage.SEVERITY_ERROR, params);
         }
         else if (calendar.hasTime()) {
-            message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.DATETIME", FacesMessage.SEVERITY_ERROR, params);
+            message = MessageFactory.getFacesMessage("javax.faces.converter.DateTimeConverter.DATETIME", FacesMessage.SEVERITY_ERROR, params);
         }
         else {
-            message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.DATE", FacesMessage.SEVERITY_ERROR, params);
+            message = MessageFactory.getFacesMessage("javax.faces.converter.DateTimeConverter.DATE", FacesMessage.SEVERITY_ERROR, params);
         }
 
         return new ConverterException(message);

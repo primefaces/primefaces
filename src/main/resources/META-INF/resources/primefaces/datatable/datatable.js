@@ -2804,7 +2804,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            if(content && $.trim(content).length) {
+                            if(content && PrimeFaces.trim(content).length) {
                                 row.addClass('ui-expanded-row');
                                 this.displayExpandedRow(row, content);
                             }
@@ -2952,10 +2952,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             var keyCode = $.ui.keyCode;
                             switch (e.which) {
                                 case keyCode.ENTER:
-                                    $(this).closest("tr").find(".ui-row-editor-check").click();
+                                    $(this).closest("tr").find(".ui-row-editor-check").trigger("click");
                                     return false; // prevents executing other event handlers (adding new row to the table)
                                 case keyCode.ESCAPE:
-                                    $(this).closest("tr").find(".ui-row-editor-close").click();
+                                    $(this).closest("tr").find(".ui-row-editor-close").trigger("click");
                                     return false;
                                 default:
                                     break;
@@ -5007,7 +5007,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             }
         }
 
-        this.scrollBody.scroll(function() {
+        this.scrollBody.on('scroll.datatable', function() {
             var scrollLeft = $this.scrollBody.scrollLeft(),
             scrollTop = $this.scrollBody.scrollTop();
             

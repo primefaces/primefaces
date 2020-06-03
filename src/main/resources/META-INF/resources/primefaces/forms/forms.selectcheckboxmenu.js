@@ -670,7 +670,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} value A value against which the available options are matched.
      */
     filter: function(value) {
-        var filterValue = this.cfg.caseSensitive ? $.trim(value) : $.trim(value).toLowerCase();
+        var filterValue = this.cfg.caseSensitive ? PrimeFaces.trim(value) : PrimeFaces.trim(value).toLowerCase();
 
         if(filterValue === '') {
             this.itemContainer.children('li.ui-selectcheckboxmenu-item').filter(':hidden').show();
@@ -883,7 +883,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             if(updateInput) {
             	var itemGroups = item.prevAll('li.ui-selectcheckboxmenu-item-group'),
                 input = this.inputs.eq(item.index() - itemGroups.length);
-                input.prop('checked', true).attr('aria-checked', true).change();
+                input.prop('checked', true).attr('aria-checked', true).trigger('change');
 
                 this.updateToggler();
 
@@ -916,7 +916,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             if(updateInput) {
                 var itemGroups = item.prevAll('li.ui-selectcheckboxmenu-item-group'),
                 input = this.inputs.eq(item.index() - itemGroups.length);
-                input.prop('checked', false).attr('aria-checked', false).change();
+                input.prop('checked', false).attr('aria-checked', false).trigger('change');
                 uncheckedInput.trigger('focus.selectCheckboxMenu');
                 this.updateToggler();
 

@@ -71,7 +71,8 @@ public class AjaxStatusRenderer extends CoreRenderer {
             writer.writeAttribute("class", status.getStyleClass(), "styleClass");
         }
 
-        for (String event : AjaxStatus.EVENTS) {
+        for (int i = 0; i < AjaxStatus.EVENTS.size(); i++) {
+            String event = AjaxStatus.EVENTS.get(i);
             UIComponent facet = status.getFacet(event);
 
             if (ComponentUtils.shouldRenderFacet(facet)) {

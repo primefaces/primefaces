@@ -515,23 +515,23 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.skinButton(this.jq.find('.ui-button'));
 
         //events
-        $(this.jqId + ' .ui-picklist-button-add').click(function() {_self.add();});
-        $(this.jqId + ' .ui-picklist-button-add-all').click(function() {_self.addAll();});
-        $(this.jqId + ' .ui-picklist-button-remove').click(function() {_self.remove();});
-        $(this.jqId + ' .ui-picklist-button-remove-all').click(function() {_self.removeAll();});
+        $(this.jqId + ' .ui-picklist-button-add').on("click", function() {_self.add();});
+        $(this.jqId + ' .ui-picklist-button-add-all').on("click", function() {_self.addAll();});
+        $(this.jqId + ' .ui-picklist-button-remove').on("click", function() {_self.remove();});
+        $(this.jqId + ' .ui-picklist-button-remove-all').on("click", function() {_self.removeAll();});
 
         if(this.cfg.showSourceControls) {
-            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-up').click(function() {_self.moveUp(_self.sourceList);});
-            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-top').click(function() {_self.moveTop(_self.sourceList);});
-            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-down').click(function() {_self.moveDown(_self.sourceList);});
-            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-bottom').click(function() {_self.moveBottom(_self.sourceList);});
+            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-up').on("click", function() {_self.moveUp(_self.sourceList);});
+            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-top').on("click", function() {_self.moveTop(_self.sourceList);});
+            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-down').on("click", function() {_self.moveDown(_self.sourceList);});
+            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-bottom').on("click", function() {_self.moveBottom(_self.sourceList);});
         }
 
         if(this.cfg.showTargetControls) {
-            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-up').click(function() {_self.moveUp(_self.targetList);});
-            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-top').click(function() {_self.moveTop(_self.targetList);});
-            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-down').click(function() {_self.moveDown(_self.targetList);});
-            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-bottom').click(function() {_self.moveBottom(_self.targetList);});
+            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-up').on("click", function() {_self.moveUp(_self.targetList);});
+            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-top').on("click", function() {_self.moveTop(_self.targetList);});
+            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-down').on("click", function() {_self.moveDown(_self.targetList);});
+            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-bottom').on("click", function() {_self.moveBottom(_self.targetList);});
         }
     },
 
@@ -639,7 +639,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} list The source or target list that is to be filtered. 
      */
     filter: function(value, list) {
-        var filterValue = $.trim(value).toLowerCase(),
+        var filterValue = PrimeFaces.trim(value).toLowerCase(),
         items = list.children('li.ui-picklist-item'),
         animated = this.isAnimated();
 
@@ -1180,7 +1180,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      */
     disableButton: function (button) {
         if (button.hasClass('ui-state-focus')) {
-            button.blur();
+            button.trigger("blur");
         }
         
         button.attr('disabled', 'disabled').addClass('ui-state-disabled');

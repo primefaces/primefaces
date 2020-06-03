@@ -119,7 +119,7 @@ if (!PrimeFaces.ajax) {
              * data, such as which forms should be updated. 
              */
             updateFormStateInput: function(name, value, xhr) {
-                var trimmedValue = $.trim(value);
+                var trimmedValue = PrimeFaces.trim(value);
 
                 var forms = null;
                 if (xhr && xhr.pfSettings && xhr.pfSettings.portletForms) {
@@ -573,7 +573,7 @@ if (!PrimeFaces.ajax) {
                 // fallback to @all if no process was defined by the user
                 else {
                     var definedProcess = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall(cfg, 'process');
-                    definedProcess = $.trim(definedProcess);
+                    definedProcess = PrimeFaces.trim(definedProcess);
                     if (definedProcess === '') {
                         processIds = '@all';
                     }
@@ -996,7 +996,7 @@ if (!PrimeFaces.ajax) {
                             var activeElement = $(document.activeElement);
                             var activeElementId = activeElement.attr('id');
                             var activeElementSelection;
-                            if (activeElement.length > 0 && activeElement.is('input') && $.isFunction($.fn.getSelection)) {
+                            if (activeElement.length > 0 && activeElement.is('input') && typeof $.fn.getSelection === "function") {
                                 activeElementSelection = activeElement.getSelection();
                             }
 

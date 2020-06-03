@@ -23,8 +23,7 @@
  */
 package org.primefaces.component.selectmanymenu;
 
-import java.util.Set;
-
+import java.util.List;
 import javax.faces.application.ResourceDependency;
 
 import org.primefaces.util.LangUtils;
@@ -44,7 +43,7 @@ public class SelectManyMenu extends SelectManyMenuBase {
     public static final String FILTER_CONTAINER_CLASS = "ui-selectlistbox-filter-container";
     public static final String FILTER_CLASS = "ui-selectlistbox-filter ui-inputfield ui-widget ui-state-default ui-corner-all";
     public static final String FILTER_ICON_CLASS = "ui-icon ui-icon-search";
-    public static final Set<String> DOM_EVENTS = LangUtils.unmodifiableSet("onchange", "onclick", "ondblclick");
+    public static final List<String> DOM_EVENTS = LangUtils.unmodifiableList("onchange", "onclick", "ondblclick");
 
     @Override
     public String getInputClientId() {

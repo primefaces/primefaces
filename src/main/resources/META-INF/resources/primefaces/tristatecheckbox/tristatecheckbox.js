@@ -140,7 +140,7 @@ PrimeFaces.widget.TriStateCheckbox = PrimeFaces.widget.BaseWidget.extend({
             }
 
             // fire change event
-            this.input.change();
+            this.input.trigger('change');
         }
     }
 });

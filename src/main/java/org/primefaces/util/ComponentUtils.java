@@ -54,7 +54,8 @@ import java.util.function.Supplier;
 
 public class ComponentUtils {
 
-    public static final Set<VisitHint> VISIT_HINTS_SKIP_UNRENDERED = EnumSet.of(VisitHint.SKIP_UNRENDERED);
+    public static final Set<VisitHint> VISIT_HINTS_SKIP_UNRENDERED = Collections.unmodifiableSet(
+            EnumSet.of(VisitHint.SKIP_UNRENDERED));
 
     public static final String SKIP_ITERATION_HINT = "javax.faces.visit.SKIP_ITERATION";
 

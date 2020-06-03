@@ -78,17 +78,17 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
     bindEvents: function() {
         var $this = this;
 
-        this.headers.mouseover(function() {
+        this.headers.on("mouseover", function() {
             var element = $(this);
             if(!element.hasClass('ui-state-active')&&!element.hasClass('ui-state-disabled')) {
                 element.addClass('ui-state-hover');
             }
-        }).mouseout(function() {
+        }).on("mouseout", function() {
             var element = $(this);
             if(!element.hasClass('ui-state-active')&&!element.hasClass('ui-state-disabled')) {
                 element.removeClass('ui-state-hover');
             }
-        }).click(function(e) {
+        }).on("click", function(e) {
             var element = $(this);
             if(!element.hasClass('ui-state-disabled')) {
                 var tabIndex = $this.headers.index(element);

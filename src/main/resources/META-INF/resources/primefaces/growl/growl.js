@@ -140,7 +140,7 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
         var $this = this,
         sticky = this.cfg.sticky;
 
-        message.mouseover(function() {
+        message.on("mouseover", function() {
             var msg = $(this);
 
             //visuals
@@ -153,7 +153,7 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
                 clearTimeout(msg.data('timeout'));
             }
         })
-        .mouseout(function() {
+        .on("mouseout", function() {
             //visuals
             $(this).find('div.ui-growl-icon-close:first').hide();
 
@@ -164,7 +164,7 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //remove message on click of close icon
-        message.find('div.ui-growl-icon-close').click(function() {
+        message.find('div.ui-growl-icon-close').on("click", function() {
             $this.removeMessage(message);
 
             //clear timeout if removed manually

@@ -19,13 +19,13 @@ PrimeFaces.widget.TagCloud = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
         var _self = this;
 
-        this.jq.find('a').mouseover(function() {
+        this.jq.find('a').on("mouseover", function() {
             $(this).addClass('ui-state-hover');
         })
-        .mouseout(function() {
+        .on("mouseout", function() {
             $(this).removeClass('ui-state-hover');
         })
-        .click(function(e) {
+        .on("click", function(e) {
             var link = $(this);
 
             if(link.attr('href') === '#') {

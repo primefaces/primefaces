@@ -154,6 +154,15 @@ public class LangUtils {
         return Collections.unmodifiableSet(result);
     }
 
+    @SafeVarargs
+    public static <T> List<T> concat(List<T>...  lists) {
+        ArrayList<T> result = new ArrayList<>();
+        for (List<T> list : lists) {
+            result.addAll(list);
+        }
+        return Collections.unmodifiableList(result);
+    }
+
     public static String[] concat(String[] array1, String[] array2) {
         int length1 = array1.length;
         int length2 = array2.length;

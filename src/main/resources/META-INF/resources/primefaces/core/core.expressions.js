@@ -28,7 +28,7 @@ if (!PrimeFaces.expressions) {
 
             if (splittedExpressions) {
                 for (var i = 0; i < splittedExpressions.length; ++i) {
-                    var expression =  $.trim(splittedExpressions[i]);
+                    var expression =  PrimeFaces.trim(splittedExpressions[i]);
                     if (expression.length > 0) {
 
                         // skip unresolvable keywords
@@ -78,7 +78,7 @@ if (!PrimeFaces.expressions) {
 
             if (splittedExpressions) {
                 for (var i = 0; i < splittedExpressions.length; ++i) {
-                    var expression =  $.trim(splittedExpressions[i]);
+                    var expression =  PrimeFaces.trim(splittedExpressions[i]);
                     if (expression.length > 0) {
 
                         // just a id or passtrough keywords

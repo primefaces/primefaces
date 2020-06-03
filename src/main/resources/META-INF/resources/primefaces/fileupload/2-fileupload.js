@@ -473,7 +473,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
             if(key === keyCode.SPACE || key === keyCode.ENTER) {
                 $this.chooseButton.children('input').trigger('click');
-                $(this).blur();
+                $(this).trigger('blur');
                 e.preventDefault();
             }
         });
@@ -762,7 +762,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
      * Brings up the native file selection dialog.
      */
     show: function() {
-        this.input.click();
+        this.input.trigger("click");
     }
 });
 
@@ -951,10 +951,10 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
      */
     show: function() {
         if(this.cfg.skinSimple) {
-            this.input.click();
+            this.input.trigger("click");
         }
         else {
-            this.jq.click();
+            this.jq.trigger("click");
         }
     }
 
