@@ -363,7 +363,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} value Search term for filtering. 
      */
     filter: function(value) {
-        var filterValue = $.trim(value).toLowerCase();
+        var filterValue = PrimeFaces.trim(value).toLowerCase();
 
         if(filterValue === '') {
             this.menuitems.filter(':hidden').show();
