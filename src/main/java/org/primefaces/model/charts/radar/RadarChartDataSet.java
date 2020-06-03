@@ -445,9 +445,7 @@ public class RadarChartDataSet extends ChartDataSet {
      */
     @Override
     public String encode() throws IOException {
-        FastStringWriter fsw = new FastStringWriter();
-
-        try {
+        try (FastStringWriter fsw = new FastStringWriter()) {
             fsw.write("{");
 
             ChartUtils.writeDataValue(fsw, "type", "radar", false);
@@ -475,11 +473,8 @@ public class RadarChartDataSet extends ChartDataSet {
             ChartUtils.writeDataValue(fsw, "pointHoverRadius", this.pointHoverRadius, true);
 
             fsw.write("}");
-        }
-        finally {
-            fsw.close();
-        }
 
-        return fsw.toString();
+            return fsw.toString();
+        }
     }
 }

@@ -188,9 +188,7 @@ public class PieChartDataSet extends ChartDataSet {
      */
     @Override
     public String encode() throws IOException {
-        FastStringWriter fsw = new FastStringWriter();
-
-        try {
+        try (FastStringWriter fsw = new FastStringWriter()) {
             fsw.write("{");
 
             ChartUtils.writeDataValue(fsw, "type", this.getType(), false);
@@ -204,11 +202,8 @@ public class PieChartDataSet extends ChartDataSet {
             ChartUtils.writeDataValue(fsw, "hoverBorderWidth", this.hoverBorderWidth, true);
 
             fsw.write("}");
-        }
-        finally {
-            fsw.close();
-        }
 
-        return fsw.toString();
+            return fsw.toString();
+        }
     }
 }

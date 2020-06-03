@@ -106,9 +106,7 @@ public class CartesianCategoryAxes extends CartesianAxes {
      */
     @Override
     public String encode() throws IOException {
-        FastStringWriter fsw = new FastStringWriter();
-
-        try {
+        try (FastStringWriter fsw = new FastStringWriter()) {
             fsw.write(super.encode());
 
             if (this.type != null) {
@@ -122,11 +120,8 @@ public class CartesianCategoryAxes extends CartesianAxes {
                 fsw.write(this.ticks.encode());
                 fsw.write("}");
             }
-        }
-        finally {
-            fsw.close();
-        }
 
-        return fsw.toString();
+            return fsw.toString();
+        }
     }
 }

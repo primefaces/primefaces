@@ -185,9 +185,7 @@ public abstract class CartesianTicks implements Serializable {
      * @throws java.io.IOException If an I/O error occurs
      */
     public String encode() throws IOException {
-        FastStringWriter fsw = new FastStringWriter();
-
-        try {
+        try (FastStringWriter fsw = new FastStringWriter()) {
             ChartUtils.writeDataValue(fsw, "autoSkip", this.autoSkip, false);
             ChartUtils.writeDataValue(fsw, "autoSkipPadding", this.autoSkipPadding, true);
             ChartUtils.writeDataValue(fsw, "labelOffset", this.labelOffset, true);
@@ -195,11 +193,8 @@ public abstract class CartesianTicks implements Serializable {
             ChartUtils.writeDataValue(fsw, "minRotation", this.minRotation, true);
             ChartUtils.writeDataValue(fsw, "mirror", this.mirror, true);
             ChartUtils.writeDataValue(fsw, "padding", this.padding, true);
-        }
-        finally {
-            fsw.close();
-        }
 
-        return fsw.toString();
+            return fsw.toString();
+        }
     }
 }

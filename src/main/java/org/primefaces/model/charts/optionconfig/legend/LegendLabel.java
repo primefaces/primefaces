@@ -43,6 +43,7 @@ public class LegendLabel implements Serializable {
     private String fontStyle;
     private Number padding;
     private boolean usePointStyle = false;
+
     /**
      * width of colored box
      *
@@ -51,6 +52,7 @@ public class LegendLabel implements Serializable {
     public Number getBoxWidth() {
         return boxWidth;
     }
+
     /**
      * width of colored box
      *
@@ -59,6 +61,7 @@ public class LegendLabel implements Serializable {
     public void setBoxWidth(Number boxWidth) {
         this.boxWidth = boxWidth;
     }
+
     /**
      * Font color for the label.
      *
@@ -67,6 +70,7 @@ public class LegendLabel implements Serializable {
     public String getFontColor() {
         return fontColor;
     }
+
     /**
      * Font color for the label.
      *
@@ -75,6 +79,7 @@ public class LegendLabel implements Serializable {
     public void setFontColor(String fontColor) {
         this.fontColor = fontColor;
     }
+
     /**
      * Font family for the label, follows CSS font-family options.
      *
@@ -83,6 +88,7 @@ public class LegendLabel implements Serializable {
     public String getFontFamily() {
         return fontFamily;
     }
+
     /**
      * Font family for the label, follows CSS font-family options.
      *
@@ -91,6 +97,7 @@ public class LegendLabel implements Serializable {
     public void setFontFamily(String fontFamily) {
         this.fontFamily = fontFamily;
     }
+
     /**
      * Font size for the label.
      *
@@ -99,6 +106,7 @@ public class LegendLabel implements Serializable {
     public Number getFontSize() {
         return fontSize;
     }
+
     /**
      * Font size for the label.
      *
@@ -107,6 +115,7 @@ public class LegendLabel implements Serializable {
     public void setFontSize(Number fontSize) {
         this.fontSize = fontSize;
     }
+
     /**
      * Font style for the label, follows CSS font-style options.
      *
@@ -115,6 +124,7 @@ public class LegendLabel implements Serializable {
     public String getFontStyle() {
         return fontStyle;
     }
+
     /**
      * Font style for the label, follows CSS font-style options.
      *
@@ -123,6 +133,7 @@ public class LegendLabel implements Serializable {
     public void setFontStyle(String fontStyle) {
         this.fontStyle = fontStyle;
     }
+
     /**
      * Padding between rows of colored boxes.
      *
@@ -131,6 +142,7 @@ public class LegendLabel implements Serializable {
     public Number getPadding() {
         return padding;
     }
+
     /**
      * Padding between rows of colored boxes.
      *
@@ -139,6 +151,7 @@ public class LegendLabel implements Serializable {
     public void setPadding(Number padding) {
         this.padding = padding;
     }
+
     /**
      * Label style will match corresponding point style (size is based on fontSize, boxWidth is not used in this case).
      *
@@ -148,6 +161,7 @@ public class LegendLabel implements Serializable {
     public boolean isUsePointStyle() {
         return usePointStyle;
     }
+
     /**
      * Label style will match corresponding point style (size is based on fontSize, boxWidth is not used in this case).
      *
@@ -164,9 +178,7 @@ public class LegendLabel implements Serializable {
      * @throws java.io.IOException If an I/O error occurs
      */
     public String encode() throws IOException {
-        FastStringWriter fsw = new FastStringWriter();
-
-        try {
+        try (FastStringWriter fsw = new FastStringWriter()) {
             fsw.write("{");
 
             ChartUtils.writeDataValue(fsw, "usePointStyle", this.usePointStyle, false);
@@ -178,12 +190,9 @@ public class LegendLabel implements Serializable {
             ChartUtils.writeDataValue(fsw, "boxWidth", this.boxWidth, true);
 
             fsw.write("}");
-        }
-        finally {
-            fsw.close();
-        }
 
-        return fsw.toString();
+            return fsw.toString();
+        }
     }
 
 }

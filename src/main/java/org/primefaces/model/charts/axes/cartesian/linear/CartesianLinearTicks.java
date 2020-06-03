@@ -197,9 +197,7 @@ public class CartesianLinearTicks extends CartesianTicks {
      */
     @Override
     public String encode() throws IOException {
-        FastStringWriter fsw = new FastStringWriter();
-
-        try {
+        try (FastStringWriter fsw = new FastStringWriter()) {
             fsw.write(super.encode());
             ChartUtils.writeDataValue(fsw, "beginAtZero", this.beginAtZero, true);
             ChartUtils.writeDataValue(fsw, "min", this.min, true);
@@ -209,11 +207,8 @@ public class CartesianLinearTicks extends CartesianTicks {
             ChartUtils.writeDataValue(fsw, "stepSize", this.stepSize, true);
             ChartUtils.writeDataValue(fsw, "suggestedMax", this.suggestedMax, true);
             ChartUtils.writeDataValue(fsw, "suggestedMin", this.suggestedMin, true);
-        }
-        finally {
-            fsw.close();
-        }
 
-        return fsw.toString();
+            return fsw.toString();
+        }
     }
 }
