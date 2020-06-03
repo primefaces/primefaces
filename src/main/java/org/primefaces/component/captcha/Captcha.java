@@ -111,7 +111,7 @@ public class Captcha extends CaptchaBase {
                     params[0] = MessageFactory.getLabel(context, this);
                     params[1] = value;
 
-                    msg = MessageFactory.getMessage(Captcha.INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
+                    msg = MessageFactory.getFacesMessage(Captcha.INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
                 }
 
                 context.addMessage(getClientId(context), msg);

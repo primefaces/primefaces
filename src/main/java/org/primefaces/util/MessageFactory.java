@@ -44,14 +44,14 @@ public class MessageFactory {
     private MessageFactory() {
     }
 
-    public static FacesMessage getMessage(String messageId, FacesMessage.Severity severity, Object[] params) {
-        FacesMessage facesMessage = getMessage(LocaleUtils.getCurrentLocale(), messageId, params);
+    public static FacesMessage getFacesMessage(String messageId, FacesMessage.Severity severity, Object[] params) {
+        FacesMessage facesMessage = getFacesMessage(LocaleUtils.getCurrentLocale(), messageId, params);
         facesMessage.setSeverity(severity);
 
         return facesMessage;
     }
 
-    public static FacesMessage getMessage(Locale locale, String messageId, Object[] params) {
+    public static FacesMessage getFacesMessage(Locale locale, String messageId, Object[] params) {
         String summary = null;
         String detail = null;
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -64,7 +64,9 @@ public class MessageFactory {
         if (userBundleName != null) {
             try {
                 bundle = getBundle(userBundleName, locale, currentClassLoader, facesContext);
-                summary = bundle.getString(messageId);
+                if (bundle.containsKey(messageId)) {
+                    summary = bundle.getString(messageId);
+                }
             }
             catch (MissingResourceException e) {
                 // No Op
@@ -78,7 +80,9 @@ public class MessageFactory {
                 if (bundle == null) {
                     throw new NullPointerException();
                 }
-                summary = bundle.getString(messageId);
+                if (bundle.containsKey(messageId)) {
+                    summary = bundle.getString(messageId);
+                }
             }
             catch (MissingResourceException e) {
                 // No Op
@@ -92,7 +96,9 @@ public class MessageFactory {
                 if (bundle == null) {
                     throw new NullPointerException();
                 }
-                summary = bundle.getString(messageId);
+                if (bundle.containsKey(messageId)) {
+                    summary = bundle.getString(messageId);
+                }
             }
             catch (MissingResourceException e) {
                 // No Op
@@ -103,7 +109,10 @@ public class MessageFactory {
 
         if (bundle != null) {
             try {
-                detail = getFormattedText(locale, bundle.getString(messageId + DEFAULT_DETAIL_SUFFIX), params);
+                String detailMessageId = messageId + DEFAULT_DETAIL_SUFFIX;
+                if (bundle.containsKey(detailMessageId)) {
+                    detail = getFormattedText(locale, bundle.getString(detailMessageId), params);
+                }
             }
             catch (MissingResourceException e) {
                 // NoOp
@@ -114,18 +123,73 @@ public class MessageFactory {
     }
 
     public static String getMessage(String messageId, Object[] params) {
-        FacesMessage message = getMessage(LocaleUtils.getCurrentLocale(), messageId, params);
+        return getMessage(LocaleUtils.getCurrentLocale(), messageId, params);
+    }
 
-        return message.getSummary();
+    public static String getMessage(Locale locale, String messageId, Object[] params) {
+        String summary = null;
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        Application application = facesContext.getApplication();
+        String userBundleName = application.getMessageBundle();
+        ResourceBundle bundle = null;
+        ClassLoader currentClassLoader = LangUtils.getCurrentClassLoader(application.getClass());
+
+        //try user defined bundle first
+        if (userBundleName != null) {
+            try {
+                bundle = getBundle(userBundleName, locale, currentClassLoader, facesContext);
+                if (bundle.containsKey(messageId)) {
+                    summary = bundle.getString(messageId);
+                }
+            }
+            catch (MissingResourceException e) {
+                // No Op
+            }
+        }
+
+        //try primefaces bundle
+        if (summary == null) {
+            try {
+                bundle = getBundle(PRIMEFACES_BUNDLE_BASENAME, locale, currentClassLoader, facesContext);
+                if (bundle == null) {
+                    throw new NullPointerException();
+                }
+                if (bundle.containsKey(messageId)) {
+                    summary = bundle.getString(messageId);
+                }
+            }
+            catch (MissingResourceException e) {
+                // No Op
+            }
+        }
+
+        //fallback to default jsf bundle
+        if (summary == null) {
+            try {
+                bundle = getBundle(DEFAULT_BUNDLE_BASENAME, locale, currentClassLoader, facesContext);
+                if (bundle == null) {
+                    throw new NullPointerException();
+                }
+                if (bundle.containsKey(messageId)) {
+                    summary = bundle.getString(messageId);
+                }
+            }
+            catch (MissingResourceException e) {
+                // No Op
+            }
+        }
+
+        summary = getFormattedText(locale, summary, params);
+
+        return summary;
     }
 
     public static String getFormattedText(Locale locale, String message, Object[] params) {
-        MessageFormat messageFormat = null;
-
-        if (params == null || message == null) {
+        if ((params == null || params.length == 0) || LangUtils.isValueBlank(message)) {
             return message;
         }
 
+        MessageFormat messageFormat = null;
         if (locale != null) {
             messageFormat = new MessageFormat(message, locale);
         }
