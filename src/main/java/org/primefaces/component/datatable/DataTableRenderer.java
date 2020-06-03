@@ -717,6 +717,9 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("role", "columnheader", null);
         writer.writeAttribute(HTML.ARIA_LABEL, ariaHeaderLabel, null);
         writer.writeAttribute("scope", "col", null);
+        if (component != null) {
+            renderDynamicPassThruAttributes(context, component);
+        }
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
@@ -1451,6 +1454,10 @@ public class DataTableRenderer extends DataRenderer {
         }
         if (styleClass != null) {
             writer.writeAttribute("class", styleClass, null);
+        }
+        UIComponent component = (column instanceof UIComponent) ? (UIComponent) column : null;
+        if (component != null) {
+            renderDynamicPassThruAttributes(context, component);
         }
 
         if (selectionEnabled) {
