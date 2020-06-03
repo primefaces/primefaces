@@ -88,7 +88,7 @@ public class WebXmlParser {
 
             if (webXml == null) {
                 // Quarkus
-                webXml = toDocument(context.getExternalContext().getResource("/META-INF/web.xml"));
+                webXml = toDocument(LangUtils.getCurrentClassLoader(WebXmlParser.class).getResource("/META-INF/web.xml"));
             }
 
             if (webXml != null) {
