@@ -47,7 +47,7 @@ PrimeFaces.widget.Log = PrimeFaces.widget.BaseWidget.extend({
         
         //z-index
         this.jq.zIndex(++PrimeFaces.zindex);
-        this.header.mousedown(function() {
+        this.header.on("mousedown", function() {
             _self.jq.zIndex(++PrimeFaces.zindex);
         });
 
@@ -69,16 +69,16 @@ PrimeFaces.widget.Log = PrimeFaces.widget.BaseWidget.extend({
         var _self = this;
 
         //visuals
-        this.header.children('.ui-log-button').mouseover(function() {
+        this.header.children('.ui-log-button').on("mouseover", function() {
             var el = $(this);
             if(!el.hasClass('ui-state-active'))
                 $(this).addClass('ui-state-hover');
-        }).mouseout(function() {
+        }).on("mouseout", function() {
             $(this).removeClass('ui-state-hover');
         });
 
         //clear
-        this.header.children('.ui-log-clear').click(function(e) {
+        this.header.children('.ui-log-clear').on("click", function(e) {
             _self.itemsContainer.html('');
             _self.filters.filter('.ui-state-active').removeClass('ui-state-active');
             _self.filters.filter('.ui-log-all').addClass('ui-state-active');
@@ -87,7 +87,7 @@ PrimeFaces.widget.Log = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //all
-        this.header.children('.ui-log-all').click(function(e) {
+        this.header.children('.ui-log-all').on("click", function(e) {
             _self.itemsContainer.children().show();
             _self.filters.filter('.ui-state-active').removeClass('ui-state-active');
             $(this).addClass('ui-state-active').removeClass('ui-state-hover');
@@ -96,22 +96,22 @@ PrimeFaces.widget.Log = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //info
-        this.header.children('.ui-log-info').click(function(e) {
+        this.header.children('.ui-log-info').on("click", function(e) {
             _self.handleFilterClick(e, '.ui-log-item-info', 'info', $(this));
         });
 
         //warn
-        this.header.children('.ui-log-warn').click(function(e) {
+        this.header.children('.ui-log-warn').on("click", function(e) {
             _self.handleFilterClick(e, '.ui-log-item-warn', 'warn', $(this));
         });
 
         //debug
-        this.header.children('.ui-log-debug').click(function(e) {
+        this.header.children('.ui-log-debug').on("click", function(e) {
             _self.handleFilterClick(e, '.ui-log-item-debug', 'debug', $(this));
         });
 
         //error
-        this.header.children('.ui-log-error').click(function(e) {
+        this.header.children('.ui-log-error').on("click", function(e) {
             _self.handleFilterClick(e, '.ui-log-item-error', 'error', $(this));
         });
     },

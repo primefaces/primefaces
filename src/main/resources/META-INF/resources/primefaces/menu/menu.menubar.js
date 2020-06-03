@@ -154,7 +154,7 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
                     case keyCode.ENTER:
                         var currentLink = currentitem.children('.ui-menuitem-link');
                         currentLink.trigger('click');
-                        $this.jq.blur();
+                        $this.jq.trigger("blur");
                         PrimeFaces.utils.openLink(e, currentLink);
                     break;
 

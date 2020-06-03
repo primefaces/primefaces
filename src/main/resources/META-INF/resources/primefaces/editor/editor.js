@@ -204,7 +204,7 @@
             .css({ border: "none", margin: 0, padding: 0 }) // Needed for IE6 & 7 (won't work in CSS file)
             .hide()
             .data(CLEDITOR, editor)
-            .blur(function () {
+            .on("blur", function () {
                 // Update the iframe when the textarea loses focus
                 updateFrame(editor, true);
             });
@@ -296,7 +296,7 @@
 
         // Bind the document click event handler
         if (!documentClickAssigned) {
-            $(document).click(function (e) {
+            $(document).on("click", function (e) {
                 // Dismiss all non-prompt popups
                 var $target = $(e.target);
                 if (!$target.add($target.parents()).is("." + PROMPT_CLASS))
@@ -876,7 +876,7 @@
         // Work around for bug in IE which causes the editor to lose
         // focus when clicking below the end of the document.
         if (ie || iege11)
-            $doc.click(function () { focus(editor); });
+            $doc.on("click", function () { focus(editor); });
 
         // Load the content
         updateFrame(editor);
@@ -914,13 +914,13 @@
             });
 
             // Restore the text range and trigger focused event when the iframe gains focus
-            $frame.focus(function () {
+            $frame.on("focus", function () {
                 restoreRange(editor);
                 $(editor).triggerHandler(FOCUSED);
             });
 
             // Trigger blurred event when the iframe looses focus
-            $frame.blur(function () {
+            $frame.on("blur", function () {
                 $(editor).triggerHandler(BLURRED);
             });
 
@@ -929,13 +929,13 @@
         // Trigger focused and blurred events for all other browsers
         else {
             $($frame[0].contentWindow)
-                .focus(function () { $(editor).triggerHandler(FOCUSED); })
-                .blur(function () { $(editor).triggerHandler(BLURRED); });
+                .on("focus", function () { $(editor).triggerHandler(FOCUSED); })
+                .on("blur", function () { $(editor).triggerHandler(BLURRED); });
         }
 
         // Enable the toolbar buttons and update the textarea as the user types or clicks
         $doc.click(hidePopups)
-            .keydown(function (e) {
+            .on("keydown", function (e) {
                 // Prevent Internet Explorer from going to prior page when an image 
                 // is selected and the backspace key is pressed.
                 if (ie && getSelection(editor).type == "Control" && e.keyCode == 8) {

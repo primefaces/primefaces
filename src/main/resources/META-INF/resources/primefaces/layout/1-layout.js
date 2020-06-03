@@ -114,11 +114,11 @@ PrimeFaces.widget.Layout = PrimeFaces.widget.DeferredWidget.extend({
         units = this.jq.children('.ui-layout-unit'),
         resizers = this.jq.children('.ui-layout-resizer');
 
-        units.children('.ui-layout-unit-header').children('a.ui-layout-unit-header-icon').mouseover(function() {
+        units.children('.ui-layout-unit-header').children('a.ui-layout-unit-header-icon').on("mouseover", function() {
             $(this).addClass('ui-state-hover');
-        }).mouseout(function() {
+        }).on("mouseout", function() {
             $(this).removeClass('ui-state-hover');
-        }).click(function() {
+        }).on("click", function() {
             var element = $(this),
             unit = element.parents('.ui-layout-unit:first'),
             pane = unit.data('layoutEdge');
@@ -130,9 +130,9 @@ PrimeFaces.widget.Layout = PrimeFaces.widget.DeferredWidget.extend({
             }
         });
 
-        resizers.find('a.ui-layout-unit-expand-icon').mouseover(function() {
+        resizers.find('a.ui-layout-unit-expand-icon').on("mouseover", function() {
             $(this).addClass('ui-state-hover');
-        }).mouseout(function() {
+        }).on("mouseout", function() {
             $(this).removeClass('ui-state-hover');
         });
     },

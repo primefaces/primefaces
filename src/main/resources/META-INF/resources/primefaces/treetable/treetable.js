@@ -1307,7 +1307,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
         this.updateVerticalScroll();
 
-        this.scrollBody.scroll(function() {
+        this.scrollBody.on('scroll.treeTable', function() {
             var scrollLeft = $this.scrollBody.scrollLeft();
             $this.scrollHeaderBox.css('margin-left', -scrollLeft);
             $this.scrollFooterBox.css('margin-left', -scrollLeft);

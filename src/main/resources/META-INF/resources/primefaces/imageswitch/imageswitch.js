@@ -292,7 +292,7 @@ function buildOptions($cont, $slides, els, options, o) {
 	}
 
 	if (opts.pause)
-		$cont.hover(function(){this.cyclePause++;},function(){this.cyclePause--;});
+		$cont.on("mouseenter", function() {this.cyclePause++;}).on("mouseleave", function() {this.cyclePause--;});
 
 	if (supportMultiTransitions(opts) === false)
 		return false;
@@ -770,7 +770,7 @@ $.fn.cycle.createPagerAnchor = function(i, el, $p, els, opts) {
 		$a.on('click.cycle', function(){return false;}); // suppress click
 
 	if (opts.pauseOnPagerHover)
-		$a.hover(function() {opts.$cont[0].cyclePause++;}, function() {opts.$cont[0].cyclePause--;} );
+		$a.on("mouseenter", function() {opts.$cont[0].cyclePause++;}).on("mouseleave", function() {opts.$cont[0].cyclePause--;});
 };
 
 // helper fn to calculate the number of slides between the current and the next

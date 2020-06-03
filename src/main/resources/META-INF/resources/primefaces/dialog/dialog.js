@@ -337,7 +337,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         var $this = this;
 
         //Move dialog to top if target is not a trigger for a PrimeFaces overlay
-        this.jq.mousedown(function(e) {
+        this.jq.on("mousedown", function(e) {
             if(!$(e.target).data('primefaces-overlay-target')) {
                 $this.moveToTop();
             }
@@ -358,12 +358,12 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             e.preventDefault();
         });
 
-        this.maximizeIcon.click(function(e) {
+        this.maximizeIcon.on("click", function(e) {
             $this.toggleMaximize();
             e.preventDefault();
         });
 
-        this.minimizeIcon.click(function(e) {
+        this.minimizeIcon.on("click", function(e) {
             $this.toggleMinimize();
             e.preventDefault();
         });

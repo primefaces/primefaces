@@ -68,13 +68,13 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
     bindEvents: function() {
         var $this = this;
 
-        this.links.mouseenter(function() {
+        this.links.on("mouseenter", function() {
            $(this).addClass('ui-state-hover');
         })
-        .mouseleave(function() {
+        .on("mouseleave", function() {
            $(this).removeClass('ui-state-hover');
         })
-        .click(function(e) {
+        .on("click", function(e) {
             var link = $(this),
             submenu = link.next();
 
@@ -84,7 +84,7 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
             }
         });
 
-        this.backward.click(function() {
+        this.backward.on("click", function() {
             $this.back();
         });
     },
