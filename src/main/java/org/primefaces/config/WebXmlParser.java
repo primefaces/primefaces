@@ -85,6 +85,12 @@ public class WebXmlParser {
     private static Map<String, String> getWebXmlErrorPages(FacesContext context) {
         try {
             Document webXml = toDocument(context.getExternalContext().getResource("/WEB-INF/web.xml"));
+
+            if (webXml == null) {
+                // Quarkus
+                webXml = toDocument(context.getExternalContext().getResource("/META-INF/web.xml"));
+            }
+
             if (webXml != null) {
                 return parseErrorPages(webXml.getDocumentElement());
             }
@@ -126,7 +132,7 @@ public class WebXmlParser {
             }
         }
         catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Could not get web-fragment.xml's from ClassLoader", e);
+            LOGGER.log(Level.SEVERE, "Could not get web-fragment.xml\'s from ClassLoader", e);
         }
 
         return webFragmentXmlsErrorPages;

@@ -257,23 +257,29 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
 
     public void buildRowKeys(TreeNode node) {
-        int childCount = node.getChildCount();
-        if (childCount > 0) {
-            for (int i = 0; i < childCount; i++) {
-                TreeNode childNode = node.getChildren().get(i);
-                if (childNode.isSelected()) {
-                    addToPreselection(childNode);
-                }
+        if (node.isExpanded() || node.getParent() == null || node.getParent().isExpanded()) {
+            int childCount = node.getChildCount();
+            if (childCount > 0) {
+                for (int i = 0; i < childCount; i++) {
+                    TreeNode childNode = node.getChildren().get(i);
+                    if (childNode.isSelected()) {
+                        addToPreselection(childNode);
+                    }
 
-                String childRowKey = (node.getParent() == null) ? String.valueOf(i) : node.getRowKey() + "_" + i;
-                childNode.setRowKey(childRowKey);
-                buildRowKeys(childNode);
+                    String childRowKey = (node.getParent() == null) ? String.valueOf(i) : node.getRowKey() + "_" + i;
+                    childNode.setRowKey(childRowKey);
+                    buildRowKeys(childNode);
+                }
             }
         }
     }
 
     public void populateRowKeys(TreeNode node, List<String> keys) {
-        if (node != null) {
+        if (node == null) {
+            return;
+        }
+
+        if (node.isExpanded() || node.getParent() == null || node.getParent().isExpanded()) {
             int childCount = node.getChildCount();
             if (childCount > 0) {
                 for (int i = 0; i < childCount; i++) {
@@ -293,7 +299,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
                 String childRowKey = (node.getParent() == null) ? String.valueOf(i) : node.getRowKey() + "_" + i;
                 childNode.setRowKey(childRowKey);
-                updateRowKeys(childNode);
+                updateRowKeys(childNode); // should we comment this to enable lazy loading?
             }
         }
     }

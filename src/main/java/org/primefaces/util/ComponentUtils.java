@@ -24,6 +24,7 @@
 package org.primefaces.util;
 
 import org.primefaces.component.api.RTLAware;
+import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.Widget;
 import org.primefaces.config.PrimeConfiguration;
@@ -53,7 +54,8 @@ import java.util.function.Supplier;
 
 public class ComponentUtils {
 
-    public static final Set<VisitHint> VISIT_HINTS_SKIP_UNRENDERED = EnumSet.of(VisitHint.SKIP_UNRENDERED);
+    public static final Set<VisitHint> VISIT_HINTS_SKIP_UNRENDERED = Collections.unmodifiableSet(
+            EnumSet.of(VisitHint.SKIP_UNRENDERED));
 
     public static final String SKIP_ITERATION_HINT = "javax.faces.visit.SKIP_ITERATION";
 
@@ -171,10 +173,15 @@ public class ComponentUtils {
         return context.getApplication().createConverter(converterType);
     }
 
-    public static Object getConvertedValue(FacesContext context, UIComponent component, String value) {
-        Converter converter = getConverter(context, component);
+    public static Object getConvertedValue(FacesContext context, UIComponent component, Object value) {
+        String submittedValue = Objects.toString(value, null);
+        if (LangUtils.isValueBlank(submittedValue)) {
+            submittedValue = null;
+        }
+
+        Converter<?> converter = getConverter(context, component);
         if (converter != null) {
-            return converter.getAsObject(context, component, value);
+            return converter.getAsObject(context, component, submittedValue);
         }
 
         return value;
@@ -217,6 +224,12 @@ public class ComponentUtils {
         boolean globalValue = PrimeRequestContext.getCurrentInstance(context).isRTL();
 
         return globalValue || component.isRTL();
+    }
+
+    public static boolean isTouchable(FacesContext context, TouchAware component) {
+        boolean globalValue = PrimeRequestContext.getCurrentInstance(context).isTouchable();
+
+        return globalValue || component.isTouchable();
     }
 
     public static void processDecodesOfFacetsAndChilds(UIComponent component, FacesContext context) {

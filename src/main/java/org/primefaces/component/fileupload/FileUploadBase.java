@@ -57,6 +57,7 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         onstart,
         oncomplete,
         onerror,
+        onvalidationfailure,
         oncancel,
         disabled,
         messageTemplate,
@@ -69,7 +70,14 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         cancelIcon,
         onAdd,
         validateContentType,
-        virusScan
+        virusScan,
+        maxChunkSize,
+        maxRetries,
+        retryTimeout,
+        title,
+        chooseButtonTitle,
+        uploadButtonTitle,
+        cancelButtonTitle
     }
 
     public FileUploadBase() {
@@ -249,6 +257,15 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         getStateHelper().put(PropertyKeys.oncomplete, oncomplete);
     }
 
+    public String getOnvalidationfailure() {
+        Object eval = getStateHelper().eval(PropertyKeys.onvalidationfailure, null);
+        return (String) eval;
+    }
+
+    public void setOnvalidationfailure(String onvalidationfailure) {
+        getStateHelper().put(PropertyKeys.onvalidationfailure, onvalidationfailure);
+    }
+
     public String getOnerror() {
         return (String) getStateHelper().eval(PropertyKeys.onerror, null);
     }
@@ -360,4 +377,61 @@ public abstract class FileUploadBase extends UIInput implements Widget {
     public void setVirusScan(boolean virusScan) {
         getStateHelper().put(PropertyKeys.virusScan, virusScan);
     }
+
+    public Long getMaxChunkSize() {
+        return (Long) getStateHelper().eval(PropertyKeys.maxChunkSize, 0L);
+    }
+
+    public void setMaxChunkSize(Long maxChunkSize) {
+        getStateHelper().put(PropertyKeys.maxChunkSize, maxChunkSize);
+    }
+
+    public int getMaxRetries() {
+        return (Integer) getStateHelper().eval(PropertyKeys.maxRetries, 30);
+    }
+
+    public void setMaxRetries(int maxRetries) {
+        getStateHelper().put(PropertyKeys.maxRetries, maxRetries);
+    }
+
+    public int getRetryTimeout() {
+        return (Integer) getStateHelper().eval(PropertyKeys.retryTimeout, 1000);
+    }
+
+    public void setRetryTimeout(int retryTimeout) {
+        getStateHelper().put(PropertyKeys.retryTimeout, retryTimeout);
+    }
+
+    public String getTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.title, null);
+    }
+
+    public void setTitle(String title) {
+        getStateHelper().put(PropertyKeys.title, title);
+    }
+
+    public String getChooseButtonTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.chooseButtonTitle, null);
+    }
+
+    public void setChooseButtonTitle(String chooseButtonTitle) {
+        getStateHelper().put(PropertyKeys.chooseButtonTitle, chooseButtonTitle);
+    }
+
+    public String getUploadButtonTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.uploadButtonTitle, null);
+    }
+
+    public void setUploadButtonTitle(String uploadButtonTitle) {
+        getStateHelper().put(PropertyKeys.uploadButtonTitle, uploadButtonTitle);
+    }
+
+    public String getCancelButtonTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.cancelButtonTitle, null);
+    }
+
+    public void setCancelButtonTitle(String cancelButtonTitle) {
+        getStateHelper().put(PropertyKeys.cancelButtonTitle, cancelButtonTitle);
+    }
+
 }

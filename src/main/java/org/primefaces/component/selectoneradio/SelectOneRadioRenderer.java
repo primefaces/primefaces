@@ -388,10 +388,9 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
     protected void encodeOptionOutput(FacesContext context, SelectOneRadio radio, boolean selected, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String boxClass = HTML.RADIOBUTTON_BOX_CLASS;
+        String boxClass = createStyleClass(radio, null, HTML.RADIOBUTTON_BOX_CLASS);
         boxClass = selected ? boxClass + " ui-state-active" : boxClass;
         boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
-        boxClass = !radio.isValid() ? boxClass + " ui-state-error" : boxClass;
         String iconClass = selected ? HTML.RADIOBUTTON_CHECKED_ICON_CLASS : HTML.RADIOBUTTON_UNCHECKED_ICON_CLASS;
 
         writer.startElement("div", null);

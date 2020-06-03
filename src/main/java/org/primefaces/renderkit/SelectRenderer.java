@@ -49,8 +49,22 @@ import org.primefaces.util.LangUtils;
 
 public abstract class SelectRenderer extends InputRenderer {
 
+    protected boolean isHideNoSelection(UIComponent component) {
+        Object attribute = component.getAttributes().get("hideNoSelectionOption");
+        return  attribute != null ? (Boolean) attribute : false;
+    }
+
+    protected void addSelectItem(UIInput component, List<SelectItem> selectItems, SelectItem item, boolean hideNoSelectOption) {
+        if (hideNoSelectOption && item.isNoSelectionOption()) {
+            return;
+        }
+        selectItems.add(item);
+    }
+
     protected List<SelectItem> getSelectItems(FacesContext context, UIInput component) {
         List<SelectItem> selectItems = new ArrayList<>();
+        boolean hideNoSelectOption = isHideNoSelection(component);
+        SelectItem selectItem;
 
         for (int i = 0; i < component.getChildCount(); i++) {
             UIComponent child = component.getChildren().get(i);
@@ -59,16 +73,17 @@ public abstract class SelectRenderer extends InputRenderer {
                 Object selectItemValue = uiSelectItem.getValue();
 
                 if (selectItemValue == null) {
-                    selectItems.add(new SelectItem(uiSelectItem.getItemValue(),
+                    selectItem = new SelectItem(uiSelectItem.getItemValue(),
                             uiSelectItem.getItemLabel(),
                             uiSelectItem.getItemDescription(),
                             uiSelectItem.isItemDisabled(),
                             uiSelectItem.isItemEscaped(),
-                            uiSelectItem.isNoSelectionOption()));
+                            uiSelectItem.isNoSelectionOption());
                 }
                 else {
-                    selectItems.add((SelectItem) selectItemValue);
+                    selectItem = (SelectItem) selectItemValue;
                 }
+                addSelectItem(component, selectItems, selectItem, hideNoSelectOption);
             }
             else if (child instanceof UISelectItems) {
                 UISelectItems uiSelectItems = ((UISelectItems) child);
@@ -76,25 +91,27 @@ public abstract class SelectRenderer extends InputRenderer {
 
                 if (value != null) {
                     if (value instanceof SelectItem) {
-                        selectItems.add((SelectItem) value);
+                        addSelectItem(component, selectItems, (SelectItem) value, hideNoSelectOption);
                     }
                     else if (value.getClass().isArray()) {
                         for (int j = 0; j < Array.getLength(value); j++) {
                             Object item = Array.get(value, j);
 
                             if (item instanceof SelectItem) {
-                                selectItems.add((SelectItem) item);
+                                selectItem = (SelectItem) item;
                             }
                             else {
-                                selectItems.add(createSelectItem(context, uiSelectItems, item, null));
+                                selectItem = createSelectItem(context, uiSelectItems, item, null);
                             }
+                            addSelectItem(component, selectItems, selectItem, hideNoSelectOption);
                         }
                     }
                     else if (value instanceof Map) {
                         Map<?, ?> map = (Map) value;
 
                         for (Map.Entry<?, ?> entry : map.entrySet()) {
-                            selectItems.add(createSelectItem(context, uiSelectItems, entry.getValue(), String.valueOf(entry.getKey())));
+                            selectItem = createSelectItem(context, uiSelectItems, entry.getValue(), String.valueOf(entry.getKey()));
+                            addSelectItem(component, selectItems, selectItem, hideNoSelectOption);
                         }
                     }
                     else if (value instanceof List && value instanceof RandomAccess) {
@@ -103,11 +120,12 @@ public abstract class SelectRenderer extends InputRenderer {
                         for (int j = 0; j < list.size(); j++) {
                             Object item = list.get(j);
                             if (item instanceof SelectItem) {
-                                selectItems.add((SelectItem) item);
+                                selectItem = (SelectItem) item;
                             }
                             else {
-                                selectItems.add(createSelectItem(context, uiSelectItems, item, null));
+                                selectItem = createSelectItem(context, uiSelectItems, item, null);
                             }
+                            addSelectItem(component, selectItems, selectItem, hideNoSelectOption);
                         }
                     }
                     else if (value instanceof Collection) {
@@ -115,11 +133,12 @@ public abstract class SelectRenderer extends InputRenderer {
 
                         for (Object item : collection) {
                             if (item instanceof SelectItem) {
-                                selectItems.add((SelectItem) item);
+                                selectItem = (SelectItem) item;
                             }
                             else {
-                                selectItems.add(createSelectItem(context, uiSelectItems, item, null));
+                                selectItem = createSelectItem(context, uiSelectItems, item, null);
                             }
+                            addSelectItem(component, selectItems, selectItem, hideNoSelectOption);
                         }
                     }
                 }

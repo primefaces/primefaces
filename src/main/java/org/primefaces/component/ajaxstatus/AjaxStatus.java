@@ -23,7 +23,9 @@
  */
 package org.primefaces.component.ajaxstatus;
 
+import java.util.List;
 import javax.faces.application.ResourceDependency;
+import org.primefaces.util.LangUtils;
 
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
@@ -36,7 +38,9 @@ public class AjaxStatus extends AjaxStatusBase {
     public static final String SUCCESS = "success";
     public static final String COMPLETE = "complete";
     public static final String ERROR = "error";
+
     public static final String DEFAULT = "default";
     public static final String CALLBACK_SIGNATURE = "function()";
-    public static final String[] EVENTS = {START, SUCCESS, COMPLETE, ERROR};
+
+    public static final List<String> EVENTS = LangUtils.unmodifiableList(START, SUCCESS, COMPLETE, ERROR);
 }

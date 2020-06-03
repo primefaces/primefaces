@@ -24,7 +24,6 @@
 package org.primefaces.component.calendar;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Locale;
 
 import javax.faces.context.FacesContext;
@@ -32,6 +31,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class CalendarRenderer extends BaseCalendarRenderer {
@@ -87,7 +87,8 @@ public class CalendarRenderer extends BaseCalendarRenderer {
         String defaultDate = null;
 
         if (calendar.isConversionFailed()) {
-            defaultDate = CalendarUtils.getValueAsString(context, calendar, LocalDateTime.now());
+            Class<?> dateType = resolveDateType(context, calendar);
+            defaultDate = CalendarUtils.getValueAsString(context, calendar, CalendarUtils.now(uicalendar, dateType));
         }
         else if (!isValueBlank(value)) {
             defaultDate = value;
@@ -106,7 +107,8 @@ public class CalendarRenderer extends BaseCalendarRenderer {
                 .attr("disabledWeekends", calendar.isDisabledWeekends(), false)
                 .attr("disabled", calendar.isDisabled(), false)
                 .attr("yearRange", calendar.getYearRange(), null)
-                .attr("focusOnSelect", calendar.isFocusOnSelect(), false);
+                .attr("focusOnSelect", calendar.isFocusOnSelect(), false)
+                .attr("touchable", ComponentUtils.isTouchable(context, calendar),  true);
 
         if (calendar.isNavigator()) {
             wb.attr("changeMonth", true).attr("changeYear", true);

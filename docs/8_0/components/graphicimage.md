@@ -63,8 +63,10 @@ public class ImageBean {
     private StreamedContent image;
 
     public DynamicImageController() {
-        InputStream stream = this.getClass().getResourceAsStream("barcalogo.jpg");
-        image = new DefaultStreamedContent(stream, "image/jpeg");
+        image = DefaultStreamedContent.builder()
+                    .contentType("image/jpeg")
+                    .stream(() -> this.getClass().getResourceAsStream("barcalogo.jpg"))
+                    .build();
     }
     public StreamedContent getImage() {
         return this.image;
@@ -93,15 +95,21 @@ public class BarcodeBean {
     private StreamedContent barcode;
 
     public BackingBean() {
-        try {
-            File barcodeFile = new File("dynamicbarcode");
-            BarcodeImageHandler.saveJPEG(
-            BarcodeFactory.createCode128("PRIMEFACES"), barcodeFile);
-            barcode = new DefaultStreamedContent(
-            new FileInputStream(barcodeFile), "image/jpeg");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        barcode = DefaultStreamedContent.builder()
+                    .contentType("image/jpeg")
+                    .stream(() -> {
+                        try {
+                            File barcodeFile = new File("dynamicbarcode");
+                            BarcodeImageHandler.saveJPEG(
+                            BarcodeFactory.createCode128("PRIMEFACES"), barcodeFile);
+                            return new FileInputStream(barcodeFile);
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                            return null;
+                        }
+                    })
+                    .build();
     }
     public BarcodeBean getBarcode() {
         return this.barcode;

@@ -107,6 +107,16 @@ public class LocaleUtils {
         return result;
     }
 
+    /**
+     * Some JS libraries like FullCalendar used by Schedule require the locale for "pt_BR" to be "pt-br".
+     *
+     * @param locale the Locale to convert
+     * @return the Javascript string locale
+     */
+    public static String toJavascriptLocale(Locale locale) {
+        return locale.toString().toLowerCase().replace('_', '-');
+    }
+
     public static Locale getCurrentLocale(FacesContext context) {
         Locale locale = null;
 

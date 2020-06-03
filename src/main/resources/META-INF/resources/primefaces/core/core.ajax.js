@@ -36,6 +36,10 @@ if (!PrimeFaces.ajax) {
      * options. The individual options are documented in `PrimeFaces.ajax.Configuration`. 
      * @param {Partial<PrimeFaces.ajax.ConfigurationExtender>} [ext] Optional extender with additional options that
      * overwrite the options given in `cfg`.
+     * @return {Promise<PrimeFaces.ajax.ResponseData>} A promise that resolves once the AJAX requests is done. Use this
+     * to run custom JavaScript logic. When the AJAX request succeeds, the promise is fulfilled. Otherwise, when the
+     * AJAX request fails, the promise is rejected. If the promise is rejected, the rejection handler receives an object
+     * of type {@link PrimeFaces.ajax.FailedRequestData}. 
      */
     PrimeFaces.ab = function(cfg, ext) {
         for (var option in cfg) {
@@ -50,7 +54,7 @@ if (!PrimeFaces.ajax) {
             }
         }
 
-        PrimeFaces.ajax.Request.handle(cfg, ext);
+        return PrimeFaces.ajax.Request.handle(cfg, ext);
     };
 
     /**
@@ -355,12 +359,18 @@ if (!PrimeFaces.ajax) {
              * removes all requests that are waiting in the queue and have not been sent yet.
              */
             abortAll: function() {
+                // clear out any pending requests
+                this.requests = new Array();
+
+                // abort any in-flight that are not DONE(4)
                 for(var i = 0; i < this.xhrs.length; i++) {
-                    this.xhrs[i].abort();
+                    var xhr = this.xhrs[i];
+                    if (xhr.readyState != 4) {
+                        xhr.abort();
+                    }
                 }
 
                 this.xhrs = new Array();
-                this.requests = new Array();
             }
         },
 
@@ -381,9 +391,14 @@ if (!PrimeFaces.ajax) {
              * the HTTP method, the URL, and the content of the request. 
              * @param {Partial<PrimeFaces.ajax.ConfigurationExtender>} [ext] Optional extender with additional options
              * that overwrite the options given in `cfg`.
+             * @return {Promise<PrimeFaces.ajax.ResponseData>} A promise that resolves once the AJAX requests is done.
+             * Use this to run custom JavaScript logic. When the AJAX request succeeds, the promise is fulfilled.
+             * Otherwise, when the AJAX request fails, the promise is rejected. If the promise is rejected, the
+             * rejection handler receives an object of type {@link PrimeFaces.ajax.FailedRequestData}.
              */
             handle: function(cfg, ext) {
                 cfg.ext = ext;
+                cfg.promise = cfg.promise || $.Deferred();
 
                 if (PrimeFaces.settings.earlyPostParamEvaluation) {
                     cfg.earlyPostParams = PrimeFaces.ajax.Request.collectEarlyPostParams(cfg);
@@ -395,6 +410,8 @@ if (!PrimeFaces.ajax) {
                 else {
                     PrimeFaces.ajax.Queue.offer(cfg);
                 }
+
+                return cfg.promise.promise();
             },
 
             /**
@@ -463,11 +480,15 @@ if (!PrimeFaces.ajax) {
                 }
 
                 if(retVal === false) {
-                    PrimeFaces.debug('Ajax request cancelled by onstart callback.');
+                    PrimeFaces.debug('AJAX request cancelled by onstart callback.');
 
                     //remove from queue
                     if(!cfg.async) {
                         PrimeFaces.ajax.Queue.poll();
+                    }
+
+                    if (cfg.promise) {
+                        cfg.promise.reject({ textStatus: 'error', errorThrown: 'AJAX request cancelled by onstart callback.' });
                     }
 
                     return false;  //cancel request
@@ -695,6 +716,10 @@ if (!PrimeFaces.ajax) {
 
                 var jqXhr = $.ajax(xhrOptions)
                     .fail(function(xhr, status, errorThrown) {
+                        if (cfg.promise) {
+                            cfg.promise.reject({jqXHR: xhr, textStatus: status, errorThrown: errorThrown});
+                        }
+
                         var location = xhr.getResponseHeader("Location");
                         if (xhr.status == 401 && location) {
                             PrimeFaces.debug('Unauthorized status received. Redirecting to ' + location);
@@ -713,10 +738,15 @@ if (!PrimeFaces.ajax) {
                         PrimeFaces.error('Request return with error:' + status + '.');
                     })
                     .done(function(data, status, xhr) {
-                        PrimeFaces.debug('Response received succesfully.');
-
+                        PrimeFaces.debug('Response received successfully.');
                         try {
                             var parsed;
+
+                            // Resolve promise for custom JavaScript handler
+                            // Promise handlers are called asynchronously so they are run after the response was handled
+                            if (cfg.promise) {
+                                cfg.promise.resolve({document: data, textStatus: status, jqXHR: xhr});
+                            }
 
                             //call user callback
                             if(cfg.onsuccess) {
@@ -752,7 +782,7 @@ if (!PrimeFaces.ajax) {
                             cfg.ext.oncomplete.call(this, xhr, status, xhr.pfArgs, data);
                         }
 
-                        // after that, call the endusers callback, which should be called when everything is ready
+                        // after that, call the end user's callback, which should be called when everything is ready
                         if(cfg.oncomplete) {
                             cfg.oncomplete.call(this, xhr, status, xhr.pfArgs, data);
                         }

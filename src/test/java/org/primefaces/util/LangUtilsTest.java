@@ -28,8 +28,13 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 
 public class LangUtilsTest {
+    
+    private static final String FOO = "foo";
+    private static final String SENTENCE = "foo bar baz";
 
     @Test
     public void getTypeFromCollectionProperty_Simple() {
@@ -58,6 +63,28 @@ public class LangUtilsTest {
 
         assertEquals(String.class, type);
     }
+    
+
+
+    @Test
+    public void substring() {
+        assertNull(LangUtils.substring(null, 0, 0));
+        assertNull(LangUtils.substring(null, 1, 2));
+        assertEquals("", LangUtils.substring("", 0, 0));
+        assertEquals("", LangUtils.substring("", 1, 2));
+        assertEquals("", LangUtils.substring("", -2, -1));
+
+        assertEquals("", LangUtils.substring(SENTENCE, 8, 6));
+        assertEquals(FOO, LangUtils.substring(SENTENCE, 0, 3));
+        assertEquals("o", LangUtils.substring(SENTENCE, -9, 3));
+        assertEquals(FOO, LangUtils.substring(SENTENCE, 0, -8));
+        assertEquals("o", LangUtils.substring(SENTENCE, -9, -8));
+        assertEquals(SENTENCE, LangUtils.substring(SENTENCE, 0, 80));
+        assertEquals("", LangUtils.substring(SENTENCE, 2, 2));
+        assertEquals("b", LangUtils.substring("abc", -2, -1));
+    }
+
+   
 
     class SimpleClass {
         private List<String> strings;

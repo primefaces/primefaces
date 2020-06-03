@@ -125,10 +125,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         String title = menu.getTitle();
 
         String style = menu.getStyle();
-        String styleClass = menu.getStyleClass();
-        styleClass = styleClass == null ? SelectOneMenu.STYLE_CLASS : SelectOneMenu.STYLE_CLASS + " " + styleClass;
-        styleClass = !valid ? styleClass + " ui-state-error" : styleClass;
-        styleClass = menu.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
+        String styleClass = createStyleClass(menu, SelectOneMenu.STYLE_CLASS);
 
         if (ComponentUtils.isRTL(context, menu)) {
             styleClass = styleClass + " " + SelectOneMenu.RTL_CLASS;
@@ -547,7 +544,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 .attr("syncTooltip", menu.isSyncTooltip(), false)
                 .attr("labelTemplate", menu.getLabelTemplate(), null)
                 .attr("autoWidth", menu.isAutoWidth(), true)
-                .attr("dynamic", menu.isDynamic(), false);
+                .attr("dynamic", menu.isDynamic(), false)
+                .attr("touchable", ComponentUtils.isTouchable(context, menu),  true);
 
         if (menu.isFilter()) {
             wb.attr("filter", true)

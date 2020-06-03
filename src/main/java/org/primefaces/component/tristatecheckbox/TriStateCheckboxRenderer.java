@@ -90,7 +90,7 @@ public class TriStateCheckboxRenderer extends InputRenderer {
 
         encodeInput(context, checkbox, clientId, valCheck);
         encodeOutput(context, checkbox, valCheck, disabled);
-        encodeItemLabel(context, checkbox);
+        encodeItemLabel(context, checkbox, disabled);
 
         writer.endElement("div");
     }
@@ -125,9 +125,8 @@ public class TriStateCheckboxRenderer extends InputRenderer {
     protected void encodeOutput(final FacesContext context, final TriStateCheckbox checkbox, final int valCheck,
                                 final boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = HTML.CHECKBOX_BOX_CLASS;
+        String styleClass = createStyleClass(checkbox, null, HTML.CHECKBOX_BOX_CLASS) ;
         styleClass = (valCheck == 1 || valCheck == 2) ? styleClass + " ui-state-active" : styleClass;
-        styleClass = !checkbox.isValid() ? styleClass + " ui-state-error" : styleClass;
         styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
 
         //if stateIcon is defined use it insted of default icons.
@@ -182,14 +181,16 @@ public class TriStateCheckboxRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeItemLabel(final FacesContext context, final TriStateCheckbox checkbox) throws IOException {
+    protected void encodeItemLabel(final FacesContext context, final TriStateCheckbox checkbox, final boolean disabled) throws IOException {
         String label = checkbox.getItemLabel();
 
         if (label != null) {
             ResponseWriter writer = context.getResponseWriter();
 
             writer.startElement("span", null);
-            writer.writeAttribute("class", HTML.CHECKBOX_LABEL_CLASS, null);
+            String styleClass = HTML.CHECKBOX_LABEL_CLASS;
+            styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
+            writer.writeAttribute("class", styleClass, null);
             writer.writeText(label, "itemLabel");
             writer.endElement("span");
         }

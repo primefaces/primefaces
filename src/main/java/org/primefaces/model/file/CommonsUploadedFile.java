@@ -85,4 +85,8 @@ public class CommonsUploadedFile implements UploadedFile, Serializable {
         fileItem.write(new File(validFilePath));
     }
 
+    @Override
+    public void delete() throws IOException {
+        fileItem.delete();
+    }
 }

@@ -1,15 +1,15 @@
 /**
  * __PrimeFaces Growl Widget__
- * 
+ *
  * Growl is based on the Mac’s growl notification widget and used to display FacesMessages in an overlay.
- * 
+ *
  * @interface {PrimeFaces.widget.GrowlCfg} cfg The configuration for the {@link  Growl| Growl widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * 
+ *
  * @prop {boolean} cfg.escape `true` to treat the message's summary and details as plain text, `false` to treat them as
- * an HTML string. 
+ * an HTML string.
  * @prop {boolean} cfg.keepAlive Defines if previous messages should be kept on a new message is shown.
  * @prop {number} cfg.life Duration in milliseconds to display non-sticky messages.
  * @prop {PrimeFaces.FacesMessage[]} cfg.msgs List of messages that are shown initially when the widget is loaded or
@@ -26,7 +26,12 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        this.render();
+        //create container
+        this.jq = $('<div id="' + this.id + '_container" class="ui-growl ui-widget" aria-live="polite"></div>');
+        this.jq.appendTo($(document.body));
+
+        //render messages
+        this.show(this.cfg.msgs);
     },
 
     /**
@@ -42,7 +47,29 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
+     * Appends a message to the current displayed messages.
+     *
+     * @param {PrimeFaces.FacesMessage} msg A message to translate into an HTML element.
+     */
+    add: function(msg) {
+        this.renderMessage(msg);
+    },
+
+    /**
+     * Appends all messages to the current displayed messages.
+     *
+     * @param {PrimeFaces.FacesMessage[]} msgs The messages to translate into HTML elements.
+     */
+    addAll: function(msgs) {
+        var $this = this;
+        $.each(msgs, function(index, msg) {
+            $this.renderMessage(msg);
+        });
+    },
+
+    /**
      * Displays the given messages in the growl window represented by this growl widget.
+     *
      * @param {PrimeFaces.FacesMessage[]} msgs Messages to display in this growl
      */
     show: function(msgs) {
@@ -62,21 +89,9 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Removes all growl messages that are currently displayed.
-     */    removeAll: function() {
-        this.jq.children('div.ui-growl-item-container').remove();
-    },
-
-    /**
-     * Renders the client-side parts of this widget.
-     * @private
      */
-    render: function() {
-        //create container
-        this.jq = $('<div id="' + this.id + '_container" class="ui-growl ui-widget" aria-live="polite"></div>');
-        this.jq.appendTo($(document.body));
-
-        //render messages
-        this.show(this.cfg.msgs);
+    removeAll: function() {
+        this.jq.children('div.ui-growl-item-container').remove();
     },
 
     /**

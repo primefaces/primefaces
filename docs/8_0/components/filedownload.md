@@ -30,8 +30,11 @@ public class FileBean {
     private StreamedContent file;
 
     public FileDownloadController() {
-        InputStream stream = this.getClass().getResourceAsStream("yourfile.pdf");
-        file = new DefaultStreamedContent(stream, "application/pdf", "downloaded_file.pdf");
+        file = DefaultStreamedContent.builder()
+                    .contentType("application/pdf")
+                    .name("downloaded_file.pdf")
+                    .stream(() -> this.getClass().getResourceAsStream("yourfile.pdf"))
+                    .build();
     }
     public StreamedContent getFile() {
         return this.file;

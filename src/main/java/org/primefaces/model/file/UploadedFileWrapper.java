@@ -99,4 +99,8 @@ public class UploadedFileWrapper implements UploadedFile, FacesWrapper<UploadedF
         return getWrapped().getContentType();
     }
 
+    @Override
+    public void delete() throws IOException {
+        getWrapped().delete();
+    }
 }

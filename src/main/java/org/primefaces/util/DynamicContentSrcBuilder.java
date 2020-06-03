@@ -31,7 +31,7 @@ import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
-import java.util.UUID;
+
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Resource;
@@ -39,6 +39,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.xml.bind.DatatypeConverter;
+
 import org.primefaces.application.resource.DynamicContentType;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.model.StreamedContent;
@@ -51,6 +52,11 @@ public class DynamicContentSrcBuilder {
     }
 
     public static String build(FacesContext context, Object value, UIComponent component, boolean cache, DynamicContentType type, boolean stream) {
+        return build(context, value, component, cache, type, stream, "value");
+    }
+
+    public static String build(FacesContext context, Object value, UIComponent component, boolean cache,
+            DynamicContentType type, boolean stream, String attributeName) {
 
         String src = null;
 
@@ -76,7 +82,7 @@ public class DynamicContentSrcBuilder {
                 }
 
                 ValueExpression expression = ValueExpressionAnalyzer.getExpression(
-                        context.getELContext(), component.getValueExpression("value"));
+                        context.getELContext(), component.getValueExpression(attributeName));
 
                 String expressionString = expression.getExpressionString();
                 String resourceKey = md5(expressionString);
@@ -118,14 +124,7 @@ public class DynamicContentSrcBuilder {
             }
         }
 
-        if (src != null) {
-            src += src.contains("?") ? "&" : "?";
-            src += Constants.DYNAMIC_CONTENT_CACHE_PARAM + "=" + cache;
-
-            if (!cache) {
-                src += "&uid=" + UUID.randomUUID().toString();
-            }
-        }
+        src = ResourceUtils.appendCacheBuster(src, cache);
 
         return context.getExternalContext().encodeResourceURL(src);
     }

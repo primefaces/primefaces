@@ -66,36 +66,44 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
         zindex = ++PrimeFaces.zindex;
 
         documentBody.children('div.ui-spotlight-top').css({
-            'left': 0,
-            'top': 0,
-            'width': documentBody.width(),
-            'height': offset.top,
+            'left': '0px',
+            'top': '0px',
+            'width': documentBody.width() + 'px',
+            'height': offset.top + 'px',
+            'pointer-events' : 'none',
+            'user-select': 'none',
             'z-index': zindex
         });
 
         var bottomTop = offset.top + this.target.outerHeight();
         documentBody.children('div.ui-spotlight-bottom').css({
-            'left': 0,
-            'top': bottomTop,
-            'width': documentBody.width(),
-            'height': doc.height() - bottomTop,
+            'left': '0px',
+            'top': bottomTop + 'px',
+            'width': documentBody.width() + 'px',
+            'height': (doc.height() - bottomTop) + 'px',
+            'pointer-events' : 'none',
+            'user-select': 'none',
             'z-index': zindex
         });
 
         documentBody.children('div.ui-spotlight-left').css({
-            'left': 0,
-            'top': offset.top,
-            'width': offset.left,
-            'height': this.target.outerHeight(),
+            'left': '0px',
+            'top': offset.top + 'px',
+            'width': offset.left + 'px',
+            'height': this.target.outerHeight() + 'px',
+            'pointer-events' : 'none',
+            'user-select': 'none',
             'z-index': zindex
         });
 
         var rightLeft = offset.left + this.target.outerWidth();
         documentBody.children('div.ui-spotlight-right').css({
-            'left': rightLeft,
-            'top': offset.top,
-            'width': documentBody.width() - rightLeft,
-            'height': this.target.outerHeight(),
+            'left': rightLeft + 'px',
+            'top': offset.top + 'px',
+            'width': (documentBody.width() - rightLeft) + 'px',
+            'height': this.target.outerHeight() + 'px',
+            'pointer-events' : 'none',
+            'user-select': 'none',
             'z-index': zindex
         });
     },

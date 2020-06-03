@@ -40,6 +40,7 @@ onchange | null | String | Callback to execute on value change.
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the container.
 tabindex | null | String | Position of the component in the tabbing order.
+hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
 
 ## Getting started with SelectManyCheckbox
 SelectManyCheckbox usage is same as the standard one.

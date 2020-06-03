@@ -67,10 +67,8 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         List<SelectItem> selectItems = getSelectItems(context, button);
         int selectItemsSize = selectItems.size();
         String style = button.getStyle();
-        String styleClass = button.getStyleClass();
-        styleClass = styleClass == null ? SelectManyButton.STYLE_CLASS : SelectManyButton.STYLE_CLASS + " " + styleClass;
+        String styleClass = createStyleClass(button, SelectManyButton.STYLE_CLASS);
         styleClass = styleClass + " ui-buttonset-" + selectItemsSize;
-        styleClass = !button.isValid() ? styleClass + " ui-state-error" : styleClass;
 
         writer.startElement("div", button);
         writer.writeAttribute("id", clientId, "id");

@@ -31,6 +31,7 @@
 | event | null | String | Client side event to trigger ajax request. |
 | resetValues | false | Boolean | If true, local values of input components to be updated within the ajax request would be reset. |
 | ignoreAutoUpdate | false | Boolean | If true, components which autoUpdate="true" will not be updated for this request. If not specified, or the value is false, no such indication is made. |
+| ignoreComponentNotFound | false | Boolean | If true, unresolvable components referenced in the update/process attribute are ignored. Default is 'false' and therefore a ComponentNotFoundException will be thrown. |
 | form | null | String | Form to serialize for an ajax request. Default is the enclosing form. |
 | skipChildren | true | Boolean | Containers components like, datatable, panel, tabview skip their children if the request owner is them. For example, sort, page event of a datatable. As children are skipped, input values get lost, assume a case with a datatable and inputs components in a column. Sorting the column discards the changes and data is sorted according to original value. Setting skipChildren to false, enabled input values to update the value and sorting to be happened with user values. |
 

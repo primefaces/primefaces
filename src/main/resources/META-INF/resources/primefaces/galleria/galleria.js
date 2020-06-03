@@ -156,17 +156,19 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
         });
 
         // Touch Swipe Events
-        this.jq.swipe({
-            swipeLeft:function(event) {
-                $this.stopSlideshow();
-                $this.prev();
-            },
-            swipeRight: function(event) {
-                $this.stopSlideshow();
-                $this.next();
-            },
-            excludedElements: PrimeFaces.utils.excludedSwipeElements()
-        });
+        if (PrimeFaces.env.isTouchable(this.cfg)) {
+            this.jq.swipe({
+                swipeLeft:function(event) {
+                    $this.stopSlideshow();
+                    $this.prev();
+                },
+                swipeRight: function(event) {
+                    $this.stopSlideshow();
+                    $this.next();
+                },
+                excludedElements: PrimeFaces.utils.excludedSwipeElements()
+            });
+        }
 
         // Keyboard accessibility
         this.jq.on('keydown.galleria', function(e) {

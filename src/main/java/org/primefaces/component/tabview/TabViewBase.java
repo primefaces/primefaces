@@ -27,10 +27,11 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.RTLAware;
+import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.Widget;
 
-public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, TouchAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -51,7 +52,8 @@ public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware
         onTabClose,
         dir,
         scrollable,
-        tabindex
+        tabindex,
+        touchable
     }
 
     public TabViewBase() {
@@ -173,5 +175,15 @@ public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware
 
     public void setTabindex(String tabindex) {
         getStateHelper().put(PropertyKeys.tabindex, tabindex);
+    }
+
+    @Override
+    public boolean isTouchable() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, true);
+    }
+
+    @Override
+    public void setTouchable(boolean touchable) {
+        getStateHelper().put(PropertyKeys.touchable, touchable);
     }
 }

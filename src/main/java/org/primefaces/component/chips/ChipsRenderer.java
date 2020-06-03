@@ -90,7 +90,6 @@ public class ChipsRenderer extends InputRenderer {
         String inputId = clientId + "_input";
         List values = (List) chips.getValue();
         List<String> stringValues = new ArrayList<>();
-        boolean disabled = chips.isDisabled();
         String title = chips.getTitle();
 
         String style = chips.getStyle();
@@ -98,11 +97,7 @@ public class ChipsRenderer extends InputRenderer {
         styleClass = styleClass == null ? Chips.STYLE_CLASS : Chips.STYLE_CLASS + " " + styleClass;
 
         String inputStyle = chips.getInputStyle();
-        String inputStyleClass = chips.getInputStyleClass();
-
-        String listClass = disabled ? Chips.CONTAINER_CLASS + " ui-state-disabled" : Chips.CONTAINER_CLASS;
-        listClass = (inputStyleClass == null) ? listClass : listClass + " " + inputStyleClass;
-        listClass = chips.isValid() ? listClass : listClass + " ui-state-error";
+        String listClass = createStyleClass(chips, Chips.PropertyKeys.inputStyleClass.name(), Chips.CONTAINER_CLASS);
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
