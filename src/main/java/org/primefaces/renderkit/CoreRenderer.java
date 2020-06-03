@@ -98,10 +98,11 @@ public abstract class CoreRenderer extends Renderer {
 
     protected void renderPassThruAttributes(FacesContext context, UIComponent component, List<String> attrs) throws IOException {
         //pre-defined attributes
-        if (attrs != null && attrs.size() > 0) {
+        if (attrs != null && !attrs.isEmpty()) {
             ResponseWriter writer = context.getResponseWriter();
 
-            for (String attribute : attrs) {
+            for (int i = 0; i < attrs.size(); i++) {
+                String attribute = attrs.get(i);
                 Object value = component.getAttributes().get(attribute);
                 if (shouldRenderAttribute(value)) {
                     writer.writeAttribute(attribute, value.toString(), attribute);
@@ -110,6 +111,16 @@ public abstract class CoreRenderer extends Renderer {
         }
 
         renderDynamicPassThruAttributes(context, component);
+    }
+
+    protected void renderPassThruAttributes(FacesContext context, UIComponent component, List<String>... attrs) throws IOException {
+        if (attrs == null) {
+            return;
+        }
+
+        for (List<String> a : attrs) {
+            renderPassThruAttributes(context, component, a);
+        }
     }
 
     protected void renderDynamicPassThruAttributes(FacesContext context, UIComponent component) throws IOException {
@@ -129,10 +140,16 @@ public abstract class CoreRenderer extends Renderer {
 
     private void renderDomEvents(FacesContext context, UIComponent component, List<String> eventAttrs, Map<String, List<ClientBehavior>> behaviors)
             throws IOException {
+
+        if (eventAttrs == null || eventAttrs.isEmpty()) {
+            return;
+        }
+
         ResponseWriter writer = context.getResponseWriter();
         StringBuilder builder = null;
 
-        for (String domEvent : eventAttrs) {
+        for (int i = 0; i < eventAttrs.size(); i++) {
+            String domEvent = eventAttrs.get(i);
             Object eventValue = component.getAttributes().get(domEvent);
             String behaviorEvent = domEvent.substring(2, domEvent.length());
             List<ClientBehavior> eventBehaviors = behaviors.get(behaviorEvent);
@@ -172,8 +189,8 @@ public abstract class CoreRenderer extends Renderer {
                             chained = true;
                         }
 
-                        for (int i = 0; i < size; i++) {
-                            ClientBehavior behavior = eventBehaviors.get(i);
+                        for (int j = 0; j < size; j++) {
+                            ClientBehavior behavior = eventBehaviors.get(j);
                             String script = behavior.getScript(cbc);
                             if (script != null) {
                                 if (chained) {
@@ -789,7 +806,7 @@ public abstract class CoreRenderer extends Renderer {
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("style", "display: none;", null);
 
-        renderPassThruAttributes(context, component, null);
+        renderPassThruAttributes(context, component);
 
         writer.endElement("div");
     }
