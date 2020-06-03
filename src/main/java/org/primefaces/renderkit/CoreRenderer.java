@@ -96,7 +96,7 @@ public abstract class CoreRenderer extends Renderer {
         return ResourceUtils.getResourceRequestPath(context, resourceName);
     }
 
-    protected void renderPassThruAttributes(FacesContext context, UIComponent component, Set<String> attrs) throws IOException {
+    protected void renderPassThruAttributes(FacesContext context, UIComponent component, List<String> attrs) throws IOException {
         //pre-defined attributes
         if (attrs != null && attrs.size() > 0) {
             ResponseWriter writer = context.getResponseWriter();
@@ -118,7 +118,7 @@ public abstract class CoreRenderer extends Renderer {
         }
     }
 
-    protected void renderDomEvents(FacesContext context, UIComponent component, Set<String> eventAttrs) throws IOException {
+    protected void renderDomEvents(FacesContext context, UIComponent component, List<String> eventAttrs) throws IOException {
         if (component instanceof ClientBehaviorHolder) {
             renderDomEvents(context, component, eventAttrs, ((ClientBehaviorHolder) component).getClientBehaviors());
         }
@@ -127,7 +127,7 @@ public abstract class CoreRenderer extends Renderer {
         }
     }
 
-    private void renderDomEvents(FacesContext context, UIComponent component, Set<String> eventAttrs, Map<String, List<ClientBehavior>> behaviors)
+    private void renderDomEvents(FacesContext context, UIComponent component, List<String> eventAttrs, Map<String, List<ClientBehavior>> behaviors)
             throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         StringBuilder builder = null;

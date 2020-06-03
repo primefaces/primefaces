@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.selectoneradio;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UINamingContainer;
@@ -39,7 +39,7 @@ public class SelectOneRadio extends SelectOneRadioBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectOneRadio";
 
-    public static final Set<String> DOM_EVENTS = LangUtils.unmodifiableSet("onchange", "onclick");
+    public static final List<String> DOM_EVENTS = LangUtils.unmodifiableList("onchange", "onclick");
 
     public static final String STYLE_CLASS = "ui-selectoneradio ui-widget";
     public static final String NATIVE_STYLE_CLASS = "ui-selectoneradio ui-selectoneradio-native ui-widget";
