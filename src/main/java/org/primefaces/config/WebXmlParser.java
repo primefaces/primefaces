@@ -132,7 +132,7 @@ public class WebXmlParser {
             }
         }
         catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Could not get web-fragment.xml's from ClassLoader", e);
+            LOGGER.log(Level.SEVERE, "Could not get web-fragment.xml from ClassLoader", e);
         }
 
         return webFragmentXmlsErrorPages;
