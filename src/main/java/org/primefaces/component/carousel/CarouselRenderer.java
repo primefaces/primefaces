@@ -285,7 +285,7 @@ public class CarouselRenderer extends CoreRenderer {
         if (renderFacet) {
             facet.encodeAll(context);
         }
-        else if (text != null) {
+        else {
             writer.writeText(text, "footerText");
         }
 

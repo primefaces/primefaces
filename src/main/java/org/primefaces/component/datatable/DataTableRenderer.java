@@ -776,10 +776,10 @@ public class DataTableRenderer extends DataRenderer {
         String sortIcon = null;
 
         if (Objects.equals(column.getColumnKey(), sortMeta.getColumnKey())) {
-            if (sortOrder.equals(SortOrder.ASCENDING)) {
+            if (sortOrder == SortOrder.ASCENDING) {
                 sortIcon = DataTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
             }
-            else if (sortOrder.equals(SortOrder.DESCENDING)) {
+            else if (sortOrder == SortOrder.DESCENDING) {
                 sortIcon = DataTable.SORTABLE_COLUMN_DESCENDING_ICON_CLASS;
             }
         }

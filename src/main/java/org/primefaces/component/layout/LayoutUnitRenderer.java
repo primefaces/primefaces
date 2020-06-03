@@ -100,7 +100,7 @@ public class LayoutUnitRenderer extends CoreRenderer {
         if (renderFacet) {
             headerFacet.encodeAll(context);
         }
-        else if (headerText != null) {
+        else {
             writer.writeText(headerText, null);
         }
 
@@ -136,7 +136,7 @@ public class LayoutUnitRenderer extends CoreRenderer {
         if (footerFacet != null) {
             footerFacet.encodeAll(context);
         }
-        else if (footerText != null) {
+        else {
             writer.writeText(footerText, null);
         }
 
