@@ -31,11 +31,8 @@ public class DashboardReorderEvent extends AbstractAjaxBehaviorEvent {
     private static final long serialVersionUID = 1L;
 
     private String widgetId;
-
     private Integer itemIndex;
-
     private Integer columnIndex;
-
     private Integer senderColumnIndex;
 
     public DashboardReorderEvent(UIComponent component, Behavior behavior, String widgetId, Integer itemIndex, Integer columnIndex, Integer senderColumnIndex) {

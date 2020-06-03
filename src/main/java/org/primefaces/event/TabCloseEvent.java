@@ -31,7 +31,7 @@ public class TabCloseEvent<T> extends AbstractAjaxBehaviorEvent implements TabEv
 
     private static final long serialVersionUID = 1L;
 
-    private Tab tab;
+    private transient Tab tab;
     private T data;
 
     public TabCloseEvent(UIComponent component, Behavior behavior, Tab tab) {

@@ -32,7 +32,7 @@ public class TabChangeEvent<T> extends AbstractAjaxBehaviorEvent implements TabE
 
     private static final long serialVersionUID = 1L;
 
-    private Tab tab;
+    private transient Tab tab;
     private T data;
 
     public TabChangeEvent(UIComponent component, Behavior behavior, Tab tab) {
