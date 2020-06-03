@@ -70,8 +70,9 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
                         if (streamedContent == null || streamedContent.getStream() == null) {
 
                             if (context.isProjectStage(ProjectStage.Development)) {
-                                LOGGER.log(Level.WARNING, "StreamedContent resolved to null - skip streaming resource for ValueExpression: "
-                                        + dynamicContentEL);
+                                LOGGER.log(Level.WARNING,
+                                        "StreamedContent resolved to null - skip streaming resource for ValueExpression: {0}",
+                                        dynamicContentEL);
                             }
 
                             if (externalContext.getRequest() instanceof HttpServletRequest) {
