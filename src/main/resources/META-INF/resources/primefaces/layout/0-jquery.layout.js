@@ -42,7 +42,7 @@
      * @param {Array.<string>} a_fn
      */
     , runPluginCallbacks = function (Instance, a_fn) {
-        if ($.isArray(a_fn))
+        if (Array.isArray(a_fn))
             for (var i = 0, c = a_fn.length; i < c; i++) {
                 var fn = a_fn[i];
                 try {
@@ -1729,7 +1729,7 @@
                     ;
             if ($.isPlainObject(cos))
                 cos = [cos]; // convert a hash to a 1-elem array
-            else if (!cos || !$.isArray(cos))
+            else if (!cos || !Array.isArray(cos))
                 return;
 
             $.each(cos, function (idx, co) {
@@ -5843,7 +5843,7 @@ jQuery.cookie = function (name, value, options) {
             , pair, pane, key, val
                     , ps, pC, child, array, count, branch
                     ;
-            if ($.isArray(keys))
+            if (Array.isArray(keys))
                 keys = keys.join(",");
             // convert keys to an array and change delimiters from '__' to '.'
             keys = keys.replace(/__/g, ".").split(',');
@@ -5897,7 +5897,7 @@ jQuery.cookie = function (name, value, options) {
 
             function stringify(h) {
                 var D = [], i = 0, k, v, t // k = key, v = value
-                        , a = $.isArray(h)
+                        , a = Array.isArray(h)
                         ;
                 for (k in h) {
                     v = h[k];
