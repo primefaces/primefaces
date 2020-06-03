@@ -114,7 +114,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                 element.removeClass('ui-state-hover').addClass('ui-state-active');
 
                 if($this.input.is(':not(:focus)')) {
-                    $this.input.focus();
+                    $this.input.trigger('focus');
                 }
 
                 $this.repeat(null, dir);

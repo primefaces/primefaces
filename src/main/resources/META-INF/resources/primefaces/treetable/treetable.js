@@ -254,7 +254,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     bindChangeFilter: function(filter) {
         var $this = this;
 
-        filter.change(function() {
+        filter.on('change', function() {
             $this.filter();
         });
     },
@@ -1838,7 +1838,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         cell.addClass('ui-state-highlight ui-cell-editing');
         displayContainer.hide();
         inputContainer.show();
-        inputs.eq(0).focus().select();
+        inputs.eq(0).trigger('focus').trigger('select');
 
         //metadata
         if(multi) {
@@ -1877,7 +1877,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                             if(focusIndex < 0 || (focusIndex === inputs.length)) {
                                 $this.tabCell(cell, !shiftKey);
                             } else {
-                                inputs.eq(focusIndex).focus();
+                                inputs.eq(focusIndex).trigger('focus');
                             }
                         }
                         else {

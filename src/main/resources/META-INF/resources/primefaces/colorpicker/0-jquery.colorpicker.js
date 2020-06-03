@@ -105,7 +105,7 @@
 				$(this).parent().addClass('colorpicker_focus');
 			},
 			downIncrement = function (ev) {
-				var field = $(this).parent().find('input').focus();
+				var field = $(this).parent().find('input').trigger('focus');
 				var current = {
 					el: $(this).parent().addClass('colorpicker_slider'),
 					max: this.parentNode.className.indexOf('_hsb_h') > 0 ? 360 : (this.parentNode.className.indexOf('_hsb') > 0 ? 100 : 255),
@@ -126,7 +126,7 @@
 			},
 			upIncrement = function (ev) {
 				change.apply(ev.data.field.get(0), [true]);
-				ev.data.el.removeClass('ui-colorpicker_slider').find('input').focus();
+				ev.data.el.removeClass('ui-colorpicker_slider').find('input').trigger('focus');
 				$(document).off('mouseup', upIncrement);
 				$(document).off('mousemove', moveIncrement);
 				return false;

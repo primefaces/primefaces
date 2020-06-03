@@ -138,7 +138,7 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     postShow: function() {
-        this.content.find('input:text,textarea').filter(':visible:enabled:first').focus().select();
+        this.content.find('input:text,textarea').filter(':visible:enabled:first').trigger('focus').trigger('select');
 
         PrimeFaces.invokeDeferredRenders(this.id);
     },

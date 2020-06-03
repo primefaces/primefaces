@@ -53,7 +53,7 @@
     (function ($) {
 // alias Math methods - used a lot!
             var min = Math.min, max = Math.max, round = Math.floor, isStr = function (v) {
-                    return $.type(v) === "string";
+                    return typeof v === "string";
                 }
 
                 /**
@@ -1187,7 +1187,7 @@
                         ;
                         if (hasPane && !$P) // a pane is specified, but does not exist!
                             return retVal;
-                        if (!hasPane && $.type(pane) === "boolean") {
+                        if (!hasPane && typeof pane === "boolean") {
                             skipBoundEvents = pane; // allow pane param to be skipped for Layout callback
                             pane = "";
                         }
@@ -1217,7 +1217,7 @@
                                 }
                             } catch (ex) {
                                 _log(options.errors.callbackError.replace(/EVENT/, String.prototype.trim((pane || "") + " " + lng)), false);
-                                if ($.type(ex) === "string" && string.length)
+                                if (typeof ex === "string" && string.length)
                                     _log("Exception:  " + ex, false);
                             }
                         }
@@ -5516,7 +5516,7 @@
                     , clear = false
                     , o = cookieOpts || {}
                     , x = o.expires || null
-                    , t = $.type(x)
+                    , t = typeof x
                 ;
                 if (t === "date")
                     date = x;
@@ -5780,7 +5780,7 @@
              */
             , readState: function (inst, opts) {
                 // backward compatility
-                if ($.type(opts) === 'string')
+                if (typeof opts === 'string')
                     opts = {keys: opts};
                 if (!opts)
                     opts = {};

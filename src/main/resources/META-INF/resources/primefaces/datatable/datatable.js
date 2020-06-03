@@ -554,7 +554,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         if(this.reflowDD && this.cfg.reflow) {
             PrimeFaces.skinSelect(this.reflowDD);
-            this.reflowDD.change(function(e) {
+            this.reflowDD.on('change', function(e) {
                 var arrVal = $(this).val().split('_'),
                     columnHeader = $this.sortableColumns.eq(parseInt(arrVal[0])),
                     sortOrder = parseInt(arrVal[1]);
@@ -859,7 +859,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             $this.unhighlightFocusedRow();
 
                             if($this.isCheckboxSelectionEnabled()) {
-                                row.find('> td.ui-selection-column .ui-chkbox input').focus();
+                                row.find('> td.ui-selection-column .ui-chkbox input').trigger('focus');
                             }
                             else {
                                 $this.focusedRow = row;
@@ -3053,7 +3053,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         var inputs=row.find(':input:enabled');
         if (inputs.length > 0) {
-            inputs.first().focus();
+            inputs.first().trigger('focus');
         }
     },
 
@@ -3186,7 +3186,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             cell.addClass('ui-state-highlight ui-cell-editing');
             displayContainer.hide();
             inputContainer.show();
-            inputs.eq(0).focus().select();
+            inputs.eq(0).trigger('focus').trigger('select');
 
             //metadata
             if(multi) {
@@ -3233,7 +3233,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                                 if(focusIndex < 0 || (focusIndex === inputs.length) || input.parent().hasClass('ui-inputnumber') || input.parent().hasClass('ui-helper-hidden-accessible')) {
                                     $this.tabCell(cell, !shiftKey);
                                 } else {
-                                    inputs.eq(focusIndex).focus();
+                                    inputs.eq(focusIndex).trigger('focus');
                                 }
                             }
                             else {
