@@ -295,7 +295,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         //onchange handler for editable input
         if(this.cfg.editable) {
-            this.label.change(function(e) {
+            this.label.on('change', function(e) {
                 $this.triggerChange(true);
                 $this.callHandleMethod($this.handleLabelChange, e);
             });
@@ -455,7 +455,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if(!silent) {
-            this.focusInput.focus();
+            this.focusInput.trigger('focus');
             this.callBehavior('itemSelect');
         }
 
@@ -918,7 +918,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * Puts focus on this widget.
      */
     focus: function() {
-        this.focusInput.focus();
+        this.focusInput.trigger('focus');
     },
 
     /**
@@ -933,7 +933,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }, timeout);
         }
         else {
-            this.filterInput.focus();
+            this.filterInput.trigger('focus');
         }
     },
 

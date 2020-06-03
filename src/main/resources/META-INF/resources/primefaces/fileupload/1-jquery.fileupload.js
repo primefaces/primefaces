@@ -1176,7 +1176,7 @@
       // If the fileInput had focus before it was detached,
       // restore focus to the inputClone.
       if (restoreFocus) {
-        inputClone.focus();
+        inputClone.trigger('focus');
       }
       // Avoid memory leaks with the detached file input:
       $.cleanData(input.off('remove'));

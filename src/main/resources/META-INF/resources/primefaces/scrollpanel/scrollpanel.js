@@ -238,11 +238,12 @@
 					);
 
 
-					verticalDrag.hover(
+					verticalDrag.on('mouseenter.jsp',
 						function()
 						{
 							verticalDrag.addClass('jspHover');
-						},
+						}
+					).on('mouseleave.jsp',
 						function()
 						{
 							verticalDrag.removeClass('jspHover');
@@ -326,11 +327,12 @@
 						appendArrows(horizontalTrack, settings.horizontalArrowPositions, arrowLeft, arrowRight);
 					}
 
-					horizontalDrag.hover(
+					horizontalDrag.on('mouseenter.jsp',
 						function()
 						{
 							horizontalDrag.addClass('jspHover');
-						},
+						}
+					).on('mouseleave.jsp',
 						function()
 						{
 							horizontalDrag.removeClass('jspHover');
@@ -864,10 +866,10 @@
 				isScrollableV && validParents.push(verticalBar[0]);
 				
 				// IE also focuses elements that don't have tabindex set.
-				pane.focus(
+				pane.on('focus.jsp',
 					function()
 					{
-						elem.focus();
+						elem.trigger('focus');
 					}
 				);
 				

@@ -430,10 +430,10 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         this.menu.show();
         
         if(this.cfg.filter) {
-            this.filterInput.focus();
+            this.filterInput.trigger('focus');
         }
         else {
-            this.menuButton.focus();
+            this.menuButton.trigger('focus');
         }
     },
 

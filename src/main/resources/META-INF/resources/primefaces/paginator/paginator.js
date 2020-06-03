@@ -132,7 +132,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
 
         //records per page selection
         PrimeFaces.skinSelect(this.rppSelect);
-        this.rppSelect.change(function(e) {
+        this.rppSelect.on('change', function(e) {
             if(!$(this).hasClass("ui-state-disabled")){
                 $this.setRowsPerPage($(this).val());
             }
@@ -140,7 +140,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
 
         //jump to page dropdown
         PrimeFaces.skinSelect(this.jtpSelect);
-        this.jtpSelect.change(function(e) {
+        this.jtpSelect.on('change', function(e) {
             if(!$(this).hasClass("ui-state-disabled")){
                 $this.setPage(parseInt($(this).val()));
             }
@@ -148,7 +148,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
 
         //jump to page input
         PrimeFaces.skinInput(this.jtpInput);
-        this.jtpInput.change(function(e) {
+        this.jtpInput.on('change', function(e) {
             if(!$(this).hasClass("ui-state-disabled")){
                 var page = parseInt($(this).val());
                 if (isNaN(page) || page > $this.cfg.pageCount || page < 1) {

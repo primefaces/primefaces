@@ -52,7 +52,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
         }).on("mouseleave", function() {
             $(this).removeClass('ui-state-hover');
         }).on("click", function() {
-            $this.input.focus();
+            $this.input.trigger('focus');
         });
 
 
@@ -115,7 +115,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
             this.input.removeAttr('placeholder');
             
             if (refocus) {
-                this.input.focus();
+                this.input.trigger('focus');
             }
 
             this.hinput.append('<option value="' + escapedValue + '" selected="selected"></option>');

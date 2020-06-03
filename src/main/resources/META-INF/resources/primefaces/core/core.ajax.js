@@ -573,8 +573,7 @@ if (!PrimeFaces.ajax) {
                 // fallback to @all if no process was defined by the user
                 else {
                     var definedProcess = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall(cfg, 'process');
-                    definedProcess = PrimeFaces.trim(definedProcess);
-                    if (definedProcess === '') {
+                    if (definedProcess === undefined || definedProcess.length == 0) {
                         processIds = '@all';
                     }
                 }
@@ -1068,7 +1067,7 @@ if (!PrimeFaces.ajax) {
                         // already focussed?
                         if (activeElementId !== $(document.activeElement).attr('id')) {
                             // focus
-                            elementToFocus.focus();
+                            elementToFocus.trigger('focus');
 
                             // reapply cursor / selection
                             if (activeElementSelection) {

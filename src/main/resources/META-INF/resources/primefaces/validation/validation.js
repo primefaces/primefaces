@@ -650,9 +650,9 @@ if (window.PrimeFaces) {
                 if(vc.messages.hasOwnProperty(key)) {
                     var el = $(PrimeFaces.escapeClientId(key));
                     if(!el.is(':focusable'))
-                        el.find(':focusable:first').focus();
+                        el.find(':focusable:first').trigger('focus');
                     else
-                        el.focus();
+                        el.trigger('focus');
                     break;
                 }
             }
