@@ -268,12 +268,12 @@
          * @param {Event} event A DOM2-normalized event object.
          * @return {void}
          */
-        jqElem.on($.trim((opts.events + " ").split(" ").join("._idleTimer" + uniqueId + " ")), function (e) {
+        jqElem.on(PrimeFaces.trim((opts.events + " ").split(" ").join("._idleTimer" + uniqueId + " ")), function (e) {
             handleEvent(e);
         });
 
         if (opts.timerSyncId) {
-            $(window).bind("storage", handleEvent);
+            $(window).on("storage", handleEvent);
         }
 
         // Internal Object Properties, This isn't all necessary, but we

@@ -285,9 +285,8 @@ public class BarChartDataSet extends ChartDataSet {
      */
     @Override
     public String encode() throws IOException {
-        FastStringWriter fsw = new FastStringWriter();
+        try (FastStringWriter fsw = new FastStringWriter()) {
 
-        try {
             fsw.write("{");
 
             ChartUtils.writeDataValue(fsw, "type", this.getType(), false);
@@ -306,11 +305,8 @@ public class BarChartDataSet extends ChartDataSet {
             ChartUtils.writeDataValue(fsw, "hoverBorderWidth", this.hoverBorderWidth, true);
 
             fsw.write("}");
-        }
-        finally {
-            fsw.close();
-        }
 
-        return fsw.toString();
+            return fsw.toString();
+        }
     }
 }

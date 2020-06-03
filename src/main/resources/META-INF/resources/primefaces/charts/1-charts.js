@@ -412,7 +412,7 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Export the current visual state of this chart as an image.
-     * @return {HTMLImageElement}
+     * @return {HTMLImageElement} An HTML image element with an image of the current chart.
      */
     exportAsImage: function() {
         return this.jq.jqplotToImageElem();
@@ -425,7 +425,7 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
     bindItemSelect: function() {
         var $this = this;
 
-        this.jq.bind("jqplotClick", function(ev, gridpos, datapos, neighbor) {
+        this.jq.on("jqplotClick", function(ev, gridpos, datapos, neighbor) {
             if(neighbor && $this.hasBehavior('itemSelect')) {
                 var ext = {
                     params: [

@@ -47,13 +47,11 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
     bindEvents: function() {
         var $this = this;
 
-        this.itemContainer.hover(function() {
-                $(this).addClass('ui-state-hover');
-            },
-            function() {
-                $(this).removeClass('ui-state-hover');
-            }
-        ).click(function() {
+        this.itemContainer.on("mouseenter", function() {
+            $(this).addClass('ui-state-hover');
+        }).on("mouseleave", function() {
+            $(this).removeClass('ui-state-hover');
+        }).on("click", function() {
             $this.input.focus();
         });
 

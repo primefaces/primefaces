@@ -54,7 +54,8 @@ public abstract class InputNumberBase extends HtmlInputText implements Widget, I
         inputStyleClass,
         padControl,
         leadingZero,
-        decimalSeparatorAlternative
+        decimalSeparatorAlternative,
+        modifyValueOnWheel
     }
 
     public InputNumberBase() {
@@ -202,5 +203,13 @@ public abstract class InputNumberBase extends HtmlInputText implements Widget, I
 
     public void setDecimalSeparatorAlternative(String decimalSeparatorAlternative) {
         getStateHelper().put(PropertyKeys.decimalSeparatorAlternative, decimalSeparatorAlternative);
+    }
+
+    public boolean isModifyValueOnWheel() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.modifyValueOnWheel, true);
+    }
+
+    public void setModifyValueOnWheel(boolean modifyValueOnWheel) {
+        getStateHelper().put(PropertyKeys.modifyValueOnWheel, modifyValueOnWheel);
     }
 }

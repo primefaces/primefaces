@@ -31,9 +31,7 @@ public class ItemSelectEvent extends AbstractAjaxBehaviorEvent {
     private static final long serialVersionUID = 1L;
 
     private int itemIndex;
-
     private int seriesIndex;
-
     private int dataSetIndex;
 
     public ItemSelectEvent(UIComponent source, Behavior behavior, int itemIndex, int index) {

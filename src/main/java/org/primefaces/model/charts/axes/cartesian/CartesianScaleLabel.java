@@ -197,9 +197,7 @@ public class CartesianScaleLabel implements Serializable {
      * @throws java.io.IOException If an I/O error occurs
      */
     public String encode() throws IOException {
-        FastStringWriter fsw = new FastStringWriter();
-
-        try {
+        try (FastStringWriter fsw = new FastStringWriter()) {
             fsw.write("{");
 
             ChartUtils.writeDataValue(fsw, "display", this.display, false);
@@ -212,11 +210,8 @@ public class CartesianScaleLabel implements Serializable {
             ChartUtils.writeDataValue(fsw, "padding", this.padding, true);
 
             fsw.write("}");
-        }
-        finally {
-            fsw.close();
-        }
 
-        return fsw.toString();
+            return fsw.toString();
+        }
     }
 }

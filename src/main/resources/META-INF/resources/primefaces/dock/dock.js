@@ -55,7 +55,7 @@ PrimeFaces.widget.Dock = PrimeFaces.widget.BaseWidget.extend({
 
         // add bounce effect 
         if (this.cfg.animate) {
-            this.links.click(function (e) {
+            this.links.on("click", function (e) {
                 var item = $(this);
                 item.addClass('ui-dock-bounce').delay($this.cfg.animationDuration).queue(function () {
                     item.removeClass('ui-dock-bounce');

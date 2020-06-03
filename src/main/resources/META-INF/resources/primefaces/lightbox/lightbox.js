@@ -82,7 +82,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         this.bindCommonEvents();
 
         if(this.cfg.visible) {
-            this.links.eq(0).click();
+            this.links.eq(0).trigger("click");
         }
     },
 
@@ -155,13 +155,13 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
             $this.panel.stop().animate({ left: '+=' + leftOffset, top: '+=' + topOffset}, 500);
         });
 
-        this.navigators.mouseover(function() {
+        this.navigators.on("mouseover", function() {
             $(this).addClass('ui-state-hover');
         })
-        .mouseout(function() {
+        .on("mouseout", function() {
             $(this).removeClass('ui-state-hover');
         })
-        .click(function(e) {
+        .on("click", function(e) {
             var nav = $(this);
 
             $this.hideNavigators();
@@ -180,7 +180,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
             e.preventDefault();
         });
 
-        this.links.click(function(e) {
+        this.links.on("click", function(e) {
             var link = $(this);
 
             if($this.isHidden()) {
@@ -253,7 +253,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         this.inline.appendTo(this.content).show();
         var $this = this;
 
-        this.links.click(function(e) {
+        this.links.on("click", function(e) {
             $this.show();
 
             var title = $(this).attr('title');
@@ -283,7 +283,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
             this.iframe.attr('title', this.cfg.iframeTitle);
         }
 
-        this.links.click(function(e) {
+        this.links.on("click", function(e) {
             if(!$this.iframeLoaded) {
                 $this.content.addClass('ui-lightbox-loading').css({
                     width: $this.cfg.width
@@ -318,14 +318,14 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
     bindCommonEvents: function() {
         var $this = this;
 
-        this.closeIcon.mouseover(function() {
+        this.closeIcon.on("mouseover", function() {
             $(this).addClass('ui-state-hover');
         })
-        .mouseout(function() {
+        .on("mouseout", function() {
             $(this).removeClass('ui-state-hover');
         });
 
-        this.closeIcon.click(function(e) {
+        this.closeIcon.on("click", function(e) {
             $this.hide();
             e.preventDefault();
         });

@@ -104,7 +104,7 @@ column instance and should return a string to be included exported document.
 
 ```xhtml
 <p:commandButton value="Export as Text" ajax="false" >
-    <p:dataExporter type="text" target="tableId" fileName="cars" customExporter="#{dataExporterView.textExporter}"/>
+    <p:dataExporter type="text" target="tableId" fileName="cars" exporter="#{dataExporterView.textExporter}"/>
 </p:commandLink>
 ```
 

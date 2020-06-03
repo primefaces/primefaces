@@ -101,9 +101,7 @@ public class RadialLinearAngleLines implements Serializable {
      * @throws java.io.IOException If an I/O error occurs
      */
     public String encode() throws IOException {
-        FastStringWriter fsw = new FastStringWriter();
-
-        try {
+        try (FastStringWriter fsw = new FastStringWriter()) {
             fsw.write("{");
 
             ChartUtils.writeDataValue(fsw, "display", this.display, false);
@@ -111,11 +109,8 @@ public class RadialLinearAngleLines implements Serializable {
             ChartUtils.writeDataValue(fsw, "lineWidth", this.lineWidth, true);
 
             fsw.write("}");
-        }
-        finally {
-            fsw.close();
-        }
 
-        return fsw.toString();
+            return fsw.toString();
+        }
     }
 }

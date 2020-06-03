@@ -57,17 +57,17 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         //button visuals
-        this.button.mouseover(function(){
+        this.button.on("mouseover", function(){
             if(!$this.button.hasClass('ui-state-focus')) {
                 $this.button.addClass('ui-state-hover');
             }
-        }).mouseout(function() {
+        }).on("mouseout", function() {
             if(!$this.button.hasClass('ui-state-focus')) {
                 $this.button.removeClass('ui-state-hover ui-state-active');
             }
-        }).mousedown(function() {
+        }).on("mousedown", function() {
             $(this).removeClass('ui-state-focus ui-state-hover').addClass('ui-state-active');
-        }).mouseup(function() {
+        }).on("mouseup", function() {
             var el = $(this);
             el.removeClass('ui-state-active')
 
@@ -79,9 +79,9 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
                 el.addClass('ui-state-focus');
                 $this.show();
             }
-        }).focus(function() {
+        }).on("focus", function() {
             $(this).addClass('ui-state-focus');
-        }).blur(function() {
+        }).on("blur", function() {
             $(this).removeClass('ui-state-focus');
         });
 
@@ -89,20 +89,20 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
         this.button.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
 
         //menuitem visuals
-        this.menuitems.mouseover(function(e) {
+        this.menuitems.on("mouseover", function(e) {
             var element = $(this);
             if(!element.hasClass('ui-state-disabled')) {
                 element.addClass('ui-state-hover');
             }
-        }).mouseout(function(e) {
+        }).on("mouseout", function(e) {
             $(this).removeClass('ui-state-hover');
-        }).click(function() {
+        }).on("click", function() {
             $this.button.removeClass('ui-state-focus');
             $this.hide();
         });
 
         //keyboard support
-        this.button.keydown(function(e) {
+        this.button.on("keydown", function(e) {
             var keyCode = $.ui.keyCode;
 
             switch(e.which) {

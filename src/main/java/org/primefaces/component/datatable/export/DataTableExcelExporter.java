@@ -129,7 +129,9 @@ public class DataTableExcelExporter extends DataTableExporter {
     }
 
     protected void addColumnFacets(DataTable table, Sheet sheet, DataTableExporter.ColumnType columnType) {
-        int sheetRowIndex = columnType.equals(DataTableExporter.ColumnType.HEADER) ? 0 : (sheet.getLastRowNum() + 1);
+        int sheetRowIndex = columnType == DataTableExporter.ColumnType.HEADER
+                ? 0
+                : sheet.getLastRowNum() + 1;
         Row rowHeader = sheet.createRow(sheetRowIndex);
 
         for (UIColumn col : table.getColumns()) {

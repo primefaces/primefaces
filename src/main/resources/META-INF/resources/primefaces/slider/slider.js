@@ -65,7 +65,7 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
 
         this.bindEvents();
 
-        if (PrimeFaces.env.touch) {
+        if (PrimeFaces.env.isTouchable(this.cfg)) {
             this.bindTouchEvents();
         }
     },
@@ -230,10 +230,10 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
      */
     triggerOnchange: function(input) {
         if (input.parent().hasClass('ui-inputnumber')) {
-            input.change();
+            input.trigger('change');
         }
         else if (input.hasClass('ui-spinner-input')) {
-            input.change();
+            input.trigger('change');
         }
     },
 

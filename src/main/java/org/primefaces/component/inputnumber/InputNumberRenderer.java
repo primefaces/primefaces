@@ -47,13 +47,7 @@ public class InputNumberRenderer extends InputRenderer {
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue)
             throws ConverterException {
-
-        String submittedValueString = (String) submittedValue;
-        if (LangUtils.isValueBlank(submittedValueString)) {
-            return null;
-        }
-
-        return ComponentUtils.getConvertedValue(context, component, submittedValueString);
+        return ComponentUtils.getConvertedValue(context, component, submittedValue);
     }
 
     @Override
@@ -132,9 +126,7 @@ public class InputNumberRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = inputNumber.getClientId(context);
 
-        String styleClass = inputNumber.getStyleClass();
-        styleClass = styleClass == null ? InputNumber.STYLE_CLASS : InputNumber.STYLE_CLASS + " " + styleClass;
-        styleClass = inputNumber.isValid() ? styleClass : styleClass + " ui-state-error"; // see #3706
+        String styleClass = createStyleClass(inputNumber, InputNumber.STYLE_CLASS);
 
         writer.startElement("span", inputNumber);
         writer.writeAttribute("id", clientId, null);
@@ -186,16 +178,8 @@ public class InputNumberRenderer extends InputRenderer {
         String inputId = clientId + "_input";
 
         String inputStyle = inputNumber.getInputStyle();
-        String inputStyleClass = inputNumber.getInputStyleClass();
-
         String style = inputStyle;
-
-        String styleClass = InputText.STYLE_CLASS;
-        styleClass = inputNumber.isValid() ? styleClass : styleClass + " ui-state-error";
-        styleClass = !inputNumber.isDisabled() ? styleClass : styleClass + " ui-state-disabled";
-        if (!isValueBlank(inputStyleClass)) {
-            styleClass += " " + inputStyleClass;
-        }
+        String styleClass = createStyleClass(inputNumber, InputNumber.PropertyKeys.inputStyleClass.name(), InputText.STYLE_CLASS) ;
 
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);
@@ -249,6 +233,7 @@ public class InputNumberRenderer extends InputRenderer {
             .attr("emptyInputBehavior", emptyValue, "focus")
             .attr("leadingZero", inputNumber.getLeadingZero(), "deny")
             .attr("allowDecimalPadding", inputNumber.isPadControl(), true)
+            .attr("modifyValueOnWheel", inputNumber.isModifyValueOnWheel(), true)
             .attr("roundingMethod", inputNumber.getRoundMethod(), "S")
             .attr("selectOnFocus", false, true)
             .attr("showWarnings", false, true);

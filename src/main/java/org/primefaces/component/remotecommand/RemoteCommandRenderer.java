@@ -75,7 +75,11 @@ public class RemoteCommandRenderer extends CoreRenderer {
                         .ajax(true)
                         .process(command, command.getProcess())
                         .update(command, command.getUpdate())
-                        .command(request).build();
+                        .command("return " + request)
+                        .build();
+        }
+        else {
+            request = "return " + request;
         }
 
         //script

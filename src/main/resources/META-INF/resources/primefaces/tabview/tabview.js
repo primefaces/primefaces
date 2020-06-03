@@ -245,7 +245,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     bindSwipeEvents: function() {
-        if (!PrimeFaces.env.touch) {
+        if (!PrimeFaces.env.isTouchable(this.cfg)) {
             return;
         }
         var $this = this;

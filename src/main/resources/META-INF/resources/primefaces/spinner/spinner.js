@@ -261,7 +261,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             parsedValue = parseInt(value);
         }
         if(isNaN(parsedValue)) {
-            if($.trim(value) === '' && this.cfg.min !== undefined && this.cfg.required) {
+            if(PrimeFaces.trim(value) === '' && this.cfg.min !== undefined && this.cfg.required) {
                 parsedValue = this.cfg.min;
             } else {
                 parsedValue = null;

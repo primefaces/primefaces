@@ -158,20 +158,15 @@ public class AxesTicks implements Serializable {
      * @throws java.io.IOException If an I/O error occurs
      */
     public String encode() throws IOException {
-        FastStringWriter fsw = new FastStringWriter();
-
-        try {
+        try (FastStringWriter fsw = new FastStringWriter()) {
             ChartUtils.writeDataValue(fsw, "display", this.display, false);
             ChartUtils.writeDataValue(fsw, "fontColor", this.fontColor, true);
             ChartUtils.writeDataValue(fsw, "fontFamily", this.fontFamily, true);
             ChartUtils.writeDataValue(fsw, "fontSize", this.fontSize, true);
             ChartUtils.writeDataValue(fsw, "fontStyle", this.fontStyle, true);
             ChartUtils.writeDataValue(fsw, "reverse", this.reverse, true);
-        }
-        finally {
-            fsw.close();
-        }
 
-        return fsw.toString();
+            return fsw.toString();
+        }
     }
 }

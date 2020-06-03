@@ -44,6 +44,7 @@ layout | list | String | Layout strategy to use, valid values are "list" and "gr
 gridIcon | null | String | Icon of the grid layout button.
 listIcon | null | String | Icon of the list layout button.
 multiViewState | false | Boolean | Whether to keep DataView state across views, defaults to false.
+touchable | true | Boolean | Enable touch support if browser detection supports it.
 
 ## Getting started with the DataView
 A list of cars will be used throughout the examples.

@@ -26,7 +26,8 @@ package org.primefaces.component.filedownload;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -42,6 +43,7 @@ import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 public class FileDownloadActionListener implements ActionListener, StateHolder {
 
@@ -72,18 +74,32 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
         }
 
         ExternalContext externalContext = context.getExternalContext();
-        String contentDispositionValue = contentDisposition != null ? (String) contentDisposition.getValue(elContext) : "attachment";
-        String monitorKeyValue = monitorKey != null ? "_" + (String) monitorKey.getValue(elContext) : "";
 
         InputStream inputStream = null;
 
         try {
             externalContext.setResponseContentType(content.getContentType());
+
+            String contentDispositionValue = contentDisposition != null ? (String) contentDisposition.getValue(elContext) : "attachment";
             externalContext.setResponseHeader("Content-Disposition", ComponentUtils.createContentDisposition(contentDispositionValue, content.getName()));
-            externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE + monitorKeyValue, "true", Collections.<String, Object>emptyMap());
+
+
+            String monitorKeyCookieName = Constants.DOWNLOAD_COOKIE + context.getViewRoot().getViewId().replace('/', '_');
+            if (monitorKey != null) {
+                String evaluated = (String) monitorKey.getValue(elContext);
+                if (!LangUtils.isValueBlank(evaluated)) {
+                    monitorKeyCookieName += "_" + evaluated;
+                }
+            }
+
+            Map<String, Object> cookieOptions = new HashMap<>();
+            cookieOptions.put("path", LangUtils.isValueBlank(externalContext.getRequestContextPath())
+                    ? "/"
+                    : externalContext.getRequestContextPath()); // Always add cookies to context root; see #3108
+            externalContext.addResponseCookie(monitorKeyCookieName, "true", cookieOptions);
 
             if (content.getContentLength() != null) {
-                externalContext.setResponseContentLength(content.getContentLength().intValue());
+                externalContext.setResponseContentLength(content.getContentLength());
             }
 
             if (PrimeRequestContext.getCurrentInstance(context).isSecure()) {

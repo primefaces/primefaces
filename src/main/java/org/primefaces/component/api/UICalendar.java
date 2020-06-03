@@ -38,7 +38,7 @@ import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.MessageFactory;
 
-public abstract class UICalendar extends HtmlInputText implements InputHolder {
+public abstract class UICalendar extends HtmlInputText implements InputHolder, TouchAware {
 
     public static final String CONTAINER_CLASS = "ui-calendar";
     public static final String INPUT_STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
@@ -64,7 +64,8 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
         inputStyleClass,
         type,
         rangeSeparator,
-        resolverStyle
+        resolverStyle,
+        touchable
     }
 
     public Object getLocale() {
@@ -251,6 +252,16 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
         getStateHelper().put(PropertyKeys.resolverStyle, resolverStyle);
     }
 
+    @Override
+    public boolean isTouchable() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, true);
+    }
+
+    @Override
+    public void setTouchable(boolean touchable) {
+        getStateHelper().put(PropertyKeys.touchable, touchable);
+    }
+
     public enum ValidationResult {
         OK, INVALID_DISABLED_DATE, INVALID_RANGE_DATES_SEQUENTIAL, INVALID_MIN_DATE, INVALID_MAX_DATE, INVALID_OUT_OF_RANGE
     }
@@ -269,19 +280,19 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder {
                 case OK:
                     break;
                 case INVALID_DISABLED_DATE:
-                    msg = MessageFactory.getMessage(DATE_INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
+                    msg = MessageFactory.getFacesMessage(DATE_INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
                     break;
                 case INVALID_RANGE_DATES_SEQUENTIAL:
-                    msg = MessageFactory.getMessage(DATE_INVALID_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
+                    msg = MessageFactory.getFacesMessage(DATE_INVALID_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
                     break;
                 case INVALID_MIN_DATE:
-                    msg = MessageFactory.getMessage(DATE_MIN_DATE_ID, FacesMessage.SEVERITY_ERROR, params);
+                    msg = MessageFactory.getFacesMessage(DATE_MIN_DATE_ID, FacesMessage.SEVERITY_ERROR, params);
                     break;
                 case INVALID_MAX_DATE:
-                    msg = MessageFactory.getMessage(DATE_MAX_DATE_ID, FacesMessage.SEVERITY_ERROR, params);
+                    msg = MessageFactory.getFacesMessage(DATE_MAX_DATE_ID, FacesMessage.SEVERITY_ERROR, params);
                     break;
                 case INVALID_OUT_OF_RANGE:
-                    msg = MessageFactory.getMessage(DATE_OUT_OF_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
+                    msg = MessageFactory.getFacesMessage(DATE_OUT_OF_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
                     break;
             }
         }

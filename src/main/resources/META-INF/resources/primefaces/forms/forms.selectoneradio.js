@@ -175,7 +175,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
                     var prevRadioInput = (index === 0) ? $this.enabledInputs.eq((size - 1)) : $this.enabledInputs.eq(--index),
                     prevRadio = prevRadioInput.parent().next();
 
-                    input.blur();
+                    input.trigger("blur");
                     $this.unselect(currentRadio);
                     $this.select(prevRadio);
                     prevRadioInput.trigger('focus').trigger('change');
@@ -187,7 +187,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
                     var nextRadioInput = (index === (size - 1)) ? $this.enabledInputs.eq(0) : $this.enabledInputs.eq(++index),
                     nextRadio = nextRadioInput.parent().next();
 
-                    input.blur();
+                    input.trigger("blur");
                     $this.unselect(currentRadio);
                     $this.select(nextRadio);
                     nextRadioInput.trigger('focus').trigger('change');

@@ -721,6 +721,7 @@ public class DataTable extends DataTableBase {
         setSortField(null);
         setDefaultSort(true);
         setSortMeta(null);
+        setScrollOffset(0);
     }
 
     public boolean isFilteringEnabled() {
@@ -861,7 +862,7 @@ public class DataTable extends DataTableBase {
 
         Object rowKey = hasRowKey ? getRowKey() : getRowKeyFromModel(object);
 
-        if (rowKey != null && !isDisabledSelection()) {
+        if (rowKey != null) {
             selectedRowKeys.add(rowKey);
         }
     }

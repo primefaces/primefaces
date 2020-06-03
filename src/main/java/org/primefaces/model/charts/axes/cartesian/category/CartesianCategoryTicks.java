@@ -103,18 +103,13 @@ public class CartesianCategoryTicks extends CartesianTicks {
      */
     @Override
     public String encode() throws IOException {
-        FastStringWriter fsw = new FastStringWriter();
-
-        try {
+        try (FastStringWriter fsw = new FastStringWriter()) {
             fsw.write(super.encode());
             ChartUtils.writeDataValue(fsw, "labels", this.labels, true);
             ChartUtils.writeDataValue(fsw, "min", this.min, true);
             ChartUtils.writeDataValue(fsw, "max", this.max, true);
-        }
-        finally {
-            fsw.close();
-        }
 
-        return fsw.toString();
+            return fsw.toString();
+        }
     }
 }

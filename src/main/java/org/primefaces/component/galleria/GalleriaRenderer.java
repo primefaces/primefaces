@@ -136,7 +136,8 @@ public class GalleriaRenderer extends CoreRenderer {
                 .attr("showCaption", galleria.isShowCaption(), false)
                 .attr("panelWidth", galleria.getPanelWidth(), Integer.MIN_VALUE)
                 .attr("panelHeight", galleria.getPanelHeight(), Integer.MIN_VALUE)
-                .attr("custom", (galleria.getFacet("content") != null));
+                .attr("custom", (galleria.getFacet("content") != null))
+                .attr("touchable", ComponentUtils.isTouchable(context, galleria),  true);
 
         wb.finish();
     }

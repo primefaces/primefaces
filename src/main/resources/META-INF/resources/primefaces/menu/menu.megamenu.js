@@ -54,7 +54,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
     bindEvents: function() {
         var $this = this;
 
-        this.rootLinks.mouseenter(function(e) {
+        this.rootLinks.on("mouseenter", function(e) {
             var link = $(this),
             menuitem = link.parent();
 
@@ -78,7 +78,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.autoDisplay === false) {
             this.rootLinks.data('primefaces-megamenu', this.id).find('*').data('primefaces-megamenu', this.id)
 
-            this.rootLinks.click(function(e) {
+            this.rootLinks.on("click", function(e) {
                 var link = $(this),
                 menuitem = link.parent(),
                 submenu = link.next();
@@ -101,36 +101,36 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
             });
         }
         else {
-            this.rootLinks.filter('.ui-submenu-link').click(function(e) {
+            this.rootLinks.filter('.ui-submenu-link').on("click", function(e) {
                 e.preventDefault();
             });
         }
 
-        this.subLinks.mouseenter(function() {
+        this.subLinks.on("mouseenter", function() {
             if($this.activeitem && !$this.isRootLink($this.activeitem)) {
                 $this.deactivate($this.activeitem);
             }
             $this.highlight($(this).parent());
         })
-        .mouseleave(function() {
+        .on("mouseleave", function() {
             if($this.activeitem && !$this.isRootLink($this.activeitem)) {
                 $this.deactivate($this.activeitem);
             }
             $(this).removeClass('ui-state-hover');
         });
 
-        this.rootList.mouseleave(function(e) {
+        this.rootList.on("mouseleave", function(e) {
             var activeitem = $this.rootList.children('.ui-menuitem-active');
             if(activeitem.length === 1) {
                 $this.deactivate(activeitem, false);
             }
         });
 
-        this.rootList.find('> li.ui-menuitem > ul.ui-menu-child').mouseleave(function(e) {
+        this.rootList.find('> li.ui-menuitem > ul.ui-menu-child').on("mouseleave", function(e) {
             e.stopPropagation();
         });
 
-        $(document.body).click(function(e) {
+        $(document.body).on("click", function(e) {
             var target = $(e.target);
             if(target.data('primefaces-megamenu') === $this.id) {
                 return;
@@ -251,7 +251,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
                     case keyCode.ENTER:
                         var currentLink = currentitem.children('.ui-menuitem-link');
                         currentLink.trigger('click');
-                        $this.jq.blur();
+                        $this.jq.trigger("blur");
                         var href = currentLink.attr('href');
                         if(href && href !== '#') {
                             window.location.href = href;

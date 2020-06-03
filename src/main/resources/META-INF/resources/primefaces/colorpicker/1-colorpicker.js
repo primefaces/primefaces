@@ -71,6 +71,9 @@
             this.overlay = $(PrimeFaces.escapeClientId(this.jqEl.data('colorpickerId')));
             this.livePreview = $(this.jqId + '_livePreview');
         }
+
+        //pfs metadata
+        this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
 
     /**
@@ -88,7 +91,7 @@
                 $this.livePreview.css('backgroundColor', '#' + hex);
             }
 
-            $this.input.change();
+            $this.input.trigger('change');
 
             $this.callBehavior('change');
         };

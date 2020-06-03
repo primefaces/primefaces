@@ -19,8 +19,15 @@
 
 .ui-dialog-mask {
     position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
+    pointer-events: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 /** Confirm Dialog **/

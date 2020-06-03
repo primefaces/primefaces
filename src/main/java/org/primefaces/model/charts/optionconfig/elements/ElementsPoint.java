@@ -196,9 +196,7 @@ public class ElementsPoint implements Serializable {
      * @throws java.io.IOException If an I/O error occurs
      */
     public String encode() throws IOException {
-        FastStringWriter fsw = new FastStringWriter();
-
-        try {
+        try (FastStringWriter fsw = new FastStringWriter()) {
             ChartUtils.writeDataValue(fsw, "radius", this.radius, false);
             ChartUtils.writeDataValue(fsw, "pointStyle", this.pointStyle, true);
             ChartUtils.writeDataValue(fsw, "backgroundColor", this.backgroundColor, true);
@@ -207,11 +205,8 @@ public class ElementsPoint implements Serializable {
             ChartUtils.writeDataValue(fsw, "hitRadius", this.hitRadius, true);
             ChartUtils.writeDataValue(fsw, "hoverRadius", this.hoverRadius, true);
             ChartUtils.writeDataValue(fsw, "hoverBorderWidth", this.hoverBorderWidth, true);
-        }
-        finally {
-            fsw.close();
-        }
 
-        return fsw.toString();
+            return fsw.toString();
+        }
     }
 }

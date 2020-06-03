@@ -15,6 +15,7 @@
   - [Error Handling](/core/errorhandling.md)
   - [BeanValidation Transformation](/core/beanvalidationtransformation.md)
   - [Misc](/core/misc.md)
+  - [Themes](/core/themes.md)
 
 - AJAX
 
@@ -77,6 +78,7 @@
   - [FileDownload](/components/filedownload.md)
   - [FileUpload](/components/fileupload.md)
   - [Focus](/components/focus.md)
+  - [Form Layout](/components/formlayout.md)
   - [Fragment](/components/fragment.md)
   - [Galleria](/components/galleria.md)
   - [GMap](/components/gmap.md)

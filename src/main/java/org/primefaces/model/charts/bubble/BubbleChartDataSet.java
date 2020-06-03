@@ -275,9 +275,7 @@ public class BubbleChartDataSet extends ChartDataSet {
      */
     @Override
     public String encode() throws IOException {
-        FastStringWriter fsw = new FastStringWriter();
-
-        try {
+        try (FastStringWriter fsw = new FastStringWriter()) {
             fsw.write("{");
 
             ChartUtils.writeDataValue(fsw, "type", "bubble", false);
@@ -295,11 +293,8 @@ public class BubbleChartDataSet extends ChartDataSet {
             ChartUtils.writeDataValue(fsw, "radius", this.radius, true);
 
             fsw.write("}");
-        }
-        finally {
-            fsw.close();
-        }
 
-        return fsw.toString();
+            return fsw.toString();
+        }
     }
 }

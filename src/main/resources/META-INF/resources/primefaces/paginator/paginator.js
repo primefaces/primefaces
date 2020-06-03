@@ -162,7 +162,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //First page link
-        this.firstLink.click(function(e) {
+        this.firstLink.on("click", function(e) {
             PrimeFaces.clearSelection();
 
             if(!$(this).hasClass("ui-state-disabled")){
@@ -173,7 +173,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //Prev page link
-        this.prevLink.click(function(e) {
+        this.prevLink.on("click", function(e) {
             PrimeFaces.clearSelection();
 
             if(!$(this).hasClass("ui-state-disabled")){
@@ -184,7 +184,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //Next page link
-        this.nextLink.click(function(e) {
+        this.nextLink.on("click", function(e) {
             PrimeFaces.clearSelection();
 
             if(!$(this).hasClass("ui-state-disabled")){
@@ -195,7 +195,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //Last page link
-        this.endLink.click(function(e) {
+        this.endLink.on("click", function(e) {
             PrimeFaces.clearSelection();
 
             if(!$(this).hasClass("ui-state-disabled")){
@@ -259,11 +259,12 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Binds swipe events to this paginator to the JQ element passed in.
-     * 
-     * @param {JQuery} owner The owner of the paginator
+     * @private
+     * @param {JQuery} owner the owner JQ element of the paginator
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} ownerConfig the owner configuration to check if touch enabled or not
      */
-    bindSwipeEvents: function(owner) {
-        if (!PrimeFaces.env.touch) {
+    bindSwipeEvents: function(owner, ownerConfig) {
+        if (!PrimeFaces.env.isTouchable(ownerConfig)) {
             return;
         }
         var $this = this;

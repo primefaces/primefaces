@@ -125,8 +125,8 @@
 			    now = (new Date()).getTime();
 
 			options   = (typeof options === "object") ? options : {};
-			callback  = ($.isFunction(callback)) ? callback : function() {};
-			callback  = ($.isFunction(options)) ? options : callback;
+			callback  = (typeof callback === "function") ? callback : function() {};
+			callback  = (typeof options === "function") ? options : callback;
 			settings  = $.extend({}, defaults, options, internalData);
 
 			return this
@@ -162,13 +162,13 @@
 					// unbind any events that we set if we're relaying out
 					if (relayout) {
 						self
-							.unbind(".roundabout")
+							.off(".roundabout")
 							.children(settings.childSelector)
-								.unbind(".roundabout");
+								.off(".roundabout");
 					} else {
 						// bind responsive action
 						if (settings.responsive) {
-							$(window).bind("resize", function() {
+							$(window).on("resize", function() {
 								methods.stopAutoplay.apply(self);
 								methods.relayoutChildren.apply(self);
 							});
@@ -181,7 +181,7 @@
 							.children(settings.childSelector)
 							.each(function(i) {
 								$(this)
-									.bind("click.roundabout", function() {
+									.on("click.roundabout", function() {
 										var degrees = methods.getPlacement.apply(self, [i]);
 
 										if (!methods.isInFocus.apply(self, [degrees])) {
@@ -198,7 +198,7 @@
 					// bind next buttons
 					if (settings.btnNext) {
 						$(settings.btnNext)
-							.bind("click.roundabout", function() {
+							.on("click.roundabout", function() {
 								if (!self.data("roundabout").animating) {
 									methods.animateToNextChild.apply(self, [self.data("roundabout").btnNextCallback]);
 								}
@@ -209,7 +209,7 @@
 					// bind previous buttons
 					if (settings.btnPrev) {
 						$(settings.btnPrev)
-							.bind("click.roundabout", function() {
+							.on("click.roundabout", function() {
 								methods.animateToPreviousChild.apply(self, [self.data("roundabout").btnPrevCallback]);
 								return false;
 							});
@@ -218,7 +218,7 @@
 					// bind toggle autoplay buttons
 					if (settings.btnToggleAutoplay) {
 						$(settings.btnToggleAutoplay)
-							.bind("click.roundabout", function() {
+							.on("click.roundabout", function() {
 								methods.toggleAutoplay.apply(self);
 								return false;
 							});
@@ -227,7 +227,7 @@
 					// bind start autoplay buttons
 					if (settings.btnStartAutoplay) {
 						$(settings.btnStartAutoplay)
-							.bind("click.roundabout", function() {
+							.on("click.roundabout", function() {
 								methods.startAutoplay.apply(self);
 								return false;
 							});
@@ -236,7 +236,7 @@
 					// bind stop autoplay buttons
 					if (settings.btnStopAutoplay) {
 						$(settings.btnStopAutoplay)
-							.bind("click.roundabout", function() {
+							.on("click.roundabout", function() {
 								methods.stopAutoplay.apply(self);
 								return false;
 							});
@@ -245,10 +245,10 @@
 					// autoplay pause on hover
 					if (settings.autoplayPauseOnHover) {
 						self
-							.bind("mouseenter.roundabout.autoplay", function() {
+							.on("mouseenter.roundabout.autoplay", function() {
 								methods.stopAutoplay.apply(self, [true]);
 							})
-							.bind("mouseleave.roundabout.autoplay", function() {
+							.on("mouseleave.roundabout.autoplay", function() {
 								methods.startAutoplay.apply(self);
 							});
 					}
@@ -256,11 +256,11 @@
 					// drag and drop
 					if (settings.enableDrag) {
 						// on screen
-						if (!$.isFunction(self.drag)) {
+						if (typeof self.drag !== "function") {
 							if (settings.debug) {
 								alert("You do not have the drag plugin loaded.");
 							}
-						} else if (!$.isFunction(self.drop)) {
+						} else if (typeof self.drop !== "function") {
 							if (settings.debug) {
 								alert("You do not have the drop plugin loaded.");
 							}
@@ -635,13 +635,13 @@
 			callback = callback || function() {};
 
 			// find callback function in arguments
-			if ($.isFunction(passedData)) {
+			if (typeof passedData === "function") {
 				callback = passedData;
 				passedData = null;
-			} else if ($.isFunction(easing)) {
+			} else if (typeof easing === "function") {
 				callback = easing;
 				easing = null;
-			} else if ($.isFunction(duration)) {
+			} else if (typeof duration === "function") {
 				callback = duration;
 				duration = null;
 			}
@@ -730,10 +730,10 @@
 			    callback = passedArgs[2] || function() {};
 
 			// find callback
-			if ($.isFunction(easing)) {
+			if (typeof easing === "function") {
 				callback = easing;
 				easing = null;
-			} else if ($.isFunction(duration)) {
+			} else if (typeof duration === "function") {
 				callback = duration;
 				duration = null;
 			}
@@ -802,10 +802,10 @@
 			callback = callback || function() {};
 
 			// find callback
-			if ($.isFunction(easing)) {
+			if (typeof easing === "function") {
 				callback = easing;
 				easing = null;
-			} else if ($.isFunction(duration)) {
+			} else if (typeof duration === "function") {
 				callback = duration;
 				duration = null;
 			}
@@ -824,10 +824,10 @@
 			callback = callback || function() {};
 
 			// find callback
-			if ($.isFunction(easing)) {
+			if (typeof easing === "function") {
 				callback = easing;
 				easing = null;
-			} else if ($.isFunction(duration)) {
+			} else if (typeof duration === "function") {
 				callback = duration;
 				duration = null;
 			}
@@ -866,10 +866,10 @@
 			callback = callback || function() {};
 
 			// find callback
-			if ($.isFunction(easing)) {
+			if (typeof easing === "function") {
 				callback = easing;
 				easing = null;
-			} else if ($.isFunction(duration)) {
+			} else if (typeof duration === "function") {
 				callback = duration;
 				duration = null;
 			}
@@ -888,10 +888,10 @@
 			callback = callback || function() {};
 
 			// find callback
-			if ($.isFunction(easing)) {
+			if (typeof easing === "function") {
 				callback = easing;
 				easing = null;
-			} else if ($.isFunction(duration)) {
+			} else if (typeof duration === "function") {
 				callback = duration;
 				duration = null;
 			}
@@ -965,7 +965,7 @@
 					
 					// this will prevent autoplayPauseOnHover from restarting autoplay
 					if (!keepAutoplayBindings) {
-						$(this).unbind(".autoplay");
+						$(this).off(".autoplay");
 					}
 					
 					$(this).trigger("autoplayStop");
@@ -1186,7 +1186,7 @@
 	$.fn.roundabout = function(method) {
 		if (methods[method]) {
 			return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
-		} else if (typeof method === "object" || $.isFunction(method) || !method) {
+		} else if (typeof method === "object" || typeof method === "function" || !method) {
 			return methods.init.apply(this, arguments);
 		} else {
 			$.error("Method " + method + " does not exist for jQuery.roundabout.");

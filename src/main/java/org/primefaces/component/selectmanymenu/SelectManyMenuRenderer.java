@@ -36,10 +36,12 @@ import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.column.Column;
+import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectManyMenuRenderer extends SelectManyRenderer {
@@ -67,10 +69,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         List<SelectItem> selectItems = getSelectItems(context, menu);
 
         String style = menu.getStyle();
-        String styleClass = menu.getStyleClass();
-        styleClass = styleClass == null ? SelectManyMenu.CONTAINER_CLASS : SelectManyMenu.CONTAINER_CLASS + " " + styleClass;
-        styleClass = menu.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
-        styleClass = !menu.isValid() ? styleClass + " ui-state-error" : styleClass;
+        String styleClass = createStyleClass(menu, SelectManyMenu.CONTAINER_CLASS);
 
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
@@ -325,6 +324,8 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER, null), null);
+
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);
         }

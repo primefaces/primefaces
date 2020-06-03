@@ -51,7 +51,7 @@ public class BeanPropertyComparator implements Comparator {
 
         this.sortBy = sortBy;
         this.var = var;
-        this.asc = sortOrder.equals(SortOrder.ASCENDING);
+        this.asc = sortOrder == SortOrder.ASCENDING;
         this.sortFunction = sortFunction;
         this.caseSensitive = caseSensitive;
         this.locale = locale;

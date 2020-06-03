@@ -75,13 +75,13 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         }
 
         //events
-        this.jq.focus(function() {
+        this.jq.on("focus", function() {
             _self.show();
         })
-        .blur(function() {
+        .on("blur", function() {
             _self.hide();
         })
-        .keyup(function() {
+        .on("keyup", function() {
             var value = _self.jq.val(),
             label = null,
             meterPos = null;

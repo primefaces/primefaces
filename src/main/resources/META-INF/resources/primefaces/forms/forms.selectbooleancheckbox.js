@@ -62,7 +62,7 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
             });
 
             //toggle state on label click
-            this.itemLabel.click(function() {
+            this.itemLabel.on("click", function() {
                 $this.toggle();
                 $this.input.trigger('focus');
             });
