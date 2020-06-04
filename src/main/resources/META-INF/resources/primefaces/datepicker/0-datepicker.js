@@ -1950,6 +1950,7 @@
                 var $this = this;
                 setTimeout(function () {
                     $this.bindDocumentClickListener();
+                    $this.bindWindowResizeListener();
                 }, 10);
             }
 
@@ -1965,6 +1966,7 @@
                 }
 
                 this.unbindDocumentClickListener();
+                this.unbindWindowResizeListener();
                 this.datepickerClick = false;
 
                 this.panel.hide();
@@ -2002,7 +2004,25 @@
             }
         },
 
+        bindWindowResizeListener: function () {
+            if (this.options.inline) {
+                return;
+            }
+            var $this = this;
+            $(window).on('resize.' + this.options.id, function() {
+                $this.alignPanel();
+            });
+        },
+
+        unbindWindowResizeListener: function () {
+            $(window).off('resize.'+ this.options.id);
+        },
+
         alignPanel: function () {
+            if (!this.panel || !this.panel.is(":visible")) {
+               return; 
+            }
+
             if (this.options.touchUI) {
                 this.enableModality();
             }
