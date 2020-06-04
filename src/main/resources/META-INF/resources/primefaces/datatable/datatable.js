@@ -173,6 +173,7 @@
  * @prop {string} cfg.stickyTopAt Selector to position on the page according to other fixing elements on the top of the
  * table.
  * @prop {string} cfg.tabindex The value of the `tabindex` attribute for this data table.
+ * @prop {boolean} cfg.unsortable When true columns can be unsorted upon clicking sort.
  * @prop {boolean} cfg.virtualScroll Loads data on demand as the scrollbar gets close to the bottom.
  */
 PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
@@ -530,6 +531,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             var columnHeader = $(this),
             sortOrderData = columnHeader.data('sortorder'),
+                // TODO here we should exclude unsorted based on cfg
             sortOrder = (sortOrderData === $this.SORT_ORDER.UNSORTED) ? $this.SORT_ORDER.ASCENDING :
                 (sortOrderData === $this.SORT_ORDER.ASCENDING) ? $this.SORT_ORDER.DESCENDING :
                     $this.SORT_ORDER.UNSORTED,
@@ -1957,7 +1959,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Performs a sorting operation on the rows of this data table via AJAX
      * @param {JQuery} columnHeader Header of the column by which to sort.
-     * @param {-1 | 0 | 1} order Whether to sort by the column value in an ascending or descending order.
+     * @param {-1 | 0 | 1} order Whether to "unsort" or to sort by the column value in an ascending or descending order.
      * @param {boolean} multi `true` if sorting by multiple columns is enabled, or `false` otherwise.
      * @private
      */

@@ -57,6 +57,8 @@ public abstract class DataTableBase extends UIData
         sortBy,
         sortOrder,
         sortFunction,
+        sortMode,
+        unsortable,
         scrollRows,
         rowKey,
         filterEvent,
@@ -66,7 +68,6 @@ public abstract class DataTableBase extends UIData
         draggableColumns,
         editable,
         filteredValue,
-        sortMode,
         editMode,
         editingRow,
         cellSeparator,
@@ -331,6 +332,14 @@ public abstract class DataTableBase extends UIData
 
     public void setSortMode(String sortMode) {
         getStateHelper().put(PropertyKeys.sortMode, sortMode);
+    }
+
+    public boolean getUnsortable() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.unsortable, true);
+    }
+
+    public void setUnsortable(boolean unsortable) {
+        getStateHelper().put(PropertyKeys.unsortable, unsortable);
     }
 
     public String getEditMode() {
