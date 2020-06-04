@@ -44,7 +44,9 @@ public interface InputHolder {
     String getLabelledBy();
 
     /**
-     * @return Sets the id of the label for aria
+     * Sets the id of the label for aria.
+     *
+     * @param id the id
      */
     void setLabelledBy(String id);
 }
