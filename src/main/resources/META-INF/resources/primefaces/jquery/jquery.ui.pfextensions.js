@@ -186,7 +186,7 @@
                         this.each(function () {
                             var elem = this;
                             setTimeout(function () {
-                                $(elem).focus();
+                                $(elem).trigger('focus');
                                 if (fn) {
                                     fn.call(elem);
                                 }
@@ -416,7 +416,7 @@ $.widget( "ui.sortable", $.ui.sortable, {
 
                                 obj.children('select').remove();
 
-                                $(sel).appendTo(obj).change(function (e) {
+                                $(sel).appendTo(obj).on('change', function (e) {
                                         tp_inst._onTimeChange();
                                         tp_inst._onSelectHandler();
                                         tp_inst._afterInject();

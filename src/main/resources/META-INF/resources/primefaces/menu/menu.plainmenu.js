@@ -140,7 +140,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
                         $this.hide();
 
                         if($this.cfg.overlay) {
-                            $this.trigger.focus();
+                            $this.trigger.trigger('focus');
                         }
                     break;
 

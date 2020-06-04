@@ -84,7 +84,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                 $this.expandRootSubmenu($(this), false);
 
             $this.removeFocusedItem();
-            header.focus();
+            header.trigger('focus');
             e.preventDefault();
         });
 
@@ -249,7 +249,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                         if(PrimeFaces.env.isIE()) {
                             $this.focusCheck = true;
                         }
-                        $(this).focus();
+                        $(this).trigger('focus');
                     }
                 break;
             }
@@ -327,7 +327,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
      */
     focusItem: function(item) {
         this.removeFocusedItem();
-        this.getItemText(item).addClass('ui-menuitem-outline').focus();
+        this.getItemText(item).addClass('ui-menuitem-outline').trigger('focus');
         this.focusedItem = item;
     },
 

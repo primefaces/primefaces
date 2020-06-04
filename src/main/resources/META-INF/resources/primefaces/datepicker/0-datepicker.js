@@ -1698,7 +1698,7 @@
             this.isKeydown = true;
             if (event.keyCode === 27) {
                 //put the focus back to the inputfield
-                this.inputfield.focus();
+                this.inputfield.trigger('focus');
             }
 
             if (event.keyCode === 9 || event.keyCode === 27) {
@@ -1735,7 +1735,7 @@
 
         onButtonClick: function (event) {
             if (!this.panel.is(':visible')) {
-                this.inputfield.focus();
+                this.inputfield.trigger('focus');
                 this.showOverlay();
             }
             else {
@@ -1793,6 +1793,15 @@
                     newViewDate.setMonth(newViewDate.getMonth() - 1, 1);
                 }
 
+                // #5967 check if month can be navigated to by checking last day in month
+                var testDate = new Date(newViewDate.getTime()),
+                    minDate = this.options.minDate;
+                testDate.setMonth(testDate.getMonth()+1)
+                testDate.setHours(-1);
+                if (minDate && minDate > testDate) {
+                    return;
+                }
+
                 if (this.options.onMonthChange) {
                     this.options.onMonthChange.call(this, newViewDate.getMonth() + 1, newViewDate.getFullYear());
                 }
@@ -1836,6 +1845,12 @@
                 }
                 else {
                     newViewDate.setMonth(newViewDate.getMonth() + 1, 1);
+                }
+
+                // #5967 check if month can be navigated to by checking first day next month
+                var maxDate = this.options.maxDate;
+                if (maxDate && maxDate < newViewDate) {
+                    return;
                 }
 
                 if (this.options.onMonthChange) {
@@ -1939,7 +1954,7 @@
             }
 
             if ((this.options.showTime || this.options.timeOnly) && this.options.timeInput) {
-                this.panel.find('.ui-hour-picker input').focus();
+                this.panel.find('.ui-hour-picker input').trigger('focus');
             }
         },
 
@@ -2070,7 +2085,7 @@
 
             if (!this.options.inline && this.isSingleSelection() && (!this.options.showTime || this.options.hideOnDateTimeSelect)) {
                 //put the focus back to the inputfield
-                this.inputfield.focus();
+                this.inputfield.trigger('focus');
 
                 setTimeout(function () {
                     $this.hideOverlay();

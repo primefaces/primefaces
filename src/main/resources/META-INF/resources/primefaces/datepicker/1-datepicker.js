@@ -195,7 +195,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
             if(!_self.cfg.inline && _self.cfg.focusOnSelect) {
                 _self.refocusInput = true;
-                _self.jqEl.focus();
+                _self.jqEl.trigger('focus');
                 if(!_self.cfg.showIcon) {
                     var inst = this;
 

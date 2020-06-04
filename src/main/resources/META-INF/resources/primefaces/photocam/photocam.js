@@ -429,7 +429,7 @@ var Webcam = {
 					// no global callback definied for snapshot, load image and wait for external snap method call
 					input.style.display = 'block';
 					input.focus();
-					input.trigger("click");
+					input.click();
 					input.style.display = 'none';
 				}
 			}, false);
@@ -903,7 +903,7 @@ var Webcam = {
 				img.addEventListener('load', iFunc);
 				input.style.display = 'block';
 				input.focus();
-				input.trigger("click");
+				input.click();
 				input.style.display = 'none';
 			} else {
 				// Image already selected

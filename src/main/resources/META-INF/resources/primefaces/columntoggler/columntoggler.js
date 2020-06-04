@@ -177,7 +177,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         //closer
         this.closer.on('click', function(e) {
             $this.hide();
-            $this.trigger.focus();
+            $this.trigger.trigger('focus');
             e.preventDefault();
         });
 
@@ -249,15 +249,15 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                     var index = $(this).closest('li').index();
                     if(e.shiftKey) {
                         if(index === 0)
-                            $this.closer.focus();
+                            $this.closer.trigger('focus');
                         else
-                            inputs.eq(index - 1).focus();
+                            inputs.eq(index - 1).trigger('focus');
                     }
                     else {
                         if(index === ($this.columns.length - 1) && !e.shiftKey)
-                            $this.closer.focus();
+                            $this.closer.trigger('focus');
                         else
-                            inputs.eq(index + 1).focus();
+                            inputs.eq(index + 1).trigger('focus');
                     }
 
                     e.preventDefault();
@@ -285,14 +285,14 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
 
             if((key === keyCode.ENTER)) {
                 $this.hide();
-                $this.trigger.focus();
+                $this.trigger.trigger('focus');
                 e.preventDefault();
             }
             else if(key === keyCode.TAB) {
                 if(e.shiftKey)
-                    inputs.eq($this.columns.length - 1).focus();
+                    inputs.eq($this.columns.length - 1).trigger('focus');
                 else
-                    inputs.eq(0).focus();
+                    inputs.eq(0).trigger('focus');
 
                 e.preventDefault();
             }

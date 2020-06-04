@@ -428,7 +428,7 @@
          */
         setCaretToEnd: function(element) {
             if(element) {
-                element.focus();
+                element.trigger('focus');
                 var length = element.value.length;
 
                 if(length > 0) {
@@ -634,7 +634,7 @@
                     var jq = $(PrimeFaces.escapeClientId(id));
 
                     if(jq.is(selector)) {
-                        jq.focus();
+                        jq.trigger('focus');
                     }
                     else {
                         var firstElement = jq.find(selector).eq(0);
@@ -665,18 +665,18 @@
             if(el.is(':radio')) {
                 // github issue: #2582
                 if(el.hasClass('ui-helper-hidden-accessible')) {
-                    el.parent().focus();
+                    el.parent().trigger('focus');
                 }
                 else {
                     var checkedRadio = $(':radio[name="' + $.escapeSelector(el.attr('name')) + '"]').filter(':checked');
                     if(checkedRadio.length)
-                        checkedRadio.focus();
+                        checkedRadio.trigger('focus');
                     else
-                        el.focus();
+                        el.trigger('focus');
                 }
             }
             else {
-                el.focus();
+                el.trigger('focus');
             }
         },
 
@@ -1011,7 +1011,16 @@
          * @return {string} trimmed value or "" if it was NULL
          */
         trim: function(value) {
-            return value == null ? "" : value.trim();
+            if (!value) {
+                return "";
+            }
+            
+            if (typeof value === 'string' || value instanceof String) {
+                return value.trim();
+            }
+            
+            // return original value if it was not a string
+            return value;
         },
 
         /**

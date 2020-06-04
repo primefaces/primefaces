@@ -324,9 +324,9 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
      */
     applyFocus: function() {
         if(this.cfg.focus)
-        	PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.focus).focus();
+        	PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.focus).trigger('focus');
         else
-            this.jq.find(':not(:submit):not(:button):not(:radio):not(:checkbox):input:visible:enabled:first').focus();
+            this.jq.find(':not(:submit):not(:button):not(:radio):not(:checkbox):input:visible:enabled:first').trigger('focus');
     },
 
     /**
@@ -870,7 +870,7 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
      * @inheritdoc
      */
     applyFocus: function() {
-        this.jq.find(':button,:submit').filter(':visible:enabled').eq(0).focus();
+        this.jq.find(':button,:submit').filter(':visible:enabled').eq(0).trigger('focus');
     },
 
     /**
