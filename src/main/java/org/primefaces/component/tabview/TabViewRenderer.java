@@ -47,6 +47,11 @@ public class TabViewRenderer extends CoreRenderer {
 
         if (!LangUtils.isValueBlank(activeIndexValue)) {
             tabView.setActiveIndex(Integer.parseInt(activeIndexValue));
+
+            if (tabView.isMultiViewState()) {
+                TabViewState ts = tabView.getMultiViewState(true);
+                ts.setActiveIndex(tabView.getActiveIndex());
+            }
         }
 
         decodeBehaviors(context, component);
