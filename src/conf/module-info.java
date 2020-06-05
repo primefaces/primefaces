@@ -6,7 +6,7 @@ open module primefaces {
 	//different servlet versions
 	requires static java.servlet;
 	requires static javax.servlet;
-	requires static javax.servlet-api;
+	requires static javax.servlet.api;
 
 	requires javax.el;
 	requires java.validation;

@@ -1108,8 +1108,6 @@
                             <goal>add-module-info</goal>
                         </goals>
                         <configuration>
-                            <!-- Place in META-INF/versions/9/-->
-                            <jvmVersion>11</jvmVersion>
                             <overwriteExistingFiles>true</overwriteExistingFiles>
                             <module>
                                 <moduleInfoFile>${basedir}/src/conf/module-info.java</moduleInfoFile>
