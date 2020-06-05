@@ -19,6 +19,7 @@ DataTable displays data in tabular format.
 
 | Name                      | Default            | Type             | Description
 | ------------------------- | ------------------ | ---------------- | ------------------ |
+| allowUnsorting            | true               | Boolean          | Defines whether columns are allowed to be unsorted. Default is true.
 | ariaRowLabel              | null               | String           | Label to read by screen readers on checkbox selection.
 | binding                   | null               | Object           | An el expression that maps to a server side UIComponent instance in a backing bean
 | caseSensitiveSort         | false              | Boolean          | Case sensitivity for sorting, insensitive by default.
@@ -106,7 +107,6 @@ DataTable displays data in tabular format.
 | tabindex                  | null               | String           | Position of the element in the tabbing order.
 | tableStyle                | null               | String           | Inline style of the table element.
 | tableStyleClass           | null               | String           | Style class of the table element.
-| allowUnsorting                | true               | Boolean          | Include "unsort" when repeatedly clicking on column header.
 | value                     | null               | Object           | Data to display.
 | var                       | null               | String           | Name of the request-scoped variable used to refer each data.
 | virtualScroll             | false              | Boolean          | Loads data on demand as the scrollbar gets close to the bottom. Default is false.
