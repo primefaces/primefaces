@@ -8,7 +8,6 @@ open module primefaces {
 	requires java.validation;
 
 	requires static com.hazelcast.all;
-	requires static com.hazelcast.all;
 
 	requires java.sql;
 	requires java.scripting;
