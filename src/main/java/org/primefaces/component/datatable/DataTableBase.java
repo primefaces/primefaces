@@ -58,7 +58,7 @@ public abstract class DataTableBase extends UIData
         sortOrder,
         sortFunction,
         sortMode,
-        unsortable,
+        allowUnsorting,
         scrollRows,
         rowKey,
         filterEvent,
@@ -334,12 +334,12 @@ public abstract class DataTableBase extends UIData
         getStateHelper().put(PropertyKeys.sortMode, sortMode);
     }
 
-    public boolean getUnsortable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.unsortable, true);
+    public boolean getAllowUnsorting() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.allowUnsorting, true);
     }
 
-    public void setUnsortable(boolean unsortable) {
-        getStateHelper().put(PropertyKeys.unsortable, unsortable);
+    public void setAllowUnsorting(boolean allowUnsorting) {
+        getStateHelper().put(PropertyKeys.allowUnsorting, allowUnsorting);
     }
 
     public String getEditMode() {

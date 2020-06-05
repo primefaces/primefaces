@@ -173,7 +173,7 @@
  * @prop {string} cfg.stickyTopAt Selector to position on the page according to other fixing elements on the top of the
  * table.
  * @prop {string} cfg.tabindex The value of the `tabindex` attribute for this data table.
- * @prop {boolean} cfg.unsortable When true columns can be unsorted upon clicking sort.
+ * @prop {boolean} cfg.allowUnsorting When true columns can be unsorted upon clicking sort.
  * @prop {boolean} cfg.virtualScroll Loads data on demand as the scrollbar gets close to the bottom.
  */
 PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
@@ -529,12 +529,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             PrimeFaces.clearSelection();
 
+            let unsorting = this.cfg.allowUnsorting || this.cfg.allowUnsorting == undefined;
+
             var columnHeader = $(this),
             sortOrderData = columnHeader.data('sortorder'),
-                // TODO here we should exclude unsorted based on cfg
             sortOrder = (sortOrderData === $this.SORT_ORDER.UNSORTED) ? $this.SORT_ORDER.ASCENDING :
                 (sortOrderData === $this.SORT_ORDER.ASCENDING) ? $this.SORT_ORDER.DESCENDING :
-                    $this.SORT_ORDER.UNSORTED,
+                    unsorting ? $this.SORT_ORDER.UNSORTED : $this.SORT_ORDER.ASCENDING,
             metaKey = e.metaKey||e.ctrlKey||metaKeyOn;
             if($this.cfg.multiSort) {
                 if(metaKey) {

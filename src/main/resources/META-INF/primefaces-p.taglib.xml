@@ -7302,9 +7302,9 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines wether columns are unsortable.]]>
+                <![CDATA[Defines wether columns are allowUnsorting.]]>
             </description>
-            <name>unsortable</name>
+            <name>allowUnsorting</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>

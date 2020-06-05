@@ -288,8 +288,8 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         // by default cycling through sorting includes unsort, an attribute is needed when unsort should not be included
-        if (!table.getUnsortable()) {
-            wb.attr("unsortable", false);
+        if (!table.getAllowUnsorting()) {
+            wb.attr("allowUnsorting", false);
         }
 
         if (table.isStickyHeader()) {
