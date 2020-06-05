@@ -9268,6 +9268,10 @@ declare namespace PrimeFaces.widget {
      */
     export interface DataTableCfg extends PrimeFaces.widget.DeferredWidgetCfg {
         /**
+         * Default is true: include "unsort" when repeatedly clicking on column header.
+         */
+        allowUnsorting: boolean;
+        /**
          * Defines the cell edit behavior.
          */
         cellEditMode: string;

@@ -7302,6 +7302,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines whether columns are allowed to be unsorted. Default is true.]]>
+            </description>
+            <name>allowUnsorting</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Ordered map of sort information in "multiple" sortMode; This also allows to sort the table by default.]]>
             </description>
             <name>sortMeta</name>

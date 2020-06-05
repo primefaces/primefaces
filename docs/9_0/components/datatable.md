@@ -19,6 +19,7 @@ DataTable displays data in tabular format.
 
 | Name                      | Default            | Type             | Description
 | ------------------------- | ------------------ | ---------------- | ------------------ |
+| allowUnsorting            | true               | Boolean          | Defines whether columns are allowed to be unsorted. Default is true.
 | ariaRowLabel              | null               | String           | Label to read by screen readers on checkbox selection.
 | binding                   | null               | Object           | An el expression that maps to a server side UIComponent instance in a backing bean
 | caseSensitiveSort         | false              | Boolean          | Case sensitivity for sorting, insensitive by default.
@@ -216,7 +217,8 @@ template.
 
 
 ## Sorting
-Defining _sortBy_ attribute enables ajax based sorting on that particular column.
+Defining _sortBy_ attribute enables ajax based sorting on that particular column. Sorting cycles through ascending,
+descending and unsorted upon clicking on the column header.
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}">

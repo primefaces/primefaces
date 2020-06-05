@@ -287,6 +287,11 @@ public class DataTableRenderer extends DataRenderer {
                     .nativeAttr("sortMetaOrder", table.getSortMetaAsString(context), null);
         }
 
+        // by default cycling through sorting includes unsort, an attribute is needed when unsort should not be included
+        if (!table.getAllowUnsorting()) {
+            wb.attr("allowUnsorting", false);
+        }
+
         if (table.isStickyHeader()) {
             wb.attr("stickyHeader", true)
                     .attr("stickyTopAt", table.getStickyTopAt(), null);

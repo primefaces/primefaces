@@ -173,6 +173,7 @@
  * @prop {string} cfg.stickyTopAt Selector to position on the page according to other fixing elements on the top of the
  * table.
  * @prop {string} cfg.tabindex The value of the `tabindex` attribute for this data table.
+ * @prop {boolean} cfg.allowUnsorting When true columns can be unsorted upon clicking sort.
  * @prop {boolean} cfg.virtualScroll Loads data on demand as the scrollbar gets close to the bottom.
  */
 PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
@@ -427,8 +428,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.sortableColumns.attr('tabindex', this.cfg.tabindex);
 
         //aria messages
-        this.ascMessage = PrimeFaces.getAriaLabel('datatable.sort.ASC');
-        this.descMessage = PrimeFaces.getAriaLabel('datatable.sort.DESC');
+        this.ascMessage = PrimeFaces.getAriaLabel('datatable.sort.SORT_ASC');
+        this.descMessage = PrimeFaces.getAriaLabel('datatable.sort.SORT_DESC');
+        this.otherMessage = PrimeFaces.getAriaLabel('datatable.sort.SORT_LABEL');
 
         //reflow dropdown
         this.reflowDD = $(this.jqId + '_reflowDD');
@@ -454,11 +456,18 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         hasAriaSort = true;
                     }
                 }
-                else {
+                else if (sortIcon.hasClass('ui-icon-triangle-1-s')) {
                     sortOrder = this.SORT_ORDER.DESCENDING;
-                    columnHeader.attr('aria-label', this.getSortMessage(ariaLabel, this.ascMessage));
+                    columnHeader.attr('aria-label', this.getSortMessage(ariaLabel, this.otherMessage));
                     if(!hasAriaSort) {
                         columnHeader.attr('aria-sort', 'descending');
+                        hasAriaSort = true;
+                    }
+                } else {
+                    sortOrder = this.SORT_ORDER.UNSORTED;
+                    columnHeader.attr('aria-label', this.getSortMessage(ariaLabel, this.ascMessage));
+                    if(!hasAriaSort) {
+                        columnHeader.attr('aria-sort', 'other');
                         hasAriaSort = true;
                     }
                 }
@@ -520,9 +529,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             PrimeFaces.clearSelection();
 
+            let unsorting = $this.cfg.allowUnsorting || $this.cfg.allowUnsorting == undefined;
+
             var columnHeader = $(this),
             sortOrderData = columnHeader.data('sortorder'),
-            sortOrder = (sortOrderData === $this.SORT_ORDER.UNSORTED) ? $this.SORT_ORDER.ASCENDING : -1 * sortOrderData,
+            sortOrder = (sortOrderData === $this.SORT_ORDER.UNSORTED) ? $this.SORT_ORDER.ASCENDING :
+                (sortOrderData === $this.SORT_ORDER.ASCENDING) ? $this.SORT_ORDER.DESCENDING :
+                    unsorting ? $this.SORT_ORDER.UNSORTED : $this.SORT_ORDER.ASCENDING,
             metaKey = e.metaKey||e.ctrlKey||metaKeyOn;
             if($this.cfg.multiSort) {
                 if(metaKey) {
@@ -1947,7 +1960,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Performs a sorting operation on the rows of this data table via AJAX
      * @param {JQuery} columnHeader Header of the column by which to sort.
-     * @param {-1 | 0 | 1} order Whether to sort by the column value in an ascending or descending order.
+     * @param {-1 | 0 | 1} order Whether to "unsort" or to sort by the column value in an ascending or descending order.
      * @param {boolean} multi `true` if sorting by multiple columns is enabled, or `false` otherwise.
      * @private
      */
@@ -2017,14 +2030,22 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         var sortIcon = columnHeader.find('.ui-sortable-column-icon'),
                         ariaLabel = columnHeader.attr('aria-label');
 
-                        if(order === $this.SORT_ORDER.DESCENDING) {
+                        if (order === $this.SORT_ORDER.DESCENDING) {
                             sortIcon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
-                            columnHeader.attr('aria-sort', 'descending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
-                            $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'descending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
-                        } else if(order === $this.SORT_ORDER.ASCENDING) {
-                            sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
+                            columnHeader.attr('aria-sort', 'descending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.otherMessage));
+                            $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'descending')
+                                .attr('aria-label', $this.getSortMessage(ariaLabel, $this.otherMessage));
+                        } else if (order === $this.SORT_ORDER.ASCENDING) {
+                            sortIcon.removeClass('ui-icon-carat-2-n-s').addClass('ui-icon-triangle-1-n');
                             columnHeader.attr('aria-sort', 'ascending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
-                            $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'ascending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
+                            $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'ascending')
+                                .attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
+                        } else {
+                            sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-carat-2-n-s');
+                            columnHeader.removeClass('ui-state-active ').attr('aria-sort', 'other')
+                                .attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
+                            $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'other')
+                                .attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
                         }
                     }
                 }
