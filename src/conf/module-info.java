@@ -3,50 +3,33 @@ open module primefaces {
 	requires javax.faces;
 	requires org.apache.commons.io;
 	requires org.apache.commons.fileupload;
-
-	//servlet 4
-	requires static java.servlet;
-	//servlet 3.5
-	requires static javax.servlet;
-	//servlet 3.0
-	requires static javax.servlet.api;
-
+	requires java.servlet;
 	requires javax.el;
 	requires java.validation;
 
-	//Version 4
 	requires static com.hazelcast.all;
-	requires static com.hazelcast;
-	//Version 3.12.6 client
-	requires static com.hazelcast.client;
+	requires static com.hazelcast.all;
 
+	requires java.sql;
+	requires java.scripting;
+	requires java.desktop;
 	requires static org.apache.poi;
 	requires static org.apache.poi.ooxml;
 
 	requires com.google.common;
 
-	requires java.xml.bind;
-	requires static org.apache.xmlbeans;
-
-	requires org.json;
-
-	requires org.apache.commons.lang3;
-
-
-	requires java.sql;
-	requires java.scripting;
-	requires java.desktop;
-
-	//plugins
 	requires static itext;
+	requires java.xml.bind;
 	requires static barcode4j.light;
 	requires static com.rometools.rome;
 	requires static org.apache.xmlbeans;
 	requires static encoder;
 	requires static owasp.java.html.sanitizer;
 	requires static esapi;
+	requires org.json;
 	requires static qrgen;
-	//zxing
+
+	requires org.apache.commons.lang3;
 	requires static core;
 
 	exports org.primefaces;
@@ -298,7 +281,6 @@ open module primefaces {
 	uses org.primefaces.component.fileupload.FileUploadDecoder;
 	provides org.primefaces.component.fileupload.FileUploadDecoder with org.primefaces.component.fileupload.NativeFileUploadDecoder,
 			                                                               org.primefaces.component.fileupload.CommonsFileUploadDecoder;
-
 
 	uses org.primefaces.virusscan.VirusScanner;
 	provides org.primefaces.virusscan.VirusScanner with org.primefaces.virusscan.impl.VirusTotalReportScanner;
