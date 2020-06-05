@@ -3,20 +3,28 @@ open module primefaces {
 	requires javax.faces;
 	requires org.apache.commons.io;
 	requires org.apache.commons.fileupload;
-	requires java.servlet;
+	//different servlet versions
+	requires static java.servlet;
+	requires static javax.servlet;
+	requires static javax.servlet-api;
+
 	requires javax.el;
 	requires java.validation;
 
+	//either the all library or the base library
 	requires static com.hazelcast.all;
+	requires static com.hazelcast;
 
 	requires java.sql;
 	requires java.scripting;
 	requires java.desktop;
+
 	requires static org.apache.poi;
 	requires static org.apache.poi.ooxml;
 
 	requires com.google.common;
 
+	//addons
 	requires static itext;
 	requires java.xml.bind;
 	requires static barcode4j.light;
@@ -27,9 +35,11 @@ open module primefaces {
 	requires static esapi;
 	requires org.json;
 	requires static qrgen;
+	//zxing
+	requires static core;
 
 	requires org.apache.commons.lang3;
-	requires static core;
+
 
 	exports org.primefaces;
 	exports org.primefaces.application;
