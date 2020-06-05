@@ -338,7 +338,7 @@
                             </configuration>
                         </execution>
                     </executions>
-                </plugin>                
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -978,7 +978,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.2</version>
+                <version>3.2.4</version>
                 <configuration>
                     <shadedArtifactAttached>false</shadedArtifactAttached>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
@@ -1025,6 +1025,7 @@
                                 <exclude>META-INF/*.SF</exclude>
                                 <exclude>META-INF/*.DSA</exclude>
                                 <exclude>META-INF/*.RSA</exclude>
+                                <exclude>module-info.class</exclude>
                             </excludes>
                         </filter>
                     </filters>
@@ -1094,6 +1095,30 @@
                     </dependency>
                 </dependencies>
             </plugin>
+
+            <plugin>
+                <groupId>org.moditect</groupId>
+                <artifactId>moditect-maven-plugin</artifactId>
+                <version>1.0.0.RC1</version>
+                <executions>
+                    <execution>
+                        <id>add-module-infos</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>add-module-info</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Place in META-INF/versions/9/-->
+                            <jvmVersion>11</jvmVersion>
+                            <!--<overwriteExistingFiles>true</overwriteExistingFiles>-->
+                            <module>
+                                <moduleInfoFile>${basedir}/src/moditect/module-info.java</moduleInfoFile>
+                            </module>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
