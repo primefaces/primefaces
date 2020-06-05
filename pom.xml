@@ -212,7 +212,7 @@
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
-            <version>3.12</version>
+            <version>4.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -242,6 +242,7 @@
             <version>20180813</version>
             <optional>true</optional>
         </dependency>
+
         <dependency>
             <groupId>org.owasp.encoder</groupId>
             <artifactId>encoder</artifactId>
@@ -338,7 +339,7 @@
                             </configuration>
                         </execution>
                     </executions>
-                </plugin>                
+                </plugin>
             </plugins>
         </pluginManagement>
 

@@ -26,50 +26,50 @@ package org.primefaces.cache;
 import com.hazelcast.config.Config;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.IMap;
+import com.hazelcast.map.IMap;
 
 public class HazelcastCacheProvider implements CacheProvider {
 
-    private final HazelcastInstance hazelcastInstance;
+	private final HazelcastInstance hazelcastInstance;
 
-    public HazelcastCacheProvider() {
-        Config config = new Config();
-        hazelcastInstance = Hazelcast.newHazelcastInstance(config);
-    }
+	public HazelcastCacheProvider() {
+		Config config = new Config();
+		hazelcastInstance = Hazelcast.newHazelcastInstance(config);
+	}
 
-    @Override
-    public Object get(String region, String key) {
-        IMap<String, Object> cacheRegion = getRegion(region);
+	@Override
+	public Object get(String region, String key) {
+		IMap<String, Object> cacheRegion = getRegion(region);
 
-        return cacheRegion.get(key);
-    }
+		return cacheRegion.get(key);
+	}
 
-    @Override
-    public void put(String region, String key, Object object) {
-        IMap<String, Object> cacheRegion = getRegion(region);
+	@Override
+	public void put(String region, String key, Object object) {
+		IMap<String, Object> cacheRegion = getRegion(region);
 
-        cacheRegion.put(key, object);
-    }
+		cacheRegion.put(key, object);
+	}
 
-    @Override
-    public void remove(String region, String key) {
-        IMap<String, Object> cacheRegion = getRegion(region);
+	@Override
+	public void remove(String region, String key) {
+		IMap<String, Object> cacheRegion = getRegion(region);
 
-        cacheRegion.remove(key);
-    }
+		cacheRegion.remove(key);
+	}
 
-    @Override
-    public void clear() {
-        // not supported by hazelcast
-    }
+	@Override
+	public void clear() {
+		// not supported by hazelcast
+	}
 
-    protected IMap<String, Object> getRegion(String name) {
-        IMap<String, Object> region = getHazelcastInstance().getMap(name);
+	protected IMap<String, Object> getRegion(String name) {
+		IMap<String, Object> region = getHazelcastInstance().getMap(name);
 
-        return region;
-    }
+		return region;
+	}
 
-    public HazelcastInstance getHazelcastInstance() {
-        return hazelcastInstance;
-    }
+	public HazelcastInstance getHazelcastInstance() {
+		return hazelcastInstance;
+	}
 }
