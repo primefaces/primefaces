@@ -65,6 +65,7 @@ rows | 0 | Integer | Number of rows to display per page. Default value is 0 mean
 first | 0 | Integer | Index of the first data to display.
 disabledTextSelection | true | Boolean | Disables text selection on row click.
 touchable | true | Boolean | Enable touch support if browser detection supports it.
+editInitEvent             | null               | String           | Defines a client side event to open cell on editable treetable.
 
 ## Getting started with the TreeTable
 Similar to the Tree, TreeTable is populated with an _org.primefaces.model.TreeNode_ instance that
