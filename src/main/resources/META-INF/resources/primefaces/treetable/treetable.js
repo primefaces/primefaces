@@ -620,22 +620,22 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             var editEvent = (this.cfg.editInitEvent !== 'click') ? this.cfg.editInitEvent + '.treetable-cell click.treetable-cell' : 'click.treetable-cell';
 
             this.tbody.off(editEvent, cellSelector)
-				.on(editEvent, cellSelector, null, function(e) {
-				    if(!$(e.target).is('span.ui-treetable-toggler.ui-c')) {
-				        $this.incellClick = true;
+                .on(editEvent, cellSelector, null, function(e) {
+                    if(!$(e.target).is('span.ui-treetable-toggler.ui-c')) {
+                        $this.incellClick = true;
 				
-				        var item = $(this);
-				        var cell = item.hasClass('ui-editable-column') ? item : item.closest('.ui-editable-column');
+                        var item = $(this);
+                        var cell = item.hasClass('ui-editable-column') ? item : item.closest('.ui-editable-column');
 				        
-				        if(!cell.hasClass('ui-cell-editing') && e.type === $this.cfg.editInitEvent) {
-				            $this.showCellEditor($(this));
+                        if(!cell.hasClass('ui-cell-editing') && e.type === $this.cfg.editInitEvent) {
+                            $this.showCellEditor($(this));
 				            
-				            if($this.cfg.editInitEvent === "dblclick") {
-				                $this.incellClick = false;
-				            }
-				        }
-				    }
-				});
+                            if($this.cfg.editInitEvent === "dblclick") {
+                                $this.incellClick = false;
+                            }
+                        }
+                     }
+                });
 
             $(document).off('click.treetable-cell-blur' + this.id)
                         .on('click.treetable-cell-blur' + this.id, function(e) {
