@@ -113,7 +113,8 @@ public class TabViewRenderer extends CoreRenderer {
                 .attr("effectDuration", tabView.getEffectDuration(), null)
                 .attr("scrollable", tabView.isScrollable())
                 .attr("tabindex", tabView.getTabindex(), null)
-                .attr("touchable", ComponentUtils.isTouchable(context, tabView),  true);
+                .attr("touchable", ComponentUtils.isTouchable(context, tabView),  true)
+                .attr("multiViewState", tabView.isMultiViewState(), false);
 
         encodeClientBehaviors(context, tabView);
 

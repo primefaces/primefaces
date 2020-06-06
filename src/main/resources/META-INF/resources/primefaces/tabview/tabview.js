@@ -1,4 +1,4 @@
-/**
+tabChange/**
  * __PrimeFaces TabView Widget__
  * 
  * TabView is a container component to group content in tabs.
@@ -58,6 +58,7 @@
  * @prop {boolean} cfg.scrollable When enabled, tab headers can be scrolled horizontally instead of wrapping.
  * @prop {number} cfg.selected The currently selected tab.
  * @prop {number} cfg.tabindex Position of the element in the tabbing order.
+ * @prop {boolean} cfg.multiViewState Whether to keep TabView state across views.
  */
 PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
 
@@ -74,6 +75,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.selected = parseInt(this.stateHolder.val());
         this.focusedTabHeader = null;
         this.tabindex = this.cfg.tabindex||0;
+        //this.multiViewState = this.cfg.multiViewState;
 
         if(this.cfg.scrollable) {
             this.navscroller = this.jq.children('.ui-tabs-navscroller');
@@ -459,7 +461,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         else {
             this.show(newPanel);
 
-            if(this.hasBehavior('tabChange') && !silent) {
+            if ((this.hasBehavior('tabChange') || this.cfg.multiViewState) && !silent)) {
                 this.fireTabChangeEvent(newPanel);
             }
         }
