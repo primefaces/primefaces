@@ -83,6 +83,10 @@ public class TabViewRenderer extends CoreRenderer {
             }
         }
         else {
+            if (tabView.isMultiViewState()) {
+                tabView.restoreMultiViewState();
+            }
+
             tabView.resetLoadedTabsState();
 
             encodeMarkup(context, tabView);
