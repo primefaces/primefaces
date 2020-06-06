@@ -1,4 +1,4 @@
-tabChange/**
+/**
  * __PrimeFaces TabView Widget__
  * 
  * TabView is a container component to group content in tabs.
@@ -461,7 +461,10 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         else {
             this.show(newPanel);
 
-            if ((this.hasBehavior('tabChange') || this.cfg.multiViewState) && !silent)) {
+            console.log("TabView-select-function");
+
+            if ((this.hasBehavior('tabChange') || this.cfg.multiViewState) && !silent) {
+                console.log("TabView-select-function - if erfüllt");
                 this.fireTabChangeEvent(newPanel);
             }
         }
