@@ -249,7 +249,8 @@ public class TreeTableRenderer extends DataRenderer {
             wb.attr("editable", true)
                     .attr("editMode", tt.getEditMode())
                     .attr("cellEditMode", tt.getCellEditMode(), "eager")
-                    .attr("cellSeparator", tt.getCellSeparator(), null);
+                    .attr("cellSeparator", tt.getCellSeparator(), null)
+                    .attr("editInitEvent", tt.getEditInitEvent());
         }
 
         //Filtering
