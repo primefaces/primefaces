@@ -75,7 +75,6 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.selected = parseInt(this.stateHolder.val());
         this.focusedTabHeader = null;
         this.tabindex = this.cfg.tabindex||0;
-        //this.multiViewState = this.cfg.multiViewState;
 
         if(this.cfg.scrollable) {
             this.navscroller = this.jq.children('.ui-tabs-navscroller');
@@ -469,18 +468,6 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                     var options = {
                         source: this.id,
                         partialSubmit: true,
-                        /*
-                        TODO: How to set partialSubmitFilter to only send and process activeIndex-hidden-field to the server?
-                        partialSubmitFilter: "@none",
-                        partialSubmitFilter: ":input:hidden",
-                        partialSubmitFilter: "@form:" + this.id + '_activeIndex',
-                        partialSubmitFilter: ":" + this.cfg.formId + ":" + this.id + '_activeIndex',
-                        partialSubmitFilter: "@form:" + this.id + '_activeIndex',
-                        partialSubmitFilter: this.id + '_activeIndex',
-
-                        process: "@none",
-                        process: this.id + '_activeIndex',
-                         */
                         partialSubmitFilter: this.id + '_activeIndex',
                         process: this.id,
                         ignoreAutoUpdate: true,
