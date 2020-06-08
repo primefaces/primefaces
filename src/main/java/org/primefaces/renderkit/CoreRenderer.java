@@ -113,6 +113,7 @@ public abstract class CoreRenderer extends Renderer {
     @SafeVarargs
     protected final void renderPassThruAttributes(FacesContext context, UIComponent component, List<String>... attrs) throws IOException {
         if (attrs == null) {
+            renderDynamicPassThruAttributes(context, component);
             return;
         }
 
