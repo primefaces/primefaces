@@ -8607,7 +8607,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Whether to block scrolling of the document. Default is true.]]>
+                <![CDATA[Whether to block scrolling of the document. Default is false.]]>
             </description>
             <name>blockScroll</name>
             <required>false</required>

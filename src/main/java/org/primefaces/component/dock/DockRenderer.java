@@ -50,7 +50,7 @@ public class DockRenderer extends BaseMenuRenderer {
         wb.init("Dock", dock.resolveWidgetVar(context), clientId)
                 .attr("position", dock.getPosition())
                 .attr("halign", dock.getHalign())
-                .attr("blockScroll", dock.isBlockScroll())
+                .attr("blockScroll", dock.isBlockScroll(), false)
                 .attr("animate", dock.isAnimate())
                 .attr("animationDuration", dock.getAnimationDuration());
 

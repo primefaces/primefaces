@@ -88,7 +88,7 @@ public abstract class DockBase extends AbstractMenu implements Widget, RTLAware 
     }
 
     public boolean isBlockScroll() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.blockScroll, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.blockScroll, false);
     }
 
     public void setBlockScroll(boolean blockScroll) {
@@ -111,6 +111,7 @@ public abstract class DockBase extends AbstractMenu implements Widget, RTLAware 
         getStateHelper().put(PropertyKeys.animationDuration, animationDuration);
     }
 
+    @Override
     public String getDir() {
         return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
     }
