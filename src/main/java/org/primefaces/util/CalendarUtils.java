@@ -245,6 +245,7 @@ public class CalendarUtils {
                     javax.faces.convert.DateTimeConverter nativeConverter = (javax.faces.convert.DateTimeConverter) converter;
                     if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf23()) {
                         Field field = javax.faces.convert.DateTimeConverter.class.getDeclaredField("type");
+                        field.setAccessible(true);
                         dateType = Objects.toString(field.get(nativeConverter), "date");
                     }
                 }
