@@ -60,10 +60,11 @@ var Webcam = {
 		swfURL: '',            // URI to webcam.swf movie (defaults to the js location)
 		flashNotDetectedText: 'ERROR: No Adobe Flash Player detected.  Webcam.js relies on Flash for browsers that do not support getUserMedia (like yours).',
 		noInterfaceFoundText: 'No supported webcam interface found.',
-		unfreeze_snap: true,    // Whether to unfreeze the camera after snap (defaults to true)
+		unfreeze_snap: true,   // Whether to unfreeze the camera after snap (defaults to true)
 		iosPlaceholderText: 'Click here to open camera.',
-		user_callback: null,    // callback function for snapshot (used if no user_callback parameter given to snap function)
-		user_canvas: null       // user provided canvas for snapshot (used if no user_canvas parameter given to snap function)
+		user_callback: null,   // callback function for snapshot (used if no user_callback parameter given to snap function)
+		user_canvas: null,     // user provided canvas for snapshot (used if no user_canvas parameter given to snap function)
+		device: null           // selected device to grab images from
 	},
 
 	errors: {
@@ -294,14 +295,24 @@ var Webcam = {
 			
 			// ask user for access to their camera
 			var self = this;
+			
+			var constraints = this.params.constraints;
+			
+			if (!constraints) {
+			    constraints = new Object();
+			    constraints = {
+                    width: { min: this.params.dest_width },
+                    height: { min: this.params.dest_height }
+                };
+			    if(this.params.device === "user" || this.params.device === "environment") {
+			        constraints.facingMode = this.params.device;
+                } else if (this.params.device) {
+                    constraints.deviceId = this.params.device;
+                }
+			}
 			this.mediaDevices.getUserMedia({
 				"audio": false,
-				"video": this.params.constraints || {
-					mandatory: {
-						minWidth: this.params.dest_width,
-						minHeight: this.params.dest_height
-					}
-				}
+				"video": constraints
 			})
 			.then( function(stream) {
 				// got access, attach stream to video
@@ -1092,12 +1103,21 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
         if (!("autoStart" in this.cfg)) {
             this.cfg.autoStart = true;
         }
+        
+        if(this.cfg.onCameraError) {
+            this.onCameraError = this.cfg.onCameraError;
+        }
+        
+        this.loadDeviceList();
+
+        this.device = this.cfg.device;
 
         Webcam.setSWFLocation(this.cfg.camera);
 
         if (this.cfg.autoStart) {
             this.attach();
         }
+
     },
 
     /**
@@ -1125,6 +1145,7 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
                 image_format: this.cfg.format,
                 jpeg_quality: this.cfg.jpegQuality,
                 force_flash: this.cfg.forceFlash,
+                device: this.device,
                 user_callback: function(data) {
                     var options = {
                         source: $this.id,
@@ -1137,10 +1158,26 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
                     PrimeFaces.ajax.Request.handle(options);
                 }
             });
+            
+            $this = this;
+            Webcam.on("error", this.onCameraError);
 
             Webcam.attach(this.id);
             this.attached = true;
         }
+    },
+    
+    onCameraError: function(errorObj) {
+        var message;
+        if ((errorObj instanceof Webcam.errors.FlashError) || (errorObj instanceof Webcam.errors.WebcamError)) {
+            message = errorObj.message;
+        } else {
+            message = "Could not access webcam: " + errorObj.name + ": " + 
+            errorObj.message + " " + errorObj.toString();
+        }
+
+        // default error handler if no custom one specified
+        alert("Inner engine Webcam.js caught an error: " + message);
     },
 
     /**
@@ -1162,6 +1199,41 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
             Webcam.snap();
         } else {
             PrimeFaces.error('Capture error: AdvancedPhotoCam not attached to the camera');
+        }
+    },
+    
+    /**
+     *  Retrieve the available devices list and stores it in this.devices.
+     *  This function has effect for navigator.mediaDevices supported browsers only.
+     */
+    loadDeviceList: function() {
+        
+        if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+            return;
+        }
+        
+        this.devices = new Array();
+        
+        navigator.mediaDevices.enumerateDevices()
+            .then(devices => devices.filter(
+                    function (device) {
+                        return device.kind === "videoinput";
+                    }
+                  )
+            .forEach(device => {
+                this.devices.push(device);
+            })
+        );
+                
+    },
+    
+    /**
+     * utility to detach and attach the video again.
+     */
+    reload: function () {
+        if (this.attached) {
+            this.dettach();
+            this.attach();
         }
     }
 
