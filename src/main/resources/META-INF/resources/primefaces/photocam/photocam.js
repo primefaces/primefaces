@@ -1232,7 +1232,7 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-     * utility to detach and attach the video again.
+     * Utility to detach and attach the video again.
      */
     reload: function () {
         if (this.attached) {
