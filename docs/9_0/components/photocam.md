@@ -44,8 +44,8 @@ photoHeight | 240 | Integer | Height of the captured photo, defaults to height.
 format | jpeg | Boolean | Format of the image, valid values are "jpeg" default and png.
 jpegQuality | 90 | Integer | Quality of the image between 0 and 100 when the format is jpeg, default value is 90.
 forceFlash | false | Boolean | Enables always using flash fallback even in an HTML5 environment.
-device | false | String | Suggests a video input device.
-onCameraError | false | String | Fallback to handle errors caught by the webcam engine
+device | false | String | Suggests a video input device such as 'user' (aka font camera) or 'environment' (aka rear camera).
+onCameraError | false | String | Client side callback executed if the camera has an error.
 
 ## Getting started with PhotoCam
 Capture is triggered via client side api’s _capture_ method. Also a method expression is necessary to

@@ -18722,7 +18722,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[An device to grab images]]>
+                <![CDATA[Suggests a video input device such as 'user' (aka font camera) or 'environment' (aka rear camera).]]>
             </description>
             <name>device</name>
             <required>false</required>
@@ -18730,7 +18730,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Webcam engine error fallback]]>
+                <![CDATA[Client side callback executed if the camera has an error.]]>
             </description>
             <name>onCameraError</name>
             <required>false</required>
