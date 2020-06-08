@@ -1169,7 +1169,7 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
     
     /**
      * default error handler webcam events
-     * @param {Object} errorObj error object containing message, stacktrace and so on.
+     * @param {Function} errorObj error object containing message, stacktrace and so on.
      */
     onCameraError: function(errorObj) {
         var message;
