@@ -135,5 +135,5 @@ This component is strongly dependent of browser / operational system faculties a
 
 - Navigators like Google Chrome (version 47 and later) require secure origins (HTTPS or LOCALHOST) to activate media devices functionality. Thus, unless you are accessing the page from LOCALHOST, PhotoCam is likely to do not work in a plain HTTP call. More details can be found here: https://developers.google.com/web/updates/2015/10/chrome-47-webrtc
 - Third-party browsers on iOS devices (Iphone, Ipad, etc) do not have same access to media devices as the Apple native browser Safari. Thus, on an iOS device, PhotoCam should works fine on Safari but not on Chrome or Firefox (or other no-Safari navigators). See http://www.openradar.me/33571214 for any updates on this. Note that this restriction is applied only for iOS devices. In general, third-party browsers running on OSx systems (mackbooks, iMacs and so on) don't have this same restriction.
-- PhotoCam does not support Microsoft Internet Explorer 11 or below. Other eldery browsers are likely to do not work as well.
+- PhotoCam does not support Microsoft Internet Explorer 11 or below. Other legacy browsers are also not likely to be functional.
 
