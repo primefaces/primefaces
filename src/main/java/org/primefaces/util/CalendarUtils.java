@@ -24,13 +24,15 @@
 package org.primefaces.util;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.Temporal;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -40,7 +42,6 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
 import org.primefaces.component.api.UICalendar;
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.convert.DatePatternConverter;
 import org.primefaces.convert.PatternConverter;
 import org.primefaces.convert.TimePatternConverter;
@@ -239,22 +240,10 @@ public class CalendarUtils {
         Converter converter = calendar.getConverter();
         if (converter != null) {
             if (converter instanceof javax.faces.convert.DateTimeConverter) {
-                String dateType = "date";
-
-                try {
-                    javax.faces.convert.DateTimeConverter nativeConverter = (javax.faces.convert.DateTimeConverter) converter;
-                    if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf23()) {
-                        Field field = javax.faces.convert.DateTimeConverter.class.getDeclaredField("type");
-                        field.setAccessible(true);
-                        dateType = Objects.toString(field.get(nativeConverter), "date");
-                    }
-                }
-                catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-                    // could not determine converter date type
-                }
-
+                javax.faces.convert.DateTimeConverter nativeConverter = (javax.faces.convert.DateTimeConverter) converter;
+                String dateType = nativeConverter.getType();
                 // only run converter if type for dates match
-                if (dateType.equalsIgnoreCase(value.getClass().getSimpleName())) {
+                if (value.getClass().getSimpleName().equalsIgnoreCase(dateType)) {
                     return converter.getAsString(context, calendar, value);
                 }
             }
