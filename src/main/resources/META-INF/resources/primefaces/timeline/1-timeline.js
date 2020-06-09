@@ -447,7 +447,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
                 if (group) {
                     params.push({
                         name: this.id + '_group',
-                        value: group.content
+                        value: group.groupId
                     });
                 }
 
