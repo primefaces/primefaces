@@ -1108,8 +1108,6 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
             this.onCameraError = this.cfg.onCameraError;
         }
         
-        this.loadDeviceList();
-
         this.device = this.cfg.device;
 
         Webcam.setSWFLocation(this.cfg.camera);
@@ -1169,7 +1167,8 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
     
     /**
      * Default error handler for webcam events
-     * @param {() => void} errorObj Error object containing message, stacktrace and so on.
+     * @private
+     * @param {Error} errorObj Error object containing message, stacktrace and so on.
      */
     onCameraError: function(errorObj) {
         var message;
@@ -1180,8 +1179,7 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
             errorObj.message + " " + errorObj.toString();
         }
 
-        // default error handler if no custom one specified
-        alert("Inner engine Webcam.js caught an error: " + message);
+        alert("Webcam.js caught an error: " + message);
     },
 
     /**
@@ -1207,28 +1205,20 @@ PrimeFaces.widget.PhotoCam = PrimeFaces.widget.BaseWidget.extend({
     },
     
     /**
-     *  Retrieve the available devices list and stores it in this.devices.
-     *  This function has effect for navigator.mediaDevices supported browsers only.
+     *  Retrieves the available video input device list 
+     *  @return {Promise<InputDeviceInfo[]>} Returns a promise to resolve the enumeration or null if the browser doesn't support media devices enumeration
      */
-    loadDeviceList: function() {
-        
-        if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-            return;
-        }
-        
-        this.devices = new Array();
-        
-        navigator.mediaDevices.enumerateDevices()
-            .then(devices => devices.filter(
+    getAvailableDevices: function() {
+        var result = null;
+        if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+            result = navigator.mediaDevices.enumerateDevices().then(devices => devices.filter(
                     function (device) {
                         return device.kind === "videoinput";
                     }
                   )
-            .forEach(device => {
-                this.devices.push(device);
-            })
-        );
-                
+            );
+        }
+        return result;
     },
     
     /**

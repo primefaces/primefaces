@@ -83,36 +83,31 @@ The tag attribute `device` allows the suggestion of a device to be used by the i
 the client-side operational system & browser will choose the preferred device to use with. Usually, in mobile devices the value `"user"`
 will be resolved as the front camera and `"environment"` will be resolved as the rear camera.
 
-A specific device can be also addressed. For this purpose, the PhotoCam widget is shipped with an attribute `devices` filled with browser native 
-`InputDeviceInfo` objects which can provide the required `deviceId` hash. The code below shows how to extract this information to populate a HTML select dropdown:
+A specific device can be also addressed. For this purpose, the PhotoCam widget is shipped with a `getAvailableDevices()` utility to retrieve the browser native 
+`InputDeviceInfo` objects. These objects can provide the required `deviceId` hash for each video input device attached to the system.
+The code below shows how to fill this information into a HTML select dropdown:
 
 ```javascript
-    window.setTimeout(function() {
-	    var photoCam = PF('photoCam');
-	    var devices = photoCam.devices;
-	    if (devices) {
-	        var deviceSelector = document.querySelector("select");
-	        devices.forEach(device => {
-	            if (device.deviceId) {
-	                var option = document.createElement("option");
-	                if (device.label) {
-	                    option.text = device.label;
-	                } else {
-	                    option.text = "unamed device";
-	                }
-	                option.value = device.deviceId;
-	                deviceSelector.appendChild(option);
-	            }
-	        });
-	    } else {
-	        console.log("no devices found");
-	    }
-	}, 500);
+    function populateDeviceMenu() {
+        var photoCam = PF('pc');
+        var deviceSelector = document.querySelector("select");
+        var availableDevices = photoCam.getAvailableDevices();
+        if (availableDevices) {
+            availableDevices.then(devices => devices.forEach(device => {
+                        var option = document.createElement("option");
+                        option.text = device.label;
+                        option.value = device.deviceId;
+                        deviceSelector.appendChild(option);
+                    })
+                );
+        } else {
+            console.log("no devices available");
+        }
+    }
+    
+    populateDeviceMenu();
 
 ```
-
-It turns out that even browsers in regular or fast PCs may be a bit lazy to fill up the `InputDeviceInfo` collection data into the `devices` widget attribute.
-Thus, it is a good idea to wait some mills before consume these objects, for example, using the `window.setTimeout` idiom as shown above.
 
 ## Error handling
 
@@ -134,6 +129,6 @@ will swept to console any error thrown by the PhotoCam underlying engine.
 This component is strongly dependent of browser / operational system faculties and constraints. Some of known restrictions are listed below:
 
 - Navigators like Google Chrome (version 47 and later) require secure origins (HTTPS or LOCALHOST) to activate media devices functionality. Thus, unless you are accessing the page from LOCALHOST, PhotoCam is likely to do not work in a plain HTTP call. More details can be found here: https://developers.google.com/web/updates/2015/10/chrome-47-webrtc
-- Third-party browsers on iOS devices (Iphone, Ipad, etc) do not have same access to media devices as the Apple native browser Safari. Thus, on an iOS device, PhotoCam should works fine on Safari but not on Chrome or Firefox (or other no-Safari navigators). See http://www.openradar.me/33571214 for any updates on this. Note that this restriction is applied only for iOS devices. In general, third-party browsers running on OSx systems (mackbooks, iMacs and so on) don't have this same restriction.
+- Third-party browsers on iOS devices (Iphone, Ipad, etc) do not have same access to media devices as the Apple native browser Safari. Thus, on an iOS device, PhotoCam should works fine on Safari but not on Chrome or Firefox (or other no-Safari navigator). See http://www.openradar.me/33571214 for any updates on this. Note that this restriction is applied only for iOS devices. In general, third-party browsers running on OSx systems (mackbooks, iMacs and so on) don't have this same restriction.
 - PhotoCam does not support Microsoft Internet Explorer 11 or below. Other legacy browsers are also not likely to be functional.
 
