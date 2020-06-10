@@ -19,14 +19,13 @@ To activate your theme simply use the `primefaces.THEME`  web.xml context parame
 
 PrimeFaces comes built-in with themes ready to use of out the box. They include:
 
-- artisto (legacy ThemeRoller theme not recommended)
 - luna-green
 - luna-amber
 - luna-blue
 - luna-pink
 - nova-colored
 - nova-dark
-- nova-light
+- nova-light (DEFAULT)
 - omega
 
 

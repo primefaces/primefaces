@@ -13,7 +13,7 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 
 | Name | Default | Description |
 | --- | --- | --- |
-| THEME | omega | Theme of the application. |
+| THEME | nova-light | Theme of the application. |
 | SUBMIT | full | Defines ajax submit mode; 'full' or 'partial'. |
 | DIR | ltr | Defines orientation; 'ltr' or 'rtl'. |
 | RESET_VALUES | false | When enabled, AJAX updated inputs are always reseted. |
