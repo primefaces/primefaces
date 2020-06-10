@@ -102,7 +102,7 @@ public class ConstraintDescriptorWrapper<T extends Annotation> implements Constr
 
     //BV 2.0.2
     @Override
-    public <U> U unwrap(Class<U> type){
+    public <U> U unwrap(Class<U> type) {
         return wrapped.unwrap(type);
     }
 }
