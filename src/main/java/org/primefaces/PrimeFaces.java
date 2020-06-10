@@ -24,6 +24,7 @@
 package org.primefaces;
 
 import org.primefaces.component.api.MultiViewStateAware;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.expression.ComponentNotFoundException;
 import org.primefaces.expression.SearchExpressionFacade;
@@ -40,8 +41,10 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitContext;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialViewContext;
+import javax.faces.lifecycle.ClientWindow;
 import java.io.Serializable;
 import java.util.*;
 import java.util.function.Consumer;
@@ -527,17 +530,36 @@ public class PrimeFaces {
         private Map<MVSKey, Object> getMVSSessionMap(boolean create) {
             FacesContext fc = getFacesContext();
             Map<String, Object> sessionMap = fc.getExternalContext().getSessionMap();
-            Map<MVSKey, Object> mvsMap = (Map) sessionMap.get(Constants.MULTI_VIEW_STATES);
+
+            PrimeApplicationContext primeApplicationContext = PrimeApplicationContext.getCurrentInstance(fc);
+            String clientWindowId = "session";
+            if (primeApplicationContext.getEnvironment().isAtLeastJsf22() &&
+                    "CLIENT_WINDOW".equals(primeApplicationContext.getConfig().getMultiViewStateStore())) {
+                ExternalContext externalContext = fc.getExternalContext();
+                ClientWindow clientWindow = externalContext.getClientWindow();
+                if (clientWindow != null && clientWindow.getId() != null && clientWindow.getId().length() > 0) {
+                    clientWindowId = clientWindow.getId();
+                }
+            }
+
+            Map<String, Map<MVSKey, Object>> clientWindowMap = (Map) sessionMap.get(Constants.MULTI_VIEW_STATES);
+            if (clientWindowMap == null) {
+                clientWindowMap = new HashMap<>();
+                sessionMap.put(Constants.MULTI_VIEW_STATES, clientWindowMap);
+            }
+
+            Map<MVSKey, Object> mvsMap = clientWindowMap.get(clientWindowId);
 
             if (mvsMap == null) {
                 if (create) {
                     mvsMap = new HashMap<>();
-                    sessionMap.put(Constants.MULTI_VIEW_STATES, mvsMap);
+                    clientWindowMap.put(clientWindowId, mvsMap);
                 }
                 else {
                     mvsMap = Collections.emptyMap();
                 }
             }
+
             return mvsMap;
         }
 
