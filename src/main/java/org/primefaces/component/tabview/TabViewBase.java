@@ -25,13 +25,11 @@ package org.primefaces.component.tabview;
 
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
-import org.primefaces.component.api.RTLAware;
-import org.primefaces.component.api.TouchAware;
-import org.primefaces.component.api.UITabPanel;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.*;
+import org.primefaces.component.datalist.DataListBase;
 
-public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, TouchAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, TouchAware, ClientBehaviorHolder, PrimeClientBehaviorHolder,
+        MultiViewStateAware<TabViewState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -53,7 +51,8 @@ public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware
         dir,
         scrollable,
         tabindex,
-        touchable
+        touchable,
+        multiViewState
     }
 
     public TabViewBase() {
@@ -185,5 +184,14 @@ public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware
     @Override
     public void setTouchable(boolean touchable) {
         getStateHelper().put(PropertyKeys.touchable, touchable);
+    }
+
+    @Override
+    public boolean isMultiViewState() {
+        return (Boolean) getStateHelper().eval(DataListBase.PropertyKeys.multiViewState, false);
+    }
+
+    public void setMultiViewState(boolean multiViewState) {
+        getStateHelper().put(DataListBase.PropertyKeys.multiViewState, multiViewState);
     }
 }
