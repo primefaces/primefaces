@@ -4,8 +4,8 @@ dist: trusty
 
 jdk:
 - oraclejdk8
-- openjdk8
-# - openjdk7  (not possible since JSF 2.3 dependency - we need to compile it)
+- openjdk11
+
 
 script:
 # add --update-snapshots if snapshots are used

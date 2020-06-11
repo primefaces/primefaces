@@ -416,7 +416,8 @@ if (!PrimeFaces.ajax) {
 
             /**
              * Performs the early collection of post parameters (form element values) if the request is configured that
-             * way.
+             * way. See: https://github.com/primefaces/primefaces/issues/109
+             * 
              * @param {Partial<PrimeFaces.ajax.Configuration>} cfg Configuration for the AJAX request to send, such as
              * the HTTP method, the URL, and the content of the request.
              * @return {PrimeFaces.ajax.ServerCallbackParameter[]} The collected form element values to be sent with the request.

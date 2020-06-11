@@ -58,6 +58,7 @@
  * @prop {boolean} cfg.scrollable When enabled, tab headers can be scrolled horizontally instead of wrapping.
  * @prop {number} cfg.selected The currently selected tab.
  * @prop {number} cfg.tabindex Position of the element in the tabbing order.
+ * @prop {boolean} cfg.multiViewState Whether to keep TabView state across views.
  */
 PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
 
@@ -459,8 +460,24 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         else {
             this.show(newPanel);
 
-            if(this.hasBehavior('tabChange') && !silent) {
-                this.fireTabChangeEvent(newPanel);
+            if (!silent) {
+                if (this.hasBehavior('tabChange')) {
+                    this.fireTabChangeEvent(newPanel);
+                }
+                else if (this.cfg.multiViewState) {
+                    var options = {
+                        source: this.id,
+                        partialSubmit: true,
+                        partialSubmitFilter: this.id + '_activeIndex',
+                        process: this.id,
+                        ignoreAutoUpdate: true,
+                        params: [
+                            {name: this.id + '_activeIndex', value: this.getActiveIndex()}
+                        ]
+                    };
+
+                    PrimeFaces.ajax.Request.handle(options);
+                }
             }
         }
 

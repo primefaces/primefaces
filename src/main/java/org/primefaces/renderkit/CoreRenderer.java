@@ -23,6 +23,23 @@
  */
 package org.primefaces.renderkit;
 
+import java.io.IOException;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
+import javax.el.PropertyNotFoundException;
+import javax.faces.component.*;
+import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorContext;
+import javax.faces.component.behavior.ClientBehaviorHolder;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.convert.Converter;
+import javax.faces.render.Renderer;
+import javax.faces.validator.Validator;
+
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
@@ -33,26 +50,6 @@ import org.primefaces.util.*;
 import org.primefaces.validate.ClientValidator;
 import org.primefaces.validate.bean.BeanValidationMetadata;
 import org.primefaces.validate.bean.BeanValidationMetadataMapper;
-
-import javax.el.PropertyNotFoundException;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
-import javax.faces.component.UIViewRoot;
-import javax.faces.component.behavior.ClientBehavior;
-import javax.faces.component.behavior.ClientBehaviorContext;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.render.Renderer;
-import javax.faces.validator.Validator;
-import java.io.IOException;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import javax.faces.component.UIForm;
 
 public abstract class CoreRenderer extends Renderer {
 
@@ -113,8 +110,10 @@ public abstract class CoreRenderer extends Renderer {
         renderDynamicPassThruAttributes(context, component);
     }
 
-    protected void renderPassThruAttributes(FacesContext context, UIComponent component, List<String>... attrs) throws IOException {
+    @SafeVarargs
+    protected final void renderPassThruAttributes(FacesContext context, UIComponent component, List<String>... attrs) throws IOException {
         if (attrs == null) {
+            renderDynamicPassThruAttributes(context, component);
             return;
         }
 

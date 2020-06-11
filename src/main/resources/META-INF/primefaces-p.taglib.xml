@@ -8607,7 +8607,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Whether to block scrolling of the document. Default is true.]]>
+                <![CDATA[Whether to block scrolling of the document. Default is false.]]>
             </description>
             <name>blockScroll</name>
             <required>false</required>
@@ -18720,6 +18720,22 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Suggests a video input device such as 'user' (aka font camera) or 'environment' (aka rear camera).]]>
+            </description>
+            <name>device</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback executed if the camera has an error.]]>
+            </description>
+            <name>onCameraError</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -25922,6 +25938,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to keep TabView state across views, defaults to false.]]>
+            </description>
+            <name>multiViewState</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -28496,6 +28520,14 @@
             <name>touchable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines a client side event to open cell on editable table.]]>
+            </description>
+            <name>editInitEvent</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
