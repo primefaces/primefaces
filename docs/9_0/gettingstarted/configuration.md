@@ -13,16 +13,20 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 
 | Name | Default | Description |
 | --- | --- | --- |
-| THEME | omega | Theme of the application. |
-| SUBMIT | full | Defines ajax submit mode; 'full' or 'partial'. |
-| DIR | ltr | Defines orientation; 'ltr' or 'rtl'. |
-| RESET_VALUES | false | When enabled, AJAX updated inputs are always reseted. |
 | CLIENT_SIDE_VALIDATION | false | Enables/disables global client side validation . |
-| UPLOADER | auto | Defines uploader mode; 'auto', 'native' or 'commons'. 'auto' means 'native' on JSF2.2+, otherwise 'commons'. |
-| TRANSFORM_METADATA | false | Transforms bean validation metadata to HTML attributes. |
-| LEGACY_WIDGET_NAMESPACE | false | Enables window scope so that widgets can be accessed using widgetVar.method() in addition to default PF namespace approach like PF('widgetVar').method(). |
-| FONT_AWESOME | false | Auto includes Font-Awesome 4.7. |
-| INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES | false | Whether to load messages for the client side validation (CSV) from server via the MessageInterpolator. |
-| MOVE_SCRIPTS_TO_BOTTOM | false | Moves all inline scripts to end of body tag for better performance and smaller HTML output. |
 | CSP | false | Enable Content Security Policy to prevent cross-site scripting (XSS), clickjacking and other code injection attacks |
-| MULTI_VIEW_STATE_STORE | session | Store MultiViewState per Session ('session') or per ClientWindow ('client_window') |
+| CSP_POLICY | null | Custom CSP Policy that allows you to whitelist sites that you need JavaScript from such as `script-src 'self' https: *.googleapis.com` |
+| DIR | ltr | Defines orientation; 'ltr' or 'rtl' for right-to-left support. |
+| EARLY_POST_PARAM_EVALUATION | false | Make p:ajax behave like f:ajax for queued AJAX requests. See: https://github.com/primefaces/primefaces/issues/109 |
+| EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING | null | Comma separated list of exceptions for PrimeExceptionHandler to ignore e.g. `javax.faces.application.ViewExpiredException,javax.persistence.RollbackException`. |
+| FONT_AWESOME | false | Auto includes Font-Awesome 4.7 icons. |
+| INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES | false | Whether to load messages for the client side validation (CSV) from server via the MessageInterpolator. |
+| LEGACY_WIDGET_NAMESPACE | false | Enables window scope so that widgets can be accessed using widgetVar.method() in addition to default PF namespace approach like PF('widgetVar').method(). |
+| MOVE_SCRIPTS_TO_BOTTOM | false | Moves all inline scripts to end of body tag for better performance and smaller HTML output. |
+| MULTI_VIEW_STATE_STORE | session | Store MultiViewState per Session ('session') or per ClientWindow ('client-window') |
+| RESET_VALUES | false | When enabled, AJAX updated inputs are always reset. |
+| SUBMIT | full | Defines ajax submit mode; 'full' or 'partial'. |
+| THEME | aristo | Theme of the application. |
+| TOUCHABLE | true | Globally enables/disables touch support on browsers that support touch. |
+| TRANSFORM_METADATA | false | Transforms bean validation metadata to HTML attributes. |
+| UPLOADER | auto | Defines uploader mode; 'auto', 'native' or 'commons'. 'auto' means 'native' on JSF2.2+, otherwise 'commons'. |
