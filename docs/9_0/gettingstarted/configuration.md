@@ -23,8 +23,9 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 | UPLOADER | auto | Defines uploader mode; 'auto', 'native' or 'commons'. 'auto' means 'native' on JSF2.2+, otherwise 'commons'. |
 | TRANSFORM_METADATA | false | Transforms bean validation metadata to HTML attributes. |
 | LEGACY_WIDGET_NAMESPACE | false | Enables window scope so that widgets can be accessed using widgetVar.method() in addition to default PF namespace approach like PF('widgetVar').method(). |
-| FONT_AWESOME | false | Auto includes Font-Awesome 4.7. |
+| FONT_AWESOME | false | Auto includes Font-Awesome 4.7 icons. |
 | MOVE_SCRIPTS_TO_BOTTOM | false | Moves all inline scripts to end of body tag for better performance and smaller HTML output. |
+| EARLY_POST_PARAM_EVALUATION | false | Make p:ajax behave like f:ajax for queued AJAX requests. See: https://github.com/primefaces/primefaces/issues/109 |
 | EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING | null | Comma separated list of exceptions for PrimeExceptionHandler to ignore e.g. `javax.faces.application.ViewExpiredException,javax.persistence.RollbackException`. |
 | CSP | false | Enable Content Security Policy to prevent cross-site scripting (XSS), clickjacking and other code injection attacks |
 | CSP_POLICY | null | Custom CSP Policy that allows you to whitelist sites that you need JavaScript from such as `script-src 'self' https: *.googleapis.com` |
