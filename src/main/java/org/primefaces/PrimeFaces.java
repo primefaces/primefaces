@@ -512,7 +512,7 @@ public class PrimeFaces {
          * @return multiview state bean attached to a component
          */
         public <T> T get(String viewId, String clientId, boolean create, Supplier<T> supplier) {
-            Map<MVSKey, Object> mvsMap = getMVSStorage(create);
+            Map<MVSKey, Object> mvsMap = getMVSStore(create);
             MVSKey mvsKey = MVSKey.of(viewId, clientId);
 
             T state = (T) mvsMap.get(mvsKey);
@@ -525,10 +525,10 @@ public class PrimeFaces {
         }
 
         private Set<MVSKey> getMVSKeys() {
-            return getMVSStorage(false).keySet();
+            return getMVSStore(false).keySet();
         }
 
-        private Map<MVSKey, Object> getMVSStorage(boolean create) {
+        private Map<MVSKey, Object> getMVSStore(boolean create) {
             FacesContext fc = getFacesContext();
             Map<String, Object> sessionMap = fc.getExternalContext().getSessionMap();
 
