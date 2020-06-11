@@ -54,6 +54,7 @@ public class PrimeConfiguration {
     private boolean csp;
     private String cspPolicy;
     private String[] exceptionTypesToIgnoreInLogging;
+    private final String multiViewStateStore;
 
     // internal config
     private final boolean stringConverterAvailable;
@@ -125,6 +126,8 @@ public class PrimeConfiguration {
         else {
             exceptionTypesToIgnoreInLogging = value.split(",");
         }
+
+        multiViewStateStore = externalContext.getInitParameter(Constants.ContextParams.MULTI_VIEW_STATE_STORE);
     }
 
     protected boolean resolveValidateEmptyFields(FacesContext context, PrimeEnvironment environment) {
@@ -228,5 +231,9 @@ public class PrimeConfiguration {
 
     public String[] getExceptionTypesToIgnoreInLogging() {
         return exceptionTypesToIgnoreInLogging;
+    }
+
+    public String getMultiViewStateStore() {
+        return multiViewStateStore;
     }
 }

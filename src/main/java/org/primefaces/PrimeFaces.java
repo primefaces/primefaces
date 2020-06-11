@@ -24,6 +24,7 @@
 package org.primefaces;
 
 import org.primefaces.component.api.MultiViewStateAware;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.expression.ComponentNotFoundException;
 import org.primefaces.expression.SearchExpressionFacade;
@@ -40,10 +41,13 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitContext;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialViewContext;
+import javax.faces.lifecycle.ClientWindow;
 import java.io.Serializable;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.logging.Level;
@@ -508,7 +512,7 @@ public class PrimeFaces {
          * @return multiview state bean attached to a component
          */
         public <T> T get(String viewId, String clientId, boolean create, Supplier<T> supplier) {
-            Map<MVSKey, Object> mvsMap = getMVSSessionMap(create);
+            Map<MVSKey, Object> mvsMap = getMVSStore(create);
             MVSKey mvsKey = MVSKey.of(viewId, clientId);
 
             T state = (T) mvsMap.get(mvsKey);
@@ -521,23 +525,42 @@ public class PrimeFaces {
         }
 
         private Set<MVSKey> getMVSKeys() {
-            return getMVSSessionMap(false).keySet();
+            return getMVSStore(false).keySet();
         }
 
-        private Map<MVSKey, Object> getMVSSessionMap(boolean create) {
+        private Map<MVSKey, Object> getMVSStore(boolean create) {
             FacesContext fc = getFacesContext();
             Map<String, Object> sessionMap = fc.getExternalContext().getSessionMap();
-            Map<MVSKey, Object> mvsMap = (Map) sessionMap.get(Constants.MULTI_VIEW_STATES);
+
+            PrimeApplicationContext primeApplicationContext = PrimeApplicationContext.getCurrentInstance(fc);
+            String clientWindowId = "session";
+            if (primeApplicationContext.getEnvironment().isAtLeastJsf22() &&
+                    "client-window".equals(primeApplicationContext.getConfig().getMultiViewStateStore())) {
+                ExternalContext externalContext = fc.getExternalContext();
+                ClientWindow clientWindow = externalContext.getClientWindow();
+                if (clientWindow != null && !LangUtils.isValueBlank(clientWindow.getId())) {
+                    clientWindowId = clientWindow.getId();
+                }
+            }
+
+            Map<String, Map<MVSKey, Object>> clientWindowMap = (Map) sessionMap.get(Constants.MULTI_VIEW_STATES);
+            if (clientWindowMap == null) {
+                clientWindowMap = new ConcurrentHashMap<>();
+                sessionMap.put(Constants.MULTI_VIEW_STATES, clientWindowMap);
+            }
+
+            Map<MVSKey, Object> mvsMap = clientWindowMap.get(clientWindowId);
 
             if (mvsMap == null) {
                 if (create) {
-                    mvsMap = new HashMap<>();
-                    sessionMap.put(Constants.MULTI_VIEW_STATES, mvsMap);
+                    mvsMap = new ConcurrentHashMap<>();
+                    clientWindowMap.put(clientWindowId, mvsMap);
                 }
                 else {
                     mvsMap = Collections.emptyMap();
                 }
             }
+
             return mvsMap;
         }
 
