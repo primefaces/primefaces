@@ -546,7 +546,7 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
 
         this.dimensions = this.getDimensions(this.jq.width());
 
-        this.canvas = new Raphael(this.id, this.dimensions.size,this.dimensions.size);
+        this.canvas = Raphael(this.id, this.dimensions.size,this.dimensions.size);
 
         this.clock = this.canvas.circle(this.dimensions.half,this.dimensions.half, this.dimensions.clock_width);
 
