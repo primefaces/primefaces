@@ -40,8 +40,13 @@ public class SidebarRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Sidebar bar = (Sidebar) component;
 
-        encodeMarkup(context, bar);
-        encodeScript(context, bar);
+        if (bar.isContentLoadRequest(context)) {
+            renderChildren(context, bar);
+        }
+        else {
+            encodeMarkup(context, bar);
+            encodeScript(context, bar);
+        }
     }
 
     protected void encodeMarkup(FacesContext context, Sidebar bar) throws IOException {
@@ -87,6 +92,7 @@ public class SidebarRenderer extends CoreRenderer {
                 .attr("visible", bar.isVisible(), false)
                 .attr("blockScroll", bar.isBlockScroll(), false)
                 .attr("baseZIndex", bar.getBaseZIndex(), 0)
+                .attr("dynamic", bar.isDynamic(), false)
                 .attr("appendTo", SearchExpressionFacade.resolveClientId(context, bar, bar.getAppendTo(),
                         SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
                 .callback("onHide", "function()", bar.getOnHide())
