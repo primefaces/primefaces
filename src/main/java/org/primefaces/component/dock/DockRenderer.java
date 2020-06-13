@@ -37,6 +37,7 @@ import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class DockRenderer extends BaseMenuRenderer {
@@ -71,6 +72,7 @@ public class DockRenderer extends BaseMenuRenderer {
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", "ui-dock-container " + dock.getHalign() + " " + position, null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
 
         encodeMenuItems(context, dock);
 
@@ -91,6 +93,7 @@ public class DockRenderer extends BaseMenuRenderer {
                 if (element.isRendered() && element instanceof MenuItem) {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", "ui-dock-item", "styleClass");
+                    writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
                     encodeMenuItem(context, dock, (MenuItem) element, "-1");
                     writer.endElement("li");
                 }
