@@ -121,11 +121,10 @@ public class Elements implements Serializable {
      * @throws java.io.IOException If an I/O error occurs
      */
     public String encode() throws IOException {
-        FastStringWriter fsw = new FastStringWriter();
-        boolean hasComma = false;
-        String preString;
+        try (FastStringWriter fsw = new FastStringWriter()) {
+            boolean hasComma = false;
+            String preString;
 
-        try {
             if (this.point != null) {
                 fsw.write("\"point\":{");
                 fsw.write(this.point.encode());
@@ -158,11 +157,8 @@ public class Elements implements Serializable {
                 fsw.write(this.arc.encode());
                 fsw.write("}");
             }
-        }
-        finally {
-            fsw.close();
-        }
 
-        return fsw.toString();
+            return fsw.toString();
+        }
     }
 }

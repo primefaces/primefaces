@@ -196,7 +196,7 @@ if (window.PrimeFaces) {
                     return null;
                 }
 
-                if($.trim(submittedValue).length === 0) {
+                if(PrimeFaces.trim(submittedValue).length === 0) {
                     return null;
                 }
 
@@ -221,7 +221,7 @@ if (window.PrimeFaces) {
                     return null;
                 }
 
-                if($.trim(submittedValue).length === 0) {
+                if(PrimeFaces.trim(submittedValue).length === 0) {
                     return null;
                 }
 
@@ -246,7 +246,7 @@ if (window.PrimeFaces) {
                     return null;
                 }
 
-                if($.trim(submittedValue).length === 0) {
+                if(PrimeFaces.trim(submittedValue).length === 0) {
                     return null;
                 }
 
@@ -271,7 +271,7 @@ if (window.PrimeFaces) {
                     return null;
                 }
 
-                if($.trim(submittedValue).length === 0) {
+                if(PrimeFaces.trim(submittedValue).length === 0) {
                     return null;
                 }
 
@@ -296,7 +296,7 @@ if (window.PrimeFaces) {
                     return null;
                 }
 
-                if($.trim(submittedValue).length === 0) {
+                if(PrimeFaces.trim(submittedValue).length === 0) {
                     return null;
                 }
 
@@ -321,7 +321,7 @@ if (window.PrimeFaces) {
                     return null;
                 }
 
-                if($.trim(submittedValue).length === 0) {
+                if(PrimeFaces.trim(submittedValue).length === 0) {
                     return null;
                 }
 
@@ -346,7 +346,7 @@ if (window.PrimeFaces) {
                     return null;
                 }
 
-                if($.trim(submittedValue).length === 0) {
+                if(PrimeFaces.trim(submittedValue).length === 0) {
                     return null;
                 }
 
@@ -371,7 +371,7 @@ if (window.PrimeFaces) {
                     return null;
                 }
 
-                if($.trim(submittedValue).length === 0) {
+                if(PrimeFaces.trim(submittedValue).length === 0) {
                     return null;
                 }
 
@@ -400,7 +400,7 @@ if (window.PrimeFaces) {
                     return null;
                 }
 
-                if($.trim(submittedValue).length === 0) {
+                if(PrimeFaces.trim(submittedValue).length === 0) {
                     return null;
                 }
 
@@ -426,7 +426,7 @@ if (window.PrimeFaces) {
                     return null;
                 }
 
-                if($.trim(submittedValue).length === 0) {
+                if(PrimeFaces.trim(submittedValue).length === 0) {
                     return null;
                 }
 
@@ -452,7 +452,7 @@ if (window.PrimeFaces) {
                     return null;
                 }
 
-                if($.trim(submittedValue).length === 0) {
+                if(PrimeFaces.trim(submittedValue).length === 0) {
                     return null;
                 }
 
@@ -520,7 +520,7 @@ if (window.PrimeFaces) {
                     return null;
                 }
 
-                if($.trim(submittedValue).length === 0) {
+                if(PrimeFaces.trim(submittedValue).length === 0) {
                     return null;
                 }
 
@@ -650,9 +650,9 @@ if (window.PrimeFaces) {
                 if(vc.messages.hasOwnProperty(key)) {
                     var el = $(PrimeFaces.escapeClientId(key));
                     if(!el.is(':focusable'))
-                        el.find(':focusable:first').focus();
+                        el.find(':focusable:first').trigger('focus');
                     else
-                        el.focus();
+                        el.trigger('focus');
                     break;
                 }
             }
@@ -735,7 +735,7 @@ if (window.PrimeFaces) {
             valid = false;
         }
 
-        if(valid && ((submittedValue !== null && $.trim(submittedValue).length > 0)||PrimeFaces.settings.validateEmptyFields)) {
+        if(valid && ((submittedValue !== null && PrimeFaces.trim(submittedValue).length > 0)||PrimeFaces.settings.validateEmptyFields)) {
             var validatorIds = element.data('p-val');
             if(validatorIds) {
                 validatorIds = validatorIds.split(',');

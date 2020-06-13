@@ -253,7 +253,7 @@
 					var count = data.substring(0, i).match(/"/g); // Handle embedded ':'
 					return (!count || count.length % 2 === 0 ? '"' + group + '":' : group + ':');
 				}).replace(/\\:/g, ':');
-				data = $.parseJSON('{' + data + '}');
+				data = JSON.parse('{' + data + '}');
 				for (var key in data) {
 					if (data.hasOwnProperty(key)) {
 						var value = data[key];
@@ -649,8 +649,7 @@ $('selector').tabs(); // And instantiate it */
 
 		_postAttach: function(elem, inst) {
 			if (inst._inline) {
-				elem.append(inst._mainDiv).
-					on('click.' + inst.name, function() { inst._input.focus(); });
+				elem.append(inst._mainDiv).on('click.' + inst.name, function() { inst._input.trigger('focus'); });
 				this._updateKeypad(inst);
 			}
 			else if (elem.is(':disabled')) {
@@ -701,7 +700,7 @@ $('selector').tabs(); // And instantiate it */
 						$('<img src="' + buttonImage + '" alt="' +
 						buttonStatus + '" title="' + buttonStatus + '"></img>')));
 					elem[inst.options.isRTL ? 'before' : 'after'](trigger);
-					trigger.addClass(this._triggerClass).click(function() {
+					trigger.addClass(this._triggerClass).on("click", function() {
 						if (plugin._keypadShowing && plugin._lastField === elem[0]) {
 							plugin.hide();
 						}
@@ -713,7 +712,7 @@ $('selector').tabs(); // And instantiate it */
 				}
 			}
 			inst.saveReadonly = elem.attr('readonly');
-			elem[inst.options.keypadOnly ? 'attr' : 'removeAttr']('readonly', true).
+			elem.prop( "readonly", inst.options.keypadOnly).
 				on('setData.' + inst.name, function(event, key, value) {
 					inst.options[key] = value;
 				}).
@@ -731,8 +730,7 @@ $('selector').tabs(); // And instantiate it */
 			elem.siblings('.' + this._appendClass).remove().end().
 				siblings('.' + this._triggerClass).remove().end().
 				prev('.' + this._inlineEntryClass).remove();
-			elem.empty().off('.' + inst.name)
-				[inst.saveReadonly ? 'attr' : 'removeAttr']('readonly', true);
+			elem.empty().off('.' + inst.name).prop('readonly', inst.saveReadonly);
 			inst._input.removeData(inst.name);
 		},
 
@@ -862,7 +860,7 @@ $('selector').tabs(); // And instantiate it */
 					(inst.options.useThemeRoller ? ' ui-widget ui-widget-content ui-corner-all ui-shadow' : '') +
 					(inst.options.isRTL ? ' ' + this._rtlClass : '') + ' ' +
 					(inst._inline ? this._inlineClass : this._mainDivClass));
-			if ($.isFunction(inst.options.beforeShow)) {
+			if (typeof inst.options.beforeShow === "function") {
 				inst.options.beforeShow.apply((inst._input ? inst._input[0] : null),
 					[inst._mainDiv, inst]);
 			}
@@ -941,7 +939,7 @@ $('selector').tabs(); // And instantiate it */
 						(showAnim === 'fadeIn' ? 'fadeOut' : 'hide'))](showAnim ? duration : 0);
 				}
 			}
-			if ($.isFunction(inst.options.onClose)) {
+			if (typeof inst.options.onClose === "function") {
 				inst.options.onClose.apply((inst._input ? inst._input[0] : null),  // trigger custom callback
 					[inst._input.val(), inst]);
 			}
@@ -987,7 +985,7 @@ $('selector').tabs(); // And instantiate it */
 		_shiftKeypad: function(inst) {
 			inst.ucase = !inst.ucase;
 			this._updateKeypad(inst);
-			inst._input.focus(); // for further typing
+			inst._input.trigger('focus'); // for further typing
 		},
 
 		/** Erase the text field.
@@ -1038,7 +1036,7 @@ $('selector').tabs(); // And instantiate it */
 			input.val(newValue.substr(0, range[0]) + value + newValue.substr(range[1]));
 			var pos = range[0] + value.length;
 			if (input.is(':visible')) {
-				input.focus(); // for further typing
+				input.trigger('focus'); // for further typing
 			}
 			if (elem.setSelectionRange) { // Mozilla
 				if (input.is(':visible')) {
@@ -1057,7 +1055,7 @@ $('selector').tabs(); // And instantiate it */
 			@param {Element} elem The target text field.
 			@return {number[]} The start and end positions of the selection. */
 		_getIERange: function(elem) {
-			elem.focus();
+			elem.trigger('focus');
 			var selectionRange = document.selection.createRange().duplicate();
 			// Use two ranges: before and selection
 			var beforeRange = this._getIETextRange(elem);
@@ -1112,7 +1110,7 @@ $('selector').tabs(); // And instantiate it */
 				value = value.substr(0, maxlen);
 			}
 			inst._input.val(value);
-			if (!$.isFunction(inst.options.onKeypress)) {
+			if (typeof value !== "function") {
 				inst._input.trigger('change'); // fire the change event
 			}
 		},
@@ -1122,7 +1120,7 @@ $('selector').tabs(); // And instantiate it */
 			@param {object} inst The instance settings.
 			@param {string} key The character pressed. */
 		_notifyKeypress: function(inst, key) {
-			if ($.isFunction(inst.options.onKeypress)) { // trigger custom callback
+			if (typeof inst.options.onKeypress === "function") { // trigger custom callback
 				inst.options.onKeypress.apply((inst._input ? inst._input[0] : null),
 					[key, inst._input.val(), inst]);
 			}
@@ -1171,13 +1169,12 @@ $('selector').tabs(); // And instantiate it */
 			var buttons = html.find('button');
 			PrimeFaces.skinButton(buttons);
 
-			buttons.mousedown(function() { $(this).addClass(activeClasses); }).
-				mouseup(function() { $(this).removeClass(activeClasses); }).
-				mouseout(function() { $(this).removeClass(activeClasses); }).
-				filter('.' + this._keyClass).
-				click(function() { plugin._selectValue(thisInst, $(this).text()); });
+			buttons.on("mousedown", function() { $(this).addClass(activeClasses); }).
+				on("mouseup", function() { $(this).removeClass(activeClasses); }).
+				on("mouseout", function() { $(this).removeClass(activeClasses); }).
+				filter('.' + this._keyClass).on("click", function() { plugin._selectValue(thisInst, $(this).text()); });
 			$.each(this._specialKeys, function(i, keyDef) {
-				html.find('.' + plugin._namePrefixClass + keyDef.name).click(function() {
+				html.find('.' + plugin._namePrefixClass + keyDef.name).on("click", function() {
 					keyDef.action.apply(thisInst._input, [thisInst]);
 				});
 			});

@@ -43,7 +43,7 @@ public class TreeNodeComparator implements Comparator<Object> {
             Locale locale) {
         this.sortBy = sortBy;
         this.var = var;
-        this.asc = sortOrder.equals(SortOrder.ASCENDING);
+        this.asc = sortOrder == SortOrder.ASCENDING;
         this.sortFunction = sortFunction;
         this.caseSensitive = caseSensitive;
         this.locale = locale;

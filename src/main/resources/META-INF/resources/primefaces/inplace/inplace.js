@@ -49,13 +49,13 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
         if(!this.cfg.disabled) {
 
             if(this.cfg.toggleable) {
-                this.display.bind(this.cfg.event, function(){
+                this.display.on(this.cfg.event, function(){
                     $this.show();
                 });
 
-                this.display.mouseover(function(){
+                this.display.on("mouseover", function(){
                     $(this).toggleClass("ui-state-highlight");
-                }).mouseout(function(){
+                }).on("mouseout", function(){
                     $(this).toggleClass("ui-state-highlight");
                 });
             }
@@ -73,8 +73,8 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
 
                 PrimeFaces.skinButton(saveButton).skinButton(cancelButton);
 
-                saveButton.click(function(e) {$this.save(e)});
-                cancelButton.click(function(e) {$this.cancel(e)});
+                saveButton.on("click", function(e) {$this.save(e)});
+                cancelButton.on("click", function(e) {$this.cancel(e)});
             }
 
             /* to enter space in inplace input within multi-selection dataTable */
@@ -138,7 +138,7 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     postShow: function() {
-        this.content.find('input:text,textarea').filter(':visible:enabled:first').focus().select();
+        this.content.find('input:text,textarea').filter(':visible:enabled:first').trigger('focus').trigger('select');
 
         PrimeFaces.invokeDeferredRenders(this.id);
     },

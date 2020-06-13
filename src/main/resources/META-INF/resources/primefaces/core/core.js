@@ -92,7 +92,7 @@
          * with the given value and the key used as the name. 
          * @param {string} parent The ID of a FORM element.
          * @param {Record<string, string>} params An object with key-value pairs.
-         * @return {typeof PrimeFaces}
+         * @return {typeof PrimeFaces} This object for chaining.
          */
         addSubmitParam : function(parent, params) {
             var form = $(this.escapeClientId(parent));
@@ -121,7 +121,7 @@
                 form.attr('target', target);
             }
 
-            form.submit();
+            form.trigger('submit');
             form.children('input.ui-submit-param').remove();
 
             if (target) {
@@ -253,20 +253,17 @@
 
             PrimeFaces.updateFilledState(input, parent);
 
-            input.hover(
-                function() {
-                    $(this).addClass('ui-state-hover');
-                },
-                function() {
-                    $(this).removeClass('ui-state-hover');
-                }
-            ).focus(function() {
+            input.on("mouseenter", function() {
+                $(this).addClass('ui-state-hover');
+            }).on("mouseleave", function() {
+                $(this).removeClass('ui-state-hover');
+            }).on("focus", function() {
                 $(this).addClass('ui-state-focus');
 
                 if(parent.is("span:not('.ui-float-label')")) {
                     parent.addClass('ui-inputwrapper-focus');
                 }
-            }).blur(function() {
+            }).on("blur", function() {
                 $(this).removeClass('ui-state-focus');
 
                 if(input.hasClass('hasDatepicker')) {
@@ -300,32 +297,32 @@
          * @return {typeof PrimeFaces} this for chaining
          */
         skinButton : function(button) {
-            button.mouseover(function(){
+            button.on("mouseover", function(){
                 var el = $(this);
                 if(!button.prop('disabled')) {
                     el.addClass('ui-state-hover');
                 }
-            }).mouseout(function() {
+            }).on("mouseout", function() {
                 $(this).removeClass('ui-state-active ui-state-hover');
-            }).mousedown(function() {
+            }).on("mousedown", function() {
                 var el = $(this);
                 if(!button.prop('disabled')) {
                     el.addClass('ui-state-active').removeClass('ui-state-hover');
                 }
-            }).mouseup(function() {
+            }).on("mouseup", function() {
                 $(this).removeClass('ui-state-active').addClass('ui-state-hover');
-            }).focus(function() {
+            }).on("focus", function() {
                 $(this).addClass('ui-state-focus');
-            }).blur(function() {
+            }).on("blur", function() {
                 $(this).removeClass('ui-state-focus ui-state-active');
-            }).keydown(function(e) {
+            }).on("keydown", function(e) {
                 if(e.which === $.ui.keyCode.SPACE || e.which === $.ui.keyCode.ENTER) {
                     $(this).addClass('ui-state-active');
                 }
-            }).keyup(function() {
+            }).on("keyup", function() {
                 $(this).removeClass('ui-state-active');
             });
-
+            
             //aria
             var role = button.attr('role');
             if(!role) {
@@ -345,15 +342,15 @@
          * @return {typeof PrimeFaces} this for chaining
          */
         skinSelect : function(select) {
-            select.mouseover(function() {
+            select.on("mouseover", function() {
                 var el = $(this);
                 if(!el.hasClass('ui-state-focus'))
                     el.addClass('ui-state-hover');
-            }).mouseout(function() {
+            }).on("mouseout", function() {
                 $(this).removeClass('ui-state-hover');
-            }).focus(function() {
+            }).on("focus", function() {
                 $(this).addClass('ui-state-focus').removeClass('ui-state-hover');
-            }).blur(function() {
+            }).on("blur", function() {
                 $(this).removeClass('ui-state-focus ui-state-hover');
             });
 
@@ -431,7 +428,7 @@
          */
         setCaretToEnd: function(element) {
             if(element) {
-                element.focus();
+                element.trigger('focus');
                 var length = element.value.length;
 
                 if(length > 0) {
@@ -514,7 +511,7 @@
 
         /**
          * Finds the text currently selected by the user on the current page.
-         * @return {string | Selection}
+         * @return {string | Selection} The text currently selected by the user on the current page.
          */
         getSelection: function() {
             var text = '';
@@ -637,7 +634,7 @@
                     var jq = $(PrimeFaces.escapeClientId(id));
 
                     if(jq.is(selector)) {
-                        jq.focus();
+                        jq.trigger('focus');
                     }
                     else {
                         var firstElement = jq.find(selector).eq(0);
@@ -668,18 +665,18 @@
             if(el.is(':radio')) {
                 // github issue: #2582
                 if(el.hasClass('ui-helper-hidden-accessible')) {
-                    el.parent().focus();
+                    el.parent().trigger('focus');
                 }
                 else {
                     var checkedRadio = $(':radio[name="' + $.escapeSelector(el.attr('name')) + '"]').filter(':checked');
                     if(checkedRadio.length)
-                        checkedRadio.focus();
+                        checkedRadio.trigger('focus');
                     else
-                        el.focus();
+                        el.trigger('focus');
                 }
             }
             else {
-                el.focus();
+                el.trigger('focus');
             }
         },
 
@@ -1007,6 +1004,26 @@
         },
 
         /**
+         * For 4.0 jQuery deprecated $.trim in favor of PrimeFaces.trim however that does not handle
+         * NULL and jQuery did so this function allows a drop in replacement.
+         * 
+         * @param {string} value the String to trim
+         * @return {string} trimmed value or "" if it was NULL
+         */
+        trim: function(value) {
+            if (!value) {
+                return "";
+            }
+            
+            if (typeof value === 'string' || value instanceof String) {
+                return value.trim();
+            }
+            
+            // return original value if it was not a string
+            return value;
+        },
+
+        /**
          * Generate a RFC-4122 compliant UUID to be used as a unique identifier.
          *
          * See https://www.ietf.org/rfc/rfc4122.txt
@@ -1024,6 +1041,18 @@
               lut[d1&0xff]+lut[d1>>8&0xff]+'-'+lut[d1>>16&0x0f|0x40]+lut[d1>>24&0xff]+'-'+
               lut[d2&0x3f|0x80]+lut[d2>>8&0xff]+'-'+lut[d2>>16&0xff]+lut[d2>>24&0xff]+
               lut[d3&0xff]+lut[d3>>8&0xff]+lut[d3>>16&0xff]+lut[d3>>24&0xff];
+        },
+
+        /**
+         * Converts a date into an ISO-8601 date without using the browser timezone offset.
+         * 
+         * See https://stackoverflow.com/questions/10830357/javascript-toisostring-ignores-timezone-offset
+         * 
+         * @param {Date} date the date to convert
+         * @return {string} ISO-8601 version of the date
+         */
+        toISOString: function(date) {
+            return new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString();
         },
 
         /**

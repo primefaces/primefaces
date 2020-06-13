@@ -32,7 +32,6 @@ public class FlowEvent extends FacesEvent {
     private static final long serialVersionUID = 1L;
 
     private String oldStep;
-
     private String newStep;
 
     public FlowEvent(UIComponent component, String oldStep, String newStep) {

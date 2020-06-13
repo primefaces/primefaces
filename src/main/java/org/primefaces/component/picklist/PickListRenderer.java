@@ -40,6 +40,7 @@ import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class PickListRenderer extends InputRenderer {
@@ -372,6 +373,7 @@ public class PickListRenderer extends InputRenderer {
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER, null), null);
         writer.endElement("input");
 
         writer.startElement("span", null);

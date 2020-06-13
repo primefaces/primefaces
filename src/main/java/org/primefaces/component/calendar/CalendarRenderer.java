@@ -31,6 +31,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class CalendarRenderer extends BaseCalendarRenderer {
@@ -106,7 +107,8 @@ public class CalendarRenderer extends BaseCalendarRenderer {
                 .attr("disabledWeekends", calendar.isDisabledWeekends(), false)
                 .attr("disabled", calendar.isDisabled(), false)
                 .attr("yearRange", calendar.getYearRange(), null)
-                .attr("focusOnSelect", calendar.isFocusOnSelect(), false);
+                .attr("focusOnSelect", calendar.isFocusOnSelect(), false)
+                .attr("touchable", ComponentUtils.isTouchable(context, calendar),  true);
 
         if (calendar.isNavigator()) {
             wb.attr("changeMonth", true).attr("changeYear", true);

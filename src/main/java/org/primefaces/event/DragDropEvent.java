@@ -31,9 +31,7 @@ public class DragDropEvent<T> extends AbstractAjaxBehaviorEvent {
     private static final long serialVersionUID = 1L;
 
     private String dragId;
-
     private String dropId;
-
     private T data;
 
     public DragDropEvent(UIComponent component, Behavior behavior, String dragId, String dropId) {

@@ -254,9 +254,7 @@ public class RadialLinearTicks extends AxesTicks {
      */
     @Override
     public String encode() throws IOException {
-        FastStringWriter fsw = new FastStringWriter();
-
-        try {
+        try (FastStringWriter fsw = new FastStringWriter()) {
             fsw.write("{");
             fsw.write(super.encode());
 
@@ -273,11 +271,8 @@ public class RadialLinearTicks extends AxesTicks {
             ChartUtils.writeDataValue(fsw, "showLabelBackdrop", this.showLabelBackdrop, true);
 
             fsw.write("}");
-        }
-        finally {
-            fsw.close();
-        }
 
-        return fsw.toString();
+            return fsw.toString();
+        }
     }
 }

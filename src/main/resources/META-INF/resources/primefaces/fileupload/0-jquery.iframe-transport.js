@@ -81,12 +81,12 @@
               '" name="iframe-transport-' +
               counter +
               '"></iframe>'
-          ).bind('load', function() {
+          ).on('load', function() {
             var fileInputClones,
-              paramNames = $.isArray(options.paramName)
+              paramNames = Array.isArray(options.paramName)
                 ? options.paramName
                 : [options.paramName];
-            iframe.unbind('load').bind('load', function() {
+            iframe.off('load').on('load', function() {
               var response;
               // Wrap in a try/catch block to catch exceptions thrown
               // when trying to access cross-domain iframe contents:
@@ -153,7 +153,7 @@
               // Remove the HTML5 form attribute from the input(s):
               options.fileInput.removeAttr('form');
             }
-            form.submit();
+            form.trigger('submit');
             // Insert the file input fields at their original location
             // by replacing the clones with the originals:
             if (fileInputClones && fileInputClones.length) {
@@ -173,7 +173,7 @@
           if (iframe) {
             // javascript:false as iframe src aborts the request
             // and prevents warning popups on HTTPS in IE6.
-            iframe.unbind('load').prop('src', initialIframeSrc);
+            iframe.off('load').prop('src', initialIframeSrc);
           }
           if (form) {
             form.remove();

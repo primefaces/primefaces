@@ -134,6 +134,9 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         if(hasTimePicker) {
             this.configureTimePicker();
         }
+        
+        // is touch support enabled
+        var touchEnabled = PrimeFaces.env.isTouchable(this.cfg) && !this.input.attr("readonly") && this.cfg.showOn && this.cfg.showOn === 'button';
 
         //Client behaviors, input skinning and z-index
         if(this.cfg.popup) {
@@ -161,7 +164,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                 }, 1);
 
                 // touch support - prevents keyboard popup
-                if(PrimeFaces.env.touch && !$this.input.attr("readonly") && $this.cfg.showOn && $this.cfg.showOn === 'button') {
+                if(touchEnabled) {
                     $(this).prop("readonly", true);
                 }
 
@@ -178,7 +181,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         }
 
         // touch support - prevents keyboard popup
-        if (PrimeFaces.env.touch && !this.input.attr("readonly") && this.cfg.showOn && this.cfg.showOn === 'button') {
+        if (touchEnabled) {
             var fireCloseEvent = this.cfg.onClose;
             this.cfg.onClose = function(dateText, inst) {
                 $(this).attr("readonly", false);
@@ -301,7 +304,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
 
                 if($this.cfg.focusOnSelect) {
                     $this.refocusInput = true;
-                    $this.jqEl.focus();
+                    $this.jqEl.trigger('focus');
                     if(!($this.cfg.showOn && $this.cfg.showOn === 'button')) {
                         $this.jqEl.off('click.calendar').on('click.calendar', function() {
                             $(this).datepicker("show");

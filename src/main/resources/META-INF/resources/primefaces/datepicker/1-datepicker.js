@@ -63,6 +63,9 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         this.bindDateSelectListener();
         this.bindViewChangeListener();
         this.bindCloseListener();
+        
+        // is touch support enabled
+        var touchEnabled = PrimeFaces.env.isTouchable(this.cfg) && !this.input.attr("readonly") && this.cfg.showIcon;
 
         //Client behaviors, input skinning and z-index
         if(!this.cfg.inline) {
@@ -83,7 +86,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                 var inst = this; // the instance of prime.datePicker API
 
                 // touch support - prevents keyboard popup
-                if(PrimeFaces.env.touch && !inst.inputfield.attr("readonly") && _self.cfg.showIcon) {
+                if(touchEnabled) {
                     _self.jqEl.prop("readonly", true);
                 }
 
@@ -96,7 +99,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         }
 
         // touch support - prevents keyboard popup
-        if (PrimeFaces.env.touch && !this.input.attr("readonly") && this.cfg.showIcon) {
+        if (touchEnabled) {
             this.cfg.onBeforeHide = function() {
                 _self.jqEl.attr("readonly", false);
             };
@@ -192,7 +195,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
             if(!_self.cfg.inline && _self.cfg.focusOnSelect) {
                 _self.refocusInput = true;
-                _self.jqEl.focus();
+                _self.jqEl.trigger('focus');
                 if(!_self.cfg.showIcon) {
                     var inst = this;
 

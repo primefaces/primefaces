@@ -61,17 +61,17 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
     bindEvents: function() {
         var $this = this;
 
-        this.headers.mouseover(function() {
+        this.headers.on("mouseover", function() {
             var element = $(this);
             if(!element.hasClass('ui-state-active')) {
                 element.addClass('ui-state-hover');
             }
-        }).mouseout(function() {
+        }).on("mouseout", function() {
             var element = $(this);
             if(!element.hasClass('ui-state-active')) {
                 element.removeClass('ui-state-hover');
             }
-        }).click(function(e) {
+        }).on("click", function(e) {
             var header = $(this);
 
             if (!$this.cfg.multiple) {
@@ -84,21 +84,21 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                 $this.expandRootSubmenu($(this), false);
 
             $this.removeFocusedItem();
-            header.focus();
+            header.trigger('focus');
             e.preventDefault();
         });
 
-        this.menuitemLinks.mouseover(function() {
+        this.menuitemLinks.on("mouseover", function() {
             $(this).addClass('ui-state-hover');
-        }).mouseout(function() {
+        }).on("mouseout", function() {
             $(this).removeClass('ui-state-hover');
-        }).click(function(e) {
+        }).on("click", function(e) {
             var currentLink = $(this);
             $this.focusItem(currentLink.closest('.ui-menuitem'));
             PrimeFaces.utils.openLink(e, currentLink);
         });
 
-        this.treeLinks.click(function(e) {
+        this.treeLinks.on("click", function(e) {
             var link = $(this),
             submenu = link.parent(),
             submenuList = link.next();
@@ -235,7 +235,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                     setTimeout(function(){
                         currentLink.trigger('click');
                     },1);
-                    $this.jq.blur();
+                    $this.jq.trigger("blur");
 
                     var href = currentLink.attr('href');
                     if(href && href !== '#') {
@@ -249,7 +249,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                         if(PrimeFaces.env.isIE()) {
                             $this.focusCheck = true;
                         }
-                        $(this).focus();
+                        $(this).trigger('focus');
                     }
                 break;
             }
@@ -327,7 +327,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
      */
     focusItem: function(item) {
         this.removeFocusedItem();
-        this.getItemText(item).addClass('ui-menuitem-outline').focus();
+        this.getItemText(item).addClass('ui-menuitem-outline').trigger('focus');
         this.focusedItem = item;
     },
 

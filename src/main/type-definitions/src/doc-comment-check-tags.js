@@ -87,7 +87,7 @@ function checkSymbolHasDescription(jsdoc, errorFactory, severitySettings, tags, 
  */
 function checkTagHasDescription(tag, severitySettings, errorFactory, tags, excludeName = false) {
     const desc = tag !== undefined && tag.description !== undefined ? tag.description.trim() : "";
-    const withName = excludeName ? desc : (tag.name || "").trim() + " " + desc;
+    const withName = excludeName ? desc : ((tag.name || "").trim() + " " + desc).trim();
     if (withName.length === 0 && tag.tag !== Tags.Pattern) {
         /** @type {"tagOverriddenMissingDesc" | "tagParamMissingDesc" | "tagReturnMissingDesc" | "tagTemplateMissingDesc" | "tagTypedefMissingDesc" | "tagMissingDesc"} */
         let key;
@@ -124,7 +124,7 @@ function checkTagHasDescription(tag, severitySettings, errorFactory, tags, exclu
  */
 function checkTagHasNoDescription(tag, severitySettings, errorFactory, excludeName = false) {
     const desc = tag !== undefined && tag.description !== undefined ? tag.description.trim() : "";
-    const withName = excludeName ? desc : (tag.name || "").trim() + " " + desc;
+    const withName = excludeName ? desc : ((tag.name || "").trim() + " " + desc).trim();
     if (withName.trim().length !== 0) {
         handleError("tagSuperfluousDesc", severitySettings, () => errorFactory(`Tag @${tag ? tag.tag : "UNNAMED"} (${tag.name ? tag.name : "<no-name>"}) does not require a description, it will be ignored."`));
         return false;

@@ -216,9 +216,7 @@ public class Title implements Serializable {
      * @throws java.io.IOException If an I/O error occurs
      */
     public String encode() throws IOException {
-        FastStringWriter fsw = new FastStringWriter();
-
-        try {
+        try (FastStringWriter fsw = new FastStringWriter()) {
             ChartUtils.writeDataValue(fsw, "display", this.display, false);
             ChartUtils.writeDataValue(fsw, "position", this.position, true);
             ChartUtils.writeDataValue(fsw, "fontSize", this.fontSize, true);
@@ -228,11 +226,8 @@ public class Title implements Serializable {
             ChartUtils.writeDataValue(fsw, "padding", this.padding, true);
             ChartUtils.writeDataValue(fsw, "lineHeight", this.lineHeight, true);
             ChartUtils.writeDataValue(fsw, "text", this.text, true);
-        }
-        finally {
-            fsw.close();
-        }
 
-        return fsw.toString();
+            return fsw.toString();
+        }
     }
 }

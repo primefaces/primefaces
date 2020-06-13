@@ -41,6 +41,7 @@ import org.primefaces.component.calendar.BaseCalendarRenderer;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class DatePickerRenderer extends BaseCalendarRenderer {
@@ -141,11 +142,13 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("numberOfMonths", datepicker.getNumberOfMonths(), 1)
             .attr("view", datepicker.getView(), null)
             .attr("touchUI", datepicker.isTouchUI(), false)
+            .attr("showWeek", datepicker.isShowWeek(), false)
             .attr("appendTo", SearchExpressionFacade.resolveClientId(context, datepicker, datepicker.getAppendTo(),
                             SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
             .attr("icon", datepicker.getTriggerButtonIcon(), null)
             .attr("rangeSeparator", datepicker.getRangeSeparator(), null)
-            .attr("timeInput", datepicker.isTimeInput());
+            .attr("timeInput", datepicker.isTimeInput())
+            .attr("touchable", ComponentUtils.isTouchable(context, datepicker),  true);
 
         List<Integer> disabledDays = datepicker.getDisabledDays();
         if (disabledDays != null) {
@@ -175,6 +178,11 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         String onYearChange = datepicker.getOnYearChange();
         if (onYearChange != null) {
             wb.nativeAttr("onYearChange", onYearChange);
+        }
+
+        String weekCalculator = datepicker.getWeekCalculator();
+        if (weekCalculator != null) {
+            wb.nativeAttr("weekCalculator", weekCalculator);
         }
 
         if (datepicker.isShowOtherMonths()) {

@@ -114,7 +114,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                 element.removeClass('ui-state-hover').addClass('ui-state-active');
 
                 if($this.input.is(':not(:focus)')) {
-                    $this.input.focus();
+                    $this.input.trigger('focus');
                 }
 
                 $this.repeat(null, dir);
@@ -261,7 +261,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             parsedValue = parseInt(value);
         }
         if(isNaN(parsedValue)) {
-            if($.trim(value) === '' && this.cfg.min !== undefined && this.cfg.required) {
+            if(PrimeFaces.trim(value) === '' && this.cfg.min !== undefined && this.cfg.required) {
                 parsedValue = this.cfg.min;
             } else {
                 parsedValue = null;

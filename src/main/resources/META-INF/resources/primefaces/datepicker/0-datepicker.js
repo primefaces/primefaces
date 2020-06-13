@@ -16,7 +16,6 @@
         factory(jQuery);
     }
 }(function ($) {
-
     $.widget("prime.datePicker", {
 
         options: {
@@ -44,6 +43,8 @@
             numberOfMonths: 1,
             view: 'date',
             touchUI: false,
+            showWeek: false,
+            weekCalculator: null,
             showTime: false,
             timeOnly: false,
             showSeconds: false,
@@ -108,6 +109,34 @@
         _setInitValues: function () {
             if (this.options.userLocale && typeof this.options.userLocale === 'object') {
                 $.extend(this.options.locale, this.options.userLocale);
+            }
+
+            if (this.options.showWeek && !this.options.weekCalculator) {
+                this.options.weekCalculator = this.calculateWeekNumber.bind(this);
+
+                // initialize the potentially missing firstDayWeekOffset option
+                // based on the firstDay(OfWeek) option:
+                //  - firstDay = saturday => firstDayWeekOffset = 12
+                //  - firstDay = sunday => firstDayWeekOffset = 6
+                //  - firstDay = monday (ISO8601) => firstDayWeekOffset = 4
+                //
+                // those defaults are based on the locales on the library
+                // moment.js and won't be correct for _all_ locales.
+                var sundayIndex = this.getSundayIndex();
+                if (this.options.locale.firstDayWeekOffset === undefined) {
+                    if (sundayIndex == 0) {
+                        this.options.locale.firstDayWeekOffset = 6;
+                    }
+                    else if (sundayIndex == 1) {
+                        this.options.locale.firstDayWeekOffset = 12;
+                    }
+                    else if (sundayIndex == 6) {
+                        this.options.locale.firstDayWeekOffset = 4;
+                    }
+                    else {
+                        this.options.showWeek = false;
+                    }
+                }
             }
 
             var parsedDefaultDate = this.parseValue(this.options.defaultDate);
@@ -1306,6 +1335,15 @@
 
         renderDayNames: function (weekDaysMin, weekDays) {
             var dayNamesHtml = '';
+
+            if(this.options.showWeek) {
+                dayNamesHtml += '<th scope="col">' +
+                    '<span>' +
+                    this.options.locale.weekHeader +
+                    '</span>' +
+                    '</th>';
+            }
+
             for (var i = 0; i < weekDaysMin.length; i++) {
                 dayNamesHtml += '<th scope="col">' +
                     '<span title="' + this.escapeHTML(weekDays[i]) + '">' +
@@ -1317,8 +1355,64 @@
             return dayNamesHtml;
         },
 
+        // utility methods for calculateWeekNumber. Based on the implementation from moment.js
+        // start-of-first-week - start-of-year
+        firstWeekOffset: function(year, dow, doy) {
+                // first-week day -- which january is always in the first week (4 for iso, 1 for other)
+            var fwd = 7 + dow - doy,
+                // first-week day local weekday -- which local weekday is fwd
+                fwdlw = (7 + new Date(Date.UTC(year, 0, fwd)).getUTCDay() - dow) % 7;
+
+            return -fwdlw + fwd - 1;
+        },
+
+        dayOfYear: function(d) {
+            return Math.round( ( new Date( d.year, d.month, d.day ).getTime() - new Date( d.year, 0, 0 ).getTime() ) / 86400000 );
+        },
+
+        daysInYear: function(year) {
+            if((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) {
+                return 366;
+            }
+            return 365;
+        },
+
+        weeksInYear: function(year, dow, doy) {
+            var weekOffset = this.firstWeekOffset(year, dow, doy),
+                weekOffsetNext = this.firstWeekOffset(year + 1, dow, doy);
+                
+            return (this.daysInYear(year) - weekOffset + weekOffsetNext) / 7;
+        },
+
+        calculateWeekNumber: function(d) {
+            var dow = this.options.locale.firstDay !== undefined ? this.options.locale.firstDay : this.options.locale.firstDayOfWeek,
+                doy = this.options.locale.firstDayWeekOffset,
+                weekOffset = this.firstWeekOffset(d.year, dow, doy),
+                week = Math.floor((this.dayOfYear(d) - weekOffset - 1) / 7) + 1;
+
+            if(week < 1) {
+                return week + this.weeksInYear(resYear, dow, doy);
+            }
+            else if(week > this.weeksInYear(d.year, dow, doy)) {
+                return  week - this.weeksInYear(d.year, dow, doy);
+            }
+            else {
+                return  week;
+            }
+        },
+
         renderWeek: function (weekDates) {
             var weekHtml = '';
+
+            if(this.options.showWeek) {
+                var firstDate = weekDates[0],
+                    lastDate = weekDates[6],
+                    cellClass = firstDate.otherMonth && lastDate.otherMonth && !this.options.showOtherMonths ? ' ui-datepicker-other-month-hidden' : '';
+
+                weekHtml += '<td class="ui-datepicker-weeknumber' + cellClass + '"><span class="ui-state-disabled">' + 
+                    this.options.weekCalculator(firstDate) + 
+                    '</span></td>';
+            }
 
             for (var i = 0; i < weekDates.length; i++) {
                 var date = weekDates[i],
@@ -1562,7 +1656,7 @@
                     var dayEl = $(this),
                         calendarIndex = dayEl.closest('.ui-datepicker-group').index(),
                         weekIndex = dayEl.closest('tr').index(),
-                        dayIndex = dayEl.closest('td').index();
+                        dayIndex = dayEl.closest('td').index() - ($this.options.showWeek ? 1 : 0);
                     $this.onDateSelect(event, $this.monthsMetaData[calendarIndex].dates[weekIndex][dayIndex]);
                 }
             });
@@ -1604,7 +1698,7 @@
             this.isKeydown = true;
             if (event.keyCode === 27) {
                 //put the focus back to the inputfield
-                this.inputfield.focus();
+                this.inputfield.trigger('focus');
             }
 
             if (event.keyCode === 9 || event.keyCode === 27) {
@@ -1641,7 +1735,7 @@
 
         onButtonClick: function (event) {
             if (!this.panel.is(':visible')) {
-                this.inputfield.focus();
+                this.inputfield.trigger('focus');
                 this.showOverlay();
             }
             else {
@@ -1699,6 +1793,15 @@
                     newViewDate.setMonth(newViewDate.getMonth() - 1, 1);
                 }
 
+                // #5967 check if month can be navigated to by checking last day in month
+                var testDate = new Date(newViewDate.getTime()),
+                    minDate = this.options.minDate;
+                testDate.setMonth(testDate.getMonth()+1)
+                testDate.setHours(-1);
+                if (minDate && minDate > testDate) {
+                    return;
+                }
+
                 if (this.options.onMonthChange) {
                     this.options.onMonthChange.call(this, newViewDate.getMonth() + 1, newViewDate.getFullYear());
                 }
@@ -1742,6 +1845,12 @@
                 }
                 else {
                     newViewDate.setMonth(newViewDate.getMonth() + 1, 1);
+                }
+
+                // #5967 check if month can be navigated to by checking first day next month
+                var maxDate = this.options.maxDate;
+                if (maxDate && maxDate < newViewDate) {
+                    return;
                 }
 
                 if (this.options.onMonthChange) {
@@ -1841,11 +1950,12 @@
                 var $this = this;
                 setTimeout(function () {
                     $this.bindDocumentClickListener();
+                    $this.bindWindowResizeListener();
                 }, 10);
             }
 
             if ((this.options.showTime || this.options.timeOnly) && this.options.timeInput) {
-                this.panel.find('.ui-hour-picker input').focus();
+                this.panel.find('.ui-hour-picker input').trigger('focus');
             }
         },
 
@@ -1856,6 +1966,7 @@
                 }
 
                 this.unbindDocumentClickListener();
+                this.unbindWindowResizeListener();
                 this.datepickerClick = false;
 
                 this.panel.hide();
@@ -1893,7 +2004,25 @@
             }
         },
 
+        bindWindowResizeListener: function () {
+            if (this.options.inline) {
+                return;
+            }
+            var $this = this;
+            $(window).on('resize.' + this.options.id, function() {
+                $this.alignPanel();
+            });
+        },
+
+        unbindWindowResizeListener: function () {
+            $(window).off('resize.'+ this.options.id);
+        },
+
         alignPanel: function () {
+            if (!this.panel || !this.panel.is(":visible")) {
+               return; 
+            }
+
             if (this.options.touchUI) {
                 this.enableModality();
             }
@@ -1976,7 +2105,7 @@
 
             if (!this.options.inline && this.isSingleSelection() && (!this.options.showTime || this.options.hideOnDateTimeSelect)) {
                 //put the focus back to the inputfield
-                this.inputfield.focus();
+                this.inputfield.trigger('focus');
 
                 setTimeout(function () {
                     $this.hideOverlay();

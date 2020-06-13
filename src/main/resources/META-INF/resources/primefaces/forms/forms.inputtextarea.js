@@ -153,7 +153,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
 
         this.panel = $(panelMarkup).appendTo(document.body);
 
-        this.jq.keyup(function(e) {
+        this.jq.on("keyup", function(e) {
             var keyCode = $.ui.keyCode;
 
             switch(e.which) {
@@ -189,7 +189,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                 break;
             }
 
-        }).keydown(function(e) {
+        }).on("keydown", function(e) {
             var overlayVisible = _self.panel.is(':visible'),
             keyCode = $.ui.keyCode;
 
@@ -322,7 +322,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
             selectionStart = _self.jq.getSelection().start,
             queryLength = _self.query.length;
 
-            _self.jq.focus();
+            _self.jq.trigger('focus');
 
             _self.jq.setSelection(selectionStart-queryLength, selectionStart);
             _self.jq.replaceSelectedText(itemValue);

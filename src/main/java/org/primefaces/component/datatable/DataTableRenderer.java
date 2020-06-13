@@ -114,6 +114,10 @@ public class DataTableRenderer extends DataRenderer {
             table.setDefaultSortFunction(table.getSortFunction());
         }
 
+        if (table.isLiveScroll()) {
+            table.setScrollOffset(0);
+        }
+
         if (table.isLazy()) {
             if (table.isLiveScroll()) {
                 table.loadLazyScrollData(0, table.getScrollRows());
@@ -248,7 +252,12 @@ public class DataTableRenderer extends DataRenderer {
                     .attr("scrollHeight", table.getScrollHeight(), null)
                     .attr("frozenColumns", table.getFrozenColumns(), 0)
                     .attr("liveScrollBuffer", table.getLiveScrollBuffer())
-                    .attr("virtualScroll", table.isVirtualScroll());
+                    .attr("virtualScroll", table.isVirtualScroll())
+                    .attr("touchable", false,  true);
+        }
+        else {
+            // only allow swipe if not scrollable
+            wb.attr("touchable", ComponentUtils.isTouchable(context, table),  true);
         }
 
         //Resizable/Draggable Columns
@@ -276,6 +285,11 @@ public class DataTableRenderer extends DataRenderer {
         if (table.isMultiSort()) {
             wb.attr("multiSort", true)
                     .nativeAttr("sortMetaOrder", table.getSortMetaAsString(context), null);
+        }
+
+        // by default cycling through sorting includes unsort, an attribute is needed when unsort should not be included
+        if (!table.getAllowUnsorting()) {
+            wb.attr("allowUnsorting", false);
         }
 
         if (table.isStickyHeader()) {
@@ -708,6 +722,9 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("role", "columnheader", null);
         writer.writeAttribute(HTML.ARIA_LABEL, ariaHeaderLabel, null);
         writer.writeAttribute("scope", "col", null);
+        if (component != null) {
+            renderDynamicPassThruAttributes(context, component);
+        }
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
@@ -764,10 +781,10 @@ public class DataTableRenderer extends DataRenderer {
         String sortIcon = null;
 
         if (Objects.equals(column.getColumnKey(), sortMeta.getColumnKey())) {
-            if (sortOrder.equals(SortOrder.ASCENDING)) {
+            if (sortOrder == SortOrder.ASCENDING) {
                 sortIcon = DataTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
             }
-            else if (sortOrder.equals(SortOrder.DESCENDING)) {
+            else if (sortOrder == SortOrder.DESCENDING) {
                 sortIcon = DataTable.SORTABLE_COLUMN_DESCENDING_ICON_CLASS;
             }
         }
@@ -1443,6 +1460,10 @@ public class DataTableRenderer extends DataRenderer {
         if (styleClass != null) {
             writer.writeAttribute("class", styleClass, null);
         }
+        UIComponent component = (column instanceof UIComponent) ? (UIComponent) column : null;
+        if (component != null) {
+            renderDynamicPassThruAttributes(context, component);
+        }
 
         if (selectionEnabled) {
             encodeColumnSelection(context, table, clientId, column, selected);
@@ -1648,26 +1669,40 @@ public class DataTableRenderer extends DataRenderer {
             encodeNativeCheckbox(context, table, checked, disabled, isHeaderCheckbox);
         }
         else {
+            String ariaRowLabel = table.getAriaRowLabel();
+            Object rowKey = table.getRowKey();
             String boxClass = HTML.CHECKBOX_BOX_CLASS;
             boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
             boxClass = checked ? boxClass + " ui-state-active" : boxClass;
             String iconClass = checked ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
 
+            if (isHeaderCheckbox) {
+                rowKey = "head";
+                ariaRowLabel = MessageFactory.getMessage(DataTable.ARIA_HEADER_CHECKBOX_ALL, new Object[]{});
+            }
+
             writer.startElement("div", null);
             writer.writeAttribute("class", styleClass, "styleClass");
 
             writer.startElement("div", null);
-            writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
-            encodeNativeCheckbox(context, table, checked, disabled, isHeaderCheckbox);
-            writer.endElement("div");
 
-            writer.startElement("div", null);
+            writer.writeAttribute("id", table.getClientId(context) + "_" + rowKey + "_checkbox", null);
+            writer.writeAttribute("role", "checkbox", null);
+            writer.writeAttribute("tabindex", "0", null);
+            writer.writeAttribute(HTML.ARIA_LABEL, ariaRowLabel, null);
+            writer.writeAttribute(HTML.ARIA_CHECKED, String.valueOf(checked), null);
+
+            if (disabled) {
+                writer.writeAttribute("aria-disabled", "true", null);
+            }
+
             writer.writeAttribute("class", boxClass, null);
+
             writer.startElement("span", null);
             writer.writeAttribute("class", iconClass, null);
             writer.endElement("span");
-            writer.endElement("div");
 
+            writer.endElement("div");
             writer.endElement("div");
         }
     }

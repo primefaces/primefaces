@@ -35,12 +35,6 @@
  * when a file is sent to the server. See also {@link FileUploadCfg.onstart}.
  * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnStartCallback
  *
- * @interface {PrimeFaces.widget.FileUpload.XFileId} XFileId - Identifier of an uploaded file.
- * @prop {string} XFileId.filename - Name of the uploaded file.
- * @prop {Date} XFileId.lastmodified - Lastmodified-attribute of the uploaded file.
- * @prop {string} XFileId.type - (Mime-)type of the uploaded file.
- * @prop {number} XFileId.size - Size of the uploaded file.
- *
  * @interface {PrimeFaces.widget.FileUpload.UploadMessage} UploadMessage A error message for a file upload widget.
  * @prop {number} UploadMessage.filesize The size of the uploaded file in bytes.
  * @prop {string} UploadMessage.filename The name of the uploaded file.
@@ -98,9 +92,14 @@
  * @prop {string} cfg.process Component(s) to process in fileupload request.
  * @prop {boolean} cfg.sequentialUploads `true` to upload files one after each other, `false` to upload in parallel.
  * @prop {string} cfg.update Component(s) to update after fileupload completes.
- * @prop {number} cfg.maxChunkSize To upload large files in smaller chunks, set this option to a preferred maximum chunk size. If set to 0, null or undefined, or the browser does not support the required Blob API, files will be uploaded as a whole.
- * @prop {number} cfg.maxRetries Only for chunked file upload: Amount of retries when upload get´s interrupted due to e.g. unstable network connection.
- * @prop {number} cfg.retryTimeout Only for chunked file upload: (Base-)Timeout in milliseconds to wait until the next retry. It is multiplied with the retry count. (first retry: retryTimeout * 1, second retry: retryTimeout *2, ...)
+ * @prop {number} cfg.maxChunkSize To upload large files in smaller chunks, set this option to a preferred maximum chunk
+ * size. If set to `0`, `null` or `undefined`, or the browser does not support the required Blob API, files will be
+ * uploaded as a whole.
+ * @prop {number} cfg.maxRetries Only for chunked file upload: Amount of retries when upload gets interrupted due to
+ * e.g. an unstable network connection.
+ * @prop {number} cfg.retryTimeout Only for chunked file upload: (Base) timeout in milliseconds to wait until the next
+ * retry. It is multiplied with the retry count. (first retry: `retryTimeout * 1`, second retry: `retryTimeout * 2`,
+ * ...)
  * @prop {string} cfg.resumeContextPath Server-side path which provides information to resume chunked file upload.
  */
 PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
@@ -474,7 +473,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
             if(key === keyCode.SPACE || key === keyCode.ENTER) {
                 $this.chooseButton.children('input').trigger('click');
-                $(this).blur();
+                $(this).trigger('blur');
                 e.preventDefault();
             }
         });
@@ -597,10 +596,11 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
 
     /**
-     * Creates a XFileId-object for a file.
+     * Creates a unique identifier (file key) for a given file. That identifier consists e.g. of the name of the
+     * uploaded file, its last modified-attribute etc. This is used by the server to identify uploaded files.
      * @private
-     * @param {File} file A file to create a FileId-object.
-     * @return {PrimeFaces.widget.FileUpload.XFileId}
+     * @param {File} file A file for which to create an identifier.
+     * @return {string} An identifier for the given file.
      */
     createXFileId: function(file) {
       return [file.name, file.lastModified, file.type, file.size].join();
@@ -626,7 +626,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Removes the given uploadeds file from this upload widget.
+     * Removes the given uploaded file from this upload widget.
      * @private
      * @param {PrimeFaces.widget.FileUpload.UploadFile[]} files Files to remove from this widget.
      */
@@ -762,26 +762,31 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
      * Brings up the native file selection dialog.
      */
     show: function() {
-        this.input.click();
+        this.input.trigger("click");
     }
 });
 
 /**
  * __PrimeFaces Simple FileUpload Widget__
  * 
- * @prop {number} maxFileSize Maximum allowed size in bytes for files.
  * @prop {JQuery} button The DOM element for the button for selecting a file.
  * @prop {JQuery} display The DOM element for the UI display.
  * @prop {JQuery} input The DOM element for the file input element.
  * 
- * @interface {PrimeFaces.widget.SimpleFileUploadCfg} cfg The configuration for the {@link  SimpleFileUpload| SimpleFileUpload widget}.
+ * @interface {PrimeFaces.widget.SimpleFileUploadCfg} cfg The configuration for the
+ * {@link  SimpleFileUpload| SimpleFileUpload widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * 
- * @prop {number} cfg.maxFileSize Maximum allowed size in bytes for files.
+ * @prop {boolean} cfg.skinSimple Whether to apply theming to the simple upload widget.
+ * @prop {boolean} cfg.disabled Whether this file upload is disabled.
+ * @prop {number} cfg.fileLimit Maximum number of files allowed to upload.
+ * @prop {string} cfg.fileLimitMessage Message to display when file limit exceeds.
+ * @prop {string} cfg.invalidFileMessage Message to display when file is not accepted.
  * @prop {string} cfg.invalidSizeMessage Message to display when size limit exceeds.
- * @prop {boolean} cfg.skinSimple Applies theming to simple uploader.
+ * @prop {number} cfg.maxFileSize Maximum allowed size in bytes for files.
+ * @prop {string} cfg.messageTemplate Message template to use when displaying file validation errors.
  */
 PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
 
@@ -792,8 +797,16 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
      */
     init: function(cfg) {
         this._super(cfg);
+        if(this.cfg.disabled) {
+            return;
+        }
 
+        this.cfg.invalidFileMessage = this.cfg.invalidFileMessage || 'Invalid file type';
         this.cfg.invalidSizeMessage = this.cfg.invalidSizeMessage || 'Invalid file size';
+        this.cfg.fileLimitMessage = this.cfg.fileLimitMessage || 'Maximum number of files exceeded';
+        this.cfg.messageTemplate = this.cfg.messageTemplate || '{name} {size}';
+        this.sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+
         this.maxFileSize = this.cfg.maxFileSize;
 
         if(this.cfg.skinSimple) {
@@ -835,13 +848,56 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
 
         this.input.on('change.fileupload', function() {
             var files = $this.input[0].files;
-            var file = files.length > 0 ? files[files.length - 1] : null;
-            var validMsg = $this.validate(file);
-            if(validMsg) {
-            	$this.input.val('');
-                $this.display.text(validMsg);
+            if (files) {
+            	var validationFailureMessage;
+            	var validationFileName;
+            	var validationFileSize;
+            	if (files.length > $this.cfg.fileLimit) {
+            		validationFailureMessage = $this.cfg.fileLimitMessage;
+            		validationFileName = null;
+            		validationFileSize = null;
+            	}
+            	// checking each file until find a violation
+            	var i = 0;
+            	for(; !validationFailureMessage && i < files.length; ++i) {
+            		var file = files[i];
+            		var validMsg = $this.validate(file);
+                    if(validMsg) {
+                    	validationFailureMessage = validMsg;
+                    	validationFileName = file.name;
+                		validationFileSize = file.size;
+                    }
+            	}
+                
+                if(validationFailureMessage) {
+                	//a violation was found. Display the respective message, clear the input and 
+                	// call the validation failure handler if exists
+                	var details = '';
+                	if(validationFileName && validationFileSize) {
+                		details += ': ' + $this.cfg.messageTemplate.replace('{name}', validationFileName).replace('{size}', $this.formatSize(validationFileSize));
+                	}
+                	$this.display.text(validationFailureMessage + details);
+                	$this.input.val('');
+                    
+                    if ($this.cfg.onvalidationfailure) {
+                    	$this.cfg.onvalidationfailure({
+                            summary: validationFailureMessage,
+                            filename: validationFileName,
+                            filesize: validationFileSize
+                        });
+                    }
+                } else {
+                	// If everything is ok, format the message and display it
+                	var toDisplay = $this.cfg.messageTemplate.replace('{name}', files[0].name).replace('{size}', $this.formatSize(files[0].size));
+                	
+                	if (files.length > 1) {
+                		toDisplay = toDisplay + " + " + (files.length - 1);
+                	}
+                	$this.display.text(toDisplay);
+                }
             } else {
-                $this.display.text($this.input.val().replace(/\\/g, '/').replace(/.*\//, ''));
+            	// no data was found so clear the input
+            	$this.input.val('');
             }
         })
         .on('focus.fileupload', function() {
@@ -856,28 +912,51 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Validates the given file against the current validation settings
      * @private
-     * @param {File} file to be validated.
+     * @param {File} file Uploaded file to validate.
      * @return {string | null} `null` if the given file is valid, or an error message otherwise.
      */
     validate: function(file) {
-        var $this = this;
-
-        if(file && $this.cfg.maxFileSize && file.size > $this.cfg.maxFileSize) {
-            return $this.cfg.invalidSizeMessage;
+        if (this.cfg.allowTypes && !(this.cfg.allowTypes.test(file.type) || this.cfg.allowTypes.test(file.name))) {
+            return this.cfg.invalidFileMessage;
         }
+
+        if (this.cfg.maxFileSize && file.size > this.cfg.maxFileSize) {
+            return this.cfg.invalidSizeMessage;
+        }
+
         return null;
     },
 
+    /**
+     * Formats the given file size in a more human-friendly format, e.g. `1.5 MB` etc.
+     * @param {number} bytes File size in bytes to format
+     * @return {string} The given file size, formatted in a more human-friendly format.
+     */
+    formatSize: function(bytes) {
+        if(bytes === undefined)
+            return '';
+
+        if (bytes === 0)
+            return 'N/A';
+
+        var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+        if (i === 0)
+            return bytes + ' ' + this.sizes[i];
+        else
+            return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + this.sizes[i];
+    },
+    
     /**
      * Brings up the native file selection dialog.
      */
     show: function() {
         if(this.cfg.skinSimple) {
-            this.input.click();
+            this.input.trigger("click");
         }
         else {
-            this.jq.click();
+            this.jq.trigger("click");
         }
     }
 
 });
+        

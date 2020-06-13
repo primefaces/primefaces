@@ -93,6 +93,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         writer.writeAttribute("id", inputId, "id");
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "checkbox", null);
+        writer.writeAttribute(HTML.ARIA_LABEL, label, null);
 
         if (checked) {
             writer.writeAttribute("checked", "checked", null);

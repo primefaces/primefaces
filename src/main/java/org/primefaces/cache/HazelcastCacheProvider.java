@@ -26,7 +26,7 @@ package org.primefaces.cache;
 import com.hazelcast.config.Config;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.IMap;
+import com.hazelcast.map.IMap;
 
 public class HazelcastCacheProvider implements CacheProvider {
 

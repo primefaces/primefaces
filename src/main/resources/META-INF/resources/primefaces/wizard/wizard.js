@@ -67,8 +67,8 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
             PrimeFaces.skinButton(this.nextNav);
 
             //events
-            this.backNav.click(function() {_self.back();});
-            this.nextNav.click(function() {_self.next();});
+            this.backNav.on("click", function() {_self.back();});
+            this.nextNav.on("click", function() {_self.next();});
 
             if(currentStepIndex == 0)
                 this.backNav.hide();

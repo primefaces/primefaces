@@ -23,26 +23,33 @@
  */
 package org.primefaces.webapp;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.primefaces.util.FileUploadUtils;
-
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.primefaces.util.FileUploadUtils;
+
 public class FileUploadChunksServlet extends HttpServlet {
 
+    private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = Logger.getLogger(FileUploadChunksServlet.class.getName());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        long uploadedBytes = FileUploadUtils.getFileUploadChunkDecoder(req).decodeUploadedBytes(req);
-        printUploadedBytes(resp, uploadedBytes);
+        try {
+            long uploadedBytes = FileUploadUtils.getFileUploadChunkDecoder(req).decodeUploadedBytes(req);
+            printUploadedBytes(resp, uploadedBytes);
+        }
+        catch (Exception ex) {
+            sendError(resp, ex);
+        }
     }
 
     @Override
@@ -50,9 +57,8 @@ public class FileUploadChunksServlet extends HttpServlet {
         try {
             FileUploadUtils.getFileUploadChunkDecoder(req).deleteChunks(req);
         }
-        catch (IOException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        catch (IOException ex) {
+            sendError(resp, ex);
         }
     }
 
@@ -63,9 +69,28 @@ public class FileUploadChunksServlet extends HttpServlet {
             json.put("uploadedBytes", uploadedBytes);
             w.print(json.toString());
         }
-        catch (IOException | JSONException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        catch (IOException | JSONException ex) {
+            sendError(resp, ex);
+        }
+    }
+
+    /**
+     * Even though the signatures for methods in a servlet include throws IOException, ServletException, it's a bad
+     * idea to let such exceptions be thrown. Failure to catch exceptions in a servlet could leave a system in a
+     * vulnerable state, possibly resulting in denial-of-service attacks, or the exposure of sensitive information
+     * because when a servlet throws an exception, the servlet container typically sends debugging information back
+     * to the user. And that information could be very valuable to an attacker.
+     *
+     * @param resp the HTTP response
+     * @param ex the original exception thrown
+     */
+    private void sendError(HttpServletResponse resp, Exception ex) {
+        try {
+            LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+        catch (IOException ioex) {
+            LOGGER.log(Level.SEVERE, ioex.getMessage(), ioex);
         }
     }
 }

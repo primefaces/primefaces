@@ -34,6 +34,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 
+import org.primefaces.PrimeFaces;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.TabCloseEvent;
 import org.primefaces.util.ComponentUtils;
@@ -217,4 +218,27 @@ public class TabView extends TabViewBase {
             setIndex(-1);
         }
     }
+
+    @Override
+    public void restoreMultiViewState() {
+        TabViewState ts = getMultiViewState(false);
+        if (ts != null) {
+            setActiveIndex(ts.getActiveIndex());
+        }
+    }
+
+    @Override
+    public TabViewState getMultiViewState(boolean create) {
+        FacesContext fc = getFacesContext();
+        String viewId = fc.getViewRoot().getViewId();
+
+        return PrimeFaces.current().multiViewState()
+                .get(viewId, getClientId(fc), create, TabViewState::new);
+    }
+
+    @Override
+    public void resetMultiViewState() {
+        setActiveIndex(0);
+    }
+
 }

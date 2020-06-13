@@ -52,6 +52,11 @@ public class DynamicContentSrcBuilder {
     }
 
     public static String build(FacesContext context, Object value, UIComponent component, boolean cache, DynamicContentType type, boolean stream) {
+        return build(context, value, component, cache, type, stream, "value");
+    }
+
+    public static String build(FacesContext context, Object value, UIComponent component, boolean cache,
+            DynamicContentType type, boolean stream, String attributeName) {
 
         String src = null;
 
@@ -77,7 +82,7 @@ public class DynamicContentSrcBuilder {
                 }
 
                 ValueExpression expression = ValueExpressionAnalyzer.getExpression(
-                        context.getELContext(), component.getValueExpression("value"));
+                        context.getELContext(), component.getValueExpression(attributeName));
 
                 String expressionString = expression.getExpressionString();
                 String resourceKey = md5(expressionString);

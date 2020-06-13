@@ -57,7 +57,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.height = this.jq.height();
         this.cfg.centerX = this.cfg.width / 2;
         this.cfg.centerY = this.cfg.height / 2;
-        this.raphael = new Raphael(this.id, this.cfg.width, this.cfg.height);
+        this.raphael = Raphael(this.id, this.cfg.width, this.cfg.height);
         this.nodes = [];
 
         if(this.cfg.model) {
@@ -111,11 +111,11 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
         if(title) {
             node.data('title', title);
 
-            node.mouseover(this.mouseoverNode);
-            node.mouseout(this.mouseoutNode);
+            node.on("mouseover", this.mouseoverNode);
+            node.on("mouseout", this.mouseoutNode);
 
-            text.mouseover(this.mouseoverText);
-            text.mouseout(this.mouseoutText);
+            text.on("mouseover", this.mouseoverText);
+            text.on("mouseout", this.mouseoutText);
         }
 
         //show

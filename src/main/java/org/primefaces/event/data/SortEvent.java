@@ -35,19 +35,31 @@ public class SortEvent extends AbstractAjaxBehaviorEvent {
 
     private UIColumn sortColumn;
 
-    private boolean ascending;
+    private SortOrder sortOrder;
 
     private int sortColumnIndex;
 
     public SortEvent(UIComponent component, Behavior behavior, UIColumn sortColumn, SortOrder order, int sortColumnIndex) {
         super(component, behavior);
         this.sortColumn = sortColumn;
-        this.ascending = order.equals(SortOrder.ASCENDING);
+        this.sortOrder = order;
         this.sortColumnIndex = sortColumnIndex;
     }
 
+    public SortOrder getSortOrder() {
+        return sortOrder;
+    }
+
     public boolean isAscending() {
-        return ascending;
+        return sortOrder == SortOrder.ASCENDING;
+    }
+
+    public boolean isDescending() {
+        return sortOrder == SortOrder.DESCENDING;
+    }
+
+    public boolean isUnsorted() {
+        return sortOrder == SortOrder.UNSORTED;
     }
 
     public UIColumn getSortColumn() {

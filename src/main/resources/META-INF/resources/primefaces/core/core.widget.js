@@ -262,7 +262,7 @@ if (!PrimeFaces.widget) {
         init: function(cfg) {
             this.cfg = cfg;
             this.id = cfg.id;
-            if ($.isArray(this.id)) {
+            if (Array.isArray(this.id)) {
                 this.jqId = $.map(this.id, function(id) {
                     return PrimeFaces.escapeClientId(id);
                 }).join(",");
@@ -374,7 +374,7 @@ if (!PrimeFaces.widget) {
          * @param {string | string[]} clientId The client-side ID of the widget.
          */
         removeScriptElement: function(clientId) {
-            if ($.isArray(clientId)) {
+            if (Array.isArray(clientId)) {
                 $.each(clientId, function(_, id) {
                     $(PrimeFaces.escapeClientId(id) + '_s').remove();
                 });

@@ -246,7 +246,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         this.toggler = $(this.jqId + '_toggler');
         this.toggleStateHolder = $(this.jqId + '_collapsed');
 
-        this.toggler.click(function() {
+        this.toggler.on("click", function() {
             $this.toggle();
 
             return false;
@@ -263,7 +263,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         this.closer = $(this.jqId + '_closer');
         this.visibleStateHolder = $(this.jqId + "_visible");
 
-        this.closer.click(function(e) {
+        this.closer.on("click", function(e) {
             $this.close();
             e.preventDefault();
 

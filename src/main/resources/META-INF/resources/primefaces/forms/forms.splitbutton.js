@@ -88,7 +88,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         this.button.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
 
         //toggle menu
-        this.menuButton.click(function() {
+        this.menuButton.on("click", function() {
             if($this.menu.is(':hidden'))
                 $this.show();
             else
@@ -96,21 +96,21 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //menuitem visuals
-        this.menuitems.mouseover(function(e) {
+        this.menuitems.on("mouseover", function(e) {
             var menuitem = $(this),
             menuitemLink = menuitem.children('.ui-menuitem-link');
 
             if(!menuitemLink.hasClass('ui-state-disabled')) {
                 menuitem.addClass('ui-state-hover');
             }
-        }).mouseout(function(e) {
+        }).on("mouseout", function(e) {
             $(this).removeClass('ui-state-hover');
-        }).click(function() {
+        }).on("click", function() {
             $this.hide();
         });
 
         //keyboard support
-        this.menuButton.keydown(function(e) {
+        this.menuButton.on("keydown", function(e) {
             var keyCode = $.ui.keyCode;
 
             switch(e.which) {
@@ -363,7 +363,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} value Search term for filtering. 
      */
     filter: function(value) {
-        var filterValue = $.trim(value).toLowerCase();
+        var filterValue = PrimeFaces.trim(value).toLowerCase();
 
         if(filterValue === '') {
             this.menuitems.filter(':hidden').show();
@@ -430,10 +430,10 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         this.menu.show();
         
         if(this.cfg.filter) {
-            this.filterInput.focus();
+            this.filterInput.trigger('focus');
         }
         else {
-            this.menuButton.focus();
+            this.menuButton.trigger('focus');
         }
     },
 

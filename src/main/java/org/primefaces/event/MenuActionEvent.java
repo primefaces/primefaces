@@ -31,7 +31,7 @@ public class MenuActionEvent extends ActionEvent {
 
     private static final long serialVersionUID = 1L;
 
-    private MenuItem menuItem;
+    private transient MenuItem menuItem;
 
     public MenuActionEvent(UIComponent component, MenuItem menuItem) {
         super(component);

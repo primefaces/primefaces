@@ -94,6 +94,7 @@
  * @prop {boolean} cfg.scrollable Whether or not the data should be scrollable.
  * @prop {PrimeFaces.widget.TreeTable.SelectionMode} cfg.selectionMode How rows may be selected.
  * @prop {boolean} cfg.stickyHeader Sticky header stays in window viewport during scrolling.
+ * @prop {string} cfg.editInitEvent Event that triggers row/cell editing.
  */
 PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
@@ -196,6 +197,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             };
 
             this.paginator = new PrimeFaces.widget.Paginator(this.cfg.paginator);
+            this.paginator.bindSwipeEvents(this.jq, this.cfg);
         }
     },
 
@@ -253,7 +255,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     bindChangeFilter: function(filter) {
         var $this = this;
 
-        filter.change(function() {
+        filter.on('change', function() {
             $this.filter();
         });
     },
@@ -615,18 +617,25 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         else if(this.cfg.editMode === 'cell') {
             var cellSelector = '> tr > td.ui-editable-column';
+            var editEvent = (this.cfg.editInitEvent !== 'click') ? this.cfg.editInitEvent + '.treetable-cell click.treetable-cell' : 'click.treetable-cell';
 
-            this.tbody.off('click.treetable-cell', cellSelector)
-                        .on('click.treetable-cell', cellSelector, null, function(e) {
-                            if(!$(e.target).is('span.ui-treetable-toggler.ui-c')) {
-                                $this.incellClick = true;
-
-                                var cell = $(this);
-                                if(!cell.hasClass('ui-cell-editing')) {
-                                    $this.showCellEditor($(this));
-                                }
+            this.tbody.off(editEvent, cellSelector)
+                .on(editEvent, cellSelector, null, function(e) {
+                    if(!$(e.target).is('span.ui-treetable-toggler.ui-c')) {
+                        $this.incellClick = true;
+				
+                        var item = $(this);
+                        var cell = item.hasClass('ui-editable-column') ? item : item.closest('.ui-editable-column');
+				        
+                        if(!cell.hasClass('ui-cell-editing') && e.type === $this.cfg.editInitEvent) {
+                            $this.showCellEditor($(this));
+				            
+                            if($this.cfg.editInitEvent === "dblclick") {
+                                $this.incellClick = false;
                             }
-                        });
+                        }
+                     }
+                });
 
             $(document).off('click.treetable-cell-blur' + this.id)
                         .on('click.treetable-cell-blur' + this.id, function(e) {
@@ -1306,7 +1315,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
         this.updateVerticalScroll();
 
-        this.scrollBody.scroll(function() {
+        this.scrollBody.on('scroll.treeTable', function() {
             var scrollLeft = $this.scrollBody.scrollLeft();
             $this.scrollHeaderBox.css('margin-left', -scrollLeft);
             $this.scrollFooterBox.css('margin-left', -scrollLeft);
@@ -1837,7 +1846,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         cell.addClass('ui-state-highlight ui-cell-editing');
         displayContainer.hide();
         inputContainer.show();
-        inputs.eq(0).focus().select();
+        inputs.eq(0).trigger('focus').trigger('select');
 
         //metadata
         if(multi) {
@@ -1876,7 +1885,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                             if(focusIndex < 0 || (focusIndex === inputs.length)) {
                                 $this.tabCell(cell, !shiftKey);
                             } else {
-                                inputs.eq(focusIndex).focus();
+                                inputs.eq(focusIndex).trigger('focus');
                             }
                         }
                         else {

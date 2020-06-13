@@ -30,8 +30,8 @@ are many other third party libraries and plugins used to support features.
 | [jQuery Timepicker Addon](../jsdocs/modules/jquery.html#datepicker-1) | 1.6.3 | http://trentrichardson.com/examples/timepicker |
 | jQuery UI Touch Punch | 1.0.5 | https://github.com/RWAP/jquery-ui-touch-punch |
 | jQuery UI | 1.12.1 | https://github.com/jquery/jquery-ui |
-| [jQuery](../jsdocs/modules/jquery.html) | 3.4.1 | https://jquery.com/ |
-| [jquery.layout](../jsdocs/modules/jquery.html#layout) | 1.5.12 | https://github.com/GedMarc/layout |
+| [jQuery](../jsdocs/modules/jquery.html) | 3.5.0 | https://jquery.com/ |
+| [jquery.layout](../jsdocs/modules/jquery.html#layout) | 1.8.1 | https://github.com/GedMarc/layout |
 | [Jquery.print](../jsdocs/modules/jquery.html#print) | 1.6.0 | https://github.com/DoersGuild/jQuery.print |
 | [jScrollPane](../jsdocs/modules/jquery.html#jscrollpane) | 2.0.19 | http://jscrollpane.kelvinluck.com/ |
 | [JSPlumb Diagram](../jsdocs/globals.html#jsplumb) | 2.1.0 | https://github.com/jsplumb/jsplumb |
@@ -39,7 +39,7 @@ are many other third party libraries and plugins used to support features.
 | [moment.js](../jsdocs/modules/moment.html) | 2.22.2 | https://github.com/moment/moment |
 | moment-timezone.js | 0.5.25 | https://github.com/moment/moment-timezone |
 | [Quill Editor](../jsdocs/classes/quill.html) | 1.3.7 | https://quilljs.com/ |
-| [Raphaël](../jsdocs/interfaces/raphaelstatic.html) | 2.2.0 | http://raphaeljs.com |
+| [Raphaël](../jsdocs/interfaces/raphaelstatic.html) | 2.3.0 | http://raphaeljs.com |
 | [Signature](../jsdocs/modules/jquery.html#signature) | 1.2.0 | http://keith-wood.name/signature.html |
 | [Timeline](../jsdocs/classes/timeline.html) | 7.3.4 | https://github.com/visjs/vis-timeline |
 | [TouchSwipe](../jsdocs/modules/jquery.html#swipe) | 1.6.18 | https://github.com/mattbryson/TouchSwipe-Jquery-Plugin |

@@ -121,7 +121,7 @@
         var options = [];
         // see how many data arrays we have
         for (var i=0, l=arguments.length; i<l; i++) {
-            if ($.isArray(arguments[i])) {
+            if (Array.isArray(arguments[i])) {
                 datas.push(arguments[i]);
             }
             else if ($.isPlainObject(arguments[i])) {
@@ -200,7 +200,7 @@
         }
 
         else if (arguments.length === 2) {
-            if ($.isArray(data)) {
+            if (Array.isArray(data)) {
                 _data = data;
             }
 
@@ -333,7 +333,7 @@
             else {
                 var canvas = $.jqplot.CanvasManager.canvases[idx];
                 canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-                $(canvas).unbind().removeAttr('class').removeAttr('style');
+                $(canvas).off().removeAttr('class').removeAttr('style');
                 // Style attributes seemed to be still hanging around.  wierd.  Some ticks
                 // still retained a left: 0px attribute after reusing a canvas.
                 $(canvas).css({left: '', top: '', position: ''});
@@ -687,7 +687,7 @@
     Axis.prototype.constructor = Axis;
     
     Axis.prototype.init = function() {
-        if ($.isFunction(this.renderer)) {
+        if (typeof this.renderer === "function") {
             this.renderer = new this.renderer();  
         }
         // set the axis name
@@ -1076,7 +1076,7 @@
     };
     
     Legend.prototype.init = function() {
-        if ($.isFunction(this.renderer)) {
+        if (typeof this.renderer === "function") {
             this.renderer = new this.renderer();  
         }
         this.renderer.init.call(this, this.rendererOptions);
@@ -1141,7 +1141,7 @@
     Title.prototype.constructor = Title;
     
     Title.prototype.init = function() {
-        if ($.isFunction(this.renderer)) {
+        if (typeof this.renderer === "function") {
             this.renderer = new this.renderer();  
         }
         this.renderer.init.call(this, this.rendererOptions);
@@ -1377,7 +1377,7 @@
             var comp = $.jqplot.getColorComponents(comp);
             this.fillColor = 'rgba('+comp[0]+','+comp[1]+','+comp[2]+','+this.fillAlpha+')';
         }
-        if ($.isFunction(this.renderer)) {
+        if (typeof this.renderer === "function") {
             this.renderer = new this.renderer();  
         }
         this.renderer.init.call(this, this.rendererOptions, plot);
@@ -1615,7 +1615,7 @@
     Grid.prototype.constructor = Grid;
     
     Grid.prototype.init = function() {
-        if ($.isFunction(this.renderer)) {
+        if (typeof this.renderer === "function") {
             this.renderer = new this.renderer();  
         }
         this.renderer.init.call(this, this.rendererOptions);
@@ -2048,7 +2048,7 @@
                 throw new Error("Canvas dimension not set");
             }
             
-            if (options.dataRenderer && $.isFunction(options.dataRenderer)) {
+            if (options.dataRenderer && typeof options.dataRenderer === "function") {
                 if (options.dataRendererOptions) {
                     this.dataRendererOptions = options.dataRendererOptions;
                 }
@@ -2060,7 +2060,7 @@
                 $.extend(true, this.noDataIndicator, options.noDataIndicator);
             }
             
-            if (data == null || $.isArray(data) == false || data.length == 0 || $.isArray(data[0]) == false || data[0].length == 0) {
+            if (data == null || Array.isArray(data) == false || data.length == 0 || Array.isArray(data[0]) == false || data[0].length == 0) {
                 
                 if (this.noDataIndicator.show == false) {
                     throw new Error("No data specified");
@@ -2191,7 +2191,7 @@
             if (ax === true) {
                 ax = this.axes;
             }
-            if ($.isArray(ax)) {
+            if (Array.isArray(ax)) {
                 for (var i = 0; i < ax.length; i++) {
                     this.axes[ax[i]].resetScale(opts[ax[i]]);
                 }
@@ -2272,7 +2272,7 @@
             }
             
             if (data) {
-                if (options.dataRenderer && $.isFunction(options.dataRenderer)) {
+                if (options.dataRenderer && typeof options.dataRenderer === "function") {
                     if (options.dataRendererOptions) {
                         this.dataRendererOptions = options.dataRendererOptions;
                     }
@@ -2718,7 +2718,7 @@
                 var temp = [];
                 var i, l;
                 dir = dir || 'vertical';
-                if (!$.isArray(data[0])) {
+                if (!Array.isArray(data[0])) {
                     // we have a series of scalars.  One line with just y values.
                     // turn the scalar list of data into a data array of form:
                     // [[1, data[0]], [2, data[1]], ...]
@@ -2842,7 +2842,7 @@
         this.destroy = function() {
             this.canvasManager.freeAllCanvases();
             if (this.eventCanvas && this.eventCanvas._elem) {
-                this.eventCanvas._elem.unbind();
+                this.eventCanvas._elem.off();
             }
             // Couple of posts on Stack Overflow indicate that empty() doesn't
             // always cear up the dom and release memory.  Sometimes setting
@@ -2911,10 +2911,10 @@
             this.target.trigger('jqplotPreRedraw');
             if (clear) {
                 this.canvasManager.freeAllCanvases();
-                this.eventCanvas._elem.unbind();
+                this.eventCanvas._elem.off();
                 // Dont think I bind any events to the target, this shouldn't be necessary.
                 // It will remove user's events.
-                // this.target.unbind();
+                // this.target.off();
                 this.target.empty();
             }
              for (var ax in this.axes) {
@@ -3122,14 +3122,14 @@
                 for (var i=0, l=$.jqplot.eventListenerHooks.length; i<l; i++) {
                     // in the handler, this will refer to the eventCanvas dom element.
                     // make sure there are references back into plot objects.
-                    this.eventCanvas._elem.bind($.jqplot.eventListenerHooks[i][0], {plot:this}, $.jqplot.eventListenerHooks[i][1]);
+                    this.eventCanvas._elem.on($.jqplot.eventListenerHooks[i][0], {plot:this}, $.jqplot.eventListenerHooks[i][1]);
                 }
             
                 // register event listeners on the overlay canvas
                 for (var i=0, l=this.eventListenerHooks.hooks.length; i<l; i++) {
                     // in the handler, this will refer to the eventCanvas dom element.
                     // make sure there are references back into plot objects.
-                    this.eventCanvas._elem.bind(this.eventListenerHooks.hooks[i][0], {plot:this}, this.eventListenerHooks.hooks[i][1]);
+                    this.eventCanvas._elem.on(this.eventListenerHooks.hooks[i][0], {plot:this}, this.eventListenerHooks.hooks[i][1]);
                 }
 
                 var fb = this.fillBetween;
@@ -3245,20 +3245,20 @@
         };
         
         this.bindCustomEvents = function() {
-            this.eventCanvas._elem.bind('click', {plot:this}, this.onClick);
-            this.eventCanvas._elem.bind('dblclick', {plot:this}, this.onDblClick);
-            this.eventCanvas._elem.bind('mousedown', {plot:this}, this.onMouseDown);
-            this.eventCanvas._elem.bind('mousemove', {plot:this}, this.onMouseMove);
-            this.eventCanvas._elem.bind('mouseenter', {plot:this}, this.onMouseEnter);
-            this.eventCanvas._elem.bind('mouseleave', {plot:this}, this.onMouseLeave);
+            this.eventCanvas._elem.on('click', {plot:this}, this.onClick);
+            this.eventCanvas._elem.on('dblclick', {plot:this}, this.onDblClick);
+            this.eventCanvas._elem.on('mousedown', {plot:this}, this.onMouseDown);
+            this.eventCanvas._elem.on('mousemove', {plot:this}, this.onMouseMove);
+            this.eventCanvas._elem.on('mouseenter', {plot:this}, this.onMouseEnter);
+            this.eventCanvas._elem.on('mouseleave', {plot:this}, this.onMouseLeave);
             if (this.captureRightClick) {
-                this.eventCanvas._elem.bind('mouseup', {plot:this}, this.onRightClick);
+                this.eventCanvas._elem.on('mouseup', {plot:this}, this.onRightClick);
                 this.eventCanvas._elem.get(0).oncontextmenu = function() {
                     return false;
                 };
             }
             else {
-                this.eventCanvas._elem.bind('mouseup', {plot:this}, this.onMouseUp);
+                this.eventCanvas._elem.on('mouseup', {plot:this}, this.onMouseUp);
             }
         };
         
@@ -3829,7 +3829,7 @@
     // conpute a highlight color or array of highlight colors from given colors.
     $.jqplot.computeHighlightColors  = function(colors) {
         var ret;
-        if ($.isArray(colors)) {
+        if (Array.isArray(colors)) {
             ret = [];
             for (var i=0; i<colors.length; i++){
                 var rgba = $.jqplot.getColorComponents(colors[i]);
@@ -5132,7 +5132,7 @@
         if (bd.length == 2) {
             // Do we have an array of x,y values?
             // like [[[1,1], [2,4], [3,3]], [[1,3], [2,6], [3,5]]]
-            if ($.isArray(bd[0][0])) {
+            if (Array.isArray(bd[0][0])) {
                 // since an arbitrary array of points, spin through all of them to determine max and min lines.
 
                 var p;
@@ -5186,7 +5186,7 @@
         // if more than 2 arrays, have arrays of [ylow, yhi] values.
         // note, can't distinguish case of [[ylow, yhi], [ylow, yhi]] from [[ylow, ylow], [yhi, yhi]]
         // this is assumed to be of the latter form.
-        else if (bd.length > 2 && !$.isArray(bd[0][0])) {
+        else if (bd.length > 2 && !Array.isArray(bd[0][0])) {
             var hi = (bd[0][0] > bd[0][1]) ? 0 : 1;
             var low = (hi) ? 0 : 1;
             for (var i=0, l=bd.length; i<l; i++) {
@@ -5203,7 +5203,7 @@
             var afunc = null;
             var bfunc = null;
 
-            if ($.isArray(intrv)) {
+            if (Array.isArray(intrv)) {
                 a = intrv[0];
                 b = intrv[1];
             }
@@ -6015,7 +6015,7 @@
         
         this.eventCanvas._elem.before(this.plugins.lineRenderer.highlightCanvas.createElement(this._gridPadding, 'jqplot-lineRenderer-highlight-canvas', this._plotDimensions, this));
         this.plugins.lineRenderer.highlightCanvas.setContext();
-        this.eventCanvas._elem.bind('mouseleave', {plot:this}, function (ev) { unhighlight(ev.data.plot); });
+        this.eventCanvas._elem.on('mouseleave', {plot:this}, function (ev) { unhighlight(ev.data.plot); });
     } 
     
     function highlight (plot, sidx, pidx, points) {
@@ -6183,7 +6183,7 @@
         this._scalefact = 1.0;
         $.extend(true, this, options);
         if (this.breakPoints) {
-            if (!$.isArray(this.breakPoints)) {
+            if (!Array.isArray(this.breakPoints)) {
                 this.breakPoints = null;
             }
             else if (this.breakPoints.length < 2 || this.breakPoints[1] <= this.breakPoints[0]) {
@@ -6351,7 +6351,7 @@
             for (i=0; i<userTicks.length; i++){
                 var ut = userTicks[i];
                 var t = new this.tickRenderer(this.tickOptions);
-                if ($.isArray(ut)) {
+                if (Array.isArray(ut)) {
                     t.value = ut[0];
                     if (this.breakPoints) {
                         if (ut[0] == this.breakPoints[0]) {
@@ -6846,7 +6846,7 @@
     // > plot.axes.yaxis.renderer.resetTickValues.call(plot.axes.yaxis, yarr);
     //
     $.jqplot.LinearAxisRenderer.prototype.resetTickValues = function(opts) {
-        if ($.isArray(opts) && opts.length == this._ticks.length) {
+        if (Array.isArray(opts) && opts.length == this._ticks.length) {
             var t;
             for (var i=0; i<opts.length; i++) {
                 t = this._ticks[i];
@@ -11249,7 +11249,7 @@
 
             // Fixes #7595 - Elements lose focus when wrapped.
             if ( element[ 0 ] === active || $.contains( element[ 0 ], active ) ) {
-                $( active ).focus();
+                $( active ).trigger('focus');
             }
 
             wrapper = element.parent(); //Hotfix for jQuery 1.4 since some change in wrap() seems to actually loose the reference to the wrapped element
@@ -11290,7 +11290,7 @@
 
                 // Fixes #7595 - Elements lose focus when wrapped.
                 if ( element[ 0 ] === active || $.contains( element[ 0 ], active ) ) {
-                    $( active ).focus();
+                    $( active ).trigger('focus');
                 }
             }
 
@@ -11316,21 +11316,21 @@
         }
 
         // catch (effect, callback)
-        if ( $.isFunction( options ) ) {
+        if ( typeof options === "function" ) {
             callback = options;
             speed = null;
             options = {};
         }
 
         // catch (effect, speed, ?)
-        if ( $.type( options ) === "number" || $.fx.speeds[ options ]) {
+        if ( typeof  options  === "number" || $.fx.speeds[ options ]) {
             callback = speed;
             speed = options;
             options = {};
         }
 
         // catch (effect, options, callback)
-        if ( $.isFunction( speed ) ) {
+        if ( typeof speed === "function" ) {
             callback = speed;
             speed = null;
         }
@@ -11396,10 +11396,10 @@
                     mode = args.mode;
 
                 function done() {
-                    if ( $.isFunction( complete ) ) {
+                    if ( typeof complete === "function" ) {
                         complete.call( elem[0] );
                     }
-                    if ( $.isFunction( next ) ) {
+                    if ( typeof next === "function" ) {
                         next();
                     }
                 }
@@ -12944,7 +12944,7 @@
     };
     
     
-    // this.eventCanvas._elem.bind($.jqplot.eventListenerHooks[i][0], {plot:this}, $.jqplot.eventListenerHooks[i][1]);
+    // this.eventCanvas._elem.on($.jqplot.eventListenerHooks[i][0], {plot:this}, $.jqplot.eventListenerHooks[i][1]);
     
     // setup default renderers for axes and legend so user doesn't have to
     // called with scope of plot
@@ -13109,7 +13109,7 @@
         }
         
         var hctx = this.plugins.pieRenderer.highlightCanvas.setContext();
-        this.eventCanvas._elem.bind('mouseleave', {plot:this}, function (ev) { unhighlight(ev.data.plot); });
+        this.eventCanvas._elem.on('mouseleave', {plot:this}, function (ev) { unhighlight(ev.data.plot); });
     }
     
     $.jqplot.preInitHooks.push(preInit);
@@ -13824,7 +13824,7 @@
         
         this.eventCanvas._elem.before(this.plugins.barRenderer.highlightCanvas.createElement(this._gridPadding, 'jqplot-barRenderer-highlight-canvas', this._plotDimensions, this));
         this.plugins.barRenderer.highlightCanvas.setContext();
-        this.eventCanvas._elem.bind('mouseleave', {plot:this}, function (ev) { unhighlight(ev.data.plot); });
+        this.eventCanvas._elem.on('mouseleave', {plot:this}, function (ev) { unhighlight(ev.data.plot); });
     }   
     
     function highlight (plot, sidx, pidx, points) {
@@ -14726,7 +14726,7 @@
             this.eventCanvas._elem.before(this.plugins.donutRenderer.highlightCanvas.createElement(this._gridPadding, 'jqplot-donutRenderer-highlight-canvas', this._plotDimensions, this));
         }
         var hctx = this.plugins.donutRenderer.highlightCanvas.setContext();
-        this.eventCanvas._elem.bind('mouseleave', {plot:this}, function (ev) { unhighlight(ev.data.plot); });
+        this.eventCanvas._elem.on('mouseleave', {plot:this}, function (ev) { unhighlight(ev.data.plot); });
     }
     
     $.jqplot.preInitHooks.push(preInit);
@@ -14947,11 +14947,11 @@
                                     }
                                 } 
                                 if (this.showSwatches) {
-                                    td1.bind('click', {series:s, speed:speed, plot: plot, replot:this.seriesToggleReplot}, handleToggle);
+                                    td1.on('click', {series:s, speed:speed, plot: plot, replot:this.seriesToggleReplot}, handleToggle);
                                     td1.addClass('jqplot-seriesToggle');
                                 }
                                 if (this.showLabels)  {
-                                    td2.bind('click', {series:s, speed:speed, plot: plot, replot:this.seriesToggleReplot}, handleToggle);
+                                    td2.on('click', {series:s, speed:speed, plot: plot, replot:this.seriesToggleReplot}, handleToggle);
                                     td2.addClass('jqplot-seriesToggle');
                                 }
 
@@ -15252,11 +15252,11 @@
                                     }
                                 } 
                                 if (this.showSwatches) {
-                                    td1.bind('click', {series:s, index:idx, speed:speed, plot: plot, replot:this.seriesToggleReplot}, handleToggle);
+                                    td1.on('click', {series:s, index:idx, speed:speed, plot: plot, replot:this.seriesToggleReplot}, handleToggle);
                                     td1.addClass('jqplot-seriesToggle');
                                 }
                                 if (this.showLabels)  {
-                                    td2.bind('click', {series:s, index:idx, speed:speed, plot: plot, replot:this.seriesToggleReplot}, handleToggle);
+                                    td2.on('click', {series:s, index:idx, speed:speed, plot: plot, replot:this.seriesToggleReplot}, handleToggle);
                                     td2.addClass('jqplot-seriesToggle');
                                 }
 
@@ -18679,8 +18679,8 @@
         cc.zoom = true;
         cc.zoomProxy = true;
               
-        controllerPlot.target.bind('jqplotZoom', plotZoom);
-        controllerPlot.target.bind('jqplotResetZoom', plotReset);
+        controllerPlot.target.on('jqplotZoom', plotZoom);
+        controllerPlot.target.on('jqplotResetZoom', plotReset);
 
         function plotZoom(ev, gridpos, datapos, plot, cursor) {
             tc.doZoom(gridpos, datapos, targetPlot, cursor);
@@ -19308,9 +19308,9 @@
                 c._zoom.axes.start[ax] = datapos[ax];
             }  
            if(plot.plugins.mobile){
-                $(document).bind('vmousemove.jqplotCursor', {plot:plot}, handleZoomMove);              
+                $(document).on('vmousemove.jqplotCursor', {plot:plot}, handleZoomMove);              
             } else {
-                $(document).bind('mousemove.jqplotCursor', {plot:plot}, handleZoomMove);              
+                $(document).on('mousemove.jqplotCursor', {plot:plot}, handleZoomMove);              
             }
 
         }
@@ -19359,7 +19359,7 @@
         c._zoom.started = false;
         c._zoom.zooming = false;
         
-        $(document).unbind('mousemove.jqplotCursor', handleZoomMove);
+        $(document).off('mousemove.jqplotCursor', handleZoomMove);
         
         if (document.onselectstart != undefined && c._oldHandlers.onselectstart != null){
             document.onselectstart = c._oldHandlers.onselectstart;
@@ -19824,7 +19824,7 @@
                 } 
             }
         }
-        if ($.isFunction(opts.tooltipContentEditor)) {
+        if (typeof opts.tooltipContentEditor === "function") {
             // args str, seriesIndex, pointIndex are essential so the hook can look up
             // extra data for the point.
             str = opts.tooltipContentEditor(str, neighbor.seriesIndex, neighbor.pointIndex, plot);

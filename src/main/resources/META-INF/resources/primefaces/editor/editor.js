@@ -204,7 +204,7 @@
             .css({ border: "none", margin: 0, padding: 0 }) // Needed for IE6 & 7 (won't work in CSS file)
             .hide()
             .data(CLEDITOR, editor)
-            .blur(function () {
+            .on("blur", function () {
                 // Update the iframe when the textarea loses focus
                 updateFrame(editor, true);
             });
@@ -262,7 +262,7 @@
                     .data(BUTTON_NAME, button.name)
                     .addClass(BUTTON_CLASS)
                     .attr("title", button.title)
-                    .bind(CLICK, $.proxy(buttonClick, editor))
+                    .on(CLICK, $.proxy(buttonClick, editor))
                     .appendTo($group)
                     .hover(hoverEnter, hoverLeave);
 
@@ -296,7 +296,7 @@
 
         // Bind the document click event handler
         if (!documentClickAssigned) {
-            $(document).click(function (e) {
+            $(document).on("click", function (e) {
                 // Dismiss all non-prompt popups
                 var $target = $(e.target);
                 if (!$target.add($target.parents()).is("." + PROMPT_CLASS))
@@ -307,7 +307,7 @@
 
         // Bind the window resize event when the width or height is auto or %
         if (/auto|%/.test("" + options.width + options.height))
-            $(window).bind("resize.cleditor", function () { refresh(editor); });
+            $(window).on("resize.cleditor", function () { refresh(editor); });
 
         // Create the iframe and resize the controls
         refresh(editor);
@@ -350,22 +350,22 @@
         };
     });
 
-    // blurred - shortcut for .bind("blurred", handler) or .trigger("blurred")
+    // blurred - shortcut for .on("blurred", handler) or .trigger("blurred")
     fn.blurred = function (handler) {
         var $this = $(this);
-        return handler ? $this.bind(BLURRED, handler) : $this.trigger(BLURRED);
+        return handler ? $this.on(BLURRED, handler) : $this.trigger(BLURRED);
     };
 
-    // change - shortcut for .bind("change", handler) or .trigger("change")
+    // change - shortcut for .on("change", handler) or .trigger("change")
     fn.change = function change(handler) {
         var $this = $(this);
-        return handler ? $this.bind(CHANGE, handler) : $this.trigger(CHANGE);
+        return handler ? $this.on(CHANGE, handler) : $this.trigger(CHANGE);
     };
 
-    // focused - shortcut for .bind("focused", handler) or .trigger("focused")
+    // focused - shortcut for .on("focused", handler) or .trigger("focused")
     fn.focused = function (handler) {
         var $this = $(this);
-        return handler ? $this.bind(FOCUSED, handler) : $this.trigger(FOCUSED);
+        return handler ? $this.on(FOCUSED, handler) : $this.trigger(FOCUSED);
     };
 
     //===============
@@ -438,12 +438,12 @@
 
                     // Wire up the submit button click event handler
                     $popup.children(":button")
-                        .unbind(CLICK)
-                        .bind(CLICK, function () {
+                        .off(CLICK)
+                        .on(CLICK, function () {
 
                             // Insert the image or link if a url was entered
                             var $text = $popup.find(":text"),
-                                url = $.trim($text.val());
+                                url = PrimeFaces.trim($text.val());
                             if (url !== "")
                                 execCommand(editor, data.command, url, null, data.button);
 
@@ -461,8 +461,8 @@
 
                     // Wire up the submit button click event handler
                     $popup.children(":button")
-                        .unbind(CLICK)
-                        .bind(CLICK, function () {
+                        .off(CLICK)
+                        .on(CLICK, function () {
 
                             // Insert the unformatted text replacing new lines with break tags
                             var $textarea = $popup.find("textarea"),
@@ -828,7 +828,7 @@
         $.each(popups, function (idx, popup) {
             $(popup)
                 .hide()
-                .unbind(CLICK)
+                .off(CLICK)
                 .removeData(BUTTON);
         });
     }
@@ -876,7 +876,7 @@
         // Work around for bug in IE which causes the editor to lose
         // focus when clicking below the end of the document.
         if (ie || iege11)
-            $doc.click(function () { focus(editor); });
+            $doc.on("click", function () { focus(editor); });
 
         // Load the content
         updateFrame(editor);
@@ -887,7 +887,7 @@
             // Save the current user selection. This code is needed since IE will
             // reset the selection just after the beforedeactivate event and just
             // before the beforeactivate event.
-            $doc.bind("beforedeactivate beforeactivate selectionchange keypress keyup", function (e) {
+            $doc.on("beforedeactivate beforeactivate selectionchange keypress keyup", function (e) {
 
                 // Flag the editor as inactive
                 if (e.type === "beforedeactivate")
@@ -914,13 +914,13 @@
             });
 
             // Restore the text range and trigger focused event when the iframe gains focus
-            $frame.focus(function () {
+            $frame.on("focus", function () {
                 restoreRange(editor);
                 $(editor).triggerHandler(FOCUSED);
             });
 
             // Trigger blurred event when the iframe looses focus
-            $frame.blur(function () {
+            $frame.on("blur", function () {
                 $(editor).triggerHandler(BLURRED);
             });
 
@@ -929,13 +929,13 @@
         // Trigger focused and blurred events for all other browsers
         else {
             $($frame[0].contentWindow)
-                .focus(function () { $(editor).triggerHandler(FOCUSED); })
-                .blur(function () { $(editor).triggerHandler(BLURRED); });
+                .on("focus", function () { $(editor).triggerHandler(FOCUSED); })
+                .on("blur", function () { $(editor).triggerHandler(BLURRED); });
         }
 
         // Enable the toolbar buttons and update the textarea as the user types or clicks
         $doc.click(hidePopups)
-            .keydown(function (e) {
+            .on("keydown", function (e) {
                 // Prevent Internet Explorer from going to prior page when an image 
                 // is selected and the backspace key is pressed.
                 if (ie && getSelection(editor).type == "Control" && e.keyCode == 8) {
@@ -943,11 +943,11 @@
                     e.preventDefault();
                 }
             })
-            .bind("keyup mouseup", function () {
+            .on("keyup mouseup", function () {
                 refreshButtons(editor);
                 updateTextArea(editor, true);
             })
-            .bind("paste", function() {
+            .on("paste", function() {
                 setTimeout(function() {
                     refreshButtons(editor);
                     updateTextArea(editor, true);
@@ -1126,12 +1126,12 @@
         // Assign the popup button and click event handler
         if (button) {
             $.data(popup, BUTTON, button);
-            $popup.bind(CLICK, { popup: popup }, $.proxy(popupClick, editor));
+            $popup.on(CLICK, { popup: popup }, $.proxy(popupClick, editor));
         }
 
         // Focus the first input element if any
         setTimeout(function () {
-            $popup.find(":text,textarea").eq(0).focus().select();
+            $popup.find(":text,textarea").eq(0).trigger('focus').trigger('select');
         }, 100);
 
     }
@@ -1276,7 +1276,7 @@ PrimeFaces.widget.Editor = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this,
         frameDoc = this.editor.$frame[0].contentWindow.document;
 
-        $(frameDoc).bind('keydown.editor', function(event){
+        $(frameDoc).on('keydown.editor', function(event){
             $this.editor.updateTextArea();
 
             var text = $this.editor.$area.val();

@@ -52,16 +52,17 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
     bindEvents: function() {
         var _self = this;
 
-        this.stars.click(function() {
+        this.stars.on("click", function() {
             var value = _self.stars.index(this) + 1;   //index starts from zero
 
             _self.setValue(value);
         });
 
-        this.cancel.hover(function() {
-            $(this).toggleClass('ui-rating-cancel-hover');
-        })
-        .click(function() {
+        this.cancel.on("mouseenter", function() {
+             $(this).addClass('ui-rating-cancel-hover');
+        }).on("mouseleave", function() {
+             $(this).removeClass('ui-rating-cancel-hover');
+        }).on("click", function() {
             _self.reset();
         });
     },
@@ -71,9 +72,9 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     unbindEvents: function() {
-        this.stars.unbind('click');
+        this.stars.off('click');
 
-        this.cancel.unbind('hover click');
+        this.cancel.off('hover click');
     },
 
     /**

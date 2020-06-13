@@ -77,7 +77,8 @@ public class CarouselRenderer extends CoreRenderer {
                 .attr("easing", carousel.getEasing(), null)
                 .attr("responsive", carousel.isResponsive(), false)
                 .attr("breakpoint", carousel.getBreakpoint(), 560)
-                .attr("stateful", carousel.isStateful());
+                .attr("stateful", carousel.isStateful())
+                .attr("touchable", ComponentUtils.isTouchable(context, carousel),  true);
 
         if (carousel.isToggleable()) {
             wb.attr("toggleable", true)
@@ -284,7 +285,7 @@ public class CarouselRenderer extends CoreRenderer {
         if (renderFacet) {
             facet.encodeAll(context);
         }
-        else if (text != null) {
+        else {
             writer.writeText(text, "footerText");
         }
 

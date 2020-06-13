@@ -43,6 +43,7 @@ import org.primefaces.util.SharedStringBuilder;
 
 public abstract class InputRenderer extends CoreRenderer {
 
+    public static final String ARIA_FILTER = "primefaces.input.aria.filter";
     private static final String SB_STYLECLASS = InputRenderer.class.getName() + "#createStyleClass";
 
     @Override

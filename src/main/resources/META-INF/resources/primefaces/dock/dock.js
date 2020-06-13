@@ -41,13 +41,14 @@ PrimeFaces.widget.Dock = PrimeFaces.widget.BaseWidget.extend({
      */
     bindAnimations: function () {
         var $this = this;
-        this.items.hover(
+        this.items.on('mouseenter.dock',
             function () {
                 var item = $(this);
                 item.addClass('active');
                 item.prev().addClass('prev').prev().addClass('prev-anchor');
                 item.next().addClass('next').next().addClass('next-anchor');
-            },
+            }
+        ).on('mouseleave.dock', 
             function () {
                 $this.items.removeClass('active prev next next-anchor prev-anchor');
             }
@@ -55,7 +56,7 @@ PrimeFaces.widget.Dock = PrimeFaces.widget.BaseWidget.extend({
 
         // add bounce effect 
         if (this.cfg.animate) {
-            this.links.click(function (e) {
+            this.links.on("click.dock", function (e) {
                 var item = $(this);
                 item.addClass('ui-dock-bounce').delay($this.cfg.animationDuration).queue(function () {
                     item.removeClass('ui-dock-bounce');

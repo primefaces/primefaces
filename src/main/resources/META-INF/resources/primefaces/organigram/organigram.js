@@ -414,7 +414,7 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
             var widget = this;
             var expander = $("<div class='expander ui-icon " + initialIcon + "'>&nbsp;</div>").appendTo(bottomIconContainer);
 
-            expander.click(function (e) {
+            expander.on("click", function (e) {
                 // reinit dom references - they are lost sometimes
                 var expander = $(this);
                 var node = expander.closest(".ui-organigram-node");

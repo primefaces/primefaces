@@ -105,7 +105,7 @@
                     checkVal(), input.val() != focusText && changeEvent(e);
                 }
                 function changeEvent(e) { /* PrimeFaces Github Issue #3175 */
-                    input.change();
+                    input.trigger('change');
                     
                     if(settings.onChange) {
                         settings.onChange.call(input, e);

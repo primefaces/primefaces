@@ -3157,6 +3157,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+            </description>
+            <name>touchable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -3511,6 +3519,14 @@
                 <![CDATA[In responsive mode, carousel adjusts its content based on screen size.]]>
             </description>
             <name>responsive</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+            </description>
+            <name>touchable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -6335,6 +6351,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+            </description>
+            <name>touchable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -6627,6 +6651,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+            </description>
+            <name>touchable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -6851,6 +6883,14 @@
                 <![CDATA[Whether to keep list state across views, defaults to false.]]>
             </description>
             <name>multiViewState</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+            </description>
+            <name>touchable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -7254,7 +7294,31 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Property to be used for default sorting.]]>
+                <![CDATA[Defines sorting mode, valid values are "single" (default) and "multiple".]]>
+            </description>
+            <name>sortMode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines whether columns are allowed to be unsorted. Default is true.]]>
+            </description>
+            <name>allowUnsorting</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Ordered map of sort information in "multiple" sortMode; This also allows to sort the table by default.]]>
+            </description>
+            <name>sortMeta</name>
+            <required>false</required>
+            <type>java.util.Map</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Property to be used for default sorting in "single" sortMode.]]>
             </description>
             <name>sortBy</name>
             <required>false</required>
@@ -7262,7 +7326,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Sets sorting order. Default is "ascending"]]>
+                <![CDATA[Sets sorting order in "single" sortMode. Default is "ascending"]]>
             </description>
             <name>sortOrder</name>
             <required>false</required>
@@ -7270,11 +7334,28 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Custom pluggable sortFunction for default sorting.]]>
+                <![CDATA[Custom pluggable sortFunction for default sorting in "single" sortMode.]]>
             </description>
             <name>sortFunction</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the field to pass lazy load method for sorting in "single" sortMode. If not specified, sortBy expression is used to extract the name.]]>
+            </description>
+            <name>sortField</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines where the null values are placed in ascending sort order. Default value is "1" meaning null values are placed at the end in ascending mode and
+                at beginning in descending mode. Set to "-1" for the opposite behavior.]]>
+            </description>
+            <name>nullSortOrder</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
         </attribute>
         <attribute>
             <description>
@@ -7355,14 +7436,6 @@
             <name>filteredValue</name>
             <required>false</required>
             <type>java.util.List</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Defines sorting mode, valid values are "single" (default) and "multiple".]]>
-            </description>
-            <name>sortMode</name>
-            <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -7518,28 +7591,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Name of the field to pass lazy load method for sorting. If not specified, sortBy expression is used to extract the name.]]>
-            </description>
-            <name>sortField</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Defines when the datatable is initiated at client side, valid values are "load" (default) and "immediate".]]>
             </description>
             <name>initMode</name>
             <required>false</required>
             <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Defines where the null values are placed in ascending sort order. Default value is "1" meaning null values are placed at the end in ascending mode and
-                at beginning in descending mode. Set to "-1" for the opposite behavior.]]>
-            </description>
-            <name>nullSortOrder</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
         </attribute>
         <attribute>
             <description>
@@ -7742,6 +7798,14 @@
             <required>false</required>
             <type>javax.el.MethodExpression</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+            </description>
+            <name>touchable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -7933,6 +7997,14 @@
                 <![CDATA[Whether to keep DataView state across views, defaults to false.]]>
             </description>
             <name>multiViewState</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+            </description>
+            <name>touchable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -8535,7 +8607,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Whether to block scrolling of the document. Default is true.]]>
+                <![CDATA[Whether to block scrolling of the document. Default is false.]]>
             </description>
             <name>blockScroll</name>
             <required>false</required>
@@ -9783,6 +9855,38 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Native title tooltip for simple mode.]]>
+            </description>
+            <name>title</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Native title tooltip for choose button.]]>
+            </description>
+            <name>chooseButtonTitle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Native title tooltip for upload button.]]>
+            </description>
+            <name>uploadButtonTitle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Native title tooltip for cancel button.]]>
+            </description>
+            <name>cancelButtonTitle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -10002,6 +10106,14 @@
                 <![CDATA[Displays information retrieved from title and alt attributes of images in content caption.]]>
             </description>
             <name>showCaption</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+            </description>
+            <name>touchable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -11100,11 +11212,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Context relative path to the image.]]>
+                <![CDATA[Binary data to stream or context relative path]]>
             </description>
             <name>image</name>
-            <required>false</required>
-            <type>java.lang.String</type>
+            <required>true</required>
+            <type>java.lang.Object</type>
         </attribute>
         <attribute>
             <description>
@@ -18608,6 +18720,22 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Suggests a video input device such as 'user' (aka font camera) or 'environment' (aka rear camera).]]>
+            </description>
+            <name>device</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback executed if the camera has an error.]]>
+            </description>
+            <name>onCameraError</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -23021,6 +23149,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+            </description>
+            <name>touchable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -23899,6 +24035,14 @@
             <name>displayTemplate</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+            </description>
+            <name>touchable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -25785,6 +25929,22 @@
             <name>tabindex</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+            </description>
+            <name>touchable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to keep TabView state across views, defaults to false.]]>
+            </description>
+            <name>multiViewState</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -28353,6 +28513,22 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+            </description>
+            <name>touchable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines a client side event to open cell on editable table.]]>
+            </description>
+            <name>editInitEvent</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -30038,6 +30214,46 @@
             <name>timeInput</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Display the current calendar week infront of each row in the calendar panel.]]>
+            </description>
+            <name>showWeek</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[A javascript method that is used to calculate the calendar week. Default implementations are available if start of week is monday, sunday or saturday.]]>
+            </description>
+            <name>weekCalculator</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+            </description>
+            <name>touchable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Display the current calendar week infront of each row in the calendar panel.]]>
+            </description>
+            <name>showWeek</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[A javascript method that is used to calculate the calendar week. Default implementations are available if start of week is monday, sunday or saturday.]]>
+            </description>
+            <name>weekCalculator</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
 </facelet-taglib>

@@ -218,11 +218,15 @@ public class InputNumberRenderer extends InputRenderer {
                 ? defaultDecimalPlaces
                 : inputNumber.getDecimalPlaces();
 
+        String decimalSeparator = isValueBlank(inputNumber.getDecimalSeparator())
+                    ? "."
+                    : inputNumber.getDecimalSeparator();
+
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init(InputNumber.class.getSimpleName(), inputNumber.resolveWidgetVar(context), inputNumber.getClientId());
         wb.attr("disabled", inputNumber.isDisabled())
             .attr("valueToRender", valueToRender)
-            .attr("decimalCharacter", inputNumber.getDecimalSeparator(), ".")
+            .attr("decimalCharacter", decimalSeparator, ".")
             .attr("decimalCharacterAlternative", inputNumber.getDecimalSeparatorAlternative(), null)
             .attr("digitGroupSeparator", digitGroupSeparator, ",")
             .attr("currencySymbol", inputNumber.getSymbol())

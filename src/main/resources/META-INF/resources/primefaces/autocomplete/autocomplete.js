@@ -220,20 +220,18 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.multiItemContainer = this.jq.children('ul');
         this.inputContainer = this.multiItemContainer.children('.ui-autocomplete-input-token');
 
-        this.multiItemContainer.hover(function() {
+        this.multiItemContainer.on("mouseenter", function() {
                 $(this).addClass('ui-state-hover');
-            },
-            function() {
+        }).on("mouseleave", function() {
                 $(this).removeClass('ui-state-hover');
-            }
-        ).click(function() {
-            $this.input.focus();
+        }).on("click", function() {
+            $this.input.trigger('focus');
         });
 
         //delegate events to container
-        this.input.focus(function() {
+        this.input.on("focus", function() {
             $this.multiItemContainer.addClass('ui-state-focus');
-        }).blur(function(e) {
+        }).on("blur", function(e) {
             $this.multiItemContainer.removeClass('ui-state-focus');
         });
 
@@ -259,7 +257,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.bindDropdownEvents();
 
         if(PrimeFaces.env.browser.mobile) {
-            this.dropdown.bind('touchstart', function() {
+            this.dropdown.on('touchstart', function() {
                 $this.touchToDropdownButton = true;
             });
         }
@@ -286,18 +284,18 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.skinButton(this.dropdown);
 
-        this.dropdown.mouseup(function() {
+        this.dropdown.on("mouseup", function() {
             if($this.active) {
                 $this.searchWithDropdown();
-                $this.input.focus();
+                $this.input.trigger('focus');
             }
-        }).keyup(function(e) {
+        }).on("keyup", function(e) {
             var keyCode = $.ui.keyCode,
             key = e.which;
 
             if(key === keyCode.SPACE || key === keyCode.ENTER) {
                 $this.searchWithDropdown();
-                $this.input.focus();
+                $this.input.trigger('focus');
                 e.preventDefault();
                 e.stopPropagation();
             }
@@ -421,7 +419,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
                         if (highlightedItem.length > 0) {
                             $(this).trigger('change');
-                            highlightedItem.click();
+                            highlightedItem.trigger("click");
                             $this.itemSelectedWithEnter = true;
                         }
 
@@ -507,7 +505,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             isMoreText = item.hasClass('ui-autocomplete-moretext');
 
             if(isMoreText) {
-                $this.input.focus();
+                $this.input.trigger('focus');
                 $this.invokeMoreTextBehavior();
             }
             else {
@@ -534,7 +532,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
                         $this.hinput.append('<option value="' + PrimeFaces.escapeHTML(itemValue) + '" selected="selected"></option>');
                         if($this.multiItemContainer.children('li.ui-autocomplete-token').length >= $this.cfg.selectLimit) {
-                            $this.input.css('display', 'none').blur();
+                            $this.input.css('display', 'none').trigger("blur");
                             $this.disableDropdown();
                         }
 
@@ -560,7 +558,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 }
 
                 if(!$this.isTabPressed) {
-                    $this.input.focus();
+                    $this.input.trigger('focus');
                 }
             }
 
@@ -571,7 +569,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         });
 
         if(PrimeFaces.env.browser.mobile) {
-            this.items.bind('touchstart', function() {
+            this.items.on('touchstart', function() {
                 if(!$this.touchToDropdownButton) {
                     $this.itemClick = true;
                 }
@@ -997,7 +995,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             if($this.cfg.autoSelection && valid && $this.checkMatchedItem && $this.items && !$this.isTabPressed && !$this.itemSelectedWithEnter) {
                 var selectedItem = $this.items.filter('[data-item-label="' + $.escapeSelector(value) + '"]');
                 if (selectedItem.length) {
-                    selectedItem.click();
+                    selectedItem.trigger("click");
                 }
             }
 

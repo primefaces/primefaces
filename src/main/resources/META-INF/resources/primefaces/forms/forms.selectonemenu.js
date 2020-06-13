@@ -128,7 +128,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         // see #7602
-        if (PrimeFaces.env.touch) {
+        if (PrimeFaces.env.isTouchable(this.cfg)) {
             this.focusInput.attr('readonly', true);
         }
 
@@ -255,17 +255,17 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         //Triggers
-        this.triggers.mouseenter(function() {
+        this.triggers.on("mouseenter", function() {
             if(!$this.jq.hasClass('ui-state-focus')) {
                 $this.jq.addClass('ui-state-hover');
                 $this.menuIcon.addClass('ui-state-hover');
             }
         })
-        .mouseleave(function() {
+        .on("mouseleave", function() {
             $this.jq.removeClass('ui-state-hover');
             $this.menuIcon.removeClass('ui-state-hover');
         })
-        .click(function(e) {
+        .on("click", function(e) {
             if($this.panel.is(":hidden")) {
                 $this.show();
             }
@@ -295,7 +295,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         //onchange handler for editable input
         if(this.cfg.editable) {
-            this.label.change(function(e) {
+            this.label.on('change', function(e) {
                 $this.triggerChange(true);
                 $this.callHandleMethod($this.handleLabelChange, e);
             });
@@ -455,7 +455,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if(!silent) {
-            this.focusInput.focus();
+            this.focusInput.trigger('focus');
             this.callBehavior('itemSelect');
         }
 
@@ -918,7 +918,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * Puts focus on this widget.
      */
     focus: function() {
-        this.focusInput.focus();
+        this.focusInput.trigger('focus');
     },
 
     /**
@@ -933,7 +933,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }, timeout);
         }
         else {
-            this.filterInput.focus();
+            this.filterInput.trigger('focus');
         }
     },
 
@@ -941,7 +941,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * Removes focus from this widget.
      */
     blur: function() {
-        this.focusInput.blur();
+        this.focusInput.trigger("blur");
 
         this.callBehavior('blur');
     },
@@ -1127,7 +1127,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      */
     filter: function(value) {
         this.cfg.initialHeight = this.cfg.initialHeight||this.itemsWrapper.height();
-        var filterValue = this.cfg.caseSensitive ? $.trim(value) : $.trim(value).toLowerCase();
+        var filterValue = this.cfg.caseSensitive ? PrimeFaces.trim(value) : PrimeFaces.trim(value).toLowerCase();
 
         if(filterValue === '') {
             this.items.filter(':hidden').show();
