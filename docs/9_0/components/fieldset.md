@@ -32,6 +32,7 @@ Fieldset is a grouping component as an extension to HTML fieldset.
 | tabindex | 0 | String | Position of the element in the tabbing order.
 | escape | true | Boolean | Whether value would be escaped or not.
 | title | null | String | Advisory tooltip information.
+| dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the fieldset is not rendered on page load to improve performance. Default is false.
 
 ## Getting started with Fieldset
 Fieldset is used as a container component for its children.

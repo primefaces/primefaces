@@ -46,7 +46,8 @@ public abstract class FieldsetBase extends UIPanel implements Widget, ClientBeha
         collapsed,
         tabindex,
         escape,
-        title
+        title,
+        dynamic
     }
 
     public FieldsetBase() {
@@ -136,5 +137,13 @@ public abstract class FieldsetBase extends UIPanel implements Widget, ClientBeha
 
     public void setTitle(String title) {
         getStateHelper().put(PropertyKeys.title, title);
+    }
+
+    public boolean isDynamic() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
+    }
+
+    public void setDynamic(boolean dynamic) {
+        getStateHelper().put(PropertyKeys.dynamic, dynamic);
     }
 }

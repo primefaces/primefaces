@@ -55,8 +55,13 @@ public class FieldsetRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Fieldset fieldset = (Fieldset) component;
 
-        encodeMarkup(context, fieldset);
-        encodeScript(context, fieldset);
+        if (fieldset.isContentLoadRequest(context)) {
+            renderChildren(context, fieldset);
+        }
+        else {
+            encodeMarkup(context, fieldset);
+            encodeScript(context, fieldset);
+        }
     }
 
     protected void encodeMarkup(FacesContext context, Fieldset fieldset) throws IOException {
@@ -108,7 +113,9 @@ public class FieldsetRenderer extends CoreRenderer {
             writer.writeAttribute("style", "display:none", null);
         }
 
-        renderChildren(context, fieldset);
+        if (!fieldset.isDynamic()) {
+            renderChildren(context, fieldset);
+        }
 
         writer.endElement("div");
     }
@@ -121,6 +128,7 @@ public class FieldsetRenderer extends CoreRenderer {
 
         if (toggleable) {
             wb.attr("toggleable", true)
+                    .attr("dynamic", fieldset.isDynamic(), false)
                     .attr("collapsed", fieldset.isCollapsed())
                     .attr("toggleSpeed", fieldset.getToggleSpeed());
         }

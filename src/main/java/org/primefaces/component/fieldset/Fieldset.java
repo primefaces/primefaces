@@ -113,4 +113,8 @@ public class Fieldset extends FieldsetBase {
             super.processUpdates(context);
         }
     }
+
+    public boolean isContentLoadRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_contentLoad");
+    }
 }
