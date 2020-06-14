@@ -93,6 +93,21 @@ Header of the component is defined using header facet.
     //more content
 </p:dataScroller>
 ```
+## Ajax Behavior Events
+_load_ is the only AJAX behavior event of datascroller whenever more data is loaded. An example with
+load would be;
+
+```html
+<p:dataScroller>
+   <p:ajax event=”load” listener=”#{bean.onLoad}” />
+</p:dataScroller>
+```
+
+```java
+public void onLoad(AjaxBehaviorEvent event) {
+    //...
+}
+```
 ## Client Side API
 Widget: _PrimeFaces.widget.DataScroller_
 
