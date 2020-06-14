@@ -66,7 +66,9 @@ public class SidebarRenderer extends CoreRenderer {
 
         encodeCloseIcon(context);
 
-        renderChildren(context, bar);
+        if (!bar.isDynamic()) {
+            renderChildren(context, bar);
+        }
 
         writer.endElement("div");
     }
