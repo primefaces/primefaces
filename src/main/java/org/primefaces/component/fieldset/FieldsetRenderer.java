@@ -113,7 +113,9 @@ public class FieldsetRenderer extends CoreRenderer {
             writer.writeAttribute("style", "display:none", null);
         }
 
-        renderChildren(context, fieldset);
+        if (!fieldset.isDynamic()) {
+            renderChildren(context, fieldset);
+        }
 
         writer.endElement("div");
     }
