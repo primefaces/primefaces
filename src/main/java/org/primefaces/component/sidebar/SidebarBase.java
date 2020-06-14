@@ -44,6 +44,7 @@ public abstract class SidebarBase extends UIComponentBase implements Widget {
         blockScroll,
         baseZIndex,
         appendTo,
+        dynamic,
         onShow,
         onHide
     }
@@ -127,6 +128,14 @@ public abstract class SidebarBase extends UIComponentBase implements Widget {
 
     public void setAppendTo(String appendTo) {
         getStateHelper().put(PropertyKeys.appendTo, appendTo);
+    }
+
+    public boolean isDynamic() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
+    }
+
+    public void setDynamic(boolean dynamic) {
+        getStateHelper().put(PropertyKeys.dynamic, dynamic);
     }
 
     public String getOnShow() {

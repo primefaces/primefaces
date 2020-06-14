@@ -31,6 +31,7 @@ fullScreen | false | Boolean | Whether to enable the whole screen.
 blockScroll | false | Boolean | Whether to block scrolling of the document when sidebar is active.
 baseZIndex | 0 | Integer | Base zIndex value to use in layering.
 appendTo | null | String | Appends the sidebar to the given search expression.
+dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the sidebar is not rendered on page load to improve performance. Default is false.
 onShow | null | String | Client side callback to execute when sidebar is displayed.
 onHide | null | String | Client side callback to execute when sidebar is hidden.
 
