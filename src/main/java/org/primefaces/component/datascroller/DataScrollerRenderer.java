@@ -31,8 +31,8 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.PrimeFaces;
 
+import org.primefaces.PrimeFaces;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -176,8 +176,11 @@ public class DataScrollerRenderer extends CoreRenderer {
                 .attr("mode", ds.getMode(), "document")
                 .attr("buffer", ds.getBuffer())
                 .attr("virtualScroll", ds.isVirtualScroll())
-                .attr("startAtBottom", ds.isStartAtBottom())
-                .finish();
+                .attr("startAtBottom", ds.isStartAtBottom());
+
+        encodeClientBehaviors(context, ds);
+
+        wb.finish();
     }
 
     protected void loadChunk(FacesContext context, DataScroller ds, int start, int size) throws IOException {
