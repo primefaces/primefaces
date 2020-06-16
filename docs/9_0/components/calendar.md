@@ -42,6 +42,7 @@ ajax selection and more.
 | locale | null | Object | Locale to be used for labels and conversion.
 | navigator | false | Boolean | Enables month/year navigator
 | timeZone | null | Time Zone | String or a java.time.ZoneId instance or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to ZoneId.systemDefault().
+| readonly | false | Boolean | Makes the entire component readonly not allowing calendar popup or text entry.
 | readonlyInput | false | Boolean | Makes input text of a popup calendar readonly.
 | showButtonPanel | false | Boolean | Visibility of button panel containing today and done buttons.
 | effect | null | String | Effect to use when displaying and showing the popup calendar.
