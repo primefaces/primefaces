@@ -84,7 +84,7 @@ public class HeadRenderer extends Renderer {
             theme = (String) ve.getValue(elContext);
         }
         else {
-            theme = "aristo";   //default
+            theme = "nova-light";   //default
         }
 
         if (theme != null && !theme.equals("none")) {

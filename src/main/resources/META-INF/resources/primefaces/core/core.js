@@ -449,7 +449,7 @@
         /**
          * Changes the current theme to the given theme (by exchanging CSS files). Requires that the theme was
          * installed and is available.
-         * @param {string} newTheme The new theme, eg. `aristo`, `nova-dark`, or `omega`.
+         * @param {string} newTheme The new theme, eg. `luna-amber`, `nova-dark`, or `omega`.
          */
         changeTheme: function(newTheme) {
             if(newTheme && newTheme !== '') {
