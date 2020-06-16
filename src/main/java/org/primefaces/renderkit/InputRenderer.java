@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,11 +35,7 @@ import javax.faces.convert.ConverterException;
 
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.RTLAware;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.util.*;
 
 public abstract class InputRenderer extends CoreRenderer {
 
