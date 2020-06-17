@@ -56,6 +56,7 @@ public class Schedule extends ScheduleBase {
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("dateSelect", SelectEvent.class)
+            .put("dateDblSelect", SelectEvent.class)
             .put("eventSelect", SelectEvent.class)
             .put("eventMove", ScheduleEntryMoveEvent.class)
             .put("eventResize", ScheduleEntryResizeEvent.class)
@@ -90,7 +91,7 @@ public class Schedule extends ScheduleBase {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             FacesEvent wrapperEvent = null;
 
-            if (eventName.equals("dateSelect")) {
+            if (eventName.equals("dateSelect") || eventName.equals("dateDblSelect")) {
                 String selectedDateStr = params.get(clientId + "_selectedDate");
                 LocalDateTime selectedDate =  CalendarUtils.toLocalDateTime(zoneId, selectedDateStr);
                 SelectEvent<?> selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), selectedDate);

@@ -89,17 +89,34 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         this.cfg.dateClick = function(dateClickInfo) {
-            if($this.hasBehavior('dateSelect')) {
-                var ext = {
-                    params: [
-                        {name: $this.id + '_selectedDate', value: PrimeFaces.toISOString(dateClickInfo.date)}
-                    ]
-                };
+            var singleClick = PrimeFaces.toISOString(dateClickInfo.date);
+            var ext = {
+                params: [{
+                    name: $this.id + '_selectedDate',
+                    value: singleClick
+                }]
+            };
 
-                $this.callBehavior('dateSelect', ext);
+            if ($this.doubleClick == singleClick) {
+                $this.doubleClick = null;
+                if ($this.hasBehavior('dateDblSelect')) {
+                    $this.callBehavior('dateDblSelect', ext);
+                }
+            } else {
+                $this.doubleClick = PrimeFaces.toISOString(dateClickInfo.date)
+                clearInterval($this.clickTimer);
+                $this.clickTimer = setInterval(function() {
+                    doubleClick = null;
+                    clearInterval($this.clickTimer);
+                    $this.clickTimer = null;
+                }, 500);
+
+                if ($this.hasBehavior('dateSelect')) {
+                    $this.callBehavior('dateSelect', ext);
+                }
             }
         };
-
+        
         this.cfg.eventClick = function(eventClickInfo) {
             if (eventClickInfo.event.url) {
                 var targetWindow = window.open('', $this.cfg.urlTarget);
