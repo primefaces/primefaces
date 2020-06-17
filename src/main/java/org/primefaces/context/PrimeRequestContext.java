@@ -31,6 +31,7 @@ import java.util.Map;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -207,9 +208,18 @@ public class PrimeRequestContext {
      * @return if secure or not.
      */
     public boolean isSecure() {
+        return isSecure(context.getExternalContext());
+    }
+
+    /**
+     * Returns a boolean indicating whether this request was made using a secure channel, such as HTTPS.
+     *
+     * @return if secure or not.
+     */
+    public static boolean isSecure(ExternalContext externalContext) {
         // currently called once per request - later we might cache the result per request
         // and even the method lookup
-        Object request = context.getExternalContext().getRequest();
+        Object request = externalContext.getRequest();
 
         if (request instanceof HttpServletRequest) {
             return ((HttpServletRequest) request).isSecure();

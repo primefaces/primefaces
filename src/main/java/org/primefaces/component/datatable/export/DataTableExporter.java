@@ -28,6 +28,7 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.Exporter;
 import org.primefaces.component.overlaypanel.OverlayPanel;
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -43,7 +44,6 @@ import javax.faces.component.visit.VisitResult;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import javax.servlet.http.HttpServletRequest;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -393,15 +393,17 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
     }
 
     protected void addResponseCookie(ExternalContext externalContext) {
-        final boolean secure = ((HttpServletRequest) externalContext.getRequest()).isSecure();
+        final boolean secure = PrimeRequestContext.isSecure(externalContext);
+        Map<String, Object> map = null;
         if (secure) {
-            Map<String, Object> map = new HashMap<String, Object>();
+            map = new HashMap<String, Object>();
             map.put("secure", secure);
             externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", map);
         }
         else {
-            externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
+            map = Collections.<String, Object>emptyMap();
         }
+        externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", map);
     }
 
 }
