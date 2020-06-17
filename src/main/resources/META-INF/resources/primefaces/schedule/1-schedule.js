@@ -89,24 +89,24 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         this.cfg.dateClick = function(dateClickInfo) {
-            var singleClick = PrimeFaces.toISOString(dateClickInfo.date);
+            var currentDate = PrimeFaces.toISOString(dateClickInfo.date);
             var ext = {
                 params: [{
                     name: $this.id + '_selectedDate',
-                    value: singleClick
+                    value: currentDate
                 }]
             };
 
-            if ($this.doubleClick == singleClick) {
+            if ($this.doubleClick === currentDate) {
                 $this.doubleClick = null;
                 if ($this.hasBehavior('dateDblSelect')) {
                     $this.callBehavior('dateDblSelect', ext);
                 }
             } else {
-                $this.doubleClick = PrimeFaces.toISOString(dateClickInfo.date)
+                $this.doubleClick = currentDate;
                 clearInterval($this.clickTimer);
                 $this.clickTimer = setInterval(function() {
-                    doubleClick = null;
+                    $this.doubleClick = null;
                     clearInterval($this.clickTimer);
                     $this.clickTimer = null;
                 }, 500);
