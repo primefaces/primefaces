@@ -106,6 +106,7 @@ public class CalendarRenderer extends BaseCalendarRenderer {
                 .attr("showWeek", calendar.isShowWeek(), false)
                 .attr("disabledWeekends", calendar.isDisabledWeekends(), false)
                 .attr("disabled", calendar.isDisabled(), false)
+                .attr("readonly", calendar.isReadonly(), false)
                 .attr("yearRange", calendar.getYearRange(), null)
                 .attr("focusOnSelect", calendar.isFocusOnSelect(), false)
                 .attr("touchable", ComponentUtils.isTouchable(context, calendar),  true);
