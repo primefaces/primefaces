@@ -826,6 +826,10 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
                     return true;
                 }
 
+                if (requiresColumns() && visitColumnsAndColumnFacets(context, callback, visitNodes, root)) {
+                    return true;
+                }
+
                 if (visitNodes(context, root, callback, visitNodes)) {
                     return true;
                 }
@@ -960,6 +964,59 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
                 }
 
                 childIndex++;
+            }
+        }
+
+        return false;
+    }
+
+    protected boolean requiresColumns() {
+        return false;
+    }
+
+    protected boolean visitColumnsAndColumnFacets(VisitContext context, VisitCallback callback, boolean visitRows, TreeNode root) {
+        if (visitRows) {
+            setRowKey(root, null);
+        }
+
+        if (getChildCount() > 0) {
+            for (UIComponent child : getChildren()) {
+                VisitResult result = context.invokeVisitCallback(child, callback); // visit the column directly
+                if (result == VisitResult.COMPLETE) {
+                    return true;
+                }
+
+                if (child instanceof org.primefaces.component.api.UIColumn) {
+                    if (child.getFacetCount() > 0) {
+                        if (child instanceof Columns) {
+                            Columns columns = (Columns) child;
+                            for (int i = 0; i < columns.getRowCount(); i++) {
+                                columns.setRowIndex(i);
+                                boolean value = visitColumnFacets(context, callback, child);
+                                if (value) {
+                                    return true;
+                                }
+                            }
+                            columns.setRowIndex(-1);
+                        }
+                        else {
+                            boolean value = visitColumnFacets(context, callback, child);
+                            if (value) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    protected boolean visitColumnFacets(VisitContext context, VisitCallback callback, UIComponent component) {
+        for (UIComponent columnFacet : component.getFacets().values()) {
+            if (columnFacet.visitTree(context, callback)) {
+                return true;
             }
         }
 
