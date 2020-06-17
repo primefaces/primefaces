@@ -208,7 +208,6 @@ public class PrimeRequestContext {
      * @return if secure or not.
      */
     public boolean isSecure() {
-        // currently called once per request
         if (secure == null) {
             Object request = context.getExternalContext().getRequest();
 
