@@ -171,27 +171,32 @@
          * @return {string | undefined} The value of the given cookie, or `undefined` if no such cookie exists
          */
         getCookie : function(name) {
-            return $.cookie(name);
+            return Cookies.get(name);
         },
 
         /**
-         * Sets the value of a given cookie.
+         * Sets the value of a given cookie. If using HTTPS will set secure=true and SameSite=Strict.
          * @param {string} name Name of the cookie to set
          * @param {string} value Value to set 
-         * @param {Partial<JQueryCookie.Options>} [cfg] Configuration for this cookie: when it expires, its
+         * @param {Partial<CookieJS.Options>} [cfg] Configuration for this cookie: when it expires, its
          * paths and domain and whether it is secure cookie.
          */
         setCookie : function(name, value, cfg) {
-            $.cookie(name, value, cfg);
+            if (location.protocol === 'https:') {
+                cfg.secure = true;
+                cfg.sameSite = 'Strict';
+            }
+           
+            Cookies.set(name, value, cfg);
         },
 
         /**
          * Deletes the given cookie.
          * @param {string} name Name of the cookie to delete 
-         * @param {Partial<JQueryCookie.Options>} [cfg] The cookie configuration used to set the cookie. 
+         * @param {Partial<CookieJS.Options>} [cfg] The cookie configuration used to set the cookie. 
          */
         deleteCookie: function(name, cfg) {
-            $.removeCookie(name, cfg);
+            Cookies.remove(name, cfg);
         },
 
         /**
