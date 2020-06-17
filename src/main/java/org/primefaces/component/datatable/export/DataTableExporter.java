@@ -396,8 +396,9 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
         final boolean secure = PrimeRequestContext.isSecure(externalContext);
         Map<String, Object> map = null;
         if (secure) {
-            map = new HashMap<String, Object>();
+            map = new HashMap<String, Object>(2);
             map.put("secure", secure);
+            map.put("sameSite", "Strict");
             externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", map);
         }
         else {
