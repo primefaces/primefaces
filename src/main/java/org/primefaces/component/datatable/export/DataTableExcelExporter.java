@@ -99,7 +99,7 @@ public class DataTableExcelExporter extends DataTableExporter {
             config.getPostProcessor().invoke(context.getELContext(), new Object[]{wb});
         }
 
-        writeExcelToResponse(context.getExternalContext(), wb, config.getOutputFileName());
+        writeExcelToResponse(context, wb, config.getOutputFileName());
 
         reset();
     }
@@ -227,10 +227,11 @@ public class DataTableExcelExporter extends DataTableExporter {
         return wb.createSheet(sheetName);
     }
 
-    protected void writeExcelToResponse(ExternalContext externalContext, Workbook generatedExcel, String filename) throws IOException {
+    protected void writeExcelToResponse(FacesContext context, Workbook generatedExcel, String filename) throws IOException {
+        ExternalContext externalContext = context.getExternalContext();
         externalContext.setResponseContentType(getContentType());
         setResponseHeader(externalContext, getContentDisposition(filename));
-        addResponseCookie(externalContext);
+        addResponseCookie(context);
 
         OutputStream out = externalContext.getResponseOutputStream();
         generatedExcel.write(out);

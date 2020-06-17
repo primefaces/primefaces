@@ -392,8 +392,9 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
         externalContext.setResponseHeader("Content-disposition", contentDisposition);
     }
 
-    protected void addResponseCookie(ExternalContext externalContext) {
-        final boolean secure = PrimeRequestContext.isSecure(externalContext);
+    protected void addResponseCookie(FacesContext context) {
+        ExternalContext externalContext = context.getExternalContext();
+        final boolean secure = PrimeRequestContext.getCurrentInstance(context).isSecure();
         Map<String, Object> map = null;
         if (secure) {
             map = new HashMap<String, Object>(2);

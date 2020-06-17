@@ -106,7 +106,7 @@ public class DataTablePDFExporter extends DataTableExporter {
             config.getPostProcessor().invoke(context.getELContext(), new Object[]{document});
         }
 
-        writePDFToResponse(context.getExternalContext(), baos, config.getOutputFileName());
+        writePDFToResponse(context, baos, config.getOutputFileName());
 
         reset();
     }
@@ -286,13 +286,14 @@ public class DataTablePDFExporter extends DataTableExporter {
         }
     }
 
-    protected void writePDFToResponse(ExternalContext externalContext, ByteArrayOutputStream baos, String fileName) throws IOException {
+    protected void writePDFToResponse(FacesContext context, ByteArrayOutputStream baos, String fileName) throws IOException {
+        ExternalContext externalContext = context.getExternalContext();
         getDocument().close();
 
         externalContext.setResponseContentType("application/pdf");
         setResponseHeader(externalContext, ComponentUtils.createContentDisposition("attachment", fileName + ".pdf"));
         externalContext.setResponseContentLength(baos.size());
-        addResponseCookie(externalContext);
+        addResponseCookie(context);
         OutputStream out = externalContext.getResponseOutputStream();
         baos.writeTo(out);
         externalContext.responseFlushBuffer();

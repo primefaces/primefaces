@@ -25,7 +25,7 @@ package org.primefaces.component.datatable.export;
 
 import java.io.IOException;
 
-import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -50,8 +50,8 @@ public class DataTableExcelXStreamExporter extends DataTableExcelXExporter {
     }
 
     @Override
-    protected void writeExcelToResponse(ExternalContext externalContext, Workbook generatedExcel, String filename) throws IOException {
-        super.writeExcelToResponse(externalContext, generatedExcel, filename);
+    protected void writeExcelToResponse(FacesContext context, Workbook generatedExcel, String filename) throws IOException {
+        super.writeExcelToResponse(context, generatedExcel, filename);
         ((SXSSFWorkbook) generatedExcel).dispose();
     }
 

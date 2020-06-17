@@ -45,7 +45,7 @@ public class DataTableXMLExporter extends DataTableExporter {
     @Override
     public void doExport(FacesContext context, DataTable table, ExportConfiguration config, int index) throws IOException {
         ExternalContext externalContext = context.getExternalContext();
-        configureResponse(externalContext, config.getOutputFileName());
+        configureResponse(context, config.getOutputFileName());
         StringBuilder builder = new StringBuilder();
 
         if (config.getPreProcessor() != null) {
@@ -151,10 +151,11 @@ public class DataTableXMLExporter extends DataTableExporter {
         builder.append("</" + tag + ">\n");
     }
 
-    protected void configureResponse(ExternalContext externalContext, String filename) {
+    protected void configureResponse(FacesContext context, String filename) {
+        ExternalContext externalContext = context.getExternalContext();
         externalContext.setResponseContentType("text/xml");
         setResponseHeader(externalContext, ComponentUtils.createContentDisposition("attachment", filename + ".xml"));
-        addResponseCookie(externalContext);
+        addResponseCookie(context);
     }
 
 }

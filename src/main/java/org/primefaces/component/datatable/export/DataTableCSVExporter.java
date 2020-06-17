@@ -72,7 +72,7 @@ public class DataTableCSVExporter extends DataTableExporter {
     @Override
     public void doExport(FacesContext context, DataTable table, ExportConfiguration config, int index) throws IOException {
         ExternalContext externalContext = context.getExternalContext();
-        configureResponse(externalContext, config.getOutputFileName(), config.getEncodingType());
+        configureResponse(context, config.getOutputFileName(), config.getEncodingType());
         sb = createStringBuilder();
 
         if (config.getPreProcessor() != null) {
@@ -176,10 +176,11 @@ public class DataTableCSVExporter extends DataTableExporter {
         }
     }
 
-    protected void configureResponse(ExternalContext externalContext, String filename, String encodingType) {
+    protected void configureResponse(FacesContext context, String filename, String encodingType) {
+        ExternalContext externalContext = context.getExternalContext();
         externalContext.setResponseContentType("text/csv; charset=" + encodingType);
         setResponseHeader(externalContext, ComponentUtils.createContentDisposition("attachment", filename + ".csv"));
-        addResponseCookie(externalContext);
+        addResponseCookie(context);
     }
 
     protected void addColumnValues(StringBuilder builder, List<UIColumn> columns) throws IOException {
