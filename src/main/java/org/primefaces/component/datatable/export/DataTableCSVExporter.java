@@ -25,7 +25,6 @@ package org.primefaces.component.datatable.export;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -179,11 +178,8 @@ public class DataTableCSVExporter extends DataTableExporter {
 
     protected void configureResponse(ExternalContext externalContext, String filename, String encodingType) {
         externalContext.setResponseContentType("text/csv; charset=" + encodingType);
-        externalContext.setResponseHeader("Expires", "0");
-        externalContext.setResponseHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
-        externalContext.setResponseHeader("Pragma", "public");
-        externalContext.setResponseHeader("Content-disposition", ComponentUtils.createContentDisposition("attachment", filename + ".csv"));
-        externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
+        setResponseHeader(externalContext, ComponentUtils.createContentDisposition("attachment", filename + ".csv"));
+        addResponseCookie(externalContext);
     }
 
     protected void addColumnValues(StringBuilder builder, List<UIColumn> columns) throws IOException {

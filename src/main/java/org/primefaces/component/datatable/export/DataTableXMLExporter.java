@@ -28,7 +28,6 @@ import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
 
 import javax.faces.FacesException;
@@ -39,7 +38,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.Collections;
 import java.util.List;
 
 public class DataTableXMLExporter extends DataTableExporter {
@@ -155,11 +153,8 @@ public class DataTableXMLExporter extends DataTableExporter {
 
     protected void configureResponse(ExternalContext externalContext, String filename) {
         externalContext.setResponseContentType("text/xml");
-        externalContext.setResponseHeader("Expires", "0");
-        externalContext.setResponseHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
-        externalContext.setResponseHeader("Pragma", "public");
-        externalContext.setResponseHeader("Content-disposition", ComponentUtils.createContentDisposition("attachment", filename + ".xml"));
-        externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
+        setResponseHeader(externalContext, ComponentUtils.createContentDisposition("attachment", filename + ".xml"));
+        addResponseCookie(externalContext);
     }
 
 }

@@ -34,7 +34,6 @@ import org.primefaces.component.export.ExcelOptions;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
 import javax.faces.component.UIComponent;
@@ -44,7 +43,6 @@ import javax.faces.context.FacesContext;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Collections;
 import java.util.List;
 
 public class DataTableExcelExporter extends DataTableExporter {
@@ -231,11 +229,8 @@ public class DataTableExcelExporter extends DataTableExporter {
 
     protected void writeExcelToResponse(ExternalContext externalContext, Workbook generatedExcel, String filename) throws IOException {
         externalContext.setResponseContentType(getContentType());
-        externalContext.setResponseHeader("Expires", "0");
-        externalContext.setResponseHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
-        externalContext.setResponseHeader("Pragma", "public");
-        externalContext.setResponseHeader("Content-disposition", getContentDisposition(filename));
-        externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
+        setResponseHeader(externalContext, getContentDisposition(filename));
+        addResponseCookie(externalContext);
 
         OutputStream out = externalContext.getResponseOutputStream();
         generatedExcel.write(out);

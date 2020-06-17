@@ -23,6 +23,34 @@
  */
 package org.primefaces.component.datatable.export;
 
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.el.MethodExpression;
+import javax.faces.FacesException;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIColumn;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
+import javax.faces.component.UISelectMany;
+import javax.faces.component.ValueHolder;
+import javax.faces.component.html.HtmlCommandLink;
+import javax.faces.component.html.HtmlGraphicImage;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitResult;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+import javax.servlet.http.HttpServletRequest;
+
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExportConfiguration;
@@ -31,24 +59,6 @@ import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-
-import javax.el.MethodExpression;
-import javax.faces.FacesException;
-import javax.faces.component.*;
-import javax.faces.component.html.HtmlCommandLink;
-import javax.faces.component.html.HtmlGraphicImage;
-import javax.faces.component.visit.VisitCallback;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitResult;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public abstract class DataTableExporter implements Exporter<DataTable> {
 
@@ -379,4 +389,24 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
             return counter;
         }
     }
+
+    protected void setResponseHeader(ExternalContext externalContext , String contentDisposition) {
+        externalContext.setResponseHeader("Expires", "0");
+        externalContext.setResponseHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+        externalContext.setResponseHeader("Pragma", "public");
+        externalContext.setResponseHeader("Content-disposition", contentDisposition);
+    }
+
+    protected void addResponseCookie(ExternalContext externalContext) {
+        final boolean secure = ((HttpServletRequest) externalContext.getRequest()).isSecure();
+        if (secure) {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("secure", secure);
+            externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", map);
+        }
+        else {
+            externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
+        }
+    }
+
 }
