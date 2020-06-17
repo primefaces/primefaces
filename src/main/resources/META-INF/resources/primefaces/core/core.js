@@ -178,7 +178,7 @@
          * Sets the value of a given cookie. If using HTTPS will set secure=true and SameSite=Strict.
          * @param {string} name Name of the cookie to set
          * @param {string} value Value to set 
-         * @param {Partial<CCookies.CookieAttributes>} [cfg] Configuration for this cookie: when it expires, its
+         * @param {Partial<Cookies.CookieAttributes>} [cfg] Configuration for this cookie: when it expires, its
          * paths and domain and whether it is secure cookie.
          */
         setCookie : function(name, value, cfg) {
