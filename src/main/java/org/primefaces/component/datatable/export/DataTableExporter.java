@@ -399,7 +399,6 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
             map = new HashMap<String, Object>(2);
             map.put("secure", secure);
             map.put("sameSite", "Strict");
-            externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", map);
         }
         else {
             map = Collections.<String, Object>emptyMap();
