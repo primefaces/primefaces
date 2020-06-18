@@ -9,6 +9,7 @@ are many other third party libraries and plugins used to support features.
 | [Chart.js](../jsdocs/classes/chart.html) | 2.9.1 | https://www.chartjs.org |
 | [CLEditor WYSIWYG HTML Editor](../jsdocs/modules/jquery.html#cleditor) | v1.4.5 | https://github.com/cleditor/cleditor |
 | [Color Picker](../jsdocs/modules/jquery.html#colorpicker) | (2012) | www.eyecon.ro |
+| Cookie | 3.0.0 | https://github.com/js-cookie/js-cookie |
 | [ContentFlow](../jsdocs/classes/contentflow.html) | 1.0.2 | http://www.jacksasylum.eu/ContentFlow |
 | [Cropper.js](../jsdocs/modules/jquery.html#cropper) | 1.5.6 | https://github.com/fengyuanchen/cropperjs |
 | FontAwesome | 4.7.0 | https://fontawesome.com/ |
