@@ -164,11 +164,8 @@
                 }
             }
 
-            // #6047 round to nearest stepMinute
-            if (this.options.stepMinute !== 1) {
-                var newMinute = this.stepMinute(this.viewDate.getMinutes(), this.options.stepMinute);
-                this.viewDate.setMinutes(newMinute);
-            }
+            // #6047 round to nearest stepMinute on even if editing using keyboard
+            this.viewDate.setMinutes(this.stepMinute(this.viewDate.getMinutes()));
 
             this.options.minDate = this.parseMinMaxValue(this.options.minDate);
             this.options.maxDate = this.parseMinMaxValue(this.options.maxDate);
@@ -978,7 +975,7 @@
 
             var time = this.parseTime(timeString, ampm);
             value.setHours(time.hour);
-            value.setMinutes(time.minute);
+            value.setMinutes(this.stepMinute(time.minute));
             if (this.options.showSeconds) {
                 value.setSeconds(time.second);
             }
@@ -2231,6 +2228,14 @@
         },
 
         stepMinute: function(currentMinute, step) {
+            if (this.options.stepMinute <= 1) {
+                return currentMinute;
+            }
+
+            if (!step) {
+                step = this.options.stepMinute;
+            }
+
             var newMinute = currentMinute + step;
             newMinute = Math.floor(newMinute / step) * step;
             return newMinute;
