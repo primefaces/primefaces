@@ -28,6 +28,7 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.Exporter;
 import org.primefaces.component.overlaypanel.OverlayPanel;
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -40,12 +41,16 @@ import javax.faces.component.html.HtmlGraphicImage;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -379,4 +384,27 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
             return counter;
         }
     }
+
+    protected void setResponseHeader(ExternalContext externalContext , String contentDisposition) {
+        externalContext.setResponseHeader("Expires", "0");
+        externalContext.setResponseHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+        externalContext.setResponseHeader("Pragma", "public");
+        externalContext.setResponseHeader("Content-disposition", contentDisposition);
+    }
+
+    protected void addResponseCookie(FacesContext context) {
+        ExternalContext externalContext = context.getExternalContext();
+        final boolean secure = PrimeRequestContext.getCurrentInstance(context).isSecure();
+        Map<String, Object> map = null;
+        if (secure) {
+            map = new HashMap<String, Object>(2);
+            map.put("secure", secure);
+            map.put("sameSite", "Strict");
+        }
+        else {
+            map = Collections.<String, Object>emptyMap();
+        }
+        externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", map);
+    }
+
 }
