@@ -529,7 +529,7 @@ public class CalendarUtils {
         }
 
         Instant instant = Instant.parse(isoDateString);
-        ZonedDateTime utc = ZonedDateTime.ofInstant(instant, ZoneId.of("Etc/UTC"));
+        ZonedDateTime utc = ZonedDateTime.ofInstant(instant, ZoneId.of("UTC"));
         return utc.withZoneSameLocal(zoneId).toLocalDateTime();
     }
 
