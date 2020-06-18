@@ -163,6 +163,13 @@
                     viewDateDefaultsToNow = true;
                 }
             }
+
+            // #6047 round to nearest stepMinute on even if editing using keyboard
+            this.viewDate.setMinutes(this.stepMinute(this.viewDate.getMinutes()));
+            if (!this.options.viewDate) {
+                this.options.viewDate = this.viewDate;
+            }
+
             this.options.minDate = this.parseMinMaxValue(this.options.minDate);
             this.options.maxDate = this.parseMinMaxValue(this.options.maxDate);
             this.ticksTo1970 = (((1970 - 1) * 365 + Math.floor(1970 / 4) - Math.floor(1970 / 100) + Math.floor(1970 / 400)) * 24 * 60 * 60 * 10000000);
@@ -971,7 +978,7 @@
 
             var time = this.parseTime(timeString, ampm);
             value.setHours(time.hour);
-            value.setMinutes(time.minute);
+            value.setMinutes(this.stepMinute(time.minute));
             if (this.options.showSeconds) {
                 value.setSeconds(time.second);
             }
@@ -2127,7 +2134,7 @@
             if (this.options.showTime) {
                 var time = (this.value && this.value instanceof Date) ? this.value : new Date();
                 date.setHours(time.getHours());
-                date.setMinutes(time.getMinutes());
+                date.setMinutes(this.stepMinute(time.getMinutes()));
                 date.setSeconds(time.getSeconds());
                 date.setMilliseconds(0);
             }
@@ -2200,7 +2207,7 @@
         incrementMinute: function (event) {
             var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
                 currentMinute = currentTime.getMinutes(),
-                newMinute = currentMinute + this.options.stepMinute;
+                newMinute = this.stepMinute(currentMinute, this.options.stepMinute);
             newMinute = (newMinute > 59) ? (newMinute - 60) : newMinute;
 
             if (this.validateTime(currentTime.getHours(), newMinute, currentTime.getSeconds(), currentTime, "INCREMENT")) {
@@ -2213,7 +2220,7 @@
         decrementMinute: function (event) {
             var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
                 currentMinute = currentTime.getMinutes(),
-                newMinute = currentMinute - this.options.stepMinute;
+                newMinute = this.stepMinute(currentMinute, -this.options.stepMinute);
             newMinute = (newMinute < 0) ? (newMinute + 60) : newMinute;
 
             if (this.validateTime(currentTime.getHours(), newMinute, currentTime.getSeconds(), currentTime, "DECREMENT")) {
@@ -2221,6 +2228,22 @@
             }
 
             event.preventDefault();
+        },
+
+        stepMinute: function(currentMinute, step) {
+            if (this.options.stepMinute <= 1) {
+                return currentMinute;
+            }
+            if (!step) {
+                step = this.options.stepMinute;
+                if (currentMinute % step === 0) {
+                    return currentMinute;
+                }
+            }
+
+            var newMinute = currentMinute + step;
+            newMinute = Math.floor(newMinute / step) * step;
+            return newMinute;
         },
 
         incrementSecond: function (event) {
