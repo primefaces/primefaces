@@ -441,7 +441,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     restoreState: function() {
-        var carouselStateAsString = PrimeFaces.getStore(this.stateKey) || "first: null, collapsed: null";
+        var carouselStateAsString = localStorage.getItem(this.stateKey) || "first: null, collapsed: null";
         this.carouselState = PrimeFaces.csp.evalResult('({' + carouselStateAsString + '})');
 
         this.first = this.carouselState.first||this.first;
@@ -466,7 +466,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             carouselStateAsString += ", collapsed: " + this.toggleStateHolder.val();
         }
 
-        PrimeFaces.setStore(this.stateKey, carouselStateAsString);
+        localStorage.setItem(this.stateKey, carouselStateAsString);
     },
 
     /**
@@ -475,7 +475,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
      */
     clearState: function() {
         if(this.cfg.stateful) {
-            PrimeFaces.deleteStore(this.stateKey);
+            localStorage.removeItem(this.stateKey);
         }
     }
 

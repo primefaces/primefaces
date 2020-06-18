@@ -197,7 +197,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
      * @private
      */
     saveState: function() {
-        PrimeFaces.setStore(this.stateKey, this.collapsedIds.join(','));
+        localStorage.setItem(this.stateKey, this.collapsedIds.join(','));
     },
 
     /**
@@ -205,7 +205,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
      * @private
      */
     restoreState: function() {
-        var collapsedIdsAsString = PrimeFaces.getStore(this.stateKey);
+        var collapsedIdsAsString = localStorage.getItem(this.stateKey);
 
         if(collapsedIdsAsString) {
             this.collapsedIds = collapsedIdsAsString.split(',');
@@ -221,7 +221,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
      * @private
      */
     clearState: function() {
-        PrimeFaces.deleteStore(this.stateKey);
+        localStorage.removeItem(this.stateKey);
     }
 
 });

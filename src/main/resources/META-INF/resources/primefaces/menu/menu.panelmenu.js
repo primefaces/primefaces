@@ -427,7 +427,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.stateful) {
             var expandedNodeIds = this.expandedNodes.join(',');
 
-            PrimeFaces.setStore(this.stateKey, expandedNodeIds);
+            localStorage.setItem(this.stateKey, expandedNodeIds);
         }
     },
 
@@ -440,7 +440,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         var expandedNodeIds = null;
 
         if(this.cfg.stateful) {
-            expandedNodeIds = PrimeFaces.getStore(this.stateKey);
+            expandedNodeIds = localStorage.getItem(this.stateKey);
         }
 
         if(expandedNodeIds) {
@@ -502,7 +502,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
      */
     clearState: function() {
         if(this.cfg.stateful) {
-            PrimeFaces.deleteStore(this.stateKey);
+            localStorage.removeItem(this.stateKey);
         }
     },
 

@@ -166,32 +166,6 @@
         },
 
         /**
-         * Fetches the value from HTML5 Local Storage by its name
-         * @param {string} name Name of a item in storage
-         * @return {string | undefined} The value of the given store, or `undefined` if no such store exists
-         */
-        getStore : function(name) {
-            return localStorage.getItem(name);
-        },
-
-        /**
-         * Sets the value of a given name to HTML5 Local Storage.
-         * @param {string} name Name of the value to set
-         * @param {string} value Value to set 
-         */
-        setStore : function(name, value) {
-            localStorage.setItem(name, value);
-        },
-
-        /**
-         * Deletes the given name from HTML5 Local Storage.
-         * @param {string} name Name of the value to delete 
-         */
-        deleteStore: function(name) {
-            localStorage.removeItem(name);
-        },
-
-        /**
          * Fetches the value of a cookie by its name
          * @param {string} name Name of a cookie
          * @return {string | undefined} The value of the given cookie, or `undefined` if no such cookie exists
