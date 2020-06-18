@@ -166,6 +166,9 @@
 
             // #6047 round to nearest stepMinute on even if editing using keyboard
             this.viewDate.setMinutes(this.stepMinute(this.viewDate.getMinutes()));
+            if (!this.options.viewDate) {
+                this.options.viewDate = this.viewDate;
+            }
 
             this.options.minDate = this.parseMinMaxValue(this.options.minDate);
             this.options.maxDate = this.parseMinMaxValue(this.options.maxDate);
@@ -2231,9 +2234,11 @@
             if (this.options.stepMinute <= 1) {
                 return currentMinute;
             }
-
             if (!step) {
                 step = this.options.stepMinute;
+                if (currentMinute % step === 0) {
+                    return currentMinute;
+                }
             }
 
             var newMinute = currentMinute + step;
