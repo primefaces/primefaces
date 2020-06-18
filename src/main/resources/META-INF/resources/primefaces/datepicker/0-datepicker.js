@@ -2131,7 +2131,7 @@
             if (this.options.showTime) {
                 var time = (this.value && this.value instanceof Date) ? this.value : new Date();
                 date.setHours(time.getHours());
-                date.setMinutes(time.getMinutes());
+                date.setMinutes(this.stepMinute(time.getMinutes()));
                 date.setSeconds(time.getSeconds());
                 date.setMilliseconds(0);
             }
