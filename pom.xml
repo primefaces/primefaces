@@ -701,7 +701,6 @@
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/core.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.browser.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/js.cookie.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.env.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.ajax.js</include>

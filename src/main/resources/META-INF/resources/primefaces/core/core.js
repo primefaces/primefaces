@@ -166,37 +166,29 @@
         },
 
         /**
-         * Fetches the value of a cookie by its name
-         * @param {string} name Name of a cookie
-         * @return {string | undefined} The value of the given cookie, or `undefined` if no such cookie exists
+         * Fetches the value from HTML5 Local Storage by its name
+         * @param {string} name Name of a item in storage
+         * @return {string | undefined} The value of the given store, or `undefined` if no such store exists
          */
-        getCookie : function(name) {
-            return Cookies.get(name);
+        getStore : function(name) {
+            return localStorage.getItem(name);
         },
 
         /**
-         * Sets the value of a given cookie. If using HTTPS will set secure=true and SameSite=Strict.
-         * @param {string} name Name of the cookie to set
+         * Sets the value of a given name to HTML5 Local Storage.
+         * @param {string} name Name of the value to set
          * @param {string} value Value to set 
-         * @param {Partial<Cookies.CookieAttributes>} [cfg] Configuration for this cookie: when it expires, its
-         * paths and domain and whether it is secure cookie.
          */
-        setCookie : function(name, value, cfg) {
-            if (location.protocol === 'https:') {
-                cfg.secure = true;
-                cfg.sameSite = 'Strict';
-            }
-           
-            Cookies.set(name, value, cfg);
+        setStore : function(name, value) {
+            localStorage.setItem(name, value);
         },
 
         /**
-         * Deletes the given cookie.
-         * @param {string} name Name of the cookie to delete 
-         * @param {Partial<Cookies.CookieAttributes>} [cfg] The cookie configuration used to set the cookie. 
+         * Deletes the given name from HTML5 Local Storage.
+         * @param {string} name Name of the value to delete 
          */
-        deleteCookie: function(name, cfg) {
-            Cookies.remove(name, cfg);
+        deleteStore: function(name) {
+            localStorage.removeItem(name);
         },
 
         /**
