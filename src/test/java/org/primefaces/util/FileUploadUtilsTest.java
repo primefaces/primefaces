@@ -24,6 +24,7 @@
 package org.primefaces.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -155,7 +156,7 @@ public class FileUploadUtilsTest {
             }
         } else {
             String result = FileUploadUtils.checkPathTraversal(relativePath);
-            assertEquals("test.png", result);
+            assertTrue(result.endsWith("test.png"));
         }
     }
 
