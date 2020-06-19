@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright (c) 2009-2019 PrimeTek
@@ -23,14 +23,10 @@
  */
 package org.primefaces.util;
 
-import org.apache.commons.io.IOUtils;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.primefaces.component.fileupload.FileUpload;
-import org.primefaces.context.PrimeApplicationContext;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -40,10 +36,14 @@ import javax.faces.application.Application;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.primefaces.component.fileupload.FileUpload;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.file.UploadedFile;
 
 public class FileUploadUtilsTest {
@@ -69,7 +69,7 @@ public class FileUploadUtilsTest {
         inputStream = null;
         fileUpload = null;
     }
-    
+
     private UploadedFile createFile(String filename, String contentType, InputStream stream) {
         UploadedFile file = Mockito.mock(UploadedFile.class);
         when(file.getFileName()).thenReturn(filename);
@@ -81,7 +81,7 @@ public class FileUploadUtilsTest {
         }
         return file;
     }
-    
+
     @Test
     public void isValidTypeFilenameCheck() {
         when(fileUpload.getAllowTypes()).thenReturn(null);
@@ -103,13 +103,13 @@ public class FileUploadUtilsTest {
         InputStream bmp = new ByteArrayInputStream(new byte[] { 0x42, 0x4D });
         InputStream gif = new ByteArrayInputStream(new byte[] { 0x47, 0x49, 0x46, 0x38, 0x39, 0x61 });
         InputStream exe = new ByteArrayInputStream(new byte[] { 0x4D, 0x5A });
-        
+
         when(fileUpload.isValidateContentType()).thenReturn(false);
 
         when(fileUpload.getAccept()).thenReturn("image/png");
         Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.TIF", "image/tif", tif)));
         Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.mp4", "application/music", mp4)));
-        
+
         when(fileUpload.isValidateContentType()).thenReturn(true);
 
         when(fileUpload.getAccept()).thenReturn("");
@@ -134,28 +134,12 @@ public class FileUploadUtilsTest {
         Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.gif", "image/gif", exe)));
         Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", gif)));
     }
-    
-    @Test
-    public void checkPathTraversal_AbsoluteFile() {
-        // Arrange
-        String relativePath = FileUploadUtilsTest.class.getResource("/test.png").getFile();
-        
-        // Act
-        try {
-            FileUploadUtils.checkPathTraversal(relativePath);
-            fail("File was absolute path and should have failed");
-        }
-        catch (Exception e) {
-            // Assert
-            assertEquals("Path traversal attempt - absolute path not allowed.", e.getMessage());
-        }
-    }
-    
+
     @Test
     public void checkPathTraversal_PathTraversal() {
         // Arrange
         String relativePath = "../../test.png";
-        
+
         // Act
         try {
             FileUploadUtils.checkPathTraversal(relativePath);
@@ -166,17 +150,17 @@ public class FileUploadUtilsTest {
             assertEquals("Path traversal attempt for path ../../test.png", e.getMessage());
         }
     }
-    
+
     @Test
     public void checkPathTraversal_Valid() {
         // Arrange
         String relativePath = "test.png";
-        
+
         // Act
         String result = FileUploadUtils.checkPathTraversal(relativePath);
 
         // Assert
         assertEquals(relativePath, result);
     }
-    
+
 }
