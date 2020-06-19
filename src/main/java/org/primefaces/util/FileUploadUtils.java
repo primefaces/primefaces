@@ -336,7 +336,17 @@ public class FileUploadUtils {
      * @throws FacesException if any error is detected
      */
     public static String checkPathTraversal(String relativePath) {
+        // Unix systems can start with / but Windows cannot
+        String os = System.getProperty("os.name").toLowerCase();
+        if (!os.contains("win")) {
+            relativePath = relativePath.startsWith("/") ? relativePath.substring(1) : relativePath;
+        }
+
         File file = new File(relativePath);
+
+        if (file.isAbsolute()) {
+            throw new FacesException("Path traversal attempt - absolute path not allowed.");
+        }
 
         try  {
             String pathUsingCanonical = file.getCanonicalPath();

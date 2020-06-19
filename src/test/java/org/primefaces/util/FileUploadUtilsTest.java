@@ -136,6 +136,22 @@ public class FileUploadUtilsTest {
     }
 
     @Test
+    public void checkPathTraversal_AbsoluteFile() {
+        // Arrange
+        String relativePath = FileUploadUtilsTest.class.getResource("/test.png").getFile();
+
+        // Act
+        try {
+            FileUploadUtils.checkPathTraversal(relativePath);
+            fail("File was absolute path and should have failed");
+        }
+        catch (Exception e) {
+            // Assert
+            assertEquals("Path traversal attempt - absolute path not allowed.", e.getMessage());
+        }
+    }
+
+    @Test
     public void checkPathTraversal_PathTraversal() {
         // Arrange
         String relativePath = "../../test.png";
