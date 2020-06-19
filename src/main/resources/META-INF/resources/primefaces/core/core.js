@@ -214,6 +214,20 @@
         },
 
         /**
+         * Generates a unique key for using in HTML5 local storage by combining the component, id, content, and path.
+         * @param {string} component Name of the component
+         * @param {string} id ID of the component
+         * @return {string} the generated key comprising of component + id + context + path
+         */
+        createStorageKey : function(component, id) {
+            var key = component + '-' 
+                     + id 
+                     + PrimeFaces.settings.viewId.replace(/\//g, '-')
+                     + PrimeFaces.settings.contextPath.replace(/\//g, '-');
+            return key.toLowerCase();
+        },
+
+        /**
          * Updates the class of the given INPUT element to indicate whether the element contains data or not. Used for
          * example in floating labels.
          * @param {JQuery} input The text input to modify

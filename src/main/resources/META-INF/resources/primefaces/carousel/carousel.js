@@ -86,7 +86,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.totalPages = Math.ceil(this.itemsCount / this.cfg.numVisible);
 
         if(this.cfg.stateful) {
-            this.stateKey = 'carousel-' + this.id;
+            this.stateKey = PrimeFaces.createStorageKey('Carousel', this.id);
 
             this.restoreState();
         }
