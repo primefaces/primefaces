@@ -136,6 +136,30 @@ public class FileUploadUtilsTest {
     }
 
     @Test
+    public void checkPathTraversal_AbsoluteFile() {
+        // Unix systems can start with / but Windows cannot
+        String os = System.getProperty("os.name").toLowerCase();
+
+        // Arrange
+        String relativePath = FileUploadUtilsTest.class.getResource("/test.png").getFile();
+
+        // Act
+        if (os.contains("win")) {
+            try {
+                FileUploadUtils.checkPathTraversal(relativePath);
+                fail("File was absolute path and should have failed");
+            }
+            catch (Exception e) {
+                // Assert
+                assertEquals("Path traversal attempt - absolute path not allowed.", e.getMessage());
+            }
+        } else {
+            String result = FileUploadUtils.checkPathTraversal(relativePath);
+            assertEquals("test.png", result);
+        }
+    }
+
+    @Test
     public void checkPathTraversal_PathTraversal() {
         // Arrange
         String relativePath = "../../test.png";
