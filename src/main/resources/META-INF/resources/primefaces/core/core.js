@@ -214,17 +214,17 @@
         },
 
         /**
-         * Generates a unique key for using in HTML5 local storage by combining the context, view, component, and id.
-         * @param {string} component Name of the component
+         * Generates a unique key for using in HTML5 local storage by combining the context, view, id, and key.
+         * @param {string} key a unique key name such as the component name
          * @param {string} id ID of the component
-         * @return {string} the generated key comprising of context + view + component + id
+         * @return {string} the generated key comprising of context + view + id + key
          */
-        createStorageKey : function(component, id) {
-            var key = PrimeFaces.settings.contextPath.replace(/\//g, '-')
+        createStorageKey : function(key, id) {
+            var sk = PrimeFaces.settings.contextPath.replace(/\//g, '-')
                     + PrimeFaces.settings.viewId.replace(/\//g, '-')
-                    + component + '-' 
-                    + id;
-            return key.toLowerCase();
+                    + id + '-',
+                    + key;
+            return sk.toLowerCase();
         },
 
         /**
