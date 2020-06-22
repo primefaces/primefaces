@@ -25,31 +25,31 @@ if (!PrimeFaces.clientwindow) {
          * @type {string}
          * @readonly
          */
-        TEMP_WINDOW_ID : "temp",
+        TEMP_CLIENT_WINDOW_ID : "temp",
 
         /**
          * 
          * @type {int}
          * @readonly
          */
-        LENGTH_WINDOW_ID : 5,
+        LENGTH_CLIENT_WINDOW_ID : 5,
 
         initialized : false,
-        windowId : null,
+        clientWindowId : null,
         initialRedirect : false,
 
-        init: function(windowId, initialRedirect) {
+        init: function(clientWindowId, initialRedirect) {
             if (PrimeFaces.clientwindow.initialized === true) {
                 return;
             }
 
             this.initialized = true;
 
-            this.windowId = windowId;
+            this.clientWindowId = clientWindowId;
             this.initialRedirect = initialRedirect;
 
             this.cleanupCookies();
-            this.assertWindowId();
+            this.assertClientWindowId();
         },
 
         cleanupCookies : function() {
@@ -59,42 +59,42 @@ if (!PrimeFaces.clientwindow) {
             }
         },
 
-        assertWindowId: function() {
-            var urlWindowId = this.getUrlParameter(window.location.href, this.CLIENT_WINDOW_URL_PARAM);
-            var sessionStorageWindowId = sessionStorage.getItem(this.CLIENT_WINDOW_SESSION_STORAGE);
+        assertClientWindowId: function() {
+            var urlClientWindowId = this.getUrlParameter(window.location.href, this.CLIENT_WINDOW_URL_PARAM);
+            var sessionStorageClientWindowId = sessionStorage.getItem(this.CLIENT_WINDOW_SESSION_STORAGE);
 
             // session story empty -> "open in new tab/window" was used
-            if (sessionStorageWindowId === null) {
+            if (sessionStorageClientWindowId === null) {
                 // initial redirect
                 // -> the windowId is valid - we don't need to a second request
-                if (this.initialRedirect && urlWindowId === this.windowId) {
-                    sessionStorage.setItem(this.CLIENT_WINDOW_SESSION_STORAGE, this.windowId);
+                if (this.initialRedirect && urlClientWindowId === this.clientWindowId) {
+                    sessionStorage.setItem(this.CLIENT_WINDOW_SESSION_STORAGE, this.clientWindowId);
                 }
                 // != initial redirect
                 // -> request a new windowId to avoid multiple tabs with the same windowId
                 else {
-                    this.requestNewWindowId();
+                    this.requestNewClientWindowId();
                 }
             }
             else {
                 // we triggered the windowId recreation last request
-                if (sessionStorageWindowId === this.TEMP_WINDOW_ID) {
-                    sessionStorage.setItem(this.CLIENT_WINDOW_SESSION_STORAGE, this.windowId);
+                if (sessionStorageClientWindowId === this.TEMP_CLIENT_WINDOW_ID) {
+                    sessionStorage.setItem(this.CLIENT_WINDOW_SESSION_STORAGE, this.clientWindowId);
                 }
                 // security check length
-                else if (sessionStorageWindowId.length !== this.LENGTH_WINDOW_ID) {
-                    this.requestNewWindowId();
+                else if (sessionStorageClientWindowId.length !== this.LENGTH_CLIENT_WINDOW_ID) {
+                    this.requestNewClientWindowId();
                 }
                 // session storage windowId doesn't match requested windowId
                 // -> redirect to the same view with current windowId from the window name
-                else if (sessionStorageWindowId !== urlWindowId || sessionStorageWindowId !== this.windowId) {
-                    window.location = this.replaceUrlParam(window.location.href, this.CLIENT_WINDOW_URL_PARAM, sessionStorageWindowId);
+                else if (sessionStorageClientWindowId !== urlClientWindowId || sessionStorageClientWindowId !== this.clientWindowId) {
+                    window.location = this.replaceUrlParam(window.location.href, this.CLIENT_WINDOW_URL_PARAM, sessionStorageClientWindowId);
                 }
             }
         },
         
-        requestNewWindowId : function() {
-            sessionStorage.setItem(this.CLIENT_WINDOW_SESSION_STORAGE, this.TEMP_WINDOW_ID);
+        requestNewClientWindowId : function() {
+            sessionStorage.setItem(this.CLIENT_WINDOW_SESSION_STORAGE, this.TEMP_CLIENT_WINDOW_ID);
             
             // we remove the windowId if available and redirect to the same url again to create a new windowId
             window.location = this.replaceUrlParam(window.location.href, this.CLIENT_WINDOW_URL_PARAM, null);

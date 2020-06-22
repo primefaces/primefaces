@@ -116,7 +116,7 @@ public class BeanValidationMetadataMapper {
                                 try {
                                     // TODO AppScoped instances? CDI?
                                     // instantiate ClientValidationConstraint
-                                    clientValidationConstraint = (ClientValidationConstraint) resolvedBy.newInstance();
+                                    clientValidationConstraint = (ClientValidationConstraint) resolvedBy.getConstructor().newInstance();
                                 }
                                 catch (Exception e) {
                                     throw new FacesException("Could not instantiate ClientValidationConstraint!", e);
