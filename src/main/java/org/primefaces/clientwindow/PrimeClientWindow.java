@@ -25,6 +25,7 @@ package org.primefaces.clientwindow;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -113,9 +114,7 @@ public class PrimeClientWindow extends ClientWindow {
         for (Map.Entry<String, String[]> entry : externalContext.getRequestParameterValuesMap().entrySet()) {
             List<String> requestParametersValues = requestParameters.computeIfAbsent(entry.getKey(), k -> new ArrayList<>(1));
             if (entry.getValue() != null) {
-                for (String value : entry.getValue()) {
-                    requestParametersValues.add(value);
-                }
+                requestParametersValues.addAll(Arrays.asList(entry.getValue()));
             }
         }
 

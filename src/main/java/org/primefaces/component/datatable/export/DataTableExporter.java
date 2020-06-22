@@ -397,7 +397,7 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
         final boolean secure = PrimeRequestContext.getCurrentInstance(context).isSecure();
         Map<String, Object> map = null;
         if (secure) {
-            map = new HashMap<String, Object>(2);
+            map = new HashMap<>(2);
             map.put("secure", secure);
             map.put("sameSite", "Strict");
         }
