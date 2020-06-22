@@ -24,6 +24,8 @@
 package org.primefaces.clientwindow;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -98,6 +100,7 @@ public class PrimeClientWindow extends ClientWindow {
      * We cant use
      * {@link javax.faces.application.ViewHandler#getBookmarkableURL(javax.faces.context.FacesContext, java.lang.String, java.util.Map, boolean)}
      * as the ViewRoot isn't available yet in the {@link FacesContext}.
+     * Same applies for {@link ExternalContext#encodeRedirectURL(java.lang.String, java.util.Map)}.
      *
      * @param context The {@link FacesContext}.
      * @return The initial-redirect URL.
@@ -110,14 +113,69 @@ public class PrimeClientWindow extends ClientWindow {
             url += externalContext.getRequestPathInfo();
         }
 
-        Map<String, List<String>> requestParameters = new HashMap<>();
+        Map<String, List<String>> parameters = new HashMap<>();
         for (Map.Entry<String, String[]> entry : externalContext.getRequestParameterValuesMap().entrySet()) {
-            List<String> requestParametersValues = requestParameters.computeIfAbsent(entry.getKey(), k -> new ArrayList<>(1));
+            List<String> values = parameters.computeIfAbsent(entry.getKey(), k -> new ArrayList<>(1));
             if (entry.getValue() != null) {
-                requestParametersValues.addAll(Arrays.asList(entry.getValue()));
+                values.addAll(Arrays.asList(entry.getValue()));
+            }
+        }
+        parameters.put(ResponseStateManager.CLIENT_WINDOW_URL_PARAM, Arrays.asList(id));
+
+        url = appendParameters(externalContext, url, parameters);
+
+        //only #encodeResourceURL is portable currently
+        url = externalContext.encodeResourceURL(url);
+
+        return url;
+    }
+
+    protected String appendParameters(ExternalContext externalContext, String url, Map<String, List<String>> parameters) {
+        StringBuilder urlBuilder = new StringBuilder(url);
+        boolean existingParameters = url.contains("?");
+
+        for (Map.Entry<String, List<String>> entry : parameters.entrySet()) {
+            for (String value : entry.getValue()) {
+                if (!url.contains(entry.getKey() + "=" + value)
+                        && !url.contains(entry.getKey() + "=" + encodeURLParameterValue(value, externalContext))) {
+                    if (LangUtils.isValueEmpty(entry.getKey()) && LangUtils.isValueEmpty(value)) {
+                        continue;
+                    }
+
+                    if (!existingParameters) {
+                        urlBuilder.append("?");
+                        existingParameters = true;
+                    }
+                    else {
+                        urlBuilder.append("&");
+                    }
+
+                    urlBuilder.append(encodeURLParameterValue(entry.getKey(), externalContext))
+                        .append("=")
+                        .append(encodeURLParameterValue(value, externalContext));
+                }
             }
         }
 
-        return externalContext.encodeRedirectURL(url, requestParameters);
+        return urlBuilder.toString();
+    }
+
+    /**
+     * Encodes the given value using URLEncoder.encode() with the charset returned
+     * from ExternalContext.getResponseCharacterEncoding().
+     * This is exactly how the ExternalContext impl encodes URL parameter values.
+     *
+     * @param value           value which should be encoded
+     * @param externalContext current external-context
+     * @return encoded value
+     */
+    protected String encodeURLParameterValue(String value, ExternalContext externalContext) {
+        try {
+            return URLEncoder.encode(value, externalContext.getResponseCharacterEncoding());
+        }
+        catch (UnsupportedEncodingException e) {
+            throw new UnsupportedOperationException("Encoding type="
+                    + externalContext.getResponseCharacterEncoding() + " not supported", e);
+        }
     }
 }
