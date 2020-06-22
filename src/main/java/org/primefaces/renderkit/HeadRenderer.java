@@ -213,12 +213,12 @@ public class HeadRenderer extends Renderer {
         if (applicationContext.getEnvironment().isAtLeastJsf22()) {
             if (context.getExternalContext().getClientWindow() != null) {
                 ClientWindow clientWindow = context.getExternalContext().getClientWindow();
-                if (clientWindow != null && clientWindow instanceof PrimeClientWindow) {
+                if (clientWindow instanceof PrimeClientWindow) {
 
                     boolean initialRedirect = false;
 
                     Object cookie = PrimeClientWindowUtils.getInitialRedirectCookie(context, clientWindow.getId());
-                    if (cookie != null && cookie instanceof Cookie) {
+                    if (cookie instanceof Cookie) {
                         Cookie servletCookie = (Cookie) cookie;
                         initialRedirect = true;
 
