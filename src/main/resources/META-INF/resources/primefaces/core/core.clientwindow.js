@@ -1,43 +1,66 @@
 if (!PrimeFaces.clientwindow) {
 
     /**
+     * The object with functionality related to multiple window support in PrimeFaces applications.
      * 
      * @namespace
      */
     PrimeFaces.clientwindow = {
 
         /**
-         * 
+         * The name of the URL parameter holding the client window ID.
          * @type {string}
          * @readonly
          */
         CLIENT_WINDOW_URL_PARAM : "jfwid",
 
         /**
-         * 
+         * The key for the session storage entry holding the client window ID.
          * @type {string}
          * @readonly
          */
         CLIENT_WINDOW_SESSION_STORAGE : "pf.windowId",
 
         /**
-         * 
+         * The value of the temporary client window ID, used for requesting a new ID, see
+         * {@link requestNewClientWindowId}.
          * @type {string}
          * @readonly
          */
         TEMP_CLIENT_WINDOW_ID : "temp",
 
         /**
-         * 
-         * @type {int}
+         * The number of characters of the client window ID. Each client window ID must be of this length, or it is
+         * invalid.
+         * @type {number}
          * @readonly
          */
         LENGTH_CLIENT_WINDOW_ID : 5,
 
+        /**
+         * Whether the {@link init} function was called already.
+         * @type {boolean}
+         */
         initialized : false,
+
+        /**
+         * The current window ID, as received from the server. May be `null` when to ID was provided.
+         * @type {null | string}
+         */
         clientWindowId : null,
+
+        /**
+         * Whether the currently loaded page is from the first redirect.
+         * @type {boolean}
+         */
         initialRedirect : false,
 
+        /**
+         * Initializes the client window feature. Usually invoked on page load. This method should only be called once
+         * per page.
+         * @param {string} clientWindowId The current client window ID.
+         * @param {boolean} initialRedirect Whether the currently loaded page is from the first redirect.
+         */
         init: function(clientWindowId, initialRedirect) {
             if (PrimeFaces.clientwindow.initialized === true) {
                 return;
@@ -52,6 +75,9 @@ if (!PrimeFaces.clientwindow) {
             this.assertClientWindowId();
         },
 
+        /**
+         * Makes sure the temporary cookie for the client window ID is expired.
+         */
         cleanupCookies : function() {
             var urlWindowId = this.getUrlParameter(window.location.href, this.CLIENT_WINDOW_URL_PARAM);
             if (urlWindowId) {
@@ -59,6 +85,10 @@ if (!PrimeFaces.clientwindow) {
             }
         },
 
+        /**
+         * Checks whether the client window ID is valid. If not, requests a new client window ID from the server via
+         * reloading the current page.
+         */
         assertClientWindowId: function() {
             var urlClientWindowId = this.getUrlParameter(window.location.href, this.CLIENT_WINDOW_URL_PARAM);
             var sessionStorageClientWindowId = sessionStorage.getItem(this.CLIENT_WINDOW_SESSION_STORAGE);
@@ -93,6 +123,10 @@ if (!PrimeFaces.clientwindow) {
             }
         },
         
+        /**
+         * Expires the current client window ID by replacing it with a temporary, invalid client window ID. Then reloads
+         * the current page to request a new ID from the server.
+         */
         requestNewClientWindowId : function() {
             sessionStorage.setItem(this.CLIENT_WINDOW_SESSION_STORAGE, this.TEMP_CLIENT_WINDOW_ID);
             
@@ -100,6 +134,14 @@ if (!PrimeFaces.clientwindow) {
             window.location = this.replaceUrlParam(window.location.href, this.CLIENT_WINDOW_URL_PARAM, null);
         },
 
+        /**
+         * Returns the value of the URL parameter with the given name. When the URL contains multiple URL parameters
+         * with the same name, the value of the first URL parameter is returned.
+         * @param {string} uri An URL from which to extract an URL parameter.
+         * @param {string} name Name of the URL parameter to retrieve.
+         * @return {string | null} The value of the given URL parameter. Returns the empty string when the URL parameter
+         * is present, but has no value. Returns `null` when no URL parameter with the given name exists.
+         */
         getUrlParameter : function(uri, name) {
              // create an anchor object with the uri and let the browser parse it
              var a = document.createElement('a');
@@ -121,6 +163,16 @@ if (!PrimeFaces.clientwindow) {
              return null;
         },
 
+        /**
+         * Given an URL, removes all URL parameters with the given name, adds a new URL parameter with the given value,
+         * and returns the new URL with the replaced parameter. If the URL contains multiple URL parameters with the
+         * same name, they are all removed.
+         * @param {string} uri The URL for which to change an URL parameter.
+         * @param {string} parameterName Name of the URL parameter to change.
+         * @param {string | null} [parameterValue] New value for the URL parameter. If `null` or not given, the empty
+         * string is used.
+         * @return {string} The given URL, but with value of the given URL parameter changed to the new value.
+         */
         replaceUrlParam : function(uri, parameterName, parameterValue) {
             var a = document.createElement('a');
             a.href = uri;
@@ -174,6 +226,11 @@ if (!PrimeFaces.clientwindow) {
             return a.href;
         },
 
+        /**
+         * Expires the cookie with the given name by setting a cookie with the appropriate `max-age` and `expires`
+         * settings.
+         * @param {string} cookieName Name of the cookie to expire.
+         */
         expireCookie : function(cookieName) {
             var date = new Date();
             date.setTime(date.getTime() - (10 * 24 * 60 * 60 * 1000)); // - 10 day
@@ -182,4 +239,4 @@ if (!PrimeFaces.clientwindow) {
             document.cookie = cookieName + "=" + expires + "; path=/";
         }
     };
-}
+}	

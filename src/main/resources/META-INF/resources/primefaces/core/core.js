@@ -10,6 +10,7 @@
      * of the following entries:
      * 
      * - {@link PrimeFaces.ajax} The AJAX module with functionality for sending AJAX requests
+     * - {@link PrimeFaces.clientwindow} The client window module for multiple window support in PrimeFaces applications.
      * - {@link PrimeFaces.csp} The  CSP module for the HTTP Content-Security-Policy (CSP) policy `script-src` directive.
      * - {@link PrimeFaces.dialog} The dialog module with functionality related to the dialog framework
      * - {@link PrimeFaces.env} The environment module with information about the current browser
