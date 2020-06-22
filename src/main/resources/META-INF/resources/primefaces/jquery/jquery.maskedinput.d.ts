@@ -1,5 +1,5 @@
 /**
- * Namespace for the masked input JQueryUI plugin.
+ * Namespace for the Input Mask plugin.
  * 
  * It allows a user to more easily enter fixed width input where you would like them to enter the data in a certain
  * format (dates,phone numbers, etc).
@@ -14,18 +14,11 @@ declare namespace JQueryMaskedInput {
      * - `9` - Represents a numeric character (0-9)
      * - `*` - Represents an alphanumeric character (A-Z,a-z,0-9)
      * 
-     * You can have part of your mask be optional. Anything listed after `?` within the mask is considered optional user
-     * input. The common example for this is phone number `+` optional extension.
+     * You can have part of your mask be optional. Anything listed in between `[` and `]` within the mask is considered 
+     * optional user input. The common example for this is phone number `+` optional extension.
      * 
-     * You can also supply your own mask definitions by extending the `$.mask.definitions` object.
-     * 
-     * Examples for valid masks:
-     * 
-     * - Date: `99/99/9999`
-     * - Phone: `(999) 999-9999`
-     * - Phone + Ext: `(999) 999-9999? x99999` 
-     * - Product Key: `a*-999-a999`
-     * - Eye Script: `~9.99 ~9.99 999`	
+     * You can also supply your own mask definitions and aliases by setting defauls.
+     * See: https://github.com/RobinHerbots/Inputmask#set-defaults
      */
     export type MaskString = string;
     /**
@@ -33,10 +26,24 @@ declare namespace JQueryMaskedInput {
      */
     export interface MaskSettings {
         /**
-         * If `true`, the input field will be cleared when the user leaves the input field and did not enter some input
-         * that completed the mask. If `false`, the partially entered text will remaing in the input field.
+         * With an alias you can define a complex mask definition and call it by using an alias name. So this is mainly
+         * to simplify the use of your masks. Some aliases found in the extensions are: email, currency, decimal, 
+         * integer, date, datetime, dd/mm/yyyy, etc.
          */
-        autoclear: boolean;
+        alias: string;
+       /**
+         * When using an alias like `datetime` its the format such as `dd\mm\yyyy`.
+         */
+        inputFormat: string;
+       /**
+         * When not using an alias this is the mask to use on the field such as `99-999-9999`.
+         */
+        mask: string;
+        /**
+         * If `true`, the input field will be cleared when the user leaves the input field and did not enter some input
+         * that completed the mask. If `false`, the partially entered text will remaining in the input field.
+         */
+        clearIncomplete: boolean;
         /**
          * Placeholder string that is shown when no text is entered in the input field.
          */
@@ -44,68 +51,25 @@ declare namespace JQueryMaskedInput {
         /**
          * Callback that is invoked once the mask has been completed (every character required by the mask was entered).
          */
-        completed(this: JQuery): void;
+        oncomplete(this: JQuery): void;
+        /**
+         * Callback that is invoked once the input field is cleared.
+         */
+        oncleared(this: JQuery): void;
         /**
          * Callback that is invoked when the value of the input has changed. 
          * @param event Event that triggered the change.
          */
         onChange(this: JQuery, event: JQuery.Event): void;
     }
-    /**
-     * Global settings for the masked input plugin available in `$.mask`. Also contains the default values for the
-     * `MaskSettings`.
-     */
-    export interface GlobalSettings extends MaskSettings {
-        /**
-         * An object with custom mask character definition. The key must be a (single) character used in a mask
-         * definition. The value must be a RegExp string (converted to a RegExp via `new RegExp`) and match those
-         * characters to which the mask character applies. For example, default definitions are as follows:
-         * 
-         * ```javascript
-         * {
-         *   "9": "[0-9]",
-         *   "a": "[A-Za-z]",
-         *   "*": "[A-Za-z0-9]",
-         * }
-         * ```
-         */
-        definitions: Record<string, string>;
-        /**
-         * Name of the HTML data attribute used for storing information related to the masked input in the DOM element.
-         */
-        dataName: string;
-    }
 }
 
 interface JQuery {
     /**
-     * Selects the text at the given range. If end is not given, just moves the cursor to the start position,
-     * @param begin 0-based index of the start of the range, inclusive.
-     * @param end 0-based index of the end of the range, exclusive.
-     * @return this for chaining.
-     */
-    caret(begin: number, end?: number): this;
-    /**
-     * Removes the mask from the input field, returning it to the previous state before the masked input plugin was
-     * initialized.
-     * @return this for chaining.
-     */
-    unmask(): this;
-    /**
      * Sets up the masked input plugin on this INPUT element. The user must now enter data in the given mask format.
      * 
-     * @param mask Mask to use for the input, such as `99/99/9999` or `(999) 999-9999? x99999`.
      * @param settings Additional settings for the mask.
      * @return this for chaining.
      */
-    mask(mask: JQueryMaskedInput.MaskString, settings?: Partial<JQueryMaskedInput.MaskSettings>): this;
-
-}
-
-interface JQueryStatic {
-    /**
-     * Global settings for the masked input plugin available in `$.mask`. Also contains the default values for the
-     * `MaskSettings`.
-     */
-    mask: JQueryMaskedInput.GlobalSettings;
+    inputmask(settings?: Partial<JQueryMaskedInput.MaskSettings>): this;
 }

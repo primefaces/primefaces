@@ -93,10 +93,10 @@ ajax selection and more.
 | tabindex | null | Integer | Position of the input element in the tabbing order.
 | title | null | String | Advisory tooltip informaton.
 | beforeShowDay | null | String | Client side callback to execute before displaying a date, used to customize date display.
-| mask | null | String | Applies a mask using the pattern.
 | timeControlType | slider | String | Defines the type of element to use for time picker, valid values are "slider" and "select".
 | beforeShow | null | String | Callback to execute before displaying calendar, element and calendar instance are passed as parameters
-| maskSlotChar | null | String | Placeholder in mask template.
+| mask | null | String | Applies a mask using the pattern.
+| maskSlotChar | '_' | String | Placeholder in mask template.  Default to `_`.
 | maskAutoClear | true | Boolean | Clears the field on blur when incomplete input is entered
 | timeControlObject | null | String | Client side object to use in custom timeControlType.
 | timeInput | false | Boolean | Allows direct input in time field.

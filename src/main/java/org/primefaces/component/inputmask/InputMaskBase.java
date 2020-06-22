@@ -78,7 +78,7 @@ public abstract class InputMaskBase extends HtmlInputText implements Widget {
     }
 
     public String getSlotChar() {
-        return (String) getStateHelper().eval(PropertyKeys.slotChar, null);
+        return (String) getStateHelper().eval(PropertyKeys.slotChar, "_");
     }
 
     public void setSlotChar(String slotChar) {

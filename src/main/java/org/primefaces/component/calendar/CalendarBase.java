@@ -316,7 +316,7 @@ public abstract class CalendarBase extends UICalendar implements Widget, InputHo
     }
 
     public String getMaskSlotChar() {
-        return (String) getStateHelper().eval(PropertyKeys.maskSlotChar, null);
+        return (String) getStateHelper().eval(PropertyKeys.maskSlotChar, "_");
     }
 
     public void setMaskSlotChar(String maskSlotChar) {

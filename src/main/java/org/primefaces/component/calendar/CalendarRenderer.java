@@ -172,7 +172,7 @@ public class CalendarRenderer extends BaseCalendarRenderer {
         if (mask != null && !mask.equals("false")) {
             String patternTemplate = calendar.getPattern() == null ? pattern : calendar.getPattern();
             String maskTemplate = (mask.equals("true")) ? calendar.convertPattern(patternTemplate) : mask;
-            wb.attr("mask", maskTemplate).attr("maskSlotChar", calendar.getMaskSlotChar(), null).attr("maskAutoClear", calendar.isMaskAutoClear(), true);
+            wb.attr("mask", maskTemplate).attr("maskSlotChar", calendar.getMaskSlotChar(), "_").attr("maskAutoClear", calendar.isMaskAutoClear(), true);
         }
 
         encodeClientBehaviors(context, calendar);
