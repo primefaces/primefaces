@@ -136,25 +136,28 @@ public class PrimeClientWindow extends ClientWindow {
 
         for (Map.Entry<String, List<String>> entry : parameters.entrySet()) {
             String name = entry.getKey();
+
             for (String value : entry.getValue()) {
-                if (!url.contains(name + "=" + value)
-                        && !url.contains(name + "=" + encodeURLParameterValue(value, externalContext))) {
-                    if (LangUtils.isValueEmpty(name) && LangUtils.isValueEmpty(value)) {
-                        continue;
-                    }
-
-                    if (!existingParameters) {
-                        urlBuilder.append("?");
-                        existingParameters = true;
-                    }
-                    else {
-                        urlBuilder.append("&");
-                    }
-
-                    urlBuilder.append(encodeURLParameterValue(name, externalContext))
-                        .append("=")
-                        .append(encodeURLParameterValue(value, externalContext));
+                if (LangUtils.isValueEmpty(name) && LangUtils.isValueEmpty(value)) {
+                    continue;
                 }
+
+                if (url.contains(name + "=" + value)
+                        || url.contains(name + "=" + encodeURLParameterValue(value, externalContext))) {
+                    continue;
+                }
+
+                if (!existingParameters) {
+                    urlBuilder.append("?");
+                    existingParameters = true;
+                }
+                else {
+                    urlBuilder.append("&");
+                }
+
+                urlBuilder.append(encodeURLParameterValue(name, externalContext))
+                    .append("=")
+                    .append(encodeURLParameterValue(value, externalContext));
             }
         }
 
