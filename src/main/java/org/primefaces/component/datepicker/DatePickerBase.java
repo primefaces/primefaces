@@ -24,6 +24,7 @@
 package org.primefaces.component.datepicker;
 
 import java.util.List;
+
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.UICalendar;
@@ -440,7 +441,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
     public String calculateTimeOnlyPattern() {
         if (timeOnlyPattern == null) {
             boolean ampm = "12".equals(getHourFormat());
-            timeOnlyPattern = ampm ? "KK" : "HH";
+            timeOnlyPattern = ampm ? "hh" : "HH";
             timeOnlyPattern += ":mm";
             if (isShowSeconds()) {
                 timeOnlyPattern += ":ss";
