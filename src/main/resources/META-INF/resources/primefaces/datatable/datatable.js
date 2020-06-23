@@ -529,7 +529,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             PrimeFaces.clearSelection();
 
-            let unsorting = $this.cfg.allowUnsorting || $this.cfg.allowUnsorting == undefined;
+            var unsorting = $this.cfg.allowUnsorting || $this.cfg.allowUnsorting == undefined;
 
             var columnHeader = $(this),
             sortOrderData = columnHeader.data('sortorder'),
