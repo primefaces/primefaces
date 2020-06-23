@@ -28,6 +28,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,17 +42,10 @@ import org.primefaces.util.LangUtils;
 public class PrimeClientWindow extends ClientWindow {
 
     private String id;
-    private Map<String, String> queryParamsMap;
 
     @Override
     public Map<String, String> getQueryURLParameters(FacesContext context) {
-        if (queryParamsMap == null) {
-            if (id != null) {
-                queryParamsMap = new HashMap<>(2, 1);
-                queryParamsMap.put(ResponseStateManager.CLIENT_WINDOW_URL_PARAM, id);
-            }
-        }
-        return queryParamsMap;
+        return Collections.emptyMap();
     }
 
     @Override
