@@ -30,6 +30,7 @@ import java.time.format.ResolverStyle;
 import java.util.Locale;
 
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
@@ -313,22 +314,12 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder, T
         }
     }
 
-    /*
-    @Override
-    public Converter getConverter() {
-        Converter converter = super.getConverter();
-
-        //TODO: Why does it matter whether Client-Side-Validation is enabled?
-        if (converter == null && PrimeApplicationContext.getCurrentInstance(getFacesContext()).getConfig().isClientSideValidationEnabled()) {
-            DateTimeConverter con = new DateTimeConverter();
-            con.setPattern(calculatePattern());
-            con.setTimeZone(TimeZone.getTimeZone(CalendarUtils.calculateZoneId(this.getTimeZone())));
-            con.setLocale(calculateLocale(getFacesContext()));
-
-            return con;
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public void validateMinMax() {
+        Comparable minDate = (Comparable) getMindate();
+        Comparable maxDate = (Comparable) getMaxdate();
+        if (minDate != null && maxDate != null && maxDate.compareTo(minDate) == -1) {
+            throw new FacesException("Minimum date must be less than maximum date.");
         }
-
-        return converter;
     }
-    */
 }
