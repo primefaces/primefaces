@@ -7,7 +7,7 @@
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * @extends {JQueryMaskedInput.MaskSettings} cfg
+ * @extends {Inputmask.Options} cfg
  * 
  * @prop {string} cfg.mask The mask template to use.
  */
@@ -27,7 +27,6 @@ PrimeFaces.widget.InputMask = PrimeFaces.widget.BaseWidget.extend({
                 this.cfg.onChange = originalOnchange;
                 this.jq.prop('onchange', null);
             }
-            
             this.jq.inputmask('remove').inputmask(this.cfg);
         }
 
