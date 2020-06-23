@@ -26,8 +26,11 @@ package org.primefaces.clientwindow;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+
+import org.primefaces.util.ResourceUtils;
 
 public class PrimeClientWindowUtils {
 
@@ -38,21 +41,24 @@ public class PrimeClientWindowUtils {
     }
 
     public static void addInitialRedirectCookie(FacesContext context, String windowId) {
-        Map<String, Object> properties = new HashMap();
+        Map<String, Object> properties = new HashMap<>(4);
         properties.put("path", "/");
         properties.put("maxAge", 30);
-
-        context.getExternalContext().addResponseCookie(INITIAL_REDIRECT_COOKIE_PREFIX + windowId, "true", properties);
+        ResourceUtils.addResponseCookie(context, getCookieName(windowId), "true", properties);
     }
 
     public static Object getInitialRedirectCookie(FacesContext context, String windowId) {
         Map<String, Object> cookieMap = context.getExternalContext().getRequestCookieMap();
-
-        if (cookieMap.containsKey(INITIAL_REDIRECT_COOKIE_PREFIX + windowId)) {
-            return cookieMap.get(INITIAL_REDIRECT_COOKIE_PREFIX + windowId);
+        String cookie = getCookieName(windowId);
+        if (cookieMap.containsKey(cookie)) {
+            return cookieMap.get(cookie);
         }
 
         return null;
+    }
+
+    public static String getCookieName(String windowId) {
+        return INITIAL_REDIRECT_COOKIE_PREFIX + windowId;
     }
 
     public static String secureWindowId(String windowId) {

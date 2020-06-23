@@ -24,10 +24,7 @@
 package org.primefaces.util;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 import javax.faces.FacesException;
 import javax.faces.application.Application;
@@ -36,6 +33,8 @@ import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
+
+import org.primefaces.context.PrimeRequestContext;
 
 public class ResourceUtils {
 
@@ -57,6 +56,30 @@ public class ResourceUtils {
 
             return context.getExternalContext().encodeResourceURL(url);
         }
+    }
+
+    /**
+     * Adds the cookie represented by the arguments to the response. If the current HTTP conversation is secured
+     * over SSL (e.g. https:) then the cookie is set to secure=true and sameSite=Strict.
+     *
+     * @param context the FacesContext contains the External context we add the cookie to
+     * @param name To be passed as the first argument to the <code>Cookie</code> constructor.
+     * @param value To be passed as the second argument to the <code>Cookie</code> constructor.
+     * @param properties A <code>Map</code> containing key/value pairs to be passed
+     * as arguments to the setter methods as described above.
+     */
+    public static void addResponseCookie(FacesContext context, String name, String value, Map<String, Object> properties) {
+        if (properties == null) {
+            properties = new HashMap<>(2);
+        }
+
+        final boolean secure = PrimeRequestContext.getCurrentInstance(context).isSecure();
+        if (secure) {
+            properties.put("secure", secure);
+            properties.put("sameSite", "Strict");
+        }
+
+        context.getExternalContext().addResponseCookie(name, value, properties);
     }
 
     public static String appendCacheBuster(String url, boolean cache) {
