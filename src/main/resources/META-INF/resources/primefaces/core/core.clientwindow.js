@@ -164,7 +164,7 @@ if (!PrimeFaces.clientwindow) {
         },
 
         /**
-         * Given an URL, removes all URL parameters with the given name, adds a new URL parameter with the given value,
+         * Given a URL, removes all URL parameters with the given name, adds a new URL parameter with the given value,
          * and returns the new URL with the replaced parameter. If the URL contains multiple URL parameters with the
          * same name, they are all removed.
          * @param {string} uri The URL for which to change an URL parameter.
@@ -232,11 +232,7 @@ if (!PrimeFaces.clientwindow) {
          * @param {string} cookieName Name of the cookie to expire.
          */
         expireCookie : function(cookieName) {
-            var date = new Date();
-            date.setTime(date.getTime() - (10 * 24 * 60 * 60 * 1000)); // - 10 day
-            var expires = ";max-age=0;expires=" + date.toGMTString();
-
-            document.cookie = cookieName + "=" + expires + "; path=/";
+            PrimeFaces.setCookie(cookieName, 'true', { path: '/', expires: -10, 'max-age': '0' });
         }
     };
 }	

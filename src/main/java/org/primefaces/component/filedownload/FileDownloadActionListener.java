@@ -44,6 +44,7 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
+import org.primefaces.util.ResourceUtils;
 
 public class FileDownloadActionListener implements ActionListener, StateHolder {
 
@@ -92,11 +93,11 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
                 }
             }
 
-            Map<String, Object> cookieOptions = new HashMap<>();
+            Map<String, Object> cookieOptions = new HashMap<>(4);
             cookieOptions.put("path", LangUtils.isValueBlank(externalContext.getRequestContextPath())
                     ? "/"
                     : externalContext.getRequestContextPath()); // Always add cookies to context root; see #3108
-            externalContext.addResponseCookie(monitorKeyCookieName, "true", cookieOptions);
+            ResourceUtils.addResponseCookie(context, monitorKeyCookieName, "true", cookieOptions);
 
             if (content.getContentLength() != null) {
                 externalContext.setResponseContentLength(content.getContentLength());
