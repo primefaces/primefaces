@@ -18,7 +18,7 @@
  * @prop {JQuery} prevNav The DOM element for the button to switch to the previous carousel item.
  * @prop {JQuery} responsiveDropdown The DOM element for the responsive dropdown for selecting the item show.
  * @prop {JQuery} stateholder The DOM element for the hidden input storing the currently visible carousel items.
- * @prop {string} stateKey The key of the cookie that stores the current carousel state.
+ * @prop {string} stateKey The key of the HTML5 Local Storage that stores the current carousel state.
  * @prop {JQuery} toggler The DOM element for the carousel toggler.
  * @prop {JQuery} toggleableContent The DOM element for the toggleable content of the carousel.
  * @prop {JQuery} toggleStateHolder The DOM element for the hidden input with the current toggle state.
@@ -86,7 +86,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.totalPages = Math.ceil(this.itemsCount / this.cfg.numVisible);
 
         if(this.cfg.stateful) {
-            this.stateKey = 'carousel-' + this.id;
+            this.stateKey = PrimeFaces.createStorageKey(this.id, 'Carousel');
 
             this.restoreState();
         }
@@ -441,7 +441,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     restoreState: function() {
-        var carouselStateAsString = PrimeFaces.getCookie(this.stateKey) || "first: null, collapsed: null";
+        var carouselStateAsString = localStorage.getItem(this.stateKey) || "first: null, collapsed: null";
         this.carouselState = PrimeFaces.csp.evalResult('({' + carouselStateAsString + '})');
 
         this.first = this.carouselState.first||this.first;
@@ -456,7 +456,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Saves the current state of this carousel (current page etc.) in a cookie.
+     * Saves the current state of this carousel (current page etc.) in HTML5 Local Store.
      * @private
      */
     saveState: function() {
@@ -466,7 +466,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             carouselStateAsString += ", collapsed: " + this.toggleStateHolder.val();
         }
 
-        PrimeFaces.setCookie(this.stateKey, carouselStateAsString, {path:'/'});
+        localStorage.setItem(this.stateKey, carouselStateAsString);
     },
 
     /**
@@ -475,7 +475,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
      */
     clearState: function() {
         if(this.cfg.stateful) {
-            PrimeFaces.deleteCookie(this.stateKey, {path:'/'});
+            localStorage.removeItem(this.stateKey);
         }
     }
 

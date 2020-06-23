@@ -10,7 +10,7 @@
  * @prop {JQuery} menuitemLinks The DOM elements for the menu items inside each accordion panel that can be clicked.
  * @prop {JQuery} menuContent The DOM elements for the content container of each accordion panel.
  * @prop {JQuery} menuText The DOM elements for the text of each menu entry in the accordion panels.
- * @prop {string} stateKey Cookie key used to store the UI state (expanded items) in a cookie. 
+ * @prop {string} stateKey Key used to store the UI state (expanded items) in an HTML5 Local Store. 
  * @prop {JQuery} treeLinks  The DOM elements for the clickable links with a sub menu that is shown upon clicking the
  * link. 
  * 
@@ -20,7 +20,7 @@
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * 
  * @prop {boolean} cfg.multiple Whether multiple accordion menu items are allowed to be expanded at the same time.
- * @prop {boolean} cfg.stateful Whether the UI state (expanded menu items) should be persisted in a cookie.
+ * @prop {boolean} cfg.stateful Whether the UI state (expanded menu items) should be persisted in an HTML5 Local Store.
  */
 PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
 
@@ -48,7 +48,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         this.bindEvents();
 
         if(this.cfg.stateful) {
-            this.stateKey = 'panelMenu-' + this.id;
+            this.stateKey = PrimeFaces.createStorageKey(this.id, 'PanelMenu');
         }
 
         this.restoreState();
@@ -419,7 +419,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Writes the UI state of this panel menu to a cookie. Used to preserve the state during AJAX updates as well as
+     * Writes the UI state of this panel menu to an HTML5 Local Store. Used to preserve the state during AJAX updates as well as
      * between page reloads.
      * @private
      */
@@ -427,12 +427,12 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.stateful) {
             var expandedNodeIds = this.expandedNodes.join(',');
 
-            PrimeFaces.setCookie(this.stateKey, expandedNodeIds, {path:'/'});
+            localStorage.setItem(this.stateKey, expandedNodeIds);
         }
     },
 
     /**
-     * Read the UI state of this panel menu stored in a cookie and reapplies to this panel menu. Used to preserve the
+     * Read the UI state of this panel menu stored in an HTML5 Local Store and reapplies to this panel menu. Used to preserve the
      * state during AJAX updates as well as between page reloads.
      * @private
      */
@@ -440,7 +440,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         var expandedNodeIds = null;
 
         if(this.cfg.stateful) {
-            expandedNodeIds = PrimeFaces.getCookie(this.stateKey);
+            expandedNodeIds = localStorage.getItem(this.stateKey);
         }
 
         if(expandedNodeIds) {
@@ -471,7 +471,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Callback invoked after a menu item was collapsed. Saves the current UI state in a cookie.
+     * Callback invoked after a menu item was collapsed. Saves the current UI state in an HTML5 Local Store.
      * @param {JQuery} element Element that was collapsed.
      * @private
      */
@@ -486,7 +486,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Callback invoked after a menu item was expanded. Saves the current UI state in a cookie.
+     * Callback invoked after a menu item was expanded. Saves the current UI state in an HTML5 Local Store.
      * @param {JQuery} element Element that was expanded.
      * @private
      */
@@ -497,12 +497,12 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Deletes the UI state of this panel menu stored in a cookie.
+     * Deletes the UI state of this panel menu stored in an HTML5 Local Store.
      * @private
      */
     clearState: function() {
         if(this.cfg.stateful) {
-            PrimeFaces.deleteCookie(this.stateKey, {path:'/'});
+            localStorage.removeItem(this.stateKey);
         }
     },
 

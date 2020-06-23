@@ -187,7 +187,6 @@
                 cfg.secure = true;
                 cfg.sameSite = 'Strict';
             }
-           
             Cookies.set(name, value, cfg);
         },
 
@@ -213,6 +212,20 @@
             }
 
             return (cookieEnabled);
+        },
+
+        /**
+         * Generates a unique key for using in HTML5 local storage by combining the context, view, id, and key.
+         * @param {string} id ID of the component
+         * @param {string} key a unique key name such as the component name
+         * @return {string} the generated key comprising of context + view + id + key
+         */
+        createStorageKey : function(id, key) {
+            var sk = PrimeFaces.settings.contextPath.replace(/\//g, '-')
+                    + PrimeFaces.settings.viewId.replace(/\//g, '-')
+                    + id + '-',
+                    + key;
+            return sk.toLowerCase();
         },
 
         /**
