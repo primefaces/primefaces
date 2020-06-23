@@ -48,7 +48,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         this.bindEvents();
 
         if(this.cfg.stateful) {
-            this.stateKey = PrimeFaces.createStorageKey('PanelMenu', this.id);
+            this.stateKey = PrimeFaces.createStorageKey(this.id, 'PanelMenu');
         }
 
         this.restoreState();

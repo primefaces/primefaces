@@ -33,7 +33,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
 
         if(this.cfg.toggleable) {
             this.collapsedIds = [];
-            this.stateKey = PrimeFaces.createStorageKey('PlainMenu', this.id);
+            this.stateKey = PrimeFaces.createStorageKey(this.id, 'PlainMenu');
             this.restoreState();
         }
     },
