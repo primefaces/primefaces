@@ -223,7 +223,7 @@
         createStorageKey : function(id, key) {
             var sk = PrimeFaces.settings.contextPath.replace(/\//g, '-')
                     + PrimeFaces.settings.viewId.replace(/\//g, '-')
-                    + id + '-',
+                    + id + '-'
                     + key;
             return sk.toLowerCase();
         },
