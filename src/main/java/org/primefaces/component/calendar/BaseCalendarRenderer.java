@@ -84,7 +84,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         String widgetValue = uicalendar.isTimeOnly() ? CalendarUtils.getTimeOnlyValueAsString(context, uicalendar) : markupValue;
 
         // #6068 ensure min is before max
-        uicalendar.validateMinMax();
+        uicalendar.validateMinMax(context);
 
         encodeMarkup(context, uicalendar, markupValue);
         encodeScript(context, uicalendar, widgetValue);

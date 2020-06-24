@@ -315,11 +315,13 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder, T
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public void validateMinMax() {
+    public void validateMinMax(FacesContext context) {
         Comparable minDate = (Comparable) getMindate();
         Comparable maxDate = (Comparable) getMaxdate();
         if (minDate != null && maxDate != null && maxDate.compareTo(minDate) == -1) {
-            throw new FacesException("Minimum date must be less than maximum date.");
+            String id = getClientId(context);
+            String component = this.getClass().getSimpleName();
+            throw new FacesException(component + " : \"" + id + "\" minimum date must be less than maximum date.");
         }
     }
 }
