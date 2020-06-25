@@ -420,7 +420,7 @@ public class DiagramRenderer extends CoreRenderer {
                         requestMap.put(var, data);
                         elementFacet.encodeAll(context);
                     }
-                    else if (data != null) {
+                    else if (data != null && elementFacet == null) {
                         writer.writeText(data, null);
                     }
                     writer.endElement("div");
