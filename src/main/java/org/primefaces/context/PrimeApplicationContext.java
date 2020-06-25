@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -149,9 +149,11 @@ public class PrimeApplicationContext {
             }
             else {
                 try {
-                    return (CacheProvider) LangUtils.loadClassForName(cacheProviderConfigValue).newInstance();
+                    Class<? extends CacheProvider> cacheProviderClazz = LangUtils.loadClassForName(cacheProviderConfigValue);
+                    return cacheProviderClazz.getConstructor().newInstance();
                 }
-                catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+                catch (NoSuchMethodException | ClassNotFoundException | InstantiationException
+                        | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                     throw new FacesException(ex);
                 }
             }

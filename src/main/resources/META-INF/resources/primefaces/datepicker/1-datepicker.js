@@ -61,9 +61,10 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
         //events
         this.bindDateSelectListener();
+        this.bindClearButtonListener();
         this.bindViewChangeListener();
         this.bindCloseListener();
-        
+
         // is touch support enabled
         var touchEnabled = PrimeFaces.env.isTouchable(this.cfg) && !this.input.attr("readonly") && this.cfg.showIcon;
 
@@ -208,6 +209,18 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                     _self.refocusInput = false;
                 }, 10);
             }
+        };
+    },
+
+    /**
+     * Sets up the event listener for when the Clear button is selected.
+     * @private
+     */
+    bindClearButtonListener: function() {
+        var $this = this;
+
+        this.cfg.onClearButtonClick = function(event) {
+            $this.callBehavior('dateSelect');
         };
     },
 

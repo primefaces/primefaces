@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,12 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.lifecycle.ClientWindow;
 import javax.faces.render.Renderer;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import org.primefaces.clientwindow.PrimeClientWindowUtils;
+import org.primefaces.clientwindow.PrimeClientWindow;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.util.ComponentUtils;
@@ -84,7 +89,7 @@ public class HeadRenderer extends Renderer {
             theme = (String) ve.getValue(elContext);
         }
         else {
-            theme = "aristo";   //default
+            theme = "nova-light";   //default
         }
 
         if (theme != null && !theme.equals("none")) {
@@ -203,6 +208,30 @@ public class HeadRenderer extends Renderer {
 
         if (projectStage != ProjectStage.Production) {
             writer.write("PrimeFaces.settings.projectStage='" + projectStage.toString() + "';");
+        }
+
+        if (applicationContext.getEnvironment().isAtLeastJsf22()) {
+            if (context.getExternalContext().getClientWindow() != null) {
+                ClientWindow clientWindow = context.getExternalContext().getClientWindow();
+                if (clientWindow instanceof PrimeClientWindow) {
+
+                    boolean initialRedirect = false;
+
+                    Object cookie = PrimeClientWindowUtils.getInitialRedirectCookie(context, clientWindow.getId());
+                    if (cookie instanceof Cookie) {
+                        Cookie servletCookie = (Cookie) cookie;
+                        initialRedirect = true;
+
+                        // expire/remove cookie
+                        servletCookie.setMaxAge(0);
+                        ((HttpServletResponse) context.getExternalContext().getResponse()).addCookie(servletCookie);
+                    }
+                    writer.write(
+                            String.format("PrimeFaces.clientwindow.init('%s', %s);",
+                                    PrimeClientWindowUtils.secureWindowId(clientWindow.getId()),
+                                    initialRedirect));
+                }
+            }
         }
 
         writer.write("}");

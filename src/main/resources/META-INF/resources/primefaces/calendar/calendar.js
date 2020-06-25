@@ -71,6 +71,7 @@
  * @prop {boolean} cfg.popup `true` if `mode` is set to `popup`.
  * @prop {PrimeFaces.widget.Calendar.PreShowCallback} cfg.preShow Callback invoked before the calendar is opened.
  * @prop {PrimeFaces.widget.Calendar.PreShowDayCallback} cfg.preShowDay Callback invoked before a day is shown.
+ * @prop {boolean} cfg.readonly Makes the calendar readonly when set to true.
  * @prop {number} cfg.second Default for second selection, if no date is given. Default is 0.
  * @prop {number} cfg.secondMax Maximum boundary for second selection.
  * @prop {number} cfg.secondMin Minimum boundary for second selection.
@@ -152,6 +153,11 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                     return false;
                 }
 
+                // #4119 do not popup if readonly
+                if ($this.cfg.readonly) {
+                    return false;
+                }
+
                 //display on top
                 setTimeout(function() {
                     $('#ui-datepicker-div').addClass('ui-input-overlay').css('z-index', ++PrimeFaces.zindex);
@@ -214,7 +220,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                 triggerButton.attr('title', title);
             }
 
-            if(this.cfg.disabled) {
+            if(this.cfg.disabled || this.readonly) {
                 triggerButton.addClass('ui-state-disabled');
             }
 

@@ -10,6 +10,7 @@
      * of the following entries:
      * 
      * - {@link PrimeFaces.ajax} The AJAX module with functionality for sending AJAX requests
+     * - {@link PrimeFaces.clientwindow} The client window module for multiple window support in PrimeFaces applications.
      * - {@link PrimeFaces.csp} The  CSP module for the HTTP Content-Security-Policy (CSP) policy `script-src` directive.
      * - {@link PrimeFaces.dialog} The dialog module with functionality related to the dialog framework
      * - {@link PrimeFaces.env} The environment module with information about the current browser
@@ -171,27 +172,31 @@
          * @return {string | undefined} The value of the given cookie, or `undefined` if no such cookie exists
          */
         getCookie : function(name) {
-            return $.cookie(name);
+            return Cookies.get(name);
         },
 
         /**
-         * Sets the value of a given cookie.
+         * Sets the value of a given cookie. If using HTTPS will set secure=true and SameSite=Strict.
          * @param {string} name Name of the cookie to set
          * @param {string} value Value to set 
-         * @param {Partial<JQueryCookie.Options>} [cfg] Configuration for this cookie: when it expires, its
+         * @param {Partial<Cookies.CookieAttributes>} [cfg] Configuration for this cookie: when it expires, its
          * paths and domain and whether it is secure cookie.
          */
         setCookie : function(name, value, cfg) {
-            $.cookie(name, value, cfg);
+            if (location.protocol === 'https:') {
+                cfg.secure = true;
+                cfg.sameSite = 'Strict';
+            }
+            Cookies.set(name, value, cfg);
         },
 
         /**
          * Deletes the given cookie.
          * @param {string} name Name of the cookie to delete 
-         * @param {Partial<JQueryCookie.Options>} [cfg] The cookie configuration used to set the cookie. 
+         * @param {Partial<Cookies.CookieAttributes>} [cfg] The cookie configuration used to set the cookie. 
          */
         deleteCookie: function(name, cfg) {
-            $.removeCookie(name, cfg);
+            Cookies.remove(name, cfg);
         },
 
         /**
@@ -207,6 +212,20 @@
             }
 
             return (cookieEnabled);
+        },
+
+        /**
+         * Generates a unique key for using in HTML5 local storage by combining the context, view, id, and key.
+         * @param {string} id ID of the component
+         * @param {string} key a unique key name such as the component name
+         * @return {string} the generated key comprising of context + view + id + key
+         */
+        createStorageKey : function(id, key) {
+            var sk = PrimeFaces.settings.contextPath.replace(/\//g, '-')
+                    + PrimeFaces.settings.viewId.replace(/\//g, '-')
+                    + id + '-'
+                    + key;
+            return sk.toLowerCase();
         },
 
         /**
@@ -449,7 +468,7 @@
         /**
          * Changes the current theme to the given theme (by exchanging CSS files). Requires that the theme was
          * installed and is available.
-         * @param {string} newTheme The new theme, eg. `aristo`, `nova-dark`, or `omega`.
+         * @param {string} newTheme The new theme, eg. `luna-amber`, `nova-dark`, or `omega`.
          */
         changeTheme: function(newTheme) {
             if(newTheme && newTheme !== '') {

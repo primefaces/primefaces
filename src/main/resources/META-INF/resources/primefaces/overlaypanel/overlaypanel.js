@@ -266,7 +266,9 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @param {string | JQuery} [target] ID or DOM element of the target component that triggers this overlay panel.
      */
     align: function(target) {
-        var win = $(window);
+        var win = $(window),
+        allowedNegativeValuesByParentOffset = this.jq.offsetParent().offset(),
+        $this = this;
 
         if (target) {
             if (typeof target === 'string') {
@@ -290,6 +292,17 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
                     ,at: this.cfg.at
                     ,of: this.targetElement
                     ,collision: this.cfg.collision
+                    ,using: function(pos, info) {
+                        if(pos.top < -allowedNegativeValuesByParentOffset.top) {
+                            pos.top = -allowedNegativeValuesByParentOffset.top;
+                        }
+                        
+                        if(pos.left < -allowedNegativeValuesByParentOffset.left) {
+                            pos.left = -allowedNegativeValuesByParentOffset.left;
+                        }
+                        
+                        $this.jq.css(pos);
+                    }
                 });
 
         var widthOffset = this.jq.width() - this.content.width();

@@ -480,27 +480,16 @@ declare namespace PrimeFaces {
 }
 declare namespace PrimeFaces.ajax {
     /**
-     * Additional arguments on a {@link JQuery.jqXHR} request that are mainly used by PrimeFaces internally.
+     * An entry on the {@link JQuery.jqXHR} request object with additional values added by PrimeFaces. For example, when
+     * you call `PrimeFaces.current().ajax().addCallbackParam(...)` on the server in a bean method, the added parameters
+     * are available in this object. This is also how you can access pass values from the server to the client after
+     * calling a remote command. See {@link PrimeFaces.ajax.pfXHR} and {@link PrimeFaces.ab}.
      */
     export type PrimeFacesArgs = Record<string, any>;
     /**
      * Additional settings on a {@link JQuery.jqXHR} request, such as portlet forms and nonces.
      */
     export type PrimeFacesSettings = Record<string, any>;
-    /**
-     * The XHR request object used by PrimeFaces. It extends the `jqXHR` object as used by JQuery, but adds additional
-     * properties specific to PrimeFaces.
-     */
-    export type pfXHR = JQuery.jqXHR & {
-        /**
-         * Additional arguments used by PrimeFaces internally.
-         */
-        pfArgs?: PrimeFacesArgs;
-        /**
-         * Additional settings, such as portlet forms and nonces.
-         */
-        pfSettings?: PrimeFacesSettings;
-    };
     /**
      * Callback for an AJAX request that is always called after the request completes, irrespective of whether it
      * succeeded or failed.
@@ -544,6 +533,78 @@ declare namespace PrimeFaces.ajax {
      * @return `true` if this handler already handle and/or parsed the response, `false` or `undefined` otherwise.
      */
     (this: Request, data: any, status: JQuery.Ajax.SuccessTextStatus, xhr: pfXHR) => boolean | undefined;
+    /**
+     * The XHR request object used by PrimeFaces. It extends the `jqXHR` object as used by JQuery, but adds additional
+     * properties specific to PrimeFaces.
+     */
+    export interface pfXHR extends JQuery.jqXHR {
+        /**
+         * An object with additional values added by PrimeFaces. For example, when you call
+         * `PrimeFaces.current().ajax().addCallbackParam(...)` on the server in a bean method, the added parameters are
+         * available in this object. This is also how you can access pass values from the server to the client after
+         * calling a remote command.  See {@link PrimeFaces.ajax.pfXHR} and {@link PrimeFaces.ab}.
+         */
+        pfArgs?: PrimeFacesArgs;
+        /**
+         * Additional settings, such as portlet forms and nonces.
+         */
+        pfSettings?: PrimeFacesSettings;
+    }
+    /**
+     * Represents the data of a PrimeFaces AJAX request. This is the value that is returned by
+     * {@link PrimeFaces.ab} and {@link PrimeFaces.ajax.Request.handle}.
+     */
+    export interface ResponseData {
+        /**
+         * The XML document that was returned by the server. This may include several elements such as `update` for DOM
+         * updates that need to be performed, `executeScript` for running JavaScript code. A typical response might look
+         * as follows:
+         *
+         * ```xml
+         * <?xml version="1.0" encoding="UTF-8"?>
+         * <partial-response>
+         *    <changes>
+         *       <update id="content:msgs"><![CDATA[
+         *           <span id="content:msgs" class="ui-growl-pl">...</span>
+         *           <script id="content:msgs_s" type="text/javascript">...</script>
+         *       ]]></update>
+         *       <update id="content:javax.faces.ViewState:0"><![CDATA[3644438980748093603:2519460806875181703]]></update>
+         *    </changes>
+         * </partial-response>
+         * ```
+         */
+        document: XMLDocument;
+        /**
+         * The jQuery XHR request object that was used for the request.
+         *
+         * __Note__: This object has a `pfArgs` entry that contains the values added to the response by the server. See
+         * {@link PrimeFaces.ajax.pfXHR.pfArgs}.
+         */
+        jqXHR: PrimeFaces.ajax.pfXHR;
+        /**
+         * A string describing the type of success. Usually the HTTP status text.
+         */
+        textStatus: JQuery.Ajax.SuccessTextStatus;
+    }
+    /**
+     * Represents the data passed to the exception handler of the promise returned by {@link PrimeFaces.ab} and
+     * {@link PrimeFaces.ajax.Request.handle}.
+     */
+    export interface FailedRequestData {
+        /**
+         * An optional exception message, if an error occurred.
+         */
+        errorThrown: string;
+        /**
+         * The jQuery XHR request object that was used for the request. May not be available when no HTTP request was
+         * sent, such as when validation failed.
+         */
+        jqXHR?: PrimeFaces.ajax.pfXHR;
+        /**
+         * A string describing the type of error that occurred.
+         */
+        textStatus: JQuery.Ajax.SuccessTextStatus;
+    }
     /**
      * Describes a server callback parameter for an AJAX call. For example, when you call a
      * `<p:remoteCommand name="myCommand" />` from the client, you may pass additional parameters to the backing
@@ -701,6 +762,13 @@ declare namespace PrimeFaces.ajax {
          */
         process: string;
         /**
+         * A promise object that is resolved when the AJAX request is complete. You can use this option to register
+         * a custom callback. Please note that usually you do not have to set this option explicitly, you can use the
+         * return value of {@link PrimeFaces.ab} or {@link PrimeFaces.ajax.Request.handle}. It will create a new promise
+         * object when none was provided, and return that.
+         */
+        promise: Promise<PrimeFaces.ajax.ResponseData>;
+        /**
          * `true` if the AJAX request is a reset request that resets the value of all form elements to their
          * initial values, or `false` otherwise. Defaults to `false`.
          */
@@ -792,7 +860,7 @@ declare namespace JQuery {
          * Triggered on the document before an AJAX request made by {@link PrimeFaces.ajax} starts.
          *
          * Usually the following arguments are passed to the callback:
-         * - {@link JQuery.jqXHR}: The AJAX request that is about to be sent.
+         * - {@link PrimeFaces.ajax.pfXHR}: The AJAX request that is about to be sent.
          * - {@link JQuery.AjaxSettings}: The settings of the AJAX request.
          */
         pfAjaxSend: JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
@@ -806,7 +874,7 @@ declare namespace JQuery {
          * Triggered on the document when an AJAX request made by {@link PrimeFaces.ajax} fails.
          *
          * Usually the following arguments are passed to the callback:
-         * - {@link JQuery.jqXHR}: The AJAX request that failed.
+         * - {@link PrimeFaces.ajax.pfXHR}: The AJAX request that failed.
          * - {@link JQuery.AjaxSettings}: The settings of the AJAX request.
          * - A string: The error that occurred.
          */
@@ -815,7 +883,7 @@ declare namespace JQuery {
          * Triggered on the document when an AJAX request made by {@link PrimeFaces.ajax} succeeds.
          *
          * Usually the following arguments are passed to the callback:
-         * - {@link JQuery.jqXHR}: The AJAX request that was successful.
+         * - {@link PrimeFaces.ajax.pfXHR}: The AJAX request that was successful.
          * - {@link JQuery.AjaxSettings}: The settings of the AJAX request.
          */
         pfAjaxSuccess: JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
@@ -823,7 +891,7 @@ declare namespace JQuery {
          * Triggered on the document when an AJAX request completes (both success and failure). Only when `global` is set to `true`.
          *
          * Usually the following arguments are passed to the callback:
-         * - {@link JQuery.jqXHR}: The AJAX request that completed
+         * - {@link PrimeFaces.ajax.pfXHR}: The AJAX request that completed
          * - {@link JQuery.AjaxSettings}: The settings of the AJAX request.
          */
         pfAjaxComplete: JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
@@ -2698,6 +2766,10 @@ declare namespace PrimeFaces.widget {
          */
         preShowDay: PrimeFaces.widget.Calendar.PreShowDayCallback;
         /**
+         * Makes the calendar readonly when set to true.
+         */
+        readonly: boolean;
+        /**
          * Default for second selection, if no date is given. Default is 0.
          */
         second: number;
@@ -2954,7 +3026,7 @@ declare namespace PrimeFaces.widget {
          */
         responsiveDropdown: JQuery;
         /**
-         * The key of the cookie that stores the current carousel state.
+         * The key of the HTML5 Local Storage that stores the current carousel state.
          */
         stateKey: string;
         /**
@@ -3038,6 +3110,26 @@ declare namespace PrimeFaces.widget {
          */
         init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
         /**
+         * Used in ajax updates, reloads the widget configuration.
+         *
+         * When an AJAX call is made and this component is updated, the DOM element is replaced with the newly rendered
+         * content. However, no new instance of the widget is created. Instead, after the DOM element was replaced, this
+         * method is called with the new widget configuration from the server. This makes it possible to persist
+         * client-side state during an update, such as the currently selected tab.
+         *
+         * Please note that instead of overriding this method, you should consider adding a refresh listener instead
+         * via {@link addRefreshListener}. This has the advantage of letting you add multiple listeners, and makes it
+         * possible to add additional listeners from code outside this widget.
+         *
+         * By default, this method calls all refresh listeners, then reinitializes the widget by calling the `init`
+         * method.
+         *
+         * @override
+         * @param cfg The new widget configuration from the server.
+         * @return The value as returned by the `init` method, which is often `undefined`.
+         */
+        refresh(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+        /**
          * Calculates the proper size for this widget and applies it.
          */
         private refreshDimensions(): void;
@@ -3046,7 +3138,7 @@ declare namespace PrimeFaces.widget {
          */
         private restoreState(): void;
         /**
-         * Saves the current state of this carousel (current page etc.) in a cookie.
+         * Saves the current state of this carousel (current page etc.) in HTML5 Local Store.
          */
         private saveState(): void;
         /**
@@ -3469,7 +3561,7 @@ declare namespace PrimeFaces.widget {
         /**
          * Export the current visual state of this chart as an image.
          *
-         * @return
+         * @return An HTML image element with an image of the current chart.
          */
         exportAsImage(): HTMLImageElement;
         /**
@@ -5472,8 +5564,12 @@ declare namespace PrimeFaces {
      * options. The individual options are documented in `PrimeFaces.ajax.Configuration`.
      * @param ext Optional extender with additional options that
      * overwrite the options given in `cfg`.
+     * @return A promise that resolves once the AJAX requests is done. Use this
+     * to run custom JavaScript logic. When the AJAX request succeeds, the promise is fulfilled. Otherwise, when the
+     * AJAX request fails, the promise is rejected. If the promise is rejected, the rejection handler receives an object
+     * of type {@link PrimeFaces.ajax.FailedRequestData}.
      */
-    export function ab(cfg: Partial<PrimeFaces.ajax.ShorthandConfiguration>, ext?: Partial<PrimeFaces.ajax.ConfigurationExtender>): void;
+    export function ab(cfg: Partial<PrimeFaces.ajax.ShorthandConfiguration>, ext?: Partial<PrimeFaces.ajax.ConfigurationExtender>): Promise<PrimeFaces.ajax.ResponseData>;
 }
 /**
  * The object with functionality related to sending and receiving AJAX requests that are made by PrimeFaces. Each
@@ -5655,7 +5751,7 @@ declare namespace PrimeFaces.ajax {
         arrayCompare<TValue = any>(arr1: PrimeFaces.ajax.ServerCallbackParameter<TValue>[], arr2: PrimeFaces.ajax.ServerCallbackParameter<TValue>[]): PrimeFaces.ajax.ServerCallbackParameter<TValue>[];
         /**
          * Performs the early collection of post parameters (form element values) if the request is configured that
-         * way.
+         * way. See: https://github.com/primefaces/primefaces/issues/109
          *
          * @param cfg Configuration for the AJAX request to send, such as
          * the HTTP method, the URL, and the content of the request.
@@ -5680,8 +5776,12 @@ declare namespace PrimeFaces.ajax {
          * the HTTP method, the URL, and the content of the request.
          * @param ext Optional extender with additional options
          * that overwrite the options given in `cfg`.
+         * @return A promise that resolves once the AJAX requests is done.
+         * Use this to run custom JavaScript logic. When the AJAX request succeeds, the promise is fulfilled.
+         * Otherwise, when the AJAX request fails, the promise is rejected. If the promise is rejected, the
+         * rejection handler receives an object of type {@link PrimeFaces.ajax.FailedRequestData}.
          */
-        handle(cfg: Partial<PrimeFaces.ajax.Configuration>, ext?: Partial<PrimeFaces.ajax.ConfigurationExtender>): void;
+        handle(cfg: Partial<PrimeFaces.ajax.Configuration>, ext?: Partial<PrimeFaces.ajax.ConfigurationExtender>): Promise<PrimeFaces.ajax.ResponseData>;
         /**
          * Given an AJAX call configuration, resolves the components for the `process` or `update` search
          * expressions given by the configurations. Resolves the search expressions to the actual components and
@@ -5867,6 +5967,92 @@ declare namespace PrimeFaces.ajax {
     }
 }
 /**
+ * The object with functionality related to multiple window support in PrimeFaces applications.
+ */
+declare namespace PrimeFaces.clientwindow {
+    /**
+     * The key for the session storage entry holding the client window ID.
+     */
+    export const CLIENT_WINDOW_SESSION_STORAGE: string;
+    /**
+     * The name of the URL parameter holding the client window ID.
+     */
+    export const CLIENT_WINDOW_URL_PARAM: string;
+    /**
+     * The number of characters of the client window ID. Each client window ID must be of this length, or it is
+     * invalid.
+     */
+    export const LENGTH_CLIENT_WINDOW_ID: number;
+    /**
+     * The value of the temporary client window ID, used for requesting a new ID, see
+     * {@link requestNewClientWindowId}.
+     */
+    export const TEMP_CLIENT_WINDOW_ID: string;
+    /**
+     * The current window ID, as received from the server. May be `null` when to ID was provided.
+     */
+    export let clientWindowId: null | string;
+    /**
+     * Whether the currently loaded page is from the first redirect.
+     */
+    export let initialRedirect: boolean;
+    /**
+     * Whether the {@link init} function was called already.
+     */
+    export let initialized: boolean;
+    /**
+     * Checks whether the client window ID is valid. If not, requests a new client window ID from the server via
+     * reloading the current page.
+     */
+    export function assertClientWindowId(): void;
+    /**
+     * Makes sure the temporary cookie for the client window ID is expired.
+     */
+    export function cleanupCookies(): void;
+    /**
+     * Expires the cookie with the given name by setting a cookie with the appropriate `max-age` and `expires`
+     * settings.
+     *
+     * @param cookieName Name of the cookie to expire.
+     */
+    export function expireCookie(cookieName: string): void;
+    /**
+     * Returns the value of the URL parameter with the given name. When the URL contains multiple URL parameters
+     * with the same name, the value of the first URL parameter is returned.
+     *
+     * @param uri An URL from which to extract an URL parameter.
+     * @param name Name of the URL parameter to retrieve.
+     * @return The value of the given URL parameter. Returns the empty string when the URL parameter
+     * is present, but has no value. Returns `null` when no URL parameter with the given name exists.
+     */
+    export function getUrlParameter(uri: string, name: string): string | null;
+    /**
+     * Initializes the client window feature. Usually invoked on page load. This method should only be called once
+     * per page.
+     *
+     * @param clientWindowId The current client window ID.
+     * @param initialRedirect Whether the currently loaded page is from the first redirect.
+     */
+    export function init(clientWindowId: string, initialRedirect: boolean): void;
+    /**
+     * Given an URL, removes all URL parameters with the given name, adds a new URL parameter with the given value,
+     * and returns the new URL with the replaced parameter. If the URL contains multiple URL parameters with the
+     * same name, they are all removed.
+     *
+     * @param uri The URL for which to change an URL parameter.
+     * @param parameterName Name of the URL parameter to change.
+     * @param parameterValue New value for the URL parameter. If `null` or not given, the empty
+     * string is used.
+     * @return The given URL, but with value of the given URL parameter changed to the new value.
+     */
+    export function replaceUrlParam(uri: string, parameterName: string, parameterValue?: string | null): string;
+    /**
+     * Expires the current client window ID by replacing it with a temporary, invalid client window ID. Then reloads
+     * the current page to request a new ID from the server.
+     */
+    export function requestNewClientWindowId(): void;
+}
+/**
  * The object with functionality related to handling the `script-src` directive of the HTTP Content-Security-Policy
  * (CSP) policy. This makes use of a nonce (number used once). The server must generate a unique nonce value each
  * time it transmits a policy.
@@ -5880,6 +6066,13 @@ declare namespace PrimeFaces.csp {
      * The value of the nonce to be used.
      */
     export let NONCE_VALUE: string;
+    /**
+     * GitHub #5790: When using jQuery to trigger a click event on a button while using CSP
+     * we must set preventDefault or else it will trigger a non-ajax button click.
+     *
+     * @return the JQuery click event
+     */
+    export function clickEvent(): JQuery.Event;
     /**
      * Perform a CSP safe `eval()`.
      *
@@ -6063,6 +6256,14 @@ declare namespace PrimeFaces.env {
      * given version.
      */
     export function isLtIE(version: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11): boolean;
+    /**
+     * A widget is touch enabled if the browser supports touch AND the widget has the touchable property enabled.
+     * The default will be true if it widget status can't be determined.
+     *
+     * @param cfg the widget configuration
+     * @return true if touch is enabled, false if disabled
+     */
+    export function isTouchable(cfg: PrimeFaces.widget.BaseWidgetCfg): boolean;
 }
 /**
  * The object with functionality related to working with search expressions.
@@ -6156,6 +6357,7 @@ declare function PF(widgetVar: string): PrimeFaces.widget.BaseWidget | undefined
  * of the following entries:
  *
  * - {@link PrimeFaces.ajax} The AJAX module with functionality for sending AJAX requests
+ * - {@link PrimeFaces.clientwindow} The client window module for multiple window support in PrimeFaces applications.
  * - {@link PrimeFaces.csp} The  CSP module for the HTTP Content-Security-Policy (CSP) policy `script-src` directive.
  * - {@link PrimeFaces.dialog} The dialog module with functionality related to the dialog framework
  * - {@link PrimeFaces.env} The environment module with information about the current browser
@@ -6280,7 +6482,7 @@ declare namespace PrimeFaces {
      *
      * @param parent The ID of a FORM element.
      * @param params An object with key-value pairs.
-     * @return
+     * @return This object for chaining.
      */
     export function addSubmitParam(parent: string, params: Record<string, string>): typeof PrimeFaces;
     /**
@@ -6324,7 +6526,7 @@ declare namespace PrimeFaces {
      * Changes the current theme to the given theme (by exchanging CSS files). Requires that the theme was
      * installed and is available.
      *
-     * @param newTheme The new theme, eg. `aristo`, `nova-dark`, or `omega`.
+     * @param newTheme The new theme, eg. `luna-amber`, `nova-dark`, or `omega`.
      */
     export function changeTheme(newTheme: string): void;
     /**
@@ -6351,6 +6553,14 @@ declare namespace PrimeFaces {
      * @return `true` if cookies are enabled and can be used, `false` otherwise.
      */
     export function cookiesEnabled(): boolean;
+    /**
+     * Generates a unique key for using in HTML5 local storage by combining the context, view, id, and key.
+     *
+     * @param id ID of the component
+     * @param key a unique key name such as the component name
+     * @return the generated key comprising of context + view + id + key
+     */
+    export function createStorageKey(id: string, key: string): string;
     /**
      * Creates a new widget of the given type and with the given configuration. Registers that widget in the widgets
      * registry {@link PrimeFaces.widgets}. If this method is called in response to an AJAX request and the method
@@ -6381,7 +6591,7 @@ declare namespace PrimeFaces {
      * @param name Name of the cookie to delete
      * @param cfg The cookie configuration used to set the cookie.
      */
-    export function deleteCookie(name: string, cfg?: Partial<JQueryCookie.Options>): void;
+    export function deleteCookie(name: string, cfg?: Partial<Cookies.CookieAttributes>): void;
     /**
      * Logs the given message at the `error` level.
      *
@@ -6468,7 +6678,7 @@ declare namespace PrimeFaces {
     /**
      * Finds the text currently selected by the user on the current page.
      *
-     * @return
+     * @return The text currently selected by the user on the current page.
      */
     export function getSelection(): string | Selection;
     /**
@@ -6559,7 +6769,7 @@ declare namespace PrimeFaces {
      * @param start Callback that is invoked when the download starts.
      * @param complete Callback that is invoked when the download ends.
      * @param monitorKey Name of the cookie for monitoring the download. The cookie name defaults to
-     * `primefaces.download`. When a monitor key is given, the name of the cookie will consist of a prefix and the
+     * `primefaces.download` + the current viewId. When a monitor key is given, the name of the cookie will consist of a prefix and the
      * given monitor key.
      */
     export function monitorDownload(start: () => void, complete: () => void, monitorKey?: string): void;
@@ -6616,14 +6826,14 @@ declare namespace PrimeFaces {
      */
     export function setCaretToEnd(element: JQuery): void;
     /**
-     * Sets the value of a given cookie.
+     * Sets the value of a given cookie. If using HTTPS will set secure=true and SameSite=Strict.
      *
      * @param name Name of the cookie to set
      * @param value Value to set
      * @param cfg Configuration for this cookie: when it expires, its
      * paths and domain and whether it is secure cookie.
      */
-    export function setCookie(name: string, value: string, cfg?: Partial<JQueryCookie.Options>): void;
+    export function setCookie(name: string, value: string, cfg?: Partial<Cookies.CookieAttributes>): void;
     /**
      * Deprecated, use `PrimeFaces.dialog.DialogHandler.showMessageInDialog` instead.
      *
@@ -6672,6 +6882,23 @@ declare namespace PrimeFaces {
      */
     export function submit(formId: string, target?: string): void;
     /**
+     * Converts a date into an ISO-8601 date without using the browser timezone offset.
+     *
+     * See https://stackoverflow.com/questions/10830357/javascript-toisostring-ignores-timezone-offset
+     *
+     * @param date the date to convert
+     * @return ISO-8601 version of the date
+     */
+    export function toISOString(date: Date): string;
+    /**
+     * For 4.0 jQuery deprecated $.trim in favor of PrimeFaces.trim however that does not handle
+     * NULL and jQuery did so this function allows a drop in replacement.
+     *
+     * @param value the String to trim
+     * @return trimmed value or "" if it was NULL
+     */
+    export function trim(value: string): string;
+    /**
      * Updates the class of the given INPUT element to indicate whether the element contains data or not. Used for
      * example in floating labels.
      *
@@ -6687,6 +6914,10 @@ declare namespace PrimeFaces {
      * @return A random UUID.
      */
     export function uuid(): string;
+    /**
+     * Logs the current PrimeFaces and jQuery version to console.
+     */
+    export function version(): void;
     /**
      * Logs the given message at the `warn` level.
      *
@@ -9089,7 +9320,7 @@ declare namespace PrimeFaces.widget {
          * Performs a sorting operation on the rows of this data table via AJAX
          *
          * @param columnHeader Header of the column by which to sort.
-         * @param order Whether to sort by the column value in an ascending or descending order.
+         * @param order Whether to "unsort" or to sort by the column value in an ascending or descending order.
          * @param multi `true` if sorting by multiple columns is enabled, or `false` otherwise.
          */
         private sort(columnHeader: JQuery, order: -1 | 0 | 1, multi: boolean): void;
@@ -9268,7 +9499,7 @@ declare namespace PrimeFaces.widget {
      */
     export interface DataTableCfg extends PrimeFaces.widget.DeferredWidgetCfg {
         /**
-         * Default is true: include "unsort" when repeatedly clicking on column header.
+         * When true columns can be unsorted upon clicking sort.
          */
         allowUnsorting: boolean;
         /**
@@ -11419,6 +11650,10 @@ declare namespace PrimeFaces.widget {
          */
         viewDateOption: Date | Date[];
         /**
+         * Sets up the event listener for when the Clear button is selected.
+         */
+        private bindClearButtonListener(): void;
+        /**
          * Sets up the event listeners for when the date picker is closed.
          */
         private bindCloseListener(): void;
@@ -12938,6 +13173,10 @@ declare namespace PrimeFaces.widget {
          */
         legend: JQuery;
         /**
+         * When dynamic loading is enabled, whether the content was already loaded.
+         */
+        loaded: boolean;
+        /**
          * The DOM element with the hidden input field for the state of this fieldset.
          */
         stateHolder: JQuery;
@@ -12969,6 +13208,30 @@ declare namespace PrimeFaces.widget {
          */
         init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
         /**
+         * Loads the contents of this fieldset panel dynamically via AJAX, if dynamic loading is enabled.
+         */
+        private loadContents(): void;
+        /**
+         * Used in ajax updates, reloads the widget configuration.
+         *
+         * When an AJAX call is made and this component is updated, the DOM element is replaced with the newly rendered
+         * content. However, no new instance of the widget is created. Instead, after the DOM element was replaced, this
+         * method is called with the new widget configuration from the server. This makes it possible to persist
+         * client-side state during an update, such as the currently selected tab.
+         *
+         * Please note that instead of overriding this method, you should consider adding a refresh listener instead
+         * via {@link addRefreshListener}. This has the advantage of letting you add multiple listeners, and makes it
+         * possible to add additional listeners from code outside this widget.
+         *
+         * By default, this method calls all refresh listeners, then reinitializes the widget by calling the `init`
+         * method.
+         *
+         * @override
+         * @param cfg The new widget configuration from the server.
+         * @return The value as returned by the `init` method, which is often `undefined`.
+         */
+        refresh(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+        /**
          * Toggles the content of this fieldset (collapsed or expanded).
          *
          * @param e Optional event that triggered the toggling.
@@ -12994,6 +13257,11 @@ declare namespace PrimeFaces.widget {
          * visible).
          */
         collapsed: boolean;
+        /**
+         * `true` to load the content via AJAX when the fieldset panel is opened, `false` to load
+         * the content immediately.
+         */
+        dynamic: boolean;
         /**
          * Toggle duration in milliseconds.
          */
@@ -14715,6 +14983,14 @@ declare namespace PrimeFaces.widget {
          */
         private createPostData(): PrimeFaces.ajax.ServerCallbackParameter;
         /**
+         * Creates a unique identifier (file key) for a given file. That identifier consists e.g. of the name of the
+         * uploaded file, its last modified-attribute etc. This is used by the server to identify uploaded files.
+         *
+         * @param file A file for which to create an identifier.
+         * @return An identifier for the given file.
+         */
+        private createXFileId(file: File): string;
+        /**
          * Disabled the given file upload button.
          *
          * @param btn Button to disabled.
@@ -14775,7 +15051,7 @@ declare namespace PrimeFaces.widget {
          */
         private removeFileRow(row: JQuery): void;
         /**
-         * Removes the given uploadeds file from this upload widget.
+         * Removes the given uploaded file from this upload widget.
          *
          * @param files Files to remove from this widget.
          */
@@ -14847,9 +15123,20 @@ declare namespace PrimeFaces.widget {
          */
         invalidSizeMessage: string;
         /**
+         * To upload large files in smaller chunks, set this option to a preferred maximum chunk
+         * size. If set to `0`, `null` or `undefined`, or the browser does not support the required Blob API, files will be
+         * uploaded as a whole.
+         */
+        maxChunkSize: number;
+        /**
          * Maximum allowed size in bytes for files.
          */
         maxFileSize: number;
+        /**
+         * Only for chunked file upload: Amount of retries when upload gets interrupted due to
+         * e.g. an unstable network connection.
+         */
+        maxRetries: number;
         /**
          * Message template to use when displaying file validation errors.
          */
@@ -14886,6 +15173,16 @@ declare namespace PrimeFaces.widget {
          * Component(s) to process in fileupload request.
          */
         process: string;
+        /**
+         * Server-side path which provides information to resume chunked file upload.
+         */
+        resumeContextPath: string;
+        /**
+         * Only for chunked file upload: (Base) timeout in milliseconds to wait until the next
+         * retry. It is multiplied with the retry count. (first retry: `retryTimeout * 1`, second retry: `retryTimeout * 2`,
+         * ...)
+         */
+        retryTimeout: number;
         /**
          * `true` to upload files one after each other, `false` to upload in parallel.
          */
@@ -14947,13 +15244,16 @@ declare namespace PrimeFaces.widget {
          */
         input: JQuery;
         /**
-         * Maximum allowed size in bytes for files.
-         */
-        maxFileSize: number;
-        /**
          * Sets up all events listeners for this file upload widget.
          */
         private bindEvents(): void;
+        /**
+         * Formats the given file size in a more human-friendly format, e.g. `1.5 MB` etc.
+         *
+         * @param bytes File size in bytes to format
+         * @return The given file size, formatted in a more human-friendly format.
+         */
+        formatSize(bytes: number): string;
         /**
          * A widget class should not have an explicit constructor. Instead, this initialize method is called after the
          * widget was created. You can use this method to perform any initialization that is required. For widgets that
@@ -14984,20 +15284,36 @@ declare namespace PrimeFaces.widget {
         /**
          * Validates the given file against the current validation settings
          *
-         * @param input File input element to validate.
          * @param file Uploaded file to validate.
          * @return `null` if the given file is valid, or an error message otherwise.
          */
-        private validate(input: HTMLElement, file: File): string | null;
+        private validate(file: File): string | null;
     }
 }
 declare namespace PrimeFaces.widget {
     /**
-     * The configuration for the {@link  SimpleFileUpload| SimpleFileUpload widget}.
+     * The configuration for the
+     * {@link  SimpleFileUpload| SimpleFileUpload widget}.
      * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
      * configuration is usually meant to be read-only and should not be modified.
      */
     export interface SimpleFileUploadCfg extends PrimeFaces.widget.BaseWidgetCfg {
+        /**
+         * Whether this file upload is disabled.
+         */
+        disabled: boolean;
+        /**
+         * Maximum number of files allowed to upload.
+         */
+        fileLimit: number;
+        /**
+         * Message to display when file limit exceeds.
+         */
+        fileLimitMessage: string;
+        /**
+         * Message to display when file is not accepted.
+         */
+        invalidFileMessage: string;
         /**
          * Message to display when size limit exceeds.
          */
@@ -15007,7 +15323,11 @@ declare namespace PrimeFaces.widget {
          */
         maxFileSize: number;
         /**
-         * Applies theming to simple uploader.
+         * Message template to use when displaying file validation errors.
+         */
+        messageTemplate: string;
+        /**
+         * Whether to apply theming to the simple upload widget.
          */
         skinSimple: boolean;
     }
@@ -15311,10 +15631,6 @@ declare namespace PrimeFaces.widget {
          * Template text to display in counter, default value is `{0}`.
          */
         counterTemplate: string;
-        /**
-         * Maximum number of characters that may be entered in this field.
-         */
-        maxlength: number;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -15508,10 +15824,6 @@ declare namespace PrimeFaces.widget {
      * @typeparam TCfg Defaults to `LinkButtonCfg`. Type of the configuration object for this widget.
      */
     export class LinkButton<TCfg extends LinkButtonCfg = LinkButtonCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
-        /**
-         * The DOM element for the link button.
-         */
-        button: JQuery;
         /**
          * The DOM element for the link that is a child of the button.
          */
@@ -18334,6 +18646,18 @@ declare namespace PrimeFaces.widget {
      */
     export class Growl<TCfg extends GrowlCfg = GrowlCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
         /**
+         * Appends a message to the current displayed messages.
+         *
+         * @param msg A message to translate into an HTML element.
+         */
+        add(msg: PrimeFaces.FacesMessage): void;
+        /**
+         * Appends all messages to the current displayed messages.
+         *
+         * @param msgs The messages to translate into HTML elements.
+         */
+        addAll(msgs: PrimeFaces.FacesMessage[]): void;
+        /**
          * Sets up all event listeners for the given message, such as for closing the message when the close icon clicked.
          *
          * @param message The message for which to set up the event listeners
@@ -18392,10 +18716,6 @@ declare namespace PrimeFaces.widget {
          * @param message The message to remove, an HTML element with the class `ui-growl-item-container`.
          */
         removeMessage(message: JQuery): void;
-        /**
-         * Renders the client-side parts of this widget.
-         */
-        private render(): void;
         /**
          * Creates the HTML elements for the given faces message, and adds it to the DOM.
          *
@@ -20230,7 +20550,7 @@ declare namespace autosize {
     export function update<TElement extends ElementOrElements>(element: TElement): TElement;
 }
 /**
- * Namespace for the cookie JQueryUI plugin, available as `$.browser`.
+ * Namespace for the Browser JQueryUI plugin, available as `$.browser`.
  *
  * Contains some additional types and interfaces required for the typings.
  */
@@ -20435,53 +20755,6 @@ interface JQuery {
      * @return The current position of the cursor in pixels, relative to the top left of the element.
      */
     getCaretPosition(): JQueryCaretposition.CaretPosition;
-}
-/**
- * Namespace for the cookie JQueryUI plugin, available as `$.fn.cookie` and `$.fn.removeCookie`.
- *
- * Contains some additional types and interfaces required for the typings.
- */
-declare namespace JQueryCookie {
-    /**
-     * Represents the properties of a cookie, other that its name and value.
-     */
-    export interface Options {
-        /**
-         * The date when the cookie expires. When a number is given, it is interpreted as the number of days the cookie
-         * is valid from the current date. Default to no expiration date.
-         */
-        expires: number | Date;
-        /**
-         * Path of the cookie. Default to the path of current page.
-         */
-        path: string;
-        /**
-         * Domain of the cookie. Defaults to the domain of the current page.
-         */
-        domain: string;
-        /**
-         * `true` if the cookie should be secure, or `false` otherwise. Default to `false`.
-         */
-        secure: boolean;
-    }
-}
-interface JQueryStatic {
-    /**
-     * Sets a cookie with the given value.
-     *
-     * @param key Name of the cookie to set.
-     * @param options Option of the cookie to set.
-     * @return The literal text of the cookie that was set, eg. `key=value; expires=Wed, 01 Jan 2000 12:00:00 GMT`.
-     */
-    cookie(key: string, value: string, options?: Partial<JQueryCookie.Options>): string;
-    /**
-     * Removes the given cookie. You should pass in the same options you used when setting the cookie.
-     *
-     * @param key Name of the cookie to remove.
-     * @param options Option of the cookie to remove.
-     * @return `true` if the cookie does not exist anymore, `false` otherwise.
-     */
-    removeCookie(key: string, options?: Partial<JQueryCookie.Options>): boolean;
 }
 /**
  * Namespace for the masked input JQueryUI plugin.
@@ -27150,7 +27423,7 @@ declare namespace PrimeFaces.widget {
          */
         menuitemLinks: JQuery;
         /**
-         * Cookie key used to store the UI state (expanded items) in a cookie.
+         * Key used to store the UI state (expanded items) in an HTML5 Local Store.
          */
         stateKey: string;
         /**
@@ -27159,7 +27432,7 @@ declare namespace PrimeFaces.widget {
          */
         treeLinks: JQuery;
         /**
-         * Callback invoked after a menu item was expanded. Saves the current UI state in a cookie.
+         * Callback invoked after a menu item was expanded. Saves the current UI state in an HTML5 Local Store.
          *
          * @param element Element that was expanded.
          */
@@ -27173,7 +27446,7 @@ declare namespace PrimeFaces.widget {
          */
         private bindKeyEvents(): void;
         /**
-         * Deletes the UI state of this panel menu stored in a cookie.
+         * Deletes the UI state of this panel menu stored in an HTML5 Local Store.
          */
         private clearState(): void;
         /**
@@ -27263,7 +27536,7 @@ declare namespace PrimeFaces.widget {
          */
         isExpanded(item: JQuery): boolean;
         /**
-         * Callback invoked after a menu item was collapsed. Saves the current UI state in a cookie.
+         * Callback invoked after a menu item was collapsed. Saves the current UI state in an HTML5 Local Store.
          *
          * @param element Element that was collapsed.
          */
@@ -27273,12 +27546,12 @@ declare namespace PrimeFaces.widget {
          */
         private removeFocusedItem(): void;
         /**
-         * Read the UI state of this panel menu stored in a cookie and reapplies to this panel menu. Used to preserve the
+         * Read the UI state of this panel menu stored in an HTML5 Local Store and reapplies to this panel menu. Used to preserve the
          * state during AJAX updates as well as between page reloads.
          */
         private restoreState(): void;
         /**
-         * Writes the UI state of this panel menu to a cookie. Used to preserve the state during AJAX updates as well as
+         * Writes the UI state of this panel menu to an HTML5 Local Store. Used to preserve the state during AJAX updates as well as
          * between page reloads.
          */
         private saveState(): void;
@@ -27303,7 +27576,7 @@ declare namespace PrimeFaces.widget {
          */
         multiple: boolean;
         /**
-         * Whether the UI state (expanded menu items) should be persisted in a cookie.
+         * Whether the UI state (expanded menu items) should be persisted in an HTML5 Local Store.
          */
         stateful: boolean;
     }
@@ -27326,7 +27599,7 @@ declare namespace PrimeFaces.widget {
          */
         menuitemLinks: JQuery;
         /**
-         * Name of the cookie that is used to store the state of this plain menu (expanded / collapsed
+         * Name of the HTML5 Local Store that is used to store the state of this plain menu (expanded / collapsed
          * menu items).
          */
         stateKey: string;
@@ -27343,7 +27616,7 @@ declare namespace PrimeFaces.widget {
          *
          * @param header Menu item with children to collapse.
          * @param stateful `true` if the new state of this menu (which items are collapsed and expanded) should
-         * be saved (in a cookie), `false` otherwise.
+         * be saved (in an HTML5 Local Store), `false` otherwise.
          */
         collapseSubmenu(header: JQuery, stateful?: boolean): void;
         /**
@@ -27351,7 +27624,7 @@ declare namespace PrimeFaces.widget {
          *
          * @param header Menu item with children to expand.
          * @param stateful `true` if the new state of this menu (which items are collapsed and expanded) should
-         * be saved (in a cookie), `false` otherwise.
+         * be saved (in an HTML5 Local Store), `false` otherwise.
          */
         expandSubmenu(header: JQuery, stateful?: boolean): void;
         /**
@@ -27383,7 +27656,7 @@ declare namespace PrimeFaces.widget {
         private restoreState(): void;
         /**
          * Saves the current state (expanded / collapsed menu items) of this plain menu. Used to preserve the state during
-         * AJAX updates as well as between page reloads. The state is stored in a cookie.
+         * AJAX updates as well as between page reloads. The state is stored in an HTML5 Local Store.
          */
         private saveState(): void;
     }
@@ -28806,9 +29079,10 @@ declare namespace PrimeFaces.widget {
         /**
          * Binds swipe events to this paginator to the JQ element passed in.
          *
-         * @param owner The owner of the paginator
+         * @param owner the owner JQ element of the paginator
+         * @param ownerConfig the owner configuration to check if touch enabled or not
          */
-        bindSwipeEvents(owner: JQuery): void;
+        private bindSwipeEvents(owner: JQuery, ownerConfig: PrimeFaces.PartialWidgetCfg<TCfg>): void;
         /**
          * Disables one of the items of this pagination.
          *
@@ -29493,6 +29767,17 @@ declare namespace Webcam {
      */
     export function upload(imageData: string, endpointUrl: string, onComplete: WebcamEventMap["uploadComplete"]): void;
 }
+declare namespace PrimeFaces.widget.PhotoCam {
+    /**
+     * Callback invoked when an error is caught by the Webcam.js engine.
+     * See also {@link PhotoCamCfg.onCameraError}.
+     */
+    export type onCameraError =
+    /**
+     * @param errorObj The error object containing the error information.
+     */
+    (this: PrimeFaces.widget.PhotoCam, errorObj: Error) => void;
+}
 declare namespace PrimeFaces.widget {
     /**
      * __PrimeFaces PhotoCam Widget__
@@ -29536,6 +29821,12 @@ declare namespace PrimeFaces.widget {
          */
         dettach(): void;
         /**
+         *  Retrieves the available video input device list
+         *
+         * @return Returns a promise to resolve the enumeration or `null` if the browser doesn't support media devices enumeration.
+         */
+        getAvailableDevices(): Promise<InputDeviceInfo[]> | null;
+        /**
          * A widget class should not have an explicit constructor. Instead, this initialize method is called after the
          * widget was created. You can use this method to perform any initialization that is required. For widgets that
          * need to create custom HTML on the client-side this is also the place where you should call your render
@@ -29558,6 +29849,16 @@ declare namespace PrimeFaces.widget {
          * component.
          */
         init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+        /**
+         * Default error handler for webcam events
+         *
+         * @param errorObj Error object containing message, stacktrace and so on.
+         */
+        private onCameraError(errorObj: Error): void;
+        /**
+         * Utility to detach and attach the video again.
+         */
+        reload(): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -29576,6 +29877,10 @@ declare namespace PrimeFaces.widget {
          */
         camera: string;
         /**
+         * The id of device to retrieve images
+         */
+        device: string;
+        /**
          * Enables always using flash fallback even in an HTML5 environment.
          */
         forceFlash: boolean;
@@ -29591,6 +29896,10 @@ declare namespace PrimeFaces.widget {
          * Quality of the image between `0` and `100` when the format is `jpeg`, default value is `90`.
          */
         jpegQuality: number;
+        /**
+         * Custom Webcam.js error handler
+         */
+        onCameraError: PrimeFaces.widget.PhotoCam.onCameraError;
         /**
          * Height of the captured photo in pixels, defaults to height.
          */
@@ -31423,7 +31732,9 @@ declare namespace PrimeFaces.widget {
          */
         protected _render(): void;
         /**
-         * Sets up the event listeners for the view buttons.
+         * Sets up the event listeners for when the user switches the to a different view (month view, week day, or time
+         * view). Updates the hidden input field with the current view name. Used for restoring the view after an AJAX
+         * update.
          */
         private bindViewChangeListener(): void;
         /**
@@ -32080,6 +32391,10 @@ declare namespace PrimeFaces.widget {
          */
         closeIcon: JQuery;
         /**
+         * When dynamic loading is enabled, whether the content was already loaded.
+         */
+        loaded: boolean;
+        /**
          * Sets all ARIA attributes on the elements and the icons.
          */
         private applyARIA(): void;
@@ -32138,6 +32453,10 @@ declare namespace PrimeFaces.widget {
          */
         isVisible(): boolean;
         /**
+         * Loads the contents of this sidebar panel dynamically via AJAX, if dynamic loading is enabled.
+         */
+        private loadContents(): void;
+        /**
          * Callback function that is invoked when this sidebar is hidden.
          *
          * @param event Currently unused.
@@ -32148,6 +32467,26 @@ declare namespace PrimeFaces.widget {
          * Callback function that is invoked when this sidebar is hidden.
          */
         private postShow(): void;
+        /**
+         * Used in ajax updates, reloads the widget configuration.
+         *
+         * When an AJAX call is made and this component is updated, the DOM element is replaced with the newly rendered
+         * content. However, no new instance of the widget is created. Instead, after the DOM element was replaced, this
+         * method is called with the new widget configuration from the server. This makes it possible to persist
+         * client-side state during an update, such as the currently selected tab.
+         *
+         * Please note that instead of overriding this method, you should consider adding a refresh listener instead
+         * via {@link addRefreshListener}. This has the advantage of letting you add multiple listeners, and makes it
+         * possible to add additional listeners from code outside this widget.
+         *
+         * By default, this method calls all refresh listeners, then reinitializes the widget by calling the `init`
+         * method.
+         *
+         * @override
+         * @param cfg The new widget configuration from the server.
+         * @return The value as returned by the `init` method, which is often `undefined`.
+         */
+        refresh(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
         /**
          * Brings up this sidebar in case is is not already visible.
          */
@@ -32169,6 +32508,11 @@ declare namespace PrimeFaces.widget {
          * Base z-index for the sidebar.
          */
         baseZIndex: number;
+        /**
+         * `true` to load the content via AJAX when the overlay panel is opened, `false` to load
+         * the content immediately.
+         */
+        dynamic: boolean;
         /**
          * Callback that is invoked when the sidebar is opened.
          */
@@ -33513,6 +33857,10 @@ declare namespace PrimeFaces.widget {
          * Duration of the transition effect.
          */
         effectDuration: number;
+        /**
+         * Whether to keep TabView state across views.
+         */
+        multiViewState: boolean;
         /**
          * Client side callback to execute when a tab is
          * clicked. If the callback returns `false`, the tab is not selected.
@@ -36829,6 +37177,10 @@ declare namespace PrimeFaces.widget {
          */
         disabledTextSelection: boolean;
         /**
+         * Event that triggers row/cell editing.
+         */
+        editInitEvent: string;
+        /**
          * If editing is enables and whether entire rows or individual
          * cells can be edited.
          */
@@ -37000,7 +37352,7 @@ declare namespace PrimeFaces.util.ValidationContext {
      * @param element Element for which to create the message.
      * @param defaultKey Key of the message.
      * @param msg Default message to show. May be used to find the key of the message.
-     * @return
+     * @return A faces message with the given key for the given element.
      */
     export function getMessageBV(element: JQuery, defaultKey?: string, msg?: string): PrimeFaces.FacesMessageBase;
 }

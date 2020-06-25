@@ -107,6 +107,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.touchToDropdownButton = false;
         this.isTabPressed = false;
         this.isDynamicLoaded = false;
+        
+        this.cfg.onChange = this.input.prop('onchange');
+        this.input.prop('onchange', null).off('change');
 
         if(this.cfg.cache) {
             this.initCache();
@@ -418,7 +421,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         }
 
                         if (highlightedItem.length > 0) {
-                            $(this).trigger('change');
+                            $this.preventInputChangeEvent = true;
                             highlightedItem.trigger("click");
                             $this.itemSelectedWithEnter = true;
                         }
@@ -475,9 +478,15 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
 
         }).on('paste.autoComplete', function() {
-			$this.suppressInput = false;
+            $this.suppressInput = false;
             $this.checkMatchedItem = true;
-		});
+	}).on('change.autoComplete', function(e) {
+            if ($this.cfg.onChange && !$this.preventInputChangeEvent) {
+                $this.cfg.onChange.call(this);
+            }
+            
+            $this.preventInputChangeEvent = false;
+        });
     },
 
     /**
@@ -557,7 +566,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     $this.invokeItemSelectBehavior(event, itemValue);
                 }
 
-                if(!$this.isTabPressed) {
+                if ($this.cfg.onChange) {
+                    $this.cfg.onChange.call(this);
+                }
+
+                if (!$this.isTabPressed) {
                     $this.input.trigger('focus');
                 }
             }
@@ -565,6 +578,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             $this.hide();
         })
         .on('mousedown', function() {
+            $this.preventInputChangeEvent = true;
             $this.checkMatchedItem = false;
         });
 

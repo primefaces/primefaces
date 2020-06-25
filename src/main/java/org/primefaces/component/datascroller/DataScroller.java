@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,14 @@
  */
 package org.primefaces.component.datascroller;
 
+import java.util.Collection;
+import java.util.Map;
+
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
+import javax.faces.event.BehaviorEvent;
+
+import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -43,6 +49,28 @@ public class DataScroller extends DataScrollerBase {
     public static final String LOADER_CLASS = "ui-datascroller-loader";
     public static final String LOADING_CLASS = "ui-datascroller-loading";
     public static final String VIRTUALSCROLL_WRAPPER_CLASS = "ui-datascroller-virtualscroll-wrapper";
+
+    private static final String DEFAULT_EVENT = "load";
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+                .put(DEFAULT_EVENT, null)
+                .build();
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+        return BEHAVIOR_EVENT_MAPPING;
+    }
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
+
+    @Override
+    public String getDefaultEventName() {
+        return DEFAULT_EVENT;
+    }
 
     public boolean isLoadRequest() {
         FacesContext context = getFacesContext();

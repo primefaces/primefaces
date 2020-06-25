@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,13 @@
  */
 package org.primefaces.component.datatable.export;
 
-import org.primefaces.component.celleditor.CellEditor;
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.export.ExportConfiguration;
-import org.primefaces.component.export.Exporter;
-import org.primefaces.component.overlaypanel.OverlayPanel;
-import org.primefaces.model.LazyDataModel;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
@@ -40,15 +39,19 @@ import javax.faces.component.html.HtmlGraphicImage;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+
+import org.primefaces.component.celleditor.CellEditor;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.ExportConfiguration;
+import org.primefaces.component.export.Exporter;
+import org.primefaces.component.overlaypanel.OverlayPanel;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.ResourceUtils;
 
 public abstract class DataTableExporter implements Exporter<DataTable> {
 
@@ -379,4 +382,16 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
             return counter;
         }
     }
+
+    protected void setResponseHeader(ExternalContext externalContext , String contentDisposition) {
+        externalContext.setResponseHeader("Expires", "0");
+        externalContext.setResponseHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+        externalContext.setResponseHeader("Pragma", "public");
+        externalContext.setResponseHeader("Content-disposition", contentDisposition);
+    }
+
+    protected void addResponseCookie(FacesContext context) {
+        ResourceUtils.addResponseCookie(context, Constants.DOWNLOAD_COOKIE, "true", null);
+    }
+
 }

@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,6 @@ import org.primefaces.component.export.ExcelOptions;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
 import javax.faces.component.UIComponent;
@@ -44,7 +43,6 @@ import javax.faces.context.FacesContext;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Collections;
 import java.util.List;
 
 public class DataTableExcelExporter extends DataTableExporter {
@@ -101,7 +99,7 @@ public class DataTableExcelExporter extends DataTableExporter {
             config.getPostProcessor().invoke(context.getELContext(), new Object[]{wb});
         }
 
-        writeExcelToResponse(context.getExternalContext(), wb, config.getOutputFileName());
+        writeExcelToResponse(context, wb, config.getOutputFileName());
 
         reset();
     }
@@ -229,13 +227,11 @@ public class DataTableExcelExporter extends DataTableExporter {
         return wb.createSheet(sheetName);
     }
 
-    protected void writeExcelToResponse(ExternalContext externalContext, Workbook generatedExcel, String filename) throws IOException {
+    protected void writeExcelToResponse(FacesContext context, Workbook generatedExcel, String filename) throws IOException {
+        ExternalContext externalContext = context.getExternalContext();
         externalContext.setResponseContentType(getContentType());
-        externalContext.setResponseHeader("Expires", "0");
-        externalContext.setResponseHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
-        externalContext.setResponseHeader("Pragma", "public");
-        externalContext.setResponseHeader("Content-disposition", getContentDisposition(filename));
-        externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
+        setResponseHeader(externalContext, getContentDisposition(filename));
+        addResponseCookie(context);
 
         OutputStream out = externalContext.getResponseOutputStream();
         generatedExcel.write(out);

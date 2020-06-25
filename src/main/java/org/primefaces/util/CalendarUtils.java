@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -529,8 +529,8 @@ public class CalendarUtils {
         }
 
         Instant instant = Instant.parse(isoDateString);
-        LocalDateTime result = LocalDateTime.ofInstant(instant, zoneId);
-        return result;
+        ZonedDateTime utc = ZonedDateTime.ofInstant(instant, ZoneId.of("UTC"));
+        return utc.withZoneSameLocal(zoneId).toLocalDateTime();
     }
 
     /**

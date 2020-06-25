@@ -4,6 +4,7 @@
  * Sidebar is a panel component displayed as an overlay at the edges of the screen.
  * 
  * @prop {JQuery} closeIcon The DOM element for the icon that closes this sidebar.
+ * @prop {boolean} loaded When dynamic loading is enabled, whether the content was already loaded.
  * 
  * @typedef PrimeFaces.widget.Sidebar.OnHideCallback Callback that is invoked when the sidebar is opened. See also
  * {@link SidebarCfg.onHide}.
@@ -22,6 +23,8 @@
  * @prop {PrimeFaces.widget.Sidebar.OnHideCallback} cfg.onHide Callback that is invoked when the sidebar is opened.
  * @prop {PrimeFaces.widget.Sidebar.OnShowCallback} cfg.onShow Callback that is invoked when the sidebar is closed.
  * @prop {boolean} cfg.visible Whether the sidebar is initially opened.
+ * @prop {boolean} cfg.dynamic `true` to load the content via AJAX when the overlay panel is opened, `false` to load
+ * the content immediately.
  */
 PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
@@ -44,6 +47,17 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
         }
 
         this.bindEvents();
+    },
+
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
+    refresh: function(cfg) {
+        this._super(cfg);
+
+        this.loaded = false;
     },
 
     /**
@@ -75,6 +89,19 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
             return;
         }
 
+        if (!this.loaded && this.cfg.dynamic) {
+            this.loadContents();
+        }
+        else {
+            this._show();
+        }
+    },
+
+    /**
+     * Makes the sidebar panel visible.
+     * @private
+     */
+    _show: function() {
         this.jq.addClass('ui-sidebar-active');
         this.jq.css('z-index', this.cfg.baseZIndex + (++PrimeFaces.zindex));
 
@@ -181,6 +208,38 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
         });
 
         this.closeIcon.attr('role', 'button');
+    },
+
+    /**
+     * Loads the contents of this sidebar panel dynamically via AJAX, if dynamic loading is enabled.
+     * @private
+     */
+    loadContents: function() {
+        var $this = this,
+        options = {
+            source: this.id,
+            process: this.id,
+            update: this.id,
+            params: [
+                {name: this.id + '_contentLoad', value: true}
+            ],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            this.content.html(content);
+                            this.loaded = true;
+                        }
+                    });
+
+                return true;
+            },
+            oncomplete: function() {
+                $this._show();
+            }
+        };
+
+        PrimeFaces.ajax.Request.handle(options);
     }
 
 });

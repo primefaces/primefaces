@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -106,6 +106,7 @@ public class CalendarRenderer extends BaseCalendarRenderer {
                 .attr("showWeek", calendar.isShowWeek(), false)
                 .attr("disabledWeekends", calendar.isDisabledWeekends(), false)
                 .attr("disabled", calendar.isDisabled(), false)
+                .attr("readonly", calendar.isReadonly(), false)
                 .attr("yearRange", calendar.getYearRange(), null)
                 .attr("focusOnSelect", calendar.isFocusOnSelect(), false)
                 .attr("touchable", ComponentUtils.isTouchable(context, calendar),  true);

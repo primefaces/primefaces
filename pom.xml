@@ -197,7 +197,7 @@
             <scope>test</scope>
         </dependency>
         <!-- Content type validation in FileUploadUtilsTest -->
-        <dependency> 
+        <dependency>
             <groupId>org.apache.tika</groupId>
             <artifactId>tika-java7</artifactId>
             <version>1.24.1</version>
@@ -262,7 +262,7 @@
         <dependency>
             <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
             <artifactId>owasp-java-html-sanitizer</artifactId>
-            <version>20190503.1</version>
+            <version>20200615.1</version>
             <scope>provided</scope>
         </dependency>
 
@@ -532,9 +532,9 @@
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>3.0</version>
+                <version>4.0.rc1</version>
                 <configuration>
-                    <header>${project.basedir}/src/conf/header.txt</header>
+                    <header>src/conf/header.txt</header>
                     <includes>
                         <include>src/main/java/**</include>
                     </includes>
@@ -701,6 +701,7 @@
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/core.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.browser.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/js.cookie.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.env.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.ajax.js</include>
@@ -709,6 +710,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.utils.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.widget.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.resources.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.clientwindow.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.polyfills.js</include>
 
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/ajaxstatus/ajaxstatus.js</include>
@@ -910,7 +912,6 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.maskedinput.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.caretposition.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.autosize.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.cookie.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.mousewheel.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.rangy.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.ui.touch-punch.js</include>

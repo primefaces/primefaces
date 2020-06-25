@@ -35,7 +35,7 @@ onHide | null | String | Client side callback to execute when panel is hidden.
 my | left top | String | Position of the panel relative to the target.
 at | left bottom | String | Position of the target relative to the panel.
 collision | flip | String | When the positioned element overflows the window in some direction, move it to an alternative position. Similar to my and at, this accepts a single value or a pair for horizontal/vertical, e.g., "flip", "fit", "fit flip", "fit none".
-dynamic | false | Boolean | Defines content loading mode.
+dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the overlay is not rendered on page load to improve performance. Default is false.
 dismissable | true | Boolean | When set true, clicking outside of the panel hides the overlay.
 showCloseIcon | false | Boolean | Displays a close icon to hide the overlay, default is false.
 modal | false | Boolean | Boolean value that specifies whether the document should be shielded with a partially transparent mask to require the user to close the Panel before being able to activate any elements in the document.

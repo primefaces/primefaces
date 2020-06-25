@@ -41,6 +41,8 @@ Side Validation, messages property is used as the bundle for the locale.
     week : 'week',
     day : 'Day',
     allDayText : 'All Day',
+    today: 'Today',
+    clear : 'Clear',
     messages : {
         'javax.faces.component.UIInput.REQUIRED' : '{0}: Validation Error: Value is required.',
         'javax.faces.converter.IntegerConverter.INTEGER' : '{2}: \'{0}\' must be a number consisting of one or more digits.',

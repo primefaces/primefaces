@@ -278,7 +278,12 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
             }
         };
 
-        PrimeFaces.ajax.Request.handle(options);
+        if(this.hasBehavior('load')) {
+            this.callBehavior('load', options);
+        }
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
     },
 
     /**

@@ -9,6 +9,7 @@ are many other third party libraries and plugins used to support features.
 | [Chart.js](../jsdocs/classes/chart.html) | 2.9.1 | https://www.chartjs.org |
 | [CLEditor WYSIWYG HTML Editor](../jsdocs/modules/jquery.html#cleditor) | v1.4.5 | https://github.com/cleditor/cleditor |
 | [Color Picker](../jsdocs/modules/jquery.html#colorpicker) | (2012) | www.eyecon.ro |
+| [Cookie](../jsdocs/modules/cookies.html) | 3.0.0 | https://github.com/js-cookie/js-cookie |
 | [ContentFlow](../jsdocs/classes/contentflow.html) | 1.0.2 | http://www.jacksasylum.eu/ContentFlow |
 | [Cropper.js](../jsdocs/modules/jquery.html#cropper) | 1.5.6 | https://github.com/fengyuanchen/cropperjs |
 | FontAwesome | 4.7.0 | https://fontawesome.com/ |
@@ -17,7 +18,6 @@ are many other third party libraries and plugins used to support features.
 | jqPlot | 1.0.9 | http://www.jqplot.com/ |
 | [jQuery Autosize](../jsdocs/modules/autosize.html) | 4.0.2 | http://www.jacklmoore.com/autosize |
 | [jQuery Browser Plugin](../jsdocs/interfaces/jquerystatic.html#browser)  | 0.1.0 | https://github.com/gabceb/jquery-browser-plugin |
-| [jQuery Cookie Plugin](../jsdocs/interfaces/jquerystatic.html#cookie) | 1.4.1 | https://github.com/carhartl/jquery-cookie |
 | [jQuery Cycle Plugin](../jsdocs/modules/jquery.html#cycle) | 2.88 |  http://jquery.malsup.com/cycle/ |
 | [jQuery File Upload Plugin](../jsdocs/interfaces/jqueryfileupload.fileupload.html) | 10.2.0 | https://github.com/blueimp/jQuery-File-Upload |
 | [jQuery Hotkeys Plugin](../jsdocs/interfaces/jquerystatic.html#hotkeys) | 0.2.0 | https://github.com/tzuryby/jquery.hotkeys |
@@ -41,7 +41,7 @@ are many other third party libraries and plugins used to support features.
 | [Quill Editor](../jsdocs/classes/quill.html) | 1.3.7 | https://quilljs.com/ |
 | [Raphaël](../jsdocs/interfaces/raphaelstatic.html) | 2.3.0 | http://raphaeljs.com |
 | [Signature](../jsdocs/modules/jquery.html#signature) | 1.2.0 | http://keith-wood.name/signature.html |
-| [Timeline](../jsdocs/classes/timeline.html) | 7.3.4 | https://github.com/visjs/vis-timeline |
+| [Timeline](../jsdocs/classes/timeline.html) | 7.3.7 | https://github.com/visjs/vis-timeline |
 | [TouchSwipe](../jsdocs/modules/jquery.html#swipe) | 1.6.18 | https://github.com/mattbryson/TouchSwipe-Jquery-Plugin |
 | [WebcamJS](../jsdocs/modules/webcam.html) | 1.0.26 | http://github.com/jhuckaby |
 

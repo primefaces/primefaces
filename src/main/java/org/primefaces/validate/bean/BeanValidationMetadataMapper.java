@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -116,7 +116,7 @@ public class BeanValidationMetadataMapper {
                                 try {
                                     // TODO AppScoped instances? CDI?
                                     // instantiate ClientValidationConstraint
-                                    clientValidationConstraint = (ClientValidationConstraint) resolvedBy.newInstance();
+                                    clientValidationConstraint = (ClientValidationConstraint) resolvedBy.getConstructor().newInstance();
                                 }
                                 catch (Exception e) {
                                     throw new FacesException("Could not instantiate ClientValidationConstraint!", e);

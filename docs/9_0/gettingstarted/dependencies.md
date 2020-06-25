@@ -14,7 +14,7 @@ any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 | apache tika | 1.24.1 | Optional | Advanced security (content type validation) for FileUpload |
 | barcode4j-light | 2.1 | Optional | Barcode |
 | qrgen |  1.4 | Optional | QR Code support for Barcode |
-| owasp-java-html-sanitizer |  20190503.1 | Optional | TextEditor |
+| owasp-java-html-sanitizer |  20200615.1 | Optional | TextEditor |
 
 *Listed versions are tested and known to be working with PrimeFaces, other versions of these
 dependencies may also work but not tested.
