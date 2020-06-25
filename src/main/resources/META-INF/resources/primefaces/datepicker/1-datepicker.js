@@ -220,6 +220,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         this.cfg.onClearButtonClick = function(event) {
+            $this.input.trigger('change');
             $this.callBehavior('dateSelect');
         };
     },
@@ -234,6 +235,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             return;
         }
 
+        this.input.trigger('change');
         this.callBehavior('dateSelect');
     },
 
