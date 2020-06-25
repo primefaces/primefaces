@@ -27,6 +27,10 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -220,15 +224,9 @@ public class ImageCropperRenderer extends CoreRenderer {
                         // GitHub #3268 OWASP Path Traversal
                         imagePath = FileUploadUtils.checkPathTraversal(imagePath);
 
-                        String webRoot = externalContext.getRealPath(Constants.EMPTY_STRING);
-                        String fileSeparator = Constants.EMPTY_STRING;
-                        if (!(webRoot.endsWith("\\") || webRoot.endsWith("/")) &&
-                                    !(imagePath.startsWith("\\") || imagePath.startsWith("/"))) {
-                            fileSeparator = "/";
-                        }
-
-                        File file = new File(webRoot + fileSeparator + imagePath);
-                        inputStream = new FileInputStream(file);
+                        String webRoot = externalContext.getRealPath(imagePath);
+	                    Path locationPath  = Paths.get(webRoot);
+	                    inputStream = Files.newInputStream(locationPath, StandardOpenOption.READ);
                     }
                 }
                 else if (stream != null) {
