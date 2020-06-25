@@ -25,6 +25,7 @@ package org.primefaces.application.resource;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -102,7 +103,7 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
 
     private Resource wrapResource(Resource resource, String libraryName) {
         if (resource != null && libraryName != null
-                    && (libraryName.startsWith(Constants.LIBRARY) || libraryName.equalsIgnoreCase(Constants.LIBRARY))) {
+                    && (libraryName.toLowerCase(Locale.getDefault()).startsWith(Constants.LIBRARY))) {
             return new PrimeResource(resource);
         }
         else {
