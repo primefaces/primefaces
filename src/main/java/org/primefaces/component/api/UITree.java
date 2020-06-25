@@ -39,6 +39,8 @@ import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
 
+import org.primefaces.component.column.Column;
+import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.tree.UITreeNode;
 import org.primefaces.model.CheckboxTreeNode;
@@ -1007,6 +1009,9 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
                         }
                     }
                 }
+                else if (child instanceof ColumnGroup) {
+                    visitColumnGroup(context, callback, (ColumnGroup) child);
+                }
             }
         }
 
@@ -1017,6 +1022,25 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         for (UIComponent columnFacet : component.getFacets().values()) {
             if (columnFacet.visitTree(context, callback)) {
                 return true;
+            }
+        }
+
+        return false;
+    }
+
+    protected boolean visitColumnGroup(VisitContext context, VisitCallback callback, ColumnGroup group) {
+        if (group.getChildCount() > 0) {
+            for (UIComponent row : group.getChildren()) {
+                if (row.getChildCount() > 0) {
+                    for (UIComponent col : row.getChildren()) {
+                        if (col instanceof Column && col.getFacetCount() > 0) {
+                            boolean value = visitColumnFacets(context, callback, col);
+                            if (value) {
+                                return true;
+                            }
+                        }
+                    }
+                }
             }
         }
 
