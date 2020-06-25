@@ -1,9 +1,9 @@
 /*!
- * jScrollPane - v2.2.1 - 2018-09-27
+ * jScrollPane - v2.2.3 - 2020-06-25
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2014 Kelvin Luck
- * Copyright (c) 2017-2018 Tuukka Pasanen
+ * Copyright (c) 2017-2020 Tuukka Pasanen
  * Dual licensed under the MIT or GPL licenses.
  */
 
@@ -45,6 +45,8 @@
 //
 // About: Release History
 //
+// 2.2.3       - (2020-06-25) Fix Github Issue #376 and #377 with jQuery 3.5 and upcoming jQuery 4.0
+// 2.2.2       - (2020-05-06) Just update NPM dependecies to remove vunerbilities
 // 2.2.1       - (2018-09-27) No changed applied to release so same as RC1/2
 // 2.2.1-rc.2  - (2018-06-14) Sucked NPM release have to make new Release.. this is 2018!
 // 2.2.1-rc.1  - (2018-06-14) Fixed CSSLint warnings which can lead CSS problems in
@@ -136,7 +138,9 @@
 						newPaneWidth, newPaneHeight, maintainAtBottom = false, maintainAtRight = false;
 
 				settings = s;
-
+				lastContentX = 0;
+				lastContentY = 0;
+				
 				if (pane === undefined) {
 					originalScrollTop = elem.scrollTop();
 					originalScrollLeft = elem.scrollLeft();
@@ -227,8 +231,8 @@
 				if (!(isScrollableH || isScrollableV)) {
 					elem.removeClass('jspScrollable');
 					pane.css({
-            top: '0px',
-            left: '0px',
+            top: '0',
+            left: '0',
 						width: container.width() - originalPaddingTotalWidth
 					});
 					removeMousewheel();
@@ -248,7 +252,7 @@
 					initialiseHorizontalScroll();
 					resizeScrollbars();
 
-					if (isMaintainingPositon) {
+					if (settings.stickToBottom || settings.stickToRight) {
 						scrollToX(maintainAtRight  ? (contentWidth  - paneWidth ) : lastContentX, false);
 						scrollToY(maintainAtBottom ? (contentHeight - paneHeight) : lastContentY, false);
 					}
@@ -414,10 +418,10 @@
 					verticalDrag = verticalTrack.find('>.ui-scrollpanel-drag');
 
 					if (settings.showArrows) {
-						arrowUp = $('<a class="jspArrow jspArrowUp" ></div>').on(
+						arrowUp = $('<a class="jspArrow jspArrowUp" ></a>').on(
 							'mousedown.jsp', getArrowScroll(0, -1)
 						).on('click.jsp', nil);
-						arrowDown = $('<a class="jspArrow jspArrowDown" ></div>').on(
+						arrowDown = $('<a class="jspArrow jspArrowDown" ></a>').on(
 							'mousedown.jsp', getArrowScroll(0, 1)
 						).on('click.jsp', nil);
 						if (settings.arrowScrollOnHover) {
@@ -515,10 +519,10 @@
 					horizontalDrag = horizontalTrack.find('>.ui-scrollpanel-drag');
 
 					if (settings.showArrows) {
-						arrowLeft = $('<a class="jspArrow jspArrowLeft" ></div>').on(
+						arrowLeft = $('<a class="jspArrow jspArrowLeft" ></a>').on(
 							'mousedown.jsp', getArrowScroll(-1, 0)
 						).on('click.jsp', nil);
-						arrowRight = $('<a class="jspArrow jspArrowRight" ></div>').on(
+						arrowRight = $('<a class="jspArrow jspArrowRight" ></a>').on(
 							'mousedown.jsp', getArrowScroll(1, 0)
 						).on('click.jsp', nil);
 						if (settings.arrowScrollOnHover) {
@@ -1057,13 +1061,23 @@
 			function isCloseToBottom()
 			{
 				var scrollableHeight = contentHeight - paneHeight;
-				return (scrollableHeight > 20) && (scrollableHeight - contentPositionY() < 10);
+				if(settings.maintainPosition == true)
+				{
+					return (scrollableHeight >= 20) && (scrollableHeight - contentPositionY() < 10);
+				}
+
+				return true;
 			}
 
 			function isCloseToRight()
 			{
 				var scrollableWidth = contentWidth - paneWidth;
-				return (scrollableWidth > 20) && (scrollableWidth - contentPositionX() < 10);
+				if(settings.maintainPosition == true)
+				{
+					return (scrollableWidth >= 20) && (scrollableWidth - contentPositionX() < 10);
+				}
+
+				return true;
 			}
 
 			function initMousewheel()
