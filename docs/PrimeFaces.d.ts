@@ -3026,7 +3026,7 @@ declare namespace PrimeFaces.widget {
          */
         responsiveDropdown: JQuery;
         /**
-         * The key of the cookie that stores the current carousel state.
+         * The key of the HTML5 Local Storage that stores the current carousel state.
          */
         stateKey: string;
         /**
@@ -3138,7 +3138,7 @@ declare namespace PrimeFaces.widget {
          */
         private restoreState(): void;
         /**
-         * Saves the current state of this carousel (current page etc.) in a cookie.
+         * Saves the current state of this carousel (current page etc.) in HTML5 Local Store.
          */
         private saveState(): void;
         /**
@@ -5980,6 +5980,92 @@ declare namespace PrimeFaces.ajax {
     }
 }
 /**
+ * The object with functionality related to multiple window support in PrimeFaces applications.
+ */
+declare namespace PrimeFaces.clientwindow {
+    /**
+     * The key for the session storage entry holding the client window ID.
+     */
+    export const CLIENT_WINDOW_SESSION_STORAGE: string;
+    /**
+     * The name of the URL parameter holding the client window ID.
+     */
+    export const CLIENT_WINDOW_URL_PARAM: string;
+    /**
+     * The number of characters of the client window ID. Each client window ID must be of this length, or it is
+     * invalid.
+     */
+    export const LENGTH_CLIENT_WINDOW_ID: number;
+    /**
+     * The value of the temporary client window ID, used for requesting a new ID, see
+     * {@link requestNewClientWindowId}.
+     */
+    export const TEMP_CLIENT_WINDOW_ID: string;
+    /**
+     * The current window ID, as received from the server. May be `null` when to ID was provided.
+     */
+    export let clientWindowId: null | string;
+    /**
+     * Whether the currently loaded page is from the first redirect.
+     */
+    export let initialRedirect: boolean;
+    /**
+     * Whether the {@link init} function was called already.
+     */
+    export let initialized: boolean;
+    /**
+     * Checks whether the client window ID is valid. If not, requests a new client window ID from the server via
+     * reloading the current page.
+     */
+    export function assertClientWindowId(): void;
+    /**
+     * Makes sure the temporary cookie for the client window ID is expired.
+     */
+    export function cleanupCookies(): void;
+    /**
+     * Expires the cookie with the given name by setting a cookie with the appropriate `max-age` and `expires`
+     * settings.
+     *
+     * @param cookieName Name of the cookie to expire.
+     */
+    export function expireCookie(cookieName: string): void;
+    /**
+     * Returns the value of the URL parameter with the given name. When the URL contains multiple URL parameters
+     * with the same name, the value of the first URL parameter is returned.
+     *
+     * @param uri An URL from which to extract an URL parameter.
+     * @param name Name of the URL parameter to retrieve.
+     * @return The value of the given URL parameter. Returns the empty string when the URL parameter
+     * is present, but has no value. Returns `null` when no URL parameter with the given name exists.
+     */
+    export function getUrlParameter(uri: string, name: string): string | null;
+    /**
+     * Initializes the client window feature. Usually invoked on page load. This method should only be called once
+     * per page.
+     *
+     * @param clientWindowId The current client window ID.
+     * @param initialRedirect Whether the currently loaded page is from the first redirect.
+     */
+    export function init(clientWindowId: string, initialRedirect: boolean): void;
+    /**
+     * Given an URL, removes all URL parameters with the given name, adds a new URL parameter with the given value,
+     * and returns the new URL with the replaced parameter. If the URL contains multiple URL parameters with the
+     * same name, they are all removed.
+     *
+     * @param uri The URL for which to change an URL parameter.
+     * @param parameterName Name of the URL parameter to change.
+     * @param parameterValue New value for the URL parameter. If `null` or not given, the empty
+     * string is used.
+     * @return The given URL, but with value of the given URL parameter changed to the new value.
+     */
+    export function replaceUrlParam(uri: string, parameterName: string, parameterValue?: string | null): string;
+    /**
+     * Expires the current client window ID by replacing it with a temporary, invalid client window ID. Then reloads
+     * the current page to request a new ID from the server.
+     */
+    export function requestNewClientWindowId(): void;
+}
+/**
  * The object with functionality related to handling the `script-src` directive of the HTTP Content-Security-Policy
  * (CSP) policy. This makes use of a nonce (number used once). The server must generate a unique nonce value each
  * time it transmits a policy.
@@ -6284,6 +6370,7 @@ declare function PF(widgetVar: string): PrimeFaces.widget.BaseWidget | undefined
  * of the following entries:
  *
  * - {@link PrimeFaces.ajax} The AJAX module with functionality for sending AJAX requests
+ * - {@link PrimeFaces.clientwindow} The client window module for multiple window support in PrimeFaces applications.
  * - {@link PrimeFaces.csp} The  CSP module for the HTTP Content-Security-Policy (CSP) policy `script-src` directive.
  * - {@link PrimeFaces.dialog} The dialog module with functionality related to the dialog framework
  * - {@link PrimeFaces.env} The environment module with information about the current browser
@@ -6479,6 +6566,14 @@ declare namespace PrimeFaces {
      * @return `true` if cookies are enabled and can be used, `false` otherwise.
      */
     export function cookiesEnabled(): boolean;
+    /**
+     * Generates a unique key for using in HTML5 local storage by combining the context, view, id, and key.
+     *
+     * @param id ID of the component
+     * @param key a unique key name such as the component name
+     * @return the generated key comprising of context + view + id + key
+     */
+    export function createStorageKey(id: string, key: string): string;
     /**
      * Creates a new widget of the given type and with the given configuration. Registers that widget in the widgets
      * registry {@link PrimeFaces.widgets}. If this method is called in response to an AJAX request and the method
@@ -15357,7 +15452,7 @@ declare namespace PrimeFaces.widget {
      * __PrimeFaces DefaultCommand Widget__
      *
      * Which command to submit the form with when enter key is pressed a common problem in web apps not just specific to
-     * JSF. Browsers tend to behave differently as there doesn’t seem to be a standard and even if a standard exists,
+     * JSF. Browsers tend to behave differently as there doesnâ€™t seem to be a standard and even if a standard exists,
      * IE probably will not care about it. There are some ugly workarounds like placing a hidden button and writing
      * JavaScript for every form in your app. `DefaultCommand` solves this problem by normalizing the command (e.g. button
      * or link) to submit the form with on enter key press.
@@ -18564,7 +18659,7 @@ declare namespace PrimeFaces.widget {
     /**
      * __PrimeFaces Growl Widget__
      *
-     * Growl is based on the Mac’s growl notification widget and used to display FacesMessages in an overlay.
+     * Growl is based on the Macâ€™s growl notification widget and used to display FacesMessages in an overlay.
      *
      * @typeparam TCfg Defaults to `GrowlCfg`. Type of the configuration object for this widget.
      */
@@ -20679,6 +20774,117 @@ interface JQuery {
      * @return The current position of the cursor in pixels, relative to the top left of the element.
      */
     getCaretPosition(): JQueryCaretposition.CaretPosition;
+}
+/**
+ * Namespace for the masked input JQueryUI plugin.
+ *
+ * It allows a user to more easily enter fixed width input where you would like them to enter the data in a certain
+ * format (dates,phone numbers, etc).
+ */
+declare namespace JQueryMaskedInput {
+    /**
+     * A mask is defined by a format made up of mask literals and mask definitions. Any character not in the definitions
+     * list below is considered a mask literal. Mask literals will be automatically entered for the user as they type
+     * and will not be able to be removed by the user.The following mask definitions are predefined:
+     *
+     * - `a` - Represents an alpha character (A-Z,a-z)
+     * - `9` - Represents a numeric character (0-9)
+     * - `*` - Represents an alphanumeric character (A-Z,a-z,0-9)
+     *
+     * You can have part of your mask be optional. Anything listed after `?` within the mask is considered optional user
+     * input. The common example for this is phone number `+` optional extension.
+     *
+     * You can also supply your own mask definitions by extending the `$.mask.definitions` object.
+     *
+     * Examples for valid masks:
+     *
+     * - Date: `99/99/9999`
+     * - Phone: `(999) 999-9999`
+     * - Phone + Ext: `(999) 999-9999? x99999`
+     * - Product Key: `a*-999-a999`
+     * - Eye Script: `~9.99 ~9.99 999`
+     */
+    export type MaskString = string;
+    /**
+     * Settings for the mask when setting up an input field with a mask.
+     */
+    export interface MaskSettings {
+        /**
+         * If `true`, the input field will be cleared when the user leaves the input field and did not enter some input
+         * that completed the mask. If `false`, the partially entered text will remaing in the input field.
+         */
+        autoclear: boolean;
+        /**
+         * Placeholder string that is shown when no text is entered in the input field.
+         */
+        placeholder: string;
+        /**
+         * Callback that is invoked once the mask has been completed (every character required by the mask was entered).
+         */
+        completed(this: JQuery): void;
+        /**
+         * Callback that is invoked when the value of the input has changed.
+         *
+         * @param event Event that triggered the change.
+         */
+        onChange(this: JQuery, event: JQuery.Event): void;
+    }
+    /**
+     * Global settings for the masked input plugin available in `$.mask`. Also contains the default values for the
+     * `MaskSettings`.
+     */
+    export interface GlobalSettings extends MaskSettings {
+        /**
+         * An object with custom mask character definition. The key must be a (single) character used in a mask
+         * definition. The value must be a RegExp string (converted to a RegExp via `new RegExp`) and match those
+         * characters to which the mask character applies. For example, default definitions are as follows:
+         *
+         * ```javascript
+         * {
+         *   "9": "[0-9]",
+         *   "a": "[A-Za-z]",
+         *   "*": "[A-Za-z0-9]",
+         * }
+         * ```
+         */
+        definitions: Record<string, string>;
+        /**
+         * Name of the HTML data attribute used for storing information related to the masked input in the DOM element.
+         */
+        dataName: string;
+    }
+}
+interface JQuery {
+    /**
+     * Selects the text at the given range. If end is not given, just moves the cursor to the start position,
+     *
+     * @param begin 0-based index of the start of the range, inclusive.
+     * @param end 0-based index of the end of the range, exclusive.
+     * @return this for chaining.
+     */
+    caret(begin: number, end?: number): this;
+    /**
+     * Removes the mask from the input field, returning it to the previous state before the masked input plugin was
+     * initialized.
+     *
+     * @return this for chaining.
+     */
+    unmask(): this;
+    /**
+     * Sets up the masked input plugin on this INPUT element. The user must now enter data in the given mask format.
+     *
+     * @param mask Mask to use for the input, such as `99/99/9999` or `(999) 999-9999? x99999`.
+     * @param settings Additional settings for the mask.
+     * @return this for chaining.
+     */
+    mask(mask: JQueryMaskedInput.MaskString, settings?: Partial<JQueryMaskedInput.MaskSettings>): this;
+}
+interface JQueryStatic {
+    /**
+     * Global settings for the masked input plugin available in `$.mask`. Also contains the default values for the
+     * `MaskSettings`.
+     */
+    mask: JQueryMaskedInput.GlobalSettings;
 }
 /**
  * Namespace for the jQuery Mouse Wheel plugin.
@@ -23157,8 +23363,8 @@ declare namespace JQueryLayout {
      *
      * If a `start` callback function returns `false`, the event will be cancelled.
      *
-     * __NOTE__: If an event is 'automatically triggered' by layout logic – like closing a pane when there is
-     * insufficient room – then the event cannot be cancelled. In this case, returning false will have no effect.
+     * __NOTE__: If an event is 'automatically triggered' by layout logic â€“ like closing a pane when there is
+     * insufficient room â€“ then the event cannot be cancelled. In this case, returning false will have no effect.
      */
     export type OnStartCallback =
     /**
@@ -23652,7 +23858,7 @@ declare namespace JQueryLayout {
          * - Toggle East-pane: `CTRL+Right` or `SHIFT+Right`
          *
          * The SHIFT+ARROW combinations are ignored if pressed while the cursor is in a form field, allowing users to
-         * 'select text' — eg: SHIFT+Right in a TEXTAREA.
+         * 'select text' â€” eg: SHIFT+Right in a TEXTAREA.
          */
         north__enableCursorHotkey: boolean;
         /**
@@ -23693,19 +23899,19 @@ declare namespace JQueryLayout {
          */
         north__fxName_size: string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         north__fxSpeed: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         north__fxSpeed_open: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         north__fxSpeed_close: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         north__fxSpeed_size: number | string;
         /**
@@ -23765,7 +23971,7 @@ declare namespace JQueryLayout {
         north__resizerCursor: string;
         /**
          * If a hotkey is specified, it is automatically enabled. It does not matter whether 'cursor hotkeys' are also
-         * enabled – those are separate.
+         * enabled â€“ those are separate.
          *
          * You can specify any of the following values:
          *
@@ -24032,7 +24238,7 @@ declare namespace JQueryLayout {
          * - Toggle East-pane: `CTRL+Right` or `SHIFT+Right`
          *
          * The SHIFT+ARROW combinations are ignored if pressed while the cursor is in a form field, allowing users to
-         * 'select text' — eg: SHIFT+Right in a TEXTAREA.
+         * 'select text' â€” eg: SHIFT+Right in a TEXTAREA.
          */
         east__enableCursorHotkey: boolean;
         /**
@@ -24073,19 +24279,19 @@ declare namespace JQueryLayout {
          */
         east__fxName_size: string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         east__fxSpeed: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         east__fxSpeed_open: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         east__fxSpeed_close: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         east__fxSpeed_size: number | string;
         /**
@@ -24145,7 +24351,7 @@ declare namespace JQueryLayout {
         east__resizerCursor: string;
         /**
          * If a hotkey is specified, it is automatically enabled. It does not matter whether 'cursor hotkeys' are also
-         * enabled – those are separate.
+         * enabled â€“ those are separate.
          *
          * You can specify any of the following values:
          *
@@ -24412,7 +24618,7 @@ declare namespace JQueryLayout {
          * - Toggle East-pane: `CTRL+Right` or `SHIFT+Right`
          *
          * The SHIFT+ARROW combinations are ignored if pressed while the cursor is in a form field, allowing users to
-         * 'select text' — eg: SHIFT+Right in a TEXTAREA.
+         * 'select text' â€” eg: SHIFT+Right in a TEXTAREA.
          */
         south__enableCursorHotkey: boolean;
         /**
@@ -24453,19 +24659,19 @@ declare namespace JQueryLayout {
          */
         south__fxName_size: string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         south__fxSpeed: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         south__fxSpeed_open: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         south__fxSpeed_close: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         south__fxSpeed_size: number | string;
         /**
@@ -24525,7 +24731,7 @@ declare namespace JQueryLayout {
         south__resizerCursor: string;
         /**
          * If a hotkey is specified, it is automatically enabled. It does not matter whether 'cursor hotkeys' are also
-         * enabled – those are separate.
+         * enabled â€“ those are separate.
          *
          * You can specify any of the following values:
          *
@@ -24792,7 +24998,7 @@ declare namespace JQueryLayout {
          * - Toggle East-pane: `CTRL+Right` or `SHIFT+Right`
          *
          * The SHIFT+ARROW combinations are ignored if pressed while the cursor is in a form field, allowing users to
-         * 'select text' — eg: SHIFT+Right in a TEXTAREA.
+         * 'select text' â€” eg: SHIFT+Right in a TEXTAREA.
          */
         west__enableCursorHotkey: boolean;
         /**
@@ -24833,19 +25039,19 @@ declare namespace JQueryLayout {
          */
         west__fxName_size: string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         west__fxSpeed: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         west__fxSpeed_open: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         west__fxSpeed_close: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         west__fxSpeed_size: number | string;
         /**
@@ -24905,7 +25111,7 @@ declare namespace JQueryLayout {
         west__resizerCursor: string;
         /**
          * If a hotkey is specified, it is automatically enabled. It does not matter whether 'cursor hotkeys' are also
-         * enabled – those are separate.
+         * enabled â€“ those are separate.
          *
          * You can specify any of the following values:
          *
@@ -25203,7 +25409,7 @@ declare namespace JQueryLayout {
          * - Toggle East-pane: `CTRL+Right` or `SHIFT+Right`
          *
          * The SHIFT+ARROW combinations are ignored if pressed while the cursor is in a form field, allowing users to
-         * 'select text' — eg: SHIFT+Right in a TEXTAREA.
+         * 'select text' â€” eg: SHIFT+Right in a TEXTAREA.
          */
         enableCursorHotkey: boolean;
         /**
@@ -25244,19 +25450,19 @@ declare namespace JQueryLayout {
          */
         fxName_size: string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         fxSpeed: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         fxSpeed_open: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         fxSpeed_close: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         fxSpeed_size: number | string;
         /**
@@ -25372,7 +25578,7 @@ declare namespace JQueryLayout {
         resizerCursor: string;
         /**
          * If a hotkey is specified, it is automatically enabled. It does not matter whether 'cursor hotkeys' are also
-         * enabled – those are separate.
+         * enabled â€“ those are separate.
          *
          * You can specify any of the following values:
          *
@@ -26017,7 +26223,7 @@ declare namespace PrimeFaces.widget {
      * __PrimeFaces Layout Widget__
      *
      * Layout component features a highly customizable borderLayout model making it very easy to create complex layouts even
-     * if you’re not familiar with web design.
+     * if youâ€™re not familiar with web design.
      *
      * > __Layout and LayoutUnit are deprecated__, use FlexGrid or GridCSS instead. They'll be removed on 9.0.
      *
@@ -26512,7 +26718,7 @@ declare namespace PrimeFaces.widget {
      *
      * Log component is a visual console to display logs on JSF pages.
      *
-     * The Log API is also available via global PrimeFaces object in case you’d like to use the log component to display
+     * The Log API is also available via global PrimeFaces object in case youâ€™d like to use the log component to display
      * your logs:
      *
      * ```javascript
@@ -27236,7 +27442,7 @@ declare namespace PrimeFaces.widget {
          */
         menuitemLinks: JQuery;
         /**
-         * Cookie key used to store the UI state (expanded items) in a cookie.
+         * Key used to store the UI state (expanded items) in an HTML5 Local Store.
          */
         stateKey: string;
         /**
@@ -27245,7 +27451,7 @@ declare namespace PrimeFaces.widget {
          */
         treeLinks: JQuery;
         /**
-         * Callback invoked after a menu item was expanded. Saves the current UI state in a cookie.
+         * Callback invoked after a menu item was expanded. Saves the current UI state in an HTML5 Local Store.
          *
          * @param element Element that was expanded.
          */
@@ -27259,7 +27465,7 @@ declare namespace PrimeFaces.widget {
          */
         private bindKeyEvents(): void;
         /**
-         * Deletes the UI state of this panel menu stored in a cookie.
+         * Deletes the UI state of this panel menu stored in an HTML5 Local Store.
          */
         private clearState(): void;
         /**
@@ -27349,7 +27555,7 @@ declare namespace PrimeFaces.widget {
          */
         isExpanded(item: JQuery): boolean;
         /**
-         * Callback invoked after a menu item was collapsed. Saves the current UI state in a cookie.
+         * Callback invoked after a menu item was collapsed. Saves the current UI state in an HTML5 Local Store.
          *
          * @param element Element that was collapsed.
          */
@@ -27359,12 +27565,12 @@ declare namespace PrimeFaces.widget {
          */
         private removeFocusedItem(): void;
         /**
-         * Read the UI state of this panel menu stored in a cookie and reapplies to this panel menu. Used to preserve the
+         * Read the UI state of this panel menu stored in an HTML5 Local Store and reapplies to this panel menu. Used to preserve the
          * state during AJAX updates as well as between page reloads.
          */
         private restoreState(): void;
         /**
-         * Writes the UI state of this panel menu to a cookie. Used to preserve the state during AJAX updates as well as
+         * Writes the UI state of this panel menu to an HTML5 Local Store. Used to preserve the state during AJAX updates as well as
          * between page reloads.
          */
         private saveState(): void;
@@ -27389,7 +27595,7 @@ declare namespace PrimeFaces.widget {
          */
         multiple: boolean;
         /**
-         * Whether the UI state (expanded menu items) should be persisted in a cookie.
+         * Whether the UI state (expanded menu items) should be persisted in an HTML5 Local Store.
          */
         stateful: boolean;
     }
@@ -27412,7 +27618,7 @@ declare namespace PrimeFaces.widget {
          */
         menuitemLinks: JQuery;
         /**
-         * Name of the cookie that is used to store the state of this plain menu (expanded / collapsed
+         * Name of the HTML5 Local Store that is used to store the state of this plain menu (expanded / collapsed
          * menu items).
          */
         stateKey: string;
@@ -27429,7 +27635,7 @@ declare namespace PrimeFaces.widget {
          *
          * @param header Menu item with children to collapse.
          * @param stateful `true` if the new state of this menu (which items are collapsed and expanded) should
-         * be saved (in a cookie), `false` otherwise.
+         * be saved (in an HTML5 Local Store), `false` otherwise.
          */
         collapseSubmenu(header: JQuery, stateful?: boolean): void;
         /**
@@ -27437,7 +27643,7 @@ declare namespace PrimeFaces.widget {
          *
          * @param header Menu item with children to expand.
          * @param stateful `true` if the new state of this menu (which items are collapsed and expanded) should
-         * be saved (in a cookie), `false` otherwise.
+         * be saved (in an HTML5 Local Store), `false` otherwise.
          */
         expandSubmenu(header: JQuery, stateful?: boolean): void;
         /**
@@ -27469,7 +27675,7 @@ declare namespace PrimeFaces.widget {
         private restoreState(): void;
         /**
          * Saves the current state (expanded / collapsed menu items) of this plain menu. Used to preserve the state during
-         * AJAX updates as well as between page reloads. The state is stored in a cookie.
+         * AJAX updates as well as between page reloads. The state is stored in an HTML5 Local Store.
          */
         private saveState(): void;
     }
@@ -30998,13 +31204,13 @@ declare namespace JQueryRoundabout {
         dropCallback: RoundaboutCallback;
         /**
          * The length of time (in milliseconds) the animation will take to animate Roundabout to the appropriate child
-         * when the Roundabout is “dropped.”
+         * when the Roundabout is â€œdropped.â€�
          *
          * Defaults to `600`.
          */
         dropDuration: number;
         /**
-         * The easing function to use when animating Roundabout after it has been “dropped.” With no other plugins, the
+         * The easing function to use when animating Roundabout after it has been â€œdropped.â€� With no other plugins, the
          * standard jQuery easing functions are available. When using the jQuery easing plugin all of its easing functions will also be available.
          *
          * Defaults to `swing`.
@@ -31070,21 +31276,21 @@ declare namespace JQueryRoundabout {
         maxZ: number;
         /**
          * The lowest opacity that will be assigned to a moving element. This occurs when the moving element is opposite
-         * of (that is, 180° away from) the focusBearing.
+         * of (that is, 180Â° away from) the focusBearing.
          *
          * Defaults to `0.4`.
          */
         minOpacity: number;
         /**
          * The lowest size (relative to its starting size) that will be assigned to a moving element. This occurs when
-         * the moving element is opposite of (that is, 180° away from) the focusBearing.
+         * the moving element is opposite of (that is, 180Â° away from) the focusBearing.
          *
          * Defaults to `0.4`.
          */
         minScale: number;
         /**
          * The lowest z-index that will be assigned to a moving element. This occurs when the moving element is opposite
-         * of (that is, 180° away from) the focusBearing.
+         * of (that is, 180Â° away from) the focusBearing.
          *
          * Defaults to `100`.
          */
@@ -31197,9 +31403,9 @@ interface JQuery {
      * in focus.
      *
      * @param method The method to call on the Roundabout instance.
-     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundabout’s
+     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundaboutâ€™s
      * configured duration if no value is set here
-     * @param easing The name of the easing function to use for movement; uses Roundabout’s configured easing if no
+     * @param easing The name of the easing function to use for movement; uses Roundaboutâ€™s configured easing if no
      * value is set here.
      * @param onChangeComplete Callback function that is invoked once the change completes.
      * @return this jQuery instance for chaining.
@@ -31220,9 +31426,9 @@ interface JQuery {
      *
      * @param method The method to call on the Roundabout instance.
      * @param childPosition The zero-based child to which Roundabout will animate.
-     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundabout’s
+     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundaboutâ€™s
      * configured duration if no value is set here
-     * @param easing The name of the easing function to use for movement; uses Roundabout’s configured easing if no
+     * @param easing The name of the easing function to use for movement; uses Roundaboutâ€™s configured easing if no
      * value is set here.
      * @param onChangeComplete Callback function that is invoked once the change completes.
      * @return this jQuery instance for chaining.
@@ -31242,9 +31448,9 @@ interface JQuery {
      * Animates the Roundabout to the next child element.
      *
      * @param method The method to call on the Roundabout instance.
-     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundabout’s
+     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundaboutâ€™s
      * configured duration if no value is set here
-     * @param easing The name of the easing function to use for movement; uses Roundabout’s configured easing if no
+     * @param easing The name of the easing function to use for movement; uses Roundaboutâ€™s configured easing if no
      * value is set here.
      * @param onChangeComplete Callback function that is invoked once the change completes.
      * @return this jQuery instance for chaining.
@@ -31262,9 +31468,9 @@ interface JQuery {
      * Animates the Roundabout to the previous child element.
      *
      * @param method The method to call on the Roundabout instance.
-     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundabout’s
+     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundaboutâ€™s
      * configured duration if no value is set here
-     * @param easing The name of the easing function to use for movement; uses Roundabout’s configured easing if no
+     * @param easing The name of the easing function to use for movement; uses Roundaboutâ€™s configured easing if no
      * value is set here.
      * @param onChangeComplete Callback function that is invoked once the change completes.
      * @return this jQuery instance for chaining.
@@ -31284,9 +31490,9 @@ interface JQuery {
      *
      * @param method The method to call on the Roundabout instance.
      * @param degrees The amount by which the bearing will change (either positive or negative)
-     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundabout’s
+     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundaboutâ€™s
      * configured duration if no value is set here
-     * @param easing The name of the easing function to use for movement; uses Roundabout’s configured easing if no
+     * @param easing The name of the easing function to use for movement; uses Roundaboutâ€™s configured easing if no
      * value is set here.
      * @param onChangeComplete Callback function that is invoked once the change completes.
      * @return this jQuery instance for chaining.
@@ -31307,9 +31513,9 @@ interface JQuery {
      *
      * @param method The method to call on the Roundabout instance.
      * @param degrees A value between `0.0` and `359.9`.
-     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundabout’s
+     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundaboutâ€™s
      * configured duration if no value is set here
-     * @param easing The name of the easing function to use for movement; uses Roundabout’s configured easing if no
+     * @param easing The name of the easing function to use for movement; uses Roundaboutâ€™s configured easing if no
      * value is set here.
      * @param onChangeComplete Callback function that is invoked once the change completes.
      * @return this jQuery instance for chaining.
@@ -31325,7 +31531,7 @@ interface JQuery {
      */
     roundabout(method: "animateBearingToFocus", degrees: number, onChangeComplete?: JQueryRoundabout.RoundaboutCallback): this;
     /**
-     * Starts the Roundabout’s autoplay feature.
+     * Starts the Roundaboutâ€™s autoplay feature.
      *
      * @param method The method to call on the Roundabout instance.
      * @param onAnimationComplete Callback function that is invoked after each autoplay animation completes.
@@ -31333,7 +31539,7 @@ interface JQuery {
      */
     roundabout(method: "startAutoplay", onAnimationComplete?: JQueryRoundabout.RoundaboutCallback): this;
     /**
-     * Stops the Roundabout’s autoplay feature.
+     * Stops the Roundaboutâ€™s autoplay feature.
      *
      * @param method The method to call on the Roundabout instance.
      * @param keepAutoplayBindings When `true` will not destroy any autoplay mouseenter and mouseleave event bindings
@@ -31342,7 +31548,7 @@ interface JQuery {
      */
     roundabout(method: "stopAutoplay", keepAutoplayBindings?: boolean): this;
     /**
-     * Starts or stops the Roundabout’s autoplay feature (based upon its current state).
+     * Starts or stops the Roundaboutâ€™s autoplay feature (based upon its current state).
      *
      * @param method The method to call on the Roundabout instance.
      * @param onAnimationComplete Callback function that is invoked after each autoplay animation completes.
@@ -31350,14 +31556,14 @@ interface JQuery {
      */
     roundabout(method: "toggleAutoplay", onAnimationComplete?: JQueryRoundabout.RoundaboutCallback): this;
     /**
-     * Checks to see if the Roundabout’s autoplay feature is currently playing or not.
+     * Checks to see if the Roundaboutâ€™s autoplay feature is currently playing or not.
      *
      * @param method The method to call on the Roundabout instance.
      * @return `true` if autoplay is active, or `false` otherwise.
      */
     roundabout(method: "isAutoplaying"): boolean;
     /**
-     * Changes the length of time (in milliseconds) that the Roundabout’s autoplay feature waits between attempts to
+     * Changes the length of time (in milliseconds) that the Roundaboutâ€™s autoplay feature waits between attempts to
      * animate to the next child.
      *
      * @param method The method to call on the Roundabout instance.
@@ -31415,14 +31621,14 @@ declare namespace JQuery {
          * Triggered by the {@link JQuery.roundabout|jQuery Roundabout plugin}.
          *
          * This event fires on moving child elements when an animation causes them pass through the point that is
-         * opposite (or 180°) from the `focusBearing` in a clockwise motion.
+         * opposite (or 180Â°) from the `focusBearing` in a clockwise motion.
          */
         moveClockwiseThroughBack: JQuery.EventBase<TDelegateTarget, TData, TCurrentTarget, TTarget>;
         /**
          * Triggered by the {@link JQuery.roundabout|jQuery Roundabout plugin}.
          *
          * This event fires on moving child elements when an animation causes them to pass through the point that is
-         * opposite (or 180°) from the focusBearing in a counterclockwise motion.
+         * opposite (or 180Â°) from the focusBearing in a counterclockwise motion.
          */
         moveCounterclockwiseThroughBack: JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
         /**
