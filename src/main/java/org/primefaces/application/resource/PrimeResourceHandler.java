@@ -25,13 +25,16 @@ package org.primefaces.application.resource;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.application.resource.barcode.BarcodeHandler;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
@@ -67,25 +70,13 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
     @Override
     public Resource createResource(String resourceName, String libraryName) {
         Resource resource = super.createResource(resourceName, libraryName);
-
-        if (resource != null && libraryName != null && libraryName.equalsIgnoreCase(Constants.LIBRARY)) {
-            return new PrimeResource(resource);
-        }
-        else {
-            return resource;
-        }
+        return wrapResource(resource, libraryName);
     }
 
     @Override
     public Resource createResource(String resourceName, String libraryName, String contentType) {
         Resource resource = super.createResource(resourceName, libraryName, contentType);
-
-        if (resource != null && libraryName != null && libraryName.equalsIgnoreCase(Constants.LIBRARY)) {
-            return new PrimeResource(resource);
-        }
-        else {
-            return resource;
-        }
+        return wrapResource(resource, libraryName);
     }
 
     @Override
@@ -107,6 +98,16 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
             else {
                 handler.handle(context);
             }
+        }
+    }
+
+    private Resource wrapResource(Resource resource, String libraryName) {
+        if (resource != null && libraryName != null
+                    && (libraryName.toLowerCase(Locale.getDefault()).startsWith(Constants.LIBRARY))) {
+            return new PrimeResource(resource);
+        }
+        else {
+            return resource;
         }
     }
 }
