@@ -5548,6 +5548,19 @@ declare namespace PrimeFaces.widget {
     export interface ContentFlowCfg extends PrimeFaces.widget.DeferredWidgetCfg {
     }
 }
+/**
+ * Namespace for the cookie Javascript Cookie, available as `Cookies.set` and `Cookies.get`.
+ *
+ * Contains some additional types and interfaces required for the typings.
+ * https://github.com/js-cookie/js-cookie
+ */
+declare namespace Cookies {
+    /**
+     * Represents the properties of a cookie, other that its name and value.
+     */
+    export interface CookieAttributes {
+    }
+}
 declare namespace PrimeFaces {
     /**
      * AJAX parameter shortcut mapping for the method `PrimeFaces.ab` that sends an AJAX request.
@@ -15439,7 +15452,7 @@ declare namespace PrimeFaces.widget {
      * __PrimeFaces DefaultCommand Widget__
      *
      * Which command to submit the form with when enter key is pressed a common problem in web apps not just specific to
-     * JSF. Browsers tend to behave differently as there doesn’t seem to be a standard and even if a standard exists,
+     * JSF. Browsers tend to behave differently as there doesnâ€™t seem to be a standard and even if a standard exists,
      * IE probably will not care about it. There are some ugly workarounds like placing a hidden button and writing
      * JavaScript for every form in your app. `DefaultCommand` solves this problem by normalizing the command (e.g. button
      * or link) to submit the form with on enter key press.
@@ -15507,11 +15520,17 @@ declare namespace PrimeFaces.widget {
      */
     export class InputMask<TCfg extends InputMaskCfg = InputMaskCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
         /**
-         * Returns the current value of this input field.
+         * Returns the current value of this input field including the mask like "12/31/1999".
          *
-         * @return The current value of this input field.
+         * @return The current value of this input field with mask.
          */
         getValue(): string;
+        /**
+         * Returns the current value of this input field without the mask like "12311999".
+         *
+         * @return The current value of this input field without mask.
+         */
+        getValueUnmasked(): string;
         /**
          * A widget class should not have an explicit constructor. Instead, this initialize method is called after the
          * widget was created. You can use this method to perform any initialization that is required. For widgets that
@@ -15550,7 +15569,7 @@ declare namespace PrimeFaces.widget {
      * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
      * configuration is usually meant to be read-only and should not be modified.
      */
-    export interface InputMaskCfg extends JQueryMaskedInput.MaskSettings, PrimeFaces.widget.BaseWidgetCfg {
+    export interface InputMaskCfg extends Inputmask.Options, PrimeFaces.widget.BaseWidgetCfg {
         /**
          * The mask template to use.
          */
@@ -18640,7 +18659,7 @@ declare namespace PrimeFaces.widget {
     /**
      * __PrimeFaces Growl Widget__
      *
-     * Growl is based on the Mac’s growl notification widget and used to display FacesMessages in an overlay.
+     * Growl is based on the Macâ€™s growl notification widget and used to display FacesMessages in an overlay.
      *
      * @typeparam TCfg Defaults to `GrowlCfg`. Type of the configuration object for this widget.
      */
@@ -23344,8 +23363,8 @@ declare namespace JQueryLayout {
      *
      * If a `start` callback function returns `false`, the event will be cancelled.
      *
-     * __NOTE__: If an event is 'automatically triggered' by layout logic – like closing a pane when there is
-     * insufficient room – then the event cannot be cancelled. In this case, returning false will have no effect.
+     * __NOTE__: If an event is 'automatically triggered' by layout logic â€“ like closing a pane when there is
+     * insufficient room â€“ then the event cannot be cancelled. In this case, returning false will have no effect.
      */
     export type OnStartCallback =
     /**
@@ -23839,7 +23858,7 @@ declare namespace JQueryLayout {
          * - Toggle East-pane: `CTRL+Right` or `SHIFT+Right`
          *
          * The SHIFT+ARROW combinations are ignored if pressed while the cursor is in a form field, allowing users to
-         * 'select text' — eg: SHIFT+Right in a TEXTAREA.
+         * 'select text' â€” eg: SHIFT+Right in a TEXTAREA.
          */
         north__enableCursorHotkey: boolean;
         /**
@@ -23880,19 +23899,19 @@ declare namespace JQueryLayout {
          */
         north__fxName_size: string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         north__fxSpeed: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         north__fxSpeed_open: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         north__fxSpeed_close: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         north__fxSpeed_size: number | string;
         /**
@@ -23952,7 +23971,7 @@ declare namespace JQueryLayout {
         north__resizerCursor: string;
         /**
          * If a hotkey is specified, it is automatically enabled. It does not matter whether 'cursor hotkeys' are also
-         * enabled – those are separate.
+         * enabled â€“ those are separate.
          *
          * You can specify any of the following values:
          *
@@ -24219,7 +24238,7 @@ declare namespace JQueryLayout {
          * - Toggle East-pane: `CTRL+Right` or `SHIFT+Right`
          *
          * The SHIFT+ARROW combinations are ignored if pressed while the cursor is in a form field, allowing users to
-         * 'select text' — eg: SHIFT+Right in a TEXTAREA.
+         * 'select text' â€” eg: SHIFT+Right in a TEXTAREA.
          */
         east__enableCursorHotkey: boolean;
         /**
@@ -24260,19 +24279,19 @@ declare namespace JQueryLayout {
          */
         east__fxName_size: string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         east__fxSpeed: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         east__fxSpeed_open: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         east__fxSpeed_close: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         east__fxSpeed_size: number | string;
         /**
@@ -24332,7 +24351,7 @@ declare namespace JQueryLayout {
         east__resizerCursor: string;
         /**
          * If a hotkey is specified, it is automatically enabled. It does not matter whether 'cursor hotkeys' are also
-         * enabled – those are separate.
+         * enabled â€“ those are separate.
          *
          * You can specify any of the following values:
          *
@@ -24599,7 +24618,7 @@ declare namespace JQueryLayout {
          * - Toggle East-pane: `CTRL+Right` or `SHIFT+Right`
          *
          * The SHIFT+ARROW combinations are ignored if pressed while the cursor is in a form field, allowing users to
-         * 'select text' — eg: SHIFT+Right in a TEXTAREA.
+         * 'select text' â€” eg: SHIFT+Right in a TEXTAREA.
          */
         south__enableCursorHotkey: boolean;
         /**
@@ -24640,19 +24659,19 @@ declare namespace JQueryLayout {
          */
         south__fxName_size: string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         south__fxSpeed: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         south__fxSpeed_open: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         south__fxSpeed_close: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         south__fxSpeed_size: number | string;
         /**
@@ -24712,7 +24731,7 @@ declare namespace JQueryLayout {
         south__resizerCursor: string;
         /**
          * If a hotkey is specified, it is automatically enabled. It does not matter whether 'cursor hotkeys' are also
-         * enabled – those are separate.
+         * enabled â€“ those are separate.
          *
          * You can specify any of the following values:
          *
@@ -24979,7 +24998,7 @@ declare namespace JQueryLayout {
          * - Toggle East-pane: `CTRL+Right` or `SHIFT+Right`
          *
          * The SHIFT+ARROW combinations are ignored if pressed while the cursor is in a form field, allowing users to
-         * 'select text' — eg: SHIFT+Right in a TEXTAREA.
+         * 'select text' â€” eg: SHIFT+Right in a TEXTAREA.
          */
         west__enableCursorHotkey: boolean;
         /**
@@ -25020,19 +25039,19 @@ declare namespace JQueryLayout {
          */
         west__fxName_size: string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         west__fxSpeed: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         west__fxSpeed_open: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         west__fxSpeed_close: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         west__fxSpeed_size: number | string;
         /**
@@ -25092,7 +25111,7 @@ declare namespace JQueryLayout {
         west__resizerCursor: string;
         /**
          * If a hotkey is specified, it is automatically enabled. It does not matter whether 'cursor hotkeys' are also
-         * enabled – those are separate.
+         * enabled â€“ those are separate.
          *
          * You can specify any of the following values:
          *
@@ -25390,7 +25409,7 @@ declare namespace JQueryLayout {
          * - Toggle East-pane: `CTRL+Right` or `SHIFT+Right`
          *
          * The SHIFT+ARROW combinations are ignored if pressed while the cursor is in a form field, allowing users to
-         * 'select text' — eg: SHIFT+Right in a TEXTAREA.
+         * 'select text' â€” eg: SHIFT+Right in a TEXTAREA.
          */
         enableCursorHotkey: boolean;
         /**
@@ -25431,19 +25450,19 @@ declare namespace JQueryLayout {
          */
         fxName_size: string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         fxSpeed: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         fxSpeed_open: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         fxSpeed_close: number | string;
         /**
-         * Speed of animations – standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
+         * Speed of animations â€“ standard jQuery keyword like `fast`, or a millisecond value. Defaults to `normal`.
          */
         fxSpeed_size: number | string;
         /**
@@ -25559,7 +25578,7 @@ declare namespace JQueryLayout {
         resizerCursor: string;
         /**
          * If a hotkey is specified, it is automatically enabled. It does not matter whether 'cursor hotkeys' are also
-         * enabled – those are separate.
+         * enabled â€“ those are separate.
          *
          * You can specify any of the following values:
          *
@@ -26204,7 +26223,7 @@ declare namespace PrimeFaces.widget {
      * __PrimeFaces Layout Widget__
      *
      * Layout component features a highly customizable borderLayout model making it very easy to create complex layouts even
-     * if you’re not familiar with web design.
+     * if youâ€™re not familiar with web design.
      *
      * > __Layout and LayoutUnit are deprecated__, use FlexGrid or GridCSS instead. They'll be removed on 9.0.
      *
@@ -26699,7 +26718,7 @@ declare namespace PrimeFaces.widget {
      *
      * Log component is a visual console to display logs on JSF pages.
      *
-     * The Log API is also available via global PrimeFaces object in case you’d like to use the log component to display
+     * The Log API is also available via global PrimeFaces object in case youâ€™d like to use the log component to display
      * your logs:
      *
      * ```javascript
@@ -31185,13 +31204,13 @@ declare namespace JQueryRoundabout {
         dropCallback: RoundaboutCallback;
         /**
          * The length of time (in milliseconds) the animation will take to animate Roundabout to the appropriate child
-         * when the Roundabout is “dropped.”
+         * when the Roundabout is â€œdropped.â€�
          *
          * Defaults to `600`.
          */
         dropDuration: number;
         /**
-         * The easing function to use when animating Roundabout after it has been “dropped.” With no other plugins, the
+         * The easing function to use when animating Roundabout after it has been â€œdropped.â€� With no other plugins, the
          * standard jQuery easing functions are available. When using the jQuery easing plugin all of its easing functions will also be available.
          *
          * Defaults to `swing`.
@@ -31257,21 +31276,21 @@ declare namespace JQueryRoundabout {
         maxZ: number;
         /**
          * The lowest opacity that will be assigned to a moving element. This occurs when the moving element is opposite
-         * of (that is, 180° away from) the focusBearing.
+         * of (that is, 180Â° away from) the focusBearing.
          *
          * Defaults to `0.4`.
          */
         minOpacity: number;
         /**
          * The lowest size (relative to its starting size) that will be assigned to a moving element. This occurs when
-         * the moving element is opposite of (that is, 180° away from) the focusBearing.
+         * the moving element is opposite of (that is, 180Â° away from) the focusBearing.
          *
          * Defaults to `0.4`.
          */
         minScale: number;
         /**
          * The lowest z-index that will be assigned to a moving element. This occurs when the moving element is opposite
-         * of (that is, 180° away from) the focusBearing.
+         * of (that is, 180Â° away from) the focusBearing.
          *
          * Defaults to `100`.
          */
@@ -31384,9 +31403,9 @@ interface JQuery {
      * in focus.
      *
      * @param method The method to call on the Roundabout instance.
-     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundabout’s
+     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundaboutâ€™s
      * configured duration if no value is set here
-     * @param easing The name of the easing function to use for movement; uses Roundabout’s configured easing if no
+     * @param easing The name of the easing function to use for movement; uses Roundaboutâ€™s configured easing if no
      * value is set here.
      * @param onChangeComplete Callback function that is invoked once the change completes.
      * @return this jQuery instance for chaining.
@@ -31407,9 +31426,9 @@ interface JQuery {
      *
      * @param method The method to call on the Roundabout instance.
      * @param childPosition The zero-based child to which Roundabout will animate.
-     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundabout’s
+     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundaboutâ€™s
      * configured duration if no value is set here
-     * @param easing The name of the easing function to use for movement; uses Roundabout’s configured easing if no
+     * @param easing The name of the easing function to use for movement; uses Roundaboutâ€™s configured easing if no
      * value is set here.
      * @param onChangeComplete Callback function that is invoked once the change completes.
      * @return this jQuery instance for chaining.
@@ -31429,9 +31448,9 @@ interface JQuery {
      * Animates the Roundabout to the next child element.
      *
      * @param method The method to call on the Roundabout instance.
-     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundabout’s
+     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundaboutâ€™s
      * configured duration if no value is set here
-     * @param easing The name of the easing function to use for movement; uses Roundabout’s configured easing if no
+     * @param easing The name of the easing function to use for movement; uses Roundaboutâ€™s configured easing if no
      * value is set here.
      * @param onChangeComplete Callback function that is invoked once the change completes.
      * @return this jQuery instance for chaining.
@@ -31449,9 +31468,9 @@ interface JQuery {
      * Animates the Roundabout to the previous child element.
      *
      * @param method The method to call on the Roundabout instance.
-     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundabout’s
+     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundaboutâ€™s
      * configured duration if no value is set here
-     * @param easing The name of the easing function to use for movement; uses Roundabout’s configured easing if no
+     * @param easing The name of the easing function to use for movement; uses Roundaboutâ€™s configured easing if no
      * value is set here.
      * @param onChangeComplete Callback function that is invoked once the change completes.
      * @return this jQuery instance for chaining.
@@ -31471,9 +31490,9 @@ interface JQuery {
      *
      * @param method The method to call on the Roundabout instance.
      * @param degrees The amount by which the bearing will change (either positive or negative)
-     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundabout’s
+     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundaboutâ€™s
      * configured duration if no value is set here
-     * @param easing The name of the easing function to use for movement; uses Roundabout’s configured easing if no
+     * @param easing The name of the easing function to use for movement; uses Roundaboutâ€™s configured easing if no
      * value is set here.
      * @param onChangeComplete Callback function that is invoked once the change completes.
      * @return this jQuery instance for chaining.
@@ -31494,9 +31513,9 @@ interface JQuery {
      *
      * @param method The method to call on the Roundabout instance.
      * @param degrees A value between `0.0` and `359.9`.
-     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundabout’s
+     * @param duration The length of time (in milliseconds) that the animation will take to complete; uses Roundaboutâ€™s
      * configured duration if no value is set here
-     * @param easing The name of the easing function to use for movement; uses Roundabout’s configured easing if no
+     * @param easing The name of the easing function to use for movement; uses Roundaboutâ€™s configured easing if no
      * value is set here.
      * @param onChangeComplete Callback function that is invoked once the change completes.
      * @return this jQuery instance for chaining.
@@ -31512,7 +31531,7 @@ interface JQuery {
      */
     roundabout(method: "animateBearingToFocus", degrees: number, onChangeComplete?: JQueryRoundabout.RoundaboutCallback): this;
     /**
-     * Starts the Roundabout’s autoplay feature.
+     * Starts the Roundaboutâ€™s autoplay feature.
      *
      * @param method The method to call on the Roundabout instance.
      * @param onAnimationComplete Callback function that is invoked after each autoplay animation completes.
@@ -31520,7 +31539,7 @@ interface JQuery {
      */
     roundabout(method: "startAutoplay", onAnimationComplete?: JQueryRoundabout.RoundaboutCallback): this;
     /**
-     * Stops the Roundabout’s autoplay feature.
+     * Stops the Roundaboutâ€™s autoplay feature.
      *
      * @param method The method to call on the Roundabout instance.
      * @param keepAutoplayBindings When `true` will not destroy any autoplay mouseenter and mouseleave event bindings
@@ -31529,7 +31548,7 @@ interface JQuery {
      */
     roundabout(method: "stopAutoplay", keepAutoplayBindings?: boolean): this;
     /**
-     * Starts or stops the Roundabout’s autoplay feature (based upon its current state).
+     * Starts or stops the Roundaboutâ€™s autoplay feature (based upon its current state).
      *
      * @param method The method to call on the Roundabout instance.
      * @param onAnimationComplete Callback function that is invoked after each autoplay animation completes.
@@ -31537,14 +31556,14 @@ interface JQuery {
      */
     roundabout(method: "toggleAutoplay", onAnimationComplete?: JQueryRoundabout.RoundaboutCallback): this;
     /**
-     * Checks to see if the Roundabout’s autoplay feature is currently playing or not.
+     * Checks to see if the Roundaboutâ€™s autoplay feature is currently playing or not.
      *
      * @param method The method to call on the Roundabout instance.
      * @return `true` if autoplay is active, or `false` otherwise.
      */
     roundabout(method: "isAutoplaying"): boolean;
     /**
-     * Changes the length of time (in milliseconds) that the Roundabout’s autoplay feature waits between attempts to
+     * Changes the length of time (in milliseconds) that the Roundaboutâ€™s autoplay feature waits between attempts to
      * animate to the next child.
      *
      * @param method The method to call on the Roundabout instance.
@@ -31602,14 +31621,14 @@ declare namespace JQuery {
          * Triggered by the {@link JQuery.roundabout|jQuery Roundabout plugin}.
          *
          * This event fires on moving child elements when an animation causes them pass through the point that is
-         * opposite (or 180°) from the `focusBearing` in a clockwise motion.
+         * opposite (or 180Â°) from the `focusBearing` in a clockwise motion.
          */
         moveClockwiseThroughBack: JQuery.EventBase<TDelegateTarget, TData, TCurrentTarget, TTarget>;
         /**
          * Triggered by the {@link JQuery.roundabout|jQuery Roundabout plugin}.
          *
          * This event fires on moving child elements when an animation causes them to pass through the point that is
-         * opposite (or 180°) from the focusBearing in a counterclockwise motion.
+         * opposite (or 180Â°) from the focusBearing in a counterclockwise motion.
          */
         moveCounterclockwiseThroughBack: JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
         /**

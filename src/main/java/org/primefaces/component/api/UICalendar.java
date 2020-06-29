@@ -191,21 +191,39 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder, T
 
     public abstract String calculateWidgetPattern();
 
+    /**
+     * @see https://github.com/RobinHerbots/Inputmask/blob/5.x/README_date.md
+     * @param patternTemplate the date pattern
+     * @return the value converted for InputMask plugin
+     */
     public String convertPattern(String patternTemplate) {
-        String pattern = patternTemplate.replace("MMM", "###");
-        int patternLen = pattern.length();
-        int countM = patternLen - pattern.replace("M", "").length();
-        int countD = patternLen - pattern.replace("d", "").length();
-        if (countM == 1) {
-            pattern = pattern.replace("M", "mm");
+        // switch capital and lower M's for InputMask
+        char[] chars = patternTemplate.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            char c = chars[i];
+            if (c == 'm' || c == 'M') {
+                if (Character.isUpperCase(c)) {
+                    chars[i] = Character.toLowerCase(c);
+                }
+                else if (Character.isLowerCase(c)) {
+                    chars[i] = Character.toUpperCase(c);
+                }
+            }
         }
-
+        String pattern = new String(chars);
+        int patternLen = pattern.length();
+        int countY = patternLen - pattern.replace("y", "").length();
+        int countM = patternLen - pattern.replace("m", "").length();
+        int countD = patternLen - pattern.replace("d", "").length();
         if (countD == 1) {
             pattern = pattern.replace("d", "dd");
         }
-
-        pattern = pattern.replaceAll("[a-zA-Z]", "9");
-        pattern = pattern.replace("###", "aaa");
+        if (countM == 1) {
+            pattern = pattern.replace("m", "mm");
+        }
+        if (countY == 1) {
+            pattern = pattern.replace("y", "yy");
+        }
         return pattern;
     }
 
