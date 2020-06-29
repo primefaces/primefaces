@@ -1732,7 +1732,9 @@
                 this.updateViewDate(event, value.length ? value[0] : value);
             }
             catch (err) {
-                this.updateModel(event, rawValue);
+                if (!this.options.mask) {
+                    this.updateModel(event, rawValue);
+                }
             }
 
             if (this.options.onInput) {
