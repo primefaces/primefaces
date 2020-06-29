@@ -23,22 +23,6 @@
  */
 package org.primefaces.component.calendar;
 
-import org.primefaces.component.api.UICalendar;
-import org.primefaces.el.ValueExpressionAnalyzer;
-import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.CalendarUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.MessageFactory;
-
-import javax.el.ValueExpression;
-import javax.el.ValueReference;
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -55,6 +39,23 @@ import java.time.temporal.Temporal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.TimeZone;
+
+import javax.el.ValueExpression;
+import javax.el.ValueReference;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
+
+import org.primefaces.component.api.UICalendar;
+import org.primefaces.el.ValueExpressionAnalyzer;
+import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.MessageFactory;
 
 public abstract class BaseCalendarRenderer extends InputRenderer {
 
@@ -81,6 +82,9 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         UICalendar uicalendar = (UICalendar) component;
         String markupValue = CalendarUtils.getValueAsString(context, uicalendar);
         String widgetValue = uicalendar.isTimeOnly() ? CalendarUtils.getTimeOnlyValueAsString(context, uicalendar) : markupValue;
+
+        // #6068 ensure min is before max
+        uicalendar.validateMinMax(context);
 
         encodeMarkup(context, uicalendar, markupValue);
         encodeScript(context, uicalendar, widgetValue);
