@@ -753,7 +753,6 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectonebutton.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectbooleanbutton.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectcheckboxmenu.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.inputmask.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.password.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.defaultcommand.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.splitbutton.js</include>
@@ -809,6 +808,15 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/imagecropper/0-cropper.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/imagecropper/1-jquery-cropper.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/imagecropper/2-imagecropper.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/inputmask/inputmask.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/inputmask/0-jquery.inputmask.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/inputmask/1-inputmask.js</include>
                             </includes>
                         </aggregation>
                         <aggregation>
@@ -908,7 +916,6 @@
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.ui.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.ui.timepicker.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.maskedinput.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.caretposition.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.autosize.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.mousewheel.js</include>
@@ -1268,7 +1275,6 @@
                                 <exclude>**/photocam.js</exclude>
                                 <exclude>**/0-quill.min.js</exclude>
                                 <exclude>**/jquery.js</exclude>
-                                <exclude>**/jquery.maskedinput.js</exclude>
                                 <exclude>**/fullcalendar-core.min.js</exclude>
                                 <exclude>**/fullcalendar-locales-all.min.js</exclude>
                                 <exclude>**/fullcalendar-interaction.min.js</exclude>
@@ -1279,6 +1285,7 @@
                                 <exclude>**/fullcalendar-moment-timezone.min.js</exclude>
                                 <exclude>**/0-timeline.min.js</exclude>
                                 <exclude>**/0-chartjs.js</exclude>
+                                <exclude>**/0-jquery.inputmask.js</exclude>
                                 <exclude>**/raphael.js</exclude>
                                 <exclude>**/theme.css</exclude>
                             </excludes>
