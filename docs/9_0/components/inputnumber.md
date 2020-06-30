@@ -63,9 +63,9 @@ styleClass | null | String | Style class of the input element.
 tabindex | null | Integer | Position of the input element in the tabbing order.
 title | null | String | Advisory tooltip information.
 type | text | String | Input field type.
-decimalSeparator |. | String | Decimal separator char.
+decimalSeparator | *1 | String | Decimal separator char.
 decimalSeparatorAlternative | null | String | Allow to declare an alternative decimal separator which is automatically replaced by `decimalCharacter` when typed.
-thousandSeparator | , | String | Thousand separator char.
+thousandSeparator | *1 | String | Thousand separator char.
 symbol | none | String | Desired symbol or unit.
 symbolPosition | p | String | Position of the symbol. 'p' for prefix 's' for suffix
 minValue | -10000000000000 | String | Minimum value allowed
@@ -78,7 +78,7 @@ inputStyleClass | null | String | Style class of the input element.
 padControl | true | Boolean | Controls padding of the decimal places. If true, always pads the decimal with zeros.
 modifyValueOnWheel | true | Boolean | Allows the user to increment or decrement the element value with the mouse wheel.
 
-
+*1 Depends on locale defined via faces-config.xml
 
 ## Getting Started with InputNumber
 Without any configuration, input number will parse the value and format it as a number using
