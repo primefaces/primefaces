@@ -30003,7 +30003,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Whether the year should be rendered as a dropdown instead of text. Default is false.]]>
+                <![CDATA[Whether the month should be rendered as a dropdown instead of text. Default is false.]]>
             </description>
             <name>monthNavigator</name>
             <required>false</required>
