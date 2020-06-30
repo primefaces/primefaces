@@ -2232,7 +2232,11 @@
 
         stepMinute: function(currentMinute, step) {
             if (this.options.stepMinute <= 1) {
-                return currentMinute;
+                if (!step) {
+                    return currentMinute;
+                } else {
+                    return currentMinute + step;
+                }
             }
             if (!step) {
                 step = this.options.stepMinute;
