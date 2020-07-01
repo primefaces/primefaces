@@ -912,27 +912,29 @@ displayed as stacked.
 
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
-| page | org.primefaces.event.data.PageEvent | On pagination.
-| sort | org.primefaces.event.data.SortEvent | When a column is sorted.
-| filter | org.primefaces.event.data.FilterEvent | On filtering.
-| rowSelect | org.primefaces.event.SelectEvent | When a row is being selected.
-| rowUnselect | org.primefaces.event.UnselectEvent | When a row is being unselected.
-| rowEdit | org.primefaces.event.RowEditEvent | When a row is edited.
-| rowEditInit | org.primefaces.event.RowEditEvent | When a row switches to edit mode
-| rowEditCancel | org.primefaces.event.RowEditEvent | When row edit is cancelled.
-| colResize | org.primefaces.event.ColumnResizeEvent | When a column is being selected.
-| toggleSelect | org.primefaces.event.ToggleSelectEvent | When header checkbox is toggled.
-| colReorder | - | When columns are reordered.
-| rowSelectRadio | org.primefaces.event.SelectEvent | Row selection with radio.
-| rowSelectCheckbox | org.primefaces.event.SelectEvent | Row selection with checkbox.
-| rowUnselectCheckbox | org.primefaces.event.UnselectEvent | Row unselection with checkbox.
-| rowDblselect | org.primefaces.event.SelectEvent | Row selection with double click.
-| rowToggle | org.primefaces.event.ToggleEvent | Row expand or collapse.
-| contextMenu | org.primefaces.event.SelectEvent | ContextMenu display.
 | cellEdit | org.primefaces.event.CellEditEvent | When a cell is edited.
-| cellEditInit | org.primefaces.event.CellEditEvent | When a cell edit begins.
 | cellEditCancel | org.primefaces.event.CellEditEvent | When a cell edit is cancelled e.g. with escape key
+| cellEditInit | org.primefaces.event.CellEditEvent | When a cell edit begins.
+| colReorder | - | When columns are reordered.
+| colResize | org.primefaces.event.ColumnResizeEvent | When a column is being selected.
+| contextMenu | org.primefaces.event.SelectEvent | ContextMenu display.
+| filter | org.primefaces.event.data.FilterEvent | On filtering.
+| liveScroll | org.primefaces.event.data.PageEvent | On live scroll loading more data.
+| page | org.primefaces.event.data.PageEvent | On pagination.
+| rowDblselect | org.primefaces.event.SelectEvent | Row selection with double click.
+| rowEdit | org.primefaces.event.RowEditEvent | When a row is edited.
+| rowEditCancel | org.primefaces.event.RowEditEvent | When row edit is cancelled.
+| rowEditInit | org.primefaces.event.RowEditEvent | When a row switches to edit mode
 | rowReorder | org.primefaces.event.ReorderEvent | On row reorder.
+| rowSelect | org.primefaces.event.SelectEvent | When a row is being selected.
+| rowSelectCheckbox | org.primefaces.event.SelectEvent | Row selection with checkbox.
+| rowSelectRadio | org.primefaces.event.SelectEvent | Row selection with radio.
+| rowToggle | org.primefaces.event.ToggleEvent | Row expand or collapse.
+| rowUnselect | org.primefaces.event.UnselectEvent | When a row is being unselected.
+| rowUnselectCheckbox | org.primefaces.event.UnselectEvent | Row unselection with checkbox.
+| sort | org.primefaces.event.data.SortEvent | When a column is sorted.
+| toggleSelect | org.primefaces.event.ToggleSelectEvent | When header checkbox is toggled.
+| virtualScroll | org.primefaces.event.data.PageEvent | On virtual scoll loading more data.
 
 For example, datatable below makes an ajax request when a row is selected with a click on row.
 
