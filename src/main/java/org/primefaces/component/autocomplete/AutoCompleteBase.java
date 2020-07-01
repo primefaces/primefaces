@@ -23,13 +23,14 @@
  */
 package org.primefaces.component.autocomplete;
 
-import javax.faces.component.html.HtmlInputText;
+import javax.faces.component.html.HtmlSelectManyCheckbox;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
-public abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHolder, MixedClientBehaviorHolder {
+public abstract class AutoCompleteBase extends HtmlSelectManyCheckbox implements Widget, InputHolder, MixedClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -79,7 +80,8 @@ public abstract class AutoCompleteBase extends HtmlInputText implements Widget, 
         dynamic,
         autoSelection,
         escape,
-        queryMode
+        queryMode,
+        autocomplete
     }
 
     public AutoCompleteBase() {
@@ -433,5 +435,29 @@ public abstract class AutoCompleteBase extends HtmlInputText implements Widget, 
 
     public void setQueryMode(String queryMode) {
         getStateHelper().put(PropertyKeys.queryMode, queryMode);
+    }
+
+    public String getAutocomplete() {
+        return (String) getStateHelper().eval(PropertyKeys.autocomplete);
+    }
+
+    public void setAutocomplete(String autocomplete) {
+        getStateHelper().put(PropertyKeys.autocomplete, autocomplete);
+    }
+
+    @Override
+    protected void validateValue(FacesContext context, Object convertedValue) {
+        // we need to override this method because original method from UISelectMany validates
+        // that each selected value exists in possible values (autocomplete allows to enter new value)
+        if (!isValid()) {
+            return;
+        }
+
+        if (isRequired() && isEmpty(convertedValue)) {
+            // if it is going to be invalid, let super class handle error messages
+            super.validateValue(context, convertedValue);
+        }
+
+        // missing validate of empty fields (difficult to override)
     }
 }

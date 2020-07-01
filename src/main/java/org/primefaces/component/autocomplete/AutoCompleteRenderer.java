@@ -27,23 +27,25 @@ import java.io.IOException;
 import java.util.*;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UISelectMany;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.event.PhaseId;
+import javax.faces.render.Renderer;
 
 import org.primefaces.component.column.Column;
 import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
-public class AutoCompleteRenderer extends InputRenderer {
+public class AutoCompleteRenderer extends SelectManyRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -366,7 +368,13 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         List values;
         if (ac.isValid()) {
-            values = (List) ac.getValue();
+            Object value = ac.getValue();
+            if (value instanceof Collection) {
+                values = new ArrayList<>((Collection) ac.getValue());
+            }
+            else {
+                values = Arrays.asList((String[]) ac.getValue());
+            }
         }
         else {
             Object submittedValue = ac.getSubmittedValue();
@@ -771,31 +779,19 @@ public class AutoCompleteRenderer extends InputRenderer {
         AutoComplete ac = (AutoComplete) component;
         boolean isMultiple = ac.isMultiple();
 
-        if (submittedValue == null || submittedValue.equals("") || ac.isMoreTextRequest(context)) {
-            return isMultiple ? new ArrayList() : null;
-        }
-
-        Converter converter = ComponentUtils.getConverter(context, component);
-
         if (isMultiple) {
-            String[] values = (String[]) submittedValue;
-            List list = new ArrayList();
-
-            for (String value : values) {
-                if (isValueBlank(value)) {
-                    continue;
-                }
-
-                Object convertedValue = converter != null ? converter.getAsObject(context, ac, value) : value;
-
-                if (convertedValue != null) {
-                    list.add(convertedValue);
-                }
-            }
-
-            return list;
+            Renderer renderer = ComponentUtils.getUnwrappedRenderer(
+                context,
+                "javax.faces.SelectMany",
+                "javax.faces.Checkbox");
+            return renderer.getConvertedValue(context, component, submittedValue);
         }
         else {
+            if (submittedValue == null || submittedValue.equals("") || ac.isMoreTextRequest(context)) {
+                return null;
+            }
+
+            Converter converter = ComponentUtils.getConverter(context, component);
             if (converter != null) {
                 return converter.getAsObject(context, component, (String) submittedValue);
             }
@@ -803,6 +799,11 @@ public class AutoCompleteRenderer extends InputRenderer {
                 return submittedValue;
             }
         }
+    }
+
+    @Override
+    protected String getSubmitParam(FacesContext context, UISelectMany selectMany) {
+        return selectMany.getClientId(context);
     }
 
     @Override
