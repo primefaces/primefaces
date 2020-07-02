@@ -218,6 +218,9 @@ public class GMapRenderer extends CoreRenderer {
         if (marker.getZindex() > Integer.MIN_VALUE) {
             writer.write(",zIndex:" + marker.getZindex());
         }
+        if (marker.getAnimation() != null) {
+            writer.write(",animation: google.maps.Animation." + marker.getAnimation().name());
+        }
 
         writer.write("})");
     }
