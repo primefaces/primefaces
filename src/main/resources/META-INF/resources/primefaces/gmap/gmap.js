@@ -339,7 +339,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      * @param {google.maps.MouseEvent | google.maps.IconMouseEvent} event The event that occurred.
      * @param {PrimeFaces.widget.GMap.Overlay} overlay The shape that was selected.
-     * @param {int} clickCount whether it was single or double click
+     * @param {number} clickCount whether it was single or double click
      */
     fireOverlaySelectEvent: function(event, overlay, clickCount) {
         this.selectedOverlay = overlay;
@@ -434,7 +434,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
      * Triggers the behavior for when a point on the map was selected.
      * @private
      * @param {google.maps.MouseEvent | google.maps.IconMouseEvent} event The event that triggered the point selection.
-     * @param {int} clickCount whether it was single or double click
+     * @param {number} clickCount whether it was single or double click
      */
     firePointSelectEvent: function(event, clickCount) {
         var ext = {
