@@ -39,7 +39,12 @@
     border: 0 none;
 }
 
+.ui-panelgrid .ui-panelgrid-cell.ui-panelgrid-nopad {
+   padding: 0;
+}
+
 /* Grid CSS */
+.ui-panelgrid .p-grid .ui-panelgrid-cell,
 .ui-panelgrid .ui-grid-responsive .ui-panelgrid-cell {
     border: 0 none;
 }

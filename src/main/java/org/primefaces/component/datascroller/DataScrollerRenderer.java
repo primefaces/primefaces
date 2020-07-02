@@ -1,27 +1,41 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2020 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.datascroller;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
+import org.primefaces.PrimeFaces;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class DataScrollerRenderer extends CoreRenderer {
@@ -29,15 +43,24 @@ public class DataScrollerRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         DataScroller ds = (DataScroller) component;
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String clientId = ds.getClientId(context);
+        int chunkSize = ds.getChunkSize();
 
         if (ds.isLoadRequest()) {
-            String clientId = ds.getClientId(context);
             int offset = Integer.parseInt(context.getExternalContext().getRequestParameterMap().get(clientId + "_offset"));
 
             loadChunk(context, ds, offset, ds.getChunkSize());
         }
+        else if (ds.isVirtualScrollingRequest(context)) {
+            int offset = Integer.parseInt(params.get(clientId + "_first"));
+            int rowCount = ds.getRowCount();
+            int virtualScrollRows = (chunkSize * 2);
+            int scrollRows = (offset + virtualScrollRows) > rowCount ? (rowCount - offset) : virtualScrollRows;
+
+            loadChunk(context, ds, offset, scrollRows);
+        }
         else {
-            int chunkSize = ds.getChunkSize();
             if (chunkSize == 0) {
                 chunkSize = ds.getRowCount();
             }
@@ -51,6 +74,7 @@ public class DataScrollerRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ds.getClientId(context);
         boolean inline = ds.getMode().equals("inline");
+        boolean isLazy = ds.isLazy();
         UIComponent header = ds.getFacet("header");
         UIComponent loader = ds.getFacet("loader");
         String contentCornerClass = null;
@@ -64,10 +88,10 @@ public class DataScrollerRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
         if (style != null) {
-            writer.writeAttribute("style", styleClass, null);
+            writer.writeAttribute("style", style, null);
         }
 
-        if (header != null && header.isRendered()) {
+        if (ComponentUtils.shouldRenderFacet(header)) {
             writer.startElement("div", ds);
             writer.writeAttribute("class", DataScroller.HEADER_CLASS, null);
             header.encodeAll(context);
@@ -85,20 +109,57 @@ public class DataScrollerRenderer extends CoreRenderer {
             writer.writeAttribute("style", "height:" + ds.getScrollHeight() + "px", null);
         }
 
+        int rowCount = ds.getRowCount();
+        int start = 0;
+
+        if (inline && ds.isVirtualScroll()) {
+            int virtualScrollRowCount = (chunkSize * 2);
+            int rowCountToRender = (isLazy && rowCount == 0) ? virtualScrollRowCount : ((virtualScrollRowCount > rowCount) ? rowCount : virtualScrollRowCount);
+
+            if (ds.isStartAtBottom()) {
+                int totalPage = (int) Math.ceil(rowCount * 1d / chunkSize);
+                start = Math.max((totalPage - 2) * chunkSize, 0);
+            }
+
+            encodeVirtualScrollList(context, ds, start, rowCountToRender);
+        }
+        else {
+            if (ds.isStartAtBottom()) {
+                start = rowCount > chunkSize ? rowCount - chunkSize : 0;
+            }
+
+            encodeList(context, ds, start, chunkSize);
+
+            writer.startElement("div", null);
+            writer.writeAttribute("class", DataScroller.LOADER_CLASS, null);
+            if (ComponentUtils.shouldRenderFacet(loader)) {
+                loader.encodeAll(context);
+            }
+            writer.endElement("div");
+        }
+
+        writer.endElement("div");
+
+        writer.endElement("div");
+    }
+
+    protected void encodeList(FacesContext context, DataScroller ds, int start, int chunkSize) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
         writer.startElement("ul", ds);
         writer.writeAttribute("class", DataScroller.LIST_CLASS, null);
-        loadChunk(context, ds, 0, chunkSize);
+        loadChunk(context, ds, start, chunkSize);
         ds.setRowIndex(-1);
         writer.endElement("ul");
+    }
+
+    protected void encodeVirtualScrollList(FacesContext context, DataScroller ds, int start, int chunkSize) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", DataScroller.LOADER_CLASS, null);
-        if (loader != null && loader.isRendered()) {
-            loader.encodeAll(context);
-        }
-        writer.endElement("div");
+        writer.writeAttribute("class", DataScroller.VIRTUALSCROLL_WRAPPER_CLASS, null);
 
-        writer.endElement("div");
+        encodeList(context, ds, start, chunkSize);
 
         writer.endElement("div");
     }
@@ -108,24 +169,43 @@ public class DataScrollerRenderer extends CoreRenderer {
         String loadEvent = ds.getFacet("loader") == null ? "scroll" : "manual";
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DataScroller", ds.resolveWidgetVar(), clientId)
+        wb.init("DataScroller", ds.resolveWidgetVar(context), clientId)
                 .attr("chunkSize", chunkSize)
                 .attr("totalSize", ds.getRowCount())
                 .attr("loadEvent", loadEvent)
                 .attr("mode", ds.getMode(), "document")
                 .attr("buffer", ds.getBuffer())
-                .finish();
+                .attr("virtualScroll", ds.isVirtualScroll())
+                .attr("startAtBottom", ds.isStartAtBottom());
+
+        encodeClientBehaviors(context, ds);
+
+        wb.finish();
     }
 
     protected void loadChunk(FacesContext context, DataScroller ds, int start, int size) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        boolean isLazy = ds.isLazy();
+        int _start = start < 0 ? 0 : start;
 
-        if (ds.isLazy()) {
-            loadLazyData(ds, start, size);
+        if (isLazy) {
+            loadLazyData(context, ds, _start, size);
         }
 
-        for (int i = start; i < (start + size); i++) {
+        String rowIndexVar = ds.getRowIndexVar();
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+
+        int lastIndex = (_start + size);
+
+        lastIndex = start < 0 ? lastIndex + start : lastIndex;
+
+        for (int i = _start; i < lastIndex; i++) {
             ds.setRowIndex(i);
+
+            if (rowIndexVar != null) {
+                requestMap.put(rowIndexVar, i);
+            }
+
             if (!ds.isRowAvailable()) {
                 break;
             }
@@ -136,15 +216,24 @@ public class DataScrollerRenderer extends CoreRenderer {
             writer.endElement("li");
         }
         ds.setRowIndex(-1);
+
+        if (rowIndexVar != null) {
+            requestMap.remove(rowIndexVar);
+        }
     }
 
-    protected void loadLazyData(DataScroller ds, int start, int size) {
+    protected void loadLazyData(FacesContext context, DataScroller ds, int start, int size) {
         LazyDataModel lazyModel = (LazyDataModel) ds.getValue();
 
         if (lazyModel != null) {
-            List<?> data = lazyModel.load(start, size, null, null, null);
+            List<?> data = lazyModel.load(start, size, null, null, Collections.emptyMap());
             lazyModel.setPageSize(size);
             lazyModel.setWrappedData(data);
+
+            //Update virtualscoller for callback
+            if (ComponentUtils.isRequestSource(ds, context) && ds.isVirtualScroll()) {
+                PrimeFaces.current().ajax().addCallbackParam("totalSize", lazyModel.getRowCount());
+            }
         }
     }
 

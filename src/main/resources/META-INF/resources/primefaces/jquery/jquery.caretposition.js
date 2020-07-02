@@ -21,7 +21,7 @@ $(function() {
 			'overflow-y': 'auto'
 		},
 
-		simulator : $('<div id="textarea_simulator"/>').css({
+		simulator : $('<div id="textarea_simulator"></div>').css({
 				position: 'absolute',
 				top: 0,
 				left: 0,
@@ -29,8 +29,8 @@ $(function() {
 			}).appendTo(document.body),
 
 		toHtml : function(text) {
-			return PrimeFaces.escapeHTML(text.replace(/\n/g, '<br>')
-				.split(' ')).join('<span style="white-space:prev-wrap">&nbsp;</span>');
+			return PrimeFaces.escapeHTML(text).replace(/\n/g, '<br>')
+				.split(' ').join('<span style="white-space:prev-wrap">&nbsp;</span>');
 		},
 		// calculate position
 		getCaretPosition: function() {
@@ -64,9 +64,9 @@ $(function() {
 			var beforeText = value.substring(0, cursorPosition),
 				afterText = value.substring(cursorPosition);
 
-			var before = $('<span class="before"/>').html(cal.toHtml(beforeText)),
-				focus = $('<span class="focus"/>'),
-				after = $('<span class="after"/>').html(cal.toHtml(afterText));
+			var before = $('<span class="before"></span>').html(cal.toHtml(beforeText)),
+				focus = $('<span class="focus"></span>'),
+				after = $('<span class="after"></span>').html(cal.toHtml(afterText));
 
 			cal.simulator.append(before).append(focus).append(after);
 			var focusOffset = focus.offset(), simulatorOffset = cal.simulator.offset();

@@ -1,0 +1,7 @@
+Error: Program failed to validate:
+
+Error: [tsMissingOverride] at Bar (${PROJECT_BASEDIR}/src/main/type-definitions/specs/tsvalidate/OverrideMethodMissing/input.d.ts:14:20)
+'@override' not found on method 'foo' of type 'Bar', but it does override the parent methods Foo#foo. Add the '@override' tag.
+
+Error: [tsMissingOverride] at Bar (${PROJECT_BASEDIR}/src/main/type-definitions/specs/tsvalidate/OverrideMethodMissing/input.d.ts:19:20)
+'@override' not found on method 'foo' of type 'Bar', but it does override the parent methods Foo#foo. Add the '@override' tag.

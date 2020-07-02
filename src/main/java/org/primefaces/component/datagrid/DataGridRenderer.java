@@ -1,27 +1,37 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2020 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.datagrid;
 
 import java.io.IOException;
-import javax.faces.FacesException;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.DataRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.WidgetBuilder;
 
@@ -44,8 +54,18 @@ public class DataGridRenderer extends DataRenderer {
             }
 
             encodeContent(context, grid);
+
+            if (grid.isMultiViewState()) {
+                DataGridState gs = grid.getMultiViewState(true);
+                gs.setFirst(grid.getFirst());
+                gs.setRows(grid.getRows());
+            }
         }
         else {
+            if (grid.isMultiViewState()) {
+                grid.restoreMultiViewState();
+            }
+
             encodeMarkup(context, grid);
             encodeScript(context, grid);
         }
@@ -54,7 +74,7 @@ public class DataGridRenderer extends DataRenderer {
     protected void encodeScript(FacesContext context, DataGrid grid) throws IOException {
         String clientId = grid.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DataGrid", grid.resolveWidgetVar(), clientId);
+        wb.init("DataGrid", grid.resolveWidgetVar(context), clientId);
 
         if (grid.isPaginator()) {
             encodePaginatorConfig(context, grid, wb);
@@ -79,8 +99,8 @@ public class DataGridRenderer extends DataRenderer {
         String style = grid.getStyle();
         String styleClass = grid.getStyleClass() == null ? DataGrid.DATAGRID_CLASS : DataGrid.DATAGRID_CLASS + " " + grid.getStyleClass();
         String contentClass = empty
-                ? DataGrid.EMPTY_CONTENT_CLASS
-                : (layout.equals("tabular") ? DataGrid.TABLE_CONTENT_CLASS : DataGrid.GRID_CONTENT_CLASS);
+                              ? DataGrid.EMPTY_CONTENT_CLASS
+                              : (layout.equals("tabular") ? DataGrid.TABLE_CONTENT_CLASS : DataGrid.GRID_CONTENT_CLASS);
 
         if (hasPaginator) {
             grid.calculateFirst();
@@ -105,11 +125,11 @@ public class DataGridRenderer extends DataRenderer {
 
         if (empty) {
             UIComponent emptyFacet = grid.getFacet("emptyMessage");
-            if (emptyFacet != null) {
+            if (ComponentUtils.shouldRenderFacet(emptyFacet)) {
                 emptyFacet.encodeAll(context);
             }
             else {
-                writer.write(grid.getEmptyMessage());
+                writer.writeText(grid.getEmptyMessage(), "emptyMessage");
             }
         }
         else {
@@ -143,12 +163,13 @@ public class DataGridRenderer extends DataRenderer {
 
     protected void encodeGrid(FacesContext context, DataGrid grid) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        
+
         int columns = grid.getColumns();
         int rowIndex = grid.getFirst();
         int rows = grid.getRows();
         int itemsToRender = rows != 0 ? rows : grid.getRowCount();
         int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
+        int displayedItemsToRender = rowIndex + itemsToRender;
         String columnClass = DataGrid.COLUMN_CLASS + " " + GridLayoutUtils.getColumnClass(columns);
 
         for (int i = 0; i < numberOfRowsToRender; i++) {
@@ -171,6 +192,10 @@ public class DataGridRenderer extends DataRenderer {
                 rowIndex++;
 
                 writer.endElement("div");
+
+                if (rowIndex >= displayedItemsToRender) {
+                    break;
+                }
             }
 
             writer.endElement("div");

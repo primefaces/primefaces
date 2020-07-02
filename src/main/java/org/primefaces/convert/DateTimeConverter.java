@@ -1,17 +1,25 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2020 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.convert;
 
@@ -20,13 +28,14 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import javax.faces.convert.ConverterException;
-import org.primefaces.component.calendar.CalendarUtils;
+import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.HTML;
 
 public class DateTimeConverter extends javax.faces.convert.DateTimeConverter implements ClientConverter {
 
     private Map<String, Object> metadata;
 
+    @Override
     public Map<String, Object> getMetadata() {
         if (metadata == null) {
             String pattern = this.getPattern();
@@ -34,29 +43,40 @@ public class DateTimeConverter extends javax.faces.convert.DateTimeConverter imp
             String dateStyle = this.getDateStyle();
             String timeStyle = this.getTimeStyle();
 
-            metadata = new HashMap<String, Object>();
+            metadata = new HashMap<>();
 
             if (pattern != null) {
-                metadata.put(HTML.VALIDATION_METADATA.PATTERN, CalendarUtils.convertPattern(pattern));
+                metadata.put(HTML.ValidationMetadata.PATTERN, CalendarUtils.convertPattern(pattern));
             }
 
             if (type != null) {
-                metadata.put(HTML.VALIDATION_METADATA.DATETIME_TYPE, type);
+                String typeCleared = type;
+                if (typeCleared.equalsIgnoreCase("localDate")) {
+                    typeCleared = "date";
+                }
+                else if (typeCleared.equalsIgnoreCase("localTime")) {
+                    typeCleared = "time";
+                }
+                else if (typeCleared.equalsIgnoreCase("localDateTime")) {
+                    typeCleared = "both";
+                }
+
+                metadata.put(HTML.ValidationMetadata.DATETIME_TYPE, typeCleared);
                 if (pattern == null) {
                     DateFormat df = null;
                     if (type.equals("both")) {
                         df = DateFormat.getDateInstance(getStyle(dateStyle), this.getLocale());
-                        metadata.put(HTML.VALIDATION_METADATA.DATE_STYLE_PATTERN, CalendarUtils.convertPattern(((SimpleDateFormat) df).toPattern()));
+                        metadata.put(HTML.ValidationMetadata.DATE_STYLE_PATTERN, CalendarUtils.convertPattern(((SimpleDateFormat) df).toPattern()));
                         df = DateFormat.getTimeInstance(getStyle(timeStyle), this.getLocale());
-                        metadata.put(HTML.VALIDATION_METADATA.TIME_STYLE_PATTERN, CalendarUtils.convertPattern(((SimpleDateFormat) df).toPattern()));
+                        metadata.put(HTML.ValidationMetadata.TIME_STYLE_PATTERN, CalendarUtils.convertPattern(((SimpleDateFormat) df).toPattern()));
                     }
                     else if (type.equals("date")) {
                         df = DateFormat.getDateInstance(getStyle(dateStyle), this.getLocale());
-                        metadata.put(HTML.VALIDATION_METADATA.DATE_STYLE_PATTERN, CalendarUtils.convertPattern(((SimpleDateFormat) df).toPattern()));
+                        metadata.put(HTML.ValidationMetadata.DATE_STYLE_PATTERN, CalendarUtils.convertPattern(((SimpleDateFormat) df).toPattern()));
                     }
                     else if (type.equals("time")) {
                         df = DateFormat.getTimeInstance(getStyle(timeStyle), this.getLocale());
-                        metadata.put(HTML.VALIDATION_METADATA.TIME_STYLE_PATTERN, CalendarUtils.convertPattern(((SimpleDateFormat) df).toPattern()));
+                        metadata.put(HTML.ValidationMetadata.TIME_STYLE_PATTERN, CalendarUtils.convertPattern(((SimpleDateFormat) df).toPattern()));
                     }
                 }
             }
@@ -65,6 +85,7 @@ public class DateTimeConverter extends javax.faces.convert.DateTimeConverter imp
         return metadata;
     }
 
+    @Override
     public String getConverterId() {
         return DateTimeConverter.CONVERTER_ID;
     }

@@ -1,22 +1,31 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2020 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.selectonebutton;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UISelectOne;
@@ -26,6 +35,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
+
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -38,8 +48,7 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
                 "javax.faces.SelectOne",
-                "javax.faces.Radio",
-                Renderer.class);
+                "javax.faces.Radio");
         return renderer.getConvertedValue(context, component, submittedValue);
     }
 
@@ -57,10 +66,8 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         List<SelectItem> selectItems = getSelectItems(context, button);
         int selectItemsSize = selectItems.size();
         String style = button.getStyle();
-        String styleClass = button.getStyleClass();
-        styleClass = styleClass == null ? SelectOneButton.STYLE_CLASS : SelectOneButton.STYLE_CLASS + " " + styleClass;
+        String styleClass = createStyleClass(button, SelectOneButton.STYLE_CLASS);
         styleClass = styleClass + " ui-buttonset-" + selectItemsSize;
-        styleClass = !button.isValid() ? styleClass + " ui-state-error" : styleClass;
 
         writer.startElement("div", button);
         writer.writeAttribute("id", clientId, "id");
@@ -104,8 +111,8 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
     }
 
     protected void encodeOption(FacesContext context, SelectOneButton button, SelectItem option, String id, String name, Converter converter,
-            boolean selected, boolean disabled, int idx, int size) throws IOException {
-        
+                                boolean selected, boolean disabled, int idx, int size) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, button, converter, option.getValue());
 
@@ -127,7 +134,9 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", buttonStyle, null);
         writer.writeAttribute("tabindex", button.getTabindex(), null);
-        if (option.getDescription() != null) writer.writeAttribute("title", option.getDescription(), null);
+        if (option.getDescription() != null) {
+            writer.writeAttribute("title", option.getDescription(), null);
+        }
 
         //input
         writer.startElement("input", null);
@@ -137,23 +146,26 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         writer.writeAttribute("value", itemValueAsString, null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
         writer.writeAttribute("tabindex", "-1", null);
+        writer.writeAttribute(HTML.ARIA_LABEL, option.getLabel(), null);
 
-        if (selected) writer.writeAttribute("checked", "checked", null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
+        if (selected) {
+            writer.writeAttribute("checked", "checked", null);
+        }
 
+        renderAccessibilityAttributes(context, button);
         writer.endElement("input");
 
         //item label
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        
+
         if (option.isEscape()) {
             writer.writeText(option.getLabel(), "itemLabel");
         }
         else {
             writer.write(option.getLabel());
         }
-        
+
         writer.endElement("span");
 
         writer.endElement("div");
@@ -162,7 +174,7 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
     protected void encodeScript(FacesContext context, SelectOneButton button) throws IOException {
         String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectOneButton", button.resolveWidgetVar(), clientId)
+        wb.init("SelectOneButton", button.resolveWidgetVar(context), clientId)
                 .attr("unselectable", button.isUnselectable(), true)
                 .callback("change", "function()", button.getOnchange());
 

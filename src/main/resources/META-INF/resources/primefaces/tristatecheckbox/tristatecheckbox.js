@@ -1,6 +1,34 @@
-
+/**
+ * __PrimeFaces TriStateCheckbox Widget__
+ * 
+ * TriStateCheckbox adds a new state to a checkbox value.
+ * 
+ * @typedef PrimeFaces.widget.TriStateCheckbox.FixedMod A modulo operation with the result being in the range `[0,mod)`.
+ * @param {number} PrimeFaces.widget.TriStateCheckbox.FixedMod.number The divisor for the modulo operation.
+ * @param {number} PrimeFaces.widget.TriStateCheckbox.FixedMod.mod The dividend for the modulo operation.
+ * @return {number} PrimeFaces.widget.TriStateCheckbox.FixedMod The result of the module operation, in the range
+ * `[0,mod)]`.
+ * 
+ * @prop {JQuery} box The DOM element for the container with the label and the icon.
+ * @prop {boolean} disabled Whether this widget is initially disabled.
+ * @prop {PrimeFaces.widget.TriStateCheckbox.FixedMod} fixedMod A modulo operation with the result being in the range
+ * `[0,mod)`.
+ * @prop {JQuery} icon The DOM element for the icon showing the current state of this checkbox widget.
+ * @prop {JQuery} input The DOM element for the hidden input field storing the value of this widget.
+ * @prop {JQuery} itemLabel The DOM element for the label of the checkbox.
+ * 
+ * @interface {PrimeFaces.widget.TriStateCheckboxCfg} cfg The configuration for the {@link  TriStateCheckbox| TriStateCheckbox widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ */
 PrimeFaces.widget.TriStateCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init:function (cfg) {
         this._super(cfg);
 
@@ -9,53 +37,64 @@ PrimeFaces.widget.TriStateCheckbox = PrimeFaces.widget.BaseWidget.extend({
         this.icon = this.box.children('.ui-chkbox-icon');
         this.itemLabel = this.jq.find('.ui-chkbox-label');
         this.disabled = this.input.is(':disabled');
-        this.fixedMod = function(number,mod){
-            return ((number%mod)+mod)%mod;
-        }
+        this.fixedMod = function(number, mod){
+            return ((number % mod) + mod) % mod;
+        };
 
-        var _self = this;
+        var $this = this;
 
         //bind events if not disabled
         if (!this.disabled) {
-            this.box.mouseover(function () {
-                _self.box.addClass('ui-state-hover');
-            }).mouseout(function () {
-                _self.box.removeClass('ui-state-hover');
-            }).click(function (event) {
-                _self.toggle(1);
-                if (event.preventDefault) { event.preventDefault(); } else { event.returnValue = false; }
+            this.box.on('mouseover.triStateCheckbox', function () {
+                $this.box.addClass('ui-state-hover');
+            })
+            .on('mouseout.triStateCheckbox', function () {
+                $this.box.removeClass('ui-state-hover');
+            })
+            .on('click.triStateCheckbox', function () {
+                $this.toggle(1);
+                $this.input.trigger('focus');
+            });
+            
+            this.input.on('focus.triStateCheckbox', function () {
+                $this.box.addClass('ui-state-focus');
+            })
+            .on('blur.triStateCheckbox', function () {
+                $this.box.removeClass('ui-state-focus');
+            })
+            .on('keydown.triStateCheckbox', function (e) {
+                var keyCode = $.ui.keyCode;
+
+                switch (e.which) {
+                    case keyCode.SPACE:
+                    case keyCode.UP:
+                    case keyCode.RIGHT:
+                    case keyCode.LEFT:
+                    case keyCode.DOWN:
+                        e.preventDefault();
+                        break;
+                }
+            })            
+            .on('keyup.triStateCheckbox', function (e) {
+                var keyCode = $.ui.keyCode;
+
+                switch(e.which) {
+                    case keyCode.SPACE:
+                    case keyCode.UP:
+                    case keyCode.RIGHT:
+                        $this.toggle(1);
+                        break;
+                    case keyCode.LEFT:
+                    case keyCode.DOWN:
+                        $this.toggle(-1);
+                        break;
+                }
             });
 
             //toggle state on label click
-            this.itemLabel.click(function () {
-                _self.toggle(1);
-                if (event.preventDefault) { event.preventDefault(); } else { event.returnValue = false; }
-            });
-
-            //adding accesibility
-            this.box.bind('keydown', function(event) {
-                switch(event.keyCode){
-                    case 38:
-                        _self.toggle(1);
-                        if (event.preventDefault) { event.preventDefault(); } else { event.returnValue = false; }
-                        break;
-                    case 40:
-                        _self.toggle(-1);
-                        if (event.preventDefault) { event.preventDefault(); } else { event.returnValue = false; }
-                        break;
-                    case 39:
-                        _self.toggle(1);
-                        if (event.preventDefault) { event.preventDefault(); } else { event.returnValue = false; }
-                        break;
-                    case 37:
-                        _self.toggle(-1);
-                        if (event.preventDefault) { event.preventDefault(); } else { event.returnValue = false; }
-                        break;
-                    case 32:
-                        _self.toggle(1);
-                        if (event.preventDefault) { event.preventDefault(); } else { event.returnValue = false; }
-                        break;
-                }
+            this.itemLabel.on('click.triStateCheckbox', function() {
+                $this.toggle(1);
+                $this.input.trigger('focus');
             });
 
             // client behaviors
@@ -68,10 +107,19 @@ PrimeFaces.widget.TriStateCheckbox = PrimeFaces.widget.BaseWidget.extend({
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
 
+    /**
+     * Toggles this tri state checkbox in the given direction. Moves between unchecked, half-checked, and fully-checked.
+     * @param {-1 | 1} direction `-1` to move backwards through the states, `+1` to move forward through the states 
+     */
     toggle:function (direction) {
         if (!this.disabled) {
+            // default to switch to next state
+            if (isNaN(direction)) {
+                direction = 1;
+            }
+
             var oldValue = parseInt(this.input.val());
-            var newValue = this.fixedMod((oldValue + direction),3);
+            var newValue = this.fixedMod((oldValue + direction), 3);
             this.input.val(newValue);
 
             // remove / add def. icon and active classes
@@ -87,12 +135,12 @@ PrimeFaces.widget.TriStateCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
             // change title to the new one
             var iconTitles = this.box.data('titlestates');
-            if(iconTitles!=null && iconTitles.length>0){
-                this.box.attr('title', iconTitles[newValue]);
+            if (iconTitles != null && iconTitles.titles != null && iconTitles.titles.length > 0) {
+                this.box.attr('title', iconTitles.titles[newValue]);
             }
 
             // fire change event
-            this.input.change();
+            this.input.trigger('change');
         }
     }
 });

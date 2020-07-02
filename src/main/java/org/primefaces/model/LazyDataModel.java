@@ -1,25 +1,34 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2020 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.model;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -31,6 +40,8 @@ import javax.faces.model.DataModelListener;
  * Custom lazy loading DataModel to deal with huge datasets
  */
 public abstract class LazyDataModel<T> extends DataModel<T> implements SelectableDataModel<T>, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private int rowIndex = -1;
 
@@ -119,12 +130,32 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
         this.rowCount = rowCount;
     }
 
-    public List<T> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-        throw new UnsupportedOperationException("Lazy loading is not implemented.");
+    public List<T> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, FilterMeta> filterBy) {
+
+        Map<String, SortMeta> sortBy;
+        if (sortField == null) {
+            sortBy = Collections.emptyMap();
+        }
+        else {
+            sortBy = new HashMap<>(1);
+            sortBy.put(sortField, new SortMeta(null, sortField, sortOrder == null ? SortOrder.UNSORTED : sortOrder, null));
+        }
+
+        return load(first, pageSize, sortBy, filterBy);
     }
 
-    public List<T> load(int first, int pageSize, List<SortMeta> multiSortMeta, Map<String, Object> filters) {
-        throw new UnsupportedOperationException("Lazy loading is not implemented.");
+    /**
+     * Loads the data for the given parameters.
+     *
+     * @param first the first entry
+     * @param pageSize the page size
+     * @param sortBy a list with all sort informations
+     * @param filterBy a map with all filter informations
+     * @return the data
+     */
+    public List<T> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
+        throw new UnsupportedOperationException(
+                getMessage("Either the LazyDataModel#load for single or multi-sort must be implemented [component=%s,view=%s]."));
     }
 
     @Override
@@ -149,15 +180,24 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
 
     @Override
     public Iterator<T> iterator() {
-        return new LazyDataModelIterator<T>(this);
+        return new LazyDataModelIterator<>(this);
     }
 
-    public Iterator<T> iterator(String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-        return new LazyDataModelIterator<T>(this, sortField, sortOrder, filters);
+    @Deprecated
+    public Iterator<T> iterator(String sortField, SortOrder sortOrder, Map<String, FilterMeta> filterBy) {
+        Map<String, SortMeta> sortBy;
+        if (sortField == null) {
+            sortBy = Collections.emptyMap();
+        }
+        else {
+            sortBy = new HashMap<>(1);
+            sortBy.put(sortField, new SortMeta(null, sortField, sortOrder == null ? SortOrder.UNSORTED : sortOrder, null));
+        }
+
+        return iterator(sortBy, filterBy);
     }
 
-    public Iterator<T> iterator(List<SortMeta> multiSortMeta, Map<String, Object> filters) {
-        return new LazyDataModelIterator<T>(this, multiSortMeta, filters);
+    public Iterator<T> iterator(Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
+        return new LazyDataModelIterator<>(this, sortBy, filterBy);
     }
-
 }

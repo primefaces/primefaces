@@ -4,7 +4,7 @@
 .ui-editor * {-moz-box-sizing:content-box; -webkit-box-sizing:content-box; box-sizing:content-box}
 .ui-editor iframe {border:none; margin:0; padding:0}
 .ui-editor textarea {overflow-y:scroll; font:10pt Arial,Verdana; resize:none; outline:none}
-.ui-editor-toolbar {background: url("#{resource['primefaces:editor/images/toolbar.gif']}") repeat}
+.ui-editor .ui-editor-toolbar {background: url("#{resource['primefaces:editor/images/toolbar.gif']}") repeat}
 .ui-editor-group {float:left; height:26px}
 .ui-editor-button {float:left; width:24px; height:24px; margin:1px 0 1px 0; background: url("#{resource['primefaces:editor/images/buttons.gif']}")}
 .ui-editor-disabled {opacity:0.3; filter:alpha(opacity=30)}

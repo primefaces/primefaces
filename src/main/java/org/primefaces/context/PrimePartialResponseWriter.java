@@ -1,20 +1,42 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2020 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.context;
 
+import org.primefaces.application.resource.DynamicResourcesPhaseListener;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.primefaces.util.BeanUtils;
+import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.ResourceUtils;
+
+import javax.faces.component.NamingContainer;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.FacesContext;
+import javax.faces.context.PartialResponseWriter;
+import javax.faces.event.AbortProcessingException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,64 +44,23 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import javax.faces.component.NamingContainer;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
-import javax.faces.context.PartialResponseWriter;
-import javax.faces.event.AbortProcessingException;
-import org.primefaces.application.resource.DynamicResourcesPhaseListener;
-import org.primefaces.json.JSONArray;
-import org.primefaces.json.JSONException;
-import org.primefaces.json.JSONObject;
-import org.primefaces.util.BeanUtils;
-import org.primefaces.util.CollectionUtils;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.ResourceUtils;
 
-public class PrimePartialResponseWriter extends PartialResponseWriter {
+public class PrimePartialResponseWriter extends PartialResponseWriterWrapper {
 
     private static final Map<String, String> CALLBACK_EXTENSION_PARAMS;
-    
+
     static {
-        Map<String, String> callbackExtensionParams = new HashMap<String, String>();
+        Map<String, String> callbackExtensionParams = new HashMap<>();
         callbackExtensionParams.put("ln", "primefaces");
         callbackExtensionParams.put("type", "args");
 
         CALLBACK_EXTENSION_PARAMS = Collections.unmodifiableMap(callbackExtensionParams);
     }
 
-    private final PartialResponseWriter wrapped;
     private boolean metadataRendered = false;
 
     public PrimePartialResponseWriter(PartialResponseWriter wrapped) {
         super(wrapped);
-        this.wrapped = wrapped;
-    }
-
-    @Override
-    public void endError() throws IOException {
-        wrapped.endError();
-    }
-
-    @Override
-    public void endEval() throws IOException {
-        wrapped.endEval();
-    }
-
-    @Override
-    public void endExtension() throws IOException {
-        wrapped.endExtension();
-    }
-
-    @Override
-    public void endInsert() throws IOException {
-        wrapped.endInsert();
-    }
-
-    @Override
-    public void endUpdate() throws IOException {
-        wrapped.endUpdate();
     }
 
     @Override
@@ -96,83 +77,73 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                 encodeCallbackParams(requestContext.getCallbackParams());
                 encodeScripts(requestContext);
             }
-            catch (Exception exception) {
-                throw new AbortProcessingException(exception);
+            catch (Exception e) {
+                throw new AbortProcessingException(e);
             }
         }
 
-        wrapped.endDocument();
-    }
-
-    @Override
-    public void startDocument() throws IOException {
-        wrapped.startDocument();
+        super.endDocument();
     }
 
     @Override
     public void startError(String errorName) throws IOException {
         startMetadataIfNecessary();
 
-        wrapped.startError(errorName);
+        super.startError(errorName);
     }
 
     @Override
     public void startEval() throws IOException {
         startMetadataIfNecessary();
 
-        wrapped.startEval();
+        super.startEval();
     }
 
     @Override
     public void startExtension(Map<String, String> attributes) throws IOException {
         startMetadataIfNecessary();
 
-        wrapped.startExtension(attributes);
+        super.startExtension(attributes);
     }
 
     @Override
     public void startInsertAfter(String targetId) throws IOException {
         startMetadataIfNecessary();
 
-        wrapped.startInsertAfter(targetId);
+        super.startInsertAfter(targetId);
     }
 
     @Override
     public void startInsertBefore(String targetId) throws IOException {
         startMetadataIfNecessary();
 
-        wrapped.startInsertBefore(targetId);
+        super.startInsertBefore(targetId);
     }
 
     @Override
     public void startUpdate(String targetId) throws IOException {
         startMetadataIfNecessary();
 
-        wrapped.startUpdate(targetId);
+        super.startUpdate(targetId);
     }
 
     @Override
     public void updateAttributes(String targetId, Map<String, String> attributes) throws IOException {
         startMetadataIfNecessary();
 
-        wrapped.updateAttributes(targetId, attributes);
-    }
-
-    @Override
-    public void redirect(String url) throws IOException {
-        wrapped.redirect(url);
+        super.updateAttributes(targetId, attributes);
     }
 
     @Override
     public void delete(String targetId) throws IOException {
         startMetadataIfNecessary();
 
-        wrapped.delete(targetId);
+        super.delete(targetId);
     }
 
     public void encodeJSONObject(String paramName, JSONObject jsonObject) throws IOException, JSONException {
         String json = jsonObject.toString();
-        json = ComponentUtils.escapeXml(json);
+        json = EscapeUtils.forXml(json);
 
         getWrapped().write("\"");
         getWrapped().write(paramName);
@@ -182,7 +153,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
 
     public void encodeJSONArray(String paramName, JSONArray jsonArray) throws IOException, JSONException {
         String json = jsonArray.toString();
-        json = ComponentUtils.escapeXml(json);
+        json = EscapeUtils.forXml(json);
 
         getWrapped().write("\"");
         getWrapped().write(paramName);
@@ -192,7 +163,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
 
     public void encodeJSONValue(String paramName, Object paramValue) throws IOException, JSONException {
         String json = new JSONObject().put(paramName, paramValue).toString();
-        json = ComponentUtils.escapeXml(json);
+        json = EscapeUtils.forXml(json);
 
         getWrapped().write(json.substring(1, json.length() - 1));
     }
@@ -204,21 +175,27 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
             startExtension(CALLBACK_EXTENSION_PARAMS);
             getWrapped().write("{");
 
-            for (Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
-                String paramName = it.next();
-                Object paramValue = params.get(paramName);
+            for (Iterator<Map.Entry<String, Object>> it = params.entrySet().iterator(); it.hasNext();) {
+                Map.Entry<String, Object> entry = it.next();
+                String paramName = entry.getKey();
+                Object paramValue = entry.getValue();
 
-                if (paramValue instanceof JSONObject) {
-                    encodeJSONObject(paramName, (JSONObject) paramValue);
-                }
-                else if (paramValue instanceof JSONArray) {
-                    encodeJSONArray(paramName, (JSONArray) paramValue);
-                }
-                else if (BeanUtils.isBean(paramValue)) {
-                    encodeJSONObject(paramName, new JSONObject(paramValue));
+                if (paramValue == null) {
+                    encodeJSONValue(paramName, null);
                 }
                 else {
-                    encodeJSONValue(paramName, paramValue);
+                    if (paramValue instanceof JSONObject) {
+                        encodeJSONObject(paramName, (JSONObject) paramValue);
+                    }
+                    else if (paramValue instanceof JSONArray) {
+                        encodeJSONArray(paramName, (JSONArray) paramValue);
+                    }
+                    else if (BeanUtils.isBean(paramValue)) {
+                        encodeJSONObject(paramName, new JSONObject(paramValue));
+                    }
+                    else {
+                        encodeJSONValue(paramName, paramValue);
+                    }
                 }
 
                 if (it.hasNext()) {
@@ -232,9 +209,16 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
     }
 
     protected void encodeScripts(PrimeRequestContext requestContext) throws IOException {
+        List<String> initScripts = requestContext.getInitScriptsToExecute();
         List<String> scripts = requestContext.getScriptsToExecute();
-        if (!scripts.isEmpty()) {
+
+        if (!initScripts.isEmpty() || !scripts.isEmpty()) {
             startEval();
+
+            for (int i = 0; i < initScripts.size(); i++) {
+                getWrapped().write(initScripts.get(i));
+                getWrapped().write(';');
+            }
 
             for (int i = 0; i < scripts.size(); i++) {
                 getWrapped().write(scripts.get(i));
@@ -275,7 +259,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                                 parameterPrefix += UINamingContainer.getSeparatorChar(context);
                             }
 
-                            Map<String, Object> params = new HashMap<String, Object>();
+                            Map<String, Object> params = new HashMap<>();
                             params.put("parameterPrefix", parameterPrefix);
                             encodeCallbackParams(params);
                         }
@@ -283,35 +267,30 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
 
                     // dynamic resource loading
                     // we just do it for postbacks, otherwise ajax requests without a form would reload all resources
-                    // we also skip update=@all as the head will all resources will already be rendered
+                    // we also skip update=@all, as the head with all resources, will already be rendered
                     if (context.isPostback()
                             && !context.getPartialViewContext().isRenderAll()
                             && !applicationContext.getEnvironment().isAtLeastJsf23()) {
-                        ArrayList<ResourceUtils.ResourceInfo> initialResources = DynamicResourcesPhaseListener.getInitialResources(context);
-                        ArrayList<ResourceUtils.ResourceInfo> currentResources = ResourceUtils.getComponentResources(context);
+                        List<ResourceUtils.ResourceInfo> initialResources = DynamicResourcesPhaseListener.getInitialResources(context);
+                        List<ResourceUtils.ResourceInfo> currentResources = ResourceUtils.getComponentResources(context);
                         if (initialResources != null && currentResources != null && currentResources.size() > initialResources.size()) {
-                            startEval();
 
-                            ArrayList<ResourceUtils.ResourceInfo> newResources = new ArrayList<ResourceUtils.ResourceInfo>(currentResources);
+                            List<ResourceUtils.ResourceInfo> newResources = new ArrayList<>(currentResources);
                             newResources.removeAll(initialResources);
 
-                            getWrapped().write("if(window.PrimeFaces){");
-
-                            ArrayList<String> stylesheets = ResourceUtils.filterStylesheets(context, newResources);
-                            if (stylesheets != null && !stylesheets.isEmpty()) {
-                                String script = "PrimeFaces.ajax.Utils.loadStylesheets(['" + CollectionUtils.join(stylesheets, "','") + "']);";
-                                getWrapped().write(script);
+                            boolean updateStarted = false;
+                            for (int i = 0; i < newResources.size(); i++) {
+                                ResourceUtils.ResourceInfo resourceInfo = newResources.get(i);
+                                if (!updateStarted) {
+                                    ((PartialResponseWriter) getWrapped()).startUpdate("javax.faces.Resource");
+                                    updateStarted = true;
+                                }
+                                resourceInfo.getResource().encodeAll(context);
                             }
 
-                            ArrayList<String> scripts = ResourceUtils.filterScripts(context, newResources);
-                            if (scripts != null && !scripts.isEmpty()) {
-                                String script = "PrimeFaces.ajax.Utils.loadScripts(['" + CollectionUtils.join(scripts, "','") + "']);";
-                                getWrapped().write(script);
+                            if (updateStarted) {
+                                ((PartialResponseWriter) getWrapped()).endUpdate();
                             }
-
-                            getWrapped().write("}");
-
-                            endEval();
                         }
                     }
                 }

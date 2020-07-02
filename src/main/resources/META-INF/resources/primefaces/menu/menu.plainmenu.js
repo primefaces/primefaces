@@ -1,5 +1,28 @@
+
+/**
+ * __PrimeFaces PlainMenu Widget__
+ * 
+ * Menu is a navigation component with sub menus and menu items.
+ * 
+ * @prop {JQuery} menuitemLinks DOM elements with the links of each menu item.
+ * @prop {string} stateKey Name of the HTML5 Local Store that is used to store the state of this plain menu (expanded / collapsed
+ * menu items).
+ * @prop {string[]} collapsedIds A list with the ID of each menu item (with children) that is collapsed.
+ * 
+ * @interface {PrimeFaces.widget.PlainMenuCfg} cfg The configuration for the {@link  PlainMenu| PlainMenu widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.MenuCfg} cfg
+ * 
+ * @prop {boolean} cfg.toggleable `true` if grouped items can be toggled (expanded / collapsed), or `false` otherwise.
+ */
 PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
 
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
     init: function(cfg) {
         this._super(cfg);
 
@@ -10,27 +33,31 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
 
         if(this.cfg.toggleable) {
             this.collapsedIds = [];
-            this.stateKey = 'menu-' + this.id;
+            this.stateKey = PrimeFaces.createStorageKey(this.id, 'PlainMenu');
             this.restoreState();
         }
     },
 
+    /**
+     * Sets up all event listeners required by this widget.
+     * @private
+     */
     bindEvents: function() {
         var $this = this;
 
-        this.menuitemLinks.mouseenter(function(e) {
+        this.menuitemLinks.on("mouseenter", function(e) {
             if($this.jq.is(':focus')) {
-                $this.jq.blur();
+                $this.jq.trigger("blur");
             }
 
             $(this).addClass('ui-state-hover');
         })
-        .mouseleave(function(e) {
+        .on("mouseleave", function(e) {
             $(this).removeClass('ui-state-hover');
         });
 
         if(this.cfg.overlay) {
-            this.menuitemLinks.click(function() {
+            this.menuitemLinks.on("click", function() {
                 $this.hide();
             });
 
@@ -104,22 +131,16 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
                     break;
 
                     case keyCode.ENTER:
-                    case keyCode.NUMPAD_ENTER:
                         currentLink.trigger('click');
-                        $this.jq.blur();
-                        var href = currentLink.attr('href');
-                        if(href && href !== '#') {
-                            window.location.href = href;
-                        }
-
-                        e.preventDefault();
+                        $this.jq.trigger("blur");
+                        PrimeFaces.utils.openLink(e, currentLink);
                     break;
 
                     case keyCode.ESCAPE:
                         $this.hide();
 
                         if($this.cfg.overlay) {
-                            $this.trigger.focus();
+                            $this.trigger.trigger('focus');
                         }
                     break;
 
@@ -127,6 +148,12 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
         });
     },
 
+    /**
+     * Collapses the given sub menu so that the children of that sub menu are not visible anymore.
+     * @param {JQuery} header Menu item with children to collapse.
+     * @param {boolean} [stateful] `true` if the new state of this menu (which items are collapsed and expanded) should
+     * be saved (in an HTML5 Local Store), `false` otherwise. 
+     */
     collapseSubmenu: function(header, stateful) {
         var items = header.nextUntil('li.ui-widget-header');
 
@@ -141,6 +168,12 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
         }
     },
 
+    /**
+     * Expands the given sub menu so that the children of that sub menu become visible.
+     * @param {JQuery} header Menu item with children to expand.
+     * @param {boolean} [stateful] `true` if the new state of this menu (which items are collapsed and expanded) should
+     * be saved (in an HTML5 Local Store), `false` otherwise. 
+     */
     expandSubmenu: function(header, stateful) {
         var items = header.nextUntil('li.ui-widget-header');
 
@@ -158,12 +191,21 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
         }
     },
 
+    /**
+     * Saves the current state (expanded / collapsed menu items) of this plain menu. Used to preserve the state during
+     * AJAX updates as well as between page reloads. The state is stored in an HTML5 Local Store.
+     * @private
+     */
     saveState: function() {
-        PrimeFaces.setCookie(this.stateKey, this.collapsedIds.join(','));
+        localStorage.setItem(this.stateKey, this.collapsedIds.join(','));
     },
 
+    /**
+     * Restores that state as stored by `saveState`. Usually called after an AJAX update and on page load.
+     * @private
+     */
     restoreState: function() {
-        var collapsedIdsAsString = PrimeFaces.getCookie(this.stateKey);
+        var collapsedIdsAsString = localStorage.getItem(this.stateKey);
 
         if(collapsedIdsAsString) {
             this.collapsedIds = collapsedIdsAsString.split(',');
@@ -174,8 +216,12 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
         }
     },
 
+    /**
+     * Clear the saved state (collapsed / expanded menu items) of this plain menu.
+     * @private
+     */
     clearState: function() {
-        PrimeFaces.setCookie(this.stateKey, null);
+        localStorage.removeItem(this.stateKey);
     }
 
 });

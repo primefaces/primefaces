@@ -1,32 +1,38 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2020 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.poll;
 
 import java.io.IOException;
-
+import java.time.Duration;
 import javax.faces.FacesException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseId;
 
-import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.AjaxRequestBuilder;
-import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class PollRenderer extends CoreRenderer {
@@ -53,36 +59,36 @@ public class PollRenderer extends CoreRenderer {
         Poll poll = (Poll) component;
         String clientId = poll.getClientId(context);
 
-        UIComponent form = ComponentTraversalUtils.closestForm(context, poll);
-        if (form == null) {
-            throw new FacesException("Poll:" + clientId + " needs to be enclosed in a form component");
-        }
-
-        AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
-
-        String request = builder.init()
-                .source(clientId)
-                .form(form.getClientId(context))
-                .process(component, poll.getProcess())
-                .update(component, poll.getUpdate())
-                .async(poll.isAsync())
-                .global(poll.isGlobal())
-                .delay(poll.getDelay())
-                .timeout(poll.getTimeout())
-                .partialSubmit(poll.isPartialSubmit(), poll.isPartialSubmitSet(), poll.getPartialSubmitFilter())
-                .resetValues(poll.isResetValues(), poll.isResetValuesSet())
-                .ignoreAutoUpdate(poll.isIgnoreAutoUpdate())
-                .onstart(poll.getOnstart())
-                .onerror(poll.getOnerror())
-                .onsuccess(poll.getOnsuccess())
-                .oncomplete(poll.getOncomplete())
+        String request = preConfiguredAjaxRequestBuilder(context, poll)
                 .params(poll)
                 .build();
 
+        Object interval = poll.getInterval();
+
+        int convertedInterval;
+        if (interval instanceof Integer) {
+            convertedInterval = (Integer) interval;
+        }
+        else if (interval instanceof Duration) {
+            convertedInterval = (int) ((Duration) interval).getSeconds();
+        }
+        else if (interval instanceof String) {
+            try {
+                convertedInterval = Integer.parseInt((String) interval);
+            }
+            catch (NumberFormatException e) {
+                throw new FacesException(interval + " is not a valid integer for \"interval\" for p:poll", e);
+            }
+        }
+        else {
+            throw new FacesException(interval.getClass() + " is not supported as \"interval\" for p:poll");
+        }
+
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Poll", poll.resolveWidgetVar(), clientId)
-                .attr("frequency", poll.getInterval())
+        wb.init("Poll", poll.resolveWidgetVar(context), clientId)
+                .attr("frequency", convertedInterval)
                 .attr("autoStart", poll.isAutoStart())
+                .attr("intervalType", poll.getIntervalType(), "second")
                 .callback("fn", "function()", request);
 
         wb.finish();

@@ -5,6 +5,10 @@
     font-weight: normal;
 }
 
+input[type=text]::-ms-clear {
+    display: none;
+}
+
 .ui-widget-header .ui-inputfield,
 .ui-widget-content .ui-inputfield {
     font-weight: normal;
@@ -94,6 +98,11 @@
     text-align: center;
     padding: 2px 10px;
     border-bottom: 0px none;
+}
+
+.ui-listbox-outline {
+    outline: 1px dotted black;
+    z-index: 1;
 }
 
 /**
@@ -210,6 +219,10 @@
 
 .ui-radiobutton.ui-radiobutton-native .ui-helper-hidden-accessible input {
     margin: 0;
+    -webkit-transform: none; 
+    -moz-transform: none; 
+    -ms-transform: none;
+    transform: none;
 }
 
 .ui-selectoneradio-native label {
@@ -218,18 +231,16 @@
 
 /** SelectOneMenu **/
 .ui-selectonemenu {
-    display: inline-block;
-    position: relative;
-    width: auto;
-    zoom: 1;
-    cursor: pointer;
-    padding-right: 2em;
-    vertical-align: top;
-}
-
-.ui-selectonemenu.ui-state-hover,
-.ui-selectonemenu.ui-state-focus {
-    background-color: transparent;
+	display: inline-block;
+	position: relative;
+	width: auto;
+	-moz-transform: scaleX(1);
+	-o-transform: scaleX(1);
+	-webkit-transform: scaleX(1);
+	transform: scaleX(1);
+	cursor: pointer;
+	padding-right: 22px;
+	vertical-align: top;
 }
 
 .ui-selectonemenu .ui-selectonemenu-trigger {
@@ -308,6 +319,12 @@
     white-space: nowrap;
 }
 
+.ui-selectonemenu-footer {
+    border:0px none;
+    margin:1px 0;
+    padding:3px 5px;
+}
+
 .ui-selectonemenu-panel .ui-selectonemenu-table {
     border-collapse:collapse;
     width:100%;
@@ -334,12 +351,35 @@
     margin: 0;
     padding: 0.4em;
     display: inline-block;
+    width: 100%;
 }
 
 .ui-selectonemenu-panel .ui-selectonemenu-filter-container .ui-icon {
     position: absolute;
     top: 10px;
     right: 10px;
+}
+
+.ui-selectonemenu-rtl { 
+    direction: rtl;
+    -moz-transform: scaleX(-1); 
+    -webkit-transform: scaleX(-1); 
+    -o-transform: scaleX(-1); 
+    -ms-transform: scaleX(-1); 
+    transform: scaleX(-1); 
+}
+
+.ui-selectonemenu-rtl .ui-selectonemenu-label { 
+    -moz-transform: scaleX(-1); 
+    -webkit-transform: scaleX(-1); 
+    -o-transform: scaleX(-1); 
+    -ms-transform: scaleX(-1); 
+    transform: scaleX(-1); 
+    text-align: right; 
+}
+
+.ui-selectonemenu-panel-rtl .ui-selectonemenu-list-item { 
+    text-align: right; 
 }
 
 .ui-state-disabled a{outline: none;}
@@ -353,7 +393,6 @@
     text-decoration: none !important;
     cursor: pointer;
     text-align: center;
-    zoom: 1;
     overflow: visible; /* the overflow property removes extra width in IE */
 }
 
@@ -405,7 +444,10 @@
 .ui-button-text-icon-right .ui-icon.far,
 .ui-button-icon-only .ui-icon.fas,
 .ui-button-text-icon-left .ui-icon.fas,
-.ui-button-text-icon-right .ui-icon.fas {
+.ui-button-text-icon-right .ui-icon.fas,
+.ui-button-icon-only .ui-icon.fal,
+.ui-button-text-icon-left .ui-icon.fal,
+.ui-button-text-icon-right .ui-icon.fal {
     margin-top: -7px;
 }
 
@@ -423,9 +465,6 @@
 }
 
 /*button sets*/
-.ui-buttonset {
-    margin-right: 7px;
-}
 .ui-buttonset .ui-button {
     margin-left: 0;
     margin-right: 0;
@@ -436,12 +475,19 @@ button.ui-button::-moz-focus-inner {
     border: 0; padding: 0; /* reset extra padding in Firefox */
 }
 
+.ui-linkbutton.ui-button.ui-state-default > a {
+    color: inherit;
+}
+
+.ui-linkbutton.ui-button.ui-state-hover > a {
+    color: inherit;
+}
+
 /** SelectCheckbox Menu **/
 .ui-selectcheckboxmenu {
     display: inline-block;
     position: relative;
     width: auto;
-    zoom: 1;
     cursor: pointer;
 }
 
@@ -587,6 +633,14 @@ button.ui-button::-moz-focus-inner {
     border: 0;
 }
 
+.ui-selectcheckboxmenu-multiple-container:empty:after {
+    content: attr(label);
+    padding: 1px 3px;
+    white-space: nowrap;
+    margin:2px;
+    display: inline-block;
+}
+
 .ui-selectcheckboxmenu-token {
     cursor: default;
     float: left;
@@ -643,10 +697,42 @@ button.ui-button::-moz-focus-inner {
     right: 0px;
 }
 
+.ui-splitbuttonmenu .ui-splitbuttonmenu-filter-container {
+    position: relative;
+    margin: 0;
+    padding: 0.4em 0;
+    display: inline-block;
+}
+
+.ui-splitbuttonmenu .ui-splitbuttonmenu-filter {
+    width: 100%;
+    padding-right: 15px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.ui-splitbuttonmenu .ui-splitbuttonmenu-filter-container .ui-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.ui-splitbuttonmenu .ui-splitbuttonmenu-list-wrapper {
+    overflow: auto;
+}
+
+.ui-splitbuttonmenu.ui-menu .ui-menu-list .ui-widget-header,
+.ui-splitbuttonmenu.ui-menu .ui-menuitem-link {
+    width: 100%;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
 /** IE Hacks **/
 div.ui-button, .ui-splitbutton {
     display: inline-block;
-    zoom: 1;
 }
 
 /** Password **/
@@ -885,4 +971,59 @@ div.ui-button, .ui-splitbutton {
 .ui-fluid .ui-selectonelistbox,
 .ui-fluid .ui-selectmanymenu {
     width: 100%;
+}
+
+/** Floating Label **/
+.ui-float-label {
+    display: block;
+    position:relative;
+}
+
+.ui-float-label > label {
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    left: .25em;
+    top: 50%;
+    margin-top: -.5em;
+    transition: 0.3s ease all;
+    -moz-transition: 0.3s ease all;
+    -webkit-transition: 0.3s ease all;
+    color: #898989;
+    line-height: 1;
+}
+
+.ui-float-label > textarea ~ label {
+    top: 1.2em;
+}
+
+.ui-float-label > input:focus ~ label,
+.ui-float-label > input.ui-state-filled ~ label,
+.ui-float-label > textarea:focus ~ label,
+.ui-float-label > textarea.ui-state-filled ~ label,
+.ui-float-label > .ui-inputwrapper-focus ~ label,
+.ui-float-label > .ui-inputwrapper-filled ~ label {
+    top: -.75em;
+    font-size: 12px;
+}
+
+/** Firefox: https://github.com/primefaces/primefaces/issues/5508 **/
+.ui-float-label > input:-webkit-autofill ~ label,
+.ui-float-label > textarea:-webkit-autofill ~ label {
+    top: -.75em;
+    font-size: 12px;
+}
+
+/** Element becomes visually hidden however accessibility is still available. **/
+.ui-sr-only {
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    word-wrap: normal !important;
 }

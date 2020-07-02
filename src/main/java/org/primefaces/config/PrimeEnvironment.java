@@ -1,68 +1,90 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2020 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.config;
 
-import java.io.IOException;
+import org.primefaces.util.LangUtils;
+
+import javax.faces.context.FacesContext;
+import javax.validation.Validation;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.validation.Validation;
-import org.primefaces.util.ClassUtils;
 
 public class PrimeEnvironment {
-    
-    private static final Logger LOG = Logger.getLogger(PrimeEnvironment.class.getName());
-    
-    private boolean beanValidationAvailable = false;
-    
-    private boolean atLeastEl22 = false;
-    
-    private boolean atLeastJsf23 = false;
-    private boolean atLeastJsf22 = false;
-    private boolean atLeastJsf21 = false;
-    
-    private boolean atLeastBv11 = false;
 
-    private String buildVersion = null;
-    
-    public PrimeEnvironment() {
-        atLeastEl22 = ClassUtils.tryToLoadClassForName("javax.el.ValueReference") != null;
+    public static final String TIKA_FILE_DETECTOR_CLASS = "org.apache.tika.filetypedetector.TikaFileTypeDetector";
+    private static final Logger LOGGER = Logger.getLogger(PrimeEnvironment.class.getName());
 
-        atLeastJsf23 = ClassUtils.tryToLoadClassForName("javax.faces.component.UIImportConstants") != null;
-        atLeastJsf22 = ClassUtils.tryToLoadClassForName("javax.faces.flow.Flow") != null;
-        atLeastJsf21 = ClassUtils.tryToLoadClassForName("javax.faces.component.TransientStateHolder") != null;
+    private final boolean beanValidationAvailable;
 
-        atLeastBv11 = ClassUtils.tryToLoadClassForName("javax.validation.executable.ExecutableValidator") != null;
+    private final boolean atLeastEl22;
 
-        beanValidationAvailable = checkIfBeanValidationIsAvailable();
-        
+    private final boolean atLeastJsf23;
+    private final boolean atLeastJsf22;
+    private final boolean atLeastJsf21;
+
+    private final boolean mojarra;
+
+    private final boolean atLeastBv11;
+
+    private final String buildVersion;
+
+    private final boolean htmlSanitizerAvailable;
+
+    private final boolean tikaAvailable;
+
+    public PrimeEnvironment(FacesContext context) {
+        atLeastEl22 = LangUtils.tryToLoadClassForName("javax.el.ValueReference") != null;
+
+        atLeastJsf23 = LangUtils.tryToLoadClassForName("javax.faces.component.UIImportConstants") != null;
+        atLeastJsf22 = LangUtils.tryToLoadClassForName("javax.faces.flow.Flow") != null;
+        atLeastJsf21 = LangUtils.tryToLoadClassForName("javax.faces.component.TransientStateHolder") != null;
+
+        atLeastBv11 = LangUtils.tryToLoadClassForName("javax.validation.executable.ExecutableValidator") != null;
+
+        beanValidationAvailable = resolveBeanValidationAvailable();
+
         buildVersion = resolveBuildVersion();
-        // This should only happen if PF + the webapp is openend and started in the same netbeans instance
-        // Fallback to a UID to void a empty version in the resourceUrls
-        if (buildVersion == null || buildVersion.trim().isEmpty()) {
-            buildVersion = UUID.randomUUID().toString().replace("-", "").substring(0, 10);
+
+        htmlSanitizerAvailable = LangUtils.tryToLoadClassForName("org.owasp.html.PolicyFactory") != null;
+
+        tikaAvailable = LangUtils.tryToLoadClassForName(TIKA_FILE_DETECTOR_CLASS) != null;
+
+        if (context == null || context.getExternalContext() == null) {
+            mojarra = false;
+        }
+        else {
+            mojarra = context.getExternalContext().getApplicationMap().containsKey("com.sun.faces.ApplicationAssociate");
         }
     }
-    
-    protected boolean checkIfBeanValidationIsAvailable() {
-        boolean available = ClassUtils.tryToLoadClassForName("javax.validation.Validation") != null;
 
-        if (available) {
+    protected boolean resolveBeanValidationAvailable() {
+        boolean beanValidationAvailable = LangUtils.tryToLoadClassForName("javax.validation.Validation") != null;
+
+        if (beanValidationAvailable) {
             // Trial-error approach to check for Bean Validation impl existence.
             // If any Exception occurs here, we assume that Bean Validation is not available.
             // The cause may be anything, i.e. NoClassDef, config error...
@@ -70,91 +92,72 @@ public class PrimeEnvironment {
                 Validation.buildDefaultValidatorFactory().getValidator();
             }
             catch (Throwable t) {
-                LOG.log(Level.FINE, "BV not available - Could not build default ValidatorFactory.");
-                available = false;
+                LOGGER.log(Level.FINE, "BV not available - Could not build default ValidatorFactory.");
+                beanValidationAvailable = false;
             }
         }
 
-        return available;
+        return beanValidationAvailable;
     }
-    
-    protected String resolveBuildVersion() {
 
-        Properties buildProperties = new Properties();
-        InputStream is = null;
-        try {
-            is = getClass().getResourceAsStream("/META-INF/maven/org.primefaces/primefaces/pom.properties");
+    protected String resolveBuildVersion() {
+        String buildVersion = null;
+
+        try (InputStream is = getClass().getResourceAsStream("/META-INF/maven/org.primefaces/primefaces/pom.properties")) {
+            Properties buildProperties = new Properties();
             buildProperties.load(is);
-            return buildProperties.getProperty("version");
+            buildVersion = buildProperties.getProperty("version");
         }
         catch (Exception e) {
-            LOG.log(Level.SEVERE, "PrimeFaces version not resolvable - Could not load pom.properties.");
+            LOGGER.log(Level.SEVERE, "PrimeFaces version not resolvable - Could not load pom.properties.");
         }
 
-        if (is != null) {
-            try {
-                is.close();
-            }
-            catch (IOException e) {
-            }
+        // This should only happen if PF + the webapp is openend and started in the same netbeans instance
+        // Fallback to a UID to void a empty version in the resourceUrls
+        if (LangUtils.isValueBlank(buildVersion)) {
+            buildVersion = UUID.randomUUID().toString().replace("-", "").substring(0, 10);
         }
-        
-        return null;
+
+        return buildVersion;
     }
 
     public boolean isBeanValidationAvailable() {
         return beanValidationAvailable;
     }
 
-    public void setBeanValidationAvailable(boolean beanValidationAvailable) {
-        this.beanValidationAvailable = beanValidationAvailable;
-    }
-
     public boolean isAtLeastEl22() {
         return atLeastEl22;
-    }
-
-    public void setAtLeastEl22(boolean atLeastEl22) {
-        this.atLeastEl22 = atLeastEl22;
     }
 
     public boolean isAtLeastJsf23() {
         return atLeastJsf23;
     }
 
-    public void setAtLeastJsf23(boolean atLeastJsf23) {
-        this.atLeastJsf23 = atLeastJsf23;
-    }
-
     public boolean isAtLeastJsf22() {
         return atLeastJsf22;
-    }
-
-    public void setAtLeastJsf22(boolean atLeastJsf22) {
-        this.atLeastJsf22 = atLeastJsf22;
     }
 
     public boolean isAtLeastJsf21() {
         return atLeastJsf21;
     }
 
-    public void setAtLeastJsf21(boolean atLeastJsf21) {
-        this.atLeastJsf21 = atLeastJsf21;
+    public boolean isMojarra() {
+        return mojarra;
     }
 
     public boolean isAtLeastBv11() {
         return atLeastBv11;
     }
 
-    public void setAtLeastBv11(boolean atLeastBv11) {
-        this.atLeastBv11 = atLeastBv11;
-    }
-
     public String getBuildVersion() {
         return buildVersion;
     }
 
-    public void setBuildVersion(String buildVersion) {
-        this.buildVersion = buildVersion;
+    public boolean isHtmlSanitizerAvailable() {
+        return htmlSanitizerAvailable;
+    }
+
+    public boolean isTikaAvailable() {
+        return tikaAvailable;
     }
 }

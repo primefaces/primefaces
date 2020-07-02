@@ -1,3 +1,11 @@
+.ui-helper-hidden-accessible input,
+.ui-helper-hidden-accessible select {
+    -webkit-transform: scale(0); 
+    -moz-transform: scale(0); 
+    -ms-transform: scale(0);
+    transform: scale(0);
+}
+
 .ui-shadow {
     -moz-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
     -webkit-box-shadow: 0px 5px 10px rgba(0,0,0,0.8);
@@ -28,6 +36,10 @@ ui-overlay-visible * {
 
 .ui-icon-blank {
     background-position: 16px 16px;
+}
+
+.ui-transparent-pixel {
+	content:url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==)
 }
 
 /* Column Priorities */
@@ -97,8 +109,31 @@ ui-overlay-visible * {
 }
 
 /* FontAwesome */
-.ui-widget .ui-icon.fa, 
-.ui-icon.fa {
+.ui-icon.fa,
+.ui-widget .ui-icon.fa,
+.ui-icon.fab,
+.ui-widget .ui-icon.fab,
+.ui-icon.fas,
+.ui-widget .ui-icon.fas,
+.ui-icon.far,
+.ui-widget .ui-icon.far,
+.ui-icon.fal,
+.ui-widget .ui-icon.fal {
     background: none repeat scroll 0 0 transparent !important;
     text-indent: 0px !important;
+}
+
+/* PrimeIcons */
+.ui-widget .ui-icon.pi,
+.ui-icon.pi {
+    background: none repeat scroll 0 0 transparent !important;
+    text-indent: 0px !important;
+}
+
+/* FlexGrid */
+.p-grid,
+.p-grid>div {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 }

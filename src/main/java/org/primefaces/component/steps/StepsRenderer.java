@@ -1,37 +1,38 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2020 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.steps;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import org.primefaces.component.api.AjaxSource;
-import org.primefaces.component.api.UIOutcomeTarget;
 
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
-import org.primefaces.util.ComponentTraversalUtils;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import java.io.IOException;
+import java.util.List;
 
 public class StepsRenderer extends BaseMenuRenderer {
 
@@ -114,7 +115,7 @@ public class StepsRenderer extends BaseMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String title = menuitem.getTitle();
         String style = menuitem.getStyle();
-        String styleClass = this.getLinkStyleClass(menuitem);
+        String styleClass = getLinkStyleClass(menuitem);
 
         writer.startElement("a", null);
         writer.writeAttribute("tabindex", "-1", null);
@@ -136,53 +137,7 @@ public class StepsRenderer extends BaseMenuRenderer {
             writer.writeAttribute("onclick", "return false;", null);
         }
         else {
-            String onclick = menuitem.getOnclick();
-
-            //GET
-            if (menuitem.getUrl() != null || menuitem.getOutcome() != null) {
-                String targetURL = getTargetURL(context, (UIOutcomeTarget) menuitem);
-                writer.writeAttribute("href", targetURL, null);
-
-                if (menuitem.getTarget() != null) {
-                    writer.writeAttribute("target", menuitem.getTarget(), null);
-                }
-            }
-            //POST
-            else {
-                writer.writeAttribute("href", "#", null);
-
-                UIComponent form = ComponentTraversalUtils.closestForm(context, steps);
-                if (form == null) {
-                    throw new FacesException("MenuItem must be inside a form element");
-                }
-
-                String command;
-                if (menuitem.isDynamic()) {
-                    String menuClientId = steps.getClientId(context);
-                    Map<String, List<String>> params = menuitem.getParams();
-                    if (params == null) {
-                        params = new LinkedHashMap<String, List<String>>();
-                    }
-                    List<String> idParams = new ArrayList<String>();
-                    idParams.add(menuitem.getId());
-                    params.put(menuClientId + "_menuid", idParams);
-
-                    command = menuitem.isAjax()
-                            ? buildAjaxRequest(context, steps, (AjaxSource) menuitem, form, params)
-                            : buildNonAjaxRequest(context, steps, form, menuClientId, params, true);
-                }
-                else {
-                    command = menuitem.isAjax()
-                            ? buildAjaxRequest(context, (AjaxSource) menuitem, form) 
-                            : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
-                }
-
-                onclick = (onclick == null) ? command : onclick + ";" + command;
-            }
-
-            if (onclick != null) {
-                writer.writeAttribute("onclick", onclick, null);
-            }
+            encodeOnClick(context, steps, menuitem);
         }
 
         writer.startElement("span", steps);

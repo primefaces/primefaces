@@ -1,31 +1,43 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2020 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.dock;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
-
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class DockRenderer extends BaseMenuRenderer {
@@ -36,12 +48,12 @@ public class DockRenderer extends BaseMenuRenderer {
         String clientId = dock.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Dock", dock.resolveWidgetVar(), clientId)
+        wb.init("Dock", dock.resolveWidgetVar(context), clientId)
                 .attr("position", dock.getPosition())
-                .attr("maxWidth", dock.getMaxWidth())
-                .attr("itemWidth", dock.getItemWidth())
-                .attr("proximity", dock.getProximity())
-                .attr("halign", dock.getHalign());
+                .attr("halign", dock.getHalign())
+                .attr("blockScroll", dock.isBlockScroll(), false)
+                .attr("animate", dock.isAnimate())
+                .attr("animationDuration", dock.getAnimationDuration());
 
         wb.finish();
     }
@@ -55,26 +67,35 @@ public class DockRenderer extends BaseMenuRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
-        writer.writeAttribute("class", "ui-dock-" + position + " ui-widget", "styleClass");
-        renderPassThruAttributes(context, dock, null);
+        writer.writeAttribute("class", "ui-dock " + position + " ui-widget", "styleClass");
+        renderPassThruAttributes(context, dock);
 
-        writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-dock-container-" + position + " ui-widget-header", null);
+        writer.startElement("ul", null);
+        writer.writeAttribute("class", "ui-dock-container " + dock.getHalign() + " " + position, null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
 
         encodeMenuItems(context, dock);
 
-        writer.endElement("div");
-
+        writer.endElement("ul");
         writer.endElement("div");
     }
 
     protected void encodeMenuItems(FacesContext context, Dock dock) throws IOException {
         if (dock.getElementsCount() > 0) {
-            List<MenuElement> menuElements = (List<MenuElement>) dock.getElements();
+            ResponseWriter writer = context.getResponseWriter();
+            List<MenuElement> menuElements = new ArrayList<>(dock.getElements());
+
+            if (ComponentUtils.isRTL(context, dock)) {
+                Collections.reverse(menuElements);
+            }
 
             for (MenuElement element : menuElements) {
                 if (element.isRendered() && element instanceof MenuItem) {
-                    encodeMenuItem(context, dock, (MenuItem) element);
+                    writer.startElement("li", null);
+                    writer.writeAttribute("class", "ui-dock-item", "styleClass");
+                    writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
+                    encodeMenuItem(context, dock, (MenuItem) element, "-1");
+                    writer.endElement("li");
                 }
             }
         }
@@ -82,16 +103,8 @@ public class DockRenderer extends BaseMenuRenderer {
 
     @Override
     protected void encodeMenuItemContent(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
-        String position = ((Dock) menu).getPosition();
-
-        if (position.equalsIgnoreCase("top")) {
-            encodeItemIcon(context, menuitem);
-            encodeItemLabel(context, menuitem);
-        }
-        else {
-            encodeItemLabel(context, menuitem);
-            encodeItemIcon(context, menuitem);
-        }
+        encodeItemLabel(context, menuitem);
+        encodeItemIcon(context, menuitem);
     }
 
     protected void encodeItemIcon(FacesContext context, MenuItem menuitem) throws IOException {
@@ -99,24 +112,27 @@ public class DockRenderer extends BaseMenuRenderer {
 
         writer.startElement("img", null);
         writer.writeAttribute("src", getResourceURL(context, menuitem.getIcon()), null);
+        writer.writeAttribute("class", "ui-dock-image", "styleClass");
         writer.endElement("img");
     }
 
     protected void encodeItemLabel(FacesContext context, MenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
+        writer.startElement("em", null);
         writer.startElement("span", null);
 
         if (menuitem.getValue() != null) {
             if (menuitem.isEscape()) {
-                writer.writeText((String) menuitem.getValue(), "value");
-            } 
+                writer.writeText(menuitem.getValue(), "value");
+            }
             else {
                 writer.write((String) menuitem.getValue());
             }
         }
 
         writer.endElement("span");
+        writer.endElement("em");
     }
 
     @Override

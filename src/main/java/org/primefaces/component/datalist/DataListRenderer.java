@@ -1,26 +1,37 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2020 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.datalist;
 
 import java.io.IOException;
-import java.util.Map;
+import javax.faces.FacesException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.DataRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class DataListRenderer extends DataRenderer {
@@ -47,8 +58,18 @@ public class DataListRenderer extends DataRenderer {
             else {
                 encodeStrictList(context, list);
             }
+
+            if (list.isMultiViewState()) {
+                DataListState ls = list.getMultiViewState(true);
+                ls.setFirst(list.getFirst());
+                ls.setRows(list.getRows());
+            }
         }
         else {
+            if (list.isMultiViewState()) {
+                list.restoreMultiViewState();
+            }
+
             encodeMarkup(context, list);
             encodeScript(context, list);
         }
@@ -90,8 +111,8 @@ public class DataListRenderer extends DataRenderer {
 
         if (empty) {
             writer.startElement("div", list);
-            writer.writeAttribute("class", DataList.DATALIST_EMPTYMESSAGE_CLASS, null);
-            writer.write(list.getEmptyMessage());
+            writer.writeAttribute("class", DataList.DATALIST_EMPTY_MESSAGE_CLASS, null);
+            writer.writeText(list.getEmptyMessage(), "emptyMessage");
             writer.endElement("div");
         }
         else {
@@ -117,7 +138,7 @@ public class DataListRenderer extends DataRenderer {
     protected void encodeScript(FacesContext context, DataList list) throws IOException {
         String clientId = list.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DataList", list.resolveWidgetVar(), clientId);
+        wb.init("DataList", list.resolveWidgetVar(context), clientId);
 
         if (list.isPaginator()) {
             encodePaginatorConfig(context, list, wb);
@@ -132,7 +153,7 @@ public class DataListRenderer extends DataRenderer {
      * Renders items with no strict markup
      *
      * @param context FacesContext instance
-     * @param list DataList component
+     * @param list    DataList component
      * @throws IOException
      */
     protected void encodeStrictList(FacesContext context, DataList list) throws IOException {
@@ -140,7 +161,7 @@ public class DataListRenderer extends DataRenderer {
         String clientId = list.getClientId(context);
         boolean isDefinition = list.isDefinition();
         UIComponent definitionFacet = list.getFacet("description");
-        boolean renderDefinition = isDefinition && definitionFacet != null;
+        boolean renderDefinition = isDefinition && ComponentUtils.shouldRenderFacet(definitionFacet);
         String itemType = list.getItemType();
         String listClass = DataList.LIST_CLASS;
         if (itemType != null && itemType.equals("none")) {
@@ -149,15 +170,6 @@ public class DataListRenderer extends DataRenderer {
 
         String listTag = list.getListTag();
         String listItemTag = isDefinition ? "dt" : "li";
-        String varStatus = list.getVarStatus();
-
-        int first = list.getFirst();
-        int rows = list.getRows() == 0 ? list.getRowCount() : list.getRows();
-        int pageSize = first + rows;
-        int rowCount = list.getRowCount();
-
-        String rowIndexVar = list.getRowIndexVar();
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
         writer.startElement(listTag, null);
         writer.writeAttribute("id", clientId + "_list", null);
@@ -166,18 +178,8 @@ public class DataListRenderer extends DataRenderer {
             writer.writeAttribute("type", list.getItemType(), null);
         }
 
-        for (int i = first; i < pageSize; i++) {
-            if (varStatus != null) {
-                requestMap.put(varStatus, new VarStatus(first, (pageSize - 1), (i == 0), (i == (rowCount - 1)), i, (i % 2 == 0), (i % 2 == 1), 1));
-            }
-
-            list.setRowIndex(i);
-
-            if (rowIndexVar != null) {
-                requestMap.put(rowIndexVar, i);
-            }
-
-            if (list.isRowAvailable()) {
+        list.forEachRow((status) -> {
+            try {
                 String itemStyleClass = list.getItemStyleClass();
                 itemStyleClass = (itemStyleClass == null) ? DataList.LIST_ITEM_CLASS : DataList.LIST_ITEM_CLASS + " " + itemStyleClass;
 
@@ -192,18 +194,10 @@ public class DataListRenderer extends DataRenderer {
                     writer.endElement("dd");
                 }
             }
-        }
-
-        //cleanup
-        list.setRowIndex(-1);
-
-        if (rowIndexVar != null) {
-            requestMap.remove(rowIndexVar);
-        }
-
-        if (varStatus != null) {
-            requestMap.remove(varStatus);
-        }
+            catch (IOException e) {
+                throw new FacesException(e);
+            }
+        });
 
         writer.endElement(listTag);
     }
@@ -212,45 +206,18 @@ public class DataListRenderer extends DataRenderer {
      * Renders items with no strict markup
      *
      * @param context FacesContext instance
-     * @param list DataList component
+     * @param list    DataList component
      * @throws IOException
      */
     protected void encodeFreeList(FacesContext context, DataList list) throws IOException {
-        int first = list.getFirst();
-        int rows = list.getRows() == 0 ? list.getRowCount() : list.getRows();
-        int pageSize = first + rows;
-        int rowCount = list.getRowCount();
-
-        String rowIndexVar = list.getRowIndexVar();
-        String varStatus = list.getVarStatus();
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-
-        for (int i = first; i < pageSize; i++) {
-            if (varStatus != null) {
-                requestMap.put(varStatus, new VarStatus(first, (pageSize - 1), (i == 0), (i == (rowCount - 1)), i, (i % 2 == 0), (i % 2 == 1), 1));
-            }
-
-            list.setRowIndex(i);
-
-            if (rowIndexVar != null) {
-                requestMap.put(rowIndexVar, i);
-            }
-
-            if (list.isRowAvailable()) {
+        list.forEachRow((status) -> {
+            try {
                 renderChildren(context, list);
             }
-        }
-
-        //cleanup
-        list.setRowIndex(-1);
-
-        if (rowIndexVar != null) {
-            requestMap.remove(rowIndexVar);
-        }
-
-        if (varStatus != null) {
-            requestMap.remove(varStatus);
-        }
+            catch (IOException e) {
+                throw new FacesException(e);
+            }
+        });
     }
 
     @Override
@@ -263,94 +230,4 @@ public class DataListRenderer extends DataRenderer {
         return true;
     }
 
-    public static class VarStatus {
-
-        private int begin;
-        private int end;
-        private boolean first;
-        private boolean last;
-        private int index;
-        private boolean even;
-        private boolean odd;
-        private int step;
-
-        public VarStatus() {
-
-        }
-
-        public VarStatus(int begin, int end, boolean first, boolean last, int index, boolean even, boolean odd, int step) {
-            this.begin = begin;
-            this.end = end;
-            this.first = first;
-            this.last = last;
-            this.index = index;
-            this.even = even;
-            this.odd = odd;
-            this.step = step;
-        }
-
-        public int getBegin() {
-            return begin;
-        }
-
-        public void setBegin(int begin) {
-            this.begin = begin;
-        }
-
-        public int getEnd() {
-            return end;
-        }
-
-        public void setEnd(int end) {
-            this.end = end;
-        }
-
-        public boolean isEven() {
-            return even;
-        }
-
-        public void setEven(boolean even) {
-            this.even = even;
-        }
-
-        public boolean isFirst() {
-            return first;
-        }
-
-        public void setFirst(boolean first) {
-            this.first = first;
-        }
-
-        public int getIndex() {
-            return index;
-        }
-
-        public void setIndex(int index) {
-            this.index = index;
-        }
-
-        public boolean isLast() {
-            return last;
-        }
-
-        public void setLast(boolean last) {
-            this.last = last;
-        }
-
-        public boolean isOdd() {
-            return odd;
-        }
-
-        public void setOdd(boolean odd) {
-            this.odd = odd;
-        }
-
-        public int getStep() {
-            return step;
-        }
-
-        public void setStep(int step) {
-            this.step = step;
-        }
-    }
 }

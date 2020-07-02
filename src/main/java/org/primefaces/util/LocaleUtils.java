@@ -1,31 +1,35 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2020 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.util;
 
+import java.text.DecimalFormatSymbols;
 import java.util.Locale;
-
 import javax.faces.context.FacesContext;
 
 public class LocaleUtils {
 
-    /**
-     * Prevent instantiation.
-     */
     private LocaleUtils() {
-        // prevent instantiation
     }
 
     /**
@@ -76,12 +80,14 @@ public class LocaleUtils {
      * <p>
      * If NULL is passed the view root default locale is used.
      *
+     * @param context the {@link FacesContext}
      * @param locale given locale
+     * @param clientId the component clientId
      * @return resolved Locale
      */
-    public static Locale resolveLocale(Object locale, String clientId) {
+    public static Locale resolveLocale(FacesContext context, Object locale, String clientId) {
         Locale result = null;
-        
+
         if (locale != null) {
             if (locale instanceof String) {
                 result = toLocale((String) locale);
@@ -95,10 +101,52 @@ public class LocaleUtils {
         }
         else {
             // default to the view local
-            result = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+            result = context.getViewRoot().getLocale();
         }
 
         return result;
     }
 
+    /**
+     * Some JS libraries like FullCalendar used by Schedule require the locale for "pt_BR" to be "pt-br".
+     *
+     * @param locale the Locale to convert
+     * @return the Javascript string locale
+     */
+    public static String toJavascriptLocale(Locale locale) {
+        return locale.toString().toLowerCase().replace('_', '-');
+    }
+
+    public static Locale getCurrentLocale(FacesContext context) {
+        Locale locale = null;
+
+        if (context != null && context.getViewRoot() != null) {
+            locale = context.getViewRoot().getLocale();
+
+            if (locale == null) {
+                locale = Locale.getDefault();
+            }
+        }
+        else {
+            locale = Locale.getDefault();
+        }
+
+        return locale;
+    }
+
+    public static Locale getCurrentLocale() {
+        return getCurrentLocale(FacesContext.getCurrentInstance());
+    }
+
+    public static String getDecimalSeparator(FacesContext context) {
+        Locale locale = getCurrentLocale(context);
+        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(locale);
+        return Character.toString(decimalFormatSymbols.getDecimalSeparator());
+    }
+
+    public static String getThousandSeparator(FacesContext context) {
+        Locale locale = getCurrentLocale(context);
+        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(locale);
+        return Character.toString(decimalFormatSymbols.getGroupingSeparator());
+    }
 }

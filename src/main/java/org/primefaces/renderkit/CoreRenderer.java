@@ -1,36 +1,36 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2020 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.renderkit;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
 import javax.el.PropertyNotFoundException;
-import javax.faces.application.Resource;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
-import javax.faces.component.UIViewRoot;
+import javax.faces.component.*;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.component.behavior.ClientBehaviorHolder;
@@ -46,21 +46,14 @@ import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.convert.ClientConverter;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.util.AjaxRequestBuilder;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.HTML;
-import org.primefaces.util.SharedStringBuilder;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 import org.primefaces.validate.ClientValidator;
 import org.primefaces.validate.bean.BeanValidationMetadata;
 import org.primefaces.validate.bean.BeanValidationMetadataMapper;
-import org.primefaces.util.Jsf22Helper;
 
 public abstract class CoreRenderer extends Renderer {
 
-    private static final Logger LOG = Logger.getLogger(CoreRenderer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CoreRenderer.class.getName());
 
     private static final String SB_RENDER_DOM_EVENTS = CoreRenderer.class.getName() + "#renderDomEvents";
     private static final String SB_BUILD_NON_AJAX_REQUEST = CoreRenderer.class.getName() + "#buildNonAjaxRequest";
@@ -70,7 +63,7 @@ public abstract class CoreRenderer extends Renderer {
     protected void renderChildren(FacesContext context, UIComponent component) throws IOException {
         if (component.getChildCount() > 0) {
             for (int i = 0; i < component.getChildCount(); i++) {
-                UIComponent child = (UIComponent) component.getChildren().get(i);
+                UIComponent child = component.getChildren().get(i);
                 renderChild(context, child);
             }
         }
@@ -93,27 +86,21 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected String getResourceURL(FacesContext context, String value) {
-        return ComponentUtils.getResourceURL(context, value);
+        return ResourceUtils.getResourceURL(context, value);
     }
 
-    protected String getHrefURL(String baseUrl, Map<String, List<String>> params) {
-        return ComponentUtils.getHrefURL(baseUrl, params);
-    }
-    
     protected String getResourceRequestPath(FacesContext context, String resourceName) {
-        Resource resource = context.getApplication().getResourceHandler().createResource(resourceName, "primefaces");
-
-        return resource.getRequestPath();
+        return ResourceUtils.getResourceRequestPath(context, resourceName);
     }
 
-    protected void renderPassThruAttributes(FacesContext context, UIComponent component, String[] attrs) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
+    protected void renderPassThruAttributes(FacesContext context, UIComponent component, List<String> attrs) throws IOException {
         //pre-defined attributes
-        if (attrs != null && attrs.length > 0) {
-            for (String attribute : attrs) {
-                Object value = component.getAttributes().get(attribute);
+        if (attrs != null && !attrs.isEmpty()) {
+            ResponseWriter writer = context.getResponseWriter();
 
+            for (int i = 0; i < attrs.size(); i++) {
+                String attribute = attrs.get(i);
+                Object value = component.getAttributes().get(attribute);
                 if (shouldRenderAttribute(value)) {
                     writer.writeAttribute(attribute, value.toString(), attribute);
                 }
@@ -123,13 +110,25 @@ public abstract class CoreRenderer extends Renderer {
         renderDynamicPassThruAttributes(context, component);
     }
 
+    @SafeVarargs
+    protected final void renderPassThruAttributes(FacesContext context, UIComponent component, List<String>... attrs) throws IOException {
+        if (attrs == null) {
+            renderDynamicPassThruAttributes(context, component);
+            return;
+        }
+
+        for (List<String> a : attrs) {
+            renderPassThruAttributes(context, component, a);
+        }
+    }
+
     protected void renderDynamicPassThruAttributes(FacesContext context, UIComponent component) throws IOException {
         if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
             Jsf22Helper.renderPassThroughAttributes(context, component);
         }
     }
 
-    protected void renderDomEvents(FacesContext context, UIComponent component, String[] eventAttrs) throws IOException {
+    protected void renderDomEvents(FacesContext context, UIComponent component, List<String> eventAttrs) throws IOException {
         if (component instanceof ClientBehaviorHolder) {
             renderDomEvents(context, component, eventAttrs, ((ClientBehaviorHolder) component).getClientBehaviors());
         }
@@ -138,12 +137,18 @@ public abstract class CoreRenderer extends Renderer {
         }
     }
 
-    private void renderDomEvents(FacesContext context, UIComponent component, String[] eventAttrs, Map<String, List<ClientBehavior>> behaviors)
+    private void renderDomEvents(FacesContext context, UIComponent component, List<String> eventAttrs, Map<String, List<ClientBehavior>> behaviors)
             throws IOException {
+
+        if (eventAttrs == null || eventAttrs.isEmpty()) {
+            return;
+        }
+
         ResponseWriter writer = context.getResponseWriter();
         StringBuilder builder = null;
 
-        for (String domEvent : eventAttrs) {
+        for (int i = 0; i < eventAttrs.size(); i++) {
+            String domEvent = eventAttrs.get(i);
             Object eventValue = component.getAttributes().get(domEvent);
             String behaviorEvent = domEvent.substring(2, domEvent.length());
             List<ClientBehavior> eventBehaviors = behaviors.get(behaviorEvent);
@@ -164,14 +169,14 @@ public abstract class CoreRenderer extends Renderer {
                 }
 
                 if (hasEventBehaviors) {
-                    String clientId = ((UIComponent) component).getClientId(context);
-                    
-                    List<ClientBehaviorContext.Parameter> params = new ArrayList<ClientBehaviorContext.Parameter>();
+                    String clientId = component.getClientId(context);
+
+                    List<ClientBehaviorContext.Parameter> params = new ArrayList<>(1);
                     params.add(new ClientBehaviorContext.Parameter(
                             Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.OBSTRUSIVE));
-                    
+
                     ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
-                            context, (UIComponent) component, behaviorEvent, clientId, params);
+                            context, component, behaviorEvent, clientId, params);
                     int size = eventBehaviors.size();
                     boolean chained = false;
 
@@ -183,8 +188,8 @@ public abstract class CoreRenderer extends Renderer {
                             chained = true;
                         }
 
-                        for (int i = 0; i < size; i++) {
-                            ClientBehavior behavior = eventBehaviors.get(i);
+                        for (int j = 0; j < size; j++) {
+                            ClientBehavior behavior = eventBehaviors.get(j);
                             String script = behavior.getScript(cbc);
                             if (script != null) {
                                 if (chained) {
@@ -310,8 +315,8 @@ public abstract class CoreRenderer extends Renderer {
                     for (int i = 0; i < behaviors.size(); i++) {
                         ClientBehavior behavior = behaviors.get(i);
                         if (cbc == null) {
-                            cbc = ClientBehaviorContext.createClientBehaviorContext(
-                                    context, (UIComponent) component, behaviorEventName, component.getClientId(context), Collections.EMPTY_LIST);
+                            cbc = ClientBehaviorContext.createClientBehaviorContext(context, component, behaviorEventName,
+                                    component.getClientId(context), Collections.<ClientBehaviorContext.Parameter>emptyList());
                         }
                         String script = behavior.getScript(cbc);
 
@@ -340,7 +345,7 @@ public abstract class CoreRenderer extends Renderer {
             else {
                 if (hasBehaviors) {
                     ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
-                            context, (UIComponent) component, behaviorEventName, component.getClientId(context), Collections.EMPTY_LIST);
+                            context, component, behaviorEventName, component.getClientId(context), Collections.<ClientBehaviorContext.Parameter>emptyList());
                     ClientBehavior behavior = behaviors.get(0);
                     String script = behavior.getScript(cbc);
                     if (script != null) {
@@ -375,7 +380,7 @@ public abstract class CoreRenderer extends Renderer {
         }
 
         if (value instanceof Boolean) {
-            return ((Boolean) value).booleanValue();
+            return (Boolean) value;
         }
         else if (value instanceof Number) {
             Number number = (Number) value;
@@ -404,20 +409,22 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     public boolean isValueBlank(String value) {
-        return ComponentUtils.isValueBlank(value);
+        return LangUtils.isValueBlank(value);
     }
 
-    protected String buildAjaxRequest(FacesContext context, AjaxSource source, UIComponent form) {
-        UIComponent component = (UIComponent) source;
-        String clientId = component.getClientId(context);
+    protected <T extends UIComponent & AjaxSource> AjaxRequestBuilder preConfiguredAjaxRequestBuilder(FacesContext context, T source) {
+        return preConfiguredAjaxRequestBuilder(context, source, source, null);
+    }
 
+    protected AjaxRequestBuilder preConfiguredAjaxRequestBuilder(FacesContext context, UIComponent component, AjaxSource source, UIForm form) {
+        String clientId = component.getClientId(context);
         AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
 
         builder.init()
                 .source(clientId)
-                .form(SearchExpressionFacade.resolveClientId(context, component, source.getForm()))
-                .process(component, source.getProcess())
-                .update(component, source.getUpdate())
+                .form(source, component, form)
+                .process(component, source.getProcess(), source.isIgnoreComponentNotFound())
+                .update(component, source.getUpdate(), source.isIgnoreComponentNotFound())
                 .async(source.isAsync())
                 .global(source.isGlobal())
                 .delay(source.getDelay())
@@ -428,22 +435,40 @@ public abstract class CoreRenderer extends Renderer {
                 .onstart(source.getOnstart())
                 .onerror(source.getOnerror())
                 .onsuccess(source.getOnsuccess())
-                .oncomplete(source.getOncomplete())
-                .params(component);
+                .oncomplete(source.getOncomplete());
 
-        if (form != null) {
-            builder.form(form.getClientId(context));
-        }
+        return builder;
+    }
 
-        builder.preventDefault();
+    protected <T extends UIComponent & AjaxSource> String buildAjaxRequest(FacesContext context, T source) {
+        return buildAjaxRequest(context, source, null);
+    }
+
+    protected <T extends UIComponent & AjaxSource> String buildAjaxRequest(FacesContext context, T source, UIForm form) {
+        AjaxRequestBuilder builder = preConfiguredAjaxRequestBuilder(context, source, source, form)
+                .params(source)
+                .preventDefault();
+
+        return builder.build();
+    }
+
+    protected String buildAjaxRequest(FacesContext context, UIComponent component, AjaxSource source, UIForm form, Map<String, List<String>> params) {
+        AjaxRequestBuilder builder = preConfiguredAjaxRequestBuilder(context, component, source, form)
+                .params(params)
+                .preventDefault();
 
         return builder.build();
     }
 
     protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam, boolean submit) {
+        return buildNonAjaxRequest(context, component, form, decodeParam, Collections.emptyMap(), submit);
+    }
+
+    protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam,
+                                         Map<String, List<String>> parameters, boolean submit) {
         StringBuilder request = SharedStringBuilder.get(context, SB_BUILD_NON_AJAX_REQUEST);
         String formId = form.getClientId(context);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
 
         if (decodeParam != null) {
             params.put(decodeParam, decodeParam);
@@ -453,25 +478,23 @@ public abstract class CoreRenderer extends Renderer {
             UIComponent child = component.getChildren().get(i);
             if (child instanceof UIParameter) {
                 UIParameter param = (UIParameter) child;
-
                 params.put(param.getName(), param.getValue());
             }
+        }
+
+        if (parameters != null && !parameters.isEmpty()) {
+            parameters.forEach((k, v) -> params.put(k, v.get(0)));
         }
 
         //append params
         if (!params.isEmpty()) {
             request.append("PrimeFaces.addSubmitParam('").append(formId).append("',{");
 
-            for (Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
-                String key = it.next();
-                String value = ComponentUtils.escapeText(String.valueOf(params.get(key))) ;
-
-                request.append("'").append(key).append("':'").append(value).append("'");
-
-                if (it.hasNext()) {
-                    request.append(",");
-                }
-            }
+            request.append(
+                    params.entrySet().stream()
+                            .map(e -> "'" + e.getKey() + "':'" + EscapeUtils.forJavaScript(String.valueOf(e.getValue())) + "'")
+                            .collect(Collectors.joining(","))
+            );
 
             request.append("})");
         }
@@ -491,8 +514,6 @@ public abstract class CoreRenderer extends Renderer {
             request.append(";");
         }
 
-        request.append("PrimeFaces.onPost();");
-
         return request.toString();
     }
 
@@ -505,7 +526,7 @@ public abstract class CoreRenderer extends Renderer {
             Collection<String> eventNames = (component instanceof MixedClientBehaviorHolder)
                     ? ((MixedClientBehaviorHolder) component).getUnobstrusiveEventNames() : clientBehaviors.keySet();
             String clientId = ((UIComponent) component).getClientId(context);
-            List<ClientBehaviorContext.Parameter> params = new ArrayList<ClientBehaviorContext.Parameter>();
+            List<ClientBehaviorContext.Parameter> params = new ArrayList<>(1);
             params.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
 
             writer.write(",behaviors:{");
@@ -570,46 +591,15 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected void decodeBehaviors(FacesContext context, UIComponent component) {
-        if (!(component instanceof ClientBehaviorHolder)) {
-            return;
-        }
-
-        Map<String, List<ClientBehavior>> behaviors = ((ClientBehaviorHolder) component).getClientBehaviors();
-        if (behaviors.isEmpty()) {
-            return;
-        }
-
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String behaviorEvent = params.get("javax.faces.behavior.event");
-
-        if (null != behaviorEvent) {
-            List<ClientBehavior> behaviorsForEvent = behaviors.get(behaviorEvent);
-
-            if (behaviorsForEvent != null && !behaviorsForEvent.isEmpty()) {
-                String behaviorSource = params.get("javax.faces.source");
-                String clientId = component.getClientId(context);
-
-                if (behaviorSource != null && clientId.equals(behaviorSource)) {
-                    for (ClientBehavior behavior : behaviorsForEvent) {
-                        behavior.decode(context, component);
-                    }
-                }
-            }
-        }
+        ComponentUtils.decodeBehaviors(context, component);
     }
 
-    protected void startScript(ResponseWriter writer, String clientId) throws IOException {
-        writer.startElement("script", null);
-        writer.writeAttribute("id", clientId + "_s", null);
-        writer.writeAttribute("type", "text/javascript", null);
-    }
-
-    protected void endScript(ResponseWriter writer) throws IOException {
-        writer.endElement("script");
-    }
-
+    /**
+     * @deprecated Use {@link EscapeUtils}
+     */
+    @Deprecated
     protected String escapeText(String text) {
-        return ComponentUtils.escapeText(text);
+        return EscapeUtils.forJavaScript(text);
     }
 
     protected String getEventBehaviors(FacesContext context, ClientBehaviorHolder cbh, String event,
@@ -656,10 +646,14 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected void renderValidationMetadata(FacesContext context, EditableValueHolder component) throws IOException {
+        if (!PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
+            return; //GitHub #4049: short circuit method
+        }
+
         ResponseWriter writer = context.getResponseWriter();
         UIComponent comp = (UIComponent) component;
 
-        Converter converter = null;
+        Converter converter;
 
         try {
             converter = ComponentUtils.getConverter(context, comp);
@@ -668,7 +662,7 @@ public abstract class CoreRenderer extends Renderer {
             String message = "Skip rendering of CSV metadata for component \"" + comp.getClientId(context) + "\" because"
                     + " the ValueExpression of the \"value\" attribute"
                     + " isn't resolvable completely (e.g. a sub-expression returns null)";
-            LOG.log(Level.FINE, message);
+            LOGGER.log(Level.FINE, message);
             return;
         }
 
@@ -682,17 +676,17 @@ public abstract class CoreRenderer extends Renderer {
 
 
         //messages
-        if (label != null) writer.writeAttribute(HTML.VALIDATION_METADATA.LABEL, label, null);
-        if (requiredMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.REQUIRED_MESSAGE, requiredMessage, null);
-        if (validatorMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.VALIDATOR_MESSAGE, validatorMessage, null);
-        if (converterMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.CONVERTER_MESSAGE, converterMessage, null);
+        if (label != null) writer.writeAttribute(HTML.ValidationMetadata.LABEL, label, null);
+        if (requiredMessage != null) writer.writeAttribute(HTML.ValidationMetadata.REQUIRED_MESSAGE, requiredMessage, null);
+        if (validatorMessage != null) writer.writeAttribute(HTML.ValidationMetadata.VALIDATOR_MESSAGE, validatorMessage, null);
+        if (converterMessage != null) writer.writeAttribute(HTML.ValidationMetadata.CONVERTER_MESSAGE, converterMessage, null);
 
         //converter
-        if (converter != null && converter instanceof ClientConverter) {
+        if (converter instanceof ClientConverter) {
             ClientConverter clientConverter = (ClientConverter) converter;
             Map<String, Object> metadata = clientConverter.getMetadata();
 
-            writer.writeAttribute(HTML.VALIDATION_METADATA.CONVERTER, ((ClientConverter) converter).getConverterId(), null);
+            writer.writeAttribute(HTML.ValidationMetadata.CONVERTER, ((ClientConverter) converter).getConverterId(), null);
 
             if (metadata != null && !metadata.isEmpty()) {
                 renderValidationMetadataMap(context, metadata);
@@ -709,7 +703,7 @@ public abstract class CoreRenderer extends Renderer {
                 }
                 if (beanValidationMetadata.getValidatorIds() != null) {
                     if (validatorIds == null) {
-                        validatorIds = new ArrayList<String>();
+                        validatorIds = new ArrayList<>();
                     }
                     validatorIds.addAll(beanValidationMetadata.getValidatorIds());
                 }
@@ -718,7 +712,7 @@ public abstract class CoreRenderer extends Renderer {
 
         //required validation
         if (component.isRequired()) {
-            writer.writeAttribute(HTML.VALIDATION_METADATA.REQUIRED, "true", null);
+            writer.writeAttribute(HTML.ValidationMetadata.REQUIRED, "true", null);
         }
 
         //validators
@@ -728,7 +722,7 @@ public abstract class CoreRenderer extends Renderer {
                 if (validator instanceof ClientValidator) {
                     ClientValidator clientValidator = (ClientValidator) validator;
                     if (validatorIds == null) {
-                        validatorIds = new ArrayList<String>();
+                        validatorIds = new ArrayList<>();
                     }
                     validatorIds.add(clientValidator.getValidatorId());
                     Map<String, Object> metadata = clientValidator.getMetadata();
@@ -743,11 +737,11 @@ public abstract class CoreRenderer extends Renderer {
         renderValidatorIds(context, validatorIds);
 
         if (highlighter != null) {
-            writer.writeAttribute(HTML.VALIDATION_METADATA.HIGHLIGHTER, highlighter, null);
+            writer.writeAttribute(HTML.ValidationMetadata.HIGHLIGHTER, highlighter, null);
         }
 
         if (isGrouped()) {
-            writer.writeAttribute(HTML.VALIDATION_METADATA.GROUPED, "true", null);
+            writer.writeAttribute(HTML.ValidationMetadata.GROUPED, "true", null);
         }
     }
 
@@ -785,7 +779,7 @@ public abstract class CoreRenderer extends Renderer {
             builder.append(validatorId);
         }
 
-        writer.writeAttribute(HTML.VALIDATION_METADATA.VALIDATOR_IDS, builder.toString(), null);
+        writer.writeAttribute(HTML.ValidationMetadata.VALIDATOR_IDS, builder.toString(), null);
     }
 
     protected String getHighlighter() {
@@ -795,4 +789,25 @@ public abstract class CoreRenderer extends Renderer {
     protected boolean isGrouped() {
         return false;
     }
+
+    /**
+     * Used by script-only widget to fix #3265 and allow updating of the component.
+     *
+     * @param context the {@link FacesContext}.
+     * @param component the widget without actual HTML markup.
+     * @param clientId the component clientId.
+     * @throws IOException
+     */
+    protected void renderDummyMarkup(FacesContext context, UIComponent component, String clientId) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("div", null);
+        writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("style", "display: none;", null);
+
+        renderPassThruAttributes(context, component);
+
+        writer.endElement("div");
+    }
+
 }

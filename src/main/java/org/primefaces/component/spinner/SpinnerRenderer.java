@@ -1,29 +1,38 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2020 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.spinner;
 
 import java.io.IOException;
+import java.math.BigInteger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class SpinnerRenderer extends InputRenderer {
@@ -32,30 +41,31 @@ public class SpinnerRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         Spinner spinner = (Spinner) component;
 
-        if (spinner.isDisabled() || spinner.isReadonly()) {
+        if (!shouldDecode(spinner)) {
             return;
         }
 
         decodeBehaviors(context, spinner);
 
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(spinner.getClientId(context) + "_input");
-        String prefix = spinner.getPrefix();
-        String suffix = spinner.getSuffix();
 
-        try {
+        if (submittedValue != null) {
+            String prefix = spinner.getPrefix();
+            String suffix = spinner.getSuffix();
+
             if (prefix != null && submittedValue.startsWith(prefix)) {
                 submittedValue = submittedValue.substring(prefix.length());
             }
             if (suffix != null && submittedValue.endsWith(suffix)) {
                 submittedValue = submittedValue.substring(0, (submittedValue.length() - suffix.length()));
             }
+            if (!LangUtils.isValueEmpty(spinner.getThousandSeparator())) {
+                submittedValue = submittedValue.replace(spinner.getThousandSeparator(), "");
+            }
+            submittedValue = submittedValue.replace(spinner.getDecimalSeparator(), ".");
         }
-        catch (Exception e) {
 
-        }
-        finally {
-            spinner.setSubmittedValue(submittedValue);
-        }
+        spinner.setSubmittedValue(submittedValue);
     }
 
     @Override
@@ -69,13 +79,27 @@ public class SpinnerRenderer extends InputRenderer {
     protected void encodeScript(FacesContext context, Spinner spinner) throws IOException {
         String clientId = spinner.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Spinner", spinner.resolveWidgetVar(), clientId)
+
+        Object value = spinner.getValue();
+        String defaultDecimalPlaces = null;
+        if (value instanceof Long || value instanceof Integer || value instanceof Short || value instanceof BigInteger) {
+            defaultDecimalPlaces = "0";
+        }
+        String decimalPlaces = isValueBlank(spinner.getDecimalPlaces())
+                ? defaultDecimalPlaces
+                : spinner.getDecimalPlaces();
+
+        wb.init("Spinner", spinner.resolveWidgetVar(context), clientId)
                 .attr("step", spinner.getStepFactor(), 1.0)
                 .attr("min", spinner.getMin(), Double.MIN_VALUE)
                 .attr("max", spinner.getMax(), Double.MAX_VALUE)
                 .attr("prefix", spinner.getPrefix(), null)
                 .attr("suffix", spinner.getSuffix(), null)
-                .attr("decimalPlaces", spinner.getDecimalPlaces(), null);
+                .attr("required", spinner.isRequired(), false)
+                .attr("rotate", spinner.isRotate(), false)
+                .attr("decimalPlaces", decimalPlaces, null)
+                .attr(SpinnerBase.PropertyKeys.thousandSeparator.name(), spinner.getThousandSeparator())
+                .attr(SpinnerBase.PropertyKeys.decimalSeparator.name(), spinner.getDecimalSeparator());
 
         wb.finish();
     }
@@ -83,11 +107,8 @@ public class SpinnerRenderer extends InputRenderer {
     protected void encodeMarkup(FacesContext context, Spinner spinner) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = spinner.getClientId(context);
-        String styleClass = spinner.getStyleClass();
+        String styleClass = createStyleClass(spinner, Spinner.CONTAINER_CLASS);
         boolean valid = spinner.isValid();
-        styleClass = styleClass == null ? Spinner.CONTAINER_CLASS : Spinner.CONTAINER_CLASS + " " + styleClass;
-        styleClass = spinner.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
-        styleClass = !spinner.isValid() ? styleClass + " ui-state-error" : styleClass;
         String upButtonClass = (valid) ? Spinner.UP_BUTTON_CLASS : Spinner.UP_BUTTON_CLASS + " ui-state-error";
         String downButtonClass = (valid) ? Spinner.DOWN_BUTTON_CLASS : Spinner.DOWN_BUTTON_CLASS + " ui-state-error";
 
@@ -109,8 +130,7 @@ public class SpinnerRenderer extends InputRenderer {
     protected void encodeInput(FacesContext context, Spinner spinner) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = spinner.getClientId(context) + "_input";
-        String inputClass = spinner.isValid() ? Spinner.INPUT_CLASS : Spinner.INPUT_CLASS + " ui-state-error";
-        String labelledBy = spinner.getLabelledBy();
+        String inputClass = createStyleClass(spinner, null, Spinner.INPUT_CLASS);
 
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);
@@ -126,17 +146,10 @@ public class SpinnerRenderer extends InputRenderer {
             writer.writeAttribute("value", valueToRender, null);
         }
 
+        renderAccessibilityAttributes(context, spinner);
         renderPassThruAttributes(context, spinner, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, spinner, HTML.INPUT_TEXT_EVENTS);
-
-        if (spinner.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
-        if (spinner.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
-        if (spinner.isRequired()) writer.writeAttribute("aria-required", "true", null);
-        if (labelledBy != null) writer.writeAttribute("aria-labelledby", labelledBy, null);
-
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, spinner);
-        }
+        renderValidationMetadata(context, spinner);
 
         writer.endElement("input");
     }

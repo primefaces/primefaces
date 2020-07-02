@@ -1,66 +1,60 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * The MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2009-2020 PrimeTek
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.primefaces.component.inputnumber;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
+import java.math.BigInteger;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
 import org.primefaces.component.inputtext.InputText;
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public class InputNumberRenderer extends InputRenderer {
+
+    // Default values for "minValue"/"maxValue" properties of the AutoNumeric Plugin
+    private static final BigDecimal DEFAULT_MIN_VALUE = new BigDecimal("-10000000000000");
+    private static final BigDecimal DEFAULT_MAX_VALUE = new BigDecimal("10000000000000");
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue)
             throws ConverterException {
-
-        String submittedValueString = (String) submittedValue;
-
-        if (ComponentUtils.isValueBlank(submittedValueString)) {
-            return null;
-        }
-
-        Converter converter = ComponentUtils.getConverter(context, component);
-        if (converter != null) {
-            return converter.getAsObject(context, component, submittedValueString);
-        }
-
-        return submittedValue;
+        return ComponentUtils.getConvertedValue(context, component, submittedValue);
     }
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
         InputNumber inputNumber = (InputNumber) component;
 
-        if (inputNumber.isDisabled() || inputNumber.isReadonly()) {
+        if (!shouldDecode(inputNumber)) {
             return;
         }
 
@@ -69,38 +63,29 @@ public class InputNumberRenderer extends InputRenderer {
         String inputId = inputNumber.getClientId(context) + "_hinput";
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(inputId);
 
+        if (submittedValue == null) {
+            return;
+        }
+
         try {
-            if (ComponentUtils.isValueBlank(submittedValue)) {
+            if (LangUtils.isValueBlank(submittedValue)) {
                 ValueExpression valueExpression = inputNumber.getValueExpression("value");
                 if (valueExpression != null) {
                     Class<?> type = valueExpression.getType(context.getELContext());
-                    if (type != null && type.isPrimitive() && !ComponentUtils.isValueBlank(inputNumber.getMinValue())) {
+                    if (type != null && type.isPrimitive() && !LangUtils.isValueBlank(inputNumber.getMinValue())) {
                         // avoid coercion of null or empty string to 0 which may be out of [minValue, maxValue] range
                         submittedValue = String.valueOf(new BigDecimal(inputNumber.getMinValue()).doubleValue());
                     }
-                    else if (type != null && type.isPrimitive() && !ComponentUtils.isValueBlank(inputNumber.getMaxValue())) {
+                    else if (type != null && type.isPrimitive() && !LangUtils.isValueBlank(inputNumber.getMaxValue())) {
                         // avoid coercion of null or empty string to 0 which may be out of [minValue, maxValue] range
                         submittedValue = String.valueOf(new BigDecimal(inputNumber.getMaxValue()).doubleValue());
-                    }
-                    else {
-                        submittedValue = "";
                     }
                 }
             }
             else {
+                // Coerce submittedValue to (effective) range of [minValue, maxValue]
                 BigDecimal value = new BigDecimal(submittedValue);
-                if (!ComponentUtils.isValueBlank(inputNumber.getMinValue())) {
-                    BigDecimal min = new BigDecimal(inputNumber.getMinValue());
-                    if (value.compareTo(min) < 0) {
-                        submittedValue = String.valueOf(min.doubleValue());
-                    }
-                }
-                if (!ComponentUtils.isValueBlank(inputNumber.getMaxValue())) {
-                    BigDecimal max = new BigDecimal(inputNumber.getMaxValue());
-                    if (value.compareTo(max) > 0) {
-                        submittedValue = String.valueOf(max.doubleValue());
-                    }
-                }
+                submittedValue = coerceValueInRange(value, inputNumber).toString();
             }
         }
         catch (NumberFormatException ex) {
@@ -116,8 +101,20 @@ public class InputNumberRenderer extends InputRenderer {
 
         Object value = inputNumber.getValue();
         String valueToRender = ComponentUtils.getValueToRender(context, inputNumber, value);
-        if (valueToRender == null) {
+        if (isValueBlank(valueToRender)) {
             valueToRender = "";
+        }
+        else {
+            // Rendered value must always be inside the effective interval [minValue, maxValue],
+            // or else AutoNumeric will throw an error and the component will be broken
+            BigDecimal decimalToRender;
+            try {
+                decimalToRender = new BigDecimal(valueToRender);
+            }
+            catch (Exception e) {
+                throw new IllegalArgumentException("Error converting  [" + valueToRender + "] to a decimal value;", e);
+            }
+            valueToRender = formatForPlugin(coerceValueInRange(decimalToRender, inputNumber));
         }
 
         encodeMarkup(context, inputNumber, value, valueToRender);
@@ -129,8 +126,7 @@ public class InputNumberRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = inputNumber.getClientId(context);
 
-        String styleClass = inputNumber.getStyleClass();
-        styleClass = styleClass == null ? InputNumber.STYLE_CLASS : InputNumber.STYLE_CLASS + " " + styleClass;
+        String styleClass = createStyleClass(inputNumber, InputNumber.STYLE_CLASS);
 
         writer.startElement("span", inputNumber);
         writer.writeAttribute("id", clientId, null);
@@ -141,12 +137,12 @@ public class InputNumberRenderer extends InputRenderer {
         }
 
         encodeInput(context, inputNumber, clientId, valueToRender);
-        encodeHiddenInput(context, inputNumber, clientId);
+        encodeHiddenInput(context, inputNumber, clientId, valueToRender);
 
         writer.endElement("span");
     }
 
-    protected void encodeHiddenInput(FacesContext context, InputNumber inputNumber, String clientId) throws IOException {
+    protected void encodeHiddenInput(FacesContext context, InputNumber inputNumber, String clientId, String valueToRender) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_hinput";
 
@@ -155,6 +151,7 @@ public class InputNumberRenderer extends InputRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "hidden", null);
         writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute("value", valueToRender, null);
 
         if (inputNumber.getOnchange() != null) {
             writer.writeAttribute("onchange", inputNumber.getOnchange(), null);
@@ -168,9 +165,7 @@ public class InputNumberRenderer extends InputRenderer {
             writer.writeAttribute("onkeyup", inputNumber.getOnkeyup(), null);
         }
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, inputNumber);
-        }
+        renderValidationMetadata(context, inputNumber);
 
         writer.endElement("input");
 
@@ -183,16 +178,8 @@ public class InputNumberRenderer extends InputRenderer {
         String inputId = clientId + "_input";
 
         String inputStyle = inputNumber.getInputStyle();
-        String inputStyleClass = inputNumber.getInputStyleClass();
-
         String style = inputStyle;
-
-        String styleClass = InputText.STYLE_CLASS;
-        styleClass = inputNumber.isValid() ? styleClass : styleClass + " ui-state-error";
-        styleClass = !inputNumber.isDisabled() ? styleClass : styleClass + " ui-state-disabled";
-        if (!isValueBlank(inputStyleClass)) {
-            styleClass += " " + inputStyleClass;
-        }
+        String styleClass = createStyleClass(inputNumber, InputNumber.PropertyKeys.inputStyleClass.name(), InputText.STYLE_CLASS) ;
 
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);
@@ -200,130 +187,152 @@ public class InputNumberRenderer extends InputRenderer {
         writer.writeAttribute("type", inputNumber.getType(), null);
         writer.writeAttribute("value", valueToRender, null);
 
-        renderPassThruAttributes(context, inputNumber, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
-        renderDomEvents(context, inputNumber, HTML.INPUT_TEXT_EVENTS);
-
-        if (inputNumber.isReadonly()) {
-            writer.writeAttribute("readonly", "readonly", "readonly");
-        }
-        if (inputNumber.isDisabled()) {
-            writer.writeAttribute("disabled", "disabled", "disabled");
-        }
-
         if (!isValueBlank(style)) {
             writer.writeAttribute("style", style, null);
         }
 
         writer.writeAttribute("class", styleClass, null);
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, inputNumber);
-        }
+        renderAccessibilityAttributes(context, inputNumber);
+        renderPassThruAttributes(context, inputNumber, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
+        renderDomEvents(context, inputNumber, HTML.INPUT_TEXT_EVENTS);
+        renderValidationMetadata(context, inputNumber);
 
         writer.endElement("input");
     }
 
     protected void encodeScript(FacesContext context, InputNumber inputNumber, Object value, String valueToRender)
             throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init(InputNumber.class.getSimpleName(), inputNumber.resolveWidgetVar(), inputNumber.getClientId());
-        wb.attr("disabled", inputNumber.isDisabled())
-                .attr("valueToRender", formatForPlugin(valueToRender, inputNumber, value));
+        String emptyValue = isValueBlank(inputNumber.getEmptyValue()) || "empty".equalsIgnoreCase(inputNumber.getEmptyValue())
+                ? "null"
+                : inputNumber.getEmptyValue();
+        String digitGroupSeparator = isValueBlank(inputNumber.getThousandSeparator())
+                ? Constants.EMPTY_STRING
+                : inputNumber.getThousandSeparator();
 
-        String metaOptions = getOptions(inputNumber);
-        if (!metaOptions.isEmpty()) {
-            wb.nativeAttr("pluginOptions", metaOptions);
+        String defaultDecimalPlaces = "2";
+        if (value instanceof Long || value instanceof Integer || value instanceof Short || value instanceof BigInteger) {
+            defaultDecimalPlaces = "0";
         }
+        String decimalPlaces = isValueBlank(inputNumber.getDecimalPlaces())
+                ? defaultDecimalPlaces
+                : inputNumber.getDecimalPlaces();
+
+        String decimalSeparator = isValueBlank(inputNumber.getDecimalSeparator())
+                    ? "."
+                    : inputNumber.getDecimalSeparator();
+
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.init(InputNumber.class.getSimpleName(), inputNumber.resolveWidgetVar(context), inputNumber.getClientId());
+        wb.attr("disabled", inputNumber.isDisabled())
+            .attr("valueToRender", valueToRender)
+            .attr("decimalCharacter", decimalSeparator, ".")
+            .attr("decimalCharacterAlternative", inputNumber.getDecimalSeparatorAlternative(), null)
+            .attr("digitGroupSeparator", digitGroupSeparator, ",")
+            .attr("currencySymbol", inputNumber.getSymbol())
+            .attr("currencySymbolPlacement", inputNumber.getSymbolPosition(), "p")
+            .attr("minimumValue", formatForPlugin(inputNumber.getMinValue()))
+            .attr("maximumValue", formatForPlugin(inputNumber.getMaxValue()))
+            .attr("decimalPlaces", decimalPlaces)
+            .attr("emptyInputBehavior", emptyValue, "focus")
+            .attr("leadingZero", inputNumber.getLeadingZero(), "deny")
+            .attr("allowDecimalPadding", inputNumber.isPadControl(), true)
+            .attr("modifyValueOnWheel", inputNumber.isModifyValueOnWheel(), true)
+            .attr("roundingMethod", inputNumber.getRoundMethod(), "S")
+            .attr("selectOnFocus", false, true)
+            .attr("showWarnings", false, true);
 
         wb.finish();
     }
 
-    protected String getOptions(InputNumber inputNumber) {
-
-        String decimalSeparator = inputNumber.getDecimalSeparator();
-        String thousandSeparator = inputNumber.getThousandSeparator();
-        String symbol = inputNumber.getSymbol();
-        String symbolPosition = inputNumber.getSymbolPosition();
-        String minValue = inputNumber.getMinValue();
-        String maxValue = inputNumber.getMaxValue();
-        String roundMethod = inputNumber.getRoundMethod();
-        String decimalPlaces = inputNumber.getDecimalPlaces();
-        String emptyValue = inputNumber.getEmptyValue();
-        String lZero = inputNumber.getLeadingZero();
-        boolean padControl = inputNumber.isPadControl();
-
-        String options = "";
-        options += isValueBlank(decimalSeparator) ? "" : "aDec:\"" + escapeText(decimalSeparator) + "\",";
-        //empty thousandSeparator must be explicity defined.
-        options += isValueBlank(thousandSeparator) ? "aSep:''," : "aSep:\"" + escapeText(thousandSeparator) + "\",";
-        options += isValueBlank(symbol) ? "" : "aSign:\"" + escapeText(symbol) + "\",";
-        options += isValueBlank(symbolPosition) ? "" : "pSign:\"" + escapeText(symbolPosition) + "\",";
-        options += isValueBlank(minValue) ? "" : "vMin:\"" + escapeText(minValue) + "\",";
-        options += isValueBlank(maxValue) ? "" : "vMax:\"" + escapeText(maxValue) + "\",";
-        options += isValueBlank(roundMethod) ? "" : "mRound:\"" + escapeText(roundMethod) + "\",";
-        options += isValueBlank(decimalPlaces) ? "" : "mDec:\"" + escapeText(decimalPlaces) + "\",";
-        options += "wEmpty:\"" + escapeText(emptyValue) + "\",";
-        options += "lZero:\"" + escapeText(lZero) + "\",";
-        options += "aPad:" + padControl + ",";
-
-        //if all options are empty return empty
-        if (options.isEmpty()) {
-            return "";
+    /**
+     * Get the effective minimum Value (as interpreted in the AutoNumeric plugin)
+     * @param inputNumber the InputNumber component
+     * @return the minimumValue property as BigDecimal, or the AutoNumeric default value if empty
+     */
+    private BigDecimal getEffectiveMinValue(InputNumber inputNumber) {
+        String minimumValue = inputNumber.getMinValue();
+        if (minimumValue == null) {
+            return DEFAULT_MIN_VALUE;
         }
-
-        //delete the last comma
-        int lastInd = options.length() - 1;
-        if (options.charAt(lastInd) == ',') {
-            options = options.substring(0, lastInd);
+        try {
+            return new BigDecimal(minimumValue);
         }
-        return "{" + options + "}";
-
+        catch (Exception e) {
+            throw new IllegalArgumentException("Error converting  [" + minimumValue + "] to a decimal value for minValue", e);
+        }
     }
 
-    private String formatForPlugin(String valueToRender, InputNumber inputNumber, Object value) {
+    /**
+     * Get the effective maximum Value (as interpreted in the AutoNumeric plugin)
+     * @param inputNumber the InputNumber component
+     * @return the maximumValue property as BigDecimal, or the AutoNumeric default value if empty
+     */
+    private BigDecimal getEffectiveMaxValue(InputNumber inputNumber) {
+        String maximumValue = inputNumber.getMaxValue();
+        if (maximumValue == null) {
+            return DEFAULT_MAX_VALUE;
+        }
+        try {
+            return new BigDecimal(maximumValue);
+        }
+        catch (Exception e) {
+            throw new IllegalArgumentException("Error converting  [" + maximumValue + "] to a decimal value for maxValue", e);
+        }
+    }
 
+    /**
+     * Coerce the provided value to the range defined by the effective minimum and maximum numbers.
+     * @param value the value to render
+     * @param inputNumber the component for which the minValue and maxValue properties define the range
+     * @return the value if inside the range, or else the nearest boundary that is still inside the range
+     */
+    private BigDecimal coerceValueInRange(BigDecimal value, InputNumber inputNumber) {
+        return coerceValueInRange(value, getEffectiveMinValue(inputNumber), getEffectiveMaxValue(inputNumber));
+    }
+
+    /**
+     * Coerce the provided value to the range defined by the effective minimum and maximum numbers.
+     * @param value the value to render
+     * @param effectiveMinValue the effective minimum value
+     * @param effectiveMaxValue the effective maximum number
+     * @return the value if inside the range, or else the nearest boundary that is still inside the range
+     */
+    private BigDecimal coerceValueInRange(BigDecimal value, BigDecimal effectiveMinValue, BigDecimal effectiveMaxValue) {
+        if (value.compareTo(effectiveMinValue) < 0) {
+            return effectiveMinValue;
+        }
+        if (value.compareTo(effectiveMaxValue) > 0) {
+            return effectiveMaxValue;
+        }
+        return value;
+    }
+
+    private String formatForPlugin(String valueToRender) {
+        if (valueToRender == null) {
+            return null;
+        }
         if (isValueBlank(valueToRender)) {
             return "";
         }
         else {
             try {
-                Object objectToRender;
-                if (value instanceof BigDecimal || doubleValueCheck(valueToRender)) {
-                    objectToRender = new BigDecimal(valueToRender);
-                }
-                else {
-                    objectToRender = new Double(valueToRender);
-                }
-
-                NumberFormat formatter = new DecimalFormat("#0.0#");
-                formatter.setRoundingMode(RoundingMode.FLOOR);
-                //autoNumeric jquery plugin max and min limits
-                formatter.setMinimumFractionDigits(15);
-                formatter.setMaximumFractionDigits(15);
-                formatter.setMaximumIntegerDigits(20);
-                String f = formatter.format(objectToRender);
-
-                //force to english decimal separator
-                f = f.replace(',', '.');
-                return f;
+                BigDecimal objectToRender = new BigDecimal(valueToRender);
+                return formatForPlugin(objectToRender);
             }
             catch (Exception e) {
-                throw new IllegalArgumentException("Error converting  [" + valueToRender + "] to a double value;", e);
+                throw new IllegalArgumentException("Error converting  [" + valueToRender + "] to a decimal value;", e);
             }
         }
     }
 
-    protected boolean doubleValueCheck(String valueToRender) {
-        int counter = 0;
-        int length = valueToRender.length();
-
-        for (int i = 0; i < length; i++) {
-            if (valueToRender.charAt(i) == '9') {
-                counter++;
-            }
-        }
-
-        return (counter > 15 || length > 15);
+    /**
+     * Format a BigDecimal value as value/minValue/maxValue for the AutoNumeric plugin.
+     * @param valueToRender the value to render
+     * @return BigDecimal value as plain decimal String, without any exponential notation
+     */
+    private String formatForPlugin(BigDecimal valueToRender) {
+        return valueToRender.toPlainString();
     }
 
     @Override
