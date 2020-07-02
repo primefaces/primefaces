@@ -33,7 +33,7 @@
     <function>
         <function-name>resolveFirstComponentWithId</function-name>
         <function-class>org.primefaces.util.ComponentTraversalUtils</function-class>
-        <function-signature>java.lang.String firstWithId(java.lang.String, javax.faces.component.UIComponent)</function-signature>
+        <function-signature>javax.faces.component.UIComponent firstWithId(java.lang.String,javax.faces.component.UIComponent)</function-signature>
     </function>
 
     <function>
