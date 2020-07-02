@@ -4221,6 +4221,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Custom clock time in 'server' mode must be either Date or LocalDateTime. Null means use server clock time.]]>
+            </description>
+            <name>value</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+        </attribute>
     </tag>
     <tag>
         <description>
