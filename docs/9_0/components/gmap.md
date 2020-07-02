@@ -199,8 +199,10 @@ GMap provides many custom ajax behavior events for you to hook-in to various fea
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
 | overlaySelect | org.primefaces.event.map.OverlaySelectEvent | When an overlay is selected.
+| overlayDblSelect | org.primefaces.event.map.OverlaySelectEvent | When an overlay is double clicked.
 | stateChange | org.primefaces.event.map.StateChangeEvent | When map state changes.
 | pointSelect | org.primefaces.event.map.PointSelectEvent | When an empty point is selected.
+| pointDblSelect | org.primefaces.event.map.PointSelectEvent | When an empty point is double clicked.
 | markerDrag | org.primefaces.event.map.MarkerDragEvent | When a marker is dragged.
 | geocode | org.primefaces.event.map.GeocodeEvent | When the map is geocoded
 | reverseGeocode | org.primefaces.event.map.ReverseGeocodeEvent | When a geocode is reversed.
