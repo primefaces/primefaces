@@ -45,25 +45,25 @@
     <function>
         <function-name>ifGranted</function-name>
         <function-class>org.primefaces.util.SecurityUtils</function-class>
-        <function-signature>java.lang.Boolean ifGranted(java.lang.String)</function-signature>
+        <function-signature>boolean ifGranted(java.lang.String)</function-signature>
     </function>
 
     <function>
         <function-name>ifAllGranted</function-name>
         <function-class>org.primefaces.util.SecurityUtils</function-class>
-        <function-signature>java.lang.Boolean ifAllGranted(java.lang.Object)</function-signature>
+        <function-signature>boolean ifAllGranted(java.lang.Object)</function-signature>
     </function>
 
     <function>
         <function-name>ifAnyGranted</function-name>
         <function-class>org.primefaces.util.SecurityUtils</function-class>
-        <function-signature>java.lang.Boolean ifAnyGranted(java.lang.Object)</function-signature>
+        <function-signature>boolean ifAnyGranted(java.lang.Object)</function-signature>
     </function>
 
     <function>
         <function-name>ifNoneGranted</function-name>
         <function-class>org.primefaces.util.SecurityUtils</function-class>
-        <function-signature>java.lang.Boolean ifNoneGranted(java.lang.Object)</function-signature>
+        <function-signature>boolean ifNoneGranted(java.lang.Object)</function-signature>
     </function>
 
     <function>
