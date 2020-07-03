@@ -47,7 +47,7 @@
 }
 
 .ui-grid-col-0 {
-    width: 0;
+    display: none;
 }
 
 .ui-grid-col-1 {
@@ -208,7 +208,7 @@
 }
 
 .ui-g-0 {
-    width: 0;
+    display: none;
 }
 
 .ui-g-1 {
@@ -328,7 +328,7 @@
     }
 
     .ui-sm-0 {
-        width: 0;
+        display: none;
     }
     
     .ui-sm-1 {
@@ -449,7 +449,7 @@
     }
 
     .ui-md-0 {
-        width: 0;
+        display: none;
     }
     
     .ui-md-1 {
@@ -570,7 +570,7 @@
     }
 
     .ui-lg-0 {
-        width: 0;
+        display: none;
     }
     
     .ui-lg-1 {
@@ -691,7 +691,7 @@
     }
 
     .ui-xl-0 {
-        width: 0;
+        display: none;
     }
     
     .ui-xl-1 {
