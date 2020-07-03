@@ -30,6 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.Constants;
 
 public class SpacerRenderer extends CoreRenderer {
 
@@ -42,16 +43,14 @@ public class SpacerRenderer extends CoreRenderer {
         writer.writeAttribute("id", spacer.getClientId(context), "id");
         writer.writeAttribute("width", spacer.getWidth(), "width");
         writer.writeAttribute("height", spacer.getHeight(), "height");
-        writer.writeAttribute("alt", "", null);
-
-        String styleClass = "ui-transparent-pixel ";
-        if (spacer.getStyleClass() != null) {
-            styleClass = styleClass + spacer.getStyleClass();
-        }
-        writer.writeAttribute("class", styleClass, "styleClass");
+        writer.writeAttribute("alt", Constants.EMPTY_STRING, null);
+        writer.writeAttribute("src", "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==", null);
 
         if (spacer.getStyle() != null) {
             writer.writeAttribute("style", spacer.getStyle(), "style");
+        }
+        if (spacer.getStyleClass() != null) {
+            writer.writeAttribute("class", spacer.getStyleClass(), "styleClass");
         }
         if (spacer.getTitle() != null) {
             writer.writeAttribute("title", spacer.getTitle(), "title");
