@@ -200,6 +200,15 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
                 .attr("hideOnDateTimeSelect", datepicker.isHideOnDateTimeSelect(), false);
         }
 
+        String mask = datepicker.getMask();
+        if (mask != null && !mask.equals("false")) {
+            String patternTemplate = datepicker.getPattern() == null ? pattern : datepicker.getPattern();
+            String maskTemplate = (mask.equals("true")) ? datepicker.convertPattern(patternTemplate) : mask;
+            wb.attr("mask", maskTemplate)
+                .attr("maskSlotChar", datepicker.getMaskSlotChar(), "_")
+                .attr("maskAutoClear", datepicker.isMaskAutoClear(), true);
+        }
+
         encodeClientBehaviors(context, datepicker);
 
         wb.finish();
