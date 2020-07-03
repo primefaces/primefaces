@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -78,7 +78,7 @@ public abstract class InputMaskBase extends HtmlInputText implements Widget {
     }
 
     public String getSlotChar() {
-        return (String) getStateHelper().eval(PropertyKeys.slotChar, null);
+        return (String) getStateHelper().eval(PropertyKeys.slotChar, "_");
     }
 
     public void setSlotChar(String slotChar) {

@@ -529,7 +529,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             PrimeFaces.clearSelection();
 
-            let unsorting = $this.cfg.allowUnsorting || $this.cfg.allowUnsorting == undefined;
+            var unsorting = $this.cfg.allowUnsorting || $this.cfg.allowUnsorting == undefined;
 
             var columnHeader = $(this),
             sortOrderData = columnHeader.data('sortorder'),
@@ -784,6 +784,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindSelectionEvents: function() {
         if(this.cfg.selectionMode === 'radio') {
             this.bindRadioEvents();
+            this.bindRowEvents();
         }
         else if(this.cfg.selectionMode === 'checkbox') {
             this.bindCheckboxEvents();
@@ -2373,6 +2374,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 this.selectCheckbox(row.children('td.ui-selection-column').find('> div.ui-chkbox > div.ui-chkbox-box'));
 
             this.updateHeaderCheckbox();
+        }
+        
+        if(this.isRadioSelectionEnabled()) {
+            if(this.cfg.nativeElements)
+                row.children('td.ui-selection-column').find(':radio').prop('checked', true);
+            else
+                this.selectRadio(row.children('td.ui-selection-column').find('> div.ui-radiobutton > div.ui-radiobutton-box'));
         }
 
         this.addSelection(rowMeta.key);

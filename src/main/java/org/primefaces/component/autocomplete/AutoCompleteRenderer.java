@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -271,6 +271,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("name", clientId + "_hinput", null);
         writer.writeAttribute("type", "hidden", null);
         writer.writeAttribute("autocomplete", autocompleteProp, null);
+        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
         if (valueToRender != null) {
             writer.writeAttribute("value", valueToRender, null);
         }
@@ -287,6 +288,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("multiple", "multiple", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
         writer.writeAttribute("tabindex", "-1", null);
+        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
 
         if (ac.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", "disabled");

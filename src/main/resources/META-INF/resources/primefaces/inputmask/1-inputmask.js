@@ -7,7 +7,7 @@
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * @extends {JQueryMaskedInput.MaskSettings} cfg
+ * @extends {Inputmask.Options} cfg
  * 
  * @prop {string} cfg.mask The mask template to use.
  */
@@ -27,8 +27,7 @@ PrimeFaces.widget.InputMask = PrimeFaces.widget.BaseWidget.extend({
                 this.cfg.onChange = originalOnchange;
                 this.jq.prop('onchange', null);
             }
-            
-            this.jq.mask(this.cfg.mask, this.cfg);
+            this.jq.inputmask('remove').inputmask(this.cfg);
         }
 
         //Visuals
@@ -41,16 +40,23 @@ PrimeFaces.widget.InputMask = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} value New value to set on this input field
      */
     setValue: function(value) {
-        this.jq.val(value);
-        this.jq.unmask().mask(this.cfg.mask, this.cfg);
+        this.jq.inputmask("setvalue", value);
     },
 
     /**
-     * Returns the current value of this input field.
-     * @return {string} The current value of this input field.
+     * Returns the current value of this input field including the mask like "12/31/1999".
+     * @return {string} The current value of this input field with mask.
      */
     getValue: function() {
         return this.jq.val();
+    },
+
+    /**
+     * Returns the current value of this input field without the mask like "12311999".
+     * @return {string} The current value of this input field without mask.
+     */
+    getValueUnmasked: function() {
+        return this.jq.inputmask('unmaskedvalue');
     }
 
 });

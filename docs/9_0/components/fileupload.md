@@ -162,7 +162,7 @@ uses a new request for each file.
 However, in simple mode, it is possible to get all updated files at once via the `UploadedFiles` model:
 ```xhtml
 <p:fileUpload value="#{fileUploadView.files}" multiple="true" mode="simple" />
-<p:commandButton value="Submit" action="#{fileUploadView.upload}" />
+<p:commandButton value="Submit" action="#{fileUploadView.upload}" ajax="false"/>
 ```
 
 ```java

@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,7 @@
 package org.primefaces.component.datepicker;
 
 import java.util.List;
+
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.UICalendar;
@@ -440,7 +441,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
     public String calculateTimeOnlyPattern() {
         if (timeOnlyPattern == null) {
             boolean ampm = "12".equals(getHourFormat());
-            timeOnlyPattern = ampm ? "KK" : "HH";
+            timeOnlyPattern = ampm ? "hh" : "HH";
             timeOnlyPattern += ":mm";
             if (isShowSeconds()) {
                 timeOnlyPattern += ":ss";

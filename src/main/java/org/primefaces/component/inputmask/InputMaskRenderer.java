@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -57,7 +57,7 @@ public class InputMaskRenderer extends InputRenderer {
             if (inputMask.isValidateMask() && !submittedValue.isEmpty() && !LangUtils.isValueBlank(mask)) {
                 Pattern pattern = translateMaskIntoRegex(context, mask);
                 if (!pattern.matcher(submittedValue).matches()) {
-                    submittedValue = "";
+                    submittedValue = Constants.EMPTY_STRING;
                 }
             }
 
@@ -83,7 +83,7 @@ public class InputMaskRenderer extends InputRenderer {
         boolean optionalFound = false;
 
         for (char c : mask.toCharArray()) {
-            if (c == '?') {
+            if (c == '[' || c == ']') {
                 optionalFound = true;
             }
             else {
@@ -96,7 +96,7 @@ public class InputMaskRenderer extends InputRenderer {
     protected String translateMaskCharIntoRegex(char c, boolean optional) {
         String translated;
 
-        if (c == '?') {
+        if (c == '[' || c == ']') {
             return ""; //should be ignored
         }
         else if (c == '9') {
@@ -130,12 +130,12 @@ public class InputMaskRenderer extends InputRenderer {
         String mask = inputMask.getMask();
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("InputMask", inputMask.resolveWidgetVar(context), clientId);
-        String slotChar = inputMask.getSlotChar();
 
         if (mask != null) {
             wb.attr("mask", mask)
-                    .attr("placeholder", slotChar, null)
-                    .attr("autoclear", inputMask.isAutoClear(), true);
+                .attr("placeholder", inputMask.getSlotChar(), "_")
+                .attr("clearMaskOnLostFocus", inputMask.isAutoClear(), true)
+                .attr("clearIncomplete", inputMask.isAutoClear(), false);
         }
 
         wb.finish();

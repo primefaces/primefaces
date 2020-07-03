@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -316,7 +316,7 @@ public abstract class CalendarBase extends UICalendar implements Widget, InputHo
     }
 
     public String getMaskSlotChar() {
-        return (String) getStateHelper().eval(PropertyKeys.maskSlotChar, null);
+        return (String) getStateHelper().eval(PropertyKeys.maskSlotChar, "_");
     }
 
     public void setMaskSlotChar(String maskSlotChar) {

@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,6 @@ import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
 
 import javax.faces.FacesException;
@@ -39,7 +38,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.Collections;
 import java.util.List;
 
 public class DataTableXMLExporter extends DataTableExporter {
@@ -47,7 +45,7 @@ public class DataTableXMLExporter extends DataTableExporter {
     @Override
     public void doExport(FacesContext context, DataTable table, ExportConfiguration config, int index) throws IOException {
         ExternalContext externalContext = context.getExternalContext();
-        configureResponse(externalContext, config.getOutputFileName());
+        configureResponse(context, config.getOutputFileName());
         StringBuilder builder = new StringBuilder();
 
         if (config.getPreProcessor() != null) {
@@ -153,13 +151,11 @@ public class DataTableXMLExporter extends DataTableExporter {
         builder.append("</" + tag + ">\n");
     }
 
-    protected void configureResponse(ExternalContext externalContext, String filename) {
+    protected void configureResponse(FacesContext context, String filename) {
+        ExternalContext externalContext = context.getExternalContext();
         externalContext.setResponseContentType("text/xml");
-        externalContext.setResponseHeader("Expires", "0");
-        externalContext.setResponseHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
-        externalContext.setResponseHeader("Pragma", "public");
-        externalContext.setResponseHeader("Content-disposition", ComponentUtils.createContentDisposition("attachment", filename + ".xml"));
-        externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
+        setResponseHeader(externalContext, ComponentUtils.createContentDisposition("attachment", filename + ".xml"));
+        addResponseCookie(context);
     }
 
 }

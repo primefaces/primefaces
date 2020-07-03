@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,13 @@
  */
 package org.primefaces.component.datascroller;
 
+import javax.faces.component.behavior.ClientBehaviorHolder;
+
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.UIData;
 import org.primefaces.component.api.Widget;
 
-public abstract class DataScrollerBase extends UIData implements Widget {
+public abstract class DataScrollerBase extends UIData implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

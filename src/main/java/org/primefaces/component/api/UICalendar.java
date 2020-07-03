@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,7 @@ import java.time.format.ResolverStyle;
 import java.util.Locale;
 
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
@@ -190,21 +191,39 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder, T
 
     public abstract String calculateWidgetPattern();
 
+    /**
+     * @see https://github.com/RobinHerbots/Inputmask/blob/5.x/README_date.md
+     * @param patternTemplate the date pattern
+     * @return the value converted for InputMask plugin
+     */
     public String convertPattern(String patternTemplate) {
-        String pattern = patternTemplate.replace("MMM", "###");
-        int patternLen = pattern.length();
-        int countM = patternLen - pattern.replace("M", "").length();
-        int countD = patternLen - pattern.replace("d", "").length();
-        if (countM == 1) {
-            pattern = pattern.replace("M", "mm");
+        // switch capital and lower M's for InputMask
+        char[] chars = patternTemplate.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            char c = chars[i];
+            if (c == 'm' || c == 'M') {
+                if (Character.isUpperCase(c)) {
+                    chars[i] = Character.toLowerCase(c);
+                }
+                else if (Character.isLowerCase(c)) {
+                    chars[i] = Character.toUpperCase(c);
+                }
+            }
         }
-
+        String pattern = new String(chars);
+        int patternLen = pattern.length();
+        int countY = patternLen - pattern.replace("y", "").length();
+        int countM = patternLen - pattern.replace("m", "").length();
+        int countD = patternLen - pattern.replace("d", "").length();
         if (countD == 1) {
             pattern = pattern.replace("d", "dd");
         }
-
-        pattern = pattern.replaceAll("[a-zA-Z]", "9");
-        pattern = pattern.replace("###", "aaa");
+        if (countM == 1) {
+            pattern = pattern.replace("m", "mm");
+        }
+        if (countY == 1) {
+            pattern = pattern.replace("y", "yy");
+        }
         return pattern;
     }
 
@@ -313,22 +332,14 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder, T
         }
     }
 
-    /*
-    @Override
-    public Converter getConverter() {
-        Converter converter = super.getConverter();
-
-        //TODO: Why does it matter whether Client-Side-Validation is enabled?
-        if (converter == null && PrimeApplicationContext.getCurrentInstance(getFacesContext()).getConfig().isClientSideValidationEnabled()) {
-            DateTimeConverter con = new DateTimeConverter();
-            con.setPattern(calculatePattern());
-            con.setTimeZone(TimeZone.getTimeZone(CalendarUtils.calculateZoneId(this.getTimeZone())));
-            con.setLocale(calculateLocale(getFacesContext()));
-
-            return con;
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public void validateMinMax(FacesContext context) {
+        Comparable minDate = (Comparable) getMindate();
+        Comparable maxDate = (Comparable) getMaxdate();
+        if (minDate != null && maxDate != null && maxDate.compareTo(minDate) < 0) {
+            String id = getClientId(context);
+            String component = this.getClass().getSimpleName();
+            throw new FacesException(component + " : \"" + id + "\" minimum date must be less than maximum date.");
         }
-
-        return converter;
     }
-    */
 }
