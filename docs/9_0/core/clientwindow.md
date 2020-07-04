@@ -2,7 +2,7 @@
 
 Prime Client Window provides a improved version of JSF´s (version 2.2 and up ) CLIENT_WINDOW_MODE.
 This allows for separating state not only per session but also on a per client-window-base.
-(Or call it per-browsesr-tab-base.)
+(Or call it per-browser-tab-base.)
 
 
 Prime Client Window is activated in faces-config.xml
@@ -15,7 +15,7 @@ Prime Client Window is activated in faces-config.xml
 </faces-config>
 ```
 
-It´s a replacement for following JSF-mechanism activated in web.xml. So only add PrimeClientWindowLifecycleFactory
+It´s a replacement for the standard JSF-mechanism activated in web.xml. So only add PrimeClientWindowLifecycleFactory
 but not add javax.faces.CLIENT_WINDOW_MODE!
 ```xml
 <context-param>
