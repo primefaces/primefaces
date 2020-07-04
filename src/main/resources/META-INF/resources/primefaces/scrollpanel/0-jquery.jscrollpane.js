@@ -1,11 +1,95 @@
 /*!
- * jScrollPane - v2.0.19 - 2013-11-16
+ * jScrollPane - v2.2.3 - 2020-06-25
  * http://jscrollpane.kelvinluck.com/
  *
- * Copyright (c) 2013 Kelvin Luck
+ * Copyright (c) 2014 Kelvin Luck
+ * Copyright (c) 2017-2020 Tuukka Pasanen
  * Dual licensed under the MIT or GPL licenses.
  */
-(function($,window,undefined){
+
+// Script: jScrollPane - cross browser customisable scrollbars
+//
+// *Version: 2.2.1, Last updated: 2018-09-27*
+//
+// Project Home - http://jscrollpane.kelvinluck.com/
+// GitHub       - http://github.com/vitch/jScrollPane
+// CND          - https://cdnjs.com/libraries/jScrollPane
+// Source       - https://cdnjs.cloudflare.com/ajax/libs/jScrollPane/2.2.1/script/jquery.jscrollpane.min.js
+// (Minified)   - https://cdnjs.cloudflare.com/ajax/libs/jScrollPane/2.2.1/script/jquery.jscrollpane.js
+// CSS          - https://cdnjs.cloudflare.com/ajax/libs/jScrollPane/2.2.1/style/jquery.jscrollpane.css
+// (Minified)   - https://cdnjs.cloudflare.com/ajax/libs/jScrollPane/2.2.1/style/jquery.jscrollpane.min.css
+//
+// About: License
+//
+// Copyright (c) 2017 Kelvin Luck
+// Copyright (c) 2017-2018 Tuukka Pasanen
+// Dual licensed under the MIT or GPL Version 2 licenses.
+// http://jscrollpane.kelvinluck.com/MIT-LICENSE.txt
+// http://jscrollpane.kelvinluck.com/GPL-LICENSE.txt
+//
+// About: Examples
+//
+// All examples and demos are available through the jScrollPane example site at:
+// http://jscrollpane.kelvinluck.com/
+//
+// About: Support and Testing
+//
+// This plugin is tested on the browsers below and has been found to work reliably on them. If you run
+// into a problem on one of the supported browsers then please visit the support section on the jScrollPane
+// website (http://jscrollpane.kelvinluck.com/) for more information on getting support. You are also
+// welcome to fork the project on GitHub if you can contribute a fix for a given issue.
+//
+// jQuery Versions - jQuery 3.x. Although script should work from jQuery 1.1 and up but no promises are made.
+// Browsers Tested - See jQuery browser support page: https://jquery.com/browser-support/. Only modern
+//                   browsers are supported.
+//
+// About: Release History
+//
+// 2.2.3       - (2020-06-25) Fix Github Issue #376 and #377 with jQuery 3.5 and upcoming jQuery 4.0
+// 2.2.2       - (2020-05-06) Just update NPM dependecies to remove vunerbilities
+// 2.2.1       - (2018-09-27) No changed applied to release so same as RC1/2
+// 2.2.1-rc.2  - (2018-06-14) Sucked NPM release have to make new Release.. this is 2018!
+// 2.2.1-rc.1  - (2018-06-14) Fixed CSSLint warnings which can lead CSS problems in
+//                            production! Please report a issue if this breaks something!
+//                            * Merged:
+//                            - #360 Register to globally available version of jQuery
+// 2.2.0       - (2018-05-16) No changes to RC1
+// 2.2.0-rc.1  - (2018-04-28) Merged resize sensor to find out size changes of screen and
+//                            again little bit tuned this to support more npm goodies.
+//                            * Merged:
+//                            - #361 Event based reinitialising - Resize Sensor
+//                            - #359 Use npm scripts and local dev dependencies to build the project
+// 2.1.3       - (2018-04-04) No changes from Release Candidate 2 so making release
+// 2.1.3-rc.2  - (2018-03-13) Now using 'script/jquery.jscrollpane.min.js' main
+//                            in package.json rather than 'Gruntfile.js'
+// 2.1.3-rc.1  - (2018-03-05) Moving Gruntfile.js to root and example HTML
+//                            to subdirectory examples
+// 2.1.2       - (2018-02-16) Just on console.log remove and Release!
+//                            This version should play nicely with NPM
+// 2.1.2-rc.2  - (2018-02-03) Update package.json main-tag
+// 2.1.2-rc.1  - (2018-01-18) Release on NPM.
+// 2.1.1       - (2018-01-12) As everyone stays silent then we just release! No changes from RC.1
+// 2.1.1-rc.1  - (2017-12-23) Started to slowly merge stuff (HO HO HO Merry Christmas!)
+//             * Merged
+//             - #349 - ScrollPane reinitialization should adapt to changed container size
+//             - #335 Set drag bar width/height with .css instead of .width/.height
+//             - #297 added two settings: always show HScroll and VScroll
+//             * Bugs
+//             - #8 Make it possible to tell a scrollbar to be "always on"
+// 2.1.0  - (2017-12-16) Update jQuery to version 3.x
+
+(function (factory) {
+  if ( typeof define === 'function' && define.amd ) {
+      // AMD. Register as an anonymous module.
+      define(['jquery'], factory);
+  } else if (typeof exports === 'object') {
+      // Node/CommonJS style for Browserify
+      module.exports = factory(jQuery || require('jquery'));
+  } else {
+      // Browser globals
+      factory(jQuery);
+  }
+}(function($){
 
 	$.fn.jScrollPane = function(settings)
 	{
@@ -19,8 +103,20 @@
 				horizontalBar, horizontalTrack, horizontalTrackWidth, horizontalDragWidth, arrowLeft, arrowRight,
 				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, previousContentWidth,
 				wasAtTop = true, wasAtLeft = true, wasAtBottom = false, wasAtRight = false,
-				originalElement = elem.clone(false, false).empty(),
+				originalElement = elem.clone(false, false).empty(), resizeEventsAdded = false,
 				mwEvent = $.fn.mwheelIntent ? 'mwheelIntent.jsp' : 'mousewheel.jsp';
+
+			var reinitialiseFn = function() {
+				// if size has changed then reinitialise
+				if (settings.resizeSensorDelay > 0) {
+					setTimeout(function() {
+						initialise(settings);
+					}, settings.resizeSensorDelay);
+				}
+				else {
+					initialise(settings);
+				}
+			};
 
 			if (elem.css('box-sizing') === 'border-box') {
 				originalPadding = 0;
@@ -29,7 +125,7 @@
 				originalPadding = elem.css('paddingTop') + ' ' +
 									elem.css('paddingRight') + ' ' +
 									elem.css('paddingBottom') + ' ' +
-									elem.css('paddingLeft');	
+									elem.css('paddingLeft');
 				originalPaddingTotalWidth = (parseInt(elem.css('paddingLeft'), 10) || 0) +
 											(parseInt(elem.css('paddingRight'), 10) || 0);
 			}
@@ -39,10 +135,12 @@
 
 				var /*firstChild, lastChild, */isMaintainingPositon, lastContentX, lastContentY,
 						hasContainingSpaceChanged, originalScrollTop, originalScrollLeft,
-						maintainAtBottom = false, maintainAtRight = false;
+						newPaneWidth, newPaneHeight, maintainAtBottom = false, maintainAtRight = false;
 
 				settings = s;
-
+				lastContentX = 0;
+				lastContentY = 0;
+				
 				if (pane === undefined) {
 					originalScrollTop = elem.scrollTop();
 					originalScrollLeft = elem.scrollLeft();
@@ -50,7 +148,7 @@
 					elem.css(
 						{
 							overflow: 'hidden',
-							padding: 0
+							padding: '0px'
 						}
 					);
 					// TODO: Deal with where width/ height is 0 as it probably means the element is hidden and we should
@@ -59,9 +157,9 @@
 					paneHeight = elem.innerHeight();
 
 					elem.width(paneWidth);
-					
-					pane = $('<div class="ui-scrollpanel-content"></div>').css('padding', originalPadding).append(elem.children());
-					container = $('<div class="ui-scrollpanel-container"></div>')
+
+					pane = $('<div class="ui-scrollpanel-content" ></div>').css('padding', originalPadding).append(elem.children());
+					container = $('<div class="ui-scrollpanel-container" ></div>')
 						.css({
 							'width': paneWidth + 'px',
 							'height': paneHeight + 'px'
@@ -70,7 +168,7 @@
 
 					/*
 					// Move any margins from the first and last children up to the container so they can still
-					// collapse with neighbouring elements as they would before jScrollPane 
+					// collapse with neighbouring elements as they would before jScrollPane
 					firstChild = pane.find(':first-child');
 					lastChild = pane.find(':last-child');
 					elem.css(
@@ -85,19 +183,23 @@
 				} else {
 					elem.css('width', '');
 
+					// To measure the required dimensions accurately, temporarily override the CSS positioning
+					// of the container and pane.
+					container.css({width: 'auto', height: 'auto'});
+					pane.css('position', 'static');
+
+					newPaneWidth = elem.innerWidth() + originalPaddingTotalWidth;
+					newPaneHeight = elem.innerHeight();
+					pane.css('position', 'absolute');
+
 					maintainAtBottom = settings.stickToBottom && isCloseToBottom();
 					maintainAtRight  = settings.stickToRight  && isCloseToRight();
 
-					hasContainingSpaceChanged = elem.innerWidth() + originalPaddingTotalWidth != paneWidth || elem.outerHeight() != paneHeight;
+					hasContainingSpaceChanged = newPaneWidth !== paneWidth || newPaneHeight !== paneHeight;
 
-					if (hasContainingSpaceChanged) {
-						paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
-						paneHeight = elem.innerHeight();
-						container.css({
-							width: paneWidth + 'px',
-							height: paneHeight + 'px'
-						});
-					}
+					paneWidth = newPaneWidth;
+					paneHeight = newPaneHeight;
+					container.css({width: paneWidth +'px', height: paneHeight+'px'});
 
 					// If nothing changed since last check...
 					if (!hasContainingSpaceChanged && previousContentWidth == contentWidth && pane.outerHeight() == contentHeight) {
@@ -105,7 +207,7 @@
 						return;
 					}
 					previousContentWidth = contentWidth;
-					
+
 					pane.css('width', '');
 					elem.width(paneWidth);
 
@@ -123,17 +225,14 @@
 
 				percentInViewH = contentWidth / paneWidth;
 				percentInViewV = contentHeight / paneHeight;
-				isScrollableV = percentInViewV > 1;
-
-				isScrollableH = percentInViewH > 1;
-
-				//console.log(paneWidth, paneHeight, contentWidth, contentHeight, percentInViewH, percentInViewV, isScrollableH, isScrollableV);
+				isScrollableV = percentInViewV > 1 || settings.alwaysShowVScroll;
+				isScrollableH = percentInViewH > 1 || settings.alwaysShowHScroll;
 
 				if (!(isScrollableH || isScrollableV)) {
 					elem.removeClass('jspScrollable');
 					pane.css({
-            top: 0,
-            left: 0,
+            top: '0',
+            left: '0',
 						width: container.width() - originalPaddingTotalWidth
 					});
 					removeMousewheel();
@@ -153,7 +252,7 @@
 					initialiseHorizontalScroll();
 					resizeScrollbars();
 
-					if (isMaintainingPositon) {
+					if (settings.stickToBottom || settings.stickToRight) {
 						scrollToX(maintainAtRight  ? (contentWidth  - paneWidth ) : lastContentX, false);
 						scrollToY(maintainAtBottom ? (contentHeight - paneHeight) : lastContentY, false);
 					}
@@ -161,21 +260,21 @@
 					initFocusHandler();
 					initMousewheel();
 					initTouch();
-					
+
 					if (settings.enableKeyboardNavigation) {
 						initKeyboardNav();
 					}
 					if (settings.clickOnTrack) {
 						initClickOnTrack();
 					}
-					
+
 					observeHash();
 					if (settings.hijackInternalLinks) {
 						hijackInternalLinks();
 					}
 				}
 
-				if (settings.autoReinitialise && !reinitialiseInterval) {
+				if (!settings.resizeSensor && settings.autoReinitialise && !reinitialiseInterval) {
 					reinitialiseInterval = setInterval(
 						function()
 						{
@@ -183,14 +282,118 @@
 						},
 						settings.autoReinitialiseDelay
 					);
-				} else if (!settings.autoReinitialise && reinitialiseInterval) {
+				} else if (!settings.resizeSensor && !settings.autoReinitialise && reinitialiseInterval) {
 					clearInterval(reinitialiseInterval);
 				}
 
-				originalScrollTop && elem.scrollTop(0) && scrollToY(originalScrollTop, false);
-				originalScrollLeft && elem.scrollLeft(0) && scrollToX(originalScrollLeft, false);
+				if(settings.resizeSensor && !resizeEventsAdded) {
+		
+					// detect size change in content
+					detectSizeChanges(pane, reinitialiseFn);
+			
+					// detect size changes of scroll element
+					detectSizeChanges(elem, reinitialiseFn);
+			
+					// detect size changes of container
+					detectSizeChanges(elem.parent(), reinitialiseFn);
+
+					// add a reinit on window resize also for safety
+					window.addEventListener('resize', reinitialiseFn);
+			
+					resizeEventsAdded = true;
+				}
+
+        if(originalScrollTop && elem.scrollTop(0)) {
+          scrollToY(originalScrollTop, false);
+        }
+
+				if(originalScrollLeft && elem.scrollLeft(0)) {
+          scrollToX(originalScrollLeft, false);
+        }
 
 				elem.trigger('jsp-initialised', [isScrollableH || isScrollableV]);
+			}
+
+			function detectSizeChanges(element, callback) {
+ 
+				// create resize event elements - based on resize sensor: https://github.com/flowkey/resize-sensor/
+				var resizeWidth, resizeHeight;
+				var resizeElement = document.createElement('div');
+				var resizeGrowElement = document.createElement('div');
+				var resizeGrowChildElement = document.createElement('div');
+				var resizeShrinkElement = document.createElement('div');
+				var resizeShrinkChildElement = document.createElement('div');
+		
+				// add necessary styling
+				resizeElement.style.cssText = 'position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: scroll; z-index: -1; visibility: hidden;';
+				resizeGrowElement.style.cssText = 'position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: scroll; z-index: -1; visibility: hidden;';
+				resizeShrinkElement.style.cssText = 'position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: scroll; z-index: -1; visibility: hidden;';
+		
+				resizeGrowChildElement.style.cssText = 'position: absolute; left: 0; top: 0;';
+				resizeShrinkChildElement.style.cssText = 'position: absolute; left: 0; top: 0; width: 200%; height: 200%;';
+		
+				// Create a function to programmatically update sizes
+				var updateSizes = function() {
+		
+					resizeGrowChildElement.style.width = resizeGrowElement.offsetWidth + 10 + 'px';
+					resizeGrowChildElement.style.height = resizeGrowElement.offsetHeight + 10 + 'px';
+		
+					resizeGrowElement.scrollLeft = resizeGrowElement.scrollWidth;
+					resizeGrowElement.scrollTop = resizeGrowElement.scrollHeight;
+		
+					resizeShrinkElement.scrollLeft = resizeShrinkElement.scrollWidth;
+					resizeShrinkElement.scrollTop = resizeShrinkElement.scrollHeight;
+		
+					resizeWidth = element.width();
+					resizeHeight = element.height();
+				};
+		
+				// create functions to call when content grows
+				var onGrow = function() {
+		
+					// check to see if the content has change size
+					if (element.width() > resizeWidth || element.height() > resizeHeight) {
+			
+						// if size has changed then reinitialise
+						callback.apply(this, []);
+					}
+					// after reinitialising update sizes
+					updateSizes();
+				};
+		
+				// create functions to call when content shrinks
+				var onShrink = function() {
+		
+					// check to see if the content has change size
+					if (element.width() < resizeWidth || element.height() < resizeHeight) {
+			
+						// if size has changed then reinitialise
+						callback.apply(this, []);
+					}
+					// after reinitialising update sizes
+					updateSizes();
+				};
+		
+				// bind to scroll events
+				resizeGrowElement.addEventListener('scroll', onGrow.bind(this));
+				resizeShrinkElement.addEventListener('scroll', onShrink.bind(this));
+		
+				// nest elements before adding to pane
+				resizeGrowElement.appendChild(resizeGrowChildElement);
+				resizeShrinkElement.appendChild(resizeShrinkChildElement);
+		
+				resizeElement.appendChild(resizeGrowElement);
+				resizeElement.appendChild(resizeShrinkElement);
+		
+				element.append(resizeElement);
+
+				// ensure parent element is not statically positioned
+				if(window.getComputedStyle(element[0], null).getPropertyValue('position') === 'static') {
+					element[0].style.position = 'relative';
+				}
+		
+				// update sizes initially
+				updateSizes();
 			}
 
 			function initialiseVerticalScroll()
@@ -215,10 +418,10 @@
 					verticalDrag = verticalTrack.find('>.ui-scrollpanel-drag');
 
 					if (settings.showArrows) {
-						arrowUp = $('<a class="jspArrow jspArrowUp"></a>').on(
+						arrowUp = $('<a class="jspArrow jspArrowUp" ></a>').on(
 							'mousedown.jsp', getArrowScroll(0, -1)
 						).on('click.jsp', nil);
-						arrowDown = $('<a class="jspArrow jspArrowDown"></a>').on(
+						arrowDown = $('<a class="jspArrow jspArrowDown" ></a>').on(
 							'mousedown.jsp', getArrowScroll(0, 1)
 						).on('click.jsp', nil);
 						if (settings.arrowScrollOnHover) {
@@ -238,12 +441,14 @@
 					);
 
 
-					verticalDrag.on('mouseenter.jsp',
+					verticalDrag.on(
+                                                "mouseenter",
 						function()
 						{
 							verticalDrag.addClass('jspHover');
 						}
-					).on('mouseleave.jsp',
+                                        ).on(
+                                                "mouseleave",
 						function()
 						{
 							verticalDrag.removeClass('jspHover');
@@ -314,10 +519,10 @@
 					horizontalDrag = horizontalTrack.find('>.ui-scrollpanel-drag');
 
 					if (settings.showArrows) {
-						arrowLeft = $('<a class="jspArrow jspArrowLeft"></a>').on(
+						arrowLeft = $('<a class="jspArrow jspArrowLeft" ></a>').on(
 							'mousedown.jsp', getArrowScroll(-1, 0)
 						).on('click.jsp', nil);
-						arrowRight = $('<a class="jspArrow jspArrowRight"></a>').on(
+						arrowRight = $('<a class="jspArrow jspArrowRight" ></a>').on(
 							'mousedown.jsp', getArrowScroll(1, 0)
 						).on('click.jsp', nil);
 						if (settings.arrowScrollOnHover) {
@@ -327,12 +532,14 @@
 						appendArrows(horizontalTrack, settings.horizontalArrowPositions, arrowLeft, arrowRight);
 					}
 
-					horizontalDrag.on('mouseenter.jsp',
+					horizontalDrag.on(
+                                                "mouseenter",
 						function()
 						{
 							horizontalDrag.addClass('jspHover');
 						}
-					).on('mouseleave.jsp',
+                                        ).on(
+                                                "mouseleave",
 						function()
 						{
 							horizontalDrag.removeClass('jspHover');
@@ -392,7 +599,7 @@
 					paneHeight -= verticalTrackWidth;
 					paneWidth -= horizontalTrackHeight;
 					horizontalTrack.parent().append(
-						$('<div class="ui-scrollpanel-corner ui-widget-header"></div>').css('width', horizontalTrackHeight + 'px')
+						$('<div class="ui-scrollpanel-corner ui-widget-header" ></div>').css('width', horizontalTrackHeight + 'px')
 					);
 					sizeVerticalScrollbar();
 					sizeHorizontalScrollbar();
@@ -411,7 +618,7 @@
 					} else if (horizontalDragWidth < settings.horizontalDragMinWidth) {
 						horizontalDragWidth = settings.horizontalDragMinWidth;
 					}
-					horizontalDrag.width(horizontalDragWidth + 'px');
+					horizontalDrag.css('width', horizontalDragWidth + 'px');
 					dragMaxX = horizontalTrackWidth - horizontalDragWidth;
 					_positionDragX(horizontalDragPosition); // To update the state for the arrow buttons
 				}
@@ -422,7 +629,7 @@
 					} else if (verticalDragHeight < settings.verticalDragMinHeight) {
 						verticalDragHeight = settings.verticalDragMinHeight;
 					}
-					verticalDrag.height(verticalDragHeight + 'px');
+					verticalDrag.css('height', verticalDragHeight + 'px');
 					dragMaxY = verticalTrackHeight - verticalDragHeight;
 					_positionDragY(verticalDragPosition); // To update the state for the arrow buttons
 				}
@@ -431,7 +638,7 @@
 			function appendArrows(ele, p, a1, a2)
 			{
 				var p1 = "before", p2 = "after", aTemp;
-				
+
 				// Sniff for mac... Is there a better way to determine whether the arrows would naturally appear
 				// at the top or the bottom of the bar?
 				if (p == "os") {
@@ -454,7 +661,7 @@
 				return function()
 				{
 					arrowScroll(dirX, dirY, this, ele);
-					this.trigger("blur");
+					this.trigger('blur');
 					return false;
 				};
 			}
@@ -487,7 +694,9 @@
 					function()
 					{
 						arrow.removeClass('jspActive');
-						scrollTimeout && clearTimeout(scrollTimeout);
+						if(scrollTimeout) {
+              clearTimeout(scrollTimeout);
+            }
 						scrollTimeout = null;
 						ele.off(eve);
 					}
@@ -535,7 +744,9 @@
 									},
 									cancelClick = function()
 									{
-										scrollTimeout && clearTimeout(scrollTimeout);
+										if(scrollTimeout) {
+                      clearTimeout(scrollTimeout);
+                    }
 										scrollTimeout = null;
 										$(document).off('mouseup.jsp', cancelClick);
 									};
@@ -546,7 +757,7 @@
 						}
 					);
 				}
-				
+
 				if (isScrollableH) {
 					horizontalTrack.on(
 						'mousedown.jsp',
@@ -585,7 +796,9 @@
 									},
 									cancelClick = function()
 									{
-										scrollTimeout && clearTimeout(scrollTimeout);
+										if(scrollTimeout) {
+                      clearTimeout(scrollTimeout);
+                    }
 										scrollTimeout = null;
 										$(document).off('mouseup.jsp', cancelClick);
 									};
@@ -631,15 +844,33 @@
 					destY = dragMaxY;
 				}
 
+				// allow for devs to prevent the JSP from being scrolled
+				var willScrollYEvent = new $.Event("jsp-will-scroll-y");
+				elem.trigger(willScrollYEvent, [destY]);
+
+				if (willScrollYEvent.isDefaultPrevented()) {
+					return;
+				}
+
+				var tmpVerticalDragPosition = destY || 0;
+
+				var isAtTop = tmpVerticalDragPosition === 0,
+					isAtBottom = tmpVerticalDragPosition == dragMaxY,
+					percentScrolled = destY/ dragMaxY,
+					destTop = -percentScrolled * (contentHeight - paneHeight);
+
 				// can't just check if(animate) because false is a valid value that could be passed in...
 				if (animate === undefined) {
 					animate = settings.animateScroll;
 				}
 				if (animate) {
-					jsp.animate(verticalDrag, 'top', destY,	_positionDragY);
+					jsp.animate(verticalDrag, 'top', destY,	_positionDragY, function() {
+						elem.trigger('jsp-user-scroll-y', [-destTop, isAtTop, isAtBottom]);
+					});
 				} else {
-					verticalDrag.css('top', destY);
+					verticalDrag.css('top', destY + 'px');
 					_positionDragY(destY);
+					elem.trigger('jsp-user-scroll-y', [-destTop, isAtTop, isAtBottom]);
 				}
 
 			}
@@ -651,7 +882,7 @@
 				}
 
 				container.scrollTop(0);
-				verticalDragPosition = destY;
+				verticalDragPosition = destY || 0;
 
 				var isAtTop = verticalDragPosition === 0,
 					isAtBottom = verticalDragPosition == dragMaxY,
@@ -663,9 +894,9 @@
 					wasAtBottom = isAtBottom;
 					elem.trigger('jsp-arrow-change', [wasAtTop, wasAtBottom, wasAtLeft, wasAtRight]);
 				}
-				
+
 				updateVerticalArrows(isAtTop, isAtBottom);
-				pane.css('top', destTop);
+				pane.css('top', destTop + 'px');
 				elem.trigger('jsp-scroll-y', [-destTop, isAtTop, isAtBottom]).trigger('scroll');
 			}
 
@@ -680,14 +911,33 @@
 					destX = dragMaxX;
 				}
 
+
+				// allow for devs to prevent the JSP from being scrolled
+				var willScrollXEvent = new $.Event("jsp-will-scroll-x");
+				elem.trigger(willScrollXEvent, [destX]);
+
+				if (willScrollXEvent.isDefaultPrevented()) {
+					return;
+				}
+
+				var tmpHorizontalDragPosition = destX ||0;
+
+				var isAtLeft = tmpHorizontalDragPosition === 0,
+					isAtRight = tmpHorizontalDragPosition == dragMaxX,
+					percentScrolled = destX / dragMaxX,
+					destLeft = -percentScrolled * (contentWidth - paneWidth);
+
 				if (animate === undefined) {
 					animate = settings.animateScroll;
 				}
 				if (animate) {
-					jsp.animate(horizontalDrag, 'left', destX,	_positionDragX);
+					jsp.animate(horizontalDrag, 'left', destX,	_positionDragX, function() {
+						elem.trigger('jsp-user-scroll-x', [-destLeft, isAtLeft, isAtRight]);
+					});
 				} else {
-					horizontalDrag.css('left', destX);
+					horizontalDrag.css('left', destX + 'px');
 					_positionDragX(destX);
+					elem.trigger('jsp-user-scroll-x', [-destLeft, isAtLeft, isAtRight]);
 				}
 			}
 
@@ -698,7 +948,7 @@
 				}
 
 				container.scrollTop(0);
-				horizontalDragPosition = destX;
+				horizontalDragPosition = destX ||0;
 
 				var isAtLeft = horizontalDragPosition === 0,
 					isAtRight = horizontalDragPosition == dragMaxX,
@@ -710,9 +960,9 @@
 					wasAtRight = isAtRight;
 					elem.trigger('jsp-arrow-change', [wasAtTop, wasAtBottom, wasAtLeft, wasAtRight]);
 				}
-				
+
 				updateHorizontalArrows(isAtLeft, isAtRight);
-				pane.css('left', destLeft);
+				pane.css('left', destLeft + 'px');
 				elem.trigger('jsp-scroll-x', [-destLeft, isAtLeft, isAtRight]).trigger('scroll');
 			}
 
@@ -760,7 +1010,7 @@
 
 				container.scrollTop(0);
 				container.scrollLeft(0);
-				
+
 				// loop through parents adding the offset top of any elements that are relatively positioned between
 				// the focused element and the jspPane so we can get the true distance from the top
 				// of the focused element to the top of the scrollpane...
@@ -784,7 +1034,7 @@
 				if (!isNaN(destY)) {
 					scrollToY(destY, animate);
 				}
-				
+
 				viewportLeft = contentPositionX();
 	            maxVisibleEleLeft = viewportLeft + paneWidth;
 	            if (eleLeft < viewportLeft || stickToTop) { // element is to the left of viewport
@@ -811,13 +1061,23 @@
 			function isCloseToBottom()
 			{
 				var scrollableHeight = contentHeight - paneHeight;
-				return (scrollableHeight > 20) && (scrollableHeight - contentPositionY() < 10);
+				if(settings.maintainPosition == true)
+				{
+					return (scrollableHeight >= 20) && (scrollableHeight - contentPositionY() < 10);
+				}
+
+				return true;
 			}
 
 			function isCloseToRight()
 			{
 				var scrollableWidth = contentWidth - paneWidth;
-				return (scrollableWidth > 20) && (scrollableWidth - contentPositionX() < 10);
+				if(settings.maintainPosition == true)
+				{
+					return (scrollableWidth >= 20) && (scrollableWidth - contentPositionX() < 10);
+				}
+
+				return true;
 			}
 
 			function initMousewheel()
@@ -825,6 +1085,10 @@
 				container.off(mwEvent).on(
 					mwEvent,
 					function (event, delta, deltaX, deltaY) {
+
+                        if (!horizontalDragPosition) horizontalDragPosition = 0;
+                        if (!verticalDragPosition) verticalDragPosition = 0;
+
 						var dX = horizontalDragPosition, dY = verticalDragPosition, factor = event.deltaFactor || settings.mouseWheelSpeed;
 						jsp.scrollBy(deltaX * factor, -deltaY * factor, false);
 						// return true if there was no movement so rest of screen can scroll
@@ -858,21 +1122,27 @@
 			{
 				pane.find(':input,a').off('focus.jsp');
 			}
-			
+
 			function initKeyboardNav()
 			{
 				var keyDown, elementHasScrolled, validParents = [];
-				isScrollableH && validParents.push(horizontalBar[0]);
-				isScrollableV && validParents.push(verticalBar[0]);
-				
+				if(isScrollableH) {
+          validParents.push(horizontalBar[0]);
+        }
+
+				if(isScrollableV) {
+          validParents.push(verticalBar[0]);
+        }
+
 				// IE also focuses elements that don't have tabindex set.
-				pane.on('focus.jsp',
+				pane.on(
+					'focus.jsp',
 					function()
 					{
-						elem.trigger('focus');
+						elem.focus();
 					}
 				);
-				
+
 				elem.attr('tabindex', 0)
 					.off('keydown.jsp keypress.jsp')
 					.on(
@@ -883,7 +1153,7 @@
 								return;
 							}
 							var dX = horizontalDragPosition, dY = verticalDragPosition;
-							switch(e.which) {
+							switch(e.keyCode) {
 								case 40: // down
 								case 38: // up
 								case 34: // page down
@@ -891,7 +1161,7 @@
 								case 33: // page up
 								case 39: // right
 								case 37: // left
-									keyDown = e.which;
+									keyDown = e.keyCode;
 									keyDownHandler();
 									break;
 								case 35: // end
@@ -904,20 +1174,24 @@
 									break;
 							}
 
-							elementHasScrolled = e.which == keyDown && dX != horizontalDragPosition || dY != verticalDragPosition;
+							elementHasScrolled = e.keyCode == keyDown && dX != horizontalDragPosition || dY != verticalDragPosition;
 							return !elementHasScrolled;
 						}
 					).on(
 						'keypress.jsp', // For FF/ OSX so that we can cancel the repeat key presses if the JSP scrolls...
 						function(e)
 						{
-							if (e.which == keyDown) {
+							if (e.keyCode == keyDown) {
 								keyDownHandler();
+							}
+							// If the keypress is not related to the area, ignore it. Fixes problem with inputs inside scrolled area. Copied from line 955.
+							if (e.target !== this && !(validParents.length && $(e.target).closest(validParents).length)){
+								return;
 							}
 							return !elementHasScrolled;
 						}
 					);
-				
+
 				if (settings.hideFocus) {
 					elem.css('outline', 'none');
 					if ('hideFocus' in container[0]){
@@ -929,7 +1203,7 @@
 						elem.attr('hideFocus', false);
 					}
 				}
-				
+
 				function keyDownHandler()
 				{
 					var dX = horizontalDragPosition, dY = verticalDragPosition;
@@ -959,12 +1233,14 @@
 					return elementHasScrolled;
 				}
 			}
-			
+
 			function removeKeyboardNav()
 			{
 				elem.attr('tabindex', '-1')
 					.removeAttr('tabindex')
 					.off('keydown.jsp keypress.jsp');
+
+				pane.off('.jsp');
 			}
 
 			function observeHash()
@@ -1014,7 +1290,7 @@
 				$(document.body).data('jspHijack', true);
 
 				// use live handler to also capture newly created links
-				$(document.body).delegate('a[href*=#]', 'click', function(event) {
+				$(document.body).delegate('a[href*="#"]', 'click', function(event) {
 					// does the link point to the same page?
 					// this also takes care of cases with a <base>-Tag or Links not starting with the hash #
 					// e.g. <a href="index.html#test"> when the current url already is index.html
@@ -1038,7 +1314,6 @@
 					hash = escape(this.href.substr(this.href.indexOf('#') + 1));
 
 					// find the element on the page
-					element;
 					try {
 						element = $('#' + hash + ', a[name="' + hash + '"]');
 					} catch (e) {
@@ -1071,7 +1346,7 @@
 					event.preventDefault();
 				});
 			}
-			
+
 			// Init touch on iPad, iPhone, iPod, Android
 			function initTouch()
 			{
@@ -1081,7 +1356,7 @@
 					touchStartY,
 					moved,
 					moving = false;
-  
+
 				container.off('touchstart.jsp touchmove.jsp touchend.jsp click.jsp-touchclick').on(
 					'touchstart.jsp',
 					function(e)
@@ -1101,14 +1376,14 @@
 						if(!moving) {
 							return;
 						}
-						
+
 						var touchPos = ev.originalEvent.touches[0],
 							dX = horizontalDragPosition, dY = verticalDragPosition;
-						
+
 						jsp.scrollTo(startX + touchStartX - touchPos.pageX, startY + touchStartY - touchPos.pageY);
-						
+
 						moved = moved || Math.abs(touchStartX - touchPos.pageX) > 5 || Math.abs(touchStartY - touchPos.pageY) > 5;
-						
+
 						// return true if there was no movement so rest of screen can scroll
 						return dX == horizontalDragPosition && dY == verticalDragPosition;
 					}
@@ -1132,11 +1407,12 @@
 					}
 				);
 			}
-			
+
 			function destroy(){
 				var currentY = contentPositionY(),
 					currentX = contentPositionX();
 				elem.removeClass('jspScrollable').off('.jsp');
+				pane.off('.jsp');
 				elem.replaceWith(originalElement.append(pane.children()));
 				originalElement.scrollTop(currentY);
 				originalElement.scrollLeft(currentX);
@@ -1248,8 +1524,9 @@
 					//  * prop         - the property that is being animated
 					//  * value        - the value it's being animated to
 					//  * stepCallback - a function that you must execute each time you update the value of the property
+					//  * completeCallback - a function that will be executed after the animation had finished
 					// You can use the default implementation (below) as a starting point for your own implementation.
-					animate: function(ele, prop, value, stepCallback)
+					animate: function(ele, prop, value, stepCallback, completeCallback)
 					{
 						var params = {};
 						params[prop] = value;
@@ -1259,7 +1536,8 @@
 								'duration'	: settings.animateDuration,
 								'easing'	: settings.animateEase,
 								'queue'		: false,
-								'step'		: stepCallback
+								'step'		: stepCallback,
+								'complete'	: completeCallback
 							}
 						);
 					},
@@ -1329,13 +1607,13 @@
 					}
 				}
 			);
-			
+
 			initialise(s);
 		}
 
 		// Pluginifying code...
 		settings = $.extend({}, $.fn.jScrollPane.defaults, settings);
-		
+
 		// Apply default speed
 		$.each(['arrowButtonSpeed', 'trackClickSpeed', 'keyboardSpeed'], function() {
 			settings[this] = settings[this] || settings.speed;
@@ -1388,77 +1666,11 @@
 		keyboardSpeed				: 0,
 		initialDelay                : 300,        // Delay before starting repeating
 		speed						: 30,		// Default speed when others falsey
-		scrollPagePercent			: .8		// Percent of visible area scrolled when pageUp/Down or track area pressed
+		scrollPagePercent			: 0.8,		// Percent of visible area scrolled when pageUp/Down or track area pressed
+		alwaysShowVScroll			: false,
+		alwaysShowHScroll			: false,
+		resizeSensor				: false,
+		resizeSensorDelay			: 0,
 	};
 
-})(jQuery,this);
-
-/** 
- * __PrimeFaces ScrollPanel Widget__
- * 
- * ScrollPanel is used to display scrollable content with theme aware scrollbars instead of native browser scrollbars.
- * 
- * @prop {JQueryJScrollPane.JScrollPaneInstance} jsp The current jQuery Scroll Pane instance.
- * 
- * @interface {PrimeFaces.widget.ScrollPanelCfg} cfg The configuration for the {@link  ScrollPanel| ScrollPanel widget}.
- * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
- * configuration is usually meant to be read-only and should not be modified.
- * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
- * @extends {JQueryJScrollPane.JScrollPaneSettings} cfg
- */
-PrimeFaces.widget.ScrollPanel = PrimeFaces.widget.DeferredWidget.extend({
-
-    /**
-     * @override
-     * @inheritdoc
-     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
-     */
-    init: function(cfg) {
-        this._super(cfg);
-        
-        this.renderDeferred();
-    },
-    
-    /**
-     * @include
-     * @override
-     * @protected
-     * @inheritdoc
-     */
-    _render: function() {
-        this.jsp = this.jq.jScrollPane(this.cfg).data('jsp');
-    },
-		
-		/**
-		 * Scrolls to the given scroll position.
-		 * @param {number} x Horizontal coordinate of the new scroll position.
-		 * @param {number} y Vertical coordinate of the new scroll position.
-		 */
-    scrollTo: function(x, y) {
-        this.jsp.scrollTo(x, y);
-    },
-
-		/**
-		 * Scroll horizontally to the given scroll position.
-		 * @param {number} x The new horizontal scroll position.
-		 */
-    scrollX: function(x){
-        this.jsp.scrollToX(x);
-    },
-    
-		/**
-		 * Scroll vertically to the given scroll position.
-		 * @param {number} y The new vertical scroll position.
-		 */
-    scrollY: function(y){
-        this.jsp.scrollToY(y);
-    },
-		
-		/**
-		 * Redraws the scrollbars.
-		 */
-    redraw: function() {
-        this.jsp.reinitialise();
-    }
- 
-});
+}));

@@ -61,11 +61,8 @@ public abstract class CalendarBase extends UICalendar implements Widget, InputHo
         maxSecond,
         pagedate,
         beforeShowDay,
-        mask,
         timeControlType,
         beforeShow,
-        maskSlotChar,
-        maskAutoClear,
         timeControlObject,
         timeInput,
         showHour,
@@ -291,14 +288,6 @@ public abstract class CalendarBase extends UICalendar implements Widget, InputHo
         getStateHelper().put(PropertyKeys.beforeShowDay, beforeShowDay);
     }
 
-    public String getMask() {
-        return (String) getStateHelper().eval(PropertyKeys.mask, "false");
-    }
-
-    public void setMask(String mask) {
-        getStateHelper().put(PropertyKeys.mask, mask);
-    }
-
     public String getTimeControlType() {
         return (String) getStateHelper().eval(PropertyKeys.timeControlType, "slider");
     }
@@ -315,21 +304,6 @@ public abstract class CalendarBase extends UICalendar implements Widget, InputHo
         getStateHelper().put(PropertyKeys.beforeShow, beforeShow);
     }
 
-    public String getMaskSlotChar() {
-        return (String) getStateHelper().eval(PropertyKeys.maskSlotChar, "_");
-    }
-
-    public void setMaskSlotChar(String maskSlotChar) {
-        getStateHelper().put(PropertyKeys.maskSlotChar, maskSlotChar);
-    }
-
-    public boolean isMaskAutoClear() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.maskAutoClear, true);
-    }
-
-    public void setMaskAutoClear(boolean maskAutoClear) {
-        getStateHelper().put(PropertyKeys.maskAutoClear, maskAutoClear);
-    }
 
     public String getTimeControlObject() {
         return (String) getStateHelper().eval(PropertyKeys.timeControlObject, null);

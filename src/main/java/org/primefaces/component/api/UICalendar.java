@@ -66,7 +66,10 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder, T
         type,
         rangeSeparator,
         resolverStyle,
-        touchable
+        touchable,
+        mask,
+        maskSlotChar,
+        maskAutoClear
     }
 
     public Object getLocale() {
@@ -279,6 +282,30 @@ public abstract class UICalendar extends HtmlInputText implements InputHolder, T
     @Override
     public void setTouchable(boolean touchable) {
         getStateHelper().put(PropertyKeys.touchable, touchable);
+    }
+
+    public String getMask() {
+        return (String) getStateHelper().eval(PropertyKeys.mask, "false");
+    }
+
+    public void setMask(String mask) {
+        getStateHelper().put(PropertyKeys.mask, mask);
+    }
+
+    public String getMaskSlotChar() {
+        return (String) getStateHelper().eval(PropertyKeys.maskSlotChar, "_");
+    }
+
+    public void setMaskSlotChar(String maskSlotChar) {
+        getStateHelper().put(PropertyKeys.maskSlotChar, maskSlotChar);
+    }
+
+    public boolean isMaskAutoClear() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.maskAutoClear, true);
+    }
+
+    public void setMaskAutoClear(boolean maskAutoClear) {
+        getStateHelper().put(PropertyKeys.maskAutoClear, maskAutoClear);
     }
 
     public enum ValidationResult {
