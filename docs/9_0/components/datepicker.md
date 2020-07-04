@@ -26,71 +26,41 @@ ajax selection and more.
 | rendered | true | Boolean | Boolean value to specify the rendering of the component.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 | value | null | java.time.LocalDate, java.time.LocalDateTime, java.time.LocalTime, java.time.YearMonth, java.util.Date (deprecated) | Value of the component
-| converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
-| immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
-| required | false | Boolean | Marks component as required
-| validator | null | Method Expr | A method expression that refers to a method validationg the input
-| valueChangeListener | null | Method Expr | A method expression that refers to a method for handling a valuchangeevent
-| requiredMessage | null | String | Message to be displayed when required field validation fails.
-| converterMessage | null | String | Message to be displayed when conversion fails.
-| validatorMessage | null | String | Message to be displayed when validation fails.
-| widgetVar | null | String | Name of the client side widget.
-| placeholder | null | String | Specifies a short hint.
-| timeOnly | false * | Boolean | Shows only timepicker without date. (* Defaults to true, when value is bound to java.time.LocalTime)
-| inline |  false | Boolean | Whether to show the datepicker inline or as a popup
-| buttonTabindex | null | String | Tabindex of the datepicker button
-| showIcon | false | String | Whether to show an icon to display the picker in an overlay
-| beforeShow | null | String | Callback to execute before displaying DatePicker, element and DatePicker instance are passed as parameters
-| focusOnSelect | false | Boolean | When enabled, input receives focus after a value is picked.
-| yearRange | null | String | The range of years displayed in the year drop-down in (nnnn:nnnn) format such as (2000:2020). Default value is "displayed_date - 10 : displayed_date + 10".
-| selectionMode | single | String | Defines the selection mode, valid values are "single", "multiple" and "range"
-| showOtherMonths | false | Boolean | Displays days belonging to other months.
-| selectOtherMonths | false | Boolean | Enables selection of days belonging to other months.
-| showOnFocus | true | Boolean | Whether to show the popup when input receives focus.
-| shortYearCutoff | +10 | String | The cutoff year for determining the century for a date. Any dates entered with a year value less than or equal to the cutoff year are considered to be in the current century, while those greater than it are deemed to be in the previous century.
-| monthNavigator | false | Boolean | Whether to show the month navigator
-| yearNavigator | false | Boolean | Whether to show the year navigator
-| showTime | false * | Boolean | Specifies if the timepicker should be displayed.  (* Defaults to true, when value is bound to java.time.LocalDateTime)
-| hourFormat | '24' | String | Defines the hour format, valid values are '12' and '24'
-| showSeconds | false | Boolean | Whether to show the seconds in time picker. Default is false.
-| stepHour | 1 | Integer | Hour steps.
-| stepMinute | 1 | Integer | Minute steps.
-| stepSecond | 1 | Integer | Second steps.
-| showButtonBar | false | Boolean | Whether to display buttons at the footer.
-| showWeek | false | Boolean | Displays the week number next to each week.
-| weekCalculator | false | Boolean | A javascript function that is used to calculate the week number. Uses internal implementation on default when start of week is monday, sunday or saturday.
-| panelStyleClass | null | String | Style class of the container element.
-| panelStyle | null | String | Inline style of the container element.
-| keepInvalid | false | Boolean | Whether to keep the invalid inputs in the field or not.
-| hideOnDateTimeSelect | false | Boolean | Defines if the popup should be hidden when a time is selected.
-| maxDateCount | null | Integer | Defines the maximum number of selectable dates in multiple selection mode.
-| numberOfMonths | 1 | Integer | Number of months to display concurrently.
-| view | date | String | Defines the view mode, valid values are "date" for datepicker and "month" for month picker.
-| touchUI | false | Boolean | Activates touch friendly mode
-| dateTemplate | null | Function | Javascript function that takes a date object and returns the content for the date cell.
-| appendTo | @(body) | String | Appends the dialog to the element defined by the given search expression.
-| triggerButtonIcon | null | String | Icon of the datepicker element that toggles the visibility in popup mode.
-| disabledDates | null | List<java.time.LocalDate>, List<java.util.Date> (deprecated) | List of dates that should be disabled.
-| disabledDays | null | List<Integer> | List of week day indexes that should be disabled.
-| onMonthChange | null | Function | Javascript function to invoke when month changes.
-| onYearChange | null | Function | Javascript function to invoke when year changes.
-| locale | null | Object | Locale to be used for labels and conversion.
-| timeZone | null | Time Zone | String a java.time.ZoneId instance or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to ZoneId.systemDefault().
-| pattern | MM/dd/yy | String | DateFormat pattern for localization (for the date part only)
-| mindate | null | java.time.LocalDate, java.time.LocalDateTime, java.time.LocalTime, java.util.Date (deprecated) or String | Sets DatePicker's minimum selectable value; Also used for validation on the server-side.
-| maxdate | null | java.time.LocalDate, java.time.LocalDateTime, java.time.LocalTime, java.util.Date (deprecated) or String | Sets DatePicker's maximum selectable value; Also used for validation on the server-side.
-| readonlyInput | false | Boolean | Makes input text of a popup DatePicker readonly.
-| inputStyle | null | String | Inline style of the input element. Used when mode is popup.
-| inputStyleClass | null | String | Style class of the input element. Used when mode is popup.
-| type | text | String | Type of the input field
 | accesskey | null | String | Access key that when pressed transfers focus to the input element.
 | alt | null | String | Alternate textual description of the input field.
+| appendTo | @(body) | String | Appends the dialog to the element defined by the given search expression.
 | autocomplete | null | String | Controls browser autocomplete behavior.
+| beforeShow | null | String | Callback to execute before displaying DatePicker, element and DatePicker instance are passed as parameters
+| buttonTabindex | null | String | Tabindex of the datepicker button
+| converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
+| converterMessage | null | String | Message to be displayed when conversion fails.
+| dateTemplate | null | Function | Javascript function that takes a date object and returns the content for the date cell.
 | dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
 | disabled | false | Boolean | Disables input field
+| disabledDates | null | List<java.time.LocalDate>, List<java.util.Date> (deprecated) | List of dates that should be disabled.
+| disabledDays | null | List<Integer> | List of week day indexes that should be disabled.
+| focusOnSelect | false | Boolean | When enabled, input receives focus after a value is picked.
+| hideOnDateTimeSelect | false | Boolean | Defines if the popup should be hidden when a time is selected.
+| hourFormat | '24' | String | Defines the hour format, valid values are '12' and '24'
+| immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
+| inline |  false | Boolean | Whether to show the datepicker inline or as a popup
+| inputStyle | null | String | Inline style of the input element. Used when mode is popup.
+| inputStyleClass | null | String | Style class of the input element. Used when mode is popup.
+| keepInvalid | false | Boolean | Whether to keep the invalid inputs in the field or not.
 | label | null | String | A localized user presentable name.
 | lang | null | String | Code describing the language used in the generated markup for this component.
+| locale | null | Object | Locale to be used for labels and conversion.
+| mask | null | String | Defines if a mask should be applied to the input field. Default value is "false" and valid values to enable are "true" that uses the pattern as the mask or a custom template. Refer to inputMask component for more information about custom templates..
+| maskAutoClear | true | Boolean | Clears the field on blur when incomplete input is entered
+| maskSlotChar | '_' | String | Placeholder in mask template.  Default to `_`.
+| maxDateCount | null | Integer | Defines the maximum number of selectable dates in multiple selection mode.
+| maxdate | null | java.time.LocalDate, java.time.LocalDateTime, java.time.LocalTime, java.util.Date (deprecated) or String | Sets DatePicker's maximum selectable value; Also used for validation on the server-side.
 | maxlength | null | Integer | Maximum number of characters that may be entered in this field.
+| mindate | null | java.time.LocalDate, java.time.LocalDateTime, java.time.LocalTime, java.util.Date (deprecated) or String | Sets DatePicker's minimum selectable value; Also used for validation on the server-side.
+| monthNavigator | false | Boolean | Whether to show the month navigator
+| numberOfMonths | 1 | Integer | Number of months to display concurrently.
+| onMonthChange | null | Function | Javascript function to invoke when month changes.
+| onYearChange | null | Function | Javascript function to invoke when year changes.
 | onblur | null | String | Client side callback to execute when input element loses focus.
 | onchange | null | String | Client side callback to execute when input element loses focus and its value has been modified since gaining focus.
 | onclick | null | String | Client side callback to execute when input element is clicked.
@@ -105,17 +75,50 @@ ajax selection and more.
 | onmouseover | null | String | Client side callback to execute when a pointer button is moved onto input element.
 | onmouseup | null | String | Client side callback to execute when a pointer button is released over input element.
 | onselect | null | String | Client side callback to execute when text within input element is selected by user.
+| panelStyle | null | String | Inline style of the container element.
+| panelStyleClass | null | String | Style class of the container element.
+| pattern | MM/dd/yy | String | DateFormat pattern for localization (for the date part only)
 | placeholder | null | String | Specifies a short hint.
+| placeholder | null | String | Specifies a short hint.
+| rangeSeparator | - | String | Separator for joining start and end dates on range selection mode.
 | readonly | false | Boolean | Flag indicating that this component will prevent changes by the user.
+| readonlyInput | false | Boolean | Makes input text of a popup DatePicker readonly.
+| required | false | Boolean | Marks component as required
+| requiredMessage | null | String | Message to be displayed when required field validation fails.
+| resolverStyle | smart | String | Relevant when parsing to a Java 8 Date/Time object. lenient, smart or strict. See [ResolverStyle](https://docs.oracle.com/javase/8/docs/api/java/time/format/ResolverStyle.html).
+| selectOtherMonths | false | Boolean | Enables selection of days belonging to other months.
+| selectionMode | single | String | Defines the selection mode, valid values are "single", "multiple" and "range"
+| shortYearCutoff | +10 | String | The cutoff year for determining the century for a date. Any dates entered with a year value less than or equal to the cutoff year are considered to be in the current century, while those greater than it are deemed to be in the previous century.
+| showButtonBar | false | Boolean | Whether to display buttons at the footer.
+| showIcon | false | String | Whether to show an icon to display the picker in an overlay
+| showOnFocus | true | Boolean | Whether to show the popup when input receives focus.
+| showOtherMonths | false | Boolean | Displays days belonging to other months.
+| showSeconds | false | Boolean | Whether to show the seconds in time picker. Default is false.
+| showTime | false * | Boolean | Specifies if the timepicker should be displayed.  (* Defaults to true, when value is bound to java.time.LocalDateTime)
+| showWeek | false | Boolean | Displays the week number next to each week.
 | size | null | Integer | Number of characters used to determine the width of the input element.
+| stepHour | 1 | Integer | Hour steps.
+| stepMinute | 1 | Integer | Minute steps.
+| stepSecond | 1 | Integer | Second steps.
 | style | null | String | Inline style of the input element.
 | styleClass | null | String | Style class of the input element.
 | tabindex | null | Integer | Position of the input element in the tabbing order.
-| title | null | String | Advisory tooltip informaton.
-| rangeSeparator | - | String | Separator for joining start and end dates on range selection mode.
-| resolverStyle | smart | String | Relevant when parsing to a Java 8 Date/Time object. lenient, smart or strict. See [ResolverStyle](https://docs.oracle.com/javase/8/docs/api/java/time/format/ResolverStyle.html).
 | timeInput | false | Boolean | Allows direct input in time field.
+| timeOnly | false * | Boolean | Shows only timepicker without date. (* Defaults to true, when value is bound to java.time.LocalTime)
+| timeZone | null | Time Zone | String a java.time.ZoneId instance or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to ZoneId.systemDefault().
+| title | null | String | Advisory tooltip informaton.
+| touchUI | false | Boolean | Activates touch friendly mode
 | touchable | true | Boolean | Enable touch support if browser detection supports it.
+| triggerButtonIcon | null | String | Icon of the datepicker element that toggles the visibility in popup mode.
+| type | text | String | Type of the input field
+| validator | null | Method Expr | A method expression that refers to a method validationg the input
+| validatorMessage | null | String | Message to be displayed when validation fails.
+| valueChangeListener | null | Method Expr | A method expression that refers to a method for handling a valuchangeevent
+| view | date | String | Defines the view mode, valid values are "date" for datepicker and "month" for month picker.
+| weekCalculator | false | Boolean | A javascript function that is used to calculate the week number. Uses internal implementation on default when start of week is monday, sunday or saturday.
+| widgetVar | null | String | Name of the client side widget.
+| yearNavigator | false | Boolean | Whether to show the year navigator
+| yearRange | null | String | The range of years displayed in the year drop-down in (nnnn:nnnn) format such as (2000:2020). Default value is "displayed_date - 10 : displayed_date + 10".
 
 ## Getting Started with DatePicker
 Value of the DatePicker should be a java.time.LocalDate in single selection mode which is the default.

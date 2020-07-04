@@ -284,45 +284,45 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
         private DefaultScheduleEvent<T> scheduleEvent;
 
         private Builder() {
-            scheduleEvent = new DefaultScheduleEvent();
+            scheduleEvent = new DefaultScheduleEvent<>();
         }
 
-        public DefaultScheduleEvent.Builder id(String id) {
+        public DefaultScheduleEvent.Builder<T> id(String id) {
             scheduleEvent.setId(id);
             return this;
         }
 
-        public DefaultScheduleEvent.Builder groupId(String groupId) {
+        public DefaultScheduleEvent.Builder<T> groupId(String groupId) {
             scheduleEvent.setGroupId(groupId);
             return this;
         }
 
-        public DefaultScheduleEvent.Builder title(String title) {
+        public DefaultScheduleEvent.Builder<T> title(String title) {
             scheduleEvent.setTitle(title);
             return this;
         }
 
-        public DefaultScheduleEvent.Builder startDate(LocalDateTime startDate) {
+        public DefaultScheduleEvent.Builder<T> startDate(LocalDateTime startDate) {
             scheduleEvent.setStartDate(startDate);
             return this;
         }
 
-        public DefaultScheduleEvent.Builder endDate(LocalDateTime endDate) {
+        public DefaultScheduleEvent.Builder<T> endDate(LocalDateTime endDate) {
             scheduleEvent.setEndDate(endDate);
             return this;
         }
 
-        public DefaultScheduleEvent.Builder allDay(boolean allDay) {
+        public DefaultScheduleEvent.Builder<T> allDay(boolean allDay) {
             scheduleEvent.setAllDay(allDay);
             return this;
         }
 
-        public DefaultScheduleEvent.Builder styleClass(String styleClass) {
+        public DefaultScheduleEvent.Builder<T> styleClass(String styleClass) {
             scheduleEvent.setStyleClass(styleClass);
             return this;
         }
 
-        public DefaultScheduleEvent.Builder data(T data) {
+        public DefaultScheduleEvent.Builder<T> data(T data) {
             scheduleEvent.setData(data);
             return this;
         }
@@ -333,7 +333,7 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
          * {@link #draggable(Boolean)}.
          * @param editable Whether the event should be editable.
          */
-        public DefaultScheduleEvent.Builder editable(boolean editable) {
+        public DefaultScheduleEvent.Builder<T> editable(boolean editable) {
             scheduleEvent.setEditable(editable);
             return this;
         }
@@ -343,7 +343,7 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
          * {@code null} means that the default of the schedule is applied.
          * Otherwise, this setting overrides the default of the schedule.
          */
-        public DefaultScheduleEvent.Builder draggable(Boolean draggable) {
+        public DefaultScheduleEvent.Builder<T> draggable(Boolean draggable) {
             scheduleEvent.setDraggable(draggable);
             return this;
         }
@@ -353,37 +353,37 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
          * {@code null} means that the default of the schedule is applied.
          * Otherwise, this setting overrides the default of the schedule.
          */
-        public DefaultScheduleEvent.Builder resizable(Boolean resizable) {
+        public DefaultScheduleEvent.Builder<T> resizable(Boolean resizable) {
             scheduleEvent.setResizable(resizable);
             return this;
         }
 
-        public DefaultScheduleEvent.Builder overlapAllowed(boolean overlapAllowed) {
+        public DefaultScheduleEvent.Builder<T> overlapAllowed(boolean overlapAllowed) {
             scheduleEvent.setOverlapAllowed(overlapAllowed);
             return this;
         }
 
-        public DefaultScheduleEvent.Builder description(String description) {
+        public DefaultScheduleEvent.Builder<T> description(String description) {
             scheduleEvent.setDescription(description);
             return this;
         }
 
-        public DefaultScheduleEvent.Builder url(String url) {
+        public DefaultScheduleEvent.Builder<T> url(String url) {
             scheduleEvent.setUrl(url);
             return this;
         }
 
-        public DefaultScheduleEvent.Builder renderingMode(ScheduleRenderingMode renderingMode) {
+        public DefaultScheduleEvent.Builder<T> renderingMode(ScheduleRenderingMode renderingMode) {
             scheduleEvent.setRenderingMode(renderingMode);
             return this;
         }
 
-        public DefaultScheduleEvent.Builder dynamicProperty(String key, Object value) {
+        public DefaultScheduleEvent.Builder<T> dynamicProperty(String key, Object value) {
             scheduleEvent.setDynamicProperty(key, value);
             return this;
         }
 
-        public DefaultScheduleEvent build() {
+        public DefaultScheduleEvent<T> build() {
             return scheduleEvent;
         }
     }
