@@ -84,12 +84,12 @@
     }
   ],
   "dependencies": {
-    "@fullcalendar/core": "5.0.0-beta.4",
-    "@fullcalendar/daygrid": "5.0.0-beta.4",
-    "@fullcalendar/interaction": "5.0.0-beta.4",
-    "@fullcalendar/list": "5.0.0-beta.4",
-    "@fullcalendar/moment": "^5.0.0-beta.4",
-    "@fullcalendar/timegrid": "5.0.0-beta.4",
+    "@fullcalendar/core": "^5.1.0",
+    "@fullcalendar/daygrid": "^5.1.0",
+    "@fullcalendar/interaction": "^5.1.0",
+    "@fullcalendar/list": "^5.1.0",
+    "@fullcalendar/moment": "^5.1.0",
+    "@fullcalendar/timegrid": "^5.1.0",
     "@types/chart.js": "^2.9.19",
     "@types/googlemaps": "~3.39.3",
     "@types/inputmask": "~4.0.1",

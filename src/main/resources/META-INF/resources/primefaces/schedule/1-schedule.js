@@ -43,7 +43,9 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         this._super(cfg);
         this.cfg.formId = this.jq.closest('form').attr('id');
         this.cfg.calendarCfg.themeSystem = 'standard';
-        this.cfg.calendarCfg.locale = FullCalendar.locales[this.cfg.locale || "en"];
+        this.cfg.calendarCfg.locale = FullCalendar.globalLocales[this.cfg.locale || "en"];
+        this.cfg.calendarCfg.slotLabelFormat = this.cfg.calendarCfg.slotLabelFormat || undefined; 
+        this.cfg.calendarCfg.viewClassNames = this.onViewChange.bind(this);
         this.viewNameState = $(this.jqId + '_view');
         this.cfg.urlTarget = this.cfg.urlTarget || "_blank";
         this.cfg.calendarCfg.plugins = [
@@ -85,8 +87,6 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         var calendarEl = document.getElementById(this.cfg.id);
         _self.calendar = new FullCalendar.Calendar(calendarEl, this.cfg.calendarCfg);
         _self.calendar.render();
-
-        this.bindViewChangeListener();
     },
 
     /**
@@ -259,17 +259,15 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Sets up the event listeners for when the user switches the to a different view (month view, week day, or time
-     * view). Updates the hidden input field with the current view name. Used for restoring the view after an AJAX
-     * update.
+     * The event listener for when the user switches the to a different view (month view, week day, or time view).
+     * Updates the hidden input field with the current view name. Used for restoring the view after an AJAX update.
+     * @param {import("@fullcalendar/common").ViewContentArg} arg Event data passed by FullCalendar when the view
+     * changes.
      * @private
      */
-    bindViewChangeListener: function() {
-        var $this = this;
-        this.calendar.on('viewDidMount', function(event) {
-            $this.viewNameState.val(event.view.type);
-            $this.callBehavior('viewChange');
-        });
+    onViewChange: function(arg) {
+        this.viewNameState.val(arg.view.type);
+        this.callBehavior('viewChange');
     },
 
     /**

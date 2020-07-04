@@ -50,7 +50,24 @@ public interface ScheduleEvent<T> {
 
     String getStyleClass();
 
-    boolean isEditable();
+    /**
+     * @deprecated Use {@link #isResizable()} or {@link #isDraggable()} instead.
+     */
+    default boolean isEditable() {
+        return isDraggable() != null && isResizable() != null && (isDraggable() || isResizable());
+    }
+
+    /**
+     * @return Whether the event should be draggable. Returning {@code null}
+     * means that the default of the schedule is applied.
+     */
+    Boolean isDraggable();
+
+    /**
+     * @return Whether the event should be resizable. Returning {@code null}
+     * means that the default of the schedule is applied.
+     */
+    Boolean isResizable();
 
     boolean isOverlapAllowed();
 

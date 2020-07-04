@@ -116,7 +116,12 @@ public class ScheduleRenderer extends CoreRenderer {
                 jsonObject.put("start", dateTimeFormatter.format(event.getStartDate().atZone(zoneId)));
                 jsonObject.put("end", dateTimeFormatter.format(event.getEndDate().atZone(zoneId)));
                 jsonObject.put("allDay", event.isAllDay());
-                jsonObject.put("editable", event.isEditable());
+                if (event.isDraggable() != null) {
+                    jsonObject.put("startEditable", event.isDraggable());
+                }
+                if (event.isResizable() != null) {
+                    jsonObject.put("durationEditable", event.isResizable());
+                }
                 jsonObject.put("overlap", event.isOverlapAllowed());
                 jsonObject.put("classNames", event.getStyleClass());
                 jsonObject.put("description", event.getDescription());
@@ -160,6 +165,11 @@ public class ScheduleRenderer extends CoreRenderer {
             wb.append(",columnFormatOptions:{" + columnFormat + "}");
         }
 
+        String extender = schedule.getExtender();
+        if (extender != null) {
+            wb.nativeAttr("extender", extender);
+        }
+
         wb.append(",calendarCfg:{");
         wb.append("initialView:\"").append(EscapeUtils.forJavaScript(translateViewName(schedule.getView().trim()))).append("\"");
         wb.attr("dayMaxEventRows", schedule.getValue().isEventLimit(), false);
@@ -194,8 +204,8 @@ public class ScheduleRenderer extends CoreRenderer {
                 .attr("slotMaxTime", schedule.getMaxTime(), null)
                 .attr("aspectRatio", schedule.getAspectRatio(), Double.MIN_VALUE)
                 .attr("weekends", schedule.isShowWeekends(), true)
-                .attr("eventStartEditable", schedule.isDraggable(), true)
-                .attr("eventDurationEditable", schedule.isResizable(), true)
+                .attr("eventStartEditable", schedule.isDraggable())
+                .attr("eventDurationEditable", schedule.isResizable())
                 .attr("slotLabelInterval", schedule.getSlotLabelInterval(), null)
                 .attr("slotLabelFormat", schedule.getSlotLabelFormat(), null)
                 .attr("eventTimeFormat", schedule.getTimeFormat(), null) //https://momentjs.com/docs/#/displaying/
@@ -211,11 +221,6 @@ public class ScheduleRenderer extends CoreRenderer {
             else {
                 wb.nativeAttr("displayEventEnd", "{" + displayEventEnd + "}");
             }
-        }
-
-        String extender = schedule.getExtender();
-        if (extender != null) {
-            wb.nativeAttr("extender", extender);
         }
 
         if (isShowWeekNumbers) {
