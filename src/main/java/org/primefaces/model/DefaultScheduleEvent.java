@@ -198,10 +198,20 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
         this.resizable = editable;
     }
 
+    /**
+     * @param draggable Whether the event should be draggable. Setting
+     * {@code null} means that the default of the schedule is applied.
+     * Otherwise, this setting overrides the default of the schedule.
+     */
     public void setDraggable(Boolean draggable) {
         this.draggable = draggable;
     }
 
+    /**
+     * @param resizable Whether the event should be resizable. Setting
+     * {@code null} means that the default of the schedule is applied.
+     * Otherwise, this setting overrides the default of the schedule.
+     */
     public void setResizable(Boolean resizable) {
         this.resizable = resizable;
     }
@@ -321,8 +331,7 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
          * Makes the event both resizable and draggable.This is a shortcut
          * for calling {@link #resizable(Boolean)} and
          * {@link #draggable(Boolean)}.
-         * @param editable Whether the event should be editable. Passing
-         * {@code null} means that the default of the schedule is applied.
+         * @param editable Whether the event should be editable.
          */
         public DefaultScheduleEvent.Builder editable(boolean editable) {
             scheduleEvent.setEditable(editable);
@@ -332,6 +341,7 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
         /**
          * @param draggable Whether the event should be draggable. Passing
          * {@code null} means that the default of the schedule is applied.
+         * Otherwise, this setting overrides the default of the schedule.
          */
         public DefaultScheduleEvent.Builder draggable(Boolean draggable) {
             scheduleEvent.setDraggable(draggable);
@@ -341,6 +351,7 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
         /**
          * @param resizable Whether the event should be resizable. Passing
          * {@code null} means that the default of the schedule is applied.
+         * Otherwise, this setting overrides the default of the schedule.
          */
         public DefaultScheduleEvent.Builder resizable(Boolean resizable) {
             scheduleEvent.setResizable(resizable);

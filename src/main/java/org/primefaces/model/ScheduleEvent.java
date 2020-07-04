@@ -59,13 +59,15 @@ public interface ScheduleEvent<T> {
 
     /**
      * @return Whether the event should be draggable. Returning {@code null}
-     * means that the default of the schedule is applied.
+     * means that the default of the schedule is applied. Otherwise, this
+     * setting overrides the default of the schedule.
      */
     Boolean isDraggable();
 
     /**
      * @return Whether the event should be resizable. Returning {@code null}
-     * means that the default of the schedule is applied.
+     * means that the default of the schedule is applied. Otherwise, this
+     * setting overrides the default of the schedule.
      */
     Boolean isResizable();
 
