@@ -28,8 +28,11 @@ All PrimeFaces MultiViewState-aware components support client-window-mode.
 See [MultiViewState](multiviewstate.md) for details.
 
 Prime Client Window adds jfwid-parameter to all url´s rendered by JSF and PrimeFaces.
-Prime Client Window offers improved handling compared to JSF´s built in mechanism.
-(eg user opens link including jfwid-parameter in a new window or tab)
+Prime Client Window offers improved handling compared to JSF´s built in mechanism in following points:
+* JSF doesnt append the url param on initial redirect, so f5 creates a new windowId
+* JSF doesnt validate if the tab was initialy openend with another windowId
+* it uses sessionStorage to save and validate the windowId
+* the workflow is the same as Apache DeltaSpike lazy mode
 
 ##Requirements
 1. JSF 2.2 and up
