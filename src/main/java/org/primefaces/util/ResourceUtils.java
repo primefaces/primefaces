@@ -76,7 +76,8 @@ public class ResourceUtils {
         final boolean secure = PrimeRequestContext.getCurrentInstance(context).isSecure();
         if (secure) {
             properties.put("secure", secure);
-            properties.put("sameSite", "Strict");
+            // SameSite hopefully supported in Servlet 5.0
+            // properties.put("sameSite", "Strict");
         }
 
         context.getExternalContext().addResponseCookie(name, value, properties);
