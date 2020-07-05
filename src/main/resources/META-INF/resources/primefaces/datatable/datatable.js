@@ -1738,6 +1738,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             update: this.id,
             formId: this.cfg.formId,
             params: [{name: this.id + '_scrolling', value: true},
+                            {name: this.id + '_first', value: 1},
                             {name: this.id + '_skipChildren', value: true},
                             {name: this.id + '_scrollOffset', value: this.scrollOffset},
                             {name: this.id + '_encodeFeature', value: true}],
@@ -1767,7 +1768,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
 
-        PrimeFaces.ajax.Request.handle(options);
+        if (this.hasBehavior('liveScroll')) {
+            this.callBehavior('liveScroll', options);
+        } else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
     },
 
     /**
