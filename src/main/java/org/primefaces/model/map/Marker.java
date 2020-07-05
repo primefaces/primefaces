@@ -45,6 +45,8 @@ public class Marker extends Overlay {
 
     private boolean visible = true;
 
+    private Animation animation;
+
     public Marker(LatLng latlng) {
         this.latlng = latlng;
     }
@@ -145,5 +147,13 @@ public class Marker extends Overlay {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    public Animation getAnimation() {
+        return animation;
+    }
+
+    public void setAnimation(Animation animation) {
+        this.animation = animation;
     }
 }

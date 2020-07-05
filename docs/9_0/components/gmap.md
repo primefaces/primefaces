@@ -330,6 +330,7 @@ _org.primefaces.model.map.Marker_ extends _org.primefaces.model.map.Overlay_
 | draggable | 0 | Boolean | Defines if marker can be dragged
 | clickable | 1 | Boolean | Defines if marker can be dragged
 | flat | 0 | Boolean | If enabled, shadow image is not displayed
+| animation | null | Animation | Enumeration of either DROP or BOUNCE
 | visible | 1 | Boolean | Defines visibility of the marker
 
 _org.primefaces.model.map.Polyline_ extends _org.primefaces.model.map.Overlay_
