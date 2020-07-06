@@ -18517,6 +18517,22 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Event to show the feedback overlay panel, default is "focus".]]>
+            </description>
+            <name>showEvent</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Event to hide the feedback overlay panel, default is "blur".]]>
+            </description>
+            <name>hideEvent</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
