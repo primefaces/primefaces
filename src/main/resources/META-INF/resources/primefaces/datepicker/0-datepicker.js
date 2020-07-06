@@ -1727,9 +1727,11 @@
             var rawValue = event.target.value;
 
             try {
-                var value = this.parseValueFromString(rawValue);
-                this.updateModel(event, value);
-                this.updateViewDate(event, value.length ? value[0] : value);
+                if (rawValue.length === this.options.defaultDate.length) {
+                    var value = this.parseValueFromString(rawValue);
+                    this.updateModel(event, value);
+                    this.updateViewDate(event, value.length ? value[0] : value);
+                }
             }
             catch (err) {
                 if (!this.options.mask) {
