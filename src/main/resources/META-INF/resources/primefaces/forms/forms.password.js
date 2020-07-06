@@ -79,14 +79,14 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         }
 
         //events
-        this.jq.off(this.cfg.showEvent + ' ' + this.cfg.hideEvent)
+        this.jq.off(this.cfg.showEvent + ' ' + this.cfg.hideEvent + ' keyup.password')
         .on(this.cfg.showEvent, function() {
             _self.show();
         })
         .on(this.cfg.hideEvent, function() {
             _self.hide();
         })
-        .on("keyup", function() {
+        .on("keyup.password", function() {
             var value = _self.jq.val(),
             label = null,
             meterPos = null;
