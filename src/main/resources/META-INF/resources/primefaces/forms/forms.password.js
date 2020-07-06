@@ -20,7 +20,7 @@
  * @prop {string} cfg.strongLabel Text of the hint when the password is judged to be strong.
  * @prop {boolean} cfg.inline Displays feedback inline rather than using a popup.
  * @prop {string} cfg.showEvent Event displaying the feedback overlay. Default is 'focus'.
- * @prop {string} cfg.hideEvent Event hiding the feeback overlay. Default is 'blur'.
+ * @prop {string} cfg.hideEvent Event hiding the feedback overlay. Default is 'blur'.
  */
 PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
 
