@@ -71,6 +71,8 @@ public class PasswordRenderer extends InputRenderer {
         if (feedback) {
             wb.attr("feedback", true)
                     .attr("inline", password.isInline())
+                    .attr("showEvent", password.getShowEvent(), null)
+                    .attr("hideEvent", password.getHideEvent(), null)
                     .attr("promptLabel", password.getPromptLabel())
                     .attr("weakLabel", password.getWeakLabel())
                     .attr("goodLabel", password.getGoodLabel())

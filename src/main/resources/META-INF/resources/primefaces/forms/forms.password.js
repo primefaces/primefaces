@@ -19,6 +19,8 @@
  * @prop {string} cfg.goodLabel Text of the hint when the password is judged to be good.
  * @prop {string} cfg.strongLabel Text of the hint when the password is judged to be strong.
  * @prop {boolean} cfg.inline Displays feedback inline rather than using a popup.
+ * @prop {string} cfg.showEvent Event displaying the feedback overlay. Default is 'focus'.
+ * @prop {string} cfg.hideEvent Event hiding the feedback overlay. Default is 'blur'.
  */
 PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
 
@@ -53,6 +55,8 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         }
 
         //config
+        this.cfg.showEvent = this.cfg.showEvent ? this.cfg.showEvent + '.password' : 'focus.password';
+        this.cfg.hideEvent = this.cfg.hideEvent ? this.cfg.hideEvent + '.password' : 'blur.password';
         this.cfg.promptLabel = this.cfg.promptLabel||'Please enter a password';
         this.cfg.weakLabel = this.cfg.weakLabel||'Weak';
         this.cfg.goodLabel = this.cfg.goodLabel||'Medium';
@@ -75,13 +79,14 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         }
 
         //events
-        this.jq.on("focus", function() {
+        this.jq.off(this.cfg.showEvent + ' ' + this.cfg.hideEvent + ' keyup.password')
+        .on(this.cfg.showEvent, function() {
             _self.show();
         })
-        .on("blur", function() {
+        .on(this.cfg.hideEvent, function() {
             _self.hide();
         })
-        .on("keyup", function() {
+        .on("keyup.password", function() {
             var value = _self.jq.val(),
             label = null,
             meterPos = null;
