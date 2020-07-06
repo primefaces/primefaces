@@ -48,6 +48,8 @@ public interface ScheduleEvent<T> {
 
     boolean isAllDay();
 
+    void setAllDay(boolean allDay);
+
     String getStyleClass();
 
     /**

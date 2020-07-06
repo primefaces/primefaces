@@ -148,6 +148,7 @@ public class DefaultScheduleEvent<T> implements ScheduleEvent<T>, Serializable {
         return allDay;
     }
 
+    @Override
     public void setAllDay(boolean allDay) {
         this.allDay = allDay;
     }

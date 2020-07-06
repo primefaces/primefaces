@@ -112,11 +112,13 @@ public class Schedule extends ScheduleBase {
                 int monthDelta = Double.valueOf(params.get(clientId + "_monthDelta")).intValue();
                 int dayDelta = Double.valueOf(params.get(clientId + "_dayDelta")).intValue();
                 int minuteDelta = Double.valueOf(params.get(clientId + "_minuteDelta")).intValue();
+                boolean allDay = Boolean.valueOf(params.get(clientId + "_allDay")).booleanValue();
 
                 LocalDateTime startDate = movedEvent.getStartDate();
                 LocalDateTime endDate = movedEvent.getEndDate();
                 startDate = startDate.plusYears(yearDelta).plusMonths(monthDelta).plusDays(dayDelta).plusMinutes(minuteDelta);
                 endDate = endDate.plusYears(yearDelta).plusMonths(monthDelta).plusDays(dayDelta).plusMinutes(minuteDelta);
+                movedEvent.setAllDay(allDay);
                 movedEvent.setStartDate(startDate);
                 movedEvent.setEndDate(endDate);
 

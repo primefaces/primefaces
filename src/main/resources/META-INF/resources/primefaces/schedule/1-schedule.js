@@ -154,7 +154,8 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                         {name: $this.id + '_yearDelta', value: eventDropInfo.delta.years},
                         {name: $this.id + '_monthDelta', value: eventDropInfo.delta.months},
                         {name: $this.id + '_dayDelta', value: eventDropInfo.delta.days},
-                        {name: $this.id + '_minuteDelta', value: (eventDropInfo.delta.milliseconds/60000)}
+                        {name: $this.id + '_minuteDelta', value: (eventDropInfo.delta.milliseconds/60000)},
+                        {name: $this.id + '_allDay', value: (eventDropInfo.event.allDay)}
                     ]
                 };
 
