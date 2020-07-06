@@ -407,6 +407,10 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
             };
         }
 
+        // #1597 must set locale on HTML element
+        document.documentElement.setAttribute('lang', PrimeFaces.settings.locale);
+        $.jsDate.regional.getLocale();
+
         PrimeFaces.widget.ChartUtils.CONFIGURATORS[this.cfg.type].configure(this);
     },
 
