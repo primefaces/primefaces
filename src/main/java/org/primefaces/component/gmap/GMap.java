@@ -24,8 +24,8 @@
 package org.primefaces.component.gmap;
 
 import java.util.*;
-import javax.faces.FacesException;
 
+import javax.faces.FacesException;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -53,8 +53,10 @@ public class GMap extends GMapBase {
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("overlaySelect", OverlaySelectEvent.class)
+            .put("overlayDblSelect", OverlaySelectEvent.class)
             .put("stateChange", StateChangeEvent.class)
             .put("pointSelect", PointSelectEvent.class)
+            .put("pointDblSelect", PointSelectEvent.class)
             .put("markerDrag", MarkerDragEvent.class)
             .put("geocode", GeocodeEvent.class)
             .put("reverseGeocode", ReverseGeocodeEvent.class)
@@ -84,7 +86,7 @@ public class GMap extends GMapBase {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             FacesEvent wrapperEvent = null;
 
-            if (eventName.equals("overlaySelect")) {
+            if (eventName.equals("overlaySelect") || eventName.equals("overlayDblSelect")) {
                 wrapperEvent = new OverlaySelectEvent(this, behaviorEvent.getBehavior(), getModel().findOverlay(params.get(clientId + "_overlayId")));
 
                 //if there is info window, update and show it
@@ -105,7 +107,7 @@ public class GMap extends GMapBase {
 
                 wrapperEvent = new StateChangeEvent(this, behaviorEvent.getBehavior(), new LatLngBounds(northeast, southwest), zoomLevel, center);
             }
-            else if (eventName.equals("pointSelect")) {
+            else if (eventName.equals("pointSelect") || eventName.equals("pointDblSelect")) {
                 String[] latlng = params.get(clientId + "_pointLatLng").split(",");
                 LatLng position = new LatLng(Double.valueOf(latlng[0]), Double.valueOf(latlng[1]));
 

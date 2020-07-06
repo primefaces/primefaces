@@ -131,6 +131,10 @@ public class GMapRenderer extends CoreRenderer {
             for (ClientBehavior clientBehavior : overlaySelectBehaviors) {
                 ((AjaxBehavior) clientBehavior).setOnsuccess("PF('" + widgetVar + "').openWindow(data)");
             }
+            List<ClientBehavior> overlayDblSelectBehaviors = behaviorEvents.get("overlayDblSelect");
+            for (ClientBehavior clientBehavior : overlayDblSelectBehaviors) {
+                ((AjaxBehavior) clientBehavior).setOnsuccess("PF('" + widgetVar + "').openWindow(data)");
+            }
         }
 
         encodeClientBehaviors(context, map);

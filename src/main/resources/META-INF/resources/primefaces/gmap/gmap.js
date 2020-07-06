@@ -176,7 +176,10 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
 
             //overlay select
             google.maps.event.addListener(marker, 'click', function(event) {
-                _self.fireOverlaySelectEvent(event, this);
+                _self.fireOverlaySelectEvent(event, this, 1);
+            });
+            google.maps.event.addListener(marker, 'dblclick', function(event) {
+                _self.fireOverlaySelectEvent(event, this, 2);
             });
 
             //marker drag
@@ -336,18 +339,22 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      * @param {google.maps.MouseEvent | google.maps.IconMouseEvent} event The event that occurred.
      * @param {PrimeFaces.widget.GMap.Overlay} overlay The shape that was selected.
+     * @param {number} clickCount whether it was single or double click
      */
-    fireOverlaySelectEvent: function(event, overlay) {
+    fireOverlaySelectEvent: function(event, overlay, clickCount) {
         this.selectedOverlay = overlay;
-
-        if(this.hasBehavior('overlaySelect')) {
-            var ext = {
+        
+        var ext = {
                 params: [
                     {name: this.id + '_overlayId', value: overlay.id}
                 ]
             };
 
+        if (clickCount === 1 && this.hasBehavior('overlaySelect')) {
             this.callBehavior('overlaySelect', ext);
+        }
+        if (clickCount === 2 && this.hasBehavior('overlayDblSelect')) {
+            this.callBehavior('overlayDblSelect', ext);
         }
     },
 
@@ -416,7 +423,10 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
         var _self = this;
 
         google.maps.event.addListener(this.map, 'click', function(event) {
-            _self.firePointSelectEvent(event);
+            _self.firePointSelectEvent(event, 1);
+        });
+        google.maps.event.addListener(this.map, 'dblclick', function(event) {
+            _self.firePointSelectEvent(event, 2);
         });
     },
 
@@ -424,16 +434,20 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
      * Triggers the behavior for when a point on the map was selected.
      * @private
      * @param {google.maps.MouseEvent | google.maps.IconMouseEvent} event The event that triggered the point selection.
+     * @param {number} clickCount whether it was single or double click
      */
-    firePointSelectEvent: function(event) {
-        if(this.hasBehavior('pointSelect')) {
-            var ext = {
+    firePointSelectEvent: function(event, clickCount) {
+        var ext = {
                 params: [
                     {name: this.id + '_pointLatLng', value: event.latLng.lat() + ',' + event.latLng.lng()}
                 ]
             };
-
+        
+        if (clickCount === 1 && this.hasBehavior('pointSelect')) {
             this.callBehavior('pointSelect', ext);
+        }
+        if (clickCount === 2 && this.hasBehavior('pointDblSelect')) {
+            this.callBehavior('pointDblSelect', ext);
         }
     },
 
@@ -460,7 +474,11 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
 
             //bind overlay click event
             google.maps.event.addListener(item, 'click', function(event) {
-                _self.fireOverlaySelectEvent(event, item);
+                _self.fireOverlaySelectEvent(event, item, 1);
+            });
+            
+            google.maps.event.addListener(item, 'dblclick', function(event) {
+                _self.fireOverlaySelectEvent(event, item, 2);
             });
         })
     },
