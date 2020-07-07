@@ -255,13 +255,19 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
     applyMask: function() {
         if (this.cfg.mask && !this.cfg.inline) {
             var maskCfg = {
-                alias:'datetime',
-                inputFormat:this.cfg.mask,
-                placeholder:this.cfg.maskSlotChar||'_',
-                clearMaskOnLostFocus:this.cfg.maskAutoClear||true,
-                clearIncomplete:this.cfg.maskAutoClear||true,
-                autoUnmask:this.cfg.maskAutoUnmask||true
+                placeholder: this.cfg.maskSlotChar||'_',
+                clearMaskOnLostFocus: this.cfg.maskAutoClear||true,
+                clearIncomplete: this.cfg.maskAutoClear||true,
+                autoUnmask: this.cfg.maskAutoUnmask||true
             };
+            var pattern = new RegExp("m|d|y|h|s", 'i');
+            var isAlias = pattern.test(this.cfg.mask);
+            if (isAlias) {
+                maskCfg.alias = 'datetime';
+                maskCfg.inputFormat = this.cfg.mask;
+            } else {
+                maskCfg.mask = this.cfg.mask;
+            }
             this.input.inputmask('remove').inputmask(maskCfg);
         }
     },
