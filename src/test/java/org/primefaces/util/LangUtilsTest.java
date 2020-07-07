@@ -23,16 +23,18 @@
  */
 package org.primefaces.util;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import org.junit.jupiter.api.Test;
+
 
 
 public class LangUtilsTest {
-    
+
     private static final String FOO = "foo";
     private static final String SENTENCE = "foo bar baz";
 
@@ -63,7 +65,27 @@ public class LangUtilsTest {
 
         assertEquals(String.class, type);
     }
-    
+
+    @Test
+    public void replaceEach() {
+        //JAVADOC TESTS START
+        assertNull(LangUtils.replaceEach(null, new String[]{"a"}, new String[]{"b"}, true, 1));
+        assertEquals("", LangUtils.replaceEach("", new String[]{"a"}, new String[]{"b"}, true, 1));
+
+        assertEquals("b", LangUtils.replaceEach("aba", new String[]{"a"}, new String[]{""}, true, 0));
+        assertEquals("aba", LangUtils.replaceEach("aba", new String[]{null}, new String[]{"a"}, true, 1));
+        assertEquals("wcte", LangUtils.replaceEach("abcde", new String[]{"ab", "d"}, new String[]{"w", "t"}, true, 2));
+        assertEquals("tcte", LangUtils.replaceEach("abcde", new String[]{"ab", "d"}, new String[]{"d", "t"}, true, 2));
+        assertEquals("blaan", LangUtils.replaceEach("blllaan", new String[]{"llaan"}, new String[]{"laan"} , true, 1));
+
+        assertThrows(
+                IllegalStateException.class,
+                () -> LangUtils.replaceEach("abcde", new String[]{"ab", "d"}, new String[]{"d", "ab"}, true, 2),
+                "Should be a circular reference");
+
+        //JAVADOC TESTS END
+    }
+
 
 
     @Test
@@ -84,7 +106,7 @@ public class LangUtilsTest {
         assertEquals("b", LangUtils.substring("abc", -2, -1));
     }
 
-   
+
 
     class SimpleClass {
         private List<String> strings;

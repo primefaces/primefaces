@@ -23,18 +23,30 @@
  */
 package org.primefaces.application.resource;
 
-import org.primefaces.util.LangUtils;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.*;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseWriterWrapper;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
+
+    private static final Map<String, String> REPLACEMENT_MAP = Collections.unmodifiableMap(new HashMap<String, String>() {
+            private static final long serialVersionUID = 1L;
+        {
+            put(";;", ";");
+            put("window.PrimeFaces", "pf");
+            put("PrimeFaces.settings", "pf.settings");
+            put("PrimeFaces.cw", "pf.cw");
+            put("PrimeFaces.ab", "pf.ab");
+        }});
+    private static final String[] REPLACEMENT_KEYS = REPLACEMENT_MAP.keySet().toArray(new String[REPLACEMENT_MAP.keySet().size()]);
+    private static final String[] REPLACEMENT_VALUES = REPLACEMENT_MAP.values().toArray(new String[REPLACEMENT_MAP.values().size()]);
 
     private final ResponseWriter wrapped;
     private final MoveScriptsToBottomState state;
@@ -229,23 +241,13 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
             script.append(";");
         }
 
-        String minimized = script.toString();
+        String minimized = Constants.EMPTY_STRING;
 
-        if (!LangUtils.isValueBlank(minimized)) {
-            if ("text/javascript".equalsIgnoreCase(type)) {
-                minimized = minimized.replace(";;", ";");
-
-                if (minimized.contains("PrimeFaces")) {
-                    minimized = minimized.replace("PrimeFaces.settings", "pf.settings")
-                        .replace("PrimeFaces.cw", "pf.cw")
-                        .replace("PrimeFaces.ab", "pf.ab")
-                        .replace("window.PrimeFaces", "pf");
-
-                    minimized = "var pf=window.PrimeFaces;"
-                            + minimized
-                            + "if(window.$){$(PrimeFaces.escapeClientId(\"" + id + "\")).remove();}";
-                }
-            }
+        if (script.length() > 0 && "text/javascript".equalsIgnoreCase(type)) {
+            minimized = LangUtils.replaceEach(script.toString(), REPLACEMENT_KEYS, REPLACEMENT_VALUES, true, REPLACEMENT_KEYS.length);
+            minimized = "var pf=window.PrimeFaces;"
+                        + minimized
+                        + "if(window.$){$(PrimeFaces.escapeClientId(\"" + id + "\")).remove();}";
         }
 
         return minimized;
