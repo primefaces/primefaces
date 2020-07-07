@@ -78,6 +78,12 @@
         <function-signature>java.security.Principal userPrincipal()</function-signature>
     </function>
 
+    <function>
+        <function-name>language</function-name>
+        <function-class>org.primefaces.util.LocaleUtils</function-class>
+        <function-signature>java.lang.String getCurrentLanguage()</function-signature>
+    </function>
+
     <tag>
         <description>AutoUpdate is a TagHandler to mark the parent component to be updated at every AJAX request.
             AutoUpdate is ignored if the trigger (p:commandButton, p:ajax...) of AJAX request has the attribute ignoreAutoUpdate set to 'true'.
