@@ -1052,6 +1052,13 @@
             }
 
             if (!this.options.inline && this.options.appendTo) {
+                // remove old overlay first
+                // See PrimeFaces.utils.appendDynamicOverlay
+                $(this.options.appendTo)
+                        .children("[id='" + $(this.container).attr('id') + "_panel']")
+                        .not(this.panel)
+                        .remove();
+
                 this.panel.appendTo(this.options.appendTo);
             }
             else {
@@ -1387,7 +1394,7 @@
         weeksInYear: function(year, dow, doy) {
             var weekOffset = this.firstWeekOffset(year, dow, doy),
                 weekOffsetNext = this.firstWeekOffset(year + 1, dow, doy);
-                
+
             return (this.daysInYear(year) - weekOffset + weekOffsetNext) / 7;
         },
 
@@ -1416,8 +1423,8 @@
                     lastDate = weekDates[6],
                     cellClass = firstDate.otherMonth && lastDate.otherMonth && !this.options.showOtherMonths ? ' ui-datepicker-other-month-hidden' : '';
 
-                weekHtml += '<td class="ui-datepicker-weeknumber' + cellClass + '"><span class="ui-state-disabled">' + 
-                    this.options.weekCalculator(firstDate) + 
+                weekHtml += '<td class="ui-datepicker-weeknumber' + cellClass + '"><span class="ui-state-disabled">' +
+                    this.options.weekCalculator(firstDate) +
                     '</span></td>';
             }
 
@@ -2029,7 +2036,7 @@
 
         alignPanel: function () {
             if (!this.panel || !this.panel.is(":visible")) {
-               return; 
+               return;
             }
 
             if (this.options.touchUI) {
