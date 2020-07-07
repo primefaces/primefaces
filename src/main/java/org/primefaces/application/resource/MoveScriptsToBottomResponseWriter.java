@@ -25,26 +25,26 @@ package org.primefaces.application.resource;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseWriterWrapper;
 
-import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
+import org.primefaces.util.MapBuilder;
 
 public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
-    private static final Map<String, String> REPLACEMENT_MAP = Collections.unmodifiableMap(new HashMap<String, String>() {
-            private static final long serialVersionUID = 1L;
-        {
-            put(";;", ";");
-            put("window.PrimeFaces", "pf");
-            put("PrimeFaces.settings", "pf.settings");
-            put("PrimeFaces.cw", "pf.cw");
-            put("PrimeFaces.ab", "pf.ab");
-        }});
+    private static final Map<String, String> REPLACEMENT_MAP = MapBuilder.<String, String>builder()
+            .put(";;", ";")
+            .put("window.PrimeFaces", "pf")
+            .put("PrimeFaces.settings", "pf.settings")
+            .put("PrimeFaces.cw", "pf.cw")
+            .put("PrimeFaces.ab", "pf.ab")
+            .build();
     private static final String[] REPLACEMENT_KEYS = REPLACEMENT_MAP.keySet().toArray(new String[REPLACEMENT_MAP.keySet().size()]);
     private static final String[] REPLACEMENT_VALUES = REPLACEMENT_MAP.values().toArray(new String[REPLACEMENT_MAP.values().size()]);
 
@@ -241,13 +241,16 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
             script.append(";");
         }
 
-        String minimized = Constants.EMPTY_STRING;
+        String minimized;
 
-        if (script.length() > 0 && "text/javascript".equalsIgnoreCase(type)) {
+        if (script.indexOf("PrimeFaces") != -1 && "text/javascript".equalsIgnoreCase(type)) {
             minimized = LangUtils.replaceEach(script.toString(), REPLACEMENT_KEYS, REPLACEMENT_VALUES, true, REPLACEMENT_KEYS.length);
             minimized = "var pf=window.PrimeFaces;"
-                        + minimized
-                        + "if(window.$){$(PrimeFaces.escapeClientId(\"" + id + "\")).remove();}";
+                          + minimized
+                          + "if(window.$){$(PrimeFaces.escapeClientId(\"" + id + "\")).remove();}";
+        }
+        else {
+            minimized = script.toString();
         }
 
         return minimized;
