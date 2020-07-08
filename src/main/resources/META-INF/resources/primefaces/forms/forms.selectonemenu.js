@@ -201,9 +201,16 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      */
     _render: function() {
         var contentStyle = this.jq.attr('style'),
-        hasWidth = contentStyle && contentStyle.indexOf('width') != -1;
+            hasWidth = contentStyle && contentStyle.indexOf('width') != -1;
 
-        if(this.cfg.autoWidth && !hasWidth) {
+        if (hasWidth) {
+            // need to subtract the drop down icon from total width
+            var labelsWidth = this.jq.find('.ui-selectonemenu-label').width();
+            var dropDownWidth = this.jq.find('.ui-selectonemenu-trigger.ui-state-default.ui-corner-right').width();
+            var minWidth = (labelsWidth - dropDownWidth) + 'px';
+            this.jq.css('width', minWidth);
+            this.jq.css('min-width', minWidth);
+        } else if (this.cfg.autoWidth) {
             this.jq.css('min-width', this.input.outerWidth());
         }
     },
