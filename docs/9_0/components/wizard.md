@@ -35,6 +35,7 @@ nextLabel | null | String | Label of next navigation button.
 backLabel | null | String | Label of back navigation button.
 widgetVar | null | String | Name of the client side widget
 updateModelOnPrev | false | Boolean | If yes, the model will be updated when the "Back" button is clicked. Default is false.
+animate | false | Boolean | When enabled an animation is used to transition wizard steps. Default if false.
 
 ## Ajax Behavior Events
 Wizard provides custom ajax behavior events to configure the built-in AJAX requests.

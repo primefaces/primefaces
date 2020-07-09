@@ -28986,6 +28986,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When enabled an animation is used to transition wizard steps. Default if false.]]>
+            </description>
+            <name>animate</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>

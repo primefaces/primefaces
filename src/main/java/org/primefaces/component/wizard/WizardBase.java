@@ -25,8 +25,8 @@ package org.primefaces.component.wizard;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.component.behavior.ClientBehaviorHolder;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
 public abstract class WizardBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
@@ -48,7 +48,8 @@ public abstract class WizardBase extends UIComponentBase implements Widget, Clie
         onnext,
         nextLabel,
         backLabel,
-        updateModelOnPrev
+        updateModelOnPrev,
+        animate
     }
 
     public WizardBase() {
@@ -154,5 +155,13 @@ public abstract class WizardBase extends UIComponentBase implements Widget, Clie
 
     public void setUpdateModelOnPrev(boolean updateModelOnPrev) {
         getStateHelper().put(PropertyKeys.updateModelOnPrev, updateModelOnPrev);
+    }
+
+    public boolean isAnimate() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.animate, false);
+    }
+
+    public void setAnimate(boolean animate) {
+        getStateHelper().put(PropertyKeys.animate, animate);
     }
 }
