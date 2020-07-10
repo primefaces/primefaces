@@ -1704,6 +1704,9 @@
                 this.options.onBlur.call(this, event);
             }
 
+            //reformat input - is always OK? or only if it was modified?
+            this.inputfield.val(this.getValueToRender());
+
             this.inputfield.removeClass('ui-state-focus');
             this.container.removeClass('ui-inputwrapper-focus');
         },
