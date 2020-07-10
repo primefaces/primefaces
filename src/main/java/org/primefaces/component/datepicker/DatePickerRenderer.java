@@ -49,6 +49,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
     @Override
     protected void encodeMarkup(FacesContext context, UICalendar uicalendar, String value) throws IOException {
         DatePicker datepicker = (DatePicker) uicalendar;
+        String pattern = datepicker.calculatePattern();
 
         if (datepicker.isShowTimeWithoutDefault() == null) {
             Class<?> type = datepicker.getTypeFromValueByValueExpression(context);
@@ -56,6 +57,20 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             if (type != null) {
                 if (LocalDateTime.class.isAssignableFrom(type)) {
                     datepicker.setShowTime(true);
+                }
+                else {
+                    datepicker.setShowTime(false);
+                }
+            }
+            else {
+                if (CalendarUtils.hasTime(pattern)) {
+                    datepicker.setShowTime(true);
+                    if (pattern.contains("s")) {
+                        datepicker.setShowSeconds(true);
+                    }
+                    else {
+                        datepicker.setShowSeconds(false);
+                    }
                 }
                 else {
                     datepicker.setShowTime(false);
@@ -202,7 +217,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
 
         String mask = datepicker.getMask();
         if (mask != null && !mask.equals("false")) {
-            String patternTemplate = datepicker.getPattern() == null ? pattern : datepicker.getPattern();
+            String patternTemplate = datepicker.calculatePattern();
             String maskTemplate = (mask.equals("true")) ? datepicker.convertPattern(patternTemplate) : mask;
             wb.attr("mask", maskTemplate)
                 .attr("maskSlotChar", datepicker.getMaskSlotChar(), "_")
