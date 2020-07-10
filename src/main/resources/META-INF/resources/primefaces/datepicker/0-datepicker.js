@@ -1735,12 +1735,12 @@
 
             try {
                 var value = this.parseValueFromString(rawValue);
-                this.updateModel(event, value);
+                this.updateModel(event, value, false);
                 this.updateViewDate(event, value.length ? value[0] : value);
             }
             catch (err) {
                 if (!this.options.mask) {
-                    this.updateModel(event, rawValue);
+                    this.updateModel(event, rawValue, false);
                 }
             }
 
@@ -2488,9 +2488,11 @@
             this._setInitOptionValues();
         },
 
-        updateModel: function (event, value) {
+        updateModel: function (event, value, updateInput) {
             this.value = (value === '' ? null : value);
-            this.inputfield.val(this.getValueToRender());
+            if (updateInput != false) {
+                this.inputfield.val(this.getValueToRender());
+            }
 
             this.panel.get(0).innerHTML = this.renderPanelElements();
 
