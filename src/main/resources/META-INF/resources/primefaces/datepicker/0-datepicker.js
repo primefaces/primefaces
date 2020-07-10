@@ -788,6 +788,11 @@
                         minSize = (match === "y" ? size : 1),
                         digits = new RegExp("^\\d{" + minSize + "," + size + "}"),
                         num = value.substring(iValue).match(digits);
+                    if (!num && match === "y" && isDoubled) {
+                        //allow 2 digit-inputs for 4-digit-year-pattern (gets reformated to 4 digits onBlur)
+                        digits = new RegExp("^\\d{" + 2 + "," + size + "}"),
+                            num = value.substring(iValue).match(digits);
+                    }
                     if (!num) {
                         throw "Missing number at position " + iValue;
                     }
