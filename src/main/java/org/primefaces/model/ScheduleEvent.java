@@ -48,9 +48,30 @@ public interface ScheduleEvent<T> {
 
     boolean isAllDay();
 
+    void setAllDay(boolean allDay);
+
     String getStyleClass();
 
-    boolean isEditable();
+    /**
+     * @deprecated Use {@link #isResizable()} or {@link #isDraggable()} instead.
+     */
+    default boolean isEditable() {
+        return isDraggable() != null && isResizable() != null && (isDraggable() || isResizable());
+    }
+
+    /**
+     * @return Whether the event should be draggable. Returning {@code null}
+     * means that the default of the schedule is applied. Otherwise, this
+     * setting overrides the default of the schedule.
+     */
+    Boolean isDraggable();
+
+    /**
+     * @return Whether the event should be resizable. Returning {@code null}
+     * means that the default of the schedule is applied. Otherwise, this
+     * setting overrides the default of the schedule.
+     */
+    Boolean isResizable();
 
     boolean isOverlapAllowed();
 

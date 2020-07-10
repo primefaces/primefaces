@@ -30,6 +30,7 @@ import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.WidgetBuilder;
 
@@ -115,9 +116,14 @@ public class ScheduleRenderer extends CoreRenderer {
                 jsonObject.put("start", dateTimeFormatter.format(event.getStartDate().atZone(zoneId)));
                 jsonObject.put("end", dateTimeFormatter.format(event.getEndDate().atZone(zoneId)));
                 jsonObject.put("allDay", event.isAllDay());
-                jsonObject.put("editable", event.isEditable());
+                if (event.isDraggable() != null) {
+                    jsonObject.put("startEditable", event.isDraggable());
+                }
+                if (event.isResizable() != null) {
+                    jsonObject.put("durationEditable", event.isResizable());
+                }
                 jsonObject.put("overlap", event.isOverlapAllowed());
-                jsonObject.put("className", event.getStyleClass());
+                jsonObject.put("classNames", event.getStyleClass());
                 jsonObject.put("description", event.getDescription());
                 jsonObject.put("url", event.getUrl());
                 jsonObject.put("rendering", Objects.toString(event.getRenderingMode(), null));
@@ -147,30 +153,45 @@ public class ScheduleRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Schedule schedule) throws IOException {
         String clientId = schedule.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
+
         wb.init("Schedule", schedule.resolveWidgetVar(context), clientId)
-                .attr("defaultView", translateViewName(schedule.getView().trim()))
+                .attr("urlTarget", schedule.getUrlTarget(), "_blank")
+                .attr("noOpener", schedule.isNoOpener(), true)
                 .attr("locale", LocaleUtils.toJavascriptLocale(schedule.calculateLocale(context)))
-                .attr("tooltip", schedule.isTooltip(), false)
-                .attr("eventLimit", schedule.getValue().isEventLimit(), false)
-                //timeGrid offers an additional eventLimit - integer value; see https://fullcalendar.io/docs/eventLimit; not exposed yet by PF-schedule
-                .attr("lazyFetching", false);
+                .attr("tooltip", schedule.isTooltip(), false);
+
+        String columnFormat = schedule.getColumnHeaderFormat() != null ? schedule.getColumnHeaderFormat() : schedule.getColumnFormat();
+        if (columnFormat != null) {
+            wb.append(",columnFormatOptions:{" + columnFormat + "}");
+        }
+
+        String extender = schedule.getExtender();
+        if (extender != null) {
+            wb.nativeAttr("extender", extender);
+        }
+
+        wb.append(",calendarCfg:{");
+        wb.append("initialView:\"").append(EscapeUtils.forJavaScript(translateViewName(schedule.getView().trim()))).append("\"");
+        wb.attr("dayMaxEventRows", schedule.getValue().isEventLimit(), false);
+
+        //timeGrid offers an additional eventLimit - integer value; see https://fullcalendar.io/docs/v5/dayMaxEventRows; not exposed yet by PF-schedule
+        wb.attr("lazyFetching", false);
 
         Object initialDate = schedule.getInitialDate();
         if (initialDate != null) {
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE;
-            wb.attr("defaultDate", ((LocalDate) initialDate).format(dateTimeFormatter), null);
-
+            wb.attr("initialDate", ((LocalDate) initialDate).format(dateTimeFormatter), null);
         }
 
         if (schedule.isShowHeader()) {
-            wb.append(",header:{left:'")
+            wb.append(",headerToolbar:{start:'")
                     .append(schedule.getLeftHeaderTemplate()).append("'")
                     .attr("center", schedule.getCenterHeaderTemplate())
-                    .attr("right", translateViewNames(schedule.getRightHeaderTemplate()))
+                    .attr("end", translateViewNames(schedule.getRightHeaderTemplate()))
                     .append("}");
         }
         else {
-            wb.attr("header", false);
+            wb.attr("headerToolbar", false);
         }
 
         boolean isShowWeekNumbers = schedule.isShowWeekNumbers();
@@ -179,25 +200,18 @@ public class ScheduleRenderer extends CoreRenderer {
                 .attr("slotDuration", schedule.getSlotDuration(), "00:30:00")
                 .attr("scrollTime", schedule.getScrollTime(), "06:00:00")
                 .attr("timeZone", schedule.getClientTimeZone(), "local")
-                .attr("minTime", schedule.getMinTime(), null)
-                .attr("maxTime", schedule.getMaxTime(), null)
+                .attr("slotMinTime", schedule.getMinTime(), null)
+                .attr("slotMaxTime", schedule.getMaxTime(), null)
                 .attr("aspectRatio", schedule.getAspectRatio(), Double.MIN_VALUE)
                 .attr("weekends", schedule.isShowWeekends(), true)
-                .attr("eventStartEditable", schedule.isDraggable(), true)
-                .attr("eventDurationEditable", schedule.isResizable(), true)
+                .attr("eventStartEditable", schedule.isDraggable())
+                .attr("eventDurationEditable", schedule.isResizable())
                 .attr("slotLabelInterval", schedule.getSlotLabelInterval(), null)
                 .attr("slotLabelFormat", schedule.getSlotLabelFormat(), null)
                 .attr("eventTimeFormat", schedule.getTimeFormat(), null) //https://momentjs.com/docs/#/displaying/
                 .attr("weekNumbers", isShowWeekNumbers, false)
                 .attr("nextDayThreshold", schedule.getNextDayThreshold(), "09:00:00")
-                .attr("slotEventOverlap", schedule.isSlotEventOverlap(), true)
-                .attr("urlTarget", schedule.getUrlTarget(), "_blank")
-                .attr("noOpener", schedule.isNoOpener(), true);
-
-        String columnFormat = schedule.getColumnHeaderFormat() != null ? schedule.getColumnHeaderFormat() : schedule.getColumnFormat();
-        if (columnFormat != null) {
-            wb.append(",columnFormatOptions:{" + columnFormat + "}");
-        }
+                .attr("slotEventOverlap", schedule.isSlotEventOverlap(), true);
 
         String displayEventEnd = schedule.getDisplayEventEnd();
         if (displayEventEnd != null) {
@@ -209,18 +223,13 @@ public class ScheduleRenderer extends CoreRenderer {
             }
         }
 
-        String extender = schedule.getExtender();
-        if (extender != null) {
-            wb.nativeAttr("extender", extender);
-        }
-
         if (isShowWeekNumbers) {
             String weekNumCalculation = schedule.getWeekNumberCalculation();
             String weekNumCalculator = schedule.getWeekNumberCalculator();
 
             if (weekNumCalculation.equals("custom")) {
                 if (weekNumCalculator != null) {
-                    wb.append(",weekNumberCalculation: function(){ return ")
+                    wb.append(",weekNumberCalculation: function(date){ return ")
                             .append(schedule.getWeekNumberCalculator())
                             .append("}");
                 }
@@ -229,6 +238,8 @@ public class ScheduleRenderer extends CoreRenderer {
                 wb.attr("weekNumberCalculation", weekNumCalculation, "local");
             }
         }
+
+        wb.append("}");
 
         encodeClientBehaviors(context, schedule);
 

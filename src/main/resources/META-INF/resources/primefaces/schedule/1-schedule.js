@@ -3,10 +3,6 @@
  * 
  * Schedule provides an Outlook Calendar, iCal like JSF component to manage events.
  * 
- * @typedef {import("@fullcalendar/core").OptionsInput} PrimeFaces.widget.Schedule.OptionsInput Type alias for the
- * {@link "@fullcalendar/core/types/input-types".OptionsInput|OptionsInput} interface from FullCalendar, required for
- * technical reasons.
- * 
  * @typedef PrimeFaces.widget.Schedule.ScheduleExtender Name of JavaScript function to extend the options of the
  * underlying FullCalendar plugin. Access the this schedule widget via the this context, and change the FullCalendar
  * configuration stored in `this.cfg`. See also {@link ScheduleCfg.extender}.
@@ -21,15 +17,17 @@
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
- * @extends {PrimeFaces.widget.Schedule.OptionsInput} cfg
  * 
  * @prop {PrimeFaces.widget.Schedule.ScheduleExtender} cfg.extender Name of JavaScript function to extend the options of
  * the underlying FullCalendar plugin. Access the this schedule widget via the this context, and change the FullCalendar
  * configuration stored in `this.cfg`.
+ * @prop {import("@fullcalendar/core").CalendarOptions} cfg.calendarCfg The configuration object that is passed to the
+ * FullCalendar upon initialization, see {@link CalendarOptions|CalendarOptions}.
  * @prop {string} cfg.formId Client ID of the form that is used for AJAX requests.
+ * @prop {string} cfg.locale Locale code of the locale for the FullCalendar, such as `de` or `en`.
  * @prop {boolean} cfg.noOpener Whether for URL events access to the opener window from the target site should be
  * prevented (phishing protection), default value is `true`.
- * @prop {boolean} cfg.theme Whether theming is enabled.
+ * @prop {boolean} cfg.themeSystem Theme system used for rendering the calendar.
  * @prop {boolean} cfg.tooltip Whether a tooltip should be displayed on hover.
  * @prop {string} cfg.urlTarget Target for events with urls. Clicking on such events in the schedule will not trigger the
  * `selectEvent` but open the url using this target instead. Default is `_blank`.
@@ -44,15 +42,27 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         this.cfg.formId = this.jq.closest('form').attr('id');
-        this.cfg.theme = true;
+        this.cfg.calendarCfg.themeSystem = 'standard';
+        this.cfg.calendarCfg.locale = FullCalendar.globalLocales[this.cfg.locale || "en"];
+        this.cfg.calendarCfg.slotLabelFormat = this.cfg.calendarCfg.slotLabelFormat || undefined; 
+        this.cfg.calendarCfg.viewClassNames = this.onViewChange.bind(this);
         this.viewNameState = $(this.jqId + '_view');
         this.cfg.urlTarget = this.cfg.urlTarget || "_blank";
-        this.cfg.plugins = [ 'interaction', 'dayGrid', 'timeGrid', 'list', 'moment', 'momentTimezone'];
+        this.cfg.calendarCfg.plugins = [
+            FullCalendar.interactionPlugin, 
+            FullCalendar.dayGridPlugin,
+            FullCalendar.timeGridPlugin,
+            FullCalendar.listPlugin,
+            FullCalendar.momentPlugin,
+            FullCalendar.momentTimezonePlugin
+        ];
 
         this.setupEventSource();
 
         if(this.cfg.tooltip) {
-            this.tip = $('<div class="ui-tooltip ui-widget ui-widget-content ui-shadow ui-corner-all"></div>').appendTo(this.jq);
+            this.tip = $('<div class="ui-tooltip ui-widget ui-widget-content ui-shadow ui-corner-all"></div>').appendTo(document.body);
+            this.addDestroyListener(function(){this.tip.remove();});
+            this.addRefreshListener(function(){this.tip.remove();});
         }
 
         this.setupEventHandlers();
@@ -75,10 +85,8 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     _render: function() {
         var _self = this;
         var calendarEl = document.getElementById(this.cfg.id);
-        _self.calendar = new FullCalendar.Calendar(calendarEl, this.cfg);
+        _self.calendar = new FullCalendar.Calendar(calendarEl, this.cfg.calendarCfg);
         _self.calendar.render();
-
-        this.bindViewChangeListener();
     },
 
     /**
@@ -88,7 +96,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     setupEventHandlers: function() {
         var $this = this;
 
-        this.cfg.dateClick = function(dateClickInfo) {
+        this.cfg.calendarCfg.dateClick = function(dateClickInfo) {
             var currentDate = PrimeFaces.toISOString(dateClickInfo.date);
             var ext = {
                 params: [{
@@ -117,7 +125,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
         
-        this.cfg.eventClick = function(eventClickInfo) {
+        this.cfg.calendarCfg.eventClick = function(eventClickInfo) {
             if (eventClickInfo.event.url) {
                 var targetWindow = window.open('', $this.cfg.urlTarget);
                 if ($this.cfg.noOpener) {
@@ -138,7 +146,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
 
-        this.cfg.eventDrop = function(eventDropInfo) {
+        this.cfg.calendarCfg.eventDrop = function(eventDropInfo) {
             if($this.hasBehavior('eventMove')) {
                 var ext = {
                     params: [
@@ -146,7 +154,8 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                         {name: $this.id + '_yearDelta', value: eventDropInfo.delta.years},
                         {name: $this.id + '_monthDelta', value: eventDropInfo.delta.months},
                         {name: $this.id + '_dayDelta', value: eventDropInfo.delta.days},
-                        {name: $this.id + '_minuteDelta', value: (eventDropInfo.delta.milliseconds/60000)}
+                        {name: $this.id + '_minuteDelta', value: (eventDropInfo.delta.milliseconds/60000)},
+                        {name: $this.id + '_allDay', value: (eventDropInfo.event.allDay)}
                     ]
                 };
 
@@ -154,7 +163,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
 
-        this.cfg.eventResize = function(eventResizeInfo) {
+        this.cfg.calendarCfg.eventResize = function(eventResizeInfo) {
             if($this.hasBehavior('eventResize')) {
                 var ext = {
                     params: [
@@ -175,7 +184,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.cfg.tooltip) {
-            this.cfg.eventMouseEnter = function(mouseEnterInfo) {
+            this.cfg.calendarCfg.eventMouseEnter = function(mouseEnterInfo) {
                 if(mouseEnterInfo.event.extendedProps.description) {
                     $this.tipTimeout = setTimeout(function() {
                         $this.tip.css({
@@ -189,7 +198,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 }
             };
 
-            this.cfg.eventMouseLeave = function(mouseLeaveInfo) {
+            this.cfg.calendarCfg.eventMouseLeave = function(mouseLeaveInfo) {
                 if($this.tipTimeout) {
                     clearTimeout($this.tipTimeout);
                 }
@@ -201,7 +210,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             };
         } else {
             // PF #2795 default to regular tooltip
-            this.cfg.eventRender = function(info) {
+            this.cfg.calendarCfg.eventDidMount = function(info) {
                 if(info.event.description) {
                     element.attr('title', info.event.description);
                 }
@@ -216,7 +225,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     setupEventSource: function() {
         var $this = this;
 
-        this.cfg.events = function(fetchInfo, successCallback) {
+        this.cfg.calendarCfg.events = function(fetchInfo, successCallback) {
             var options = {
                 source: $this.id,
                 process: $this.id,
@@ -251,17 +260,15 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Sets up the event listeners for when the user switches the to a different view (month view, week day, or time
-     * view). Updates the hidden input field with the current view name. Used for restoring the view after an AJAX
-     * update.
+     * The event listener for when the user switches the to a different view (month view, week day, or time view).
+     * Updates the hidden input field with the current view name. Used for restoring the view after an AJAX update.
+     * @param {import("@fullcalendar/common").ViewContentArg} arg Event data passed by FullCalendar when the view
+     * changes.
      * @private
      */
-    bindViewChangeListener: function() {
-        var $this = this;
-        this.calendar.on('viewSkeletonRender', function(event) {
-            $this.viewNameState.val(event.view.type);
-            $this.callBehavior('viewChange');
-        });
+    onViewChange: function(arg) {
+        this.viewNameState.val(arg.view.type);
+        this.callBehavior('viewChange');
     },
 
     /**
@@ -289,12 +296,12 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         var columnFormat = this.cfg.columnFormatOptions;
         if(columnFormat) {
             for (var view in views) {
-                views[view] = {columnHeaderFormat: columnFormat[view]};
+                views[view] = {dayHeaderFormat: columnFormat[view]};
             }
         }
 
-        this.cfg.views = this.cfg.views||{};
-        $.extend(true, this.cfg.views, views);
+        this.cfg.calendarCfg.views = this.cfg.views||{};
+        $.extend(true, this.cfg.calendarCfg.views, views);
     }
 
 });

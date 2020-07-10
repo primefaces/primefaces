@@ -154,7 +154,7 @@ notable ones are:
       a flexible ImageFlow like flow written in javascript, which can handle any kind of content.
 * [Cropper.js](./classes/cropper.html)
     * The [Cropper.js](https://fengyuanchen.github.io/cropperjs/) library, a visual JavaScript image cropper.
-* [FullCalendar](./modules/__fullcalendar_core_calendar_.html)
+* [FullCalendar](./classes/calendar.html)
     * The [FullCalendar library](https://fullcalendar.io/), a full-sized drag & drop JavaScript event calendar.
 * [Google Maps](./modules/google.maps.html)
     * The [Google Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/tutorial) for
