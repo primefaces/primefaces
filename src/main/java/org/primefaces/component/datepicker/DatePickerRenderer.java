@@ -65,12 +65,6 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             else {
                 if (CalendarUtils.hasTime(pattern)) {
                     datepicker.setShowTime(true);
-                    if (pattern.contains("s")) {
-                        datepicker.setShowSeconds(true);
-                    }
-                    else {
-                        datepicker.setShowSeconds(false);
-                    }
                 }
                 else {
                     datepicker.setShowTime(false);
@@ -88,6 +82,15 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
                 else {
                     datepicker.setTimeOnly(false);
                 }
+            }
+        }
+
+        if (datepicker.isShowSecondsWithoutDefault() == null) {
+            if (pattern.contains("s")) {
+                datepicker.setShowSeconds(true);
+            }
+            else {
+                datepicker.setShowSeconds(false);
             }
         }
 
