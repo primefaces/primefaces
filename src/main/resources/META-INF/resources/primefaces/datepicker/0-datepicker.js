@@ -1,4 +1,4 @@
-or only if it was modified?/**
+/**
  * Prime DatePicker Widget
  */
 (function (factory) {
