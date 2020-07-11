@@ -1,4 +1,4 @@
-/**
+or only if it was modified?/**
  * Prime DatePicker Widget
  */
 (function (factory) {
@@ -1709,7 +1709,6 @@
                 this.options.onBlur.call(this, event);
             }
 
-            //reformat input - is always OK? or only if it was modified?
             this.inputfield.val(this.getValueToRender());
 
             this.inputfield.removeClass('ui-state-focus');
