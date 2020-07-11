@@ -55,20 +55,10 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             Class<?> type = datepicker.getTypeFromValueByValueExpression(context);
 
             if (type != null) {
-                if (LocalDateTime.class.isAssignableFrom(type)) {
-                    datepicker.setShowTime(true);
-                }
-                else {
-                    datepicker.setShowTime(false);
-                }
+                datepicker.setShowTime(LocalDateTime.class.isAssignableFrom(type));
             }
             else {
-                if (CalendarUtils.hasTime(pattern)) {
-                    datepicker.setShowTime(true);
-                }
-                else {
-                    datepicker.setShowTime(false);
-                }
+                datepicker.setShowTime(CalendarUtils.hasTime(pattern));
             }
         }
 
@@ -76,22 +66,12 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             Class<?> type = datepicker.getTypeFromValueByValueExpression(context);
 
             if (type != null) {
-                if (LocalTime.class.isAssignableFrom(type)) {
-                    datepicker.setTimeOnly(true);
-                }
-                else {
-                    datepicker.setTimeOnly(false);
-                }
+                datepicker.setTimeOnly(LocalTime.class.isAssignableFrom(type));
             }
         }
 
         if (datepicker.isShowSecondsWithoutDefault() == null) {
-            if (pattern.contains("s")) {
-                datepicker.setShowSeconds(true);
-            }
-            else {
-                datepicker.setShowSeconds(false);
-            }
+            datepicker.setShowSeconds(pattern.contains("s"));
         }
 
         ResponseWriter writer = context.getResponseWriter();
