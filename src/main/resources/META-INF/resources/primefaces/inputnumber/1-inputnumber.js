@@ -97,7 +97,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         });
 
         var originalOnchange = this.input.prop('onchange');
-        this.input.prop('onchange', null).off('change').on('change', function (e) {
+        this.input.prop('onchange', null).off('change.inputnumber').on('change.inputnumber', function (e) {
 
             var oldValue = $this.copyValueToHiddenInput();
             if (originalOnchange && originalOnchange.call(this, e) === false) {
@@ -107,7 +107,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         });
 
         var originalOnkeydown = this.input.prop('onkeydown');
-        this.input.prop('onkeydown', null).off('keydown').on('keydown', function (e) {
+        this.input.prop('onkeydown', null).off('keydown.inputnumber').on('keydown.inputnumber', function (e) {
 
             var oldValue = $this.copyValueToHiddenInput();
             if (originalOnkeydown && originalOnkeydown.call(this, e) === false) {
@@ -117,7 +117,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         });
 
         // handle mousewheel and paste
-        this.input.off('input').on('input', function (e) {
+        this.input.off('input.inputnumber').on('input.inputnumber', function (e) {
             $this.copyValueToHiddenInput();
         });
     },
