@@ -75,7 +75,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
 
         // copy the value from the input to the hidden input
         var originalOnkeyup = this.input.prop('onkeyup');
-        this.input.prop('onkeyup', null).off('keyup').on('keyup', function (e) {
+        this.input.prop('onkeyup', null).off('keyup.inputnumber').on('keyup.inputnumber', function (e) {
 
             var oldValue;
 
