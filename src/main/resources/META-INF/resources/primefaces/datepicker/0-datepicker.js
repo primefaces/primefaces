@@ -788,6 +788,11 @@
                         minSize = (match === "y" ? size : 1),
                         digits = new RegExp("^\\d{" + minSize + "," + size + "}"),
                         num = value.substring(iValue).match(digits);
+                    if (!num && match === "y" && isDoubled) {
+                        //allow 2 digit-inputs for 4-digit-year-pattern (gets reformated to 4 digits onBlur)
+                        digits = new RegExp("^\\d{" + 2 + "," + size + "}"),
+                            num = value.substring(iValue).match(digits);
+                    }
                     if (!num) {
                         throw "Missing number at position " + iValue;
                     }
@@ -1704,6 +1709,8 @@
                 this.options.onBlur.call(this, event);
             }
 
+            this.inputfield.val(this.getValueToRender());
+
             this.inputfield.removeClass('ui-state-focus');
             this.container.removeClass('ui-inputwrapper-focus');
         },
@@ -1735,12 +1742,12 @@
 
             try {
                 var value = this.parseValueFromString(rawValue);
-                this.updateModel(event, value);
+                this.updateModel(event, value, false);
                 this.updateViewDate(event, value.length ? value[0] : value);
             }
             catch (err) {
                 if (!this.options.mask) {
-                    this.updateModel(event, rawValue);
+                    this.updateModel(event, rawValue, false);
                 }
             }
 
@@ -2488,9 +2495,11 @@
             this._setInitOptionValues();
         },
 
-        updateModel: function (event, value) {
+        updateModel: function (event, value, updateInput) {
             this.value = (value === '' ? null : value);
-            this.inputfield.val(this.getValueToRender());
+            if (updateInput != false) {
+                this.inputfield.val(this.getValueToRender());
+            }
 
             this.panel.get(0).innerHTML = this.renderPanelElements();
 
