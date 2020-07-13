@@ -246,7 +246,7 @@ display a message about the selected item instantly.
 
 ```xhtml
 <p:autoComplete value="#{bean.text}" completeMethod="#{bean.complete}">
-    <p:ajax event="itemSelect" listener="bean.handleSelect" update="msg" />
+    <p:ajax event="itemSelect" listener="#{bean.handleSelect}" update="msg" />
 </p:autoComplete>
 <p:messages id=”msg” />
 ```
