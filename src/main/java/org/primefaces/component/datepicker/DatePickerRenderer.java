@@ -49,17 +49,16 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
     @Override
     protected void encodeMarkup(FacesContext context, UICalendar uicalendar, String value) throws IOException {
         DatePicker datepicker = (DatePicker) uicalendar;
+        String pattern = datepicker.calculatePattern();
 
         if (datepicker.isShowTimeWithoutDefault() == null) {
             Class<?> type = datepicker.getTypeFromValueByValueExpression(context);
 
             if (type != null) {
-                if (LocalDateTime.class.isAssignableFrom(type)) {
-                    datepicker.setShowTime(true);
-                }
-                else {
-                    datepicker.setShowTime(false);
-                }
+                datepicker.setShowTime(LocalDateTime.class.isAssignableFrom(type));
+            }
+            else {
+                datepicker.setShowTime(CalendarUtils.hasTime(pattern));
             }
         }
 
@@ -67,13 +66,12 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             Class<?> type = datepicker.getTypeFromValueByValueExpression(context);
 
             if (type != null) {
-                if (LocalTime.class.isAssignableFrom(type)) {
-                    datepicker.setTimeOnly(true);
-                }
-                else {
-                    datepicker.setTimeOnly(false);
-                }
+                datepicker.setTimeOnly(LocalTime.class.isAssignableFrom(type));
             }
+        }
+
+        if (datepicker.isShowSecondsWithoutDefault() == null) {
+            datepicker.setShowSeconds(pattern.contains("s"));
         }
 
         ResponseWriter writer = context.getResponseWriter();
@@ -202,7 +200,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
 
         String mask = datepicker.getMask();
         if (mask != null && !mask.equals("false")) {
-            String patternTemplate = datepicker.getPattern() == null ? pattern : datepicker.getPattern();
+            String patternTemplate = datepicker.calculatePattern();
             String maskTemplate = (mask.equals("true")) ? datepicker.convertPattern(patternTemplate) : mask;
             wb.attr("mask", maskTemplate)
                 .attr("maskSlotChar", datepicker.getMaskSlotChar(), "_")

@@ -516,6 +516,15 @@ public class CalendarUtils {
         return pattern.trim();
     }
 
+    public static final boolean hasTime(String pattern) {
+        for (String timeChar : TIME_CHARS) {
+            if (pattern.contains(timeChar)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Convert ISO-String (@see <a href="https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString">https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString</a>)
      * to LocalDateTime.
