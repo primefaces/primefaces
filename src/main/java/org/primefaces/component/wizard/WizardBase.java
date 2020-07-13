@@ -49,7 +49,8 @@ public abstract class WizardBase extends UIComponentBase implements Widget, Clie
         nextLabel,
         backLabel,
         updateModelOnPrev,
-        animate
+        effect,
+        effectDuration,
     }
 
     public WizardBase() {
@@ -157,11 +158,19 @@ public abstract class WizardBase extends UIComponentBase implements Widget, Clie
         getStateHelper().put(PropertyKeys.updateModelOnPrev, updateModelOnPrev);
     }
 
-    public boolean isAnimate() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.animate, false);
+    public String getEffect() {
+        return (String) getStateHelper().eval(PropertyKeys.effect, null);
     }
 
-    public void setAnimate(boolean animate) {
-        getStateHelper().put(PropertyKeys.animate, animate);
+    public void setEffect(String effect) {
+        getStateHelper().put(PropertyKeys.effect, effect);
+    }
+
+    public int getEffectDuration() {
+        return (Integer) getStateHelper().eval(PropertyKeys.effectDuration, 400);
+    }
+
+    public void setEffectDuration(int effectDuration) {
+        getStateHelper().put(PropertyKeys.effectDuration, effectDuration);
     }
 }

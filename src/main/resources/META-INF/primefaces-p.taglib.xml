@@ -1349,7 +1349,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Animation effect to use when showing and hiding suggestions.]]>
             </description>
             <name>effect</name>
             <required>false</required>
@@ -1357,7 +1357,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Duration of the animation effect in milliseconds.]]>
             </description>
             <name>effectDuration</name>
             <required>false</required>
@@ -28988,11 +28988,19 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[When enabled an animation is used to transition wizard steps. Default if false.]]>
+                <![CDATA[Animation effect to use when showing and hiding wizard panel. Default is no animation.]]>
             </description>
-            <name>animate</name>
+            <name>effect</name>
             <required>false</required>
-            <type>java.lang.Boolean</type>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Duration of the animation effect in milliseconds.]]>
+            </description>
+            <name>effectDuration</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
         </attribute>
     </tag>
     <tag>

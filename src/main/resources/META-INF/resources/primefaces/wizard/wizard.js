@@ -34,7 +34,8 @@
  * @prop {boolean} cfg.showStepStatus Whether to display a progress indicator.
  * @prop {boolean} cfg.showNavBar Whether to display a navigation bar.
  * @prop {string[]} cfg.steps List of IDs of the individual wizard step tabs.
- * @prop {boolean} cfg.animate Whether to animate the changing of steps.
+ * @prop {string} cfg.effect Animation effect to use when showing and hiding wizard.
+ * @prop {number} cfg.effectDuration Duration of the animation effect in milliseconds.
  */
 PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
 
@@ -93,10 +94,10 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
         var targetStepIndex = this.getStepIndex(this.currentStep) - 1;
         if(targetStepIndex >= 0) {
             var stepToGo = this.cfg.steps[targetStepIndex];
-            if (this.cfg.animate) {
-                this.content.fadeOut("fast", function() {
+            if (this.cfg.effect) {
+                this.content.hide($this.cfg.effect, {}, $this.cfg.effectDuration, function() {
                     $this.loadStep(stepToGo, "back");
-                    $this.content.fadeIn();
+                    $this.content.show($this.cfg.effect, {}, $this.cfg.effectDuration);
                 });
             } else {
                 this.loadStep(stepToGo, "back");
@@ -119,10 +120,10 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
         var targetStepIndex = this.getStepIndex(this.currentStep) + 1;
         if(targetStepIndex < this.cfg.steps.length) {
             var stepToGo = this.cfg.steps[targetStepIndex];
-            if (this.cfg.animate) {
-                this.content.fadeOut("fast", function() {
+            if (this.cfg.effect) {
+                this.content.hide($this.cfg.effect, {}, $this.cfg.effectDuration, function() {
                     $this.loadStep(stepToGo, "next");
-                    $this.content.fadeIn();
+                    $this.content.show($this.cfg.effect, {}, $this.cfg.effectDuration);
                 });
             } else {
                 this.loadStep(stepToGo, "next");

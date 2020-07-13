@@ -108,8 +108,13 @@ public class WizardRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Wizard", wizard.resolveWidgetVar(context), clientId)
                 .attr("showStepStatus", wizard.isShowStepStatus())
-                .attr("showNavBar", wizard.isShowNavBar())
-                .attr("animate", wizard.isAnimate(), false);
+                .attr("showNavBar", wizard.isShowNavBar());
+
+        String effect = wizard.getEffect();
+        if (effect != null) {
+            wb.attr("effect", effect, null)
+                .attr("effectDuration", wizard.getEffectDuration(), Integer.MAX_VALUE);
+        }
 
         if (wizard.getOnback() != null) {
             wb.callback("onback", "function()", wizard.getOnback());
