@@ -42,6 +42,8 @@ beforeShow | null | String | Client side callback to execute before tooltip is s
 onHide | null | String | Client side callback to execute after tooltip is shown.
 onShow | null | String | Client side callback to execute after tooltip is shown.
 position | right | String | Position of the tooltip, valid values are right, left, top and bottom.
+my | null | String | Position of tooltip with respect to target. If set overrides the 'position' attribute. Example "left center".
+at | null | String | Position of tooltip with respect to target. If set overrides the 'position' attribute. Example "right center".
 
 ## Getting started with the Tooltip
 Tooltip can be used by attaching it to a target component. Tooltip value can also be retrieved from

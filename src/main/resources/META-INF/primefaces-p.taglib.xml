@@ -27732,9 +27732,25 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Position of the tooltip, valid values are right, left, top and bottom.]]>
+                <![CDATA[Position of the tooltip, valid values are right, left, top and bottom. Default is 'right'.]]>
             </description>
             <name>position</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Position of tooltip with respect to target. If set overrides the 'position' attribute. Example "left center".]]>
+            </description>
+            <name>my</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Position of tooltip with respect to target. If set overrides the 'position' attribute. Example "right center".]]>
+            </description>
+            <name>at</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
