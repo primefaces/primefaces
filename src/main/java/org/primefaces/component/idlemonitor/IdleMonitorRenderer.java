@@ -47,7 +47,6 @@ public class IdleMonitorRenderer extends CoreRenderer {
         wb.init("IdleMonitor", idleMonitor.resolveWidgetVar(context), clientId)
                 .attr("timeout", idleMonitor.getTimeout())
                 .attr("multiWindowSupport", idleMonitor.isMultiWindowSupport())
-                .attr("contextPath", context.getExternalContext().getRequestContextPath())
                 .callback("onidle", "function()", idleMonitor.getOnidle())
                 .callback("onactive", "function()", idleMonitor.getOnactive());
 
