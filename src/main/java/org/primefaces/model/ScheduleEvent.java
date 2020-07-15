@@ -55,6 +55,7 @@ public interface ScheduleEvent<T> {
     /**
      * @deprecated Use {@link #isResizable()} or {@link #isDraggable()} instead.
      */
+    @Deprecated
     default boolean isEditable() {
         return isDraggable() != null && isResizable() != null && (isDraggable() || isResizable());
     }
