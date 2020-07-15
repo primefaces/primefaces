@@ -167,6 +167,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "checkbox", null);
+        writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("value", itemValueAsString, null);
         writer.writeAttribute("data-escaped", String.valueOf(escaped), null);
         if (selectItemGroupLabel != null) {
