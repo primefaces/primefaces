@@ -1026,6 +1026,7 @@
                                 <include>org.apache.commons.io.FilenameUtils</include>
                                 <include>org.apache.commons.io.IOUtils</include>
                                 <include>org.apache.commons.io.input.BoundedInputStream</include>
+                                <include>org.apache.commons.io.output.AppendableWriter</include>
                             </includes>
                         </relocation>
                     </relocations>
@@ -1036,6 +1037,7 @@
                                 <include>org/apache/commons/io/FilenameUtils.class</include>
                                 <include>org/apache/commons/io/IOUtils.class</include>
                                 <include>org/apache/commons/io/input/BoundedInputStream.class</include>
+                                <include>org/apache/commons/io/output/AppendableWriter.class</include>
                             </includes>
                         </filter>
                         <filter>
