@@ -699,7 +699,7 @@ declare namespace PrimeFaces.ajax {
          * The handle function which is given the HTML string of the update
          * @param content The new HTML content from the update. 
          */
-        handler(this: TWidget, content: string): void;
+        handle(this: TWidget, content: string): void;
     }
 
     /**
