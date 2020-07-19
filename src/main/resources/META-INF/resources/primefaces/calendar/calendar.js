@@ -258,7 +258,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                 placeholder: this.cfg.maskSlotChar||'_',
                 clearMaskOnLostFocus: this.cfg.maskAutoClear||true,
                 clearIncomplete: this.cfg.maskAutoClear||true,
-                autoUnmask: this.cfg.maskAutoUnmask||true
+                autoUnmask: false
             };
             var pattern = new RegExp("m|d|y|h|s", 'i');
             var isAlias = pattern.test(this.cfg.mask);
