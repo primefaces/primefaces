@@ -912,7 +912,7 @@ public class DataTable extends DataTableBase {
             for (UIComponent kid : getChildren()) {
                 if (kid.isRendered()) {
                     if (kid instanceof Columns) {
-                        int dynamicColumnsCount = ((Columns) kid).getRowCount();
+                        int dynamicColumnsCount = ((Columns) kid).getDynamicColumns().size();
                         if (dynamicColumnsCount > 0) {
                             columnsCount += dynamicColumnsCount;
                         }
@@ -944,7 +944,7 @@ public class DataTable extends DataTableBase {
             for (UIComponent kid : getChildren()) {
                 if (kid.isRendered()) {
                     if (kid instanceof Columns) {
-                        int dynamicColumnsCount = ((Columns) kid).getRowCount();
+                        int dynamicColumnsCount = ((Columns) kid).getDynamicColumns().size();
                         if (dynamicColumnsCount > 0) {
                             columnsCountWithSpan += dynamicColumnsCount;
                         }
