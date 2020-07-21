@@ -270,7 +270,7 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.7</version>
+            <version>2.4</version>
             <optional>true</optional>
         </dependency>
     </dependencies>
@@ -1026,7 +1026,6 @@
                                 <include>org.apache.commons.io.FilenameUtils</include>
                                 <include>org.apache.commons.io.IOUtils</include>
                                 <include>org.apache.commons.io.input.BoundedInputStream</include>
-                                <include>org.apache.commons.io.output.AppendableWriter</include>
                             </includes>
                         </relocation>
                     </relocations>
@@ -1037,7 +1036,6 @@
                                 <include>org/apache/commons/io/FilenameUtils.class</include>
                                 <include>org/apache/commons/io/IOUtils.class</include>
                                 <include>org/apache/commons/io/input/BoundedInputStream.class</include>
-                                <include>org/apache/commons/io/output/AppendableWriter.class</include>
                             </includes>
                         </filter>
                         <filter>
