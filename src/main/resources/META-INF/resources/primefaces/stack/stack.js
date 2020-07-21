@@ -38,7 +38,7 @@ PrimeFaces.widget.Stack = PrimeFaces.widget.BaseWidget.extend({
         else {
             var nextItem = item.next();
         
-            item.css({paddingTop: '35'});
+            item.css({paddingTop: '35px'});
             nextItem.css({top: '-50px', left: '10px'}).children('li').css({top: '55px', left: '-10px'});
             nextItem.find('li a>img').css({width: '79px', marginLeft: '0'});
         }

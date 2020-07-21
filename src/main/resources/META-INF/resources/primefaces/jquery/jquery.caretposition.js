@@ -23,8 +23,8 @@ $(function() {
 
 		simulator : $('<div id="textarea_simulator"></div>').css({
 				position: 'absolute',
-				top: 0,
-				left: 0,
+				top: '0px',
+				left: '0px',
 				visibility: 'hidden'
 			}).appendTo(document.body),
 
@@ -56,8 +56,8 @@ $(function() {
 
 			// caculate width and height
 			cal.simulator.css($.extend({
-				'width': self.width(),
-				'height': self.height()
+				'width': self.width() + 'px',
+				'height': self.height() + 'px'
 			}, cal.specificStyle));
 
 			var value = self.val(), cursorPosition = self.getCursorPosition();

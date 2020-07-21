@@ -201,7 +201,7 @@
 
         // Hide the textarea and associate it with this editor
         var $area = editor.$area = $(area)
-            .css({ border: "none", margin: 0, padding: 0 }) // Needed for IE6 & 7 (won't work in CSS file)
+            .css({ border: "none", margin: '0px', padding: '0px' }) // Needed for IE6 & 7 (won't work in CSS file)
             .hide()
             .data(CLEDITOR, editor)
             .on("blur", function () {
@@ -1120,7 +1120,7 @@
 
         // Position and show the popup
         hidePopups();
-        $popup.css({ left: left, top: top })
+        $popup.css({ left: left + 'px', top: top + 'px' })
             .show();
 
         // Assign the popup button and click event handler

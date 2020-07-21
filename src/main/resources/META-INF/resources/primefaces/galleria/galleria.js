@@ -86,8 +86,8 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
 
         if(this.cfg.showCaption) {
             this.caption = $('<div class="ui-galleria-caption"></div>').css({
-                    'bottom': this.cfg.showFilmstrip ? this.stripWrapper.outerHeight(true) : 0,
-                    'width': this.panelWrapper.width()
+                    'bottom': (this.cfg.showFilmstrip ? this.stripWrapper.outerHeight(true) : 0)  + 'px',
+                    'width': this.panelWrapper.width() + 'px'
                     }).appendTo(this.jq);
 
             this.showCaption(activePanel);

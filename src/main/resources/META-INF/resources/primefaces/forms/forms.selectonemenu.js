@@ -204,7 +204,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         hasWidth = contentStyle && contentStyle.indexOf('width') != -1;
 
         if(this.cfg.autoWidth && !hasWidth) {
-            this.jq.css('min-width', this.input.outerWidth());
+            this.jq.css('min-width', this.input.outerWidth() + 'px');
         }
     },
 
@@ -875,12 +875,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     _show: function() {
         var $this = this;
 
-        this.panel.css({'display':'block', 'opacity':0, 'pointer-events': 'none'});
+        this.panel.css({'display':'block', 'opacity':'0', 'pointer-events': 'none'});
         this.itemsWrapper.css({'overflow': 'scroll'});
 
         this.alignPanel();
 
-        this.panel.css({'display':'none', 'opacity':'', 'pointer-events': '', 'z-index': ++PrimeFaces.zindex});
+        this.panel.css({'display':'none', 'opacity':'', 'pointer-events': '', 'z-index': PrimeFaces.nextZindex()});
         this.itemsWrapper.css({'overflow': ''});
 
         if(this.cfg.effect !== 'none') {
@@ -984,12 +984,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         if(this.panel.parent().is(this.jq)) {
             this.panel.css({
-                left: 0,
-                top: this.jq.innerHeight()
+                left: '0px',
+                top: this.jq.innerHeight() + 'px'
             });
         }
         else {
-            this.panel.css({left:0, top:0}).position({
+            this.panel.css({left:'0px', top:'0px'}).position({
                 my: 'left top'
                 ,at: 'left bottom'
                 ,of: this.jq

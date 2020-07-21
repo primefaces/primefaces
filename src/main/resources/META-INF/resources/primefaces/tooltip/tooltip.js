@@ -255,8 +255,8 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             break;
         }
         this.jq.css({
-            left: position['left'],
-            top: position['top']
+            left: position['left'] + 'px',
+            top: position['top'] + 'px'
         });
     },
 
@@ -268,7 +268,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
          this.jq.css({
             left:'',
             top:'',
-            'z-index': ++PrimeFaces.zindex
+            'z-index': PrimeFaces.nextZindex()
         });
 
         if(this.cfg.trackMouse && this.mouseEvent) {
@@ -352,7 +352,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             }
         }
 
-        this.jq.css({'display':'block', 'opacity':0, 'pointer-events': 'none'});
+        this.jq.css({'display':'block', 'opacity':'0', 'pointer-events': 'none'});
     
         this.align();
 

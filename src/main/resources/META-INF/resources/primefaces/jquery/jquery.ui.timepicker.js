@@ -456,7 +456,7 @@
 						$tp.find('.ui_tpicker_' + litem + ' table').css({
 							width: size + "%",
 							marginLeft: o.isRTL ? '0' : ((size / (-2 * gridSize[litem])) + "%"),
-							marginRight: o.isRTL ? ((size / (-2 * gridSize[litem])) + "%") : '0',
+							marginRight: o.isRTL ? ((size / (-2 * gridSize[litem])) + "%") : '0px',
 							borderCollapse: 'collapse'
 						}).find("td").on("click", function (e) {
 								var $t = $(this),
@@ -565,7 +565,7 @@
 										oldMarginLeft = $g.css(rtl ? 'marginRight' : 'marginLeft').toString().replace('%', ''),
 										newWidth = oldWidth - sliderAccessWidth,
 										newMarginLeft = ((oldMarginLeft * newWidth) / oldWidth) + '%',
-										css = { width: newWidth, marginRight: 0, marginLeft: 0 };
+										css = { width: newWidth + 'px', marginRight: '0px', marginLeft: '0px' };
 									css[rtl ? 'marginRight' : 'marginLeft'] = newMarginLeft;
 									$g.css(css);
 								});

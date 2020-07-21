@@ -101,7 +101,7 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
                     page = (this.cfg.totalSize % this.cfg.chunkSize) == 0 ? pageCount - 2 : pageCount - 1,
                     top = (virtualListHeight < viewportHeight) ? (viewportHeight - virtualListHeight) : (Math.max(page, 0) * pageHeight);
 
-                    this.list.css('top', top);
+                    this.list.css('top', top + 'px');
                     this.content.scrollTop(this.content[0].scrollHeight);
                 }
             }
@@ -109,12 +109,12 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
                 this.content.scrollTop(this.content[0].scrollHeight);
                 this.cfg.offset = this.cfg.totalSize > this.cfg.chunkSize ? this.cfg.totalSize - this.cfg.chunkSize : this.cfg.totalSize;
                 
-                var paddingTop = '';
+                var paddingTop = '0';
                 if (this.content.height() > this.list.height()) {
                     paddingTop = (this.getInnerContentHeight() - this.list.outerHeight() - this.loaderContainer.outerHeight());
                 }
                 
-                this.list.css('padding-top', paddingTop);
+                this.list.css('padding-top', paddingTop + 'px');
             }
             
             this.content.on('scroll', function () {

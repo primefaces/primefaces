@@ -342,8 +342,8 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.panel, function() {
             $(document.body).children('.ui-widget-overlay').css({
-                'width': $(document).width()
-                ,'height': $(document).height()
+                'width': $(document).width() + 'px'
+                ,'height': $(document).height() + 'px'
             });
         });
     },
@@ -354,7 +354,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
     show: function() {
         this.center();
 
-        this.panel.css('z-index', ++PrimeFaces.zindex).show();
+        this.panel.css('z-index', PrimeFaces.nextZindex()).show();
 
         if(!PrimeFaces.utils.isModalActive(this.id)) {
             this.enableModality();
@@ -392,8 +392,8 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         top = (win.height() / 2 ) - (this.panel.height() / 2);
 
         this.panel.css({
-            'left': left,
-            'top': top
+            'left': left + 'px',
+            'top': top + 'px'
         });
     },
 

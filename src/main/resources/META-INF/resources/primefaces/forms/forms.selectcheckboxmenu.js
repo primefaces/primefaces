@@ -996,13 +996,13 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.panel.css({
                 'left':'',
                 'top':'',
-                'z-index': ++PrimeFaces.zindex
+                'z-index': PrimeFaces.nextZindex()
         });
 
         if(this.panel.parent().attr('id') === this.id) {
             this.panel.css({
-                left: 0,
-                top: this.jq.innerHeight()
+                left: '0px',
+                top: this.jq.innerHeight() + 'px'
             });
         }
         else {

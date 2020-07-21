@@ -669,8 +669,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         .css({
                             'left':'',
                             'top':'',
-                            'z-index': ++PrimeFaces.zindex,
-                            'width': content.outerWidth()
+                            'z-index': PrimeFaces.nextZindex(),
+                            'width': content.outerWidth() + 'px'
                         })
                         .position({
                             my: this.cfg.itemtipMyPosition
@@ -682,7 +682,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             if(this.cfg.checkForScrollbar) {
                 if(this.panel.innerHeight() < this.panel.children('.ui-autocomplete-items').outerHeight(true)) {
                     var panelOffset = this.panel.offset();
-                    this.itemtip.css('left', panelOffset.left + this.panel.outerWidth());
+                    this.itemtip.css('left', (panelOffset.left + this.panel.outerWidth()) + 'px');
                 }
             }
 
@@ -1095,14 +1095,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         this.panel.css({'left':'',
                         'top':'',
-                        'width': panelWidth,
-                        'z-index': ++PrimeFaces.zindex
+                        'width': panelWidth + 'px',
+                        'z-index': PrimeFaces.nextZindex()
                 });
 
         if(this.panel.parent().is(this.jq)) {
             this.panel.css({
-                left: 0,
-                top: this.jq.innerHeight()
+                left: '0px',
+                top: this.jq.innerHeight() + 'px'
             });
         }
         else {
