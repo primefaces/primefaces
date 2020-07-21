@@ -231,8 +231,8 @@
 				if (!(isScrollableH || isScrollableV)) {
 					elem.removeClass('jspScrollable');
 					pane.css({
-                        top: '0px',
-                        left: '0px',
+            top: '0px',
+            left: '0px',
 						width: (container.width() - originalPaddingTotalWidth) + 'px'
 					});
 					removeMousewheel();
