@@ -2252,6 +2252,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             if(this.cfg.disabledTextSelection) {
                 PrimeFaces.clearSelection();
             }
+
+            //#3567 trigger client row click on ENTER/SPACE
+            if (this.cfg.onRowClick && event.type === "keydown") {
+                this.cfg.onRowClick.call(this, row);
+            }
         }
     },
 
