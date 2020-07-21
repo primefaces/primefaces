@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -112,5 +112,9 @@ public class Fieldset extends FieldsetBase {
         if (!ComponentUtils.isRequestSource(this, context)) {
             super.processUpdates(context);
         }
+    }
+
+    public boolean isContentLoadRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_contentLoad");
     }
 }

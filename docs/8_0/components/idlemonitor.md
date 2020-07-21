@@ -42,8 +42,11 @@ By default, idleMonitor waits for 5 minutes (300000 ms) until triggering the oni
 customize this duration with the timeout attribute.
 
 ## Ajax Behavior Events
-IdleMonitor provides two ajax behavior events which are _idle_ and _active_ that are fired according to
-user status changes. Example below displays messages for each event;
+IdleMonitor provides two AJAX behavior events which are _idle_ and _active_ that are fired according to
+user status changes. If `multiWindowSupport=true` then the _active_ and _idle_ events will be fired for the
+active window and all other windows will only fire the _idle_ event.
+
+Example below displays messages for each event;
 
 ```xhtml
 <p:idleMonitor timeout="5000" update="messages">
@@ -57,7 +60,7 @@ public class Bean {
     public void idleListener() {
         //Add facesmessage
     }
-    public void idle() {
+    public void activeListener() {
         //Add facesmessage
     }
 }
@@ -67,6 +70,6 @@ Widget: _PrimeFaces.widget.IdleMonitor_
 
 | Method | Params | Return Type | Description | 
 | --- | --- | --- | --- | 
-pause() | - | void | Pauses the monitor.
+pause() | - | void | Pauses the idle monitor.
 resume() | - | void | Resumes monitoring
-reset() | - | void | Resets the timer of monitor.
+reset() | - | void | Resets the timer of idle monitor.

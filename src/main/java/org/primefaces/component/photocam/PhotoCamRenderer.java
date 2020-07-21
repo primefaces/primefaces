@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -97,7 +97,9 @@ public class PhotoCamRenderer extends CoreRenderer {
                 .attr("format", cam.getFormat(), null)
                 .attr("jpegQuality", cam.getJpegQuality(), 90)
                 .attr("forceFlash", cam.isForceFlash(), false)
-                .attr("autoStart", cam.isAutoStart(), true);
+                .attr("autoStart", cam.isAutoStart(), true)
+                .attr("device", cam.getDevice(), null)
+                .callback("onCameraError", "function(errorObj)", cam.getOnCameraError());
 
         if (cam.getUpdate() != null) {
             wb.attr("update", SearchExpressionFacade.resolveClientIds(context, cam, cam.getUpdate(),

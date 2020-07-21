@@ -509,7 +509,7 @@
 						selectLocalTimezone(tp_inst);
 					}
 				}
-				this.timezone_select.change(function () {
+				this.timezone_select.on('change', function () {
 					tp_inst._onTimeChange();
 					tp_inst._onSelectHandler();
 					tp_inst._afterInject();
@@ -525,7 +525,7 @@
 				}
 
 				this.$timeObj = $tp.find('.ui_tpicker_time_input');
-				this.$timeObj.change(function () {
+				this.$timeObj.on('change', function () {
 					var timeFormat = tp_inst.inst.settings.timeFormat;
 					var parsedTime = $.datepicker.parseTime(timeFormat, this.value);
 					var update = new Date();
@@ -892,7 +892,7 @@
 			this.timeDefined = true;
 			if (hasChanged) {
 				this._updateDateTime();
-				//this.$input.focus(); // may automatically open the picker on setDate
+				//this.$input.trigger('focus'); // may automatically open the picker on setDate
 			}
 		},
 
@@ -1087,7 +1087,7 @@
 
 					obj.children('select').remove();
 
-					$(sel).appendTo(obj).change(function (e) {
+					$(sel).appendTo(obj).on('change', function (e) {
 						tp_inst._onTimeChange();
 						tp_inst._onSelectHandler();
 						tp_inst._afterInject();

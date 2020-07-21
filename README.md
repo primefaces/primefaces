@@ -1,9 +1,9 @@
 [![Maven](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg)](https://repo.maven.apache.org/maven2/org/primefaces/primefaces/)
-[![Javadoc](http://javadoc.io/badge/org.primefaces/primefaces.svg)](http://javadoc.io/doc/org.primefaces/primefaces)
 [![Travis](https://travis-ci.org/primefaces/primefaces.svg?branch=master)](https://travis-ci.org/primefaces/primefaces)
 [![Sonar](https://sonarcloud.io/api/project_badges/measure?project=org.primefaces%3Aprimefaces&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.primefaces%3Aprimefaces)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Join the chat at https://gitter.im/primefaces/primefaces](https://badges.gitter.im/primefaces/primefaces.svg)](https://gitter.im/primefaces/primefaces?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Stackoverflow](https://img.shields.io/badge/StackOverflow-primefaces-chocolate.svg)](https://stackoverflow.com/questions/tagged/primefaces)
 
 [![PrimeFaces Hero](https://www.primefaces.org/wp-content/uploads/2020/03/primefaces-github-02032020.jpg "PrimeFaces Hero")](https://www.primefaces.org/showcase)
 

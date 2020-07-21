@@ -34,6 +34,12 @@ import static org.mockito.Mockito.when;
 public class DataTableTest {
 
     @Test
+    public void testAllowUnsorting() {
+        DataTable table = new DataTable();
+        Assertions.assertEquals(true,table.getAllowUnsorting());
+    }
+
+    @Test
     public void testResolveStaticField() {
         DataTable table = new DataTable();
         ValueExpression exprVE = mock(ValueExpression.class);

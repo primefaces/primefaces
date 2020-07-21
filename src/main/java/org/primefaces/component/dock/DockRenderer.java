@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,6 +37,7 @@ import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class DockRenderer extends BaseMenuRenderer {
@@ -50,7 +51,7 @@ public class DockRenderer extends BaseMenuRenderer {
         wb.init("Dock", dock.resolveWidgetVar(context), clientId)
                 .attr("position", dock.getPosition())
                 .attr("halign", dock.getHalign())
-                .attr("blockScroll", dock.isBlockScroll())
+                .attr("blockScroll", dock.isBlockScroll(), false)
                 .attr("animate", dock.isAnimate())
                 .attr("animationDuration", dock.getAnimationDuration());
 
@@ -71,6 +72,7 @@ public class DockRenderer extends BaseMenuRenderer {
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", "ui-dock-container " + dock.getHalign() + " " + position, null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
 
         encodeMenuItems(context, dock);
 
@@ -91,6 +93,7 @@ public class DockRenderer extends BaseMenuRenderer {
                 if (element.isRendered() && element instanceof MenuItem) {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", "ui-dock-item", "styleClass");
+                    writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
                     encodeMenuItem(context, dock, (MenuItem) element, "-1");
                     writer.endElement("li");
                 }

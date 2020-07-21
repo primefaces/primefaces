@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -64,6 +64,7 @@ public class PrimeRequestContext {
     private Boolean ignoreAutoUpdate;
     private Boolean rtl;
     private Boolean touchable;
+    private Boolean secure;
 
     public PrimeRequestContext(FacesContext context) {
         this.context = context;
@@ -207,22 +208,24 @@ public class PrimeRequestContext {
      * @return if secure or not.
      */
     public boolean isSecure() {
-        // currently called once per request - later we might cache the result per request
-        // and even the method lookup
-        Object request = context.getExternalContext().getRequest();
+        if (secure == null) {
+            Object request = context.getExternalContext().getRequest();
 
-        if (request instanceof HttpServletRequest) {
-            return ((HttpServletRequest) request).isSecure();
-        }
-        else {
-            try {
-                Method method = request.getClass().getDeclaredMethod("isSecure", EMPTY_PARAMS);
-                return (Boolean) method.invoke(request, (Object[]) null);
+            if (request instanceof HttpServletRequest) {
+                secure = ((HttpServletRequest) request).isSecure();
             }
-            catch (Exception e) {
-                return false;
+            else {
+                try {
+                    Method method = request.getClass().getDeclaredMethod("isSecure", EMPTY_PARAMS);
+                    secure = (Boolean) method.invoke(request, (Object[]) null);
+                }
+                catch (Exception e) {
+                    secure = false;
+                }
             }
         }
+
+        return secure;
     }
 
     /**

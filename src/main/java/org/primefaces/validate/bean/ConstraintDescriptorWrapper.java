@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -92,5 +92,17 @@ public class ConstraintDescriptorWrapper<T extends Annotation> implements Constr
     @Override
     public ConstraintTarget getValidationAppliesTo() {
         return wrapped.getValidationAppliesTo();
+    }
+
+    //BV 2.0.2
+    @Override
+    public javax.validation.metadata.ValidateUnwrappedValue getValueUnwrapping() {
+        return wrapped.getValueUnwrapping();
+    }
+
+    //BV 2.0.2
+    @Override
+    public <U> U unwrap(Class<U> type) {
+        return wrapped.unwrap(type);
     }
 }

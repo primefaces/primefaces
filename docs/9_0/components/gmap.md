@@ -199,8 +199,10 @@ GMap provides many custom ajax behavior events for you to hook-in to various fea
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
 | overlaySelect | org.primefaces.event.map.OverlaySelectEvent | When an overlay is selected.
+| overlayDblSelect | org.primefaces.event.map.OverlaySelectEvent | When an overlay is double clicked.
 | stateChange | org.primefaces.event.map.StateChangeEvent | When map state changes.
 | pointSelect | org.primefaces.event.map.PointSelectEvent | When an empty point is selected.
+| pointDblSelect | org.primefaces.event.map.PointSelectEvent | When an empty point is double clicked.
 | markerDrag | org.primefaces.event.map.MarkerDragEvent | When a marker is dragged.
 | geocode | org.primefaces.event.map.GeocodeEvent | When the map is geocoded
 | reverseGeocode | org.primefaces.event.map.ReverseGeocodeEvent | When a geocode is reversed.
@@ -330,6 +332,7 @@ _org.primefaces.model.map.Marker_ extends _org.primefaces.model.map.Overlay_
 | draggable | 0 | Boolean | Defines if marker can be dragged
 | clickable | 1 | Boolean | Defines if marker can be dragged
 | flat | 0 | Boolean | If enabled, shadow image is not displayed
+| animation | null | Animation | Enumeration of either DROP or BOUNCE
 | visible | 1 | Boolean | Defines visibility of the marker
 
 _org.primefaces.model.map.Polyline_ extends _org.primefaces.model.map.Overlay_

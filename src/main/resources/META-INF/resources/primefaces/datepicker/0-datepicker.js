@@ -163,6 +163,13 @@
                     viewDateDefaultsToNow = true;
                 }
             }
+
+            // #6047 round to nearest stepMinute on even if editing using keyboard
+            this.viewDate.setMinutes(this.stepMinute(this.viewDate.getMinutes()));
+            if (!this.options.viewDate) {
+                this.options.viewDate = this.viewDate;
+            }
+
             this.options.minDate = this.parseMinMaxValue(this.options.minDate);
             this.options.maxDate = this.parseMinMaxValue(this.options.maxDate);
             this.ticksTo1970 = (((1970 - 1) * 365 + Math.floor(1970 / 4) - Math.floor(1970 / 100) + Math.floor(1970 / 400)) * 24 * 60 * 60 * 10000000);
@@ -781,6 +788,11 @@
                         minSize = (match === "y" ? size : 1),
                         digits = new RegExp("^\\d{" + minSize + "," + size + "}"),
                         num = value.substring(iValue).match(digits);
+                    if (!num && match === "y" && isDoubled) {
+                        //allow 2 digit-inputs for 4-digit-year-pattern (gets reformated to 4 digits onBlur)
+                        digits = new RegExp("^\\d{" + 2 + "," + size + "}"),
+                            num = value.substring(iValue).match(digits);
+                    }
                     if (!num) {
                         throw "Missing number at position " + iValue;
                     }
@@ -971,7 +983,7 @@
 
             var time = this.parseTime(timeString, ampm);
             value.setHours(time.hour);
-            value.setMinutes(time.minute);
+            value.setMinutes(this.stepMinute(time.minute));
             if (this.options.showSeconds) {
                 value.setSeconds(time.second);
             }
@@ -1045,6 +1057,13 @@
             }
 
             if (!this.options.inline && this.options.appendTo) {
+                // remove old overlay first
+                // See PrimeFaces.utils.appendDynamicOverlay
+                $(this.options.appendTo)
+                        .children("[id='" + $(this.container).attr('id') + "_panel']")
+                        .not(this.panel)
+                        .remove();
+
                 this.panel.appendTo(this.options.appendTo);
             }
             else {
@@ -1380,7 +1399,7 @@
         weeksInYear: function(year, dow, doy) {
             var weekOffset = this.firstWeekOffset(year, dow, doy),
                 weekOffsetNext = this.firstWeekOffset(year + 1, dow, doy);
-                
+
             return (this.daysInYear(year) - weekOffset + weekOffsetNext) / 7;
         },
 
@@ -1409,8 +1428,8 @@
                     lastDate = weekDates[6],
                     cellClass = firstDate.otherMonth && lastDate.otherMonth && !this.options.showOtherMonths ? ' ui-datepicker-other-month-hidden' : '';
 
-                weekHtml += '<td class="ui-datepicker-weeknumber' + cellClass + '"><span class="ui-state-disabled">' + 
-                    this.options.weekCalculator(firstDate) + 
+                weekHtml += '<td class="ui-datepicker-weeknumber' + cellClass + '"><span class="ui-state-disabled">' +
+                    this.options.weekCalculator(firstDate) +
                     '</span></td>';
             }
 
@@ -1690,6 +1709,8 @@
                 this.options.onBlur.call(this, event);
             }
 
+            this.inputfield.val(this.getValueToRender());
+
             this.inputfield.removeClass('ui-state-focus');
             this.container.removeClass('ui-inputwrapper-focus');
         },
@@ -1698,7 +1719,7 @@
             this.isKeydown = true;
             if (event.keyCode === 27) {
                 //put the focus back to the inputfield
-                this.inputfield.focus();
+                this.inputfield.trigger('focus');
             }
 
             if (event.keyCode === 9 || event.keyCode === 27) {
@@ -1721,11 +1742,13 @@
 
             try {
                 var value = this.parseValueFromString(rawValue);
-                this.updateModel(event, value);
+                this.updateModel(event, value, false);
                 this.updateViewDate(event, value.length ? value[0] : value);
             }
             catch (err) {
-                this.updateModel(event, rawValue);
+                if (!this.options.mask) {
+                    this.updateModel(event, rawValue, false);
+                }
             }
 
             if (this.options.onInput) {
@@ -1735,7 +1758,7 @@
 
         onButtonClick: function (event) {
             if (!this.panel.is(':visible')) {
-                this.inputfield.focus();
+                this.inputfield.trigger('focus');
                 this.showOverlay();
             }
             else {
@@ -1793,6 +1816,15 @@
                     newViewDate.setMonth(newViewDate.getMonth() - 1, 1);
                 }
 
+                // #5967 check if month can be navigated to by checking last day in month
+                var testDate = new Date(newViewDate.getTime()),
+                    minDate = this.options.minDate;
+                testDate.setMonth(testDate.getMonth()+1)
+                testDate.setHours(-1);
+                if (minDate && minDate > testDate) {
+                    return;
+                }
+
                 if (this.options.onMonthChange) {
                     this.options.onMonthChange.call(this, newViewDate.getMonth() + 1, newViewDate.getFullYear());
                 }
@@ -1836,6 +1868,12 @@
                 }
                 else {
                     newViewDate.setMonth(newViewDate.getMonth() + 1, 1);
+                }
+
+                // #5967 check if month can be navigated to by checking first day next month
+                var maxDate = this.options.maxDate;
+                if (maxDate && maxDate < newViewDate) {
+                    return;
                 }
 
                 if (this.options.onMonthChange) {
@@ -1935,11 +1973,12 @@
                 var $this = this;
                 setTimeout(function () {
                     $this.bindDocumentClickListener();
+                    $this.bindWindowResizeListener();
                 }, 10);
             }
 
             if ((this.options.showTime || this.options.timeOnly) && this.options.timeInput) {
-                this.panel.find('.ui-hour-picker input').focus();
+                this.panel.find('.ui-hour-picker input').trigger('focus');
             }
         },
 
@@ -1950,6 +1989,7 @@
                 }
 
                 this.unbindDocumentClickListener();
+                this.unbindWindowResizeListener();
                 this.datepickerClick = false;
 
                 this.panel.hide();
@@ -1987,7 +2027,25 @@
             }
         },
 
+        bindWindowResizeListener: function () {
+            if (this.options.inline) {
+                return;
+            }
+            var $this = this;
+            $(window).on('resize.' + this.options.id, function() {
+                $this.alignPanel();
+            });
+        },
+
+        unbindWindowResizeListener: function () {
+            $(window).off('resize.'+ this.options.id);
+        },
+
         alignPanel: function () {
+            if (!this.panel || !this.panel.is(":visible")) {
+               return;
+            }
+
             if (this.options.touchUI) {
                 this.enableModality();
             }
@@ -2070,7 +2128,7 @@
 
             if (!this.options.inline && this.isSingleSelection() && (!this.options.showTime || this.options.hideOnDateTimeSelect)) {
                 //put the focus back to the inputfield
-                this.inputfield.focus();
+                this.inputfield.trigger('focus');
 
                 setTimeout(function () {
                     $this.hideOverlay();
@@ -2092,7 +2150,7 @@
             if (this.options.showTime) {
                 var time = (this.value && this.value instanceof Date) ? this.value : new Date();
                 date.setHours(time.getHours());
-                date.setMinutes(time.getMinutes());
+                date.setMinutes(this.stepMinute(time.getMinutes()));
                 date.setSeconds(time.getSeconds());
                 date.setMilliseconds(0);
             }
@@ -2165,7 +2223,7 @@
         incrementMinute: function (event) {
             var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
                 currentMinute = currentTime.getMinutes(),
-                newMinute = currentMinute + this.options.stepMinute;
+                newMinute = this.stepMinute(currentMinute, this.options.stepMinute);
             newMinute = (newMinute > 59) ? (newMinute - 60) : newMinute;
 
             if (this.validateTime(currentTime.getHours(), newMinute, currentTime.getSeconds(), currentTime, "INCREMENT")) {
@@ -2178,7 +2236,7 @@
         decrementMinute: function (event) {
             var currentTime = (this.value && this.value instanceof Date) ? this.value : this.viewDate,
                 currentMinute = currentTime.getMinutes(),
-                newMinute = currentMinute - this.options.stepMinute;
+                newMinute = this.stepMinute(currentMinute, -this.options.stepMinute);
             newMinute = (newMinute < 0) ? (newMinute + 60) : newMinute;
 
             if (this.validateTime(currentTime.getHours(), newMinute, currentTime.getSeconds(), currentTime, "DECREMENT")) {
@@ -2186,6 +2244,26 @@
             }
 
             event.preventDefault();
+        },
+
+        stepMinute: function(currentMinute, step) {
+            if (this.options.stepMinute <= 1) {
+                if (!step) {
+                    return currentMinute;
+                } else {
+                    return currentMinute + step;
+                }
+            }
+            if (!step) {
+                step = this.options.stepMinute;
+                if (currentMinute % step === 0) {
+                    return currentMinute;
+                }
+            }
+
+            var newMinute = currentMinute + step;
+            newMinute = Math.floor(newMinute / step) * step;
+            return newMinute;
         },
 
         incrementSecond: function (event) {
@@ -2417,9 +2495,11 @@
             this._setInitOptionValues();
         },
 
-        updateModel: function (event, value) {
+        updateModel: function (event, value, updateInput) {
             this.value = (value === '' ? null : value);
-            this.inputfield.val(this.getValueToRender());
+            if (updateInput != false) {
+                this.inputfield.val(this.getValueToRender());
+            }
 
             this.panel.get(0).innerHTML = this.renderPanelElements();
 

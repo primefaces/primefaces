@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -254,9 +254,7 @@ public class ElementsLine implements Serializable {
      * @throws java.io.IOException If an I/O error occurs
      */
     public String encode() throws IOException {
-        FastStringWriter fsw = new FastStringWriter();
-
-        try {
+        try (FastStringWriter fsw = new FastStringWriter()) {
             ChartUtils.writeDataValue(fsw, "tension", this.tension, false);
             ChartUtils.writeDataValue(fsw, "backgroundColor", this.backgroundColor, true);
             ChartUtils.writeDataValue(fsw, "borderWidth", this.borderWidth, true);
@@ -268,11 +266,8 @@ public class ElementsLine implements Serializable {
             ChartUtils.writeDataValue(fsw, "capBezierPoints", this.capBezierPoints, true);
             ChartUtils.writeDataValue(fsw, "fill", this.fill, true);
             ChartUtils.writeDataValue(fsw, "stepped", this.stepped, true);
-        }
-        finally {
-            fsw.close();
-        }
 
-        return fsw.toString();
+            return fsw.toString();
+        }
     }
 }

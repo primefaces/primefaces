@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -131,6 +131,10 @@ public class GMapRenderer extends CoreRenderer {
             for (ClientBehavior clientBehavior : overlaySelectBehaviors) {
                 ((AjaxBehavior) clientBehavior).setOnsuccess("PF('" + widgetVar + "').openWindow(data)");
             }
+            List<ClientBehavior> overlayDblSelectBehaviors = behaviorEvents.get("overlayDblSelect");
+            for (ClientBehavior clientBehavior : overlayDblSelectBehaviors) {
+                ((AjaxBehavior) clientBehavior).setOnsuccess("PF('" + widgetVar + "').openWindow(data)");
+            }
         }
 
         encodeClientBehaviors(context, map);
@@ -217,6 +221,9 @@ public class GMapRenderer extends CoreRenderer {
         }
         if (marker.getZindex() > Integer.MIN_VALUE) {
             writer.write(",zIndex:" + marker.getZindex());
+        }
+        if (marker.getAnimation() != null) {
+            writer.write(",animation: google.maps.Animation." + marker.getAnimation().name());
         }
 
         writer.write("})");

@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,8 @@
  */
 package org.primefaces.component.datepicker;
 
-import org.primefaces.event.DateViewChangeEvent;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.util.*;
+import java.time.*;
+import java.util.*;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependency;
@@ -33,14 +32,20 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
-import java.time.*;
-import java.util.*;
+
+import org.primefaces.event.DateViewChangeEvent;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
+@ResourceDependency(library = "primefaces", name = "inputmask/inputmask.js")
 @ResourceDependency(library = "primefaces", name = "datepicker/datepicker.js")
 public class DatePicker extends DatePickerBase {
 

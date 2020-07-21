@@ -1131,7 +1131,7 @@
 
         // Focus the first input element if any
         setTimeout(function () {
-            $popup.find(":text,textarea").eq(0).focus().select();
+            $popup.find(":text,textarea").eq(0).trigger('focus').trigger('select');
         }, 100);
 
     }

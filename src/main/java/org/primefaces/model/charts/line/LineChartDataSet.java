@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -563,9 +563,7 @@ public class LineChartDataSet extends ChartDataSet {
      */
     @Override
     public String encode() throws IOException {
-        FastStringWriter fsw = new FastStringWriter();
-
-        try {
+        try (FastStringWriter fsw = new FastStringWriter()) {
             fsw.write("{");
 
             ChartUtils.writeDataValue(fsw, "type", "line", false);
@@ -599,11 +597,8 @@ public class LineChartDataSet extends ChartDataSet {
             ChartUtils.writeDataValue(fsw, "steppedLine", this.steppedLine, true);
 
             fsw.write("}");
-        }
-        finally {
-            fsw.close();
-        }
 
-        return fsw.toString();
+            return fsw.toString();
+        }
     }
 }

@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -285,6 +285,11 @@ public class DataTableRenderer extends DataRenderer {
         if (table.isMultiSort()) {
             wb.attr("multiSort", true)
                     .nativeAttr("sortMetaOrder", table.getSortMetaAsString(context), null);
+        }
+
+        // by default cycling through sorting includes unsort, an attribute is needed when unsort should not be included
+        if (!table.getAllowUnsorting()) {
+            wb.attr("allowUnsorting", false);
         }
 
         if (table.isStickyHeader()) {

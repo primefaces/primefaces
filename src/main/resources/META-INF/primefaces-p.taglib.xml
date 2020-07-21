@@ -33,7 +33,7 @@
     <function>
         <function-name>resolveFirstComponentWithId</function-name>
         <function-class>org.primefaces.util.ComponentTraversalUtils</function-class>
-        <function-signature>java.lang.String firstWithId(java.lang.String, javax.faces.component.UIComponent)</function-signature>
+        <function-signature>javax.faces.component.UIComponent firstWithId(java.lang.String,javax.faces.component.UIComponent)</function-signature>
     </function>
 
     <function>
@@ -45,25 +45,25 @@
     <function>
         <function-name>ifGranted</function-name>
         <function-class>org.primefaces.util.SecurityUtils</function-class>
-        <function-signature>java.lang.Boolean ifGranted(java.lang.String)</function-signature>
+        <function-signature>boolean ifGranted(java.lang.String)</function-signature>
     </function>
 
     <function>
         <function-name>ifAllGranted</function-name>
         <function-class>org.primefaces.util.SecurityUtils</function-class>
-        <function-signature>java.lang.Boolean ifAllGranted(java.lang.Object)</function-signature>
+        <function-signature>boolean ifAllGranted(java.lang.Object)</function-signature>
     </function>
 
     <function>
         <function-name>ifAnyGranted</function-name>
         <function-class>org.primefaces.util.SecurityUtils</function-class>
-        <function-signature>java.lang.Boolean ifAnyGranted(java.lang.Object)</function-signature>
+        <function-signature>boolean ifAnyGranted(java.lang.Object)</function-signature>
     </function>
 
     <function>
         <function-name>ifNoneGranted</function-name>
         <function-class>org.primefaces.util.SecurityUtils</function-class>
-        <function-signature>java.lang.Boolean ifNoneGranted(java.lang.Object)</function-signature>
+        <function-signature>boolean ifNoneGranted(java.lang.Object)</function-signature>
     </function>
 
     <function>
@@ -76,6 +76,12 @@
         <function-name>userPrincipal</function-name>
         <function-class>org.primefaces.util.SecurityUtils</function-class>
         <function-signature>java.security.Principal userPrincipal()</function-signature>
+    </function>
+
+    <function>
+        <function-name>language</function-name>
+        <function-class>org.primefaces.util.LocaleUtils</function-class>
+        <function-signature>java.lang.String getCurrentLanguage()</function-signature>
     </function>
 
     <tag>
@@ -1343,7 +1349,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Animation effect to use when showing and hiding suggestions.]]>
             </description>
             <name>effect</name>
             <required>false</required>
@@ -1351,7 +1357,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Duration of the animation effect in milliseconds.]]>
             </description>
             <name>effectDuration</name>
             <required>false</required>
@@ -2974,15 +2980,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines if a mask should be applied to the input field. Default value is "false" and valid values to enable are "true" that uses the pattern as the mask or a custom template. Refer to
-                inputMask component for more information about custom templates.]]>
-            </description>
-            <name>mask</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Defines the type of element to use for time picker, valid values are "slider" , "select" and "custom"(with "timeControlObject" attribute).]]>
             </description>
             <name>timeControlType</name>
@@ -2994,6 +2991,15 @@
                 <![CDATA[Callback to execute before displaying calendar, element and calendar instance are passed as parameters.]]>
             </description>
             <name>beforeShow</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if a mask should be applied to the input field. Default value is "false" and valid values to enable are "true" that uses the pattern as the mask or a custom template. Refer to
+                inputMask component for more information about custom templates.]]>
+            </description>
+            <name>mask</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -4220,6 +4226,14 @@
             <name>displayMode</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Custom clock time in 'server' mode must be either Date or LocalDateTime. Null means use server clock time.]]>
+            </description>
+            <name>value</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
         </attribute>
     </tag>
     <tag>
@@ -7302,6 +7316,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines whether columns are allowed to be unsorted. Default is true.]]>
+            </description>
+            <name>allowUnsorting</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Ordered map of sort information in "multiple" sortMode; This also allows to sort the table by default.]]>
             </description>
             <name>sortMeta</name>
@@ -8599,7 +8621,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Whether to block scrolling of the document. Default is true.]]>
+                <![CDATA[Whether to block scrolling of the document. Default is false.]]>
             </description>
             <name>blockScroll</name>
             <required>false</required>
@@ -9425,6 +9447,15 @@
             <name>title</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if dynamic loading is enabled for the element's panel.
+                If the value is "true", the fieldset is not rendered on page load to improve performance. Default is false.]]>
+            </description>
+            <name>dynamic</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -18492,6 +18523,22 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Event to show the feedback overlay panel, default is "focus".]]>
+            </description>
+            <name>showEvent</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Event to hide the feedback overlay panel, default is "blur".]]>
+            </description>
+            <name>hideEvent</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -18711,6 +18758,22 @@
             <name>autoStart</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Suggests a video input device such as 'user' (aka font camera) or 'environment' (aka rear camera).]]>
+            </description>
+            <name>device</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback executed if the camera has an error.]]>
+            </description>
+            <name>onCameraError</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
@@ -23510,6 +23573,15 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines if dynamic loading is enabled for the element's panel.
+                If the value is "true", the overlay is not rendered on page load to improve performance. Default is false.]]>
+            </description>
+            <name>dynamic</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Client side callback to execute when sidebar is displayed.]]>
             </description>
             <name>onShow</name>
@@ -25914,6 +25986,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to keep TabView state across views, defaults to false.]]>
+            </description>
+            <name>multiViewState</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -27652,9 +27732,25 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Position of the tooltip, valid values are right, left, top and bottom.]]>
+                <![CDATA[Position of the tooltip, valid values are right, left, top and bottom. Default is 'right'.]]>
             </description>
             <name>position</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Position of tooltip with respect to target. If set overrides the 'position' attribute. Example "left center".]]>
+            </description>
+            <name>my</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Position of tooltip with respect to target. If set overrides the 'position' attribute. Example "right center".]]>
+            </description>
+            <name>at</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -28489,6 +28585,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines a client side event to open cell on editable table.]]>
+            </description>
+            <name>editInitEvent</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -28897,6 +29001,22 @@
             <name>updateModelOnPrev</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Animation effect to use when showing and hiding wizard panel. Default is no animation.]]>
+            </description>
+            <name>effect</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Duration of the animation effect in milliseconds.]]>
+            </description>
+            <name>effectDuration</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
         </attribute>
     </tag>
     <tag>
@@ -29945,7 +30065,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Whether the year should be rendered as a dropdown instead of text. Default is false.]]>
+                <![CDATA[Whether the month should be rendered as a dropdown instead of text. Default is false.]]>
             </description>
             <name>monthNavigator</name>
             <required>false</required>
@@ -30214,6 +30334,31 @@
             <name>weekCalculator</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if a mask should be applied to the input field. Default value is "false" and valid values to enable are "true" that uses the pattern as the mask or a custom template. Refer to
+                inputMask component for more information about custom templates.]]>
+            </description>
+            <name>mask</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[PlaceHolder in mask template.]]>
+            </description>
+            <name>maskSlotChar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Clears the field on blur when incomplete input is entered.]]>
+            </description>
+            <name>maskAutoClear</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
 </facelet-taglib>

@@ -416,7 +416,8 @@ if (!PrimeFaces.ajax) {
 
             /**
              * Performs the early collection of post parameters (form element values) if the request is configured that
-             * way.
+             * way. See: https://github.com/primefaces/primefaces/issues/109
+             * 
              * @param {Partial<PrimeFaces.ajax.Configuration>} cfg Configuration for the AJAX request to send, such as
              * the HTTP method, the URL, and the content of the request.
              * @return {PrimeFaces.ajax.ServerCallbackParameter[]} The collected form element values to be sent with the request.
@@ -573,8 +574,7 @@ if (!PrimeFaces.ajax) {
                 // fallback to @all if no process was defined by the user
                 else {
                     var definedProcess = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall(cfg, 'process');
-                    definedProcess = PrimeFaces.trim(definedProcess);
-                    if (definedProcess === '') {
+                    if (definedProcess === undefined || definedProcess.length == 0) {
                         processIds = '@all';
                     }
                 }
@@ -1068,7 +1068,7 @@ if (!PrimeFaces.ajax) {
                         // already focussed?
                         if (activeElementId !== $(document.activeElement).attr('id')) {
                             // focus
-                            elementToFocus.focus();
+                            elementToFocus.trigger('focus');
 
                             // reapply cursor / selection
                             if (activeElementSelection) {

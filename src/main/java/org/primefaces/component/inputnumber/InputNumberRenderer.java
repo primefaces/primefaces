@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -218,11 +218,15 @@ public class InputNumberRenderer extends InputRenderer {
                 ? defaultDecimalPlaces
                 : inputNumber.getDecimalPlaces();
 
+        String decimalSeparator = isValueBlank(inputNumber.getDecimalSeparator())
+                    ? "."
+                    : inputNumber.getDecimalSeparator();
+
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init(InputNumber.class.getSimpleName(), inputNumber.resolveWidgetVar(context), inputNumber.getClientId());
         wb.attr("disabled", inputNumber.isDisabled())
             .attr("valueToRender", valueToRender)
-            .attr("decimalCharacter", inputNumber.getDecimalSeparator(), ".")
+            .attr("decimalCharacter", decimalSeparator, ".")
             .attr("decimalCharacterAlternative", inputNumber.getDecimalSeparatorAlternative(), null)
             .attr("digitGroupSeparator", digitGroupSeparator, ",")
             .attr("currencySymbol", inputNumber.getSymbol())

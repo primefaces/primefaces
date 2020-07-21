@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,9 @@
 package org.primefaces.component.sidebar;
 
 import javax.faces.application.ResourceDependency;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.util.ComponentUtils;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -37,4 +40,32 @@ public class Sidebar extends SidebarBase {
     public static final String TITLE_BAR_CLOSE_CLASS = "ui-sidebar-close ui-corner-all";
     public static final String CLOSE_ICON_CLASS = "ui-icon ui-icon-closethick";
     public static final String FULL_BAR_CLASS = "ui-sidebar-full";
+
+    @Override
+    public void processDecodes(FacesContext context) {
+        if (ComponentUtils.isRequestSource(this, context)) {
+            decode(context);
+        }
+        else {
+            super.processDecodes(context);
+        }
+    }
+
+    @Override
+    public void processValidators(FacesContext context) {
+        if (!ComponentUtils.isRequestSource(this, context)) {
+            super.processValidators(context);
+        }
+    }
+
+    @Override
+    public void processUpdates(FacesContext context) {
+        if (!ComponentUtils.isRequestSource(this, context)) {
+            super.processUpdates(context);
+        }
+    }
+
+    public boolean isContentLoadRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_contentLoad");
+    }
 }

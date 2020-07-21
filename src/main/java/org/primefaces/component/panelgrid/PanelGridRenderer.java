@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -388,7 +388,7 @@ public class PanelGridRenderer extends CoreRenderer {
         if (column != null) {
             if (column.getId() != null) writer.writeAttribute("id", column.getClientId(context), null);
             if (column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
-            if (column.getStyleClass() != null) columnClass += columnClass + " " + column.getStyleClass();
+            if (column.getStyleClass() != null) columnClass = PanelGrid.CELL_CLASS + " " + column.getStyleClass();
         }
         writer.writeAttribute("class", columnClass, null);
         child.encodeAll(context);

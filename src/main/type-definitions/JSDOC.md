@@ -80,6 +80,8 @@ The core includes all the generic functionality required by the PrimeFaces frame
 `escapeHTML`.
 * [PrimeFaces.ajax](./modules/primefaces.ajax.html) The AJAX module with functionality related to AJAX requests. These
 requests are made, for example, when a form or a component is updated.
+* [PrimeFaces.clientwindow](./modules/primefaces.clientwindow.html) The module for enabling multiple window support in
+  PrimeFaces applications.
 * [PrimeFaces.dialog](./modules/primefaces.dialog.html) The dialog module for working with dialogs.
 * [PrimeFaces.expressions](./modules/primefaces.expressions.html) The search expressions module. It contains some
 methods to resolve search expressions such as `@form` on the client.
@@ -152,7 +154,7 @@ notable ones are:
       a flexible ImageFlow like flow written in javascript, which can handle any kind of content.
 * [Cropper.js](./classes/cropper.html)
     * The [Cropper.js](https://fengyuanchen.github.io/cropperjs/) library, a visual JavaScript image cropper.
-* [FullCalendar](./modules/__fullcalendar_core_calendar_.html)
+* [FullCalendar](./classes/calendar.html)
     * The [FullCalendar library](https://fullcalendar.io/), a full-sized drag & drop JavaScript event calendar.
 * [Google Maps](./modules/google.maps.html)
     * The [Google Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/tutorial) for

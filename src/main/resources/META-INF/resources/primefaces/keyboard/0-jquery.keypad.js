@@ -253,7 +253,7 @@
 					var count = data.substring(0, i).match(/"/g); // Handle embedded ':'
 					return (!count || count.length % 2 === 0 ? '"' + group + '":' : group + ':');
 				}).replace(/\\:/g, ':');
-				data = $.parseJSON('{' + data + '}');
+				data = JSON.parse('{' + data + '}');
 				for (var key in data) {
 					if (data.hasOwnProperty(key)) {
 						var value = data[key];
@@ -649,8 +649,7 @@ $('selector').tabs(); // And instantiate it */
 
 		_postAttach: function(elem, inst) {
 			if (inst._inline) {
-				elem.append(inst._mainDiv).
-					on('click.' + inst.name, function() { inst._input.focus(); });
+				elem.append(inst._mainDiv).on('click.' + inst.name, function() { inst._input.trigger('focus'); });
 				this._updateKeypad(inst);
 			}
 			else if (elem.is(':disabled')) {
@@ -713,7 +712,7 @@ $('selector').tabs(); // And instantiate it */
 				}
 			}
 			inst.saveReadonly = elem.attr('readonly');
-			elem[inst.options.keypadOnly ? 'attr' : 'removeAttr']('readonly', true).
+			elem.prop( "readonly", inst.options.keypadOnly).
 				on('setData.' + inst.name, function(event, key, value) {
 					inst.options[key] = value;
 				}).
@@ -731,8 +730,7 @@ $('selector').tabs(); // And instantiate it */
 			elem.siblings('.' + this._appendClass).remove().end().
 				siblings('.' + this._triggerClass).remove().end().
 				prev('.' + this._inlineEntryClass).remove();
-			elem.empty().off('.' + inst.name)
-				[inst.saveReadonly ? 'attr' : 'removeAttr']('readonly', true);
+			elem.empty().off('.' + inst.name).prop('readonly', inst.saveReadonly);
 			inst._input.removeData(inst.name);
 		},
 
@@ -987,7 +985,7 @@ $('selector').tabs(); // And instantiate it */
 		_shiftKeypad: function(inst) {
 			inst.ucase = !inst.ucase;
 			this._updateKeypad(inst);
-			inst._input.focus(); // for further typing
+			inst._input.trigger('focus'); // for further typing
 		},
 
 		/** Erase the text field.
@@ -1038,7 +1036,7 @@ $('selector').tabs(); // And instantiate it */
 			input.val(newValue.substr(0, range[0]) + value + newValue.substr(range[1]));
 			var pos = range[0] + value.length;
 			if (input.is(':visible')) {
-				input.focus(); // for further typing
+				input.trigger('focus'); // for further typing
 			}
 			if (elem.setSelectionRange) { // Mozilla
 				if (input.is(':visible')) {
@@ -1057,7 +1055,7 @@ $('selector').tabs(); // And instantiate it */
 			@param {Element} elem The target text field.
 			@return {number[]} The start and end positions of the selection. */
 		_getIERange: function(elem) {
-			elem.focus();
+			elem.trigger('focus');
 			var selectionRange = document.selection.createRange().duplicate();
 			// Use two ranges: before and selection
 			var beforeRange = this._getIETextRange(elem);
@@ -1172,10 +1170,9 @@ $('selector').tabs(); // And instantiate it */
 			PrimeFaces.skinButton(buttons);
 
 			buttons.on("mousedown", function() { $(this).addClass(activeClasses); }).
-				mouseup(function() { $(this).removeClass(activeClasses); }).
-				mouseout(function() { $(this).removeClass(activeClasses); }).
-				filter('.' + this._keyClass).
-				.on("click", function() { plugin._selectValue(thisInst, $(this).text()); });
+				on("mouseup", function() { $(this).removeClass(activeClasses); }).
+				on("mouseout", function() { $(this).removeClass(activeClasses); }).
+				filter('.' + this._keyClass).on("click", function() { plugin._selectValue(thisInst, $(this).text()); });
 			$.each(this._specialKeys, function(i, keyDef) {
 				html.find('.' + plugin._namePrefixClass + keyDef.name).on("click", function() {
 					keyDef.action.apply(thisInst._input, [thisInst]);

@@ -81,26 +81,29 @@
     <dependencies>
         <dependency>
             <groupId>org.glassfish</groupId>
-            <artifactId>javax.faces</artifactId>
-            <version>2.3.9</version>
+            <artifactId>jakarta.faces</artifactId>
+            <version>2.3.14</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.servlet</artifactId>
             <version>3.0</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>1.1.0.Final</version>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>2.0.2</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
-            <groupId>javax.el</groupId>
-            <artifactId>el-api</artifactId>
-            <version>2.2</version>
+            <groupId>jakarta.el</groupId>
+            <artifactId>jakarta.el-api</artifactId>
+            <version>3.0.3</version>
             <scope>provided</scope>
         </dependency>
 
@@ -128,7 +131,7 @@
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
-            <version>1.3.3</version>
+            <version>1.4</version>
             <scope>provided</scope>
         </dependency>
 
@@ -136,15 +139,15 @@
         <dependency>
             <groupId>com.rometools</groupId>
             <artifactId>rome</artifactId>
-            <version>1.9.0</version>
+            <version>1.13.0</version>
             <scope>provided</scope>
         </dependency>
 
-        <!-- PhotoCam for Java5 -->
+        <!-- JAXB for JDK11+-->
         <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.0</version>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>2.3.3</version>
             <scope>provided</scope>
         </dependency>
 
@@ -187,11 +190,17 @@
             <version>2.2.7</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.el</artifactId>
+            <version>3.0.1-b11</version>
+            <scope>test</scope>
+        </dependency>
         <!-- Content type validation in FileUploadUtilsTest -->
         <dependency>
             <groupId>org.apache.tika</groupId>
             <artifactId>tika-java7</artifactId>
-            <version>1.22</version>
+            <version>1.24.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -212,7 +221,7 @@
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
-            <version>3.12</version>
+            <version>4.0.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -242,6 +251,7 @@
             <version>20180813</version>
             <optional>true</optional>
         </dependency>
+
         <dependency>
             <groupId>org.owasp.encoder</groupId>
             <artifactId>encoder</artifactId>
@@ -252,7 +262,7 @@
         <dependency>
             <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
             <artifactId>owasp-java-html-sanitizer</artifactId>
-            <version>20190503.1</version>
+            <version>20200615.1</version>
             <scope>provided</scope>
         </dependency>
 
@@ -338,7 +348,7 @@
                             </configuration>
                         </execution>
                     </executions>
-                </plugin>                
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -348,6 +358,9 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
+                <excludes>
+                    <exclude>META-INF/resources/primefaces/schedule/build/**/*</exclude>
+                </excludes>
             </resource>
         </resources>
 
@@ -522,9 +535,9 @@
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>3.0</version>
+                <version>4.0.rc1</version>
                 <configuration>
-                    <header>${project.basedir}/src/conf/header.txt</header>
+                    <header>src/conf/header.txt</header>
                     <includes>
                         <include>src/main/java/**</include>
                     </includes>
@@ -691,6 +704,7 @@
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/core.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.browser.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/js.cookie.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.env.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.ajax.js</include>
@@ -699,6 +713,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.utils.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.widget.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.resources.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.clientwindow.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.polyfills.js</include>
 
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/ajaxstatus/ajaxstatus.js</include>
@@ -742,7 +757,6 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectonebutton.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectbooleanbutton.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectcheckboxmenu.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.inputmask.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.password.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.defaultcommand.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.splitbutton.js</include>
@@ -798,6 +812,15 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/imagecropper/0-cropper.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/imagecropper/1-jquery-cropper.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/imagecropper/2-imagecropper.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/inputmask/inputmask.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/inputmask/0-jquery.inputmask.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/inputmask/1-inputmask.js</include>
                             </includes>
                         </aggregation>
                         <aggregation>
@@ -866,6 +889,15 @@
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/scrollpanel/scrollpanel.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/scrollpanel/0-jquery.jscrollpane.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/scrollpanel/1-scrollpanel.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/timeline.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/0-timeline.min.js</include>
@@ -897,10 +929,8 @@
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.ui.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.ui.timepicker.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.maskedinput.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.caretposition.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.autosize.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.cookie.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.mousewheel.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.rangy.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.ui.touch-punch.js</include>
@@ -931,14 +961,7 @@
                             <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/schedule.js</output>
                             <includes>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-core.min.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-locales-all.min.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-interaction.min.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-daygrid.min.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-timegrid.min.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-list.min.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-moment.min.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-moment-timezone.min.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar.min.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/1-schedule.js</include>
                             </includes>
                         </aggregation>
@@ -947,10 +970,7 @@
                             <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/schedule.css</output>
                             <includes>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-core.css</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-daygrid.css</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-timegrid.css</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar-list.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/fullcalendar.min.css</include>
                             </includes>
                         </aggregation>
                         <aggregation>
@@ -1125,7 +1145,7 @@
                     <plugin>
                         <groupId>org.owasp</groupId>
                         <artifactId>dependency-check-maven</artifactId>
-                        <version>5.0.0-M3</version>
+                        <version>5.3.2</version>
                         <configuration>
                             <skipProvidedScope>false</skipProvidedScope>
                             <skipRuntimeScope>false</skipRuntimeScope>
@@ -1258,16 +1278,10 @@
                                 <exclude>**/photocam.js</exclude>
                                 <exclude>**/0-quill.min.js</exclude>
                                 <exclude>**/jquery.js</exclude>
-                                <exclude>**/fullcalendar-core.min.js</exclude>
-                                <exclude>**/fullcalendar-locales-all.min.js</exclude>
-                                <exclude>**/fullcalendar-interaction.min.js</exclude>
-                                <exclude>**/fullcalendar-daygrid.min.js</exclude>
-                                <exclude>**/fullcalendar-timegrid.min.js</exclude>
-                                <exclude>**/fullcalendar-list.min.js</exclude>
-                                <exclude>**/fullcalendar-moment.min.js</exclude>
-                                <exclude>**/fullcalendar-moment-timezone.min.js</exclude>
+                                <exclude>**/fullcalendar.min.js</exclude>
                                 <exclude>**/0-timeline.min.js</exclude>
                                 <exclude>**/0-chartjs.js</exclude>
+                                <exclude>**/0-jquery.inputmask.js</exclude>
                                 <exclude>**/raphael.js</exclude>
                                 <exclude>**/theme.css</exclude>
                             </excludes>

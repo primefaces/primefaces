@@ -312,7 +312,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
                 case keyCode.TAB:
                     pressTab = true;
-                    $this.jq.focus();
+                    $this.jq.trigger('focus');
                     setTimeout(function() {
                         pressTab = false;
                     }, 2);
@@ -1384,7 +1384,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             this.getNodeLabel(this.focusedNode).removeClass('ui-treenode-outline');
         }
 
-        this.getNodeLabel(node).addClass('ui-treenode-outline').focus();
+        this.getNodeLabel(node).addClass('ui-treenode-outline').trigger('focus');
         this.focusedNode = node;
     },
 

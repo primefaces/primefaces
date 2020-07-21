@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -44,7 +44,9 @@ public abstract class PasswordBase extends HtmlInputText implements Widget {
         goodLabel,
         strongLabel,
         redisplay,
-        match
+        match,
+        showEvent,
+        hideEvent
     }
 
     public PasswordBase() {
@@ -134,5 +136,21 @@ public abstract class PasswordBase extends HtmlInputText implements Widget {
 
     public void setMatch(String match) {
         getStateHelper().put(PropertyKeys.match, match);
+    }
+
+    public String getShowEvent() {
+        return (String) getStateHelper().eval(PropertyKeys.showEvent, null);
+    }
+
+    public void setShowEvent(String showEvent) {
+        getStateHelper().put(PropertyKeys.showEvent, showEvent);
+    }
+
+    public String getHideEvent() {
+        return (String) getStateHelper().eval(PropertyKeys.hideEvent, null);
+    }
+
+    public void setHideEvent(String hideEvent) {
+        getStateHelper().put(PropertyKeys.hideEvent, hideEvent);
     }
 }

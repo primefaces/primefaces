@@ -24,56 +24,49 @@ ajax selection and more.
 | rendered | true | Boolean | Boolean value to specify the rendering of the component.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 | value | null | java.time.LocalDate, java.time.LocalDateTime, java.time.LocalTime, java.util.Date (deprecated) | Value of the component
-| converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
-| immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
-| required | false | Boolean | Marks component as required
-| validator | null | Method Expr | A method expression that refers to a method validationg the input
-| valueChangeListener | null | Method Expr | A method expression that refers to a method for handling a valuchangeevent
-| requiredMessage | null | String | Message to be displayed when required field validation fails.
-| converterMessage | null | String | Message to be displayed when conversion fails.
-| validatorMessage | null | String | Message to be displayed when validation fails.
-| widgetVar | null | String | Name of the client side widget.
-| mindate | null | java.time.LocalDate, java.util.Date (deprecated) or String | Sets calendar's minimum visible date; Also used for validation on the server-side.
-| maxdate | null | java.time.LocalDate, java.util.Date (deprecated) or String | Sets calendar's maximum visible date; Also used for validation on the server-side.
-| pages | 1 | Integer | Enables multiple page rendering.
-| disabled | false | Boolean | Disables the calendar when set to true.
-| mode | popup | String | Defines how the calendar will be displayed.
-| pattern | MM/dd/yyyy | String | DateFormat pattern for localization
-| locale | null | Object | Locale to be used for labels and conversion.
-| navigator | false | Boolean | Enables month/year navigator
-| timeZone | null | Time Zone | String or a java.time.ZoneId instance or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to ZoneId.systemDefault().
-| readonlyInput | false | Boolean | Makes input text of a popup calendar readonly.
-| showButtonPanel | false | Boolean | Visibility of button panel containing today and done buttons.
-| effect | null | String | Effect to use when displaying and showing the popup calendar.
-| effectDuration | normal | String | Duration of the effect.
-| showOn | both | String | Client side event that displays the popup calendar.
-| showWeek | false | Boolean | Displays the week number next to each week.
-| disabledWeekends | false | Boolean | Disables weekend columns.
-| showOtherMonths | false | Boolean | Displays days belonging to other months.
-| selectOtherMonths | false | Boolean | Enables selection of days belonging to other months.
-| yearRange | null | String | Year range for the navigator, default "c-10:c+10"
-| timeOnly | false | Boolean | Shows only timepicker without date.
-| stepHour | 1 | Integer | Hour steps.
-| stepMinute | 1 | Integer | Minute steps.
-| stepSecond | 1 | Integer | Second steps.
-| minHour | 0 | Integer | Minimum boundary for hour selection.
-| maxHour | 23 | Integer | Maximum boundary for hour selection.
-| minMinute | 0 | Integer | Minimum boundary for minute selection.
-| maxMinute | 59 | Integer | Maximum boundary for hour selection.
-| minSecond | 0 | Integer | Minimum boundary for second selection.
-| maxSecond | 59 | Integer | Maximum boundary for second selection.
-| pagedate | null | Object | Initial date to display if value is null.
 | accesskey | null | String | Access key that when pressed transfers focus to the input element.
 | alt | null | String | Alternate textual description of the input field.
 | autocomplete | null | String | Controls browser autocomplete behavior.
+| beforeShow | null | String | Callback to execute before displaying calendar, element and calendar instance are passed as parameters
+| beforeShowDay | null | String | Client side callback to execute before displaying a date, used to customize date display.
+| buttonTabindex | null | String | Position of the button in the tabbing order.
+| converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
+| converterMessage | null | String | Message to be displayed when conversion fails.
+| defaultHour | 0 | Integer | Default for hour selection, if no date is given. Default is 0.
+| defaultMillisec | 0 | Integer | Default for millisecond selection, if no date is given. Default is 0.
+| defaultMinute | 0 | Integer | Default for minute selection, if no date is given. Default is 0.
+| defaultSecond | 0 | Integer | Default for second selection, if no date is given. Default is 0.
 | dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
+| disabled | false | Boolean | Disables the calendar when set to true.
+| disabledWeekends | false | Boolean | Disables weekend columns.
+| effect | null | String | Effect to use when displaying and showing the popup calendar.
+| effectDuration | normal | String | Duration of the effect.
+| focusOnSelect | false | Boolean | If enabled, the input is focused again after selecting a date. Default is false.
+| immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
+| inputStyle | null | String | Inline style of the input element. Used when mode is popup.
+| inputStyleClass | null | String | Style class of the input element. Used when mode is popup.
 | label | null | String | A localized user presentable name.
 | lang | null | String | Code describing the language used in the generated markup for this component.
+| locale | null | Object | Locale to be used for labels and conversion.
+| mask | null | String | Defines if a mask should be applied to the input field. Default value is "false" and valid values to enable are "true" that uses the pattern as the mask or a custom template. Refer to inputMask component for more information about custom templates..
+| maskAutoClear | true | Boolean | Clears the field on blur when incomplete input is entered
+| maskSlotChar | '_' | String | Placeholder in mask template.  Default to `_`.
+| maxdate | null | java.time.LocalDate, java.util.Date (deprecated) or String | Sets calendar's maximum visible date; Also used for validation on the server-side.
+| maxHour | 23 | Integer | Maximum boundary for hour selection.
 | maxlength | null | Integer | Maximum number of characters that may be entered in this field.
+| maxMinute | 59 | Integer | Maximum boundary for hour selection.
+| maxSecond | 59 | Integer | Maximum boundary for second selection.
+| mindate | null | java.time.LocalDate, java.util.Date (deprecated) or String | Sets calendar's minimum visible date; Also used for validation on the server-side.
+| minHour | 0 | Integer | Minimum boundary for hour selection.
+| minMinute | 0 | Integer | Minimum boundary for minute selection.
+| minSecond | 0 | Integer | Minimum boundary for second selection.
+| mode | popup | String | Defines how the calendar will be displayed.
+| navigator | false | Boolean | Enables month/year navigator
 | onblur | null | String | Client side callback to execute when input element loses focus.
 | onchange | null | String | Client side callback to execute when input element loses focus and its value has been modified since gaining focus.
 | onclick | null | String | Client side callback to execute onclick event.
 | ondblclick | null | String | Client side callback to execute when input element is double clicked.
+| oneLine | false | Boolean | Try to show the time dropdowns all on one line. This should be used with controlType 'select'.
 | onfocus | null | String | Client side callback to execute when input element receives focus.
 | onkeydown | null | String | Client side callback to execute when a key is pressed down over input element.
 | onkeypress | null | String | Client side callback to execute when a key is pressed and released over input element.
@@ -84,38 +77,46 @@ ajax selection and more.
 | onmouseover | null | String | Client side callback to execute when a pointer button is moved onto input element.
 | onmouseup | null | String | Client side callback to execute when a pointer button is released over input element.
 | onselect | null | String | Client side callback to execute when text within input element is selected by user.
+| pagedate | null | Object | Initial date to display if value is null.
+| pages | 1 | Integer | Enables multiple page rendering.
+| pattern | MM/dd/yyyy | String | DateFormat pattern for localization
 | placeholder | null | String | Specifies a short hint.
 | readonly | false | Boolean | Flag indicating that this component will prevent changes by the user.
+| readonly | false | Boolean | Makes the entire component readonly not allowing calendar popup or text entry.
+| readonlyInput | false | Boolean | Makes input text of a popup calendar readonly.
+| required | false | Boolean | Marks component as required
+| requiredMessage | null | String | Message to be displayed when required field validation fails.
+| resolverStyle | smart | String | Relevant when parsing to a Java 8 Date/Time object. lenient, smart or strict. See [ResolverStyle](https://docs.oracle.com/javase/8/docs/api/java/time/format/ResolverStyle.html).
+| selectOtherMonths | false | Boolean | Enables selection of days belonging to other months.
+| showButtonPanel | false | Boolean | Visibility of button panel containing today and done buttons.
+| showHour | null | String | Whether to show the hour control.
+| showMillisec | null | String | Whether to show the millisec control
+| showMinute | null | String | Whether to show the minute control.
+| showOn | both | String | Client side event that displays the popup calendar.
+| showOtherMonths | false | Boolean | Displays days belonging to other months.
+| showSecond | null | String | Whether to show the second control.
+| showTodayButton | true | Boolean | Whether to show the "Current Date" button if showButtonPanel is rendered.
+| showWeek | false | Boolean | Displays the week number next to each week.
+| size | null | Integer | Number of characters used to determine the width of the input element.
+| stepHour | 1 | Integer | Hour steps.
+| stepMinute | 1 | Integer | Minute steps.
+| stepSecond | 1 | Integer | Second steps.
 | style | null | String | Inline style of the component.
 | styleClass | null | String | Style class of the component.
-| size | null | Integer | Number of characters used to determine the width of the input element.
 | tabindex | null | Integer | Position of the input element in the tabbing order.
-| title | null | String | Advisory tooltip informaton.
-| beforeShowDay | null | String | Client side callback to execute before displaying a date, used to customize date display.
-| mask | null | String | Applies a mask using the pattern.
-| timeControlType | slider | String | Defines the type of element to use for time picker, valid values are "slider" and "select".
-| beforeShow | null | String | Callback to execute before displaying calendar, element and calendar instance are passed as parameters
-| maskSlotChar | null | String | Placeholder in mask template.
-| maskAutoClear | true | Boolean | Clears the field on blur when incomplete input is entered
 | timeControlObject | null | String | Client side object to use in custom timeControlType.
+| timeControlType | slider | String | Defines the type of element to use for time picker, valid values are "slider" and "select".
 | timeInput | false | Boolean | Allows direct input in time field.
-| showHour | null | String | Whether to show the hour control.
-| showMinute | null | String | Whether to show the minute control.
-| showSecond | null | String | Whether to show the second control.
-| showMillisec | null | String | Whether to show the millisec control
-| showTodayButton | true | Boolean | Whether to show the "Current Date" button if showButtonPanel is rendered.
-| buttonTabindex | null | String | Position of the button in the tabbing order.
-| inputStyle | null | String | Inline style of the input element. Used when mode is popup.
-| inputStyleClass | null | String | Style class of the input element. Used when mode is popup.
-| type | text | String | Input field type. Default is text.
-| focusOnSelect | false | Boolean | If enabled, the input is focused again after selecting a date. Default is false.
-| oneLine | false | Boolean | Try to show the time dropdowns all on one line. This should be used with controlType 'select'.
-| defaultHour | 0 | Integer | Default for hour selection, if no date is given. Default is 0.
-| defaultMinute | 0 | Integer | Default for minute selection, if no date is given. Default is 0.
-| defaultSecond | 0 | Integer | Default for second selection, if no date is given. Default is 0.
-| defaultMillisec | 0 | Integer | Default for millisecond selection, if no date is given. Default is 0.
-| resolverStyle | smart | String | Relevant when parsing to a Java 8 Date/Time object. lenient, smart or strict. See [ResolverStyle](https://docs.oracle.com/javase/8/docs/api/java/time/format/ResolverStyle.html).
+| timeOnly | false | Boolean | Shows only timepicker without date.
+| timeZone | null | Time Zone | String or a java.time.ZoneId instance or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to ZoneId.systemDefault().
+| title | null | String | Advisory tooltip informaton.
 | touchable | true | Boolean | Enable touch support if browser detection supports it.
+| type | text | String | Input field type. Default is text.
+| validator | null | Method Expr | A method expression that refers to a method validationg the input
+| validatorMessage | null | String | Message to be displayed when validation fails.
+| valueChangeListener | null | Method Expr | A method expression that refers to a method for handling a valuchangeevent
+| widgetVar | null | String | Name of the client side widget.
+| yearRange | null | String | Year range for the navigator, default "c-10:c+10"
 
 ## Getting Started with Calendar
 Value of the calendar should be a java.time.LocalDate.

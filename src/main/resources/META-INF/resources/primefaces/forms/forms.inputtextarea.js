@@ -322,7 +322,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
             selectionStart = _self.jq.getSelection().start,
             queryLength = _self.query.length;
 
-            _self.jq.focus();
+            _self.jq.trigger('focus');
 
             _self.jq.setSelection(selectionStart-queryLength, selectionStart);
             _self.jq.replaceSelectedText(itemValue);

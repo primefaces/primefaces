@@ -54,8 +54,8 @@ showWeekNumbers | false | Boolean | Display week numbers in schedule.
 extender | null | String | Name of JavaScript function to extend the options of the underlying FullCalendar plugin.
 displayEventEnd | null | String | Whether or not to display an event's end time text when it is rendered on the calendar. Value can be a boolean to globally configure for all views or a comma separated list such as "month:false,basicWeek:true" to configure per view.
 weekNumberCalculation | local | String | The method for calculating week numbers that are displayed. Valid values are "local"(default), "ISO" and "custom".
-weekNumberCalculator | null | String | Client side function to use in custom weekNumberCalculation.
-nextDayThreshold | 09:00:00 | String | When an event's end time spans into another day, the minimum time it must be in order for it to render as if it were on that day. Default is 09:00:00.
+weekNumberCalculator | null | String | Client side function to use in custom `weekNumberCalculation`. This must be a JavaScript expression that results in an integer week number. You can use the local variable `date`, which points to the `Date` object for which the week number is to be determined. To illustrate, if you were to specify `date.getFullYear()`, the year would be shown instead of the actual week number.  
+nextDayThreshold | 09:00:00 | String | When an event's end time spans into another day, the minimum time it must be in order for it to render as if it were on that day. Default is `09:00:00`.
 slotEventOverlap | true | Boolean | If true contemporary events will be rendered one overlapping the other, else they will be rendered side by side.
 urlTarget | _blank | String | Target for events with urls. Clicking on such events in the schedule will not trigger the selectEvent but open the url using this target instead. Default is "_blank".
 noOpener | true | Boolean | Whether for URL events access to the opener window from the target site should be prevented (phishing protection), default value is true.
@@ -116,6 +116,7 @@ Schedule provides various ajax behavior events to respond user actions.
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
 dateSelect | org.primefaces.event.SelectEvent<LocalDateTime> | When a date is selected.
+dateDblSelect | org.primefaces.event.SelectEvent<LocalDateTime> | When a date is double click selected.
 eventSelect | org.primefaces.event.SelectEvent<ScheduleEvent> | When an event is selected.
 eventMove | org.primefaces.event.ScheduleEntryMoveEvent | When an event is moved.
 eventResize | org.primefaces.event.ScheduleEntryResizeEvent | When an event is resized.

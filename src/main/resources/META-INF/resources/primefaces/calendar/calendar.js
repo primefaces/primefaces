@@ -71,6 +71,7 @@
  * @prop {boolean} cfg.popup `true` if `mode` is set to `popup`.
  * @prop {PrimeFaces.widget.Calendar.PreShowCallback} cfg.preShow Callback invoked before the calendar is opened.
  * @prop {PrimeFaces.widget.Calendar.PreShowDayCallback} cfg.preShowDay Callback invoked before a day is shown.
+ * @prop {boolean} cfg.readonly Makes the calendar readonly when set to true.
  * @prop {number} cfg.second Default for second selection, if no date is given. Default is 0.
  * @prop {number} cfg.secondMax Maximum boundary for second selection.
  * @prop {number} cfg.secondMin Minimum boundary for second selection.
@@ -115,6 +116,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         this.bindDateSelectListener();
         this.bindViewChangeListener();
         this.bindCloseListener();
+        this.applyMask();
 
         //disabled dates
         this.cfg.beforeShowDay = function(date) {
@@ -149,6 +151,11 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.beforeShow = function(input, inst) {
                 if($this.refocusInput) {
                     $this.refocusInput = false;
+                    return false;
+                }
+
+                // #4119 do not popup if readonly
+                if ($this.cfg.readonly) {
                     return false;
                 }
 
@@ -214,7 +221,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                 triggerButton.attr('title', title);
             }
 
-            if(this.cfg.disabled) {
+            if(this.cfg.disabled || this.readonly) {
                 triggerButton.addClass('ui-state-disabled');
             }
 
@@ -239,13 +246,29 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
 
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
-
-        if (this.cfg.mask) {
+    },
+    
+    /**
+     * Initializes the mask on the input if using a mask and not an inline picker.
+     * @private
+     */
+    applyMask: function() {
+        if (this.cfg.mask && !this.cfg.inline) {
             var maskCfg = {
-                placeholder:this.cfg.maskSlotChar||'_',
-                autoclear:this.cfg.maskAutoClear
+                placeholder: this.cfg.maskSlotChar||'_',
+                clearMaskOnLostFocus: this.cfg.maskAutoClear||true,
+                clearIncomplete: this.cfg.maskAutoClear||true,
+                autoUnmask: false
             };
-            this.input.mask(this.cfg.mask, maskCfg);
+            var pattern = new RegExp("m|d|y|h|s", 'i');
+            var isAlias = pattern.test(this.cfg.mask);
+            if (isAlias) {
+                maskCfg.alias = 'datetime';
+                maskCfg.inputFormat = this.cfg.mask;
+            } else {
+                maskCfg.mask = this.cfg.mask;
+            }
+            this.input.inputmask('remove').inputmask(maskCfg);
         }
     },
 
@@ -304,7 +327,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
 
                 if($this.cfg.focusOnSelect) {
                     $this.refocusInput = true;
-                    $this.jqEl.focus();
+                    $this.jqEl.trigger('focus');
                     if(!($this.cfg.showOn && $this.cfg.showOn === 'button')) {
                         $this.jqEl.off('click.calendar').on('click.calendar', function() {
                             $(this).datepicker("show");

@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -357,7 +357,9 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         externalContext.getSessionMap().put(ExceptionInfo.ATTRIBUTE_NAME, info);
 
         Map<String, String> errorPages = PrimeApplicationContext.getCurrentInstance(context).getConfig().getErrorPages();
+
         String errorPage = evaluateErrorPage(errorPages, rootCause);
+        errorPage = context.getApplication().evaluateExpressionGet(context, errorPage, String.class);
 
         String url = externalContext.getRequestContextPath() + errorPage;
 

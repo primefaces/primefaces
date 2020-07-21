@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +25,8 @@ package org.primefaces.component.wizard;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.component.behavior.ClientBehaviorHolder;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
 public abstract class WizardBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
@@ -48,7 +48,9 @@ public abstract class WizardBase extends UIComponentBase implements Widget, Clie
         onnext,
         nextLabel,
         backLabel,
-        updateModelOnPrev
+        updateModelOnPrev,
+        effect,
+        effectDuration,
     }
 
     public WizardBase() {
@@ -154,5 +156,21 @@ public abstract class WizardBase extends UIComponentBase implements Widget, Clie
 
     public void setUpdateModelOnPrev(boolean updateModelOnPrev) {
         getStateHelper().put(PropertyKeys.updateModelOnPrev, updateModelOnPrev);
+    }
+
+    public String getEffect() {
+        return (String) getStateHelper().eval(PropertyKeys.effect, null);
+    }
+
+    public void setEffect(String effect) {
+        getStateHelper().put(PropertyKeys.effect, effect);
+    }
+
+    public int getEffectDuration() {
+        return (Integer) getStateHelper().eval(PropertyKeys.effectDuration, 400);
+    }
+
+    public void setEffectDuration(int effectDuration) {
+        getStateHelper().put(PropertyKeys.effectDuration, effectDuration);
     }
 }

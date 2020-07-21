@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -48,7 +48,9 @@ public abstract class PhotoCamBase extends UIInput implements Widget {
         format,
         jpegQuality,
         forceFlash,
-        autoStart
+        autoStart,
+        device,
+        onCameraError
     }
 
     public PhotoCamBase() {
@@ -171,4 +173,21 @@ public abstract class PhotoCamBase extends UIInput implements Widget {
     public void setAutoStart(boolean autoStart) {
         getStateHelper().put(PropertyKeys.autoStart, autoStart);
     }
+
+    public String getDevice() {
+        return (String) getStateHelper().eval(PropertyKeys.device, null);
+    }
+
+    public void setDevice(String device) {
+        getStateHelper().put(PropertyKeys.device, device);
+    }
+
+    public String getOnCameraError() {
+        return (String) getStateHelper().eval(PropertyKeys.onCameraError, null);
+    }
+
+    public void setOnCameraError(String onCameraError) {
+        getStateHelper().put(PropertyKeys.onCameraError, onCameraError);
+    }
+
 }

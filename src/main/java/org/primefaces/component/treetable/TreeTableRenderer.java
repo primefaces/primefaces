@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -249,7 +249,8 @@ public class TreeTableRenderer extends DataRenderer {
             wb.attr("editable", true)
                     .attr("editMode", tt.getEditMode())
                     .attr("cellEditMode", tt.getCellEditMode(), "eager")
-                    .attr("cellSeparator", tt.getCellSeparator(), null);
+                    .attr("cellSeparator", tt.getCellSeparator(), null)
+                    .attr("editInitEvent", tt.getEditInitEvent());
         }
 
         //Filtering

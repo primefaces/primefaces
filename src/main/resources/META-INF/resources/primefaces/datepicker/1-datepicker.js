@@ -36,6 +36,9 @@
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * @extends {JQueryPrimeDatePicker.PickerOptions} cfg 
  * 
+ * @prop {string} cfg.mask Applies a mask using the pattern.
+ * @prop {boolean} cfg.maskAutoClear Clears the field on blur when incomplete input is entered
+ * @prop {string} cfg.maskSlotChar Placeholder in mask template.
  * @prop {string} cfg.buttonTabindex Tabindex of the datepicker button
  * @prop {boolean} cfg.focusOnSelect When enabled, input receives focus after a value is picked.
  * @prop {PrimeFaces.widget.DatePicker.PreShowCallback} cfg.preShow User-defined callback that may be overridden by the
@@ -61,9 +64,11 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
         //events
         this.bindDateSelectListener();
+        this.bindClearButtonListener();
         this.bindViewChangeListener();
         this.bindCloseListener();
-        
+        this.applyMask();
+
         // is touch support enabled
         var touchEnabled = PrimeFaces.env.isTouchable(this.cfg) && !this.input.attr("readonly") && this.cfg.showIcon;
 
@@ -134,7 +139,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         if(!this.cfg.inline) {
             this.jq.data('primefaces-overlay-target', this.id).find('*').data('primefaces-overlay-target', this.id);
         }
-
+        
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
@@ -180,6 +185,30 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.userLocale = locale;
         }
     },
+    
+    /**
+     * Initializes the mask on the input if using a mask and not an inline picker.
+     * @private
+     */
+    applyMask: function() {
+        if (this.cfg.mask && !this.cfg.inline) {
+            var maskCfg = {
+                placeholder: this.cfg.maskSlotChar||'_',
+                clearMaskOnLostFocus: this.cfg.maskAutoClear||true,
+                clearIncomplete: this.cfg.maskAutoClear||true,
+                autoUnmask: false
+            };
+            var pattern = new RegExp("m|d|y|h|s", 'i');
+            var isAlias = pattern.test(this.cfg.mask);
+            if (isAlias) {
+                maskCfg.alias = 'datetime';
+                maskCfg.inputFormat = this.cfg.mask;
+            } else {
+                maskCfg.mask = this.cfg.mask;
+            }
+            this.input.inputmask('remove').inputmask(maskCfg);
+        }
+    },
 
     /**
      * Sets up the event listener for when another date was selected.
@@ -195,7 +224,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
             if(!_self.cfg.inline && _self.cfg.focusOnSelect) {
                 _self.refocusInput = true;
-                _self.jqEl.focus();
+                _self.jqEl.trigger('focus');
                 if(!_self.cfg.showIcon) {
                     var inst = this;
 
@@ -212,6 +241,19 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
+     * Sets up the event listener for when the Clear button is selected.
+     * @private
+     */
+    bindClearButtonListener: function() {
+        var $this = this;
+
+        this.cfg.onClearButtonClick = function(event) {
+            $this.input.trigger('change');
+            $this.callBehavior('dateSelect');
+        };
+    },
+
+    /**
      * Triggers the event for when another date was selected.
      * @private
      */
@@ -221,6 +263,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             return;
         }
 
+        this.input.trigger('change');
         this.callBehavior('dateSelect');
     },
 

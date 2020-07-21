@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -200,9 +200,7 @@ public class Legend implements Serializable {
      * @throws java.io.IOException If an I/O error occurs
      */
     public String encode() throws IOException {
-        FastStringWriter fsw = new FastStringWriter();
-
-        try {
+        try (FastStringWriter fsw = new FastStringWriter()) {
             ChartUtils.writeDataValue(fsw, "display", this.display, false);
             ChartUtils.writeDataValue(fsw, "position", this.position, true);
             ChartUtils.writeDataValue(fsw, "align", this.align, true);
@@ -214,12 +212,9 @@ public class Legend implements Serializable {
             if (this.labels != null) {
                 fsw.write(",\"labels\":" + this.labels.encode());
             }
-        }
-        finally {
-            fsw.close();
-        }
 
-        return fsw.toString();
+            return fsw.toString();
+        }
     }
 
 }

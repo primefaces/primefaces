@@ -46,6 +46,7 @@ alt | null | String | Alternate textual description of the input field.
 autocomplete | null | String | Controls browser autocomplete behavior.
 dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
 disabled | false | Boolean | Disables input field
+hideEvent | blur | String | Client-side event to hide the feedback overlay panel, default is "blur".
 label | null | String | A localized user presentable name.
 lang | null | String | Code describing the language used in the generated markup for this component.
 maxlength | null | Integer | Maximum number of characters that may be entered in this field.
@@ -66,6 +67,7 @@ onselect | null | String | Client side callback to execute when text within inpu
 placeholder | null | String | Specifies a short hint.
 readonly | false | Boolean | Flag indicating that this component will prevent changes by the user.
 size | null | Integer | Number of characters used to determine the width of the input element.
+showEvent | focus | String | Client-side event to show the feedback overlay panel, default is "focus".
 style | null | String | Inline style of the input element.
 styleClass | null | String | Style class of the input element.
 tabindex | null | Integer | Position of the input element in the tabbing order.

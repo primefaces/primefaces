@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,25 +23,6 @@
  */
 package org.primefaces.util;
 
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-import org.primefaces.component.fileupload.FileUpload;
-import org.primefaces.component.fileupload.FileUploadChunkDecoder;
-import org.primefaces.component.fileupload.FileUploadDecoder;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.model.file.UploadedFile;
-import org.primefaces.shaded.owasp.SafeFile;
-import org.primefaces.shaded.owasp.ValidationException;
-import org.primefaces.virusscan.VirusException;
-
-import javax.faces.FacesException;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -55,6 +36,26 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import javax.faces.FacesException;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.primefaces.component.fileupload.FileUpload;
+import org.primefaces.component.fileupload.FileUploadChunkDecoder;
+import org.primefaces.component.fileupload.FileUploadDecoder;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.model.file.UploadedFile;
+import org.primefaces.shaded.owasp.SafeFile;
+import org.primefaces.shaded.owasp.ValidationException;
+import org.primefaces.virusscan.VirusException;
 
 /**
  * Utilities for FileUpload components.
@@ -335,6 +336,12 @@ public class FileUploadUtils {
      * @throws FacesException if any error is detected
      */
     public static String checkPathTraversal(String relativePath) {
+        // Unix systems can start with / but Windows cannot
+        String os = System.getProperty("os.name").toLowerCase();
+        if (!os.contains("win")) {
+            relativePath = relativePath.startsWith("/") ? relativePath.substring(1) : relativePath;
+        }
+
         File file = new File(relativePath);
 
         if (file.isAbsolute()) {

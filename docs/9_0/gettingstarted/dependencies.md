@@ -9,12 +9,12 @@ any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 | JSF runtime | 2.0, 2.1, 2.2, 2.3 | Required | Apache MyFaces or Eclipse (former Oracle) Mojarra |
 | libre openpdf | 1.3.14 | Optional | DataExporter (PDF) |
 | apache poi | 4.1.1 | Optional | DataExporter (Excel or XML) |
-| rome | 1.9.0 | Optional | FeedReader |
-| commons-fileupload | 1.3.3 | Optional | FileUpload |
-| apache tika | 1.22 | Optional | Advanced security (content type validation) for FileUpload |
+| rome | 1.13.0 | Optional | FeedReader |
+| commons-fileupload | 1.4 | Optional | FileUpload |
+| apache tika | 1.24.1 | Optional | Advanced security (content type validation) for FileUpload |
 | barcode4j-light | 2.1 | Optional | Barcode |
 | qrgen |  1.4 | Optional | QR Code support for Barcode |
-| owasp-java-html-sanitizer |  20190503.1 | Optional | TextEditor |
+| owasp-java-html-sanitizer |  20200615.1 | Optional | TextEditor |
 
 *Listed versions are tested and known to be working with PrimeFaces, other versions of these
 dependencies may also work but not tested.

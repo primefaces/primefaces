@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -88,7 +88,7 @@ public abstract class DockBase extends AbstractMenu implements Widget, RTLAware 
     }
 
     public boolean isBlockScroll() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.blockScroll, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.blockScroll, false);
     }
 
     public void setBlockScroll(boolean blockScroll) {
@@ -111,6 +111,7 @@ public abstract class DockBase extends AbstractMenu implements Widget, RTLAware 
         getStateHelper().put(PropertyKeys.animationDuration, animationDuration);
     }
 
+    @Override
     public String getDir() {
         return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
     }

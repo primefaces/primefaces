@@ -173,6 +173,7 @@
  * @prop {string} cfg.stickyTopAt Selector to position on the page according to other fixing elements on the top of the
  * table.
  * @prop {string} cfg.tabindex The value of the `tabindex` attribute for this data table.
+ * @prop {boolean} cfg.allowUnsorting When true columns can be unsorted upon clicking sort.
  * @prop {boolean} cfg.virtualScroll Loads data on demand as the scrollbar gets close to the bottom.
  */
 PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
@@ -427,8 +428,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.sortableColumns.attr('tabindex', this.cfg.tabindex);
 
         //aria messages
-        this.ascMessage = PrimeFaces.getAriaLabel('datatable.sort.ASC');
-        this.descMessage = PrimeFaces.getAriaLabel('datatable.sort.DESC');
+        this.ascMessage = PrimeFaces.getAriaLabel('datatable.sort.SORT_ASC');
+        this.descMessage = PrimeFaces.getAriaLabel('datatable.sort.SORT_DESC');
+        this.otherMessage = PrimeFaces.getAriaLabel('datatable.sort.SORT_LABEL');
 
         //reflow dropdown
         this.reflowDD = $(this.jqId + '_reflowDD');
@@ -454,11 +456,18 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         hasAriaSort = true;
                     }
                 }
-                else {
+                else if (sortIcon.hasClass('ui-icon-triangle-1-s')) {
                     sortOrder = this.SORT_ORDER.DESCENDING;
-                    columnHeader.attr('aria-label', this.getSortMessage(ariaLabel, this.ascMessage));
+                    columnHeader.attr('aria-label', this.getSortMessage(ariaLabel, this.otherMessage));
                     if(!hasAriaSort) {
                         columnHeader.attr('aria-sort', 'descending');
+                        hasAriaSort = true;
+                    }
+                } else {
+                    sortOrder = this.SORT_ORDER.UNSORTED;
+                    columnHeader.attr('aria-label', this.getSortMessage(ariaLabel, this.ascMessage));
+                    if(!hasAriaSort) {
+                        columnHeader.attr('aria-sort', 'other');
                         hasAriaSort = true;
                     }
                 }
@@ -520,9 +529,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             PrimeFaces.clearSelection();
 
+            var unsorting = $this.cfg.allowUnsorting || $this.cfg.allowUnsorting == undefined;
+
             var columnHeader = $(this),
             sortOrderData = columnHeader.data('sortorder'),
-            sortOrder = (sortOrderData === $this.SORT_ORDER.UNSORTED) ? $this.SORT_ORDER.ASCENDING : -1 * sortOrderData,
+            sortOrder = (sortOrderData === $this.SORT_ORDER.UNSORTED) ? $this.SORT_ORDER.ASCENDING :
+                (sortOrderData === $this.SORT_ORDER.ASCENDING) ? $this.SORT_ORDER.DESCENDING :
+                    unsorting ? $this.SORT_ORDER.UNSORTED : $this.SORT_ORDER.ASCENDING,
             metaKey = e.metaKey||e.ctrlKey||metaKeyOn;
             if($this.cfg.multiSort) {
                 if(metaKey) {
@@ -554,7 +567,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         if(this.reflowDD && this.cfg.reflow) {
             PrimeFaces.skinSelect(this.reflowDD);
-            this.reflowDD.change(function(e) {
+            this.reflowDD.on('change', function(e) {
                 var arrVal = $(this).val().split('_'),
                     columnHeader = $this.sortableColumns.eq(parseInt(arrVal[0])),
                     sortOrder = parseInt(arrVal[1]);
@@ -771,6 +784,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindSelectionEvents: function() {
         if(this.cfg.selectionMode === 'radio') {
             this.bindRadioEvents();
+            this.bindRowEvents();
         }
         else if(this.cfg.selectionMode === 'checkbox') {
             this.bindCheckboxEvents();
@@ -859,7 +873,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             $this.unhighlightFocusedRow();
 
                             if($this.isCheckboxSelectionEnabled()) {
-                                row.find('> td.ui-selection-column .ui-chkbox input').focus();
+                                row.find('> td.ui-selection-column .ui-chkbox input').trigger('focus');
                             }
                             else {
                                 $this.focusedRow = row;
@@ -1724,6 +1738,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             update: this.id,
             formId: this.cfg.formId,
             params: [{name: this.id + '_scrolling', value: true},
+                            {name: this.id + '_first', value: 1},
                             {name: this.id + '_skipChildren', value: true},
                             {name: this.id + '_scrollOffset', value: this.scrollOffset},
                             {name: this.id + '_encodeFeature', value: true}],
@@ -1753,7 +1768,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
 
-        PrimeFaces.ajax.Request.handle(options);
+        if (this.hasBehavior('liveScroll')) {
+            this.callBehavior('liveScroll', options);
+        } else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
     },
 
     /**
@@ -1947,7 +1966,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Performs a sorting operation on the rows of this data table via AJAX
      * @param {JQuery} columnHeader Header of the column by which to sort.
-     * @param {-1 | 0 | 1} order Whether to sort by the column value in an ascending or descending order.
+     * @param {-1 | 0 | 1} order Whether to "unsort" or to sort by the column value in an ascending or descending order.
      * @param {boolean} multi `true` if sorting by multiple columns is enabled, or `false` otherwise.
      * @private
      */
@@ -2017,14 +2036,22 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         var sortIcon = columnHeader.find('.ui-sortable-column-icon'),
                         ariaLabel = columnHeader.attr('aria-label');
 
-                        if(order === $this.SORT_ORDER.DESCENDING) {
+                        if (order === $this.SORT_ORDER.DESCENDING) {
                             sortIcon.removeClass('ui-icon-triangle-1-n').addClass('ui-icon-triangle-1-s');
-                            columnHeader.attr('aria-sort', 'descending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
-                            $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'descending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
-                        } else if(order === $this.SORT_ORDER.ASCENDING) {
-                            sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-n');
+                            columnHeader.attr('aria-sort', 'descending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.otherMessage));
+                            $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'descending')
+                                .attr('aria-label', $this.getSortMessage(ariaLabel, $this.otherMessage));
+                        } else if (order === $this.SORT_ORDER.ASCENDING) {
+                            sortIcon.removeClass('ui-icon-carat-2-n-s').addClass('ui-icon-triangle-1-n');
                             columnHeader.attr('aria-sort', 'ascending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
-                            $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'ascending').attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
+                            $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'ascending')
+                                .attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
+                        } else {
+                            sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-carat-2-n-s');
+                            columnHeader.removeClass('ui-state-active ').attr('aria-sort', 'other')
+                                .attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
+                            $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'other')
+                                .attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
                         }
                     }
                 }
@@ -2225,6 +2252,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             if(this.cfg.disabledTextSelection) {
                 PrimeFaces.clearSelection();
             }
+
+            //#3567 trigger client row click on ENTER/SPACE
+            if (this.cfg.onRowClick && event.type === "keydown") {
+                this.cfg.onRowClick.call(this, row);
+            }
         }
     },
 
@@ -2352,6 +2384,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 this.selectCheckbox(row.children('td.ui-selection-column').find('> div.ui-chkbox > div.ui-chkbox-box'));
 
             this.updateHeaderCheckbox();
+        }
+        
+        if(this.isRadioSelectionEnabled()) {
+            if(this.cfg.nativeElements)
+                row.children('td.ui-selection-column').find(':radio').prop('checked', true);
+            else
+                this.selectRadio(row.children('td.ui-selection-column').find('> div.ui-radiobutton > div.ui-radiobutton-box'));
         }
 
         this.addSelection(rowMeta.key);
@@ -3053,7 +3092,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         var inputs=row.find(':input:enabled');
         if (inputs.length > 0) {
-            inputs.first().focus();
+            inputs.first().trigger('focus');
         }
     },
 
@@ -3186,7 +3225,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             cell.addClass('ui-state-highlight ui-cell-editing');
             displayContainer.hide();
             inputContainer.show();
-            inputs.eq(0).focus().select();
+            inputs.eq(0).trigger('focus').trigger('select');
 
             //metadata
             if(multi) {
@@ -3233,7 +3272,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                                 if(focusIndex < 0 || (focusIndex === inputs.length) || input.parent().hasClass('ui-inputnumber') || input.parent().hasClass('ui-helper-hidden-accessible')) {
                                     $this.tabCell(cell, !shiftKey);
                                 } else {
-                                    inputs.eq(focusIndex).focus();
+                                    inputs.eq(focusIndex).trigger('focus');
                                 }
                             }
                             else {

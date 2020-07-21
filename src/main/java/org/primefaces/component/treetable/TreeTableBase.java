@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -76,7 +76,8 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         filteredNode,
         filterEvent,
         filterDelay,
-        cellEditMode
+        cellEditMode,
+        editInitEvent
     }
 
     public TreeTableBase() {
@@ -409,4 +410,13 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
     public void setCellEditMode(String cellEditMode) {
         getStateHelper().put(PropertyKeys.cellEditMode, cellEditMode);
     }
+
+    public String getEditInitEvent() {
+        return (String) getStateHelper().eval(PropertyKeys.editInitEvent, "click");
+    }
+
+    public void setEditInitEvent(String editInitEvent) {
+        getStateHelper().put(PropertyKeys.editInitEvent, editInitEvent);
+    }
+
 }

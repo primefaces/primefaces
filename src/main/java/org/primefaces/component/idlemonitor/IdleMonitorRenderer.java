@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,7 +47,6 @@ public class IdleMonitorRenderer extends CoreRenderer {
         wb.init("IdleMonitor", idleMonitor.resolveWidgetVar(context), clientId)
                 .attr("timeout", idleMonitor.getTimeout())
                 .attr("multiWindowSupport", idleMonitor.isMultiWindowSupport())
-                .attr("contextPath", context.getExternalContext().getRequestContextPath())
                 .callback("onidle", "function()", idleMonitor.getOnidle())
                 .callback("onactive", "function()", idleMonitor.getOnactive());
 

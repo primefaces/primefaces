@@ -70,7 +70,7 @@
                             frameWindow.print();
                         }
                         // focus body as it is losing focus in iPad and content not getting printed
-                        $('body').focus();
+                        $('body').trigger('focus');
                     } catch (e) {
                         frameWindow.print();
                     }

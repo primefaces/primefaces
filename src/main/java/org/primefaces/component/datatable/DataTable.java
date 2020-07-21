@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -173,6 +173,7 @@ public class DataTable extends DataTableBase {
             .put("taphold", SelectEvent.class)
             .put("cellEditCancel", CellEditEvent.class)
             .put("virtualScroll", PageEvent.class)
+            .put("liveScroll", PageEvent.class)
             .build();
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
@@ -346,7 +347,7 @@ public class DataTable extends DataTableBase {
                 String rowKey = params.get(clientId + "_instantUnselectedRowKey");
                 wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), getRowData(rowKey));
             }
-            else if (eventName.equals("page") || eventName.equals("virtualScroll")) {
+            else if (eventName.equals("page") || eventName.equals("virtualScroll") || eventName.equals("liveScroll")) {
                 int rows = getRowsToRender();
                 int first = Integer.parseInt(params.get(clientId + "_first"));
                 int page = rows > 0 ? (first / rows) : 0;
@@ -911,7 +912,7 @@ public class DataTable extends DataTableBase {
             for (UIComponent kid : getChildren()) {
                 if (kid.isRendered()) {
                     if (kid instanceof Columns) {
-                        int dynamicColumnsCount = ((Columns) kid).getRowCount();
+                        int dynamicColumnsCount = ((Columns) kid).getDynamicColumns().size();
                         if (dynamicColumnsCount > 0) {
                             columnsCount += dynamicColumnsCount;
                         }
@@ -943,7 +944,7 @@ public class DataTable extends DataTableBase {
             for (UIComponent kid : getChildren()) {
                 if (kid.isRendered()) {
                     if (kid instanceof Columns) {
-                        int dynamicColumnsCount = ((Columns) kid).getRowCount();
+                        int dynamicColumnsCount = ((Columns) kid).getDynamicColumns().size();
                         if (dynamicColumnsCount > 0) {
                             columnsCountWithSpan += dynamicColumnsCount;
                         }

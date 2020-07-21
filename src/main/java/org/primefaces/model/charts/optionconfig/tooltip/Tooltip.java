@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -672,9 +672,7 @@ public class Tooltip implements Serializable {
      * @throws java.io.IOException If an I/O error occurs
      */
     public String encode() throws IOException {
-        FastStringWriter fsw = new FastStringWriter();
-
-        try {
+        try (FastStringWriter fsw = new FastStringWriter()) {
             ChartUtils.writeDataValue(fsw, "enabled", this.enabled, false);
             ChartUtils.writeDataValue(fsw, "mode", this.mode, true);
             ChartUtils.writeDataValue(fsw, "intersect", this.intersect, true);
@@ -708,11 +706,8 @@ public class Tooltip implements Serializable {
             ChartUtils.writeDataValue(fsw, "borderWidth", this.borderWidth, true);
             ChartUtils.writeDataValue(fsw, "rtl", this.rtl, true);
             ChartUtils.writeDataValue(fsw, "textDirection", this.textDirection, true);
-        }
-        finally {
-            fsw.close();
-        }
 
-        return fsw.toString();
+            return fsw.toString();
+        }
     }
 }

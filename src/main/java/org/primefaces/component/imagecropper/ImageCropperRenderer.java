@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -108,7 +108,9 @@ public class ImageCropperRenderer extends CoreRenderer {
             select = "[" + cropper.getInitialCoords() + "]";
         }
 
-        wb.append(",initialCoords:").append(select);
+        if (select != null) {
+            wb.append(",initialCoords:").append(select);
+        }
 
         wb.finish();
     }
@@ -127,7 +129,7 @@ public class ImageCropperRenderer extends CoreRenderer {
         }
 
         if (cropper.getBoxWidth() > 0) {
-            style = style + " max-width:" + cropper.getBoxHeight() + "px; ";
+            style = style + " max-width:" + cropper.getBoxWidth() + "px; ";
         }
         if (!LangUtils.isValueBlank(style)) {
             writer.writeAttribute("style", style, null);

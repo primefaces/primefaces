@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -132,7 +132,7 @@ public class WebXmlParser {
             }
         }
         catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Could not get web-fragment.xml's from ClassLoader", e);
+            LOGGER.log(Level.SEVERE, "Could not get web-fragment.xml from ClassLoader", e);
         }
 
         return webFragmentXmlsErrorPages;

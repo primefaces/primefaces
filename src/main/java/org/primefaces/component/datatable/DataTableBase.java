@@ -1,7 +1,7 @@
-/**
+/*
  * The MIT License
  *
- * Copyright (c) 2009-2019 PrimeTek
+ * Copyright (c) 2009-2020 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -57,6 +57,8 @@ public abstract class DataTableBase extends UIData
         sortBy,
         sortOrder,
         sortFunction,
+        sortMode,
+        allowUnsorting,
         scrollRows,
         rowKey,
         filterEvent,
@@ -66,7 +68,6 @@ public abstract class DataTableBase extends UIData
         draggableColumns,
         editable,
         filteredValue,
-        sortMode,
         editMode,
         editingRow,
         cellSeparator,
@@ -331,6 +332,14 @@ public abstract class DataTableBase extends UIData
 
     public void setSortMode(String sortMode) {
         getStateHelper().put(PropertyKeys.sortMode, sortMode);
+    }
+
+    public boolean getAllowUnsorting() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.allowUnsorting, true);
+    }
+
+    public void setAllowUnsorting(boolean allowUnsorting) {
+        getStateHelper().put(PropertyKeys.allowUnsorting, allowUnsorting);
     }
 
     public String getEditMode() {
