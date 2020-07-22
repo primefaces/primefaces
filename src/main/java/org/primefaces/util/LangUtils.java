@@ -27,12 +27,16 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import javax.faces.FacesException;
-import javax.xml.bind.DatatypeConverter;
-import java.lang.reflect.*;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
+
+import javax.faces.FacesException;
+import javax.xml.bind.DatatypeConverter;
 
 public class LangUtils {
 
@@ -59,6 +63,39 @@ public class LangUtils {
             }
         }
         return true;
+    }
+
+    /**
+     * <p>Counts how many times the char appears in the given string.</p>
+     *
+     * <p>A {@code null} or empty ("") String input returns {@code 0}.</p>
+     *
+     * <pre>
+     * StringUtils.countMatches(null, *)       = 0
+     * StringUtils.countMatches("", *)         = 0
+     * StringUtils.countMatches("abba", 0)  = 0
+     * StringUtils.countMatches("abba", 'a')   = 2
+     * StringUtils.countMatches("abba", 'b')  = 2
+     * StringUtils.countMatches("abba", 'x') = 0
+     * </pre>
+     *
+     * @param str  the CharSequence to check, may be null
+     * @param ch  the char to count
+     * @return the number of occurrences, 0 if the CharSequence is {@code null}
+     * @since 3.4
+     */
+    public static int countMatches(final String str, final char ch) {
+        if (isValueEmpty(str)) {
+            return 0;
+        }
+        int count = 0;
+        // We could also call str.toCharArray() for faster look ups but that would generate more garbage.
+        for (int i = 0; i < str.length(); i++) {
+            if (ch == str.charAt(i)) {
+                count++;
+            }
+        }
+        return count;
     }
 
     /**
