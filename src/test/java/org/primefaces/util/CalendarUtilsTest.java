@@ -77,6 +77,7 @@ public class CalendarUtilsTest {
         when(datePicker.calculatePattern()).thenCallRealMethod();
         when(datePicker.calculateTimeOnlyPattern()).thenCallRealMethod();
         when(datePicker.calculateWidgetPattern()).thenCallRealMethod();
+        when(datePicker.calculateLocalizedPattern()).thenCallRealMethod();
         when(datePicker.calculateLocale(any())).thenReturn(locale);
     }
 
@@ -86,7 +87,7 @@ public class CalendarUtilsTest {
         setupValues(localDate, Locale.ENGLISH);
 
         String value = CalendarUtils.getValueAsString (context, datePicker);
-        assertEquals("7/23/19", value);
+        assertEquals("7/23/2019", value);
     }
 
     @Test
@@ -95,7 +96,7 @@ public class CalendarUtilsTest {
         setupValues(localDate, Locale.GERMAN);
 
         String value = CalendarUtils.getValueAsString (context, datePicker);
-        assertEquals("23.07.19", value);
+        assertEquals("23.07.2019", value);
     }
 
     @Test
@@ -106,7 +107,7 @@ public class CalendarUtilsTest {
         setupValues(date, Locale.ENGLISH);
 
         String value = CalendarUtils.getValueAsString (context, datePicker);
-        assertEquals("7/23/19", value);
+        assertEquals("7/23/2019", value);
     }
 
     @Test
@@ -117,7 +118,7 @@ public class CalendarUtilsTest {
         setupValues(date, Locale.GERMAN);
 
         String value = CalendarUtils.getValueAsString (context, datePicker);
-        assertEquals("23.07.19", value);
+        assertEquals("23.07.2019", value);
     }
 
     @Test
