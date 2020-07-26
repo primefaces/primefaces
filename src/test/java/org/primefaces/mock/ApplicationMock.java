@@ -23,9 +23,12 @@
  */
 package org.primefaces.mock;
 
+import de.odysseus.el.ExpressionFactoryImpl;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
+import javax.el.ExpressionFactory;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.NavigationHandler;
@@ -45,6 +48,8 @@ import javax.faces.validator.Validator;
 
 @SuppressWarnings("deprecation")
 public class ApplicationMock extends Application {
+
+    private ExpressionFactory expressionFactory = new de.odysseus.el.ExpressionFactoryImpl(ExpressionFactoryImpl.Profile.JEE6);
 
     @Override
     public ActionListener getActionListener() {
@@ -226,5 +231,10 @@ public class ApplicationMock extends Application {
                              Class<? extends SystemEvent> systemEventClass,
                              Object source) {
 
+    }
+
+    @Override
+    public ExpressionFactory getExpressionFactory() {
+        return expressionFactory;
     }
 }
