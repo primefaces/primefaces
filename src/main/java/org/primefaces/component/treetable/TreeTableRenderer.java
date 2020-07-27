@@ -1309,7 +1309,8 @@ public class TreeTableRenderer extends DataRenderer {
             newNode.setSelected(node.isSelected());
             newNode.setExpanded(node.isExpanded());
             return newNode;
-        } catch (ReflectiveOperationException e) {
+        }
+        catch (ReflectiveOperationException e) {
             throw new FacesException(e);
         }
     }
