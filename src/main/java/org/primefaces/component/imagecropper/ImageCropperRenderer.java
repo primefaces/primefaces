@@ -83,6 +83,8 @@ public class ImageCropperRenderer extends CoreRenderer {
                 .attr("viewMode", cropper.getViewMode(), 0)
                 .attr("aspectRatio", cropper.getAspectRatio(), Double.MIN_VALUE)
                 .attr("responsive", cropper.isResponsive(), true)
+                .attr("zoomOnTouch", cropper.isZoomOnTouch(), true)
+                .attr("zoomOnWheel", cropper.isZoomOnWheel(), true)
                 .attr("guides", cropper.isGuides(), true);
 
         if (cropper.getMinSize() != null) {
