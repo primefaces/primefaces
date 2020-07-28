@@ -48,7 +48,9 @@ public abstract class ImageCropperBase extends UIInput implements Widget {
         responsive,
         guides,
         viewMode,
-        cache
+        cache,
+        zoomOnTouch,
+        zoomOnWheel
     }
 
     public ImageCropperBase() {
@@ -170,6 +172,22 @@ public abstract class ImageCropperBase extends UIInput implements Widget {
 
     public void setCache(boolean cache) {
         getStateHelper().put(PropertyKeys.cache, cache);
+    }
+
+    public boolean isZoomOnTouch() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.zoomOnTouch, true);
+    }
+
+    public void setZoomOnTouch(boolean zoomOnTouch) {
+        getStateHelper().put(PropertyKeys.zoomOnTouch, zoomOnTouch);
+    }
+
+    public boolean isZoomOnWheel() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.zoomOnWheel, true);
+    }
+
+    public void setZoomOnWheel(boolean zoomOnWheel) {
+        getStateHelper().put(PropertyKeys.zoomOnWheel, zoomOnWheel);
     }
 
 }

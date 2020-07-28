@@ -11337,6 +11337,22 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable to zoom the image by dragging touch. Default is true.]]>
+            </description>
+            <name>zoomOnTouch</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable to zoom the image by wheeling mouse. Default is true.]]>
+            </description>
+            <name>zoomOnWheel</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
