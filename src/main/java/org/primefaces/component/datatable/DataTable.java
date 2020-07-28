@@ -182,7 +182,7 @@ public class DataTable extends DataTableBase {
      * Used to extract bean's property from a value expression (e.g "#{car.year}" = year)
      */
     private static final Pattern STATIC_FIELD_REGEX = Pattern.compile("^#\\{\\w+\\.(.*)}$");
-    
+
     /**
      * Backward compatibility for column properties (e.g sortBy, filterBy)
      * using old syntax #{car[column.property]}) instead of #{column.property}
